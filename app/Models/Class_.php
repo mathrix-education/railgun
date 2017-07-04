@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\Class_
- *
  * @property int $id
  * @property string|null $name
  * @property string|null $slug
@@ -27,14 +26,22 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Class_ extends Model
 {
-    protected $table = 'classes';
-
     /**
      * Indicates if the model should be timestamped.
-     *
      * @var bool
      */
     public $timestamps = false;
+    protected $table = 'classes';
+
+    public function parent()
+    {
+        $this->belongsTo('App\Models\Class_', 'parent_id');
+    }
+
+    public function country()
+    {
+        $this->belongsTo('App\Models\Country');
+    }
 
     /**
      * HasMany User

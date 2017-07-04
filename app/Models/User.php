@@ -17,7 +17,6 @@ use Laravel\Passport\Token;
 
 /**
  * App\Models\User
- *
  * @property int $id
  * @property string|null $username
  * @property string|null $email
@@ -33,6 +32,7 @@ use Laravel\Passport\Token;
  * @property int|null $rank_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property-read Class_ $class_
  * @property-read Collection|Client[] $clients
  * @property-read Collection|Token[] $tokens
  * @method static Builder|User whereClassId($value)
@@ -51,7 +51,6 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereUpdatedAt($value)
  * @method static Builder|User whereUsername($value)
  * @mixin \Eloquent
- * @property-read \App\Models\Class_ $class_
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
@@ -59,28 +58,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     /**
      * The attributes that are mass assignable.
-     *
      * @var array
      */
-    protected $fillable = [
-        'username',
-        'email',
-        'firstname',
-        'lastname',
-        'status',
-        'points',
-        'daily_goal'
-    ];
+    protected $fillable = ['username', 'email', 'firstname', 'lastname', 'status', 'points', 'daily_goal'];
 
     /**
      * The attributes excluded from the model's JSON form.
-     *
      * @var array
      */
-    protected $hidden = [
-        'password',
-        'facebook_id'
-    ];
+    protected $hidden = ['password', 'facebook_id'];
 
     /**
      * BelongsTo Class_

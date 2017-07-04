@@ -10,6 +10,7 @@ class UserPolicy
      * Intercept checks
      *
      * @param User $currentUser
+     *
      * @return bool
      */
     public function before(User $currentUser)
@@ -24,6 +25,7 @@ class UserPolicy
      *
      * @param User $currentUser
      * @param User $user
+     *
      * @return bool
      */
     public function show(User $currentUser, User $user)
@@ -36,6 +38,7 @@ class UserPolicy
      *
      * @param User $currentUser
      * @param User $user
+     *
      * @return bool
      */
     public function update(User $currentUser, User $user)
@@ -48,6 +51,7 @@ class UserPolicy
      *
      * @param User $currentUser
      * @param User $user
+     *
      * @return bool
      */
     public function destroy(User $currentUser, User $user)

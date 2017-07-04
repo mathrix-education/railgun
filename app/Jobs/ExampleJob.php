@@ -6,7 +6,6 @@ class ExampleJob extends Job
 {
     /**
      * Create a new job instance.
-     *
      * @return void
      */
     public function __construct()
@@ -16,7 +15,6 @@ class ExampleJob extends Job
 
     /**
      * Execute the job.
-     *
      * @return void
      */
     public function handle()

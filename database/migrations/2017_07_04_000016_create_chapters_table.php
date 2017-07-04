@@ -25,11 +25,11 @@ class CreateChaptersTable extends Migration
             $table->string('name')->nullable()->default(null);
             $table->string('slug')->nullable()->default(null);
             $table->integer('class_id')->nullable()->default(null);
-            $table->integer('disipline_id')->nullable()->default(null);
+            $table->integer('discipline_id')->nullable()->default(null);
 
             $table->index(["class_id"], 'fk_chapters__classes_idx');
 
-            $table->index(["disipline_id"], 'fk_chapters__disciplines_idx');
+            $table->index(["discipline_id"], 'fk_chapters__disciplines_idx');
 
             $table->unique(["id"], 'id_UNIQUE');
 
@@ -39,7 +39,7 @@ class CreateChaptersTable extends Migration
                 ->onDelete('no action')
                 ->onUpdate('no action');
 
-            $table->foreign('disipline_id', 'fk_chapters__disciplines_idx')
+            $table->foreign('discipline_id', 'fk_chapters__disciplines_idx')
                 ->references('id')->on('disciplines')
                 ->onDelete('no action')
                 ->onUpdate('no action');
