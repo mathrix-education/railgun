@@ -19,7 +19,8 @@
     "fzaninotto/faker": "~1.4",
     "phpunit/phpunit": "~5.0",
     "mockery/mockery": "~0.9",
-    "barryvdh/laravel-ide-helper": "^2.4"
+    "barryvdh/laravel-ide-helper": "^2.4",
+    "doctrine/dbal": "^2.5"
   },
   "autoload": {
     "psr-4": {
