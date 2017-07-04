@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\Rank
- *
  * @property int $id
  * @property int|null $level
  * @property int|null $points_min

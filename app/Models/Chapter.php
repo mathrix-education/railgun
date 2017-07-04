@@ -1,0 +1,44 @@
+<?php
+namespace App\Models;
+
+
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+/**
+ * App\Models\Chapter
+ * @property int $id
+ * @property string|null $name
+ * @property string|null $slug
+ * @property int|null $class_id
+ * @property int|null $discipline_id
+ * @property-read \App\Models\Class_ $class_
+ * @property-read \App\Models\Discipline $discipline
+ * @method static Builder|Chapter whereClassId($value)
+ * @method static Builder|Chapter whereDisciplineId($value)
+ * @method static Builder|Chapter whereId($value)
+ * @method static Builder|Chapter whereName($value)
+ * @method static Builder|Chapter whereSlug($value)
+ * @mixin \Eloquent
+ */
+class Chapter extends Model
+{
+    /**
+     * BelongsTo Class_
+     * @return BelongsTo
+     */
+    public function class_()
+    {
+        return $this->belongsTo('App\models\Class_');
+    }
+
+    /**
+     * BelongsTo Discipline
+     * @return BelongsTo
+     */
+    public function discipline()
+    {
+        return $this->belongsTo('App\models\Discipline');
+    }
+}

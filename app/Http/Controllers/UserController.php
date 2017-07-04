@@ -28,9 +28,7 @@ class UserController extends Controller
             if ($user instanceof User) {
                 return app()->dispatch($request->create('/oauth/token', 'post', $inputs));
             } else {
-                return response()->json([
-                    'message' => 'User not found'
-                ], 404);
+                return response()->json(['message' => 'User not found'], 404);
             }
         } else {
             return response()->json([], 400);
