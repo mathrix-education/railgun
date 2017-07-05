@@ -1,14 +1,13 @@
 <?php
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * App\Models\Notion
+ *
  * @property int $id
  * @property string|null $name
  * @property string|null $slug
@@ -20,8 +19,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Notion whereSlug($value)
  * @mixin \Eloquent
  */
-class Notion extends Model
+class Notion extends BaseModel
 {
+    /**
+     * Indicates if the model should be timestamped.
+     * @var bool
+     */
+    public $timestamps = false;
+
     /**
      * BelongsToMany Activity
      * @return BelongsToMany

@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "name": "Cinquième",
+    "name_short": "5ème",
+    "slug": "5eme",
+    "order": 1,
+    "parent_id": null,
+    "country_id": 1
+  },
+  {
+    "id": 2,
+    "name": "Quatrième",
+    "name_short": "4ème",
+    "slug": "4eme",
+    "order": 2,
+    "parent_id": 1,
+    "country_id": 1
+  },
+  {
+    "id": 3,
+    "name": "Troisème",
+    "name_short": "3ème",
+    "slug": "3eme",
+    "order": 3,
+    "parent_id": 2,
+    "country_id": 1
+  },
+  {
+    "id": 4,
+    "name": "Seconde",
+    "name_short": "2nde",
+    "slug": "2nde",
+    "order": 4,
+    "parent_id": 3,
+    "country_id": 1
+  },
+  {
+    "id": 5,
+    "name": "Première S",
+    "name_short": "1ère S",
+    "slug": "1ere S",
+    "order": 5,
+    "parent_id": 4,
+    "country_id": 1
+  },
+  {
+    "id": 6,
+    "name": "Première ES",
+    "name_short": "1ère ES",
+    "slug": "1ere S",
+    "order": 6,
+    "parent_id": 4,
+    "country_id": 1
+  },
+  {
+    "id": 7,
+    "name": "Première L",
+    "name_short": "1ère L",
+    "slug": "1ere L",
+    "order": 7,
+    "parent_id": 4,
+    "country_id": 1
+  },
+  {
+    "id": 8,
+    "name": "Terminale S",
+    "name_short": "Term S",
+    "slug": "Term S",
+    "order": 8,
+    "parent_id": 5,
+    "country_id": 1
+  },
+  {
+    "id": 9,
+    "name": "Terminale ES",
+    "name_short": "Term ES",
+    "slug": "1ere S",
+    "order": 9,
+    "parent_id": 6,
+    "country_id": 1
+  },
+  {
+    "id": 10,
+    "name": "Terminale L",
+    "name_short": "Term L",
+    "slug": "Term L",
+    "order": 10,
+    "parent_id": 7,
+    "country_id": 1
+  }
+]

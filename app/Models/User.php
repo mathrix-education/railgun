@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Carbon\Carbon;
@@ -8,7 +7,6 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\Client;
@@ -52,7 +50,7 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereUsername($value)
  * @mixin \Eloquent
  */
-class User extends Model implements AuthenticatableContract, AuthorizableContract
+class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable, Authorizable, HasApiTokens;
 
@@ -60,13 +58,39 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * The attributes that are mass assignable.
      * @var array
      */
-    protected $fillable = ['username', 'email', 'firstname', 'lastname', 'status', 'points', 'daily_goal'];
+    protected $fillable = [
+        'username',
+        'email',
+        'firstname',
+        'lastname',
+        'status',
+        'points',
+        'settings'
+    ];
 
     /**
      * The attributes excluded from the model's JSON form.
      * @var array
      */
-    protected $hidden = ['password', 'facebook_id'];
+    protected $hidden = [
+        'password',
+        'facebook_id'
+    ];
+
+    /**
+     * @var array
+     */
+    public $validationRules = [
+        'email' => 'required|email',
+        'firstname' => 'nullable',
+        'lastname' => 'nullable',
+        'password' => 'required|min:6',
+        'status' => 'required|in:registered,premium,moderator,admin',
+        'facebook_token' => 'nullable',
+        'points' => 'integer',
+        'class_id' => 'exists:classes,id',
+        'rank_id' => 'exists:ranks,id'
+    ];
 
     /**
      * BelongsTo Class_
