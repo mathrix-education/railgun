@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 /**
  * Class UserController
@@ -13,18 +14,25 @@ class UserController extends Controller
 {
     public function register(Request $request)
     {
-
+        $user = new User($request->all());
     }
 
+    /**
+     * Login action
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
     public function login(Request $request)
     {
         $inputs = $request->all();
 
         $user = null;
 
-
         if (isset($inputs['username']) && $inputs['grant_type'] == 'password') {
-            $user = User::where('email', $inputs['username'])->first();
+            $user = User::whereEmail($inputs['username'])->first(); // Try to find the User
+
             if ($user instanceof User) {
                 return app()->dispatch($request->create('/oauth/token', 'post', $inputs));
             } else {

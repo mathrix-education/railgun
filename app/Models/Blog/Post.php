@@ -1,19 +1,18 @@
 <?php
-
 namespace App\Models\Blog;
 
-
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * App\Models\Blog\Post
- * @property-read \App\Models\Blog\Category $category
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Blog\Tag[] $tags
+ * @property-read Category $category
+ * @property-read Collection|Tag[] $tags
  * @mixin \Eloquent
  */
-class Post extends Model
+class Post extends BaseModel
 {
     /**
      * BelongsTo Category

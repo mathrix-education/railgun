@@ -1,13 +1,12 @@
 <?php
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * App\Models\Chapter
+ *
  * @property int $id
  * @property string|null $name
  * @property string|null $slug
@@ -22,8 +21,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Chapter whereSlug($value)
  * @mixin \Eloquent
  */
-class Chapter extends Model
+class Chapter extends BaseModel
 {
+    /**
+     * Indicates if the model should be timestamped.
+     * @var bool
+     */
+    public $timestamps = false;
+
     /**
      * BelongsTo Class_
      * @return BelongsTo
