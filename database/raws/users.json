@@ -1,0 +1,50 @@
+[
+  {
+    "username": "admin",
+    "email": "admin@mathrix.fr",
+    "firstname": "Admin",
+    "lastname": "Admin",
+    "password": "test",
+    "status": "admin",
+    "facebook_token": null,
+    "points": 0,
+    "settings": {
+      "daily_goal": 0,
+      "sound": true,
+      "email_newsletter": true,
+      "email_comment": true
+    }
+  },
+  {
+    "username": "moderator",
+    "email": "moderator@mathrix.fr",
+    "firstname": "Moderator",
+    "lastname": "Moderator",
+    "password": "test",
+    "status": "moderator",
+    "facebook_token": null,
+    "points": 0,
+    "settings": {
+      "daily_goal": 0,
+      "sound": true,
+      "email_newsletter": true,
+      "email_comment": true
+    }
+  },
+  {
+    "username": "premium",
+    "email": "premium@mathrix.fr",
+    "firstname": "premium",
+    "lastname": "Premium",
+    "password": "test",
+    "status": "premium",
+    "facebook_token": null,
+    "points": 0,
+    "settings": {
+      "daily_goal": 0,
+      "sound": true,
+      "email_newsletter": true,
+      "email_comment": true
+    }
+  }
+]

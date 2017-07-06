@@ -111,7 +111,7 @@ class UserTest extends TestCase
     public function testRegisterOk()
     {
         $faker = Faker\Factory::create(); // Create a faker
-        $this->call('POST', '/user/register', [
+        $this->call('POST', '/users/register', [
             'email' => $faker->email,
             'password' => 'test',
             'class_id' => $faker->randomElement(
@@ -123,8 +123,45 @@ class UserTest extends TestCase
         $this->assertResponseOk();
     }
 
-    public function testRegisterValidationFails()
-    {
+    /**
+     * Test user register with missing field
+     */
+    public function testRegisterMissingField() {
+        $faker = Faker\Factory::create(); // Create a faker
 
+        $data = [
+            'email' => $faker->email,
+            'password' => 'test',
+            'class_id' => $faker->randomElement(
+                \App\Models\Class_::all()
+                    ->pluck('id')
+                    ->toArray()
+            )
+        ];
+
+        // Pick a random data field...
+        $dataKeys = array_keys($data);
+        shuffle($dataKeys);
+        unset($data[$dataKeys[0]]); // .. and delete it
+
+        $this->call('POST', '/users/register', $data);
+        $this->assertResponseStatus(400);
+    }
+
+    /**
+     * Test user register with bad data
+     */
+    public function testRegisterBadData() {
+
+        $this->call('POST', '/users/register', [
+            'email' => 'hsjdknvsdlkqs',
+            'password' => '5',
+            'class_id' => 'qsf5q4s4d4qzf'
+        ]);
+        $this->seeJsonStructure([
+            'error',
+            'message'
+        ]);
+        $this->assertResponseStatus(400);
     }
 }
