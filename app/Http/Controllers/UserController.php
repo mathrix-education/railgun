@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Class UserController
@@ -12,9 +14,46 @@ use Illuminate\Http\Response;
  */
 class UserController extends Controller
 {
+    /**
+     * Register action
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
     public function register(Request $request)
     {
-        $user = new User($request->all());
+        $request->replace($request->only(['username', 'email', 'password', 'class_id'])); // Trim request inputs
+        $request->merge([
+            'status' => 'registered',
+            'points' => 0,
+            'settings' => [
+                'daily_goal' => 0,
+                'sound' => true,
+                'email_newsletter' => true,
+                'email_comment' => true
+            ],
+            'rank_id' => 1 // TODO: default rank
+        ]);
+
+        try {
+            $this->validate($request, User::$validationRules);
+
+            $user = User::create($request->all());
+            $user->save();
+
+            $user = User::whereId($user->id)->first();
+
+            return response()->json([
+                'message' => 'User successfully saved',
+                'data' => ['user' => $user->toArray()]
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'error' => 'validation',
+                'message' => $e->validator->getMessageBag()->toArray()
+            ], 400);
+        }
     }
 
     /**
@@ -22,26 +61,33 @@ class UserController extends Controller
      *
      * @param Request $request
      *
-     * @return Response
+     * @return JsonResponse
      */
     public function login(Request $request)
     {
         $inputs = $request->all();
 
-        $user = null;
-
-        if (isset($inputs['username']) && $inputs['grant_type'] == 'password') {
-            $user = User::whereEmail($inputs['username'])->first(); // Try to find the User
+        if (
+            isset($inputs['username']) && // Need username
+            isset($inputs['password']) && // + password
+            $inputs['grant_type'] == 'password' // + grant_type = 'password'
+        ) {
+            $user = User::whereEmail($inputs['username'])->first(); // Try to find the user by email
 
             if ($user instanceof User) {
                 return app()->dispatch($request->create('/oauth/token', 'post', $inputs));
             } else {
-                return response()->json(['message' => 'User not found'], 404);
+                return response()->json([
+                    'error' => 'not_found',
+                    'message' => 'User not found'
+                ], 404);
             }
         } else {
-            return response()->json([], 400);
+            return response()->json([
+                'error' => 'bad_request',
+                'message' => 'Bad request'
+            ], 400);
         }
-
     }
 
     public function logout(Request $request)

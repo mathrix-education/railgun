@@ -24,7 +24,6 @@ use Laravel\Passport\Token;
  * @property string|null $status
  * @property string|null $facebook_token
  * @property int|null $points
- * @property int|null $daily_goal
  * @property string|null $settings
  * @property int|null $class_id
  * @property int|null $rank_id
@@ -55,17 +54,13 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     use Authenticatable, Authorizable, HasApiTokens;
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that are guarded.
      * @var array
      */
-    protected $fillable = [
-        'username',
-        'email',
-        'firstname',
-        'lastname',
-        'status',
-        'points',
-        'settings'
+    protected $guarded = [
+        'rank_id',
+        'created_at',
+        'updated_at'
     ];
 
     /**
@@ -78,18 +73,27 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     ];
 
     /**
+     * The attributes that should be cast to native types.
      * @var array
      */
-    public $validationRules = [
+    protected $casts = [
+        'settings' => 'array'
+    ];
+
+    /**
+     * The validation rules
+     * @var array
+     */
+    public static $validationRules = [
         'email' => 'required|email',
         'firstname' => 'nullable',
         'lastname' => 'nullable',
-        'password' => 'required|min:6',
+        'password' => 'required|min:3',
         'status' => 'required|in:registered,premium,moderator,admin',
         'facebook_token' => 'nullable',
-        'points' => 'integer',
-        'class_id' => 'exists:classes,id',
-        'rank_id' => 'exists:ranks,id'
+        'points' => 'required|integer',
+        'class_id' => 'required|exists:classes,id',
+        //'rank_id' => 'required|exists:ranks,id' // TODO: Re-enable this
     ];
 
     /**

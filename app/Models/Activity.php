@@ -1,13 +1,13 @@
 <?php
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * App\Models\Activity
- *
  * @property int $id
  * @property string|null $name
  * @property string|null $slug
@@ -30,6 +30,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class Activity extends BaseModel
 {
+    use Sluggable;
+
     /**
      * Indicates if the model should be timestamped.
      * @var bool
@@ -52,5 +54,18 @@ class Activity extends BaseModel
     public function notions()
     {
         return $this->belongsToMany('App\Models\Notion');
+    }
+
+    /**
+     * Return the sluggable configuration array for this model.
+     * @return array
+     */
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
     }
 }
