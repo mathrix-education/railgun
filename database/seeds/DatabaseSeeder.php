@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * Class DatabaseSeeder
@@ -58,10 +59,22 @@ class DatabaseSeeder extends Seeder
         $data = $this->_loadJson(__DIR__ . '/../raws/' . $table . '.json');
 
         foreach ($data as $row) {
-            $id = $row['id'];
-            unset($row['id']);
+            // Convert field values to JSON string
+            foreach ($row as $field => $value) {
+                if (is_array($value)) {
+                    $row[$field] = json_encode($value);
+                }
+            }
 
-            DB::table($table)->updateOrInsert(['id' => $id], $row);
+            // Handle id colliding
+            if (isset($row['id'])) {
+                $id = $row['id'];
+                unset($row['id']);
+
+                DB::table($table)->updateOrInsert(['id' => $id], $row);
+            } else {
+                DB::table($table)->insert($row);
+            }
         }
 
         return !is_null($next) ? $next() : true;
@@ -104,6 +117,16 @@ class DatabaseSeeder extends Seeder
         $this->_seedFromJson('countries', function () {
             $this->_seedFromJson('classes');
         });
-        $this->_seedFromFactory(App\Models\User::class, 50);
+        $this->_seedFromJson('users', function () {
+            // Hash passwords
+            $users = DB::select('SELECT * FROM `users` WHERE `password` NOT LIKE \'$2y$%\'');
+            foreach ($users as $user) {
+                DB::update('UPDATE users SET `password` = ? WHERE `id` = ?', [
+                    Hash::make($user->password),
+                    $user->id
+                ]);
+            }
+        });
+        $this->_seedFromFactory(App\Models\User::class, 47);
     }
 }

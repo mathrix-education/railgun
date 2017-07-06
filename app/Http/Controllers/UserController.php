@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -39,7 +38,13 @@ class UserController extends Controller
         try {
             $this->validate($request, User::$validationRules);
 
-            $user = User::create($request->all());
+            $user = new User();
+
+            // Allow status save; should be safe as we had manually trimmed the request before
+            $guarded = $user->getGuarded();
+            $user->guard(array_diff($guarded, ['status']));
+
+            $user->fill($request->all());
             $user->save();
 
             $user = User::whereId($user->id)->first();

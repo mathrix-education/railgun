@@ -1,12 +1,16 @@
 <?php
+use Illuminate\Support\Facades\Hash;
+
 $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
+    $names = $faker->boolean(30);
+
     return [
-        'username' => $faker->userName,
+        'username' => $faker->boolean(30) ? $faker->userName : null,
         'email' => $faker->email,
-        'firstName' => $faker->firstName,
-        'lastName' => $faker->lastName,
-        'password' => \Illuminate\Support\Facades\Hash::make('test'),
-        'status' => $faker->randomElement(['registered', 'premium', 'moderator', 'admin']),
+        'firstName' => $names ? $faker->firstName : null,
+        'lastName' => $names ? $faker->lastName : null,
+        'password' => Hash::make('test'),
+        'status' => 'registered',
         'facebook_token' => null,
         'points' => $faker->numberBetween(0, 100) * 10,
         'settings' => json_encode([
