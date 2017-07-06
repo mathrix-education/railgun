@@ -72,11 +72,15 @@ class UserController extends Controller
     {
         $inputs = $request->all();
 
-        if (
-            isset($inputs['username']) && // Need username
-            isset($inputs['password']) && // + password
-            $inputs['grant_type'] == 'password' // + grant_type = 'password'
-        ) {
+        // Need username + password
+        if (isset($inputs['username']) && isset($inputs['password'])) {
+            // Fill input with .env client
+            $inputs = array_merge($inputs, [
+                'grant_type' => 'password',
+                'client_id' => env('CLIENT_ID'),
+                'client_secret' => env('CLIENT_SECRET')
+            ]);
+
             $user = User::whereEmail($inputs['username'])->first(); // Try to find the user by email
 
             if ($user instanceof User) {

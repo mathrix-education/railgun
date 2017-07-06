@@ -32,8 +32,8 @@ class AuthServiceProvider extends ServiceProvider
             }
         });
 
-        Passport::tokensExpireIn(Carbon::now()->addDays(15));
-        Passport::refreshTokensExpireIn(Carbon::now()->addDays(30));
+        Passport::tokensExpireIn(Carbon::now()->addMonth());
+        Passport::refreshTokensExpireIn(Carbon::now()->addMonths(2));
 
         Passport::tokensCan(['admin' => 'Admin user scope', 'basic' => 'Basic user scope',]);
 
