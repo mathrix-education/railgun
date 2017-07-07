@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * App\Models\Activity
+ *
  * @property int $id
  * @property string|null $name
  * @property string|null $slug
@@ -27,6 +28,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Activity whereCorrection($value)
  * @method static Builder|Activity whereOptions($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Activity findSimilarSlugs(\Illuminate\Database\Eloquent\Model $model, $attribute, $config, $slug)
  */
 class Activity extends BaseModel
 {

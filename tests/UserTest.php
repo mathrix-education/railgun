@@ -2,16 +2,20 @@
 
 use App\Models\User;
 
+/**
+ * Class UserTest
+ * Test UserController methods
+ *
+ * @see \App\Http\Controllers\UserController
+ */
 class UserTest extends TestCase
 {
-    const CLIENT_ID = 3;
-
     private $_user;
     private $_client;
 
     /**
      * Get a user
-     * @return mixed
+     * @return User|null
      */
     private function _user()
     {
@@ -30,7 +34,7 @@ class UserTest extends TestCase
     {
         if (!isset($this->_client)) {
             $this->_client = DB::table('oauth_clients')
-                ->where('id', '=', self::CLIENT_ID)
+                ->where('id', '=', env('CLIENT_ID'))
                 ->first();
         }
 

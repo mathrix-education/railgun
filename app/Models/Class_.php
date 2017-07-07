@@ -11,16 +11,18 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @property int $id
  * @property string|null $name
+ * @property string|null $name_short
  * @property string|null $slug
  * @property int|null $order
  * @property int|null $parent_id
  * @property int|null $country_id
- * @property-read \App\Models\Class_|null $parent
- * @property-read \App\Models\Country|null $country
+ * @property-read Class_|null $parent
+ * @property-read Country|null $country
  * @property-read Collection|User[] $users
  * @method static Builder|Class_ whereCountryId($value)
  * @method static Builder|Class_ whereId($value)
  * @method static Builder|Class_ whereName($value)
+ * @method static Builder|Class_ whereNameShort($value)
  * @method static Builder|Class_ whereOrder($value)
  * @method static Builder|Class_ whereParentId($value)
  * @method static Builder|Class_ whereSlug($value)
