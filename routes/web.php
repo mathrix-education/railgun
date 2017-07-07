@@ -17,6 +17,7 @@ $app->get('/', function () use ($app) {
 
 $app->post('users/register', 'UserController@register');
 $app->post('users/login', 'UserController@login');
+$app->post('users/refresh', 'UserController@refresh');
 
 // Protected routes
 $app->group(['middleware' => 'auth:api'], function () use ($app) {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -22,6 +23,8 @@ class UserController extends Controller
      */
     public function register(Request $request)
     {
+        $this->requireInputs($request, ['username', 'email', 'password', 'class_id']);
+
         $request->replace($request->only(['username', 'email', 'password', 'class_id'])); // Trim request inputs
         $request->merge([
             'status' => 'registered',
@@ -47,14 +50,12 @@ class UserController extends Controller
             $user->fill($request->all());
             $user->save();
 
-            $user = User::whereId($user->id)->first();
-
             return response()->json([
                 'message' => 'User successfully saved'
             ]);
         } catch (ValidationException $e) {
             return response()->json([
-                'error' => 'validation',
+                'error' => 'validation_failed',
                 'message' => $e->validator->getMessageBag()->toArray()
             ], 400);
         }
@@ -69,7 +70,7 @@ class UserController extends Controller
      */
     public function login(Request $request)
     {
-        $this->checkRequestInputs($request, ['grant_type', 'client_id', 'client_secret', 'username', 'password']);
+        $this->requireInputs($request, ['grant_type', 'client_id', 'client_secret', 'username', 'password']);
 
         $inputs = $request->all();
 
@@ -84,6 +85,21 @@ class UserController extends Controller
                 'message' => 'User not found'
             ], 404);
         }
+    }
+
+    /**
+     * Refresh the access_token on expiration date
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function refresh(Request $request)
+    {
+        $this->requireInputs($request, ['grant_type', 'client_id', 'client_secret', 'refresh_token']);
+
+        $inputs = $request->all();
+
+        return app()->dispatch($request->create('/oauth/token', 'post', $inputs));
     }
 
     /**
@@ -113,9 +129,24 @@ class UserController extends Controller
         }
     }
 
-    public function logout(Request $request)
+    /**
+     * Account action
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function account(Request $request)
     {
-
+        $request->replace($request->only([
+            'username',
+            'email',
+            'firstname',
+            'lastname',
+            'new_password',
+            'old_password',
+            'settings'
+        ]));
     }
 
     public function update(Request $request, int $id)

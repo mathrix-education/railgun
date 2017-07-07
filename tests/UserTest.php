@@ -21,7 +21,7 @@ class UserTest extends TestCase
     private function _user()
     {
         if (!isset($this->_user)) {
-            $this->_user = User::inRandomOrder()->first();
+            $this->_user = User::where('id', '<', 50)->inRandomOrder()->first();
         }
 
         return $this->_user;
@@ -108,6 +108,42 @@ class UserTest extends TestCase
             'message' => 'User not found'
         ]);
         $this->assertResponseStatus(404);
+    }
+
+    /**
+     * Test token refreshing
+     */
+    public function testRefreshOk() {
+        $response = $this->_tryLogin($this->_user()->email);
+        $tokens = json_decode($response->getContent());
+
+        $this->call('post', '/users/refresh', [
+            'grant_type' => 'refresh_token',
+            'refresh_token' => $tokens->refresh_token,
+            'client_id' => $this->_client()->id,
+            'client_secret' => $this->_client()->secret,
+        ]);
+
+        $this->assertResponseOk();
+    }
+
+    /**
+     * Test token refresh with invalid token
+     */
+    public function testRefreshInvalidToken() {
+        $this->call('post', '/users/refresh', [
+            'grant_type' => 'refresh_token',
+            'refresh_token' => 'foo',
+            'client_id' => $this->_client()->id,
+            'client_secret' => $this->_client()->secret,
+        ]);
+
+        $this->seeJsonEquals([
+            'error' => 'invalid_request',
+            'message' => 'The refresh token is invalid.',
+            'hint' => 'Cannot decrypt the refresh token'
+        ]);
+        $this->assertResponseStatus(400);
     }
 
     /**
