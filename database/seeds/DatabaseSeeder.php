@@ -128,5 +128,8 @@ class DatabaseSeeder extends Seeder
             }
         });
         $this->_seedFromFactory(App\Models\User::class, 47);
+
+        // oAuth
+        $this->_seedFromJson('oauth_clients');
     }
 }
