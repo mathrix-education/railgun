@@ -117,6 +117,7 @@ class DatabaseSeeder extends Seeder
         $this->_seedFromJson('countries', function () {
             $this->_seedFromJson('classes');
         });
+        $this->_seedFromJson('class_discipline');
         $this->_seedFromJson('users', function () {
             // Hash passwords
             $users = DB::select('SELECT * FROM `users` WHERE `password` NOT LIKE \'$2y$%\'');

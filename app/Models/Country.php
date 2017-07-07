@@ -2,6 +2,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\Country
@@ -11,6 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property string|null $name_short
  * @property string|null $slug
  * @property string|null $slug_short
+ * @property-read Collection|Class_[] $classes
  * @method static Builder|Country whereId($value)
  * @method static Builder|Country whereName($value)
  * @method static Builder|Country whereNameShort($value)
@@ -25,5 +28,13 @@ class Country extends BaseModel
      * @var bool
      */
     public $timestamps = false;
+
+    /**
+     * HasMany Class_
+     * @return HasMany
+     */
+    public function classes() {
+        return $this->hasMany('App\Models\Class_');
+    }
 
 }

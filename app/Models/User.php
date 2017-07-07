@@ -82,6 +82,12 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     ];
 
     /**
+     * Indicates if the model should be timestamped.
+     * @var bool
+     */
+    public $timestamps = true;
+
+    /**
      * The validation rules on create
      * @var array
      */

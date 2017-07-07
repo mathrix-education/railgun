@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Laravel\Lumen\Routing\Controller as BaseController;
+use Laravel\Lumen\Routing\Controller;
 
-class Controller extends BaseController
+abstract class BaseController extends Controller
 {
     /**
      * Check if a request contains the needed inputs
