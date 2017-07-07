@@ -11,7 +11,13 @@ use Laravel\Passport\Passport;
  */
 class UserTest extends TestCase
 {
+    /**
+     * @var User|null
+     */
     private $_user;
+    /**
+     * @var stdClass|null
+     */
     private $_client;
 
     /**
@@ -113,7 +119,8 @@ class UserTest extends TestCase
     /**
      * Test token refreshing
      */
-    public function testRefreshOk() {
+    public function testRefreshOk()
+    {
         $response = $this->_tryLogin($this->_user()->email);
         $tokens = json_decode($response->getContent());
 
@@ -130,7 +137,8 @@ class UserTest extends TestCase
     /**
      * Test token refresh with invalid token
      */
-    public function testRefreshInvalidToken() {
+    public function testRefreshInvalidToken()
+    {
         $this->call('post', '/users/refresh', [
             'grant_type' => 'refresh_token',
             'refresh_token' => 'foo',
@@ -241,9 +249,69 @@ class UserTest extends TestCase
     /**
      * Test user profile retrieving when user does not exist
      */
-    public function testProfileNotFound() {
+    public function testProfileNotFound()
+    {
         Passport::actingAs($this->_user());
         $this->call('GET', '/users/' . -1);
         $this->assertResponseStatus(404);
+    }
+
+    /**
+     * Test user account modification with password change
+     */
+    public function testAccountOkWithPasswordChange()
+    {
+        Passport::actingAs($this->_user());
+        $newSettings = factory(User::class)->make()->toArray();
+        unset($newSettings['status'], $newSettings['points'], $newSettings['facebook_token']);
+        $newSettings['new_password'] = 'test';
+        $newSettings['old_password'] = 'test';
+
+        $this->call('post', '/users', $newSettings);
+
+        $this->assertResponseOk();
+    }
+
+    /**
+     * Test user account modification without password
+     */
+    public function testAccountOkWithoutPasswordChange()
+    {
+        Passport::actingAs($this->_user());
+        $newSettings = factory(User::class)->make()->toArray();
+        unset($newSettings['status'], $newSettings['points'], $newSettings['facebook_token']);
+
+        $this->call('post', '/users', $newSettings);
+
+        $this->assertResponseOk();
+    }
+
+    /**
+     * Test user account modification with invalid old password
+     */
+    public function testAccountInvalidOldPassword() {
+        Passport::actingAs($this->_user());
+        $newSettings = factory(User::class)->make()->toArray();
+        unset($newSettings['status'], $newSettings['points'], $newSettings['facebook_token']);
+        $newSettings['old_password'] = 'test2';
+        $newSettings['new_password'] = 'test';
+
+        $this->call('post', '/users', $newSettings);
+
+        $this->assertResponseStatus(401);
+    }
+
+    /**
+     * Test user account modification with invalid old password
+     */
+    public function testAccountInvalidData() {
+        Passport::actingAs($this->_user());
+        $newSettings = factory(User::class)->make()->toArray();
+        unset($newSettings['status'], $newSettings['points'], $newSettings['facebook_token']);
+        $newSettings['email'] = 'lol';
+
+        $this->call('post', '/users', $newSettings);
+
+        $this->assertResponseStatus(400);
     }
 }
