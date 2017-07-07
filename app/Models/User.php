@@ -82,18 +82,31 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     ];
 
     /**
-     * The validation rules
+     * The validation rules on create
      * @var array
      */
-    public static $validationRules = [
-        'email' => 'required|email',
-        'firstname' => 'nullable',
-        'lastname' => 'nullable',
+    public static $validationRulesOnCreate = [
+        'email' => 'required|email|max:60',
+        'username' => 'nullable|max:20',
+        'firstname' => 'nullable|max:30',
+        'lastname' => 'nullable|max:40',
         'password' => 'required|min:3',
         'status' => 'required|in:registered,premium,moderator,admin',
         'facebook_token' => 'nullable',
         'points' => 'required|integer',
         'class_id' => 'required|exists:classes,id'
+    ];
+
+    /**
+     * The validation rules on update
+     * @var array
+     */
+    public static $validationRulesOnUpdate = [
+        'email' => 'email',
+        'username' => 'nullable|max:20',
+        'firstname' => 'nullable|max:30',
+        'lastname' => 'nullable|max:40',
+        'password' => 'min:3'
     ];
 
     /**

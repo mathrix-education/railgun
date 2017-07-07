@@ -22,5 +22,6 @@ $app->post('users/refresh', 'UserController@refresh');
 // Protected routes
 $app->group(['middleware' => 'auth:api'], function () use ($app) {
     $app->get('users', 'UserController@profile');
+    $app->post('users', 'UserController@account');
     $app->get('users/{id:[0-9]+}', 'UserController@profile');
 });
