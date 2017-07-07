@@ -20,7 +20,6 @@ $app->post('users/login', 'UserController@login');
 
 // Protected routes
 $app->group(['middleware' => 'auth:api'], function () use ($app) {
-    $app->post('users/{id:[0-9]+}', 'UserController@edit');
-    $app->post('users/settings/{id}', 'UserController@settings');
-    $app->get('users/logout', 'UserController@logout');
+    $app->get('users', 'UserController@profile');
+    $app->get('users/{id:[0-9]+}', 'UserController@profile');
 });

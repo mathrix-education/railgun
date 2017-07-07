@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Laravel\Passport\Passport;
 
 /**
  * Class UserTest
@@ -20,7 +21,7 @@ class UserTest extends TestCase
     private function _user()
     {
         if (!isset($this->_user)) {
-            $this->_user = User::all()->first();
+            $this->_user = User::inRandomOrder()->first();
         }
 
         return $this->_user;
@@ -130,7 +131,8 @@ class UserTest extends TestCase
     /**
      * Test user register with missing field
      */
-    public function testRegisterMissingField() {
+    public function testRegisterMissingField()
+    {
         $faker = Faker\Factory::create(); // Create a faker
 
         $data = [
@@ -155,8 +157,8 @@ class UserTest extends TestCase
     /**
      * Test user register with bad data
      */
-    public function testRegisterBadData() {
-
+    public function testRegisterBadData()
+    {
         $this->call('POST', '/users/register', [
             'email' => 'hsjdknvsdlkqs',
             'password' => '5',
@@ -167,5 +169,45 @@ class UserTest extends TestCase
             'message'
         ]);
         $this->assertResponseStatus(400);
+    }
+
+    /**
+     * Test user profile retrieving
+     */
+    public function testProfileOk()
+    {
+        Passport::actingAs($this->_user());
+        $this->call('GET', '/users');
+        $this->assertResponseOk();
+    }
+
+    /**
+     * Test user profile retrieving without authorization
+     */
+    public function testProfileNotAuthorized()
+    {
+        $this->call('GET', '/users');
+        $this->assertResponseStatus(401);
+    }
+
+    /**
+     * Test other user profile retrieving
+     */
+    public function testProfileOtherUser()
+    {
+        $otherId = User::inRandomOrder()->first()->id;
+
+        Passport::actingAs($this->_user());
+        $this->call('GET', '/users/' . $otherId);
+        $this->assertResponseOk();
+    }
+
+    /**
+     * Test user profile retrieving when user does not exist
+     */
+    public function testProfileNotFound() {
+        Passport::actingAs($this->_user());
+        $this->call('GET', '/users/' . -1);
+        $this->assertResponseStatus(404);
     }
 }
