@@ -18,5 +18,10 @@
     "id": 4,
     "name": "Sciences de l'ingénieur",
     "slug": "si"
+  },
+  {
+    "id": 5,
+    "name": "Sciences de la Vie et de la Terre",
+    "slug": "svt"
   }
 ]

@@ -13,7 +13,7 @@ use Illuminate\Validation\ValidationException;
  * Class UserController
  * @package App\Http\Controllers
  */
-class UserController extends Controller
+class UserController extends BaseController
 {
     /**
      * Register action

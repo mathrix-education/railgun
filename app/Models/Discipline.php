@@ -1,7 +1,11 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\Discipline
@@ -9,6 +13,8 @@ use Illuminate\Database\Eloquent\Builder;
  * @property int $id
  * @property string|null $name
  * @property string|null $slug
+ * @property-read Collection|Chapter[] $chapters
+ * @property-read Collection|Class_[] $classes
  * @method static Builder|Discipline whereId($value)
  * @method static Builder|Discipline whereName($value)
  * @method static Builder|Discipline whereSlug($value)
@@ -17,9 +23,20 @@ use Illuminate\Database\Eloquent\Builder;
 class Discipline extends BaseModel
 {
     /**
-     * Indicates if the model should be timestamped.
-     * @var bool
+     * HasMany Chapter
+     * @return HasMany
      */
-    public $timestamps = false;
+    public function chapters()
+    {
+        return $this->hasMany('App\Models\Chapter');
+    }
 
+    /**
+     * BelongsToMany Class_
+     * @return BelongsToMany
+     */
+    public function classes()
+    {
+        return $this->belongsToMany('App\Models\Class_', 'class_discipline', 'class_id');
+    }
 }

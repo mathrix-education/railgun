@@ -35,7 +35,7 @@ class Chapter extends BaseModel
      */
     public function class_()
     {
-        return $this->belongsTo('App\models\Class_');
+        return $this->belongsTo('App\Models\Class_');
     }
 
     /**
@@ -44,6 +44,6 @@ class Chapter extends BaseModel
      */
     public function discipline()
     {
-        return $this->belongsTo('App\models\Discipline');
+        return $this->belongsTo('App\Models\Discipline');
     }
 }
