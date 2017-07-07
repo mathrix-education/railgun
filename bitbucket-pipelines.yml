@@ -3,16 +3,12 @@
 # Only use spaces to indent your .yml configuration.
 # -----
 # You can specify a custom docker image from Docker Hub as your build environment.
-image: php:7.1.1
+image: punkstar/bitbucket-pipelines-php7-mysql
 
 pipelines:
   default:
     - step:
-        caches:
-          - composer
         script:
-          - apt-get update && apt-get install -y unzip php7.1-mysql php7.1-mbstring
-          - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-          - composer install
+          - composer install --no-interaction --no-progress --prefer-dist
           - cp .env.dev .env
           - vendor/bin/phpunit
