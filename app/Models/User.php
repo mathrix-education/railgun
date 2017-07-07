@@ -16,6 +16,7 @@ use Laravel\Passport\Token;
 
 /**
  * App\Models\User
+ *
  * @property int $id
  * @property string|null $username
  * @property string|null $email

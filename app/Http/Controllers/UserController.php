@@ -50,8 +50,7 @@ class UserController extends Controller
             $user = User::whereId($user->id)->first();
 
             return response()->json([
-                'message' => 'User successfully saved',
-                'data' => ['user' => $user->toArray()]
+                'message' => 'User successfully saved'
             ]);
         } catch (ValidationException $e) {
             return response()->json([
@@ -70,32 +69,45 @@ class UserController extends Controller
      */
     public function login(Request $request)
     {
+        $this->checkRequestInputs($request, ['grant_type', 'client_id', 'client_secret', 'username', 'password']);
+
         $inputs = $request->all();
 
-        // Need username + password
-        if (isset($inputs['username']) && isset($inputs['password'])) {
-            // Fill input with .env client
-            $inputs = array_merge($inputs, [
-                'grant_type' => 'password',
-                'client_id' => env('CLIENT_ID'),
-                'client_secret' => env('CLIENT_SECRET')
-            ]);
+        // Try to find the user by email
+        $user = User::whereEmail($inputs['username'])->first();
 
-            $user = User::whereEmail($inputs['username'])->first(); // Try to find the user by email
+        if ($user instanceof User) {
+            return app()->dispatch($request->create('/oauth/token', 'post', $inputs));
+        } else {
+            return response()->json([
+                'error' => 'not_found',
+                'message' => 'User not found'
+            ], 404);
+        }
+    }
+
+    /**
+     * Profile action
+     * @param Request $request
+     * @param int|null $id
+     */
+    public function profile(Request $request, int $id = null)
+    {
+        if (is_null($id)) {
+            // Retrieve the current user
+            response()->json($request->user());
+        } else {
+            // Get user by id
+            $user = User::whereId($id)->first();
 
             if ($user instanceof User) {
-                return app()->dispatch($request->create('/oauth/token', 'post', $inputs));
+                response()->json($user);
             } else {
-                return response()->json([
+                response()->json([
                     'error' => 'not_found',
                     'message' => 'User not found'
                 ], 404);
             }
-        } else {
-            return response()->json([
-                'error' => 'bad_request',
-                'message' => 'Bad request'
-            ], 400);
         }
     }
 

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * App\Models\Blog\Post
+ *
  * @property-read Category $category
  * @property-read Collection|Tag[] $tags
  * @mixin \Eloquent
