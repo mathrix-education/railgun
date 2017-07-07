@@ -28,7 +28,6 @@ use Laravel\Passport\Token;
  * @property int|null $points
  * @property string|null $settings
  * @property int|null $class_id
- * @property int|null $rank_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Class_ $class_
@@ -44,7 +43,6 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereLastname($value)
  * @method static Builder|User wherePassword($value)
  * @method static Builder|User wherePoints($value)
- * @method static Builder|User whereRankId($value)
  * @method static Builder|User whereSettings($value)
  * @method static Builder|User whereStatus($value)
  * @method static Builder|User whereUpdatedAt($value)
@@ -95,8 +93,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         'status' => 'required|in:registered,premium,moderator,admin',
         'facebook_token' => 'nullable',
         'points' => 'required|integer',
-        'class_id' => 'required|exists:classes,id',
-        //'rank_id' => 'required|exists:ranks,id' // TODO: Re-enable this
+        'class_id' => 'required|exists:classes,id'
     ];
 
     /**

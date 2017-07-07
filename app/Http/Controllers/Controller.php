@@ -13,7 +13,7 @@ class Controller extends BaseController
      * @param array $neededInputs the needed inputs
      * @return \Illuminate\Http\JsonResponse
      */
-    public function checkRequestInputs(Request $request, array $neededInputs) {
+    public function requireInputs(Request $request, array $neededInputs) {
         $presentInputs = array_keys($request->all());
         $missingInputs = [];
 

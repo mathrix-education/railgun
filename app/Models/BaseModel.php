@@ -1,11 +1,14 @@
 <?php
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class BaseModel
  * @package app\Models
+ *
+ * @method static Builder inRandomOrder()
  */
 abstract class BaseModel extends Model
 {
