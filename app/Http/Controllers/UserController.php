@@ -90,20 +90,22 @@ class UserController extends Controller
      * Profile action
      * @param Request $request
      * @param int|null $id
+     *
+     * @return JsonResponse
      */
     public function profile(Request $request, int $id = null)
     {
         if (is_null($id)) {
             // Retrieve the current user
-            response()->json($request->user());
+            return response()->json($request->user());
         } else {
             // Get user by id
             $user = User::whereId($id)->first();
 
             if ($user instanceof User) {
-                response()->json($user);
+                return response()->json($user);
             } else {
-                response()->json([
+                return response()->json([
                     'error' => 'not_found',
                     'message' => 'User not found'
                 ], 404);
