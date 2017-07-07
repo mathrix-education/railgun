@@ -1,6 +1,6 @@
 {
   "name": "mathrix/server",
-  "description": "The Mathrix",
+  "description": "The Mathrix API server",
   "keywords": [
     "framework",
     "laravel",
@@ -35,11 +35,6 @@
     "classmap": [
       "tests/",
       "database/"
-    ]
-  },
-  "scripts": {
-    "post-root-package-install": [
-      "php -r \"copy('.env.example', '.env');\""
     ]
   },
   "minimum-stability": "dev",
