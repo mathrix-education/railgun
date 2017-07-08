@@ -32,6 +32,14 @@ class Module extends BaseModel
     public $timestamps = false;
 
     /**
+     * The attributes that should be cast to native types.
+     * @var array
+     */
+    protected $casts = [
+        'choices' => 'array'
+    ];
+
+    /**
      * BelongsToMany Activity
      * @return BelongsToMany
      */
