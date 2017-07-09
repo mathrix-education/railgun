@@ -1,5 +1,7 @@
 <?php
 $factory->define(App\Models\Module::class, function (Faker\Generator $faker) {
+    $type = $faker->randomElement(['mcq', 'mcq-table', 'match', 'fill']);
+
     $questions = [];
     $choices = [];
     $solutions = [];
@@ -7,23 +9,40 @@ $factory->define(App\Models\Module::class, function (Faker\Generator $faker) {
 
     $questionCount = $faker->numberBetween(1, 5);
 
-    for ($q = 0; $questionCount < $questionCount; $q++) {
+    for ($q = 0; $q < $questionCount; $q++) {
         $choiceCount = $faker->numberBetween(2, 4);
 
-        $questions[] = substr($faker->sentence(), -1, 1) . '?';
-        $choices[] = $faker->words($choiceCount);
-        $solutions[] = $faker->words($choiceCount);
+        $questionChoices = $faker->words($choiceCount);
+
+        $questions[] = str_replace('.', '?', $faker->sentence());
+
+        if ($type != 'mcq-table') {
+            $choices[] = $questionChoices;
+        } else if (empty($choices)) {
+            $choices = $questionChoices;
+        }
+
+        $solutions[] = $faker->randomElements(
+            $questionChoices,
+            $faker->numberBetween(
+                1,
+                $type != 'fill' ? $choiceCount : 1 // Fill module can't have multiple answers
+            )
+        );
+
         $corrections[] = $faker->paragraphs(
             $faker->numberBetween(2, 3)
         );
     }
 
-    return [
+    $module = [
         'name' => $faker->sentence(3),
-        'type' => $faker->randomElement(['mcq', 'match', 'fill']),
+        'type' => $type,
         'questions' => $questions,
         'choices' => $choices,
         'solutions' => $solutions,
-        'correction' => $corrections
+        'corrections' => $corrections
     ];
+
+    return $module;
 });
