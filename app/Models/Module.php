@@ -9,17 +9,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * App\Models\Module
  *
  * @property int $id
- * @property string|null $type
  * @property string|null $name
- * @property string|null $question
- * @property string|null $answer
- * @property string|null $correction
+ * @property string|null $type
+ * @property array $questions
+ * @property array $choices
+ * @property array $solutions
+ * @property array $corrections
  * @property-read Collection|Activity[] $activities
- * @method static Builder|Module whereAnswer($value)
- * @method static Builder|Module whereCorrection($value)
+ * @method static Builder|Module whereChoices($value)
+ * @method static Builder|Module whereCorrections($value)
  * @method static Builder|Module whereId($value)
  * @method static Builder|Module whereName($value)
- * @method static Builder|Module whereQuestion($value)
+ * @method static Builder|Module whereQuestions($value)
+ * @method static Builder|Module whereSolutions($value)
  * @method static Builder|Module whereType($value)
  * @mixin \Eloquent
  */
@@ -36,7 +38,10 @@ class Module extends BaseModel
      * @var array
      */
     protected $casts = [
-        'choices' => 'array'
+        'questions' => 'array',
+        'choices' => 'array',
+        'solutions' => 'array',
+        'corrections' => 'array',
     ];
 
     /**
