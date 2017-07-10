@@ -1,7 +1,6 @@
 <?php
 namespace App\Providers;
 
-use App\Models\Class_;
 use App\Models\Country;
 use App\Models\Discipline;
 use mmghv\LumenRouteBinding\RouteBindingServiceProvider as BaseServiceProvider;
@@ -15,12 +14,32 @@ class RouteBindingServiceProvider extends BaseServiceProvider
     {
         $binder = $this->binder;
 
-        $binder->bind('country', function($value) {
-            return Country::whereSlugShort($value)->firstOrFail();
+        $binder->bind('country', function ($value) {
+            $country = Country::whereSlugShort($value)->first();
+
+            if ($country instanceof Country) {
+                return $country;
+            } else {
+                response()->json([
+                    'error' => 'not_found',
+                    'message' => 'Country with slug "' . $value . '" cannot be found'
+                ], 404)->send();
+                die();
+            }
         });
 
-        $binder->bind('discipline', function($value) {
-            return Discipline::whereSlug($value)->firstOrFail();
+        $binder->bind('discipline', function ($value) {
+            $discipline = Discipline::whereSlug($value)->first();
+
+            if ($discipline instanceof Discipline) {
+                return $discipline;
+            } else {
+                response()->json([
+                    'error' => 'not_found',
+                    'message' => 'Discipline with slug "' . $value . '" cannot be found'
+                ], 404)->send();
+                die();
+            }
         });
     }
 }
