@@ -21,9 +21,9 @@ class ChapterController extends BaseController
     public function index(Country $country, string $classShortSlug, Discipline $discipline) {
         $class = $country->classes->where('slug_short',  $classShortSlug)->first();
 
-        $chapters = Chapter::all()
-            ->where('class_id', $class->id)
-            ->where('discipline_id', $discipline->id);
+        $chapters = Chapter::whereClassId($class->id)
+            ->whereDisciplineId($discipline->id)
+            ->get();
 
         response()->json($chapters);
     }

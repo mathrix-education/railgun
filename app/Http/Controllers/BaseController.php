@@ -3,31 +3,44 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Validator;
 use Laravel\Lumen\Routing\Controller;
 
 abstract class BaseController extends Controller
 {
     /**
+     * Override validation response format
+     *
+     * @param Validator $validator
+     *
+     * @return array
+     */
+    protected function formatValidationErrors(Validator $validator)
+    {
+        return [
+            'error' => 'validation',
+            'message' => [
+                $validator->getMessageBag()->toArray()
+            ]
+        ];
+    }
+
+    /**
      * Check if a request contains the needed inputs
+     *
      * @param Request $request the request
-     * @param array $neededInputs the needed inputs
+     * @param array $requiredInputs the required inputs
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function requireInputs(Request $request, array $neededInputs) {
-        $presentInputs = array_keys($request->all());
-        $missingInputs = [];
+    public function validateRequire(Request $request, array $requiredInputs)
+    {
+        $validationRules = [];
 
-        foreach ($neededInputs as $neededInput) {
-            if(!in_array($neededInput, $presentInputs)) {
-                $missingInputs[] = $neededInput;
-            }
+        foreach ($requiredInputs as $requiredInput) {
+            $validationRules[$requiredInput] = 'required';
         }
 
-        if(!empty($missingInputs)) {
-            return response()->json([
-                'error' => 'missing_input',
-                'message' => 'Missing inputs: ' . implode(', ', $missingInputs)
-            ], 400);
-        }
+        $this->validate($request, $validationRules);
     }
 }

@@ -1,8 +1,6 @@
 <?php
 use App\Models\Activity;
 use App\Models\Chapter;
-use App\Models\Country;
-use App\Models\Discipline;
 use App\Models\Module;
 use App\Models\Notion;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
