@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Http\Response;
 use Laravel\Passport\Passport;
 
 /**
@@ -11,6 +12,14 @@ use Laravel\Passport\Passport;
  */
 class UserTest extends TestCase
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Common
+    |--------------------------------------------------------------------------
+    |
+    | Common variables and methods
+    |
+    */
     /**
      * @var User|null
      */
@@ -27,7 +36,9 @@ class UserTest extends TestCase
     private function _user()
     {
         if (!isset($this->_user)) {
-            $this->_user = User::where('id', '<', 50)->inRandomOrder()->first();
+            $this->_user = User::where('id', '<', 50) // Be sure to get a seed user with 'test' as password
+                ->inRandomOrder()
+                ->first();
         }
 
         return $this->_user;
@@ -53,7 +64,7 @@ class UserTest extends TestCase
      * @param string $username
      * @param string $password
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     private function _tryLogin(string $username, string $password = 'test')
     {
@@ -65,7 +76,6 @@ class UserTest extends TestCase
             'password' => $password
         ]);
     }
-
 
     /*
     |--------------------------------------------------------------------------
