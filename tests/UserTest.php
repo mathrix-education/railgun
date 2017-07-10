@@ -195,7 +195,7 @@ class UserTest extends TestCase
         unset($data[$dataKeys[0]]); // .. and delete it
 
         $this->call('POST', '/users/register', $data);
-        $this->assertResponseStatus(400);
+        $this->assertResponseStatus(422);
     }
 
     /**
@@ -212,7 +212,7 @@ class UserTest extends TestCase
             'error',
             'message'
         ]);
-        $this->assertResponseStatus(400);
+        $this->assertResponseStatus(422);
     }
 
     /**
@@ -312,6 +312,6 @@ class UserTest extends TestCase
 
         $this->call('post', '/users', $newSettings);
 
-        $this->assertResponseStatus(400);
+        $this->assertResponseStatus(422);
     }
 }

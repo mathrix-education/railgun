@@ -7,7 +7,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
 /**
  * Class UserController
@@ -24,8 +23,6 @@ class UserController extends BaseController
      */
     public function register(Request $request)
     {
-        $this->requireInputs($request, ['username', 'email', 'password', 'class_id']);
-
         $request->replace($request->only(['username', 'email', 'password', 'class_id'])); // Trim request inputs
         $request->merge([
             'status' => 'registered',
@@ -38,27 +35,20 @@ class UserController extends BaseController
             ]
         ]);
 
-        try {
-            $this->validate($request, User::$validationRulesOnCreate);
+        $this->validate($request, User::$validationRulesOnCreate);
 
-            $user = new User();
+        $user = new User();
 
-            // Allow status save; should be safe as we had manually trimmed the request before
-            $guarded = $user->getGuarded();
-            $user->guard(array_diff($guarded, ['status']));
+        // Allow status save; should be safe as we had manually trimmed the request before
+        $guarded = $user->getGuarded();
+        $user->guard(array_diff($guarded, ['status']));
 
-            $user->fill($request->all());
-            $user->save();
+        $user->fill($request->all());
+        $user->save();
 
-            return response()->json([
-                'message' => 'User successfully saved'
-            ]);
-        } catch (ValidationException $e) {
-            return response()->json([
-                'error' => 'validation_failed',
-                'message' => $e->validator->getMessageBag()->toArray()
-            ], 400);
-        }
+        return response()->json([
+            'message' => 'User successfully saved'
+        ]);
     }
 
     /**
@@ -70,8 +60,7 @@ class UserController extends BaseController
      */
     public function login(Request $request)
     {
-        $this->requireInputs($request, ['grant_type', 'client_id', 'client_secret', 'username', 'password']);
-
+        $this->validateRequire($request, ['grant_type', 'client_id', 'client_secret', 'username', 'password']);
         $inputs = $request->all();
 
         // Try to find the user by email
@@ -91,11 +80,12 @@ class UserController extends BaseController
      * Refresh the access_token on expiration date
      *
      * @param Request $request
+     *
      * @return Response
      */
     public function refresh(Request $request)
     {
-        $this->requireInputs($request, ['grant_type', 'client_id', 'client_secret', 'refresh_token']);
+        $this->validateRequire($request, ['grant_type', 'client_id', 'client_secret', 'refresh_token']);
 
         $inputs = $request->all();
 
@@ -104,6 +94,7 @@ class UserController extends BaseController
 
     /**
      * Profile action
+     *
      * @param Request $request
      * @param int|null $id
      *
@@ -141,10 +132,10 @@ class UserController extends BaseController
         $inputs = $request->all();
 
         if (isset($inputs['new_password'])) {
-            $this->requireInputs($request, ['old_password']);
+            $this->validateRequire($request, ['old_password']);
 
             // Check if old password is correct
-            if(!Hash::check($inputs['old_password'], $request->user()->password)) {
+            if (!Hash::check($inputs['old_password'], $request->user()->password)) {
                 return response()->json([
                     'error' => 'invalid_old_password'
                 ], 401);
@@ -156,19 +147,12 @@ class UserController extends BaseController
             }
         }
 
-        try {
-            $this->validate($request, User::$validationRulesOnUpdate);
+        $this->validate($request, User::$validationRulesOnUpdate);
 
-            $request->user()
-                ->fill($request->all())
-                ->save();
+        $request->user()
+            ->fill($request->all())
+            ->save();
 
-            return response()->json(['message' => 'User successfully modified']);
-        } catch (ValidationException $e) {
-            return response()->json([
-                'error' => 'validation_failed',
-                'message' => $e->validator->getMessageBag()->toArray()
-            ], 400);
-        }
+        return response()->json(['message' => 'User successfully modified']);
     }
 }
