@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Chapter whereName($value)
  * @method static Builder|Chapter whereSlug($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Notion[] $notions
  */
 class Chapter extends BaseModel
 {

@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Validator;
 use Laravel\Lumen\Routing\Controller;
 
+/**
+ * Abstract Class BaseController
+ * @author Mathrix Team
+ * @package App\Http\Controllers
+ */
 abstract class BaseController extends Controller
 {
     /**

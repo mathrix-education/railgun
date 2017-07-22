@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Notion whereName($value)
  * @method static Builder|Notion whereSlug($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Chapter|null $chapter
  */
 class Notion extends BaseModel
 {
