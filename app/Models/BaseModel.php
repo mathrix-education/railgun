@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Model;
  * @package app\Models
  *
  * @method static Builder inRandomOrder()
+ * @method static Builder where($column, $operator = null, $value = null, $boolean = 'and')
+ *
  */
 abstract class BaseModel extends Model
 {

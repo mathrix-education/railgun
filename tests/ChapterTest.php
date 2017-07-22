@@ -4,68 +4,21 @@ use App\Models\Class_;
 use App\Models\Country;
 use App\Models\Discipline;
 
-class ChapterTest extends TestCase
+/**
+ * Class ChapterTest
+ *
+ * @method Class_ randomClass_()
+ * @method Discipline randomDiscipline()
+ */
+class ChapterTest extends BaseTest
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Common
-    |--------------------------------------------------------------------------
-    |
-    | Common variables and methods
-    |
-    */
     /**
-     * @var Country
-     */
-    private $_country;
-    /**
-     * @var Class_|null
-     */
-    private $_class;
-    /**
-     * @var Discipline|null
-     */
-    private $_discipline;
-
-    /**
-     * Get a random country
+     * Randomly retrieve a country
+     * TODO: NB: It is currently biased because we only defined french classes
      * @return Country
      */
-    private function _country()
-    {
-
-        if (is_null($this->_country)) {
-            $this->_country = Country::where('slug_short', 'fr')->first();
-        }
-
-        return $this->_country;
-    }
-
-    /**
-     * Get a random class
-     * @return Class_
-     */
-    private function _class()
-    {
-        if (is_null($this->_class)) {
-            $this->_class = Class_::inRandomOrder()->first();
-        }
-
-        return $this->_class;
-    }
-
-    /**
-     * Get a random discipline
-     * @return Discipline
-     */
-    private function _discipline()
-    {
-
-        if (is_null($this->_discipline)) {
-            $this->_discipline = Discipline::inRandomOrder()->first();
-        }
-
-        return $this->_discipline;
+    public function randomCountry() {
+        return Country::where('slug_short', 'fr')->first();
     }
 
 
@@ -84,9 +37,9 @@ class ChapterTest extends TestCase
     {
         $this->call(
             'GET',
-            '/' . $this->_country()->slug_short .
-            '/' . $this->_class()->slug_short .
-            '/' . $this->_discipline()->slug
+            '/' . $this->randomCountry()->slug_short .
+            '/' . $this->randomClass_()->slug_short .
+            '/' . $this->randomDiscipline()->slug
         );
 
         $this->assertResponseOk();
@@ -97,11 +50,11 @@ class ChapterTest extends TestCase
      */
     public function testIndexCountryNotFound()
     {
-        $this->json(
+        $this->call(
             'GET',
             '/xmv' .
-            '/' . $this->_class()->slug_short .
-            '/' . $this->_discipline()->slug
+            '/' . $this->randomClass_()->slug_short .
+            '/' . $this->randomDiscipline()->slug
         );
 
         $this->assertResponseStatus(404);
@@ -114,9 +67,9 @@ class ChapterTest extends TestCase
     {
         $this->call(
             'GET',
-            '/' . $this->_country()->slug_short .
+            '/' . $this->randomCountry()->slug_short .
             '/xmv' .
-            '/' . $this->_discipline()->slug
+            '/' . $this->randomDiscipline()->slug
         );
 
         $this->assertResponseStatus(404);
@@ -129,12 +82,11 @@ class ChapterTest extends TestCase
     {
         $this->call(
             'GET',
-            '/' . $this->_country()->slug_short .
-            '/' . $this->_class()->slug_short .
+            '/' . $this->randomCountry()->slug_short .
+            '/' . $this->randomClass_()->slug_short .
             '/xmv'
         );
 
         $this->assertResponseStatus(404);
     }
-
 }

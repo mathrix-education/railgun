@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 
 /**
  * Class UserController
+ * @author Mathrix Team
  * @package App\Http\Controllers
  */
 class UserController extends BaseController

@@ -155,10 +155,9 @@ class DatabaseSeeder extends Seeder
                         ])
                         ->each(function (Notion $notion) {
                             $types = ['course', 'exercise', 'test', 'video'];
-                            shuffle($types);
-                            $type = $types[0];
+                            $type = $types[random_int(0, 3)];
 
-                            factory(App\Models\Activity::class, $type)
+                            factory(App\Models\Activity::class, $type, 1)
                                 ->create()
                                 ->each(function (Activity $activity) use ($notion, $type) {
                                     DB::table('activity_notion')->insert([
@@ -167,7 +166,7 @@ class DatabaseSeeder extends Seeder
                                     ]);
 
                                     if ($type == 'exercise') {
-                                        factory(App\Models\Module::class, random_int(2, 4))
+                                        factory(App\Models\Module::class, random_int(2, 3))
                                             ->create()
                                             ->each(function (Module $module) use ($activity) {
                                                 DB::table('activity_module')->insert([

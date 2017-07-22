@@ -10,7 +10,7 @@ use Laravel\Passport\Passport;
  *
  * @see \App\Http\Controllers\UserController
  */
-class UserTest extends TestCase
+class UserTest extends BaseTest
 {
     /*
     |--------------------------------------------------------------------------
@@ -262,7 +262,7 @@ class UserTest extends TestCase
     public function testProfileNotFound()
     {
         Passport::actingAs($this->_user());
-        $this->call('GET', '/users/' . -1);
+        $this->call('GET', '/users/123456789');
         $this->assertResponseStatus(404);
     }
 
@@ -277,7 +277,7 @@ class UserTest extends TestCase
         $newSettings['new_password'] = 'test';
         $newSettings['old_password'] = 'test';
 
-        $this->call('post', '/users', $newSettings);
+        $this->call('POST', '/users', $newSettings);
 
         $this->assertResponseOk();
     }
@@ -291,7 +291,7 @@ class UserTest extends TestCase
         $newSettings = factory(User::class)->make()->toArray();
         unset($newSettings['status'], $newSettings['points'], $newSettings['facebook_token']);
 
-        $this->call('post', '/users', $newSettings);
+        $this->call('POST', '/users', $newSettings);
 
         $this->assertResponseOk();
     }
@@ -306,7 +306,7 @@ class UserTest extends TestCase
         $newSettings['old_password'] = 'test2';
         $newSettings['new_password'] = 'test';
 
-        $this->call('post', '/users', $newSettings);
+        $this->call('POST', '/users', $newSettings);
 
         $this->assertResponseStatus(401);
     }
@@ -320,7 +320,7 @@ class UserTest extends TestCase
         unset($newSettings['status'], $newSettings['points'], $newSettings['facebook_token']);
         $newSettings['email'] = 'lol';
 
-        $this->call('post', '/users', $newSettings);
+        $this->call('POST', '/users', $newSettings);
 
         $this->assertResponseStatus(422);
     }
