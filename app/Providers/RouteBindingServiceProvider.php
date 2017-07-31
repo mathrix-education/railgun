@@ -38,7 +38,7 @@ class RouteBindingServiceProvider extends BaseServiceProvider
          */
         $countryClass = function (string $countrySlugShort, string $classSlugShort) {
             $country = Country::whereSlugShort($countrySlugShort)->firstOrFail();
-            $class = $country->classes()->whereSlugShort($classSlugShort)->first();
+            $class = $country->classes()->whereSlugShort($classSlugShort)->firstOrFail();
 
             return [$country, $class];
         };
