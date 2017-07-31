@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 
 use App\Models\Chapter;
 use App\Models\Notion;
@@ -15,25 +13,14 @@ use Illuminate\Http\JsonResponse;
 class NotionController extends BaseController
 {
     /**
-     * Get notions associated with a chapter id
-     * @param int $chapterId
+     * Retrieve notions based on chapter
+     *
+     * @param Chapter $chapter
+     *
      * @return JsonResponse
      */
-    public function index(int $chapterId)
+    public function index(Chapter $chapter)
     {
-        $notions = Notion::whereChapterId($chapterId)->get();
-
-        if ($notions->isEmpty()) {
-            $chapter = Chapter::whereId($chapterId);
-
-            if (!$chapter instanceof Chapter) {
-                return response()->json([
-                    'error' => 'not_found',
-                    'message' => 'Chapter with id ' . $chapterId . ' was not found'
-                ], 404);
-            }
-        }
-
-        return response()->json($notions);
+        return response()->json($chapter->notions);
     }
 }

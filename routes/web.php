@@ -28,15 +28,22 @@ $app->group(['prefix' => 'users'], function () use ($app) {
     });
 });
 
-$app->group(['prefix' => '{countrySlug}/{classShortSlug}'], function () use ($app) {
-    $app->get('', 'DisciplineController@index');
+$app->group(['prefix' => '{country:[a-z]+}'], function () use ($app) {
+    $app->get('', 'Class@index');
 
-    $app->group(['prefix' => '{disciplineSlug}'], function () use ($app) {
-        $app->get('', 'ChapterController@index');
+    $app->group(['prefix' => '{class:[a-z0-9]+}'], function() use ($app) {
+        $app->get('', 'DisciplineController@index');
 
-        $app->group(['prefix' => '{chapterSlug:[a-z\-]+}-{chapterId:[0-9]+}'], function() use ($app) {
-            $app->get('', 'NotionController@index');
-            $app->get('{notionSlug:[a-z\-]+}-{notionId:[0-9]+}', 'ActivityController@index');
+        $app->group(['prefix' => '{discipline:[a-z\-]+}'], function () use ($app) {
+            $app->get('', 'ChapterController@index');
+
+            $app->group(['prefix' => '{chapterSlug:[a-z\-]+}-{chapter:[0-9]+}'], function() use ($app) {
+                $app->get('', 'NotionController@index');
+
+                $app->group(['prefix' => '{notionSlug:[a-z\-]+}-{notion:[0-9]+}'], function() use ($app) {
+                    $app->get('', 'ActivityController@index');
+                });
+            });
         });
     });
 });

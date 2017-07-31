@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Notion;
@@ -13,22 +12,14 @@ use Illuminate\Http\JsonResponse;
 class ActivityController extends BaseController
 {
     /**
-     * @param int $notionId
+     * Retrieve activities based on a notion
+     *
+     * @param Notion $notion
+     *
      * @return JsonResponse
      */
-    public function index(int $notionId)
+    public function index(Notion $notion)
     {
-        $notion = Notion::whereId($notionId)->with('activities')->first();
-
-        if (!$notion instanceof Notion) {
-            return response()->json([
-                'error' => 'not_found',
-                'message' => 'Notion with id ' . $notionId . ' was not found'
-            ]);
-        }
-
-        $activities = $notion->activities;
-
-        return response()->json($activities);
+        return response()->json($notion->activities);
     }
 }
