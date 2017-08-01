@@ -86,6 +86,7 @@ class RouteBindingServiceProvider extends BaseServiceProvider
 
             $chapter = $discipline
                 ->chapters()
+                ->whereClassId($class->id)
                 ->whereId($chapterId)
                 ->firstOrFail();
 

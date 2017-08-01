@@ -18,7 +18,7 @@ class ChapterController extends BaseController
      *
      * @return JsonResponse
      */
-    public function index(Discipline $discipline)
+    public function index(Discipline $discipline): JsonResponse
     {
         return response()->json($discipline->chapters);
     }

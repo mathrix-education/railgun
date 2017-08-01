@@ -17,7 +17,8 @@ class DisciplineController extends BaseController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Class_ $class) {
+    public function index(Class_ $class)
+    {
         return response()->json($class->disciplines);
     }
 }

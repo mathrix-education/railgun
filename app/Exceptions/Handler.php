@@ -52,15 +52,23 @@ class Handler extends ExceptionHandler
 
             return $exceptionHandler->render($request, $e);
         } else {
+            // Default exception handler
+            $error = Str::snake($exceptionClass, '-');
+            $error = str_replace('-exception', '', $error);
+
+            $json = [
+                'error' => $error,
+                'message' => $e->getMessage()
+            ];
+
+            // Include trace in debug mode
             if (env('APP_DEBUG')) {
-                return parent::render($request, $e);
-            } else {
-                // Default exception handler
-                return response()->json([
-                    'error' => Str::snake($exceptionClass, '-'),
-                    'message' => $e->getMessage()
-                ]);
+                $json['trace'] = explode("\n", $e->getTraceAsString());
             }
+
+            $rendered = parent::render($request, $e);
+
+            return response()->json($json, $rendered->getStatusCode());
         }
     }
 }

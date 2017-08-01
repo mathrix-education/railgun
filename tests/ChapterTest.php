@@ -1,24 +1,49 @@
 <?php
 
+use App\Models\Chapter;
 use App\Models\Class_;
 use App\Models\Country;
 use App\Models\Discipline;
+use App\Models\Notion;
 
 /**
- * Class ChapterTest
- *
- * @method Class_ randomClass_()
- * @method Discipline randomDiscipline()
+ * Class ContentTest
+ * @property Country $country
+ * @property Class_ $class
+ * @property Discipline $discipline
+ * @property Chapter $chapter
+ * @property Notion $notion
  */
-class ChapterTest extends BaseTest
+class ContentTest extends BaseTest
 {
-    /**
-     * Randomly retrieve a country
-     * TODO: NB: It is currently biased because we only defined french classes
-     * @return Country
-     */
-    public function randomCountry() {
-        return Country::where('slug_short', 'fr')->first();
+    public $country;
+    public $class;
+    public $discipline;
+    public $chapter;
+    public $notion;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->country = Country::where('slug_short', 'fr')->firstOrFail();
+        $this->class = $this->country
+            ->classes()
+            ->getResults()
+            ->random();
+        $this->discipline = $this->class
+            ->disciplines()
+            ->getResults()
+            ->random();
+        $this->chapter = $this->discipline
+            ->chapters()
+            ->where('class_id', $this->class->id)
+            ->getResults()
+            ->random();
+        $this->notion = $this->chapter
+            ->notions()
+            ->getResults()
+            ->random();
     }
 
 
@@ -26,20 +51,18 @@ class ChapterTest extends BaseTest
     |--------------------------------------------------------------------------
     | Tests
     |--------------------------------------------------------------------------
-    |
-    | Chapter tests
-    |
     */
+
     /**
      * Test chapter index
      */
-    public function testIndexOk()
+    public function testClassesIndex()
     {
         $this->call(
             'GET',
-            '/' . $this->randomCountry()->slug_short .
-            '/' . $this->randomClass_()->slug_short .
-            '/' . $this->randomDiscipline()->slug
+            '/' . $this->country->slug_short .
+            '/' . $this->class->slug_short .
+            '/' . $this->discipline->slug
         );
 
         $this->assertResponseOk();
@@ -53,8 +76,8 @@ class ChapterTest extends BaseTest
         $this->call(
             'GET',
             '/xmv' .
-            '/' . $this->randomClass_()->slug_short .
-            '/' . $this->randomDiscipline()->slug
+            '/' . $this->class->slug_short .
+            '/' . $this->discipline->slug
         );
 
         $this->assertResponseStatus(404);
@@ -67,9 +90,9 @@ class ChapterTest extends BaseTest
     {
         $this->call(
             'GET',
-            '/' . $this->randomCountry()->slug_short .
+            '/' . $this->country->slug_short .
             '/xmv' .
-            '/' . $this->randomDiscipline()->slug
+            '/' . $this->discipline->slug
         );
 
         $this->assertResponseStatus(404);
@@ -82,8 +105,8 @@ class ChapterTest extends BaseTest
     {
         $this->call(
             'GET',
-            '/' . $this->randomCountry()->slug_short .
-            '/' . $this->randomClass_()->slug_short .
+            '/' . $this->country->slug_short .
+            '/' . $this->class->slug_short .
             '/xmv'
         );
 

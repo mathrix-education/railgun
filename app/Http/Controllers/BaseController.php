@@ -34,13 +34,9 @@ abstract class BaseController extends Controller
      *
      * @param Request $request the request
      * @param array $requiredInputs the required inputs
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
-    public function validateRequire(Request $request, array $requiredInputs)
+    public function validateRequire(Request $request, array $requiredInputs): void
     {
-        $validationRules = [];
-
         foreach ($requiredInputs as $requiredInput) {
             $validationRules[$requiredInput] = 'required';
         }

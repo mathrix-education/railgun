@@ -18,7 +18,7 @@ class ActivityController extends BaseController
      *
      * @return JsonResponse
      */
-    public function index(Notion $notion)
+    public function index(Notion $notion): JsonResponse
     {
         return response()->json($notion->activities);
     }
