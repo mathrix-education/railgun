@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * App\Models\Notion
- *
  * @property int $id
  * @property string|null $name
  * @property string|null $slug
@@ -33,7 +32,7 @@ class Notion extends BaseModel
      * BelongsToMany Activity
      * @return BelongsToMany
      */
-    public function activities()
+    public function activities(): BelongsToMany
     {
         return $this->belongsToMany('App\Models\Activity');
     }
@@ -42,7 +41,8 @@ class Notion extends BaseModel
      * BelongsToChapter
      * @return BelongsTo
      */
-    public function chapter() {
+    public function chapter(): BelongsTo
+    {
         return $this->belongsTo('App\Models\Chapter');
     }
 }

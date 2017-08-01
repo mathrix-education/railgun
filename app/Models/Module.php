@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * App\Models\Module
- *
  * @property int $id
  * @property string|null $name
  * @property string|null $type
@@ -48,7 +47,7 @@ class Module extends BaseModel
      * BelongsToMany Activity
      * @return BelongsToMany
      */
-    public function activities()
+    public function activities(): BelongsToMany
     {
         return $this->belongsToMany('App\Models\Activity');
     }

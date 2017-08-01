@@ -7,7 +7,6 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Concerns\GuardsAttributes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\Client;
@@ -16,7 +15,6 @@ use Laravel\Passport\Token;
 
 /**
  * App\Models\User
- *
  * @property int $id
  * @property string|null $username
  * @property string|null $email
@@ -119,7 +117,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * BelongsTo Class_
      * @return BelongsTo
      */
-    public function class_()
+    public function class_(): BelongsTo
     {
         return $this->belongsTo('App\Models\Class_');
     }

@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\Country
- *
  * @property int $id
  * @property string|null $name
  * @property string|null $name_short
@@ -33,7 +32,8 @@ class Country extends BaseModel
      * HasMany Class_
      * @return HasMany
      */
-    public function classes() {
+    public function classes(): HasMany
+    {
         return $this->hasMany('App\Models\Class_');
     }
 
