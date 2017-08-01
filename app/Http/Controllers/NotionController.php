@@ -2,7 +2,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chapter;
-use App\Models\Notion;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -19,7 +18,7 @@ class NotionController extends BaseController
      *
      * @return JsonResponse
      */
-    public function index(Chapter $chapter)
+    public function index(Chapter $chapter): JsonResponse
     {
         return response()->json($chapter->notions);
     }

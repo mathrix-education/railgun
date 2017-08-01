@@ -13,11 +13,12 @@ class ClassController extends BaseController
 {
     /**
      * Retrieve classes based on country
+     *
      * @param Country $country
      *
      * @return JsonResponse
      */
-    public function index(Country $country)
+    public function index(Country $country): JsonResponse
     {
         return response()->json($country->classes);
     }

@@ -106,10 +106,6 @@ class UserTest extends BaseTest
     public function testLoginBadCredentials()
     {
         $this->_tryLogin($this->_user()->email, 'badpassword');
-        $this->seeJsonEquals([
-            'error' => 'invalid_credentials',
-            'message' => 'The user credentials were incorrect.'
-        ]);
         $this->assertResponseStatus(401);
     }
 
@@ -119,10 +115,6 @@ class UserTest extends BaseTest
     public function testLoginUserNotFound()
     {
         $this->_tryLogin('test@test.fr.com');
-        $this->seeJsonEquals([
-            'error' => 'not_found',
-            'message' => 'User not found'
-        ]);
         $this->assertResponseStatus(404);
     }
 

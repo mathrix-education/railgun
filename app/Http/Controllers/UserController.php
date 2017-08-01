@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 
 /**
@@ -21,7 +20,7 @@ class UserController extends BaseController
      *
      * @return JsonResponse
      */
-    public function register(Request $request)
+    public function register(Request $request): JsonResponse
     {
         $request->replace($request->only(['username', 'email', 'password', 'class_id'])); // Trim request inputs
         $request->merge([
@@ -64,16 +63,9 @@ class UserController extends BaseController
         $inputs = $request->all();
 
         // Try to find the user by email
-        $user = User::whereEmail($inputs['username'])->first();
+        User::whereEmail($inputs['username'])->firstOrFail();
 
-        if ($user instanceof User) {
-            return app()->dispatch($request->create('/oauth/token', 'post', $inputs));
-        } else {
-            return response()->json([
-                'error' => 'not_found',
-                'message' => 'User not found'
-            ], 404);
-        }
+        return app()->dispatch($request->create('/oauth/token', 'post', $inputs));
     }
 
     /**
@@ -81,7 +73,7 @@ class UserController extends BaseController
      *
      * @param Request $request
      *
-     * @return Response
+     * @return JsonResponse
      */
     public function refresh(Request $request)
     {
@@ -100,23 +92,14 @@ class UserController extends BaseController
      *
      * @return JsonResponse
      */
-    public function profile(Request $request, int $id = null)
+    public function profile(Request $request, ?int $id = null): JsonResponse
     {
         if (is_null($id)) {
             // Retrieve the current user
             return response()->json($request->user());
         } else {
             // Get user by id
-            $user = User::whereId($id)->first();
-
-            if ($user instanceof User) {
-                return response()->json($user);
-            } else {
-                return response()->json([
-                    'error' => 'not_found',
-                    'message' => 'User not found'
-                ], 404);
-            }
+            return response()->json(User::whereId($id)->firstOrFail());
         }
     }
 
@@ -127,7 +110,7 @@ class UserController extends BaseController
      *
      * @return JsonResponse
      */
-    public function account(Request $request)
+    public function account(Request $request): JsonResponse
     {
         $inputs = $request->all();
 
