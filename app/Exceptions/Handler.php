@@ -54,7 +54,7 @@ class Handler extends ExceptionHandler
         } else {
             // Default exception handler
             $error = Str::snake($exceptionClass, '_');
-            $error = str_replace('-exception', '', $error);
+            $error = str_replace('_exception', '', $error);
 
             $json = [
                 'error' => $error,
