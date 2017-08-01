@@ -53,7 +53,7 @@ class Handler extends ExceptionHandler
             return $exceptionHandler->render($request, $e);
         } else {
             // Default exception handler
-            $error = Str::snake($exceptionClass, '-');
+            $error = Str::snake($exceptionClass, '_');
             $error = str_replace('-exception', '', $error);
 
             $json = [
