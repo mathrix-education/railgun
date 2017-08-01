@@ -1,21 +1,24 @@
 <?php
+namespace App\Tests;
+
+use Laravel\Lumen\Application;
+use Laravel\Lumen\Testing\TestCase;
 
 /**
  * Class TestCase
- * Base
  */
-abstract class BaseTest extends Laravel\Lumen\Testing\TestCase
+abstract class BaseTest extends TestCase
 {
     /**
      * Creates the application.
-     *
-     * @return \Laravel\Lumen\Application
+     * @return Application
      */
-    public function createApplication()
+    public function createApplication(): Application
     {
         return require __DIR__ . '/../bootstrap/app.php';
     }
-    
+
+
     /*
     |--------------------------------------------------------------------------
     | Additional assertions
@@ -23,10 +26,12 @@ abstract class BaseTest extends Laravel\Lumen\Testing\TestCase
     */
     /**
      * Assert the response has the right error and status code
+     *
      * @param string $error the error name
      * @param int $status the status code
      */
-    public function assertJsonError(string $error, int $status) {
+    public function assertJsonError(string $error, int $status): void
+    {
         $this->seeJsonContains(['error' => $error]); // Check for error
         $this->assertResponseStatus($status); // Check for code
     }
