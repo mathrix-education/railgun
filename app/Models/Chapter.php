@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\Chapter
- *
  * @property int $id
  * @property string|null $name
  * @property string|null $slug
@@ -35,7 +34,7 @@ class Chapter extends BaseModel
      * BelongsTo Class_
      * @return BelongsTo
      */
-    public function class_()
+    public function class_(): BelongsTo
     {
         return $this->belongsTo('App\Models\Class_');
     }
@@ -44,7 +43,7 @@ class Chapter extends BaseModel
      * BelongsTo Discipline
      * @return BelongsTo
      */
-    public function discipline()
+    public function discipline(): BelongsTo
     {
         return $this->belongsTo('App\Models\Discipline');
     }
@@ -53,7 +52,8 @@ class Chapter extends BaseModel
      * HasMany Notion
      * @return HasMany
      */
-    public function notions() {
+    public function notions(): HasMany
+    {
         return $this->hasMany('App\Models\Notion');
     }
 }

@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\Class_
- *
  * @property int $id
  * @property string|null $name
  * @property string|null $name_short
@@ -49,7 +48,7 @@ class Class_ extends BaseModel
      * BelongsTo Class_
      * @return BelongsTo
      */
-    public function parent()
+    public function parent(): BelongsTo
     {
         return $this->belongsTo('App\Models\Class_', 'parent_id');
     }
@@ -58,7 +57,7 @@ class Class_ extends BaseModel
      * BelongsTo Country
      * @return BelongsTo
      */
-    public function country()
+    public function country(): BelongsTo
     {
         return $this->belongsTo('App\Models\Country');
     }
@@ -67,7 +66,8 @@ class Class_ extends BaseModel
      * BelongsToMany Discipline
      * @return BelongsToMany
      */
-    public function disciplines() {
+    public function disciplines(): BelongsToMany
+    {
         return $this->belongsToMany('App\Models\Discipline', 'class_discipline', 'class_id');
     }
 
@@ -75,7 +75,7 @@ class Class_ extends BaseModel
      * HasMany User
      * @return HasMany
      */
-    public function users()
+    public function users(): HasMany
     {
         return $this->hasMany('App\Models\User');
     }

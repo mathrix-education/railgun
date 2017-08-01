@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\Rank
- *
  * @property int $id
  * @property int|null $level
  * @property int|null $points_min
@@ -31,7 +30,7 @@ class Rank extends BaseModel
      * HasMany User
      * @return HasMany
      */
-    public function users()
+    public function users(): HasMany
     {
         return $this->hasMany('App\Models\User');
     }

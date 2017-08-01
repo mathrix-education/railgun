@@ -12,7 +12,9 @@
 */
 
 $app->get('/', function () use ($app) {
-    return $app->version();
+    return response()->json([
+        'message' => 'Welcome to Mathrix API version 1.0'
+    ]);
 });
 
 $app->group(['prefix' => 'users'], function () use ($app) {

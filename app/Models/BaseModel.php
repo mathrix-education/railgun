@@ -7,10 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class BaseModel
  * @package app\Models
- *
  * @method static Builder inRandomOrder()
  * @method static Builder where($column, $operator = null, $value = null, $boolean = 'and')
- *
  */
 abstract class BaseModel extends Model
 {
@@ -24,7 +22,7 @@ abstract class BaseModel extends Model
      * Get table name
      * @return string
      */
-    public static function getTableName()
+    public static function getTableName(): string
     {
         return with(new static)->getTable();
     }
