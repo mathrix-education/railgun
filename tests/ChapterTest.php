@@ -22,6 +22,9 @@ class ContentTest extends BaseTest
     public $chapter;
     public $notion;
 
+    /**
+     * Setup the tests
+     */
     public function setUp()
     {
         parent::setUp();
@@ -52,12 +55,63 @@ class ContentTest extends BaseTest
     | Tests
     |--------------------------------------------------------------------------
     */
-
     /**
-     * Test chapter index
+     * Test classes index
      */
     public function testClassesIndex()
     {
+        $this->call(
+            'GET',
+            '/' . $this->country->slug_short
+        );
+
+        $this->assertResponseOk();
+    }
+
+    /**
+     * Test classes index with non-existing Country::shortSlug
+     */
+    public function testClassesIndexNotFound()
+    {
+        $this->call(
+            'GET',
+            '/xmv'
+        );
+
+        $this->assertJsonError('model_not_found', 404);
+    }
+
+    /**
+     * Test disciplines index
+     */
+    public function testDisciplinesIndex() {
+        $this->call(
+            'GET',
+            '/' . $this->country->slug_short .
+            '/' . $this->class->slug_short
+        );
+
+        $this->assertResponseOk();
+    }
+
+    /**
+     * Test disciplines index with non-existing Class_::shortSlug
+     */
+    public function testDisciplinesIndexNotFound()
+    {
+        $this->call(
+            'GET',
+            '/' . $this->country->slug_short .
+            '/xmv'
+        );
+
+        $this->assertJsonError('model_not_found', 404);
+    }
+
+    /**
+     * Test chapters index
+     */
+    public function testChaptersIndex() {
         $this->call(
             'GET',
             '/' . $this->country->slug_short .
@@ -69,39 +123,9 @@ class ContentTest extends BaseTest
     }
 
     /**
-     * Test chapter index with country not found
+     * Test chapter index with non-existing Discipline::slug
      */
-    public function testIndexCountryNotFound()
-    {
-        $this->call(
-            'GET',
-            '/xmv' .
-            '/' . $this->class->slug_short .
-            '/' . $this->discipline->slug
-        );
-
-        $this->assertResponseStatus(404);
-    }
-
-    /**
-     * Test chapter index with class not found
-     */
-    public function testIndexClassNotFound()
-    {
-        $this->call(
-            'GET',
-            '/' . $this->country->slug_short .
-            '/xmv' .
-            '/' . $this->discipline->slug
-        );
-
-        $this->assertResponseStatus(404);
-    }
-
-    /**
-     * Test chapter index with discipline not found
-     */
-    public function testIndexDisciplineNotFound()
+    public function testChaptersIndexNotFound()
     {
         $this->call(
             'GET',
@@ -110,6 +134,68 @@ class ContentTest extends BaseTest
             '/xmv'
         );
 
-        $this->assertResponseStatus(404);
+        $this->assertJsonError('model_not_found', 404);
+    }
+
+    /**
+     * Test notions index
+     */
+    public function testNotionsIndex() {
+        $this->call(
+            'GET',
+            '/' . $this->country->slug_short .
+            '/' . $this->class->slug_short .
+            '/' . $this->discipline->slug .
+            '/' . $this->chapter->slug . '-' . $this->chapter->id
+        );
+
+        $this->assertResponseOk();
+    }
+
+    /**
+     * Test notions index with non-existing Chapter::id
+     */
+    public function testNotionsIndexNotFound() {
+        $this->call(
+            'GET',
+            '/' . $this->country->slug_short .
+            '/' . $this->class->slug_short .
+            '/' . $this->discipline->slug .
+            '/' . $this->chapter->slug . '-999999999'
+        );
+
+        $this->assertJsonError('model_not_found', 404);
+    }
+
+    /**
+     * Test activities index
+     */
+    public function testActivitiesIndex() {
+        $this->call(
+            'GET',
+            '/' . $this->country->slug_short .
+            '/' . $this->class->slug_short .
+            '/' . $this->discipline->slug .
+            '/' . $this->chapter->slug . '-' . $this->chapter->id .
+            '/' . $this->notion->slug . '-' . $this->notion->id
+        );
+
+        $this->assertResponseOk();
+    }
+
+    /**
+     * Test activities index with non-existing Notion::id
+     */
+    public function testActivitiesIndexNotFound() {
+        $this->call(
+            'GET',
+            '/' . $this->country->slug_short .
+            '/' . $this->class->slug_short .
+            '/' . $this->discipline->slug .
+            '/' . $this->chapter->slug . '-' . $this->chapter->id .
+            '/' . $this->notion->slug . '-999999999'
+        );
+
+        $this->assertJsonError('model_not_found', 404);
     }
 }

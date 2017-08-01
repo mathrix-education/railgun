@@ -81,7 +81,15 @@ class UserController extends BaseController
 
         $inputs = $request->all();
 
-        return app()->dispatch($request->create('/oauth/token', 'post', $inputs));
+        $response = app()->dispatch($request->create('/oauth/token', 'post', $inputs));
+
+        if ($response->getStatusCode() == 401) {
+            return response()->json([
+                'error' => 'unauthorized'
+            ]);
+        } else {
+            return $response;
+        }
     }
 
     /**
