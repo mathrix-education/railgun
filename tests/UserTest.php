@@ -1,14 +1,17 @@
 <?php
+namespace App\Tests;
 
+use App\Models\Class_;
 use App\Models\User;
+use DB;
+use Faker\Factory;
 use Illuminate\Http\Response;
 use Laravel\Passport\Passport;
 
 /**
  * Class UserTest
- * Test UserController methods
- *
- * @see \App\Http\Controllers\UserController
+ * Test User Model
+ * @see User
  */
 class UserTest extends BaseTest
 {
@@ -157,12 +160,12 @@ class UserTest extends BaseTest
      */
     public function testRegisterOk()
     {
-        $faker = Faker\Factory::create(); // Create a faker
+        $faker = Factory::create(); // Create a faker
         $this->call('POST', '/users/register', [
             'email' => $faker->email,
             'password' => 'test',
             'class_id' => $faker->randomElement(
-                \App\Models\Class_::all()
+                Class_::all()
                     ->pluck('id')
                     ->toArray()
             )
@@ -175,13 +178,13 @@ class UserTest extends BaseTest
      */
     public function testRegisterMissingField()
     {
-        $faker = Faker\Factory::create(); // Create a faker
+        $faker = Factory::create(); // Create a faker
 
         $data = [
             'email' => $faker->email,
             'password' => 'test',
             'class_id' => $faker->randomElement(
-                \App\Models\Class_::all()
+                Class_::all()
                     ->pluck('id')
                     ->toArray()
             )
@@ -291,7 +294,8 @@ class UserTest extends BaseTest
     /**
      * Test user account modification with invalid old password
      */
-    public function testAccountInvalidOldPassword() {
+    public function testAccountInvalidOldPassword()
+    {
         Passport::actingAs($this->_user());
         $newSettings = factory(User::class)->make()->toArray();
         unset($newSettings['status'], $newSettings['points'], $newSettings['facebook_token']);
@@ -306,7 +310,8 @@ class UserTest extends BaseTest
     /**
      * Test user account modification with invalid old password
      */
-    public function testAccountInvalidData() {
+    public function testAccountInvalidData()
+    {
         Passport::actingAs($this->_user());
         $newSettings = factory(User::class)->make()->toArray();
         unset($newSettings['status'], $newSettings['points'], $newSettings['facebook_token']);
