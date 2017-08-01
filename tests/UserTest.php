@@ -36,7 +36,8 @@ class UserTest extends BaseTest
     private function _user()
     {
         if (!isset($this->_user)) {
-            $this->_user = User::where('id', '<', 50) // Be sure to get a seed user with 'test' as password
+            // Be sure to get a seed user with 'test' as password
+            $this->_user = User::where('id', '<', 50)
                 ->inRandomOrder()
                 ->first();
         }
@@ -81,9 +82,6 @@ class UserTest extends BaseTest
     |--------------------------------------------------------------------------
     | Tests
     |--------------------------------------------------------------------------
-    |
-    | User tests
-    |
     */
     /**
      * Test user login ok
@@ -91,12 +89,14 @@ class UserTest extends BaseTest
     public function testLoginOk()
     {
         $this->_tryLogin($this->_user()->email);
+
         $this->seeJsonStructure([
             'token_type',
             'expires_in',
             'access_token',
             'refresh_token'
         ]);
+
         $this->assertResponseOk();
     }
 
@@ -106,7 +106,8 @@ class UserTest extends BaseTest
     public function testLoginBadCredentials()
     {
         $this->_tryLogin($this->_user()->email, 'badpassword');
-        $this->assertResponseStatus(401);
+
+        $this->assertJsonError('invalid_credentials', 401);
     }
 
     /**
@@ -115,7 +116,7 @@ class UserTest extends BaseTest
     public function testLoginUserNotFound()
     {
         $this->_tryLogin('test@test.fr.com');
-        $this->assertResponseStatus(404);
+        $this->assertJsonError('model_not_found', 404);
     }
 
     /**
@@ -148,12 +149,7 @@ class UserTest extends BaseTest
             'client_secret' => $this->_client()->secret,
         ]);
 
-        $this->seeJsonEquals([
-            'error' => 'invalid_request',
-            'message' => 'The refresh token is invalid.',
-            'hint' => 'Cannot decrypt the refresh token'
-        ]);
-        $this->assertResponseStatus(400);
+        $this->assertJsonError('invalid_request', 400);
     }
 
     /**
@@ -197,7 +193,8 @@ class UserTest extends BaseTest
         unset($data[$dataKeys[0]]); // .. and delete it
 
         $this->call('POST', '/users/register', $data);
-        $this->assertResponseStatus(422);
+
+        $this->assertJsonError('validation', 422);
     }
 
     /**
@@ -210,11 +207,8 @@ class UserTest extends BaseTest
             'password' => '5',
             'class_id' => 'qsf5q4s4d4qzf'
         ]);
-        $this->seeJsonStructure([
-            'error',
-            'message'
-        ]);
-        $this->assertResponseStatus(422);
+
+        $this->assertJsonError('validation', 422);
     }
 
     /**
@@ -223,7 +217,9 @@ class UserTest extends BaseTest
     public function testProfileOk()
     {
         Passport::actingAs($this->_user());
+
         $this->call('GET', '/users');
+
         $this->assertResponseOk();
     }
 
@@ -233,7 +229,8 @@ class UserTest extends BaseTest
     public function testProfileNotAuthorized()
     {
         $this->call('GET', '/users');
-        $this->assertResponseStatus(401);
+
+        $this->assertJsonError('unauthorized', 401);
     }
 
     /**
@@ -242,9 +239,10 @@ class UserTest extends BaseTest
     public function testProfileOtherUser()
     {
         $otherId = User::inRandomOrder()->first()->id;
-
         Passport::actingAs($this->_user());
+
         $this->call('GET', '/users/' . $otherId);
+
         $this->assertResponseOk();
     }
 
@@ -254,8 +252,10 @@ class UserTest extends BaseTest
     public function testProfileNotFound()
     {
         Passport::actingAs($this->_user());
+
         $this->call('GET', '/users/123456789');
-        $this->assertResponseStatus(404);
+
+        $this->assertJsonError('model_not_found', 404);
     }
 
     /**
@@ -300,7 +300,7 @@ class UserTest extends BaseTest
 
         $this->call('POST', '/users', $newSettings);
 
-        $this->assertResponseStatus(401);
+        $this->assertJsonError('invalid_old_password', 401);
     }
 
     /**
@@ -314,6 +314,6 @@ class UserTest extends BaseTest
 
         $this->call('POST', '/users', $newSettings);
 
-        $this->assertResponseStatus(422);
+        $this->assertJsonError('validation', 422);
     }
 }

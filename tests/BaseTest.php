@@ -15,16 +15,20 @@ abstract class BaseTest extends Laravel\Lumen\Testing\TestCase
     {
         return require __DIR__ . '/../bootstrap/app.php';
     }
-
-    public function __call($name, $arguments)
-    {
-        if(strpos($name, 'random') !== false) { // Because strpos may return 0
-            /**
-             * @var \App\Models\BaseModel $model
-             */
-            $model = 'App\Models\\' . str_replace('random', '', $name);
-
-            return $model::inRandomOrder()->first();
-        }
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Additional assertions
+    |--------------------------------------------------------------------------
+    */
+    /**
+     * Assert the response has the right error and status code
+     * @param string $error the error name
+     * @param int $status the status code
+     */
+    public function assertJsonError(string $error, int $status) {
+        $this->seeJsonContains(['error' => $error]); // Check for error
+        $this->assertResponseStatus($status); // Check for code
     }
+
 }
