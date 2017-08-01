@@ -6,9 +6,10 @@ pipelines:
   default:
     - step:
         script:
-          - apt-get update -q
-          - apt-get install -qy libmcrypt-dev unzip
+          - apt -qy update
+          - apt -qy install libmcrypt-dev unzip
           - docker-php-ext-install mcrypt && docker-php-ext-install pdo_mysql
           - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+          - cp .env.dev .env
           - composer install --quiet
           - vendor/bin/phpunit
