@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Chapter;
 use Illuminate\Http\JsonResponse;
+use Mathrix\Lumen\Http\Controllers\BaseController;
 
 /**
  * Class NotionController
