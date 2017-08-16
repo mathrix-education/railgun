@@ -8,10 +8,12 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Validation\Validator;
 use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\Client;
 use Laravel\Passport\HasApiTokens;
 use Laravel\Passport\Token;
+use Mathrix\Lumen\Models\BaseModel;
 
 /**
  * App\Models\User
@@ -89,7 +91,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * The validation rules on create
      * @var array
      */
-    public static $validationRulesOnCreate = [
+    protected $rules = [
         'email' => 'required|email|max:60',
         'username' => 'nullable|max:20',
         'firstname' => 'nullable|max:30',
@@ -102,23 +104,25 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     ];
 
     /**
-     * The validation rules on update
-     * @var array
-     */
-    public static $validationRulesOnUpdate = [
-        'email' => 'email',
-        'username' => 'nullable|max:20',
-        'firstname' => 'nullable|max:30',
-        'lastname' => 'nullable|max:40',
-        'password' => 'min:3'
-    ];
-
-    /**
      * BelongsTo Class_
      * @return BelongsTo
      */
     public function class_(): BelongsTo
     {
         return $this->belongsTo('App\Models\Class_');
+    }
+
+    /**
+     * @param Validator $validator
+     *
+     * @return Validator
+     */
+    public function injectInValidator($validator)
+    {
+        $validator->sometimes('class_id', 'required|exists:classes,id', function ($inputs) {
+            return in_array($inputs->type, ['registered', 'premium']);
+        });
+
+        return $validator;
     }
 }

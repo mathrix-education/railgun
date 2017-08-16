@@ -1,0 +1,25 @@
+{
+  "name": "mathrix/api",
+  "version": "1.0.0",
+  "description": "Mathrix API",
+  "title": "Mathrix API",
+  "url" : "",
+  "order": [
+    "Authentication",
+    "AuthenticationLogin",
+    "AuthenticationRefresh",
+    "AuthenticationForgot",
+    "AuthenticationReset",
+    "Classes",
+    "ClassesIndex",
+    "Users",
+    "UserRegister",
+    "UsersIndex",
+    "UsersStudents",
+    "UserMe",
+    "UserGet",
+    "UserEdit",
+    "UserDelete",
+    "UserCourses"
+  ]
+}

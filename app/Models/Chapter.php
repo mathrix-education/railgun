@@ -4,6 +4,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Mathrix\Lumen\Models\BaseModel;
 
 /**
  * App\Models\Chapter

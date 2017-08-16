@@ -26,16 +26,15 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app['auth']->viaRequest('api', function ($request) {
-            if ($request->input('api_token')) {
-                return User::where('api_token', $request->input('api_token'))->first();
-            }
-        });
-
         Passport::tokensExpireIn(Carbon::now()->addMonth());
         Passport::refreshTokensExpireIn(Carbon::now()->addMonths(2));
 
-        Passport::tokensCan(['admin' => 'Admin user scope', 'basic' => 'Basic user scope',]);
+        Passport::tokensCan([
+            'admin' => 'Administrator',
+            'moderator' => 'Moderator',
+            'premium' => 'Premium',
+            'registered' => 'Registered'
+        ]);
 
         Gate::policy(User::class, UserPolicy::class);
     }
