@@ -78,7 +78,7 @@ $app->middleware([
 ]);
 
 $app->routeMiddleware([
-    'auth' => App\Http\Middleware\Authenticate::class,
+    'auth' => Mathrix\Lumen\Http\Middleware\Authenticate::class,
 ]);
 
 /*
