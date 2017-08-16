@@ -21,14 +21,19 @@ require_once 'admin.php';
 
 $app->group(['prefix' => 'users'], function () use ($app) {
     $app->post('register', 'UserController@register');
-    $app->post('login', 'UserController@login');
-    $app->post('refresh', 'UserController@refresh');
+    $app->post('login', 'AuthController@login');
+    $app->post('refresh', 'AuthController@refresh');
+    $app->post('forgot', 'AuthController@forgot');
+    $app->post('reset/{token}', 'AuthController@reset');
 
     // Protected routes
     $app->group(['middleware' => 'auth:api'], function () use ($app) {
-        $app->get('', 'UserController@profile');
-        $app->post('', 'UserController@account');
-        $app->get('{id:[0-9]+}', 'UserController@profile');
+        $app->get('', 'UserController@index');
+        $app->get('{page:[0-9]+}/{perPage:[0-9]+}', 'UserController@index');
+        $app->get('me', 'UserController@me');
+        $app->get('{id:[0-9]+}', 'UserController@get');
+        $app->patch('{id:[0-9]+}', 'UserController@edit');
+        $app->delete('{id:[0-9]+}', 'UserController@delete');
     });
 });
 

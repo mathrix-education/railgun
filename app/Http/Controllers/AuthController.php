@@ -51,7 +51,7 @@ class AuthController extends BaseController
          */
         $user = User::whereEmail($inputs['username'])->firstOrFail();
 
-        $inputs['scope'] = $user->type;
+        $inputs['scope'] = $user->status;
 
         return app()->dispatch(
             $request->create('/oauth/token', 'post', $inputs)
