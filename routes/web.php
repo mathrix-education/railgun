@@ -17,6 +17,8 @@ $app->get('/', function () use ($app) {
     ]);
 });
 
+require_once 'admin.php';
+
 $app->group(['prefix' => 'users'], function () use ($app) {
     $app->post('register', 'UserController@register');
     $app->post('login', 'UserController@login');

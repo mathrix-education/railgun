@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Class_;
+use Mathrix\Lumen\Http\Controllers\BaseController;
 
 /**
  * Class DisciplineController
