@@ -17,8 +17,6 @@ $app->get('/', function () use ($app) {
     ]);
 });
 
-require_once 'admin.php';
-
 $app->group(['prefix' => 'users'], function () use ($app) {
     $app->post('register', 'UserController@register');
     $app->post('login', 'AuthController@login');
@@ -26,7 +24,6 @@ $app->group(['prefix' => 'users'], function () use ($app) {
     $app->post('forgot', 'AuthController@forgot');
     $app->post('reset/{token}', 'AuthController@reset');
 
-    // Protected routes
     $app->group(['middleware' => 'auth:api'], function () use ($app) {
         $app->get('', 'UserController@index');
         $app->get('{page:[0-9]+}/{perPage:[0-9]+}', 'UserController@index');
@@ -37,8 +34,25 @@ $app->group(['prefix' => 'users'], function () use ($app) {
     });
 });
 
-$app->group(['prefix' => 'classes'], function() use ($app) {
-    $app->get('{country:[a-z]+}', 'ClassController@index');
+$app->group(['prefix' => 'classes'], function () use ($app) {
+    $app->get('', 'CountryController@index');
+
+    $app->group(['middleware' => 'auth:api'], function () use ($app) {
+        $app->post('', 'CountryController@add');
+        $app->patch('', 'CountryController@edit');
+        $app->delete('', 'CountryController@delete');
+    });
+});
+
+$app->group(['prefix' => 'classes'], function () use ($app) {
+    $app->get('', 'ClassController@index');
+    $app->get('{country:[a-z]+}', 'ClassController@byCountry');
+
+    $app->group(['middleware' => 'auth:api'], function () use ($app) {
+        $app->post('', 'ClassController@add');
+        $app->patch('', 'ClassController@edit');
+        $app->delete('', 'ClassController@delete');
+    });
 });
 
 /*$app->group(['prefix' => '{country:[a-z]+}'], function () use ($app) {

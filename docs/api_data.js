@@ -363,12 +363,61 @@ define({ "api": [
   },
   {
     "version": "1.0.0",
-    "type": "get",
-    "url": "/classes/{country_short_slug}",
-    "title": "",
+    "type": "post",
+    "url": "/classes",
+    "title": "Add",
     "group": "Classes",
-    "name": "ClassesIndex",
-    "description": "<p>Retrieve classes based on country</p>",
+    "name": "ClassAdd",
+    "description": "<p>Retrieve classes</p>",
+    "parameter": {
+      "fields": {
+        "Data": [
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The class name</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": true,
+            "field": "name_short",
+            "defaultValue": "name",
+            "description": "<p>The class short name</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": true,
+            "field": "slug",
+            "defaultValue": "slug(name)",
+            "description": "<p>The class slug</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 422": [
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "validation",
+            "description": "<p>Class data failed to pass validation</p>"
+          }
+        ]
+      }
+    },
     "filename": "app/Http/Controllers/ClassController.php",
     "groupTitle": "Classes",
     "success": {
@@ -414,6 +463,693 @@ define({ "api": [
     }
   },
   {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/classes/{id}",
+    "title": "Delete",
+    "group": "Classes",
+    "name": "ClassDelete",
+    "description": "<p>Retrieve classes</p>",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The class id</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Class with given id does not exist</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/ClassController.php",
+    "groupTitle": "Classes"
+  },
+  {
+    "version": "1.0.0",
+    "type": "patch",
+    "url": "/classes/{id}",
+    "title": "Edit",
+    "group": "Classes",
+    "name": "ClassEdit",
+    "description": "<p>Edit a class</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The class id</p>"
+          }
+        ],
+        "Data": [
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The class name</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": true,
+            "field": "name_short",
+            "defaultValue": "name",
+            "description": "<p>The class short name</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": true,
+            "field": "slug",
+            "defaultValue": "slug(name)",
+            "description": "<p>The class slug</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Class with given id does not exist</p>"
+          }
+        ],
+        "Error 422": [
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "validation",
+            "description": "<p>Class data failed to pass validation</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/ClassController.php",
+    "groupTitle": "Classes",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The class id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The class name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name_short",
+            "description": "<p>The class short name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The class slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug_short",
+            "description": "<p>The class short slug</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/classes/{country_short_slug}",
+    "title": "byCountry",
+    "group": "Classes",
+    "name": "ClassesByCountry",
+    "description": "<p>Retrieve classes based on country</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "array",
+            "optional": false,
+            "field": "-",
+            "description": "<p>Array of classes</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The class id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The class name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name_short",
+            "description": "<p>The class short name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The class slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug_short",
+            "description": "<p>The class short slug</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Country with given <code>slug_short</code> does not exist</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/ClassController.php",
+    "groupTitle": "Classes"
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/classes",
+    "title": "Index",
+    "group": "Classes",
+    "name": "ClassesIndex",
+    "description": "<p>Retrieve classes</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "array",
+            "optional": false,
+            "field": "-",
+            "description": "<p>Array of classes</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The class id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The class name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name_short",
+            "description": "<p>The class short name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The class slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug_short",
+            "description": "<p>The class short slug</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/ClassController.php",
+    "groupTitle": "Classes"
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/countries",
+    "title": "Index",
+    "group": "Countries",
+    "name": "CountriesIndex",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "array",
+            "optional": false,
+            "field": "-",
+            "description": "<p>Array of countries</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The country id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The country name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name_short",
+            "description": "<p>The country short name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The country slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug_short",
+            "description": "<p>The country short slug</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/CountryController.php",
+    "groupTitle": "Countries"
+  },
+  {
+    "version": "1.0.0",
+    "type": "post",
+    "url": "/countries/",
+    "title": "Add",
+    "group": "Countries",
+    "name": "CountryAdd",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The country id</p>"
+          }
+        ],
+        "Data": [
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The country name</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": true,
+            "field": "name_short",
+            "defaultValue": "name",
+            "description": "<p>The country short name</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": true,
+            "field": "slug",
+            "defaultValue": "slug(name)",
+            "description": "<p>The country slug</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User odes not have enough privileges</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/CountryController.php",
+    "groupTitle": "Countries",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The country id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The country name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name_short",
+            "description": "<p>The country short name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The country slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug_short",
+            "description": "<p>The country short slug</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "delete",
+    "url": "/countries/{id}",
+    "title": "Delete",
+    "group": "Countries",
+    "name": "CountryDelete",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The country id</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Country with given id was not found</p>"
+          }
+        ],
+        "Error 422": [
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "validation",
+            "description": "<p>Country data failed to pass validation</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/CountryController.php",
+    "groupTitle": "Countries"
+  },
+  {
+    "version": "1.0.0",
+    "type": "patch",
+    "url": "/countries/{id}",
+    "title": "Edit",
+    "group": "Countries",
+    "name": "CountryEdit",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The country id</p>"
+          }
+        ],
+        "Data": [
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The country name</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": true,
+            "field": "name_short",
+            "defaultValue": "name",
+            "description": "<p>The country short name</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": true,
+            "field": "slug",
+            "defaultValue": "slug(name)",
+            "description": "<p>The country slug</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Country with given id was not found</p>"
+          }
+        ],
+        "Error 422": [
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "validation",
+            "description": "<p>Country data failed to pass validation</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/CountryController.php",
+    "groupTitle": "Countries",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The country id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The country name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name_short",
+            "description": "<p>The country short name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The country slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug_short",
+            "description": "<p>The country short slug</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/countries",
+    "title": "Get",
+    "group": "Countries",
+    "name": "CountryGet",
+    "error": {
+      "fields": {
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>The country with given id was not found</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/CountryController.php",
+    "groupTitle": "Countries",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The country id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The country name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name_short",
+            "description": "<p>The country short name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The country slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug_short",
+            "description": "<p>The country short slug</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
     "group": "Modules",
     "type": "",
     "url": "",
@@ -441,7 +1177,7 @@ define({ "api": [
           {
             "group": "Parameter",
             "type": "int",
-            "optional": true,
+            "optional": false,
             "field": "id",
             "description": "<p>The user id</p>"
           }
@@ -455,15 +1191,7 @@ define({ "api": [
             "group": "Error 401",
             "optional": false,
             "field": "unauthorized",
-            "description": "<p>The user does not have enough privileges</p>"
-          }
-        ],
-        "Error 404": [
-          {
-            "group": "Error 404",
-            "optional": false,
-            "field": "model_not_found",
-            "description": "<p>The user with given <code>id</code> was not found</p>"
+            "description": "<p>User does not have enough privileges</p>"
           }
         ]
       }
