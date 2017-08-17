@@ -1,8 +1,13 @@
 <?php
 
+use App\Models\Class_;
+use App\Models\User;
+use Faker\Generator;
 use Illuminate\Support\Facades\Hash;
 
-$factory->define(App\Models\User::class, function (Faker\Generator $faker) {
+/** @var Illuminate\Database\Eloquent\Factory $factory */
+
+$factory->define(User::class, function (Generator $faker) {
     $names = $faker->boolean(30);
 
     return [
@@ -11,7 +16,6 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
         'firstName' => $names ? $faker->firstName : null,
         'lastName' => $names ? $faker->lastName : null,
         'password' => Hash::make('test'),
-        'status' => 'registered',
         'facebook_token' => null,
         'points' => $faker->numberBetween(0, 100) * 10,
         'settings' => [
@@ -20,10 +24,46 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
             'email_newsletter' => $faker->boolean(90),
             'email_comment' => $faker->boolean(85)
         ],
-        'class_id' => $faker->randomElement(
-            \App\Models\Class_::all()
-                ->pluck('id')
-                ->toArray()
-        )
+        'class_id' => $faker->randomElement(Class_::all()->pluck('id')->toArray())
     ];
+});
+
+$factory->defineAs(User::class, 'registered', function (Generator $faker) use ($factory) {
+    $data = [
+        'type' => 'registered',
+    ];
+
+    return array_merge($factory->raw(User::class), $data);
+});
+
+$factory->defineAs(User::class, 'premium', function (Generator $faker) use ($factory) {
+    $data = [
+        'type' => 'premium',
+    ];
+
+    return array_merge($factory->raw(User::class), $data);
+});
+
+$factory->defineAs(User::class, 'moderator', function (Generator $faker) use ($factory) {
+    $data = [
+        'username' => $faker->userName,
+        'firstName' => $faker->firstName,
+        'lastName' => $faker->lastName,
+        'type' => 'moderator',
+        'class_id' => null
+    ];
+
+    return array_merge($factory->raw(User::class), $data);
+});
+
+$factory->defineAs(User::class, 'admin', function (Generator $faker) use ($factory) {
+    $data = [
+        'username' => $faker->userName,
+        'firstName' => $faker->firstName,
+        'lastName' => $faker->lastName,
+        'type' => 'admin',
+        'class_id' => null
+    ];
+
+    return array_merge($factory->raw(User::class), $data);
 });
