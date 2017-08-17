@@ -363,6 +363,67 @@
   },
   {
     "version": "1.0.0",
+    "type": "get",
+    "url": "/classes/{country_short_slug}",
+    "title": "",
+    "group": "Classes",
+    "name": "ClassesIndex",
+    "description": "<p>Retrieve classes based on country</p>",
+    "filename": "app/Http/Controllers/ClassController.php",
+    "groupTitle": "Classes",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The class id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The class name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name_short",
+            "description": "<p>The class short name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The class slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug_short",
+            "description": "<p>The class short slug</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "group": "Modules",
+    "type": "",
+    "url": "",
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/ModuleController.php",
+    "groupTitle": "Modules",
+    "name": ""
+  },
+  {
+    "version": "1.0.0",
     "type": "delete",
     "url": "/users/{id}",
     "title": "Delete (WIP)",

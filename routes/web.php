@@ -37,8 +37,12 @@ $app->group(['prefix' => 'users'], function () use ($app) {
     });
 });
 
-$app->group(['prefix' => '{country:[a-z]+}'], function () use ($app) {
-    $app->get('', 'ClassController@index');
+$app->group(['prefix' => 'classes'], function() use ($app) {
+    $app->get('{country:[a-z]+}', 'ClassController@index');
+});
+
+/*$app->group(['prefix' => '{country:[a-z]+}'], function () use ($app) {
+
 
     $app->group(['prefix' => '{class:[a-z0-9\-]+}'], function() use ($app) {
         $app->get('', 'DisciplineController@index');
@@ -55,4 +59,4 @@ $app->group(['prefix' => '{country:[a-z]+}'], function () use ($app) {
             });
         });
     });
-});
+});*/

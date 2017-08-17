@@ -5,7 +5,7 @@
     "firstname": "Admin",
     "lastname": "Admin",
     "password": "test",
-    "status": "admin",
+    "type": "admin",
     "facebook_token": null,
     "points": 0,
     "settings": {
@@ -21,7 +21,7 @@
     "firstname": "Moderator",
     "lastname": "Moderator",
     "password": "test",
-    "status": "moderator",
+    "type": "moderator",
     "facebook_token": null,
     "points": 0,
     "settings": {
