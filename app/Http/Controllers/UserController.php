@@ -215,9 +215,8 @@ class UserController extends BaseController
      * @apiDescription Delete a user
      * @apiPermission admin
      * @apiUse Bearer
-     * @apiParam {int} [id] The user id
-     * @apiError (Error 401) unauthorized The user does not have enough privileges
-     * @apiError (Error 404) model_not_found The user with given `id` was not found
+     * @apiParam {int} id The user id
+     * @apiError (Error 401) unauthorized User does not have enough privileges
      *
      * @param Request $request
      * @param int $id The user

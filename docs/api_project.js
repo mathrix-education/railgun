@@ -10,8 +10,14 @@ define({
     "AuthenticationRefresh",
     "AuthenticationForgot",
     "AuthenticationReset",
+    "Countries",
+    "CountryIndex",
     "Classes",
     "ClassesIndex",
+    "ClassesByCountry",
+    "ClassAdd",
+    "ClassEdit",
+    "ClassDelete",
     "Users",
     "UserRegister",
     "UsersIndex",
@@ -27,7 +33,7 @@ define({
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2017-08-17T15:01:41.716Z",
+    "time": "2017-08-17T16:21:07.007Z",
     "url": "http://apidocjs.com",
     "version": "0.17.6"
   }
