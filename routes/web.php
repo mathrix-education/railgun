@@ -11,13 +11,23 @@
 |
 */
 
+use App\Models\Class_;
+
 $app->get('/', function () use ($app) {
-    return response()->json([
+
+    $class = $class = Class_::with([
+        'disciplines.chapters.notions.activities'
+    ])->find(3)->toArray();
+
+    echo json_encode($class);
+    die();
+
+    /*return response()->json([
         'message' => 'Welcome to Mathrix API version 1.0'
-    ]);
+    ]);*/
 });
 
-$app->group(['prefix' => 'users'], function () use ($app) {
+/*$app->group(['prefix' => 'users'], function () use ($app) {
     $app->post('register', 'UserController@register');
     $app->post('login', 'AuthController@login');
     $app->post('refresh', 'AuthController@refresh');
@@ -32,9 +42,9 @@ $app->group(['prefix' => 'users'], function () use ($app) {
         $app->patch('{id:[0-9]+}', 'UserController@edit');
         $app->delete('{id:[0-9]+}', 'UserController@delete');
     });
-});
+});*/
 
-$app->group(['prefix' => 'classes'], function () use ($app) {
+/*$app->group(['prefix' => 'countries'], function () use ($app) {
     $app->get('', 'CountryController@index');
 
     $app->group(['middleware' => 'auth:api'], function () use ($app) {
@@ -46,6 +56,7 @@ $app->group(['prefix' => 'classes'], function () use ($app) {
 
 $app->group(['prefix' => 'classes'], function () use ($app) {
     $app->get('', 'ClassController@index');
+    $app->get('{classId}', 'CountryController@get');
     $app->get('{country:[a-z]+}', 'ClassController@byCountry');
 
     $app->group(['middleware' => 'auth:api'], function () use ($app) {
@@ -53,7 +64,7 @@ $app->group(['prefix' => 'classes'], function () use ($app) {
         $app->patch('', 'ClassController@edit');
         $app->delete('', 'ClassController@delete');
     });
-});
+});*/
 
 /*$app->group(['prefix' => '{country:[a-z]+}'], function () use ($app) {
 
