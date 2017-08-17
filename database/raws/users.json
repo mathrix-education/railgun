@@ -13,7 +13,8 @@
       "sound": true,
       "email_newsletter": true,
       "email_comment": true
-    }
+    },
+    "class_id": null
   },
   {
     "username": "moderator",
@@ -29,7 +30,8 @@
       "sound": true,
       "email_newsletter": true,
       "email_comment": true
-    }
+    },
+    "class_id": null
   },
   {
     "username": "premium",
@@ -37,7 +39,7 @@
     "firstname": "premium",
     "lastname": "Premium",
     "password": "test",
-    "status": "premium",
+    "type": "premium",
     "facebook_token": null,
     "points": 0,
     "settings": {
@@ -45,6 +47,7 @@
       "sound": true,
       "email_newsletter": true,
       "email_comment": true
-    }
+    },
+    "class_id": null
   }
 ]

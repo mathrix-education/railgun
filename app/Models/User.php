@@ -59,9 +59,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     protected $guarded = [
         'status',
-        'rank_id',
-        'created_at',
-        'updated_at'
+        'rank_id'
     ];
 
     /**
@@ -80,12 +78,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     protected $casts = [
         'settings' => 'array'
     ];
-
-    /**
-     * Indicates if the model should be timestamped.
-     * @var bool
-     */
-    public $timestamps = true;
 
     /**
      * The validation rules on create

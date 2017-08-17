@@ -23,7 +23,6 @@ class ClassController extends BaseController
      * @apiDescription Retrieve classes
      * @apiSuccess {array} - Array of classes
      * @apiUse Class
-     *
      * @return JsonResponse
      */
     public function index()
@@ -51,6 +50,14 @@ class ClassController extends BaseController
         return $this->http200Success($country->classes);
     }
 
+    /**
+     * @param int $classId
+     */
+    public function get(int $classId)
+    {
+        die('lol');
+    }
+
 
     /**
      * @apiVersion 1.0.0
@@ -67,6 +74,7 @@ class ClassController extends BaseController
      * @apiError (Error 422) validation Class data failed to pass validation
      *
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function add(Request $request)
@@ -93,6 +101,7 @@ class ClassController extends BaseController
      *
      * @param Request $request
      * @param Class_ $class
+     *
      * @return JsonResponse
      */
     public function edit(Request $request, Class_ $class)
@@ -114,6 +123,7 @@ class ClassController extends BaseController
      * @apiError (Error 404) model_not_found Class with given id does not exist
      *
      * @param Class_ $class
+     *
      * @return JsonResponse
      */
     public function delete(Class_ $class)

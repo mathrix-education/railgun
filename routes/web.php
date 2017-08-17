@@ -15,7 +15,10 @@ use App\Models\Class_;
 
 $app->get('/', function () use ($app) {
 
-    $class = $class = Class_::with([
+    $class = Class_::with([
+        'disciplines.chapters' => function($query) {
+            $query->where('class_id', 3);
+        },
         'disciplines.chapters.notions.activities'
     ])->find(3)->toArray();
 

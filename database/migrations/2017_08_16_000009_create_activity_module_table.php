@@ -13,7 +13,7 @@ class CreateActivityModuleTable extends Migration
      */
     public function up()
     {
-        Schema::create('activity_modules', function (Blueprint $table) {
+        Schema::create('activity_module', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('activity_id')->unsigned();
             $table->integer('module_id')->unsigned();
@@ -31,6 +31,6 @@ class CreateActivityModuleTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('activity_modules');
+        Schema::dropIfExists('activity_module');
     }
 }

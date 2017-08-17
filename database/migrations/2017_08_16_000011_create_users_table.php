@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('facebook_token')->nullable();
             $table->integer('points')->default(0);
             $table->text('settings');
-            $table->integer('class_id')->unsigned();
+            $table->integer('class_id')->unsigned()->nullable();
 
             // Foreign keys
             $table->foreign('class_id')->references('id')->on('classes');

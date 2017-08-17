@@ -15,7 +15,12 @@ class CreateNotionsTable extends Migration
     {
         Schema::create('notions', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
+            $table->string('name');
+            $table->string('slug');
+            $table->integer('chapter_id')->unsigned();
+
+            // Foreign keys
+            $table->foreign('chapter_id')->references('id')->on('chapters');
         });
     }
 
