@@ -13,7 +13,12 @@ use Mathrix\Lumen\Http\Controllers\BaseController;
 class ClassController extends BaseController
 {
     /**
-     * Retrieve classes based on country
+     * @apiVersion 1.0.0
+     * @api {get} /classes/{country_short_slug}
+     * @apiGroup Classes
+     * @apiName ClassesIndex
+     * @apiDescription Retrieve classes based on country
+     * @apiUse Class
      *
      * @param Country $country
      *
