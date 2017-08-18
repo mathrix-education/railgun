@@ -36,13 +36,8 @@ use Mathrix\Lumen\Models\BaseModel;
 class Module extends BaseModel
 {
     /**
-     * Indicates if the model should be timestamped.
-     * @var bool
-     */
-    public $timestamps = false;
-
-    /**
      * The attributes that should be cast to native types.
+     *
      * @var array
      */
     protected $casts = [
@@ -53,6 +48,14 @@ class Module extends BaseModel
         'options' => 'array'
     ];
 
+    /** @var array The validation rules */
+    protected $rules = [
+        'name' => 'required|max:255',
+        'slug' => 'required|max:255',
+        'description' => 'required|max:255',
+        'type' => 'required|in:course,fill,match,mcq,mcq-table,test,video'
+    ];
+
 
     /*
     |--------------------------------------------------------------------------
@@ -61,6 +64,7 @@ class Module extends BaseModel
     */
     /**
      * BelongsToMany Activity
+     *
      * @return BelongsToMany
      */
     public function activities(): BelongsToMany

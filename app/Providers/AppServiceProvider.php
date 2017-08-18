@@ -2,15 +2,19 @@
 
 namespace App\Providers;
 
+use App\Models\Activity;
 use App\Models\Chapter;
 use App\Models\Class_;
 use App\Models\Country;
 use App\Models\Discipline;
+use App\Models\Module;
 use App\Models\Notion;
+use App\Models\Observers\ActivityObserver;
 use App\Models\Observers\ChapterObserver;
 use App\Models\Observers\ClassObserver;
 use App\Models\Observers\CountryObserver;
 use App\Models\Observers\DisciplineObserver;
+use App\Models\Observers\ModuleObserver;
 use App\Models\Observers\NotionObserver;
 use App\Models\Observers\UserObserver;
 use App\Models\User;
@@ -31,5 +35,7 @@ class AppServiceProvider extends ServiceProvider
         Discipline::observe(DisciplineObserver::class);
         Chapter::observe(ChapterObserver::class);
         Notion::observe(NotionObserver::class);
+        Activity::observe(ActivityObserver::class);
+        Module::observe(ModuleObserver::class);
     }
 }

@@ -108,6 +108,48 @@ define({ "api": [
             "optional": false,
             "field": "description",
             "description": "<p>The activity description</p>"
+          },
+          {
+            "group": "Data",
+            "type": "array",
+            "optional": false,
+            "field": "link",
+            "description": "<p>The models to link with the notion</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int[]",
+            "optional": false,
+            "field": "link.modules",
+            "description": "<p>The modules ids to link</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int[]",
+            "optional": false,
+            "field": "link.notions",
+            "description": "<p>The notions ids to link</p>"
+          },
+          {
+            "group": "Data",
+            "type": "array",
+            "optional": false,
+            "field": "unlink",
+            "description": "<p>The models to unlink with the notion</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int[]",
+            "optional": false,
+            "field": "unlink.modules",
+            "description": "<p>The modules ids to unlink</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int[]",
+            "optional": false,
+            "field": "unlink.notions",
+            "description": "<p>The notions ids to unlink</p>"
           }
         ]
       }
@@ -281,6 +323,48 @@ define({ "api": [
             "optional": false,
             "field": "description",
             "description": "<p>The activity description</p>"
+          },
+          {
+            "group": "Data",
+            "type": "array",
+            "optional": false,
+            "field": "link",
+            "description": "<p>The models to link with the notion</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int[]",
+            "optional": false,
+            "field": "link.modules",
+            "description": "<p>The modules ids to link</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int[]",
+            "optional": false,
+            "field": "link.notions",
+            "description": "<p>The notions ids to link</p>"
+          },
+          {
+            "group": "Data",
+            "type": "array",
+            "optional": false,
+            "field": "unlink",
+            "description": "<p>The models to unlink with the notion</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int[]",
+            "optional": false,
+            "field": "unlink.modules",
+            "description": "<p>The modules ids to unlink</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int[]",
+            "optional": false,
+            "field": "unlink.notions",
+            "description": "<p>The notions ids to unlink</p>"
           }
         ]
       }
@@ -1372,10 +1456,31 @@ define({ "api": [
           },
           {
             "group": "Data",
+            "type": "array",
+            "optional": false,
+            "field": "link",
+            "description": "<p>The models to link with the class</p>"
+          },
+          {
+            "group": "Data",
             "type": "int[]",
             "optional": false,
-            "field": "disciplines_ids",
-            "description": "<p>The class discipline ids</p>"
+            "field": "link.disciplines",
+            "description": "<p>The discipline ids to link</p>"
+          },
+          {
+            "group": "Data",
+            "type": "array",
+            "optional": false,
+            "field": "unlink",
+            "description": "<p>The models to unlink with the class</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int[]",
+            "optional": false,
+            "field": "unlink.disciplines",
+            "description": "<p>The discipline ids to unlink</p>"
           }
         ]
       }
@@ -1582,10 +1687,31 @@ define({ "api": [
           },
           {
             "group": "Data",
+            "type": "array",
+            "optional": false,
+            "field": "link",
+            "description": "<p>The models to link with the class</p>"
+          },
+          {
+            "group": "Data",
             "type": "int[]",
             "optional": false,
-            "field": "disciplines_ids",
-            "description": "<p>The class discipline ids</p>"
+            "field": "link.disciplines",
+            "description": "<p>The discipline ids to link</p>"
+          },
+          {
+            "group": "Data",
+            "type": "array",
+            "optional": false,
+            "field": "unlink",
+            "description": "<p>The models to unlink with the class</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int[]",
+            "optional": false,
+            "field": "unlink.disciplines",
+            "description": "<p>The discipline ids to unlink</p>"
           }
         ]
       }
@@ -2882,6 +3008,34 @@ define({ "api": [
             "field": "slug",
             "defaultValue": "slug(name)",
             "description": "<p>The discipline slug</p>"
+          },
+          {
+            "group": "Data",
+            "type": "array",
+            "optional": false,
+            "field": "link",
+            "description": "<p>The models to link with the discipline</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int[]",
+            "optional": false,
+            "field": "link.classes",
+            "description": "<p>The class ids to link</p>"
+          },
+          {
+            "group": "Data",
+            "type": "array",
+            "optional": false,
+            "field": "unlink",
+            "description": "<p>The models to unlink with the discipline</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int[]",
+            "optional": false,
+            "field": "unlink.classes",
+            "description": "<p>The class ids to unlink</p>"
           }
         ]
       }
@@ -3041,6 +3195,34 @@ define({ "api": [
             "field": "slug",
             "defaultValue": "slug(name)",
             "description": "<p>The discipline slug</p>"
+          },
+          {
+            "group": "Data",
+            "type": "array",
+            "optional": false,
+            "field": "link",
+            "description": "<p>The models to link with the discipline</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int[]",
+            "optional": false,
+            "field": "link.classes",
+            "description": "<p>The class ids to link</p>"
+          },
+          {
+            "group": "Data",
+            "type": "array",
+            "optional": false,
+            "field": "unlink",
+            "description": "<p>The models to unlink with the discipline</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int[]",
+            "optional": false,
+            "field": "unlink.classes",
+            "description": "<p>The class ids to unlink</p>"
           }
         ]
       }
@@ -3243,6 +3425,507 @@ define({ "api": [
   {
     "version": "1.0.0",
     "type": "post",
+    "url": "/modules",
+    "title": "Add",
+    "group": "Modules",
+    "name": "ModuleAdd",
+    "description": "<p>Add a module</p>",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
+    "filename": "app/Http/Controllers/ModuleController.php",
+    "groupTitle": "Modules",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Data": [
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The module name</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": true,
+            "field": "slug",
+            "defaultValue": "slug(name)",
+            "description": "<p>The module slug</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "description",
+            "description": "<p>The module description</p>"
+          },
+          {
+            "group": "Data",
+            "type": "array",
+            "optional": false,
+            "field": "link",
+            "description": "<p>The models to link with the notion</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int[]",
+            "optional": false,
+            "field": "link.activities",
+            "description": "<p>The activities ids to link</p>"
+          },
+          {
+            "group": "Data",
+            "type": "array",
+            "optional": false,
+            "field": "unlink",
+            "description": "<p>The models to unlink with the notion</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int[]",
+            "optional": false,
+            "field": "unlink.activities",
+            "description": "<p>The activities ids to unlink</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The module id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The module name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The module slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "description",
+            "description": "<p>The module description</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 422": [
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "validation",
+            "description": "<p>data failed to pass validation</p>"
+          },
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "save",
+            "description": "<p>Save failed</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "delete",
+    "url": "/modules/{id}",
+    "title": "Delete (NYI)",
+    "group": "Modules",
+    "name": "ModuleDelete",
+    "description": "<p>Delete a module</p>",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The module id</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/ModuleController.php",
+    "groupTitle": "Modules",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "patch",
+    "url": "/modules/{id}",
+    "title": "Edit",
+    "group": "Modules",
+    "name": "ModuleEdit",
+    "description": "<p>Edit a module</p>",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The module id</p>"
+          }
+        ],
+        "Data": [
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The module name</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": true,
+            "field": "slug",
+            "defaultValue": "slug(name)",
+            "description": "<p>The module slug</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "description",
+            "description": "<p>The module description</p>"
+          },
+          {
+            "group": "Data",
+            "type": "array",
+            "optional": false,
+            "field": "link",
+            "description": "<p>The models to link with the notion</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int[]",
+            "optional": false,
+            "field": "link.activities",
+            "description": "<p>The activities ids to link</p>"
+          },
+          {
+            "group": "Data",
+            "type": "array",
+            "optional": false,
+            "field": "unlink",
+            "description": "<p>The models to unlink with the notion</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int[]",
+            "optional": false,
+            "field": "unlink.activities",
+            "description": "<p>The activities ids to unlink</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/ModuleController.php",
+    "groupTitle": "Modules",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The module id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The module name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The module slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "description",
+            "description": "<p>The module description</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ],
+        "Error 422": [
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "save",
+            "description": "<p>Save failed</p>"
+          },
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "validation",
+            "description": "<p>data failed to pass validation</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/modules/{id}",
+    "title": "Get",
+    "group": "Modules",
+    "name": "ModuleGet",
+    "description": "<p>Get a module by id</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The module id</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/ModuleController.php",
+    "groupTitle": "Modules",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The module id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The module name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The module slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "description",
+            "description": "<p>The module description</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/modules",
+    "title": "Index",
+    "group": "Modules",
+    "name": "ModulesIndex",
+    "description": "<p>Retrieve modules</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "filename": "app/Http/Controllers/ModuleController.php",
+    "groupTitle": "Modules",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Module[]",
+            "optional": false,
+            "field": "module",
+            "description": "<p>Array of modules</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "modules.id",
+            "description": "<p>The module id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "modules.name",
+            "description": "<p>The module name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "modules.slug",
+            "description": "<p>The module slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "modules.description",
+            "description": "<p>The module description</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "post",
     "url": "/notions",
     "title": "Add",
     "group": "Notions",
@@ -3292,6 +3975,34 @@ define({ "api": [
             "optional": false,
             "field": "chapter_id",
             "description": "<p>The notion chapter_id</p>"
+          },
+          {
+            "group": "Data",
+            "type": "array",
+            "optional": false,
+            "field": "link",
+            "description": "<p>The models to link with the notion</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int[]",
+            "optional": false,
+            "field": "link.activities",
+            "description": "<p>The activities ids to link</p>"
+          },
+          {
+            "group": "Data",
+            "type": "array",
+            "optional": false,
+            "field": "unlink",
+            "description": "<p>The models to unlink with the notion</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int[]",
+            "optional": false,
+            "field": "unlink.activities",
+            "description": "<p>The activities ids to unlink</p>"
           }
         ]
       }
@@ -3465,6 +4176,34 @@ define({ "api": [
             "optional": false,
             "field": "chapter_id",
             "description": "<p>The notion chapter_id</p>"
+          },
+          {
+            "group": "Data",
+            "type": "array",
+            "optional": false,
+            "field": "link",
+            "description": "<p>The models to link with the notion</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int[]",
+            "optional": false,
+            "field": "link.activities",
+            "description": "<p>The activities ids to link</p>"
+          },
+          {
+            "group": "Data",
+            "type": "array",
+            "optional": false,
+            "field": "unlink",
+            "description": "<p>The models to unlink with the notion</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int[]",
+            "optional": false,
+            "field": "unlink.activities",
+            "description": "<p>The activities ids to unlink</p>"
           }
         ]
       }

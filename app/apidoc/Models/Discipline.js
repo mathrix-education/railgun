@@ -2,6 +2,10 @@
  * @apiDefine DisciplineData
  * @apiParam (Data) {string} name The discipline name
  * @apiParam (Data) {string} [slug=slug(name)] The discipline slug
+ * @apiParam (Data) {array} link The models to link with the discipline
+ * @apiParam (Data) {int[]} link.classes The class ids to link
+ * @apiParam (Data) {array} unlink The models to unlink with the discipline
+ * @apiParam (Data) {int[]} unlink.classes The class ids to unlink
  */
 /**
  * @apiDefine DisciplineArray

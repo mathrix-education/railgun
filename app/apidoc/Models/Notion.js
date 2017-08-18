@@ -3,6 +3,10 @@
  * @apiParam (Data) {string} name The notion name
  * @apiParam (Data) {string} [slug=slug(name)] The notion slug
  * @apiParam (Data) {int} chapter_id The notion chapter_id
+ * @apiParam (Data) {array} link The models to link with the notion
+ * @apiParam (Data) {int[]} link.activities The activities ids to link
+ * @apiParam (Data) {array} unlink The models to unlink with the notion
+ * @apiParam (Data) {int[]} unlink.activities The activities ids to unlink
  */
 /**
  * @apiDefine NotionArray
