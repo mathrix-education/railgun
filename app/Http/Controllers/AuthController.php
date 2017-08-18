@@ -122,13 +122,14 @@ class AuthController extends BaseController
             return $user->handleResponse($this->http422Save());
         }
 
-        Mail::to($user->email)->send(new UserPasswordForgotten($user));
+        // TODO Email
+        /*Mail::to($user->email)->send(new UserPasswordForgotten($user));
         $emailErrors = Mail::failures();
         if (!empty($emailErrors)) {
             return $this->http502EmailNotSent([
                 'message' => $emailErrors
             ]);
-        }
+        }*/
 
         return $this->http200Success('Reset email sent');
     }
@@ -167,13 +168,14 @@ class AuthController extends BaseController
             return $user->handleResponse($this->http422Save());
         }
 
-        Mail::to($user->email)->send(new UserPasswordChanged($user));
+        // TODO Email
+        /*Mail::to($user->email)->send(new UserPasswordChanged($user));
         $emailErrors = Mail::failures();
         if (!empty($emailErrors)) {
             return $this->http502EmailNotSent([
                 'message' => $emailErrors
             ]);
-        }
+        }*/
 
         return $this->http200Success('Password successfully changed');
     }
