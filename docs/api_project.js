@@ -53,14 +53,20 @@ define({
     "ActivityGet",
     "ActivityAdd",
     "ActivityEdit",
-    "ActivityDelete"
+    "ActivityDelete",
+    "Modules",
+    "ModulesIndex",
+    "ModuleGet",
+    "ModuleAdd",
+    "ModuleEdit",
+    "ModuleDelete"
   ],
   "sampleUrl": false,
   "defaultVersion": "0.0.0",
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2017-08-18T08:28:21.837Z",
+    "time": "2017-08-18T08:29:32.163Z",
     "url": "http://apidocjs.com",
     "version": "0.17.6"
   }
