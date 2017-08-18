@@ -245,7 +245,7 @@ class UserController extends BaseController
         return $this->http200Success($user);
     }
 
-    
+
     /**
      * @apiVersion 1.0.0
      * @api {delete} /users/{id} Delete (WIP)
