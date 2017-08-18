@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Activity;
 use App\Models\Class_;
+use App\Models\Country;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Mathrix\Lumen\Http\Controllers\BaseController;
@@ -11,11 +12,30 @@ class ContentController extends BaseController
 {
     /**
      * @apiVersion 1.0.0
-     * @api {get} /content/data/{classId} Data
+     * @api {get} /content/countries Countries
      * @apiGroup Content
-     * @apiName ContentData
+     * @apiName ContentCountries
      * @apiDescription Retrieve content data by class id
-     * @apiPermission registered
+     * @apiPermission public
+     * @apiUse Country
+     * @apiUse ClassArray
+     * @return JsonResponse
+     */
+    public function countries()
+    {
+        $data = Country::with('classes')->get();
+
+        return $this->http200Success($data);
+    }
+
+
+    /**
+     * @apiVersion 1.0.0
+     * @api {get} /content/data/{classId} Program
+     * @apiGroup Content
+     * @apiName ContentProgram
+     * @apiDescription Retrieve content data by class id
+     * @apiPermission public
      * @apiParam {int} id The class id
      * @apiSuccess {int} id The class id
      * @apiSuccess {string} name The class name
@@ -46,7 +66,7 @@ class ContentController extends BaseController
      *
      * @return JsonResponse
      */
-    public function data(int $classId)
+    public function program(int $classId)
     {
         $data = Class_::with([
             'disciplines.chapters' => function (HasMany $query) use ($classId) {
@@ -60,13 +80,14 @@ class ContentController extends BaseController
         return $this->http200Success($data);
     }
 
+
     /**
      * @apiVersion 1.0.0
      * @api {get} /content/modules/{activityId} Modules
      * @apiGroup Content
      * @apiName ContentModules
      * @apiDescription Retrieve modules data by activity id
-     * @apiPermission registered
+     * @apiPermission public
      * @apiParam {int} id The activity id
      * @apiSuccess {int} id The activity id
      * @apiSuccess {string} name The activity name
