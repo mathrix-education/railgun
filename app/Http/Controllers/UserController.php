@@ -73,6 +73,7 @@ class UserController extends BaseController
         return $this->http200Success($user);
     }
 
+
     /**
      * @apiVersion 1.0.0
      * @api {get} /users/{?page}/{?perPage} Index
@@ -109,6 +110,39 @@ class UserController extends BaseController
                 ->get()
         );
     }
+
+
+    /**
+     * @apiVersion 1.0.0
+     * @api {get} /users/search/{field}/{value} Search
+     * @apiGroup Users
+     * @apiName UserMe
+     * @apiDescription Search user matching criteria
+     * @apiPermission admin
+     * @apiUse Bearer
+     * @apiUse UserArray
+     *
+     * @param Request $request
+     * @param $field
+     * @param $like
+     *
+     * @return JsonResponse
+     * @internal param Request $request
+     */
+    public function search(Request $request, $field, $like)
+    {
+        if ($request->user()->cant('index', User::class)) {
+            return $this->http401Unauthorized();
+        }
+        if (!in_array($field, \Schema::getColumnListing(User::getTableName()))) {
+            return $this->http400InvalidRequest($field . ' does not exists in ' . User::getTableName() . ' table');
+        }
+
+        $users = User::where($field, 'like', '%' . $like . '%')->get();
+
+        return $this->http200Success($users);
+    }
+
 
     /**
      * @apiVersion 1.0.0
@@ -157,6 +191,7 @@ class UserController extends BaseController
 
         return $this->http200Success($user);
     }
+
 
     /**
      * @apiVersion 1.0.0
@@ -210,6 +245,7 @@ class UserController extends BaseController
         return $this->http200Success($user);
     }
 
+    
     /**
      * @apiVersion 1.0.0
      * @api {delete} /users/{id} Delete (WIP)

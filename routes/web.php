@@ -33,6 +33,7 @@ $app->group(['prefix' => 'users'], function () use ($app) {
     $app->group(['middleware' => 'auth:api'], function () use ($app) {
         $app->get('', 'UserController@index');
         $app->get('{page:[0-9]+}/{perPage:[0-9]+}', 'UserController@index');
+        $app->get('search/{field}/{like}', 'UserController@search');
         $app->get('me', 'UserController@me');
         $app->get('{id:[0-9]+}', 'UserController@get');
         $app->patch('{id:[0-9]+}', 'UserController@edit');
