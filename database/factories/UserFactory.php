@@ -19,6 +19,7 @@ $factory->define(User::class, function (Generator $faker) {
         'lastName' => $names ? $faker->lastName : null,
         'password' => Hash::make('test'),
         'points' => $faker->numberBetween(0, 100) * 10,
+        'token' => $faker->uuid,
         'settings' => [
             'daily_goal' => $faker->numberBetween(0, 10) * 10,
             'sound' => $faker->boolean(70),

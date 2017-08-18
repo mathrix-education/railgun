@@ -49,9 +49,9 @@ class AuthController extends BaseController
         /**
          * @var User $user
          */
-        $user = User::whereEmail($inputs['username'])->firstOrFail();
+        $user = User::where('email', $inputs['username'])->firstOrFail();
 
-        $inputs['scope'] = $user->status;
+        $inputs['scope'] = $user->type;
 
         return app()->dispatch(
             $request->create('/oauth/token', 'post', $inputs)
@@ -156,7 +156,8 @@ class AuthController extends BaseController
         $this->validateRequire($request, ['password']);
 
         // Try to find with the given token
-        $user = User::whereToken($token)->firstOrFail();
+        /** @var User $user */
+        $user = User::where('token', $token)->firstOrFail();
 
         // Update password
         $user->password = $request->input('password');
