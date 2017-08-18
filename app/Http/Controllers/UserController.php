@@ -116,10 +116,12 @@ class UserController extends BaseController
      * @apiVersion 1.0.0
      * @api {get} /users/search/{field}/{value} Search
      * @apiGroup Users
-     * @apiName UserMe
+     * @apiName UserSearch
      * @apiDescription Search user matching criteria
      * @apiPermission admin
      * @apiUse Bearer
+     * @apiParam {string} field The field to search
+     * @apiParam {string} like The value to search
      * @apiUse UserArray
      *
      * @param Request $request
@@ -127,7 +129,6 @@ class UserController extends BaseController
      * @param $like
      *
      * @return JsonResponse
-     * @internal param Request $request
      */
     public function search(Request $request, $field, $like)
     {

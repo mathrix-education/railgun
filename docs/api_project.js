@@ -13,6 +13,7 @@ define({
     "Users",
     "UserRegister",
     "UsersIndex",
+    "UsersSearch",
     "UserMe",
     "UserGet",
     "UserEdit",
@@ -66,7 +67,7 @@ define({
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2017-08-18T15:40:13.927Z",
+    "time": "2017-08-18T15:42:42.745Z",
     "url": "http://apidocjs.com",
     "version": "0.17.6"
   }
