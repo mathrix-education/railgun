@@ -53,6 +53,12 @@
     "ActivityGet",
     "ActivityAdd",
     "ActivityEdit",
-    "ActivityDelete"
+    "ActivityDelete",
+    "Modules",
+    "ModulesIndex",
+    "ModuleGet",
+    "ModuleAdd",
+    "ModuleEdit",
+    "ModuleDelete"
   ]
 }
