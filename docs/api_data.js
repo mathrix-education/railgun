@@ -368,7 +368,27 @@ define({ "api": [
     "title": "Add",
     "group": "Classes",
     "name": "ClassAdd",
-    "description": "<p>Retrieve classes</p>",
+    "description": "<p>Add class</p>",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
+    "filename": "app/Http/Controllers/ClassController.php",
+    "groupTitle": "Classes",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
     "parameter": {
       "fields": {
         "Data": [
@@ -394,32 +414,32 @@ define({ "api": [
             "field": "slug",
             "defaultValue": "slug(name)",
             "description": "<p>The class slug</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": true,
+            "field": "slug_short",
+            "defaultValue": "slug(name_short)",
+            "description": "<p>The class short slug</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": false,
+            "field": "country_id",
+            "description": "<p>The class country id</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int[]",
+            "optional": false,
+            "field": "disciplines_ids",
+            "description": "<p>The class discipline ids</p>"
           }
         ]
       }
     },
-    "error": {
-      "fields": {
-        "Error 401": [
-          {
-            "group": "Error 401",
-            "optional": false,
-            "field": "unauthorized",
-            "description": "<p>User does not have enough privileges</p>"
-          }
-        ],
-        "Error 422": [
-          {
-            "group": "Error 422",
-            "optional": false,
-            "field": "validation",
-            "description": "<p>Class data failed to pass validation</p>"
-          }
-        ]
-      }
-    },
-    "filename": "app/Http/Controllers/ClassController.php",
-    "groupTitle": "Classes",
     "success": {
       "fields": {
         "Success 200": [
@@ -457,6 +477,39 @@ define({ "api": [
             "optional": false,
             "field": "slug_short",
             "description": "<p>The class short slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "country_id",
+            "description": "<p>The class country id</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 422": [
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "validation",
+            "description": "<p>data failed to pass validation</p>"
+          },
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "save",
+            "description": "<p>Save failed</p>"
           }
         ]
       }
@@ -464,12 +517,12 @@ define({ "api": [
   },
   {
     "version": "1.0.0",
-    "type": "get",
+    "type": "delete",
     "url": "/classes/{id}",
-    "title": "Delete",
+    "title": "Delete (NYI)",
     "group": "Classes",
     "name": "ClassDelete",
-    "description": "<p>Retrieve classes</p>",
+    "description": "<p>Delete a class</p>",
     "permission": [
       {
         "name": "admin"
@@ -488,6 +541,21 @@ define({ "api": [
         ]
       }
     },
+    "filename": "app/Http/Controllers/ClassController.php",
+    "groupTitle": "Classes",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
     "error": {
       "fields": {
         "Error 401": [
@@ -503,13 +571,11 @@ define({ "api": [
             "group": "Error 404",
             "optional": false,
             "field": "model_not_found",
-            "description": "<p>Class with given id does not exist</p>"
+            "description": "<p>Model matching given data does not exist</p>"
           }
         ]
       }
-    },
-    "filename": "app/Http/Controllers/ClassController.php",
-    "groupTitle": "Classes"
+    }
   },
   {
     "version": "1.0.0",
@@ -519,6 +585,11 @@ define({ "api": [
     "group": "Classes",
     "name": "ClassEdit",
     "description": "<p>Edit a class</p>",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
     "parameter": {
       "fields": {
         "Parameter": [
@@ -553,6 +624,91 @@ define({ "api": [
             "field": "slug",
             "defaultValue": "slug(name)",
             "description": "<p>The class slug</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": true,
+            "field": "slug_short",
+            "defaultValue": "slug(name_short)",
+            "description": "<p>The class short slug</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": false,
+            "field": "country_id",
+            "description": "<p>The class country id</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int[]",
+            "optional": false,
+            "field": "disciplines_ids",
+            "description": "<p>The class discipline ids</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/ClassController.php",
+    "groupTitle": "Classes",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The class id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The class name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name_short",
+            "description": "<p>The class short name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The class slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug_short",
+            "description": "<p>The class short slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "country_id",
+            "description": "<p>The class country id</p>"
           }
         ]
       }
@@ -572,15 +728,48 @@ define({ "api": [
             "group": "Error 404",
             "optional": false,
             "field": "model_not_found",
-            "description": "<p>Class with given id does not exist</p>"
+            "description": "<p>Model matching given data does not exist</p>"
           }
         ],
         "Error 422": [
           {
             "group": "Error 422",
             "optional": false,
+            "field": "save",
+            "description": "<p>Save failed</p>"
+          },
+          {
+            "group": "Error 422",
+            "optional": false,
             "field": "validation",
-            "description": "<p>Class data failed to pass validation</p>"
+            "description": "<p>data failed to pass validation</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/classes/{id}",
+    "title": "Get",
+    "group": "Classes",
+    "name": "ClassGet",
+    "description": "<p>Get a class by id</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The class id</p>"
           }
         ]
       }
@@ -624,63 +813,13 @@ define({ "api": [
             "optional": false,
             "field": "slug_short",
             "description": "<p>The class short slug</p>"
-          }
-        ]
-      }
-    }
-  },
-  {
-    "version": "1.0.0",
-    "type": "get",
-    "url": "/classes/{country_short_slug}",
-    "title": "byCountry",
-    "group": "Classes",
-    "name": "ClassesByCountry",
-    "description": "<p>Retrieve classes based on country</p>",
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "array",
-            "optional": false,
-            "field": "-",
-            "description": "<p>Array of classes</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "id",
-            "description": "<p>The class id</p>"
           },
           {
             "group": "Success 200",
             "type": "string",
             "optional": false,
-            "field": "name",
-            "description": "<p>The class name</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "name_short",
-            "description": "<p>The class short name</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "slug",
-            "description": "<p>The class slug</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "slug_short",
-            "description": "<p>The class short slug</p>"
+            "field": "country_id",
+            "description": "<p>The class country id</p>"
           }
         ]
       }
@@ -692,13 +831,11 @@ define({ "api": [
             "group": "Error 404",
             "optional": false,
             "field": "model_not_found",
-            "description": "<p>Country with given <code>slug_short</code> does not exist</p>"
+            "description": "<p>Model matching given data does not exist</p>"
           }
         ]
       }
-    },
-    "filename": "app/Http/Controllers/ClassController.php",
-    "groupTitle": "Classes"
+    }
   },
   {
     "version": "1.0.0",
@@ -708,16 +845,98 @@ define({ "api": [
     "group": "Classes",
     "name": "ClassesIndex",
     "description": "<p>Retrieve classes</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "filename": "app/Http/Controllers/ClassController.php",
+    "groupTitle": "Classes",
     "success": {
       "fields": {
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "array",
+            "type": "Class[]",
             "optional": false,
-            "field": "-",
+            "field": "classes",
             "description": "<p>Array of classes</p>"
           },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "classes.id",
+            "description": "<p>The class id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "classes.name",
+            "description": "<p>The class name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "classes.name_short",
+            "description": "<p>The class short name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "classes.slug",
+            "description": "<p>The class slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "classes.slug_short",
+            "description": "<p>The class short slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "classes.country_id",
+            "description": "<p>The class country id</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/content/data/{classId}",
+    "title": "Data",
+    "group": "Content",
+    "name": "ContentData",
+    "description": "<p>Retrieve content data by class id</p>",
+    "permission": [
+      {
+        "name": "registered"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The class id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
           {
             "group": "Success 200",
             "type": "int",
@@ -752,78 +971,164 @@ define({ "api": [
             "optional": false,
             "field": "slug_short",
             "description": "<p>The class short slug</p>"
-          }
-        ]
-      }
-    },
-    "filename": "app/Http/Controllers/ClassController.php",
-    "groupTitle": "Classes"
-  },
-  {
-    "version": "1.0.0",
-    "type": "get",
-    "url": "/countries",
-    "title": "Index",
-    "group": "Countries",
-    "name": "CountriesIndex",
-    "success": {
-      "fields": {
-        "Success 200": [
+          },
           {
             "group": "Success 200",
-            "type": "array",
+            "type": "Discipline[]",
             "optional": false,
-            "field": "-",
-            "description": "<p>Array of countries</p>"
+            "field": "disciplines",
+            "description": "<p>The disciplines</p>"
           },
           {
             "group": "Success 200",
             "type": "int",
             "optional": false,
-            "field": "id",
-            "description": "<p>The country id</p>"
+            "field": "disciplines.id",
+            "description": "<p>The discipline id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "disciplines.name",
+            "description": "<p>The discipline name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "disciplines.slug",
+            "description": "<p>The discipline slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Chapter[]",
+            "optional": false,
+            "field": "disciplines.chapters",
+            "description": "<p>The chapters</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "disciplines.chapters.id",
+            "description": "<p>The chapter id</p>"
           },
           {
             "group": "Success 200",
             "type": "string",
             "optional": false,
-            "field": "name",
-            "description": "<p>The country name</p>"
+            "field": "disciplines.chapters.name",
+            "description": "<p>The chapter name</p>"
           },
           {
             "group": "Success 200",
             "type": "string",
             "optional": false,
-            "field": "name_short",
-            "description": "<p>The country short name</p>"
+            "field": "disciplines.chapters.slug",
+            "description": "<p>The chapter slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Notion[]",
+            "optional": false,
+            "field": "disciplines.chapters.notions",
+            "description": "<p>The notions</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "disciplines.chapters.notions.id",
+            "description": "<p>The notion id</p>"
           },
           {
             "group": "Success 200",
             "type": "string",
             "optional": false,
-            "field": "slug",
-            "description": "<p>The country slug</p>"
+            "field": "disciplines.chapters.notions.name",
+            "description": "<p>The notion name</p>"
           },
           {
             "group": "Success 200",
             "type": "string",
             "optional": false,
-            "field": "slug_short",
-            "description": "<p>The country short slug</p>"
+            "field": "disciplines.chapters.notions.slug",
+            "description": "<p>The notion slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "disciplines.chapters.notions.description",
+            "description": "<p>The notion description</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Activity[]",
+            "optional": false,
+            "field": "disciplines.chapters.notion.activities",
+            "description": "<p>The activities</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "disciplines.chapters.notions.activities.id",
+            "description": "<p>The activity id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "disciplines.chapters.notions.activities.name",
+            "description": "<p>The activity name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "disciplines.chapters.notions.activities.slug",
+            "description": "<p>The activity slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "disciplines.chapters.notions.activities.description",
+            "description": "<p>The activity description</p>"
           }
         ]
       }
     },
-    "filename": "app/Http/Controllers/CountryController.php",
-    "groupTitle": "Countries"
+    "error": {
+      "fields": {
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Class with given id does not exist</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/ContentController.php",
+    "groupTitle": "Content"
   },
   {
     "version": "1.0.0",
-    "type": "post",
-    "url": "/countries/",
-    "title": "Add",
-    "group": "Countries",
-    "name": "CountryAdd",
+    "type": "get",
+    "url": "/content/modules/{activityId}",
+    "title": "Modules",
+    "group": "Content",
+    "name": "ContentModules",
+    "description": "<p>Retrieve modules data by activity id</p>",
+    "permission": [
+      {
+        "name": "registered"
+      }
+    ],
     "parameter": {
       "fields": {
         "Parameter": [
@@ -832,9 +1137,242 @@ define({ "api": [
             "type": "int",
             "optional": false,
             "field": "id",
-            "description": "<p>The country id</p>"
+            "description": "<p>The activity id</p>"
           }
-        ],
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The activity id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The activity name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The activity slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Module[]",
+            "optional": false,
+            "field": "modules",
+            "description": "<p>The modules</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "modules.id",
+            "description": "<p>The module name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "modules.name",
+            "description": "<p>The module name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "modules.slug",
+            "description": "<p>The module slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "allowedValues": [
+              "course",
+              "fill",
+              "match",
+              "mcq",
+              "mcq-table",
+              "test",
+              "video"
+            ],
+            "optional": false,
+            "field": "modules.type",
+            "description": "<p>The module type</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "modules.content",
+            "description": "<p>[course]    <code>string</code> The course content<br> [fill]      <code>null</code><br> [match]     <code>null</code><br> [mcq]       <code>null</code><br> [mcq-table] <code>null</code><br> [test]      <code>null</code><br> [video]     <code>string</code> The youtube video id (e.g. A7xHki1biKE)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "modules.questions",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code> The static propositions<br> [mcq]       <code>string[]</code> The mcq questions<br> [mcq-table] <code>string[]</code> The mcq questions<br> [test]      <code>string[]</code> The test questions<br> [video]     <code>null</code><br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "modules.choices",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[]</code>   The gap choices<br> [match]     <code>string[]</code>   The draggable propositions<br> [mcq]       <code>string[][]</code> The mcq choices (first dimension for the question number, second dimension for the question choices)<br> [mcq-table] <code>string[]</code>   The common choices for all questions<br> [test]      <code>null</code><br> [video]     <code>null</code><br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "modules.solutions",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code>   The solutions for each gap (only one per gap)<br> [mcq]       <code>string[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [mcq-table] <code>string[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [test]      <code>string[]</code>   The solutions for each question<br> [video]     <code>null</code><br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "modules.corrections",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[][]</code> The solutions for each question (second dimension array represents a step)<br> [mcq]       <code>string[][]</code> The solutions for each question (second dimension array represents a step)<br> [mcq-table] <code>string[][]</code> The solutions for each question (second dimension array represents a step)<br> [test]      <code>string[][]</code> The solutions for each question (second dimension array represents a step)<br> [video]     <code>null</code><br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "modules.options",
+            "description": "<p>The modules options</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "modules.options.duration",
+            "description": "<p>[test] The test duration (in seconds)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "modules.options.starts",
+            "description": "<p>[video] The video starting time (in seconds)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "modules.options.ends",
+            "description": "<p>[video] The video ends time (in seconds)</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/ContentController.php",
+    "groupTitle": "Content"
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/countries",
+    "title": "Index",
+    "group": "Countries",
+    "name": "CountriesIndex",
+    "description": "<p>Retrieve countries</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "filename": "app/Http/Controllers/CountryController.php",
+    "groupTitle": "Countries",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Country[]",
+            "optional": false,
+            "field": "countries",
+            "description": "<p>Array of countries</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "countries.id",
+            "description": "<p>The country id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "countries.name",
+            "description": "<p>The country name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "countries.name_short",
+            "description": "<p>The country short name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "countries.slug",
+            "description": "<p>The country slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "countries.slug_short",
+            "description": "<p>The country short slug</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "post",
+    "url": "/countries",
+    "title": "Add",
+    "group": "Countries",
+    "name": "CountryAdd",
+    "description": "<p>Add a country</p>",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
+    "filename": "app/Http/Controllers/CountryController.php",
+    "groupTitle": "Countries",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
         "Data": [
           {
             "group": "Data",
@@ -858,24 +1396,18 @@ define({ "api": [
             "field": "slug",
             "defaultValue": "slug(name)",
             "description": "<p>The country slug</p>"
-          }
-        ]
-      }
-    },
-    "error": {
-      "fields": {
-        "Error 401": [
+          },
           {
-            "group": "Error 401",
-            "optional": false,
-            "field": "unauthorized",
-            "description": "<p>User odes not have enough privileges</p>"
+            "group": "Data",
+            "type": "string",
+            "optional": true,
+            "field": "slug_short",
+            "defaultValue": "slug(name_short)",
+            "description": "<p>The country short slug</p>"
           }
         ]
       }
     },
-    "filename": "app/Http/Controllers/CountryController.php",
-    "groupTitle": "Countries",
     "success": {
       "fields": {
         "Success 200": [
@@ -913,6 +1445,32 @@ define({ "api": [
             "optional": false,
             "field": "slug_short",
             "description": "<p>The country short slug</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 422": [
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "validation",
+            "description": "<p>data failed to pass validation</p>"
+          },
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "save",
+            "description": "<p>Save failed</p>"
           }
         ]
       }
@@ -922,9 +1480,15 @@ define({ "api": [
     "version": "1.0.0",
     "type": "delete",
     "url": "/countries/{id}",
-    "title": "Delete",
+    "title": "Delete (NYI)",
     "group": "Countries",
     "name": "CountryDelete",
+    "description": "<p>Delete a country</p>",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
     "parameter": {
       "fields": {
         "Parameter": [
@@ -934,6 +1498,21 @@ define({ "api": [
             "optional": false,
             "field": "id",
             "description": "<p>The country id</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/CountryController.php",
+    "groupTitle": "Countries",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
           }
         ]
       }
@@ -953,21 +1532,11 @@ define({ "api": [
             "group": "Error 404",
             "optional": false,
             "field": "model_not_found",
-            "description": "<p>Country with given id was not found</p>"
-          }
-        ],
-        "Error 422": [
-          {
-            "group": "Error 422",
-            "optional": false,
-            "field": "validation",
-            "description": "<p>Country data failed to pass validation</p>"
+            "description": "<p>Model matching given data does not exist</p>"
           }
         ]
       }
-    },
-    "filename": "app/Http/Controllers/CountryController.php",
-    "groupTitle": "Countries"
+    }
   },
   {
     "version": "1.0.0",
@@ -976,6 +1545,12 @@ define({ "api": [
     "title": "Edit",
     "group": "Countries",
     "name": "CountryEdit",
+    "description": "<p>Edit a country</p>",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
     "parameter": {
       "fields": {
         "Parameter": [
@@ -1010,6 +1585,70 @@ define({ "api": [
             "field": "slug",
             "defaultValue": "slug(name)",
             "description": "<p>The country slug</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": true,
+            "field": "slug_short",
+            "defaultValue": "slug(name_short)",
+            "description": "<p>The country short slug</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/CountryController.php",
+    "groupTitle": "Countries",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The country id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The country name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name_short",
+            "description": "<p>The country short name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The country slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug_short",
+            "description": "<p>The country short slug</p>"
           }
         ]
       }
@@ -1029,58 +1668,21 @@ define({ "api": [
             "group": "Error 404",
             "optional": false,
             "field": "model_not_found",
-            "description": "<p>Country with given id was not found</p>"
+            "description": "<p>Model matching given data does not exist</p>"
           }
         ],
         "Error 422": [
           {
             "group": "Error 422",
             "optional": false,
+            "field": "save",
+            "description": "<p>Save failed</p>"
+          },
+          {
+            "group": "Error 422",
+            "optional": false,
             "field": "validation",
-            "description": "<p>Country data failed to pass validation</p>"
-          }
-        ]
-      }
-    },
-    "filename": "app/Http/Controllers/CountryController.php",
-    "groupTitle": "Countries",
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "id",
-            "description": "<p>The country id</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "name",
-            "description": "<p>The country name</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "name_short",
-            "description": "<p>The country short name</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "slug",
-            "description": "<p>The country slug</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "slug_short",
-            "description": "<p>The country short slug</p>"
+            "description": "<p>data failed to pass validation</p>"
           }
         ]
       }
@@ -1089,18 +1691,25 @@ define({ "api": [
   {
     "version": "1.0.0",
     "type": "get",
-    "url": "/countries",
+    "url": "/countries/{id}",
     "title": "Get",
     "group": "Countries",
     "name": "CountryGet",
-    "error": {
+    "description": "<p>Get a country by id</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "parameter": {
       "fields": {
-        "Error 404": [
+        "Parameter": [
           {
-            "group": "Error 404",
+            "group": "Parameter",
+            "type": "int",
             "optional": false,
-            "field": "model_not_found",
-            "description": "<p>The country with given id was not found</p>"
+            "field": "id",
+            "description": "<p>The country id</p>"
           }
         ]
       }
@@ -1147,16 +1756,422 @@ define({ "api": [
           }
         ]
       }
+    },
+    "error": {
+      "fields": {
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ]
+      }
     }
   },
   {
-    "group": "Modules",
-    "type": "",
-    "url": "",
-    "version": "0.0.0",
-    "filename": "app/Http/Controllers/ModuleController.php",
-    "groupTitle": "Modules",
-    "name": ""
+    "version": "1.0.0",
+    "type": "post",
+    "url": "/disciplines",
+    "title": "Add",
+    "group": "Disciplines",
+    "name": "DisciplineAdd",
+    "description": "<p>Add a discipline</p>",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
+    "filename": "app/Http/Controllers/DisciplineController.php",
+    "groupTitle": "Disciplines",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Data": [
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The discipline name</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": true,
+            "field": "slug",
+            "defaultValue": "slug(name)",
+            "description": "<p>The discipline slug</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The discipline id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The discipline name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The discipline slug</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 422": [
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "validation",
+            "description": "<p>data failed to pass validation</p>"
+          },
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "save",
+            "description": "<p>Save failed</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "delete",
+    "url": "/disciplines/{id}",
+    "title": "Delete (NYI)",
+    "group": "Disciplines",
+    "name": "DisciplineDelete",
+    "description": "<p>Delete a discipline</p>",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The discipline id</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/DisciplineController.php",
+    "groupTitle": "Disciplines",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "patch",
+    "url": "/disciplines/{id}",
+    "title": "Edit",
+    "group": "Disciplines",
+    "name": "DisciplineEdit",
+    "description": "<p>Edit a discipline</p>",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The discipline id</p>"
+          }
+        ],
+        "Data": [
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The discipline name</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": true,
+            "field": "slug",
+            "defaultValue": "slug(name)",
+            "description": "<p>The discipline slug</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/DisciplineController.php",
+    "groupTitle": "Disciplines",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The discipline id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The discipline name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The discipline slug</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ],
+        "Error 422": [
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "save",
+            "description": "<p>Save failed</p>"
+          },
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "validation",
+            "description": "<p>data failed to pass validation</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/disciplines/{id}",
+    "title": "Get",
+    "group": "Disciplines",
+    "name": "DisciplineGet",
+    "description": "<p>Get a discipline by id</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The discipline id</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/DisciplineController.php",
+    "groupTitle": "Disciplines",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The discipline id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The discipline name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The discipline slug</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/disciplines",
+    "title": "Index",
+    "group": "Disciplines",
+    "name": "DisciplinesIndex",
+    "description": "<p>Retrieve disciplines</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "filename": "app/Http/Controllers/DisciplineController.php",
+    "groupTitle": "Disciplines",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Discipline[]",
+            "optional": false,
+            "field": "countries",
+            "description": "<p>Array of countries</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "countries.id",
+            "description": "<p>The discipline id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "countries.name",
+            "description": "<p>The discipline name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "countries.slug",
+            "description": "<p>The discipline slug</p>"
+          }
+        ]
+      }
+    }
   },
   {
     "version": "1.0.0",

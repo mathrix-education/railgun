@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Country;
@@ -7,6 +6,12 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mathrix\Lumen\Http\Controllers\BaseController;
 
+/**
+ * Country CountryController
+ *
+ * @author Mathrix Team
+ * @package App\Http\Controllers
+ */
 class CountryController extends BaseController
 {
     /**
@@ -14,8 +19,10 @@ class CountryController extends BaseController
      * @api {get} /countries Index
      * @apiGroup Countries
      * @apiName CountriesIndex
-     * @apiSuccess {array} - Array of countries
-     * @apiUse Country
+     * @apiDescription Retrieve countries
+     * @apiPermission public
+     * @apiUse CountryArray
+     * @return JsonResponse
      */
     public function index()
     {
@@ -25,76 +32,119 @@ class CountryController extends BaseController
 
     /**
      * @apiVersion 1.0.0
-     * @api {get} /countries Get
+     * @api {get} /countries/{id} Get
      * @apiGroup Countries
      * @apiName CountryGet
+     * @apiDescription Get a country by id
+     * @apiPermission public
+     * @apiParam {int} id The country id
      * @apiUse Country
-     * @apiError (Error 404) model_not_found The country with given id was not found
-     * @param Country $country
+     * @apiUse 404ModelNotFound
+     *
+     * @param int $id
+     *
      * @return JsonResponse
      */
-    public function get(Country $country)
+    public function get(int $id)
     {
+        $country = Country::where('id', $id)->firstOrFail();
+
         return $this->http200Success($country);
     }
 
 
     /**
      * @apiVersion 1.0.0
-     * @api {post} /countries/ Add
+     * @api {post} /countries Add
      * @apiGroup Countries
      * @apiName CountryAdd
-     * @apiParam {int} id The country id
-     * @apiParam (Data) {string} name The country name
-     * @apiParam (Data) {string} [name_short=name] The country short name
-     * @apiParam (Data) {string} [slug=slug(name)] The country slug
-     * @apiParam (Data) {string} [slug=slug(name_short)] The country short slug
+     * @apiDescription Add a country
+     * @apiPermission admin
+     * @apiUse Bearer
+     * @apiUse CountryData
      * @apiUse Country
-     * @apiError (Error 401) unauthorized User odes not have enough privileges
+     * @apiUse 401Unauthorized
+     * @apiUse 422Validation
+     * @apiUse 422Save
+     *
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function add(Request $request)
     {
-        return $this->http501NotImplemented();
+        if ($request->user()->cant('add', Country::class)) {
+            return $this->http401Unauthorized();
+        }
+
+        $country = new Country();
+        $country->fill($request->all());
+
+        if (!$country->save()) {
+            return $country->handleResponse($this->http422Save());
+        }
+
+        return $this->http200Success($country);
     }
+
 
     /**
      * @apiVersion 1.0.0
      * @api {patch} /countries/{id} Edit
      * @apiGroup Countries
      * @apiName CountryEdit
+     * @apiDescription Edit a country
+     * @apiPermission admin
+     * @apiUse Bearer
      * @apiParam {int} id The country id
-     * @apiParam (Data) {string} name The country name
-     * @apiParam (Data) {string} [name_short=name] The country short name
-     * @apiParam (Data) {string} [slug=slug(name)] The country slug
-     * @apiParam (Data) {string} [slug=slug(name_short)] The country short slug
+     * @apiUse CountryData
      * @apiUse Country
-     * @apiError (Error 401) unauthorized User does not have enough privileges
-     * @apiError (Error 404) model_not_found Country with given id was not found
-     * @apiError (Error 422) validation Country data failed to pass validation
-     * @param Country $country
+     * @apiUse 401Unauthorized
+     * @apiUse 404ModelNotFound
+     * @apiUse 422Save
+     * @apiUse 422Validation
+     *
+     * @param Request $request
+     * @param int $id
+     *
      * @return JsonResponse
      */
-    public function edit(Country $country)
+    public function edit(Request $request, int $id)
     {
-        return $this->http501NotImplemented();
+        /** @var Country $country */
+        $country = Country::where('id', $id)->firstOrFail();
+
+        if ($request->user()->cant('edit', $country)) {
+            return $this->http401Unauthorized();
+        }
+
+        $country->fill($request->all());
+
+        if (!$country->save()) {
+            return $country->handleResponse($this->http422Save());
+        }
+
+        return $this->http200Success($country);
     }
 
 
     /**
      * @apiVersion 1.0.0
-     * @api {delete} /countries/{id} Delete
+     * @api {delete} /countries/{id} Delete (NYI)
      * @apiGroup Countries
      * @apiName CountryDelete
+     * @apiDescription Delete a country
+     * @apiUse Bearer
+     * @apiPermission admin
      * @apiParam {int} id The country id
-     * @apiError (Error 401) unauthorized User does not have enough privileges
-     * @apiError (Error 404) model_not_found Country with given id was not found
-     * @apiError (Error 422) validation Country data failed to pass validation
-     * @param Country $country
+     * @apiUse 401Unauthorized
+     * @apiUse 404ModelNotFound
+     *
+     * @param int $id
+     *
      * @return JsonResponse
      */
-    public function delete(Country $country)
+    public function delete(int $id)
     {
         return $this->http501NotImplemented();
     }

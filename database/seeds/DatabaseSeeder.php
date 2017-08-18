@@ -34,7 +34,11 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->seedFromJson('disciplines');
 
         $this->seedFromJson('class_discipline');
-        $this->call(ContentSeeder::class);
+        $this->call(ChapterTableSeeder::class);
+        $this->call(NotionTableSeeder::class);
+        $this->call(ActivityTableSeeder::class);
+        $this->call(ModuleTableSeeder::class);
+        //$this->call(ContentSeeder::class);
 
         $this->call(UserTableSeeder::class);
         $this->seedFromJson('oauth_clients');

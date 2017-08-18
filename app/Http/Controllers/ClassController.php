@@ -1,15 +1,14 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Class_;
-use App\Models\Country;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Mathrix\Lumen\Http\Controllers\BaseController;
-use Zend\Diactoros\Request;
 
 /**
  * Class ClassController
+ *
  * @author Mathrix Team
  * @package App\Http\Controllers
  */
@@ -21,8 +20,8 @@ class ClassController extends BaseController
      * @apiGroup Classes
      * @apiName ClassesIndex
      * @apiDescription Retrieve classes
-     * @apiSuccess {array} - Array of classes
-     * @apiUse Class
+     * @apiPermission public
+     * @apiUse ClassArray
      * @return JsonResponse
      */
     public function index()
@@ -33,29 +32,24 @@ class ClassController extends BaseController
 
     /**
      * @apiVersion 1.0.0
-     * @api {get} /classes/{country_short_slug} byCountry
+     * @api {get} /classes/{id} Get
      * @apiGroup Classes
-     * @apiName ClassesByCountry
-     * @apiDescription Retrieve classes based on country
-     * @apiSuccess {array} - Array of classes
+     * @apiName ClassGet
+     * @apiDescription Get a class by id
+     * @apiPermission public
+     * @apiParam {int} id The class id
      * @apiUse Class
-     * @apiError (Error 404) model_not_found Country with given `slug_short` does not exist
+     * @apiUse 404ModelNotFound
      *
-     * @param Country $country
+     * @param int $id
      *
      * @return JsonResponse
      */
-    public function byCountry(Country $country): JsonResponse
+    public function get(int $id)
     {
-        return $this->http200Success($country->classes);
-    }
+        $class = Class_::where('id', $id)->firstOrFail();
 
-    /**
-     * @param int $classId
-     */
-    public function get(int $classId)
-    {
-        die('lol');
+        return $this->http200Success($class);
     }
 
 
@@ -64,14 +58,14 @@ class ClassController extends BaseController
      * @api {post} /classes Add
      * @apiGroup Classes
      * @apiName ClassAdd
-     * @apiDescription Retrieve classes
-     * @apiParam (Data) {string} name The class name
-     * @apiParam (Data) {string} [name_short=name] The class short name
-     * @apiParam (Data) {string} [slug=slug(name)] The class slug
-     * @apiParam (Data) {string} [slug=slug(name_short)] The class short slug
+     * @apiDescription Add class
+     * @apiPermission admin
+     * @apiUse Bearer
+     * @apiUse ClassData
      * @apiUse Class
-     * @apiError (Error 401) unauthorized User does not have enough privileges
-     * @apiError (Error 422) validation Class data failed to pass validation
+     * @apiUse 401Unauthorized
+     * @apiUse 422Validation
+     * @apiUse 422Save
      *
      * @param Request $request
      *
@@ -79,7 +73,18 @@ class ClassController extends BaseController
      */
     public function add(Request $request)
     {
-        return $this->http501NotImplemented();
+        if ($request->user()->cant('add', Class_::class)) {
+            return $this->http401Unauthorized();
+        }
+
+        $class = new Class_();
+        $class->fill($request->all());
+
+        if (!$class->save()) {
+            return $class->handleResponse($this->http422Save());
+        }
+
+        return $this->http200Success($class);
     }
 
 
@@ -89,44 +94,57 @@ class ClassController extends BaseController
      * @apiGroup Classes
      * @apiName ClassEdit
      * @apiDescription Edit a class
+     * @apiPermission admin
+     * @apiUse Bearer
      * @apiParam {int} id The class id
-     * @apiParam (Data) {string} name The class name
-     * @apiParam (Data) {string} [name_short=name] The class short name
-     * @apiParam (Data) {string} [slug=slug(name)] The class slug
-     * @apiParam (Data) {string} [slug=slug(name_short)] The class short slug
+     * @apiUse ClassData
      * @apiUse Class
-     * @apiError (Error 401) unauthorized User does not have enough privileges
-     * @apiError (Error 404) model_not_found Class with given id does not exist
-     * @apiError (Error 422) validation Class data failed to pass validation
+     * @apiUse 401Unauthorized
+     * @apiUse 404ModelNotFound
+     * @apiUse 422Save
+     * @apiUse 422Validation
      *
      * @param Request $request
-     * @param Class_ $class
+     * @param int $id
      *
      * @return JsonResponse
      */
-    public function edit(Request $request, Class_ $class)
+    public function edit(Request $request, int $id)
     {
-        return $this->http501NotImplemented();
+        /** @var Class_ $class */
+        $class = Class_::where('id', $id)->firstOrFail();
 
+        if ($request->user()->cant('edit', $class)) {
+            return $this->http401Unauthorized();
+        }
+
+        $class->fill($request->all());
+
+        if (!$class->save()) {
+            return $class->handleResponse($this->http422Save());
+        }
+
+        return $this->http200Success($class);
     }
 
 
     /**
      * @apiVersion 1.0.0
-     * @api {get} /classes/{id} Delete
+     * @api {delete} /classes/{id} Delete (NYI)
      * @apiGroup Classes
      * @apiName ClassDelete
-     * @apiDescription Retrieve classes
+     * @apiDescription Delete a class
      * @apiPermission admin
+     * @apiUse Bearer
      * @apiParam {int} id The class id
-     * @apiError (Error 401) unauthorized User does not have enough privileges
-     * @apiError (Error 404) model_not_found Class with given id does not exist
+     * @apiUse 401Unauthorized
+     * @apiUse 404ModelNotFound
      *
-     * @param Class_ $class
+     * @param int $id
      *
      * @return JsonResponse
      */
-    public function delete(Class_ $class)
+    public function delete(int $id)
     {
         return $this->http501NotImplemented();
     }

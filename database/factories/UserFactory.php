@@ -1,12 +1,14 @@
 <?php
-
 use App\Models\Class_;
 use App\Models\User;
 use Faker\Generator;
 use Illuminate\Support\Facades\Hash;
 
-/** @var Illuminate\Database\Eloquent\Factory $factory */
-
+/**
+ * UserFactory
+ * @author Mathrix Team
+ * @var Illuminate\Database\Eloquent\Factory $factory
+ */
 $factory->define(User::class, function (Generator $faker) {
     $names = $faker->boolean(30);
 
@@ -16,7 +18,6 @@ $factory->define(User::class, function (Generator $faker) {
         'firstName' => $names ? $faker->firstName : null,
         'lastName' => $names ? $faker->lastName : null,
         'password' => Hash::make('test'),
-        'facebook_token' => null,
         'points' => $faker->numberBetween(0, 100) * 10,
         'settings' => [
             'daily_goal' => $faker->numberBetween(0, 10) * 10,
@@ -28,6 +29,12 @@ $factory->define(User::class, function (Generator $faker) {
     ];
 });
 
+
+/**
+ * UserRegisteredFactory
+ * @author Mathrix Team
+ * @var Illuminate\Database\Eloquent\Factory $factory
+ */
 $factory->defineAs(User::class, 'registered', function (Generator $faker) use ($factory) {
     $data = [
         'type' => 'registered',
@@ -36,6 +43,12 @@ $factory->defineAs(User::class, 'registered', function (Generator $faker) use ($
     return array_merge($factory->raw(User::class), $data);
 });
 
+
+/**
+ * UserPremiumFactory
+ * @author Mathrix Team
+ * @var Illuminate\Database\Eloquent\Factory $factory
+ */
 $factory->defineAs(User::class, 'premium', function (Generator $faker) use ($factory) {
     $data = [
         'type' => 'premium',
@@ -44,6 +57,12 @@ $factory->defineAs(User::class, 'premium', function (Generator $faker) use ($fac
     return array_merge($factory->raw(User::class), $data);
 });
 
+
+/**
+ * UserModeratorFactory
+ * @author Mathrix Team
+ * @var Illuminate\Database\Eloquent\Factory $factory
+ */
 $factory->defineAs(User::class, 'moderator', function (Generator $faker) use ($factory) {
     $data = [
         'username' => $faker->userName,
@@ -56,6 +75,12 @@ $factory->defineAs(User::class, 'moderator', function (Generator $faker) use ($f
     return array_merge($factory->raw(User::class), $data);
 });
 
+
+/**
+ * UserAdminFactory
+ * @author Mathrix Team
+ * @var Illuminate\Database\Eloquent\Factory $factory
+ */
 $factory->defineAs(User::class, 'admin', function (Generator $faker) use ($factory) {
     $data = [
         'username' => $faker->userName,

@@ -25,26 +25,16 @@ class ContentSeeder extends BaseTableSeeder
                             'chapter_id' => $chapter->id,
                         ])
                         ->each(function (Notion $notion) {
-                            $activityCount = random_int(1, 3);
-
-                            for ($i = 0; $i < $activityCount; $i++) {
-                                $types = ['course', 'exercise', 'test', 'video'];
-                                $type = $types[random_int(0, 3)];
-
-                                factory(Activity::class, $type, 1)
-                                    ->create()
-                                    ->each(function (Activity $activity) use ($notion, $type) {
-                                        $notion->activities()->attach($activity->id);
-
-                                        if ($type == 'exercise') {
-                                            factory(Module::class, random_int(2, 3))
-                                                ->create()
-                                                ->each(function (Module $module) use ($activity) {
-                                                    $activity->modules()->attach($module->id);
-                                                });
-                                        }
-                                    });
-                            }
+                            factory(Activity::class, random_int(1, 3))
+                                ->create()
+                                ->each(function (Activity $activity) use ($notion) {
+                                    $notion->activities()->attach($activity->id);
+                                    factory(Module::class, 'random', random_int(2, 4))
+                                        ->create()
+                                        ->each(function (Module $module) use ($activity) {
+                                            $activity->modules()->attach($module->id);
+                                        });
+                                });
                         });
                 });
             }
