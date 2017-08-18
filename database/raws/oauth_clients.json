@@ -2,7 +2,7 @@
   {
     "id": 1,
     "user_id": null,
-    "name": "Desktop Client",
+    "name": "Production Client",
     "secret": "3EXjtLLs3PimuSxdhgRQ1vwCm68xG31auFtZMic7",
     "redirect": "https://api.mathrix.fr",
     "personal_access_client": 0,
@@ -13,9 +13,9 @@
   {
     "id": 2,
     "user_id": null,
-    "name": "App Client",
+    "name": "Dev Client",
     "secret": "qdpuwTxqUKBb21J1i350ut5kRUxQE47A2MA6Y52N",
-    "redirect": "https://api.mathrix.fr",
+    "redirect": "https://dev.api.mathrix.fr",
     "personal_access_client": 0,
     "password_client": 1,
     "created_at": "2017-07-07 10:22:59",
@@ -24,41 +24,8 @@
   {
     "id": 3,
     "user_id": null,
-    "name": "Dev Desktop Client",
+    "name": "Test Client",
     "secret": "NCeWoR1cKpqEJQ6pW9gIOPXiH3iNCiV3f39fvyji",
-    "redirect": "http://dev.api.mathrix.fr",
-    "personal_access_client": 0,
-    "password_client": 1,
-    "created_at": "2017-07-07 10:22:59",
-    "updated_at": "2017-07-07 10:22:59"
-  },
-  {
-    "id": 4,
-    "user_id": null,
-    "name": "Dev App Client",
-    "secret": "blrvNtkvwtz5idSmkAE6xCjP6ChP5WqbqwSLrHXS",
-    "redirect": "http://dev.api.mathrix.fr",
-    "personal_access_client": 0,
-    "password_client": 1,
-    "created_at": "2017-07-07 10:22:59",
-    "updated_at": "2017-07-07 10:22:59"
-  },
-  {
-    "id": 5,
-    "user_id": null,
-    "name": "Local Desktop Client",
-    "secret": "I7NrdeU6ujFRkkp0asYJrF1nH1QQIHurgW1P6um3",
-    "redirect": "http://local.api.mathrix.fr",
-    "personal_access_client": 0,
-    "password_client": 1,
-    "created_at": "2017-07-07 10:22:59",
-    "updated_at": "2017-07-07 10:22:59"
-  },
-  {
-    "id": 6,
-    "user_id": null,
-    "name": "Local App Client",
-    "secret": "HK5yFrQQk75iE1L6xJhOXkosh4XHWykx9DsJvxss",
     "redirect": "http://local.api.mathrix.fr",
     "personal_access_client": 0,
     "password_client": 1,

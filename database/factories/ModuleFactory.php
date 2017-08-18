@@ -1,48 +1,28 @@
 <?php
-$factory->define(App\Models\Module::class, function (Faker\Generator $faker) {
-    $type = $faker->randomElement(['mcq', 'mcq-table', 'match', 'fill']);
+use App\Models\Module;
+use Faker\Generator;
 
-    $questions = [];
-    $choices = [];
-    $solutions = [];
-    $corrections = [];
-
-    $questionCount = $faker->numberBetween(1, 5);
-
-    for ($q = 0; $q < $questionCount; $q++) {
-        $choiceCount = $faker->numberBetween(2, 4);
-
-        $questionChoices = $faker->words($choiceCount);
-
-        $questions[] = str_replace('.', '?', $faker->sentence());
-
-        if ($type != 'mcq-table') {
-            $choices[] = $questionChoices;
-        } else if (empty($choices)) {
-            $choices = $questionChoices;
-        }
-
-        $solutions[] = $faker->randomElements(
-            $questionChoices,
-            $faker->numberBetween(
-                1,
-                $type != 'fill' ? $choiceCount : 1 // Fill module can't have multiple answers
-            )
-        );
-
-        $corrections[] = $faker->paragraphs(
-            $faker->numberBetween(2, 3)
-        );
-    }
-
-    $module = [
-        'name' => $faker->sentence(3),
-        'type' => $type,
-        'questions' => $questions,
-        'choices' => $choices,
-        'solutions' => $solutions,
-        'corrections' => $corrections
+/**
+ * ModuleFactory & ModuleRandomFactory
+ * @author Mathrix Team
+ * @var Illuminate\Database\Eloquent\Factory $factory
+ */
+$factory->define(Module::class, function (Generator $faker) {
+    $name = $faker->sentence(3);
+    return [
+        'name' => $name,
+        'slug' => str_slug($name),
     ];
+});
 
-    return $module;
+$factory->defineAs(Module::class, 'random', function (Generator $faker) use ($factory) {
+    return $factory->rawOf(Module::class, $faker->randomElement([
+        'course',
+        'fill',
+        'match',
+        'mcq',
+        'mcq-table',
+        'test',
+        'video'
+    ]));
 });

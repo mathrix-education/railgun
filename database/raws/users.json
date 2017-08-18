@@ -5,7 +5,8 @@
     "firstname": "Admin",
     "lastname": "Admin",
     "password": "test",
-    "status": "admin",
+    "type": "admin",
+    "token": "613dbcf0-5c65-3933-a45c-b12f5375bc28",
     "facebook_token": null,
     "points": 0,
     "settings": {
@@ -13,7 +14,8 @@
       "sound": true,
       "email_newsletter": true,
       "email_comment": true
-    }
+    },
+    "class_id": null
   },
   {
     "username": "moderator",
@@ -21,7 +23,8 @@
     "firstname": "Moderator",
     "lastname": "Moderator",
     "password": "test",
-    "status": "moderator",
+    "type": "moderator",
+    "token": "2da8c668-2eab-3f5e-9b8a-f0fe13e361aa",
     "facebook_token": null,
     "points": 0,
     "settings": {
@@ -29,7 +32,8 @@
       "sound": true,
       "email_newsletter": true,
       "email_comment": true
-    }
+    },
+    "class_id": null
   },
   {
     "username": "premium",
@@ -37,7 +41,8 @@
     "firstname": "premium",
     "lastname": "Premium",
     "password": "test",
-    "status": "premium",
+    "type": "premium",
+    "token": "78221072-3f63-3cce-aabc-0bd8ba32bbd9",
     "facebook_token": null,
     "points": 0,
     "settings": {
@@ -45,6 +50,7 @@
       "sound": true,
       "email_newsletter": true,
       "email_comment": true
-    }
+    },
+    "class_id": null
   }
 ]

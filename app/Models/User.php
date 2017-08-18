@@ -17,25 +17,23 @@ use Mathrix\Lumen\Models\BaseModel;
 
 /**
  * App\Models\User
+ *
  * @property int $id
  * @property string|null $username
- * @property string|null $email
+ * @property string $email
  * @property string|null $firstname
  * @property string|null $lastname
- * @property string|null $password
- * @property string|null $status
+ * @property string $password
+ * @property string $type
  * @property string|null $facebook_token
- * @property int|null $points
- * @property string|null $settings
+ * @property string $token
+ * @property int $points
+ * @property array $settings
  * @property int|null $class_id
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
  * @property-read Class_ $class_
- * @property-read Collection|Client[] $clients
- * @property-read Collection|Token[] $tokens
+ * @property-read Collection|\Laravel\Passport\Client[] $clients
+ * @property-read Collection|\Laravel\Passport\Token[] $tokens
  * @method static Builder|User whereClassId($value)
- * @method static Builder|User whereCreatedAt($value)
- * @method static Builder|User whereDailyGoal($value)
  * @method static Builder|User whereEmail($value)
  * @method static Builder|User whereFacebookToken($value)
  * @method static Builder|User whereFirstname($value)
@@ -44,10 +42,8 @@ use Mathrix\Lumen\Models\BaseModel;
  * @method static Builder|User wherePassword($value)
  * @method static Builder|User wherePoints($value)
  * @method static Builder|User whereSettings($value)
- * @method static Builder|User whereStatus($value)
- * @method static Builder|User whereUpdatedAt($value)
+ * @method static Builder|User whereType($value)
  * @method static Builder|User whereUsername($value)
- * @mixin \Eloquent
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
@@ -59,9 +55,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     protected $guarded = [
         'status',
-        'rank_id',
-        'created_at',
-        'updated_at'
+        'rank_id'
     ];
 
     /**
@@ -82,12 +76,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     ];
 
     /**
-     * Indicates if the model should be timestamped.
-     * @var bool
-     */
-    public $timestamps = true;
-
-    /**
      * The validation rules on create
      * @var array
      */
@@ -98,19 +86,10 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         'lastname' => 'nullable|max:40',
         'password' => 'required|min:3',
         'status' => 'required|in:registered,premium,moderator,admin',
+        'token' => 'required|size:36',
         'facebook_token' => 'nullable',
-        'points' => 'required|integer',
-        'class_id' => 'required|exists:classes,id'
+        'points' => 'required|integer'
     ];
-
-    /**
-     * BelongsTo Class_
-     * @return BelongsTo
-     */
-    public function class_(): BelongsTo
-    {
-        return $this->belongsTo('App\Models\Class_');
-    }
 
     /**
      * @param Validator $validator
@@ -125,4 +104,20 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
         return $validator;
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
+    /**
+     * BelongsTo Class_
+     * @return BelongsTo
+     */
+    public function class_(): BelongsTo
+    {
+        return $this->belongsTo('App\Models\Class_');
+    }
+
 }

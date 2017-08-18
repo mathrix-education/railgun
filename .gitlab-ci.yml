@@ -1,0 +1,26 @@
+image: php:7.1.1
+
+before_script:
+  - apt-get -yqq update
+  - apt-get -yqq install libmcrypt-dev unzip git openssh-client
+  # Setup gitlab SSH
+  - chmod 600 keys/*
+  - eval $(ssh-agent)
+  - ssh-add -k keys/gitlab_mathrix_id_rsa
+  - mkdir ~/.ssh
+  - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
+  # Initialize project environment
+  - docker-php-ext-install mcrypt && docker-php-ext-install pdo_mysql
+  - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+  - cp .env.test .env
+  - composer install --no-scripts --no-interaction --no-ansi --no-progress
+  - php artisan migrate:refresh --seed
+
+test:app:
+  services:
+    - mysql:latest
+  variables:
+    MYSQL_DATABASE: test_api_mathrix_fr
+    MYSQL_ROOT_PASSWORD: vM5qJKdng2B3WVBCz5e5
+  script:
+    - vendor/bin/phpunit -v --configuration phpunit.xml --stderr

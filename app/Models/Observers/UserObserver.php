@@ -1,21 +1,23 @@
 <?php
-
 namespace App\Models\Observers;
-
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Mathrix\Lumen\Observers\BaseObserver;
 
 /**
  * Class UserObserver
+ * @author Mathrix Team
  * @package App\Models\Observers
  */
-class UserObserver
+class UserObserver extends BaseObserver
 {
     /**
      * @param User $user
+     *
+     * @return bool|null|void
      */
-    public function saving(User $user)
+    public function saving($user)
     {
         /*
          * Hash if needed:
@@ -27,5 +29,7 @@ class UserObserver
         if (isset($user->password) && strlen($user->password) != 60 && !strpos($user->password, '$2y$')) {
             $user->password = Hash::make($user->password);
         }
+
+        parent::saving($user);
     }
 }

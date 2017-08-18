@@ -49,9 +49,9 @@ class AuthController extends BaseController
         /**
          * @var User $user
          */
-        $user = User::whereEmail($inputs['username'])->firstOrFail();
+        $user = User::where('email', $inputs['username'])->firstOrFail();
 
-        $inputs['scope'] = $user->status;
+        $inputs['scope'] = $user->type;
 
         return app()->dispatch(
             $request->create('/oauth/token', 'post', $inputs)
@@ -122,13 +122,14 @@ class AuthController extends BaseController
             return $user->handleResponse($this->http422Save());
         }
 
-        Mail::to($user->email)->send(new UserPasswordForgotten($user));
+        // TODO Email
+        /*Mail::to($user->email)->send(new UserPasswordForgotten($user));
         $emailErrors = Mail::failures();
         if (!empty($emailErrors)) {
             return $this->http502EmailNotSent([
                 'message' => $emailErrors
             ]);
-        }
+        }*/
 
         return $this->http200Success('Reset email sent');
     }
@@ -156,7 +157,8 @@ class AuthController extends BaseController
         $this->validateRequire($request, ['password']);
 
         // Try to find with the given token
-        $user = User::whereToken($token)->firstOrFail();
+        /** @var User $user */
+        $user = User::where('token', $token)->firstOrFail();
 
         // Update password
         $user->password = $request->input('password');
@@ -166,13 +168,14 @@ class AuthController extends BaseController
             return $user->handleResponse($this->http422Save());
         }
 
-        Mail::to($user->email)->send(new UserPasswordChanged($user));
+        // TODO Email
+        /*Mail::to($user->email)->send(new UserPasswordChanged($user));
         $emailErrors = Mail::failures();
         if (!empty($emailErrors)) {
             return $this->http502EmailNotSent([
                 'message' => $emailErrors
             ]);
-        }
+        }*/
 
         return $this->http200Success('Password successfully changed');
     }
