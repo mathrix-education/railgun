@@ -12,7 +12,5 @@
  * @apiSuccess {bool} settings.sound If the user has enabled sounds
  * @apiSuccess {bool} settings.email_newsletter If the user should receive the newsletter
  * @apiSuccess {bool} settings.email_comment If the user should receive an comment email
- * @apiSuccess {string} created_at The user creation date; Y-m-d H:i:s
- * @apiSuccess {string} updated_at The user creation date; Y-m-d H:i:s
  * @apiSuccess {int} class_id The user class_id
  */

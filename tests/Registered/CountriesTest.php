@@ -1,10 +1,9 @@
 <?php
 namespace Tests\Registered;
 
-use Mathrix\Lumen\Tests\BaseTestCase;
-use Tests\Public_\CountriesTrait;
+use Tests\Registered\Traits\CountriesAsc;
 
-class CountriesTest extends BaseTestCase
+class CountriesTest extends RegisteredTestCase
 {
-    use CountriesTrait;
+    use CountriesAsc;
 }
