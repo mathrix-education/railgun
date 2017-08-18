@@ -30,6 +30,12 @@ class Activity extends BaseModel
         'options' => 'array'
     ];
 
+    /** @var array The validation rules */
+    protected $rules = [
+        'name' => 'required|max:255',
+        'slug' => 'required|max:255',
+        'description' => 'required|max:255'
+    ];
 
     /*
     |--------------------------------------------------------------------------
