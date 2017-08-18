@@ -1,10 +1,9 @@
 <?php
 namespace Tests\Public_;
 
-use Mathrix\Lumen\Tests\BaseTestCase;
 use Tests\Public_\Traits\UsersAsc;
 
-class UsersTest extends BaseTestCase
+class UsersTest extends PublicTestCase
 {
     use UsersAsc;
 

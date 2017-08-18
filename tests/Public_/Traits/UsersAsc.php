@@ -23,10 +23,8 @@ trait UsersAsc
      */
     public function testRegisterSuccess()
     {
-        $faker = Factory::create();
-
         $this->call('post', '/users/register', [
-            'email' => $faker->email,
+            'email' => $this->faker->email,
             'password' => 'test',
             'type' => 'register',
             'class_id' => Class_::inRandomOrder()->get(['id'])->pluck('id')->first()
@@ -41,10 +39,8 @@ trait UsersAsc
      */
     public function testRegisterSuccessWithoutType()
     {
-        $faker = Factory::create();
-
         $this->call('post', '/users/register', [
-            'email' => $faker->email,
+            'email' => $this->faker->email,
             'password' => 'test',
             'class_id' => Class_::inRandomOrder()->get(['id'])->pluck('id')->first()
         ]);
