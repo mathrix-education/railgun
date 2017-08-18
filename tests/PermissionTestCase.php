@@ -8,6 +8,7 @@ use Mathrix\Lumen\Tests\BaseTestCase;
 /**
  * Class PermissionTestCase
  * Base Class for tests with permissions
+ *
  * @package Tests
  */
 abstract class PermissionTestCase extends BaseTestCase
@@ -17,9 +18,10 @@ abstract class PermissionTestCase extends BaseTestCase
 
     /**
      * Set the user for the test
+     *
      * @return User
      */
-    abstract public function initUser(): User;
+    abstract public function initUser();
 
     public function setUp()
     {
@@ -27,20 +29,32 @@ abstract class PermissionTestCase extends BaseTestCase
 
         $this->user = $this->initUser();
 
-        Passport::actingAs($this->user);
+        if (!is_null($this->user)) {
+            Passport::actingAs($this->user, [$this->user->type]);
+        } else {
+            unset($this->user);
+        }
     }
 
     /**
      * Get a stranger
+     *
+     * @param array $where
+     *
      * @return User
      */
-    public function getStranger()
+    public function getStranger(array $where)
     {
-        do {
-            $stranger = User::inRandomOrder()->first();
-        } while ($stranger->id == $this->user->id);
+        if (!is_array($where[0])) {
+            $where = [$where];
+        }
+        if (isset($this->user)) {
+            $where[] = ['id', '!=', $this->user->id];
+        }
+
+        /** @var User $stranger */
+        $stranger = User::inRandomOrder()->where($where)->firstOrFail();
 
         return $stranger;
     }
-
 }

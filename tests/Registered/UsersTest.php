@@ -2,10 +2,11 @@
 namespace Tests\Registered;
 
 use Tests\Registered\Traits\UsersAsc;
+use Tests\Registered\Traits\UsersDesc;
 
 class UsersTest extends RegisteredTestCase
 {
-    use UsersAsc;
+    use UsersAsc, UsersDesc;
 
     /**
      * Test GET /users/me with 401 unauthorized
