@@ -40,7 +40,7 @@ $app->withEloquent();
 
 $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
-    App\Exceptions\Handler::class
+    Mathrix\Lumen\Exceptions\Handler::class
 );
 
 $app->singleton(

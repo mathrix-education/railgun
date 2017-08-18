@@ -1416,98 +1416,105 @@
         "name": "public"
       }
     ],
-    "filename": "app/Http/Controllers/ContentController.php",
-    "groupTitle": "Content",
     "success": {
       "fields": {
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "id",
-            "description": "<p>The country id</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "name",
-            "description": "<p>The country name</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "name_short",
-            "description": "<p>The country short name</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "slug",
-            "description": "<p>The country slug</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "slug_short",
-            "description": "<p>The country short slug</p>"
-          },
-          {
-            "group": "Success 200",
             "type": "Class[]",
             "optional": false,
-            "field": "classes",
+            "field": "countries.classes",
             "description": "<p>Array of classes</p>"
           },
           {
             "group": "Success 200",
             "type": "int",
             "optional": false,
-            "field": "classes.id",
+            "field": "countries.classes.id",
             "description": "<p>The class id</p>"
           },
           {
             "group": "Success 200",
             "type": "string",
             "optional": false,
-            "field": "classes.name",
+            "field": "countries.classes.name",
             "description": "<p>The class name</p>"
           },
           {
             "group": "Success 200",
             "type": "string",
             "optional": false,
-            "field": "classes.name_short",
+            "field": "countries.classes.name_short",
             "description": "<p>The class short name</p>"
           },
           {
             "group": "Success 200",
             "type": "string",
             "optional": false,
-            "field": "classes.slug",
+            "field": "countries.classes.slug",
             "description": "<p>The class slug</p>"
           },
           {
             "group": "Success 200",
             "type": "string",
             "optional": false,
-            "field": "classes.slug_short",
+            "field": "countries.classes.slug_short",
             "description": "<p>The class short slug</p>"
           },
           {
             "group": "Success 200",
             "type": "string",
             "optional": false,
-            "field": "classes.country_id",
+            "field": "countries.classes.country_id",
             "description": "<p>The class country id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Country[]",
+            "optional": false,
+            "field": "countries",
+            "description": "<p>Array of countries</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "countries.id",
+            "description": "<p>The country id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "countries.name",
+            "description": "<p>The country name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "countries.name_short",
+            "description": "<p>The country short name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "countries.slug",
+            "description": "<p>The country slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "countries.slug_short",
+            "description": "<p>The country short slug</p>"
           }
         ]
       }
-    }
+    },
+    "filename": "app/Http/Controllers/ContentController.php",
+    "groupTitle": "Content"
   },
   {
     "version": "1.0.0",
@@ -1538,27 +1545,6 @@
     "success": {
       "fields": {
         "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "id",
-            "description": "<p>The activity id</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "name",
-            "description": "<p>The activity name</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "slug",
-            "description": "<p>The activity slug</p>"
-          },
           {
             "group": "Success 200",
             "type": "Module[]",
@@ -1665,6 +1651,34 @@
             "optional": false,
             "field": "modules.options.ends",
             "description": "<p>[video] The video ends time (in seconds)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The activity id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The activity name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The activity slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "description",
+            "description": "<p>The activity description</p>"
           }
         ]
       }
@@ -1701,41 +1715,6 @@
     "success": {
       "fields": {
         "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "id",
-            "description": "<p>The class id</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "name",
-            "description": "<p>The class name</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "name_short",
-            "description": "<p>The class short name</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "slug",
-            "description": "<p>The class slug</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "slug_short",
-            "description": "<p>The class short slug</p>"
-          },
           {
             "group": "Success 200",
             "type": "Discipline[]",
@@ -1861,6 +1840,48 @@
             "optional": false,
             "field": "disciplines.chapters.notions.activities.description",
             "description": "<p>The activity description</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The class id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The class name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name_short",
+            "description": "<p>The class short name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The class slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug_short",
+            "description": "<p>The class short slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "country_id",
+            "description": "<p>The class country id</p>"
           }
         ]
       }
@@ -2769,6 +2790,451 @@
             "optional": false,
             "field": "disciplines.slug",
             "description": "<p>The discipline slug</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "post",
+    "url": "/notions",
+    "title": "Add",
+    "group": "Notions",
+    "name": "NotionAdd",
+    "description": "<p>Add a notion</p>",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
+    "filename": "app/Http/Controllers/NotionController.php",
+    "groupTitle": "Notions",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Data": [
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The notion name</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": true,
+            "field": "slug",
+            "defaultValue": "slug(name)",
+            "description": "<p>The notion slug</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": false,
+            "field": "chapter_id",
+            "description": "<p>The notion chapter_id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The notion id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The notion name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The notion slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "chapter_id",
+            "description": "<p>The notion chapter_id</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 422": [
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "validation",
+            "description": "<p>data failed to pass validation</p>"
+          },
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "save",
+            "description": "<p>Save failed</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "delete",
+    "url": "/notions/{id}",
+    "title": "Delete (NYI)",
+    "group": "Notions",
+    "name": "NotionDelete",
+    "description": "<p>Delete a notion</p>",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The notion id</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/NotionController.php",
+    "groupTitle": "Notions",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "patch",
+    "url": "/notions/{id}",
+    "title": "Edit",
+    "group": "Notions",
+    "name": "NotionEdit",
+    "description": "<p>Edit a notion</p>",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The notion id</p>"
+          }
+        ],
+        "Data": [
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The notion name</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": true,
+            "field": "slug",
+            "defaultValue": "slug(name)",
+            "description": "<p>The notion slug</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": false,
+            "field": "chapter_id",
+            "description": "<p>The notion chapter_id</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/NotionController.php",
+    "groupTitle": "Notions",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The notion id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The notion name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The notion slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "chapter_id",
+            "description": "<p>The notion chapter_id</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ],
+        "Error 422": [
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "save",
+            "description": "<p>Save failed</p>"
+          },
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "validation",
+            "description": "<p>data failed to pass validation</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/notions/{id}",
+    "title": "Get",
+    "group": "Notions",
+    "name": "NotionGet",
+    "description": "<p>Get a notion by id</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The notion id</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/NotionController.php",
+    "groupTitle": "Notions",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The notion id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The notion name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The notion slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "chapter_id",
+            "description": "<p>The notion chapter_id</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/notions",
+    "title": "Index",
+    "group": "Notions",
+    "name": "NotionsIndex",
+    "description": "<p>Retrieve notions</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "filename": "app/Http/Controllers/NotionController.php",
+    "groupTitle": "Notions",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Notion[]",
+            "optional": false,
+            "field": "notion",
+            "description": "<p>Array of notions</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "notions.id",
+            "description": "<p>The notion id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "notions.name",
+            "description": "<p>The notion name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "notions.slug",
+            "description": "<p>The notion slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "chapter_id",
+            "description": "<p>The notion chapter_id</p>"
           }
         ]
       }

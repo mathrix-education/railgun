@@ -23,6 +23,13 @@ use Mathrix\Lumen\Models\BaseModel;
  */
 class Notion extends BaseModel
 {
+    /** @var array Th validation rules */
+    protected $rules = [
+        'name' => 'required|max:255',
+        'slug' => 'required|max:255',
+        'chapter_id' => 'required|exists:chapters,id'
+    ];
+
     /*
     |--------------------------------------------------------------------------
     | Relations
