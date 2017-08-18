@@ -5200,10 +5200,185 @@ define({ "api": [
   {
     "version": "1.0.0",
     "type": "get",
+    "url": "/users/{?page}/{?perPage}",
+    "title": "Index",
+    "group": "Users",
+    "name": "UsersIndex",
+    "description": "<p>Get a user by id</p>",
+    "permission": [
+      {
+        "name": "teacher"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": true,
+            "field": "page",
+            "defaultValue": "1",
+            "description": "<p>The page number</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": true,
+            "field": "perPage",
+            "defaultValue": "10",
+            "description": "<p>The user count per page</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 400": [
+          {
+            "group": "Error 400",
+            "optional": false,
+            "field": "invalid_request",
+            "description": "<p>page and perPage have to be strictly positive</p>"
+          }
+        ],
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>The user does not have enough privileges</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/UserController.php",
+    "groupTitle": "Users",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "User[]",
+            "optional": false,
+            "field": "users",
+            "description": "<p>Array of users</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "users.id",
+            "description": "<p>The user id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "users.username",
+            "description": "<p>The user username</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "users.email",
+            "description": "<p>The user email address</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "users.firstname",
+            "description": "<p>The user firstname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "users.lastname",
+            "description": "<p>The user lastname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "users.facebook_token",
+            "description": "<p>The facebook token</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "users.points",
+            "description": "<p>The user points</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "array",
+            "optional": false,
+            "field": "users.settings",
+            "description": "<p>The user settings</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "users.settings.daily_goal",
+            "description": "<p>The user daily goal points</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "users.settings.sound",
+            "description": "<p>If the user has enabled sounds</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "users.settings.email_newsletter",
+            "description": "<p>If the user should receive the newsletter</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "users.settings.email_comment",
+            "description": "<p>If the user should receive an comment email</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "users.class_id",
+            "description": "<p>The user class_id</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
     "url": "/users/search/{field}/{value}",
     "title": "Search",
     "group": "Users",
-    "name": "UserSearch",
+    "name": "UsersSearch",
     "description": "<p>Search user matching criteria</p>",
     "permission": [
       {
@@ -5344,174 +5519,6 @@ define({ "api": [
             "type": "int",
             "optional": false,
             "field": "users.class_id",
-            "description": "<p>The user class_id</p>"
-          }
-        ]
-      }
-    }
-  },
-  {
-    "version": "1.0.0",
-    "type": "get",
-    "url": "/users/{?page}/{?perPage}",
-    "title": "Index",
-    "group": "Users",
-    "name": "UsersIndex",
-    "description": "<p>Get a user by id</p>",
-    "permission": [
-      {
-        "name": "teacher"
-      }
-    ],
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": true,
-            "field": "page",
-            "defaultValue": "1",
-            "description": "<p>The page number</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": true,
-            "field": "perPage",
-            "defaultValue": "10",
-            "description": "<p>The user count per page</p>"
-          }
-        ]
-      }
-    },
-    "error": {
-      "fields": {
-        "Error 400": [
-          {
-            "group": "Error 400",
-            "optional": false,
-            "field": "invalid_request",
-            "description": "<p>page and perPage have to be strictly positive</p>"
-          }
-        ],
-        "Error 401": [
-          {
-            "group": "Error 401",
-            "optional": false,
-            "field": "unauthorized",
-            "description": "<p>The user does not have enough privileges</p>"
-          }
-        ]
-      }
-    },
-    "filename": "app/Http/Controllers/UserController.php",
-    "groupTitle": "Users",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Bearer <code>access_token</code></p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "id",
-            "description": "<p>The user id</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "username",
-            "description": "<p>The user username</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "email",
-            "description": "<p>The user email address</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "firstname",
-            "description": "<p>The user firstname</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "lastname",
-            "description": "<p>The user lastname</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "facebook_token",
-            "description": "<p>The facebook token</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "points",
-            "description": "<p>The user points</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "array",
-            "optional": false,
-            "field": "settings",
-            "description": "<p>The user settings</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "settings.daily_goal",
-            "description": "<p>The user daily goal points</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "bool",
-            "optional": false,
-            "field": "settings.sound",
-            "description": "<p>If the user has enabled sounds</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "bool",
-            "optional": false,
-            "field": "settings.email_newsletter",
-            "description": "<p>If the user should receive the newsletter</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "bool",
-            "optional": false,
-            "field": "settings.email_comment",
-            "description": "<p>If the user should receive an comment email</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "class_id",
             "description": "<p>The user class_id</p>"
           }
         ]
