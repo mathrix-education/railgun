@@ -64,7 +64,8 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     protected $hidden = [
         'password',
-        'facebook_id'
+        'token',
+        'facebook_token'
     ];
 
     /**
