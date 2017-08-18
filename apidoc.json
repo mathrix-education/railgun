@@ -35,6 +35,12 @@
     "DisciplineGet",
     "DisciplineAdd",
     "DisciplineEdit",
-    "DisciplineDelete"
+    "DisciplineDelete",
+    "Chapters",
+    "ChaptersIndex",
+    "ChapterGet",
+    "ChapterAdd",
+    "ChapterEdit",
+    "ChapterDelete"
   ]
 }

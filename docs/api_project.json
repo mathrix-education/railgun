@@ -35,14 +35,20 @@
     "DisciplineGet",
     "DisciplineAdd",
     "DisciplineEdit",
-    "DisciplineDelete"
+    "DisciplineDelete",
+    "Chapters",
+    "ChaptersIndex",
+    "ChapterGet",
+    "ChapterAdd",
+    "ChapterEdit",
+    "ChapterDelete"
   ],
   "sampleUrl": false,
   "defaultVersion": "0.0.0",
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2017-08-18T01:12:54.962Z",
+    "time": "2017-08-18T02:28:24.948Z",
     "url": "http://apidocjs.com",
     "version": "0.17.6"
   }

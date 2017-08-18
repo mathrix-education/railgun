@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Models\Observers;
-
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;

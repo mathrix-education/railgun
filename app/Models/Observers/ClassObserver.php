@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Models\Observers;
-
 
 use App\Models\Class_;
 use Mathrix\Lumen\Observers\BaseObserver;

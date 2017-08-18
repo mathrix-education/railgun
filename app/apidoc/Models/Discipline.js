@@ -5,10 +5,10 @@
  */
 /**
  * @apiDefine DisciplineArray
- * @apiSuccess {Discipline[]} countries Array of countries
- * @apiSuccess {int} countries.id The discipline id
- * @apiSuccess {string} countries.name The discipline name
- * @apiSuccess {string} countries.slug The discipline slug
+ * @apiSuccess {Discipline[]} disciplines Array of disciplines
+ * @apiSuccess {int} disciplines.id The discipline id
+ * @apiSuccess {string} disciplines.name The discipline name
+ * @apiSuccess {string} disciplines.slug The discipline slug
  */
 /**
  * @apiDefine Discipline
