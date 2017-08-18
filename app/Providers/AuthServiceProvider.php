@@ -2,8 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Chapter;
 use App\Models\Class_;
 use App\Models\Discipline;
+use App\Models\Notion;
+use App\Models\Observers\ChapterObserver;
+use App\Models\Observers\NotionObserver;
 use App\Models\User;
 use App\Policies\ClassPolicy;
 use App\Policies\DisciplinePolicy;
@@ -42,5 +46,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::policy(User::class, UserPolicy::class);
         Gate::policy(Class_::class, ClassPolicy::class);
         Gate::policy(Discipline::class, DisciplinePolicy::class);
+        Gate::policy(Chapter::class, ChapterObserver::class);
+        Gate::policy(Notion::class, NotionObserver::class);
     }
 }

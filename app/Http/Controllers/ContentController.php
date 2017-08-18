@@ -17,8 +17,14 @@ class ContentController extends BaseController
      * @apiName ContentCountries
      * @apiDescription Retrieve content data by class id
      * @apiPermission public
-     * @apiUse Country
-     * @apiUse ClassArray
+     * @apiUse CountryArray
+     * @apiSuccess {Class[]} countries.classes Array of classes
+     * @apiSuccess {int} countries.classes.id The class id
+     * @apiSuccess {string} countries.classes.name The class name
+     * @apiSuccess {string} countries.classes.name_short The class short name
+     * @apiSuccess {string} countries.classes.slug The class slug
+     * @apiSuccess {string} countries.classes.slug_short The class short slug
+     * @apiSuccess {string} countries.classes.country_id The class country id
      * @return JsonResponse
      */
     public function countries()
@@ -37,11 +43,7 @@ class ContentController extends BaseController
      * @apiDescription Retrieve content data by class id
      * @apiPermission public
      * @apiParam {int} id The class id
-     * @apiSuccess {int} id The class id
-     * @apiSuccess {string} name The class name
-     * @apiSuccess {string} name_short The class short name
-     * @apiSuccess {string} slug The class slug
-     * @apiSuccess {string} slug_short The class short slug
+     * @apiUse Class
      * @apiSuccess {Discipline[]} disciplines The disciplines
      * @apiSuccess {int} disciplines.id The discipline id
      * @apiSuccess {int} disciplines.name The discipline name
@@ -89,9 +91,7 @@ class ContentController extends BaseController
      * @apiDescription Retrieve modules data by activity id
      * @apiPermission public
      * @apiParam {int} id The activity id
-     * @apiSuccess {int} id The activity id
-     * @apiSuccess {string} name The activity name
-     * @apiSuccess {string} slug The activity slug
+     * @apiUse Activity
      * @apiSuccess {Module[]} modules The modules
      * @apiSuccess {int} modules.id The module name
      * @apiSuccess {string} modules.name The module name

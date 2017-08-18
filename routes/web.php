@@ -102,3 +102,37 @@ $app->group(['prefix' => 'disciplines'], function () use ($app) {
         $app->delete('{id:[0-9]+}', 'DisciplineController@delete');
     });
 });
+
+
+/*
+|--------------------------------------------------------------------------
+| Chapters
+|--------------------------------------------------------------------------
+*/
+$app->group(['prefix' => 'chapters'], function () use ($app) {
+    $app->get('', 'ChapterController@index');
+    $app->get('{id:[0-9]+}', 'ChapterController@get');
+
+    $app->group(['middleware' => 'auth:api'], function () use ($app) {
+        $app->post('', 'ChapterController@add');
+        $app->patch('{id:[0-9]+}', 'ChapterController@edit');
+        $app->delete('{id:[0-9]+}', 'ChapterController@delete');
+    });
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| Notions
+|--------------------------------------------------------------------------
+*/
+$app->group(['prefix' => 'notions'], function () use ($app) {
+    $app->get('', 'NotionController@index');
+    $app->get('{id:[0-9]+}', 'NotionController@get');
+
+    $app->group(['middleware' => 'auth:api'], function () use ($app) {
+        $app->post('', 'NotionController@add');
+        $app->patch('{id:[0-9]+}', 'NotionController@edit');
+        $app->delete('{id:[0-9]+}', 'NotionController@delete');
+    });
+});
