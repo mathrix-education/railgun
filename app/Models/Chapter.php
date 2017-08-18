@@ -26,6 +26,14 @@ use Mathrix\Lumen\Models\BaseModel;
  */
 class Chapter extends BaseModel
 {
+    /** @var array Validation rules */
+    protected $rules = [
+        'name' => 'required|max:255',
+        'slug' => 'required|max:255',
+        'class_id' => 'required|exists:classes,id',
+        'discipline_id' => 'required|exists:disciplines,id',
+    ];
+
     /*
     |--------------------------------------------------------------------------
     | Relations

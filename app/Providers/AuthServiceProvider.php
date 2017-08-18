@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Models\Class_;
+use App\Models\Discipline;
 use App\Models\User;
 use App\Policies\ClassPolicy;
+use App\Policies\DisciplinePolicy;
 use App\Policies\UserPolicy;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
@@ -39,5 +41,6 @@ class AuthServiceProvider extends ServiceProvider
         // Gates declarations
         Gate::policy(User::class, UserPolicy::class);
         Gate::policy(Class_::class, ClassPolicy::class);
+        Gate::policy(Discipline::class, DisciplinePolicy::class);
     }
 }
