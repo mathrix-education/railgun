@@ -47,14 +47,20 @@ define({
     "NotionGet",
     "NotionAdd",
     "NotionEdit",
-    "NotionDelete"
+    "NotionDelete",
+    "Activities",
+    "ActivitiesIndex",
+    "ActivityGet",
+    "ActivityAdd",
+    "ActivityEdit",
+    "ActivityDelete"
   ],
   "sampleUrl": false,
   "defaultVersion": "0.0.0",
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2017-08-18T07:13:05.618Z",
+    "time": "2017-08-18T07:19:56.835Z",
     "url": "http://apidocjs.com",
     "version": "0.17.6"
   }

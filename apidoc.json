@@ -47,6 +47,12 @@
     "NotionGet",
     "NotionAdd",
     "NotionEdit",
-    "NotionDelete"
+    "NotionDelete",
+    "Activities",
+    "ActivitiesIndex",
+    "ActivityGet",
+    "ActivityAdd",
+    "ActivityEdit",
+    "ActivityDelete"
   ]
 }

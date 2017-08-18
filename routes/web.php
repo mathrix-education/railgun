@@ -136,3 +136,20 @@ $app->group(['prefix' => 'notions'], function () use ($app) {
         $app->delete('{id:[0-9]+}', 'NotionController@delete');
     });
 });
+
+
+/*
+|--------------------------------------------------------------------------
+| Activities
+|--------------------------------------------------------------------------
+*/
+$app->group(['prefix' => 'activities'], function () use ($app) {
+    $app->get('', 'ActivityController@index');
+    $app->get('{id:[0-9]+}', 'ActivityController@get');
+
+    $app->group(['middleware' => 'auth:api'], function () use ($app) {
+        $app->post('', 'ActivityController@add');
+        $app->patch('{id:[0-9]+}', 'ActivityController@edit');
+        $app->delete('{id:[0-9]+}', 'ActivityController@delete');
+    });
+});
