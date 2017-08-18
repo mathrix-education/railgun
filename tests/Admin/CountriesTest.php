@@ -1,10 +1,9 @@
 <?php
 namespace Tests\Admin;
 
-use Mathrix\Lumen\Tests\BaseTestCase;
-use Tests\Public_\CountriesTrait;
+use Tests\Moderator\Traits\CountriesAsc;
 
-class CountriesTest extends BaseTestCase
+class CountriesTest extends AdminTestCase
 {
-    use CountriesTrait;
+    use CountriesAsc;
 }
