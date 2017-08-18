@@ -84,7 +84,7 @@ class UserController extends BaseController
      * @apiUse Bearer
      * @apiParam {int} [page=1] The page number
      * @apiParam {int} [perPage=10] The user count per page
-     * @apiUse User
+     * @apiUse UserArray
      * @apiError (Error 400) invalid_request page and perPage have to be strictly positive
      * @apiError (Error 401) unauthorized The user does not have enough privileges
      *
@@ -116,7 +116,7 @@ class UserController extends BaseController
      * @apiVersion 1.0.0
      * @api {get} /users/search/{field}/{value} Search
      * @apiGroup Users
-     * @apiName UserSearch
+     * @apiName UsersSearch
      * @apiDescription Search user matching criteria
      * @apiPermission admin
      * @apiUse Bearer
