@@ -47,7 +47,8 @@ $app->group(['prefix' => 'users'], function () use ($app) {
 |--------------------------------------------------------------------------
 */
 $app->group(['prefix' => 'content'], function () use ($app) {
-    $app->get('data/{classId:[0-9]+}', 'ContentController@data');
+    $app->get('countries', 'ContentController@countries');
+    $app->get('program/{classId:[0-9]+}', 'ContentController@program');
     $app->get('modules/{activityId:[0-9]+}', 'ContentController@modules');
 });
 

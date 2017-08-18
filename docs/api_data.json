@@ -1406,14 +1406,283 @@
   {
     "version": "1.0.0",
     "type": "get",
-    "url": "/content/data/{classId}",
-    "title": "Data",
+    "url": "/content/countries",
+    "title": "Countries",
     "group": "Content",
-    "name": "ContentData",
+    "name": "ContentCountries",
     "description": "<p>Retrieve content data by class id</p>",
     "permission": [
       {
-        "name": "registered"
+        "name": "public"
+      }
+    ],
+    "filename": "app/Http/Controllers/ContentController.php",
+    "groupTitle": "Content",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The country id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The country name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name_short",
+            "description": "<p>The country short name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The country slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug_short",
+            "description": "<p>The country short slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Class[]",
+            "optional": false,
+            "field": "classes",
+            "description": "<p>Array of classes</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "classes.id",
+            "description": "<p>The class id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "classes.name",
+            "description": "<p>The class name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "classes.name_short",
+            "description": "<p>The class short name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "classes.slug",
+            "description": "<p>The class slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "classes.slug_short",
+            "description": "<p>The class short slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "classes.country_id",
+            "description": "<p>The class country id</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/content/modules/{activityId}",
+    "title": "Modules",
+    "group": "Content",
+    "name": "ContentModules",
+    "description": "<p>Retrieve modules data by activity id</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The activity id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The activity id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The activity name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The activity slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Module[]",
+            "optional": false,
+            "field": "modules",
+            "description": "<p>The modules</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "modules.id",
+            "description": "<p>The module name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "modules.name",
+            "description": "<p>The module name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "modules.slug",
+            "description": "<p>The module slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "allowedValues": [
+              "course",
+              "fill",
+              "match",
+              "mcq",
+              "mcq-table",
+              "test",
+              "video"
+            ],
+            "optional": false,
+            "field": "modules.type",
+            "description": "<p>The module type</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "modules.content",
+            "description": "<p>[course]    <code>string</code> The course content<br> [fill]      <code>null</code><br> [match]     <code>null</code><br> [mcq]       <code>null</code><br> [mcq-table] <code>null</code><br> [test]      <code>null</code><br> [video]     <code>string</code> The youtube video id (e.g. A7xHki1biKE)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "modules.questions",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code> The static propositions<br> [mcq]       <code>string[]</code> The mcq questions<br> [mcq-table] <code>string[]</code> The mcq questions<br> [test]      <code>string[]</code> The test questions<br> [video]     <code>null</code><br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "modules.choices",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[]</code>   The gap choices<br> [match]     <code>string[]</code>   The draggable propositions<br> [mcq]       <code>string[][]</code> The mcq choices (first dimension for the question number, second dimension for the question choices)<br> [mcq-table] <code>string[]</code>   The common choices for all questions<br> [test]      <code>null</code><br> [video]     <code>null</code><br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "modules.solutions",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code>   The solutions for each gap (only one per gap)<br> [mcq]       <code>string[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [mcq-table] <code>string[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [test]      <code>string[]</code>   The solutions for each question<br> [video]     <code>null</code><br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "modules.corrections",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[][]</code> The solutions for each question (second dimension array represents a step)<br> [mcq]       <code>string[][]</code> The solutions for each question (second dimension array represents a step)<br> [mcq-table] <code>string[][]</code> The solutions for each question (second dimension array represents a step)<br> [test]      <code>string[][]</code> The solutions for each question (second dimension array represents a step)<br> [video]     <code>null</code><br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "modules.options",
+            "description": "<p>The modules options</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "modules.options.duration",
+            "description": "<p>[test] The test duration (in seconds)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "modules.options.starts",
+            "description": "<p>[video] The video starting time (in seconds)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "modules.options.ends",
+            "description": "<p>[video] The video ends time (in seconds)</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/ContentController.php",
+    "groupTitle": "Content"
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/content/data/{classId}",
+    "title": "Program",
+    "group": "Content",
+    "name": "ContentProgram",
+    "description": "<p>Retrieve content data by class id</p>",
+    "permission": [
+      {
+        "name": "public"
       }
     ],
     "parameter": {
@@ -1604,169 +1873,6 @@
             "optional": false,
             "field": "model_not_found",
             "description": "<p>Class with given id does not exist</p>"
-          }
-        ]
-      }
-    },
-    "filename": "app/Http/Controllers/ContentController.php",
-    "groupTitle": "Content"
-  },
-  {
-    "version": "1.0.0",
-    "type": "get",
-    "url": "/content/modules/{activityId}",
-    "title": "Modules",
-    "group": "Content",
-    "name": "ContentModules",
-    "description": "<p>Retrieve modules data by activity id</p>",
-    "permission": [
-      {
-        "name": "registered"
-      }
-    ],
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": false,
-            "field": "id",
-            "description": "<p>The activity id</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "id",
-            "description": "<p>The activity id</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "name",
-            "description": "<p>The activity name</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "slug",
-            "description": "<p>The activity slug</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Module[]",
-            "optional": false,
-            "field": "modules",
-            "description": "<p>The modules</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "modules.id",
-            "description": "<p>The module name</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "modules.name",
-            "description": "<p>The module name</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "modules.slug",
-            "description": "<p>The module slug</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "allowedValues": [
-              "course",
-              "fill",
-              "match",
-              "mcq",
-              "mcq-table",
-              "test",
-              "video"
-            ],
-            "optional": false,
-            "field": "modules.type",
-            "description": "<p>The module type</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "mixed",
-            "optional": false,
-            "field": "modules.content",
-            "description": "<p>[course]    <code>string</code> The course content<br> [fill]      <code>null</code><br> [match]     <code>null</code><br> [mcq]       <code>null</code><br> [mcq-table] <code>null</code><br> [test]      <code>null</code><br> [video]     <code>string</code> The youtube video id (e.g. A7xHki1biKE)</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "mixed",
-            "optional": false,
-            "field": "modules.questions",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code> The static propositions<br> [mcq]       <code>string[]</code> The mcq questions<br> [mcq-table] <code>string[]</code> The mcq questions<br> [test]      <code>string[]</code> The test questions<br> [video]     <code>null</code><br></p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "mixed",
-            "optional": false,
-            "field": "modules.choices",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[]</code>   The gap choices<br> [match]     <code>string[]</code>   The draggable propositions<br> [mcq]       <code>string[][]</code> The mcq choices (first dimension for the question number, second dimension for the question choices)<br> [mcq-table] <code>string[]</code>   The common choices for all questions<br> [test]      <code>null</code><br> [video]     <code>null</code><br></p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "mixed",
-            "optional": false,
-            "field": "modules.solutions",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code>   The solutions for each gap (only one per gap)<br> [mcq]       <code>string[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [mcq-table] <code>string[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [test]      <code>string[]</code>   The solutions for each question<br> [video]     <code>null</code><br></p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "mixed",
-            "optional": false,
-            "field": "modules.corrections",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[][]</code> The solutions for each question (second dimension array represents a step)<br> [mcq]       <code>string[][]</code> The solutions for each question (second dimension array represents a step)<br> [mcq-table] <code>string[][]</code> The solutions for each question (second dimension array represents a step)<br> [test]      <code>string[][]</code> The solutions for each question (second dimension array represents a step)<br> [video]     <code>null</code><br></p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "mixed",
-            "optional": false,
-            "field": "modules.options",
-            "description": "<p>The modules options</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "modules.options.duration",
-            "description": "<p>[test] The test duration (in seconds)</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "modules.options.starts",
-            "description": "<p>[video] The video starting time (in seconds)</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "modules.options.ends",
-            "description": "<p>[video] The video ends time (in seconds)</p>"
           }
         ]
       }
