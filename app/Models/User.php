@@ -26,6 +26,7 @@ use Mathrix\Lumen\Models\BaseModel;
  * @property string $password
  * @property string $type
  * @property string|null $facebook_token
+ * @property string $token
  * @property int $points
  * @property array $settings
  * @property int|null $class_id
