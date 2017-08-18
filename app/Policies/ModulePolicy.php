@@ -1,0 +1,25 @@
+<?php
+namespace App\Policies;
+
+/**
+ * Class ModulePolicy
+ * @author Mathrix Team
+ * @package App\Policies
+ */
+class ModulePolicy extends BasePolicy
+{
+    /**
+     * @return bool
+     */
+    public function edit()
+    {
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function delete() {
+        return false;
+    }
+}

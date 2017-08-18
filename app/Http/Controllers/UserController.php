@@ -8,6 +8,7 @@ use Mathrix\Lumen\Http\Controllers\BaseController;
 
 /**
  * Class UserController
+ *
  * @author Mathrix Team
  * @package App\Http\Controllers
  */
@@ -39,11 +40,13 @@ class UserController extends BaseController
         /** @var User $user */
         $user = $request->user();
 
-        if ($request->input('status') != 'register' && !$user->tokenCan('admin')) {
+        if (
+            !empty($request->input('type')) &&
+            $request->input('type') != 'register' &&
+            (!$user || !$user->tokenCan('admin'))
+        ) {
             return $this->http401Unauthorized();
-        }
-
-        if (!$user->tokenCan('admin')) {
+        } else if (!$user || !$user->tokenCan('admin')) {
             $request->merge(['status' => 'registered']);
         }
 
@@ -58,7 +61,7 @@ class UserController extends BaseController
         ]);
 
         $user = (new User())
-            ->unguardAttributes(['status'])
+            ->unguardAttributes(['type'])
             ->fill($request->all());
 
         if (!$user->save()) {
@@ -67,7 +70,7 @@ class UserController extends BaseController
 
         // TODO Send email
 
-        return $this->http200Success('User successfully saved');
+        return $this->http200Success($user);
     }
 
     /**
@@ -215,9 +218,8 @@ class UserController extends BaseController
      * @apiDescription Delete a user
      * @apiPermission admin
      * @apiUse Bearer
-     * @apiParam {int} [id] The user id
-     * @apiError (Error 401) unauthorized The user does not have enough privileges
-     * @apiError (Error 404) model_not_found The user with given `id` was not found
+     * @apiParam {int} id The user id
+     * @apiError (Error 401) unauthorized User does not have enough privileges
      *
      * @param Request $request
      * @param int $id The user

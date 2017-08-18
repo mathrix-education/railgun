@@ -2,35 +2,43 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Mathrix\Lumen\Models\BaseModel;
 
 /**
  * App\Models\Chapter
+ *
  * @property int $id
- * @property string|null $name
- * @property string|null $slug
- * @property int|null $class_id
- * @property int|null $discipline_id
- * @property-read \App\Models\Class_ $class_
- * @property-read \App\Models\Discipline $discipline
+ * @property string $name
+ * @property string $slug
+ * @property int $class_id
+ * @property int $discipline_id
+ * @property-read Class_ $class_
+ * @property-read Discipline $discipline
+ * @property-read Collection|Notion[] $notions
  * @method static Builder|Chapter whereClassId($value)
  * @method static Builder|Chapter whereDisciplineId($value)
  * @method static Builder|Chapter whereId($value)
  * @method static Builder|Chapter whereName($value)
  * @method static Builder|Chapter whereSlug($value)
- * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Notion[] $notions
  */
 class Chapter extends BaseModel
 {
-    /**
-     * Indicates if the model should be timestamped.
-     * @var bool
-     */
-    public $timestamps = false;
+    /** @var array Validation rules */
+    protected $rules = [
+        'name' => 'required|max:255',
+        'slug' => 'required|max:255',
+        'class_id' => 'required|exists:classes,id',
+        'discipline_id' => 'required|exists:disciplines,id',
+    ];
 
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
     /**
      * BelongsTo Class_
      * @return BelongsTo

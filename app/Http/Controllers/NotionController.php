@@ -1,26 +1,151 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\Chapter;
+use App\Models\Notion;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Mathrix\Lumen\Http\Controllers\BaseController;
 
 /**
- * Class NotionController
+ * Notion NotionController
+ *
  * @author Mathrix Team
  * @package App\Http\Controllers
  */
 class NotionController extends BaseController
 {
     /**
-     * Retrieve notions based on chapter
+     * @apiVersion 1.0.0
+     * @api {get} /notions Index
+     * @apiGroup Notions
+     * @apiName NotionsIndex
+     * @apiDescription Retrieve notions
+     * @apiPermission public
+     * @apiUse NotionArray
+     * @return JsonResponse
+     */
+    public function index()
+    {
+        return $this->http200Success(Notion::all());
+    }
+
+
+    /**
+     * @apiVersion 1.0.0
+     * @api {get} /notions/{id} Get
+     * @apiGroup Notions
+     * @apiName NotionGet
+     * @apiDescription Get a notion by id
+     * @apiPermission public
+     * @apiParam {int} id The notion id
+     * @apiUse Notion
+     * @apiUse 404ModelNotFound
      *
-     * @param Chapter $chapter
+     * @param int $id
      *
      * @return JsonResponse
      */
-    public function index(Chapter $chapter): JsonResponse
+    public function get(int $id)
     {
-        return response()->json($chapter->notions);
+        $notion = Notion::where('id', $id)->firstOrFail();
+
+        return $this->http200Success($notion);
+    }
+
+
+    /**
+     * @apiVersion 1.0.0
+     * @api {post} /notions Add
+     * @apiGroup Notions
+     * @apiName NotionAdd
+     * @apiDescription Add a notion
+     * @apiPermission admin
+     * @apiUse Bearer
+     * @apiUse NotionData
+     * @apiUse Notion
+     * @apiUse 401Unauthorized
+     * @apiUse 422Validation
+     * @apiUse 422Save
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function add(Request $request)
+    {
+        if ($request->user()->cant('add')) {
+            return $this->http401Unauthorized();
+        }
+
+        $notion = new Notion();
+        $notion->fill($request->all());
+
+        if (!$notion->save()) {
+            return $notion->handleResponse($this->http422Save());
+        }
+
+        return $this->http200Success($notion);
+    }
+
+
+    /**
+     * @apiVersion 1.0.0
+     * @api {patch} /notions/{id} Edit
+     * @apiGroup Notions
+     * @apiName NotionEdit
+     * @apiDescription Edit a notion
+     * @apiPermission admin
+     * @apiUse Bearer
+     * @apiParam {int} id The notion id
+     * @apiUse NotionData
+     * @apiUse Notion
+     * @apiUse 401Unauthorized
+     * @apiUse 404ModelNotFound
+     * @apiUse 422Save
+     * @apiUse 422Validation
+     *
+     * @param Request $request
+     * @param int $id
+     *
+     * @return JsonResponse
+     */
+    public function edit(Request $request, int $id)
+    {
+        /** @var Notion $notion */
+        $notion = Notion::where('id', $id)->firstOrFail();
+
+        if ($request->user()->cant('edit', Notion::class)) {
+            return $this->http401Unauthorized();
+        }
+
+        $notion->fill($request->all());
+
+        if (!$notion->save()) {
+            return $notion->handleResponse($this->http422Save());
+        }
+
+        return $this->http200Success($notion);
+    }
+
+
+    /**
+     * @apiVersion 1.0.0
+     * @api {delete} /notions/{id} Delete (NYI)
+     * @apiGroup Notions
+     * @apiName NotionDelete
+     * @apiDescription Delete a notion
+     * @apiUse Bearer
+     * @apiPermission admin
+     * @apiParam {int} id The notion id
+     * @apiUse 401Unauthorized
+     * @apiUse 404ModelNotFound
+     *
+     * @param int $id
+     *
+     * @return JsonResponse
+     */
+    public function delete(int $id)
+    {
+        return $this->http501NotImplemented();
     }
 }

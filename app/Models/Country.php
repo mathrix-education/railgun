@@ -8,29 +8,37 @@ use Mathrix\Lumen\Models\BaseModel;
 
 /**
  * App\Models\Country
+ *
  * @property int $id
- * @property string|null $name
- * @property string|null $name_short
- * @property string|null $slug
- * @property string|null $slug_short
+ * @property string $name
+ * @property string $name_short
+ * @property string $slug
+ * @property string $slug_short
  * @property-read Collection|Class_[] $classes
  * @method static Builder|Country whereId($value)
  * @method static Builder|Country whereName($value)
  * @method static Builder|Country whereNameShort($value)
  * @method static Builder|Country whereSlug($value)
  * @method static Builder|Country whereSlugShort($value)
- * @mixin \Eloquent
  */
 class Country extends BaseModel
 {
-    /**
-     * Indicates if the model should be timestamped.
-     * @var bool
-     */
-    public $timestamps = false;
+    /** @var array Validation rules */
+    protected $rules = [
+        'name' => 'required|max:255',
+        'name_short' => 'required|max:255',
+        'slug' => 'required|max:255',
+        'slug_short' => 'required|max:255',
+    ];
 
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
     /**
      * HasMany Class_
+     *
      * @return HasMany
      */
     public function classes(): HasMany

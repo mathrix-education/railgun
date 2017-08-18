@@ -10,18 +10,23 @@ use Mathrix\Lumen\Models\BaseModel;
 
 /**
  * App\Models\Discipline
+ *
  * @property int $id
- * @property string|null $name
- * @property string|null $slug
+ * @property string $name
+ * @property string $slug
  * @property-read Collection|Chapter[] $chapters
  * @property-read Collection|Class_[] $classes
  * @method static Builder|Discipline whereId($value)
  * @method static Builder|Discipline whereName($value)
  * @method static Builder|Discipline whereSlug($value)
- * @mixin \Eloquent
  */
 class Discipline extends BaseModel
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
     /**
      * HasMany Chapter
      * @return HasMany
