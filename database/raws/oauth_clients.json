@@ -15,7 +15,7 @@
     "user_id": null,
     "name": "Dev Client",
     "secret": "qdpuwTxqUKBb21J1i350ut5kRUxQE47A2MA6Y52N",
-    "redirect": "https://api.mathrix.fr",
+    "redirect": "https://dev.api.mathrix.fr",
     "personal_access_client": 0,
     "password_client": 1,
     "created_at": "2017-07-07 10:22:59",
