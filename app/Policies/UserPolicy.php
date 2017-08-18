@@ -4,6 +4,11 @@ namespace App\Policies;
 
 use App\Models\User;
 
+/**
+ * Class UserPolicy
+ * @author Mathrix Team
+ * @package App\Policies
+ */
 class UserPolicy
 {
     /**

@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Class_;
+use App\Models\Country;
+use App\Models\Observers\ClassObserver;
+use App\Models\Observers\CountryObserver;
 use App\Models\Observers\UserObserver;
 use App\Models\User;
 use Illuminate\Support\ServiceProvider;
@@ -10,10 +14,13 @@ class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
+     *
      * @return void
      */
     public function register()
     {
         User::observe(UserObserver::class);
+        Class_::observe(ClassObserver::class);
+        Country::observe(CountryObserver::class);
     }
 }

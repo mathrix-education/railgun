@@ -17,11 +17,7 @@ class CreateActivitiesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('slug');
-            $table->enum('type', ['course', 'exercise', 'test', 'video']);
             $table->string('description');
-            $table->text('content');
-            $table->text('correction');
-            $table->text('options');
         });
     }
 

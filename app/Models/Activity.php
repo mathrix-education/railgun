@@ -8,34 +8,20 @@ use Mathrix\Lumen\Models\BaseModel;
 
 /**
  * App\Models\Activity
+ *
  * @property int $id
- * @property string|null $name
- * @property string|null $slug
- * @property string|null $type
- * @property string|null $description
- * @property string|null $content
- * @property string|null $correction
- * @property string|null $options
- * @property-read Collection|Notion[] $notions
+ * @property string $name
+ * @property string $slug
+ * @property string $description
  * @property-read Collection|Module[] $modules
+ * @property-read Collection|Notion[] $notions
+ * @method static Builder|Activity whereDescription($value)
  * @method static Builder|Activity whereId($value)
  * @method static Builder|Activity whereName($value)
  * @method static Builder|Activity whereSlug($value)
- * @method static Builder|Activity whereType($value)
- * @method static Builder|Activity whereDescription($value)
- * @method static Builder|Activity whereContent($value)
- * @method static Builder|Activity whereCorrection($value)
- * @method static Builder|Activity whereOptions($value)
- * @mixin \Eloquent
  */
 class Activity extends BaseModel
 {
-    /**
-     * Indicates if the model should be timestamped.
-     * @var bool
-     */
-    public $timestamps = false;
-
     /**
      * The attributes that should be cast to native types.
      * @var array
@@ -44,6 +30,12 @@ class Activity extends BaseModel
         'options' => 'array'
     ];
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
     /**
      * BelongsToMany Module
      * @return BelongsToMany

@@ -11,26 +11,19 @@
 |
 */
 
-use App\Models\Class_;
-
 $app->get('/', function () use ($app) {
-
-    $class = Class_::with([
-        'disciplines.chapters' => function($query) {
-            $query->where('class_id', 3);
-        },
-        'disciplines.chapters.notions.activities'
-    ])->find(3)->toArray();
-
-    echo json_encode($class);
-    die();
-
-    /*return response()->json([
+    return response()->json([
         'message' => 'Welcome to Mathrix API version 1.0'
-    ]);*/
+    ]);
 });
 
-/*$app->group(['prefix' => 'users'], function () use ($app) {
+
+/*
+|--------------------------------------------------------------------------
+| Users
+|--------------------------------------------------------------------------
+*/
+$app->group(['prefix' => 'users'], function () use ($app) {
     $app->post('register', 'UserController@register');
     $app->post('login', 'AuthController@login');
     $app->post('refresh', 'AuthController@refresh');
@@ -45,46 +38,66 @@ $app->get('/', function () use ($app) {
         $app->patch('{id:[0-9]+}', 'UserController@edit');
         $app->delete('{id:[0-9]+}', 'UserController@delete');
     });
-});*/
+});
 
-/*$app->group(['prefix' => 'countries'], function () use ($app) {
+
+/*
+|--------------------------------------------------------------------------
+| Content
+|--------------------------------------------------------------------------
+*/
+$app->group(['prefix' => 'content'], function () use ($app) {
+    $app->get('data/{classId:[0-9]+}', 'ContentController@data');
+    $app->get('modules/{activityId:[0-9]+}', 'ContentController@modules');
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| Countries
+|--------------------------------------------------------------------------
+*/
+$app->group(['prefix' => 'countries'], function () use ($app) {
     $app->get('', 'CountryController@index');
+    $app->get('{id:[0-9]+}', 'CountryController@get');
 
     $app->group(['middleware' => 'auth:api'], function () use ($app) {
         $app->post('', 'CountryController@add');
-        $app->patch('', 'CountryController@edit');
-        $app->delete('', 'CountryController@delete');
+        $app->patch('{id:[0-9]+}', 'CountryController@edit');
+        $app->delete('{id:[0-9]+}', 'CountryController@delete');
     });
 });
 
+
+/*
+|--------------------------------------------------------------------------
+| Classes
+|--------------------------------------------------------------------------
+*/
 $app->group(['prefix' => 'classes'], function () use ($app) {
     $app->get('', 'ClassController@index');
-    $app->get('{classId}', 'CountryController@get');
-    $app->get('{country:[a-z]+}', 'ClassController@byCountry');
+    $app->get('{id:[0-9]+}', 'ClassController@get');
 
     $app->group(['middleware' => 'auth:api'], function () use ($app) {
         $app->post('', 'ClassController@add');
-        $app->patch('', 'ClassController@edit');
-        $app->delete('', 'ClassController@delete');
+        $app->patch('{id:[0-9]+}', 'ClassController@edit');
+        $app->delete('{id:[0-9]+}', 'ClassController@delete');
     });
-});*/
-
-/*$app->group(['prefix' => '{country:[a-z]+}'], function () use ($app) {
+});
 
 
-    $app->group(['prefix' => '{class:[a-z0-9\-]+}'], function() use ($app) {
-        $app->get('', 'DisciplineController@index');
+/*
+|--------------------------------------------------------------------------
+| Disciplines
+|--------------------------------------------------------------------------
+*/
+$app->group(['prefix' => 'disciplines'], function () use ($app) {
+    $app->get('', 'DisciplineController@index');
+    $app->get('{id:[0-9]+}', 'DisciplineController@get');
 
-        $app->group(['prefix' => '{discipline:[a-z\-]+}'], function () use ($app) {
-            $app->get('', 'ChapterController@index');
-
-            $app->group(['prefix' => '{chapterSlug:[a-z\-]+}-{chapter:[0-9]+}'], function() use ($app) {
-                $app->get('', 'NotionController@index');
-
-                $app->group(['prefix' => '{notionSlug:[a-z\-]+}-{notion:[0-9]+}'], function() use ($app) {
-                    $app->get('', 'ActivityController@index');
-                });
-            });
-        });
+    $app->group(['middleware' => 'auth:api'], function () use ($app) {
+        $app->post('', 'DisciplineController@add');
+        $app->patch('{id:[0-9]+}', 'DisciplineController@edit');
+        $app->delete('{id:[0-9]+}', 'DisciplineController@delete');
     });
-});*/
+});

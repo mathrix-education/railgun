@@ -17,11 +17,14 @@ class CreateModulesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('slug');
-            $table->enum('type', ['mcq', 'mcq-table', 'match', 'fill']);
+            $table->string('description');
+            $table->enum('type', ['course', 'test', 'video', 'mcq', 'mcq-table', 'match', 'fill']);
+            $table->text('content');
             $table->text('questions');
             $table->text('choices');
             $table->text('solutions');
             $table->text('corrections');
+            $table->text('options');
         });
     }
 
