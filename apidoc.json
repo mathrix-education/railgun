@@ -41,6 +41,12 @@
     "ChapterGet",
     "ChapterAdd",
     "ChapterEdit",
-    "ChapterDelete"
+    "ChapterDelete",
+    "Notions",
+    "NotionsIndex",
+    "NotionGet",
+    "NotionAdd",
+    "NotionEdit",
+    "NotionDelete"
   ]
 }
