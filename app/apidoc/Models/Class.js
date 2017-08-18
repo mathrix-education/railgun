@@ -5,7 +5,10 @@
  * @apiParam (Data) {string} [slug=slug(name)] The class slug
  * @apiParam (Data) {string} [slug_short=slug(name_short)] The class short slug
  * @apiParam (Data) {int} country_id The class country id
- * @apiParam (Data) {int[]} disciplines_ids The class discipline ids
+ * @apiParam (Data) {array} link The models to link with the class
+ * @apiParam (Data) {int[]} link.disciplines The discipline ids to link
+ * @apiParam (Data) {array} unlink The models to unlink with the class
+ * @apiParam (Data) {int[]} unlink.disciplines The discipline ids to unlink
  */
 /**
  * @apiDefine ClassArray

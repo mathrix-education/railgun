@@ -153,3 +153,20 @@ $app->group(['prefix' => 'activities'], function () use ($app) {
         $app->delete('{id:[0-9]+}', 'ActivityController@delete');
     });
 });
+
+
+/*
+|--------------------------------------------------------------------------
+| Modules
+|--------------------------------------------------------------------------
+*/
+$app->group(['prefix' => 'modules'], function () use ($app) {
+    $app->get('', 'ModuleController@index');
+    $app->get('{id:[0-9]+}', 'ModuleController@get');
+
+    $app->group(['middleware' => 'auth:api'], function () use ($app) {
+        $app->post('', 'ModuleController@add');
+        $app->patch('{id:[0-9]+}', 'ModuleController@edit');
+        $app->delete('{id:[0-9]+}', 'ModuleController@delete');
+    });
+});

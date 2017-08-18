@@ -32,6 +32,27 @@ class ActivityObserver extends BaseObserver
             $activity->slug = str_slug($activity->name);
         }
 
+
+        // Attach notions
+        if (!empty($activity->link['notions'])) {
+            foreach ($activity->link['notions'] as $notionId) {
+                if(Activity::find($notionId)->exists()) {
+                    $activity->notions()->attach($notionId);
+                }
+            }
+            unset($activity->link['notions']);
+        }
+
+        // Detach notions
+        if (!empty($activity->unlink['notions'])) {
+            foreach ($activity->unlink['notions'] as $notionId) {
+                if(Activity::find($notionId)->exists()) {
+                    $activity->notions()->attach($notionId);
+                }
+            }
+            unset($activity->unlink['notions']);
+        }
+
         return parent::saving($activity);
     }
 }
