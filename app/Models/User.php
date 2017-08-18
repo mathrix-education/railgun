@@ -85,9 +85,9 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         'lastname' => 'nullable|max:40',
         'password' => 'required|min:3',
         'status' => 'required|in:registered,premium,moderator,admin',
+        'token' => 'required|size:36',
         'facebook_token' => 'nullable',
-        'points' => 'required|integer',
-        'class_id' => 'required|exists:classes,id'
+        'points' => 'required|integer'
     ];
 
     /**
