@@ -64,7 +64,7 @@ return [
             'driver' => 'mysql',
             'host' => 'mysql',
             'database' => 'test_api_mathrix_fr',
-            'username' => 'test_api_mathrix_fr',
+            'username' => 'root',
             'password' => 'd3SnA4cBxckvHbyNXhAG',
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
