@@ -3,6 +3,12 @@ namespace Tests\Moderator\Traits;
 
 use App\Models\Country;
 
+/**
+ * Trait CountriesDesc
+ * Test countries as moderator or lower
+ *
+ * @package Tests\Moderator\Traits
+ */
 trait CountriesDesc
 {
     /*

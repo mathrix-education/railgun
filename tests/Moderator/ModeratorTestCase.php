@@ -4,7 +4,13 @@ namespace Tests\Moderator;
 use App\Models\User;
 use Tests\PermissionTestCase;
 
-class ModeratorTestCase extends PermissionTestCase
+/**
+ * Class ModeratorTestCase
+ * Base class for moderator tests
+ *
+ * @package Tests\Moderator
+ */
+abstract class ModeratorTestCase extends PermissionTestCase
 {
     public function initUser(): User
     {

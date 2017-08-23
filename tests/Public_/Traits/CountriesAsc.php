@@ -3,6 +3,12 @@ namespace Tests\Public_\Traits;
 
 use App\Models\Country;
 
+/**
+ * Trait CountriesAsc
+ * Test countries as public
+ *
+ * @package Tests\Public_\Traits
+ */
 trait CountriesAsc
 {
     public $jsonStructure = [
@@ -17,7 +23,7 @@ trait CountriesAsc
     /**
      * Test GET /countries
      */
-    public function testIndexSuccess()
+    public function testIndex()
     {
         $count = Country::all()->count();
         $this->call('get', '/countries');
@@ -31,7 +37,7 @@ trait CountriesAsc
     /**
      * Test GET /countries/{id}
      */
-    public function testGetSuccess()
+    public function testGet()
     {
         $id = Country::inRandomOrder()->pluck('id')->first();
         $this->call('get', '/countries/' . $id);

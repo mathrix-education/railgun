@@ -33,7 +33,7 @@ class AuthTest extends BaseTestCase
     /**
      * Test POST /users/login with 200 success
      */
-    public function testLoginSuccess()
+    public function testLogin()
     {
         $this->call('post', '/users/login', $this->loginData());
 
@@ -116,7 +116,7 @@ class AuthTest extends BaseTestCase
     /**
      * Test POST /users/refresh with 200 success
      */
-    public function testRefreshSuccess()
+    public function testRefresh()
     {
         $this->call('post', '/users/refresh', $this->refreshData());
 
@@ -192,7 +192,7 @@ class AuthTest extends BaseTestCase
     /**
      * Test POST /users/forgot with 200 success
      */
-    public function testForgotSuccess()
+    public function testForgot()
     {
         $this->call('post', '/users/forgot', ['email' => $this->user->email]);
 
@@ -219,7 +219,7 @@ class AuthTest extends BaseTestCase
     /**
      * Test POST /users/reset with 200 success
      */
-    public function testResetSuccess()
+    public function testReset()
     {
         /**
          * @var User $user

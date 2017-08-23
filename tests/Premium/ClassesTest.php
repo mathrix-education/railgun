@@ -3,6 +3,12 @@ namespace Tests\Premium;
 
 use Tests\Premium\Traits\ClassesAsc;
 
+/**
+ * Class ClassesTest
+ * Test classes as premium
+ *
+ * @package Tests\Premium
+ */
 class ClassesTest extends PremiumTestCase
 {
     use ClassesAsc;

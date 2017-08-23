@@ -3,6 +3,12 @@ namespace Tests\Public_;
 
 use Tests\Public_\Traits\UsersAsc;
 
+/**
+ * Class UsersTest
+ * Test users as public
+ *
+ * @package Tests\Public_
+ */
 class UsersTest extends PublicTestCase
 {
     use UsersAsc;

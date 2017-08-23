@@ -3,6 +3,12 @@ namespace Tests\Public_\Traits;
 
 use App\Models\Class_;
 
+/**
+ * Trait UsersAsc
+ * Test users as public
+ *
+ * @package Tests\Public_\Traits
+ */
 trait UsersAsc
 {
     public $jsonStructure = [
@@ -21,7 +27,7 @@ trait UsersAsc
     /**
      * Test POST /users/register
      */
-    public function testRegisterSuccess()
+    public function testRegister()
     {
         $this->call('post', '/users/register', [
             'email' => $this->faker->email,
@@ -38,7 +44,7 @@ trait UsersAsc
     /**
      * Test POST /users/register without type
      */
-    public function testRegisterSuccessWithoutType()
+    public function testRegisterWithoutType()
     {
         $this->call('post', '/users/register', [
             'email' => $this->faker->email,
