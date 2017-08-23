@@ -9,7 +9,7 @@ before_script:
   # Setup GitLab SSH
   - chmod 600 keys/*
   - eval $(ssh-agent)
-  - ssh-add -k keys/gitlab_mathrix_id_rsa
+  - ssh-add -k storage/gitlab_mathrix_id_rsa
   - mkdir ~/.ssh
   - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
   # Setup project files
