@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Activity;
 use App\Models\Chapter;
 use App\Models\Class_;
+use App\Models\Country;
 use App\Models\Discipline;
 use App\Models\Module;
 use App\Models\Notion;
@@ -12,6 +13,7 @@ use App\Models\User;
 use App\Policies\ActivityPolicy;
 use App\Policies\ChapterPolicy;
 use App\Policies\ClassPolicy;
+use App\Policies\CountryPolicy;
 use App\Policies\DisciplinePolicy;
 use App\Policies\ModulePolicy;
 use App\Policies\NotionPolicy;
@@ -48,6 +50,7 @@ class AuthServiceProvider extends ServiceProvider
 
         // Gates declarations
         Gate::policy(User::class, UserPolicy::class);
+        Gate::policy(Country::class, CountryPolicy::class);
         Gate::policy(Class_::class, ClassPolicy::class);
         Gate::policy(Discipline::class, DisciplinePolicy::class);
         Gate::policy(Chapter::class, ChapterPolicy::class);

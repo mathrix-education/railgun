@@ -24,6 +24,9 @@ use Mathrix\Lumen\Models\BaseModel;
  */
 class Country extends BaseModel
 {
+    /** @var array Fillable columns */
+    protected $fillable = ['name', 'name_short', 'slug', 'slug_short'];
+
     /** @var array Validation rules */
     protected $rules = [
         'name' => 'required|max:255',

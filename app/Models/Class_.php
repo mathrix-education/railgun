@@ -38,13 +38,16 @@ class Class_ extends BaseModel
     /** @var string Custom table definition */
     protected $table = 'classes';
 
+    /** @var array Fillable columns */
+    protected $fillable = ['name', 'name_short', 'slug', 'slug_short', 'order', 'parent_id', 'country_id'];
+
     /** @var array Validation rules */
     protected $rules = [
         'name' => 'required|max:255',
         'name_short' => 'required|max:255',
         'slug' => 'required|max:255',
         'slug_short' => 'required|max:255',
-        'country_id' => 'required|exists:countries,id'
+        'country_id' => 'required|exists:countries,id',
     ];
 
     /*

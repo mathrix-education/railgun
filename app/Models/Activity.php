@@ -23,6 +23,9 @@ use Mathrix\Lumen\Models\BaseModel;
  */
 class Activity extends BaseModel
 {
+    /** @var array Fillable columns */
+    protected $fillable = ['name', 'slug', 'description'];
+
     /**
      * The attributes that should be cast to native types.
      * @var array
