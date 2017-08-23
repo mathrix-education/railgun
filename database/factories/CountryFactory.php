@@ -9,8 +9,8 @@ use Faker\Generator;
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->define(Country::class, function (Generator $faker) {
-    $name = $faker->firstName;
-    $nameShort = substr($name, 0, -min([3, strlen($name) - 3]));
+    $nameShort = $faker->firstName;
+    $name = $nameShort . $faker->firstName;
 
     return [
         'name' => $name,

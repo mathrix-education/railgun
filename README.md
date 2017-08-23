@@ -33,6 +33,6 @@ Watch and build .html and .php file matching with .mjml on modification.
 2. Run `vendor/phpunit/phpunit/phpunit --configuration ./phpunit.xml`
 
 #### Locally with GitLab Runner 
-1. Install [GitLab Runner](https://docs.gitlab.com/runner/install/)
+1. Install [GitLab Runner](https://docs.gitlab.com/runner/install/) with Docker
 2. Run `gitlab-runner exec docker test:app`
 
