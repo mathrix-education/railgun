@@ -7,7 +7,7 @@ before_script:
   - docker-php-ext-install mcrypt && docker-php-ext-install pdo_mysql
   - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
   # Setup GitLab SSH
-  - chmod 600 keys/*
+  - chmod 600 storage/gitlab_mathrix_id_rsa
   - eval $(ssh-agent)
   - ssh-add -k storage/gitlab_mathrix_id_rsa
   - mkdir ~/.ssh
