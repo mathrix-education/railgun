@@ -20,6 +20,7 @@ class UsersTest extends AdminTestCase
         $this->assertCanGetStranger('admin');
     }
 
+
     /**
      * Test GET /users/{id} for registred stranger
      */

@@ -7,11 +7,21 @@ trait UsersAsc
 {
     use ParentUsersAsc;
 
+
     /*
     |--------------------------------------------------------------------------
     | GET /users/{id} for strangers
     |--------------------------------------------------------------------------
     */
+    /**
+     * Test GET /users/{id} for premium stranger
+     */
+    public function testGetStrangerPremium()
+    {
+        $this->assertCanGetStranger('premium');
+    }
+
+
     public function assertCanGetStranger(string $type)
     {
         $stranger = $this->getStranger(['type', $type]);
@@ -23,13 +33,6 @@ trait UsersAsc
         $this->seeJsonStructure($this->jsonStructure);
     }
 
-    /**
-     * Test GET /users/{id} for premium stranger
-     */
-    public function testGetStrangerPremium()
-    {
-        $this->assertCanGetStranger('premium');
-    }
 
     /**
      * Test GET /users/{id} for registred stranger

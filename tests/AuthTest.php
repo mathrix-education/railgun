@@ -8,6 +8,7 @@ use Mathrix\Lumen\Tests\BaseTestCase;
 /**
  * Class AuthTest
  * Test auth actions
+ *
  * @author Mathrix Team
  * @package Tests
  */
@@ -15,6 +16,7 @@ class AuthTest extends BaseTestCase
 {
     /** @var User $user */
     public $user;
+
 
     public function setUp()
     {
@@ -27,42 +29,7 @@ class AuthTest extends BaseTestCase
             ->first();
     }
 
-    /**
-     * Build login data from existing user
-     * @return array
-     */
-    public function loginData()
-    {
-        return [
-            'grant_type' => 'password',
-            'client_id' => env('TEST_OAUTH_CLIENT_ID'),
-            'client_secret' => env('TEST_OAUTH_CLIENT_SECRET'),
-            'username' => $this->user->email,
-            'password' => 'test'
-        ];
-    }
 
-    /**
-     * Build refresh data from login
-     */
-    public function refreshData()
-    {
-        $this->call('post', '/users/login', $this->loginData());
-
-        return [
-            'grant_type' => 'refresh',
-            'client_id' => env('TEST_OAUTH_CLIENT_ID'),
-            'client_secret' => env('TEST_OAUTH_CLIENT_SECRET'),
-            'refresh_token' => json_decode($this->response->getContent())->refresh_token
-        ];
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | POST /users/login
-    |--------------------------------------------------------------------------
-    */
     /**
      * Test POST /users/login with 200 success
      */
@@ -80,6 +47,31 @@ class AuthTest extends BaseTestCase
         $this->assertResponseStatus(200);
     }
 
+
+    /**
+     * Build login data from existing user
+     *
+     * @return array
+     */
+    public function loginData()
+    {
+        return [
+            'grant_type' => 'password',
+            'client_id' => env('TEST_OAUTH_CLIENT_ID'),
+            'client_secret' => env('TEST_OAUTH_CLIENT_SECRET'),
+            'username' => $this->user->email,
+            'password' => 'test'
+        ];
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | POST /users/login
+    |--------------------------------------------------------------------------
+    */
+
+
     /**
      * Test POST /users/login with 401 invalid_credentials
      */
@@ -92,6 +84,7 @@ class AuthTest extends BaseTestCase
         $this->assertJsonError('invalid_credentials', 401);
     }
 
+
     /**
      * Test POST /users/login with 404 model_not_found
      */
@@ -103,6 +96,7 @@ class AuthTest extends BaseTestCase
 
         $this->assertJsonError('model_not_found', 404);
     }
+
 
     /**
      * Test POST /users/login with 422 validation
@@ -119,11 +113,6 @@ class AuthTest extends BaseTestCase
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | POST /users/refresh
-    |--------------------------------------------------------------------------
-    */
     /**
      * Test POST /users/refresh with 200 success
      */
@@ -140,6 +129,30 @@ class AuthTest extends BaseTestCase
         $this->assertResponseStatus(200);
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | POST /users/refresh
+    |--------------------------------------------------------------------------
+    */
+
+
+    /**
+     * Build refresh data from login
+     */
+    public function refreshData()
+    {
+        $this->call('post', '/users/login', $this->loginData());
+
+        return [
+            'grant_type' => 'refresh',
+            'client_id' => env('TEST_OAUTH_CLIENT_ID'),
+            'client_secret' => env('TEST_OAUTH_CLIENT_SECRET'),
+            'refresh_token' => json_decode($this->response->getContent())->refresh_token
+        ];
+    }
+
+
     /**
      * Test POST /users/refresh with 400 invalid_request
      */
@@ -154,6 +167,7 @@ class AuthTest extends BaseTestCase
 
         $this->assertJsonError('invalid_request', 401);
     }
+
 
     /**
      * Test POST /users/login with 422 validation
@@ -184,6 +198,7 @@ class AuthTest extends BaseTestCase
 
         $this->assertResponseStatus(200);
     }
+
 
     /**
      * Test POST /users/forgot with 404 model_not_found
@@ -218,6 +233,7 @@ class AuthTest extends BaseTestCase
         $this->assertResponseStatus(200);
     }
 
+
     /**
      * Test POST /users/reset with 404 model_not_found
      */
@@ -229,6 +245,7 @@ class AuthTest extends BaseTestCase
 
         $this->assertJsonError('model_not_found', 404);
     }
+
 
     /**
      * Test POST /users/reset with 422 validation

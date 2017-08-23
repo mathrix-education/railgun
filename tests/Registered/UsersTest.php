@@ -8,6 +8,7 @@ class UsersTest extends RegisteredTestCase
 {
     use UsersAsc, UsersDesc;
 
+
     /**
      * Test GET /users/me with 401 unauthorized
      */
