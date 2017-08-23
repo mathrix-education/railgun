@@ -48,7 +48,7 @@ class UserController extends BaseController
         ) {
             return $this->http401Unauthorized();
         } else if (!$user || !$user->tokenCan('admin')) {
-            $request->merge(['status' => 'registered']);
+            $request->merge(['type' => 'registered']);
         }
 
         $request->merge([
