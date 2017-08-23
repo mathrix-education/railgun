@@ -36,6 +36,10 @@ use Mathrix\Lumen\Models\BaseModel;
  */
 class Module extends BaseModel
 {
+    /** @var array The fillable attributes*/
+    protected $fillable = ['name', 'slug', 'description', 'type', 'content', 'questions', 'choices', 'solutions',
+        'corrections', 'options'];
+
     /**
      * The attributes that should be cast to native types.
      *

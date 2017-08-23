@@ -23,7 +23,7 @@ use Mathrix\Lumen\Models\BaseModel;
  */
 class Activity extends BaseModel
 {
-    /** @var array Fillable columns */
+    /** @var array The fillable attributes*/
     protected $fillable = ['name', 'slug', 'description'];
 
     /**

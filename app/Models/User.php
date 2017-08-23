@@ -47,27 +47,15 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 {
     use Authenticatable, Authorizable, HasApiTokens;
 
-    /**
-     * The attributes that are guarded.
-     * @var array
-     */
-    protected $guarded = [
-        'status',
-        'rank_id'
-    ];
+    /** @var array The guarded attributes */
+    protected $guarded = ['type'];
 
-    /**
-     * The attributes excluded from the model's JSON form.
-     * @var array
-     */
-    protected $hidden = [
-        'password',
-        'token',
-        'facebook_token'
-    ];
+    /** @var array The hidden attributes from the model's JSON */
+    protected $hidden = ['password', 'token', 'facebook_token'];
 
     /**
      * The attributes that should be cast to native types.
+     *
      * @var array
      */
     protected $casts = [
@@ -76,6 +64,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     /**
      * The validation rules on create
+     *
      * @var array
      */
     protected $rules = [
@@ -89,6 +78,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         'facebook_token' => 'nullable',
         'points' => 'required|integer'
     ];
+
 
     /**
      * @param Validator $validator
@@ -112,6 +102,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     */
     /**
      * BelongsTo Class_
+     *
      * @return BelongsTo
      */
     public function class_(): BelongsTo
