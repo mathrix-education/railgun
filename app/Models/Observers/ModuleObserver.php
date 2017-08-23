@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models\Observers;
 
 use App\Models\Activity;
@@ -40,7 +41,7 @@ class ModuleObserver extends BaseObserver
         // Attach activities
         if (!empty($module->link['activities'])) {
             foreach ($module->link['activities'] as $activityId) {
-                if(Activity::find($activityId)->exists()) {
+                if (Activity::find($activityId)->exists()) {
                     $module->activities()->attach($activityId);
 
                 }
@@ -51,7 +52,7 @@ class ModuleObserver extends BaseObserver
         // Detach activities
         if (!empty($module->unlink['activities'])) {
             foreach ($module->unlink['activities'] as $activityId) {
-                if(Activity::find($activityId)->exists()) {
+                if (Activity::find($activityId)->exists()) {
                     $module->activities()->attach($activityId);
 
                 }

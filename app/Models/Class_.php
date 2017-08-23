@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -36,7 +37,7 @@ class Class_ extends BaseModel
 {
     /** @var string Custom table definition */
     protected $table = 'classes';
-    
+
     /** @var array Validation rules */
     protected $rules = [
         'name' => 'required|max:255',

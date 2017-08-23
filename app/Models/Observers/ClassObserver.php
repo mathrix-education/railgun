@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models\Observers;
 
 use App\Models\Class_;
@@ -53,7 +54,7 @@ class ClassObserver extends BaseObserver
         // Attach disciplines
         if (!empty($class->link['disciplines'])) {
             foreach ($class->link['disciplines'] as $disciplineId) {
-                if(Discipline::find($disciplineId)->exists()) {
+                if (Discipline::find($disciplineId)->exists()) {
                     $class->disciplines()->attach($disciplineId);
 
                 }
@@ -64,7 +65,7 @@ class ClassObserver extends BaseObserver
         // Detach disciplines
         if (!empty($class->unlink['disciplines'])) {
             foreach ($class->unlink['disciplines'] as $disciplineId) {
-                if(Discipline::find($disciplineId)->exists()) {
+                if (Discipline::find($disciplineId)->exists()) {
                     $class->disciplines()->attach($disciplineId);
 
                 }
