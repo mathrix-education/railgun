@@ -2,7 +2,6 @@
 namespace Tests\Public_\Traits;
 
 use App\Models\Class_;
-use Faker\Factory;
 
 trait UsersAsc
 {
@@ -17,6 +16,7 @@ trait UsersAsc
         ],
         'class_id'
     ];
+
 
     /**
      * Test POST /users/register
@@ -33,6 +33,7 @@ trait UsersAsc
         $this->assertResponseStatus(200);
         $this->seeJsonStructure($this->jsonStructure);
     }
+
 
     /**
      * Test POST /users/register without type

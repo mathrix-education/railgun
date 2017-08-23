@@ -11,7 +11,6 @@ trait CountriesDesc
     |--------------------------------------------------------------------------
     */
     /**
-     * Test POST /countries
      * Expect 401 unauthorized
      */
     public function testAddUnauthorizedError()
@@ -21,7 +20,7 @@ trait CountriesDesc
         $this->call('post', '/countries', $newData);
 
         // Assertions
-        $this->assertResponseStatus(401);
+        $this->assertJsonError('unauthorized', 401);
         $this->notSeeInDatabase('countries', $newData);
     }
 
@@ -32,7 +31,6 @@ trait CountriesDesc
     |--------------------------------------------------------------------------
     */
     /**
-     * Test PATCH /countries/{id}
      * Expect 401 unauthorized
      */
     public function testEditUnauthorizedError()
@@ -43,7 +41,7 @@ trait CountriesDesc
         $this->call('patch', '/countries/' . $country->id, $newData);
 
         // Assertions
-        $this->assertResponseStatus(401);
+        $this->assertJsonError('unauthorized', 401);
         $this->notSeeInDatabase('countries', $newData);
     }
 }

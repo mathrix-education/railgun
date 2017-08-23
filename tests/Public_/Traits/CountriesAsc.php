@@ -13,10 +13,12 @@ trait CountriesAsc
         'slug_short'
     ];
 
+
     /**
      * Test GET /countries
      */
-    public function testIndexSuccess() {
+    public function testIndexSuccess()
+    {
         $count = Country::all()->count();
         $this->call('get', '/countries');
 
@@ -25,10 +27,12 @@ trait CountriesAsc
         $this->assertJsonLength($count);
     }
 
+
     /**
      * Test GET /countries/{id}
      */
-    public function testGetSuccess() {
+    public function testGetSuccess()
+    {
         $id = Country::inRandomOrder()->pluck('id')->first();
         $this->call('get', '/countries/' . $id);
 

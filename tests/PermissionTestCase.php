@@ -16,12 +16,6 @@ abstract class PermissionTestCase extends BaseTestCase
     /** @var User $user */
     public $user;
 
-    /**
-     * Set the user for the test
-     *
-     * @return User
-     */
-    abstract public function initUser();
 
     public function setUp()
     {
@@ -35,6 +29,15 @@ abstract class PermissionTestCase extends BaseTestCase
             unset($this->user);
         }
     }
+
+
+    /**
+     * Set the user for the test
+     *
+     * @return User
+     */
+    abstract public function initUser();
+
 
     /**
      * Get a stranger

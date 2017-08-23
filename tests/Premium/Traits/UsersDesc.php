@@ -20,6 +20,7 @@ trait UsersDesc
         $this->assertCannotGet('premium');
     }
 
+
     /**
      * Test GET /users/{id} for stranger registered
      */

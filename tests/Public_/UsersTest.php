@@ -7,6 +7,7 @@ class UsersTest extends PublicTestCase
 {
     use UsersAsc;
 
+
     /**
      * Test GET /users/me with 401 unauthorized
      */
