@@ -2,8 +2,9 @@
 namespace Tests\Moderator;
 
 use Tests\Moderator\Traits\CountriesAsc;
+use Tests\Moderator\Traits\CountriesDesc;
 
 class CountriesTest extends ModeratorTestCase
 {
-    use CountriesAsc;
+    use CountriesAsc, CountriesDesc;
 }
