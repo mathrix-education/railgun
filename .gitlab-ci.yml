@@ -13,7 +13,7 @@ before_script:
   - mkdir ~/.ssh
   - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
   # Setup project files
-  - cp .env.test .env
+  - cp .env.pipelines .env
   - composer install --quiet --no-scripts --no-interaction --no-ansi --no-progress --no-suggest
   # Setup project database
   - php artisan migrate:refresh --seed

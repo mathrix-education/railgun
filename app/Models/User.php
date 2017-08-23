@@ -1,7 +1,7 @@
 <?php
+
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -10,9 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Validation\Validator;
 use Laravel\Lumen\Auth\Authorizable;
-use Laravel\Passport\Client;
 use Laravel\Passport\HasApiTokens;
-use Laravel\Passport\Token;
 use Mathrix\Lumen\Models\BaseModel;
 
 /**

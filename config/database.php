@@ -61,7 +61,7 @@ return [
         | Test connection
         |--------------------------------------------------------------------------
         */
-        'test' => [
+        'pipelines' => [
             'driver' => 'mysql',
             'host' => 'mysql',
             'database' => 'test_api_mathrix_fr',

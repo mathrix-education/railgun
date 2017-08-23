@@ -7,7 +7,6 @@ use App\Models\User;
 use Faker\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use Mathrix\Lumen\Http\Controllers\BaseController;
 
 /**
@@ -15,6 +14,7 @@ use Mathrix\Lumen\Http\Controllers\BaseController;
  * Handle users auth routes
  * @author Mathrix Team
  * @package App\Http\Controllers
+ * @version 1.0.0
  */
 class AuthController extends BaseController
 {

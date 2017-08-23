@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Mathrix\Lumen\Http\Controllers\BaseController;
 
+/**
+ * Class ContentController
+ *
+ * @author Mathrix Team
+ * @package App\Http\Controllers
+ * @version 1.0.0
+ */
 class ContentController extends BaseController
 {
     /**

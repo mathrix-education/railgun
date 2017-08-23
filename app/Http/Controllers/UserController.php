@@ -11,6 +11,7 @@ use Mathrix\Lumen\Http\Controllers\BaseController;
  *
  * @author Mathrix Team
  * @package App\Http\Controllers
+ * @version 1.0.0
  */
 class UserController extends BaseController
 {

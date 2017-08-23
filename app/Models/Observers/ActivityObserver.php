@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models\Observers;
 
 use App\Models\Activity;
@@ -36,7 +37,7 @@ class ActivityObserver extends BaseObserver
         // Attach notions
         if (!empty($activity->link['notions'])) {
             foreach ($activity->link['notions'] as $notionId) {
-                if(Activity::find($notionId)->exists()) {
+                if (Activity::find($notionId)->exists()) {
                     $activity->notions()->attach($notionId);
                 }
             }
@@ -46,7 +47,7 @@ class ActivityObserver extends BaseObserver
         // Detach notions
         if (!empty($activity->unlink['notions'])) {
             foreach ($activity->unlink['notions'] as $notionId) {
-                if(Activity::find($notionId)->exists()) {
+                if (Activity::find($notionId)->exists()) {
                     $activity->notions()->attach($notionId);
                 }
             }
