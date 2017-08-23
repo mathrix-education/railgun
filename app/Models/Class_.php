@@ -38,7 +38,7 @@ class Class_ extends BaseModel
     /** @var string Custom table definition */
     protected $table = 'classes';
 
-    /** @var array Fillable columns */
+    /** @var array The fillable attributes*/
     protected $fillable = ['name', 'name_short', 'slug', 'slug_short', 'order', 'parent_id', 'country_id'];
 
     /** @var array Validation rules */

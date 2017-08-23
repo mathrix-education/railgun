@@ -22,6 +22,9 @@ use Mathrix\Lumen\Models\BaseModel;
  */
 class Discipline extends BaseModel
 {
+    /** @var array The fillable attributes*/
+    protected $fillable = ['name', 'slug'];
+
     /*
     |--------------------------------------------------------------------------
     | Relations

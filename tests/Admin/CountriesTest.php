@@ -8,7 +8,6 @@ class CountriesTest extends AdminTestCase
 {
     use CountriesAsc;
 
-
     /*
     |--------------------------------------------------------------------------
     | POST /countries
@@ -17,7 +16,8 @@ class CountriesTest extends AdminTestCase
     /**
      * Test POST /countries with 200 success
      */
-    public function testAddSuccess() {
+    public function testAddSuccess()
+    {
         /** @var Country $country */
         $country = factory(Country::class)->make();
 
@@ -30,10 +30,11 @@ class CountriesTest extends AdminTestCase
 
 
     /**
-     * Test POST /countries without giving slugs and name_short
-     * Expect HTTP200
+     * Test POST /countries without slug, name_short nor slug_short
+     * Expect HTTP 200 success
      */
-    public function testAddSuccessWithoutSlug() {
+    public function testAddSuccessWithoutSlug()
+    {
         $name = $this->faker->firstName;
 
         $this->call('post', '/countries', [
