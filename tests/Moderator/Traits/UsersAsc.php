@@ -3,25 +3,21 @@ namespace Tests\Moderator\Traits;
 
 use Tests\Premium\Traits\UsersAsc as ParentUsersAsc;
 
+/**
+ * Trait UsersAsc
+ * Test users as moderator or higher
+ *
+ * @package Tests\Moderator\Traits
+ */
 trait UsersAsc
 {
     use ParentUsersAsc;
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | GET /users/{id} for strangers
-    |--------------------------------------------------------------------------
-    */
     /**
-     * Test GET /users/{id} for premium stranger
+     * Assert that user can get a specified user based on its type
+     * @param string $type the stranger type to test
      */
-    public function testGetStrangerPremium()
-    {
-        $this->assertCanGetStranger('premium');
-    }
-
-
     public function assertCanGetStranger(string $type)
     {
         $stranger = $this->getStranger(['type', $type]);
@@ -33,9 +29,24 @@ trait UsersAsc
         $this->seeJsonStructure($this->jsonStructure);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | GET /users/{id} for strangers
+    |--------------------------------------------------------------------------
+    */
+    /**
+     * Get stranger premium
+     * Expect HTTP 200 success
+     */
+    public function testGetStrangerPremium()
+    {
+        $this->assertCanGetStranger('premium');
+    }
+
 
     /**
-     * Test GET /users/{id} for registred stranger
+     * Get stranger registered
+     * Expect HTTP 200 success
      */
     public function testGetStrangerRegistered()
     {

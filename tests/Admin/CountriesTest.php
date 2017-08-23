@@ -4,6 +4,12 @@ namespace Tests\Admin;
 use App\Models\Country;
 use Tests\Moderator\Traits\CountriesAsc;
 
+/**
+ * Class CountriesTest
+ * Test countries as admin
+ *
+ * @package Tests\Admin
+ */
 class CountriesTest extends AdminTestCase
 {
     use CountriesAsc;
@@ -14,10 +20,9 @@ class CountriesTest extends AdminTestCase
     |--------------------------------------------------------------------------
     */
     /**
-     * Test POST /countries
      * Expect HTTP 200 success
      */
-    public function testAddSuccess()
+    public function testAdd()
     {
         $newData = factory(Country::class)->raw();
 
@@ -30,10 +35,10 @@ class CountriesTest extends AdminTestCase
 
 
     /**
-     * Test POST /countries without slug, name_short nor slug_short
+     * Without slug, name_short nor slug_short
      * Expect HTTP 200 success
      */
-    public function testAddOnlyNameSuccess()
+    public function testAddOnlyName()
     {
         $name = $this->faker->firstName;
         $expectedData = [
@@ -54,10 +59,10 @@ class CountriesTest extends AdminTestCase
 
 
     /**
-     * Test POST /countries with slug, name_short and slug_short but withou name
+     * With slug, name_short and slug_short but without name
      * Expect HTTP 422 validation
      */
-    public function testAddWithoutNameSuccess()
+    public function testAddWithoutName()
     {
         $newData = factory(Country::class)->raw();
 
@@ -75,10 +80,9 @@ class CountriesTest extends AdminTestCase
     |--------------------------------------------------------------------------
     */
     /**
-     * Test PATCH /countries/{id}
      * Expect HTTP 200 success
      */
-    public function testEditSuccess()
+    public function testEdit()
     {
         /** @var Country $country */
         $country = Country::inRandomOrder()->get(['id'])->first();
@@ -92,10 +96,10 @@ class CountriesTest extends AdminTestCase
 
 
     /**
-     * Test PATCH /countries/{id} with only name
+     * With only name
      * Expect HTTP 200 success
      */
-    public function testEditOnlyNameSuccess()
+    public function testEditOnlyName()
     {
         /** @var Country $country */
         $country = Country::inRandomOrder()->get(['id'])->first();
@@ -116,10 +120,10 @@ class CountriesTest extends AdminTestCase
 
 
     /**
-     * Test PATCH /countries/{id} without name
+     * Without name
      * Expect HTTP 200 success
      */
-    public function testEditWithoutNameSuccess()
+    public function testEditWithoutName()
     {
         /** @var Country $country */
         $country = Country::inRandomOrder()->get(['id'])->first();

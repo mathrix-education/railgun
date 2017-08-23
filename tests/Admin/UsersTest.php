@@ -3,6 +3,12 @@ namespace Tests\Admin;
 
 use Tests\Moderator\Traits\UsersAsc;
 
+/**
+ * Class UsersTest
+ * Test users as admin
+ *
+ * @package Tests\Admin
+ */
 class UsersTest extends AdminTestCase
 {
     use UsersAsc;
@@ -13,7 +19,8 @@ class UsersTest extends AdminTestCase
     |--------------------------------------------------------------------------
     */
     /**
-     * Test GET /users/{id} for premium stranger
+     * Get stranger admin
+     * Expect HTTP 200 success
      */
     public function testGetStrangerAdmin()
     {
@@ -22,7 +29,8 @@ class UsersTest extends AdminTestCase
 
 
     /**
-     * Test GET /users/{id} for registred stranger
+     * Get stranger moderator
+     * Expect HTTP 200 success
      */
     public function testGetStrangerModerator()
     {

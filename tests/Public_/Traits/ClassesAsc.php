@@ -3,6 +3,12 @@ namespace Tests\Public_\Traits;
 
 use App\Models\Class_;
 
+/**
+ * Trait ClassesAsc
+ * Test class as public or higher
+ *
+ * @package Tests\Public_\Traits
+ */
 trait ClassesAsc
 {
     /*
@@ -13,7 +19,7 @@ trait ClassesAsc
     /**
      * Expect HTTP 200 success
      */
-    public function testIndexSuccess()
+    public function testIndex()
     {
         $this->call('get', '/classes');
 
@@ -32,7 +38,7 @@ trait ClassesAsc
     /**
      * Expect HTTP 200 success
      */
-    public function testGetSuccess()
+    public function testGet()
     {
         /** @var Class_ $class */
         $class = Class_::inRandomOrder()->first();
