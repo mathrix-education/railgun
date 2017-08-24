@@ -10,8 +10,12 @@ use Tests\PermissionTestCase;
  *
  * @package Tests\Premium
  */
-class PremiumTestCase extends PermissionTestCase
+abstract class PremiumTestCase extends PermissionTestCase
 {
+    /**
+     * Initialize premium
+     * @return User
+     */
     public function initUser(): User
     {
         return User::inRandomOrder()->where('type', 'premium')->first();

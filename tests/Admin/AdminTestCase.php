@@ -13,7 +13,7 @@ use Tests\PermissionTestCase;
 abstract class AdminTestCase extends PermissionTestCase
 {
     /**
-     * Initialize admin user
+     * Initialize admin
      * @return User
      */
     public function initUser(): User
