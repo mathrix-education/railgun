@@ -9,8 +9,12 @@ use Tests\PermissionTestCase;
  *
  * @package Tests\Public_
  */
-class PublicTestCase extends PermissionTestCase
+abstract class PublicTestCase extends PermissionTestCase
 {
+    /**
+     * Don't initialize any user
+     * @return null
+     */
     public function initUser()
     {
         return null;

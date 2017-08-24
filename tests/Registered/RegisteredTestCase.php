@@ -12,6 +12,10 @@ use Tests\PermissionTestCase;
  */
 abstract class RegisteredTestCase extends PermissionTestCase
 {
+    /**
+     * Initialize registered
+     * @return User
+     */
     public function initUser(): User
     {
         return User::inRandomOrder()->where('type', 'registered')->first();

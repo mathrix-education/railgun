@@ -12,6 +12,10 @@ use Tests\PermissionTestCase;
  */
 abstract class ModeratorTestCase extends PermissionTestCase
 {
+    /**
+     * Initialize moderator
+     * @return User
+     */
     public function initUser(): User
     {
         return User::inRandomOrder()->where('type', '=', 'moderator')->first();
