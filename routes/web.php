@@ -177,7 +177,7 @@ $app->group(['prefix' => 'modules'], function () use ($app) {
 | Subscriptions
 |--------------------------------------------------------------------------
 */
-$app->group(['stripe'], function () use ($app) {
+$app->group(['prefix' => 'stripe'], function () use ($app) {
     $app->group(['middleware' => 'auth:api'], function () use ($app) {
         $app->post('subscribe', 'StripeController@subscribe');
     });
