@@ -14,7 +14,7 @@ use Mathrix\Lumen\Http\HttpJsonResponseBuilderTrait;
 class StripeController extends CashierController
 {
     use HttpJsonResponseBuilderTrait {
-        __call as buildHttpResponse;
+        HttpJsonResponseBuilderTrait::__call as buildHttpResponse;
     }
 
 
