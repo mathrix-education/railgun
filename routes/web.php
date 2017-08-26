@@ -171,3 +171,18 @@ $app->group(['prefix' => 'modules'], function () use ($app) {
         $app->delete('{id:[0-9]+}', 'ModuleController@delete');
     });
 });
+
+/*
+|--------------------------------------------------------------------------
+| Subscriptions
+|--------------------------------------------------------------------------
+*/
+$app->group(['stripe'], function () use ($app) {
+    $app->group(['middleware' => 'auth:api'], function () use ($app) {
+        $app->post('subscribe', 'StripeController@subscribe');
+    });
+
+    $app->post('charge', 'StripeController@charge');
+
+    $app->post('subscribe', 'StripeController@handleWebhook');
+});
