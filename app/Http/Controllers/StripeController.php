@@ -13,11 +13,6 @@ use Mathrix\Lumen\Http\HttpJsonResponseBuilderTrait;
  */
 class StripeController extends CashierController
 {
-    use HttpJsonResponseBuilderTrait {
-        HttpJsonResponseBuilderTrait::__call as buildHttpResponse;
-    }
-
-
     /**
      * Handle a Stripe webhook.
      *
@@ -27,6 +22,6 @@ class StripeController extends CashierController
      */
     public function handleInvoicePaymentSucceeded($payload)
     {
-        return $this->buildHttpResponse('http200Success', $payload);
+        return response()->json($payload);
     }
 }
