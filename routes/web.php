@@ -184,5 +184,5 @@ $app->group(['prefix' => 'stripe'], function () use ($app) {
 
     $app->post('charge', 'StripeController@charge');
 
-    $app->post('subscribe', 'StripeController@handleWebhook');
+    $app->post('webook', 'StripeController@handleWebhook');
 });
