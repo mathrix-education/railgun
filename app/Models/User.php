@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Validation\Validator;
+use Laravel\Cashier\Billable;
 use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\HasApiTokens;
 use Mathrix\Lumen\Models\BaseModel;
@@ -45,7 +46,7 @@ use Mathrix\Lumen\Models\BaseModel;
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
-    use Authenticatable, Authorizable, HasApiTokens;
+    use Authenticatable, Authorizable, HasApiTokens, Billable;
 
     /** @var array The guarded attributes */
     protected $guarded = ['type'];
