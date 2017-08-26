@@ -57,10 +57,15 @@ $app->singleton(
 |
 */
 
-$app->configure('app');
 $app->configure('auth');
 $app->configure('cors');
-$app->configure('ide-helper');
+$app->configure('mail');
+$app->configure('app');
+$app->configure('services');
+
+if ($app->environment() !== 'production') {
+    $app->configure('ide-helper');
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -100,6 +105,7 @@ if ($app->environment() !== 'production') {
 
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
+$app->register(Illuminate\Mail\MailServiceProvider::class);
 $app->register(Laravel\Passport\PassportServiceProvider::class);
 $app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
 $app->register(Barryvdh\Cors\ServiceProvider::class);

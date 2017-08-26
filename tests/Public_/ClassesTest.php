@@ -2,6 +2,7 @@
 namespace Tests\Public_;
 
 use Tests\Public_\Traits\ClassesAsc;
+use Tests\Registered\Traits\ClassesDesc;
 
 /**
  * Class ClassesTest
@@ -11,5 +12,5 @@ use Tests\Public_\Traits\ClassesAsc;
  */
 class ClassesTest extends PublicTestCase
 {
-    use ClassesAsc;
+    use ClassesAsc, ClassesDesc;
 }

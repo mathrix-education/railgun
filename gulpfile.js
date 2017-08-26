@@ -54,7 +54,7 @@ gulp.task('mjml', function () {
 | mjml-watch: Generate mjml on the fly and use livereload
 |--------------------------------------------------------------------------
 */
-gulp.task('mjml-watch', function () {
+gulp.task('mjml-watch', ['mjml'], function () {
     livereload.listen();
 
     return gulp.watch(mjmlSelector, mjmlOptions, function (event) {

@@ -2,6 +2,7 @@
 namespace Tests\Premium;
 
 use Tests\Premium\Traits\ClassesAsc;
+use Tests\Premium\Traits\ClassesDesc;
 
 /**
  * Class ClassesTest
@@ -11,5 +12,5 @@ use Tests\Premium\Traits\ClassesAsc;
  */
 class ClassesTest extends PremiumTestCase
 {
-    use ClassesAsc;
+    use ClassesAsc, ClassesDesc;
 }
