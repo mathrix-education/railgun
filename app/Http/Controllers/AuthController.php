@@ -1,17 +1,18 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Mail\UserPasswordChanged;
-use App\Mail\UserPasswordForgotten;
+use App\Mails\User\PasswordForgotten;
 use App\Models\User;
 use Faker\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Mathrix\Lumen\Http\Controllers\BaseController;
 
 /**
  * Class AuthController
  * Handle users auth routes
+ *
  * @author Mathrix Team
  * @package App\Http\Controllers
  * @version 1.0.0
@@ -41,20 +42,15 @@ class AuthController extends BaseController
      */
     public function login(Request $request)
     {
-        $this->validateRequire($request, ['grant_type', 'client_id', 'client_secret', 'username', 'password']);
-
-        $inputs = $request->all();
-
-        // Try to find the user by email
-        /**
-         * @var User $user
-         */
-        $user = User::where('email', $inputs['username'])->firstOrFail();
-
-        $inputs['scope'] = $user->type;
+        // Try to find the user by email to get scope
+        /** @var User $user */
+        $user = User::where('email', $request->input('username'))->first();
+        if ($user instanceof User) {
+            $request->merge(['scope' => $user->type]);
+        }
 
         return app()->dispatch(
-            $request->create('/oauth/token', 'post', $inputs)
+            $request->create('/oauth/token', 'post', $request->all())
         );
     }
 
@@ -72,8 +68,8 @@ class AuthController extends BaseController
      * @apiParam (Data) {string} client_secret The oAuth client secret `/database/raws/oauth_clients.json`
      * @apiParam (Data) {string} refresh_token The refresh token stored on
      *     [/users/login](#api-Authentication-AuthenticationLogin)
+     * @apiError (Error 401) invalid_client Invalid client id or secret
      * @apiError (Error 401) invalid_request Invalid refresh token
-     * @apiError (Error 422) validation At least one field is missing
      *
      * @param Request $request
      *
@@ -81,12 +77,11 @@ class AuthController extends BaseController
      */
     public function refresh(Request $request)
     {
-        $this->validateRequire($request, ['grant_type', 'client_id', 'client_secret', 'refresh_token']);
-
         return app()->dispatch(
             $request->create('/oauth/token', 'post', $request->all())
         );
     }
+
 
     /**
      * @apiVersion 1.0.0
@@ -122,17 +117,18 @@ class AuthController extends BaseController
             return $user->handleResponse($this->http422Save());
         }
 
-        // TODO Email
-        /*Mail::to($user->email)->send(new UserPasswordForgotten($user));
+        // Send PasswordForgotten email
+        Mail::to($user->email)->send(new PasswordForgotten($user));
         $emailErrors = Mail::failures();
         if (!empty($emailErrors)) {
             return $this->http502EmailNotSent([
                 'message' => $emailErrors
             ]);
-        }*/
+        }
 
         return $this->http200Success('Reset email sent');
     }
+
 
     /**
      * @apiVersion 1.0.0

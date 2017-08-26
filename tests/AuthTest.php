@@ -1,9 +1,13 @@
 <?php
 namespace Tests;
 
+use App\Mails\User\PasswordForgotten;
 use App\Models\User;
-use Faker\Factory;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Laravel\Lumen\Testing\DatabaseTransactions;
 use Mathrix\Lumen\Tests\BaseTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class AuthTest
@@ -11,57 +15,49 @@ use Mathrix\Lumen\Tests\BaseTestCase;
  *
  * @author Mathrix Team
  * @package Tests
+ * @since 1.0.0
  */
 class AuthTest extends BaseTestCase
 {
+    use DatabaseTransactions {
+        beginDatabaseTransaction as traitBeginDatabaseTransaction;
+    }
+
+    // oAuth configuration
+    const OAUTH_CLIENT_ID = 3;
+    const OAUTH_CLIENT_SECRET = 'NCeWoR1cKpqEJQ6pW9gIOPXiH3iNCiV3f39fvyji';
+
     /** @var User $user */
     public $user;
 
 
+    /**
+     * Override default database transaction
+     */
+    public function beginDatabaseTransaction()
+    {
+        // Disable database transaction on testLogin
+        if ($this->getName() != 'testLogin') {
+            $this->traitBeginDatabaseTransaction();
+
+            // And clean DB after last refresh test
+            if ($this->getName() == 'testRefreshInvalidClient') {
+                DB::table('oauth_access_tokens')->truncate();
+                DB::table('oauth_refresh_tokens')->truncate();
+            }
+        }
+    }
+
+
+    /**
+     * Setup the test
+     */
     public function setUp()
     {
         parent::setUp();
 
         // Ensure that the test user has been generated during the seeding process
-        $this->user = User::where('id', '<', 100)
-            ->whereNotNull('email')
-            ->inRandomOrder()
-            ->first();
-    }
-
-
-    /**
-     * Test POST /users/login with 200 success
-     */
-    public function testLogin()
-    {
-        $this->call('post', '/users/login', $this->loginData());
-
-        $this->seeJsonStructure([
-            'token_type',
-            'expires_in',
-            'access_token',
-            'refresh_token'
-        ]);
-
-        $this->assertResponseStatus(200);
-    }
-
-
-    /**
-     * Build login data from existing user
-     *
-     * @return array
-     */
-    public function loginData()
-    {
-        return [
-            'grant_type' => 'password',
-            'client_id' => env('TEST_OAUTH_CLIENT_ID'),
-            'client_secret' => env('TEST_OAUTH_CLIENT_SECRET'),
-            'username' => $this->user->email,
-            'password' => 'test'
-        ];
+        $this->user = User::inRandomOrder()->first();
     }
 
 
@@ -70,63 +66,70 @@ class AuthTest extends BaseTestCase
     | POST /users/login
     |--------------------------------------------------------------------------
     */
-
-
     /**
-     * Test POST /users/login with 401 invalid_credentials
+     * Build login form data
+     *
+     * @return array
      */
-    public function testLoginInvalidCredentials()
+    public function loginData(): array
     {
-        $data = $this->loginData();
-        $data['password'] = 'test2';
-        $this->call('post', '/users/login', $data);
-
-        $this->assertJsonError('invalid_credentials', 401);
+        return [
+            'grant_type' => 'password',
+            'client_id' => self::OAUTH_CLIENT_ID,
+            'client_secret' => self::OAUTH_CLIENT_SECRET,
+            'username' => $this->user->email,
+            'password' => 'test'
+        ];
     }
 
 
     /**
-     * Test POST /users/login with 404 model_not_found
+     * Expect HTTP 200 success
      */
-    public function testLoginModelNotFound()
+    public function testLogin()
     {
-        $data = $this->loginData();
-        $data['username'] .= 'x';
-        $this->call('post', '/users/login', $data);
+        $this->call('post', '/users/login', $this->loginData());
 
-        $this->assertJsonError('model_not_found', 404);
-    }
-
-
-    /**
-     * Test POST /users/login with 422 validation
-     */
-    public function testLoginValidation()
-    {
-        $data = $this->loginData();
-        $keyToDelete = Factory::create()->randomElement(array_keys($data));
-        unset($data[$keyToDelete]);
-
-        $this->call('post', '/users/login', $data);
-
-        $this->assertJsonError('validation', 422);
-    }
-
-
-    /**
-     * Test POST /users/refresh with 200 success
-     */
-    public function testRefresh()
-    {
-        $this->call('post', '/users/refresh', $this->refreshData());
-
+        // Assertions
+        $this->assertResponseStatus(200);
         $this->seeJsonStructure([
             'token_type',
             'expires_in',
             'access_token',
             'refresh_token'
         ]);
-        $this->assertResponseStatus(200);
+
+        return $this->response;
+    }
+
+
+    /**
+     * Expect HTTP 401 invalid_client
+     */
+    public function testLoginInvalidClient()
+    {
+        $data = $this->loginData();
+        $data['client_secret'] .= 'wrong';
+
+        $this->call('post', '/users/login', $data);
+
+        // Assertions
+        $this->assertJsonError('invalid_client', 401);
+    }
+
+
+    /**
+     * Expect HTTP 401 unauthorized
+     */
+    public function testLoginInvalidCredentials()
+    {
+        $data = $this->loginData();
+        $data['password'] = 'test2';
+
+        $this->call('post', '/users/login', $data);
+
+        // Assertions
+        $this->assertJsonError('invalid_credentials', 401);
     }
 
 
@@ -135,53 +138,72 @@ class AuthTest extends BaseTestCase
     | POST /users/refresh
     |--------------------------------------------------------------------------
     */
-
-
     /**
-     * Build refresh data from login
+     * Expect HTTP 200 success
+     *
+     * @depends testLogin
+     *
+     * @param Response $response
      */
-    public function refreshData()
+    public function testRefresh(Response $response)
     {
-        $this->call('post', '/users/login', $this->loginData());
+        $this->call('post', '/users/refresh', [
+            'grant_type' => 'refresh_token',
+            'client_id' => self::OAUTH_CLIENT_ID,
+            'client_secret' => self::OAUTH_CLIENT_SECRET,
+            'refresh_token' => json_decode($response->getContent())->refresh_token
+        ]);
 
-        return [
-            'grant_type' => 'refresh',
-            'client_id' => env('TEST_OAUTH_CLIENT_ID'),
-            'client_secret' => env('TEST_OAUTH_CLIENT_SECRET'),
-            'refresh_token' => json_decode($this->response->getContent())->refresh_token
-        ];
+        // Assertions
+        $this->assertResponseStatus(200);
+        $this->seeJsonStructure([
+            'token_type',
+            'expires_in',
+            'access_token',
+            'refresh_token'
+        ]);
     }
 
 
     /**
-     * Test POST /users/refresh with 400 invalid_request
+     * Expect HTTP 401 invalid_client
+     *
+     * @depends testLogin
+     *
+     * @param Response $response
      */
-    public function testRefreshInvalidRequest()
+    public function testRefreshInvalidClient(Response $response)
+    {
+
+        $this->call('post', '/users/refresh', [
+            'grant_type' => 'refresh_token',
+            'client_id' => self::OAUTH_CLIENT_ID,
+            'client_secret' => self::OAUTH_CLIENT_SECRET . 'wrong',
+            'refresh_token' => json_decode($response->getContent())->refresh_token
+        ]);
+
+        // Assertions
+        $this->assertJsonError('invalid_client', 401);
+    }
+
+
+    /**
+     * Expect HTTP 400 invalid_request
+     */
+    public function testRefreshInvalidToken()
     {
         $this->call('post', '/users/refresh', [
             'grant_type' => 'refresh_token',
-            'client_id' => env('TEST_OAUTH_CLIENT_ID'),
-            'client_secret' => env('TEST_OAUTH_CLIENT_SECRET'),
-            'refresh_token' => 'foo'
+            'client_id' => self::OAUTH_CLIENT_ID,
+            'client_secret' => self::OAUTH_CLIENT_SECRET,
+            'refresh_token' => 'wrong_token'
         ]);
 
+        // Assertions
         $this->assertJsonError('invalid_request', 401);
     }
 
 
-    /**
-     * Test POST /users/login with 422 validation
-     */
-    public function testRefreshValidation()
-    {
-        $data = $this->loginData();
-        $keyToDelete = Factory::create()->randomElement(array_keys($data));
-        unset($data[$keyToDelete]);
-
-        $this->call('post', '/users/login', $data);
-
-        $this->assertJsonError('validation', 422);
-    }
 
 
     /*
@@ -190,24 +212,34 @@ class AuthTest extends BaseTestCase
     |--------------------------------------------------------------------------
     */
     /**
-     * Test POST /users/forgot with 200 success
+     * Expect HTTP 200 success
      */
     public function testForgot()
     {
+        Mail::fake();
+
         $this->call('post', '/users/forgot', ['email' => $this->user->email]);
 
+        // Assertions
         $this->assertResponseStatus(200);
+        Mail::assertSent(PasswordForgotten::class, function (PasswordForgotten $email) {
+            return $email->hasTo($this->user->email);
+        });
     }
 
 
     /**
-     * Test POST /users/forgot with 404 model_not_found
+     * Expect HTTP 404 model_not_found
      */
     public function testForgotModelNotFound()
     {
+        Mail::fake();
+
         $this->call('post', '/users/forgot', ['email' => $this->user->email . '2']);
 
+        // AssertionsS
         $this->assertJsonError('model_not_found', 404);
+        Mail::assertNotSent(PasswordForgotten::class);
     }
 
 
@@ -217,25 +249,24 @@ class AuthTest extends BaseTestCase
     |--------------------------------------------------------------------------
     */
     /**
-     * Test POST /users/reset with 200 success
+     * Expect HTTP 200 success
      */
     public function testReset()
     {
-        /**
-         * @var User $user
-         */
+        /** @var User $user */
         $user = User::whereNotNull('token')->first();
 
         $this->call('post', '/users/reset/' . $user->token, [
             'password' => 'test'
         ]);
 
+        // Assertions
         $this->assertResponseStatus(200);
     }
 
 
     /**
-     * Test POST /users/reset with 404 model_not_found
+     * Expect HTTP 404 model_not_found
      */
     public function testResetModelNotFound()
     {
@@ -243,17 +274,19 @@ class AuthTest extends BaseTestCase
             'password' => 'test'
         ]);
 
+        // Assertions
         $this->assertJsonError('model_not_found', 404);
     }
 
 
     /**
-     * Test POST /users/reset with 422 validation
+     * Expect HTTP 422 validation
      */
     public function testResetValidation()
     {
         $this->call('post', '/users/reset/foo');
 
+        // Assertions
         $this->assertJsonError('validation', 422);
     }
 }

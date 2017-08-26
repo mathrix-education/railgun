@@ -2,6 +2,7 @@
 namespace Tests\Registered;
 
 use Tests\Registered\Traits\ClassesAsc;
+use Tests\Registered\Traits\ClassesDesc;
 
 /**
  * Class ClassesTest
@@ -11,5 +12,5 @@ use Tests\Registered\Traits\ClassesAsc;
  */
 class ClassesTest extends RegisteredTestCase
 {
-    use ClassesAsc;
+    use ClassesAsc, ClassesDesc;
 }
