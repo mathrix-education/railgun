@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Laravel\Cashier\Http\Controllers\WebhookController as CashierController;
 use Mathrix\Lumen\Http\HttpJsonResponseBuilderTrait;
 
@@ -12,16 +13,20 @@ use Mathrix\Lumen\Http\HttpJsonResponseBuilderTrait;
  */
 class StripeController extends CashierController
 {
-    use HttpJsonResponseBuilderTrait;
+    use HttpJsonResponseBuilderTrait {
+        __call as buildHttpResponse;
+    }
 
 
     /**
      * Handle a Stripe webhook.
      *
      * @param  array $payload
+     *
+     * @return JsonResponse
      */
     public function handleInvoicePaymentSucceeded($payload)
     {
-        $this->http200Success($payload);
+        return $this->buildHttpResponse('http200Success', $payload);
     }
 }
