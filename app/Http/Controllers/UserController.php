@@ -114,6 +114,25 @@ class UserController extends BaseController
 
     /**
      * @apiVersion 1.0.0
+     * @api {get} /users/exists/{email} Exists
+     * @apiGroup Users
+     * @apiName UserExists
+     * @apiDescription Search for user with given email
+     * @apiPermission public
+     * @apiParam {string} email The email address
+     *
+     * @param string $email the uemail to search
+     *
+     * @return JsonResponse
+     */
+    public function exists(string $email)
+    {
+        return $this->http200Success(['exists' => User::where('email', $email)->exists()]);
+    }
+
+
+    /**
+     * @apiVersion 1.0.0
      * @api {get} /users/search/{field}/{value} Search
      * @apiGroup Users
      * @apiName UsersSearch

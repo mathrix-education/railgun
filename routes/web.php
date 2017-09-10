@@ -29,6 +29,7 @@ $app->group(['prefix' => 'users'], function () use ($app) {
     $app->post('refresh', 'AuthController@refresh');
     $app->post('forgot', 'AuthController@forgot');
     $app->post('reset/{token}', 'AuthController@reset');
+    $app->get('exists/{email}', 'UserController@exists');
 
     $app->group(['middleware' => 'auth:api'], function () use ($app) {
         $app->get('', 'UserController@index');

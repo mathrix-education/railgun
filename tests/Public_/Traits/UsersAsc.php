@@ -2,7 +2,7 @@
 namespace Tests\Public_\Traits;
 
 use App\Models\Class_;
-use Faker\Factory;
+use App\Models\User;
 
 trait UsersAsc
 {
@@ -47,5 +47,32 @@ trait UsersAsc
 
         $this->assertResponseStatus(200);
         $this->seeJsonStructure($this->jsonStructure);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | /users/exists
+    |--------------------------------------------------------------------------
+    */
+    /**
+     * Test GET /users/exists with existing email
+     */
+    public function testExistsSuccessEmailExists()
+    {
+        $user = User::inRandomOrder()->first();
+
+        $this->call('get', '/users/exists/' . $user->email);
+        $this->assertResponseStatus(200);
+        $this->seeJson(['exists' => true]);
+    }
+
+    /**
+     * Test GET /users/exists with non existing email
+     */
+    public function testExistsSuccessEmailNotExist()
+    {
+        $this->call('get', '/users/exists/dummy@email.zc');
+        $this->assertResponseStatus(200);
+        $this->seeJson(['exists' => false]);
     }
 }

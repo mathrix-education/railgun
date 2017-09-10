@@ -719,6 +719,131 @@ define({ "api": [
   {
     "version": "1.0.0",
     "type": "post",
+    "url": "/users/login",
+    "title": "Login",
+    "group": "Authentication",
+    "name": "AuthenticationLogin",
+    "description": "<p>Login a user</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Data": [
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": false,
+            "field": "client_id",
+            "description": "<p>The oAuth client id; see <code>/database/raws/oauth_clients.json</code></p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "client_secret",
+            "description": "<p>The oAuth client secret <code>/database/raws/oauth_clients.json</code></p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "username",
+            "description": "<p>The user <b>email</b></p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "password",
+            "description": "<p>The user password</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "allowedValues": [
+              "password"
+            ],
+            "optional": false,
+            "field": "grant_type",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "invalid_credentials",
+            "description": "<p>User credentials were invalid</p>"
+          }
+        ],
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>The user with given <code>email</code> was not found</p>"
+          }
+        ],
+        "Error 422": [
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "validation",
+            "description": "<p>At least one field is missing</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/AuthController.php",
+    "groupTitle": "Authentication",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "allowedValues": [
+              "bearer"
+            ],
+            "optional": false,
+            "field": "token_type",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "expires_in",
+            "description": "<p>Time before token expiration in seconds</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "access_token",
+            "description": "<p>The user access token; should be stored; valid until expiration</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "refresh_token",
+            "description": "<p>The user refresh token; should be stored; see <a href=\"#api-Authentication-AuthenticationRefresh\">/users/refresh</a></p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "post",
     "url": "/users/refresh",
     "title": "Refresh",
     "group": "Authentication",
@@ -2260,7 +2385,7 @@ define({ "api": [
   {
     "version": "1.0.0",
     "type": "get",
-    "url": "/content/data/{classId}",
+    "url": "/content/program/{classId}",
     "title": "Program",
     "group": "Content",
     "name": "ContentProgram",
@@ -4723,6 +4848,35 @@ define({ "api": [
         ]
       }
     }
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/users/exists/{email}",
+    "title": "Exists",
+    "group": "Users",
+    "name": "UserExists",
+    "description": "<p>Search for user with given email</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "email",
+            "description": "<p>The email address</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/UserController.php",
+    "groupTitle": "Users"
   },
   {
     "version": "1.0.0",
