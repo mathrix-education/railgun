@@ -7,12 +7,12 @@ use App\Models\User;
 use Faker\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use Mathrix\Lumen\Http\Controllers\BaseController;
 
 /**
  * Class AuthController
  * Handle users auth routes
+ *
  * @author Mathrix Team
  * @package App\Http\Controllers
  */
@@ -56,6 +56,29 @@ class AuthController extends BaseController
         return app()->dispatch(
             $request->create('/oauth/token', 'post', $inputs)
         );
+    }
+
+
+    /**
+     * @apiVersion 1.0.0
+     * @api {post} /users/login Login
+     * @apiGroup Authentication
+     * @apiName AuthenticationLogin
+     * @apiDescription Login a user
+     * @apiPermission public
+     * @apiParam (Data) {int} client_id The oAuth client id; see `/database/raws/oauth_clients.json`
+     * @apiParam (Data) {string} client_secret The oAuth client secret `/database/raws/oauth_clients.json`
+     * @apiParam (Data) {string} username The user <b>email</b>
+     * @apiParam (Data) {string} password The user password
+     * @apiUse oAuth
+     * @apiParam (Data) {string=password} grant_type
+     * @apiError (Error 401) invalid_credentials User credentials were invalid
+     * @apiError (Error 404) model_not_found The user with given `email` was not found
+     * @apiError (Error 422) validation At least one field is missing
+     */
+    public function loginFacebook()
+    {
+
     }
 
 

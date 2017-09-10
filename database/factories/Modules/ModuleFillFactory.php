@@ -11,7 +11,7 @@ $factory->defineAs(Module::class, 'fill', function (Generator $faker) use ($fact
     $data = $factory->rawOf(Module::class, 'mcq');
 
     foreach ($data['solutions'] as $k => $v) {
-        $data['solutions'][$k] = $faker->randomElement($data['choices'][$k]);
+        $data['solutions'][$k] = $faker->randomElement(array_keys($data['choices'][$k]));
     }
 
     $data['type'] = 'fill';

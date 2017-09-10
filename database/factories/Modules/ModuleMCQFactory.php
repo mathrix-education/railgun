@@ -20,7 +20,7 @@ $factory->defineAs(Module::class, 'mcq', function (Generator $faker) use ($facto
 
         $questions[] = str_replace('.', '?', $faker->sentence());
         $choices[] = $questionChoices;
-        $solutions[] = $faker->randomElements($questionChoices, $faker->numberBetween(1, $choiceCount));
+        $solutions[] = $faker->randomElements(array_keys($questionChoices), $faker->numberBetween(1, $choiceCount));
         $corrections[] = $faker->paragraphs($faker->numberBetween(1, 3));
     }
 

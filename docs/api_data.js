@@ -2278,8 +2278,7 @@ define({ "api": [
               "match",
               "mcq",
               "mcq-table",
-              "test",
-              "video"
+              "test"
             ],
             "optional": false,
             "field": "modules.type",
@@ -2290,35 +2289,35 @@ define({ "api": [
             "type": "mixed",
             "optional": false,
             "field": "modules.content",
-            "description": "<p>[course]    <code>string</code> The course content<br> [fill]      <code>null</code><br> [match]     <code>null</code><br> [mcq]       <code>null</code><br> [mcq-table] <code>null</code><br> [test]      <code>null</code><br> [video]     <code>string</code> The youtube video id (e.g. A7xHki1biKE)</p>"
+            "description": "<p>[course]    <code>string</code> The course content<br> [fill]      <code>null</code><br> [match]     <code>null</code><br> [mcq]       <code>null</code><br> [mcq-table] <code>null</code><br> [test]      <code>null</code><br></p>"
           },
           {
             "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "modules.questions",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code> The static propositions<br> [mcq]       <code>string[]</code> The mcq questions<br> [mcq-table] <code>string[]</code> The mcq questions<br> [test]      <code>string[]</code> The test questions<br> [video]     <code>null</code><br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code> The static propositions<br> [mcq]       <code>string[]</code> The mcq questions<br> [mcq-table] <code>string[]</code> The mcq table questions<br> [test]      <code>string[]</code> The test questions<br></p>"
           },
           {
             "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "modules.choices",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[]</code>   The gap choices<br> [match]     <code>string[]</code>   The draggable propositions<br> [mcq]       <code>string[][]</code> The mcq choices (first dimension for the question number, second dimension for the question choices)<br> [mcq-table] <code>string[]</code>   The common choices for all questions<br> [test]      <code>null</code><br> [video]     <code>null</code><br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[]</code>   The gap choices<br> [match]     <code>string[]</code>   The draggable propositions<br> [mcq]       <code>string[][]</code> The mcq choices (first dimension for the question number, second dimension for the question choices)<br> [mcq-table] <code>string[]</code>   The common choices for all questions<br> [test]      <code>null</code><br></p>"
           },
           {
             "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "modules.solutions",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code>   The solutions for each gap (only one per gap)<br> [mcq]       <code>string[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [mcq-table] <code>string[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [test]      <code>string[]</code>   The solutions for each question<br> [video]     <code>null</code><br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>int[]</code>   The solutions for each gap (only one per gap)<br> [mcq]       <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [mcq-table] <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [test]      <code>string[]</code>   The solutions for each question<br></p>"
           },
           {
             "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "modules.corrections",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[][]</code> The solutions for each question (second dimension array represents a step)<br> [mcq]       <code>string[][]</code> The solutions for each question (second dimension array represents a step)<br> [mcq-table] <code>string[][]</code> The solutions for each question (second dimension array represents a step)<br> [test]      <code>string[][]</code> The solutions for each question (second dimension array represents a step)<br> [video]     <code>null</code><br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq]       <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq-table] <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [test]      <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br></p>"
           },
           {
             "group": "Success 200",
@@ -2333,20 +2332,6 @@ define({ "api": [
             "optional": false,
             "field": "modules.options.duration",
             "description": "<p>[test] The test duration (in seconds)</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "modules.options.starts",
-            "description": "<p>[video] The video starting time (in seconds)</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "modules.options.ends",
-            "description": "<p>[video] The video ends time (in seconds)</p>"
           },
           {
             "group": "Success 200",
