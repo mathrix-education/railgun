@@ -13,6 +13,7 @@
     "Users",
     "UserRegister",
     "UsersIndex",
+    "UserExists",
     "UsersSearch",
     "UserMe",
     "UserGet",
@@ -67,7 +68,7 @@
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2017-08-18T15:44:43.721Z",
+    "time": "2017-09-10T18:49:24.599Z",
     "url": "http://apidocjs.com",
     "version": "0.17.6"
   }

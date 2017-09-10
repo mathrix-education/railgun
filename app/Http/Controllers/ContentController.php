@@ -37,7 +37,7 @@ class ContentController extends BaseController
 
     /**
      * @apiVersion 1.0.0
-     * @api {get} /content/data/{classId} Program
+     * @api {get} /content/program/{classId} Program
      * @apiGroup Content
      * @apiName ContentProgram
      * @apiDescription Retrieve content data by class id

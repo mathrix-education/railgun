@@ -89,22 +89,9 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         'status' => 'required|in:registered,premium,moderator,admin',
         'token' => 'required|size:36',
         'facebook_token' => 'nullable',
-        'points' => 'required|integer'
+        'points' => 'required|integer',
+        'class_id' => 'nullable|exists:classes,id'
     ];
-
-    /**
-     * @param Validator $validator
-     *
-     * @return Validator
-     */
-    public function injectInValidator($validator)
-    {
-        $validator->sometimes('class_id', 'required|exists:classes,id', function ($inputs) {
-            return in_array($inputs->type, ['registered', 'premium']);
-        });
-
-        return $validator;
-    }
 
 
     /*
