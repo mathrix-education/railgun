@@ -14,7 +14,7 @@ $factory->defineAs(Module::class, 'mcq-table', function (Generator $faker) use (
 
     foreach ($data['solutions'] as $k => $v) {
         $data['solutions'][$k] = $faker->randomElements(
-            $data['choices'],
+            array_keys($data['choices']),
             $faker->numberBetween(1, count($data['choices']))
         );
     }

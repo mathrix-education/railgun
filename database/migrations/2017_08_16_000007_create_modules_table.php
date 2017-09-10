@@ -18,7 +18,7 @@ class CreateModulesTable extends Migration
             $table->string('name');
             $table->string('slug');
             $table->string('description');
-            $table->enum('type', ['course', 'test', 'video', 'mcq', 'mcq-table', 'match', 'fill']);
+            $table->enum('type', ['course', 'test', 'mcq', 'mcq-table', 'match', 'fill']);
             $table->text('content');
             $table->text('questions');
             $table->text('choices');

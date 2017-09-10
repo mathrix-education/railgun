@@ -15,7 +15,7 @@ $factory->defineAs(Module::class, 'match', function (Generator $faker) use ($fac
 
     $solutions = $data['choices'];
     shuffle($solutions);
-    $data['solutions'] = array_combine($data['questions'], $solutions);
+    $data['solutions'] = array_combine(array_keys($data['questions']), $solutions);
 
     $data['type'] = 'match';
 

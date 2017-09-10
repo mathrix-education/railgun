@@ -96,7 +96,7 @@ class ContentController extends BaseController
      * @apiSuccess {int} modules.id The module name
      * @apiSuccess {string} modules.name The module name
      * @apiSuccess {string} modules.slug The module slug
-     * @apiSuccess {string=course,fill,match,mcq,mcq-table,test,video} modules.type The module type
+     * @apiSuccess {string=course,fill,match,mcq,mcq-table,test} modules.type The module type
      * @apiSuccess {mixed} modules.content
      *  [course]    `string` The course content<br>
      *  [fill]      `null`<br>
@@ -104,15 +104,13 @@ class ContentController extends BaseController
      *  [mcq]       `null`<br>
      *  [mcq-table] `null`<br>
      *  [test]      `null`<br>
-     *  [video]     `string` The youtube video id (e.g. A7xHki1biKE)
      * @apiSuccess {mixed} modules.questions
      *  [course]    `null`<br>
      *  [fill]      `null`<br>
      *  [match]     `string[]` The static propositions<br>
      *  [mcq]       `string[]` The mcq questions<br>
-     *  [mcq-table] `string[]` The mcq questions<br>
+     *  [mcq-table] `string[]` The mcq table questions<br>
      *  [test]      `string[]` The test questions<br>
-     *  [video]     `null`<br>
      * @apiSuccess {mixed} modules.choices
      *  [course]    `null`<br>
      *  [fill]      `string[]`   The gap choices<br>
@@ -121,29 +119,24 @@ class ContentController extends BaseController
      *                           question choices)<br>
      *  [mcq-table] `string[]`   The common choices for all questions<br>
      *  [test]      `null`<br>
-     *  [video]     `null`<br>
      * @apiSuccess {mixed} modules.solutions
      *  [course]    `null`<br>
      *  [fill]      `null`<br>
-     *  [match]     `string[]`   The solutions for each gap (only one per gap)<br>
-     *  [mcq]       `string[][]` The solutions for each question (second dimension array represents the right
+     *  [match]     `int[]`   The solutions for each gap (only one per gap)<br>
+     *  [mcq]       `int[][]` The solutions for each question (second dimension array represents the right
      *                           answers)<br>
-     *  [mcq-table] `string[][]` The solutions for each question (second dimension array represents the right
+     *  [mcq-table] `int[][]` The solutions for each question (second dimension array represents the right
      *                           answers)<br>
      *  [test]      `string[]`   The solutions for each question<br>
-     *  [video]     `null`<br>
      * @apiSuccess {mixed} modules.corrections
      *  [course]    `null`<br>
      *  [fill]      `null`<br>
-     *  [match]     `string[][]` The solutions for each question (second dimension array represents a step)<br>
-     *  [mcq]       `string[][]` The solutions for each question (second dimension array represents a step)<br>
-     *  [mcq-table] `string[][]` The solutions for each question (second dimension array represents a step)<br>
-     *  [test]      `string[][]` The solutions for each question (second dimension array represents a step)<br>
-     *  [video]     `null`<br>
+     *  [match]     `string[][]` The corrections for each question (second dimension array represents a step)<br>
+     *  [mcq]       `string[][]` The corrections for each question (second dimension array represents a step)<br>
+     *  [mcq-table] `string[][]` The corrections for each question (second dimension array represents a step)<br>
+     *  [test]      `string[][]` The corrections for each question (second dimension array represents a step)<br>
      * @apiSuccess {mixed} modules.options The modules options
      * @apiSuccess {int} modules.options.duration [test] The test duration (in seconds)
-     * @apiSuccess {int} modules.options.starts [video] The video starting time (in seconds)
-     * @apiSuccess {int} modules.options.ends [video] The video ends time (in seconds)
      *
      * @param int $activityId
      *
