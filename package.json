@@ -1,0 +1,31 @@
+{
+  "name": "mathrix-api",
+  "version": "1.0.0",
+  "description": "[![pipeline status](https://gitlab.com/mathrix/mathrix-api/badges/master/pipeline.svg)](https://gitlab.com/mathrix/mathrix-api/commits/master)",
+  "main": "gulpfile.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/mathrix/mathrix-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/mathrix/mathrix-api/issues"
+  },
+  "homepage": "https://gitlab.com/mathrix/mathrix-api#README",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-apidoc": "^0.2.6",
+    "gulp-ext-replace": "^0.3.0",
+    "gulp-livereload": "^3.8.1",
+    "gulp-mjml": "^2.2.0",
+    "gulp-rename": "^1.2.2"
+  }
+}

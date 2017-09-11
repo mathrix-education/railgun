@@ -3,6 +3,12 @@ namespace Tests\Premium\Traits;
 
 use Tests\Moderator\Traits\UsersDesc as ParentUsersDesc;
 
+/**
+ * Trait UsersDesc
+ * Test users as premium or lower
+ *
+ * @package Tests\Premium\Traits
+ */
 trait UsersDesc
 {
     use ParentUsersDesc;
@@ -19,6 +25,7 @@ trait UsersDesc
     {
         $this->assertCannotGet('premium');
     }
+
 
     /**
      * Test GET /users/{id} for stranger registered

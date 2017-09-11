@@ -11,6 +11,7 @@ use Mathrix\Lumen\Http\Controllers\BaseController;
  *
  * @author Mathrix Team
  * @package App\Http\Controllers
+ * @version 1.0.0
  */
 class UserController extends BaseController
 {
@@ -47,7 +48,7 @@ class UserController extends BaseController
         ) {
             return $this->http401Unauthorized();
         } else if (!$user || !$user->tokenCan('admin')) {
-            $request->merge(['status' => 'registered']);
+            $request->merge(['type' => 'registered']);
         }
 
         $request->merge([

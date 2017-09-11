@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -22,6 +23,9 @@ use Mathrix\Lumen\Models\BaseModel;
  */
 class Activity extends BaseModel
 {
+    /** @var array The fillable attributes*/
+    protected $fillable = ['name', 'slug', 'description'];
+
     /**
      * The attributes that should be cast to native types.
      * @var array

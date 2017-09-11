@@ -4,6 +4,12 @@ namespace Tests\Moderator\Traits;
 use App\Models\Class_;
 use App\Models\User;
 
+/**
+ * Trait UsersDesc
+ * Test users as moderator or lower
+ *
+ * @package Tests\Moderator\Traits
+ */
 trait UsersDesc
 {
     /*
@@ -11,21 +17,6 @@ trait UsersDesc
     | POST /users/register
     |--------------------------------------------------------------------------
     */
-    /**
-     * Assert user cannot get a stranger
-     *
-     * @param string $type
-     */
-    public function assertCannotGetStranger(string $type)
-    {
-        $stranger = $this->getStranger(['type', '=', $type]);
-
-        $this->call('get', '/users/' . $stranger->id);
-
-        // Assertions
-        $this->assertJsonError('unauthorized', 401);
-    }
-
     /**
      * Assert user cannot register a user with the given type
      *
@@ -44,24 +35,30 @@ trait UsersDesc
         $this->assertJsonError('unauthorized', 401);
     }
 
+
     /**
-     * Test POST /users/register with 401 unauthorized
+     * Try to register an admin
+     * Expect HTTP 401 unauthorized
      */
     public function testRegisterAdminUnauthorized()
     {
         $this->assertCannotRegister('admin');
     }
 
+
     /**
-     * Test POST /users/register with 401 unauthorized
+     * Try to register an moderator
+     * Expect HTTP 401 unauthorized
      */
     public function testRegisterModeratorUnauthorized()
     {
         $this->assertCannotRegister('moderator');
     }
 
+
     /**
-     * Test POST /users/register with 401 unauthorized
+     * Try to register a premium user
+     * Expect HTTP 401 unauthorized
      */
     public function testRegisterPremiumUnauthorized()
     {
@@ -75,20 +72,40 @@ trait UsersDesc
     |--------------------------------------------------------------------------
     */
     /**
-     * Test GET /users/{id} for stranger admin
+     * Assert user cannot get a stranger
+     *
+     * @param string $type
+     */
+    public function assertCannotGetStranger(string $type)
+    {
+        $stranger = $this->getStranger(['type', '=', $type]);
+
+        $this->call('get', '/users/' . $stranger->id);
+
+        // Assertions
+        $this->assertJsonError('unauthorized', 401);
+    }
+
+
+    /**
+     * Get stranger admin
+     * Expect HTTP 401 unauthorized
      */
     public function testGetStrangerAdmin()
     {
         $this->assertCannotGetStranger('admin');
     }
 
+
     /**
-     * Test GET /users/{id} for stranger moderator
+     * Get stranger moderator
+     * Expect HTTP 401 unauthorized
      */
     public function testGetStrangerModerator()
     {
         $this->assertCannotGetStranger('moderator');
     }
+
 
     /*
     |--------------------------------------------------------------------------
@@ -115,32 +132,40 @@ trait UsersDesc
         $this->assertJsonError('unauthorized', 401);
     }
 
+
     /**
-     * Test PATCH /users/{id} with 401 unauthorized
+     * Try to edit an admin
+     * Expect HTTP 401 unauthorized
      */
     public function testEditAdminUnauthorized()
     {
         $this->assertCannotEdit('admin');
     }
 
+
     /**
-     * Test PATCH /users/{id} with 401 unauthorized
+     * Try to edit an moderator
+     * Expect HTTP 401 unauthorized
      */
     public function testEditModeratorUnauthorized()
     {
         $this->assertCannotEdit('moderator');
     }
 
+
     /**
-     * Test PATCH /users/{id} with 401 unauthorized
+     * Try to edit a premium user
+     * Expect HTTP 401 unauthorized
      */
     public function testEditPremiumUnauthorized()
     {
         $this->assertCannotEdit('premium');
     }
 
+
     /**
-     * Test PATCH /users/{id} with 401 unauthorized
+     * Try to edit a registered user
+     * Expect HTTP 401 unauthorized
      */
     public function testEditRegisteredUnauthorized()
     {

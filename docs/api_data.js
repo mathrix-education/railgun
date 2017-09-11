@@ -772,16 +772,14 @@ define({ "api": [
           {
             "group": "Error 401",
             "optional": false,
+            "field": "invalid_client",
+            "description": "<p>Invalid client id or secret</p>"
+          },
+          {
+            "group": "Error 401",
+            "optional": false,
             "field": "invalid_request",
             "description": "<p>Invalid refresh token</p>"
-          }
-        ],
-        "Error 422": [
-          {
-            "group": "Error 422",
-            "optional": false,
-            "field": "validation",
-            "description": "<p>At least one field is missing</p>"
           }
         ]
       }

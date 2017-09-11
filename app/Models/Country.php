@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -23,6 +24,9 @@ use Mathrix\Lumen\Models\BaseModel;
  */
 class Country extends BaseModel
 {
+    /** @var array The fillable attributes*/
+    protected $fillable = ['name', 'name_short', 'slug', 'slug_short'];
+
     /** @var array Validation rules */
     protected $rules = [
         'name' => 'required|max:255',
