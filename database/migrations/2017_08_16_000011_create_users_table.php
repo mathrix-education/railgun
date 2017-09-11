@@ -22,7 +22,6 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->enum('type', ['registered', 'premium', 'moderator', 'admin']);
             $table->string('token', 36);
-            $table->string('facebook_token')->nullable();
             $table->integer('points')->default(0);
             $table->text('settings');
             $table->integer('class_id')->unsigned()->nullable();
