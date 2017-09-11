@@ -99,51 +99,7 @@ class ContentController extends BaseController
      * @apiPermission public
      * @apiParam {int} id The activity id
      * @apiUse Activity
-     * @apiSuccess {Module[]} modules The modules
-     * @apiSuccess {int} modules.id The module name
-     * @apiSuccess {string} modules.name The module name
-     * @apiSuccess {string} modules.slug The module slug
-     * @apiSuccess {string=course,fill,match,mcq,mcq-table,test} modules.type The module type
-     * @apiSuccess {mixed} modules.content
-     *  [course]    `string` The course content<br>
-     *  [fill]      `null`<br>
-     *  [match]     `null`<br>
-     *  [mcq]       `null`<br>
-     *  [mcq-table] `null`<br>
-     *  [test]      `null`<br>
-     * @apiSuccess {mixed} modules.questions
-     *  [course]    `null`<br>
-     *  [fill]      `null`<br>
-     *  [match]     `string[]` The static propositions<br>
-     *  [mcq]       `string[]` The mcq questions<br>
-     *  [mcq-table] `string[]` The mcq table questions<br>
-     *  [test]      `string[]` The test questions<br>
-     * @apiSuccess {mixed} modules.choices
-     *  [course]    `null`<br>
-     *  [fill]      `string[]`   The gap choices<br>
-     *  [match]     `string[]`   The draggable propositions<br>
-     *  [mcq]       `string[][]` The mcq choices (first dimension for the question number, second dimension for the
-     *                           question choices)<br>
-     *  [mcq-table] `string[]`   The common choices for all questions<br>
-     *  [test]      `null`<br>
-     * @apiSuccess {mixed} modules.solutions
-     *  [course]    `null`<br>
-     *  [fill]      `null`<br>
-     *  [match]     `int[]`   The solutions for each gap (only one per gap)<br>
-     *  [mcq]       `int[][]` The solutions for each question (second dimension array represents the right
-     *                           answers)<br>
-     *  [mcq-table] `int[][]` The solutions for each question (second dimension array represents the right
-     *                           answers)<br>
-     *  [test]      `string[]`   The solutions for each question<br>
-     * @apiSuccess {mixed} modules.corrections
-     *  [course]    `null`<br>
-     *  [fill]      `null`<br>
-     *  [match]     `string[][]` The corrections for each question (second dimension array represents a step)<br>
-     *  [mcq]       `string[][]` The corrections for each question (second dimension array represents a step)<br>
-     *  [mcq-table] `string[][]` The corrections for each question (second dimension array represents a step)<br>
-     *  [test]      `string[][]` The corrections for each question (second dimension array represents a step)<br>
-     * @apiSuccess {mixed} modules.options The modules options
-     * @apiSuccess {int} modules.options.duration [test] The test duration (in seconds)
+     * @apiUse ModuleArray
      *
      * @param int $activityId
      *
