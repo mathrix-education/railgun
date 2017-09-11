@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Policies;
 
 /**
@@ -19,7 +20,8 @@ class NotionPolicy extends BasePolicy
     /**
      * @return bool
      */
-    public function delete() {
+    public function delete()
+    {
         return false;
     }
 }

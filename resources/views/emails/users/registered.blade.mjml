@@ -1,0 +1,19 @@
+<mjml>
+    <mj-body>
+        <mj-container>
+            <mj-include path="resources/views/emails/common/header"></mj-include>
+
+            <mj-section background-color="#ffffff">
+                <mj-column>
+                    <mj-text>
+                        <p>Bienvenue sur l'institut Mathrix !!</p>
+                        <p>Nous avons enregistré un compte à votre nom. Vous trouverez toutes les informations
+                            sur <a href="institut.mathrix.fr/#">cette page</a>.</p>
+                    </mj-text>
+                </mj-column>
+            </mj-section>
+
+            <mj-include path="resources/views/emails/common/footer"></mj-include>
+        </mj-container>
+    </mj-body>
+</mjml>

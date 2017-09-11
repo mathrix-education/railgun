@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -26,6 +27,9 @@ use Mathrix\Lumen\Models\BaseModel;
  */
 class Chapter extends BaseModel
 {
+    /** @var array The fillable attributes*/
+    protected $fillable = ['name', 'slug', 'class_id', 'discipline_id'];
+
     /** @var array Validation rules */
     protected $rules = [
         'name' => 'required|max:255',
@@ -41,6 +45,7 @@ class Chapter extends BaseModel
     */
     /**
      * BelongsTo Class_
+     *
      * @return BelongsTo
      */
     public function class_(): BelongsTo
@@ -48,8 +53,10 @@ class Chapter extends BaseModel
         return $this->belongsTo('App\Models\Class_');
     }
 
+
     /**
      * BelongsTo Discipline
+     *
      * @return BelongsTo
      */
     public function discipline(): BelongsTo
@@ -57,8 +64,10 @@ class Chapter extends BaseModel
         return $this->belongsTo('App\Models\Discipline');
     }
 
+
     /**
      * HasMany Notion
+     *
      * @return HasMany
      */
     public function notions(): HasMany

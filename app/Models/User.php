@@ -1,7 +1,7 @@
 <?php
+
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -10,9 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Validation\Validator;
 use Laravel\Lumen\Auth\Authorizable;
-use Laravel\Passport\Client;
 use Laravel\Passport\HasApiTokens;
-use Laravel\Passport\Token;
 use Mathrix\Lumen\Models\BaseModel;
 
 /**
@@ -49,27 +47,15 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 {
     use Authenticatable, Authorizable, HasApiTokens;
 
-    /**
-     * The attributes that are guarded.
-     * @var array
-     */
-    protected $guarded = [
-        'status',
-        'rank_id'
-    ];
+    /** @var array The guarded attributes */
+    protected $guarded = ['type'];
 
-    /**
-     * The attributes excluded from the model's JSON form.
-     * @var array
-     */
-    protected $hidden = [
-        'password',
-        'token',
-        'facebook_token'
-    ];
+    /** @var array The hidden attributes from the model's JSON */
+    protected $hidden = ['password', 'token', 'facebook_token'];
 
     /**
      * The attributes that should be cast to native types.
+     *
      * @var array
      */
     protected $casts = [
@@ -78,6 +64,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     /**
      * The validation rules on create
+     *
      * @var array
      */
     protected $rules = [
@@ -86,7 +73,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         'firstname' => 'nullable|max:30',
         'lastname' => 'nullable|max:40',
         'password' => 'required|min:3',
-        'status' => 'required|in:registered,premium,moderator,admin',
+        'type' => 'required|in:registered,premium,moderator,admin',
         'token' => 'required|size:36',
         'facebook_token' => 'nullable',
         'points' => 'required|integer',
@@ -101,6 +88,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     */
     /**
      * BelongsTo Class_
+     *
      * @return BelongsTo
      */
     public function class_(): BelongsTo

@@ -1,6 +1,5 @@
 <?php
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Encryption Key
@@ -11,10 +10,9 @@ return [
     | will not be safe. Please do this before deploying an application!
     |
     */
-
-    'key' => env('APP_KEY', 'SomeRandomString!!!'),
-
+    'key' => 'D4CXkZRn5s3ZMrak3EUaAHED7g8jh9ww',
     'cipher' => 'AES-256-CBC',
+
 
     /*
     |--------------------------------------------------------------------------
@@ -27,6 +25,8 @@ return [
     |
     */
     'locale' => env('APP_LOCALE', 'en'),
+
+
     /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale
@@ -38,7 +38,8 @@ return [
     |
     */
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
-    
+
+
     /*
     |--------------------------------------------------------------------------
     | Aliases
