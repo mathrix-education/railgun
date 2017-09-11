@@ -5049,7 +5049,7 @@ define({ "api": [
             "type": "string",
             "optional": false,
             "field": "password",
-            "description": "<p>The user password</p>"
+            "description": "<p>The user password or the user facebook token</p>"
           },
           {
             "group": "Data",
