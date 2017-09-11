@@ -2111,22 +2111,52 @@
         ]
       }
     },
+    "filename": "app/Http/Controllers/ContentController.php",
+    "groupTitle": "Content",
     "success": {
       "fields": {
         "Success 200": [
           {
             "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The activity id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The activity name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The activity slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "description",
+            "description": "<p>The activity description</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "Module[]",
             "optional": false,
             "field": "modules",
-            "description": "<p>The modules</p>"
+            "description": "<p>Array of modules</p>"
           },
           {
             "group": "Success 200",
             "type": "int",
             "optional": false,
             "field": "modules.id",
-            "description": "<p>The module name</p>"
+            "description": "<p>The module id</p>"
           },
           {
             "group": "Success 200",
@@ -2205,40 +2235,10 @@
             "optional": false,
             "field": "modules.options.duration",
             "description": "<p>[test] The test duration (in seconds)</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "id",
-            "description": "<p>The activity id</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "name",
-            "description": "<p>The activity name</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "slug",
-            "description": "<p>The activity slug</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "description",
-            "description": "<p>The activity description</p>"
           }
         ]
       }
-    },
-    "filename": "app/Http/Controllers/ContentController.php",
-    "groupTitle": "Content"
+    }
   },
   {
     "version": "1.0.0",
@@ -3454,9 +3454,66 @@
           {
             "group": "Data",
             "type": "string",
+            "allowedValues": [
+              "course",
+              "fill",
+              "match",
+              "mcq",
+              "mcq-table",
+              "test"
+            ],
             "optional": false,
-            "field": "description",
-            "description": "<p>The module description</p>"
+            "field": "modules.type",
+            "description": "<p>The module type</p>"
+          },
+          {
+            "group": "Data",
+            "type": "mixed",
+            "optional": false,
+            "field": "content",
+            "description": "<p>[course]    <code>string</code> The course content<br> [fill]      <code>null</code><br> [match]     <code>null</code><br> [mcq]       <code>null</code><br> [mcq-table] <code>null</code><br> [test]      <code>null</code><br></p>"
+          },
+          {
+            "group": "Data",
+            "type": "mixed",
+            "optional": false,
+            "field": "questions",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code> The static propositions<br> [mcq]       <code>string[]</code> The mcq questions<br> [mcq-table] <code>string[]</code> The mcq table questions<br> [test]      <code>string[]</code> The test questions<br></p>"
+          },
+          {
+            "group": "Data",
+            "type": "mixed",
+            "optional": false,
+            "field": "choices",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[]</code>   The gap choices<br> [match]     <code>string[]</code>   The draggable propositions<br> [mcq]       <code>string[][]</code> The mcq choices (first dimension for the question number, second dimension for the question choices)<br> [mcq-table] <code>string[]</code>   The common choices for all questions<br> [test]      <code>null</code><br></p>"
+          },
+          {
+            "group": "Data",
+            "type": "mixed",
+            "optional": false,
+            "field": "solutions",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>int[]</code>   The solutions for each gap (only one per gap)<br> [mcq]       <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [mcq-table] <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [test]      <code>string[]</code>   The solutions for each question<br></p>"
+          },
+          {
+            "group": "Data",
+            "type": "mixed",
+            "optional": false,
+            "field": "corrections",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq]       <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq-table] <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [test]      <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br></p>"
+          },
+          {
+            "group": "Data",
+            "type": "mixed",
+            "optional": false,
+            "field": "options",
+            "description": "<p>The modules options</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": false,
+            "field": "options.duration",
+            "description": "<p>[test] The test duration (in seconds)</p>"
           },
           {
             "group": "Data",
@@ -3516,9 +3573,66 @@
           {
             "group": "Success 200",
             "type": "string",
+            "allowedValues": [
+              "course",
+              "fill",
+              "match",
+              "mcq",
+              "mcq-table",
+              "test"
+            ],
             "optional": false,
-            "field": "description",
-            "description": "<p>The module description</p>"
+            "field": "modules.type",
+            "description": "<p>The module type</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "content",
+            "description": "<p>[course]    <code>string</code> The course content<br> [fill]      <code>null</code><br> [match]     <code>null</code><br> [mcq]       <code>null</code><br> [mcq-table] <code>null</code><br> [test]      <code>null</code><br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "questions",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code> The static propositions<br> [mcq]       <code>string[]</code> The mcq questions<br> [mcq-table] <code>string[]</code> The mcq table questions<br> [test]      <code>string[]</code> The test questions<br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "choices",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[]</code>   The gap choices<br> [match]     <code>string[]</code>   The draggable propositions<br> [mcq]       <code>string[][]</code> The mcq choices (first dimension for the question number, second dimension for the question choices)<br> [mcq-table] <code>string[]</code>   The common choices for all questions<br> [test]      <code>null</code><br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "solutions",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>int[]</code>   The solutions for each gap (only one per gap)<br> [mcq]       <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [mcq-table] <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [test]      <code>string[]</code>   The solutions for each question<br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "corrections",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq]       <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq-table] <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [test]      <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "options",
+            "description": "<p>The modules options</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "options.duration",
+            "description": "<p>[test] The test duration (in seconds)</p>"
           }
         ]
       }
@@ -3655,9 +3769,66 @@
           {
             "group": "Data",
             "type": "string",
+            "allowedValues": [
+              "course",
+              "fill",
+              "match",
+              "mcq",
+              "mcq-table",
+              "test"
+            ],
             "optional": false,
-            "field": "description",
-            "description": "<p>The module description</p>"
+            "field": "modules.type",
+            "description": "<p>The module type</p>"
+          },
+          {
+            "group": "Data",
+            "type": "mixed",
+            "optional": false,
+            "field": "content",
+            "description": "<p>[course]    <code>string</code> The course content<br> [fill]      <code>null</code><br> [match]     <code>null</code><br> [mcq]       <code>null</code><br> [mcq-table] <code>null</code><br> [test]      <code>null</code><br></p>"
+          },
+          {
+            "group": "Data",
+            "type": "mixed",
+            "optional": false,
+            "field": "questions",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code> The static propositions<br> [mcq]       <code>string[]</code> The mcq questions<br> [mcq-table] <code>string[]</code> The mcq table questions<br> [test]      <code>string[]</code> The test questions<br></p>"
+          },
+          {
+            "group": "Data",
+            "type": "mixed",
+            "optional": false,
+            "field": "choices",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[]</code>   The gap choices<br> [match]     <code>string[]</code>   The draggable propositions<br> [mcq]       <code>string[][]</code> The mcq choices (first dimension for the question number, second dimension for the question choices)<br> [mcq-table] <code>string[]</code>   The common choices for all questions<br> [test]      <code>null</code><br></p>"
+          },
+          {
+            "group": "Data",
+            "type": "mixed",
+            "optional": false,
+            "field": "solutions",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>int[]</code>   The solutions for each gap (only one per gap)<br> [mcq]       <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [mcq-table] <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [test]      <code>string[]</code>   The solutions for each question<br></p>"
+          },
+          {
+            "group": "Data",
+            "type": "mixed",
+            "optional": false,
+            "field": "corrections",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq]       <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq-table] <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [test]      <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br></p>"
+          },
+          {
+            "group": "Data",
+            "type": "mixed",
+            "optional": false,
+            "field": "options",
+            "description": "<p>The modules options</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": false,
+            "field": "options.duration",
+            "description": "<p>[test] The test duration (in seconds)</p>"
           },
           {
             "group": "Data",
@@ -3732,9 +3903,66 @@
           {
             "group": "Success 200",
             "type": "string",
+            "allowedValues": [
+              "course",
+              "fill",
+              "match",
+              "mcq",
+              "mcq-table",
+              "test"
+            ],
             "optional": false,
-            "field": "description",
-            "description": "<p>The module description</p>"
+            "field": "modules.type",
+            "description": "<p>The module type</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "content",
+            "description": "<p>[course]    <code>string</code> The course content<br> [fill]      <code>null</code><br> [match]     <code>null</code><br> [mcq]       <code>null</code><br> [mcq-table] <code>null</code><br> [test]      <code>null</code><br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "questions",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code> The static propositions<br> [mcq]       <code>string[]</code> The mcq questions<br> [mcq-table] <code>string[]</code> The mcq table questions<br> [test]      <code>string[]</code> The test questions<br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "choices",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[]</code>   The gap choices<br> [match]     <code>string[]</code>   The draggable propositions<br> [mcq]       <code>string[][]</code> The mcq choices (first dimension for the question number, second dimension for the question choices)<br> [mcq-table] <code>string[]</code>   The common choices for all questions<br> [test]      <code>null</code><br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "solutions",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>int[]</code>   The solutions for each gap (only one per gap)<br> [mcq]       <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [mcq-table] <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [test]      <code>string[]</code>   The solutions for each question<br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "corrections",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq]       <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq-table] <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [test]      <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "options",
+            "description": "<p>The modules options</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "options.duration",
+            "description": "<p>[test] The test duration (in seconds)</p>"
           }
         ]
       }
@@ -3829,9 +4057,66 @@
           {
             "group": "Success 200",
             "type": "string",
+            "allowedValues": [
+              "course",
+              "fill",
+              "match",
+              "mcq",
+              "mcq-table",
+              "test"
+            ],
             "optional": false,
-            "field": "description",
-            "description": "<p>The module description</p>"
+            "field": "modules.type",
+            "description": "<p>The module type</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "content",
+            "description": "<p>[course]    <code>string</code> The course content<br> [fill]      <code>null</code><br> [match]     <code>null</code><br> [mcq]       <code>null</code><br> [mcq-table] <code>null</code><br> [test]      <code>null</code><br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "questions",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code> The static propositions<br> [mcq]       <code>string[]</code> The mcq questions<br> [mcq-table] <code>string[]</code> The mcq table questions<br> [test]      <code>string[]</code> The test questions<br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "choices",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[]</code>   The gap choices<br> [match]     <code>string[]</code>   The draggable propositions<br> [mcq]       <code>string[][]</code> The mcq choices (first dimension for the question number, second dimension for the question choices)<br> [mcq-table] <code>string[]</code>   The common choices for all questions<br> [test]      <code>null</code><br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "solutions",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>int[]</code>   The solutions for each gap (only one per gap)<br> [mcq]       <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [mcq-table] <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [test]      <code>string[]</code>   The solutions for each question<br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "corrections",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq]       <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq-table] <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [test]      <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "options",
+            "description": "<p>The modules options</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "options.duration",
+            "description": "<p>[test] The test duration (in seconds)</p>"
           }
         ]
       }
@@ -3871,7 +4156,7 @@
             "group": "Success 200",
             "type": "Module[]",
             "optional": false,
-            "field": "module",
+            "field": "modules",
             "description": "<p>Array of modules</p>"
           },
           {
@@ -3898,9 +4183,66 @@
           {
             "group": "Success 200",
             "type": "string",
+            "allowedValues": [
+              "course",
+              "fill",
+              "match",
+              "mcq",
+              "mcq-table",
+              "test"
+            ],
             "optional": false,
-            "field": "modules.description",
-            "description": "<p>The module description</p>"
+            "field": "modules.type",
+            "description": "<p>The module type</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "modules.content",
+            "description": "<p>[course]    <code>string</code> The course content<br> [fill]      <code>null</code><br> [match]     <code>null</code><br> [mcq]       <code>null</code><br> [mcq-table] <code>null</code><br> [test]      <code>null</code><br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "modules.questions",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code> The static propositions<br> [mcq]       <code>string[]</code> The mcq questions<br> [mcq-table] <code>string[]</code> The mcq table questions<br> [test]      <code>string[]</code> The test questions<br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "modules.choices",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[]</code>   The gap choices<br> [match]     <code>string[]</code>   The draggable propositions<br> [mcq]       <code>string[][]</code> The mcq choices (first dimension for the question number, second dimension for the question choices)<br> [mcq-table] <code>string[]</code>   The common choices for all questions<br> [test]      <code>null</code><br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "modules.solutions",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>int[]</code>   The solutions for each gap (only one per gap)<br> [mcq]       <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [mcq-table] <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [test]      <code>string[]</code>   The solutions for each question<br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "modules.corrections",
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq]       <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq-table] <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [test]      <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "optional": false,
+            "field": "modules.options",
+            "description": "<p>The modules options</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "modules.options.duration",
+            "description": "<p>[test] The test duration (in seconds)</p>"
           }
         ]
       }

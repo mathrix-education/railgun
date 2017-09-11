@@ -2,7 +2,47 @@
  * @apiDefine ModuleData
  * @apiParam (Data) {string} name The module name
  * @apiParam (Data) {string} [slug=slug(name)] The module slug
- * @apiParam (Data) {string} description The module description
+ * @apiParam (Data) {string=course,fill,match,mcq,mcq-table,test} modules.type The module type
+ * @apiParam (Data) {mixed} content
+ *  [course]    `string` The course content<br>
+ *  [fill]      `null`<br>
+ *  [match]     `null`<br>
+ *  [mcq]       `null`<br>
+ *  [mcq-table] `null`<br>
+ *  [test]      `null`<br>
+ * @apiParam (Data) {mixed} questions
+ *  [course]    `null`<br>
+ *  [fill]      `null`<br>
+ *  [match]     `string[]` The static propositions<br>
+ *  [mcq]       `string[]` The mcq questions<br>
+ *  [mcq-table] `string[]` The mcq table questions<br>
+ *  [test]      `string[]` The test questions<br>
+ * @apiParam (Data) {mixed} choices
+ *  [course]    `null`<br>
+ *  [fill]      `string[]`   The gap choices<br>
+ *  [match]     `string[]`   The draggable propositions<br>
+ *  [mcq]       `string[][]` The mcq choices (first dimension for the question number, second dimension for the
+ *                           question choices)<br>
+ *  [mcq-table] `string[]`   The common choices for all questions<br>
+ *  [test]      `null`<br>
+ * @apiParam (Data) {mixed} solutions
+ *  [course]    `null`<br>
+ *  [fill]      `null`<br>
+ *  [match]     `int[]`   The solutions for each gap (only one per gap)<br>
+ *  [mcq]       `int[][]` The solutions for each question (second dimension array represents the right
+ *                           answers)<br>
+ *  [mcq-table] `int[][]` The solutions for each question (second dimension array represents the right
+ *                           answers)<br>
+ *  [test]      `string[]`   The solutions for each question<br>
+ * @apiParam (Data) {mixed} corrections
+ *  [course]    `null`<br>
+ *  [fill]      `null`<br>
+ *  [match]     `string[][]` The corrections for each question (second dimension array represents a step)<br>
+ *  [mcq]       `string[][]` The corrections for each question (second dimension array represents a step)<br>
+ *  [mcq-table] `string[][]` The corrections for each question (second dimension array represents a step)<br>
+ *  [test]      `string[][]` The corrections for each question (second dimension array represents a step)<br>
+ * @apiParam (Data) {mixed} options The modules options
+ * @apiParam (Data) {int} options.duration [test] The test duration (in seconds)
  * @apiParam (Data) {array} link The models to link with the notion
  * @apiParam (Data) {int[]} link.activities The activities ids to link
  * @apiParam (Data) {array} unlink The models to unlink with the notion
@@ -10,16 +50,96 @@
  */
 /**
  * @apiDefine ModuleArray
- * @apiSuccess {Module[]} module Array of modules
+ * @apiSuccess {Module[]} modules Array of modules
  * @apiSuccess {int} modules.id The module id
  * @apiSuccess {string} modules.name The module name
  * @apiSuccess {string} modules.slug The module slug
- * @apiSuccess {string} modules.description The module description
+ * @apiSuccess {string=course,fill,match,mcq,mcq-table,test} modules.type The module type
+ * @apiSuccess {mixed} modules.content
+ *  [course]    `string` The course content<br>
+ *  [fill]      `null`<br>
+ *  [match]     `null`<br>
+ *  [mcq]       `null`<br>
+ *  [mcq-table] `null`<br>
+ *  [test]      `null`<br>
+ * @apiSuccess {mixed} modules.questions
+ *  [course]    `null`<br>
+ *  [fill]      `null`<br>
+ *  [match]     `string[]` The static propositions<br>
+ *  [mcq]       `string[]` The mcq questions<br>
+ *  [mcq-table] `string[]` The mcq table questions<br>
+ *  [test]      `string[]` The test questions<br>
+ * @apiSuccess {mixed} modules.choices
+ *  [course]    `null`<br>
+ *  [fill]      `string[]`   The gap choices<br>
+ *  [match]     `string[]`   The draggable propositions<br>
+ *  [mcq]       `string[][]` The mcq choices (first dimension for the question number, second dimension for the
+ *                           question choices)<br>
+ *  [mcq-table] `string[]`   The common choices for all questions<br>
+ *  [test]      `null`<br>
+ * @apiSuccess {mixed} modules.solutions
+ *  [course]    `null`<br>
+ *  [fill]      `null`<br>
+ *  [match]     `int[]`   The solutions for each gap (only one per gap)<br>
+ *  [mcq]       `int[][]` The solutions for each question (second dimension array represents the right
+ *                           answers)<br>
+ *  [mcq-table] `int[][]` The solutions for each question (second dimension array represents the right
+ *                           answers)<br>
+ *  [test]      `string[]`   The solutions for each question<br>
+ * @apiSuccess {mixed} modules.corrections
+ *  [course]    `null`<br>
+ *  [fill]      `null`<br>
+ *  [match]     `string[][]` The corrections for each question (second dimension array represents a step)<br>
+ *  [mcq]       `string[][]` The corrections for each question (second dimension array represents a step)<br>
+ *  [mcq-table] `string[][]` The corrections for each question (second dimension array represents a step)<br>
+ *  [test]      `string[][]` The corrections for each question (second dimension array represents a step)<br>
+ * @apiSuccess {mixed} modules.options The modules options
+ * @apiSuccess {int} modules.options.duration [test] The test duration (in seconds)
  */
 /**
  * @apiDefine Module
  * @apiSuccess {int} id The module id
  * @apiSuccess {string} name The module name
  * @apiSuccess {string} slug The module slug
- * @apiSuccess {string} description The module description
+ * @apiSuccess {string=course,fill,match,mcq,mcq-table,test} modules.type The module type
+ * @apiSuccess {mixed} content
+ *  [course]    `string` The course content<br>
+ *  [fill]      `null`<br>
+ *  [match]     `null`<br>
+ *  [mcq]       `null`<br>
+ *  [mcq-table] `null`<br>
+ *  [test]      `null`<br>
+ * @apiSuccess {mixed} questions
+ *  [course]    `null`<br>
+ *  [fill]      `null`<br>
+ *  [match]     `string[]` The static propositions<br>
+ *  [mcq]       `string[]` The mcq questions<br>
+ *  [mcq-table] `string[]` The mcq table questions<br>
+ *  [test]      `string[]` The test questions<br>
+ * @apiSuccess {mixed} choices
+ *  [course]    `null`<br>
+ *  [fill]      `string[]`   The gap choices<br>
+ *  [match]     `string[]`   The draggable propositions<br>
+ *  [mcq]       `string[][]` The mcq choices (first dimension for the question number, second dimension for the
+ *                           question choices)<br>
+ *  [mcq-table] `string[]`   The common choices for all questions<br>
+ *  [test]      `null`<br>
+ * @apiSuccess {mixed} solutions
+ *  [course]    `null`<br>
+ *  [fill]      `null`<br>
+ *  [match]     `int[]`   The solutions for each gap (only one per gap)<br>
+ *  [mcq]       `int[][]` The solutions for each question (second dimension array represents the right
+ *                           answers)<br>
+ *  [mcq-table] `int[][]` The solutions for each question (second dimension array represents the right
+ *                           answers)<br>
+ *  [test]      `string[]`   The solutions for each question<br>
+ * @apiSuccess {mixed} corrections
+ *  [course]    `null`<br>
+ *  [fill]      `null`<br>
+ *  [match]     `string[][]` The corrections for each question (second dimension array represents a step)<br>
+ *  [mcq]       `string[][]` The corrections for each question (second dimension array represents a step)<br>
+ *  [mcq-table] `string[][]` The corrections for each question (second dimension array represents a step)<br>
+ *  [test]      `string[][]` The corrections for each question (second dimension array represents a step)<br>
+ * @apiSuccess {mixed} options The modules options
+ * @apiSuccess {int} options.duration [test] The test duration (in seconds)
  */
