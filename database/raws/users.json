@@ -7,7 +7,6 @@
     "password": "test",
     "type": "admin",
     "token": "613dbcf0-5c65-3933-a45c-b12f5375bc28",
-    "facebook_token": null,
     "points": 0,
     "settings": {
       "daily_goal": 0,
@@ -25,7 +24,6 @@
     "password": "test",
     "type": "moderator",
     "token": "2da8c668-2eab-3f5e-9b8a-f0fe13e361aa",
-    "facebook_token": null,
     "points": 0,
     "settings": {
       "daily_goal": 0,
@@ -43,7 +41,6 @@
     "password": "test",
     "type": "premium",
     "token": "78221072-3f63-3cce-aabc-0bd8ba32bbd9",
-    "facebook_token": null,
     "points": 0,
     "settings": {
       "daily_goal": 0,

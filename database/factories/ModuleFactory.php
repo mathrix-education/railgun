@@ -12,6 +12,7 @@ $factory->define(Module::class, function (Generator $faker) {
     return [
         'name' => $name,
         'slug' => str_slug($name),
+        'description' => $faker->sentence()
     ];
 });
 
