@@ -12,6 +12,10 @@ $factory->defineAs(Module::class, 'mcq-table', function (Generator $faker) use (
 
     $data['choices'] = $data['choices'][0];
 
+    foreach ($data['corrections'] as $k => $v) {
+        $data['corrections'][$k] = $v[0];
+    }
+
     foreach ($data['solutions'] as $k => $v) {
         $data['solutions'][$k] = $faker->randomElements(
             array_keys($data['choices']),

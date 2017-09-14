@@ -10,12 +10,9 @@ use Faker\Generator;
 $factory->defineAs(Module::class, 'match', function (Generator $faker) use ($factory) {
     $data = $factory->rawOf(Module::class, 'mcq');
 
-    $data['questions'] = $faker->words(count($data['questions']));
-    $data['choices'] = $faker->words(count($data['questions']));
-
-    $solutions = $data['choices'];
-    shuffle($solutions);
-    $data['solutions'] = array_combine(array_keys($data['questions']), $solutions);
+    foreach ($data['corrections'] as $k => $v) {
+        $data['corrections'][$k] = $v[0];
+    }
 
     $data['type'] = 'match';
 

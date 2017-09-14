@@ -14,6 +14,10 @@ $factory->defineAs(Module::class, 'fill', function (Generator $faker) use ($fact
         $data['solutions'][$k] = $faker->randomElement(array_keys($data['choices'][$k]));
     }
 
+    foreach ($data['corrections'] as $k => $v) {
+        $data['corrections'][$k] = $v[0];
+    }
+
     $data['type'] = 'fill';
 
     return $data;
