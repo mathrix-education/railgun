@@ -2192,35 +2192,35 @@
             "type": "mixed",
             "optional": false,
             "field": "modules.content",
-            "description": "<p>[course]    <code>string</code> The course content<br> [fill]      <code>null</code><br> [match]     <code>null</code><br> [mcq]       <code>null</code><br> [mcq-table] <code>null</code><br> [test]      <code>null</code><br></p>"
+            "description": "<p>[course]    <code>string</code> The course content<br> [fill]      <code>null</code><br> [match]     <code>null</code><br> [mcq]       <code>null</code><br> [mcq-table] <code>null</code><br> [test]      <code>null</code><br> [flashcard] <code>null</code></p>"
           },
           {
             "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "modules.questions",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code> The static propositions<br> [mcq]       <code>string[]</code> The mcq questions<br> [mcq-table] <code>string[]</code> The mcq table questions<br> [test]      <code>string[]</code> The test questions<br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code>   The static propositions<br> [mcq]       <code>string[]</code>   The mcq questions<br> [mcq-table] <code>string[]</code>   The mcq table questions<br> [test]      <code>string[]</code>   The test questions<br> [flashcard] <code>string[]</code>   The test questions</p>"
           },
           {
             "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "modules.choices",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[]</code>   The gap choices<br> [match]     <code>string[]</code>   The draggable propositions<br> [mcq]       <code>string[][]</code> The mcq choices (first dimension for the question number, second dimension for the question choices)<br> [mcq-table] <code>string[]</code>   The common choices for all questions<br> [test]      <code>null</code><br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[][]</code> The gap choices matrix<br> [match]     <code>string[][]</code> The draggable propositions matrix<br> [mcq]       <code>string[][]</code> The mcq choices (first dimension for the question number, second dimension for the question choices)<br> [mcq-table] <code>string[]</code>   The common choices for all questions<br> [test]      <code>null</code><br> [flashcard] <code>null</code></p>"
           },
           {
             "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "modules.solutions",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>int[]</code>   The solutions for each gap (only one per gap)<br> [mcq]       <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [mcq-table] <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [test]      <code>string[]</code>   The solutions for each question<br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>int[]</code>      The solution for each question<br> [match]     <code>int[][]</code>    The solutions matrix<br> [mcq]       <code>int[][]</code>    The solutions for each question (second dimension array represents the right answers)<br> [mcq-table] <code>int[][]</code>    The solutions for each question (second dimension array represents the right answers)<br> [test]      <code>string[]</code>   The solutions for each question<br> [flashcard] <code>null</code><br></p>"
           },
           {
             "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "modules.corrections",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq]       <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq-table] <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [test]      <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[]</code>   The corrections for each question<br> [match]     <code>string[]</code>   The corrections for each question<br> [mcq]       <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq-table] <code>string[]</code>   The corrections for each question (second dimension array represents a step)<br> [test]      <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [flashcard] <code>string[]</code>   The corrections for each question</p>"
           },
           {
             "group": "Success 200",
@@ -3471,35 +3471,35 @@
             "type": "mixed",
             "optional": false,
             "field": "content",
-            "description": "<p>[course]    <code>string</code> The course content<br> [fill]      <code>null</code><br> [match]     <code>null</code><br> [mcq]       <code>null</code><br> [mcq-table] <code>null</code><br> [test]      <code>null</code><br></p>"
+            "description": "<p>[course]    <code>string</code> The course content<br> [fill]      <code>null</code><br> [match]     <code>null</code><br> [mcq]       <code>null</code><br> [mcq-table] <code>null</code><br> [test]      <code>null</code><br> [flashcard] <code>null</code></p>"
           },
           {
             "group": "Data",
             "type": "mixed",
             "optional": false,
             "field": "questions",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code> The static propositions<br> [mcq]       <code>string[]</code> The mcq questions<br> [mcq-table] <code>string[]</code> The mcq table questions<br> [test]      <code>string[]</code> The test questions<br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code>   The static propositions<br> [mcq]       <code>string[]</code>   The mcq questions<br> [mcq-table] <code>string[]</code>   The mcq table questions<br> [test]      <code>string[]</code>   The test questions<br> [flashcard] <code>string[]</code>   The flashcard questions</p>"
           },
           {
             "group": "Data",
             "type": "mixed",
             "optional": false,
             "field": "choices",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[]</code>   The gap choices<br> [match]     <code>string[]</code>   The draggable propositions<br> [mcq]       <code>string[][]</code> The mcq choices (first dimension for the question number, second dimension for the question choices)<br> [mcq-table] <code>string[]</code>   The common choices for all questions<br> [test]      <code>null</code><br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[][]</code> The gap choices matrix<br> [match]     <code>string[][]</code> The draggable propositions matrix<br> [mcq]       <code>string[][]</code> The mcq choices (first dimension for the question number, second dimension for the question choices)<br> [mcq-table] <code>string[]</code>   The common choices for all questions<br> [test]      <code>null</code><br> [flashcard] <code>null</code></p>"
           },
           {
             "group": "Data",
             "type": "mixed",
             "optional": false,
             "field": "solutions",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>int[]</code>   The solutions for each gap (only one per gap)<br> [mcq]       <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [mcq-table] <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [test]      <code>string[]</code>   The solutions for each question<br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>int[]</code>      The solution for each question<br> [match]     <code>int[][]</code>    The solutions matrix<br> [mcq]       <code>int[][]</code>    The solutions for each question (second dimension array represents the right answers)<br> [mcq-table] <code>int[][]</code>    The solutions for each question (second dimension array represents the right answers)<br> [test]      <code>string[]</code>   The solutions for each question<br> [flashcard] <code>null</code></p>"
           },
           {
             "group": "Data",
             "type": "mixed",
             "optional": false,
             "field": "corrections",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq]       <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq-table] <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [test]      <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[]</code>   The corrections for each question<br> [match]     <code>string[]</code>   The corrections for each question<br> [mcq]       <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq-table] <code>string[]</code>   The corrections for each question (second dimension array represents a step)<br> [test]      <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [flashcard] <code>string[]</code>   The corrections for each question</p>"
           },
           {
             "group": "Data",
@@ -3590,35 +3590,35 @@
             "type": "mixed",
             "optional": false,
             "field": "content",
-            "description": "<p>[course]    <code>string</code> The course content<br> [fill]      <code>null</code><br> [match]     <code>null</code><br> [mcq]       <code>null</code><br> [mcq-table] <code>null</code><br> [test]      <code>null</code><br></p>"
+            "description": "<p>[course]    <code>string</code> The course content<br> [fill]      <code>null</code><br> [match]     <code>null</code><br> [mcq]       <code>null</code><br> [mcq-table] <code>null</code><br> [test]      <code>null</code><br> [flashcard] <code>null</code></p>"
           },
           {
             "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "questions",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code> The static propositions<br> [mcq]       <code>string[]</code> The mcq questions<br> [mcq-table] <code>string[]</code> The mcq table questions<br> [test]      <code>string[]</code> The test questions<br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code>   The static propositions<br> [mcq]       <code>string[]</code>   The mcq questions<br> [mcq-table] <code>string[]</code>   The mcq table questions<br> [test]      <code>string[]</code>   The test questions<br> [flashcard] <code>string[]</code>   The flashcard questions</p>"
           },
           {
             "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "choices",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[]</code>   The gap choices<br> [match]     <code>string[]</code>   The draggable propositions<br> [mcq]       <code>string[][]</code> The mcq choices (first dimension for the question number, second dimension for the question choices)<br> [mcq-table] <code>string[]</code>   The common choices for all questions<br> [test]      <code>null</code><br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[][]</code> The gap choices matrix<br> [match]     <code>string[][]</code> The draggable propositions matrix<br> [mcq]       <code>string[][]</code> The mcq choices (first dimension for the question number, second dimension for the question choices)<br> [mcq-table] <code>string[]</code>   The common choices for all questions<br> [test]      <code>null</code><br> [flashcard] <code>null</code></p>"
           },
           {
             "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "solutions",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>int[]</code>   The solutions for each gap (only one per gap)<br> [mcq]       <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [mcq-table] <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [test]      <code>string[]</code>   The solutions for each question<br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>int[]</code>      The solution for each question<br> [match]     <code>int[][]</code>    The solutions matrix<br> [mcq]       <code>int[][]</code>    The solutions for each question (second dimension array represents the right answers)<br> [mcq-table] <code>int[][]</code>    The solutions for each question (second dimension array represents the right answers)<br> [test]      <code>string[]</code>   The solutions for each question<br> [flashcard] <code>null</code></p>"
           },
           {
             "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "corrections",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq]       <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq-table] <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [test]      <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[]</code>   The corrections for each question<br> [match]     <code>string[]</code>   The corrections for each question<br> [mcq]       <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq-table] <code>string[]</code>   The corrections for each question<br> [test]      <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [flashcard] <code>string[]</code>   The corrections for each question</p>"
           },
           {
             "group": "Success 200",
@@ -3786,35 +3786,35 @@
             "type": "mixed",
             "optional": false,
             "field": "content",
-            "description": "<p>[course]    <code>string</code> The course content<br> [fill]      <code>null</code><br> [match]     <code>null</code><br> [mcq]       <code>null</code><br> [mcq-table] <code>null</code><br> [test]      <code>null</code><br></p>"
+            "description": "<p>[course]    <code>string</code> The course content<br> [fill]      <code>null</code><br> [match]     <code>null</code><br> [mcq]       <code>null</code><br> [mcq-table] <code>null</code><br> [test]      <code>null</code><br> [flashcard] <code>null</code></p>"
           },
           {
             "group": "Data",
             "type": "mixed",
             "optional": false,
             "field": "questions",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code> The static propositions<br> [mcq]       <code>string[]</code> The mcq questions<br> [mcq-table] <code>string[]</code> The mcq table questions<br> [test]      <code>string[]</code> The test questions<br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code>   The static propositions<br> [mcq]       <code>string[]</code>   The mcq questions<br> [mcq-table] <code>string[]</code>   The mcq table questions<br> [test]      <code>string[]</code>   The test questions<br> [flashcard] <code>string[]</code>   The flashcard questions</p>"
           },
           {
             "group": "Data",
             "type": "mixed",
             "optional": false,
             "field": "choices",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[]</code>   The gap choices<br> [match]     <code>string[]</code>   The draggable propositions<br> [mcq]       <code>string[][]</code> The mcq choices (first dimension for the question number, second dimension for the question choices)<br> [mcq-table] <code>string[]</code>   The common choices for all questions<br> [test]      <code>null</code><br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[][]</code> The gap choices matrix<br> [match]     <code>string[][]</code> The draggable propositions matrix<br> [mcq]       <code>string[][]</code> The mcq choices (first dimension for the question number, second dimension for the question choices)<br> [mcq-table] <code>string[]</code>   The common choices for all questions<br> [test]      <code>null</code><br> [flashcard] <code>null</code></p>"
           },
           {
             "group": "Data",
             "type": "mixed",
             "optional": false,
             "field": "solutions",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>int[]</code>   The solutions for each gap (only one per gap)<br> [mcq]       <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [mcq-table] <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [test]      <code>string[]</code>   The solutions for each question<br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>int[]</code>      The solution for each question<br> [match]     <code>int[][]</code>    The solutions matrix<br> [mcq]       <code>int[][]</code>    The solutions for each question (second dimension array represents the right answers)<br> [mcq-table] <code>int[][]</code>    The solutions for each question (second dimension array represents the right answers)<br> [test]      <code>string[]</code>   The solutions for each question<br> [flashcard] <code>null</code></p>"
           },
           {
             "group": "Data",
             "type": "mixed",
             "optional": false,
             "field": "corrections",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq]       <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq-table] <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [test]      <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[]</code>   The corrections for each question<br> [match]     <code>string[]</code>   The corrections for each question<br> [mcq]       <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq-table] <code>string[]</code>   The corrections for each question (second dimension array represents a step)<br> [test]      <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [flashcard] <code>string[]</code>   The corrections for each question</p>"
           },
           {
             "group": "Data",
@@ -3920,35 +3920,35 @@
             "type": "mixed",
             "optional": false,
             "field": "content",
-            "description": "<p>[course]    <code>string</code> The course content<br> [fill]      <code>null</code><br> [match]     <code>null</code><br> [mcq]       <code>null</code><br> [mcq-table] <code>null</code><br> [test]      <code>null</code><br></p>"
+            "description": "<p>[course]    <code>string</code> The course content<br> [fill]      <code>null</code><br> [match]     <code>null</code><br> [mcq]       <code>null</code><br> [mcq-table] <code>null</code><br> [test]      <code>null</code><br> [flashcard] <code>null</code></p>"
           },
           {
             "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "questions",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code> The static propositions<br> [mcq]       <code>string[]</code> The mcq questions<br> [mcq-table] <code>string[]</code> The mcq table questions<br> [test]      <code>string[]</code> The test questions<br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code>   The static propositions<br> [mcq]       <code>string[]</code>   The mcq questions<br> [mcq-table] <code>string[]</code>   The mcq table questions<br> [test]      <code>string[]</code>   The test questions<br> [flashcard] <code>string[]</code>   The flashcard questions</p>"
           },
           {
             "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "choices",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[]</code>   The gap choices<br> [match]     <code>string[]</code>   The draggable propositions<br> [mcq]       <code>string[][]</code> The mcq choices (first dimension for the question number, second dimension for the question choices)<br> [mcq-table] <code>string[]</code>   The common choices for all questions<br> [test]      <code>null</code><br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[][]</code> The gap choices matrix<br> [match]     <code>string[][]</code> The draggable propositions matrix<br> [mcq]       <code>string[][]</code> The mcq choices (first dimension for the question number, second dimension for the question choices)<br> [mcq-table] <code>string[]</code>   The common choices for all questions<br> [test]      <code>null</code><br> [flashcard] <code>null</code></p>"
           },
           {
             "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "solutions",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>int[]</code>   The solutions for each gap (only one per gap)<br> [mcq]       <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [mcq-table] <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [test]      <code>string[]</code>   The solutions for each question<br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>int[]</code>      The solution for each question<br> [match]     <code>int[][]</code>    The solutions matrix<br> [mcq]       <code>int[][]</code>    The solutions for each question (second dimension array represents the right answers)<br> [mcq-table] <code>int[][]</code>    The solutions for each question (second dimension array represents the right answers)<br> [test]      <code>string[]</code>   The solutions for each question<br> [flashcard] <code>null</code></p>"
           },
           {
             "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "corrections",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq]       <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq-table] <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [test]      <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[]</code>   The corrections for each question<br> [match]     <code>string[]</code>   The corrections for each question<br> [mcq]       <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq-table] <code>string[]</code>   The corrections for each question<br> [test]      <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [flashcard] <code>string[]</code>   The corrections for each question</p>"
           },
           {
             "group": "Success 200",
@@ -4074,35 +4074,35 @@
             "type": "mixed",
             "optional": false,
             "field": "content",
-            "description": "<p>[course]    <code>string</code> The course content<br> [fill]      <code>null</code><br> [match]     <code>null</code><br> [mcq]       <code>null</code><br> [mcq-table] <code>null</code><br> [test]      <code>null</code><br></p>"
+            "description": "<p>[course]    <code>string</code> The course content<br> [fill]      <code>null</code><br> [match]     <code>null</code><br> [mcq]       <code>null</code><br> [mcq-table] <code>null</code><br> [test]      <code>null</code><br> [flashcard] <code>null</code></p>"
           },
           {
             "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "questions",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code> The static propositions<br> [mcq]       <code>string[]</code> The mcq questions<br> [mcq-table] <code>string[]</code> The mcq table questions<br> [test]      <code>string[]</code> The test questions<br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code>   The static propositions<br> [mcq]       <code>string[]</code>   The mcq questions<br> [mcq-table] <code>string[]</code>   The mcq table questions<br> [test]      <code>string[]</code>   The test questions<br> [flashcard] <code>string[]</code>   The flashcard questions</p>"
           },
           {
             "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "choices",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[]</code>   The gap choices<br> [match]     <code>string[]</code>   The draggable propositions<br> [mcq]       <code>string[][]</code> The mcq choices (first dimension for the question number, second dimension for the question choices)<br> [mcq-table] <code>string[]</code>   The common choices for all questions<br> [test]      <code>null</code><br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[][]</code> The gap choices matrix<br> [match]     <code>string[][]</code> The draggable propositions matrix<br> [mcq]       <code>string[][]</code> The mcq choices (first dimension for the question number, second dimension for the question choices)<br> [mcq-table] <code>string[]</code>   The common choices for all questions<br> [test]      <code>null</code><br> [flashcard] <code>null</code></p>"
           },
           {
             "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "solutions",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>int[]</code>   The solutions for each gap (only one per gap)<br> [mcq]       <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [mcq-table] <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [test]      <code>string[]</code>   The solutions for each question<br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>int[]</code>      The solution for each question<br> [match]     <code>int[][]</code>    The solutions matrix<br> [mcq]       <code>int[][]</code>    The solutions for each question (second dimension array represents the right answers)<br> [mcq-table] <code>int[][]</code>    The solutions for each question (second dimension array represents the right answers)<br> [test]      <code>string[]</code>   The solutions for each question<br> [flashcard] <code>null</code></p>"
           },
           {
             "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "corrections",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq]       <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq-table] <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [test]      <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[]</code>   The corrections for each question<br> [match]     <code>string[]</code>   The corrections for each question<br> [mcq]       <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq-table] <code>string[]</code>   The corrections for each question<br> [test]      <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [flashcard] <code>string[]</code>   The corrections for each question</p>"
           },
           {
             "group": "Success 200",
@@ -4200,35 +4200,35 @@
             "type": "mixed",
             "optional": false,
             "field": "modules.content",
-            "description": "<p>[course]    <code>string</code> The course content<br> [fill]      <code>null</code><br> [match]     <code>null</code><br> [mcq]       <code>null</code><br> [mcq-table] <code>null</code><br> [test]      <code>null</code><br></p>"
+            "description": "<p>[course]    <code>string</code> The course content<br> [fill]      <code>null</code><br> [match]     <code>null</code><br> [mcq]       <code>null</code><br> [mcq-table] <code>null</code><br> [test]      <code>null</code><br> [flashcard] <code>null</code></p>"
           },
           {
             "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "modules.questions",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code> The static propositions<br> [mcq]       <code>string[]</code> The mcq questions<br> [mcq-table] <code>string[]</code> The mcq table questions<br> [test]      <code>string[]</code> The test questions<br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code>   The static propositions<br> [mcq]       <code>string[]</code>   The mcq questions<br> [mcq-table] <code>string[]</code>   The mcq table questions<br> [test]      <code>string[]</code>   The test questions<br> [flashcard] <code>string[]</code>   The test questions</p>"
           },
           {
             "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "modules.choices",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[]</code>   The gap choices<br> [match]     <code>string[]</code>   The draggable propositions<br> [mcq]       <code>string[][]</code> The mcq choices (first dimension for the question number, second dimension for the question choices)<br> [mcq-table] <code>string[]</code>   The common choices for all questions<br> [test]      <code>null</code><br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[][]</code> The gap choices matrix<br> [match]     <code>string[][]</code> The draggable propositions matrix<br> [mcq]       <code>string[][]</code> The mcq choices (first dimension for the question number, second dimension for the question choices)<br> [mcq-table] <code>string[]</code>   The common choices for all questions<br> [test]      <code>null</code><br> [flashcard] <code>null</code></p>"
           },
           {
             "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "modules.solutions",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>int[]</code>   The solutions for each gap (only one per gap)<br> [mcq]       <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [mcq-table] <code>int[][]</code> The solutions for each question (second dimension array represents the right answers)<br> [test]      <code>string[]</code>   The solutions for each question<br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>int[]</code>      The solution for each question<br> [match]     <code>int[][]</code>    The solutions matrix<br> [mcq]       <code>int[][]</code>    The solutions for each question (second dimension array represents the right answers)<br> [mcq-table] <code>int[][]</code>    The solutions for each question (second dimension array represents the right answers)<br> [test]      <code>string[]</code>   The solutions for each question<br> [flashcard] <code>null</code><br></p>"
           },
           {
             "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "modules.corrections",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq]       <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq-table] <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [test]      <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br></p>"
+            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[]</code>   The corrections for each question<br> [match]     <code>string[]</code>   The corrections for each question<br> [mcq]       <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq-table] <code>string[]</code>   The corrections for each question (second dimension array represents a step)<br> [test]      <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [flashcard] <code>string[]</code>   The corrections for each question</p>"
           },
           {
             "group": "Success 200",

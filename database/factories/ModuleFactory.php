@@ -23,6 +23,7 @@ $factory->defineAs(Module::class, 'random', function (Generator $faker) use ($fa
         'match',
         'mcq',
         'mcq-table',
-        'test'
+        'test',
+        'flashcard'
     ]));
 });
