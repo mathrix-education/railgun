@@ -19,11 +19,13 @@ use Mathrix\Lumen\Models\BaseModel;
  * @method static Builder|Discipline whereId($value)
  * @method static Builder|Discipline whereName($value)
  * @method static Builder|Discipline whereSlug($value)
+ * @mixin \Eloquent
  */
 class Discipline extends BaseModel
 {
     /** @var array The fillable attributes*/
     protected $fillable = ['name', 'slug'];
+
 
     /*
     |--------------------------------------------------------------------------
@@ -36,7 +38,7 @@ class Discipline extends BaseModel
      */
     public function chapters(): HasMany
     {
-        return $this->hasMany('App\Models\Chapter');
+        return $this->hasMany(Chapter::class);
     }
 
     /**
@@ -45,6 +47,6 @@ class Discipline extends BaseModel
      */
     public function classes(): BelongsToMany
     {
-        return $this->belongsToMany('App\Models\Class_', 'class_discipline', 'class_id');
+        return $this->belongsToMany(Class_::class, 'class_discipline', 'class_id');
     }
 }

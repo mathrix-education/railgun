@@ -31,6 +31,11 @@ class CreateActivityNotionTable extends Migration
      */
     public function down()
     {
+        Schema::table('activity_notion', function (Blueprint $table) {
+            $table->dropForeign('activity_notion_activity_id_foreign');
+            $table->dropForeign('activity_notion_notion_id_foreign');
+        });
+
         Schema::dropIfExists('activity_notion');
     }
 }

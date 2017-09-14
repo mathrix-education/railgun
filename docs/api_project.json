@@ -61,14 +61,26 @@
     "ModuleGet",
     "ModuleAdd",
     "ModuleEdit",
-    "ModuleDelete"
+    "ModuleDelete",
+    "Posts",
+    "PostsIndex",
+    "PostGet",
+    "PostAdd",
+    "PostEdit",
+    "PostDelete",
+    "Comments",
+    "CommentsIndex",
+    "CommentGet",
+    "CommentAdd",
+    "CommentEdit",
+    "CommentDelete"
   ],
   "sampleUrl": false,
   "defaultVersion": "0.0.0",
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2017-09-14T17:12:10.355Z",
+    "time": "2017-09-14T23:41:07.088Z",
     "url": "http://apidocjs.com",
     "version": "0.17.6"
   }

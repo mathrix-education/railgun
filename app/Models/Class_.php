@@ -32,6 +32,7 @@ use Mathrix\Lumen\Models\BaseModel;
  * @method static Builder|Class_ whereParentId($value)
  * @method static Builder|Class_ whereSlug($value)
  * @method static Builder|Class_ whereSlugShort($value)
+ * @mixin \Eloquent
  */
 class Class_ extends BaseModel
 {
@@ -49,6 +50,7 @@ class Class_ extends BaseModel
         'slug_short' => 'required|max:255',
         'country_id' => 'required|exists:countries,id',
     ];
+
 
     /*
     |--------------------------------------------------------------------------
@@ -72,7 +74,7 @@ class Class_ extends BaseModel
      */
     public function country(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Country');
+        return $this->belongsTo(Country::class);
     }
 
     /**
@@ -82,7 +84,7 @@ class Class_ extends BaseModel
      */
     public function disciplines(): BelongsToMany
     {
-        return $this->belongsToMany('App\Models\Discipline', 'class_discipline', 'class_id');
+        return $this->belongsToMany(Discipline::class, 'class_discipline', 'class_id');
     }
 
     /**
@@ -92,6 +94,6 @@ class Class_ extends BaseModel
      */
     public function users(): HasMany
     {
-        return $this->hasMany('App\Models\User');
+        return $this->hasMany(User::class);
     }
 }

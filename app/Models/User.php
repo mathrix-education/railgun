@@ -42,6 +42,8 @@ use Mathrix\Lumen\Models\BaseModel;
  * @method static Builder|User whereSettings($value)
  * @method static Builder|User whereType($value)
  * @method static Builder|User whereUsername($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereToken($value)
+ * @mixin \Eloquent
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
@@ -93,7 +95,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function class_(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Class_');
+        return $this->belongsTo(Class_::class);
     }
 
 }

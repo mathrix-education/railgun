@@ -172,3 +172,37 @@ $app->group(['prefix' => 'modules'], function () use ($app) {
         $app->delete('{id:[0-9]+}', 'ModuleController@delete');
     });
 });
+
+
+/*
+|--------------------------------------------------------------------------
+| Posts
+|--------------------------------------------------------------------------
+*/
+$app->group(['prefix' => 'posts'], function () use ($app) {
+    $app->get('', 'PostController@index');
+    $app->get('{id:[0-9]+}', 'PostController@get');
+
+    $app->group(['middleware' => 'auth:api'], function () use ($app) {
+        $app->post('', 'PostController@add');
+        $app->patch('{id:[0-9]+}', 'PostController@edit');
+        $app->delete('{id:[0-9]+}', 'PostController@delete');
+    });
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| Comments
+|--------------------------------------------------------------------------
+*/
+$app->group(['prefix' => 'comments'], function () use ($app) {
+    $app->get('', 'CommentController@index');
+    $app->get('{id:[0-9]+}', 'CommentController@get');
+
+    $app->group(['middleware' => 'auth:api'], function () use ($app) {
+        $app->post('', 'CommentController@add');
+        $app->patch('{id:[0-9]+}', 'CommentController@edit');
+        $app->delete('{id:[0-9]+}', 'CommentController@delete');
+    });
+});

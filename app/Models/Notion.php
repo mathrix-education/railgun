@@ -21,6 +21,7 @@ use Mathrix\Lumen\Models\BaseModel;
  * @method static Builder|Notion whereId($value)
  * @method static Builder|Notion whereName($value)
  * @method static Builder|Notion whereSlug($value)
+ * @mixin \Eloquent
  */
 class Notion extends BaseModel
 {
@@ -34,6 +35,7 @@ class Notion extends BaseModel
         'chapter_id' => 'required|exists:chapters,id'
     ];
 
+
     /*
     |--------------------------------------------------------------------------
     | Relations
@@ -45,7 +47,7 @@ class Notion extends BaseModel
      */
     public function activities(): BelongsToMany
     {
-        return $this->belongsToMany('App\Models\Activity');
+        return $this->belongsToMany(Activity::class);
     }
 
     /**
@@ -54,6 +56,6 @@ class Notion extends BaseModel
      */
     public function chapter(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Chapter');
+        return $this->belongsTo(Chapter::class);
     }
 }

@@ -35,6 +35,11 @@ class CreateClassesTable extends Migration
      */
     public function down()
     {
+        Schema::table('classes', function (Blueprint $table) {
+            $table->dropForeign('classes_parent_id_foreign');
+            $table->dropForeign('classes_country_id_foreign');
+        });
+
         Schema::dropIfExists('classes');
     }
 }

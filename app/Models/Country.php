@@ -21,6 +21,7 @@ use Mathrix\Lumen\Models\BaseModel;
  * @method static Builder|Country whereNameShort($value)
  * @method static Builder|Country whereSlug($value)
  * @method static Builder|Country whereSlugShort($value)
+ * @mixin \Eloquent
  */
 class Country extends BaseModel
 {
@@ -35,6 +36,7 @@ class Country extends BaseModel
         'slug_short' => 'required|max:255',
     ];
 
+
     /*
     |--------------------------------------------------------------------------
     | Relations
@@ -47,7 +49,7 @@ class Country extends BaseModel
      */
     public function classes(): HasMany
     {
-        return $this->hasMany('App\Models\Class_');
+        return $this->hasMany(Class_::class);
     }
 
 }

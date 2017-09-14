@@ -31,6 +31,10 @@ class CreateNotionsTable extends Migration
      */
     public function down()
     {
+        Schema::table('notions', function (Blueprint $table) {
+            $table->dropForeign('notions_chapter_id_foreign');
+        });
+
         Schema::dropIfExists('notions');
     }
 }

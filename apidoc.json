@@ -61,6 +61,18 @@
     "ModuleGet",
     "ModuleAdd",
     "ModuleEdit",
-    "ModuleDelete"
+    "ModuleDelete",
+    "Posts",
+    "PostsIndex",
+    "PostGet",
+    "PostAdd",
+    "PostEdit",
+    "PostDelete",
+    "Comments",
+    "CommentsIndex",
+    "CommentGet",
+    "CommentAdd",
+    "CommentEdit",
+    "CommentDelete"
   ]
 }
