@@ -2,7 +2,7 @@
  * @apiDefine ModuleData
  * @apiParam (Data) {string} name The module name
  * @apiParam (Data) {string} [slug=slug(name)] The module slug
- * @apiParam (Data) {string=course,fill,match,mcq,mcq-table,test} modules.type The module type
+ * @apiParam (Data) {string=course,fill,match,mcq,mcq-table,test,flashcard}} modules.type The module type
  * @apiParam (Data) {mixed} content
  *  [course]    `string` The course content<br>
  *  [fill]      `null`<br>
@@ -59,7 +59,7 @@
  * @apiSuccess {int} modules.id The module id
  * @apiSuccess {string} modules.name The module name
  * @apiSuccess {string} modules.slug The module slug
- * @apiSuccess {string=course,fill,match,mcq,mcq-table,test} modules.type The module type
+ * @apiSuccess {string=course,fill,match,mcq,mcq-table,test,flashcard} modules.type The module type
  * @apiSuccess {mixed} modules.content
  *  [course]    `string` The course content<br>
  *  [fill]      `null`<br>
@@ -111,7 +111,7 @@
  * @apiSuccess {int} id The module id
  * @apiSuccess {string} name The module name
  * @apiSuccess {string} slug The module slug
- * @apiSuccess {string=course,fill,match,mcq,mcq-table,test} modules.type The module type
+ * @apiSuccess {string=course,fill,match,mcq,mcq-table,test,flashcard} modules.type The module type
  * @apiSuccess {mixed} content
  *  [course]    `string` The course content<br>
  *  [fill]      `null`<br>

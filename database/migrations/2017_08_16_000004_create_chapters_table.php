@@ -33,6 +33,11 @@ class CreateChaptersTable extends Migration
      */
     public function down()
     {
+        Schema::table('chapters', function (Blueprint $table) {
+            $table->dropForeign('chapters_class_id_foreign');
+            $table->dropForeign('chapters_discipline_id_foreign');
+        });
+
         Schema::dropIfExists('chapters');
     }
 }

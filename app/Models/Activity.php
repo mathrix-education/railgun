@@ -20,6 +20,7 @@ use Mathrix\Lumen\Models\BaseModel;
  * @method static Builder|Activity whereId($value)
  * @method static Builder|Activity whereName($value)
  * @method static Builder|Activity whereSlug($value)
+ * @mixin \Eloquent
  */
 class Activity extends BaseModel
 {
@@ -41,6 +42,7 @@ class Activity extends BaseModel
         'description' => 'required|max:255'
     ];
 
+
     /*
     |--------------------------------------------------------------------------
     | Relations
@@ -52,7 +54,7 @@ class Activity extends BaseModel
      */
     public function modules(): BelongsToMany
     {
-        return $this->belongsToMany('App\Models\Module');
+        return $this->belongsToMany(Module::class);
     }
 
     /**
@@ -61,6 +63,6 @@ class Activity extends BaseModel
      */
     public function notions(): BelongsToMany
     {
-        return $this->belongsToMany('App\Models\Notion');
+        return $this->belongsToMany(Notion::class);
     }
 }

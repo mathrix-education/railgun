@@ -1974,6 +1974,723 @@ define({ "api": [
   },
   {
     "version": "1.0.0",
+    "type": "post",
+    "url": "/comments",
+    "title": "Add",
+    "group": "Comments",
+    "name": "CommentAdd",
+    "description": "<p>Add class</p>",
+    "permission": [
+      {
+        "name": "student"
+      }
+    ],
+    "filename": "app/Http/Controllers/CommentController.php",
+    "groupTitle": "Comments",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Data": [
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "content",
+            "description": "<p>The comment content</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": true,
+            "field": "parent_id",
+            "defaultValue": "null",
+            "description": "<p>The comment parent id (null for level 0)</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": true,
+            "field": "user_id",
+            "description": "<p>The comment user_id (if not specified, use the current user id)</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": false,
+            "field": "commentable_id",
+            "description": "<p>The commented model id</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "allowedValues": [
+              "module",
+              "post",
+              "course"
+            ],
+            "optional": false,
+            "field": "commentable_type",
+            "description": "<p>The commented model type</p>"
+          },
+          {
+            "group": "Data",
+            "type": "datetime",
+            "optional": true,
+            "field": "created_at",
+            "description": "<p>The created date (moderator access)</p>"
+          },
+          {
+            "group": "Data",
+            "type": "datetime",
+            "optional": true,
+            "field": "updated_at",
+            "description": "<p>The updated date (moderator access)</p>"
+          },
+          {
+            "group": "Data",
+            "type": "datetime",
+            "optional": true,
+            "field": "deleted_at",
+            "description": "<p>The deleted date (moderator access)</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The comment id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "content",
+            "description": "<p>The comment content</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": true,
+            "field": "parent_id",
+            "defaultValue": "null",
+            "description": "<p>The comment parent id (null for level 0)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>The comment user_id (if not specified, use the current user id)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "commentable_id",
+            "description": "<p>The commented model id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "allowedValues": [
+              "module",
+              "post",
+              "course"
+            ],
+            "optional": false,
+            "field": "commentable_type",
+            "description": "<p>The commented model type</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>The created date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>The updated date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "deleted_at",
+            "description": "<p>The deleted date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Comment[]",
+            "optional": false,
+            "field": "children",
+            "description": "<p>The comment children</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 422": [
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "validation",
+            "description": "<p>data failed to pass validation</p>"
+          },
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "save",
+            "description": "<p>Save failed</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "delete",
+    "url": "/comments/{id}",
+    "title": "Delete",
+    "group": "Comments",
+    "name": "CommentDelete",
+    "description": "<p>Delete a comment and its children</p>",
+    "permission": [
+      {
+        "name": "moderator"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The comment id</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/CommentController.php",
+    "groupTitle": "Comments",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "patch",
+    "url": "/comments/{id}",
+    "title": "Edit",
+    "group": "Comments",
+    "name": "CommentEdit",
+    "description": "<p>Edit a class</p>",
+    "permission": [
+      {
+        "name": "student for own comment, moderator for others"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The comment id</p>"
+          }
+        ],
+        "Data": [
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "content",
+            "description": "<p>The comment content</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": true,
+            "field": "parent_id",
+            "defaultValue": "null",
+            "description": "<p>The comment parent id (null for level 0)</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": true,
+            "field": "user_id",
+            "description": "<p>The comment user_id (if not specified, use the current user id)</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": false,
+            "field": "commentable_id",
+            "description": "<p>The commented model id</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "allowedValues": [
+              "module",
+              "post",
+              "course"
+            ],
+            "optional": false,
+            "field": "commentable_type",
+            "description": "<p>The commented model type</p>"
+          },
+          {
+            "group": "Data",
+            "type": "datetime",
+            "optional": true,
+            "field": "created_at",
+            "description": "<p>The created date (moderator access)</p>"
+          },
+          {
+            "group": "Data",
+            "type": "datetime",
+            "optional": true,
+            "field": "updated_at",
+            "description": "<p>The updated date (moderator access)</p>"
+          },
+          {
+            "group": "Data",
+            "type": "datetime",
+            "optional": true,
+            "field": "deleted_at",
+            "description": "<p>The deleted date (moderator access)</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/CommentController.php",
+    "groupTitle": "Comments",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The comment id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "content",
+            "description": "<p>The comment content</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": true,
+            "field": "parent_id",
+            "defaultValue": "null",
+            "description": "<p>The comment parent id (null for level 0)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>The comment user_id (if not specified, use the current user id)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "commentable_id",
+            "description": "<p>The commented model id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "allowedValues": [
+              "module",
+              "post",
+              "course"
+            ],
+            "optional": false,
+            "field": "commentable_type",
+            "description": "<p>The commented model type</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>The created date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>The updated date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "deleted_at",
+            "description": "<p>The deleted date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Comment[]",
+            "optional": false,
+            "field": "children",
+            "description": "<p>The comment children</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ],
+        "Error 422": [
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "save",
+            "description": "<p>Save failed</p>"
+          },
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "validation",
+            "description": "<p>data failed to pass validation</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/comments/{id}",
+    "title": "Get",
+    "group": "Comments",
+    "name": "CommentGet",
+    "description": "<p>Get a class by id</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The class id</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/CommentController.php",
+    "groupTitle": "Comments",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The comment id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "content",
+            "description": "<p>The comment content</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": true,
+            "field": "parent_id",
+            "defaultValue": "null",
+            "description": "<p>The comment parent id (null for level 0)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>The comment user_id (if not specified, use the current user id)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "commentable_id",
+            "description": "<p>The commented model id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "allowedValues": [
+              "module",
+              "post",
+              "course"
+            ],
+            "optional": false,
+            "field": "commentable_type",
+            "description": "<p>The commented model type</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>The created date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>The updated date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "deleted_at",
+            "description": "<p>The deleted date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Comment[]",
+            "optional": false,
+            "field": "children",
+            "description": "<p>The comment children</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/comments",
+    "title": "Index",
+    "group": "Comments",
+    "name": "CommentsIndex",
+    "description": "<p>Retrieve comments</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "filename": "app/Http/Controllers/CommentController.php",
+    "groupTitle": "Comments",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Comment[]",
+            "optional": false,
+            "field": "comments",
+            "description": "<p>Array of countries</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "comments.id",
+            "description": "<p>The comment id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "comments.content",
+            "description": "<p>The comment content</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": true,
+            "field": "comments.parent_id",
+            "defaultValue": "null",
+            "description": "<p>The comment parent id (null for level 0)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "comments.user_id",
+            "description": "<p>The comment user_id (if not specified, use the current user id)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "comments.commentable_id",
+            "description": "<p>The commented model id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "allowedValues": [
+              "module",
+              "post",
+              "course"
+            ],
+            "optional": false,
+            "field": "comments.commentable_type",
+            "description": "<p>The commented model type</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "comments.created_at",
+            "description": "<p>The created date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "comments.updated_at",
+            "description": "<p>The updated date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "comments.deleted_at",
+            "description": "<p>The deleted date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Comment[]",
+            "optional": false,
+            "field": "comments.children",
+            "description": "<p>The comment children</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
     "type": "get",
     "url": "/content/countries",
     "title": "Countries",
@@ -2181,7 +2898,8 @@ define({ "api": [
               "match",
               "mcq",
               "mcq-table",
-              "test"
+              "test",
+              "flashcard"
             ],
             "optional": false,
             "field": "modules.type",
@@ -3460,7 +4178,8 @@ define({ "api": [
               "match",
               "mcq",
               "mcq-table",
-              "test"
+              "test",
+              "flashcard}"
             ],
             "optional": false,
             "field": "modules.type",
@@ -3579,7 +4298,8 @@ define({ "api": [
               "match",
               "mcq",
               "mcq-table",
-              "test"
+              "test",
+              "flashcard"
             ],
             "optional": false,
             "field": "modules.type",
@@ -3775,7 +4495,8 @@ define({ "api": [
               "match",
               "mcq",
               "mcq-table",
-              "test"
+              "test",
+              "flashcard}"
             ],
             "optional": false,
             "field": "modules.type",
@@ -3909,7 +4630,8 @@ define({ "api": [
               "match",
               "mcq",
               "mcq-table",
-              "test"
+              "test",
+              "flashcard"
             ],
             "optional": false,
             "field": "modules.type",
@@ -4063,7 +4785,8 @@ define({ "api": [
               "match",
               "mcq",
               "mcq-table",
-              "test"
+              "test",
+              "flashcard"
             ],
             "optional": false,
             "field": "modules.type",
@@ -4117,6 +4840,89 @@ define({ "api": [
             "optional": false,
             "field": "options.duration",
             "description": "<p>[test] The test duration (in seconds)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Comment[]",
+            "optional": false,
+            "field": "comments",
+            "description": "<p>Array of countries</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "comments.id",
+            "description": "<p>The comment id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "comments.content",
+            "description": "<p>The comment content</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": true,
+            "field": "comments.parent_id",
+            "defaultValue": "null",
+            "description": "<p>The comment parent id (null for level 0)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "comments.user_id",
+            "description": "<p>The comment user_id (if not specified, use the current user id)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "comments.commentable_id",
+            "description": "<p>The commented model id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "allowedValues": [
+              "module",
+              "post",
+              "course"
+            ],
+            "optional": false,
+            "field": "comments.commentable_type",
+            "description": "<p>The commented model type</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "comments.created_at",
+            "description": "<p>The created date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "comments.updated_at",
+            "description": "<p>The updated date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "comments.deleted_at",
+            "description": "<p>The deleted date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Comment[]",
+            "optional": false,
+            "field": "comments.children",
+            "description": "<p>The comment children</p>"
           }
         ]
       }
@@ -4189,7 +4995,8 @@ define({ "api": [
               "match",
               "mcq",
               "mcq-table",
-              "test"
+              "test",
+              "flashcard"
             ],
             "optional": false,
             "field": "modules.type",
@@ -4744,6 +5551,613 @@ define({ "api": [
             "optional": false,
             "field": "chapter_id",
             "description": "<p>The notion chapter_id</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "post",
+    "url": "/posts",
+    "title": "Add",
+    "group": "Posts",
+    "name": "PostAdd",
+    "description": "<p>Add a post</p>",
+    "permission": [
+      {
+        "name": "moderator"
+      }
+    ],
+    "filename": "app/Http/Controllers/PostController.php",
+    "groupTitle": "Posts",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Data": [
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "title",
+            "description": "<p>The post title</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": true,
+            "field": "slug",
+            "defaultValue": "slug(title)",
+            "description": "<p>The post title</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "content",
+            "description": "<p>The post content</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": false,
+            "field": "category_id",
+            "description": "<p>The post category id</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>The post user id</p>"
+          },
+          {
+            "group": "Data",
+            "type": "datetime",
+            "optional": true,
+            "field": "created_at",
+            "description": "<p>The post created date</p>"
+          },
+          {
+            "group": "Data",
+            "type": "datetime",
+            "optional": true,
+            "field": "updated_at",
+            "description": "<p>The post updated date</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "title",
+            "description": "<p>The post title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The post title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "content",
+            "description": "<p>The post content</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "category_id",
+            "description": "<p>The post category id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>The post user id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>The post created date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>The post updated date</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 422": [
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "validation",
+            "description": "<p>data failed to pass validation</p>"
+          },
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "save",
+            "description": "<p>Save failed</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "delete",
+    "url": "/posts/{id}",
+    "title": "Delete",
+    "group": "Posts",
+    "name": "PostDelete",
+    "description": "<p>Delete a post</p>",
+    "permission": [
+      {
+        "name": "moderator"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The post id</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/PostController.php",
+    "groupTitle": "Posts",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "patch",
+    "url": "/posts/{id}",
+    "title": "Edit",
+    "group": "Posts",
+    "name": "PostEdit",
+    "description": "<p>Edit a post</p>",
+    "permission": [
+      {
+        "name": "moderator"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The post id</p>"
+          }
+        ],
+        "Data": [
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "title",
+            "description": "<p>The post title</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": true,
+            "field": "slug",
+            "defaultValue": "slug(title)",
+            "description": "<p>The post title</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "content",
+            "description": "<p>The post content</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": false,
+            "field": "category_id",
+            "description": "<p>The post category id</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>The post user id</p>"
+          },
+          {
+            "group": "Data",
+            "type": "datetime",
+            "optional": true,
+            "field": "created_at",
+            "description": "<p>The post created date</p>"
+          },
+          {
+            "group": "Data",
+            "type": "datetime",
+            "optional": true,
+            "field": "updated_at",
+            "description": "<p>The post updated date</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/PostController.php",
+    "groupTitle": "Posts",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "title",
+            "description": "<p>The post title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The post title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "content",
+            "description": "<p>The post content</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "category_id",
+            "description": "<p>The post category id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>The post user id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>The post created date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>The post updated date</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ],
+        "Error 422": [
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "save",
+            "description": "<p>Save failed</p>"
+          },
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "validation",
+            "description": "<p>data failed to pass validation</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/posts/{id}",
+    "title": "Get",
+    "group": "Posts",
+    "name": "PostGet",
+    "description": "<p>Get a post by id</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The post id</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/PostController.php",
+    "groupTitle": "Posts",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "title",
+            "description": "<p>The post title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The post title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "content",
+            "description": "<p>The post content</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "category_id",
+            "description": "<p>The post category id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>The post user id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>The post created date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>The post updated date</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/posts",
+    "title": "Index",
+    "group": "Posts",
+    "name": "PostsIndex",
+    "description": "<p>Retrieve posts</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": true,
+            "field": "page",
+            "defaultValue": "1",
+            "description": "<p>The page number</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": true,
+            "field": "perPage",
+            "defaultValue": "10",
+            "description": "<p>The post count per page</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/PostController.php",
+    "groupTitle": "Posts",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Post[]",
+            "optional": false,
+            "field": "posts",
+            "description": "<p>Array of posts</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "posts.title",
+            "description": "<p>The post title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "posts.slug",
+            "description": "<p>The post title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "posts.content",
+            "description": "<p>The post content</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "posts.category_id",
+            "description": "<p>The post category id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "posts.user_id",
+            "description": "<p>The post user id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "posts.created_at",
+            "description": "<p>The post created date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "posts.updated_at",
+            "description": "<p>The post updated date</p>"
           }
         ]
       }

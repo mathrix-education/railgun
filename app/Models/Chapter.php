@@ -24,6 +24,7 @@ use Mathrix\Lumen\Models\BaseModel;
  * @method static Builder|Chapter whereId($value)
  * @method static Builder|Chapter whereName($value)
  * @method static Builder|Chapter whereSlug($value)
+ * @mixin \Eloquent
  */
 class Chapter extends BaseModel
 {
@@ -38,6 +39,7 @@ class Chapter extends BaseModel
         'discipline_id' => 'required|exists:disciplines,id',
     ];
 
+
     /*
     |--------------------------------------------------------------------------
     | Relations
@@ -50,7 +52,7 @@ class Chapter extends BaseModel
      */
     public function class_(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Class_');
+        return $this->belongsTo(Class_::class);
     }
 
 
@@ -61,7 +63,7 @@ class Chapter extends BaseModel
      */
     public function discipline(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Discipline');
+        return $this->belongsTo(Discipline::class);
     }
 
 
@@ -72,6 +74,6 @@ class Chapter extends BaseModel
      */
     public function notions(): HasMany
     {
-        return $this->hasMany('App\Models\Notion');
+        return $this->hasMany(Notion::class);
     }
 }

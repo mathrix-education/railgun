@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Mathrix\Lumen\Http\Controllers\BaseController;
 
 /**
- * Chapter ChapterController
+ * Class ChapterController
  *
  * @author Mathrix Team
  * @package App\Http\Controllers

@@ -2,6 +2,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Module;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mathrix\Lumen\Http\Controllers\BaseController;
@@ -40,6 +42,7 @@ class ModuleController extends BaseController
      * @apiPermission public
      * @apiParam {int} id The module id
      * @apiUse Module
+     * @apiUse CommentArray
      * @apiUse 404ModelNotFound
      *
      * @param int $id
@@ -48,7 +51,17 @@ class ModuleController extends BaseController
      */
     public function get(int $id)
     {
-        $module = Module::where('id', $id)->firstOrFail();
+        $module = Module::where('id', $id)->with([
+            'comments' => function (MorphMany $query) use ($id) {
+                $query->getQuery()
+                    ->where('commentable_id', '=', $id)
+                    ->where('commentable_type', '=', 'module')
+                    ->orderByDesc('created_at');
+            },
+            'comments.children' => function(HasMany $query) {
+                $query->getQuery()->orderBy('created_at');
+            }
+        ])->firstOrFail();
 
         return $this->http200Success($module);
     }

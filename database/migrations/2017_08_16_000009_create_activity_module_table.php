@@ -31,6 +31,11 @@ class CreateActivityModuleTable extends Migration
      */
     public function down()
     {
+        Schema::table('activity_module', function (Blueprint $table) {
+            $table->dropForeign('activity_module_activity_id_foreign');
+            $table->dropForeign('activity_module_module_id_foreign');
+        });
+
         Schema::dropIfExists('activity_module');
     }
 }

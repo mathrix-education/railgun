@@ -31,6 +31,11 @@ class CreateClassDisciplineTable extends Migration
      */
     public function down()
     {
+        Schema::table('class_discipline', function (Blueprint $table) {
+            $table->dropForeign('class_discipline_class_id_foreign');
+            $table->dropForeign('class_discipline_discipline_id_foreign');
+        });
+
         Schema::dropIfExists('class_discipline');
     }
 }
