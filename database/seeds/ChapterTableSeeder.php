@@ -3,12 +3,11 @@ use App\Models\Chapter;
 use Illuminate\Support\Facades\DB;
 use Mathrix\Lumen\Database\BaseTableSeeder;
 
-
 class ChapterTableSeeder extends BaseTableSeeder
 {
     public function run()
     {
-        $this->println('<info>Seeding</info> chapters from factory');
+        $this->println('<comment>Seeding:</comment> chapters from factory');
 
         $class_discipline = DB::table('class_discipline')->get()->toArray();
 
@@ -18,5 +17,7 @@ class ChapterTableSeeder extends BaseTableSeeder
                 'discipline_id' => $v->discipline_id
             ]);
         }
+
+        $this->println('<info>Seeded:</info>  chapters from factory');
     }
 }

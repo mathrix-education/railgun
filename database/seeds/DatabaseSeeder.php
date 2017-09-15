@@ -29,18 +29,19 @@ class DatabaseSeeder extends BaseTableSeeder
     public function run()
     {
         // Main site
+        $this->seedFromJson('oauth_clients');
         $this->seedFromJson('countries');
         $this->seedFromJson('classes');
         $this->seedFromJson('disciplines');
-
         $this->seedFromJson('class_discipline');
+
         $this->call(ChapterTableSeeder::class);
         $this->call(NotionTableSeeder::class);
         $this->call(ActivityTableSeeder::class);
         $this->call(ModuleTableSeeder::class);
-        //$this->call(ContentSeeder::class);
-
         $this->call(UserTableSeeder::class);
-        $this->seedFromJson('oauth_clients');
+        $this->call(CategoryTableSeeder::class);
+        $this->call(PostTableSeeder::class);
+        $this->call(CommentTableSeeder::class);
     }
 }

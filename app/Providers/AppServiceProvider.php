@@ -36,7 +36,8 @@ class AppServiceProvider extends ServiceProvider
     {
         // MorphMap
         Relation::morphMap([
-            'module' => Module::class
+            'module' => Module::class,
+            'post' => Post::class
         ]);
 
         // Observers

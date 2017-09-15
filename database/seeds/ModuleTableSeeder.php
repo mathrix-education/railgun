@@ -7,7 +7,7 @@ class ModuleTableSeeder extends BaseTableSeeder
 {
     public function run()
     {
-        $this->println('<info>Seeding</info> modules from factory');
+        $this->println('<comment>Seeding:</comment> modules from factory');
 
         $activities = Activity::get(['id']);
 
@@ -17,5 +17,6 @@ class ModuleTableSeeder extends BaseTableSeeder
                 $activity->modules()->attach($module->id);
             });
         }
+        $this->println('<info>Seeded:</info>  modules from factory');
     }
 }

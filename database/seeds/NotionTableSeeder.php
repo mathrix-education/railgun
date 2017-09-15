@@ -7,7 +7,7 @@ class NotionTableSeeder extends BaseTableSeeder
 {
     public function run()
     {
-        $this->println('<info>Seeding</info> notions from factory');
+        $this->println('<comment>Seeding:</comment> notions from factory');
 
         $chapters = Chapter::get(['id']);
 
@@ -17,5 +17,6 @@ class NotionTableSeeder extends BaseTableSeeder
                 'chapter_id' => $chapter->id,
             ]);
         }
+        $this->println('<info>Seeded:</info>  notions from factory');
     }
 }

@@ -24,7 +24,7 @@ class CreateCommentsTable extends Migration
 
             // Polymorphic
             $table->integer('commentable_id')->unsigned();
-            $table->string('commentable_type');
+            $table->enum('commentable_type', ['module', 'post', 'course']);
 
             // Foreign keys
             $table->foreign('parent_id')->references('id')->on('comments');

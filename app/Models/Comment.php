@@ -53,8 +53,8 @@ class Comment extends BaseModel
     /** @var array Validation rules */
     protected $rules = [
         'content' => 'required',
-        'user_id' => 'required|exists:user,id',
-        'parent_id' => 'exists:comment,id'
+        'user_id' => 'required|exists:users,id',
+        'parent_id' => 'nullable|exists:comments,id'
     ];
 
     /** @var bool If timestamps (created_at and updated_at) should be used */
