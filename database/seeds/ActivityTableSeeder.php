@@ -7,7 +7,7 @@ class ActivityTableSeeder extends BaseTableSeeder
 {
     public function run()
     {
-        $this->println('<info>Seeding</info> activities from factory');
+        $this->println('<comment>Seeding:</comment> activities from factory');
 
         $notions = Notion::get(['id']);
 
@@ -17,5 +17,6 @@ class ActivityTableSeeder extends BaseTableSeeder
                 $notion->activities()->attach($activity->id);
             });
         }
+        $this->println('<info>Seeded:</info>  activities from factory');
     }
 }
