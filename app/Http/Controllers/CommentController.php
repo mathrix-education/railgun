@@ -2,9 +2,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mathrix\Lumen\Http\Controllers\BaseController;
+use Mathrix\Lumen\Models\BaseModel;
 
 /**
  * Comment CommentController
@@ -28,6 +31,40 @@ class CommentController extends BaseController
     public function index()
     {
         return $this->http200Success(Comment::all());
+    }
+
+
+    /**
+     * @apiVersion 1.0.0
+     * @api {get} /comments/{type} Index
+     * @apiGroup Comments
+     * @apiName CommentsIndex
+     * @apiDescription Retrieve comments by type
+     * @apiPermission public
+     * @apiUse CommentArray
+     *
+     * @param string $commentable_type
+     * @param int|string $commentable_id
+     * @param int $page
+     * @param int $perPage
+     *
+     * @return JsonResponse
+     */
+    public function type(string $commentable_type, int $commentable_id, int $page = 1, int $perPage)
+    {
+        // Ensure that the commentable model is morphed
+        /** @var BaseModel $commentable_class */
+        if ($commentable_class = Relation::getMorphedModel($commentable_type) == null) {
+            return $this->http400InvalidRequest();
+        }
+
+        // Ensure that the morphed exists
+        $commentable = $commentable_class::where('id', '=', $commentable_id)->firstOrFail();
+
+        $comments = $commentable->comments();
+
+        // Retrieve comments
+        return $this->http200Success();
     }
 
 
@@ -155,6 +192,7 @@ class CommentController extends BaseController
         }
 
         $comment->delete();
+
         return $this->http200Success();
     }
 }
