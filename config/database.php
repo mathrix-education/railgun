@@ -19,8 +19,8 @@ return [
         'live' => [
             'driver' => 'mysql',
             'host' => '127.0.0.1',
-            'database' => 'api_mathrix_fr',
-            'username' => 'api_mathrix_fr',
+            'database' => 'mathrix_fr',
+            'username' => 'mathrix_fr',
             'password' => 't3QczMqKDBwKqRA83bKK',
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
@@ -36,19 +36,8 @@ return [
         'dev' => [
             'driver' => 'mysql',
             'host' => '127.0.0.1',
-            'database' => 'dev_api_mathrix_fr',
-            'username' => 'dev_api_mathrix_fr',
-            'password' => 'vM5qJKdng2B3WVBCz5e5',
-            'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix' => '',
-            'strict' => false,
-        ],
-        'dev_dist' => [
-            'driver' => 'mysql',
-            'host' => 'dev.api.mathrix.fr',
-            'database' => 'dev_api_mathrix_fr',
-            'username' => 'dev_api_mathrix_fr',
+            'database' => 'mathrix_fr_dev',
+            'username' => 'mathrix_fr_dev',
             'password' => 'vM5qJKdng2B3WVBCz5e5',
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
@@ -58,13 +47,30 @@ return [
 
         /*
         |--------------------------------------------------------------------------
-        | Test connection
+        | Tests connection
+        |--------------------------------------------------------------------------
+        */
+        'tests' => [
+            'driver' => 'mysql',
+            'host' => '127.0.0.1',
+            'database' => 'mathrix_fr_tests',
+            'username' => 'mathrix_fr_tests',
+            'password' => 'uFFgY3pt2TEVc9NRAgac',
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+            'strict' => false,
+        ],
+
+        /*
+        |--------------------------------------------------------------------------
+        | Pipelines connection
         |--------------------------------------------------------------------------
         */
         'pipelines' => [
             'driver' => 'mysql',
             'host' => 'mysql',
-            'database' => 'test_api_mathrix_fr',
+            'database' => 'mathrix_fr_pipelines',
             'username' => 'root',
             'password' => 'd3SnA4cBxckvHbyNXhAG',
             'charset' => 'utf8',

@@ -22,7 +22,7 @@ test:app:
   services:
     - mysql:latest
   variables:
-    MYSQL_DATABASE: test_api_mathrix_fr
+    MYSQL_DATABASE: mathrix_fr_pipelines
     MYSQL_ROOT_PASSWORD: d3SnA4cBxckvHbyNXhAG
   script:
     - vendor/bin/phpunit -v --configuration phpunit.xml --stderr

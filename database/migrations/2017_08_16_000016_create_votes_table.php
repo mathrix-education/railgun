@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUpvotesTable extends Migration
+class CreateVotesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateUpvotesTable extends Migration
      */
     public function up()
     {
-        Schema::create('upvotes', function (Blueprint $table) {
+        Schema::create('votes', function (Blueprint $table) {
             $table->increments('id');
             $table->tinyInteger('type');
             $table->integer('user_id')->unsigned()->nullable();
@@ -35,10 +35,10 @@ class CreateUpvotesTable extends Migration
      */
     public function down()
     {
-        Schema::table('upvotes', function (Blueprint $table) {
-            $table->dropForeign('upvotes_user_id_foreign');
+        Schema::table('votes', function (Blueprint $table) {
+            $table->dropForeign('votes_user_id_foreign');
         });
 
-        Schema::dropIfExists('upvotes');
+        Schema::dropIfExists('votes');
     }
 }

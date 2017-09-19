@@ -1,13 +1,13 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\Upvote;
+use App\Models\Vote;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\JsonResponse;
 use Mathrix\Lumen\Http\Controllers\BaseController;
 use Mathrix\Lumen\Models\BaseModel;
 
-class UpvoteController extends BaseController
+class VoteController extends BaseController
 {
     /**
      * @param string $type
@@ -25,15 +25,15 @@ class UpvoteController extends BaseController
 
         // Ensure that the morphed exists
         $model = $class::where('id', '=', $id)->firstOrFail();
-        $model->increment('upvote_score');
+        $model->increment('vote_score');
 
-        $upvote = new Upvote();
-        $upvote->fill([]);
+        $vote = new Vote();
+        $vote->fill([]);
 
-        if (!$upvote->save()) {
-            return $upvote->handleResponse($this->http422Save());
+        if (!$vote->save()) {
+            return $vote->handleResponse($this->http422Save());
         }
 
-        return $this->http200Success($upvote);
+        return $this->http200Success($vote);
     }
 }
