@@ -4,7 +4,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Mathrix\Lumen\Models\BaseModel;
 
-class Upvote extends BaseModel
+class Vote extends BaseModel
 {
 
     /** @var array The fillable attributes*/
