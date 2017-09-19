@@ -20,8 +20,8 @@ class CreateVotesTable extends Migration
             $table->dateTime('created_at');
 
             // Polymorphic
-            $table->integer('upvotable_id')->unsigned();
-            $table->enum('upvotable_type', ['comment']);
+            $table->integer('votable_id')->unsigned();
+            $table->enum('votable_type', ['comment']);
 
             // Foreign keys
             $table->foreign('user_id')->references('id')->on('users');
