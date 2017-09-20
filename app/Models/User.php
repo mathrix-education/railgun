@@ -8,9 +8,11 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Validation\Validator;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Lumen\Auth\Authorizable;
+use Laravel\Passport\Client;
 use Laravel\Passport\HasApiTokens;
+use Laravel\Passport\Token;
 use Mathrix\Lumen\Models\BaseModel;
 
 /**
@@ -23,27 +25,28 @@ use Mathrix\Lumen\Models\BaseModel;
  * @property string|null $lastname
  * @property string $password
  * @property string $type
- * @property string|null $facebook_token
  * @property string $token
  * @property int $points
  * @property array $settings
  * @property int|null $class_id
  * @property-read Class_ $class_
- * @property-read Collection|\Laravel\Passport\Client[] $clients
- * @property-read Collection|\Laravel\Passport\Token[] $tokens
+ * @property-read Collection|Comment[] $comments
+ * @property-read Collection|Client[] $clients
+ * @property-read Collection|Token[] $tokens
+ * @method static Builder|User whereId($value)
  * @method static Builder|User whereClassId($value)
  * @method static Builder|User whereEmail($value)
  * @method static Builder|User whereFacebookToken($value)
  * @method static Builder|User whereFirstname($value)
- * @method static Builder|User whereId($value)
  * @method static Builder|User whereLastname($value)
+ * @method static Builder|User whereToken($value)
  * @method static Builder|User wherePassword($value)
  * @method static Builder|User wherePoints($value)
  * @method static Builder|User whereSettings($value)
  * @method static Builder|User whereType($value)
  * @method static Builder|User whereUsername($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereToken($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Vote[] $votes
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
@@ -98,4 +101,25 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         return $this->belongsTo(Class_::class);
     }
 
+
+    /**
+     * HasMany Comment
+     *
+     * @return HasMany
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+
+    /**
+     * HasMany Vote
+     *
+     * @return HasMany
+     */
+    public function votes(): HasMany
+    {
+        return $this->hasMany(Vote::class);
+    }
 }

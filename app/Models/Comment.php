@@ -26,6 +26,7 @@ use Mathrix\Lumen\Models\BaseModel;
  * @property int $commentable_id
  * @property string $commentable_type
  * @property-read Collection|Comment[] $children
+ * @property-read Collection|Vote[] $votes
  * @property-read Model $commentable
  * @property-read Comment|null $parent
  * @property-read User|null $user
@@ -101,12 +102,19 @@ class Comment extends BaseModel
 
     /**
      * MorphTo
-     *
-     * Get all of the owning commentable models.
      */
     public function commentable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+
+    /**
+     * Get all of the post's comments.
+     */
+    public function votes()
+    {
+        return $this->morphMany(Vote::class, 'votable');
     }
 
 
