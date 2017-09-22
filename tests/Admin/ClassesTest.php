@@ -1,8 +1,8 @@
 <?php
 namespace Tests\Admin;
 
-use App\Models\Country;
-use Tests\Moderator\Traits\CountriesAsc;
+use App\Models\Class_;
+use Tests\Moderator\Traits\ClassesAsc;
 
 /**
  * Class ClassesTest
@@ -12,11 +12,11 @@ use Tests\Moderator\Traits\CountriesAsc;
  */
 class ClassesTest extends AdminTestCase
 {
-    use CountriesAsc;
+    use ClassesAsc;
 
     /*
     |--------------------------------------------------------------------------
-    | POST /countries
+    | POST /classes
     |--------------------------------------------------------------------------
     */
     /**
@@ -24,13 +24,13 @@ class ClassesTest extends AdminTestCase
      */
     public function testAdd()
     {
-        $newData = factory(Country::class)->raw();
+        $newData = factory(Class_::class)->raw();
 
-        $this->call('post', '/countries', $newData);
+        $this->call('post', '/classes', $newData);
 
         // Assertions
         $this->assertResponseStatus(200);
-        $this->seeInDatabase('countries', $newData);
+        $this->seeInDatabase('classes', $newData);
     }
 
 
@@ -40,21 +40,24 @@ class ClassesTest extends AdminTestCase
      */
     public function testAddOnlyName()
     {
-        $name = $this->faker->firstName;
+
+        $newData = factory(Class_::class)->raw();
+
         $expectedData = [
-            'name' => $name,
-            'slug' => str_slug($name),
-            'name_short' => $name,
-            'slug_short' => str_slug($name)
+            'name' => $newData['name'],
+            'slug' => str_slug($newData['name']),
+            'name_short' => $newData['name'],
+            'slug_short' => str_slug($newData['name'])
         ];
 
-        $this->call('post', '/countries', [
-            'name' => $name
+        $this->call('post', '/classes', [
+            'name' => $newData['name'],
+            'country_id' => $newData['country_id']
         ]);
 
         // Assertions
         $this->assertResponseStatus(200);
-        $this->seeInDatabase('countries', $expectedData);
+        $this->seeInDatabase('classes', $expectedData);
     }
 
 
@@ -64,19 +67,19 @@ class ClassesTest extends AdminTestCase
      */
     public function testAddWithoutName()
     {
-        $newData = factory(Country::class)->raw();
+        $newData = factory(Class_::class)->raw();
 
-        $this->call('post', '/countries', array_diff_key($newData, ['name' => 'name']));
+        $this->call('post', '/classes', array_diff_key($newData, ['name' => 'name']));
 
         // Assertions
         $this->assertResponseStatus(422);
-        $this->notSeeInDatabase('countries', $newData);
+        $this->notSeeInDatabase('classes', $newData);
     }
 
 
     /*
     |--------------------------------------------------------------------------
-    | PATCH /countries/{id}
+    | PATCH /classes/{id}
     |--------------------------------------------------------------------------
     */
     /**
@@ -84,14 +87,14 @@ class ClassesTest extends AdminTestCase
      */
     public function testEdit()
     {
-        /** @var Country $country */
-        $country = Country::inRandomOrder()->get(['id'])->first();
-        $newData = factory(Country::class)->raw();
-        $this->call('patch', '/countries/' . $country->id, $newData);
+        /** @var Class_ $class */
+        $class = Class_::inRandomOrder()->get(['id'])->first();
+        $newData = factory(Class_::class)->raw();
+        $this->call('patch', '/classes/' . $class->id, $newData);
 
         // Assertions
         $this->assertResponseStatus(200);
-        $this->seeInDatabase('countries', $newData);
+        $this->seeInDatabase('classes', $newData);
     }
 
 
@@ -101,8 +104,8 @@ class ClassesTest extends AdminTestCase
      */
     public function testEditOnlyName()
     {
-        /** @var Country $country */
-        $country = Country::inRandomOrder()->get(['id'])->first();
+        /** @var Class_ $class */
+        $class = Class_::inRandomOrder()->get(['id'])->first();
         $name = $this->faker->firstName;
         $expectedData = [
             'name' => $name,
@@ -111,11 +114,11 @@ class ClassesTest extends AdminTestCase
             'slug_short' => str_slug($name)
         ];
 
-        $this->call('patch', '/countries/' . $country->id, ['name' => $name]);
+        $this->call('patch', '/classes/' . $class->id, ['name' => $name]);
 
         // Assertions
         $this->assertResponseStatus(200);
-        $this->seeInDatabase('countries', $expectedData);
+        $this->seeInDatabase('classes', $expectedData);
     }
 
 
@@ -125,8 +128,8 @@ class ClassesTest extends AdminTestCase
      */
     public function testEditWithoutName()
     {
-        /** @var Country $country */
-        $country = Country::inRandomOrder()->get(['id'])->first();
+        /** @var Class_ $class */
+        $class = Class_::inRandomOrder()->get(['id'])->first();
         $name = $this->faker->firstName;
         $newData = [
             'slug' => str_slug($name),
@@ -134,10 +137,10 @@ class ClassesTest extends AdminTestCase
             'slug_short' => str_slug($name)
         ];
 
-        $this->call('patch', '/countries/' . $country->id, $newData);
+        $this->call('patch', '/classes/' . $class->id, $newData);
 
         // Assertions
         $this->assertResponseStatus(200);
-        $this->seeInDatabase('countries', $newData);
+        $this->seeInDatabase('classes', $newData);
     }
 }

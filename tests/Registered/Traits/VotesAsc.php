@@ -43,7 +43,7 @@ trait VotesAsc
 
         $scoreBefore = $comment->score;
 
-        Passport::actingAs($user);
+        Passport::actingAs($user, [$user->type]);
         $this->call('post', '/votes/comment/' . $comment->id . '/up');
         $comment = Comment::find($comment->id);
 
@@ -84,7 +84,7 @@ trait VotesAsc
 
         $scoreBefore = $comment->score;
 
-        Passport::actingAs($user);
+        Passport::actingAs($user, [$user->type]);
         $this->call('post', '/votes/comment/' . $comment->id . '/up');
         $comment = Comment::find($comment->id);
 
@@ -125,7 +125,7 @@ trait VotesAsc
 
         $scoreBefore = $comment->score;
 
-        Passport::actingAs($user);
+        Passport::actingAs($user, [$user->type]);
         $this->call('post', '/votes/comment/' . $comment->id . '/up');
         $comment = Comment::find($comment->id);
 
@@ -166,7 +166,7 @@ trait VotesAsc
 
         $scoreBefore = $comment->score;
 
-        Passport::actingAs($user);
+        Passport::actingAs($user, [$user->type]);
         $this->call('post', '/votes/comment/' . $comment->id . '/down');
         $comment = Comment::find($comment->id);
 
@@ -207,7 +207,7 @@ trait VotesAsc
 
         $scoreBefore = $comment->score;
 
-        Passport::actingAs($user);
+        Passport::actingAs($user, [$user->type]);
         $this->call('post', '/votes/comment/' . $comment->id . '/down');
         $comment = Comment::find($comment->id);
 
@@ -248,7 +248,7 @@ trait VotesAsc
 
         $scoreBefore = $comment->score;
 
-        Passport::actingAs($user);
+        Passport::actingAs($user, [$user->type]);
         $this->call('post', '/votes/comment/' . $comment->id . '/down');
         $comment = Comment::find($comment->id);
 

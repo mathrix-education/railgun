@@ -2,6 +2,7 @@
 namespace Tests;
 
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Laravel\Passport\Passport;
 use Mathrix\Lumen\Tests\BaseTestCase;
 
@@ -28,6 +29,18 @@ abstract class PermissionTestCase extends BaseTestCase
         } else {
             unset($this->user);
         }
+    }
+
+    /**
+     * Destroy PDO instances at the end of each test to avoid th Too many connections error
+     */
+    public function tearDown()
+    {
+        $this->beforeApplicationDestroyed(function () {
+            DB::disconnect();
+        });
+
+        parent::tearDown();
     }
 
 
