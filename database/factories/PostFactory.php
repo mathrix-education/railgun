@@ -1,4 +1,3 @@
-
 <?php
 use App\Models\Category;
 use App\Models\Post;

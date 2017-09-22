@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\Client;
 use Laravel\Passport\HasApiTokens;
@@ -31,6 +32,7 @@ use Mathrix\Lumen\Models\BaseModel;
  * @property int|null $class_id
  * @property-read Class_ $class_
  * @property-read Collection|Comment[] $comments
+ * @property-read Collection|Vote[] $votes
  * @property-read Collection|Client[] $clients
  * @property-read Collection|Token[] $tokens
  * @method static Builder|User whereId($value)
@@ -46,7 +48,6 @@ use Mathrix\Lumen\Models\BaseModel;
  * @method static Builder|User whereType($value)
  * @method static Builder|User whereUsername($value)
  * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Vote[] $votes
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {

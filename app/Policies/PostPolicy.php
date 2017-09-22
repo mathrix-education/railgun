@@ -18,7 +18,7 @@ class PostPolicy extends BasePolicy
      */
     public function add(User $currentUser)
     {
-        if ($currentUser->tokenCan('moderator')) {
+        if ($currentUser->tokenCan('admin')) {
             return true;
         }
 
@@ -32,7 +32,7 @@ class PostPolicy extends BasePolicy
      */
     public function edit(User $currentUser)
     {
-        if ($currentUser->tokenCan('moderator')) {
+        if ($currentUser->tokenCan('admin')) {
             return true;
         }
 
@@ -46,7 +46,7 @@ class PostPolicy extends BasePolicy
      */
     public function delete(User $currentUser)
     {
-        if ($currentUser->tokenCan('moderator')) {
+        if ($currentUser->tokenCan('admin')) {
             return true;
         }
 

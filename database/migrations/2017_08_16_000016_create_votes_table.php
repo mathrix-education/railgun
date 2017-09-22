@@ -15,9 +15,10 @@ class CreateVotesTable extends Migration
     {
         Schema::create('votes', function (Blueprint $table) {
             $table->increments('id');
-            $table->tinyInteger('type');
+            $table->integer('value');
             $table->integer('user_id')->unsigned()->nullable();
             $table->dateTime('created_at');
+            $table->dateTime('updated_at');
 
             // Polymorphic
             $table->integer('votable_id')->unsigned();

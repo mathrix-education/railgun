@@ -1,10 +1,12 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Mails\User\PasswordForgotten;
 use App\Models\User;
 use Faker\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Mathrix\Lumen\Http\Controllers\BaseController;
 
 /**
@@ -116,13 +118,13 @@ class AuthController extends BaseController
         }
 
         // Send PasswordForgotten email
-        /*Mail::to($user->email)->send(new PasswordForgotten($user));
+        Mail::to($user->email)->send(new PasswordForgotten($user));
         $emailErrors = Mail::failures();
         if (!empty($emailErrors)) {
             return $this->http502EmailNotSent([
                 'message' => $emailErrors
             ]);
-        }*/
+        }
 
         return $this->http200Success('Reset email sent');
     }

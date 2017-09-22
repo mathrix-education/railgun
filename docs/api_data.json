@@ -2587,6 +2587,111 @@
   {
     "version": "1.0.0",
     "type": "get",
+    "url": "/comments/{type}",
+    "title": "Index",
+    "group": "Comments",
+    "name": "CommentsIndex",
+    "description": "<p>Retrieve comments by type</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "filename": "app/Http/Controllers/CommentController.php",
+    "groupTitle": "Comments",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Comment[]",
+            "optional": false,
+            "field": "comments",
+            "description": "<p>Array of countries</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "comments.id",
+            "description": "<p>The comment id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "comments.content",
+            "description": "<p>The comment content</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": true,
+            "field": "comments.parent_id",
+            "defaultValue": "null",
+            "description": "<p>The comment parent id (null for level 0)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "comments.user_id",
+            "description": "<p>The comment user_id (if not specified, use the current user id)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "comments.commentable_id",
+            "description": "<p>The commented model id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "allowedValues": [
+              "module",
+              "post",
+              "course"
+            ],
+            "optional": false,
+            "field": "comments.commentable_type",
+            "description": "<p>The commented model type</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "comments.created_at",
+            "description": "<p>The created date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "comments.updated_at",
+            "description": "<p>The updated date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "comments.deleted_at",
+            "description": "<p>The deleted date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Comment[]",
+            "optional": false,
+            "field": "comments.children",
+            "description": "<p>The comment children</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
     "url": "/comments",
     "title": "Index",
     "group": "Comments",
@@ -3659,6 +3764,613 @@
             "optional": false,
             "field": "model_not_found",
             "description": "<p>Model matching given data does not exist</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "course",
+    "url": "/courses",
+    "title": "Add",
+    "group": "Courses",
+    "name": "CourseAdd",
+    "description": "<p>Add a course</p>",
+    "permission": [
+      {
+        "name": "moderator"
+      }
+    ],
+    "filename": "app/Http/Controllers/CourseController.php",
+    "groupTitle": "Courses",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Data": [
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "title",
+            "description": "<p>The course title</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": true,
+            "field": "slug",
+            "defaultValue": "slug(title)",
+            "description": "<p>The course title</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "content",
+            "description": "<p>The course content</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": false,
+            "field": "category_id",
+            "description": "<p>The course category id</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>The course user id</p>"
+          },
+          {
+            "group": "Data",
+            "type": "datetime",
+            "optional": true,
+            "field": "created_at",
+            "description": "<p>The course created date</p>"
+          },
+          {
+            "group": "Data",
+            "type": "datetime",
+            "optional": true,
+            "field": "updated_at",
+            "description": "<p>The course updated date</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "title",
+            "description": "<p>The course title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The course title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "content",
+            "description": "<p>The course content</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "category_id",
+            "description": "<p>The course category id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>The course user id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>The course created date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>The course updated date</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 422": [
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "validation",
+            "description": "<p>data failed to pass validation</p>"
+          },
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "save",
+            "description": "<p>Save failed</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "delete",
+    "url": "/courses/{id}",
+    "title": "Delete",
+    "group": "Courses",
+    "name": "CourseDelete",
+    "description": "<p>Delete a course</p>",
+    "permission": [
+      {
+        "name": "moderator"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The course id</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/CourseController.php",
+    "groupTitle": "Courses",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "patch",
+    "url": "/courses/{id}",
+    "title": "Edit",
+    "group": "Courses",
+    "name": "CourseEdit",
+    "description": "<p>Edit a course</p>",
+    "permission": [
+      {
+        "name": "moderator"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The course id</p>"
+          }
+        ],
+        "Data": [
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "title",
+            "description": "<p>The course title</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": true,
+            "field": "slug",
+            "defaultValue": "slug(title)",
+            "description": "<p>The course title</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "content",
+            "description": "<p>The course content</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": false,
+            "field": "category_id",
+            "description": "<p>The course category id</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>The course user id</p>"
+          },
+          {
+            "group": "Data",
+            "type": "datetime",
+            "optional": true,
+            "field": "created_at",
+            "description": "<p>The course created date</p>"
+          },
+          {
+            "group": "Data",
+            "type": "datetime",
+            "optional": true,
+            "field": "updated_at",
+            "description": "<p>The course updated date</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/CourseController.php",
+    "groupTitle": "Courses",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "title",
+            "description": "<p>The course title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The course title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "content",
+            "description": "<p>The course content</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "category_id",
+            "description": "<p>The course category id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>The course user id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>The course created date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>The course updated date</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ],
+        "Error 422": [
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "save",
+            "description": "<p>Save failed</p>"
+          },
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "validation",
+            "description": "<p>data failed to pass validation</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/courses/{id}",
+    "title": "Get",
+    "group": "Courses",
+    "name": "CourseGet",
+    "description": "<p>Get a course by id</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The course id</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/CourseController.php",
+    "groupTitle": "Courses",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "title",
+            "description": "<p>The course title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The course title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "content",
+            "description": "<p>The course content</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "category_id",
+            "description": "<p>The course category id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>The course user id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>The course created date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>The course updated date</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/courses",
+    "title": "Index",
+    "group": "Courses",
+    "name": "CoursesIndex",
+    "description": "<p>Retrieve courses</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": true,
+            "field": "page",
+            "defaultValue": "1",
+            "description": "<p>The page number</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": true,
+            "field": "perPage",
+            "defaultValue": "10",
+            "description": "<p>The course count per page</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/CourseController.php",
+    "groupTitle": "Courses",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Course[]",
+            "optional": false,
+            "field": "courses",
+            "description": "<p>Array of courses</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "courses.title",
+            "description": "<p>The course title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "courses.slug",
+            "description": "<p>The course title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "courses.content",
+            "description": "<p>The course content</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "courses.category_id",
+            "description": "<p>The course category id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "courses.user_id",
+            "description": "<p>The course user id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "courses.created_at",
+            "description": "<p>The course created date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "datetime",
+            "optional": false,
+            "field": "courses.updated_at",
+            "description": "<p>The course updated date</p>"
           }
         ]
       }
@@ -7288,6 +8000,104 @@
             "optional": false,
             "field": "users.class_id",
             "description": "<p>The user class_id</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "post",
+    "url": "/votes/{votable_type}/{votable_id}/down",
+    "title": "Down",
+    "group": "Votes",
+    "name": "VoteDown",
+    "description": "<p>Down vote something</p>",
+    "permission": [
+      {
+        "name": "registered"
+      }
+    ],
+    "filename": "app/Http/Controllers/VoteController.php",
+    "groupTitle": "Votes",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 422": [
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "save",
+            "description": "<p>Save failed</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "post",
+    "url": "/votes/{votable_type}/{votable_id}/up",
+    "title": "Up",
+    "group": "Votes",
+    "name": "VoteUp",
+    "description": "<p>Up vote something</p>",
+    "permission": [
+      {
+        "name": "registered"
+      }
+    ],
+    "filename": "app/Http/Controllers/VoteController.php",
+    "groupTitle": "Votes",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 422": [
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "save",
+            "description": "<p>Save failed</p>"
           }
         ]
       }
