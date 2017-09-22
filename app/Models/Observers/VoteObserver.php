@@ -20,10 +20,34 @@ class VoteObserver extends BaseObserver
      *
      * @return bool
      */
-    public function saving($vote)
+    public function created($vote)
     {
-
+        $vote->votable->update(['score' => (int)$vote->votable->score + (int)$vote->value]);
 
         return parent::saving($vote);
+    }
+
+    /**
+     * @param Vote $vote
+     *
+     * @return bool
+     */
+    public function updated($vote)
+    {
+        $vote->votable->update(['score' => (int)$vote->votable->score + 2 * (int)$vote->value]);
+
+        return parent::saving($vote);
+    }
+
+    /**
+     * @param Vote $vote
+     *
+     * @return bool
+     */
+    public function deleted($vote)
+    {
+        $vote->votable->update(['score' => (int)$vote->votable->score - (int)$vote->value]);
+
+        return true;
     }
 }

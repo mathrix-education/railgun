@@ -206,3 +206,15 @@ $app->group(['prefix' => 'comments'], function () use ($app) {
         $app->delete('{id:[0-9]+}', 'CommentController@delete');
     });
 });
+
+/*
+|--------------------------------------------------------------------------
+| Votes
+|--------------------------------------------------------------------------
+*/
+$app->group(['prefix' => 'votes'], function () use ($app) {
+    $app->group(['middleware' => 'auth:api'], function () use ($app) {
+        $app->post('{votable_type}/{votable_id}/up', 'VoteController@up');
+        $app->post('{votable_type}/{votable_id}/down', 'VoteController@down');
+    });
+});

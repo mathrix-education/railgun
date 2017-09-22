@@ -42,6 +42,8 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->call(UserTableSeeder::class);
         $this->call(CategoryTableSeeder::class);
         $this->call(PostTableSeeder::class);
+        $this->call(CourseTableSeeder::class);
         $this->call(CommentTableSeeder::class);
+        $this->call(VoteTableSeeder::class);
     }
 }

@@ -68,11 +68,20 @@
     "PostAdd",
     "PostEdit",
     "PostDelete",
+    "Courses",
+    "CoursesIndex",
+    "CourseGet",
+    "CourseAdd",
+    "CourseEdit",
+    "CourseDelete",
     "Comments",
     "CommentsIndex",
     "CommentGet",
     "CommentAdd",
     "CommentEdit",
-    "CommentDelete"
+    "CommentDelete",
+    "Votes",
+    "VoteUp",
+    "VoteDown"
   ]
 }

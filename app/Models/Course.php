@@ -1,7 +1,9 @@
 <?php
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Mathrix\Lumen\Models\BaseModel;
 
@@ -13,16 +15,16 @@ use Mathrix\Lumen\Models\BaseModel;
  * @property string $slug
  * @property string $content
  * @property int $category_id
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property-read \App\Models\Category $category
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
- * @method static Builder|Course whereCategoryId($value)
- * @method static Builder|Course whereContent($value)
- * @method static Builder|Course whereCreatedAt($value)
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property-read Category $category
+ * @property-read Collection|Comment[] $comments
  * @method static Builder|Course whereId($value)
  * @method static Builder|Course whereSlug($value)
  * @method static Builder|Course whereTitle($value)
+ * @method static Builder|Course whereContent($value)
+ * @method static Builder|Course whereCategoryId($value)
+ * @method static Builder|Course whereCreatedAt($value)
  * @method static Builder|Course whereUpdatedAt($value)
  * @mixin \Eloquent
  */

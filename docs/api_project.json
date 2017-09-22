@@ -68,19 +68,28 @@
     "PostAdd",
     "PostEdit",
     "PostDelete",
+    "Courses",
+    "CoursesIndex",
+    "CourseGet",
+    "CourseAdd",
+    "CourseEdit",
+    "CourseDelete",
     "Comments",
     "CommentsIndex",
     "CommentGet",
     "CommentAdd",
     "CommentEdit",
-    "CommentDelete"
+    "CommentDelete",
+    "Votes",
+    "VoteUp",
+    "VoteDown"
   ],
   "sampleUrl": false,
   "defaultVersion": "0.0.0",
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2017-09-14T23:41:07.088Z",
+    "time": "2017-09-22T22:56:24.892Z",
     "url": "http://apidocjs.com",
     "version": "0.17.6"
   }
