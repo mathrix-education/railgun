@@ -34,10 +34,6 @@ class PostController extends BaseController
      */
     public function index(Request $request, int $page = 1, int $perPage = 10)
     {
-        if ($request->user()->cant('index', Post::class)) {
-            return $this->http401Unauthorized();
-        }
-
         if ($page < 1 || $perPage < 1) {
             return $this->http400InvalidRequest('page and perPage have to be strictly positive');
         }
