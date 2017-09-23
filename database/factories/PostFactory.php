@@ -12,7 +12,7 @@ use Faker\Generator;
  */
 $factory->define(Post::class, function (Generator $faker) {
     $title = substr($faker->sentence($faker->numberBetween(3, 5)), 0, -1);
-    $created = $faker->dateTime();
+    $created = $faker->dateTime('-30 days');
 
     return [
         'title' => $title,

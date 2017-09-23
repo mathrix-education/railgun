@@ -116,38 +116,4 @@ class Comment extends BaseModel
     {
         return $this->morphMany(Vote::class, 'votable');
     }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Overridden functions
-    |--------------------------------------------------------------------------
-    */
-    /**
-     * Override delete (also delete children))
-     *
-     * @return bool|null
-     */
-    public function delete()
-    {
-        foreach ($this->children as $child) {
-            $child->delete();
-        }
-
-        return parent::delete();
-    }
-
-    /**
-     * Override delete (also delete children))
-     *
-     * @return bool|null
-     */
-    public function forceDelete()
-    {
-        foreach ($this->children as $child) {
-            $child->forceDelete();
-        }
-
-        return parent::forceDelete();
-    }
 }

@@ -80,7 +80,7 @@ class PostController extends BaseController
      * @apiGroup Posts
      * @apiName PostAdd
      * @apiDescription Add a post
-     * @apiPermission moderator
+     * @apiPermission admin
      * @apiUse Bearer
      * @apiUse PostData
      * @apiUse Post
@@ -94,7 +94,7 @@ class PostController extends BaseController
      */
     public function add(Request $request)
     {
-        if ($request->user()->cant('add')) {
+        if ($request->user()->cant('add', Post::class)) {
             return $this->http401Unauthorized();
         }
 
@@ -126,7 +126,7 @@ class PostController extends BaseController
      * @apiUse 422Validation
      *
      * @param Request $request
-     * @param int $id
+     * @param int $id, factory(Post::class)->raw()
      *
      * @return JsonResponse
      */
@@ -179,6 +179,6 @@ class PostController extends BaseController
             return $post->handleResponse($this->http422Delete());
         }
 
-        return $this->http501NotImplemented();
+        return $this->http200Success();
     }
 }

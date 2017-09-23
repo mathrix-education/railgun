@@ -80,24 +80,4 @@ class Post extends BaseModel
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Overridden functions
-    |--------------------------------------------------------------------------
-    */
-    /**
-     * Delete a post
-     *
-     * @return bool|null
-     */
-    public function delete()
-    {
-        // Force delete linked comments and their children
-        foreach ($this->comments as $comment) {
-            $comment->forceDelete();
-        }
-
-        return parent::delete();
-    }
 }

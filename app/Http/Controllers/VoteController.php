@@ -50,7 +50,7 @@ class VoteController extends BaseController
             return $this->http400InvalidRequest();
         }
 
-        if (!$request->user()->cant('vote', Vote::class)) {
+        if ($request->user()->cant('vote', Vote::class)) {
             return $this->http401Unauthorized();
         }
 

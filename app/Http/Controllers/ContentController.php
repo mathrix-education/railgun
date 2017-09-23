@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Activity;
 use App\Models\Class_;
 use App\Models\Country;
+use App\Models\Notion;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Mathrix\Lumen\Http\Controllers\BaseController;
@@ -101,13 +102,15 @@ class ContentController extends BaseController
      * @apiUse Activity
      * @apiUse ModuleArray
      *
-     * @param int $activityId
+     * @param int $notionId
      *
      * @return JsonResponse
      */
-    public function modules(int $activityId)
+    public function modules(int $notionId)
     {
-        $data = Activity::with('modules')->where('id', $activityId)->firstOrFail();;
+        $data = Notion::with(['activities', 'activities.modules'])
+            ->where('id', $notionId)
+            ->firstOrFail();;
 
         return $this->http200Success($data);
     }

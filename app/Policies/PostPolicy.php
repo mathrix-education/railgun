@@ -12,44 +12,26 @@ use App\Models\User;
 class PostPolicy extends BasePolicy
 {
     /**
-     * @param User $currentUser
-     *
      * @return bool
      */
-    public function add(User $currentUser)
+    public function add()
     {
-        if ($currentUser->tokenCan('admin')) {
-            return true;
-        }
-
         return false;
     }
 
     /**
-     * @param User $currentUser
-     *
      * @return bool
      */
-    public function edit(User $currentUser)
+    public function edit()
     {
-        if ($currentUser->tokenCan('admin')) {
-            return true;
-        }
-
         return false;
     }
 
     /**
-     * @param User $currentUser
-     *
      * @return bool
      */
-    public function delete(User $currentUser)
+    public function delete()
     {
-        if ($currentUser->tokenCan('admin')) {
-            return true;
-        }
-
         return false;
     }
 }

@@ -5,19 +5,27 @@ namespace App\Providers;
 use App\Models\Activity;
 use App\Models\Chapter;
 use App\Models\Class_;
+use App\Models\Comment;
 use App\Models\Country;
+use App\Models\Course;
 use App\Models\Discipline;
 use App\Models\Module;
 use App\Models\Notion;
+use App\Models\Post;
 use App\Models\User;
+use App\Models\Vote;
 use App\Policies\ActivityPolicy;
 use App\Policies\ChapterPolicy;
 use App\Policies\ClassPolicy;
+use App\Policies\CommentPolicy;
 use App\Policies\CountryPolicy;
+use App\Policies\CoursePolicy;
 use App\Policies\DisciplinePolicy;
 use App\Policies\ModulePolicy;
 use App\Policies\NotionPolicy;
+use App\Policies\PostPolicy;
 use App\Policies\UserPolicy;
+use App\Policies\VotePolicy;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -59,5 +67,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::policy(Notion::class, NotionPolicy::class);
         Gate::policy(Activity::class, ActivityPolicy::class);
         Gate::policy(Module::class, ModulePolicy::class);
+        Gate::policy(Post::class, PostPolicy::class);
+        Gate::policy(Course::class, CoursePolicy::class);
+        Gate::policy(Comment::class, CommentPolicy::class);
+        Gate::policy(Vote::class, VotePolicy::class);
     }
 }
