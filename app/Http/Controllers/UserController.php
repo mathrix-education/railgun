@@ -115,20 +115,27 @@ class UserController extends BaseController
 
     /**
      * @apiVersion 1.0.0
-     * @api {get} /users/exists/{email} Exists
+     * @api {get} /users/exists/{field}/{value} Exists
      * @apiGroup Users
      * @apiName UserExists
-     * @apiDescription Search for user with given email
+     * @apiDescription Search for user matching given key-value
      * @apiPermission public
-     * @apiParam {string} email The email address
+     * @apiParam {string=username,email} field The field to check
+     * @apiParam {string} value The field value to search
      *
-     * @param string $email the uemail to search
+     * @param string $field
+     * @param string $value
      *
      * @return JsonResponse
+     * @internal param string $email the email to search
      */
-    public function exists(string $email)
+    public function exists(string $field, string $value)
     {
-        return $this->http200Success(['exists' => User::where('email', $email)->exists()]);
+        if (!in_array($field, ['username', 'email'])) {
+            return $this->http400InvalidRequest();
+        }
+
+        return $this->http200Success(['exists' => User::where($field, $value)->exists()]);
     }
 
 
