@@ -63,23 +63,58 @@ trait UsersAsc
     |--------------------------------------------------------------------------
     */
     /**
+     * Test GET /users/exists with existing username
+     */
+    public function testExistsSuccessUsernameExists()
+    {
+        /** @var User $user */
+        $user = User::inRandomOrder()->whereNotNull('username')->first();
+
+        $this->call('get', '/users/exists/username/' . $user->username);
+
+        // Assertions
+        $this->assertResponseStatus(200);
+        $this->seeJson(['exists' => true]);
+    }
+
+
+    /**
+     * Test GET /users/exists with non existing username
+     */
+    public function testExistsSuccessUsernameNotExist()
+    {
+        $this->call('get', '/users/exists/username/dummy-username');
+
+        // Assertions
+        $this->assertResponseStatus(200);
+        $this->seeJson(['exists' => false]);
+    }
+
+
+    /**
      * Test GET /users/exists with existing email
      */
     public function testExistsSuccessEmailExists()
     {
+        /** @var User $user */
         $user = User::inRandomOrder()->first();
 
-        $this->call('get', '/users/exists/' . $user->email);
+        $this->call('get', '/users/exists/email/' . $user->email);
+
+        // Assertions
         $this->assertResponseStatus(200);
         $this->seeJson(['exists' => true]);
     }
+
 
     /**
      * Test GET /users/exists with non existing email
      */
     public function testExistsSuccessEmailNotExist()
     {
-        $this->call('get', '/users/exists/dummy@email.zc');
+        $this->call('get', '/users/exists/email/dummy@email.zc');
+
+        // Assertions
         $this->assertResponseStatus(200);
         $this->seeJson(['exists' => false]);
     }
