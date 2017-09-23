@@ -8,6 +8,7 @@ use Tests\Registered\Traits\ClassesDesc;
  * Class ClassesTest
  * Test classes as public
  *
+ * @author Mathrix Team
  * @package Tests\Public_
  */
 class ClassesTest extends PublicTestCase

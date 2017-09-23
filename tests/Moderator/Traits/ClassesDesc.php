@@ -7,6 +7,7 @@ use App\Models\Class_;
  * Trait ClassesDesc
  * Test classes for moderator and lower
  *
+ * @author Mathrix Team
  * @package Tests\Moderator\Traits
  */
 trait ClassesDesc

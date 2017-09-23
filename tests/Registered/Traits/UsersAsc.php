@@ -7,6 +7,7 @@ use Tests\Public_\Traits\UsersAsc as ParentUsersAsc;
  * Trait UsersAsc
  * Test users as registered or higher
  *
+ * @author Mathrix Team
  * @package Tests\Registered\Traits
  */
 trait UsersAsc

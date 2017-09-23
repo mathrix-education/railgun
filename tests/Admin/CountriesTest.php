@@ -8,6 +8,7 @@ use Tests\Moderator\Traits\CountriesAsc;
  * Class CountriesTest
  * Test countries as admin
  *
+ * @author Mathrix Team
  * @package Tests\Admin
  */
 class CountriesTest extends AdminTestCase

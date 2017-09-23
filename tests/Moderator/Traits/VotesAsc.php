@@ -8,6 +8,7 @@ use Tests\Premium\Traits\VotesAsc as ParentVotesAsc;
  * Test votes as moderator or higher
  *
  * @author Mathrix Team
+ * @package Tests\Moderator\Traits
  */
 trait VotesAsc
 {

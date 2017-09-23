@@ -8,6 +8,7 @@ use App\Models\User;
  * Trait UsersDesc
  * Test users as moderator or lower
  *
+ * @author Mathrix Team
  * @package Tests\Moderator\Traits
  */
 trait UsersDesc
@@ -17,6 +18,15 @@ trait UsersDesc
     | POST /users/register
     |--------------------------------------------------------------------------
     */
+    /**
+     * Try to register an admin
+     * Expect HTTP 401 unauthorized
+     */
+    public function testRegisterAdminUnauthorized()
+    {
+        $this->assertCannotRegister('admin');
+    }
+
     /**
      * Assert user cannot register a user with the given type
      *
@@ -34,17 +44,6 @@ trait UsersDesc
         // Assertions
         $this->assertJsonError('unauthorized', 401);
     }
-
-
-    /**
-     * Try to register an admin
-     * Expect HTTP 401 unauthorized
-     */
-    public function testRegisterAdminUnauthorized()
-    {
-        $this->assertCannotRegister('admin');
-    }
-
 
     /**
      * Try to register an moderator
@@ -71,6 +70,16 @@ trait UsersDesc
     | GET /users/{id}
     |--------------------------------------------------------------------------
     */
+
+    /**
+     * Get stranger admin
+     * Expect HTTP 401 unauthorized
+     */
+    public function testGetStrangerAdmin()
+    {
+        $this->assertCannotGetStranger('admin');
+    }
+
     /**
      * Assert user cannot get a stranger
      *
@@ -85,17 +94,6 @@ trait UsersDesc
         // Assertions
         $this->assertJsonError('unauthorized', 401);
     }
-
-
-    /**
-     * Get stranger admin
-     * Expect HTTP 401 unauthorized
-     */
-    public function testGetStrangerAdmin()
-    {
-        $this->assertCannotGetStranger('admin');
-    }
-
 
     /**
      * Get stranger moderator
@@ -112,6 +110,16 @@ trait UsersDesc
     | PATCH /users/{id}
     |--------------------------------------------------------------------------
     */
+
+    /**
+     * Try to edit an admin
+     * Expect HTTP 401 unauthorized
+     */
+    public function testEditAdminUnauthorized()
+    {
+        $this->assertCannotEdit('admin');
+    }
+
     /**
      * Assert user cannot edit a user with the given type
      *
@@ -131,17 +139,6 @@ trait UsersDesc
         // Assertions
         $this->assertJsonError('unauthorized', 401);
     }
-
-
-    /**
-     * Try to edit an admin
-     * Expect HTTP 401 unauthorized
-     */
-    public function testEditAdminUnauthorized()
-    {
-        $this->assertCannotEdit('admin');
-    }
-
 
     /**
      * Try to edit an moderator

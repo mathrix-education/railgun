@@ -7,6 +7,7 @@ use Tests\Public_\Traits\ClassesAsc as ParentClassesAsc;
  * Trait ClassesAsc
  * Test classes as registered or higher
  *
+ * @author Mathrix Team
  * @package Tests\Registered\Traits
  */
 trait ClassesAsc

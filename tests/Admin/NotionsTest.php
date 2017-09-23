@@ -6,8 +6,9 @@ use Tests\Moderator\Traits\CountriesAsc;
 
 /**
  * Class NotionsTest
- * Test classes as admin
+ * Test notions as admin
  *
+ * @author Mathrix Team
  * @package Tests\Admin
  */
 class NotionsTest extends AdminTestCase

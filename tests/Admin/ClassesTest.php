@@ -8,6 +8,7 @@ use Tests\Moderator\Traits\ClassesAsc;
  * Class ClassesTest
  * Test classes as admin
  *
+ * @author Mathrix Team
  * @package Tests\Admin
  */
 class ClassesTest extends AdminTestCase

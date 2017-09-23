@@ -7,6 +7,7 @@ use App\Models\Country;
  * Trait CountriesDesc
  * Test countries as moderator or lower
  *
+ * @author Mathrix Team
  * @package Tests\Moderator\Traits
  */
 trait CountriesDesc

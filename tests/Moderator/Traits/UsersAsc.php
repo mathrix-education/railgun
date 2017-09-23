@@ -7,6 +7,7 @@ use Tests\Premium\Traits\UsersAsc as ParentUsersAsc;
  * Trait UsersAsc
  * Test users as moderator or higher
  *
+ * @author Mathrix Team
  * @package Tests\Moderator\Traits
  */
 trait UsersAsc
@@ -15,7 +16,23 @@ trait UsersAsc
 
 
     /**
+     * Get stranger premium
+     * Expect HTTP 200 success
+     */
+    public function testGetStrangerPremium()
+    {
+        $this->assertCanGetStranger('premium');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | GET /users/{id} for strangers
+    |--------------------------------------------------------------------------
+    */
+
+    /**
      * Assert that user can get a specified user based on its type
+     *
      * @param string $type the stranger type to test
      */
     public function assertCanGetStranger(string $type)
@@ -28,21 +45,6 @@ trait UsersAsc
         $this->assertResponseStatus(200);
         $this->seeJsonStructure($this->jsonStructure);
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | GET /users/{id} for strangers
-    |--------------------------------------------------------------------------
-    */
-    /**
-     * Get stranger premium
-     * Expect HTTP 200 success
-     */
-    public function testGetStrangerPremium()
-    {
-        $this->assertCanGetStranger('premium');
-    }
-
 
     /**
      * Get stranger registered

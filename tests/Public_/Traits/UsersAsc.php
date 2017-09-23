@@ -8,6 +8,7 @@ use App\Models\User;
  * Trait UsersAsc
  * Test users as public
  *
+ * @author Mathrix Team
  * @package Tests\Public_\Traits
  */
 trait UsersAsc

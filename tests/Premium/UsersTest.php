@@ -8,6 +8,7 @@ use Tests\Premium\Traits\UsersDesc;
  * Class UsersTest
  * Test users as premium
  *
+ * @author Mathrix Team
  * @package Tests\Premium
  */
 class UsersTest extends PremiumTestCase

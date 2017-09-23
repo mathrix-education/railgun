@@ -6,8 +6,9 @@ use Tests\Registered\Traits\UsersDesc;
 
 /**
  * Class UsersTest
- * Tests users as registred
+ * Tests users as registered
  *
+ * @author Mathrix Team
  * @package Tests\Registered
  */
 class UsersTest extends RegisteredTestCase
