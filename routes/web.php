@@ -29,7 +29,7 @@ $app->group(['prefix' => 'users'], function () use ($app) {
     $app->post('refresh', 'AuthController@refresh');
     $app->post('forgot', 'AuthController@forgot');
     $app->post('reset/{token}', 'AuthController@reset');
-    $app->get('exists/{email}', 'UserController@exists');
+    $app->get('exists/{field}/{value}', 'UserController@exists');
 
     $app->group(['middleware' => 'auth:api'], function () use ($app) {
         $app->get('', 'UserController@index');
@@ -193,6 +193,23 @@ $app->group(['prefix' => 'posts'], function () use ($app) {
 
 /*
 |--------------------------------------------------------------------------
+| Courses
+|--------------------------------------------------------------------------
+*/
+$app->group(['prefix' => 'courses'], function () use ($app) {
+    $app->get('', 'CourseController@index');
+    $app->get('{id:[0-9]+}', 'CourseController@get');
+
+    $app->group(['middleware' => 'auth:api'], function () use ($app) {
+        $app->post('', 'CourseController@add');
+        $app->patch('{id:[0-9]+}', 'CourseController@edit');
+        $app->delete('{id:[0-9]+}', 'CourseController@delete');
+    });
+});
+
+
+/*
+|--------------------------------------------------------------------------
 | Comments
 |--------------------------------------------------------------------------
 */
@@ -206,6 +223,7 @@ $app->group(['prefix' => 'comments'], function () use ($app) {
         $app->delete('{id:[0-9]+}', 'CommentController@delete');
     });
 });
+
 
 /*
 |--------------------------------------------------------------------------

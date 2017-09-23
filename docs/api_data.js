@@ -7178,11 +7178,11 @@ define({ "api": [
   {
     "version": "1.0.0",
     "type": "get",
-    "url": "/users/exists/{email}",
+    "url": "/users/exists/{field}/{value}",
     "title": "Exists",
     "group": "Users",
     "name": "UserExists",
-    "description": "<p>Search for user with given email</p>",
+    "description": "<p>Search for user matching given key-value</p>",
     "permission": [
       {
         "name": "public"
@@ -7194,9 +7194,20 @@ define({ "api": [
           {
             "group": "Parameter",
             "type": "string",
+            "allowedValues": [
+              "username",
+              "email"
+            ],
             "optional": false,
-            "field": "email",
-            "description": "<p>The email address</p>"
+            "field": "field",
+            "description": "<p>The field to check</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "value",
+            "description": "<p>The field value to search</p>"
           }
         ]
       }
