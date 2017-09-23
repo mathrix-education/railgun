@@ -1,11 +1,4 @@
 <?php
-use App\Models\Activity;
-use App\Models\Chapter;
-use App\Models\Module;
-use App\Models\Notion;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use Mathrix\Lumen\Database\BaseTableSeeder;
 
 /**
@@ -24,6 +17,7 @@ class DatabaseSeeder extends BaseTableSeeder
 
     /**
      * Run the database seeds.
+     *
      * @return void
      */
     public function run()

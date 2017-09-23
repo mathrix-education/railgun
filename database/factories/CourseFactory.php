@@ -1,8 +1,6 @@
 <?php
 use App\Models\Category;
 use App\Models\Course;
-use App\Models\Post;
-use App\Models\User;
 use Faker\Generator;
 
 /**

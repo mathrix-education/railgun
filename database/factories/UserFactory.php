@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Hash;
 
 /**
  * UserFactory
+ *
  * @author Mathrix Team
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
@@ -33,6 +34,7 @@ $factory->define(User::class, function (Generator $faker) {
 
 /**
  * UserRegisteredFactory
+ *
  * @author Mathrix Team
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
@@ -47,6 +49,7 @@ $factory->defineAs(User::class, 'registered', function (Generator $faker) use ($
 
 /**
  * UserPremiumFactory
+ *
  * @author Mathrix Team
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
@@ -61,6 +64,7 @@ $factory->defineAs(User::class, 'premium', function (Generator $faker) use ($fac
 
 /**
  * UserModeratorFactory
+ *
  * @author Mathrix Team
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
@@ -79,6 +83,7 @@ $factory->defineAs(User::class, 'moderator', function (Generator $faker) use ($f
 
 /**
  * UserAdminFactory
+ *
  * @author Mathrix Team
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
