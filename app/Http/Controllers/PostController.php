@@ -45,7 +45,7 @@ class PostController extends BaseController
         return $this->http200Success(
             Post::limit($perPage)
                 ->offset(($page - 1) * $perPage)
-                ->orderByDesc('created')
+                ->orderByDesc('created_at')
                 ->get()
         );
     }
