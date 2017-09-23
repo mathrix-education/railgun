@@ -10,7 +10,7 @@ Written by Mathieu Bour for Mathrix.
 ### Installation
 1. Install PHP 7.1 with mysql, mbstring, intl and dom extensions.
 2. Clone this repository on your local workspace.
-3. Start your ssh-agent and add our SSH key located in `storage/gitlab_mathrix_id_rsa` to your identities.
+3. Start your ssh-agent and add our SSH key located in `storage/ssh/gitlab_mathrix_id_rsa` to your identities.
 4. Run `composer install` to setup the project files.
 5. Run `php artisan migrate:refresh --seed` to setup a working database.
 6. Run `php artisan ide-helper:generate` to generate PHPDoc for Laravel Facades.

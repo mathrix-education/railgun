@@ -50,7 +50,9 @@ use Mathrix\Lumen\Models\BaseModel;
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
-    use Authenticatable, Authorizable, HasApiTokens;
+    use Authenticatable, Authorizable, HasApiTokens {
+        HasApiTokens::tokenCan as passportTokenCan;
+    }
 
     /** @var array The guarded attributes */
     protected $guarded = ['type'];
@@ -121,5 +123,28 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function votes(): HasMany
     {
         return $this->hasMany(Vote::class);
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Passport
+    |--------------------------------------------------------------------------
+    */
+    public function tokenCan($scope)
+    {
+        $order = ['admin', 'moderator', 'premium', 'registered'];
+
+        if (in_array($scope, $order)) {
+            $key = array_search($scope, $order);
+
+            foreach ($order as $k => $grantedScope) {
+                if ($this->passportTokenCan($grantedScope) && $k <= $key) {
+                    return true;
+                }
+            }
+        }
+
+        return $this->passportTokenCan($scope);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models\Observers;
 
+use App\Models\Comment;
 use App\Models\Post;
 use Mathrix\Lumen\Observers\BaseObserver;
 
@@ -38,5 +39,21 @@ class PostObserver extends BaseObserver
         }
 
         return parent::saving($post);
+    }
+
+    /**
+     * @param Post $post
+     *
+     * @return bool
+     */
+    public function deleting($post)
+    {
+        // Force delete linked comments and their children
+        /** @var Comment $comment */
+        foreach ($post->comments as $comment) {
+            $comment->forceDelete();
+        }
+
+        return true;
     }
 }

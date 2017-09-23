@@ -45,6 +45,7 @@ class AuthController extends BaseController
         // Try to find the user by email to get scope
         /** @var User $user */
         $user = User::where('email', $request->input('username'))->first();
+
         if ($user instanceof User) {
             $request->merge(['scope' => $user->type]);
         }

@@ -18,10 +18,6 @@ class CoursePolicy extends BasePolicy
      */
     public function add(User $currentUser)
     {
-        if ($currentUser->tokenCan('admin')) {
-            return true;
-        }
-
         return false;
     }
 
@@ -32,10 +28,6 @@ class CoursePolicy extends BasePolicy
      */
     public function edit(User $currentUser)
     {
-        if ($currentUser->tokenCan('admin')) {
-            return true;
-        }
-
         return false;
     }
 
@@ -46,10 +38,6 @@ class CoursePolicy extends BasePolicy
      */
     public function delete(User $currentUser)
     {
-        if ($currentUser->tokenCan('admin')) {
-            return true;
-        }
-
         return false;
     }
 }
