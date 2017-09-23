@@ -30,9 +30,10 @@ use Mathrix\Lumen\Models\BaseModel;
  */
 class Course extends BaseModel
 {
+    /** @var bool If timestamps (created_at and updated_at) should be used */
+    public $timestamps = true;
     /** @var array The fillable attributes */
     protected $fillable = ['title', 'slug', 'content', 'category_id'];
-
     /** @var array Validation rules */
     protected $rules = [
         'title' => 'required|max:255',
@@ -41,15 +42,13 @@ class Course extends BaseModel
         'category_id' => 'required|exists:categories,id'
     ];
 
-    /** @var bool If timestamps (created_at and updated_at) should be used */
-    public $timestamps = true;
-
 
     /*
     |--------------------------------------------------------------------------
     | Relations
     |--------------------------------------------------------------------------
     */
+
     /**
      * BelongsTo Category
      *

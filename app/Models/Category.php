@@ -20,7 +20,7 @@ use Mathrix\Lumen\Models\BaseModel;
  */
 class Category extends BaseModel
 {
-    /** @var array The fillable attributes*/
+    /** @var array The fillable attributes */
     protected $fillable = ['name', 'slug'];
 
     /** @var array Validation rules */

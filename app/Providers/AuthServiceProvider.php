@@ -25,6 +25,7 @@ use Laravel\Passport\Passport;
 
 /**
  * Class AuthServiceProvider
+ *
  * @author Mathrix Team
  * @package App\Providers
  */
@@ -32,6 +33,7 @@ class AuthServiceProvider extends ServiceProvider
 {
     /**
      * Boot the authentication services for the application.
+     *
      * @return void
      */
     public function boot()

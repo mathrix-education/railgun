@@ -175,7 +175,7 @@ class CourseController extends BaseController
             return $this->http401Unauthorized();
         }
 
-        if(!$course->delete()) {
+        if (!$course->delete()) {
             return $course->handleResponse($this->http422Delete());
         }
 

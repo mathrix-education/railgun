@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder as QueryBuilder;
@@ -52,19 +51,16 @@ class Comment extends BaseModel
 {
     use SoftDeletes;
 
-    /** @var array The fillable attributes*/
+    /** @var bool If timestamps (created_at and updated_at) should be used */
+    public $timestamps = true;
+    /** @var array The fillable attributes */
     protected $fillable = ['content', 'score', 'parent_id', 'user_id', 'commentable_id', 'commentable_type'];
-
     /** @var array Validation rules */
     protected $rules = [
         'content' => 'required',
         'user_id' => 'required|exists:users,id',
         'parent_id' => 'nullable|exists:comments,id'
     ];
-
-    /** @var bool If timestamps (created_at and updated_at) should be used */
-    public $timestamps = true;
-
     /** @var array The attributes that should be mutated to dates */
     protected $dates = ['deleted_at'];
 
@@ -129,6 +125,7 @@ class Comment extends BaseModel
     */
     /**
      * Override delete (also delete children))
+     *
      * @return bool|null
      */
     public function delete()
@@ -142,6 +139,7 @@ class Comment extends BaseModel
 
     /**
      * Override delete (also delete children))
+     *
      * @return bool|null
      */
     public function forceDelete()

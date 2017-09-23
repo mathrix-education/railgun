@@ -2,8 +2,6 @@
 
 namespace App\Models\Observers;
 
-use App\Models\Activity;
-use App\Models\Notion;
 use App\Models\Post;
 use Mathrix\Lumen\Observers\BaseObserver;
 

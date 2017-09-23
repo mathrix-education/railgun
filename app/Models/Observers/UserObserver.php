@@ -8,6 +8,7 @@ use Mathrix\Lumen\Observers\BaseObserver;
 
 /**
  * Class UserObserver
+ *
  * @author Mathrix Team
  * @package App\Models\Observers
  */

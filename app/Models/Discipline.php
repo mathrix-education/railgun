@@ -23,7 +23,7 @@ use Mathrix\Lumen\Models\BaseModel;
  */
 class Discipline extends BaseModel
 {
-    /** @var array The fillable attributes*/
+    /** @var array The fillable attributes */
     protected $fillable = ['name', 'slug'];
 
 
@@ -34,6 +34,7 @@ class Discipline extends BaseModel
     */
     /**
      * HasMany Chapter
+     *
      * @return HasMany
      */
     public function chapters(): HasMany
@@ -43,6 +44,7 @@ class Discipline extends BaseModel
 
     /**
      * BelongsToMany Class_
+     *
      * @return BelongsToMany
      */
     public function classes(): BelongsToMany

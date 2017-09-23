@@ -33,9 +33,10 @@ use Mathrix\Lumen\Models\BaseModel;
  */
 class Post extends BaseModel
 {
+    /** @var bool If timestamps (created_at and updated_at) should be used */
+    public $timestamps = true;
     /** @var array The fillable attributes */
     protected $fillable = ['title', 'slug', 'content', 'category_id', 'user_id'];
-
     /** @var array Validation rules */
     protected $rules = [
         'title' => 'required|max:255',
@@ -45,15 +46,13 @@ class Post extends BaseModel
         'user_id' => 'required|exists:users,id'
     ];
 
-    /** @var bool If timestamps (created_at and updated_at) should be used */
-    public $timestamps = true;
-
 
     /*
     |--------------------------------------------------------------------------
     | Relations
     |--------------------------------------------------------------------------
     */
+
     /**
      * BelongsTo Category
      *
@@ -89,6 +88,7 @@ class Post extends BaseModel
     */
     /**
      * Delete a post
+     *
      * @return bool|null
      */
     public function delete()

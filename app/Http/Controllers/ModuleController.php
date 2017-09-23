@@ -58,7 +58,7 @@ class ModuleController extends BaseController
                     ->where('commentable_type', '=', 'module')
                     ->orderByDesc('created_at');
             },
-            'comments.children' => function(HasMany $query) {
+            'comments.children' => function (HasMany $query) {
                 $query->getQuery()->orderBy('created_at');
             }
         ])->firstOrFail();
