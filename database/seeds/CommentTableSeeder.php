@@ -4,7 +4,8 @@ use Mathrix\Lumen\Database\BaseTableSeeder;
 
 class CommentTableSeeder extends BaseTableSeeder
 {
-    public function run() {
+    public function run()
+    {
 
         $this->println('<comment>Seeding:</comment> comments from factory');
 

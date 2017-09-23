@@ -4,6 +4,7 @@ use Faker\Generator;
 
 /**
  * ModuleMCQFactory
+ *
  * @author Mathrix Team
  * @var Illuminate\Database\Eloquent\Factory $factory
  */

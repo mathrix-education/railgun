@@ -13,7 +13,7 @@ class ActivityTableSeeder extends BaseTableSeeder
 
         /** @var Notion $notion */
         foreach ($notions as $notion) {
-            factory(Activity::class, random_int(1, 3))->create()->each(function(Activity $activity) use ($notion) {
+            factory(Activity::class, random_int(1, 3))->create()->each(function (Activity $activity) use ($notion) {
                 $notion->activities()->attach($activity->id);
             });
         }

@@ -1,5 +1,4 @@
 <?php
-use App\Models\Comment;
 use App\Models\Vote;
 use Mathrix\Lumen\Database\BaseTableSeeder;
 

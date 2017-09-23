@@ -4,11 +4,13 @@ use Faker\Generator;
 
 /**
  * ModuleFactory & ModuleRandomFactory
+ *
  * @author Mathrix Team
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->define(Module::class, function (Generator $faker) {
     $name = $faker->sentence(3);
+
     return [
         'name' => $name,
         'slug' => str_slug($name),

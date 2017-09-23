@@ -4,6 +4,7 @@ use Faker\Generator;
 
 /**
  * ModuleFlashCardFactory
+ *
  * @author Mathrix Team
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
