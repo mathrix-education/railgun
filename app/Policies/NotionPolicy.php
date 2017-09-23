@@ -4,6 +4,7 @@ namespace App\Policies;
 
 /**
  * Class NotionPolicy
+ *
  * @author Mathrix Team
  * @package App\Policies
  */

@@ -25,7 +25,7 @@ use Mathrix\Lumen\Models\BaseModel;
  */
 class Notion extends BaseModel
 {
-    /** @var array The The fillable attributes*/
+    /** @var array The The fillable attributes */
     protected $fillable = ['name', 'slug', 'chapter_id'];
 
     /** @var array The validation rules */
@@ -43,6 +43,7 @@ class Notion extends BaseModel
     */
     /**
      * BelongsToMany Activity
+     *
      * @return BelongsToMany
      */
     public function activities(): BelongsToMany
@@ -52,6 +53,7 @@ class Notion extends BaseModel
 
     /**
      * BelongsToChapter
+     *
      * @return BelongsTo
      */
     public function chapter(): BelongsTo

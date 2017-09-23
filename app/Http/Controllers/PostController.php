@@ -175,7 +175,7 @@ class PostController extends BaseController
             return $this->http401Unauthorized();
         }
 
-        if(!$post->delete()) {
+        if (!$post->delete()) {
             return $post->handleResponse($this->http422Delete());
         }
 

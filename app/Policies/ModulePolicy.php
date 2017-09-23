@@ -4,6 +4,7 @@ namespace App\Policies;
 
 /**
  * Class ModulePolicy
+ *
  * @author Mathrix Team
  * @package App\Policies
  */

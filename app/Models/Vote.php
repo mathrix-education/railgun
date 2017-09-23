@@ -28,9 +28,10 @@ use Mathrix\Lumen\Models\BaseModel;
  */
 class Vote extends BaseModel
 {
-    /** @var array The fillable attributes*/
+    /** @var bool If timestamps (created_at and updated_at) should be used */
+    public $timestamps = true;
+    /** @var array The fillable attributes */
     protected $fillable = ['value', 'user_id', 'votable_id', 'votable_type'];
-
     /** @var array Validation rules */
     protected $rules = [
         'user_id' => 'required|exists:users,id',
@@ -38,15 +39,13 @@ class Vote extends BaseModel
         'votable_type' => 'required|in:comment'
     ];
 
-    /** @var bool If timestamps (created_at and updated_at) should be used */
-    public $timestamps = true;
-
 
     /*
     |--------------------------------------------------------------------------
     | Relations
     |--------------------------------------------------------------------------
     */
+
     /**
      * BelongsTo User
      *

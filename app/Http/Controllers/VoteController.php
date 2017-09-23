@@ -11,6 +11,28 @@ use Mathrix\Lumen\Models\BaseModel;
 class VoteController extends BaseController
 {
     /**
+     * @apiVersion 1.0.0
+     * @api {post} /votes/{votable_type}/{votable_id}/up Up
+     * @apiGroup Votes
+     * @apiName VoteUp
+     * @apiDescription Up vote something
+     * @apiPermission registered
+     * @apiUse Bearer
+     * @apiUse 401Unauthorized
+     * @apiUse 422Save
+     *
+     * @param Request $request
+     * @param string $votable_type
+     * @param int $votable_id
+     *
+     * @return JsonResponse
+     */
+    public function up(Request $request, string $votable_type, int $votable_id)
+    {
+        return $this->vote($request, $votable_type, $votable_id, 1);
+    }
+
+    /**
      * Handle vote action
      *
      * @param Request $request
@@ -44,7 +66,6 @@ class VoteController extends BaseController
         }
 
 
-
         if (!Vote::where($voteConditions)->exists()) {
             $vote = new Vote($voteData);
             $vote->value = $value;
@@ -56,7 +77,7 @@ class VoteController extends BaseController
             /** @var Vote $vote */
             $vote = Vote::where($voteConditions)->first();
 
-            if($vote->value == $value) {
+            if ($vote->value == $value) {
                 if (!$vote->delete()) {
                     return $vote->handleResponse($this->http422Save());
                 }
@@ -68,29 +89,6 @@ class VoteController extends BaseController
         }
 
         return $this->http200Success($vote->exists());
-    }
-
-
-    /**
-     * @apiVersion 1.0.0
-     * @api {post} /votes/{votable_type}/{votable_id}/up Up
-     * @apiGroup Votes
-     * @apiName VoteUp
-     * @apiDescription Up vote something
-     * @apiPermission registered
-     * @apiUse Bearer
-     * @apiUse 401Unauthorized
-     * @apiUse 422Save
-     *
-     * @param Request $request
-     * @param string $votable_type
-     * @param int $votable_id
-     *
-     * @return JsonResponse
-     */
-    public function up(Request $request, string $votable_type, int $votable_id)
-    {
-        return $this->vote($request, $votable_type, $votable_id, 1);
     }
 
     /**

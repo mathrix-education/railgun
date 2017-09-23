@@ -24,11 +24,12 @@ use Mathrix\Lumen\Models\BaseModel;
  */
 class Activity extends BaseModel
 {
-    /** @var array The fillable attributes*/
+    /** @var array The fillable attributes */
     protected $fillable = ['name', 'slug', 'description'];
 
     /**
      * The attributes that should be cast to native types.
+     *
      * @var array
      */
     protected $casts = [
@@ -50,6 +51,7 @@ class Activity extends BaseModel
     */
     /**
      * BelongsToMany Module
+     *
      * @return BelongsToMany
      */
     public function modules(): BelongsToMany
@@ -59,6 +61,7 @@ class Activity extends BaseModel
 
     /**
      * BelongsToMany Notion
+     *
      * @return BelongsToMany
      */
     public function notions(): BelongsToMany
