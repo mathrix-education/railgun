@@ -32,6 +32,13 @@ abstract class PermissionTestCase extends BaseTestCase
     }
 
     /**
+     * Set the user for the test
+     *
+     * @return User
+     */
+    abstract public function initUser();
+
+    /**
      * Destroy PDO instances at the end of each test to avoid th Too many connections error
      */
     public function tearDown()
@@ -42,15 +49,6 @@ abstract class PermissionTestCase extends BaseTestCase
 
         parent::tearDown();
     }
-
-
-    /**
-     * Set the user for the test
-     *
-     * @return User
-     */
-    abstract public function initUser();
-
 
     /**
      * Get a stranger

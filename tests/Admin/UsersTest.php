@@ -7,6 +7,7 @@ use Tests\Moderator\Traits\UsersAsc;
  * Class UsersTest
  * Test users as admin
  *
+ * @author Mathrix Team
  * @package Tests\Admin
  */
 class UsersTest extends AdminTestCase

@@ -7,6 +7,7 @@ use App\Models\Notion;
  * Trait NotionsDesc
  * Test notions for moderator and lower
  *
+ * @author Mathrix Team
  * @package Tests\Moderator\Traits
  */
 trait NotionsDesc

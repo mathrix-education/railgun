@@ -7,6 +7,7 @@ use App\Models\Class_;
  * Trait ClassesAsc
  * Test class as public or higher
  *
+ * @author Mathrix Team
  * @package Tests\Public_\Traits
  */
 trait ClassesAsc

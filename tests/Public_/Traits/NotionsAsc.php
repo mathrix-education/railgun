@@ -7,6 +7,7 @@ use App\Models\Notion;
  * Trait NotionsAsc
  * Test notions as public or higher
  *
+ * @author Mathrix Team
  * @package Tests\Public_\Traits
  */
 trait NotionsAsc

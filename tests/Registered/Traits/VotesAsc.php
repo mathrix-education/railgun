@@ -3,7 +3,6 @@ namespace Tests\Registered\Traits;
 
 use App\Models\Comment;
 use App\Models\User;
-use App\Models\Vote;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Passport\Passport;
@@ -13,6 +12,7 @@ use Laravel\Passport\Passport;
  * Test votes as registered user
  * Because there are currently only comments which are votable, we will only test them alongside votes
  *
+ * @author Mathrix Team
  * @package Tests\Registered\Traits
  */
 trait VotesAsc

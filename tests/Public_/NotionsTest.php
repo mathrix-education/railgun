@@ -6,8 +6,9 @@ use Tests\Registered\Traits\NotionsDesc;
 
 /**
  * Class NotionsTest
- * Test classes as public
+ * Test notions as public
  *
+ * @author Mathrix Team
  * @package Tests\Public_
  */
 class NotionsTest extends PublicTestCase

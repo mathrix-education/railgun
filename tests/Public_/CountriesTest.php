@@ -7,6 +7,7 @@ use Tests\Public_\Traits\CountriesAsc;
  * Class CountriesTest
  * Test countries as public
  *
+ * @author Mathrix Team
  * @package Tests\Public_
  */
 class CountriesTest extends PublicTestCase

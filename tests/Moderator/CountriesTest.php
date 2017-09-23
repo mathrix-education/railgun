@@ -8,6 +8,7 @@ use Tests\Moderator\Traits\CountriesDesc;
  * Class CountriesTest
  * Test countries as moderator
  *
+ * @author Mathrix Team
  * @package Tests\Moderator
  */
 class CountriesTest extends ModeratorTestCase

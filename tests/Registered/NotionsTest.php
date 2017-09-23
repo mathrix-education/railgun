@@ -6,8 +6,9 @@ use Tests\Registered\Traits\NotionsDesc;
 
 /**
  * Class NotionsTest
- * Test classes as registered
+ * Test notions as registered
  *
+ * @author Mathrix Team
  * @package Tests\Registered
  */
 class NotionsTest extends RegisteredTestCase

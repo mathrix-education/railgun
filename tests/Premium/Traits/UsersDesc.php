@@ -7,6 +7,7 @@ use Tests\Moderator\Traits\UsersDesc as ParentUsersDesc;
  * Trait UsersDesc
  * Test users as premium or lower
  *
+ * @author Mathrix Team
  * @package Tests\Premium\Traits
  */
 trait UsersDesc

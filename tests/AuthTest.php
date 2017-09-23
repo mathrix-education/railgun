@@ -66,22 +66,6 @@ class AuthTest extends BaseTestCase
     | POST /users/login
     |--------------------------------------------------------------------------
     */
-    /**
-     * Build login form data
-     *
-     * @return array
-     */
-    public function loginData(): array
-    {
-        return [
-            'grant_type' => 'password',
-            'client_id' => self::OAUTH_CLIENT_ID,
-            'client_secret' => self::OAUTH_CLIENT_SECRET,
-            'username' => $this->user->email,
-            'password' => 'test'
-        ];
-    }
-
 
     /**
      * Expect HTTP 200 success
@@ -102,6 +86,21 @@ class AuthTest extends BaseTestCase
         return $this->response;
     }
 
+    /**
+     * Build login form data
+     *
+     * @return array
+     */
+    public function loginData(): array
+    {
+        return [
+            'grant_type' => 'password',
+            'client_id' => self::OAUTH_CLIENT_ID,
+            'client_secret' => self::OAUTH_CLIENT_SECRET,
+            'username' => $this->user->email,
+            'password' => 'test'
+        ];
+    }
 
     /**
      * Expect HTTP 401 invalid_client
