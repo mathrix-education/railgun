@@ -39,5 +39,6 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->call(CourseTableSeeder::class);
         $this->call(CommentTableSeeder::class);
         $this->call(VoteTableSeeder::class);
+        $this->call(QuoteTableSeeder::class);
     }
 }

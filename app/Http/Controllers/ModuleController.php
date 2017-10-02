@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Module;
@@ -144,7 +145,7 @@ class ModuleController extends BaseController
 
     /**
      * @apiVersion 1.0.0
-     * @api {delete} /modules/{id} Delete (NYI)
+     * @api {delete} /modules/{id} Delete
      * @apiGroup Modules
      * @apiName ModuleDelete
      * @apiDescription Delete a module
@@ -154,12 +155,23 @@ class ModuleController extends BaseController
      * @apiUse 401Unauthorized
      * @apiUse 404ModelNotFound
      *
+     * @param Request $request
      * @param int $id
-     *
      * @return JsonResponse
      */
-    public function delete(int $id)
+    public function delete(Request $request, int $id)
     {
-        return $this->http501NotImplemented();
+        /** @var Module $module */
+        $module = Module::where('id', '=', $id)->firstOrFail();
+
+        if ($request->user()->cant('delete', $module)) {
+            return $this->http401Unauthorized();
+        }
+
+        if (!$module->delete()) {
+            return $module->handleResponse($this->http422Delete());
+        }
+
+        return $this->http200Success();
     }
 }

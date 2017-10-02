@@ -236,3 +236,22 @@ $app->group(['prefix' => 'votes'], function () use ($app) {
         $app->post('{votable_type}/{votable_id}/down', 'VoteController@down');
     });
 });
+
+
+/*
+|--------------------------------------------------------------------------
+| Quotes
+|--------------------------------------------------------------------------
+*/
+$app->group(['prefix' => 'quotes'], function () use ($app) {
+    $app->get('', 'QuoteController@index');
+    $app->get('{id:[0-9]+}', 'QuoteController@get');
+    $app->get('random', 'QuoteController@random');
+    $app->get('random/{count:[0-9]+}', 'QuoteController@random');
+
+    $app->group(['middleware' => 'auth:api'], function () use ($app) {
+        $app->post('', 'QuoteController@add');
+        $app->patch('{id:[0-9]+}', 'QuoteController@edit');
+        $app->delete('{id:[0-9]+}', 'QuoteController@delete');
+    });
+});

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Chapter;
@@ -131,7 +132,7 @@ class ChapterController extends BaseController
 
     /**
      * @apiVersion 1.0.0
-     * @api {delete} /chapters/{id} Delete (NYI)
+     * @api {delete} /chapters/{id} Delete
      * @apiGroup Chapters
      * @apiName ChapterDelete
      * @apiDescription Delete a chapter
@@ -141,12 +142,23 @@ class ChapterController extends BaseController
      * @apiUse 401Unauthorized
      * @apiUse 404ModelNotFound
      *
+     * @param Request $request
      * @param int $id
-     *
      * @return JsonResponse
      */
-    public function delete(int $id)
+    public function delete(Request $request, int $id)
     {
-        return $this->http501NotImplemented();
+        /** @var Chapter $chapter */
+        $chapter = Chapter::where('id', '=', $id)->firstOrFail();
+
+        if ($request->user()->cant('delete', $chapter)) {
+            return $this->http401Unauthorized();
+        }
+
+        if (!$chapter->delete()) {
+            return $chapter->handleResponse($this->http422Delete());
+        }
+
+        return $this->http200Success();
     }
 }

@@ -12,6 +12,7 @@ use App\Models\Discipline;
 use App\Models\Module;
 use App\Models\Notion;
 use App\Models\Post;
+use App\Models\Quote;
 use App\Models\User;
 use App\Models\Vote;
 use App\Policies\ActivityPolicy;
@@ -24,6 +25,7 @@ use App\Policies\DisciplinePolicy;
 use App\Policies\ModulePolicy;
 use App\Policies\NotionPolicy;
 use App\Policies\PostPolicy;
+use App\Policies\QuotePolicy;
 use App\Policies\UserPolicy;
 use App\Policies\VotePolicy;
 use Carbon\Carbon;
@@ -71,5 +73,6 @@ class AuthServiceProvider extends ServiceProvider
         Gate::policy(Course::class, CoursePolicy::class);
         Gate::policy(Comment::class, CommentPolicy::class);
         Gate::policy(Vote::class, VotePolicy::class);
+        Gate::policy(Quote::class, QuotePolicy::class);
     }
 }
