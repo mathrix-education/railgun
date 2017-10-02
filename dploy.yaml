@@ -5,5 +5,3 @@ dev:
     user: api_mathrix_fr_dev
     pass: ndRxb8bZfrbM2adCST2X
     check: true
-    exlude:
-        - readme.md
