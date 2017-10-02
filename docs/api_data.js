@@ -203,7 +203,7 @@ define({ "api": [
             "group": "Error 422",
             "optional": false,
             "field": "validation",
-            "description": "<p>data failed to pass validation</p>"
+            "description": "<p>Data failed to pass validation</p>"
           },
           {
             "group": "Error 422",
@@ -447,7 +447,7 @@ define({ "api": [
             "group": "Error 422",
             "optional": false,
             "field": "validation",
-            "description": "<p>data failed to pass validation</p>"
+            "description": "<p>Data failed to pass validation</p>"
           }
         ]
       }
@@ -948,22 +948,6 @@ define({ "api": [
             "field": "discipline_id",
             "description": "<p>The chapter discipline id</p>"
           }
-        ],
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": false,
-            "field": "class_id",
-            "description": "<p>The chapter class id</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": false,
-            "field": "discipline_id",
-            "description": "<p>The chapter discipline id</p>"
-          }
         ]
       }
     },
@@ -990,6 +974,20 @@ define({ "api": [
             "optional": false,
             "field": "slug",
             "description": "<p>The chapter slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>The chapter class id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "discipline_id",
+            "description": "<p>The chapter discipline id</p>"
           }
         ]
       }
@@ -1009,7 +1007,7 @@ define({ "api": [
             "group": "Error 422",
             "optional": false,
             "field": "validation",
-            "description": "<p>data failed to pass validation</p>"
+            "description": "<p>Data failed to pass validation</p>"
           },
           {
             "group": "Error 422",
@@ -1105,20 +1103,6 @@ define({ "api": [
             "optional": false,
             "field": "id",
             "description": "<p>The chapter id</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": false,
-            "field": "class_id",
-            "description": "<p>The chapter class id</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": false,
-            "field": "discipline_id",
-            "description": "<p>The chapter discipline id</p>"
           }
         ],
         "Data": [
@@ -1192,6 +1176,20 @@ define({ "api": [
             "optional": false,
             "field": "slug",
             "description": "<p>The chapter slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>The chapter class id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "discipline_id",
+            "description": "<p>The chapter discipline id</p>"
           }
         ]
       }
@@ -1225,7 +1223,7 @@ define({ "api": [
             "group": "Error 422",
             "optional": false,
             "field": "validation",
-            "description": "<p>data failed to pass validation</p>"
+            "description": "<p>Data failed to pass validation</p>"
           }
         ]
       }
@@ -1253,20 +1251,6 @@ define({ "api": [
             "optional": false,
             "field": "id",
             "description": "<p>The chapter id</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": false,
-            "field": "class_id",
-            "description": "<p>The chapter class id</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": false,
-            "field": "discipline_id",
-            "description": "<p>The chapter discipline id</p>"
           }
         ]
       }
@@ -1296,6 +1280,20 @@ define({ "api": [
             "optional": false,
             "field": "slug",
             "description": "<p>The chapter slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>The chapter class id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "discipline_id",
+            "description": "<p>The chapter discipline id</p>"
           }
         ]
       }
@@ -1358,22 +1356,16 @@ define({ "api": [
             "optional": false,
             "field": "chapters.slug",
             "description": "<p>The chapter slug</p>"
-          }
-        ]
-      }
-    },
-    "parameter": {
-      "fields": {
-        "Parameter": [
+          },
           {
-            "group": "Parameter",
+            "group": "Success 200",
             "type": "int",
             "optional": false,
             "field": "chapters.class_id",
             "description": "<p>The chapter class id</p>"
           },
           {
-            "group": "Parameter",
+            "group": "Success 200",
             "type": "int",
             "optional": false,
             "field": "chapters.discipline_id",
@@ -1546,7 +1538,7 @@ define({ "api": [
             "group": "Error 422",
             "optional": false,
             "field": "validation",
-            "description": "<p>data failed to pass validation</p>"
+            "description": "<p>Data failed to pass validation</p>"
           },
           {
             "group": "Error 422",
@@ -1806,7 +1798,7 @@ define({ "api": [
             "group": "Error 422",
             "optional": false,
             "field": "validation",
-            "description": "<p>data failed to pass validation</p>"
+            "description": "<p>Data failed to pass validation</p>"
           }
         ]
       }
@@ -2165,7 +2157,7 @@ define({ "api": [
             "group": "Error 422",
             "optional": false,
             "field": "validation",
-            "description": "<p>data failed to pass validation</p>"
+            "description": "<p>Data failed to pass validation</p>"
           },
           {
             "group": "Error 422",
@@ -2455,7 +2447,7 @@ define({ "api": [
             "group": "Error 422",
             "optional": false,
             "field": "validation",
-            "description": "<p>data failed to pass validation</p>"
+            "description": "<p>Data failed to pass validation</p>"
           }
         ]
       }
@@ -2587,16 +2579,57 @@ define({ "api": [
   {
     "version": "1.0.0",
     "type": "get",
-    "url": "/comments",
-    "title": "Index",
+    "url": "/comments/{commentable_type}/{commentable_id}/{?page}/{?perPage}",
+    "title": "Type",
     "group": "Comments",
     "name": "CommentsIndex",
-    "description": "<p>Retrieve comments</p>",
+    "description": "<p>Retrieve comments by type</p>",
     "permission": [
       {
         "name": "public"
       }
     ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "allowedValues": [
+              "post",
+              "course",
+              "module"
+            ],
+            "optional": false,
+            "field": "commentable_type",
+            "description": "<p>the commentable_type</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "commentable_id",
+            "description": "<p>the commentable id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": true,
+            "field": "page",
+            "defaultValue": "1",
+            "description": "<p>the page to fetch</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": true,
+            "field": "perPage",
+            "defaultValue": "10",
+            "description": "<p>the comments per page to fetch (excluding children)</p>"
+          }
+        ]
+      }
+    },
     "filename": "app/Http/Controllers/CommentController.php",
     "groupTitle": "Comments",
     "success": {
@@ -2692,57 +2725,16 @@ define({ "api": [
   {
     "version": "1.0.0",
     "type": "get",
-    "url": "/comments/{commentable_type}/{commentable_id}/{?page}/{?perPage}",
-    "title": "Type",
+    "url": "/comments",
+    "title": "Index",
     "group": "Comments",
     "name": "CommentsIndex",
-    "description": "<p>Retrieve comments by type</p>",
+    "description": "<p>Retrieve comments</p>",
     "permission": [
       {
         "name": "public"
       }
     ],
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "string",
-            "allowedValues": [
-              "post",
-              "course",
-              "module"
-            ],
-            "optional": false,
-            "field": "commentable_type",
-            "description": "<p>the commentable_type</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": false,
-            "field": "commentable_id",
-            "description": "<p>the commentable id</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": true,
-            "field": "page",
-            "defaultValue": "1",
-            "description": "<p>the page to fetch</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": true,
-            "field": "perPage",
-            "defaultValue": "10",
-            "description": "<p>the comments per page to fetch (excluding children)</p>"
-          }
-        ]
-      }
-    },
     "filename": "app/Http/Controllers/CommentController.php",
     "groupTitle": "Comments",
     "success": {
@@ -3322,6 +3314,139 @@ define({ "api": [
   {
     "version": "1.0.0",
     "type": "get",
+    "url": "/content/search/{query}/{?page}/{?perPage}",
+    "title": "Search",
+    "group": "Content",
+    "name": "ContentSearch",
+    "description": "<p>Search for chapters and notions</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": true,
+            "field": "page",
+            "defaultValue": "1",
+            "description": "<p>The page number</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": true,
+            "field": "perPage",
+            "defaultValue": "10",
+            "description": "<p>The search count per page</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 400": [
+          {
+            "group": "Error 400",
+            "optional": false,
+            "field": "invalid_request",
+            "description": "<p>page and perPage have to be strictly positive</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/ContentController.php",
+    "groupTitle": "Content",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Chapter[]",
+            "optional": false,
+            "field": "chapters",
+            "description": "<p>Array of chapters</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "chapters.id",
+            "description": "<p>The chapter id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "chapters.name",
+            "description": "<p>The chapter name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "chapters.slug",
+            "description": "<p>The chapter slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "chapters.class_id",
+            "description": "<p>The chapter class id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "chapters.discipline_id",
+            "description": "<p>The chapter discipline id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Notion[]",
+            "optional": false,
+            "field": "notions",
+            "description": "<p>Array of notions</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "notions.id",
+            "description": "<p>The notion id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "notions.name",
+            "description": "<p>The notion name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "notions.slug",
+            "description": "<p>The notion slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "notions.chapter_id",
+            "description": "<p>The notion chapter_id</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
     "url": "/countries",
     "title": "Index",
     "group": "Countries",
@@ -3504,7 +3629,7 @@ define({ "api": [
             "group": "Error 422",
             "optional": false,
             "field": "validation",
-            "description": "<p>data failed to pass validation</p>"
+            "description": "<p>Data failed to pass validation</p>"
           },
           {
             "group": "Error 422",
@@ -3722,7 +3847,7 @@ define({ "api": [
             "group": "Error 422",
             "optional": false,
             "field": "validation",
-            "description": "<p>data failed to pass validation</p>"
+            "description": "<p>Data failed to pass validation</p>"
           }
         ]
       }
@@ -3964,7 +4089,7 @@ define({ "api": [
             "group": "Error 422",
             "optional": false,
             "field": "validation",
-            "description": "<p>data failed to pass validation</p>"
+            "description": "<p>Data failed to pass validation</p>"
           },
           {
             "group": "Error 422",
@@ -4215,7 +4340,7 @@ define({ "api": [
             "group": "Error 422",
             "optional": false,
             "field": "validation",
-            "description": "<p>data failed to pass validation</p>"
+            "description": "<p>Data failed to pass validation</p>"
           }
         ]
       }
@@ -4536,7 +4661,7 @@ define({ "api": [
             "group": "Error 422",
             "optional": false,
             "field": "validation",
-            "description": "<p>data failed to pass validation</p>"
+            "description": "<p>Data failed to pass validation</p>"
           },
           {
             "group": "Error 422",
@@ -4752,7 +4877,7 @@ define({ "api": [
             "group": "Error 422",
             "optional": false,
             "field": "validation",
-            "description": "<p>data failed to pass validation</p>"
+            "description": "<p>Data failed to pass validation</p>"
           }
         ]
       }
@@ -5125,7 +5250,7 @@ define({ "api": [
             "group": "Error 422",
             "optional": false,
             "field": "validation",
-            "description": "<p>data failed to pass validation</p>"
+            "description": "<p>Data failed to pass validation</p>"
           },
           {
             "group": "Error 422",
@@ -5471,7 +5596,7 @@ define({ "api": [
             "group": "Error 422",
             "optional": false,
             "field": "validation",
-            "description": "<p>data failed to pass validation</p>"
+            "description": "<p>Data failed to pass validation</p>"
           }
         ]
       }
@@ -5941,7 +6066,7 @@ define({ "api": [
             "group": "Error 422",
             "optional": false,
             "field": "validation",
-            "description": "<p>data failed to pass validation</p>"
+            "description": "<p>Data failed to pass validation</p>"
           },
           {
             "group": "Error 422",
@@ -6171,7 +6296,7 @@ define({ "api": [
             "group": "Error 422",
             "optional": false,
             "field": "validation",
-            "description": "<p>data failed to pass validation</p>"
+            "description": "<p>Data failed to pass validation</p>"
           }
         ]
       }
@@ -6274,7 +6399,7 @@ define({ "api": [
             "group": "Success 200",
             "type": "Notion[]",
             "optional": false,
-            "field": "notion",
+            "field": "notions",
             "description": "<p>Array of notions</p>"
           },
           {
@@ -6302,7 +6427,7 @@ define({ "api": [
             "group": "Success 200",
             "type": "int",
             "optional": false,
-            "field": "chapter_id",
+            "field": "notions.chapter_id",
             "description": "<p>The notion chapter_id</p>"
           }
         ]
@@ -6463,7 +6588,7 @@ define({ "api": [
             "group": "Error 422",
             "optional": false,
             "field": "validation",
-            "description": "<p>data failed to pass validation</p>"
+            "description": "<p>Data failed to pass validation</p>"
           },
           {
             "group": "Error 422",
@@ -6714,7 +6839,7 @@ define({ "api": [
             "group": "Error 422",
             "optional": false,
             "field": "validation",
-            "description": "<p>data failed to pass validation</p>"
+            "description": "<p>Data failed to pass validation</p>"
           }
         ]
       }
@@ -7006,7 +7131,7 @@ define({ "api": [
             "group": "Error 422",
             "optional": false,
             "field": "validation",
-            "description": "<p>data failed to pass validation</p>"
+            "description": "<p>Data failed to pass validation</p>"
           },
           {
             "group": "Error 422",
@@ -7193,7 +7318,7 @@ define({ "api": [
             "group": "Error 422",
             "optional": false,
             "field": "validation",
-            "description": "<p>data failed to pass validation</p>"
+            "description": "<p>Data failed to pass validation</p>"
           }
         ]
       }

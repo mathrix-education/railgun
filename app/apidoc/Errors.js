@@ -12,5 +12,5 @@
  */
 /**
  * @apiDefine 422Validation
- * @apiError (Error 422) validation data failed to pass validation
+ * @apiError (Error 422) validation Data failed to pass validation
  */
