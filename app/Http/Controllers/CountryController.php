@@ -131,7 +131,7 @@ class CountryController extends BaseController
 
     /**
      * @apiVersion 1.0.0
-     * @api {delete} /countries/{id} Delete (NYI)
+     * @api {delete} /countries/{id} Delete (Not implemented)
      * @apiGroup Countries
      * @apiName CountryDelete
      * @apiDescription Delete a country

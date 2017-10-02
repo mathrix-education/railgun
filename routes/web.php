@@ -13,7 +13,7 @@
 
 $app->get('/', function () use ($app) {
     return response()->json([
-        'message' => 'Welcome to Mathrix API version 1.0'
+        'message' => 'Welcome to Mathrix API version 1.0.0'
     ]);
 });
 
@@ -204,6 +204,23 @@ $app->group(['prefix' => 'courses'], function () use ($app) {
         $app->post('', 'CourseController@add');
         $app->patch('{id:[0-9]+}', 'CourseController@edit');
         $app->delete('{id:[0-9]+}', 'CourseController@delete');
+    });
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| Categories
+|--------------------------------------------------------------------------
+*/
+$app->group(['prefix' => 'categories'], function () use ($app) {
+    $app->get('', 'CategoryController@index');
+    $app->get('{id:[0-9]+}', 'CategoryController@get');
+
+    $app->group(['middleware' => 'auth:api'], function () use ($app) {
+        $app->post('', 'CategoryController@add');
+        $app->patch('{id:[0-9]+}', 'CategoryController@edit');
+        $app->delete('{id:[0-9]+}', 'CategoryController@delete');
     });
 });
 

@@ -26,6 +26,13 @@ class Discipline extends BaseModel
     /** @var array The fillable attributes */
     protected $fillable = ['name', 'slug'];
 
+    /** @var array Validation rules */
+    protected $rules = [
+        'name' => 'required|max:255',
+        'slug' => 'required|max:255',
+        'beta' => 'boolean',
+        //'image' => 'required' // TODO: manage upload
+    ];
 
     /*
     |--------------------------------------------------------------------------

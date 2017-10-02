@@ -131,7 +131,7 @@ class ActivityController extends BaseController
 
     /**
      * @apiVersion 1.0.0
-     * @api {delete} /activities/{id} Delete (NYI)
+     * @api {delete} /activities/{id} Delete
      * @apiGroup Activities
      * @apiName ActivityDelete
      * @apiDescription Delete a activity

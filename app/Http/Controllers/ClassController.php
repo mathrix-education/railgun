@@ -131,7 +131,7 @@ class ClassController extends BaseController
 
     /**
      * @apiVersion 1.0.0
-     * @api {delete} /classes/{id} Delete (NYI)
+     * @api {delete} /classes/{id} Delete (Not implemented)
      * @apiGroup Classes
      * @apiName ClassDelete
      * @apiDescription Delete a class
