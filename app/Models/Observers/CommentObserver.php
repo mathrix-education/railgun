@@ -33,7 +33,6 @@ class CommentObserver extends BaseObserver
     /**
      * @param Comment $comment
      *
-     * é"&é&
      * @return bool
      */
     public function deleting($comment)
