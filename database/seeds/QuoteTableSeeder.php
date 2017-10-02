@@ -8,7 +8,7 @@ class QuoteTableSeeder extends BaseTableSeeder
     {
         $this->println('<comment>Seeding:</comment> quotes from factory');
 
-        factory(Quote::class, 100);
+        factory(Quote::class, 100)->create();
 
         $this->println('<info>Seeded:</info>  quotes from factory');
     }

@@ -62,4 +62,18 @@ class NotionObserver extends BaseObserver
 
         return parent::saving($notion);
     }
+
+
+    /**
+     * Detach all activities link with the deleting notion
+     * @param Notion $notion
+     *
+     * @return bool
+     */
+    public function deleting($notion)
+    {
+        $notion->activities()->detach();
+
+        return true;
+    }
 }

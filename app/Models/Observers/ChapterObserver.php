@@ -35,4 +35,19 @@ class ChapterObserver extends BaseObserver
 
         return parent::saving($chapter);
     }
+
+    /**
+     * Delete all notions linked with the deleting chapter
+     * @param Chapter $chapter
+     *
+     * @return bool
+     */
+    public function deleting($chapter)
+    {
+        foreach ($chapter->notions as $notion) {
+            $notion->delete();
+        }
+
+        return true;
+    }
 }

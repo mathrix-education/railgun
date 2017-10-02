@@ -56,4 +56,19 @@ class ActivityObserver extends BaseObserver
 
         return parent::saving($activity);
     }
+
+
+    /**
+     * Detach all modules and notions linked with the deleting notion
+     * @param Activity $activity
+     *
+     * @return bool
+     */
+    public function deleting($activity)
+    {
+        $activity->notions()->detach();
+        $activity->modules()->detach();
+
+        return true;
+    }
 }
