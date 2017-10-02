@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Activity;
+use App\Models\Category;
 use App\Models\Chapter;
 use App\Models\Class_;
 use App\Models\Comment;
@@ -16,6 +17,7 @@ use App\Models\Quote;
 use App\Models\User;
 use App\Models\Vote;
 use App\Policies\ActivityPolicy;
+use App\Policies\CategoryPolicy;
 use App\Policies\ChapterPolicy;
 use App\Policies\ClassPolicy;
 use App\Policies\CommentPolicy;
@@ -71,6 +73,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::policy(Module::class, ModulePolicy::class);
         Gate::policy(Post::class, PostPolicy::class);
         Gate::policy(Course::class, CoursePolicy::class);
+        Gate::policy(Category::class, CategoryPolicy::class);
         Gate::policy(Comment::class, CommentPolicy::class);
         Gate::policy(Vote::class, VotePolicy::class);
         Gate::policy(Quote::class, QuotePolicy::class);

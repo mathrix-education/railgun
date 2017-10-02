@@ -86,7 +86,7 @@ class AuthController extends BaseController
 
     /**
      * @apiVersion 1.0.0
-     * @api {post} /users/forgot Forgot password (WIP)
+     * @api {post} /users/forgot Forgot password
      * @apiGroup Authentication
      * @apiName AuthenticationForgot
      * @apiDescription Ask for a password reset email
@@ -133,7 +133,7 @@ class AuthController extends BaseController
 
     /**
      * @apiVersion 1.0.0
-     * @api {post} /users/reset/{token} Reset password (WIP)
+     * @api {post} /users/reset/{token} Reset password
      * @apiGroup Authentication
      * @apiName AuthenticationReset
      * @apiDescription Ask for a password reset email

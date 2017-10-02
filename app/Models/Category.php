@@ -28,6 +28,7 @@ class Category extends BaseModel
     protected $rules = [
         'name' => 'required|max:255',
         'slug' => 'required|max:255',
+        //'image' => 'required' // TODO: manage upload
     ];
 
 

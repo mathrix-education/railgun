@@ -219,7 +219,7 @@ define({ "api": [
     "version": "1.0.0",
     "type": "delete",
     "url": "/activities/{id}",
-    "title": "Delete (NYI)",
+    "title": "Delete",
     "group": "Activities",
     "name": "ActivityDelete",
     "description": "<p>Delete a activity</p>",
@@ -890,6 +890,409 @@ define({ "api": [
   },
   {
     "version": "1.0.0",
+    "type": "get",
+    "url": "/categories",
+    "title": "Index",
+    "group": "Categories",
+    "name": "CategoriesIndex",
+    "description": "<p>Retrieve categories</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "filename": "app/Http/Controllers/CategoryController.php",
+    "groupTitle": "Categories",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Category[]",
+            "optional": false,
+            "field": "categories",
+            "description": "<p>Array of categories</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "categories.id",
+            "description": "<p>The category id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "categories.name",
+            "description": "<p>The category name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "categories.slug",
+            "description": "<p>The category slug</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "post",
+    "url": "/categories",
+    "title": "Add",
+    "group": "Categories",
+    "name": "CategoryAdd",
+    "description": "<p>Add a category</p>",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
+    "filename": "app/Http/Controllers/CategoryController.php",
+    "groupTitle": "Categories",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Data": [
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The category name</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": true,
+            "field": "slug",
+            "defaultValue": "slug(name)",
+            "description": "<p>The category slug</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The category id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The category name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The category slug</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 422": [
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "validation",
+            "description": "<p>Data failed to pass validation</p>"
+          },
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "save",
+            "description": "<p>Save failed</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "delete",
+    "url": "/categories/{id}",
+    "title": "Delete (Not implemented)",
+    "group": "Categories",
+    "name": "CategoryDelete",
+    "description": "<p>Delete a category</p>",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The category id</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/CategoryController.php",
+    "groupTitle": "Categories",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "patch",
+    "url": "/categories/{id}",
+    "title": "Edit",
+    "group": "Categories",
+    "name": "CategoryEdit",
+    "description": "<p>Edit a category</p>",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The category id</p>"
+          }
+        ],
+        "Data": [
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The category name</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": true,
+            "field": "slug",
+            "defaultValue": "slug(name)",
+            "description": "<p>The category slug</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/CategoryController.php",
+    "groupTitle": "Categories",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The category id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The category name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The category slug</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ],
+        "Error 422": [
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "save",
+            "description": "<p>Save failed</p>"
+          },
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "validation",
+            "description": "<p>Data failed to pass validation</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/categories/{id}",
+    "title": "Get",
+    "group": "Categories",
+    "name": "CategoryGet",
+    "description": "<p>Get a category by id</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The category id</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/CategoryController.php",
+    "groupTitle": "Categories",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The category id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The category name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The category slug</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
     "type": "post",
     "url": "/chapters",
     "title": "Add",
@@ -1554,7 +1957,7 @@ define({ "api": [
     "version": "1.0.0",
     "type": "delete",
     "url": "/classes/{id}",
-    "title": "Delete (NYI)",
+    "title": "Delete (Not implemented)",
     "group": "Classes",
     "name": "ClassDelete",
     "description": "<p>Delete a class</p>",
@@ -3645,7 +4048,7 @@ define({ "api": [
     "version": "1.0.0",
     "type": "delete",
     "url": "/countries/{id}",
-    "title": "Delete (NYI)",
+    "title": "Delete (Not implemented)",
     "group": "Countries",
     "name": "CountryDelete",
     "description": "<p>Delete a country</p>",
@@ -4590,6 +4993,21 @@ define({ "api": [
           },
           {
             "group": "Data",
+            "type": "bool",
+            "optional": true,
+            "field": "beta",
+            "defaultValue": "false",
+            "description": "<p>If the discipline is in beta</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "image",
+            "description": "<p>The discipline image</p>"
+          },
+          {
+            "group": "Data",
             "type": "array",
             "optional": false,
             "field": "link",
@@ -4642,6 +5060,20 @@ define({ "api": [
             "optional": false,
             "field": "slug",
             "description": "<p>The discipline slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "beta",
+            "description": "<p>If the discipline is in beta</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "image",
+            "description": "<p>The discipline image</p>"
           }
         ]
       }
@@ -4677,7 +5109,7 @@ define({ "api": [
     "version": "1.0.0",
     "type": "delete",
     "url": "/disciplines/{id}",
-    "title": "Delete (NYI)",
+    "title": "Delete (Not implemented)",
     "group": "Disciplines",
     "name": "DisciplineDelete",
     "description": "<p>Delete a discipline</p>",
@@ -4777,6 +5209,21 @@ define({ "api": [
           },
           {
             "group": "Data",
+            "type": "bool",
+            "optional": true,
+            "field": "beta",
+            "defaultValue": "false",
+            "description": "<p>If the discipline is in beta</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "image",
+            "description": "<p>The discipline image</p>"
+          },
+          {
+            "group": "Data",
             "type": "array",
             "optional": false,
             "field": "link",
@@ -4844,6 +5291,20 @@ define({ "api": [
             "optional": false,
             "field": "slug",
             "description": "<p>The discipline slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "beta",
+            "description": "<p>If the discipline is in beta</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "image",
+            "description": "<p>The discipline image</p>"
           }
         ]
       }
@@ -4934,6 +5395,20 @@ define({ "api": [
             "optional": false,
             "field": "slug",
             "description": "<p>The discipline slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "beta",
+            "description": "<p>If the discipline is in beta</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "image",
+            "description": "<p>The discipline image</p>"
           }
         ]
       }
@@ -4996,6 +5471,20 @@ define({ "api": [
             "optional": false,
             "field": "disciplines.slug",
             "description": "<p>The discipline slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "disciplines.beta",
+            "description": "<p>If the discipline is in beta</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "disciplines.image",
+            "description": "<p>The discipline image</p>"
           }
         ]
       }

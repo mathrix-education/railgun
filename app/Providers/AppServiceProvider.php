@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Activity;
+use App\Models\Category;
 use App\Models\Chapter;
 use App\Models\Class_;
 use App\Models\Comment;
@@ -12,6 +13,7 @@ use App\Models\Discipline;
 use App\Models\Module;
 use App\Models\Notion;
 use App\Models\Observers\ActivityObserver;
+use App\Models\Observers\CategoryObserver;
 use App\Models\Observers\ChapterObserver;
 use App\Models\Observers\ClassObserver;
 use App\Models\Observers\CommentObserver;
@@ -59,6 +61,7 @@ class AppServiceProvider extends ServiceProvider
         Module::observe(ModuleObserver::class);
         Post::observe(PostObserver::class);
         Course::observe(CourseObserver::class);
+        Category::observe(CategoryObserver::class);
         Comment::observe(CommentObserver::class);
         Vote::observe(VoteObserver::class);
         Quote::observe(QuoteObserver::class);

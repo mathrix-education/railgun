@@ -131,7 +131,7 @@ class DisciplineController extends BaseController
 
     /**
      * @apiVersion 1.0.0
-     * @api {delete} /disciplines/{id} Delete (NYI)
+     * @api {delete} /disciplines/{id} Delete (Not implemented)
      * @apiGroup Disciplines
      * @apiName DisciplineDelete
      * @apiDescription Delete a discipline
