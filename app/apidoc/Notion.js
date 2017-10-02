@@ -10,11 +10,11 @@
  */
 /**
  * @apiDefine NotionArray
- * @apiSuccess {Notion[]} notion Array of notions
+ * @apiSuccess {Notion[]} notions Array of notions
  * @apiSuccess {int} notions.id The notion id
  * @apiSuccess {string} notions.name The notion name
  * @apiSuccess {string} notions.slug The notion slug
- * @apiSuccess {int} chapter_id The notion chapter_id
+ * @apiSuccess {int} notions.chapter_id The notion chapter_id
  */
 /**
  * @apiDefine Notion

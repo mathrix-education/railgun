@@ -20,6 +20,10 @@
     "UserEdit",
     "UserDelete",
     "Content",
+    "ContentCountries",
+    "ContentProgram",
+    "ContentModules",
+    "ContentSearch",
     "Countries",
     "CountriesIndex",
     "CountryGet",
@@ -86,6 +90,7 @@
     "Quotes",
     "QuotesIndex",
     "QuotesRandom",
+    "QuoteGet",
     "QuoteAdd",
     "QuoteEdit",
     "QuoteDelete"

@@ -20,6 +20,10 @@ define({
     "UserEdit",
     "UserDelete",
     "Content",
+    "ContentCountries",
+    "ContentProgram",
+    "ContentModules",
+    "ContentSearch",
     "Countries",
     "CountriesIndex",
     "CountryGet",
@@ -86,6 +90,7 @@ define({
     "Quotes",
     "QuotesIndex",
     "QuotesRandom",
+    "QuoteGet",
     "QuoteAdd",
     "QuoteEdit",
     "QuoteDelete"
@@ -95,7 +100,7 @@ define({
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2017-10-02T16:46:11.885Z",
+    "time": "2017-10-02T23:01:43.140Z",
     "url": "http://apidocjs.com",
     "version": "0.17.6"
   }

@@ -1,7 +1,9 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
+use App\Models\Chapter;
 use App\Models\Class_;
 use App\Models\Country;
 use App\Models\Notion;
@@ -113,5 +115,49 @@ class ContentController extends BaseController
             ->firstOrFail();;
 
         return $this->http200Success($data);
+    }
+
+
+    /**
+     * @apiVersion 1.0.0
+     * @api {get} /content/search/{query}/{?page}/{?perPage} Search
+     * @apiGroup Content
+     * @apiName ContentSearch
+     * @apiDescription Search for chapters and notions
+     * @apiPermission public
+     * @apiParam {int} [page=1] The page number
+     * @apiParam {int} [perPage=10] The search count per page
+     * @apiUse ChapterArray
+     * @apiUse NotionArray
+     * @apiError (Error 400) invalid_request page and perPage have to be strictly positive
+     *
+     * @param string $query
+     * @param int $page
+     * @param int $perPage
+     *
+     * @return JsonResponse
+     */
+    public function search(string $query, int $page = 1, $perPage = 10)
+    {
+        if ($page < 1 || $perPage < 1) {
+            return $this->http400InvalidRequest('page and perPage have to be strictly positive');
+        }
+
+        $chapters = Chapter::where('name', 'LIKE', '%' . $query . '%')
+            ->orWhere('slug', 'LIKE', '%' . $query . '%')
+            ->limit($perPage)
+            ->offset(($page - 1) * $perPage)
+            ->get();
+        $notions = Notion::where('name', 'LIKE', '%' . $query . '%')
+            ->orWhere('slug', 'LIKE', '%' . $query . '%')
+            ->limit($perPage)
+            ->offset(($page - 1) * $perPage)
+            ->get();
+
+        return $this->http200Success([
+            'chapters' => $chapters,
+            'notions' => $notions
+        ]);
+
     }
 }
