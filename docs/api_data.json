@@ -1025,7 +1025,7 @@
     "version": "1.0.0",
     "type": "delete",
     "url": "/chapters/{id}",
-    "title": "Delete (NYI)",
+    "title": "Delete",
     "group": "Chapters",
     "name": "ChapterDelete",
     "description": "<p>Delete a chapter</p>",
@@ -2587,11 +2587,11 @@
   {
     "version": "1.0.0",
     "type": "get",
-    "url": "/comments/{type}",
+    "url": "/comments",
     "title": "Index",
     "group": "Comments",
     "name": "CommentsIndex",
-    "description": "<p>Retrieve comments by type</p>",
+    "description": "<p>Retrieve comments</p>",
     "permission": [
       {
         "name": "public"
@@ -2692,16 +2692,57 @@
   {
     "version": "1.0.0",
     "type": "get",
-    "url": "/comments",
-    "title": "Index",
+    "url": "/comments/{commentable_type}/{commentable_id}/{?page}/{?perPage}",
+    "title": "Type",
     "group": "Comments",
     "name": "CommentsIndex",
-    "description": "<p>Retrieve comments</p>",
+    "description": "<p>Retrieve comments by type</p>",
     "permission": [
       {
         "name": "public"
       }
     ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "allowedValues": [
+              "post",
+              "course",
+              "module"
+            ],
+            "optional": false,
+            "field": "commentable_type",
+            "description": "<p>the commentable_type</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "commentable_id",
+            "description": "<p>the commentable id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": true,
+            "field": "page",
+            "defaultValue": "1",
+            "description": "<p>the page to fetch</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": true,
+            "field": "perPage",
+            "defaultValue": "10",
+            "description": "<p>the comments per page to fetch (excluding children)</p>"
+          }
+        ]
+      }
+    },
     "filename": "app/Http/Controllers/CommentController.php",
     "groupTitle": "Comments",
     "success": {
@@ -5100,7 +5141,7 @@
     "version": "1.0.0",
     "type": "delete",
     "url": "/modules/{id}",
-    "title": "Delete (NYI)",
+    "title": "Delete",
     "group": "Modules",
     "name": "ModuleDelete",
     "description": "<p>Delete a module</p>",
@@ -5916,7 +5957,7 @@
     "version": "1.0.0",
     "type": "delete",
     "url": "/notions/{id}",
-    "title": "Delete (NYI)",
+    "title": "Delete",
     "group": "Notions",
     "name": "NotionDelete",
     "description": "<p>Delete a notion</p>",
@@ -6278,7 +6319,7 @@
     "description": "<p>Add a post</p>",
     "permission": [
       {
-        "name": "moderator"
+        "name": "admin"
       }
     ],
     "filename": "app/Http/Controllers/PostController.php",
@@ -6870,6 +6911,471 @@
             "optional": false,
             "field": "posts.updated_at",
             "description": "<p>The post updated date</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "post",
+    "url": "/quotes",
+    "title": "Add",
+    "group": "Quotes",
+    "name": "QuoteAdd",
+    "description": "<p>Add a quote</p>",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
+    "filename": "app/Http/Controllers/QuoteController.php",
+    "groupTitle": "Quotes",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Data": [
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "content",
+            "description": "<p>The quote content</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "author",
+            "description": "<p>The quote author</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The quote id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "content",
+            "description": "<p>The quote content</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "author",
+            "description": "<p>The quote author</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 422": [
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "validation",
+            "description": "<p>data failed to pass validation</p>"
+          },
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "save",
+            "description": "<p>Save failed</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "delete",
+    "url": "/quotes/{id}",
+    "title": "Delete",
+    "group": "Quotes",
+    "name": "QuoteDelete",
+    "description": "<p>Delete a quote</p>",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The quote id</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/QuoteController.php",
+    "groupTitle": "Quotes",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "patch",
+    "url": "/quotes/{id}",
+    "title": "Edit",
+    "group": "Quotes",
+    "name": "QuoteEdit",
+    "description": "<p>Edit a quote</p>",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The quote id</p>"
+          }
+        ],
+        "Data": [
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "content",
+            "description": "<p>The quote content</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "author",
+            "description": "<p>The quote author</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/QuoteController.php",
+    "groupTitle": "Quotes",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The quote id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "content",
+            "description": "<p>The quote content</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "author",
+            "description": "<p>The quote author</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ],
+        "Error 422": [
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "save",
+            "description": "<p>Save failed</p>"
+          },
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "validation",
+            "description": "<p>data failed to pass validation</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/quotes/random/{count}",
+    "title": "Get",
+    "group": "Quotes",
+    "name": "QuoteGet",
+    "description": "<p>Get a set of random quotes ; use /quotes/index to get all quotes</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": true,
+            "field": "count",
+            "defaultValue": "1",
+            "description": "<p>The quote count to fetch</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/QuoteController.php",
+    "groupTitle": "Quotes",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Quote[]",
+            "optional": false,
+            "field": "quotes",
+            "description": "<p>Array of countries</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "quotes.id",
+            "description": "<p>The quote id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "quotes.content",
+            "description": "<p>The quote content</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "quotes.author",
+            "description": "<p>The quote author</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/quotes/{id}",
+    "title": "Get",
+    "group": "Quotes",
+    "name": "QuoteGet",
+    "description": "<p>Get a quote by id</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The quote id</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/QuoteController.php",
+    "groupTitle": "Quotes",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The quote id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "content",
+            "description": "<p>The quote content</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "author",
+            "description": "<p>The quote author</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/quotes",
+    "title": "Index",
+    "group": "Quotes",
+    "name": "QuotesIndex",
+    "description": "<p>Retrieve quotes</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "filename": "app/Http/Controllers/QuoteController.php",
+    "groupTitle": "Quotes",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Quote[]",
+            "optional": false,
+            "field": "quotes",
+            "description": "<p>Array of countries</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "quotes.id",
+            "description": "<p>The quote id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "quotes.content",
+            "description": "<p>The quote content</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "quotes.author",
+            "description": "<p>The quote author</p>"
           }
         ]
       }

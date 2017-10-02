@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Notion;
@@ -74,7 +75,7 @@ class NotionController extends BaseController
      */
     public function add(Request $request)
     {
-        if ($request->user()->cant('add')) {
+        if ($request->user()->cant('add', Notion::class)) {
             return $this->http401Unauthorized();
         }
 
@@ -115,7 +116,7 @@ class NotionController extends BaseController
         /** @var Notion $notion */
         $notion = Notion::where('id', $id)->firstOrFail();
 
-        if ($request->user()->cant('edit', Notion::class)) {
+        if ($request->user()->cant('edit', $notion)) {
             return $this->http401Unauthorized();
         }
 
@@ -131,7 +132,7 @@ class NotionController extends BaseController
 
     /**
      * @apiVersion 1.0.0
-     * @api {delete} /notions/{id} Delete (NYI)
+     * @api {delete} /notions/{id} Delete
      * @apiGroup Notions
      * @apiName NotionDelete
      * @apiDescription Delete a notion
@@ -141,12 +142,23 @@ class NotionController extends BaseController
      * @apiUse 401Unauthorized
      * @apiUse 404ModelNotFound
      *
+     * @param Request $request
      * @param int $id
-     *
      * @return JsonResponse
      */
-    public function delete(int $id)
+    public function delete(Request $request, int $id)
     {
-        return $this->http501NotImplemented();
+        /** @var Notion $notion */
+        $notion = Notion::where('id', '=', $id)->firstOrFail();
+
+        if ($request->user()->cant('delete', $notion)) {
+            return $this->http401Unauthorized();
+        }
+
+        if (!$notion->delete()) {
+            return $notion->handleResponse($this->http422Delete());
+        }
+
+        return $this->http200Success();
     }
 }

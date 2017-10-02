@@ -141,12 +141,23 @@ class ActivityController extends BaseController
      * @apiUse 401Unauthorized
      * @apiUse 404ModelNotFound
      *
+     * @param Request $request
      * @param int $id
-     *
      * @return JsonResponse
      */
-    public function delete(int $id)
+    public function delete(Request $request, int $id)
     {
-        return $this->http501NotImplemented();
+        /** @var Activity $activity */
+        $activity = Activity::where('id', '=', $id)->firstOrFail();
+
+        if ($request->user()->cant('delete', $activity)) {
+            return $this->http401Unauthorized();
+        }
+
+        if (!$activity->delete()) {
+            return $activity->handleResponse($this->http422Delete());
+        }
+
+        return $this->http200Success();
     }
 }

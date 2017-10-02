@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
@@ -35,11 +36,15 @@ class CommentController extends BaseController
 
     /**
      * @apiVersion 1.0.0
-     * @api {get} /comments/{type} Index
+     * @api {get} /comments/{commentable_type}/{commentable_id}/{?page}/{?perPage} Type
      * @apiGroup Comments
      * @apiName CommentsIndex
      * @apiDescription Retrieve comments by type
      * @apiPermission public
+     * @apiParam {string=post,course,module} commentable_type the commentable_type
+     * @apiParam {int} commentable_id the commentable id
+     * @apiParam {int} [page=1] the page to fetch
+     * @apiParam {int} [perPage=10] the comments per page to fetch (excluding children)
      * @apiUse CommentArray
      *
      * @param string $commentable_type
@@ -49,7 +54,7 @@ class CommentController extends BaseController
      *
      * @return JsonResponse
      */
-    public function type(string $commentable_type, int $commentable_id, int $page = 1, int $perPage)
+    public function type(string $commentable_type, int $commentable_id, int $page = 1, int $perPage = 10)
     {
         // Ensure that the commentable model is morphed
         /** @var BaseModel $commentable_class */
@@ -57,13 +62,22 @@ class CommentController extends BaseController
             return $this->http400InvalidRequest();
         }
 
+        if ($page < 1 || $perPage < 1) {
+            return $this->http400InvalidRequest('page and perPage have to be strictly positive');
+        }
+
+
         // Ensure that the morphed exists
         $commentable = $commentable_class::where('id', '=', $commentable_id)->firstOrFail();
 
-        $comments = $commentable->comments();
-
         // Retrieve comments
-        return $this->http200Success();
+        return $this->http200Success(
+            $commentable->comments()
+                ->with('children')
+                ->limit($perPage)
+                ->offset(($page - 1) * $perPage)
+                ->get()
+        );
     }
 
 
@@ -184,13 +198,16 @@ class CommentController extends BaseController
      */
     public function delete(Request $request, int $id)
     {
+        /** @var Comment $comment */
         $comment = Comment::where('id', '=', $id)->firstOrFail();
 
         if ($request->user()->cant('delete', $comment)) {
             return $this->http401Unauthorized();
         }
 
-        $comment->delete();
+        if (!$comment->delete()) {
+            return $comment->handleResponse($this->http422Delete());
+        }
 
         return $this->http200Success();
     }
