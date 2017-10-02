@@ -56,9 +56,9 @@ class QuoteController extends BaseController
 
     /**
      * @apiVersion 1.0.0
-     * @api {get} /quotes/random/{count} Get
+     * @api {get} /quotes/random/{count} Random
      * @apiGroup Quotes
-     * @apiName QuoteGet
+     * @apiName QuotesRandom
      * @apiDescription Get a set of random quotes ; use /quotes/index to get all quotes
      * @apiPermission public
      * @apiParam {int} [count=1] The quote count to fetch

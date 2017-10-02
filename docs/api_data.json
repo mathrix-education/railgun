@@ -7202,70 +7202,6 @@
   {
     "version": "1.0.0",
     "type": "get",
-    "url": "/quotes/random/{count}",
-    "title": "Get",
-    "group": "Quotes",
-    "name": "QuoteGet",
-    "description": "<p>Get a set of random quotes ; use /quotes/index to get all quotes</p>",
-    "permission": [
-      {
-        "name": "public"
-      }
-    ],
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": true,
-            "field": "count",
-            "defaultValue": "1",
-            "description": "<p>The quote count to fetch</p>"
-          }
-        ]
-      }
-    },
-    "filename": "app/Http/Controllers/QuoteController.php",
-    "groupTitle": "Quotes",
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Quote[]",
-            "optional": false,
-            "field": "quotes",
-            "description": "<p>Array of countries</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "quotes.id",
-            "description": "<p>The quote id</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "quotes.content",
-            "description": "<p>The quote content</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "quotes.author",
-            "description": "<p>The quote author</p>"
-          }
-        ]
-      }
-    }
-  },
-  {
-    "version": "1.0.0",
-    "type": "get",
     "url": "/quotes/{id}",
     "title": "Get",
     "group": "Quotes",
@@ -7344,6 +7280,70 @@
         "name": "public"
       }
     ],
+    "filename": "app/Http/Controllers/QuoteController.php",
+    "groupTitle": "Quotes",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Quote[]",
+            "optional": false,
+            "field": "quotes",
+            "description": "<p>Array of countries</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "quotes.id",
+            "description": "<p>The quote id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "quotes.content",
+            "description": "<p>The quote content</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "quotes.author",
+            "description": "<p>The quote author</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/quotes/random/{count}",
+    "title": "Random",
+    "group": "Quotes",
+    "name": "QuotesRandom",
+    "description": "<p>Get a set of random quotes ; use /quotes/index to get all quotes</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": true,
+            "field": "count",
+            "defaultValue": "1",
+            "description": "<p>The quote count to fetch</p>"
+          }
+        ]
+      }
+    },
     "filename": "app/Http/Controllers/QuoteController.php",
     "groupTitle": "Quotes",
     "success": {
