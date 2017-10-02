@@ -82,6 +82,12 @@
     "CommentDelete",
     "Votes",
     "VoteUp",
-    "VoteDown"
+    "VoteDown",
+    "Quotes",
+    "QuotesIndex",
+    "QuotesRandom",
+    "QuoteAdd",
+    "QuoteEdit",
+    "QuoteDelete"
   ]
 }
