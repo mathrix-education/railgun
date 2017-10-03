@@ -3374,6 +3374,48 @@
         "Success 200": [
           {
             "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The class id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The class name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name_short",
+            "description": "<p>The class short name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The class slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug_short",
+            "description": "<p>The class short slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "country_id",
+            "description": "<p>The class country id</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "Discipline[]",
             "optional": false,
             "field": "disciplines",
@@ -3504,48 +3546,6 @@
             "optional": false,
             "field": "disciplines.chapters.notions.activities.modules",
             "description": "<p>The modules</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "id",
-            "description": "<p>The class id</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "name",
-            "description": "<p>The class name</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "name_short",
-            "description": "<p>The class short name</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "slug",
-            "description": "<p>The class slug</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "slug_short",
-            "description": "<p>The class short slug</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "country_id",
-            "description": "<p>The class country id</p>"
           }
         ]
       }
@@ -3594,6 +3594,48 @@
     "success": {
       "fields": {
         "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The class id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The class name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name_short",
+            "description": "<p>The class short name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The class slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug_short",
+            "description": "<p>The class short slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "country_id",
+            "description": "<p>The class country id</p>"
+          },
           {
             "group": "Success 200",
             "type": "Discipline[]",
@@ -3719,48 +3761,6 @@
             "optional": false,
             "field": "disciplines.chapters.notions.activities.description",
             "description": "<p>The activity description</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "id",
-            "description": "<p>The class id</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "name",
-            "description": "<p>The class name</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "name_short",
-            "description": "<p>The class short name</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "slug",
-            "description": "<p>The class slug</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "slug_short",
-            "description": "<p>The class short slug</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "country_id",
-            "description": "<p>The class country id</p>"
           }
         ]
       }
