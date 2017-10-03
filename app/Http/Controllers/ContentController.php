@@ -95,12 +95,12 @@ class ContentController extends BaseController
 
     /**
      * @apiVersion 1.0.0
-     * @api {get} /content/modules/{activityId} Modules
+     * @api {get} /content/modules/{notionId} Modules
      * @apiGroup Content
      * @apiName ContentModules
      * @apiDescription Retrieve modules data by activity id
      * @apiPermission public
-     * @apiParam {int} id The activity id
+     * @apiParam {int} id The notion id
      * @apiUse Activity
      * @apiUse ModuleArray
      *
