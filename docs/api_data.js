@@ -3346,225 +3346,10 @@ define({ "api": [
   {
     "version": "1.0.0",
     "type": "get",
-    "url": "/content/program/{classId}",
-    "title": "Program",
-    "group": "Content",
-    "name": "ContentProgram",
-    "description": "<p>Retrieve content data by class id</p>",
-    "permission": [
-      {
-        "name": "public"
-      }
-    ],
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": false,
-            "field": "id",
-            "description": "<p>The class id</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Discipline[]",
-            "optional": false,
-            "field": "disciplines",
-            "description": "<p>The disciplines</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "disciplines.id",
-            "description": "<p>The discipline id</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "disciplines.name",
-            "description": "<p>The discipline name</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "disciplines.slug",
-            "description": "<p>The discipline slug</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Chapter[]",
-            "optional": false,
-            "field": "disciplines.chapters",
-            "description": "<p>The chapters</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "disciplines.chapters.id",
-            "description": "<p>The chapter id</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "disciplines.chapters.name",
-            "description": "<p>The chapter name</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "disciplines.chapters.slug",
-            "description": "<p>The chapter slug</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Notion[]",
-            "optional": false,
-            "field": "disciplines.chapters.notions",
-            "description": "<p>The notions</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "disciplines.chapters.notions.id",
-            "description": "<p>The notion id</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "disciplines.chapters.notions.name",
-            "description": "<p>The notion name</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "disciplines.chapters.notions.slug",
-            "description": "<p>The notion slug</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "disciplines.chapters.notions.description",
-            "description": "<p>The notion description</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Activity[]",
-            "optional": false,
-            "field": "disciplines.chapters.notion.activities",
-            "description": "<p>The activities</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "disciplines.chapters.notions.activities.id",
-            "description": "<p>The activity id</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "disciplines.chapters.notions.activities.name",
-            "description": "<p>The activity name</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "disciplines.chapters.notions.activities.slug",
-            "description": "<p>The activity slug</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "disciplines.chapters.notions.activities.description",
-            "description": "<p>The activity description</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "id",
-            "description": "<p>The class id</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "name",
-            "description": "<p>The class name</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "name_short",
-            "description": "<p>The class short name</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "slug",
-            "description": "<p>The class slug</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "slug_short",
-            "description": "<p>The class short slug</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "country_id",
-            "description": "<p>The class country id</p>"
-          }
-        ]
-      }
-    },
-    "error": {
-      "fields": {
-        "Error 404": [
-          {
-            "group": "Error 404",
-            "optional": false,
-            "field": "model_not_found",
-            "description": "<p>Class with given id does not exist</p>"
-          }
-        ]
-      }
-    },
-    "filename": "app/Http/Controllers/ContentController.php",
-    "groupTitle": "Content"
-  },
-  {
-    "version": "1.0.0",
-    "type": "get",
     "url": "/content/modules/{classId}",
     "title": "Modules",
     "group": "Content",
-    "name": "ContentProgram",
+    "name": "ContentModules",
     "description": "<p>Retrieve content data by class id</p>",
     "permission": [
       {
@@ -3719,6 +3504,221 @@ define({ "api": [
             "optional": false,
             "field": "disciplines.chapters.notions.activities.modules",
             "description": "<p>The modules</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The class id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The class name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name_short",
+            "description": "<p>The class short name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The class slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug_short",
+            "description": "<p>The class short slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "country_id",
+            "description": "<p>The class country id</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Class with given id does not exist</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/ContentController.php",
+    "groupTitle": "Content"
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/content/program/{classId}",
+    "title": "Program",
+    "group": "Content",
+    "name": "ContentProgram",
+    "description": "<p>Retrieve content data by class id</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The class id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Discipline[]",
+            "optional": false,
+            "field": "disciplines",
+            "description": "<p>The disciplines</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "disciplines.id",
+            "description": "<p>The discipline id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "disciplines.name",
+            "description": "<p>The discipline name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "disciplines.slug",
+            "description": "<p>The discipline slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Chapter[]",
+            "optional": false,
+            "field": "disciplines.chapters",
+            "description": "<p>The chapters</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "disciplines.chapters.id",
+            "description": "<p>The chapter id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "disciplines.chapters.name",
+            "description": "<p>The chapter name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "disciplines.chapters.slug",
+            "description": "<p>The chapter slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Notion[]",
+            "optional": false,
+            "field": "disciplines.chapters.notions",
+            "description": "<p>The notions</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "disciplines.chapters.notions.id",
+            "description": "<p>The notion id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "disciplines.chapters.notions.name",
+            "description": "<p>The notion name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "disciplines.chapters.notions.slug",
+            "description": "<p>The notion slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "disciplines.chapters.notions.description",
+            "description": "<p>The notion description</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Activity[]",
+            "optional": false,
+            "field": "disciplines.chapters.notion.activities",
+            "description": "<p>The activities</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "disciplines.chapters.notions.activities.id",
+            "description": "<p>The activity id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "disciplines.chapters.notions.activities.name",
+            "description": "<p>The activity name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "disciplines.chapters.notions.activities.slug",
+            "description": "<p>The activity slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "disciplines.chapters.notions.activities.description",
+            "description": "<p>The activity description</p>"
           },
           {
             "group": "Success 200",
