@@ -98,7 +98,7 @@ class ContentController extends BaseController
      * @apiVersion 1.0.0
      * @api {get} /content/modules/{classId} Modules
      * @apiGroup Content
-     * @apiName ContentProgram
+     * @apiName ContentModules
      * @apiDescription Retrieve content data by class id
      * @apiPermission public
      * @apiParam {int} id The class id

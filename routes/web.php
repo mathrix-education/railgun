@@ -52,6 +52,8 @@ $app->group(['prefix' => 'content'], function () use ($app) {
     $app->get('countries', 'ContentController@countries');
     $app->get('program/{classId:[0-9]+}', 'ContentController@program');
     $app->get('modules/{activityId:[0-9]+}', 'ContentController@modules');
+    $app->get('search/{query}', 'ContentController@search');
+    $app->get('search/{query}/{page:[0-9]+}/{perPage:[0-9]+}', 'ContentController@search');
 });
 
 
@@ -194,6 +196,7 @@ $app->group(['prefix' => 'posts'], function () use ($app) {
 /*
 |--------------------------------------------------------------------------
 | Courses
+        $app->get('{page:[0-9]+}/{perPage:[0-9]+}', 'UserController@index');
 |--------------------------------------------------------------------------
 */
 $app->group(['prefix' => 'courses'], function () use ($app) {
