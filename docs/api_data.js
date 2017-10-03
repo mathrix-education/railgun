@@ -532,7 +532,7 @@ define({ "api": [
     "version": "1.0.0",
     "type": "post",
     "url": "/users/forgot",
-    "title": "Forgot password (WIP)",
+    "title": "Forgot password",
     "group": "Authentication",
     "name": "AuthenticationForgot",
     "description": "<p>Ask for a password reset email</p>",
@@ -828,7 +828,7 @@ define({ "api": [
     "version": "1.0.0",
     "type": "post",
     "url": "/users/reset/{token}",
-    "title": "Reset password (WIP)",
+    "title": "Reset password",
     "group": "Authentication",
     "name": "AuthenticationReset",
     "description": "<p>Ask for a password reset email</p>",
@@ -3346,7 +3346,7 @@ define({ "api": [
   {
     "version": "1.0.0",
     "type": "get",
-    "url": "/content/modules/{activityId}",
+    "url": "/content/modules/{notionId}",
     "title": "Modules",
     "group": "Content",
     "name": "ContentModules",
@@ -3364,7 +3364,7 @@ define({ "api": [
             "type": "int",
             "optional": false,
             "field": "id",
-            "description": "<p>The activity id</p>"
+            "description": "<p>The notion id</p>"
           }
         ]
       }
