@@ -53,7 +53,12 @@ class ContentController extends BaseController
      * @apiDescription Retrieve content data by class id
      * @apiPermission public
      * @apiParam {int} id The class id
-     * @apiUse Class
+     * @apiSuccess {int} id The class id
+     * @apiSuccess {string} name The class name
+     * @apiSuccess {string} name_short The class short name
+     * @apiSuccess {string} slug The class slug
+     * @apiSuccess {string} slug_short The class short slug
+     * @apiSuccess {string} country_id The class country id
      * @apiSuccess {Discipline[]} disciplines The disciplines
      * @apiSuccess {int} disciplines.id The discipline id
      * @apiSuccess {int} disciplines.name The discipline name
@@ -102,7 +107,12 @@ class ContentController extends BaseController
      * @apiDescription Retrieve content data by class id
      * @apiPermission public
      * @apiParam {int} id The class id
-     * @apiUse Class
+     * @apiSuccess {int} id The class id
+     * @apiSuccess {string} name The class name
+     * @apiSuccess {string} name_short The class short name
+     * @apiSuccess {string} slug The class slug
+     * @apiSuccess {string} slug_short The class short slug
+     * @apiSuccess {string} country_id The class country id
      * @apiSuccess {Discipline[]} disciplines The disciplines
      * @apiSuccess {int} disciplines.id The discipline id
      * @apiSuccess {int} disciplines.name The discipline name
