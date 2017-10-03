@@ -3346,162 +3346,6 @@ define({ "api": [
   {
     "version": "1.0.0",
     "type": "get",
-    "url": "/content/modules/{notionId}",
-    "title": "Modules",
-    "group": "Content",
-    "name": "ContentModules",
-    "description": "<p>Retrieve modules data by activity id</p>",
-    "permission": [
-      {
-        "name": "public"
-      }
-    ],
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": false,
-            "field": "id",
-            "description": "<p>The notion id</p>"
-          }
-        ]
-      }
-    },
-    "filename": "app/Http/Controllers/ContentController.php",
-    "groupTitle": "Content",
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "id",
-            "description": "<p>The activity id</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "name",
-            "description": "<p>The activity name</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "slug",
-            "description": "<p>The activity slug</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "description",
-            "description": "<p>The activity description</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Module[]",
-            "optional": false,
-            "field": "modules",
-            "description": "<p>Array of modules</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "modules.id",
-            "description": "<p>The module id</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "modules.name",
-            "description": "<p>The module name</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "modules.slug",
-            "description": "<p>The module slug</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "allowedValues": [
-              "course",
-              "fill",
-              "match",
-              "mcq",
-              "mcq-table",
-              "test",
-              "flashcard"
-            ],
-            "optional": false,
-            "field": "modules.type",
-            "description": "<p>The module type</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "mixed",
-            "optional": false,
-            "field": "modules.content",
-            "description": "<p>[course]    <code>string</code> The course content<br> [fill]      <code>null</code><br> [match]     <code>null</code><br> [mcq]       <code>null</code><br> [mcq-table] <code>null</code><br> [test]      <code>null</code><br> [flashcard] <code>null</code></p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "mixed",
-            "optional": false,
-            "field": "modules.questions",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>null</code><br> [match]     <code>string[]</code>   The static propositions<br> [mcq]       <code>string[]</code>   The mcq questions<br> [mcq-table] <code>string[]</code>   The mcq table questions<br> [test]      <code>string[]</code>   The test questions<br> [flashcard] <code>string[]</code>   The test questions</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "mixed",
-            "optional": false,
-            "field": "modules.choices",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[][]</code> The gap choices matrix<br> [match]     <code>string[][]</code> The draggable propositions matrix<br> [mcq]       <code>string[][]</code> The mcq choices (first dimension for the question number, second dimension for the question choices)<br> [mcq-table] <code>string[]</code>   The common choices for all questions<br> [test]      <code>null</code><br> [flashcard] <code>null</code></p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "mixed",
-            "optional": false,
-            "field": "modules.solutions",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>int[]</code>      The solution for each question<br> [match]     <code>int[][]</code>    The solutions matrix<br> [mcq]       <code>int[][]</code>    The solutions for each question (second dimension array represents the right answers)<br> [mcq-table] <code>int[][]</code>    The solutions for each question (second dimension array represents the right answers)<br> [test]      <code>string[]</code>   The solutions for each question<br> [flashcard] <code>null</code><br></p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "mixed",
-            "optional": false,
-            "field": "modules.corrections",
-            "description": "<p>[course]    <code>null</code><br> [fill]      <code>string[]</code>   The corrections for each question<br> [match]     <code>string[]</code>   The corrections for each question<br> [mcq]       <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [mcq-table] <code>string[]</code>   The corrections for each question (second dimension array represents a step)<br> [test]      <code>string[][]</code> The corrections for each question (second dimension array represents a step)<br> [flashcard] <code>string[]</code>   The corrections for each question</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "mixed",
-            "optional": false,
-            "field": "modules.options",
-            "description": "<p>The modules options</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "modules.options.duration",
-            "description": "<p>[test] The test duration (in seconds)</p>"
-          }
-        ]
-      }
-    }
-  },
-  {
-    "version": "1.0.0",
-    "type": "get",
     "url": "/content/program/{classId}",
     "title": "Program",
     "group": "Content",
@@ -3653,6 +3497,228 @@ define({ "api": [
             "optional": false,
             "field": "disciplines.chapters.notions.activities.description",
             "description": "<p>The activity description</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The class id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The class name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name_short",
+            "description": "<p>The class short name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>The class slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "slug_short",
+            "description": "<p>The class short slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "country_id",
+            "description": "<p>The class country id</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Class with given id does not exist</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/ContentController.php",
+    "groupTitle": "Content"
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/content/modules/{classId}",
+    "title": "Modules",
+    "group": "Content",
+    "name": "ContentProgram",
+    "description": "<p>Retrieve content data by class id</p>",
+    "permission": [
+      {
+        "name": "public"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The class id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Discipline[]",
+            "optional": false,
+            "field": "disciplines",
+            "description": "<p>The disciplines</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "disciplines.id",
+            "description": "<p>The discipline id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "disciplines.name",
+            "description": "<p>The discipline name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "disciplines.slug",
+            "description": "<p>The discipline slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Chapter[]",
+            "optional": false,
+            "field": "disciplines.chapters",
+            "description": "<p>The chapters</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "disciplines.chapters.id",
+            "description": "<p>The chapter id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "disciplines.chapters.name",
+            "description": "<p>The chapter name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "disciplines.chapters.slug",
+            "description": "<p>The chapter slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Notion[]",
+            "optional": false,
+            "field": "disciplines.chapters.notions",
+            "description": "<p>The notions</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "disciplines.chapters.notions.id",
+            "description": "<p>The notion id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "disciplines.chapters.notions.name",
+            "description": "<p>The notion name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "disciplines.chapters.notions.slug",
+            "description": "<p>The notion slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "disciplines.chapters.notions.description",
+            "description": "<p>The notion description</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Activity[]",
+            "optional": false,
+            "field": "disciplines.chapters.notion.activities",
+            "description": "<p>The activities</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "disciplines.chapters.notions.activities.id",
+            "description": "<p>The activity id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "disciplines.chapters.notions.activities.name",
+            "description": "<p>The activity name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "disciplines.chapters.notions.activities.slug",
+            "description": "<p>The activity slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "disciplines.chapters.notions.activities.description",
+            "description": "<p>The activity description</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Module[]",
+            "optional": false,
+            "field": "disciplines.chapters.notions.activities.modules",
+            "description": "<p>The modules</p>"
           },
           {
             "group": "Success 200",
