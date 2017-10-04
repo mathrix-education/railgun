@@ -11,9 +11,17 @@ use Faker\Generator;
 $factory->defineAs(Module::class, 'fill', function (Generator $faker) use ($factory) {
     $data = $factory->rawOf(Module::class, 'mcq');
 
-    foreach ($data['solutions'] as $k => $v) {
-        $data['solutions'][$k] = $faker->randomElement(array_keys($data['choices'][$k]));
+    // Generate gaps
+    $content = $faker->text(500);
+    $choiceCount = count($data['choices']);
+    $gapCount = $faker->numberBetween(1, $choiceCount - 1);
+    $explodedContent = explode(' ', $content);
+    for($i = 0; $i < $gapCount; $i++) {
+        $explodedContent[$faker->numberBetween(0, count($explodedContent) - 1)] = '[choix]';
     }
+    $data['content'] = implode(' ', $explodedContent);
+
+    $data['solutions'] = null;
 
     foreach ($data['corrections'] as $k => $v) {
         $data['corrections'][$k] = $v[0];
