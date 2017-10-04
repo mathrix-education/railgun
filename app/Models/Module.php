@@ -61,7 +61,7 @@ class Module extends BaseModel
         'name' => 'required|max:255',
         'slug' => 'required|max:255',
         'description' => 'required|max:255',
-        'type' => 'required|in:course,fill,match,mcq,mcq-table,test'
+        'type' => 'required|in:course,fill,match,mcq,mcq-table,test,flashcard'
     ];
 
 
