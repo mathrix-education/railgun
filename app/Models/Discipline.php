@@ -14,17 +14,21 @@ use Mathrix\Lumen\Models\BaseModel;
  * @property int $id
  * @property string $name
  * @property string $slug
+ * @property bool $beta
+ * @property string|null $image
  * @property-read Collection|Chapter[] $chapters
  * @property-read Collection|Class_[] $classes
  * @method static Builder|Discipline whereId($value)
  * @method static Builder|Discipline whereName($value)
  * @method static Builder|Discipline whereSlug($value)
+ * @method static Builder|Discipline whereBeta($value)
+ * @method static Builder|Discipline whereImage($value)
  * @mixin \Eloquent
  */
 class Discipline extends BaseModel
 {
     /** @var array The fillable attributes */
-    protected $fillable = ['name', 'slug'];
+    protected $fillable = ['name', 'slug', 'beta', 'image'];
 
     /** @var array Validation rules */
     protected $rules = [

@@ -18,6 +18,8 @@ use Mathrix\Lumen\Models\BaseModel;
  * @method static Builder|Category whereName($value)
  * @method static Builder|Category whereSlug($value)
  * @mixin \Eloquent
+ * @property string|null $image
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereImage($value)
  */
 class Category extends BaseModel
 {

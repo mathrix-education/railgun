@@ -74,7 +74,7 @@ class ActivityController extends BaseController
      */
     public function add(Request $request)
     {
-        if ($request->user()->cant('add')) {
+        if ($request->user()->cant('add', Activity::class)) {
             return $this->http401Unauthorized();
         }
 

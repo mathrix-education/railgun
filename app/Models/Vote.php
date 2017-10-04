@@ -25,6 +25,8 @@ use Mathrix\Lumen\Models\BaseModel;
  * @method static Builder|Vote whereVotableId($value)
  * @method static Builder|Vote whereVotableType($value)
  * @mixin Eloquent
+ * @property \Carbon\Carbon $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Vote whereUpdatedAt($value)
  */
 class Vote extends BaseModel
 {

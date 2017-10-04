@@ -75,7 +75,7 @@ class ChapterController extends BaseController
      */
     public function add(Request $request)
     {
-        if ($request->user()->cant('add')) {
+        if ($request->user()->cant('add', Chapter::class)) {
             return $this->http401Unauthorized();
         }
 

@@ -1,4 +1,5 @@
 <?php
+use App\Models\Chapter;
 use App\Models\Notion;
 use Faker\Generator;
 
@@ -13,6 +14,7 @@ $factory->define(Notion::class, function (Generator $faker) {
 
     return [
         'name' => $name,
-        'slug' => str_slug($name)
+        'slug' => str_slug($name),
+        'chapter_id' => Chapter::inRandomOrder()->firstOrFail()->id
     ];
 });
