@@ -1,5 +1,7 @@
 <?php
 use App\Models\Chapter;
+use App\Models\Class_;
+use App\Models\Discipline;
 use Faker\Generator;
 
 /**
@@ -13,6 +15,8 @@ $factory->define(Chapter::class, function (Generator $faker) {
 
     return [
         'name' => $name,
-        'slug' => str_slug($name)
+        'slug' => str_slug($name),
+        'class_id' => Class_::inRandomOrder()->firstOrFail()->id,
+        'discipline_id' => Discipline::inRandomOrder()->firstOrFail()->id,
     ];
 });

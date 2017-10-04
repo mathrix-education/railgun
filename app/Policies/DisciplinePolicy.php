@@ -13,6 +13,14 @@ class DisciplinePolicy extends BasePolicy
     /**
      * @return bool
      */
+    public function add()
+    {
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
     public function edit()
     {
         return false;
