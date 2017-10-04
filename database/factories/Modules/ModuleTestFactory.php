@@ -11,8 +11,8 @@ use Faker\Generator;
 $factory->defineAs(Module::class, 'test', function (Generator $faker) use ($factory) {
     $data = $factory->rawOf(Module::class, 'mcq');
 
-    unset($data['choices']);
-    unset($data['solutions']);
+    $data['choices'] = null;
+    $data['solutions'] = null;
 
     $data['type'] = 'test';
     $data['options'] = [

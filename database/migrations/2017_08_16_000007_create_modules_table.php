@@ -19,12 +19,12 @@ class CreateModulesTable extends Migration
             $table->string('slug');
             $table->string('description');
             $table->enum('type', ['course', 'test', 'mcq', 'mcq-table', 'match', 'fill', 'flashcard']);
-            $table->text('content');
-            $table->text('questions');
-            $table->text('choices');
-            $table->text('solutions');
-            $table->text('corrections');
-            $table->text('options');
+            $table->text('content')->nullable();
+            $table->text('questions')->nullable();
+            $table->text('choices')->nullable();
+            $table->text('solutions')->nullable();
+            $table->text('corrections')->nullable();
+            $table->text('options')->nullable();
         });
     }
 
