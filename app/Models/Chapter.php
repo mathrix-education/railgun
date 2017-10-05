@@ -52,7 +52,7 @@ class Chapter extends BaseModel
      */
     public function class_(): BelongsTo
     {
-        return $this->belongsTo(Class_::class);
+        return $this->belongsTo(Class_::class, 'class_id');
     }
 
 

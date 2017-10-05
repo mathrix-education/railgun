@@ -58,6 +58,26 @@ class Class_ extends BaseModel
     |--------------------------------------------------------------------------
     */
     /**
+     * Get the cursus (ie. the class it self and all its previous)
+     * @return Collection
+     */
+    public function cursus()
+    {
+        $classes = new Collection();
+        $classes->add($this);
+
+        /** @var Class_ $end */
+        $end = $classes->last();
+
+        while (!is_null($end->parent_id)) {
+            $classes[] = Class_::find($end->parent_id);
+            $end = $classes->last();
+        }
+
+        return $classes;
+    }
+
+    /**
      * BelongsTo Class_
      *
      * @return BelongsTo
