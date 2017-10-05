@@ -3863,6 +3863,293 @@ define({ "api": [
             "description": "<p>The discipline name</p>"
           },
           {
+            "group": "Parameter",
+            "type": "int",
+            "optional": true,
+            "field": "perPage",
+            "defaultValue": "10",
+            "description": "<p>The search count per page</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "notions.chapter.discipline.image",
+            "description": "<p>The discipline image</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Class",
+            "optional": false,
+            "field": "notions.chapter.class_",
+            "description": "<p>The class</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "notions.chapter.class_.id",
+            "description": "<p>The class id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "notions.chapter.class_.name",
+            "description": "<p>The class name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "notions.chapter.class_.name_short",
+            "description": "<p>The class short name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "notions.chapter.class_.slug",
+            "description": "<p>The class slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "notions.chapter.class_.slug_short",
+            "description": "<p>The class short slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Discipline",
+            "optional": false,
+            "field": "chapters.discipline",
+            "description": "<p>The discipline</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "chapters.discipline.id",
+            "description": "<p>The discipline id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "chapters.discipline.name",
+            "description": "<p>The discipline name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "chapters.discipline.slug",
+            "description": "<p>The discipline slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "chapters.discipline.beta",
+            "description": "<p>If the discipline is in beta</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "chapters.discipline.image",
+            "description": "<p>The discipline image</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Class",
+            "optional": false,
+            "field": "chapters.class_",
+            "description": "<p>The class</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "chapters.class_.id",
+            "description": "<p>The class id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "chapters.class_.name",
+            "description": "<p>The class name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "chapters.class_.name_short",
+            "description": "<p>The class short name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "chapters.class_.slug",
+            "description": "<p>The class slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "chapters.class_.slug_short",
+            "description": "<p>The class short slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "chapters.class_.country_id",
+            "description": "<p>The class country id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Country",
+            "optional": false,
+            "field": "chapters.class_.country",
+            "description": "<p>The country</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "chapters.class_.country.id",
+            "description": "<p>The country id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "chapters.class_.country.name",
+            "description": "<p>The country name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "chapters.class_.country.name_short",
+            "description": "<p>The country short name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "chapters.class_.country.slug",
+            "description": "<p>The country slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "chapters.class_.country.slug_short",
+            "description": "<p>The country short slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Notion[]",
+            "optional": false,
+            "field": "notions.chapter.class_.country_id",
+            "description": "<p>The class country id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Country",
+            "optional": false,
+            "field": "notions.chapter.class_.country",
+            "description": "<p>The country</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "notions.chapter.class_.country.id",
+            "description": "<p>The country id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "notions.chapter.class_.country.name",
+            "description": "<p>The country name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "notions.chapter.class_.country.name_short",
+            "description": "<p>The country short name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "notions.chapter_id",
+            "description": "<p>The notion chapter_id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Chapter",
+            "optional": false,
+            "field": "notions.chapter",
+            "description": "<p>The chapter</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "notions.chapter.id",
+            "description": "<p>The chapter id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "notions.chapter.name",
+            "description": "<p>The chapter name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "notions.chapter.slug",
+            "description": "<p>The chapter slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Discipline",
+            "optional": false,
+            "field": "notions.chapter.discipline",
+            "description": "<p>The discipline</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "notions.chapter.discipline.id",
+            "description": "<p>The discipline id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "notions.chapter.discipline.name",
+            "description": "<p>The discipline name</p>"
+          },
+          {
             "group": "Success 200",
             "type": "string",
             "optional": false,
