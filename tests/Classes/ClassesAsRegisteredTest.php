@@ -33,10 +33,4 @@ class ClassesAsRegisteredTest extends ScopeTestCase
     {
         $this->sameAs('public');
     }
-
-    public function testSearch() {
-        $this->call('get', '/content/search/lorem');
-
-        $this->debug();
-    }
 }
