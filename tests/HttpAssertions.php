@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: mathieu
- * Date: 04/10/17
- * Time: 06:08
- */
-
 namespace Tests;
 
 /**
@@ -26,6 +19,7 @@ trait HttpAssertions
 
     /**
      * Shortcut to assertJsonError('unauthorized', 401)
+
      */
     public function assertHttp401Unauthorized()
     {

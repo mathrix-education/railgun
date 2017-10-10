@@ -273,6 +273,7 @@ class AuthTest extends BaseTestCase
             'password' => 'test'
         ]);
 
+
         // Assertions
         $this->assertJsonError('model_not_found', 404);
     }

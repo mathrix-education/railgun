@@ -49,7 +49,6 @@ class CountryController extends BaseController
     public function get(int $id)
     {
         $country = Country::where('id', $id)->firstOrFail();
-
         return $this->http200Success($country);
     }
 

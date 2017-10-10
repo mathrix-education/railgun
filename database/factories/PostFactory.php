@@ -12,7 +12,7 @@ use Faker\Generator;
  */
 $factory->define(Post::class, function (Generator $faker) {
     $title = substr($faker->sentence($faker->numberBetween(3, 5)), 0, -1);
-    $created = $faker->dateTime('-30 days');
+    $created = $faker->dateTimeBetween('-30 days', 'now');
 
     return [
         'title' => $title,
@@ -21,5 +21,6 @@ $factory->define(Post::class, function (Generator $faker) {
         'category_id' => $faker->randomElement(Category::all()->pluck('id')->toArray()),
         'user_id' => $faker->randomElement(User::all()->pluck('id')->toArray()),
         'created_at' => $created,
+        'updated_at' => $faker->boolean(10) ? $faker->dateTimeBetween($created, 'now') : $created,
     ];
 });
