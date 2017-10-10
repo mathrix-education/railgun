@@ -11,9 +11,14 @@ use Faker\Generator;
 $factory->defineAs(Module::class, 'flashcard', function (Generator $faker) use ($factory) {
     $data = $factory->rawOf(Module::class, 'mcq');
 
+    $data['type'] = 'flashcard';
+
     $data['choices'] = null;
     $data['solutions'] = null;
-    $data['type'] = 'flashcard';
+
+    foreach ($data['corrections'] as $k => $v) {
+        $data['corrections'][$k] = $v[0];
+    }
 
     return $data;
 });
