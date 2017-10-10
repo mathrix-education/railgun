@@ -75,12 +75,11 @@ class CategoryController extends BaseController
      */
     public function add(Request $request)
     {
-        if ($request->user()->cant('add')) {
+        if ($request->user()->cant('add', Category::class)) {
             return $this->http401Unauthorized();
         }
 
-        $category = new Category();
-        $category->fill($request->all());
+        $category = new Category($request->all());
 
         if (!$category->save()) {
             return $category->handleResponse($this->http422Save());
@@ -144,6 +143,7 @@ class CategoryController extends BaseController
      *
      * @param Request $request
      * @param int $id
+     *
      * @return JsonResponse
      */
     public function delete(Request $request, int $id)

@@ -180,7 +180,7 @@ class ScopeTestCase extends BaseTestCase
             throw new \Exception('Test ' . $classNameToInstantiate . '::' . $testName . '() does not exists');
         }
 
-        // Finally run the diProjectsstant test
+        // Finally run the distant test
         $testClassObject->{$testName}();
     }
 
@@ -190,6 +190,24 @@ class ScopeTestCase extends BaseTestCase
     |--------------------------------------------------------------------------
     */
     /**
+     * Cast data to its right MySQL values
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    public function castData(array $data)
+    {
+        foreach ($data as $field => $value) {
+            if ($value instanceof \DateTime) {
+                $data[$field] = $value->format('Y-m-d H:i:s');
+            }
+        }
+
+        return $data;
+    }
+
+    /**
      * Assert that a given where condition exists in the database.
      *
      * @param  string $table
@@ -198,7 +216,7 @@ class ScopeTestCase extends BaseTestCase
      */
     public function assertInDatabase(string $table, array $data, $onConnection = null)
     {
-        $this->seeInDatabase($table, $data, $onConnection);
+        $this->seeInDatabase($table, $this->castData($data), $onConnection);
     }
 
     /**
@@ -210,6 +228,6 @@ class ScopeTestCase extends BaseTestCase
      */
     public function assertNotInDatabase(string $table, array $data, $onConnection = null)
     {
-        $this->notSeeInDatabase($table, $data, $onConnection);
+        $this->notSeeInDatabase($table, $this->castData($data), $onConnection);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Mathrix\Lumen\Models\BaseModel;
 
@@ -12,14 +13,14 @@ use Mathrix\Lumen\Models\BaseModel;
  * @property int $id
  * @property string $name
  * @property string $slug
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Course[] $courses
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Post[] $posts
+ * @property-read Collection|Course[] $courses
+ * @property-read Collection|Post[] $posts
+ * @property string|null $image
+ * @method static Builder|Category whereImage($value)
  * @method static Builder|Category whereId($value)
  * @method static Builder|Category whereName($value)
  * @method static Builder|Category whereSlug($value)
  * @mixin \Eloquent
- * @property string|null $image
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereImage($value)
  */
 class Category extends BaseModel
 {
