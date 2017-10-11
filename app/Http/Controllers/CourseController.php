@@ -34,10 +34,6 @@ class CourseController extends BaseController
      */
     public function index(Request $request, int $page = 1, int $perPage = 10)
     {
-        if ($request->user()->cant('index', Course::class)) {
-            return $this->http401Unauthorized();
-        }
-
         if ($page < 1 || $perPage < 1) {
             return $this->http400InvalidRequest('page and perPage have to be strictly positive');
         }
@@ -45,7 +41,7 @@ class CourseController extends BaseController
         return $this->http200Success(
             Course::limit($perPage)
                 ->offset(($page - 1) * $perPage)
-                ->orderByDesc('created')
+                ->orderByDesc('created_at')
                 ->get()
         );
     }
@@ -94,7 +90,7 @@ class CourseController extends BaseController
      */
     public function add(Request $request)
     {
-        if ($request->user()->cant('add')) {
+        if ($request->user()->cant('add', Course::class)) {
             return $this->http401Unauthorized();
         }
 
@@ -179,6 +175,6 @@ class CourseController extends BaseController
             return $course->handleResponse($this->http422Delete());
         }
 
-        return $this->http501NotImplemented();
+        return $this->http200Success();
     }
 }

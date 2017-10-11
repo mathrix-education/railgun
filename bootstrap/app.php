@@ -121,9 +121,9 @@ $app->register(Barryvdh\Cors\ServiceProvider::class);
 |
 */
 
-Dusterio\LumenPassport\LumenPassport::routes($app);
+Dusterio\LumenPassport\LumenPassport::routes($app->router);
 
-$app->group(['namespace' => 'App\Http\Controllers'], function ($app) {
+$app->router->group(['namespace' => 'App\Http\Controllers'], function ($router) {
     require __DIR__ . '/../routes/web.php';
 });
 
