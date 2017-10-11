@@ -6,6 +6,15 @@ variables:
   MYSQL_DATABASE: mathrix_fr_pipelines
   DB_HOST: mysql
 
+before_script:
+  # Setup GitLab SSH
+  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+  - chmod 600 storage/ssh/gitlab_mathrix_id_rsa
+  - eval $(ssh-agent -s)
+  - ssh-add -k storage/ssh/gitlab_mathrix_id_rsa
+  - mkdir ~/.ssh
+  - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
+
 test:
   stage: test
   services:
@@ -13,18 +22,6 @@ test:
   image: edbizarro/gitlab-ci-pipeline-php:7.1-alpine
   script:
     - yarn
-    # Setup GitLab SSH
-    - chmod 600 storage/ssh/gitlab_mathrix_id_rsa
-    - eval $(ssh-agent)
-    - ssh-add -k storage/ssh/gitlab_mathrix_id_rsa
-    - mkdir ~/.ssh
-    - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
-    # Setup GitLab SSH
-    #- chmod 0600 storage/ssh/gitlab_mathrix_id_rsa
-    - eval $(ssh-agent)
-    - ssh-add -k storage/ssh/gitlab_mathrix_id_rsa
-    - mkdir ~/.ssh
-    - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
     # Setup project files
     - cp storage/env/.env.pipelines .env
     - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
