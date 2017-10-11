@@ -14,6 +14,8 @@ use Laravel\Cashier\Http\Controllers\WebhookController as CashierController;
  */
 class StripeController extends CashierController
 {
+    private const ALLOWED_STRIPE_PLANS = ['v3_annually', 'v3_monthly'];
+
     /**
      * @apiVersion 1.0.0
      * @api {post} /stripe/subscribe Subscribe
@@ -25,6 +27,7 @@ class StripeController extends CashierController
      * @apiParam (Data) {string} stripe_token the stripe token
      * @apiParam (Data) {string=v3_annually,v3_monthly} stripe_plan the stripe plan
      * @apiParam (Data) {string} [stripe_coupon=null] the stripe coupon
+     * @apiError (Error 401) invalid_request Invalid stripe_plan
      *
      * @param Request $request
      *
@@ -33,12 +36,20 @@ class StripeController extends CashierController
     public function subscribe(Request $request)
     {
         $stripeToken = $request->input('stripe_token');
+        $stripePlan = $request->input('stripe_plan');
         $stripeCoupon = $request->input('stripe_coupon');
+
+        if (!in_array($stripePlan, self::ALLOWED_STRIPE_PLANS)) {
+            return response()->json([
+                'error' => 'invalid_request',
+                'message' => 'stripe_plan has to be in [' . implode(', ', self::ALLOWED_STRIPE_PLANS) . ']'
+            ], 401);
+        }
 
         /** @var User $user */
         $user = $request->getUser();
 
-        $user->newSubscription('main', 'premium')
+        $user->newSubscription('premium', $stripePlan)
             ->withCoupon($stripeCoupon)
             ->create($stripeToken);
 
