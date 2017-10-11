@@ -73,7 +73,7 @@ class CommentController extends BaseController
         // Retrieve comments
         return $this->http200Success(
             $commentable->comments()
-                ->with('children')
+                ->with(['user', 'children'])
                 ->limit($perPage)
                 ->offset(($page - 1) * $perPage)
                 ->get()
@@ -98,7 +98,9 @@ class CommentController extends BaseController
      */
     public function get(int $id)
     {
-        $class = Comment::where('id', $id)->firstOrFail();
+        $class = Comment::where('id', $id)
+            ->with('user')
+            ->firstOrFail();
 
         return $this->http200Success($class);
     }
