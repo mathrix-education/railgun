@@ -8376,7 +8376,7 @@ define({ "api": [
             "type": "string",
             "optional": false,
             "field": "stripe_token",
-            "description": "<p>the stripe token</p>"
+            "description": "<p>The stripe token</p>"
           },
           {
             "group": "Data",
@@ -8387,7 +8387,7 @@ define({ "api": [
             ],
             "optional": false,
             "field": "stripe_plan",
-            "description": "<p>the stripe plan</p>"
+            "description": "<p>The stripe plan</p>"
           },
           {
             "group": "Data",
@@ -8395,7 +8395,7 @@ define({ "api": [
             "optional": true,
             "field": "stripe_coupon",
             "defaultValue": "null",
-            "description": "<p>the stripe coupon</p>"
+            "description": "<p>The stripe coupon</p>"
           }
         ]
       }

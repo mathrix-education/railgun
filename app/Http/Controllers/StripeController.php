@@ -24,9 +24,9 @@ class StripeController extends CashierController
      * @apiDescription Subscribe user to plan
      * @apiPermission registered
      * @apiUse Bearer
-     * @apiParam (Data) {string} stripe_token the stripe token
-     * @apiParam (Data) {string=v3_annually,v3_monthly} stripe_plan the stripe plan
-     * @apiParam (Data) {string} [stripe_coupon=null] the stripe coupon
+     * @apiParam (Data) {string} stripe_token The stripe token
+     * @apiParam (Data) {string=v3_annually,v3_monthly} stripe_plan The stripe plan
+     * @apiParam (Data) {string} [stripe_coupon=null] The stripe coupon
      * @apiError (Error 401) invalid_request Invalid stripe_plan
      *
      * @param Request $request
