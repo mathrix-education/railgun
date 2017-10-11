@@ -22,7 +22,8 @@
     "mathrix/lumen-utils": "dev-master",
     "illuminate/mail": "^5.4",
     "laravel/cashier": "~7.0",
-    "barryvdh/laravel-cors": "^0.9.3"
+    "barryvdh/laravel-cors": "^0.9.3",
+    "illuminate/routing": "^5.5"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",
