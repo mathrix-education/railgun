@@ -53,7 +53,7 @@ class StripeController extends CashierController
             ->withCoupon($stripeCoupon)
             ->create($stripeToken);
 
-        return response();
+        return response()->json(['status' => 'success']);
     }
 
     /*
