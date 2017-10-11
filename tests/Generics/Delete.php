@@ -41,12 +41,26 @@ trait Delete
     /**
      * Generic delete; expect HTTP 200 and data present in database
      */
-    public function genericDeleteUnauthorized()
+    public function genericSoftDeleteSuccess()
     {
         $this->genericDelete();
 
         // Assertions
-        $this->assertHttp401Unauthorized();
+        $this->assertHttp200Success();
         $this->assertInDatabase($this->modelPlural, ['id' => $this->deleteModelId]);
+    }
+
+    /**
+     * Generic delete; expect HTTP 200 and data present in database
+     */
+    public function genericDeleteUnauthorized()
+    {
+        $this->genericDelete();
+
+        $deletedAt = ($this->modelClass)::where('id', $this->deleteModelId)->firstOrFail()->deleted_at;
+
+        // Assertions
+        $this->assertHttp401Unauthorized();
+        $this->assertInDatabase($this->modelPlural, ['id' => $this->deleteModelId, 'deleted_at' => $deletedAt]);
     }
 }

@@ -26,6 +26,7 @@ class CommentController extends BaseController
      * @apiDescription Retrieve comments
      * @apiPermission public
      * @apiUse CommentArray
+     *
      * @return JsonResponse
      */
     public function index()
@@ -58,7 +59,9 @@ class CommentController extends BaseController
     {
         // Ensure that the commentable model is morphed
         /** @var BaseModel $commentable_class */
-        if ($commentable_class = Relation::getMorphedModel($commentable_type) == null) {
+        $commentable_class = Relation::getMorphedModel($commentable_type);
+
+        if ($commentable_class == null) {
             return $this->http400InvalidRequest();
         }
 
@@ -126,10 +129,6 @@ class CommentController extends BaseController
      */
     public function add(Request $request)
     {
-        if ($request->user()->cant('add', Comment::class)) {
-            return $this->http401Unauthorized();
-        }
-
         $class = new Comment();
         $class->fill($request->all());
 

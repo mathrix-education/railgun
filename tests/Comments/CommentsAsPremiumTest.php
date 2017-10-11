@@ -21,7 +21,7 @@ class CommentsAsPremiumTest extends ScopeTestCase
 
     public function testAdd()
     {
-        $this->sameAs('public');
+        $this->sameAs('registered');
     }
 
     public function testEdit()
