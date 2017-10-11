@@ -2540,7 +2540,7 @@
             "type": "User",
             "optional": false,
             "field": "user",
-            "description": "<p>Array of countries</p>"
+            "description": "<p>The user</p>"
           },
           {
             "group": "Success 200",
@@ -2907,7 +2907,7 @@
             "type": "User",
             "optional": false,
             "field": "user",
-            "description": "<p>Array of countries</p>"
+            "description": "<p>The user</p>"
           },
           {
             "group": "Success 200",
@@ -3143,7 +3143,7 @@
             "type": "User",
             "optional": false,
             "field": "user",
-            "description": "<p>Array of countries</p>"
+            "description": "<p>The user</p>"
           },
           {
             "group": "Success 200",
@@ -3392,7 +3392,7 @@
             "type": "User",
             "optional": false,
             "field": "comments.user",
-            "description": "<p>Array of countries</p>"
+            "description": "<p>The user</p>"
           },
           {
             "group": "Success 200",
@@ -3595,7 +3595,7 @@
             "type": "User",
             "optional": false,
             "field": "comments.user",
-            "description": "<p>Array of countries</p>"
+            "description": "<p>The user</p>"
           },
           {
             "group": "Success 200",
@@ -7118,7 +7118,7 @@
             "type": "User",
             "optional": false,
             "field": "comments.user",
-            "description": "<p>Array of countries</p>"
+            "description": "<p>The user</p>"
           },
           {
             "group": "Success 200",
