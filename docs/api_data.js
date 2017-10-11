@@ -2540,7 +2540,91 @@ define({ "api": [
             "type": "Comment[]",
             "optional": false,
             "field": "children",
-            "description": "<p>The comment children</p>"
+            "description": "<p>The comment children * @apiSuccess {int} comments.user.id The user id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "user.username",
+            "description": "<p>The user username</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "user.email",
+            "description": "<p>The user email address</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "user.firstname",
+            "description": "<p>The user firstname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "user.lastname",
+            "description": "<p>The user lastname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "user.facebook_token",
+            "description": "<p>The facebook token</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "user.points",
+            "description": "<p>The user points</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "array",
+            "optional": false,
+            "field": "user.settings",
+            "description": "<p>The user settings</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "user.settings.daily_goal",
+            "description": "<p>The user daily goal points</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "user.settings.sound",
+            "description": "<p>If the user has enabled sounds</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "user.settings.email_newsletter",
+            "description": "<p>If the user should receive the newsletter</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "user.settings.email_comment",
+            "description": "<p>If the user should receive an comment email</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "user.class_id",
+            "description": "<p>The user class_id</p>"
           }
         ]
       }
@@ -2816,7 +2900,91 @@ define({ "api": [
             "type": "Comment[]",
             "optional": false,
             "field": "children",
-            "description": "<p>The comment children</p>"
+            "description": "<p>The comment children * @apiSuccess {int} comments.user.id The user id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "user.username",
+            "description": "<p>The user username</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "user.email",
+            "description": "<p>The user email address</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "user.firstname",
+            "description": "<p>The user firstname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "user.lastname",
+            "description": "<p>The user lastname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "user.facebook_token",
+            "description": "<p>The facebook token</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "user.points",
+            "description": "<p>The user points</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "array",
+            "optional": false,
+            "field": "user.settings",
+            "description": "<p>The user settings</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "user.settings.daily_goal",
+            "description": "<p>The user daily goal points</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "user.settings.sound",
+            "description": "<p>If the user has enabled sounds</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "user.settings.email_newsletter",
+            "description": "<p>If the user should receive the newsletter</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "user.settings.email_comment",
+            "description": "<p>If the user should receive an comment email</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "user.class_id",
+            "description": "<p>The user class_id</p>"
           }
         ]
       }
@@ -2961,7 +3129,91 @@ define({ "api": [
             "type": "Comment[]",
             "optional": false,
             "field": "children",
-            "description": "<p>The comment children</p>"
+            "description": "<p>The comment children * @apiSuccess {int} comments.user.id The user id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "user.username",
+            "description": "<p>The user username</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "user.email",
+            "description": "<p>The user email address</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "user.firstname",
+            "description": "<p>The user firstname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "user.lastname",
+            "description": "<p>The user lastname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "user.facebook_token",
+            "description": "<p>The facebook token</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "user.points",
+            "description": "<p>The user points</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "array",
+            "optional": false,
+            "field": "user.settings",
+            "description": "<p>The user settings</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "user.settings.daily_goal",
+            "description": "<p>The user daily goal points</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "user.settings.sound",
+            "description": "<p>If the user has enabled sounds</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "user.settings.email_newsletter",
+            "description": "<p>If the user should receive the newsletter</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "user.settings.email_comment",
+            "description": "<p>If the user should receive an comment email</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "user.class_id",
+            "description": "<p>The user class_id</p>"
           }
         ]
       }
@@ -3120,6 +3372,97 @@ define({ "api": [
             "optional": false,
             "field": "comments.children",
             "description": "<p>The comment children</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "comments.user.id",
+            "description": "<p>The user id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "comments.user.username",
+            "description": "<p>The user username</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "comments.user.email",
+            "description": "<p>The user email address</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "comments.user.firstname",
+            "description": "<p>The user firstname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "comments.user.lastname",
+            "description": "<p>The user lastname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "comments.user.facebook_token",
+            "description": "<p>The facebook token</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "comments.user.points",
+            "description": "<p>The user points</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "array",
+            "optional": false,
+            "field": "comments.user.settings",
+            "description": "<p>The user settings</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "comments.user.settings.daily_goal",
+            "description": "<p>The user daily goal points</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "comments.user.settings.sound",
+            "description": "<p>If the user has enabled sounds</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "comments.user.settings.email_newsletter",
+            "description": "<p>If the user should receive the newsletter</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "comments.user.settings.email_comment",
+            "description": "<p>If the user should receive an comment email</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "comments.user.class_id",
+            "description": "<p>The user class_id</p>"
           }
         ]
       }
@@ -3225,6 +3568,97 @@ define({ "api": [
             "optional": false,
             "field": "comments.children",
             "description": "<p>The comment children</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "comments.user.id",
+            "description": "<p>The user id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "comments.user.username",
+            "description": "<p>The user username</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "comments.user.email",
+            "description": "<p>The user email address</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "comments.user.firstname",
+            "description": "<p>The user firstname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "comments.user.lastname",
+            "description": "<p>The user lastname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "comments.user.facebook_token",
+            "description": "<p>The facebook token</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "comments.user.points",
+            "description": "<p>The user points</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "array",
+            "optional": false,
+            "field": "comments.user.settings",
+            "description": "<p>The user settings</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "comments.user.settings.daily_goal",
+            "description": "<p>The user daily goal points</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "comments.user.settings.sound",
+            "description": "<p>If the user has enabled sounds</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "comments.user.settings.email_newsletter",
+            "description": "<p>If the user should receive the newsletter</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "comments.user.settings.email_comment",
+            "description": "<p>If the user should receive an comment email</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "comments.user.class_id",
+            "description": "<p>The user class_id</p>"
           }
         ]
       }
@@ -6650,6 +7084,97 @@ define({ "api": [
             "optional": false,
             "field": "comments.children",
             "description": "<p>The comment children</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "comments.user.id",
+            "description": "<p>The user id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "comments.user.username",
+            "description": "<p>The user username</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "comments.user.email",
+            "description": "<p>The user email address</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "comments.user.firstname",
+            "description": "<p>The user firstname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "comments.user.lastname",
+            "description": "<p>The user lastname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "comments.user.facebook_token",
+            "description": "<p>The facebook token</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "comments.user.points",
+            "description": "<p>The user points</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "array",
+            "optional": false,
+            "field": "comments.user.settings",
+            "description": "<p>The user settings</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "comments.user.settings.daily_goal",
+            "description": "<p>The user daily goal points</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "comments.user.settings.sound",
+            "description": "<p>If the user has enabled sounds</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "comments.user.settings.email_newsletter",
+            "description": "<p>If the user should receive the newsletter</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "comments.user.settings.email_comment",
+            "description": "<p>If the user should receive an comment email</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "comments.user.class_id",
+            "description": "<p>The user class_id</p>"
           }
         ]
       }
