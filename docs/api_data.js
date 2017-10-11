@@ -8400,6 +8400,18 @@ define({ "api": [
         ]
       }
     },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "invalid_request",
+            "description": "<p>Invalid stripe_plan</p>"
+          }
+        ]
+      }
+    },
     "filename": "app/Http/Controllers/StripeController.php",
     "groupTitle": "Stripe",
     "header": {
