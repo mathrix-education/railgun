@@ -3,7 +3,7 @@ image: php:7.1.1
 before_script:
   # Initialize project environment
   - apt-get -yqq update
-  - apt-get -yqq install libmcrypt-dev unzip git openssh-client
+  - apt-get -yqq install libmcrypt-dev unzip git openssh-client php7.1-gd
   - docker-php-ext-install mcrypt && docker-php-ext-install pdo_mysql
   - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
   # Setup GitLab SSH
