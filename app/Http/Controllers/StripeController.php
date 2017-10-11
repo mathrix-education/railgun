@@ -21,6 +21,8 @@ class StripeController extends CashierController
      */
     public function handleInvoicePaymentSucceeded($payload)
     {
+        die('lol');
+        // Grant user user premium
         return response()->json($payload);
     }
 }

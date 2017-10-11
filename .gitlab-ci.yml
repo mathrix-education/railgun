@@ -21,7 +21,6 @@ test:
     - mysql:5.7
   image: edbizarro/gitlab-ci-pipeline-php:7.1-alpine
   script:
-    - yarn
     # Setup project files
     - cp storage/env/.env.pipelines .env
     - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
