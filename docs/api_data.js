@@ -8381,6 +8381,17 @@ define({ "api": [
           {
             "group": "Data",
             "type": "string",
+            "allowedValues": [
+              "v3_annually",
+              "v3_monthly"
+            ],
+            "optional": false,
+            "field": "stripe_plan",
+            "description": "<p>the stripe plan</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
             "optional": true,
             "field": "stripe_coupon",
             "defaultValue": "null",
