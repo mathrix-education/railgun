@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Laravel\Cashier\Http\Controllers\WebhookController as CashierController;
+use Laravel\Cashier\Subscription;
 
 /**
  * Class StripeController
@@ -66,10 +67,41 @@ class StripeController extends CashierController
      *
      * @param  array $payload
      *
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function handleInvoicePaymentSucceeded($payload)
     {
+        // TODO: LOG IT
         return new Response('Webhook Handled', 200);
+    }
+
+
+    /**
+     *
+     * Payment succeeded
+     *
+     * @param  array $payload
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function handleInvoicePaymentFailed(array $payload)
+    {
+        // TODO: LOG IT
+        return new Response('Webhook Handled', 200);
+    }
+
+
+    /**
+     * Handle customer.subscription.deleted
+     *
+     * @param array $payload
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function handleCustomerSubscriptionDeleted(array $payload)
+    {
+        $reponse = parent::handleCustomerSubscriptionDeleted($payload);
+
+        return $reponse;
     }
 }
