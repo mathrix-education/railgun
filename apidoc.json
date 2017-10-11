@@ -98,6 +98,8 @@
     "QuoteGet",
     "QuoteAdd",
     "QuoteEdit",
-    "QuoteDelete"
+    "QuoteDelete",
+    "Stripe",
+    "StripeSubscribe"
   ]
 }

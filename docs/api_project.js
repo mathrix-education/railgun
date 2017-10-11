@@ -98,14 +98,16 @@ define({
     "QuoteGet",
     "QuoteAdd",
     "QuoteEdit",
-    "QuoteDelete"
+    "QuoteDelete",
+    "Stripe",
+    "StripeSubscribe"
   ],
   "sampleUrl": false,
   "defaultVersion": "0.0.0",
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2017-10-10T23:22:08.938Z",
+    "time": "2017-10-11T13:12:21.525Z",
     "url": "http://apidocjs.com",
     "version": "0.17.6"
   }
