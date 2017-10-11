@@ -2537,10 +2537,10 @@
           },
           {
             "group": "Success 200",
-            "type": "Comment[]",
+            "type": "User",
             "optional": false,
-            "field": "children",
-            "description": "<p>The comment children * @apiSuccess {int} comments.user.id The user id</p>"
+            "field": "user",
+            "description": "<p>Array of countries</p>"
           },
           {
             "group": "Success 200",
@@ -2625,6 +2625,13 @@
             "optional": false,
             "field": "user.class_id",
             "description": "<p>The user class_id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Comment[]",
+            "optional": false,
+            "field": "children",
+            "description": "<p>The comment children * @apiSuccess {int} comments.user.id The user id</p>"
           }
         ]
       }
@@ -2897,10 +2904,10 @@
           },
           {
             "group": "Success 200",
-            "type": "Comment[]",
+            "type": "User",
             "optional": false,
-            "field": "children",
-            "description": "<p>The comment children * @apiSuccess {int} comments.user.id The user id</p>"
+            "field": "user",
+            "description": "<p>Array of countries</p>"
           },
           {
             "group": "Success 200",
@@ -2985,6 +2992,13 @@
             "optional": false,
             "field": "user.class_id",
             "description": "<p>The user class_id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Comment[]",
+            "optional": false,
+            "field": "children",
+            "description": "<p>The comment children * @apiSuccess {int} comments.user.id The user id</p>"
           }
         ]
       }
@@ -3126,10 +3140,10 @@
           },
           {
             "group": "Success 200",
-            "type": "Comment[]",
+            "type": "User",
             "optional": false,
-            "field": "children",
-            "description": "<p>The comment children * @apiSuccess {int} comments.user.id The user id</p>"
+            "field": "user",
+            "description": "<p>Array of countries</p>"
           },
           {
             "group": "Success 200",
@@ -3214,6 +3228,13 @@
             "optional": false,
             "field": "user.class_id",
             "description": "<p>The user class_id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Comment[]",
+            "optional": false,
+            "field": "children",
+            "description": "<p>The comment children * @apiSuccess {int} comments.user.id The user id</p>"
           }
         ]
       }
@@ -3368,10 +3389,10 @@
           },
           {
             "group": "Success 200",
-            "type": "Comment[]",
+            "type": "User",
             "optional": false,
-            "field": "comments.children",
-            "description": "<p>The comment children</p>"
+            "field": "comments.user",
+            "description": "<p>Array of countries</p>"
           },
           {
             "group": "Success 200",
@@ -3463,6 +3484,13 @@
             "optional": false,
             "field": "comments.user.class_id",
             "description": "<p>The user class_id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Comment[]",
+            "optional": false,
+            "field": "comments.children",
+            "description": "<p>The comment children</p>"
           }
         ]
       }
@@ -3564,10 +3592,10 @@
           },
           {
             "group": "Success 200",
-            "type": "Comment[]",
+            "type": "User",
             "optional": false,
-            "field": "comments.children",
-            "description": "<p>The comment children</p>"
+            "field": "comments.user",
+            "description": "<p>Array of countries</p>"
           },
           {
             "group": "Success 200",
@@ -3659,6 +3687,13 @@
             "optional": false,
             "field": "comments.user.class_id",
             "description": "<p>The user class_id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Comment[]",
+            "optional": false,
+            "field": "comments.children",
+            "description": "<p>The comment children</p>"
           }
         ]
       }
@@ -7080,10 +7115,10 @@
           },
           {
             "group": "Success 200",
-            "type": "Comment[]",
+            "type": "User",
             "optional": false,
-            "field": "comments.children",
-            "description": "<p>The comment children</p>"
+            "field": "comments.user",
+            "description": "<p>Array of countries</p>"
           },
           {
             "group": "Success 200",
@@ -7175,6 +7210,13 @@
             "optional": false,
             "field": "comments.user.class_id",
             "description": "<p>The user class_id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Comment[]",
+            "optional": false,
+            "field": "comments.children",
+            "description": "<p>The comment children</p>"
           }
         ]
       }

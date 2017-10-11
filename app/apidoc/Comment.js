@@ -21,7 +21,7 @@
  * @apiSuccess {datetime} comments.created_at The created date
  * @apiSuccess {datetime} comments.updated_at The updated date
  * @apiSuccess {datetime} comments.deleted_at The deleted date
- * @apiSuccess {Comment[]} comments.children The comment children
+ * @apiSuccess {User} comments.user Array of countries
  * @apiSuccess {int} comments.user.id The user id
  * @apiSuccess {string} comments.user.username The user username
  * @apiSuccess {string} comments.user.email The user email address
@@ -35,6 +35,7 @@
  * @apiSuccess {bool} comments.user.settings.email_newsletter If the user should receive the newsletter
  * @apiSuccess {bool} comments.user.settings.email_comment If the user should receive an comment email
  * @apiSuccess {int} comments.user.class_id The user class_id
+ * @apiSuccess {Comment[]} comments.children The comment children
  */
 /**
  * @apiDefine Comment
@@ -47,7 +48,7 @@
  * @apiSuccess {datetime} created_at The created date
  * @apiSuccess {datetime} updated_at The updated date
  * @apiSuccess {datetime} deleted_at The deleted date
- * @apiSuccess {Comment[]} children The comment children * @apiSuccess {int} comments.user.id The user id
+ * @apiSuccess {User} user Array of countries
  * @apiSuccess {string} user.username The user username
  * @apiSuccess {string} user.email The user email address
  * @apiSuccess {string} user.firstname The user firstname
@@ -60,4 +61,5 @@
  * @apiSuccess {bool} user.settings.email_newsletter If the user should receive the newsletter
  * @apiSuccess {bool} user.settings.email_comment If the user should receive an comment email
  * @apiSuccess {int} user.class_id The user class_id
+ * @apiSuccess {Comment[]} children The comment children * @apiSuccess {int} comments.user.id The user id
  */
