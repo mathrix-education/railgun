@@ -30,3 +30,5 @@ switch (env('STRIPE_CONFIG')) {
             'secret' => env('STRIPE_SECRET'),
         ];
 }
+
+return $config;
