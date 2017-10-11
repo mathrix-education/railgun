@@ -60,6 +60,23 @@ class AuthTest extends BaseTestCase
         $this->user = User::inRandomOrder()->first();
     }
 
+    protected function setUpTraits()
+    {
+        parent::setUpTraits();
+
+        $uses = array_flip(class_uses_recursive(static::class));
+
+        if (isset($uses[DatabaseTransactions::class])) {
+            $database = $this->app->make('db');
+
+            $this->beforeApplicationDestroyed(function () use ($database) {
+                foreach ($this->connectionsToTransact() as $name) {
+                    $database->connection($name)->disconnect();
+                }
+            });
+        }
+    }
+
 
     /*
     |--------------------------------------------------------------------------

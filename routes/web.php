@@ -10,8 +10,11 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
+/** @var Router $router */
 
-$app->get('/', function () use ($app) {
+use Laravel\Lumen\Routing\Router;
+
+$router->get('/', function () use ($router) {
     return response()->json([
         'message' => 'Welcome to Mathrix API version 1.0.0'
     ]);
@@ -23,22 +26,22 @@ $app->get('/', function () use ($app) {
 | Users
 |--------------------------------------------------------------------------
 */
-$app->group(['prefix' => 'users'], function () use ($app) {
-    $app->post('register', 'UserController@register');
-    $app->post('login', 'AuthController@login');
-    $app->post('refresh', 'AuthController@refresh');
-    $app->post('forgot', 'AuthController@forgot');
-    $app->post('reset/{token}', 'AuthController@reset');
-    $app->get('exists/{field}/{value}', 'UserController@exists');
+$router->group(['prefix' => 'users'], function () use ($router) {
+    $router->post('register', 'UserController@register');
+    $router->post('login', 'AuthController@login');
+    $router->post('refresh', 'AuthController@refresh');
+    $router->post('forgot', 'AuthController@forgot');
+    $router->post('reset/{token}', 'AuthController@reset');
+    $router->get('exists/{field}/{value}', 'UserController@exists');
 
-    $app->group(['middleware' => 'auth:api'], function () use ($app) {
-        $app->get('', 'UserController@index');
-        $app->get('{page:[0-9]+}/{perPage:[0-9]+}', 'UserController@index');
-        $app->get('search/{field}/{like}', 'UserController@search');
-        $app->get('me', 'UserController@me');
-        $app->get('{id:[0-9]+}', 'UserController@get');
-        $app->patch('{id:[0-9]+}', 'UserController@edit');
-        $app->delete('{id:[0-9]+}', 'UserController@delete');
+    $router->group(['middleware' => 'auth:api'], function () use ($router) {
+        $router->get('', 'UserController@index');
+        $router->get('{page:[0-9]+}/{perPage:[0-9]+}', 'UserController@index');
+        $router->get('search/{field}/{like}', 'UserController@search');
+        $router->get('me', 'UserController@me');
+        $router->get('{id:[0-9]+}', 'UserController@get');
+        $router->patch('{id:[0-9]+}', 'UserController@edit');
+        $router->delete('{id:[0-9]+}', 'UserController@delete');
     });
 });
 
@@ -48,12 +51,12 @@ $app->group(['prefix' => 'users'], function () use ($app) {
 | Content
 |--------------------------------------------------------------------------
 */
-$app->group(['prefix' => 'content'], function () use ($app) {
-    $app->get('countries', 'ContentController@countries');
-    $app->get('program/{classId:[0-9]+}', 'ContentController@program');
-    $app->get('modules/{activityId:[0-9]+}', 'ContentController@modules');
-    $app->get('search/{query}', 'ContentController@search');
-    $app->get('search/{query}/{page:[0-9]+}/{perPage:[0-9]+}', 'ContentController@search');
+$router->group(['prefix' => 'content'], function () use ($router) {
+    $router->get('countries', 'ContentController@countries');
+    $router->get('program/{classId:[0-9]+}', 'ContentController@program');
+    $router->get('modules/{activityId:[0-9]+}', 'ContentController@modules');
+    $router->get('search/{query}', 'ContentController@search');
+    $router->get('search/{query}/{page:[0-9]+}/{perPage:[0-9]+}', 'ContentController@search');
 });
 
 
@@ -62,14 +65,14 @@ $app->group(['prefix' => 'content'], function () use ($app) {
 | Countries
 |--------------------------------------------------------------------------
 */
-$app->group(['prefix' => 'countries'], function () use ($app) {
-    $app->get('', 'CountryController@index');
-    $app->get('{id:[0-9]+}', 'CountryController@get');
+$router->group(['prefix' => 'countries'], function () use ($router) {
+    $router->get('', 'CountryController@index');
+    $router->get('{id:[0-9]+}', 'CountryController@get');
 
-    $app->group(['middleware' => 'auth:api'], function () use ($app) {
-        $app->post('', 'CountryController@add');
-        $app->patch('{id:[0-9]+}', 'CountryController@edit');
-        $app->delete('{id:[0-9]+}', 'CountryController@delete');
+    $router->group(['middleware' => 'auth:api'], function () use ($router) {
+        $router->post('', 'CountryController@add');
+        $router->patch('{id:[0-9]+}', 'CountryController@edit');
+        $router->delete('{id:[0-9]+}', 'CountryController@delete');
     });
 });
 
@@ -79,14 +82,14 @@ $app->group(['prefix' => 'countries'], function () use ($app) {
 | Classes
 |--------------------------------------------------------------------------
 */
-$app->group(['prefix' => 'classes'], function () use ($app) {
-    $app->get('', 'ClassController@index');
-    $app->get('{id:[0-9]+}', 'ClassController@get');
+$router->group(['prefix' => 'classes'], function () use ($router) {
+    $router->get('', 'ClassController@index');
+    $router->get('{id:[0-9]+}', 'ClassController@get');
 
-    $app->group(['middleware' => 'auth:api'], function () use ($app) {
-        $app->post('', 'ClassController@add');
-        $app->patch('{id:[0-9]+}', 'ClassController@edit');
-        $app->delete('{id:[0-9]+}', 'ClassController@delete');
+    $router->group(['middleware' => 'auth:api'], function () use ($router) {
+        $router->post('', 'ClassController@add');
+        $router->patch('{id:[0-9]+}', 'ClassController@edit');
+        $router->delete('{id:[0-9]+}', 'ClassController@delete');
     });
 });
 
@@ -96,14 +99,14 @@ $app->group(['prefix' => 'classes'], function () use ($app) {
 | Disciplines
 |--------------------------------------------------------------------------
 */
-$app->group(['prefix' => 'disciplines'], function () use ($app) {
-    $app->get('', 'DisciplineController@index');
-    $app->get('{id:[0-9]+}', 'DisciplineController@get');
+$router->group(['prefix' => 'disciplines'], function () use ($router) {
+    $router->get('', 'DisciplineController@index');
+    $router->get('{id:[0-9]+}', 'DisciplineController@get');
 
-    $app->group(['middleware' => 'auth:api'], function () use ($app) {
-        $app->post('', 'DisciplineController@add');
-        $app->patch('{id:[0-9]+}', 'DisciplineController@edit');
-        $app->delete('{id:[0-9]+}', 'DisciplineController@delete');
+    $router->group(['middleware' => 'auth:api'], function () use ($router) {
+        $router->post('', 'DisciplineController@add');
+        $router->patch('{id:[0-9]+}', 'DisciplineController@edit');
+        $router->delete('{id:[0-9]+}', 'DisciplineController@delete');
     });
 });
 
@@ -113,14 +116,14 @@ $app->group(['prefix' => 'disciplines'], function () use ($app) {
 | Chapters
 |--------------------------------------------------------------------------
 */
-$app->group(['prefix' => 'chapters'], function () use ($app) {
-    $app->get('', 'ChapterController@index');
-    $app->get('{id:[0-9]+}', 'ChapterController@get');
+$router->group(['prefix' => 'chapters'], function () use ($router) {
+    $router->get('', 'ChapterController@index');
+    $router->get('{id:[0-9]+}', 'ChapterController@get');
 
-    $app->group(['middleware' => 'auth:api'], function () use ($app) {
-        $app->post('', 'ChapterController@add');
-        $app->patch('{id:[0-9]+}', 'ChapterController@edit');
-        $app->delete('{id:[0-9]+}', 'ChapterController@delete');
+    $router->group(['middleware' => 'auth:api'], function () use ($router) {
+        $router->post('', 'ChapterController@add');
+        $router->patch('{id:[0-9]+}', 'ChapterController@edit');
+        $router->delete('{id:[0-9]+}', 'ChapterController@delete');
     });
 });
 
@@ -130,14 +133,14 @@ $app->group(['prefix' => 'chapters'], function () use ($app) {
 | Notions
 |--------------------------------------------------------------------------
 */
-$app->group(['prefix' => 'notions'], function () use ($app) {
-    $app->get('', 'NotionController@index');
-    $app->get('{id:[0-9]+}', 'NotionController@get');
+$router->group(['prefix' => 'notions'], function () use ($router) {
+    $router->get('', 'NotionController@index');
+    $router->get('{id:[0-9]+}', 'NotionController@get');
 
-    $app->group(['middleware' => 'auth:api'], function () use ($app) {
-        $app->post('', 'NotionController@add');
-        $app->patch('{id:[0-9]+}', 'NotionController@edit');
-        $app->delete('{id:[0-9]+}', 'NotionController@delete');
+    $router->group(['middleware' => 'auth:api'], function () use ($router) {
+        $router->post('', 'NotionController@add');
+        $router->patch('{id:[0-9]+}', 'NotionController@edit');
+        $router->delete('{id:[0-9]+}', 'NotionController@delete');
     });
 });
 
@@ -147,14 +150,14 @@ $app->group(['prefix' => 'notions'], function () use ($app) {
 | Activities
 |--------------------------------------------------------------------------
 */
-$app->group(['prefix' => 'activities'], function () use ($app) {
-    $app->get('', 'ActivityController@index');
-    $app->get('{id:[0-9]+}', 'ActivityController@get');
+$router->group(['prefix' => 'activities'], function () use ($router) {
+    $router->get('', 'ActivityController@index');
+    $router->get('{id:[0-9]+}', 'ActivityController@get');
 
-    $app->group(['middleware' => 'auth:api'], function () use ($app) {
-        $app->post('', 'ActivityController@add');
-        $app->patch('{id:[0-9]+}', 'ActivityController@edit');
-        $app->delete('{id:[0-9]+}', 'ActivityController@delete');
+    $router->group(['middleware' => 'auth:api'], function () use ($router) {
+        $router->post('', 'ActivityController@add');
+        $router->patch('{id:[0-9]+}', 'ActivityController@edit');
+        $router->delete('{id:[0-9]+}', 'ActivityController@delete');
     });
 });
 
@@ -164,14 +167,14 @@ $app->group(['prefix' => 'activities'], function () use ($app) {
 | Modules
 |--------------------------------------------------------------------------
 */
-$app->group(['prefix' => 'modules'], function () use ($app) {
-    $app->get('', 'ModuleController@index');
-    $app->get('{id:[0-9]+}', 'ModuleController@get');
+$router->group(['prefix' => 'modules'], function () use ($router) {
+    $router->get('', 'ModuleController@index');
+    $router->get('{id:[0-9]+}', 'ModuleController@get');
 
-    $app->group(['middleware' => 'auth:api'], function () use ($app) {
-        $app->post('', 'ModuleController@add');
-        $app->patch('{id:[0-9]+}', 'ModuleController@edit');
-        $app->delete('{id:[0-9]+}', 'ModuleController@delete');
+    $router->group(['middleware' => 'auth:api'], function () use ($router) {
+        $router->post('', 'ModuleController@add');
+        $router->patch('{id:[0-9]+}', 'ModuleController@edit');
+        $router->delete('{id:[0-9]+}', 'ModuleController@delete');
     });
 });
 
@@ -181,14 +184,14 @@ $app->group(['prefix' => 'modules'], function () use ($app) {
 | Posts
 |--------------------------------------------------------------------------
 */
-$app->group(['prefix' => 'posts'], function () use ($app) {
-    $app->get('', 'PostController@index');
-    $app->get('{id:[0-9]+}', 'PostController@get');
+$router->group(['prefix' => 'posts'], function () use ($router) {
+    $router->get('', 'PostController@index');
+    $router->get('{id:[0-9]+}', 'PostController@get');
 
-    $app->group(['middleware' => 'auth:api'], function () use ($app) {
-        $app->post('', 'PostController@add');
-        $app->patch('{id:[0-9]+}', 'PostController@edit');
-        $app->delete('{id:[0-9]+}', 'PostController@delete');
+    $router->group(['middleware' => 'auth:api'], function () use ($router) {
+        $router->post('', 'PostController@add');
+        $router->patch('{id:[0-9]+}', 'PostController@edit');
+        $router->delete('{id:[0-9]+}', 'PostController@delete');
     });
 });
 
@@ -196,17 +199,17 @@ $app->group(['prefix' => 'posts'], function () use ($app) {
 /*
 |--------------------------------------------------------------------------
 | Courses
-        $app->get('{page:[0-9]+}/{perPage:[0-9]+}', 'UserController@index');
+        $router->get('{page:[0-9]+}/{perPage:[0-9]+}', 'UserController@index');
 |--------------------------------------------------------------------------
 */
-$app->group(['prefix' => 'courses'], function () use ($app) {
-    $app->get('', 'CourseController@index');
-    $app->get('{id:[0-9]+}', 'CourseController@get');
+$router->group(['prefix' => 'courses'], function () use ($router) {
+    $router->get('', 'CourseController@index');
+    $router->get('{id:[0-9]+}', 'CourseController@get');
 
-    $app->group(['middleware' => 'auth:api'], function () use ($app) {
-        $app->post('', 'CourseController@add');
-        $app->patch('{id:[0-9]+}', 'CourseController@edit');
-        $app->delete('{id:[0-9]+}', 'CourseController@delete');
+    $router->group(['middleware' => 'auth:api'], function () use ($router) {
+        $router->post('', 'CourseController@add');
+        $router->patch('{id:[0-9]+}', 'CourseController@edit');
+        $router->delete('{id:[0-9]+}', 'CourseController@delete');
     });
 });
 
@@ -216,14 +219,14 @@ $app->group(['prefix' => 'courses'], function () use ($app) {
 | Categories
 |--------------------------------------------------------------------------
 */
-$app->group(['prefix' => 'categories'], function () use ($app) {
-    $app->get('', 'CategoryController@index');
-    $app->get('{id:[0-9]+}', 'CategoryController@get');
+$router->group(['prefix' => 'categories'], function () use ($router) {
+    $router->get('', 'CategoryController@index');
+    $router->get('{id:[0-9]+}', 'CategoryController@get');
 
-    $app->group(['middleware' => 'auth:api'], function () use ($app) {
-        $app->post('', 'CategoryController@add');
-        $app->patch('{id:[0-9]+}', 'CategoryController@edit');
-        $app->delete('{id:[0-9]+}', 'CategoryController@delete');
+    $router->group(['middleware' => 'auth:api'], function () use ($router) {
+        $router->post('', 'CategoryController@add');
+        $router->patch('{id:[0-9]+}', 'CategoryController@edit');
+        $router->delete('{id:[0-9]+}', 'CategoryController@delete');
     });
 });
 
@@ -233,14 +236,14 @@ $app->group(['prefix' => 'categories'], function () use ($app) {
 | Comments
 |--------------------------------------------------------------------------
 */
-$app->group(['prefix' => 'comments'], function () use ($app) {
-    $app->get('', 'CommentController@index');
-    $app->get('{id:[0-9]+}', 'CommentController@get');
+$router->group(['prefix' => 'comments'], function () use ($router) {
+    $router->get('', 'CommentController@index');
+    $router->get('{id:[0-9]+}', 'CommentController@get');
 
-    $app->group(['middleware' => 'auth:api'], function () use ($app) {
-        $app->post('', 'CommentController@add');
-        $app->patch('{id:[0-9]+}', 'CommentController@edit');
-        $app->delete('{id:[0-9]+}', 'CommentController@delete');
+    $router->group(['middleware' => 'auth:api'], function () use ($router) {
+        $router->post('', 'CommentController@add');
+        $router->patch('{id:[0-9]+}', 'CommentController@edit');
+        $router->delete('{id:[0-9]+}', 'CommentController@delete');
     });
 });
 
@@ -250,10 +253,10 @@ $app->group(['prefix' => 'comments'], function () use ($app) {
 | Votes
 |--------------------------------------------------------------------------
 */
-$app->group(['prefix' => 'votes'], function () use ($app) {
-    $app->group(['middleware' => 'auth:api'], function () use ($app) {
-        $app->post('{votable_type}/{votable_id}/up', 'VoteController@up');
-        $app->post('{votable_type}/{votable_id}/down', 'VoteController@down');
+$router->group(['prefix' => 'votes'], function () use ($router) {
+    $router->group(['middleware' => 'auth:api'], function () use ($router) {
+        $router->post('{votable_type}/{votable_id}/up', 'VoteController@up');
+        $router->post('{votable_type}/{votable_id}/down', 'VoteController@down');
     });
 });
 
@@ -263,15 +266,15 @@ $app->group(['prefix' => 'votes'], function () use ($app) {
 | Quotes
 |--------------------------------------------------------------------------
 */
-$app->group(['prefix' => 'quotes'], function () use ($app) {
-    $app->get('', 'QuoteController@index');
-    $app->get('{id:[0-9]+}', 'QuoteController@get');
-    $app->get('random', 'QuoteController@random');
-    $app->get('random/{count:[0-9]+}', 'QuoteController@random');
+$router->group(['prefix' => 'quotes'], function () use ($router) {
+    $router->get('', 'QuoteController@index');
+    $router->get('{id:[0-9]+}', 'QuoteController@get');
+    $router->get('random', 'QuoteController@random');
+    $router->get('random/{count:[0-9]+}', 'QuoteController@random');
 
-    $app->group(['middleware' => 'auth:api'], function () use ($app) {
-        $app->post('', 'QuoteController@add');
-        $app->patch('{id:[0-9]+}', 'QuoteController@edit');
-        $app->delete('{id:[0-9]+}', 'QuoteController@delete');
+    $router->group(['middleware' => 'auth:api'], function () use ($router) {
+        $router->post('', 'QuoteController@add');
+        $router->patch('{id:[0-9]+}', 'QuoteController@edit');
+        $router->delete('{id:[0-9]+}', 'QuoteController@delete');
     });
 });

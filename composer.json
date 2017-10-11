@@ -16,7 +16,7 @@
   ],
   "require": {
     "php": ">=7.1",
-    "laravel/lumen-framework": "5.4.*",
+    "laravel/lumen-framework": "5.5.*",
     "vlucas/phpdotenv": "~2.2",
     "dusterio/lumen-passport": "^0.2.0",
     "mathrix/lumen-utils": "dev-master",
@@ -26,10 +26,11 @@
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",
-    "phpunit/phpunit": "~5.0",
+    "phpunit/phpunit": "~6.0",
     "mockery/mockery": "~0.9",
     "barryvdh/laravel-ide-helper": "^2.4",
-    "doctrine/dbal": "^2.5"
+    "doctrine/dbal": "^2.5",
+    "filp/whoops": "~2.0"
   },
   "autoload": {
     "psr-4": {

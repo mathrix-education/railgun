@@ -132,8 +132,9 @@ class ScopeTestCase extends BaseTestCase
         }
     }
 
+
     /**
-     * Destroy PDO instances at the end of each test to avoid th Too many connections error
+     * Destroy database connection after each test to avoid the Too Many Connections error
      */
     public function tearDown()
     {
