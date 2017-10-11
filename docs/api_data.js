@@ -8357,6 +8357,56 @@ define({ "api": [
   },
   {
     "version": "1.0.0",
+    "type": "post",
+    "url": "/stripe/subscribe",
+    "title": "Subscribe",
+    "group": "Stripe",
+    "name": "StripeSubscribe",
+    "description": "<p>Subscribe user to plan</p>",
+    "permission": [
+      {
+        "name": "registered"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Data": [
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "stripe_token",
+            "description": "<p>the stripe token</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": true,
+            "field": "stripe_coupon",
+            "defaultValue": "null",
+            "description": "<p>the stripe coupon</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/StripeController.php",
+    "groupTitle": "Stripe",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "1.0.0",
     "type": "delete",
     "url": "/users/{id}",
     "title": "Delete (WIP)",

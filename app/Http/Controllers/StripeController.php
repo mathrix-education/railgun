@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\JsonResponse;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Laravel\Cashier\Http\Controllers\WebhookController as CashierController;
 
 /**
@@ -13,16 +15,49 @@ use Laravel\Cashier\Http\Controllers\WebhookController as CashierController;
 class StripeController extends CashierController
 {
     /**
-     * Handle a Stripe webhook.
+     * @apiVersion 1.0.0
+     * @api {post} /stripe/subscribe Subscribe
+     * @apiGroup Stripe
+     * @apiName StripeSubscribe
+     * @apiDescription Subscribe user to plan
+     * @apiPermission registered
+     * @apiUse Bearer
+     * @apiParam (Data) {string} stripe_token the stripe token
+     * @apiParam (Data) {string} [stripe_coupon=null] the stripe coupon
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function subscribe(Request $request)
+    {
+        $stripeToken = $request->input('stripe_token');
+        $stripeCoupon = $request->input('stripe_coupon');
+
+        /** @var User $user */
+        $user = $request->getUser();
+
+        $user->newSubscription('main', 'premium')
+            ->withCoupon($stripeCoupon)
+            ->create($stripeToken);
+
+        return response();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Stripe webhooks
+    |--------------------------------------------------------------------------
+    */
+    /**
+     * Payment succeeded
      *
      * @param  array $payload
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function handleInvoicePaymentSucceeded($payload)
     {
-        die('lol');
-        // Grant user user premium
-        return response()->json($payload);
+        return new Response('Webhook Handled', 200);
     }
 }
