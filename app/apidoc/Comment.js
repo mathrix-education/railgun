@@ -21,7 +21,7 @@
  * @apiSuccess {datetime} comments.created_at The created date
  * @apiSuccess {datetime} comments.updated_at The updated date
  * @apiSuccess {datetime} comments.deleted_at The deleted date
- * @apiSuccess {User} comments.user Array of countries
+ * @apiSuccess {User} comments.user The user
  * @apiSuccess {int} comments.user.id The user id
  * @apiSuccess {string} comments.user.username The user username
  * @apiSuccess {string} comments.user.email The user email address
@@ -48,7 +48,7 @@
  * @apiSuccess {datetime} created_at The created date
  * @apiSuccess {datetime} updated_at The updated date
  * @apiSuccess {datetime} deleted_at The deleted date
- * @apiSuccess {User} user Array of countries
+ * @apiSuccess {User} user The user
  * @apiSuccess {string} user.username The user username
  * @apiSuccess {string} user.email The user email address
  * @apiSuccess {string} user.firstname The user firstname
