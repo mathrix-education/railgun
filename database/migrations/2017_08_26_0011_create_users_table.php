@@ -26,6 +26,12 @@ class CreateUsersTable extends Migration
             $table->text('settings');
             $table->integer('class_id')->unsigned()->nullable();
 
+            // Stripe
+            $table->string('stripe_id')->nullable();
+            $table->string('card_brand')->nullable();
+            $table->string('card_last_four')->nullable();
+            $table->timestamp('trial_ends_at')->nullable();
+
             // Foreign keys
             $table->foreign('class_id')->references('id')->on('classes');
         });
