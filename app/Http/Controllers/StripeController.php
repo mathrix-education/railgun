@@ -47,7 +47,7 @@ class StripeController extends CashierController
         }
 
         /** @var User $user */
-        $user = $request->getUser();
+        $user = $request->user();
 
         $user->newSubscription('premium', $stripePlan)
             ->withCoupon($stripeCoupon)
