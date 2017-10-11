@@ -1,6 +1,7 @@
 <?php
 namespace Tests\Comments;
 
+use Mathrix\Lumen\Models\BaseModel;
 use Tests\ScopeTestCase;
 
 /**
@@ -16,7 +17,20 @@ class CommentsAsPublicTest extends ScopeTestCase
 {
     public function testIndex()
     {
-        $this->genericIndexSuccess();
+        $this->genericIndexUnauthorized();
+    }
+
+    public function testType()
+    {
+        $commentableType = $this->faker->randomElement(['Module', 'Post', 'Course']);
+        /** @var BaseModel $typeClass */
+        $typeClass = 'App\\Models\\' . $commentableType;
+        $commentableId = $typeClass::inRandomOrder()->has('comments')->firstOrFail()->id;
+
+        $this->call('get', '/comments/' . strtolower($commentableType) . '/' . $commentableId);
+
+        // Assertions
+        $this->assertHttp200Success();
     }
 
     public function testAdd()

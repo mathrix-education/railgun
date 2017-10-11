@@ -16,7 +16,7 @@ class CommentsAsAdminTest extends ScopeTestCase
 {
     public function testIndex()
     {
-        $this->sameAs('public');
+        $this->genericIndexSuccess();
     }
 
     public function testAdd()
@@ -31,7 +31,6 @@ class CommentsAsAdminTest extends ScopeTestCase
 
     public function testDelete()
     {
-        $this->genericDeleteSuccess();
-        $this->assertNotInDatabase('notions', ['chapter_id' => $this->deleteModelId]);
+        $this->genericSoftDeleteSuccess();
     }
 }
