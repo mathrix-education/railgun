@@ -278,3 +278,18 @@ $router->group(['prefix' => 'quotes'], function () use ($router) {
         $router->delete('{id:[0-9]+}', 'QuoteController@delete');
     });
 });
+
+/*
+|--------------------------------------------------------------------------
+| Subscriptions
+|--------------------------------------------------------------------------
+*/
+$app->group(['prefix' => 'stripe'], function () use ($app) {
+    $app->group(['middleware' => 'auth:api'], function () use ($app) {
+        $app->post('subscribe', 'StripeController@subscribe');
+    });
+
+    $app->post('charge', 'StripeController@charge');
+
+    $app->post('webhook', 'StripeController@handleWebhook');
+});
