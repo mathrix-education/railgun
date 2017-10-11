@@ -9,7 +9,7 @@ variables:
 before_script:
   # Setup GitLab SSH
   - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-  - chmod 600 storage/ssh/gitlab_mathrix_id_rsa
+  - sudo chmod 600 storage/ssh/gitlab_mathrix_id_rsa
   - eval $(ssh-agent -s)
   - ssh-add -k storage/ssh/gitlab_mathrix_id_rsa
   - mkdir ~/.ssh
