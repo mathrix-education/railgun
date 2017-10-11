@@ -45,9 +45,11 @@ trait Delete
     {
         $this->genericDelete();
 
+        $deletedAt = ($this->modelClass)::where('id', $this->deleteModelId)->withTrashed()->first()->deleted_at;
+
         // Assertions
         $this->assertHttp200Success();
-        $this->assertInDatabase($this->modelPlural, ['id' => $this->deleteModelId]);
+        $this->assertInDatabase($this->modelPlural, ['id' => $this->deleteModelId, 'deleted_at' => $deletedAt]);
     }
 
     /**
@@ -57,10 +59,8 @@ trait Delete
     {
         $this->genericDelete();
 
-        $deletedAt = ($this->modelClass)::where('id', $this->deleteModelId)->firstOrFail()->deleted_at;
-
         // Assertions
         $this->assertHttp401Unauthorized();
-        $this->assertInDatabase($this->modelPlural, ['id' => $this->deleteModelId, 'deleted_at' => $deletedAt]);
+        $this->assertInDatabase($this->modelPlural, ['id' => $this->deleteModelId]);
     }
 }
