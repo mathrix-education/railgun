@@ -5,6 +5,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\Passport;
+use Mathrix\Lumen\Models\BaseModel;
 use Mathrix\Lumen\Tests\BaseTestCase;
 use Tests\Generics\Generics;
 
@@ -26,7 +27,7 @@ class ScopeTestCase extends BaseTestCase
     /** @var string the effective scope */
     protected $scope = 'public';
 
-    /** @var string the test main model class */
+    /** @var BaseModel the test main model class */
     protected $modelClass = null;
     /** @var string the test main model singular */
     protected $modelSingular = null;
