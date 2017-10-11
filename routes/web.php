@@ -199,7 +199,6 @@ $router->group(['prefix' => 'posts'], function () use ($router) {
 /*
 |--------------------------------------------------------------------------
 | Courses
-        $router->get('{page:[0-9]+}/{perPage:[0-9]+}', 'UserController@index');
 |--------------------------------------------------------------------------
 */
 $router->group(['prefix' => 'courses'], function () use ($router) {
@@ -284,12 +283,12 @@ $router->group(['prefix' => 'quotes'], function () use ($router) {
 | Subscriptions
 |--------------------------------------------------------------------------
 */
-$app->group(['prefix' => 'stripe'], function () use ($app) {
-    $app->group(['middleware' => 'auth:api'], function () use ($app) {
-        $app->post('subscribe', 'StripeController@subscribe');
+$router->group(['prefix' => 'stripe'], function () use ($router) {
+    $router->group(['middleware' => 'auth:api'], function () use ($router) {
+        $router->post('subscribe', 'StripeController@subscribe');
     });
 
-    $app->post('charge', 'StripeController@charge');
+    $router->post('charge', 'StripeController@charge');
 
-    $app->post('webhook', 'StripeController@handleWebhook');
+    $router->post('webhook', 'StripeController@handleWebhook');
 });

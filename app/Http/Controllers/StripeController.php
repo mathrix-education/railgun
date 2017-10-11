@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Laravel\Cashier\Http\Controllers\WebhookController as CashierController;
-use Mathrix\Lumen\Http\HttpJsonResponseBuilderTrait;
 
 /**
  * Class StripeController
