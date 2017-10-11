@@ -2363,7 +2363,7 @@
             "source": {
                 "type": "git",
                 "url": "git@gitlab.com:mathrix/lumen-utils.git",
-                "reference": "6391d9d80e54f0b0a6a1537ff24629be953d57c3"
+                "reference": "0f4d9cb6c340b1c0cbabb763c6382e5e6b59ed67"
             },
             "require": {
                 "dusterio/lumen-passport": "0.2.0",
@@ -2388,7 +2388,7 @@
                 }
             ],
             "description": "Base classes for Lumen framework",
-            "time": "2017-10-11T02:05:34+00:00"
+            "time": "2017-10-11T13:31:34+00:00"
         },
         {
             "name": "monolog/monolog",
