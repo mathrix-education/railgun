@@ -22,6 +22,19 @@
  * @apiSuccess {datetime} comments.updated_at The updated date
  * @apiSuccess {datetime} comments.deleted_at The deleted date
  * @apiSuccess {Comment[]} comments.children The comment children
+ * @apiSuccess {int} comments.user.id The user id
+ * @apiSuccess {string} comments.user.username The user username
+ * @apiSuccess {string} comments.user.email The user email address
+ * @apiSuccess {string} comments.user.firstname The user firstname
+ * @apiSuccess {string} comments.user.lastname The user lastname
+ * @apiSuccess {string} comments.user.facebook_token The facebook token
+ * @apiSuccess {int} comments.user.points The user points
+ * @apiSuccess {array} comments.user.settings The user settings
+ * @apiSuccess {int} comments.user.settings.daily_goal The user daily goal points
+ * @apiSuccess {bool} comments.user.settings.sound If the user has enabled sounds
+ * @apiSuccess {bool} comments.user.settings.email_newsletter If the user should receive the newsletter
+ * @apiSuccess {bool} comments.user.settings.email_comment If the user should receive an comment email
+ * @apiSuccess {int} comments.user.class_id The user class_id
  */
 /**
  * @apiDefine Comment
@@ -34,5 +47,17 @@
  * @apiSuccess {datetime} created_at The created date
  * @apiSuccess {datetime} updated_at The updated date
  * @apiSuccess {datetime} deleted_at The deleted date
- * @apiSuccess {Comment[]} children The comment children
+ * @apiSuccess {Comment[]} children The comment children * @apiSuccess {int} comments.user.id The user id
+ * @apiSuccess {string} user.username The user username
+ * @apiSuccess {string} user.email The user email address
+ * @apiSuccess {string} user.firstname The user firstname
+ * @apiSuccess {string} user.lastname The user lastname
+ * @apiSuccess {string} user.facebook_token The facebook token
+ * @apiSuccess {int} user.points The user points
+ * @apiSuccess {array} user.settings The user settings
+ * @apiSuccess {int} user.settings.daily_goal The user daily goal points
+ * @apiSuccess {bool} user.settings.sound If the user has enabled sounds
+ * @apiSuccess {bool} user.settings.email_newsletter If the user should receive the newsletter
+ * @apiSuccess {bool} user.settings.email_comment If the user should receive an comment email
+ * @apiSuccess {int} user.class_id The user class_id
  */
