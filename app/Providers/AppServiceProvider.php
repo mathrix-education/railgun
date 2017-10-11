@@ -32,6 +32,7 @@ use App\Models\User;
 use App\Models\Vote;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Cashier\Cashier;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -42,6 +43,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        Cashier::useCurrency('eur', '€');
+
         // MorphMap
         Relation::morphMap([
             'module' => Module::class,
