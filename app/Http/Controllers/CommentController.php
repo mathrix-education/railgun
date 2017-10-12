@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
@@ -64,7 +63,7 @@ class CommentController extends BaseController
         /** @var BaseModel $commentable_class */
         $commentable_class = Relation::getMorphedModel($commentable_type);
 
-        if ($commentable_class == null) {
+        if ($commentable_class === null) {
             return $this->http400InvalidRequest();
         }
 
