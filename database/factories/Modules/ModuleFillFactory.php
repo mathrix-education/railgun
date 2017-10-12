@@ -1,4 +1,5 @@
 <?php
+
 use App\Models\Module;
 use Faker\Generator;
 
@@ -10,24 +11,18 @@ use Faker\Generator;
  */
 $factory->defineAs(Module::class, 'fill', function (Generator $faker) use ($factory) {
     $data = $factory->rawOf(Module::class, 'mcq');
+    $data['type'] = 'fill';
+    $data['questions'] = null;
 
     // Generate gaps
-    $content = $faker->text(500);
+    $content = $faker->text(100);
     $choiceCount = count($data['choices']);
-    $gapCount = $faker->numberBetween(1, $choiceCount - 1);
-    $explodedContent = explode(' ', $content);
-    for($i = 0; $i < $gapCount; $i++) {
-        $explodedContent[$faker->numberBetween(0, count($explodedContent) - 1)] = '[choix]';
+
+    for ($i = 0; $i < $choiceCount; $i++) {
+        $content .= '[choix]' . $faker->text(100);
+        $data['choices'][$i] = $data['choices'][$i][0];
+        $data['corrections'][$i] = $data['corrections'][$i][0];
     }
-    $data['content'] = implode(' ', $explodedContent);
-
-    $data['solutions'] = null;
-
-    foreach ($data['corrections'] as $k => $v) {
-        $data['corrections'][$k] = $v[0];
-    }
-
-    $data['type'] = 'fill';
 
     return $data;
 });

@@ -16,10 +16,11 @@ $factory->defineAs(Module::class, 'mcq', function (Generator $faker) use ($facto
     $corrections = [];
 
     for ($q = 0; $q < $questionCount; $q++) {
+        $questions[] = str_replace('.', '?', $faker->sentence());
+
         $choiceCount = $faker->numberBetween(2, 4);
         $questionChoices = $faker->words($choiceCount);
 
-        $questions[] = str_replace('.', '?', $faker->sentence());
         $choices[] = $questionChoices;
         $solutions[] = $faker->randomElements(array_keys($questionChoices), $faker->numberBetween(1, $choiceCount));
         $corrections[] = $faker->paragraphs($faker->numberBetween(1, 3));
