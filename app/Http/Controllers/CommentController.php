@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Course;
+use App\Models\Module;
+use App\Models\Post;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -71,12 +74,13 @@ class CommentController extends BaseController
 
 
         // Ensure that the morphed exists
+        /** @var Module|Post|Course $commentable */
         $commentable = $commentable_class::where('id', '=', $commentable_id)->firstOrFail();
 
         // Retrieve comments
         return $this->http200Success(
             $commentable->comments()
-                ->with(['user', 'children'])
+                ->with(['user', 'children', 'children.user'])
                 ->limit($perPage)
                 ->offset(($page - 1) * $perPage)
                 ->get()
