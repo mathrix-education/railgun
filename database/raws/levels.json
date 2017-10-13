@@ -1,0 +1,102 @@
+[
+  {
+    "level": 1,
+    "objective": 0
+  },
+  {
+    "level": 2,
+    "objective": 5
+  },
+  {
+    "level": 3,
+    "objective": 15
+  },
+  {
+    "level": 4,
+    "objective": 29
+  },
+  {
+    "level": 5,
+    "objective": 46
+  },
+  {
+    "level": 6,
+    "objective": 67
+  },
+  {
+    "level": 7,
+    "objective": 92
+  },
+  {
+    "level": 8,
+    "objective": 122
+  },
+  {
+    "level": 9,
+    "objective": 157
+  },
+  {
+    "level": 10,
+    "objective": 203
+  },
+  {
+    "level": 11,
+    "objective": 255
+  },
+  {
+    "level": 12,
+    "objective": 313
+  },
+  {
+    "level": 13,
+    "objective": 378
+  },
+  {
+    "level": 14,
+    "objective": 450
+  },
+  {
+    "level": 15,
+    "objective": 530
+  },
+  {
+    "level": 16,
+    "objective": 620
+  },
+  {
+    "level": 17,
+    "objective": 720
+  },
+  {
+    "level": 18,
+    "objective": 835
+  },
+  {
+    "level": 19,
+    "objective": 965
+  },
+  {
+    "level": 20,
+    "objective": 1110
+  },
+  {
+    "level": 21,
+    "objective": 1270
+  },
+  {
+    "level": 22,
+    "objective": 1445
+  },
+  {
+    "level": 23,
+    "objective": 1635
+  },
+  {
+    "level": 24,
+    "objective": 1840
+  },
+  {
+    "level": 25,
+    "objective": 10000
+  }
+]
