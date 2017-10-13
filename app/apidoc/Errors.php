@@ -1,3 +1,4 @@
+<?php
 /**
  * @apiDefine 401Unauthorized
  * @apiError (Error 401) unauthorized User does not have enough privileges

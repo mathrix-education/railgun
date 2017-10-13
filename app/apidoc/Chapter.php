@@ -1,3 +1,4 @@
+<?php
 /**
  * @apiDefine ChapterData
  * @apiParam (Data) {string} name The chapter name

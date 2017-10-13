@@ -1,3 +1,4 @@
+<?php
 /**
  * @apiDefine CategoryData
  * @apiParam (Data) {string} name The category name

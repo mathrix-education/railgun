@@ -1,3 +1,4 @@
+<?php
 /**
  * @apiDefine CourseData
  * @apiParam (Data) {string} title The course title

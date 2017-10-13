@@ -1,3 +1,4 @@
+<?php
 /**
  * @apiDefine DisciplineData
  * @apiParam (Data) {string} name The discipline name

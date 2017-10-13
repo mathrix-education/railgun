@@ -1,3 +1,4 @@
+<?php
 /**
  * @apiDefine QuoteData
  * @apiParam (Data) {string} content The quote content

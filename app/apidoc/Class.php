@@ -1,3 +1,4 @@
+<?php
 /**
  * @apiDefine ClassData
  * @apiParam (Data) {string} name The class name

@@ -1,3 +1,4 @@
+<?php
 /**
  * @apiDefine CountryData
  * @apiParam (Data) {string} name The country name

@@ -1,3 +1,4 @@
+<?php
 /**
  * @apiDefine ModuleData
  * @apiParam (Data) {string} name The module name
