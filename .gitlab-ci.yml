@@ -9,11 +9,10 @@ variables:
 before_script:
   # Setup GitLab SSH
   - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-  - sudo chmod 600 storage/ssh/gitlab_mathrix_id_rsa
-  - sudo mkdir -p ~/.ssh
-  - sudo ssh-agent -s
-  - sudo ssh-add -k storage/ssh/gitlab_mathrix_id_rsa
-  - sudo ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
+  - mkdir -p ~/.ssh
+  - ssh-agent -s
+  - ssh-add -k storage/ssh/gitlab_mathrix_id_rsa
+  - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
 
 test:
   stage: test
@@ -22,8 +21,8 @@ test:
   image: edbizarro/gitlab-ci-pipeline-php:7.1-alpine
   script:
     # Setup project files
-    - sudo cp storage/env/.env.pipelines .env
-    - sudo composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
-    - sudo php artisan migrate:refresh --seed
+    - cp storage/env/.env.pipelines .env
+    - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+    - php artisan migrate:refresh --seed
     # Setup project database
-    - sudo ./vendor/phpunit/phpunit/phpunit -v --coverage-text --colors=never --stderr
+    - ./vendor/phpunit/phpunit/phpunit -v --coverage-text --colors=never --stderr
