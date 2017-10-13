@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests;
 
 /**
@@ -17,23 +18,13 @@ trait HttpAssertions
         $this->assertResponseStatus(200);
     }
 
-    /*
-     * $this->assertHttp4xxErrorName()
-     * => $this->assertJsonError('errorName', 4xx)
-     */
-    /**
-     * Shortcut to assertJsonError('unauthorized', 401)
-     */
-    public function assertHttp401Unauthorized()
-    {
-        $this->assertJsonError('unauthorized', 401);
-    }
 
-    /**
-     * Shortcut to assertJsonError('not_implemented', 501)
-     */
-    public function assertHttp501NotImplemented()
+    public function __call($name, $arguments)
     {
-        $this->assertJsonError('not_implemented', 501);
+        $strCleaned = str_replace('assertHttp', '', $name);
+        $errorCode = substr($strCleaned, 0, 3);
+        $errorName = str_replace($errorCode, '', $strCleaned);
+        $errorName = snake_case($errorName);
+        $this->assertJsonError($errorName, $errorCode);
     }
 }
