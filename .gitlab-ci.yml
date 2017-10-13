@@ -10,7 +10,7 @@ before_script:
   # Setup GitLab SSH
   - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
   - mkdir -p ~/.ssh
-  - ssh-agent -s
+  - eval $(ssh-agent -s)
   - ssh-add -k storage/ssh/gitlab_mathrix_id_rsa
   - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
 
