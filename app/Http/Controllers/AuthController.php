@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Mails\User\PasswordForgotten;
+use App\Models\Log;
 use App\Models\User;
 use Faker\Factory;
 use Illuminate\Http\JsonResponse;
@@ -46,13 +47,27 @@ class AuthController extends BaseController
         /** @var User $user */
         $user = User::where('email', $request->input('username'))->first();
 
-        if ($user instanceof User) {
+        if ($user !== null) {
             $request->merge(['scope' => $user->type]);
         }
 
-        return app()->dispatch(
+        $response = app()->dispatch(
             $request->create('/oauth/token', 'post', $request->all())
         );
+
+        // If user successfully logged, log it into the database
+        if ($response->getStatusCode() == 200) {
+            $log = new Log([
+                'event' => 'user_logged',
+                'user_id' => $user->id,
+                'value' => [
+                    'ip' => $request->getClientIp()
+                ]
+            ]);
+            $log->save();
+        }
+
+        return $response;
     }
 
 

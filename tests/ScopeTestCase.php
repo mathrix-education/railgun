@@ -232,4 +232,21 @@ class ScopeTestCase extends BaseTestCase
     {
         $this->notSeeInDatabase($table, $this->castData($data), $onConnection);
     }
+
+    /**
+     * Assert that an event is logged in the database
+     *
+     * @param string $event The event type
+     * @param User|int|null $user The user as object, the user_id or null if not relying on user
+     * @param array $data The additional data to filter the event
+     */
+    public function assertLogged(string $event, $user = null, array $data = [])
+    {
+        $data = array_merge([
+            'event' => $event,
+            'user_id' => $user === null || is_int($user) ? $user : $user->id,
+        ], $data);
+
+        $this->assertInDatabase('logs', $data);
+    }
 }
