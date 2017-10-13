@@ -11,7 +11,7 @@ before_script:
   - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
   - sudo chmod 600 storage/ssh/gitlab_mathrix_id_rsa
   - sudo mkdir -p ~/.ssh
-  - sudo eval $(ssh-agent -s)
+  - sudo ssh-agent -s
   - sudo ssh-add -k storage/ssh/gitlab_mathrix_id_rsa
   - sudo ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
 
