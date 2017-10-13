@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Mails\User\PasswordForgotten;
@@ -12,11 +13,11 @@ use Mathrix\Lumen\Http\Controllers\BaseController;
 
 /**
  * Class AuthController
- * Handle users auth routes
  *
- * @author Mathrix Team
+ * @author Mathrix Back-End Team
  * @package App\Http\Controllers
- * @version 1.0.0
+ * @since 0.9a-1
+ * @copyright Mathrix
  */
 class AuthController extends BaseController
 {

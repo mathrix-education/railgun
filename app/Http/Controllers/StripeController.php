@@ -11,7 +11,10 @@ use Laravel\Cashier\Subscription;
 /**
  * Class StripeController
  *
+ * @author Mathrix Back-End Team
  * @package App\Http\Controllers
+ * @since 0.9a-1
+ * @copyright Mathrix
  */
 class StripeController extends CashierController
 {
