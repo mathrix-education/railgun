@@ -272,8 +272,8 @@ class UserController extends BaseController
      * @apiPermission registered for self update, admin otherwise
      * @apiUse Bearer
      * @apiParam {int} [id=null] The user id
-     * @apiUse (Error 400) invalid_request points field is required
-     * @apiUse (Error 400) points field has to be a positive integer
+     * @apiError (Error 400) invalid_request points field is required
+     * @apiError (Error 400) points field has to be a positive integer
      * @apiUse 401Unauthorized
      * @apiUse 404ModelNotFound
      *
