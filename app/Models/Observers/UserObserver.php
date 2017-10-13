@@ -15,6 +15,30 @@ use Mathrix\Lumen\Observers\BaseObserver;
  */
 class UserObserver extends BaseObserver
 {
+
+    /**
+     * @param User $user
+     */
+    public function created($user)
+    {
+        Log::log('user_registered', $user);
+    }
+
+    /**
+     * @param User $user
+     */
+    public function updated($user)
+    {
+        $changes = $user->getChanges();
+
+        if (in_array('password', $changes)) {
+            Log::log('user_changed_password', $user);
+        }
+        if (in_array('daily', $changes)) {
+            Log::log('user_set_daily', $user);
+        }
+    }
+
     /**
      * @param User $user
      *
@@ -34,21 +58,5 @@ class UserObserver extends BaseObserver
         }
 
         parent::saving($user);
-    }
-
-    /**
-     * @param User $user
-     */
-    public function created($user)
-    {
-        $log = new Log([
-            'event' => 'user_registered',
-            'user_id' => $user->id,
-            'value' => null,
-            'loggable_type' => null,
-            'loggable_id' => null,
-        ]);
-
-        $log->save();
     }
 }

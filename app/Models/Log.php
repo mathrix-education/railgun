@@ -45,20 +45,14 @@ class Log extends BaseModel
     ];
 
 
-    /**
-     * Disable updated_at field update
-     * @param mixed $value
-     *
-     * @return $this
-     */
-    public function setUpdatedAt($value)
-    {
-        return $this;
-    }
-
-
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
     /**
      * BelongsTo User
+     *
      * @return BelongsTo
      */
     public function user(): BelongsTo
@@ -72,5 +66,38 @@ class Log extends BaseModel
     public function loggable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    /**
+     * Add a log line the the database
+     *
+     * @param string $event the event name
+     * @param User|int|null $user the user as model, its id or njull for system log
+     * @param array $data the optional data to associate with the log, such as the loggable type and id
+     *
+     * @return bool
+     */
+    public static function log(string $event, $user = null, $data = [])
+    {
+        $data = array_merge([
+            'event' => $event,
+            'user_id' => $user === null || is_int($user) ? $user : $user->id,
+        ], $data);
+
+        $log = new Log($data);
+
+        return $log->save();
+    }
+
+    /**
+     * Disable updated_at field update
+     *
+     * @param mixed $value
+     *
+     * @return $this
+     */
+    public function setUpdatedAt($value)
+    {
+        return $this;
     }
 }

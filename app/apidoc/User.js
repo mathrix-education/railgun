@@ -1,4 +1,19 @@
 /**
+ * @apiDefine UserData
+ * @apiParam (Data) {string} [firstname=null] The user firstname
+ * @apiParam (Data) {string} [lastname=null] The user lastname
+ * @apiParam (Data) {string} [username=null] The user username
+ * @apiParam (Data) {string=registered,premium,moderator,admin} type The user type
+ * @apiParam (Data) {string} email The user email
+ * @apiParam (Data) {string} password The user password
+ * @apiParam (Data) {int} [class_id=null] The class id; should be `null` for `moderator` and `admin`
+ * @apiParam (Data) {int=20,40,70} daily The user daily goal
+ * @apiParam (Data) {array} settings The user options
+ * @apiParam (Data) {bool} settings.sound If the user has enabled sounds
+ * @apiParam (Data) {bool} settings.email_newsletter If the user should receive the newsletter
+ * @apiParam (Data) {bool} settings.email_comment If the user should receive an comment email
+ */
+/**
  * @apiDefine User
  * @apiSuccess {int} id The user id
  * @apiSuccess {string} username The user username
