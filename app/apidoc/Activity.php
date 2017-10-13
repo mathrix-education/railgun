@@ -1,3 +1,4 @@
+<?php
 /**
  * @apiDefine ActivityData
  * @apiParam (Data) {string} name The activity name

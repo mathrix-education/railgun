@@ -1,3 +1,4 @@
+<?php
 /**
  * @apiDefine PostData
  * @apiParam (Data) {string} title The post title

@@ -1,3 +1,4 @@
+<?php
 /**
  * @apiDefine UserData
  * @apiParam (Data) {string} [firstname=null] The user firstname

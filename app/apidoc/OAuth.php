@@ -1,3 +1,4 @@
+<?php
 /**
  * @apiDefine oAuth
  * @apiSuccess {string=bearer} token_type

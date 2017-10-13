@@ -1,3 +1,4 @@
+<?php
 /**
  * @apiDefine CommentData
  * @apiParam (Data) {string} content The comment content
