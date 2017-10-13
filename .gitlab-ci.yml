@@ -17,7 +17,7 @@ before_script:
 test:
   stage: test
   services:
-    - mysql:5.7
+    - mysql:5.6
   image: edbizarro/gitlab-ci-pipeline-php:7.1-alpine
   script:
     # Setup project files
