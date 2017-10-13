@@ -17,9 +17,12 @@ trait HttpAssertions
         $this->assertResponseStatus(200);
     }
 
+    /*
+     * $this->assertHttp4xxErrorName()
+     * => $this->assertJsonError('errorName', 4xx)
+     */
     /**
      * Shortcut to assertJsonError('unauthorized', 401)
-
      */
     public function assertHttp401Unauthorized()
     {

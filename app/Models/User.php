@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Cashier\Billable;
+use Laravel\Cashier\Subscription;
 use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\Client;
 use Laravel\Passport\HasApiTokens;
@@ -30,11 +31,17 @@ use Mathrix\Lumen\Models\BaseModel;
  * @property int $points
  * @property array $settings
  * @property int|null $class_id
+ * @property string|null $stripe_id
+ * @property string|null $card_brand
+ * @property string|null $card_last_four
+ * @property string|null $trial_ends_at
  * @property-read Class_ $class_
- * @property-read Collection|Comment[] $comments
- * @property-read Collection|Vote[] $votes
  * @property-read Collection|Client[] $clients
+ * @property-read Collection|Comment[] $comments
+ * @property-read Collection|Log[] $logs
+ * @property-read Collection|Subscription[] $subscriptions
  * @property-read Collection|Token[] $tokens
+ * @property-read Collection|Vote[] $votes
  * @method static Builder|User whereId($value)
  * @method static Builder|User whereClassId($value)
  * @method static Builder|User whereEmail($value)
@@ -47,6 +54,10 @@ use Mathrix\Lumen\Models\BaseModel;
  * @method static Builder|User whereSettings($value)
  * @method static Builder|User whereType($value)
  * @method static Builder|User whereUsername($value)
+ * @method static Builder|User whereCardBrand($value)
+ * @method static Builder|User whereCardLastFour($value)
+ * @method static Builder|User whereStripeId($value)
+ * @method static Builder|User whereTrialEndsAt($value)
  * @mixin \Eloquent
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
@@ -113,6 +124,17 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+
+
+    /**
+     * HasMany Log
+     *
+     * @return HasMany
+     */
+    public function logs(): HasMany
+    {
+        return $this->hasMany(Log::class);
     }
 
 

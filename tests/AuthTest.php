@@ -100,6 +100,8 @@ class AuthTest extends BaseTestCase
             'refresh_token'
         ]);
 
+        // TODO: assert logged
+
         return $this->response;
     }
 

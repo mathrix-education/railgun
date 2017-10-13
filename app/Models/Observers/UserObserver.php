@@ -2,6 +2,7 @@
 
 namespace App\Models\Observers;
 
+use App\Models\Log;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Mathrix\Lumen\Observers\BaseObserver;
@@ -33,5 +34,21 @@ class UserObserver extends BaseObserver
         }
 
         parent::saving($user);
+    }
+
+    /**
+     * @param User $user
+     */
+    public function created($user)
+    {
+        $log = new Log([
+            'event' => 'user_registered',
+            'user_id' => $user->id,
+            'value' => null,
+            'loggable_type' => null,
+            'loggable_id' => null,
+        ]);
+
+        $log->save();
     }
 }
