@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Post;
@@ -9,9 +10,10 @@ use Mathrix\Lumen\Http\Controllers\BaseController;
 /**
  * Class PostController
  *
- * @author Mathrix Team
+ * @author Mathrix Back-End Team
  * @package App\Http\Controllers
- * @version 1.0.0
+ * @since 0.9a-1
+ * @copyright Mathrix
  */
 class PostController extends BaseController
 {
@@ -122,7 +124,7 @@ class PostController extends BaseController
      * @apiUse 422Validation
      *
      * @param Request $request
-     * @param int $id, factory(Post::class)->raw()
+     * @param int $id , factory(Post::class)->raw()
      *
      * @return JsonResponse
      */
