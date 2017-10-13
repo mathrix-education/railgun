@@ -3255,57 +3255,16 @@
   {
     "version": "1.0.0",
     "type": "get",
-    "url": "/comments/{commentable_type}/{commentable_id}/{?page}/{?perPage}",
-    "title": "Type",
+    "url": "/comments",
+    "title": "Index",
     "group": "Comments",
     "name": "CommentsIndex",
-    "description": "<p>Retrieve comments by type</p>",
+    "description": "<p>Retrieve comments</p>",
     "permission": [
       {
         "name": "public"
       }
     ],
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "string",
-            "allowedValues": [
-              "post",
-              "course",
-              "module"
-            ],
-            "optional": false,
-            "field": "commentable_type",
-            "description": "<p>the commentable_type</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": false,
-            "field": "commentable_id",
-            "description": "<p>the commentable id</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": true,
-            "field": "page",
-            "defaultValue": "1",
-            "description": "<p>the page to fetch</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": true,
-            "field": "perPage",
-            "defaultValue": "10",
-            "description": "<p>the comments per page to fetch (excluding children)</p>"
-          }
-        ]
-      }
-    },
     "filename": "app/Http/Controllers/CommentController.php",
     "groupTitle": "Comments",
     "success": {
@@ -3499,16 +3458,57 @@
   {
     "version": "1.0.0",
     "type": "get",
-    "url": "/comments",
-    "title": "Index",
+    "url": "/comments/{commentable_type}/{commentable_id}/{?page}/{?perPage}",
+    "title": "Type",
     "group": "Comments",
     "name": "CommentsIndex",
-    "description": "<p>Retrieve comments</p>",
+    "description": "<p>Retrieve comments by type</p>",
     "permission": [
       {
         "name": "public"
       }
     ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "allowedValues": [
+              "post",
+              "course",
+              "module"
+            ],
+            "optional": false,
+            "field": "commentable_type",
+            "description": "<p>the commentable_type</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "commentable_id",
+            "description": "<p>the commentable id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": true,
+            "field": "page",
+            "defaultValue": "1",
+            "description": "<p>the page to fetch</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": true,
+            "field": "perPage",
+            "defaultValue": "10",
+            "description": "<p>the comments per page to fetch (excluding children)</p>"
+          }
+        ]
+      }
+    },
     "filename": "app/Http/Controllers/CommentController.php",
     "groupTitle": "Comments",
     "success": {
@@ -9062,6 +9062,21 @@
         "name": "registered for self get, at least admin for strangers"
       }
     ],
+    "filename": "app/Http/Controllers/UserController.php",
+    "groupTitle": "Users",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
     "parameter": {
       "fields": {
         "Data": [
@@ -9126,17 +9141,22 @@
           },
           {
             "group": "Data",
+            "type": "int",
+            "allowedValues": [
+              "20",
+              "40",
+              "70"
+            ],
+            "optional": false,
+            "field": "daily",
+            "description": "<p>The user daily goal</p>"
+          },
+          {
+            "group": "Data",
             "type": "array",
             "optional": false,
             "field": "settings",
             "description": "<p>The user options</p>"
-          },
-          {
-            "group": "Data",
-            "type": "int",
-            "optional": false,
-            "field": "settings.daily_goal",
-            "description": "<p>The user daily goal points</p>"
           },
           {
             "group": "Data",
@@ -9158,41 +9178,6 @@
             "optional": false,
             "field": "settings.email_comment",
             "description": "<p>If the user should receive an comment email</p>"
-          }
-        ]
-      }
-    },
-    "error": {
-      "fields": {
-        "Error 401": [
-          {
-            "group": "Error 401",
-            "optional": false,
-            "field": "unauthorized",
-            "description": "<p>The user does not have enough privileges</p>"
-          }
-        ],
-        "Error 404": [
-          {
-            "group": "Error 404",
-            "optional": false,
-            "field": "model_not_found",
-            "description": "<p>The user with given <code>id</code> was not found</p>"
-          }
-        ]
-      }
-    },
-    "filename": "app/Http/Controllers/UserController.php",
-    "groupTitle": "Users",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Bearer <code>access_token</code></p>"
           }
         ]
       }
@@ -9290,6 +9275,26 @@
             "optional": false,
             "field": "class_id",
             "description": "<p>The user class_id</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
           }
         ]
       }
@@ -9361,6 +9366,118 @@
         ]
       }
     },
+    "filename": "app/Http/Controllers/UserController.php",
+    "groupTitle": "Users",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The user id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "username",
+            "description": "<p>The user username</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "email",
+            "description": "<p>The user email address</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "firstname",
+            "description": "<p>The user firstname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastname",
+            "description": "<p>The user lastname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "facebook_token",
+            "description": "<p>The facebook token</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "points",
+            "description": "<p>The user points</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "array",
+            "optional": false,
+            "field": "settings",
+            "description": "<p>The user settings</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "settings.daily_goal",
+            "description": "<p>The user daily goal points</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "settings.sound",
+            "description": "<p>If the user has enabled sounds</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "settings.email_newsletter",
+            "description": "<p>If the user should receive the newsletter</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "settings.email_comment",
+            "description": "<p>If the user should receive an comment email</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>The user class_id</p>"
+          }
+        ]
+      }
+    },
     "error": {
       "fields": {
         "Error 401": [
@@ -9368,7 +9485,7 @@
             "group": "Error 401",
             "optional": false,
             "field": "unauthorized",
-            "description": "<p>The user does not have enough privileges</p>"
+            "description": "<p>User does not have enough privileges</p>"
           }
         ],
         "Error 404": [
@@ -9376,11 +9493,25 @@
             "group": "Error 404",
             "optional": false,
             "field": "model_not_found",
-            "description": "<p>The user with given <code>id</code> was not found</p>"
+            "description": "<p>Model matching given data does not exist</p>"
           }
         ]
       }
-    },
+    }
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/users/me",
+    "title": "Me",
+    "group": "Users",
+    "name": "UserMe",
+    "description": "<p>Get the current user</p>",
+    "permission": [
+      {
+        "name": "registered"
+      }
+    ],
     "filename": "app/Http/Controllers/UserController.php",
     "groupTitle": "Users",
     "header": {
@@ -9496,17 +9627,65 @@
   },
   {
     "version": "1.0.0",
-    "type": "get",
-    "url": "/users/me",
-    "title": "Me",
+    "type": "delete",
+    "url": "/users/points/{?id}",
+    "title": "Points (WIP)",
     "group": "Users",
-    "name": "UserMe",
-    "description": "<p>Get the current user</p>",
+    "name": "UserPoints",
+    "description": "<p>Give points to a user</p>",
     "permission": [
       {
-        "name": "student"
+        "name": "registered for self update, admin otherwise"
       }
     ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": true,
+            "field": "id",
+            "defaultValue": "null",
+            "description": "<p>The user id</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 400": [
+          {
+            "group": "Error 400",
+            "optional": false,
+            "field": "invalid_request",
+            "description": "<p>points field is required</p>"
+          },
+          {
+            "group": "Error 400",
+            "optional": false,
+            "field": "points",
+            "description": "<p>field has to be a positive integer</p>"
+          }
+        ],
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ]
+      }
+    },
     "filename": "app/Http/Controllers/UserController.php",
     "groupTitle": "Users",
     "header": {
@@ -9518,103 +9697,6 @@
             "optional": false,
             "field": "Authorization",
             "description": "<p>Bearer <code>access_token</code></p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "id",
-            "description": "<p>The user id</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "username",
-            "description": "<p>The user username</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "email",
-            "description": "<p>The user email address</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "firstname",
-            "description": "<p>The user firstname</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "lastname",
-            "description": "<p>The user lastname</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "facebook_token",
-            "description": "<p>The facebook token</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "points",
-            "description": "<p>The user points</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "array",
-            "optional": false,
-            "field": "settings",
-            "description": "<p>The user settings</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "settings.daily_goal",
-            "description": "<p>The user daily goal points</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "bool",
-            "optional": false,
-            "field": "settings.sound",
-            "description": "<p>If the user has enabled sounds</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "bool",
-            "optional": false,
-            "field": "settings.email_newsletter",
-            "description": "<p>If the user should receive the newsletter</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "bool",
-            "optional": false,
-            "field": "settings.email_comment",
-            "description": "<p>If the user should receive an comment email</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "int",
-            "optional": false,
-            "field": "class_id",
-            "description": "<p>The user class_id</p>"
           }
         ]
       }
@@ -9858,7 +9940,7 @@
             "group": "Error 401",
             "optional": false,
             "field": "unauthorized",
-            "description": "<p>The user does not have enough privileges</p>"
+            "description": "<p>User does not have enough privileges</p>"
           }
         ]
       }
