@@ -40,7 +40,18 @@ class UserPolicy extends BasePolicy
      */
     public function edit(User $currentUser, User $user)
     {
-        return $currentUser->id === $user->id || $user->tokenCan('admin');
+        return $currentUser->id === $user->id;
+    }
+
+    /**
+     * @param User $currentUser
+     * @param User $user
+     *
+     * @return bool
+     */
+    public function points(User $currentUser, User $user)
+    {
+        return $currentUser->id === $user->id;
     }
 
     /**
@@ -51,6 +62,7 @@ class UserPolicy extends BasePolicy
      */
     public function delete(User $currentUser, User $user)
     {
-        return $currentUser->id === $user->id || $user->tokenCan('admin');
+        // TODO: Really?
+        return $currentUser->id === $user->id;
     }
 }

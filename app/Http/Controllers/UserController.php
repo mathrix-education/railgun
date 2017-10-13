@@ -87,7 +87,7 @@ class UserController extends BaseController
      * @apiParam {int} [perPage=10] The user count per page
      * @apiUse UserArray
      * @apiError (Error 400) invalid_request page and perPage have to be strictly positive
-     * @apiError (Error 401) unauthorized The user does not have enough privileges
+     * @apiUse 401Unauthorized
      *
      * @param Request $request
      * @param int $page the page number
@@ -97,6 +97,7 @@ class UserController extends BaseController
      */
     public function index(Request $request, int $page = 1, int $perPage = 10)
     {
+        // Check permission
         if ($request->user()->cant('index', User::class)) {
             return $this->http401Unauthorized();
         }
@@ -159,6 +160,7 @@ class UserController extends BaseController
      */
     public function search(Request $request, $field, $like)
     {
+        // Check permission
         if ($request->user()->cant('index', User::class)) {
             return $this->http401Unauthorized();
         }
@@ -178,7 +180,7 @@ class UserController extends BaseController
      * @apiGroup Users
      * @apiName UserMe
      * @apiDescription Get the current user
-     * @apiPermission student
+     * @apiPermission registered
      * @apiUse Bearer
      * @apiUse User
      *
@@ -201,8 +203,8 @@ class UserController extends BaseController
      * @apiUse Bearer
      * @apiParam {int} [id] The user id
      * @apiUse User
-     * @apiError (Error 401) unauthorized The user does not have enough privileges
-     * @apiError (Error 404) model_not_found The user with given `id` was not found
+     * @apiUse 401Unauthorized
+     * @apiUse 404ModelNotFound
      *
      * @param Request $request
      * @param int $id
@@ -213,6 +215,7 @@ class UserController extends BaseController
     {
         $user = User::whereId($id)->firstOrFail();
 
+        // Check permission
         if ($request->user()->cant('get', $user)) {
             return $this->http401Unauthorized();
         }
@@ -229,44 +232,75 @@ class UserController extends BaseController
      * @apiDescription Edit a user
      * @apiPermission registered for self get, at least admin for strangers
      * @apiUse Bearer
-     * @apiParam (Data) {string} [firstname=null] The user firstname
-     * @apiParam (Data) {string} [lastname=null] The user lastname
-     * @apiParam (Data) {string} [username=null] The user username
-     * @apiParam (Data) {string=registered,premium,moderator,admin} type The user type
-     * @apiParam (Data) {string} email The user email
-     * @apiParam (Data) {string} password The user password
-     * @apiParam (Data) {int} [class_id=null] The class id; should be `null` for `moderator` and `admin`
-     * @apiParam (Data) {array} settings The user options
-     * @apiParam (Data) {int} settings.daily_goal The user daily goal points
-     * @apiParam (Data) {bool} settings.sound If the user has enabled sounds
-     * @apiParam (Data) {bool} settings.email_newsletter If the user should receive the newsletter
-     * @apiParam (Data) {bool} settings.email_comment If the user should receive an comment email
+     * @apiUse UserData
      * @apiUse User
-     * @apiError (Error 401) unauthorized The user does not have enough privileges
-     * @apiError (Error 404) model_not_found The user with given `id` was not found
+     * @apiUse 401Unauthorized
+     * @apiUse 404ModelNotFound
      *
      * @param Request $request
-     * @param int $id The user id; if not set edit the current user
+     * @param int|null $id The user id; if null set edit the current user
      *
      * @return JsonResponse
      */
-    public function edit(Request $request, int $id)
+    public function edit(Request $request, int $id = null)
     {
-        $currentUser = $request->user();
-        $user = User::whereId($id)->firstOrFail();
+        $user = $id === null ? $request->user() : User::where('id', $id)->firstOrFail();
 
-        if ($currentUser->cant('edit', $user)) {
+        // Check permission
+        if ($request->user()->cant('edit', $user)) {
             return $this->http401Unauthorized();
         }
 
         // Unlock fields for admin
-        if ($currentUser->tokenCan('admin')) {
-            $user->unguardAttributes(['type', 'courses_available']);
+        if ($request->user()->tokenCan('admin')) {
+            $user->unguardAttributes(['type']);
         }
 
-        $user->update($request->all());
+        if (!$user->update($request->all())) {
+            return $user->handleResponse($this->http422Save());
+        }
 
-        if (!$user->save()) {
+        return $this->http200Success($user);
+    }
+
+    /**
+     * @apiVersion 1.0.0
+     * @api {delete} /users/points/{?id} Points (WIP)
+     * @apiGroup Users
+     * @apiName UserPoints
+     * @apiDescription Give points to a user
+     * @apiPermission registered for self update, admin otherwise
+     * @apiUse Bearer
+     * @apiParam {int} [id=null] The user id
+     * @apiUse (Error 400) invalid_request points field is required
+     * @apiUse (Error 400) points field has to be a positive integer
+     * @apiUse 401Unauthorized
+     * @apiUse 404ModelNotFound
+     *
+     * @param Request $request
+     * @param int|null $id
+     *
+     * @return JsonResponse
+     */
+    public function points(Request $request, $id = null)
+    {
+        /** @var User $user */
+        $user = $id === null ? $request->user() : User::where('id', $id)->firstOrFail();
+
+        // Check permission
+        if ($request->user()->cant('points', $user)) {
+            return $this->http401Unauthorized();
+        }
+
+        $pointsToAdd = $request->input('points'); // Retrieve points to add from form data
+
+        if ($pointsToAdd === null) { // Check field presence
+            return $this->http400InvalidRequest(['message' => 'points field is required']);
+        } else if (!is_int($pointsToAdd) || $pointsToAdd < 0) { // Check if field is a valid positive integer
+            return $this->http400InvalidRequest(['message' => 'points field has to be a positive integer']);
+        }
+
+        if (!$user->update(['points' => $user->points + $pointsToAdd])) {
             return $user->handleResponse($this->http422Save());
         }
 
