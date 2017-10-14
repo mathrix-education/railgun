@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activity;
+use App\Models\Log;
+use App\Models\Module;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mathrix\Lumen\Http\Controllers\BaseController;
@@ -296,6 +300,30 @@ class UserController extends BaseController
             return $this->http401Unauthorized();
         }
 
+        $loggableType = $request->input('loggable_type');
+        $loggableId = $request->input('loggable_id');
+        $useLoggable = $loggableType !== null && $loggableId !== null;
+
+        // If loggable informations are ok
+        if ($useLoggable) {
+            /** @var Activity|Module $loggableModelClass */
+            $loggableModelClass = Relation::getMorphedModel($loggableType); // Retrieve morphed loggable model class
+
+            // If null, abort
+            if ($loggableModelClass === null) {
+                return $this->http400InvalidRequest('Invalid loggable model');
+            }
+
+            // Else, try to find the loggable model
+            /** @var Activity|Module $loggable */
+            $loggable = $loggableModelClass::where('id', $loggableId)->firstOrFail();
+
+            // User already gathered point from this loggable today
+            if ($request->user()->cant('pointsMore', $loggable)) {
+                return $this->http429TooManyRequests('Already gathered points today for this model');
+            }
+        }
+
         $pointsToAdd = $request->input('points'); // Retrieve points to add from form data
 
         if ($pointsToAdd === null) { // Check field presence
@@ -308,6 +336,14 @@ class UserController extends BaseController
             return $user->handleResponse($this->http422Save());
         }
 
+        if ($useLoggable) {
+            // Then log the informations
+            Log::log('user_gathered_points', $user, [
+                'loggable_type' => $loggableType,
+                'loggable_id' => $loggableId
+            ]);
+        }
+
         return $this->http200Success($user);
     }
 
@@ -318,7 +354,7 @@ class UserController extends BaseController
      * @apiGroup Users
      * @apiName UserDelete
      * @apiDescription Delete a user
-     * @apiPermission admin
+     * @apiPermission adminhttp501NotImplemented
      * @apiUse Bearer
      * @apiParam {int} id The user id
      * @apiError (Error 401) unauthorized User does not have enough privileges

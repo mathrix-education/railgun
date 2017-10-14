@@ -47,6 +47,7 @@ class AppServiceProvider extends ServiceProvider
 
         // MorphMap
         Relation::morphMap([
+            'activity' => Activity::class,
             'module' => Module::class,
             'post' => Post::class,
             'course' => Course::class,
