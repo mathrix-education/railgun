@@ -89,4 +89,12 @@ class Module extends BaseModel
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
+
+    /**
+     * Get all of the post's logs.
+     */
+    public function logs()
+    {
+        return $this->morphMany(Log::class, 'loggable');
+    }
 }

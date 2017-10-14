@@ -50,6 +50,14 @@ class Activity extends BaseModel
     |--------------------------------------------------------------------------
     */
     /**
+     * Get all of the post's logs.
+     */
+    public function logs()
+    {
+        return $this->morphMany(Log::class, 'loggable');
+    }
+
+    /**
      * BelongsToMany Module
      *
      * @return BelongsToMany
