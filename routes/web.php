@@ -37,8 +37,8 @@ $router->group(['prefix' => 'users'], function () use ($router) {
     $router->group(['middleware' => 'auth:api'], function () use ($router) {
         $router->get('', 'UserController@index');
         $router->get('me', 'UserController@me');
-        $router->get('points', 'UserController@points');
-        $router->get('points/{id:[0-9]+}', 'UserController@points');
+        $router->post('points', 'UserController@points');
+        $router->post('points/{id:[0-9]+}', 'UserController@points');
         $router->get('{page:[0-9]+}/{perPage:[0-9]+}', 'UserController@index');
         $router->get('search/{field}/{like}', 'UserController@search');
         $router->get('{id:[0-9]+}', 'UserController@get');

@@ -21,7 +21,6 @@ class UsersAsPublicTest extends ScopeTestCase
     | /users/register
     |--------------------------------------------------------------------------
     */
-
     public function testRegister()
     {
         $data = [
