@@ -267,13 +267,15 @@ class UserController extends BaseController
 
     /**
      * @apiVersion 1.0.0
-     * @api {delete} /users/points/{?id} Points (WIP)
+     * @api {post} /users/points/{?id} Points (WIP)
      * @apiGroup Users
      * @apiName UserPoints
      * @apiDescription Give points to a user
      * @apiPermission registered for self update, admin otherwise
      * @apiUse Bearer
-     * @apiParam {int} [id=null] The user id
+     * @apiParam (Data) {int} [id=null] The user id
+     * @apiParam (Data) {string=module} [loggable_type] The loggable type
+     * @apiParam (Data) {int} [loggable_id] The loggable id
      * @apiError (Error 400) invalid_request points field is required
      * @apiError (Error 400) points field has to be a positive integer
      * @apiUse 401Unauthorized
@@ -312,7 +314,7 @@ class UserController extends BaseController
 
     /**
      * @apiVersion 1.0.0
-     * @api {delete} /users/{id} Delete (WIP)
+     * @api {delete} /users/{id} Delete (Not implemented)
      * @apiGroup Users
      * @apiName UserDelete
      * @apiDescription Delete a user
