@@ -13,7 +13,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Mathrix\Lumen\Http\Controllers\BaseController;
-use MongoDB\Driver\Query;
 
 /**
  * Class ContentController

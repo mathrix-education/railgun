@@ -145,6 +145,7 @@ class ChapterController extends BaseController
      *
      * @param Request $request
      * @param int $id
+     *
      * @return JsonResponse
      */
     public function delete(Request $request, int $id)
