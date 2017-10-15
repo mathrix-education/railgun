@@ -15,7 +15,7 @@ use Tests\Generics\Generics;
  * @author Mathrix Team
  * @package Tests
  */
-class ScopeTestCase extends BaseTestCase
+abstract class ScopeTestCase extends BaseTestCase
 {
     use HttpAssertions, Generics;
 

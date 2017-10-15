@@ -6,6 +6,7 @@ use App\Models\Activity;
 use App\Models\Log;
 use App\Models\Module;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -305,7 +306,7 @@ class UserController extends BaseController
         $loggableId = $request->input('loggable_id');
         $useLoggable = $loggableType !== null && $loggableId !== null;
 
-        // If loggable informations are ok
+        // Valid loggable informations were passed
         if ($useLoggable) {
             /** @var Activity|Module $loggableModelClass */
             $loggableModelClass = Relation::getMorphedModel($loggableType); // Retrieve morphed loggable model class
@@ -319,8 +320,17 @@ class UserController extends BaseController
             /** @var Activity|Module $loggable */
             $loggable = $loggableModelClass::where('id', $loggableId)->firstOrFail();
 
+            $userHasAlreadyGatheredPointsWithThisModule = Log::where([
+                ['event', 'user_gathered_points'],
+                ['user_id', $user->id],
+                ['loggable_type', '=', $loggableType],
+                ['loggable_id', '=', $loggable->id],
+            ])
+                ->whereBetween('created_at', [Carbon::now()->setTime(0, 0, 0), Carbon::now()])
+                ->exists();
+
             // User already gathered point from this loggable today
-            if ($request->user()->cant('pointsMore', $loggable)) {
+            if ($userHasAlreadyGatheredPointsWithThisModule) {
                 return $this->http429TooManyRequests('Already gathered points today for this model');
             }
         }
@@ -337,6 +347,7 @@ class UserController extends BaseController
             return $user->handleResponse($this->http422Save());
         }
 
+        // Log the points update
         if ($useLoggable) {
             // Then log the informations
             Log::log('user_gathered_points', $user, [
