@@ -6,16 +6,18 @@ class ActivityTableSeeder extends BaseTableSeeder
 {
     public function run()
     {
-        $this->println('<comment>Seeding:</comment> activities from factory');
-
-        $notions = Notion::get(['id']);
+        $notionIds = Notion::get(['id'])->pluck('id')->toArray();
 
         /** @var Notion $notion */
-        foreach ($notions as $notion) {
-            factory(Activity::class, random_int(1, 3))->create()->each(function (Activity $activity) use ($notion) {
-                $notion->activities()->attach($activity->id);
-            });
+        foreach ($notionIds as $notionId) {
+            $this->seedFromFactory(Activity::class, [
+                'count' => random_int(1, 3),
+                'callback' => function (Activity $activity) use ($notionId) {
+                    $activity->notions()->attach($notionId);
+                },
+                'loop' => $notionIds,
+                'iterate' => $notionId
+            ]);
         }
-        $this->println('<info>Seeded:</info>  activities from factory');
     }
 }

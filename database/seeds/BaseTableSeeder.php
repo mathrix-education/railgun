@@ -2,7 +2,6 @@
 
 use App\Models\BaseModel;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 /**
@@ -10,56 +9,6 @@ use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
  */
 abstract class BaseTableSeeder extends Seeder
 {
-    /**
-     * Override default call
-     *
-     * @param string $class
-     * @param bool $silent
-     */
-    public function call($class, $silent = false)
-    {
-        $this->resolve($class)->__invoke();
-    }
-
-
-    /**
-     * Seed database from a json file
-     *
-     * @param string $table
-     * @param callable|Closure $next
-     *
-     * @return bool
-     */
-    public function seedFromJson(string $table, Closure $next = null)
-    {
-        $this->println('<comment>Seeding</comment>: ' . $table . ' from json');
-
-        $data = $this->loadFromRawJson($table);
-
-        foreach ($data as $row) {
-            // Convert field values to JSON string
-            foreach ($row as $field => $value) {
-                if (is_array($value)) {
-                    $row[$field] = json_encode($value);
-                }
-            }
-
-            // Handle id colliding
-            if (isset($row['id'])) {
-                $id = $row['id'];
-                unset($row['id']);
-
-                DB::table($table)->updateOrInsert(['id' => $id], $row);
-            } else {
-                DB::table($table)->insert($row);
-            }
-        }
-        $this->println('<info>Seeded</info>:  ' . $table . ' from json');
-
-        return !is_null($next) ? $next() : true;
-    }
-
-
     /**
      * Write output to console
      *
@@ -70,6 +19,18 @@ abstract class BaseTableSeeder extends Seeder
         if (isset($this->command) && !$this->command->getOutput()->isQuiet()) {
             $this->command->getOutput()->writeln($message);
         }
+    }
+
+
+    /**
+     * Override default call
+     *
+     * @param string $class
+     * @param bool $silent
+     */
+    public function call($class, $silent = false)
+    {
+        $this->resolve($class)->__invoke();
     }
 
 
@@ -96,37 +57,117 @@ abstract class BaseTableSeeder extends Seeder
 
 
     /**
+     * Seed database from a json file
+     *
+     * @param string $modelClass
+     *
+     * @return bool
+     */
+    public function seedFromJson(string $modelClass)
+    {
+        switch ($modelClass) {
+            case 'Laravel\\Passport\\Client':
+                $table = 'oauth_clients';
+                break;
+            default:
+                $table = $modelClass::getTableName();
+                break;
+        }
+
+        $this->println('<comment>Seeding</comment>: ' . $table . ' from json');
+
+        $data = $this->loadFromRawJson($table);
+
+        foreach ($data as $row) {
+            /** @var BaseModel $model */
+            $model = new $modelClass($row);
+            $model->save();
+        }
+
+        $this->println('<info>Seeded</info>:  ' . $table . ' from json');
+    }
+
+
+    /**
      * Seed from a factory
      *
-     * @param BaseModel $model The model class
-     * @param string|int|null $subFactory the sub-factory or the count
-     * @param int|null $count the count
+     * @param string|BaseModel $modelClass The model class
+     * @param array $options
+     *  'subFactory' => null
+     *  'count' => 1
+     *  'override' => []
+     *  'callback' => null
      */
-    public function seedFromFactory($model, $subFactory = null, $count = null)
+    public function seedFromFactory($modelClass, $options = [])
     {
-        if (!is_null($subFactory) && is_int($subFactory)) {
-            $count = $subFactory;
-            $subFactory = null;
+        $defaultOptions = [
+            'subFactory' => null,
+            'count' => 1,
+            'override' => [],
+            'callback' => null,
+            'loop' => null,
+            'iterate' => null
+        ];
+        $options = array_merge($defaultOptions, $options);
+
+        $table = $modelClass::getTableName();
+        $factoryName = $table . ($options['subFactory'] !== null ? ':' . $options['subFactory'] : '');
+
+        if ($options['loop'] === null || array_values($options['loop'])[0] === $options['iterate']) {
+            $this->println('<comment>Seeding:</comment> ' . $factoryName . ' from factory');
         }
 
-        $factoryName = $model::getTableName() . $subFactory ?: (':' . $subFactory);
-
-        $this->println('<comment>Seeding: </comment>' . $factoryName . ' from factory');
-
-        if (is_string($subFactory)) {
-            if (is_int($count)) {
-                factory($model, $subFactory, $count)->create();
-            } else {
-                factory($model, $subFactory)->create();
-            }
+        // Run factory
+        if (is_string($options['subFactory'])) {
+            $results = factory($modelClass, $options['subFactory'], $options['count'])
+                ->create($options['override']);
         } else {
-            if (is_int($count)) {
-                factory($model, $count)->create();
-            } else {
-                factory($model)->create();
-            }
+            $results = factory($modelClass, $options['count'])
+                ->create($options['override']);
         }
 
-        $this->println('<info>Seeded:  </info>' . $factoryName . ' from factory');
+        if ($options['callback'] !== null) {
+            $results->each($options['callback']);
+        }
+
+        if ($options['loop'] === null || end($options['loop']) === $options['iterate']) {
+            $this->println('<info>Seeded:</info>  ' . $factoryName . ' from factory');
+        }
+    }
+
+
+    /**
+     * Register attachment between two models from a raw json file
+     *
+     * @param BaseModel|string $modelClass1
+     * @param BaseModel|string $modelClass2
+     */
+    public function seedAttachmentsFromJson($modelClass1, $modelClass2)
+    {
+        $model1Table = $modelClass1::getTableName();
+        $model2Table = $modelClass2::getTableName();
+        $model1Key = str_singular($model1Table);
+        $model2Key = str_singular($model2Table);
+        $joinTableName = $model1Key . '_' . $model2Key;
+        $model1Key .= '_id';
+        $model2Key .= '_id';
+
+        $this->println('<comment>Seeding</comment>: ' . $joinTableName . ' from json');
+
+        $data = $this->loadFromRawJson($joinTableName);
+        $links = [];
+
+        foreach ($data as $row) {
+            $model1Id = $row[$model1Key];
+
+            $links[$model1Id][] = $row[$model2Key];
+        }
+
+        foreach ($links as $model1Id => $model2Ids) {
+            $model1 = $modelClass1::where('id', $model1Id)->firstOrFail();
+            $model1->$model2Table()->attach($model2Ids);
+        }
+
+        $this->println('<info>Seeded</info>:  ' . $joinTableName . ' from json');
     }
 }

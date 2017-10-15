@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('firstname')->nullable();
             $table->string('lastname')->nullable();
             $table->string('password');
-            $table->enum('type', ['registered', 'premium', 'moderator', 'admin']);
+            $table->enum('type', ['registered', 'moderator', 'admin']);
             $table->string('token', 36);
             $table->integer('points')->default(0);
             $table->integer('daily');

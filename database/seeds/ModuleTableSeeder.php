@@ -6,16 +6,19 @@ class ModuleTableSeeder extends BaseTableSeeder
 {
     public function run()
     {
-        $this->println('<comment>Seeding:</comment> modules from factory');
-
-        $activities = Activity::get(['id']);
+        $activityIds = Activity::get(['id'])->pluck('id')->toArray();
 
         /** @var Activity $activity */
-        foreach ($activities as $activity) {
-            factory(Module::class, 'random', random_int(1, 3))->create()->each(function (Module $module) use ($activity) {
-                $activity->modules()->attach($module->id);
-            });
+        foreach ($activityIds as $activityId) {
+            $this->seedFromFactory(Module::class, [
+                'subFactory' => 'random',
+                'count' => random_int(1, 3),
+                'callback' => function (Module $module) use ($activityId) {
+                    $module->activities()->attach($activityId);
+                },
+                'loop' => $activityIds,
+                'iterate' => $activityId
+            ]);
         }
-        $this->println('<info>Seeded:</info>  modules from factory');
     }
 }

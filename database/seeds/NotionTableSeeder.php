@@ -6,16 +6,18 @@ class NotionTableSeeder extends BaseTableSeeder
 {
     public function run()
     {
-        $this->println('<comment>Seeding:</comment> notions from factory');
-
-        $chapters = Chapter::get(['id']);
+        $chapterIds = Chapter::get(['id'])->pluck('id')->toArray();
 
         /** @var Chapter $chapter */
-        foreach ($chapters as $chapter) {
-            factory(Notion::class, random_int(2, 3))->create([
-                'chapter_id' => $chapter->id,
+        foreach ($chapterIds as $chapterId) {
+            $this->seedFromFactory(Notion::class, [
+                'count' => random_int(2, 3),
+                'override' => [
+                    'chapter_id' => $chapterId,
+                ],
+                'loop' => $chapterIds,
+                'iterate' => $chapterId
             ]);
         }
-        $this->println('<info>Seeded:</info>  notions from factory');
     }
 }

@@ -30,7 +30,7 @@ class UserController extends BaseController
      * @apiPermission public for registering regular user, admin otherwise
      * @apiParam (Data) {string} email The user email
      * @apiParam (Data) {string} password The user password or the user facebook token
-     * @apiParam (Data) {string=registered,premium,moderator,admin} type The user type
+     * @apiParam (Data) {string=registered,moderator,admin} type The user type
      * @apiParam (Data) {int} [class_id=null] The class id; should be `null` for `moderator` and `admin`
      * @apiUse User
      * @apiError (Error 409) conflict The given data failed to pass validation

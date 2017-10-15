@@ -4,7 +4,7 @@
  * @apiParam (Data) {string} [firstname=null] The user firstname
  * @apiParam (Data) {string} [lastname=null] The user lastname
  * @apiParam (Data) {string} [username=null] The user username
- * @apiParam (Data) {string=registered,premium,moderator,admin} type The user type
+ * @apiParam (Data) {string=registered,moderator,admin} type The user type
  * @apiParam (Data) {string} email The user email
  * @apiParam (Data) {string} password The user password
  * @apiParam (Data) {int} [class_id=null] The class id; should be `null` for `moderator` and `admin`
