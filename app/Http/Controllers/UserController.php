@@ -348,16 +348,19 @@ class UserController extends BaseController
         }
 
         // Log the points update
+        $logData = [
+            'value' => ['points' => $pointsToAdd]
+        ];
+
         if ($useLoggable) {
-            // Then log the informations
-            Log::log('user_gathered_points', $user, [
+            $logData = array_merge($logData, [
                 'loggable_type' => $loggableType,
                 'loggable_id' => $loggableId
             ]);
-        } else {
-            // Then log the informations
-            Log::log('user_gathered_points', $user);
         }
+
+        // Then log the informations
+        Log::log('user_gathered_points', $user, $logData);
 
         return $this->http200Success($user);
     }
