@@ -32,6 +32,7 @@ class Handler extends ExceptionHandler
         OAuthServerException::class
     ];
 
+
     /**
      * Render an exception into an HTTP response.
      *

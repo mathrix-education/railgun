@@ -14,17 +14,6 @@ trait Delete
     /** @var int model id */
     protected $deleteModelId;
 
-    /**
-     * Generic delete call
-     */
-    public function genericDelete()
-    {
-        $this->genericUsableOrFail();
-
-        $this->deleteModelId = ($this->modelClass)::inRandomOrder()->firstOrFail()->id;
-
-        $this->call('delete', '/' . $this->modelPlural . '/' . $this->deleteModelId);
-    }
 
     /**
      * Generic delete; expect HTTP 200 and data present in database
@@ -37,6 +26,20 @@ trait Delete
         $this->assertHttp200Success();
         $this->assertNotInDatabase($this->modelPlural, ['id' => $this->deleteModelId]);
     }
+
+
+    /**
+     * Generic delete call
+     */
+    public function genericDelete()
+    {
+        $this->genericUsableOrFail();
+
+        $this->deleteModelId = ($this->modelClass)::inRandomOrder()->firstOrFail()->id;
+
+        $this->call('delete', '/' . $this->modelPlural . '/' . $this->deleteModelId);
+    }
+
 
     /**
      * Generic delete; expect HTTP 200 and data present in database
@@ -51,6 +54,7 @@ trait Delete
         $this->assertHttp200Success();
         $this->assertInDatabase($this->modelPlural, ['id' => $this->deleteModelId, 'deleted_at' => $deletedAt]);
     }
+
 
     /**
      * Generic delete; expect HTTP 200 and data present in database

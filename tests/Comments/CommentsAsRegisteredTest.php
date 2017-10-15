@@ -19,15 +19,18 @@ class CommentsAsRegisteredTest extends ScopeTestCase
         $this->sameAs('public');
     }
 
+
     public function testAdd()
     {
         $this->genericAddSuccess();
     }
 
+
     public function testEdit()
     {
         $this->sameAs('public');
     }
+
 
     public function testDelete()
     {

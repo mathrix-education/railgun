@@ -24,6 +24,7 @@ class CreateNotionsTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      *

@@ -17,6 +17,7 @@ abstract class BaseController extends Controller
 {
     use HttpJsonResponseBuilderTrait;
 
+
     /**
      * Check if a request contains the needed inputs
      *
@@ -27,6 +28,7 @@ abstract class BaseController extends Controller
     {
         $this->validate($request, array_fill_keys($requiredInputs, 'required'));
     }
+
 
     /**
      * Override validation response format

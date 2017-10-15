@@ -198,6 +198,7 @@ class UserController extends BaseController
         return $this->http200Success($request->user());
     }
 
+
     /**
      * @apiVersion 0.9.1
      * @api {get} /users/{id} Get
@@ -267,6 +268,7 @@ class UserController extends BaseController
 
         return $this->http200Success($user);
     }
+
 
     /**
      * @apiVersion 0.9.1

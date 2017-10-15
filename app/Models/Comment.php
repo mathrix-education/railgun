@@ -82,6 +82,7 @@ class Comment extends BaseModel
         return $this->belongsTo(Comment::class, 'parent_id');
     }
 
+
     /**
      * HasMany Comment
      *
@@ -92,6 +93,7 @@ class Comment extends BaseModel
         return $this->hasMany(Comment::class, 'parent_id');
     }
 
+
     /**
      * BelongsTo Comment
      *
@@ -101,6 +103,7 @@ class Comment extends BaseModel
     {
         return $this->belongsTo(User::class);
     }
+
 
     /**
      * MorphTo

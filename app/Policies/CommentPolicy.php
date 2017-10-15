@@ -32,6 +32,7 @@ class CommentPolicy extends BasePolicy
         return false;
     }
 
+
     /**
      * @param User $currentUser
      *

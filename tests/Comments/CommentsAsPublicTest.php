@@ -20,6 +20,7 @@ class CommentsAsPublicTest extends ScopeTestCase
         $this->genericIndexUnauthorized();
     }
 
+
     public function testType()
     {
         $commentableType = $this->faker->randomElement(['Module', 'Post', 'Course']);
@@ -33,15 +34,18 @@ class CommentsAsPublicTest extends ScopeTestCase
         $this->assertHttp200Success();
     }
 
+
     public function testAdd()
     {
         $this->genericAddUnauthorized();
     }
 
+
     public function testEdit()
     {
         $this->genericEditUnauthorized();
     }
+
 
     public function testDelete()
     {

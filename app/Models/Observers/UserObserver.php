@@ -23,6 +23,7 @@ class UserObserver extends BaseObserver
         Log::log('user_registered', $user);
     }
 
+
     /**
      * @param User $user
      */
@@ -37,6 +38,7 @@ class UserObserver extends BaseObserver
             Log::log('user_set_daily', $user);
         }
     }
+
 
     /**
      * @param User $user

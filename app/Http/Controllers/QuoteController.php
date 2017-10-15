@@ -54,6 +54,7 @@ class QuoteController extends BaseController
         return $this->http200Success($quote);
     }
 
+
     /**
      * @apiVersion 0.9.1
      * @api {get} /quotes/random/{count} Random

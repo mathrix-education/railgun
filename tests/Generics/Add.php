@@ -14,6 +14,20 @@ trait Add
     /** @var array factorized model data */
     protected $addModelData;
 
+
+    /**
+     * Generic add; expect HTTP 200 and data present in database
+     */
+    public function genericAddSuccess()
+    {
+        $this->genericAdd();
+
+        // Assertions
+        $this->assertHttp200Success();
+        $this->assertInDatabase($this->modelPlural, $this->addModelData);
+    }
+
+
     /**
      * Generic add call
      */
@@ -28,17 +42,6 @@ trait Add
         $this->call('post', '/' . $this->modelPlural, $this->addModelData);
     }
 
-    /**
-     * Generic add; expect HTTP 200 and data present in database
-     */
-    public function genericAddSuccess()
-    {
-        $this->genericAdd();
-
-        // Assertions
-        $this->assertHttp200Success();
-        $this->assertInDatabase($this->modelPlural, $this->addModelData);
-    }
 
     /**
      * Generic add; expect HTTP 200 and data present in database

@@ -20,6 +20,7 @@ class CreateQuotesTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      *

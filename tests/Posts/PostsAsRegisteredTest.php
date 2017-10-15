@@ -19,15 +19,18 @@ class PostsAsRegisteredTest extends ScopeTestCase
         $this->sameAs('public');
     }
 
+
     public function testAdd()
     {
         $this->sameAs('public');
     }
 
+
     public function testEdit()
     {
         $this->sameAs('public');
     }
+
 
     public function testDelete()
     {

@@ -22,6 +22,7 @@ class CreateDisciplinesTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      *

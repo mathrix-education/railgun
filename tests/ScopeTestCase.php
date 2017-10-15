@@ -1,13 +1,11 @@
 <?php
 namespace Tests;
 
-use App\Models\Log;
+use App\Models\BaseModel;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\Passport;
-use App\Models\BaseModel;
 use Tests\Generics\Generics;
 
 /**
@@ -39,6 +37,60 @@ class ScopeTestCase extends BaseTestCase
     protected $modelsMap = [
         'Class' => 'Class_'
     ];
+
+
+    /**
+     * Destroy database connection after each test to avoid the Too Many Connections error
+     */
+    public function tearDown()
+    {
+        $this->beforeApplicationDestroyed(function () {
+            DB::disconnect();
+        });
+
+        parent::tearDown();
+    }
+
+
+    /**
+     * Call a test from a different test class of the same model
+     *
+     * @see QuotesAsRegisteredTest::testIndex() for a concrete example
+     *
+     * @param string $scope the scope
+     * @param null|string $testName the test name, default the same as the called
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function sameAs($scope, $testName = null)
+    {
+        $classNameToInstantiate = str_replace(
+            'As' . ucfirst($this->scope),
+            'As' . ucfirst($scope),
+            get_class($this)
+        );
+
+        // Check if class exists
+        if (!class_exists($classNameToInstantiate)) {
+            throw new \Exception($classNameToInstantiate . ' does not exists');
+        }
+
+        /** @var ScopeTestCase $testClassObject */
+        $testClassObject = new $classNameToInstantiate();
+        $testName = $testName ?? $this->getName();
+
+        $testClassObject->setup();
+
+        // Check if method exists the class
+        if (!method_exists($testClassObject, $testName)) {
+            throw new \Exception('Test ' . $classNameToInstantiate . '::' . $testName . '() does not exists');
+        }
+
+        // Finally run the distant test
+        $testClassObject->{$testName}();
+    }
+
 
     /**
      * 1. Try to guess the model assiated with test class
@@ -132,135 +184,5 @@ class ScopeTestCase extends BaseTestCase
                 Passport::actingAs($this->user, [$this->user->type]); // Set Passport behavior
             }
         }
-    }
-
-
-    /**
-     * Destroy database connection after each test to avoid the Too Many Connections error
-     */
-    public function tearDown()
-    {
-        $this->beforeApplicationDestroyed(function () {
-            DB::disconnect();
-        });
-
-        parent::tearDown();
-    }
-
-
-    /**
-     * Call a test from a different test class of the same model
-     *
-     * @see QuotesAsRegisteredTest::testIndex() for a concrete example
-     *
-     * @param string $scope the scope
-     * @param null|string $testName the test name, default the same as the called
-     *
-     * @return void
-     * @throws \Exception
-     */
-    public function sameAs($scope, $testName = null)
-    {
-        $classNameToInstantiate = str_replace(
-            'As' . ucfirst($this->scope),
-            'As' . ucfirst($scope),
-            get_class($this)
-        );
-
-        // Check if class exists
-        if (!class_exists($classNameToInstantiate)) {
-            throw new \Exception($classNameToInstantiate . ' does not exists');
-        }
-
-        /** @var ScopeTestCase $testClassObject */
-        $testClassObject = new $classNameToInstantiate();
-        $testName = $testName ?? $this->getName();
-
-        $testClassObject->setup();
-
-        // Check if method exists the class
-        if (!method_exists($testClassObject, $testName)) {
-            throw new \Exception('Test ' . $classNameToInstantiate . '::' . $testName . '() does not exists');
-        }
-
-        // Finally run the distant test
-        $testClassObject->{$testName}();
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Database assertions; unlock access
-    |--------------------------------------------------------------------------
-    */
-    /**
-     * Cast data to its right MySQL values
-     *
-     * @param array $data
-     *
-     * @return array
-     */
-    public function castData(array $data)
-    {
-        foreach ($data as $field => $value) {
-            if ($value instanceof \DateTime) {
-                $data[$field] = $value->format('Y-m-d H:i:s');
-            }
-        }
-
-        return $data;
-    }
-
-    /**
-     * Assert that a given where condition exists in the database.
-     *
-     * @param  string $table
-     * @param  array $data
-     * @param  string|null $onConnection
-     */
-    public function assertInDatabase(string $table, array $data, $onConnection = null)
-    {
-        $this->seeInDatabase($table, $this->castData($data), $onConnection);
-    }
-
-    /**
-     * Assert that a given where condition does not exist in the database.
-     *
-     * @param  string $table
-     * @param  array $data
-     * @param  string|null $onConnection
-     */
-    public function assertNotInDatabase(string $table, array $data, $onConnection = null)
-    {
-        $this->notSeeInDatabase($table, $this->castData($data), $onConnection);
-    }
-
-    /**
-     * Assert that an event is logged in the database
-     *
-     * @param string $event The event type
-     * @param User|int|null $user The user as object, the user_id or null if not relying on user
-     * @param array $data The additional data to filter the event (associative or Eloquent mode)
-     */
-    public function assertLogged(string $event, $user = null, array $data = [])
-    {
-        foreach ($data as $key => $value) {
-            if (is_array($value)) {
-                $data[] = [$key, $value];
-                unset($data[$key]);
-            }
-        }
-
-        $data = array_merge([
-            ['event', $event],
-            ['user_id', $user === null || is_int($user) ? $user : $user->id]
-        ], $data);
-
-        $count = Log::where($data)
-            ->whereBetween('created_at', [Carbon::now()->subSeconds(10), Carbon::now()]) // 10 seconds
-            ->count();
-
-        $this->assertGreaterThan(0, $count, sprintf(
-            'Unable to find row in database table [%s] that matched attributes [%s].', 'logs', json_encode($data)
-        ));
     }
 }

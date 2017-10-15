@@ -24,6 +24,7 @@ class VoteObserver extends BaseObserver
         return parent::saving($vote);
     }
 
+
     /**
      * @param Vote $vote
      *
@@ -35,6 +36,7 @@ class VoteObserver extends BaseObserver
 
         return parent::saving($vote);
     }
+
 
     /**
      * @param Vote $vote

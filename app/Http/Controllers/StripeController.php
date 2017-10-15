@@ -19,6 +19,7 @@ class StripeController extends CashierController
 {
     private const ALLOWED_STRIPE_PLANS = ['v3_annually', 'v3_monthly'];
 
+
     /**
      * @apiVersion 0.9.1
      * @api {post} /stripe/subscribe Subscribe

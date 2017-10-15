@@ -29,6 +29,7 @@ class CommentObserver extends BaseObserver
         return parent::saving($comment);
     }
 
+
     /**
      * @param Comment $comment
      *

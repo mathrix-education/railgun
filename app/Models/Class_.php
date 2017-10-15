@@ -78,6 +78,7 @@ class Class_ extends BaseModel
         return $classes;
     }
 
+
     /**
      * BelongsTo Class_
      *
@@ -87,6 +88,7 @@ class Class_ extends BaseModel
     {
         return $this->belongsTo('App\Models\Class_', 'parent_id');
     }
+
 
     /**
      * BelongsTo Country
@@ -98,6 +100,7 @@ class Class_ extends BaseModel
         return $this->belongsTo(Country::class);
     }
 
+
     /**
      * BelongsToMany Discipline
      *
@@ -107,6 +110,7 @@ class Class_ extends BaseModel
     {
         return $this->belongsToMany(Discipline::class, 'class_discipline', 'class_id');
     }
+
 
     /**
      * HasMany User

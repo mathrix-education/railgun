@@ -1,7 +1,6 @@
 <?php
 namespace Tests\Quotes;
 
-use App\Models\Quote;
 use Tests\ScopeTestCase;
 
 /**
@@ -20,25 +19,30 @@ class QuotesAsAdminTest extends ScopeTestCase
         $this->sameAs('public');
     }
 
+
     public function testRandom()
     {
         $this->sameAs('public');
     }
+
 
     public function testRandomMultiple()
     {
         $this->sameAs('public');
     }
 
+
     public function testAdd()
     {
         $this->genericAddSuccess();
     }
 
+
     public function testEdit()
     {
         $this->genericEditSuccess();
     }
+
 
     public function testDelete()
     {
