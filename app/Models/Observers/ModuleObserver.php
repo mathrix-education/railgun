@@ -4,7 +4,6 @@ namespace App\Models\Observers;
 
 use App\Models\Activity;
 use App\Models\Module;
-use Mathrix\Lumen\Observers\BaseObserver;
 
 /**
  * Class ModuleObserver

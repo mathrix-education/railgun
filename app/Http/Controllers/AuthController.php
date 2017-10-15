@@ -9,7 +9,6 @@ use Faker\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use Mathrix\Lumen\Http\Controllers\BaseController;
 
 /**
  * Class AuthController

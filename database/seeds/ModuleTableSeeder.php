@@ -1,7 +1,6 @@
 <?php
 use App\Models\Activity;
 use App\Models\Module;
-use Mathrix\Lumen\Database\BaseTableSeeder;
 
 class ModuleTableSeeder extends BaseTableSeeder
 {

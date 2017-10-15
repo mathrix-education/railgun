@@ -4,7 +4,6 @@ namespace App\Models\Observers;
 
 use App\Models\Class_;
 use App\Models\Discipline;
-use Mathrix\Lumen\Observers\BaseObserver;
 
 /**
  * Class UserObserver

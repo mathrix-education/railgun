@@ -4,7 +4,6 @@ namespace App\Models\Observers;
 
 use App\Models\Comment;
 use App\Models\Post;
-use Mathrix\Lumen\Observers\BaseObserver;
 
 /**
  * Class PostObserver

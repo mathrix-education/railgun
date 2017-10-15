@@ -1,7 +1,6 @@
 <?php
 use App\Models\Chapter;
 use App\Models\Notion;
-use Mathrix\Lumen\Database\BaseTableSeeder;
 
 class NotionTableSeeder extends BaseTableSeeder
 {

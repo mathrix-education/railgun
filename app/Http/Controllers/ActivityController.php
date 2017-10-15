@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 use App\Models\Activity;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Mathrix\Lumen\Http\Controllers\BaseController;
 
 /**
  * Class ActivityController

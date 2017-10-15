@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Lumen\Testing\DatabaseTransactions;
-use Mathrix\Lumen\Tests\BaseTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 /**

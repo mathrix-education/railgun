@@ -3,7 +3,6 @@
 namespace App\Models\Observers;
 
 use App\Models\Category;
-use Mathrix\Lumen\Observers\BaseObserver;
 
 /**
  * Class CategoryObserver

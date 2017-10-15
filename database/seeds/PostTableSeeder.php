@@ -1,7 +1,6 @@
 <?php
 use App\Models\Category;
 use App\Models\Post;
-use Mathrix\Lumen\Database\BaseTableSeeder;
 
 class PostTableSeeder extends BaseTableSeeder
 {
