@@ -58,7 +58,6 @@ class AuthServiceProvider extends ServiceProvider
         Passport::tokensCan([
             'admin' => 'Administrator',
             'moderator' => 'Moderator',
-            'premium' => 'Premium',
             'registered' => 'Registered'
         ]);
 

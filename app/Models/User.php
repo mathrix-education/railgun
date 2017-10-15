@@ -92,7 +92,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         'firstname' => 'nullable|max:30',
         'lastname' => 'nullable|max:40',
         'password' => 'required|min:3',
-        'type' => 'required|in:registered,premium,moderator,admin',
+        'type' => 'required|in:registered,moderator,admin',
         'token' => 'required|size:36',
         'points' => 'required|integer',
         'daily' => 'required|in:20,40,70',
@@ -156,7 +156,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     */
     public function tokenCan($scope)
     {
-        $order = ['admin', 'moderator', 'premium', 'registered'];
+        $order = ['admin', 'moderator', 'registered'];
 
         if (in_array($scope, $order)) {
             $key = array_search($scope, $order);

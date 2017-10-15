@@ -2,11 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Activity;
-use App\Models\Log;
-use App\Models\Module;
 use App\Models\User;
-use Carbon\Carbon;
 
 /**
  * Class UserPolicy
@@ -33,8 +29,7 @@ class UserPolicy extends BasePolicy
      */
     public function get(User $currentUser, User $user)
     {
-        return $currentUser->id === $user->id ||
-            (in_array($user->type, ['registered', 'premium']) && $currentUser->tokenCan('moderator'));
+        return $currentUser->id === $user->id || $user->type == 'registered' && $currentUser->tokenCan('moderator');
     }
 
 

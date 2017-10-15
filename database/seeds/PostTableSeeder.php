@@ -6,16 +6,18 @@ class PostTableSeeder extends BaseTableSeeder
 {
     public function run()
     {
-        $this->println('<comment>Seeding:</comment> posts from factory');
-
-        $categories = Category::get(['id']);
+        $categoryIds = Category::get(['id'])->pluck('id')->toArray();
 
         /** @var Category $chapter */
-        foreach ($categories as $category) {
-            factory(Post::class, random_int(1, 5))->create([
-                'category_id' => $category->id,
+        foreach ($categoryIds as $categoryId) {
+            $this->seedFromFactory(Post::class, [
+                'count' => random_int(1, 5),
+                'override' => [
+                    'category_id' => $categoryId
+                ],
+                'loop' => $categoryIds,
+                'iterate' => $categoryId
             ]);
         }
-        $this->println('<info>Seeded:</info>  posts from factory');
     }
 }
