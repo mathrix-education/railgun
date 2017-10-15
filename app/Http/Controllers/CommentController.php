@@ -16,13 +16,13 @@ use Illuminate\Http\Request;
  *
  * @author Mathrix Back-End Team
  * @package App\Http\Controllers
- * @since 0.9.1
+ * @since 0.8.1
  * @copyright Mathrix
  */
 class CommentController extends BaseController
 {
     /**
-     * @apiVersion 0.9.1
+     * @apiVersion 0.8.1
      * @api {get} /comments Index
      * @apiGroup Comments
      * @apiName CommentsIndex
@@ -39,7 +39,7 @@ class CommentController extends BaseController
 
 
     /**
-     * @apiVersion 0.9.1
+     * @apiVersion 0.8.1
      * @api {get} /comments/{commentable_type}/{commentable_id}/{?page}/{?perPage} Type
      * @apiGroup Comments
      * @apiName CommentsIndex
@@ -89,7 +89,7 @@ class CommentController extends BaseController
 
 
     /**
-     * @apiVersion 0.9.1
+     * @apiVersion 0.8.1
      * @api {get} /comments/{id} Get
      * @apiGroup Comments
      * @apiName CommentGet
@@ -114,7 +114,7 @@ class CommentController extends BaseController
 
 
     /**
-     * @apiVersion 0.9.1
+     * @apiVersion 0.8.1
      * @api {post} /comments Add
      * @apiGroup Comments
      * @apiName CommentAdd
@@ -145,7 +145,7 @@ class CommentController extends BaseController
 
 
     /**
-     * @apiVersion 0.9.1
+     * @apiVersion 0.8.1
      * @api {patch} /comments/{id} Edit
      * @apiGroup Comments
      * @apiName CommentEdit
@@ -185,7 +185,7 @@ class CommentController extends BaseController
 
 
     /**
-     * @apiVersion 0.9.1
+     * @apiVersion 0.8.1
      * @api {delete} /comments/{id} Delete
      * @apiGroup Comments
      * @apiName CommentDelete
