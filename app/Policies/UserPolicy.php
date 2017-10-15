@@ -64,26 +64,6 @@ class UserPolicy extends BasePolicy
 
     /**
      * @param User $currentUser
-     * @param Activity|Module $loggable
-     *
-     * @return bool
-     */
-    public function pointsMore(User $currentUser, $loggable)
-    {
-        $midnight = Carbon::now()->setTime(0, 0, 0);
-        return !Log::where([
-            ['event', '=', 'user_gathered_points'],
-            ['user_id', '=', $currentUser->id],
-            ['loggable_type', '=', str_replace('App\\Models\\', '', strtolower(get_class($loggable)))],
-            ['loggable_id', '=', $loggable->id],
-        ])
-            ->whereBetween('created', [$midnight, Carbon::now()])
-            ->exists();
-    }
-
-
-    /**
-     * @param User $currentUser
      * @param User $user
      *
      * @return bool

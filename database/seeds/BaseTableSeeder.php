@@ -109,7 +109,7 @@ abstract class BaseTableSeeder extends Seeder
             $subFactory = null;
         }
 
-        $factoryName = $model::getTableName() . $subFactory ?: ':' . $subFactory;
+        $factoryName = $model::getTableName() . $subFactory ?: (':' . $subFactory);
 
         $this->println('<comment>Seeding: </comment>' . $factoryName . ' from factory');
 

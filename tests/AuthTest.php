@@ -3,7 +3,6 @@ namespace Tests;
 
 use App\Mails\User\PasswordForgotten;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,34 +17,12 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AuthTest extends BaseTestCase
 {
-    use DatabaseTransactions {
-        beginDatabaseTransaction as traitBeginDatabaseTransaction;
-    }
-
     // oAuth configuration
     const OAUTH_CLIENT_ID = 3;
     const OAUTH_CLIENT_SECRET = 'NCeWoR1cKpqEJQ6pW9gIOPXiH3iNCiV3f39fvyji';
 
     /** @var User $user */
     public $user;
-
-
-    /**
-     * Override default database transaction
-     */
-    public function beginDatabaseTransaction()
-    {
-        // Disable database transaction on testLogin
-        if ($this->getName() != 'testLogin') {
-            $this->traitBeginDatabaseTransaction();
-
-            // And clean DB after last refresh test
-            if ($this->getName() == 'testRefreshInvalidClient') {
-                DB::table('oauth_access_tokens')->truncate();
-                DB::table('oauth_refresh_tokens')->truncate();
-            }
-        }
-    }
 
 
     /**
@@ -75,8 +52,7 @@ class AuthTest extends BaseTestCase
             'access_token',
             'refresh_token'
         ]);
-
-        // TODO: assert logged
+        $this->assertLogged('user_logged', $this->user);
 
         return $this->response;
     }
@@ -87,8 +63,6 @@ class AuthTest extends BaseTestCase
     | POST /users/login
     |--------------------------------------------------------------------------
     */
-
-
     /**
      * Build login form data
      *
@@ -226,15 +200,11 @@ class AuthTest extends BaseTestCase
     }
 
 
-
-
     /*
     |--------------------------------------------------------------------------
     | POST /users/forgot
     |--------------------------------------------------------------------------
     */
-
-
     /**
      * Expect HTTP 404 model_not_found
      */
