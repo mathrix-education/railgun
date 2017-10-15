@@ -8,12 +8,11 @@ Written by Mathieu Bour for Mathrix.
 
 
 ### Installation
-1. Install PHP 7.1 with mysql, mbstring, intl and dom extensions.
+1. Setup PHP 7.1 environment with at least mysql, mbstring, intl and dom extensions.
 2. Clone this repository on your local workspace.
-3. Start your ssh-agent and add our SSH key located in `storage/ssh/gitlab_mathrix_id_rsa` to your identities.
-4. Run `composer install` to setup the project files.
-5. Run `php artisan migrate:refresh --seed` to setup a working database.
-6. Run `php artisan ide-helper:generate` to generate PHPDoc for Laravel Facades.
+3. Run `composer install` to setup the project files.
+4. Run `php artisan migrate:refresh --seed` to setup a working database.
+5. Run `php artisan ide-helper:generate` to generate PHPDoc for Laravel Facades.
 
 
 ### Gulp tasks
@@ -34,5 +33,5 @@ Watch and build .html and .php file matching with .mjml on modification.
 
 #### Locally with GitLab Runner 
 1. Install [GitLab Runner](https://docs.gitlab.com/runner/install/) with Docker
-2. Run `gitlab-runner exec docker test:app`
+2. Run `gitlab-runner exec docker test`
 
