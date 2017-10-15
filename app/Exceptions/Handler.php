@@ -14,12 +14,14 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 /**
  * Class Handler
  * Handle exceptions and display them in json as response
+ *
  * @package App\Exceptions
  */
 class Handler extends ExceptionHandler
 {
     /**
      * A list of the exception types that should not be reported.
+     *
      * @var array
      */
     protected $dontReport = [

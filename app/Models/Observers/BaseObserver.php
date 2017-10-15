@@ -5,6 +5,7 @@ use App\Models\BaseModel;
 
 /**
  * Class BaseObserver
+ *
  * @author Mathrix Team
  * @package App\Observers
  */

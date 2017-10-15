@@ -10,13 +10,13 @@ use Illuminate\Http\Request;
  *
  * @author Mathrix Back-End Team
  * @package App\Http\Controllers
- * @since 0.9a-1
+ * @since 0.9.1
  * @copyright Mathrix
  */
 class CountryController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {get} /countries Index
      * @apiGroup Countries
      * @apiName CountriesIndex
@@ -32,7 +32,7 @@ class CountryController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {get} /countries/{id} Get
      * @apiGroup Countries
      * @apiName CountryGet
@@ -54,7 +54,7 @@ class CountryController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {post} /countries Add
      * @apiGroup Countries
      * @apiName CountryAdd
@@ -89,7 +89,7 @@ class CountryController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {patch} /countries/{id} Edit
      * @apiGroup Countries
      * @apiName CountryEdit
@@ -129,7 +129,7 @@ class CountryController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {delete} /countries/{id} Delete (Not implemented)
      * @apiGroup Countries
      * @apiName CountryDelete

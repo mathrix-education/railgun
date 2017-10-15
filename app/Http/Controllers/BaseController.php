@@ -1,14 +1,15 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Http\HttpJsonResponseBuilderTrait;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Validator;
 use Laravel\Lumen\Routing\Controller;
-use App\Http\HttpJsonResponseBuilderTrait;
 
 /**
  * Class BaseController
  * Add a few methods to all controllers
+ *
  * @author Mathrix Team
  * @package App\Http\Controllers
  */

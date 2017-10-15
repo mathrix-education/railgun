@@ -11,13 +11,13 @@ use Illuminate\Http\Request;
  *
  * @author Mathrix Back-End Team
  * @package App\Http\Controllers
- * @since 0.9a-1
+ * @since 0.9.1
  * @copyright Mathrix
  */
 class DisciplineController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {get} /disciplines Index
      * @apiGroup Disciplines
      * @apiName DisciplinesIndex
@@ -33,7 +33,7 @@ class DisciplineController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {get} /disciplines/{id} Get
      * @apiGroup Disciplines
      * @apiName DisciplineGet
@@ -56,7 +56,7 @@ class DisciplineController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {post} /disciplines Add
      * @apiGroup Disciplines
      * @apiName DisciplineAdd
@@ -91,7 +91,7 @@ class DisciplineController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {patch} /disciplines/{id} Edit
      * @apiGroup Disciplines
      * @apiName DisciplineEdit
@@ -131,7 +131,7 @@ class DisciplineController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {delete} /disciplines/{id} Delete (Not implemented)
      * @apiGroup Disciplines
      * @apiName DisciplineDelete

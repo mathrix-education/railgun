@@ -11,13 +11,13 @@ use Illuminate\Http\Request;
  *
  * @author Mathrix Back-End Team
  * @package App\Http\Controllers
- * @since 0.9a-1
+ * @since 0.9.1
  * @copyright Mathrix
  */
 class PostController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {get} /posts Index
      * @apiGroup Posts
      * @apiName PostsIndex
@@ -49,7 +49,7 @@ class PostController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {get} /posts/{id} Get
      * @apiGroup Posts
      * @apiName PostGet
@@ -72,7 +72,7 @@ class PostController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {post} /posts Add
      * @apiGroup Posts
      * @apiName PostAdd
@@ -107,7 +107,7 @@ class PostController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {patch} /posts/{id} Edit
      * @apiGroup Posts
      * @apiName PostEdit
@@ -147,7 +147,7 @@ class PostController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {delete} /posts/{id} Delete
      * @apiGroup Posts
      * @apiName PostDelete

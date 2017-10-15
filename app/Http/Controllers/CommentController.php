@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BaseModel;
 use App\Models\Comment;
 use App\Models\Course;
 use App\Models\Module;
@@ -9,20 +10,19 @@ use App\Models\Post;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Models\BaseModel;
 
 /**
  * Class CommentController
  *
  * @author Mathrix Back-End Team
  * @package App\Http\Controllers
- * @since 0.9a-1
+ * @since 0.9.1
  * @copyright Mathrix
  */
 class CommentController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {get} /comments Index
      * @apiGroup Comments
      * @apiName CommentsIndex
@@ -39,7 +39,7 @@ class CommentController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {get} /comments/{commentable_type}/{commentable_id}/{?page}/{?perPage} Type
      * @apiGroup Comments
      * @apiName CommentsIndex
@@ -89,7 +89,7 @@ class CommentController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {get} /comments/{id} Get
      * @apiGroup Comments
      * @apiName CommentGet
@@ -114,7 +114,7 @@ class CommentController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {post} /comments Add
      * @apiGroup Comments
      * @apiName CommentAdd
@@ -145,7 +145,7 @@ class CommentController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {patch} /comments/{id} Edit
      * @apiGroup Comments
      * @apiName CommentEdit
@@ -185,7 +185,7 @@ class CommentController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {delete} /comments/{id} Delete
      * @apiGroup Comments
      * @apiName CommentDelete

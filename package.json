@@ -1,6 +1,6 @@
 {
   "name": "mathrix-api",
-  "version": "1.0.0",
+  "version": "0.9a-1",
   "description": "[![pipeline status](https://gitlab.com/mathrix/mathrix-api/badges/master/pipeline.svg)](https://gitlab.com/mathrix/mathrix-api/commits/master)",
   "main": "gulpfile.js",
   "directories": {
@@ -15,7 +15,7 @@
     "url": "git+ssh://git@gitlab.com/mathrix/mathrix-api.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "proprietary",
   "bugs": {
     "url": "https://gitlab.com/mathrix/mathrix-api/issues"
   },

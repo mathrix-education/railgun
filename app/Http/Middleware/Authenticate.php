@@ -8,12 +8,14 @@ use Illuminate\Http\Request;
 /**
  * Class Authenticate
  * Handle auth using oAuth via Passport
+ *
  * @package App\Http\Middleware
  */
 class Authenticate
 {
     /**
      * The authentication guard factory instance.
+     *
      * @var \Illuminate\Contracts\Auth\Factory
      */
     protected $auth;

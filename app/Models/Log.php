@@ -50,23 +50,6 @@ class Log extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
-    /**
-     * BelongsTo User
-     *
-     * @return BelongsTo
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    /**
-     * MorphTo
-     */
-    public function loggable(): MorphTo
-    {
-        return $this->morphTo();
-    }
 
     /**
      * Add a log line the the database
@@ -87,6 +70,24 @@ class Log extends BaseModel
         $log = new Log($data);
 
         return $log->save();
+    }
+
+    /**
+     * BelongsTo User
+     *
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * MorphTo
+     */
+    public function loggable(): MorphTo
+    {
+        return $this->morphTo();
     }
 
     /**

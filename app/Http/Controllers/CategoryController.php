@@ -11,13 +11,13 @@ use Illuminate\Http\Request;
  *
  * @author Mathrix Back-End Team
  * @package App\Http\Controllers
- * @since 0.9a-1
+ * @since 0.9.1
  * @copyright Mathrix
  */
 class CategoryController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {get} /categories Index
      * @apiGroup Categories
      * @apiName CategoriesIndex
@@ -33,7 +33,7 @@ class CategoryController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {get} /categories/{id} Get
      * @apiGroup Categories
      * @apiName CategoryGet
@@ -56,7 +56,7 @@ class CategoryController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {post} /categories Add
      * @apiGroup Categories
      * @apiName CategoryAdd
@@ -90,7 +90,7 @@ class CategoryController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {patch} /categories/{id} Edit
      * @apiGroup Categories
      * @apiName CategoryEdit
@@ -130,7 +130,7 @@ class CategoryController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {delete} /categories/{id} Delete (Not implemented)
      * @apiGroup Categories
      * @apiName CategoryDelete

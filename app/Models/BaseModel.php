@@ -1,13 +1,13 @@
 <?php
 namespace App\Models;
 
+use App\Http\HttpJsonResponseBuilderTrait;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
-use App\Http\HttpJsonResponseBuilderTrait;
 
 /**
  * Class BaseModel
@@ -97,12 +97,10 @@ abstract class BaseModel extends Model
         HttpJsonResponseBuilderTrait::__call as buildResponse;
     }
 
-    /** @var bool Indicates if the model should be timestamped */
-    public $timestamps = false;
-
     /** @var bool Use appends */
     public static $withAppends = true;
-
+    /** @var bool Indicates if the model should be timestamped */
+    public $timestamps = false;
     /** @var bool Validate before save */
     protected $validate = true;
     /** @var array Default validation rules */
@@ -130,24 +128,6 @@ abstract class BaseModel extends Model
     }
 
     /**
-     * Unguard some attributes
-     *
-     * @param string|array $attributes
-     *
-     * @return $this
-     */
-    public function unguardAttributes($attributes)
-    {
-        if (is_string($attributes)) {
-            $attributes = [$attributes];
-        }
-
-        $this->guarded = array_diff($this->guarded, $attributes);
-
-        return $this;
-    }
-
-    /**
      * Use appends
      */
     public static function withAppends()
@@ -168,25 +148,22 @@ abstract class BaseModel extends Model
     }
 
     /**
-     * Override to support appends togglers
+     * Unguard some attributes
      *
-     * @return array
+     * @param string|array $attributes
+     *
+     * @return $this
      */
-    protected function getArrayableAppends()
+    public function unguardAttributes($attributes)
     {
-        if (!self::$withAppends) {
-            return [];
+        if (is_string($attributes)) {
+            $attributes = [$attributes];
         }
 
-        return parent::getArrayableAppends();
+        $this->guarded = array_diff($this->guarded, $attributes);
+
+        return $this;
     }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Response
-    |--------------------------------------------------------------------------
-    */
 
     /**
      * Handle response
@@ -205,6 +182,13 @@ abstract class BaseModel extends Model
             return $this->http500Model();
         }
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Response
+    |--------------------------------------------------------------------------
+    */
 
     /**
      * Check if the model as a response
@@ -236,13 +220,6 @@ abstract class BaseModel extends Model
         $this->response = $response;
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Validation
-    |--------------------------------------------------------------------------
-    */
-
     /**
      * @return bool If model need to be validated before save
      */
@@ -250,6 +227,13 @@ abstract class BaseModel extends Model
     {
         return $this->validate;
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Validation
+    |--------------------------------------------------------------------------
+    */
 
     /**
      * Enable the model validation
@@ -331,5 +315,19 @@ abstract class BaseModel extends Model
         } else {
             return parent::__call($name, $arguments);
         }
+    }
+
+    /**
+     * Override to support appends togglers
+     *
+     * @return array
+     */
+    protected function getArrayableAppends()
+    {
+        if (!self::$withAppends) {
+            return [];
+        }
+
+        return parent::getArrayableAppends();
     }
 }
