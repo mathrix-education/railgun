@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 /**
  * Trait JsonResponseBuilderTrait
  * Handle the JsonResponse
+ *
  * @package App\Http
  * @see JsonResponse
  * @method JsonResponse http200Success($data = null)

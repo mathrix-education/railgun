@@ -59,6 +59,7 @@ class Class_ extends BaseModel
     */
     /**
      * Get the cursus (ie. the class it self and all its previous)
+     *
      * @return Collection
      */
     public function cursus()

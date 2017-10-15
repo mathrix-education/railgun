@@ -11,13 +11,13 @@ use Illuminate\Http\Request;
  *
  * @author Mathrix Back-End Team
  * @package App\Http\Controllers
- * @since 0.9a-1
+ * @since 0.9.1
  * @copyright Mathrix
  */
 class QuoteController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {get} /quotes Index
      * @apiGroup Quotes
      * @apiName QuotesIndex
@@ -33,7 +33,7 @@ class QuoteController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {get} /quotes/{id} Get
      * @apiGroup Quotes
      * @apiName QuoteGet
@@ -55,7 +55,7 @@ class QuoteController extends BaseController
     }
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {get} /quotes/random/{count} Random
      * @apiGroup Quotes
      * @apiName QuotesRandom
@@ -79,7 +79,7 @@ class QuoteController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {post} /quotes Add
      * @apiGroup Quotes
      * @apiName QuoteAdd
@@ -114,7 +114,7 @@ class QuoteController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {patch} /quotes/{id} Edit
      * @apiGroup Quotes
      * @apiName QuoteEdit
@@ -154,7 +154,7 @@ class QuoteController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {delete} /quotes/{id} Delete
      * @apiGroup Quotes
      * @apiName QuoteDelete

@@ -11,13 +11,13 @@ use Illuminate\Http\Request;
  *
  * @author Mathrix Back-End Team
  * @package App\Http\Controllers
- * @since 0.9a-1
+ * @since 0.9.1
  * @copyright Mathrix
  */
 class ChapterController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {get} /chapters Index
      * @apiGroup Chapters
      * @apiName ChaptersIndex
@@ -33,7 +33,7 @@ class ChapterController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {get} /chapters/{id} Get
      * @apiGroup Chapters
      * @apiName ChapterGet
@@ -56,7 +56,7 @@ class ChapterController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {post} /chapters Add
      * @apiGroup Chapters
      * @apiName ChapterAdd
@@ -91,7 +91,7 @@ class ChapterController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {patch} /chapters/{id} Edit
      * @apiGroup Chapters
      * @apiName ChapterEdit
@@ -131,7 +131,7 @@ class ChapterController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {delete} /chapters/{id} Delete
      * @apiGroup Chapters
      * @apiName ChapterDelete

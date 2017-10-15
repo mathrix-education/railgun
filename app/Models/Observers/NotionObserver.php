@@ -65,6 +65,7 @@ class NotionObserver extends BaseObserver
 
     /**
      * Detach all activities link with the deleting notion
+     *
      * @param Notion $notion
      *
      * @return bool

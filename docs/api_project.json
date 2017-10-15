@@ -1,6 +1,6 @@
 {
   "name": "mathrix/mathrix-api",
-  "version": "1.0.0",
+  "version": "0.9a-1",
   "description": "Mathrix API",
   "title": "Mathrix API",
   "url": "",
@@ -107,7 +107,7 @@
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2017-10-13T23:36:13.558Z",
+    "time": "2017-10-15T06:27:41.777Z",
     "url": "http://apidocjs.com",
     "version": "0.17.6"
   }

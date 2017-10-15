@@ -59,6 +59,7 @@ class ActivityObserver extends BaseObserver
 
     /**
      * Detach all modules and notions linked with the deleting notion
+     *
      * @param Activity $activity
      *
      * @return bool

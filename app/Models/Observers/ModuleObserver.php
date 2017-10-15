@@ -64,6 +64,7 @@ class ModuleObserver extends BaseObserver
 
     /**
      * Detach all activities linked with the deleting module
+     *
      * @param Module $module
      *
      * @return bool

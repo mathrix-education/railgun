@@ -12,7 +12,7 @@ use Laravel\Cashier\Http\Controllers\WebhookController as CashierController;
  *
  * @author Mathrix Back-End Team
  * @package App\Http\Controllers
- * @since 0.9a-1
+ * @since 0.9.1
  * @copyright Mathrix
  */
 class StripeController extends CashierController
@@ -20,7 +20,7 @@ class StripeController extends CashierController
     private const ALLOWED_STRIPE_PLANS = ['v3_annually', 'v3_monthly'];
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 0.9.1
      * @api {post} /stripe/subscribe Subscribe
      * @apiGroup Stripe
      * @apiName StripeSubscribe

@@ -1,11 +1,7 @@
 {
   "name": "mathrix/mathrix-api",
   "description": "The Mathrix API server",
-  "keywords": [
-    "framework",
-    "laravel",
-    "lumen"
-  ],
+  "version": "0.9a-1",
   "license": "proprietary",
   "type": "project",
   "require": {

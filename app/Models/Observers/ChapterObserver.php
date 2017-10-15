@@ -37,6 +37,7 @@ class ChapterObserver extends BaseObserver
 
     /**
      * Delete all notions linked with the deleting chapter
+     *
      * @param Chapter $chapter
      *
      * @return bool

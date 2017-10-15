@@ -13,7 +13,9 @@ abstract class BasePolicy
 {
     /**
      * Allow admin to bypass policies
+     *
      * @param User $currentUser
+     *
      * @return bool|null
      */
     public function before(User $currentUser)

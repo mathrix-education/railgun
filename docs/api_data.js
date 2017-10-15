@@ -1,6 +1,6 @@
 define({ "api": [
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/activities",
     "title": "Index",
@@ -57,7 +57,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "post",
     "url": "/activities",
     "title": "Add",
@@ -216,7 +216,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "delete",
     "url": "/activities/{id}",
     "title": "Delete",
@@ -278,7 +278,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "patch",
     "url": "/activities/{id}",
     "title": "Edit",
@@ -454,7 +454,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/activities/{id}",
     "title": "Get",
@@ -529,7 +529,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "post",
     "url": "/users/forgot",
     "title": "Forgot password",
@@ -592,7 +592,7 @@ define({ "api": [
     "groupTitle": "Authentication"
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "post",
     "url": "/users/login",
     "title": "Login",
@@ -717,7 +717,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "post",
     "url": "/users/refresh",
     "title": "Refresh",
@@ -825,7 +825,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "post",
     "url": "/users/reset/{token}",
     "title": "Reset password",
@@ -889,7 +889,7 @@ define({ "api": [
     "groupTitle": "Authentication"
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/categories",
     "title": "Index",
@@ -939,7 +939,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "post",
     "url": "/categories",
     "title": "Add",
@@ -1042,7 +1042,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "delete",
     "url": "/categories/{id}",
     "title": "Delete (Not implemented)",
@@ -1104,7 +1104,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "patch",
     "url": "/categories/{id}",
     "title": "Edit",
@@ -1224,7 +1224,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/categories/{id}",
     "title": "Get",
@@ -1292,7 +1292,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "post",
     "url": "/chapters",
     "title": "Add",
@@ -1423,7 +1423,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "delete",
     "url": "/chapters/{id}",
     "title": "Delete",
@@ -1485,7 +1485,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "patch",
     "url": "/chapters/{id}",
     "title": "Edit",
@@ -1633,7 +1633,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/chapters/{id}",
     "title": "Get",
@@ -1715,7 +1715,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/chapters",
     "title": "Index",
@@ -1779,7 +1779,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "post",
     "url": "/classes",
     "title": "Add",
@@ -1954,7 +1954,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "delete",
     "url": "/classes/{id}",
     "title": "Delete (Not implemented)",
@@ -2016,7 +2016,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "patch",
     "url": "/classes/{id}",
     "title": "Edit",
@@ -2208,7 +2208,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/classes/{id}",
     "title": "Get",
@@ -2297,7 +2297,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/classes",
     "title": "Index",
@@ -2368,7 +2368,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "post",
     "url": "/comments",
     "title": "Add",
@@ -2664,7 +2664,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "delete",
     "url": "/comments/{id}",
     "title": "Delete",
@@ -2726,7 +2726,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "patch",
     "url": "/comments/{id}",
     "title": "Edit",
@@ -3039,7 +3039,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/comments/{id}",
     "title": "Get",
@@ -3253,7 +3253,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/comments",
     "title": "Index",
@@ -3456,7 +3456,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/comments/{commentable_type}/{commentable_id}/{?page}/{?perPage}",
     "title": "Type",
@@ -3700,7 +3700,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/content/countries",
     "title": "Countries",
@@ -3813,7 +3813,7 @@ define({ "api": [
     "groupTitle": "Content"
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/content/modules/{classId}",
     "title": "Modules",
@@ -4035,7 +4035,7 @@ define({ "api": [
     "groupTitle": "Content"
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/content/program/{classId}",
     "title": "Program",
@@ -4250,7 +4250,7 @@ define({ "api": [
     "groupTitle": "Content"
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/content/search/{query}/{?page}/{?perPage}",
     "title": "Search",
@@ -4677,7 +4677,7 @@ define({ "api": [
     "groupTitle": "Content"
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/countries",
     "title": "Index",
@@ -4741,7 +4741,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "post",
     "url": "/countries",
     "title": "Add",
@@ -4874,7 +4874,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "delete",
     "url": "/countries/{id}",
     "title": "Delete (Not implemented)",
@@ -4936,7 +4936,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "patch",
     "url": "/countries/{id}",
     "title": "Edit",
@@ -5086,7 +5086,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/countries/{id}",
     "title": "Get",
@@ -5168,7 +5168,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "course",
     "url": "/courses",
     "title": "Add",
@@ -5334,7 +5334,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "delete",
     "url": "/courses/{id}",
     "title": "Delete",
@@ -5396,7 +5396,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "patch",
     "url": "/courses/{id}",
     "title": "Edit",
@@ -5579,7 +5579,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/courses/{id}",
     "title": "Get",
@@ -5675,7 +5675,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/courses",
     "title": "Index",
@@ -5775,7 +5775,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "post",
     "url": "/disciplines",
     "title": "Add",
@@ -5935,7 +5935,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "delete",
     "url": "/disciplines/{id}",
     "title": "Delete (Not implemented)",
@@ -5997,7 +5997,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "patch",
     "url": "/disciplines/{id}",
     "title": "Edit",
@@ -6174,7 +6174,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/disciplines/{id}",
     "title": "Get",
@@ -6256,7 +6256,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/disciplines",
     "title": "Index",
@@ -6320,7 +6320,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "post",
     "url": "/modules",
     "title": "Add",
@@ -6581,7 +6581,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "delete",
     "url": "/modules/{id}",
     "title": "Delete",
@@ -6643,7 +6643,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "patch",
     "url": "/modules/{id}",
     "title": "Edit",
@@ -6921,7 +6921,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/modules/{id}",
     "title": "Get",
@@ -7235,7 +7235,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/modules",
     "title": "Index",
@@ -7350,7 +7350,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "post",
     "url": "/notions",
     "title": "Add",
@@ -7495,7 +7495,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "delete",
     "url": "/notions/{id}",
     "title": "Delete",
@@ -7557,7 +7557,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "patch",
     "url": "/notions/{id}",
     "title": "Edit",
@@ -7719,7 +7719,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/notions/{id}",
     "title": "Get",
@@ -7794,7 +7794,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/notions",
     "title": "Index",
@@ -7851,7 +7851,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "post",
     "url": "/posts",
     "title": "Add",
@@ -8017,7 +8017,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "delete",
     "url": "/posts/{id}",
     "title": "Delete",
@@ -8079,7 +8079,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "patch",
     "url": "/posts/{id}",
     "title": "Edit",
@@ -8262,7 +8262,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/posts/{id}",
     "title": "Get",
@@ -8358,7 +8358,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/posts",
     "title": "Index",
@@ -8458,7 +8458,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "post",
     "url": "/quotes",
     "title": "Add",
@@ -8560,7 +8560,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "delete",
     "url": "/quotes/{id}",
     "title": "Delete",
@@ -8622,7 +8622,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "patch",
     "url": "/quotes/{id}",
     "title": "Edit",
@@ -8741,7 +8741,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/quotes/{id}",
     "title": "Get",
@@ -8809,7 +8809,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/quotes",
     "title": "Index",
@@ -8859,7 +8859,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/quotes/random/{count}",
     "title": "Random",
@@ -8923,7 +8923,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "post",
     "url": "/stripe/subscribe",
     "title": "Subscribe",
@@ -8996,16 +8996,16 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "delete",
     "url": "/users/{id}",
-    "title": "Delete (WIP)",
+    "title": "Delete (Not implemented)",
     "group": "Users",
     "name": "UserDelete",
     "description": "<p>Delete a user</p>",
     "permission": [
       {
-        "name": "admin"
+        "name": "adminhttp501NotImplemented"
       }
     ],
     "parameter": {
@@ -9050,7 +9050,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "patch",
     "url": "/users/{id}",
     "title": "Edit",
@@ -9301,7 +9301,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/users/exists/{field}/{value}",
     "title": "Exists",
@@ -9341,7 +9341,7 @@ define({ "api": [
     "groupTitle": "Users"
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/users/{id}",
     "title": "Get",
@@ -9500,7 +9500,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/users/me",
     "title": "Me",
@@ -9626,8 +9626,8 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
-    "type": "delete",
+    "version": "0.9.1",
+    "type": "post",
     "url": "/users/points/{?id}",
     "title": "Points (WIP)",
     "group": "Users",
@@ -9640,14 +9640,31 @@ define({ "api": [
     ],
     "parameter": {
       "fields": {
-        "Parameter": [
+        "Data": [
           {
-            "group": "Parameter",
+            "group": "Data",
             "type": "int",
             "optional": true,
             "field": "id",
             "defaultValue": "null",
             "description": "<p>The user id</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "allowedValues": [
+              "module"
+            ],
+            "optional": true,
+            "field": "loggable_type",
+            "description": "<p>The loggable type</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": true,
+            "field": "loggable_id",
+            "description": "<p>The loggable id</p>"
           }
         ]
       }
@@ -9703,7 +9720,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "post",
     "url": "/users/register",
     "title": "Register",
@@ -9891,7 +9908,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/users/{?page}/{?perPage}",
     "title": "Index",
@@ -10066,7 +10083,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "get",
     "url": "/users/search/{field}/{value}",
     "title": "Search",
@@ -10219,7 +10236,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "post",
     "url": "/votes/{votable_type}/{votable_id}/down",
     "title": "Down",
@@ -10268,7 +10285,7 @@ define({ "api": [
     }
   },
   {
-    "version": "1.0.0",
+    "version": "0.9.1",
     "type": "post",
     "url": "/votes/{votable_type}/{votable_id}/up",
     "title": "Up",
