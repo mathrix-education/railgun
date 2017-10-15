@@ -20,6 +20,7 @@ use Illuminate\Support\Str;
  * @method JsonResponse http422Save($data = null)
  * @method JsonResponse http422Delete($data = null)
  * @method JsonResponse http422Validation($data = null)
+ * @method JsonResponse http429TooManyRequests($data = null)
  * @method JsonResponse http500Model($data = null)
  * @method JsonResponse http501NotImplemented($data = null)
  * @method JsonResponse http502EmailNotSent($data = null)
