@@ -4,6 +4,7 @@ use App\Models\Class_;
 use App\Models\Comment;
 use App\Models\Country;
 use App\Models\Discipline;
+use App\Models\Level;
 use App\Models\Quote;
 use App\Models\Vote;
 use Laravel\Passport\Client;
@@ -49,5 +50,7 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->call(CourseTableSeeder::class);
         $this->seedFromFactory(Comment::class, ['count' => 200]);
         $this->seedFromFactory(Vote::class, ['count' => random_int(450, 550)]);
+        $this->seedFromJson(Level::class);
+
     }
 }

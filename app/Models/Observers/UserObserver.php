@@ -2,6 +2,7 @@
 
 namespace App\Models\Observers;
 
+use App\Models\Level;
 use App\Models\Log;
 use App\Models\User;
 use Carbon\Carbon;
@@ -15,6 +16,28 @@ use Illuminate\Support\Facades\Hash;
  */
 class UserObserver extends BaseObserver
 {
+    /**
+     * @param User $user
+     *
+     * @return bool|null|void
+     */
+    public function saving($user)
+    {
+        /*
+         * Hash if needed:
+         * - password needs to be set
+         * - password length is not equal to 60
+         * - password does not contain the CRYPT_BLOWFISH identifier $2y$
+         * Not 100% sure but practically null
+         */
+        if (isset($user->password) && strlen($user->password) != 60 && !strpos($user->password, '$2y$')) {
+            $user->password = Hash::make($user->password);
+        }
+
+        parent::saving($user);
+    }
+
+
     /**
      * @param User $user
      */
@@ -69,27 +92,21 @@ class UserObserver extends BaseObserver
         if (in_array('daily', $changes)) {
             Log::log('user_set_daily', $user);
         }
-    }
+        if (in_array('points', $changes) && !in_array('level', $changes)) {
+            $levelBefore = $user->level;
+            /** @var Level $level */
+            $level = Level::where('level', $user->level + 1)->first();
 
+            while ($user->points >= $level->objective && $level !== null) {
+                $user->level++;
+                $level = Level::where('level', $user->level + 1)->first();
+            }
 
-    /**
-     * @param User $user
-     *
-     * @return bool|null|void
-     */
-    public function saving($user)
-    {
-        /*
-         * Hash if needed:
-         * - password needs to be set
-         * - password length is not equal to 60
-         * - password does not contain the CRYPT_BLOWFISH identifier $2y$
-         * Not 100% sure but practically null
-         */
-        if (isset($user->password) && strlen($user->password) != 60 && !strpos($user->password, '$2y$')) {
-            $user->password = Hash::make($user->password);
+            if ($user->level != $levelBefore) {
+                $user->update(['level' => $user->level]);
+            }
         }
 
-        parent::saving($user);
     }
 }
+
