@@ -1,7 +1,9 @@
 <?php
 namespace Tests;
 
+use App\Models\Log;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\Passport;
@@ -238,15 +240,28 @@ class ScopeTestCase extends BaseTestCase
      *
      * @param string $event The event type
      * @param User|int|null $user The user as object, the user_id or null if not relying on user
-     * @param array $data The additional data to filter the event
+     * @param array $data The additional data to filter the event (associative or Eloquent mode)
      */
     public function assertLogged(string $event, $user = null, array $data = [])
     {
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $data[] = [$key, $value];
+                unset($data[$key]);
+            }
+        }
+
         $data = array_merge([
-            'event' => $event,
-            'user_id' => $user === null || is_int($user) ? $user : $user->id,
+            ['event', $event],
+            ['user_id', $user === null || is_int($user) ? $user : $user->id]
         ], $data);
 
-        $this->assertInDatabase('logs', $data);
+        $count = Log::where($data)
+            ->whereBetween('created_at', [Carbon::now()->subSeconds(10), Carbon::now()]) // 10 seconds
+            ->count();
+
+        $this->assertGreaterThan(0, $count, sprintf(
+            'Unable to find row in database table [%s] that matched attributes [%s].', 'logs', json_encode($data)
+        ));
     }
 }

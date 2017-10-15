@@ -18,5 +18,6 @@ class UsersAsRegisteredTest extends ScopeTestCase
             'id' => $this->user->id,
             'points' => $pointsBefore + $pointsToAdd
         ]);
+        $this->assertLogged('user_gathered_points', $this->user);
     }
 }
