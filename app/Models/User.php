@@ -29,6 +29,8 @@ use Laravel\Passport\Token;
  * @property string $type
  * @property string $token
  * @property int $points
+ * @property int $daily
+ * @property int $daily_achievements
  * @property array $settings
  * @property int|null $class_id
  * @property string|null $stripe_id
@@ -51,6 +53,8 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereToken($value)
  * @method static Builder|User wherePassword($value)
  * @method static Builder|User wherePoints($value)
+ * @method static Builder|User whereDaily($value)
+ * @method static Builder|User whereDailyAchievements($value)
  * @method static Builder|User whereSettings($value)
  * @method static Builder|User whereType($value)
  * @method static Builder|User whereUsername($value)

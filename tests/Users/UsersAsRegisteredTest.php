@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Users;
 
 use App\Models\Activity;
@@ -55,5 +56,19 @@ class UsersAsRegisteredTest extends ScopeTestCase
             'points' => $pointsBefore + $pointsToAdd
         ]);
         $this->assertLogged('user_gathered_points', $this->user);
+
+    }
+
+    public function testDailyAchievementPass()
+    {
+        $dailyAchievementsBefore = $this->user->daily_achievements;
+        $this->call('post', '/users/points', ['points' => 100]);// To be sure to pass a daily achievement
+
+        $this->assertHttp200Success();
+        $this->assertInDatabase('users', [
+            'id' => $this->user->id,
+            'daily_achievements' => $dailyAchievementsBefore + 1
+        ]);
     }
 }
+
