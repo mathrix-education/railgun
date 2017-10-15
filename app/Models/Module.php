@@ -36,6 +36,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @method static Builder|Module whereType($value)
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Log[] $logs
  */
 class Module extends BaseModel
 {

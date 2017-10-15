@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Activity whereName($value)
  * @method static Builder|Activity whereSlug($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Log[] $logs
  */
 class Activity extends BaseModel
 {
