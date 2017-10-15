@@ -8,18 +8,11 @@
   ],
   "license": "proprietary",
   "type": "project",
-  "repositories": [
-    {
-      "type": "git",
-      "url": "git@gitlab.com:mathrix/lumen-utils.git"
-    }
-  ],
   "require": {
     "php": ">=7.1",
     "laravel/lumen-framework": "5.5.*",
     "vlucas/phpdotenv": "~2.2",
     "dusterio/lumen-passport": "^0.2.0",
-    "mathrix/lumen-utils": "dev-master",
     "illuminate/mail": "^5.4",
     "laravel/cashier": "~7.0",
     "barryvdh/laravel-cors": "^0.9.3",

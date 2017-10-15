@@ -40,7 +40,7 @@ $app->withEloquent();
 
 $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
-    Mathrix\Lumen\Exceptions\Handler::class
+    App\Exceptions\Handler::class
 );
 
 $app->singleton(
@@ -83,7 +83,7 @@ $app->middleware([
 ]);
 
 $app->routeMiddleware([
-    'auth' => Mathrix\Lumen\Http\Middleware\Authenticate::class,
+    'auth' => App\Http\Middleware\Authenticate::class,
 ]);
 
 /*

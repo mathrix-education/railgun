@@ -5,7 +5,6 @@ namespace App\Models\Observers;
 use App\Models\Log;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Mathrix\Lumen\Observers\BaseObserver;
 
 /**
  * Class UserObserver

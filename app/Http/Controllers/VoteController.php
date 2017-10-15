@@ -6,8 +6,7 @@ use App\Models\Vote;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Mathrix\Lumen\Http\Controllers\BaseController;
-use Mathrix\Lumen\Models\BaseModel;
+use App\Models\BaseModel;
 
 /**
  * Class VoteController

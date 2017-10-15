@@ -7,8 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\Passport;
-use Mathrix\Lumen\Models\BaseModel;
-use Mathrix\Lumen\Tests\BaseTestCase;
+use App\Models\BaseModel;
 use Tests\Generics\Generics;
 
 /**

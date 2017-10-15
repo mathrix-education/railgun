@@ -4,7 +4,6 @@ namespace App\Models\Observers;
 
 use App\Models\Activity;
 use App\Models\Notion;
-use Mathrix\Lumen\Observers\BaseObserver;
 
 /**
  * Class NotionObserver

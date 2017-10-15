@@ -3,7 +3,6 @@
 namespace App\Models\Observers;
 
 use App\Models\Activity;
-use Mathrix\Lumen\Observers\BaseObserver;
 
 /**
  * Class ActivityObserver

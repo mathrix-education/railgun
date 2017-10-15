@@ -3,7 +3,6 @@
 namespace App\Models\Observers;
 
 use App\Models\Vote;
-use Mathrix\Lumen\Observers\BaseObserver;
 
 /**
  * Class VoteObserver

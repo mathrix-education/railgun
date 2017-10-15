@@ -1,6 +1,4 @@
 <?php
-use Mathrix\Lumen\Database\BaseTableSeeder;
-
 /**
  * Class DatabaseSeeder
  */

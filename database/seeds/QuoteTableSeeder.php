@@ -1,6 +1,5 @@
 <?php
 use App\Models\Quote;
-use Mathrix\Lumen\Database\BaseTableSeeder;
 
 class QuoteTableSeeder extends BaseTableSeeder
 {

@@ -1,7 +1,7 @@
 <?php
 namespace Tests\Comments;
 
-use Mathrix\Lumen\Models\BaseModel;
+use App\Models\BaseModel;
 use Tests\ScopeTestCase;
 
 /**

@@ -1,7 +1,6 @@
 <?php
 use App\Models\Chapter;
 use Illuminate\Support\Facades\DB;
-use Mathrix\Lumen\Database\BaseTableSeeder;
 
 class ChapterTableSeeder extends BaseTableSeeder
 {

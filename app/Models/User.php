@@ -15,7 +15,7 @@ use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\Client;
 use Laravel\Passport\HasApiTokens;
 use Laravel\Passport\Token;
-use Mathrix\Lumen\Models\BaseModel;
+
 
 /**
  * App\Models\User

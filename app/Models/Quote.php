@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Mathrix\Lumen\Models\BaseModel;
+
 
 /**
  * App\Models\Quote

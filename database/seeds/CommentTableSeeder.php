@@ -1,6 +1,5 @@
 <?php
 use App\Models\Comment;
-use Mathrix\Lumen\Database\BaseTableSeeder;
 
 class CommentTableSeeder extends BaseTableSeeder
 {

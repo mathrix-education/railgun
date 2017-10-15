@@ -1,7 +1,6 @@
 <?php
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Mathrix\Lumen\Database\BaseTableSeeder;
 
 class UserTableSeeder extends BaseTableSeeder
 {

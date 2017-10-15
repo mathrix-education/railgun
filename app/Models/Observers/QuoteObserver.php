@@ -3,7 +3,6 @@
 namespace App\Models\Observers;
 
 use App\Models\Quote;
-use Mathrix\Lumen\Observers\BaseObserver;
 
 /**
  * Class QuoteObserver

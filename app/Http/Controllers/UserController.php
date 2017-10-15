@@ -9,7 +9,6 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Mathrix\Lumen\Http\Controllers\BaseController;
 
 /**
  * Class UserController

@@ -1,6 +1,5 @@
 <?php
 use App\Models\Vote;
-use Mathrix\Lumen\Database\BaseTableSeeder;
 
 class VoteTableSeeder extends BaseTableSeeder
 {
