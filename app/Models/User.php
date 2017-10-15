@@ -29,6 +29,7 @@ use Laravel\Passport\Token;
  * @property string $type
  * @property string $token
  * @property int $points
+ * @property int $level
  * @property int $daily
  * @property int $daily_achievements
  * @property array $settings
@@ -53,6 +54,7 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereToken($value)
  * @method static Builder|User wherePassword($value)
  * @method static Builder|User wherePoints($value)
+ * @method static Builder|User whereLevel($value)
  * @method static Builder|User whereDaily($value)
  * @method static Builder|User whereDailyAchievements($value)
  * @method static Builder|User whereSettings($value)
@@ -63,6 +65,8 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereStripeId($value)
  * @method static Builder|User whereTrialEndsAt($value)
  * @mixin \Eloquent
+ * @property int $levels
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereLevels($value)
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {

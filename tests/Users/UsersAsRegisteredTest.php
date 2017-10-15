@@ -3,6 +3,7 @@
 namespace Tests\Users;
 
 use App\Models\Activity;
+use App\Models\Level;
 use App\Models\Log;
 use App\Models\Module;
 use Carbon\Carbon;
@@ -15,6 +16,7 @@ class UsersAsRegisteredTest extends ScopeTestCase
         $pointsBefore = $this->user->points;
         $pointsToAdd = $this->faker->numberBetween(1, 10);
 
+
         $this->call('post', '/users/points', ['points' => $pointsToAdd]);
 
         // Assertions
@@ -25,6 +27,7 @@ class UsersAsRegisteredTest extends ScopeTestCase
         ]);
         $this->assertLogged('user_gathered_points', $this->user);
     }
+
 
     public function testPointsWithLoggable()
     {
@@ -49,6 +52,7 @@ class UsersAsRegisteredTest extends ScopeTestCase
             'loggable_id' => $loggable->id
         ]);
 
+
         // Assertions
         $this->assertHttp200Success();
         $this->assertInDatabase('users', [
@@ -58,6 +62,7 @@ class UsersAsRegisteredTest extends ScopeTestCase
         $this->assertLogged('user_gathered_points', $this->user);
 
     }
+
 
     public function testDailyAchievementPass()
     {
@@ -70,5 +75,25 @@ class UsersAsRegisteredTest extends ScopeTestCase
             'daily_achievements' => $dailyAchievementsBefore + 1
         ]);
     }
+
+
+    public function testLevelObjectivePass()
+    {
+        // $levels = $this->user->level;
+        $levelBefore = $this->user->level;
+
+        $objective = Level::where('level', $this->user->level + 1)->first()->objective; // get the following obj
+        $pointsToAdd = $objective - $this->user->points;
+
+        $this->call('post', '/users/points', ['points' => $pointsToAdd]);
+
+        $this->assertHttp200Success();
+        $this->assertInDatabase('users', [
+            'id' => $this->user->id,
+            'level' => $levelBefore + 1
+        ]);
+    }
+
+
 }
 

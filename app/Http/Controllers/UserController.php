@@ -302,6 +302,7 @@ class UserController extends BaseController
             return $this->http401Unauthorized();
         }
 
+
         $loggableType = $request->input('loggable_type');
         $loggableId = $request->input('loggable_id');
         $useLoggable = $loggableType !== null && $loggableId !== null;
@@ -342,8 +343,8 @@ class UserController extends BaseController
         } else if (!is_int($pointsToAdd) || $pointsToAdd < 0) { // Check if field is a valid positive integer
             return $this->http400InvalidRequest(['message' => 'points field has to be a positive integer']);
         }
-
         if (!$user->update(['points' => $user->points + $pointsToAdd])) {
+
             return $user->handleResponse($this->http422Save());
         }
 
