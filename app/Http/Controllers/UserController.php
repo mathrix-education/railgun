@@ -342,6 +342,9 @@ class UserController extends BaseController
                 'loggable_type' => $loggableType,
                 'loggable_id' => $loggableId
             ]);
+        } else {
+            // Then log the informations
+            Log::log('user_gathered_points', $user);
         }
 
         return $this->http200Success($user);
