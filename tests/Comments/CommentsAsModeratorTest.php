@@ -19,15 +19,18 @@ class CommentsAsModeratorTest extends ScopeTestCase
         $this->sameAs('public');
     }
 
+
     public function testAdd()
     {
         $this->sameAs('registered');
     }
 
+
     public function testEdit()
     {
         $this->sameAs('public');
     }
+
 
     public function testDelete()
     {

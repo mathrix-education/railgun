@@ -62,6 +62,7 @@ class ModuleObserver extends BaseObserver
         return parent::saving($module);
     }
 
+
     /**
      * Detach all activities linked with the deleting module
      *

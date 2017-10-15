@@ -117,6 +117,7 @@ abstract class BaseModel extends Model
      */
     protected $response = null;
 
+
     /**
      * Get the table name
      *
@@ -126,6 +127,7 @@ abstract class BaseModel extends Model
     {
         return with(new static)->getTable();
     }
+
 
     /**
      * Use appends
@@ -137,6 +139,7 @@ abstract class BaseModel extends Model
         return (new static);
     }
 
+
     /**
      * Don't use appends
      */
@@ -146,6 +149,7 @@ abstract class BaseModel extends Model
 
         return (new static);
     }
+
 
     /**
      * Unguard some attributes
@@ -164,6 +168,7 @@ abstract class BaseModel extends Model
 
         return $this;
     }
+
 
     /**
      * Handle response
@@ -200,6 +205,7 @@ abstract class BaseModel extends Model
         return !is_null($this->response);
     }
 
+
     /**
      * Set the model response
      *
@@ -210,6 +216,7 @@ abstract class BaseModel extends Model
         return $this->response;
     }
 
+
     /**
      * Set the model response
      *
@@ -219,6 +226,7 @@ abstract class BaseModel extends Model
     {
         $this->response = $response;
     }
+
 
     /**
      * @return bool If model need to be validated before save
@@ -243,6 +251,7 @@ abstract class BaseModel extends Model
         $this->validate = true;
     }
 
+
     /**
      * Disable the model validation
      */
@@ -250,6 +259,7 @@ abstract class BaseModel extends Model
     {
         $this->validate = false;
     }
+
 
     /**
      * Validate model data
@@ -278,6 +288,7 @@ abstract class BaseModel extends Model
         return true;
     }
 
+
     /**
      * Inject custom rules in the validator before save
      *
@@ -290,6 +301,7 @@ abstract class BaseModel extends Model
         return $validator;
     }
 
+
     /**
      * Returns the validation errors
      *
@@ -299,6 +311,7 @@ abstract class BaseModel extends Model
     {
         return $this->errors;
     }
+
 
     /**
      * Resolve __call conflict
@@ -316,6 +329,7 @@ abstract class BaseModel extends Model
             return parent::__call($name, $arguments);
         }
     }
+
 
     /**
      * Override to support appends togglers

@@ -19,15 +19,18 @@ class ClassesAsPublicTest extends ScopeTestCase
         $this->genericIndexSuccess();
     }
 
+
     public function testAdd()
     {
         $this->genericAddUnauthorized();
     }
 
+
     public function testEdit()
     {
         $this->genericEditUnauthorized();
     }
+
 
     public function testDelete()
     {

@@ -24,6 +24,7 @@ class UserPolicy extends BasePolicy
         return false;
     }
 
+
     /**
      * @param User $currentUser
      * @param User $user
@@ -36,6 +37,7 @@ class UserPolicy extends BasePolicy
             (in_array($user->type, ['registered', 'premium']) && $currentUser->tokenCan('moderator'));
     }
 
+
     /**
      * @param User $currentUser
      * @param User $user
@@ -47,6 +49,7 @@ class UserPolicy extends BasePolicy
         return $currentUser->id === $user->id;
     }
 
+
     /**
      * @param User $currentUser
      * @param User $user
@@ -57,6 +60,7 @@ class UserPolicy extends BasePolicy
     {
         return $currentUser->id === $user->id;
     }
+
 
     /**
      * @param User $currentUser
@@ -76,6 +80,7 @@ class UserPolicy extends BasePolicy
             ->whereBetween('created', [$midnight, Carbon::now()])
             ->exists();
     }
+
 
     /**
      * @param User $currentUser

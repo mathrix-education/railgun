@@ -19,15 +19,18 @@ class CommentsAsAdminTest extends ScopeTestCase
         $this->genericIndexSuccess();
     }
 
+
     public function testAdd()
     {
         $this->genericAddSuccess();
     }
 
+
     public function testEdit()
     {
         $this->genericEditSuccess();
     }
+
 
     public function testDelete()
     {

@@ -59,6 +59,7 @@ class Course extends BaseModel
         return $this->belongsTo(Category::class);
     }
 
+
     /**
      * Get all of the post's comments.
      */

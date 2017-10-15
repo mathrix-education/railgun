@@ -18,6 +18,7 @@ class ClassPolicy extends BasePolicy
         return false;
     }
 
+
     /**
      * @return bool
      */
@@ -25,6 +26,7 @@ class ClassPolicy extends BasePolicy
     {
         return false;
     }
+
 
     /**
      * @return bool

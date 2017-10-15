@@ -16,10 +16,12 @@ class ModulesAsAdminTest extends ScopeTestCase
 {
     protected $subFactory = 'random';
 
+
     public function testIndex()
     {
         $this->sameAs('public');
     }
+
 
     public function testAdd()
     {
@@ -27,11 +29,13 @@ class ModulesAsAdminTest extends ScopeTestCase
         $this->assertHttp200Success();
     }
 
+
     public function testEdit()
     {
         $this->genericEdit();
         $this->assertHttp200Success();
     }
+
 
     public function testDelete()
     {

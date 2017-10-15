@@ -59,29 +59,6 @@ class AuthTest extends BaseTestCase
         $this->user = User::inRandomOrder()->first();
     }
 
-    protected function setUpTraits()
-    {
-        parent::setUpTraits();
-
-        $uses = array_flip(class_uses_recursive(static::class));
-
-        if (isset($uses[DatabaseTransactions::class])) {
-            $database = $this->app->make('db');
-
-            $this->beforeApplicationDestroyed(function () use ($database) {
-                foreach ($this->connectionsToTransact() as $name) {
-                    $database->connection($name)->disconnect();
-                }
-            });
-        }
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | POST /users/login
-    |--------------------------------------------------------------------------
-    */
 
     /**
      * Expect HTTP 200 success
@@ -104,6 +81,14 @@ class AuthTest extends BaseTestCase
         return $this->response;
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | POST /users/login
+    |--------------------------------------------------------------------------
+    */
+
+
     /**
      * Build login form data
      *
@@ -119,6 +104,7 @@ class AuthTest extends BaseTestCase
             'password' => 'test'
         ];
     }
+
 
     /**
      * Expect HTTP 401 invalid_client
@@ -150,11 +136,6 @@ class AuthTest extends BaseTestCase
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | POST /users/refresh
-    |--------------------------------------------------------------------------
-    */
     /**
      * Expect HTTP 200 success
      *
@@ -180,6 +161,13 @@ class AuthTest extends BaseTestCase
             'refresh_token'
         ]);
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | POST /users/refresh
+    |--------------------------------------------------------------------------
+    */
 
 
     /**
@@ -221,13 +209,6 @@ class AuthTest extends BaseTestCase
     }
 
 
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | POST /users/forgot
-    |--------------------------------------------------------------------------
-    */
     /**
      * Expect HTTP 200 success
      */
@@ -245,6 +226,15 @@ class AuthTest extends BaseTestCase
     }
 
 
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | POST /users/forgot
+    |--------------------------------------------------------------------------
+    */
+
+
     /**
      * Expect HTTP 404 model_not_found
      */
@@ -260,11 +250,6 @@ class AuthTest extends BaseTestCase
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | POST /users/reset
-    |--------------------------------------------------------------------------
-    */
     /**
      * Expect HTTP 200 success
      */
@@ -280,6 +265,13 @@ class AuthTest extends BaseTestCase
         // Assertions
         $this->assertResponseStatus(200);
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | POST /users/reset
+    |--------------------------------------------------------------------------
+    */
 
 
     /**
@@ -306,5 +298,23 @@ class AuthTest extends BaseTestCase
 
         // Assertions
         $this->assertJsonError('validation', 422);
+    }
+
+
+    protected function setUpTraits()
+    {
+        parent::setUpTraits();
+
+        $uses = array_flip(class_uses_recursive(static::class));
+
+        if (isset($uses[DatabaseTransactions::class])) {
+            $database = $this->app->make('db');
+
+            $this->beforeApplicationDestroyed(function () use ($database) {
+                foreach ($this->connectionsToTransact() as $name) {
+                    $database->connection($name)->disconnect();
+                }
+            });
+        }
     }
 }

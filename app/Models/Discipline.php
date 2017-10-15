@@ -53,6 +53,7 @@ class Discipline extends BaseModel
         return $this->hasMany(Chapter::class);
     }
 
+
     /**
      * BelongsToMany Class_
      *

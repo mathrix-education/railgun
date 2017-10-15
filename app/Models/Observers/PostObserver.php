@@ -40,6 +40,7 @@ class PostObserver extends BaseObserver
         return parent::saving($post);
     }
 
+
     /**
      * @param Post $post
      *

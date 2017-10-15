@@ -27,6 +27,7 @@ class CreateCoursesTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      *

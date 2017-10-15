@@ -57,6 +57,7 @@ class Activity extends BaseModel
         return $this->morphMany(Log::class, 'loggable');
     }
 
+
     /**
      * BelongsToMany Module
      *
@@ -66,6 +67,7 @@ class Activity extends BaseModel
     {
         return $this->belongsToMany(Module::class);
     }
+
 
     /**
      * BelongsToMany Notion

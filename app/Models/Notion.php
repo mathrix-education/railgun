@@ -51,6 +51,7 @@ class Notion extends BaseModel
         return $this->belongsToMany(Activity::class);
     }
 
+
     /**
      * BelongsToChapter
      *

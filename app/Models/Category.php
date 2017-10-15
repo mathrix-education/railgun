@@ -50,6 +50,7 @@ class Category extends BaseModel
         return $this->hasMany(Post::class);
     }
 
+
     /**
      * HasMany Post
      *

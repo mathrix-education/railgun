@@ -40,6 +40,7 @@ class VoteController extends BaseController
         return $this->vote($request, $votable_type, $votable_id, 1);
     }
 
+
     /**
      * Handle vote action
      *
@@ -98,6 +99,7 @@ class VoteController extends BaseController
 
         return $this->http200Success($vote->exists());
     }
+
 
     /**
      * @apiVersion 0.9.1

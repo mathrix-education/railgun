@@ -1,9 +1,9 @@
 <?php
+use App\Models\BaseModel;
 use App\Models\User;
 use App\Models\Vote;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use App\Models\BaseModel;
 
 /**
  * VoteFactory

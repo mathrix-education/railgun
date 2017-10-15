@@ -43,6 +43,7 @@ trait HttpJsonResponseBuilderTrait
         'http502EmailNotSent' => 'Email was not sent'
     ];
 
+
     /**
      * Define if the controller should return a JSON HTTP response
      *
@@ -60,6 +61,7 @@ trait HttpJsonResponseBuilderTrait
 
         return null;
     }
+
 
     /**
      * Check if method matches to the HTTP response pattern
@@ -79,6 +81,7 @@ trait HttpJsonResponseBuilderTrait
             return false;
         }
     }
+
 
     /**
      * Build the JsonResponse with the given data

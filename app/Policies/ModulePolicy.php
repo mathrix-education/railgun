@@ -18,6 +18,7 @@ class ModulePolicy extends BasePolicy
         return false;
     }
 
+
     /**
      * @return bool
      */
@@ -25,6 +26,7 @@ class ModulePolicy extends BasePolicy
     {
         return false;
     }
+
 
     /**
      * @return bool

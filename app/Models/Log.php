@@ -72,6 +72,7 @@ class Log extends BaseModel
         return $log->save();
     }
 
+
     /**
      * BelongsTo User
      *
@@ -82,6 +83,7 @@ class Log extends BaseModel
         return $this->belongsTo(User::class);
     }
 
+
     /**
      * MorphTo
      */
@@ -89,6 +91,7 @@ class Log extends BaseModel
     {
         return $this->morphTo();
     }
+
 
     /**
      * Disable updated_at field update

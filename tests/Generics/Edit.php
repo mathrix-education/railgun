@@ -16,6 +16,20 @@ trait Edit
     /** @var array factorized model data */
     protected $editModelData;
 
+
+    /**
+     * Generic edit; expect HTTP 200 and data present in database
+     */
+    public function genericEditSuccess()
+    {
+        $this->genericEdit();
+
+        // Assertions
+        $this->assertHttp200Success();
+        $this->assertInDatabase($this->modelPlural, $this->editModelData);
+    }
+
+
     /**
      * Generic edit call
      */
@@ -31,17 +45,6 @@ trait Edit
         $this->call('patch', '/' . $this->modelPlural . '/' . $this->editModelId, $this->editModelData);
     }
 
-    /**
-     * Generic edit; expect HTTP 200 and data present in database
-     */
-    public function genericEditSuccess()
-    {
-        $this->genericEdit();
-
-        // Assertions
-        $this->assertHttp200Success();
-        $this->assertInDatabase($this->modelPlural, $this->editModelData);
-    }
 
     /**
      * Generic edit; expect HTTP 200 and data present in database

@@ -63,6 +63,7 @@ class Post extends BaseModel
         return $this->belongsTo(Category::class);
     }
 
+
     /**
      * BelongsTo User
      *
@@ -72,6 +73,7 @@ class Post extends BaseModel
     {
         return $this->belongsTo(User::class);
     }
+
 
     /**
      * Get all of the post's comments.

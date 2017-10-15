@@ -1,8 +1,8 @@
 <?php
 
+use App\Models\BaseModel;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Models\BaseModel;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 /**
@@ -20,6 +20,7 @@ abstract class BaseTableSeeder extends Seeder
     {
         $this->resolve($class)->__invoke();
     }
+
 
     /**
      * Seed database from a json file
@@ -58,6 +59,7 @@ abstract class BaseTableSeeder extends Seeder
         return !is_null($next) ? $next() : true;
     }
 
+
     /**
      * Write output to console
      *
@@ -69,6 +71,7 @@ abstract class BaseTableSeeder extends Seeder
             $this->command->getOutput()->writeln($message);
         }
     }
+
 
     /**
      * Load data from a JSON file
@@ -91,8 +94,10 @@ abstract class BaseTableSeeder extends Seeder
         }
     }
 
+
     /**
      * Seed from a factory
+     *
      * @param BaseModel $model The model class
      * @param string|int|null $subFactory the sub-factory or the count
      * @param int|null $count the count
@@ -122,6 +127,6 @@ abstract class BaseTableSeeder extends Seeder
             }
         }
 
-        $this->println('<info>Seeded:  </info>' . $factoryName .' from factory');
+        $this->println('<info>Seeded:  </info>' . $factoryName . ' from factory');
     }
 }

@@ -20,6 +20,7 @@ class Authenticate
      */
     protected $auth;
 
+
     /**
      * Create a new middleware instance.
      *
@@ -29,6 +30,7 @@ class Authenticate
     {
         $this->auth = $auth;
     }
+
 
     /**
      * Handle an incoming request.

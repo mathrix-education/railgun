@@ -21,6 +21,7 @@ class CoursePolicy extends BasePolicy
         return false;
     }
 
+
     /**
      * @param User $currentUser
      *
@@ -30,6 +31,7 @@ class CoursePolicy extends BasePolicy
     {
         return false;
     }
+
 
     /**
      * @param User $currentUser

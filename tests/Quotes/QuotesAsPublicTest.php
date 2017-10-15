@@ -20,6 +20,7 @@ class QuotesAsPublicTest extends ScopeTestCase
         $this->genericIndexSuccess();
     }
 
+
     public function testRandom()
     {
         $this->call('get', '/quotes/random');
@@ -28,6 +29,7 @@ class QuotesAsPublicTest extends ScopeTestCase
         $this->assertHttp200Success();
         $this->assertJsonLength(1);
     }
+
 
     public function testRandomMultiple()
     {
@@ -39,15 +41,18 @@ class QuotesAsPublicTest extends ScopeTestCase
         $this->assertJsonLength($quoteCountToFetch);
     }
 
+
     public function testAdd()
     {
         $this->genericAddUnauthorized();
     }
 
+
     public function testEdit()
     {
         $this->genericEditUnauthorized();
     }
+
 
     public function testDelete()
     {

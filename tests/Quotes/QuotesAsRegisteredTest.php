@@ -19,25 +19,30 @@ class QuotesAsRegisteredTest extends ScopeTestCase
         $this->sameAs('public');
     }
 
+
     public function testRandom()
     {
         $this->sameAs('public');
     }
+
 
     public function testRandomMultiple()
     {
         $this->sameAs('public');
     }
 
+
     public function testAdd()
     {
         $this->sameAs('public');
     }
 
+
     public function testEdit()
     {
         $this->sameAs('public');
     }
+
 
     public function testDelete()
     {
