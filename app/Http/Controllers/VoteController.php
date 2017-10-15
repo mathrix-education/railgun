@@ -13,13 +13,13 @@ use Illuminate\Http\Request;
  *
  * @author Mathrix Back-End Team
  * @package App\Http\Controllers
- * @since 0.9.1
+ * @since 0.8.1
  * @copyright Mathrix
  */
 class VoteController extends BaseController
 {
     /**
-     * @apiVersion 0.9.1
+     * @apiVersion 0.8.1
      * @api {post} /votes/{votable_type}/{votable_id}/up Up
      * @apiGroup Votes
      * @apiName VoteUp
@@ -102,7 +102,7 @@ class VoteController extends BaseController
 
 
     /**
-     * @apiVersion 0.9.1
+     * @apiVersion 0.8.1
      * @api {post} /votes/{votable_type}/{votable_id}/down Down
      * @apiGroup Votes
      * @apiName VoteDown

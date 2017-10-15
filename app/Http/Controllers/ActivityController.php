@@ -10,13 +10,13 @@ use Illuminate\Http\Request;
  *
  * @author Mathrix Back-End Team
  * @package App\Http\Controllers
- * @since 0.9.1
+ * @since 0.8.1
  * @copyright Mathrix
  */
 class ActivityController extends BaseController
 {
     /**
-     * @apiVersion 0.9.1
+     * @apiVersion 0.8.1
      * @api {get} /activities Index
      * @apiGroup Activities
      * @apiName ActivitiesIndex
@@ -32,7 +32,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 0.9.1
+     * @apiVersion 0.8.1
      * @api {get} /activities/{id} Get
      * @apiGroup Activities
      * @apiName ActivityGet
@@ -55,7 +55,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 0.9.1
+     * @apiVersion 0.8.1
      * @api {post} /activities Add
      * @apiGroup Activities
      * @apiName ActivityAdd
@@ -90,7 +90,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 0.9.1
+     * @apiVersion 0.8.1
      * @api {patch} /activities/{id} Edit
      * @apiGroup Activities
      * @apiName ActivityEdit
@@ -130,7 +130,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 0.9.1
+     * @apiVersion 0.8.1
      * @api {delete} /activities/{id} Delete
      * @apiGroup Activities
      * @apiName ActivityDelete

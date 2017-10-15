@@ -18,13 +18,13 @@ use Illuminate\Support\Collection;
  *
  * @author Mathrix Back-End Team
  * @package App\Http\Controllers
- * @since 0.9.1
+ * @since 0.8.1
  * @copyright Mathrix
  */
 class ContentController extends BaseController
 {
     /**
-     * @apiVersion 0.9.1
+     * @apiVersion 0.8.1
      * @api {get} /content/countries Countries
      * @apiGroup Content
      * @apiName ContentCountries
@@ -49,7 +49,7 @@ class ContentController extends BaseController
 
 
     /**
-     * @apiVersion 0.9.1
+     * @apiVersion 0.8.1
      * @api {get} /content/program/{classId} Program
      * @apiGroup Content
      * @apiName ContentProgram
@@ -102,7 +102,7 @@ class ContentController extends BaseController
 
 
     /**
-     * @apiVersion 0.9.1
+     * @apiVersion 0.8.1
      * @api {get} /content/modules/{classId} Modules
      * @apiGroup Content
      * @apiName ContentModules
@@ -157,7 +157,7 @@ class ContentController extends BaseController
 
 
     /**
-     * @apiVersion 0.9.1
+     * @apiVersion 0.8.1
      * @api {get} /content/search/{query}/{?page}/{?perPage} Search
      * @apiGroup Content
      * @apiName ContentSearch

@@ -3000,7 +3000,7 @@
                 "php": ">=7.0.0"
             },
             "require-dev": {
-                "mockery/mockery": "~0.9.1",
+                "mockery/mockery": "~0.8.1",
                 "symfony/phpunit-bridge": "~3.3@dev"
             },
             "type": "library",
