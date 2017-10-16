@@ -23,39 +23,21 @@ class UserObserver extends BaseObserver
      */
     public function saving($user)
     {
-        /*
-         * Hash if needed:
-         * - password needs to be set
-         * - password length is not equal to 60
-         * - password does not contain the CRYPT_BLOWFISH identifier $2y$
-         * Not 100% sure but practically null
-         */
-        if (isset($user->password) && strlen($user->password) != 60 && !strpos($user->password, '$2y$')) {
-            $user->password = Hash::make($user->password);
+        if ($user->isDirty('password')) {
+            /*
+             * Hash if needed:
+             * - password needs to be set
+             * - password length is not equal to 60
+             * - password does not contain the CRYPT_BLOWFISH identifier $2y$
+             * Not 100% sure but practically null
+             */
+            if (isset($user->password) && strlen($user->password) != 60 && !strpos($user->password, '$2y$')) {
+                $user->password = Hash::make($user->password);
+            }
         }
 
-        parent::saving($user);
-    }
-
-
-    /**
-     * @param User $user
-     */
-    public function created($user)
-    {
-        Log::log('user_registered', $user);
-    }
-
-
-    /**
-     * @param User $user
-     */
-    public function updating($user)
-    {
-        $changes = array_keys($user->getDirty());
-
-        if (in_array('points', $changes)) {
-            /** @var int $pointsAdded the points added during the current request*/
+        if ($user->isDirty('points')) {
+            /** @var int $pointsAdded the points added during the current request */
             $pointsAdded = $user->points - $user->getOriginal('points');
 
             /*
@@ -94,6 +76,17 @@ class UserObserver extends BaseObserver
                 $nextLevel = Level::where('level', $user->level + 1)->first();
             }
         }
+
+        parent::saving($user);
+    }
+
+
+    /**
+     * @param User $user
+     */
+    public function created($user)
+    {
+        Log::log('user_registered', $user);
     }
 
 

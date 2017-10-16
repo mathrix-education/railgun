@@ -1,5 +1,6 @@
 <?php
 use App\Models\Class_;
+use App\Models\Level;
 use App\Models\User;
 use Faker\Generator;
 use Illuminate\Support\Facades\Hash;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
  */
 $factory->define(User::class, function (Generator $faker) {
     $names = $faker->boolean(30);
+    $points = $faker->numberBetween(0, 100) * 10;
 
     return [
         'username' => $faker->boolean(30) ? $faker->userName : null,
@@ -20,7 +22,8 @@ $factory->define(User::class, function (Generator $faker) {
         'lastName' => $names ? $faker->lastName : null,
         'password' => Hash::make('test'),
         'token' => $faker->uuid,
-        'points' => $faker->numberBetween(0, 100) * 10,
+        'points' => $points,
+        'level' => Level::getLevelByPoints($points),
         'daily' => $faker->randomElement([20, 40, 70]),
         'settings' => [
             'daily_goal' => $faker->numberBetween(0, 10) * 10,
