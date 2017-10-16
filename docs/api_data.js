@@ -9005,7 +9005,7 @@ define({ "api": [
     "description": "<p>Delete a user</p>",
     "permission": [
       {
-        "name": "adminhttp501NotImplemented"
+        "name": "http501NotImplemented"
       }
     ],
     "parameter": {
@@ -9829,6 +9829,14 @@ define({ "api": [
             "description": "<p>field has to be a positive integer</p>"
           }
         ],
+        "Error 429": [
+          {
+            "group": "Error 429",
+            "optional": false,
+            "field": "too_many_requests",
+            "description": "<p>Already gathered points today for this model</p>"
+          }
+        ],
         "Error 401": [
           {
             "group": "Error 401",
@@ -9843,6 +9851,14 @@ define({ "api": [
             "optional": false,
             "field": "model_not_found",
             "description": "<p>Model matching given data does not exist</p>"
+          }
+        ],
+        "Error 422": [
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "save",
+            "description": "<p>Save failed</p>"
           }
         ]
       }
