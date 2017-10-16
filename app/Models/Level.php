@@ -29,7 +29,6 @@ class Level extends BaseModel
     ];
 
 
-
     /**
      * Get the level associated with the given points amount
      *

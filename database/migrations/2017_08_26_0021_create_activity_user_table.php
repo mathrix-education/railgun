@@ -17,11 +17,8 @@ class CreateActivityUserTable extends Migration
             $table->increments('id');
             $table->integer('activity_id')->unsigned();
             $table->integer('user_id')->unsigned();
-            $table->boolean('favorite');
-            $table->enum('status',[
-                'completed',
-                'to_revise'
-            ])->nullable();
+            $table->boolean('favorite')->default(false);
+            $table->enum('status', ['completed', 'to_revise'])->nullable()->default(null);
 
             // Foreign keys
             $table->foreign('activity_id')->references('id')->on('activities');

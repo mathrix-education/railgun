@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -160,5 +161,99 @@ class ActivityController extends BaseController
         }
 
         return $this->http200Success();
+    }
+
+
+    /**
+     * @apiVersion 0.8.1
+     * @api {post} /activities/{id}/favorite Favorite
+     * @apiGroup Activities
+     * @apiName ActivityFavorite
+     * @apiDescription Delete a activity
+     * @apiUse Bearer
+     * @apiPermission admin
+     * @apiParam {int} id The activity id
+     * @apiUse 401Unauthorized
+     * @apiUse 404ModelNotFound
+     *
+     * @param Request $request
+     * @param int $id
+     *
+     * @return JsonResponse
+     */
+    public function favorite(Request $request, int $id)
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        // Check authorization
+        if (
+            !$user->tokenCan('admin') &&
+            is_int($request->input('user_id')) &&
+            $user->id != $request->input('user_id')
+        ) {
+            return $this->http401Unauthorized();
+        }
+
+        $user = $id === null ? $request->user() : User::where('id', $id)->firstOrFail();
+
+        $activity = Activity::where('id', $id)->firstOrFail(); // We don't need the activity itself
+
+        $pivot = $user->activities()->where('id', $activity->id)->first();
+
+        if ($pivot === null) {
+            $user->activities()->save($activity, ['favorite' => true]);
+        } else {
+            $user->activities()->save($activity, [!$pivot->favorite]);
+        }
+
+        return $this->http200Success($user);
+    }
+
+
+    /**
+     * @apiVersion 0.8.1
+     * @api {post} /activities/{id}/mark Favorite
+     * @apiGroup Activities
+     * @apiName ActivityFavorite
+     * @apiDescription Delete a activity
+     * @apiUse Bearer
+     * @apiPermission admin
+     * @apiParam {int} id The activity id
+     * @apiUse 401Unauthorized
+     * @apiUse 404ModelNotFound
+     *
+     * @param Request $request
+     * @param int $id
+     *
+     * @return JsonResponse
+     */
+    public function mark(Request $request, int $id)
+    {
+        $as = $request->input('status');
+
+        if (!in_array($as, ['completed', 'to_revise', null])) {
+            return $this->http400InvalidRequest('Allowed values: "completed", "to_revise", null');
+        }
+
+        /** @var User $user */
+        $user = $request->user();
+
+        // Check authorization
+        if (
+            !$user->tokenCan('admin') &&
+            is_int($request->input('user_id')) &&
+            $user->id != $request->input('user_id')
+        ) {
+            return $this->http401Unauthorized();
+        }
+
+        $user = $id === null ? $request->user() : User::where('id', $id)->firstOrFail();
+
+        $activity = Activity::where('id', $id)->firstOrFail(); // We don't need the activity itself
+
+        $user->activities()->save($activity, ['status' => $as]); // Save status
+
+        return $this->http200Success($user);
     }
 }

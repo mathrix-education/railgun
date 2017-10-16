@@ -12,7 +12,7 @@ use App\Models\User;
 abstract class BasePolicy
 {
     /**
-     * Allow admin to bypass policies
+     * Allow admin to bypass policies: return true for them, null otherwise
      *
      * @param User $currentUser
      *
@@ -25,5 +25,18 @@ abstract class BasePolicy
         } else {
             return null;
         }
+    }
+
+
+    /**
+     * Return always false, beacause admin authorization is already handled
+     *
+     * @see BasePolicy::before()
+     *
+     * @return bool
+     */
+    public function adminOnly()
+    {
+        return false;
     }
 }

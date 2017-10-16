@@ -42,6 +42,29 @@ class VoteController extends BaseController
 
 
     /**
+     * @apiVersion 0.8.1
+     * @api {post} /votes/{votable_type}/{votable_id}/down Down
+     * @apiGroup Votes
+     * @apiName VoteDown
+     * @apiDescription Down vote something
+     * @apiPermission registered
+     * @apiUse Bearer
+     * @apiUse 401Unauthorized
+     * @apiUse 422Save
+     *
+     * @param Request $request
+     * @param string $votable_type
+     * @param int $votable_id
+     *
+     * @return JsonResponse
+     */
+    public function down(Request $request, string $votable_type, int $votable_id)
+    {
+        return $this->vote($request, $votable_type, $votable_id, -1);
+    }
+
+
+    /**
      * Handle vote action
      *
      * @param Request $request
@@ -98,28 +121,5 @@ class VoteController extends BaseController
         }
 
         return $this->http200Success($vote->exists());
-    }
-
-
-    /**
-     * @apiVersion 0.8.1
-     * @api {post} /votes/{votable_type}/{votable_id}/down Down
-     * @apiGroup Votes
-     * @apiName VoteDown
-     * @apiDescription Down vote something
-     * @apiPermission registered
-     * @apiUse Bearer
-     * @apiUse 401Unauthorized
-     * @apiUse 422Save
-     *
-     * @param Request $request
-     * @param string $votable_type
-     * @param int $votable_id
-     *
-     * @return JsonResponse
-     */
-    public function down(Request $request, string $votable_type, int $votable_id)
-    {
-        return $this->vote($request, $votable_type, $votable_id, -1);
     }
 }

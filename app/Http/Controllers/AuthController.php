@@ -110,7 +110,7 @@ class AuthController extends BaseController
      * @apiError (Error 404) model_not_found The user with given `email` was not found
      * @apiError (Error 422) validation The email field is missing
      * @apiError (Error 422) save Unable to save the user
-     * @apiError (Error 502) email_not_sent Unable to sent reset email
+     * @apiError (Error 502) email_not_sent Unable to send reset email
      *
      * @param Request $request
      *
