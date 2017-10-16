@@ -1,6 +1,6 @@
 define({
   "name": "mathrix/mathrix-api",
-  "version": "0.9a-1",
+  "version": "0.8.1",
   "description": "Mathrix API",
   "title": "Mathrix API",
   "url": "",
@@ -107,7 +107,7 @@ define({
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2017-10-16T15:18:43.275Z",
+    "time": "2017-10-16T15:19:54.179Z",
     "url": "http://apidocjs.com",
     "version": "0.17.6"
   }
