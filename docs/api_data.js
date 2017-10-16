@@ -9773,7 +9773,7 @@ define({ "api": [
     "version": "0.8.1",
     "type": "post",
     "url": "/users/points/{?id}",
-    "title": "Points (WIP)",
+    "title": "Points",
     "group": "Users",
     "name": "UserPoints",
     "description": "<p>Give points to a user</p>",
@@ -9821,12 +9821,6 @@ define({ "api": [
             "optional": false,
             "field": "invalid_request",
             "description": "<p>points field is required</p>"
-          },
-          {
-            "group": "Error 400",
-            "optional": false,
-            "field": "points",
-            "description": "<p>field has to be a positive integer</p>"
           }
         ],
         "Error 429": [
