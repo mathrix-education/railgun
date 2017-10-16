@@ -74,7 +74,7 @@ abstract class BaseTableSeeder extends Seeder
                 break;
         }
 
-        $this->println('<comment>Seeding</comment>: ' . $table . ' from json');
+        $this->println('<comment>Seeding:</comment> ' . $table . ' from json');
 
         $data = $this->loadFromRawJson($table);
 
@@ -84,7 +84,7 @@ abstract class BaseTableSeeder extends Seeder
             $model->save();
         }
 
-        $this->println('<info>Seeded</info>:  ' . $table . ' from json');
+        $this->println('<info>Seeded:</info>  ' . $table . ' from json');
     }
 
 
@@ -152,7 +152,7 @@ abstract class BaseTableSeeder extends Seeder
         $model1Key .= '_id';
         $model2Key .= '_id';
 
-        $this->println('<comment>Seeding</comment>: ' . $joinTableName . ' from json');
+        $this->println('<comment>Seeding:</comment> ' . $joinTableName . ' from json');
 
         $data = $this->loadFromRawJson($joinTableName);
         $links = [];
@@ -168,6 +168,6 @@ abstract class BaseTableSeeder extends Seeder
             $model1->$model2Table()->attach($model2Ids);
         }
 
-        $this->println('<info>Seeded</info>:  ' . $joinTableName . ' from json');
+        $this->println('<info>Seeded:</info>  ' . $joinTableName . ' from json');
     }
 }

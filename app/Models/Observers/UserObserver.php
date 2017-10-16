@@ -55,11 +55,15 @@ class UserObserver extends BaseObserver
         $changes = array_keys($user->getDirty());
 
         if (in_array('points', $changes)) {
-            $pointsBefore = $user->getOriginal('points');
-            $pointsAfter = $user->points;
-            $pointsAdded = $pointsAfter - $pointsBefore;
-            $sum = $pointsAdded;
+            /** @var int $pointsAdded the points added during the current request*/
+            $pointsAdded = $user->points - $user->getOriginal('points');
 
+            /*
+            |--------------------------------------------------------------------------
+            | Trigger the daily_achievements incrementation
+            |--------------------------------------------------------------------------
+            */
+            $sum = $pointsAdded;
             $logs = Log::where([
                 ['user_id', '=', $user->id],
                 ['event', '=', 'user_gathered_points']
@@ -74,6 +78,20 @@ class UserObserver extends BaseObserver
 
             if ($sum >= $user->daily) {
                 $user->daily_achievements++;
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Trigger the level achievement
+            |--------------------------------------------------------------------------
+            */
+            /** @var Level $nextLevel */
+            $nextLevel = Level::where('level', $user->level + 1)->first();
+
+            while ($nextLevel !== null && $user->points >= $nextLevel->objective) {
+                $user->level++;
+                $nextLevel = Level::where('level', $user->level + 1)->first();
             }
         }
     }
@@ -92,21 +110,12 @@ class UserObserver extends BaseObserver
         if (in_array('daily', $changes)) {
             Log::log('user_set_daily', $user);
         }
-        if (in_array('points', $changes) && !in_array('level', $changes)) {
-            $levelBefore = $user->level;
-            /** @var Level $level */
-            $level = Level::where('level', $user->level + 1)->first();
-
-            while ($user->points >= $level->objective && $level !== null) {
-                $user->level++;
-                $level = Level::where('level', $user->level + 1)->first();
-            }
-
-            if ($user->level != $levelBefore) {
-                $user->update(['level' => $user->level]);
-            }
+        if (in_array('level', $changes)) {
+            Log::log('user_passed_level', $user, [
+                'from' => $user->level - 1,
+                'to' => $user->level
+            ]);
         }
-
     }
 }
 

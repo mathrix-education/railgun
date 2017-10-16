@@ -82,6 +82,9 @@ abstract class ScopeTestCase extends BaseTestCase
 
         $testClassObject->setup();
 
+        // Pass the current user to the instantiate class test
+        //$testClassObject->user = $this->user;
+
         // Check if method exists the class
         if (!method_exists($testClassObject, $testName)) {
             throw new \Exception('Test ' . $classNameToInstantiate . '::' . $testName . '() does not exists');
