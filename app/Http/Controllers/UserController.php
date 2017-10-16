@@ -273,7 +273,7 @@ class UserController extends BaseController
 
     /**
      * @apiVersion 0.8.1
-     * @api {post} /users/points/{?id} Points (WIP)
+     * @api {post} /users/points/{?id} Points
      * @apiGroup Users
      * @apiName UserPoints
      * @apiDescription Give points to a user
@@ -283,14 +283,14 @@ class UserController extends BaseController
      * @apiParam (Data) {string=module} [loggable_type] The loggable type
      * @apiParam (Data) {int} [loggable_id] The loggable id
      * @apiError (Error 400) invalid_request points field is required
-     * @apiError (Error 400) points field has to be a positive integer
+     * @apiError (Error 400) invalid_request points field has to be a positive integer
      * @apiUse 401Unauthorized
      * @apiUse 404ModelNotFound
-     * @apiError (Error 429) too_many_requests Already gathered points today for this model
      * @apiUse 422Save
+     * @apiError (Error 429) too_many_requests Already gathered points today for this model
      *
      * @param Request $request
-     * @param int|null $id
+     * @param int|null $id the user id
      *
      * @return JsonResponse
      */
