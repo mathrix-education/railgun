@@ -22,6 +22,13 @@ class Level extends BaseModel
     /** @var array The fillable attributes */
     public $fillable = ['level', 'objective', 'youtube_id'];
 
+    /** @var array The validation rules */
+    protected $rules = [
+        'level' => 'required|integer',
+        'objective' => 'required|integer'
+    ];
+
+
 
     /**
      * Get the level associated with the given points amount

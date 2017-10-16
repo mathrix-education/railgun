@@ -14,14 +14,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $name
  * @property string $slug
  * @property string $description
+ * @property-read Collection|Log[] $logs
  * @property-read Collection|Module[] $modules
  * @property-read Collection|Notion[] $notions
+ * @property-read Collection|User[] $users
  * @method static Builder|Activity whereDescription($value)
  * @method static Builder|Activity whereId($value)
  * @method static Builder|Activity whereName($value)
  * @method static Builder|Activity whereSlug($value)
  * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Log[] $logs
  */
 class Activity extends BaseModel
 {
@@ -50,6 +51,7 @@ class Activity extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
+
     /**
      * Get all of the post's logs.
      */
@@ -78,5 +80,14 @@ class Activity extends BaseModel
     public function notions(): BelongsToMany
     {
         return $this->belongsToMany(Notion::class);
+    }
+    /**
+     * BelongsToMany Users
+     *
+     * @return BelongsToMany
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
     }
 }

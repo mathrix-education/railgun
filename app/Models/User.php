@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Cashier\Billable;
 use Laravel\Cashier\Subscription;
@@ -39,6 +40,7 @@ use Laravel\Passport\Token;
  * @property string|null $card_last_four
  * @property string|null $trial_ends_at
  * @property-read Class_ $class_
+ * @property-read Collection|Activity[] $activities
  * @property-read Collection|Client[] $clients
  * @property-read Collection|Comment[] $comments
  * @property-read Collection|Log[] $logs
@@ -65,8 +67,6 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereStripeId($value)
  * @method static Builder|User whereTrialEndsAt($value)
  * @mixin \Eloquent
- * @property int $levels
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereLevels($value)
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
@@ -113,6 +113,17 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     | Relations
     |--------------------------------------------------------------------------
     */
+    /**
+     * BelongsToMany Activity
+     *
+     * @return BelongsToMany
+     */
+    public function activities()
+    {
+        return $this->belongsToMany(Activity::class);
+    }
+
+
     /**
      * BelongsTo Class_
      *
