@@ -15,7 +15,6 @@ use App\Models\Notion;
 use App\Models\Post;
 use App\Models\Quote;
 use App\Models\User;
-use App\Models\Vote;
 use App\Policies\ActivityPolicy;
 use App\Policies\CategoryPolicy;
 use App\Policies\ChapterPolicy;
@@ -74,7 +73,6 @@ class AuthServiceProvider extends ServiceProvider
         Gate::policy(Course::class, CoursePolicy::class);
         Gate::policy(Category::class, CategoryPolicy::class);
         Gate::policy(Comment::class, CommentPolicy::class);
-        Gate::policy(Vote::class, VotePolicy::class);
         Gate::policy(Quote::class, QuotePolicy::class);
         // No policy for logs as it is a system-side process
     }

@@ -112,7 +112,7 @@ class PostController extends BaseController
      * @apiGroup Posts
      * @apiName PostEdit
      * @apiDescription Edit a post
-     * @apiPermission moderator
+     * @apiPermission admin
      * @apiUse Bearer
      * @apiParam {int} id The post id
      * @apiUse PostData
@@ -153,7 +153,7 @@ class PostController extends BaseController
      * @apiName PostDelete
      * @apiDescription Delete a post
      * @apiUse Bearer
-     * @apiPermission moderator
+     * @apiPermission admin
      * @apiParam {int} id The post id
      * @apiUse 401Unauthorized
      * @apiUse 404ModelNotFound

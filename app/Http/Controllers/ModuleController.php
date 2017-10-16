@@ -24,14 +24,10 @@ class ModuleController extends BaseController
      * @apiGroup Modules
      * @apiName ModulesIndex
      * @apiDescription Retrieve modules
-     * @apiPermission public
+     * @apiPermission moderator
      * @apiUse ModuleArray
      * @return JsonResponse
      */
-    public function index()
-    {
-        return $this->http200Success(Module::all());
-    }
 
 
     /**
@@ -74,7 +70,7 @@ class ModuleController extends BaseController
      * @apiGroup Modules
      * @apiName ModuleAdd
      * @apiDescription Add a module
-     * @apiPermission admin
+     * @apiPermission moderator
      * @apiUse Bearer
      * @apiUse ModuleData
      * @apiUse Module
@@ -109,7 +105,7 @@ class ModuleController extends BaseController
      * @apiGroup Modules
      * @apiName ModuleEdit
      * @apiDescription Edit a module
-     * @apiPermission admin
+     * @apiPermission moderator
      * @apiUse Bearer
      * @apiParam {int} id The module id
      * @apiUse ModuleData
@@ -150,7 +146,7 @@ class ModuleController extends BaseController
      * @apiName ModuleDelete
      * @apiDescription Delete a module
      * @apiUse Bearer
-     * @apiPermission admin
+     * @apiPermission moderator
      * @apiParam {int} id The module id
      * @apiUse 401Unauthorized
      * @apiUse 404ModelNotFound

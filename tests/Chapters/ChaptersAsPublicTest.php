@@ -16,7 +16,7 @@ class ChaptersAsPublicTest extends ScopeTestCase
 {
     public function testIndex()
     {
-        $this->genericIndexSuccess();
+        $this->genericIndexUnauthorized();
     }
 
 

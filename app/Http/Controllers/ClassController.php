@@ -23,13 +23,7 @@ class ClassController extends BaseController
      * @apiDescription Retrieve classes
      * @apiPermission public
      * @apiUse ClassArray
-     * @return JsonResponse
      */
-    public function index()
-    {
-        return $this->http200Success(Class_::all());
-    }
-
 
     /**
      * @apiVersion 0.8.1

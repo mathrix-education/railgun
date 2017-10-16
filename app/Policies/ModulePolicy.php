@@ -2,6 +2,8 @@
 
 namespace App\Policies;
 
+use App\Models\User;
+
 /**
  * Class ModulePolicy
  *
@@ -11,28 +13,34 @@ namespace App\Policies;
 class ModulePolicy extends BasePolicy
 {
     /**
+     * @param User $currentUser
+     *
      * @return bool
      */
-    public function add()
+    public function add(User $currentUser)
     {
-        return false;
+        return $this->atLeastModerator($currentUser);
     }
 
 
     /**
+     * @param User $currentUser
+     *
      * @return bool
      */
-    public function edit()
+    public function edit(User $currentUser)
     {
-        return false;
+        return $this->atLeastModerator($currentUser);
     }
 
 
     /**
+     * @param User $currentUser
+     *
      * @return bool
      */
-    public function delete()
+    public function delete(User $currentUser)
     {
-        return false;
+        return $this->atLeastModerator($currentUser);
     }
 }

@@ -27,15 +27,11 @@ class CommentController extends BaseController
      * @apiGroup Comments
      * @apiName CommentsIndex
      * @apiDescription Retrieve comments
-     * @apiPermission public
+     * @apiPermission moderator
      * @apiUse CommentArray
      *
      * @return JsonResponse
      */
-    public function index()
-    {
-        return $this->http200Success(Comment::all());
-    }
 
 
     /**
@@ -119,7 +115,7 @@ class CommentController extends BaseController
      * @apiGroup Comments
      * @apiName CommentAdd
      * @apiDescription Add class
-     * @apiPermission student
+     * @apiPermission registered
      * @apiUse Bearer
      * @apiUse CommentData
      * @apiUse Comment
@@ -150,7 +146,7 @@ class CommentController extends BaseController
      * @apiGroup Comments
      * @apiName CommentEdit
      * @apiDescription Edit a class
-     * @apiPermission student for own comment, moderator for others
+     * @apiPermission registered for own comment, moderator otherwise
      * @apiUse Bearer
      * @apiParam {int} id The comment id
      * @apiUse CommentData

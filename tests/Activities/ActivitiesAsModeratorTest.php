@@ -16,24 +16,26 @@ class ActivitiesAsModeratorTest extends ScopeTestCase
 {
     public function testIndex()
     {
-        $this->sameAs('public');
+        $this->genericIndexSuccess();
     }
 
 
     public function testAdd()
     {
-        $this->sameAs('public');
+        $this->genericAddSuccess();
     }
 
 
     public function testEdit()
     {
-        $this->sameAs('public');
+        $this->genericEditSuccess();
     }
 
 
     public function testDelete()
     {
-        $this->sameAs('public');
+        $this->genericDeleteSuccess();
+        $this->assertNotInDatabase('activity_notion', ['activity_id' => $this->deleteModelId]);
+        $this->assertNotInDatabase('activity_module', ['activity_id' => $this->deleteModelId]);
     }
 }

@@ -16,24 +16,25 @@ class ChaptersAsModeratorTest extends ScopeTestCase
 {
     public function testIndex()
     {
-        $this->sameAs('public');
+        $this->genericIndexSuccess();
     }
 
 
     public function testAdd()
     {
-        $this->sameAs('public');
+        $this->genericAddSuccess();
     }
 
 
     public function testEdit()
     {
-        $this->sameAs('public');
+        $this->genericEditSuccess();
     }
 
 
     public function testDelete()
     {
-        $this->sameAs('public');
+        $this->genericDeleteSuccess();
+        $this->assertNotInDatabase('notions', ['chapter_id' => $this->deleteModelId]);
     }
 }

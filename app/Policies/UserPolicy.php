@@ -15,10 +15,10 @@ class UserPolicy extends BasePolicy
     /**
      * @return bool
      */
-    public function search()
+    /*public function search()
     {
         return false;
-    }
+    }*/
 
 
     /**
@@ -29,7 +29,7 @@ class UserPolicy extends BasePolicy
      */
     public function get(User $currentUser, User $user)
     {
-        return $currentUser->id === $user->id || $user->type == 'registered' && $currentUser->tokenCan('moderator');
+        return $currentUser->id === $user->id || $this->atLeastModerator($currentUser) && $user->type == 'registered';
     }
 
 

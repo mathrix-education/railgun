@@ -60,13 +60,31 @@ class Activity extends BaseModel
                 ->wherePivot('user_id', '=', $user->id)
                 ->first();
 
-            if($pivot !== null) {
+            if ($pivot !== null) {
                 return $pivot->favorite;
             }
         }
 
         return null;
     }
+
+
+    /**
+     * BelongsToMany Users
+     *
+     * @return BelongsToMany
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
 
 
     public function getStatusAttribute()
@@ -79,7 +97,7 @@ class Activity extends BaseModel
                 ->wherePivot('user_id', '=', $user->id)
                 ->first();
 
-            if($pivot !== null) {
+            if ($pivot !== null) {
                 return $pivot->status;
             }
         }
@@ -87,12 +105,6 @@ class Activity extends BaseModel
         return null;
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Relations
-    |--------------------------------------------------------------------------
-    */
 
     /**
      * Get all of the post's logs.
@@ -122,16 +134,5 @@ class Activity extends BaseModel
     public function notions(): BelongsToMany
     {
         return $this->belongsToMany(Notion::class);
-    }
-
-
-    /**
-     * BelongsToMany Users
-     *
-     * @return BelongsToMany
-     */
-    public function users()
-    {
-        return $this->belongsToMany(User::class);
     }
 }

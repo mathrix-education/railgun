@@ -22,15 +22,9 @@ class ChapterController extends BaseController
      * @apiGroup Chapters
      * @apiName ChaptersIndex
      * @apiDescription Retrieve chapters
-     * @apiPermission public
+     * @apiPermission moderator
      * @apiUse ChapterArray
-     * @return JsonResponse
      */
-    public function index()
-    {
-        return $this->http200Success(Chapter::all());
-    }
-
 
     /**
      * @apiVersion 0.8.1
@@ -61,7 +55,7 @@ class ChapterController extends BaseController
      * @apiGroup Chapters
      * @apiName ChapterAdd
      * @apiDescription Add a chapter
-     * @apiPermission admin
+     * @apiPermission moderator
      * @apiUse Bearer
      * @apiUse ChapterData
      * @apiUse Chapter
@@ -96,7 +90,7 @@ class ChapterController extends BaseController
      * @apiGroup Chapters
      * @apiName ChapterEdit
      * @apiDescription Edit a chapter
-     * @apiPermission admin
+     * @apiPermission moderator
      * @apiUse Bearer
      * @apiParam {int} id The chapter id
      * @apiUse ChapterData
@@ -137,7 +131,7 @@ class ChapterController extends BaseController
      * @apiName ChapterDelete
      * @apiDescription Delete a chapter
      * @apiUse Bearer
-     * @apiPermission admin
+     * @apiPermission moderator
      * @apiParam {int} id The chapter id
      * @apiUse 401Unauthorized
      * @apiUse 404ModelNotFound

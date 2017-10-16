@@ -24,13 +24,7 @@ class CategoryController extends BaseController
      * @apiDescription Retrieve categories
      * @apiPermission public
      * @apiUse CategoryArray
-     * @return JsonResponse
      */
-    public function index()
-    {
-        return $this->http200Success(Category::all());
-    }
-
 
     /**
      * @apiVersion 0.8.1

@@ -24,12 +24,7 @@ class DisciplineController extends BaseController
      * @apiDescription Retrieve disciplines
      * @apiPermission public
      * @apiUse DisciplineArray
-     * @return JsonResponse
      */
-    public function index()
-    {
-        return $this->http200Success(Discipline::all());
-    }
 
 
     /**
