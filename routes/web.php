@@ -119,10 +119,10 @@ $router->group(['prefix' => 'disciplines'], function () use ($router) {
 |--------------------------------------------------------------------------
 */
 $router->group(['prefix' => 'chapters'], function () use ($router) {
-    $router->get('', 'ChapterController@index');
     $router->get('{id:[0-9]+}', 'ChapterController@get');
 
     $router->group(['middleware' => 'auth:api'], function () use ($router) {
+        $router->get('', 'ChapterController@index');
         $router->post('', 'ChapterController@add');
         $router->patch('{id:[0-9]+}', 'ChapterController@edit');
         $router->delete('{id:[0-9]+}', 'ChapterController@delete');
@@ -153,10 +153,10 @@ $router->group(['prefix' => 'notions'], function () use ($router) {
 |--------------------------------------------------------------------------
 */
 $router->group(['prefix' => 'activities'], function () use ($router) {
-    $router->get('', 'ActivityController@index');
     $router->get('{id:[0-9]+}', 'ActivityController@get');
 
     $router->group(['middleware' => 'auth:api'], function () use ($router) {
+        $router->get('', 'ActivityController@index');
         $router->post('', 'ActivityController@add');
         $router->patch('{id:[0-9]+}/favorite', 'ActivityController@favorite');
         $router->delete('{id:[0-9]+}/mark', 'ActivityController@mark');

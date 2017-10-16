@@ -77,7 +77,7 @@ class CourseController extends BaseController
      * @apiGroup Courses
      * @apiName CourseAdd
      * @apiDescription Add a course
-     * @apiPermission moderator
+     * @apiPermission admin
      * @apiUse Bearer
      * @apiUse CourseData
      * @apiUse Course
@@ -112,7 +112,7 @@ class CourseController extends BaseController
      * @apiGroup Courses
      * @apiName CourseEdit
      * @apiDescription Edit a course
-     * @apiPermission moderator
+     * @apiPermission admin
      * @apiUse Bearer
      * @apiParam {int} id The course id
      * @apiUse CourseData
@@ -153,7 +153,7 @@ class CourseController extends BaseController
      * @apiName CourseDelete
      * @apiDescription Delete a course
      * @apiUse Bearer
-     * @apiPermission moderator
+     * @apiPermission admin
      * @apiParam {int} id The course id
      * @apiUse 401Unauthorized
      * @apiUse 404ModelNotFound

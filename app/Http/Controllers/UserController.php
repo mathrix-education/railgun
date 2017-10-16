@@ -87,37 +87,14 @@ class UserController extends BaseController
      * @apiGroup Users
      * @apiName UsersIndex
      * @apiDescription Get a user by id
-     * @apiPermission teacher
+     * @apiPermission admin
      * @apiUse Bearer
      * @apiParam {int} [page=1] The page number
      * @apiParam {int} [perPage=10] The user count per page
      * @apiUse UserArray
      * @apiError (Error 400) invalid_request page and perPage have to be strictly positive
      * @apiUse 401Unauthorized
-     *
-     * @param Request $request
-     * @param int $page the page number
-     * @param int $perPage the users count per page
-     *
-     * @return JsonResponse
      */
-    public function index(Request $request, int $page = 1, int $perPage = 10)
-    {
-        // Check permission
-        if ($request->user()->cant('index', User::class)) {
-            return $this->http401Unauthorized();
-        }
-
-        if ($page < 1 || $perPage < 1) {
-            return $this->http400InvalidRequest('page and perPage have to be strictly positive');
-        }
-
-        return $this->http200Success(
-            User::limit($perPage)
-                ->offset(($page - 1) * $perPage)
-                ->get()
-        );
-    }
 
 
     /**
@@ -206,7 +183,7 @@ class UserController extends BaseController
      * @apiGroup Users
      * @apiName UserGet
      * @apiDescription Get a user by id
-     * @apiPermission registered for self get, at least moderator for strangers
+     * @apiPermission registered for self get, at least moderator for others registered
      * @apiUse Bearer
      * @apiParam {int} [id] The user id
      * @apiUse User
@@ -387,12 +364,6 @@ class UserController extends BaseController
      */
     public function delete(Request $request, int $id)
     {
-        $user = User::whereId($id)->firstOrFail();
-
-        if ($request->user()->cant('delete', $user)) {
-            return $this->http401Unauthorized();
-        }
-
         return $this->http501NotImplemented();
     }
 }

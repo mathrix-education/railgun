@@ -35,7 +35,7 @@ class Post extends BaseModel
 {
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
-    
+
     /** @var array The fillable attributes */
     protected $fillable = ['title', 'slug', 'content', 'category_id', 'user_id', 'created_at', 'updated_at'];
 

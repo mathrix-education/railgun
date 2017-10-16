@@ -23,12 +23,7 @@ class CountryController extends BaseController
      * @apiDescription Retrieve countries
      * @apiPermission public
      * @apiUse CountryArray
-     * @return JsonResponse
      */
-    public function index()
-    {
-        return $this->http200Success(Country::all());
-    }
 
 
     /**

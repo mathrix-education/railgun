@@ -22,15 +22,9 @@ class ActivityController extends BaseController
      * @apiGroup Activities
      * @apiName ActivitiesIndex
      * @apiDescription Retrieve activities
-     * @apiPermission public
+     * @apiPermission moderator
      * @apiUse ActivityArray
-     * @return JsonResponse
      */
-    public function index()
-    {
-        return $this->http200Success(Activity::all());
-    }
-
 
     /**
      * @apiVersion 0.8.1
@@ -61,7 +55,7 @@ class ActivityController extends BaseController
      * @apiGroup Activities
      * @apiName ActivityAdd
      * @apiDescription Add a activity
-     * @apiPermission admin
+     * @apiPermission moderator
      * @apiUse Bearer
      * @apiUse ActivityData
      * @apiUse Activity
@@ -96,7 +90,7 @@ class ActivityController extends BaseController
      * @apiGroup Activities
      * @apiName ActivityEdit
      * @apiDescription Edit a activity
-     * @apiPermission admin
+     * @apiPermission moderator
      * @apiUse Bearer
      * @apiParam {int} id The activity id
      * @apiUse ActivityData
@@ -137,7 +131,7 @@ class ActivityController extends BaseController
      * @apiName ActivityDelete
      * @apiDescription Delete a activity
      * @apiUse Bearer
-     * @apiPermission admin
+     * @apiPermission moderator
      * @apiParam {int} id The activity id
      * @apiUse 401Unauthorized
      * @apiUse 404ModelNotFound
@@ -171,7 +165,7 @@ class ActivityController extends BaseController
      * @apiName ActivityFavorite
      * @apiDescription Delete a activity
      * @apiUse Bearer
-     * @apiPermission admin
+     * @apiPermission registered
      * @apiParam {int} id The activity id
      * @apiUse 401Unauthorized
      * @apiUse 404ModelNotFound
@@ -218,7 +212,7 @@ class ActivityController extends BaseController
      * @apiName ActivityFavorite
      * @apiDescription Delete a activity
      * @apiUse Bearer
-     * @apiPermission admin
+     * @apiPermission registered
      * @apiParam {int} id The activity id
      * @apiUse 401Unauthorized
      * @apiUse 404ModelNotFound

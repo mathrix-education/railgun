@@ -183,10 +183,9 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function tokenCan($scope)
     {
         $order = ['admin', 'moderator', 'registered'];
+        $key = array_search($scope, $order);
 
-        if (in_array($scope, $order)) {
-            $key = array_search($scope, $order);
-
+        if ($key !== false) {
             foreach ($order as $k => $grantedScope) {
                 if ($this->passportTokenCan($grantedScope) && $k <= $key) {
                     return true;

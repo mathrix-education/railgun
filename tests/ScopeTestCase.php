@@ -20,9 +20,9 @@ abstract class ScopeTestCase extends BaseTestCase
     use HttpAssertions, Generics;
 
     /** @var User the user used in the test */
-    protected $user;
+    public $user = null;
     /** @var array available scopes */
-    protected $scopes = ['admin', 'moderator', 'premium', 'registered'];
+    protected $scopes = ['admin', 'moderator', 'registered'];
     /** @var string the effective scope */
     protected $scope = 'public';
 
@@ -80,10 +80,10 @@ abstract class ScopeTestCase extends BaseTestCase
         $testClassObject = new $classNameToInstantiate();
         $testName = $testName ?? $this->getName();
 
-        $testClassObject->setup();
-
         // Pass the current user to the instantiate class test
-        //$testClassObject->user = $this->user;
+        $testClassObject->user = $this->user;
+
+        $testClassObject->setup();
 
         // Check if method exists the class
         if (!method_exists($testClassObject, $testName)) {
@@ -170,14 +170,18 @@ abstract class ScopeTestCase extends BaseTestCase
         $potentialSubstringScopeFromTestName = strstr($testName, 'As');
 
 
-        if ($potentialSubstringScopeFromTestName) {
+        if ($potentialSubstringScopeFromTestName !== false) {
             $potentialScope = strtolower(substr($potentialSubstringScopeFromTestName, 2));
         }
 
         // Try to find the right scope
         if (in_array($potentialScope, $this->scopes)) {
             $this->scope = $potentialScope;
-            $this->user = User::inRandomOrder()->where('type', '=', $this->scope)->first();
+
+            // User has NOT be manually defined from a sameAs() method
+            if ($this->user === null) {
+                $this->user = User::inRandomOrder()->where('type', '=', $this->scope)->first();
+            }
 
             // No user could be found, thje database is probably not seeded
             if (!$this->user instanceof User) {

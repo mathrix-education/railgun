@@ -21,7 +21,7 @@ class CommentPolicy extends BasePolicy
      */
     public function edit(User $currentUser, Comment $comment)
     {
-        if ($currentUser->tokenCan('moderator')) {
+        if ($this->atLeastModerator($currentUser)) {
             return true;
         }
 
@@ -40,10 +40,6 @@ class CommentPolicy extends BasePolicy
      */
     public function delete(User $currentUser)
     {
-        if ($currentUser->tokenCan('moderator')) {
-            return true;
-        }
-
-        return false;
+        return $this->atLeastModerator($currentUser);
     }
 }

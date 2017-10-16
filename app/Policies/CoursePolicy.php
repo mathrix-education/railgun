@@ -1,8 +1,6 @@
 <?php
 namespace App\Policies;
 
-use App\Models\User;
-
 /**
  * Class CoursePolicy
  *
@@ -12,33 +10,27 @@ use App\Models\User;
 class CoursePolicy extends BasePolicy
 {
     /**
-     * @param User $currentUser
-     *
      * @return bool
      */
-    public function add(User $currentUser)
+    public function add()
     {
         return false;
     }
 
 
     /**
-     * @param User $currentUser
-     *
      * @return bool
      */
-    public function edit(User $currentUser)
+    public function edit()
     {
         return false;
     }
 
 
     /**
-     * @param User $currentUser
-     *
      * @return bool
      */
-    public function delete(User $currentUser)
+    public function delete()
     {
         return false;
     }

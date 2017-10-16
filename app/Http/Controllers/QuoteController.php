@@ -24,12 +24,7 @@ class QuoteController extends BaseController
      * @apiDescription Retrieve quotes
      * @apiPermission public
      * @apiUse QuoteArray
-     * @return JsonResponse
      */
-    public function index()
-    {
-        return $this->http200Success(Quote::all());
-    }
 
 
     /**

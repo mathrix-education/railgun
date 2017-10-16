@@ -22,14 +22,10 @@ class NotionController extends BaseController
      * @apiGroup Notions
      * @apiName NotionsIndex
      * @apiDescription Retrieve notions
-     * @apiPermission public
+     * @apiPermission moderator
      * @apiUse NotionArray
      * @return JsonResponse
      */
-    public function index()
-    {
-        return $this->http200Success(Notion::all());
-    }
 
 
     /**
@@ -61,7 +57,7 @@ class NotionController extends BaseController
      * @apiGroup Notions
      * @apiName NotionAdd
      * @apiDescription Add a notion
-     * @apiPermission admin
+     * @apiPermission moderator
      * @apiUse Bearer
      * @apiUse NotionData
      * @apiUse Notion
@@ -96,7 +92,7 @@ class NotionController extends BaseController
      * @apiGroup Notions
      * @apiName NotionEdit
      * @apiDescription Edit a notion
-     * @apiPermission admin
+     * @apiPermission moderator
      * @apiUse Bearer
      * @apiParam {int} id The notion id
      * @apiUse NotionData
@@ -137,7 +133,7 @@ class NotionController extends BaseController
      * @apiName NotionDelete
      * @apiDescription Delete a notion
      * @apiUse Bearer
-     * @apiPermission admin
+     * @apiPermission moderator
      * @apiParam {int} id The notion id
      * @apiUse 401Unauthorized
      * @apiUse 404ModelNotFound

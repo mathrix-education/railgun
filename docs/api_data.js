@@ -9,7 +9,7 @@ define({ "api": [
     "description": "<p>Retrieve activities</p>",
     "permission": [
       {
-        "name": "public"
+        "name": "moderator"
       }
     ],
     "filename": "app/Http/Controllers/ActivityController.php",
@@ -66,7 +66,7 @@ define({ "api": [
     "description": "<p>Add a activity</p>",
     "permission": [
       {
-        "name": "admin"
+        "name": "moderator"
       }
     ],
     "filename": "app/Http/Controllers/ActivityController.php",
@@ -225,7 +225,7 @@ define({ "api": [
     "description": "<p>Delete a activity</p>",
     "permission": [
       {
-        "name": "admin"
+        "name": "moderator"
       }
     ],
     "parameter": {
@@ -287,7 +287,7 @@ define({ "api": [
     "description": "<p>Edit a activity</p>",
     "permission": [
       {
-        "name": "admin"
+        "name": "moderator"
       }
     ],
     "parameter": {
@@ -455,6 +455,130 @@ define({ "api": [
   },
   {
     "version": "0.8.1",
+    "type": "post",
+    "url": "/activities/{id}/mark",
+    "title": "Favorite",
+    "group": "Activities",
+    "name": "ActivityFavorite",
+    "description": "<p>Delete a activity</p>",
+    "permission": [
+      {
+        "name": "registered"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The activity id</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/ActivityController.php",
+    "groupTitle": "Activities",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "0.8.1",
+    "type": "post",
+    "url": "/activities/{id}/favorite",
+    "title": "Favorite",
+    "group": "Activities",
+    "name": "ActivityFavorite",
+    "description": "<p>Delete a activity</p>",
+    "permission": [
+      {
+        "name": "registered"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The activity id</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/ActivityController.php",
+    "groupTitle": "Activities",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "0.8.1",
     "type": "get",
     "url": "/activities/{id}",
     "title": "Get",
@@ -583,7 +707,7 @@ define({ "api": [
             "group": "Error 502",
             "optional": false,
             "field": "email_not_sent",
-            "description": "<p>Unable to sent reset email</p>"
+            "description": "<p>Unable to send reset email</p>"
           }
         ]
       }
@@ -1301,7 +1425,7 @@ define({ "api": [
     "description": "<p>Add a chapter</p>",
     "permission": [
       {
-        "name": "admin"
+        "name": "moderator"
       }
     ],
     "filename": "app/Http/Controllers/ChapterController.php",
@@ -1432,7 +1556,7 @@ define({ "api": [
     "description": "<p>Delete a chapter</p>",
     "permission": [
       {
-        "name": "admin"
+        "name": "moderator"
       }
     ],
     "parameter": {
@@ -1494,7 +1618,7 @@ define({ "api": [
     "description": "<p>Edit a chapter</p>",
     "permission": [
       {
-        "name": "admin"
+        "name": "moderator"
       }
     ],
     "parameter": {
@@ -1724,7 +1848,7 @@ define({ "api": [
     "description": "<p>Retrieve chapters</p>",
     "permission": [
       {
-        "name": "public"
+        "name": "moderator"
       }
     ],
     "filename": "app/Http/Controllers/ChapterController.php",
@@ -2377,7 +2501,7 @@ define({ "api": [
     "description": "<p>Add class</p>",
     "permission": [
       {
-        "name": "student"
+        "name": "registered"
       }
     ],
     "filename": "app/Http/Controllers/CommentController.php",
@@ -2735,7 +2859,7 @@ define({ "api": [
     "description": "<p>Edit a class</p>",
     "permission": [
       {
-        "name": "student for own comment, moderator for others"
+        "name": "registered for own comment, moderator otherwise"
       }
     ],
     "parameter": {
@@ -3255,16 +3379,57 @@ define({ "api": [
   {
     "version": "0.8.1",
     "type": "get",
-    "url": "/comments",
-    "title": "Index",
+    "url": "/comments/{commentable_type}/{commentable_id}/{?page}/{?perPage}",
+    "title": "Type",
     "group": "Comments",
     "name": "CommentsIndex",
-    "description": "<p>Retrieve comments</p>",
+    "description": "<p>Retrieve comments by type</p>",
     "permission": [
       {
         "name": "public"
       }
     ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "allowedValues": [
+              "post",
+              "course",
+              "module"
+            ],
+            "optional": false,
+            "field": "commentable_type",
+            "description": "<p>the commentable_type</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "commentable_id",
+            "description": "<p>the commentable id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": true,
+            "field": "page",
+            "defaultValue": "1",
+            "description": "<p>the page to fetch</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": true,
+            "field": "perPage",
+            "defaultValue": "10",
+            "description": "<p>the comments per page to fetch (excluding children)</p>"
+          }
+        ]
+      }
+    },
     "filename": "app/Http/Controllers/CommentController.php",
     "groupTitle": "Comments",
     "success": {
@@ -3458,57 +3623,16 @@ define({ "api": [
   {
     "version": "0.8.1",
     "type": "get",
-    "url": "/comments/{commentable_type}/{commentable_id}/{?page}/{?perPage}",
-    "title": "Type",
+    "url": "/comments",
+    "title": "Index",
     "group": "Comments",
     "name": "CommentsIndex",
-    "description": "<p>Retrieve comments by type</p>",
+    "description": "<p>Retrieve comments</p>",
     "permission": [
       {
-        "name": "public"
+        "name": "moderator"
       }
     ],
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "string",
-            "allowedValues": [
-              "post",
-              "course",
-              "module"
-            ],
-            "optional": false,
-            "field": "commentable_type",
-            "description": "<p>the commentable_type</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": false,
-            "field": "commentable_id",
-            "description": "<p>the commentable id</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": true,
-            "field": "page",
-            "defaultValue": "1",
-            "description": "<p>the page to fetch</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": true,
-            "field": "perPage",
-            "defaultValue": "10",
-            "description": "<p>the comments per page to fetch (excluding children)</p>"
-          }
-        ]
-      }
-    },
     "filename": "app/Http/Controllers/CommentController.php",
     "groupTitle": "Comments",
     "success": {
@@ -5177,7 +5301,7 @@ define({ "api": [
     "description": "<p>Add a course</p>",
     "permission": [
       {
-        "name": "moderator"
+        "name": "admin"
       }
     ],
     "filename": "app/Http/Controllers/CourseController.php",
@@ -5343,7 +5467,7 @@ define({ "api": [
     "description": "<p>Delete a course</p>",
     "permission": [
       {
-        "name": "moderator"
+        "name": "admin"
       }
     ],
     "parameter": {
@@ -5405,7 +5529,7 @@ define({ "api": [
     "description": "<p>Edit a course</p>",
     "permission": [
       {
-        "name": "moderator"
+        "name": "admin"
       }
     ],
     "parameter": {
@@ -6329,7 +6453,7 @@ define({ "api": [
     "description": "<p>Add a module</p>",
     "permission": [
       {
-        "name": "admin"
+        "name": "moderator"
       }
     ],
     "filename": "app/Http/Controllers/ModuleController.php",
@@ -6590,7 +6714,7 @@ define({ "api": [
     "description": "<p>Delete a module</p>",
     "permission": [
       {
-        "name": "admin"
+        "name": "moderator"
       }
     ],
     "parameter": {
@@ -6652,7 +6776,7 @@ define({ "api": [
     "description": "<p>Edit a module</p>",
     "permission": [
       {
-        "name": "admin"
+        "name": "moderator"
       }
     ],
     "parameter": {
@@ -7244,7 +7368,7 @@ define({ "api": [
     "description": "<p>Retrieve modules</p>",
     "permission": [
       {
-        "name": "public"
+        "name": "moderator"
       }
     ],
     "filename": "app/Http/Controllers/ModuleController.php",
@@ -7359,7 +7483,7 @@ define({ "api": [
     "description": "<p>Add a notion</p>",
     "permission": [
       {
-        "name": "admin"
+        "name": "moderator"
       }
     ],
     "filename": "app/Http/Controllers/NotionController.php",
@@ -7504,7 +7628,7 @@ define({ "api": [
     "description": "<p>Delete a notion</p>",
     "permission": [
       {
-        "name": "admin"
+        "name": "moderator"
       }
     ],
     "parameter": {
@@ -7566,7 +7690,7 @@ define({ "api": [
     "description": "<p>Edit a notion</p>",
     "permission": [
       {
-        "name": "admin"
+        "name": "moderator"
       }
     ],
     "parameter": {
@@ -7803,7 +7927,7 @@ define({ "api": [
     "description": "<p>Retrieve notions</p>",
     "permission": [
       {
-        "name": "public"
+        "name": "moderator"
       }
     ],
     "filename": "app/Http/Controllers/NotionController.php",
@@ -8026,7 +8150,7 @@ define({ "api": [
     "description": "<p>Delete a post</p>",
     "permission": [
       {
-        "name": "moderator"
+        "name": "admin"
       }
     ],
     "parameter": {
@@ -8088,7 +8212,7 @@ define({ "api": [
     "description": "<p>Edit a post</p>",
     "permission": [
       {
-        "name": "moderator"
+        "name": "admin"
       }
     ],
     "parameter": {
@@ -9418,7 +9542,7 @@ define({ "api": [
     "description": "<p>Get a user by id</p>",
     "permission": [
       {
-        "name": "registered for self get, at least moderator for strangers"
+        "name": "registered for self get, at least moderator for others registered"
       }
     ],
     "parameter": {
@@ -10108,7 +10232,7 @@ define({ "api": [
     "description": "<p>Get a user by id</p>",
     "permission": [
       {
-        "name": "teacher"
+        "name": "admin"
       }
     ],
     "parameter": {
