@@ -20,7 +20,7 @@ $factory->defineAs(Module::class, 'fill', function (Generator $faker) use ($fact
 
     for ($i = 0; $i < $choiceCount; $i++) {
         $content .= '[choix]' . $faker->text(100);
-        $data['choices'][$i] = $data['choices'][$i][0];
+        $data['choices'][$i][] = $data['choices'][$i][0];
         $data['corrections'][$i] = $data['corrections'][$i][0];
     }
 
