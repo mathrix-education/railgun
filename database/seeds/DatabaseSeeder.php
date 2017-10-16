@@ -43,6 +43,7 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->call(ActivityTableSeeder::class);
         $this->call(ModuleTableSeeder::class);
 
+        $this->seedFromJson(Level::class);
         $this->call(UserTableSeeder::class);
 
         $this->seedFromFactory(Category::class, ['count' => random_int(5, 8)]);
@@ -50,7 +51,6 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->call(CourseTableSeeder::class);
         $this->seedFromFactory(Comment::class, ['count' => 200]);
         $this->seedFromFactory(Vote::class, ['count' => random_int(450, 550)]);
-        $this->seedFromJson(Level::class);
 
     }
 }

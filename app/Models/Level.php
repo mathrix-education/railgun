@@ -22,4 +22,21 @@ class Level extends BaseModel
     /** @var array The fillable attributes */
     public $fillable = ['level', 'objective', 'youtube_id'];
 
+
+    /**
+     * Get the level associated with the given points amount
+     *
+     * @param int $points
+     *
+     * @return Level
+     */
+    public static function getLevelByPoints(int $points): Level
+    {
+        /** @var Level $level */
+        $level = Level::where('objective', '<=', $points)
+            ->orderByDesc('objective')
+            ->firstOrFail();
+
+        return $level;
+    }
 }

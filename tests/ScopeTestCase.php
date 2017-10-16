@@ -177,7 +177,7 @@ abstract class ScopeTestCase extends BaseTestCase
         // Try to find the right scope
         if (in_array($potentialScope, $this->scopes)) {
             $this->scope = $potentialScope;
-            $this->user = User::where('type', '=', $this->scope)->first();
+            $this->user = User::inRandomOrder()->where('type', '=', $this->scope)->first();
 
             // No user could be found, thje database is probably not seeded
             if (!$this->user instanceof User) {
