@@ -173,6 +173,13 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     | Passport
     |--------------------------------------------------------------------------
     */
+    /**
+     * Determine if user can do something according to its token
+     *
+     * @param string $scope the minimum scope
+     *
+     * @return bool
+     */
     public function tokenCan($scope)
     {
         $order = ['admin', 'moderator', 'registered'];

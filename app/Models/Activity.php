@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Auth;
 
 
 /**
@@ -29,11 +30,7 @@ class Activity extends BaseModel
     /** @var array The fillable attributes */
     protected $fillable = ['name', 'slug', 'description'];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
+    /** @var array The attributes that should be cast to native types */
     protected $casts = [
         'options' => 'array'
     ];
@@ -44,6 +41,51 @@ class Activity extends BaseModel
         'slug' => 'required|max:255',
         'description' => 'required|max:255'
     ];
+
+    protected $appends = ['favorite', 'status'];
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Virtual attributes
+    |--------------------------------------------------------------------------
+    */
+    public function getFavoriteAttribute()
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        if ($user !== null) {
+            $pivot = $this->users()
+                ->wherePivot('user_id', '=', $user->id)
+                ->first();
+
+            if($pivot !== null) {
+                return $pivot->favorite;
+            }
+        }
+
+        return null;
+    }
+
+
+    public function getStatusAttribute()
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        if ($user !== null) {
+            $pivot = $this->users()
+                ->wherePivot('user_id', '=', $user->id)
+                ->first();
+
+            if($pivot !== null) {
+                return $pivot->status;
+            }
+        }
+
+        return null;
+    }
 
 
     /*
