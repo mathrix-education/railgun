@@ -10,19 +10,6 @@ use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 abstract class BaseTableSeeder extends Seeder
 {
     /**
-     * Write output to console
-     *
-     * @param $message
-     */
-    public function println($message)
-    {
-        if (isset($this->command) && !$this->command->getOutput()->isQuiet()) {
-            $this->command->getOutput()->writeln($message);
-        }
-    }
-
-
-    /**
      * Override default call
      *
      * @param string $class
@@ -31,28 +18,6 @@ abstract class BaseTableSeeder extends Seeder
     public function call($class, $silent = false)
     {
         $this->resolve($class)->__invoke();
-    }
-
-
-    /**
-     * Load data from a JSON file
-     *
-     * @param string $table the json file
-     *
-     * @return array
-     * @throws FileNotFoundException
-     */
-    public function loadFromRawJson(string $table): array
-    {
-        $childClass = new ReflectionClass($this);
-
-        $path = dirname($childClass->getFileName(), 2) . '/raws/' . $table . '.json';
-
-        if (file_exists($path)) {
-            return json_decode(file_get_contents($path), true);
-        } else {
-            throw new FileNotFoundException($path);
-        }
     }
 
 
@@ -85,6 +50,41 @@ abstract class BaseTableSeeder extends Seeder
         }
 
         $this->println('<info>Seeded:</info>  ' . $table . ' from json');
+    }
+
+
+    /**
+     * Write output to console
+     *
+     * @param $message
+     */
+    public function println($message)
+    {
+        if (isset($this->command) && !$this->command->getOutput()->isQuiet()) {
+            $this->command->getOutput()->writeln($message);
+        }
+    }
+
+
+    /**
+     * Load data from a JSON file
+     *
+     * @param string $table the json file
+     *
+     * @return array
+     * @throws FileNotFoundException
+     */
+    public function loadFromRawJson(string $table): array
+    {
+        $childClass = new ReflectionClass($this);
+
+        $path = dirname($childClass->getFileName(), 2) . '/raws/' . $table . '.json';
+
+        if (file_exists($path)) {
+            return json_decode(file_get_contents($path), true);
+        } else {
+            throw new FileNotFoundException($path);
+        }
     }
 
 

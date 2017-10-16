@@ -81,6 +81,8 @@ class Activity extends BaseModel
     {
         return $this->belongsToMany(Notion::class);
     }
+
+
     /**
      * BelongsToMany Users
      *
