@@ -44,11 +44,7 @@ class Module extends BaseModel
     protected $fillable = ['name', 'slug', 'description', 'type', 'content', 'questions', 'choices', 'solutions',
         'corrections', 'options'];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
+    /** @var array The attributes that should be cast to native types */
     protected $casts = [
         'questions' => 'array',
         'choices' => 'array',
@@ -94,9 +90,11 @@ class Module extends BaseModel
 
 
     /**
-     * Get all of the post's logs.
+     * MorphMany Log
+     *
+     * @return MorphMany
      */
-    public function logs()
+    public function logs(): MorphMany
     {
         return $this->morphMany(Log::class, 'loggable');
     }

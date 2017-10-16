@@ -35,11 +35,7 @@ class Log extends BaseModel
     /** @var array */
     public $fillable = ['event', 'user_id', 'value', 'created_at', 'loggable_type', 'loggable_id'];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
+    /** @var array The attributes that should be cast to native types */
     protected $casts = [
         'value' => 'array'
     ];

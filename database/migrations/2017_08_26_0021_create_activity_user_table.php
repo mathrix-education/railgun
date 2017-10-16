@@ -39,6 +39,6 @@ class CreateActivityUserTable extends Migration
             $table->dropForeign('activity_user_user_id_foreign');
         });
 
-        Schema::dropIfExists('levels');
+        Schema::dropIfExists('activity_user');
     }
 }

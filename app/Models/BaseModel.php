@@ -88,7 +88,6 @@ use Illuminate\Support\Facades\Validator;
  * @method static void truncate()
  * @method static Expression raw($value)
  *
- * @mixin Builder
  * @package App\Models
  */
 abstract class BaseModel extends Model

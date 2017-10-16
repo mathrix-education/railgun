@@ -54,15 +54,18 @@ class Comment extends BaseModel
 
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
+
     /** @var array The fillable attributes */
     protected $fillable = ['content', 'score', 'parent_id', 'user_id', 'commentable_id', 'commentable_type',
         'created_at', 'updated_at', 'deleted_at'];
+
     /** @var array Validation rules */
     protected $rules = [
         'content' => 'required',
         'user_id' => 'required|exists:users,id',
         'parent_id' => 'nullable|exists:comments,id'
     ];
+
     /** @var array The attributes that should be mutated to dates */
     protected $dates = ['deleted_at'];
 
