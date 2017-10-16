@@ -9084,6 +9084,21 @@ define({ "api": [
             "group": "Data",
             "type": "string",
             "optional": true,
+            "field": "username",
+            "defaultValue": "null",
+            "description": "<p>The user username</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": false,
+            "field": "email",
+            "description": "<p>The user email</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": true,
             "field": "firstname",
             "defaultValue": "null",
             "description": "<p>The user firstname</p>"
@@ -9099,17 +9114,15 @@ define({ "api": [
           {
             "group": "Data",
             "type": "string",
-            "optional": true,
-            "field": "username",
-            "defaultValue": "null",
-            "description": "<p>The user username</p>"
+            "optional": false,
+            "field": "password",
+            "description": "<p>The user password</p>"
           },
           {
             "group": "Data",
             "type": "string",
             "allowedValues": [
               "registered",
-              "premium",
               "moderator",
               "admin"
             ],
@@ -9119,25 +9132,17 @@ define({ "api": [
           },
           {
             "group": "Data",
-            "type": "string",
+            "type": "int",
             "optional": false,
-            "field": "email",
-            "description": "<p>The user email</p>"
-          },
-          {
-            "group": "Data",
-            "type": "string",
-            "optional": false,
-            "field": "password",
-            "description": "<p>The user password</p>"
+            "field": "points",
+            "description": "<p>The user points</p>"
           },
           {
             "group": "Data",
             "type": "int",
-            "optional": true,
-            "field": "class_id",
-            "defaultValue": "null",
-            "description": "<p>The class id; should be <code>null</code> for <code>moderator</code> and <code>admin</code></p>"
+            "optional": false,
+            "field": "level",
+            "description": "<p>The user level</p>"
           },
           {
             "group": "Data",
@@ -9150,6 +9155,13 @@ define({ "api": [
             "optional": false,
             "field": "daily",
             "description": "<p>The user daily goal</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": false,
+            "field": "daily_achievements",
+            "description": "<p>The user daily achievements</p>"
           },
           {
             "group": "Data",
@@ -9167,17 +9179,35 @@ define({ "api": [
           },
           {
             "group": "Data",
-            "type": "bool",
-            "optional": false,
-            "field": "settings.email_newsletter",
-            "description": "<p>If the user should receive the newsletter</p>"
+            "type": "string",
+            "optional": true,
+            "field": "stripe_id",
+            "defaultValue": "null",
+            "description": "<p>The Stripe customer id</p>"
           },
           {
             "group": "Data",
-            "type": "bool",
-            "optional": false,
-            "field": "settings.email_comment",
-            "description": "<p>If the user should receive an comment email</p>"
+            "type": "string",
+            "optional": true,
+            "field": "card_brand",
+            "defaultValue": "null",
+            "description": "<p>The card brand (Visa, etc.)</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": true,
+            "field": "card_last_four",
+            "defaultValue": "null",
+            "description": "<p>The card last four digits</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "optional": true,
+            "field": "trial_ends_at",
+            "defaultValue": "null",
+            "description": "<p>The trial expire date</p>"
           }
         ]
       }
@@ -9187,7 +9217,7 @@ define({ "api": [
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "int",
+            "type": "string",
             "optional": false,
             "field": "id",
             "description": "<p>The user id</p>"
@@ -9204,7 +9234,7 @@ define({ "api": [
             "type": "string",
             "optional": false,
             "field": "email",
-            "description": "<p>The user email address</p>"
+            "description": "<p>The user email</p>"
           },
           {
             "group": "Success 200",
@@ -9224,8 +9254,20 @@ define({ "api": [
             "group": "Success 200",
             "type": "string",
             "optional": false,
-            "field": "facebook_token",
-            "description": "<p>The facebook token</p>"
+            "field": "password",
+            "description": "<p>The user password</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "allowedValues": [
+              "registered",
+              "moderator",
+              "admin"
+            ],
+            "optional": false,
+            "field": "type",
+            "description": "<p>The user type</p>"
           },
           {
             "group": "Success 200",
@@ -9236,17 +9278,36 @@ define({ "api": [
           },
           {
             "group": "Success 200",
-            "type": "array",
+            "type": "int",
             "optional": false,
-            "field": "settings",
-            "description": "<p>The user settings</p>"
+            "field": "level",
+            "description": "<p>The user level</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "allowedValues": [
+              "20",
+              "40",
+              "70"
+            ],
+            "optional": false,
+            "field": "daily",
+            "description": "<p>The user daily goal</p>"
           },
           {
             "group": "Success 200",
             "type": "int",
             "optional": false,
-            "field": "settings.daily_goal",
-            "description": "<p>The user daily goal points</p>"
+            "field": "daily_achievements",
+            "description": "<p>The user daily achievements</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "array",
+            "optional": false,
+            "field": "settings",
+            "description": "<p>The user options</p>"
           },
           {
             "group": "Success 200",
@@ -9257,24 +9318,31 @@ define({ "api": [
           },
           {
             "group": "Success 200",
-            "type": "bool",
+            "type": "string",
             "optional": false,
-            "field": "settings.email_newsletter",
-            "description": "<p>If the user should receive the newsletter</p>"
+            "field": "stripe_id",
+            "description": "<p>The Stripe customer id</p>"
           },
           {
             "group": "Success 200",
-            "type": "bool",
+            "type": "string",
             "optional": false,
-            "field": "settings.email_comment",
-            "description": "<p>If the user should receive an comment email</p>"
+            "field": "card_brand",
+            "description": "<p>The card brand (Visa, etc.)</p>"
           },
           {
             "group": "Success 200",
-            "type": "int",
+            "type": "string",
             "optional": false,
-            "field": "class_id",
-            "description": "<p>The user class_id</p>"
+            "field": "card_last_four",
+            "description": "<p>The card last four digits</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "trial_ends_at",
+            "description": "<p>The trial expire date</p>"
           }
         ]
       }
@@ -9386,7 +9454,7 @@ define({ "api": [
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "int",
+            "type": "string",
             "optional": false,
             "field": "id",
             "description": "<p>The user id</p>"
@@ -9403,7 +9471,7 @@ define({ "api": [
             "type": "string",
             "optional": false,
             "field": "email",
-            "description": "<p>The user email address</p>"
+            "description": "<p>The user email</p>"
           },
           {
             "group": "Success 200",
@@ -9423,8 +9491,20 @@ define({ "api": [
             "group": "Success 200",
             "type": "string",
             "optional": false,
-            "field": "facebook_token",
-            "description": "<p>The facebook token</p>"
+            "field": "password",
+            "description": "<p>The user password</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "allowedValues": [
+              "registered",
+              "moderator",
+              "admin"
+            ],
+            "optional": false,
+            "field": "type",
+            "description": "<p>The user type</p>"
           },
           {
             "group": "Success 200",
@@ -9435,17 +9515,36 @@ define({ "api": [
           },
           {
             "group": "Success 200",
-            "type": "array",
+            "type": "int",
             "optional": false,
-            "field": "settings",
-            "description": "<p>The user settings</p>"
+            "field": "level",
+            "description": "<p>The user level</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "allowedValues": [
+              "20",
+              "40",
+              "70"
+            ],
+            "optional": false,
+            "field": "daily",
+            "description": "<p>The user daily goal</p>"
           },
           {
             "group": "Success 200",
             "type": "int",
             "optional": false,
-            "field": "settings.daily_goal",
-            "description": "<p>The user daily goal points</p>"
+            "field": "daily_achievements",
+            "description": "<p>The user daily achievements</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "array",
+            "optional": false,
+            "field": "settings",
+            "description": "<p>The user options</p>"
           },
           {
             "group": "Success 200",
@@ -9456,24 +9555,31 @@ define({ "api": [
           },
           {
             "group": "Success 200",
-            "type": "bool",
+            "type": "string",
             "optional": false,
-            "field": "settings.email_newsletter",
-            "description": "<p>If the user should receive the newsletter</p>"
+            "field": "stripe_id",
+            "description": "<p>The Stripe customer id</p>"
           },
           {
             "group": "Success 200",
-            "type": "bool",
+            "type": "string",
             "optional": false,
-            "field": "settings.email_comment",
-            "description": "<p>If the user should receive an comment email</p>"
+            "field": "card_brand",
+            "description": "<p>The card brand (Visa, etc.)</p>"
           },
           {
             "group": "Success 200",
-            "type": "int",
+            "type": "string",
             "optional": false,
-            "field": "class_id",
-            "description": "<p>The user class_id</p>"
+            "field": "card_last_four",
+            "description": "<p>The card last four digits</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "trial_ends_at",
+            "description": "<p>The trial expire date</p>"
           }
         ]
       }
@@ -9532,7 +9638,7 @@ define({ "api": [
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "int",
+            "type": "string",
             "optional": false,
             "field": "id",
             "description": "<p>The user id</p>"
@@ -9549,7 +9655,7 @@ define({ "api": [
             "type": "string",
             "optional": false,
             "field": "email",
-            "description": "<p>The user email address</p>"
+            "description": "<p>The user email</p>"
           },
           {
             "group": "Success 200",
@@ -9569,8 +9675,20 @@ define({ "api": [
             "group": "Success 200",
             "type": "string",
             "optional": false,
-            "field": "facebook_token",
-            "description": "<p>The facebook token</p>"
+            "field": "password",
+            "description": "<p>The user password</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "allowedValues": [
+              "registered",
+              "moderator",
+              "admin"
+            ],
+            "optional": false,
+            "field": "type",
+            "description": "<p>The user type</p>"
           },
           {
             "group": "Success 200",
@@ -9581,17 +9699,36 @@ define({ "api": [
           },
           {
             "group": "Success 200",
-            "type": "array",
+            "type": "int",
             "optional": false,
-            "field": "settings",
-            "description": "<p>The user settings</p>"
+            "field": "level",
+            "description": "<p>The user level</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "allowedValues": [
+              "20",
+              "40",
+              "70"
+            ],
+            "optional": false,
+            "field": "daily",
+            "description": "<p>The user daily goal</p>"
           },
           {
             "group": "Success 200",
             "type": "int",
             "optional": false,
-            "field": "settings.daily_goal",
-            "description": "<p>The user daily goal points</p>"
+            "field": "daily_achievements",
+            "description": "<p>The user daily achievements</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "array",
+            "optional": false,
+            "field": "settings",
+            "description": "<p>The user options</p>"
           },
           {
             "group": "Success 200",
@@ -9602,24 +9739,31 @@ define({ "api": [
           },
           {
             "group": "Success 200",
-            "type": "bool",
+            "type": "string",
             "optional": false,
-            "field": "settings.email_newsletter",
-            "description": "<p>If the user should receive the newsletter</p>"
+            "field": "stripe_id",
+            "description": "<p>The Stripe customer id</p>"
           },
           {
             "group": "Success 200",
-            "type": "bool",
+            "type": "string",
             "optional": false,
-            "field": "settings.email_comment",
-            "description": "<p>If the user should receive an comment email</p>"
+            "field": "card_brand",
+            "description": "<p>The card brand (Visa, etc.)</p>"
           },
           {
             "group": "Success 200",
-            "type": "int",
+            "type": "string",
             "optional": false,
-            "field": "class_id",
-            "description": "<p>The user class_id</p>"
+            "field": "card_last_four",
+            "description": "<p>The card last four digits</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "trial_ends_at",
+            "description": "<p>The trial expire date</p>"
           }
         ]
       }
@@ -9754,7 +9898,6 @@ define({ "api": [
             "type": "string",
             "allowedValues": [
               "registered",
-              "premium",
               "moderator",
               "admin"
             ],
@@ -9814,7 +9957,7 @@ define({ "api": [
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "int",
+            "type": "string",
             "optional": false,
             "field": "id",
             "description": "<p>The user id</p>"
@@ -9831,7 +9974,7 @@ define({ "api": [
             "type": "string",
             "optional": false,
             "field": "email",
-            "description": "<p>The user email address</p>"
+            "description": "<p>The user email</p>"
           },
           {
             "group": "Success 200",
@@ -9851,8 +9994,20 @@ define({ "api": [
             "group": "Success 200",
             "type": "string",
             "optional": false,
-            "field": "facebook_token",
-            "description": "<p>The facebook token</p>"
+            "field": "password",
+            "description": "<p>The user password</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "allowedValues": [
+              "registered",
+              "moderator",
+              "admin"
+            ],
+            "optional": false,
+            "field": "type",
+            "description": "<p>The user type</p>"
           },
           {
             "group": "Success 200",
@@ -9863,17 +10018,36 @@ define({ "api": [
           },
           {
             "group": "Success 200",
-            "type": "array",
+            "type": "int",
             "optional": false,
-            "field": "settings",
-            "description": "<p>The user settings</p>"
+            "field": "level",
+            "description": "<p>The user level</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "allowedValues": [
+              "20",
+              "40",
+              "70"
+            ],
+            "optional": false,
+            "field": "daily",
+            "description": "<p>The user daily goal</p>"
           },
           {
             "group": "Success 200",
             "type": "int",
             "optional": false,
-            "field": "settings.daily_goal",
-            "description": "<p>The user daily goal points</p>"
+            "field": "daily_achievements",
+            "description": "<p>The user daily achievements</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "array",
+            "optional": false,
+            "field": "settings",
+            "description": "<p>The user options</p>"
           },
           {
             "group": "Success 200",
@@ -9884,24 +10058,31 @@ define({ "api": [
           },
           {
             "group": "Success 200",
-            "type": "bool",
+            "type": "string",
             "optional": false,
-            "field": "settings.email_newsletter",
-            "description": "<p>If the user should receive the newsletter</p>"
+            "field": "stripe_id",
+            "description": "<p>The Stripe customer id</p>"
           },
           {
             "group": "Success 200",
-            "type": "bool",
+            "type": "string",
             "optional": false,
-            "field": "settings.email_comment",
-            "description": "<p>If the user should receive an comment email</p>"
+            "field": "card_brand",
+            "description": "<p>The card brand (Visa, etc.)</p>"
           },
           {
             "group": "Success 200",
-            "type": "int",
+            "type": "string",
             "optional": false,
-            "field": "class_id",
-            "description": "<p>The user class_id</p>"
+            "field": "card_last_four",
+            "description": "<p>The card last four digits</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "trial_ends_at",
+            "description": "<p>The trial expire date</p>"
           }
         ]
       }
@@ -9989,7 +10170,7 @@ define({ "api": [
           },
           {
             "group": "Success 200",
-            "type": "int",
+            "type": "string",
             "optional": false,
             "field": "users.id",
             "description": "<p>The user id</p>"
@@ -10006,7 +10187,7 @@ define({ "api": [
             "type": "string",
             "optional": false,
             "field": "users.email",
-            "description": "<p>The user email address</p>"
+            "description": "<p>The user email</p>"
           },
           {
             "group": "Success 200",
@@ -10026,8 +10207,20 @@ define({ "api": [
             "group": "Success 200",
             "type": "string",
             "optional": false,
-            "field": "users.facebook_token",
-            "description": "<p>The facebook token</p>"
+            "field": "users.password",
+            "description": "<p>The user password</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "allowedValues": [
+              "registered",
+              "moderator",
+              "admin"
+            ],
+            "optional": false,
+            "field": "users.type",
+            "description": "<p>The user type</p>"
           },
           {
             "group": "Success 200",
@@ -10038,17 +10231,36 @@ define({ "api": [
           },
           {
             "group": "Success 200",
-            "type": "array",
+            "type": "int",
             "optional": false,
-            "field": "users.settings",
-            "description": "<p>The user settings</p>"
+            "field": "users.level",
+            "description": "<p>The user level</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "allowedValues": [
+              "20",
+              "40",
+              "70"
+            ],
+            "optional": false,
+            "field": "users.daily",
+            "description": "<p>The user daily goal</p>"
           },
           {
             "group": "Success 200",
             "type": "int",
             "optional": false,
-            "field": "users.settings.daily_goal",
-            "description": "<p>The user daily goal points</p>"
+            "field": "users.daily_achievements",
+            "description": "<p>The user daily achievements</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "array",
+            "optional": false,
+            "field": "users.settings",
+            "description": "<p>The user options</p>"
           },
           {
             "group": "Success 200",
@@ -10059,24 +10271,31 @@ define({ "api": [
           },
           {
             "group": "Success 200",
-            "type": "bool",
+            "type": "string",
             "optional": false,
-            "field": "users.settings.email_newsletter",
-            "description": "<p>If the user should receive the newsletter</p>"
+            "field": "users.stripe_id",
+            "description": "<p>The Stripe customer id</p>"
           },
           {
             "group": "Success 200",
-            "type": "bool",
+            "type": "string",
             "optional": false,
-            "field": "users.settings.email_comment",
-            "description": "<p>If the user should receive an comment email</p>"
+            "field": "users.card_brand",
+            "description": "<p>The card brand (Visa, etc.)</p>"
           },
           {
             "group": "Success 200",
-            "type": "int",
+            "type": "string",
             "optional": false,
-            "field": "users.class_id",
-            "description": "<p>The user class_id</p>"
+            "field": "users.card_last_four",
+            "description": "<p>The card last four digits</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "users.trial_ends_at",
+            "description": "<p>The trial expire date</p>"
           }
         ]
       }
@@ -10142,7 +10361,7 @@ define({ "api": [
           },
           {
             "group": "Success 200",
-            "type": "int",
+            "type": "string",
             "optional": false,
             "field": "users.id",
             "description": "<p>The user id</p>"
@@ -10159,7 +10378,7 @@ define({ "api": [
             "type": "string",
             "optional": false,
             "field": "users.email",
-            "description": "<p>The user email address</p>"
+            "description": "<p>The user email</p>"
           },
           {
             "group": "Success 200",
@@ -10179,8 +10398,20 @@ define({ "api": [
             "group": "Success 200",
             "type": "string",
             "optional": false,
-            "field": "users.facebook_token",
-            "description": "<p>The facebook token</p>"
+            "field": "users.password",
+            "description": "<p>The user password</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "allowedValues": [
+              "registered",
+              "moderator",
+              "admin"
+            ],
+            "optional": false,
+            "field": "users.type",
+            "description": "<p>The user type</p>"
           },
           {
             "group": "Success 200",
@@ -10191,17 +10422,36 @@ define({ "api": [
           },
           {
             "group": "Success 200",
-            "type": "array",
+            "type": "int",
             "optional": false,
-            "field": "users.settings",
-            "description": "<p>The user settings</p>"
+            "field": "users.level",
+            "description": "<p>The user level</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "allowedValues": [
+              "20",
+              "40",
+              "70"
+            ],
+            "optional": false,
+            "field": "users.daily",
+            "description": "<p>The user daily goal</p>"
           },
           {
             "group": "Success 200",
             "type": "int",
             "optional": false,
-            "field": "users.settings.daily_goal",
-            "description": "<p>The user daily goal points</p>"
+            "field": "users.daily_achievements",
+            "description": "<p>The user daily achievements</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "array",
+            "optional": false,
+            "field": "users.settings",
+            "description": "<p>The user options</p>"
           },
           {
             "group": "Success 200",
@@ -10212,24 +10462,31 @@ define({ "api": [
           },
           {
             "group": "Success 200",
-            "type": "bool",
+            "type": "string",
             "optional": false,
-            "field": "users.settings.email_newsletter",
-            "description": "<p>If the user should receive the newsletter</p>"
+            "field": "users.stripe_id",
+            "description": "<p>The Stripe customer id</p>"
           },
           {
             "group": "Success 200",
-            "type": "bool",
+            "type": "string",
             "optional": false,
-            "field": "users.settings.email_comment",
-            "description": "<p>If the user should receive an comment email</p>"
+            "field": "users.card_brand",
+            "description": "<p>The card brand (Visa, etc.)</p>"
           },
           {
             "group": "Success 200",
-            "type": "int",
+            "type": "string",
             "optional": false,
-            "field": "users.class_id",
-            "description": "<p>The user class_id</p>"
+            "field": "users.card_last_four",
+            "description": "<p>The card last four digits</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "users.trial_ends_at",
+            "description": "<p>The trial expire date</p>"
           }
         ]
       }

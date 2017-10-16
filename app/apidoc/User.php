@@ -1,49 +1,61 @@
 <?php
 /**
  * @apiDefine UserData
+ * @apiParam (Data) {string} [username=null] The user username
+ * @apiParam (Data) {string} email The user email
  * @apiParam (Data) {string} [firstname=null] The user firstname
  * @apiParam (Data) {string} [lastname=null] The user lastname
- * @apiParam (Data) {string} [username=null] The user username
- * @apiParam (Data) {string=registered,moderator,admin} type The user type
- * @apiParam (Data) {string} email The user email
  * @apiParam (Data) {string} password The user password
- * @apiParam (Data) {int} [class_id=null] The class id; should be `null` for `moderator` and `admin`
+ * @apiParam (Data) {string=registered,moderator,admin} type The user type
+ * @apiParam (Data) {int} points The user points
+ * @apiParam (Data) {int} level The user level
  * @apiParam (Data) {int=20,40,70} daily The user daily goal
+ * @apiParam (Data) {int} daily_achievements The user daily achievements
  * @apiParam (Data) {array} settings The user options
  * @apiParam (Data) {bool} settings.sound If the user has enabled sounds
- * @apiParam (Data) {bool} settings.email_newsletter If the user should receive the newsletter
- * @apiParam (Data) {bool} settings.email_comment If the user should receive an comment email
+ * @apiParam (Data) {string} [stripe_id=null] The Stripe customer id
+ * @apiParam (Data) {string} [card_brand=null] The card brand (Visa, etc.)
+ * @apiParam (Data) {string} [card_last_four=null] The card last four digits
+ * @apiParam (Data) {string} [trial_ends_at=null] The trial expire date
  */
 /**
  * @apiDefine User
- * @apiSuccess {int} id The user id
+ * @apiSuccess {string} id The user id
  * @apiSuccess {string} username The user username
- * @apiSuccess {string} email The user email address
+ * @apiSuccess {string} email The user email
  * @apiSuccess {string} firstname The user firstname
  * @apiSuccess {string} lastname The user lastname
- * @apiSuccess {string} facebook_token The facebook token
+ * @apiSuccess {string} password The user password
+ * @apiSuccess {string=registered,moderator,admin} type The user type
  * @apiSuccess {int} points The user points
- * @apiSuccess {array} settings The user settings
- * @apiSuccess {int} settings.daily_goal The user daily goal points
+ * @apiSuccess {int} level The user level
+ * @apiSuccess {int=20,40,70} daily The user daily goal
+ * @apiSuccess {int} daily_achievements The user daily achievements
+ * @apiSuccess {array} settings The user options
  * @apiSuccess {bool} settings.sound If the user has enabled sounds
- * @apiSuccess {bool} settings.email_newsletter If the user should receive the newsletter
- * @apiSuccess {bool} settings.email_comment If the user should receive an comment email
- * @apiSuccess {int} class_id The user class_id
+ * @apiSuccess {string} stripe_id The Stripe customer id
+ * @apiSuccess {string} card_brand The card brand (Visa, etc.)
+ * @apiSuccess {string} card_last_four The card last four digits
+ * @apiSuccess {string} trial_ends_at The trial expire date
  */
 /**
  * @apiDefine UserArray
  * @apiSuccess {User[]} users Array of users
- * @apiSuccess {int} users.id The user id
+ * @apiSuccess {string} users.id The user id
  * @apiSuccess {string} users.username The user username
- * @apiSuccess {string} users.email The user email address
+ * @apiSuccess {string} users.email The user email
  * @apiSuccess {string} users.firstname The user firstname
  * @apiSuccess {string} users.lastname The user lastname
- * @apiSuccess {string} users.facebook_token The facebook token
+ * @apiSuccess {string} users.password The user password
+ * @apiSuccess {string=registered,moderator,admin} users.type The user type
  * @apiSuccess {int} users.points The user points
- * @apiSuccess {array} users.settings The user settings
- * @apiSuccess {int} users.settings.daily_goal The user daily goal points
+ * @apiSuccess {int} users.level The user level
+ * @apiSuccess {int=20,40,70} users.daily The user daily goal
+ * @apiSuccess {int} users.daily_achievements The user daily achievements
+ * @apiSuccess {array} users.settings The user options
  * @apiSuccess {bool} users.settings.sound If the user has enabled sounds
- * @apiSuccess {bool} users.settings.email_newsletter If the user should receive the newsletter
- * @apiSuccess {bool} users.settings.email_comment If the user should receive an comment email
- * @apiSuccess {int} users.class_id The user class_id
+ * @apiSuccess {string} users.stripe_id The Stripe customer id
+ * @apiSuccess {string} users.card_brand The card brand (Visa, etc.)
+ * @apiSuccess {string} users.card_last_four The card last four digits
+ * @apiSuccess {string} users.trial_ends_at The trial expire date
  */

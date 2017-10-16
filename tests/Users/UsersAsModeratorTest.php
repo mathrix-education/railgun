@@ -24,7 +24,7 @@ class UsersAsAdminTest extends ScopeTestCase
     }
 
 
-    public function testLevelObjectivePass()
+    public function testLevelPass()
     {
         $this->sameAs('registered');
     }
