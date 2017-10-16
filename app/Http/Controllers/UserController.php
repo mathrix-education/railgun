@@ -286,6 +286,8 @@ class UserController extends BaseController
      * @apiError (Error 400) points field has to be a positive integer
      * @apiUse 401Unauthorized
      * @apiUse 404ModelNotFound
+     * @apiError (Error 429) too_many_requests Already gathered points today for this model
+     * @apiUse 422Save
      *
      * @param Request $request
      * @param int|null $id
@@ -373,7 +375,7 @@ class UserController extends BaseController
      * @apiGroup Users
      * @apiName UserDelete
      * @apiDescription Delete a user
-     * @apiPermission adminhttp501NotImplemented
+     * @apiPermission http501NotImplemented
      * @apiUse Bearer
      * @apiParam {int} id The user id
      * @apiError (Error 401) unauthorized User does not have enough privileges
