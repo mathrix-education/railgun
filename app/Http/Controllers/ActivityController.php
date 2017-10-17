@@ -207,10 +207,39 @@ class ActivityController extends BaseController
 
     /**
      * @apiVersion 0.8.1
-     * @api {post} /activities/{id}/mark Favorite
+     * @api {get} /activities/favorite Favorites
      * @apiGroup Activities
-     * @apiName ActivityFavorite
-     * @apiDescription Delete a activity
+     * @apiName ActivitiesFavorite
+     * @apiDescription Get user favorite activities
+     * @apiUse Bearer
+     * @apiPermission registered
+     * @apiUse 401Unauthorized
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function favorites(Request $request)
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        // TODO get for other users
+
+        $activities = $user->activities()
+            ->wherePivot('favorite', '=', true)
+            ->get();
+
+        return $this->http200Success($activities);
+    }
+
+
+    /**
+     * @apiVersion 0.8.1
+     * @api {post} /activities/{id}/mark Mark
+     * @apiGroup Activities
+     * @apiName ActivityMark
+     * @apiDescription Mark activity as completed or to_revise
      * @apiUse Bearer
      * @apiPermission registered
      * @apiParam {int} id The activity id
