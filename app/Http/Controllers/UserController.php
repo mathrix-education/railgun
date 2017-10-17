@@ -257,6 +257,7 @@ class UserController extends BaseController
      * @apiPermission registered for self update, admin otherwise
      * @apiUse Bearer
      * @apiParam (Data) {int} [id=null] The user id
+     * @apiParam (Data) {int} points The points to add
      * @apiParam (Data) {string=module} [loggable_type] The loggable type
      * @apiParam (Data) {int} [loggable_id] The loggable id
      * @apiError (Error 400) invalid_request points field is required

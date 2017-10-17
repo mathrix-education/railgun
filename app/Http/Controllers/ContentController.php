@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Chapter;
 use App\Models\Class_;
 use App\Models\Country;
+use App\Models\Module;
 use App\Models\Notion;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -239,6 +240,12 @@ class ContentController extends BaseController
         $notions = new Collection();
         $classIds = [];
 
+        // Videos
+        $videos = Module::where('title', 'LIKE', '%' . $query . '%')
+            ->limit($perPage)
+            ->offset(($page - 1) * $perPage)
+            ->get();
+
         // Custom requests for logged users
         if ($user) {
             /** @var Class_ $userClass */
@@ -304,6 +311,7 @@ class ContentController extends BaseController
         }
 
         return $this->http200Success([
+            'videos' => $videos,
             'chapters' => $chapters,
             'notions' => $notions
         ]);

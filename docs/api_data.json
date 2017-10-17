@@ -2,6 +2,47 @@
   {
     "version": "0.8.1",
     "type": "get",
+    "url": "/activities/favorite",
+    "title": "Favorites",
+    "group": "Activities",
+    "name": "ActivitiesFavorite",
+    "description": "<p>Get user favorite activities</p>",
+    "permission": [
+      {
+        "name": "registered"
+      }
+    ],
+    "filename": "app/Http/Controllers/ActivityController.php",
+    "groupTitle": "Activities",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "0.8.1",
+    "type": "get",
     "url": "/activities",
     "title": "Index",
     "group": "Activities",
@@ -456,68 +497,6 @@
   {
     "version": "0.8.1",
     "type": "post",
-    "url": "/activities/{id}/mark",
-    "title": "Favorite",
-    "group": "Activities",
-    "name": "ActivityFavorite",
-    "description": "<p>Delete a activity</p>",
-    "permission": [
-      {
-        "name": "registered"
-      }
-    ],
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": false,
-            "field": "id",
-            "description": "<p>The activity id</p>"
-          }
-        ]
-      }
-    },
-    "filename": "app/Http/Controllers/ActivityController.php",
-    "groupTitle": "Activities",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Bearer <code>access_token</code></p>"
-          }
-        ]
-      }
-    },
-    "error": {
-      "fields": {
-        "Error 401": [
-          {
-            "group": "Error 401",
-            "optional": false,
-            "field": "unauthorized",
-            "description": "<p>User does not have enough privileges</p>"
-          }
-        ],
-        "Error 404": [
-          {
-            "group": "Error 404",
-            "optional": false,
-            "field": "model_not_found",
-            "description": "<p>Model matching given data does not exist</p>"
-          }
-        ]
-      }
-    }
-  },
-  {
-    "version": "0.8.1",
-    "type": "post",
     "url": "/activities/{id}/favorite",
     "title": "Favorite",
     "group": "Activities",
@@ -641,6 +620,68 @@
     },
     "error": {
       "fields": {
+        "Error 404": [
+          {
+            "group": "Error 404",
+            "optional": false,
+            "field": "model_not_found",
+            "description": "<p>Model matching given data does not exist</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "version": "0.8.1",
+    "type": "post",
+    "url": "/activities/{id}/mark",
+    "title": "Mark",
+    "group": "Activities",
+    "name": "ActivityMark",
+    "description": "<p>Mark activity as completed or to_revise</p>",
+    "permission": [
+      {
+        "name": "registered"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The activity id</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/ActivityController.php",
+    "groupTitle": "Activities",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer <code>access_token</code></p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ],
         "Error 404": [
           {
             "group": "Error 404",
@@ -9916,6 +9957,13 @@
             "field": "id",
             "defaultValue": "null",
             "description": "<p>The user id</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": false,
+            "field": "points",
+            "description": "<p>The points to add</p>"
           },
           {
             "group": "Data",
