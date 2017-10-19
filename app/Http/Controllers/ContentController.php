@@ -246,16 +246,14 @@ class ContentController extends BaseController
         // Videos
         $videos = Activity::where('visible', true)
             ->whereHas('modules', function (Builder $q) use ($query) {
-                return $q->where([
-                    ['type', 'video'],
-                    ['name', 'LIKE', '%' . $query . '%']
-                ])->orWhere('name', 'LIKE', '%' . $query . '%');
+                return $q->where('type', '=', 'video')
+                    ->where('name', 'LIKE', '%' . $query . '%')
+                    ->orWhere('slug', 'LIKE', '%' . $query . '%');
             })
             ->with(['modules' => function(BelongsToMany $q) use($query) {
-                return $q->where([
-                    ['type', 'video'],
-                    ['name', 'LIKE', '%' . $query . '%']
-                ])->orWhere('name', 'LIKE', '%' . $query . '%');
+                return $q->where('type', '=', 'video')
+                    ->where('name', 'LIKE', '%' . $query . '%')
+                    ->orWhere('slug', 'LIKE', '%' . $query . '%');
             }])
             ->limit($perPage)
             ->offset(($page - 1) * $perPage)
