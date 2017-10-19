@@ -40,7 +40,7 @@ class Class_ extends BaseModel
     protected $table = 'classes';
 
     /** @var array The fillable attributes */
-    protected $fillable = ['name', 'name_short', 'slug', 'slug_short', 'order', 'parent_id', 'country_id'];
+    protected $fillable = ['name', 'name_short', 'slug', 'slug_short', 'order', 'visible', 'parent_id', 'country_id'];
 
     /** @var array Validation rules */
     protected $rules = [
@@ -49,6 +49,7 @@ class Class_ extends BaseModel
         'slug' => 'required|max:255',
         'slug_short' => 'required|max:255',
         'country_id' => 'required|exists:countries,id',
+        'visible' => 'boolean'
     ];
 
 

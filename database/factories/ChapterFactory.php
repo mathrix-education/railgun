@@ -18,5 +18,6 @@ $factory->define(Chapter::class, function (Generator $faker) {
         'slug' => str_slug($name),
         'class_id' => Class_::inRandomOrder()->firstOrFail()->id,
         'discipline_id' => Discipline::inRandomOrder()->firstOrFail()->id,
+        'visible' => $faker->boolean(95)
     ];
 });

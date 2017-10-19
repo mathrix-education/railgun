@@ -18,6 +18,7 @@ $factory->define(Class_::class, function (Generator $faker) {
         'slug' => str_slug($name),
         'name_short' => $nameShort,
         'slug_short' => str_slug($nameShort),
-        'country_id' => $faker->randomElement(Country::all()->pluck('id')->toArray())
+        'country_id' => $faker->randomElement(Country::all()->pluck('id')->toArray()),
+        'visible' => $faker->boolean(95)
     ];
 });

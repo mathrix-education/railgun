@@ -16,6 +16,7 @@ $factory->define(Country::class, function (Generator $faker) {
         'name' => $name,
         'slug' => str_slug($name),
         'name_short' => $nameShort,
-        'slug_short' => str_slug($nameShort)
+        'slug_short' => str_slug($nameShort),
+        'visible' => $faker->boolean(95)
     ];
 });

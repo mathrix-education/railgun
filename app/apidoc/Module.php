@@ -47,6 +47,7 @@
  *  [mcq-table] `string[]`   The corrections for each question (second dimension array represents a step)<br>
  *  [test]      `string[][]` The corrections for each question (second dimension array represents a step)<br>
  *  [flashcard] `string[]`   The corrections for each question
+ * @apiParam (Data) {bool} visible The module visibility
  * @apiParam (Data) {mixed} options The modules options
  * @apiParam (Data) {int} options.duration [test] The test duration (in seconds)
  * @apiParam (Data) {array} link The models to link with the notion
@@ -104,7 +105,8 @@
  *  [mcq-table] `string[]`   The corrections for each question (second dimension array represents a step)<br>
  *  [test]      `string[][]` The corrections for each question (second dimension array represents a step)<br>
  *  [flashcard] `string[]`   The corrections for each question
- * @apiSuccess {mixed} modules.options The modules options
+ * @apiSuccess {bool} modules.visible The module visibility
+ * @apiSuccess {mixed} modules.options The module options
  * @apiSuccess {int} modules.options.duration [test] The test duration (in seconds)
  */
 /**
@@ -154,6 +156,7 @@
  *  [mcq-table] `string[]`   The corrections for each question<br>
  *  [test]      `string[][]` The corrections for each question (second dimension array represents a step)<br>
  *  [flashcard] `string[]`   The corrections for each question
- * @apiSuccess {mixed} options The modules options
+ * @apiSuccess {bool} visible The module visibility
+ * @apiSuccess {mixed} options The module options
  * @apiSuccess {int} options.duration [test] The test duration (in seconds)
  */
