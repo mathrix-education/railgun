@@ -25,6 +25,7 @@ class CreateModulesTable extends Migration
             $table->text('solutions')->nullable();
             $table->text('corrections')->nullable();
             $table->text('options')->nullable();
+            $table->boolean('visible')->default(true);
         });
     }
 

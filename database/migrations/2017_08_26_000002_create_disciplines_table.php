@@ -19,6 +19,7 @@ class CreateDisciplinesTable extends Migration
             $table->string('slug');
             $table->boolean('beta')->default(0);
             $table->string('image')->nullable()->default(null);
+            $table->boolean('visible')->default(true);
         });
     }
 

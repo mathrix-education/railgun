@@ -20,6 +20,7 @@ class CreateClassesTable extends Migration
             $table->string('slug');
             $table->string('slug_short');
             $table->integer('order');
+            $table->boolean('visible')->default(true);
             $table->integer('parent_id')->unsigned()->nullable();
             $table->integer('country_id')->unsigned();
 

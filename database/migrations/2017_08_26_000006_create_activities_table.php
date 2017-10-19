@@ -18,6 +18,7 @@ class CreateActivitiesTable extends Migration
             $table->string('name');
             $table->string('slug');
             $table->string('description');
+            $table->boolean('visible')->default(true);
         });
     }
 

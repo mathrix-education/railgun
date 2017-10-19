@@ -19,6 +19,7 @@ class CreateCountriesTable extends Migration
             $table->string('name_short');
             $table->string('slug');
             $table->string('slug_short');
+            $table->boolean('visible')->default(true);
         });
     }
 
