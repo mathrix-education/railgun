@@ -63,14 +63,9 @@ class AuthController extends BaseController
 
         // If user successfully logged, log it into the database
         if ($response->getStatusCode() == 200) {
-            $log = new Log([
-                'event' => 'user_logged',
-                'user_id' => $user->id,
-                'value' => [
-                    'ip' => $request->getClientIp()
-                ]
+            Log::log('user_logged', $user->id, [
+                'ip' => $request->getClientIp()
             ]);
-            $log->save();
         }
 
         return $response;

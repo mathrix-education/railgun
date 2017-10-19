@@ -108,6 +108,15 @@ class CommentController extends BaseController
      * @apiParam {int} [page=1] the page to fetch
      * @apiParam {int} [perPage=10] the comments per page to fetch (excluding children)
      * @apiUse CommentArray
+     * @apiUse Http400InvalidRequest_Pagination
+     *
+     * @param string $commentable_type
+     * @param int $commentable_id
+     * @param int $page
+     * @param int $perPage
+     *
+     * @return JsonResponse
+     * @throws Http400InvalidRequestException
      */
     public function type(string $commentable_type, int $commentable_id, int $page = 1, int $perPage = 10)
     {
