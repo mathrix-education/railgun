@@ -302,7 +302,7 @@ class ContentController extends BaseController
                 ->offset(($page - 1) * $perPage)
                 ->get();
 
-            $chapters->union($chaptersToAdd);
+            $chapters = $chapters->merge($chaptersToAdd);
         }
 
         if ($notions->count() < $perPage) {
@@ -322,7 +322,7 @@ class ContentController extends BaseController
                 ->offset(($page - 1) * $perPage)
                 ->get();
 
-            $notions->union($notionsToAdd);
+            $notions = $notions->merge($notionsToAdd);
         }
 
         return response()->json([

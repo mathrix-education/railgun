@@ -10,11 +10,6 @@ use Tests\ScopeTestCase;
 
 class UsersAsRegisteredTest extends ScopeTestCase
 {
-    public function testSearch() {
-        $this->call('get', '/content/search/lorem');
-        $this->debug();
-    }
-
     public function testPointsWithoutLoggable()
     {
         $pointsBefore = $this->user->points;
