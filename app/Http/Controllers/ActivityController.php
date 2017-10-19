@@ -37,7 +37,7 @@ class ActivityController extends BaseController
      * @api {get} /activities/{id} Get
      * @apiGroup Activities
      * @apiName ActivityGet
-     * @apiDescription Get a activity by id
+     * @apiDescription Get an activity by id
      * @apiPermission public
      * @apiParam {int} id The activity id
      * @apiUse Activity
@@ -66,7 +66,7 @@ class ActivityController extends BaseController
      * @api {patch} /activities/{id} Edit
      * @apiGroup Activities
      * @apiName ActivityEdit
-     * @apiDescription Edit a activity
+     * @apiDescription Edit an activity
      * @apiPermission moderator
      * @apiUse Bearer
      * @apiParam {int} id The activity id
@@ -84,7 +84,7 @@ class ActivityController extends BaseController
      * @api {delete} /activities/{id} Delete
      * @apiGroup Activities
      * @apiName ActivityDelete
-     * @apiDescription Delete a activity
+     * @apiDescription Delete an activity
      * @apiUse Bearer
      * @apiPermission moderator
      * @apiParam {int} id The activity id
@@ -129,7 +129,7 @@ class ActivityController extends BaseController
      * @api {post} /activities/{id}/mark Mark
      * @apiGroup Activities
      * @apiName ActivityMark
-     * @apiDescription Mark activity as favorite or set its status completed or to_revise
+     * @apiDescription Mark an activity as favorite or set its status completed or to_revise
      * @apiUse Bearer
      * @apiPermission registered
      * @apiUse MetaData
@@ -161,6 +161,7 @@ class ActivityController extends BaseController
         $meta = Meta::firstOrNew($metaData);
         $meta->favorite = $request->input('favorite');
         $meta->status = $request->input('status');
+
         $meta->save();
 
         return response()->json($user);

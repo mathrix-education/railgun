@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
+use App\Models\Activity;
 use App\Models\Chapter;
 use App\Models\Class_;
 use App\Models\Country;
-use App\Models\Module;
 use App\Models\Notion;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -243,7 +244,19 @@ class ContentController extends BaseController
         $classIds = [];
 
         // Videos
-        $videos = Module::where('name', 'LIKE', '%' . $query . '%')
+        $videos = Activity::where('visible', true)
+            ->whereHas('modules', function (Builder $q) use ($query) {
+                return $q->where([
+                    ['type', 'video'],
+                    ['name', 'LIKE', '%' . $query . '%']
+                ])->orWhere('name', 'LIKE', '%' . $query . '%');
+            })
+            ->with(['modules' => function(BelongsToMany $q) use($query) {
+                return $q->where([
+                    ['type', 'video'],
+                    ['name', 'LIKE', '%' . $query . '%']
+                ])->orWhere('name', 'LIKE', '%' . $query . '%');
+            }])
             ->limit($perPage)
             ->offset(($page - 1) * $perPage)
             ->get();

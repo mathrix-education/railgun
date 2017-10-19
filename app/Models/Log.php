@@ -1,6 +1,8 @@
 <?php
 namespace App\Models;
 
+use App\Exceptions\Http422ModelSaveException;
+use App\Exceptions\Http422ModelValidationException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -55,6 +57,8 @@ class Log extends BaseModel
      * @param array $data the optional data to associate with the log, such as the loggable type and id
      *
      * @return bool
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
      */
     public static function log(string $event, $user = null, $data = [])
     {
