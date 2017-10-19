@@ -26,6 +26,7 @@ class CourseController extends BaseController
      * @apiParam {int} [page=1] The page number
      * @apiParam {int} [perPage=10] The course count per page
      * @apiUse CourseArray
+     * @apiUse Http400InvalidRequest_Pagination
      */
 
 
@@ -38,7 +39,7 @@ class CourseController extends BaseController
      * @apiPermission public
      * @apiParam {int} id The course id
      * @apiUse Course
-     * @apiUse 404ModelNotFound
+     * @apiUse Http404ModelNotFound
      */
 
 
@@ -52,9 +53,9 @@ class CourseController extends BaseController
      * @apiUse Bearer
      * @apiUse CourseData
      * @apiUse Course
-     * @apiUse 401Unauthorized
-     * @apiUse 422Validation
-     * @apiUse 422Save
+     * @apiUse Http401Unauthorized
+     * @apiUse Http422ModelValidation
+     * @apiUse Http422ModelSave
      */
 
 
@@ -69,10 +70,10 @@ class CourseController extends BaseController
      * @apiParam {int} id The course id
      * @apiUse CourseData
      * @apiUse Course
-     * @apiUse 401Unauthorized
-     * @apiUse 404ModelNotFound
-     * @apiUse 422Save
-     * @apiUse 422Validation
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
+     * @apiUse Http422ModelSave
+     * @apiUse Http422ModelValidation
      */
 
 
@@ -85,7 +86,7 @@ class CourseController extends BaseController
      * @apiUse Bearer
      * @apiPermission admin
      * @apiParam {int} id The course id
-     * @apiUse 401Unauthorized
-     * @apiUse 404ModelNotFound
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
      */
 }

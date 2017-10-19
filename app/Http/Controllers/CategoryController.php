@@ -25,6 +25,7 @@ class CategoryController extends BaseController
      * @apiDescription Retrieve categories
      * @apiPermission public
      * @apiUse CategoryArray
+     * @apiUse Http400InvalidRequest_Pagination
      */
 
 
@@ -37,11 +38,7 @@ class CategoryController extends BaseController
      * @apiPermission public
      * @apiParam {int} id The category id
      * @apiUse Category
-     * @apiUse 404ModelNotFound
-     *
-     * @param int $id
-     *
-     * @return JsonResponse
+     * @apiUse Http404ModelNotFound
      */
 
 
@@ -55,9 +52,9 @@ class CategoryController extends BaseController
      * @apiUse Bearer
      * @apiUse CategoryData
      * @apiUse Category
-     * @apiUse 401Unauthorized
-     * @apiUse 422Validation
-     * @apiUse 422Save
+     * @apiUse Http401Unauthorized
+     * @apiUse Http422ModelValidation
+     * @apiUse Http422ModelSave
      */
 
 
@@ -72,10 +69,10 @@ class CategoryController extends BaseController
      * @apiParam {int} id The category id
      * @apiUse CategoryData
      * @apiUse Category
-     * @apiUse 401Unauthorized
-     * @apiUse 404ModelNotFound
-     * @apiUse 422Save
-     * @apiUse 422Validation
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
+     * @apiUse Http422ModelSave
+     * @apiUse Http422ModelValidation
      */
 
 
@@ -88,8 +85,8 @@ class CategoryController extends BaseController
      * @apiUse Bearer
      * @apiPermission admin
      * @apiParam {int} id The category id
-     * @apiUse 401Unauthorized
-     * @apiUse 404ModelNotFound
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
      *
      * @param Request $request
      * @param int $id

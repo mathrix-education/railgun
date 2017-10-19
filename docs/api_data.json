@@ -27,6 +27,129 @@
         ]
       }
     },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Meta[]",
+            "optional": false,
+            "field": "metas",
+            "description": "<p>Array of metas</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "metas.id",
+            "description": "<p>The meta id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "metas.favorite",
+            "description": "<p>If the activity is a favorite</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "allowedValues": [
+              "completed",
+              "to_revise",
+              "null"
+            ],
+            "optional": false,
+            "field": "metas.status",
+            "description": "<p>The meta status</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "metas.country_id",
+            "description": "<p>The meta country_id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "metas.class_id_id",
+            "description": "<p>The meta class_id_id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "metas.discipline_id",
+            "description": "<p>The meta discipline_id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "metas.chapter_id",
+            "description": "<p>The meta chapter_id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "metas.notion_id",
+            "description": "<p>The meta notion_id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "metas.activity_id",
+            "description": "<p>The meta activity_id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Country",
+            "optional": false,
+            "field": "metas.country",
+            "description": "<p>The meta country</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Class",
+            "optional": false,
+            "field": "metas.class",
+            "description": "<p>The meta class</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Discipline",
+            "optional": false,
+            "field": "metas.discipline",
+            "description": "<p>The meta discipline</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Chapter",
+            "optional": false,
+            "field": "metas.chapter",
+            "description": "<p>The meta chapter</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Notion",
+            "optional": false,
+            "field": "metas.notion",
+            "description": "<p>The meta notion</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Activity",
+            "optional": false,
+            "field": "metas.activity",
+            "description": "<p>The meta activity</p>"
+          }
+        ]
+      }
+    },
     "error": {
       "fields": {
         "Error 401": [
@@ -92,6 +215,26 @@
             "optional": false,
             "field": "activities.description",
             "description": "<p>The activity description</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 400": [
+          {
+            "group": "Error 400",
+            "optional": false,
+            "field": "invalid_request",
+            "description": "<p>page and perPage have to be strictly positive</p>"
+          }
+        ],
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
           }
         ]
       }
@@ -243,14 +386,14 @@
           {
             "group": "Error 422",
             "optional": false,
-            "field": "validation",
-            "description": "<p>Data failed to pass validation</p>"
+            "field": "model_validation",
+            "description": "<p>Model data failed to pass validation</p>"
           },
           {
             "group": "Error 422",
             "optional": false,
-            "field": "save",
-            "description": "<p>Save failed</p>"
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
           }
         ]
       }
@@ -481,76 +624,14 @@
           {
             "group": "Error 422",
             "optional": false,
-            "field": "save",
-            "description": "<p>Save failed</p>"
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
           },
           {
             "group": "Error 422",
             "optional": false,
-            "field": "validation",
-            "description": "<p>Data failed to pass validation</p>"
-          }
-        ]
-      }
-    }
-  },
-  {
-    "version": "0.8.1",
-    "type": "post",
-    "url": "/activities/{id}/favorite",
-    "title": "Favorite",
-    "group": "Activities",
-    "name": "ActivityFavorite",
-    "description": "<p>Delete a activity</p>",
-    "permission": [
-      {
-        "name": "registered"
-      }
-    ],
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": false,
-            "field": "id",
-            "description": "<p>The activity id</p>"
-          }
-        ]
-      }
-    },
-    "filename": "app/Http/Controllers/ActivityController.php",
-    "groupTitle": "Activities",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Bearer <code>access_token</code></p>"
-          }
-        ]
-      }
-    },
-    "error": {
-      "fields": {
-        "Error 401": [
-          {
-            "group": "Error 401",
-            "optional": false,
-            "field": "unauthorized",
-            "description": "<p>User does not have enough privileges</p>"
-          }
-        ],
-        "Error 404": [
-          {
-            "group": "Error 404",
-            "optional": false,
-            "field": "model_not_found",
-            "description": "<p>Model matching given data does not exist</p>"
+            "field": "model_validation",
+            "description": "<p>Model data failed to pass validation</p>"
           }
         ]
       }
@@ -638,25 +719,12 @@
     "title": "Mark",
     "group": "Activities",
     "name": "ActivityMark",
-    "description": "<p>Mark activity as completed or to_revise</p>",
+    "description": "<p>Mark activity as favorite or set its status completed or to_revise</p>",
     "permission": [
       {
         "name": "registered"
       }
     ],
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": false,
-            "field": "id",
-            "description": "<p>The activity id</p>"
-          }
-        ]
-      }
-    },
     "filename": "app/Http/Controllers/ActivityController.php",
     "groupTitle": "Activities",
     "header": {
@@ -672,8 +740,85 @@
         ]
       }
     },
+    "parameter": {
+      "fields": {
+        "Data": [
+          {
+            "group": "Data",
+            "type": "bool",
+            "optional": true,
+            "field": "favorite",
+            "defaultValue": "false",
+            "description": "<p>If the activity is a favorite</p>"
+          },
+          {
+            "group": "Data",
+            "type": "string",
+            "allowedValues": [
+              "completed",
+              "to_revise",
+              "null"
+            ],
+            "optional": true,
+            "field": "status",
+            "defaultValue": "null",
+            "description": "<p>If the activity is a favorite</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": false,
+            "field": "country_id",
+            "description": "<p>The meta country_id</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": false,
+            "field": "class_id_id",
+            "description": "<p>The meta class_id_id</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": false,
+            "field": "discipline_id",
+            "description": "<p>The meta discipline_id</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": false,
+            "field": "chapter_id",
+            "description": "<p>The meta chapter_id</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": false,
+            "field": "notion_id",
+            "description": "<p>The meta notion_id</p>"
+          },
+          {
+            "group": "Data",
+            "type": "int",
+            "optional": false,
+            "field": "activity_id",
+            "description": "<p>The meta activity_id</p>"
+          }
+        ]
+      }
+    },
     "error": {
       "fields": {
+        "Error 400": [
+          {
+            "group": "Error 400",
+            "optional": false,
+            "field": "invalid_request",
+            "description": "<p>Request is invalid</p>"
+          }
+        ],
         "Error 401": [
           {
             "group": "Error 401",
@@ -688,6 +833,20 @@
             "optional": false,
             "field": "model_not_found",
             "description": "<p>Model matching given data does not exist</p>"
+          }
+        ],
+        "Error 422": [
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
+          },
+          {
+            "group": "Error 422",
+            "optional": false,
+            "field": "model_validation",
+            "description": "<p>Model data failed to pass validation</p>"
           }
         ]
       }
@@ -1101,6 +1260,18 @@
           }
         ]
       }
+    },
+    "error": {
+      "fields": {
+        "Error 400": [
+          {
+            "group": "Error 400",
+            "optional": false,
+            "field": "invalid_request",
+            "description": "<p>page and perPage have to be strictly positive</p>"
+          }
+        ]
+      }
     }
   },
   {
@@ -1193,14 +1364,14 @@
           {
             "group": "Error 422",
             "optional": false,
-            "field": "validation",
-            "description": "<p>Data failed to pass validation</p>"
+            "field": "model_validation",
+            "description": "<p>Model data failed to pass validation</p>"
           },
           {
             "group": "Error 422",
             "optional": false,
-            "field": "save",
-            "description": "<p>Save failed</p>"
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
           }
         ]
       }
@@ -1375,14 +1546,14 @@
           {
             "group": "Error 422",
             "optional": false,
-            "field": "save",
-            "description": "<p>Save failed</p>"
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
           },
           {
             "group": "Error 422",
             "optional": false,
-            "field": "validation",
-            "description": "<p>Data failed to pass validation</p>"
+            "field": "model_validation",
+            "description": "<p>Model data failed to pass validation</p>"
           }
         ]
       }
@@ -1574,14 +1745,14 @@
           {
             "group": "Error 422",
             "optional": false,
-            "field": "validation",
-            "description": "<p>Data failed to pass validation</p>"
+            "field": "model_validation",
+            "description": "<p>Model data failed to pass validation</p>"
           },
           {
             "group": "Error 422",
             "optional": false,
-            "field": "save",
-            "description": "<p>Save failed</p>"
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
           }
         ]
       }
@@ -1784,14 +1955,14 @@
           {
             "group": "Error 422",
             "optional": false,
-            "field": "save",
-            "description": "<p>Save failed</p>"
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
           },
           {
             "group": "Error 422",
             "optional": false,
-            "field": "validation",
-            "description": "<p>Data failed to pass validation</p>"
+            "field": "model_validation",
+            "description": "<p>Model data failed to pass validation</p>"
           }
         ]
       }
@@ -1938,6 +2109,26 @@
             "optional": false,
             "field": "chapters.discipline_id",
             "description": "<p>The chapter discipline id</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 400": [
+          {
+            "group": "Error 400",
+            "optional": false,
+            "field": "invalid_request",
+            "description": "<p>page and perPage have to be strictly positive</p>"
+          }
+        ],
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
           }
         ]
       }
@@ -2105,14 +2296,14 @@
           {
             "group": "Error 422",
             "optional": false,
-            "field": "validation",
-            "description": "<p>Data failed to pass validation</p>"
+            "field": "model_validation",
+            "description": "<p>Model data failed to pass validation</p>"
           },
           {
             "group": "Error 422",
             "optional": false,
-            "field": "save",
-            "description": "<p>Save failed</p>"
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
           }
         ]
       }
@@ -2359,14 +2550,14 @@
           {
             "group": "Error 422",
             "optional": false,
-            "field": "save",
-            "description": "<p>Save failed</p>"
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
           },
           {
             "group": "Error 422",
             "optional": false,
-            "field": "validation",
-            "description": "<p>Data failed to pass validation</p>"
+            "field": "model_validation",
+            "description": "<p>Model data failed to pass validation</p>"
           }
         ]
       }
@@ -2527,6 +2718,18 @@
             "optional": false,
             "field": "classes.country_id",
             "description": "<p>The class country id</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 400": [
+          {
+            "group": "Error 400",
+            "optional": false,
+            "field": "invalid_request",
+            "description": "<p>page and perPage have to be strictly positive</p>"
           }
         ]
       }
@@ -2815,14 +3018,14 @@
           {
             "group": "Error 422",
             "optional": false,
-            "field": "validation",
-            "description": "<p>Data failed to pass validation</p>"
+            "field": "model_validation",
+            "description": "<p>Model data failed to pass validation</p>"
           },
           {
             "group": "Error 422",
             "optional": false,
-            "field": "save",
-            "description": "<p>Save failed</p>"
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
           }
         ]
       }
@@ -3190,14 +3393,14 @@
           {
             "group": "Error 422",
             "optional": false,
-            "field": "save",
-            "description": "<p>Save failed</p>"
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
           },
           {
             "group": "Error 422",
             "optional": false,
-            "field": "validation",
-            "description": "<p>Data failed to pass validation</p>"
+            "field": "model_validation",
+            "description": "<p>Model data failed to pass validation</p>"
           }
         ]
       }
@@ -3420,57 +3623,16 @@
   {
     "version": "0.8.1",
     "type": "get",
-    "url": "/comments/{commentable_type}/{commentable_id}/{?page}/{?perPage}",
-    "title": "Type",
+    "url": "/comments",
+    "title": "Index",
     "group": "Comments",
     "name": "CommentsIndex",
-    "description": "<p>Retrieve comments by type</p>",
+    "description": "<p>Retrieve comments</p>",
     "permission": [
       {
-        "name": "public"
+        "name": "moderator"
       }
     ],
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "string",
-            "allowedValues": [
-              "post",
-              "course",
-              "module"
-            ],
-            "optional": false,
-            "field": "commentable_type",
-            "description": "<p>the commentable_type</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": false,
-            "field": "commentable_id",
-            "description": "<p>the commentable id</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": true,
-            "field": "page",
-            "defaultValue": "1",
-            "description": "<p>the page to fetch</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": true,
-            "field": "perPage",
-            "defaultValue": "10",
-            "description": "<p>the comments per page to fetch (excluding children)</p>"
-          }
-        ]
-      }
-    },
     "filename": "app/Http/Controllers/CommentController.php",
     "groupTitle": "Comments",
     "success": {
@@ -3659,21 +3821,82 @@
           }
         ]
       }
+    },
+    "error": {
+      "fields": {
+        "Error 400": [
+          {
+            "group": "Error 400",
+            "optional": false,
+            "field": "invalid_request",
+            "description": "<p>page and perPage have to be strictly positive</p>"
+          }
+        ],
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ]
+      }
     }
   },
   {
     "version": "0.8.1",
     "type": "get",
-    "url": "/comments",
-    "title": "Index",
+    "url": "/comments/{commentable_type}/{commentable_id}/{?page}/{?perPage}",
+    "title": "Type",
     "group": "Comments",
     "name": "CommentsIndex",
-    "description": "<p>Retrieve comments</p>",
+    "description": "<p>Retrieve comments by type</p>",
     "permission": [
       {
-        "name": "moderator"
+        "name": "public"
       }
     ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "allowedValues": [
+              "post",
+              "course",
+              "module"
+            ],
+            "optional": false,
+            "field": "commentable_type",
+            "description": "<p>the commentable_type</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "commentable_id",
+            "description": "<p>the commentable id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": true,
+            "field": "page",
+            "defaultValue": "1",
+            "description": "<p>the page to fetch</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": true,
+            "field": "perPage",
+            "defaultValue": "10",
+            "description": "<p>the comments per page to fetch (excluding children)</p>"
+          }
+        ]
+      }
+    },
     "filename": "app/Http/Controllers/CommentController.php",
     "groupTitle": "Comments",
     "success": {
@@ -4903,6 +5126,18 @@
           }
         ]
       }
+    },
+    "error": {
+      "fields": {
+        "Error 400": [
+          {
+            "group": "Error 400",
+            "optional": false,
+            "field": "invalid_request",
+            "description": "<p>page and perPage have to be strictly positive</p>"
+          }
+        ]
+      }
     }
   },
   {
@@ -5025,14 +5260,14 @@
           {
             "group": "Error 422",
             "optional": false,
-            "field": "validation",
-            "description": "<p>Data failed to pass validation</p>"
+            "field": "model_validation",
+            "description": "<p>Model data failed to pass validation</p>"
           },
           {
             "group": "Error 422",
             "optional": false,
-            "field": "save",
-            "description": "<p>Save failed</p>"
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
           }
         ]
       }
@@ -5237,14 +5472,14 @@
           {
             "group": "Error 422",
             "optional": false,
-            "field": "save",
-            "description": "<p>Save failed</p>"
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
           },
           {
             "group": "Error 422",
             "optional": false,
-            "field": "validation",
-            "description": "<p>Data failed to pass validation</p>"
+            "field": "model_validation",
+            "description": "<p>Model data failed to pass validation</p>"
           }
         ]
       }
@@ -5485,14 +5720,14 @@
           {
             "group": "Error 422",
             "optional": false,
-            "field": "validation",
-            "description": "<p>Data failed to pass validation</p>"
+            "field": "model_validation",
+            "description": "<p>Model data failed to pass validation</p>"
           },
           {
             "group": "Error 422",
             "optional": false,
-            "field": "save",
-            "description": "<p>Save failed</p>"
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
           }
         ]
       }
@@ -5730,14 +5965,14 @@
           {
             "group": "Error 422",
             "optional": false,
-            "field": "save",
-            "description": "<p>Save failed</p>"
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
           },
           {
             "group": "Error 422",
             "optional": false,
-            "field": "validation",
-            "description": "<p>Data failed to pass validation</p>"
+            "field": "model_validation",
+            "description": "<p>Model data failed to pass validation</p>"
           }
         ]
       }
@@ -5937,6 +6172,18 @@
           }
         ]
       }
+    },
+    "error": {
+      "fields": {
+        "Error 400": [
+          {
+            "group": "Error 400",
+            "optional": false,
+            "field": "invalid_request",
+            "description": "<p>page and perPage have to be strictly positive</p>"
+          }
+        ]
+      }
     }
   },
   {
@@ -6086,14 +6333,14 @@
           {
             "group": "Error 422",
             "optional": false,
-            "field": "validation",
-            "description": "<p>Data failed to pass validation</p>"
+            "field": "model_validation",
+            "description": "<p>Model data failed to pass validation</p>"
           },
           {
             "group": "Error 422",
             "optional": false,
-            "field": "save",
-            "description": "<p>Save failed</p>"
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
           }
         ]
       }
@@ -6325,14 +6572,14 @@
           {
             "group": "Error 422",
             "optional": false,
-            "field": "save",
-            "description": "<p>Save failed</p>"
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
           },
           {
             "group": "Error 422",
             "optional": false,
-            "field": "validation",
-            "description": "<p>Data failed to pass validation</p>"
+            "field": "model_validation",
+            "description": "<p>Model data failed to pass validation</p>"
           }
         ]
       }
@@ -6479,6 +6726,18 @@
             "optional": false,
             "field": "disciplines.image",
             "description": "<p>The discipline image</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 400": [
+          {
+            "group": "Error 400",
+            "optional": false,
+            "field": "invalid_request",
+            "description": "<p>page and perPage have to be strictly positive</p>"
           }
         ]
       }
@@ -6732,14 +6991,14 @@
           {
             "group": "Error 422",
             "optional": false,
-            "field": "validation",
-            "description": "<p>Data failed to pass validation</p>"
+            "field": "model_validation",
+            "description": "<p>Model data failed to pass validation</p>"
           },
           {
             "group": "Error 422",
             "optional": false,
-            "field": "save",
-            "description": "<p>Save failed</p>"
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
           }
         ]
       }
@@ -7072,14 +7331,14 @@
           {
             "group": "Error 422",
             "optional": false,
-            "field": "save",
-            "description": "<p>Save failed</p>"
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
           },
           {
             "group": "Error 422",
             "optional": false,
-            "field": "validation",
-            "description": "<p>Data failed to pass validation</p>"
+            "field": "model_validation",
+            "description": "<p>Model data failed to pass validation</p>"
           }
         ]
       }
@@ -7512,6 +7771,26 @@
           }
         ]
       }
+    },
+    "error": {
+      "fields": {
+        "Error 400": [
+          {
+            "group": "Error 400",
+            "optional": false,
+            "field": "invalid_request",
+            "description": "<p>page and perPage have to be strictly positive</p>"
+          }
+        ],
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
+          }
+        ]
+      }
     }
   },
   {
@@ -7646,14 +7925,14 @@
           {
             "group": "Error 422",
             "optional": false,
-            "field": "validation",
-            "description": "<p>Data failed to pass validation</p>"
+            "field": "model_validation",
+            "description": "<p>Model data failed to pass validation</p>"
           },
           {
             "group": "Error 422",
             "optional": false,
-            "field": "save",
-            "description": "<p>Save failed</p>"
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
           }
         ]
       }
@@ -7870,14 +8149,14 @@
           {
             "group": "Error 422",
             "optional": false,
-            "field": "save",
-            "description": "<p>Save failed</p>"
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
           },
           {
             "group": "Error 422",
             "optional": false,
-            "field": "validation",
-            "description": "<p>Data failed to pass validation</p>"
+            "field": "model_validation",
+            "description": "<p>Model data failed to pass validation</p>"
           }
         ]
       }
@@ -8010,6 +8289,26 @@
             "optional": false,
             "field": "notions.chapter_id",
             "description": "<p>The notion chapter_id</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 400": [
+          {
+            "group": "Error 400",
+            "optional": false,
+            "field": "invalid_request",
+            "description": "<p>page and perPage have to be strictly positive</p>"
+          }
+        ],
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
           }
         ]
       }
@@ -8168,14 +8467,14 @@
           {
             "group": "Error 422",
             "optional": false,
-            "field": "validation",
-            "description": "<p>Data failed to pass validation</p>"
+            "field": "model_validation",
+            "description": "<p>Model data failed to pass validation</p>"
           },
           {
             "group": "Error 422",
             "optional": false,
-            "field": "save",
-            "description": "<p>Save failed</p>"
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
           }
         ]
       }
@@ -8413,14 +8712,14 @@
           {
             "group": "Error 422",
             "optional": false,
-            "field": "save",
-            "description": "<p>Save failed</p>"
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
           },
           {
             "group": "Error 422",
             "optional": false,
-            "field": "validation",
-            "description": "<p>Data failed to pass validation</p>"
+            "field": "model_validation",
+            "description": "<p>Model data failed to pass validation</p>"
           }
         ]
       }
@@ -8620,6 +8919,18 @@
           }
         ]
       }
+    },
+    "error": {
+      "fields": {
+        "Error 400": [
+          {
+            "group": "Error 400",
+            "optional": false,
+            "field": "invalid_request",
+            "description": "<p>page and perPage have to be strictly positive</p>"
+          }
+        ]
+      }
     }
   },
   {
@@ -8711,14 +9022,14 @@
           {
             "group": "Error 422",
             "optional": false,
-            "field": "validation",
-            "description": "<p>Data failed to pass validation</p>"
+            "field": "model_validation",
+            "description": "<p>Model data failed to pass validation</p>"
           },
           {
             "group": "Error 422",
             "optional": false,
-            "field": "save",
-            "description": "<p>Save failed</p>"
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
           }
         ]
       }
@@ -8892,14 +9203,14 @@
           {
             "group": "Error 422",
             "optional": false,
-            "field": "save",
-            "description": "<p>Save failed</p>"
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
           },
           {
             "group": "Error 422",
             "optional": false,
-            "field": "validation",
-            "description": "<p>Data failed to pass validation</p>"
+            "field": "model_validation",
+            "description": "<p>Model data failed to pass validation</p>"
           }
         ]
       }
@@ -9330,6 +9641,13 @@
           },
           {
             "group": "Data",
+            "type": "bool",
+            "optional": false,
+            "field": "premium",
+            "description": "<p>If the user is premium or not</p>"
+          },
+          {
+            "group": "Data",
             "type": "array",
             "optional": false,
             "field": "settings",
@@ -9466,6 +9784,13 @@
             "optional": false,
             "field": "daily_achievements",
             "description": "<p>The user daily achievements</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "premium",
+            "description": "<p>If the user is premium or not</p>"
           },
           {
             "group": "Success 200",
@@ -9706,6 +10031,13 @@
           },
           {
             "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "premium",
+            "description": "<p>If the user is premium or not</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "array",
             "optional": false,
             "field": "settings",
@@ -9890,6 +10222,13 @@
           },
           {
             "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "premium",
+            "description": "<p>If the user is premium or not</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "array",
             "optional": false,
             "field": "settings",
@@ -10023,8 +10362,8 @@
           {
             "group": "Error 422",
             "optional": false,
-            "field": "save",
-            "description": "<p>Save failed</p>"
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
           }
         ]
       }
@@ -10226,6 +10565,13 @@
           },
           {
             "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "premium",
+            "description": "<p>If the user is premium or not</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "array",
             "optional": false,
             "field": "settings",
@@ -10301,26 +10647,6 @@
             "field": "perPage",
             "defaultValue": "10",
             "description": "<p>The user count per page</p>"
-          }
-        ]
-      }
-    },
-    "error": {
-      "fields": {
-        "Error 400": [
-          {
-            "group": "Error 400",
-            "optional": false,
-            "field": "invalid_request",
-            "description": "<p>page and perPage have to be strictly positive</p>"
-          }
-        ],
-        "Error 401": [
-          {
-            "group": "Error 401",
-            "optional": false,
-            "field": "unauthorized",
-            "description": "<p>User does not have enough privileges</p>"
           }
         ]
       }
@@ -10439,6 +10765,13 @@
           },
           {
             "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "users.premium",
+            "description": "<p>If the user is premium or not</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "array",
             "optional": false,
             "field": "users.settings",
@@ -10478,6 +10811,26 @@
             "optional": false,
             "field": "users.trial_ends_at",
             "description": "<p>The trial expire date</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 400": [
+          {
+            "group": "Error 400",
+            "optional": false,
+            "field": "invalid_request",
+            "description": "<p>page and perPage have to be strictly positive</p>"
+          }
+        ],
+        "Error 401": [
+          {
+            "group": "Error 401",
+            "optional": false,
+            "field": "unauthorized",
+            "description": "<p>User does not have enough privileges</p>"
           }
         ]
       }
@@ -10630,6 +10983,13 @@
           },
           {
             "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "users.premium",
+            "description": "<p>If the user is premium or not</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "array",
             "optional": false,
             "field": "users.settings",
@@ -10716,8 +11076,8 @@
           {
             "group": "Error 422",
             "optional": false,
-            "field": "save",
-            "description": "<p>Save failed</p>"
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
           }
         ]
       }
@@ -10765,8 +11125,8 @@
           {
             "group": "Error 422",
             "optional": false,
-            "field": "save",
-            "description": "<p>Save failed</p>"
+            "field": "model_save",
+            "description": "<p>Model save failed</p>"
           }
         ]
       }

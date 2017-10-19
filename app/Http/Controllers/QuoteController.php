@@ -36,7 +36,7 @@ class QuoteController extends BaseController
      * @apiPermission public
      * @apiParam {int} id The quote id
      * @apiUse Quote
-     * @apiUse 404ModelNotFound
+     * @apiUse Http404ModelNotFound
      */
 
 
@@ -50,9 +50,9 @@ class QuoteController extends BaseController
      * @apiUse Bearer
      * @apiUse QuoteData
      * @apiUse Quote
-     * @apiUse 401Unauthorized
-     * @apiUse 422Validation
-     * @apiUse 422Save
+     * @apiUse Http401Unauthorized
+     * @apiUse Http422ModelValidation
+     * @apiUse Http422ModelSave
      */
 
     /**
@@ -66,10 +66,10 @@ class QuoteController extends BaseController
      * @apiParam {int} id The quote id
      * @apiUse QuoteData
      * @apiUse Quote
-     * @apiUse 401Unauthorized
-     * @apiUse 404ModelNotFound
-     * @apiUse 422Save
-     * @apiUse 422Validation
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
+     * @apiUse Http422ModelSave
+     * @apiUse Http422ModelValidation
      */
 
 
@@ -82,8 +82,8 @@ class QuoteController extends BaseController
      * @apiUse Bearer
      * @apiPermission admin
      * @apiParam {int} id The quote id
-     * @apiUse 401Unauthorized
-     * @apiUse 404ModelNotFound
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
      */
 
 

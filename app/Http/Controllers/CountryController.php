@@ -24,6 +24,7 @@ class CountryController extends BaseController
      * @apiDescription Retrieve countries
      * @apiPermission public
      * @apiUse CountryArray
+     * @apiUse Http400InvalidRequest_Pagination
      */
 
 
@@ -36,7 +37,7 @@ class CountryController extends BaseController
      * @apiPermission public
      * @apiParam {int} id The country id
      * @apiUse Country
-     * @apiUse 404ModelNotFound
+     * @apiUse Http404ModelNotFound
      */
 
 
@@ -50,9 +51,9 @@ class CountryController extends BaseController
      * @apiUse Bearer
      * @apiUse CountryData
      * @apiUse Country
-     * @apiUse 401Unauthorized
-     * @apiUse 422Validation
-     * @apiUse 422Save
+     * @apiUse Http401Unauthorized
+     * @apiUse Http422ModelValidation
+     * @apiUse Http422ModelSave
      */
 
 
@@ -67,10 +68,10 @@ class CountryController extends BaseController
      * @apiParam {int} id The country id
      * @apiUse CountryData
      * @apiUse Country
-     * @apiUse 401Unauthorized
-     * @apiUse 404ModelNotFound
-     * @apiUse 422Save
-     * @apiUse 422Validation
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
+     * @apiUse Http422ModelSave
+     * @apiUse Http422ModelValidation
      */
 
 
@@ -83,8 +84,8 @@ class CountryController extends BaseController
      * @apiUse Bearer
      * @apiPermission admin
      * @apiParam {int} id The country id
-     * @apiUse 401Unauthorized
-     * @apiUse 404ModelNotFound
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
      *
      * @param Request $request
      * @param int $id

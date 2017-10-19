@@ -243,7 +243,7 @@ class ContentController extends BaseController
         $classIds = [];
 
         // Videos
-        $videos = Module::where('title', 'LIKE', '%' . $query . '%')
+        $videos = Module::where('name', 'LIKE', '%' . $query . '%')
             ->limit($perPage)
             ->offset(($page - 1) * $perPage)
             ->get();
