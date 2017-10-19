@@ -1,7 +1,12 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Exceptions\Http400InvalidRequestException;
+use App\Exceptions\Http401UnauthorizedException;
+use App\Exceptions\Http422ModelSaveException;
+use App\Exceptions\Http422ModelValidationException;
 use App\Models\Activity;
+use App\Models\Meta;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -26,6 +31,7 @@ class ActivityController extends BaseController
      * @apiUse ActivityArray
      */
 
+
     /**
      * @apiVersion 0.8.1
      * @api {get} /activities/{id} Get
@@ -36,17 +42,7 @@ class ActivityController extends BaseController
      * @apiParam {int} id The activity id
      * @apiUse Activity
      * @apiUse 404ModelNotFound
-     *
-     * @param int $id
-     *
-     * @return JsonResponse
      */
-    public function get(int $id)
-    {
-        $activity = Activity::where('id', $id)->firstOrFail();
-
-        return $this->http200Success($activity);
-    }
 
 
     /**
@@ -62,26 +58,7 @@ class ActivityController extends BaseController
      * @apiUse 401Unauthorized
      * @apiUse 422Validation
      * @apiUse 422Save
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function add(Request $request)
-    {
-        if ($request->user()->cant('add', Activity::class)) {
-            return $this->http401Unauthorized();
-        }
-
-        $activity = new Activity();
-        $activity->fill($request->all());
-
-        if (!$activity->save()) {
-            return $activity->handleResponse($this->http422Save());
-        }
-
-        return $this->http200Success($activity);
-    }
 
 
     /**
@@ -99,29 +76,7 @@ class ActivityController extends BaseController
      * @apiUse 404ModelNotFound
      * @apiUse 422Save
      * @apiUse 422Validation
-     *
-     * @param Request $request
-     * @param int $id
-     *
-     * @return JsonResponse
      */
-    public function edit(Request $request, int $id)
-    {
-        /** @var Activity $activity */
-        $activity = Activity::where('id', $id)->firstOrFail();
-
-        if ($request->user()->cant('edit', Activity::class)) {
-            return $this->http401Unauthorized();
-        }
-
-        $activity->fill($request->all());
-
-        if (!$activity->save()) {
-            return $activity->handleResponse($this->http422Save());
-        }
-
-        return $this->http200Success($activity);
-    }
 
 
     /**
@@ -135,27 +90,7 @@ class ActivityController extends BaseController
      * @apiParam {int} id The activity id
      * @apiUse 401Unauthorized
      * @apiUse 404ModelNotFound
-     *
-     * @param Request $request
-     * @param int $id
-     *
-     * @return JsonResponse
      */
-    public function delete(Request $request, int $id)
-    {
-        /** @var Activity $activity */
-        $activity = Activity::where('id', '=', $id)->firstOrFail();
-
-        if ($request->user()->cant('delete', $activity)) {
-            return $this->http401Unauthorized();
-        }
-
-        if (!$activity->delete()) {
-            return $activity->handleResponse($this->http422Delete());
-        }
-
-        return $this->http200Success();
-    }
 
 
     /**
@@ -166,7 +101,6 @@ class ActivityController extends BaseController
      * @apiDescription Delete a activity
      * @apiUse Bearer
      * @apiPermission registered
-     * @apiParam {int} id The activity id
      * @apiUse 401Unauthorized
      * @apiUse 404ModelNotFound
      *
@@ -174,6 +108,7 @@ class ActivityController extends BaseController
      * @param int $id
      *
      * @return JsonResponse
+     * @throws Http401UnauthorizedException
      */
     public function favorite(Request $request, int $id)
     {
@@ -186,22 +121,30 @@ class ActivityController extends BaseController
             is_int($request->input('user_id')) &&
             $user->id != $request->input('user_id')
         ) {
-            return $this->http401Unauthorized();
+            throw new Http401UnauthorizedException();
         }
 
         $user = $id === null ? $request->user() : User::where('id', $id)->firstOrFail();
 
-        $activity = Activity::where('id', $id)->firstOrFail(); // We don't need the activity itself
+        Activity::where('id', $id)->firstOrFail(); // We don't need the activity itself
 
-        $pivot = $user->activities()->where('id', $activity->id)->first();
+        // Get the meta
+        $meta = Meta::where([
+            ['user_id', $user->id],
+            ['activity_id', $id]
+        ])->first();
 
-        if ($pivot === null) {
-            $user->activities()->save($activity, ['favorite' => true]);
+        $metaData = array_merge(['user_id' => $user->id], $request->all());
+        if ($meta === null) {
+            $meta = new Meta($metaData);
         } else {
-            $user->activities()->save($activity, [!$pivot->favorite]);
+            $meta->fill($metaData);
         }
 
-        return $this->http200Success($user);
+        // Check save
+        $meta->save();
+
+        return response()->json($user);
     }
 
 
@@ -213,6 +156,7 @@ class ActivityController extends BaseController
      * @apiDescription Get user favorite activities
      * @apiUse Bearer
      * @apiPermission registered
+     * @apiUse MetaArray
      * @apiUse 401Unauthorized
      *
      * @param Request $request
@@ -221,16 +165,13 @@ class ActivityController extends BaseController
      */
     public function favorites(Request $request)
     {
-        /** @var User $user */
-        $user = $request->user();
-
-        // TODO get for other users
-
-        $activities = $user->activities()
-            ->wherePivot('favorite', '=', true)
+        $metas = Meta::with(['country', 'class_', 'discipline', 'notion', 'activity'])
+            ->where([
+                ['user_id' => $request->user()->id],
+                ['favorite' => true]
+            ])
             ->get();
-
-        return $this->http200Success($activities);
+        return response()->json($metas);
     }
 
 
@@ -242,7 +183,7 @@ class ActivityController extends BaseController
      * @apiDescription Mark activity as completed or to_revise
      * @apiUse Bearer
      * @apiPermission registered
-     * @apiParam {int} id The activity id
+     * @apiUse MetaData
      * @apiUse 401Unauthorized
      * @apiUse 404ModelNotFound
      *
@@ -250,33 +191,25 @@ class ActivityController extends BaseController
      * @param int $id
      *
      * @return JsonResponse
+     * @throws Http401UnauthorizedException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
+     * @throws Http400InvalidRequestException
      */
     public function mark(Request $request, int $id)
     {
-        $as = $request->input('status');
+        $user = $this->getUserByRequestOrUnauthorized($request);
 
-        if (!in_array($as, ['completed', 'to_revise', null])) {
-            return $this->http400InvalidRequest('Allowed values: "completed", "to_revise", null');
-        }
+        $metaData = array_merge(
+            ['user_id' => $user->id, 'activity_id' => $id],
+            $request->only(['country_id', 'class_id', 'discipline_id', 'notion_id'])
+        );
 
-        /** @var User $user */
-        $user = $request->user();
+        /** @var Meta $meta */
+        $meta = Meta::firstOrNew($metaData);
+        $meta->status = $request->input('status');
+        $meta->save();
 
-        // Check authorization
-        if (
-            !$user->tokenCan('admin') &&
-            is_int($request->input('user_id')) &&
-            $user->id != $request->input('user_id')
-        ) {
-            return $this->http401Unauthorized();
-        }
-
-        $user = $id === null ? $request->user() : User::where('id', $id)->firstOrFail();
-
-        $activity = Activity::where('id', $id)->firstOrFail(); // We don't need the activity itself
-
-        $user->activities()->save($activity, ['status' => $as]); // Save status
-
-        return $this->http200Success($user);
+        return response()->json($user);
     }
 }

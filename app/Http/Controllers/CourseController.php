@@ -26,26 +26,7 @@ class CourseController extends BaseController
      * @apiParam {int} [page=1] The page number
      * @apiParam {int} [perPage=10] The course count per page
      * @apiUse CourseArray
-     *
-     * @param Request $request
-     * @param int $page
-     * @param int $perPage
-     *
-     * @return JsonResponse
      */
-    public function index(Request $request, int $page = 1, int $perPage = 10)
-    {
-        if ($page < 1 || $perPage < 1) {
-            return $this->http400InvalidRequest('page and perPage have to be strictly positive');
-        }
-
-        return $this->http200Success(
-            Course::limit($perPage)
-                ->offset(($page - 1) * $perPage)
-                ->orderByDesc('created_at')
-                ->get()
-        );
-    }
 
 
     /**
@@ -58,17 +39,7 @@ class CourseController extends BaseController
      * @apiParam {int} id The course id
      * @apiUse Course
      * @apiUse 404ModelNotFound
-     *
-     * @param int $id
-     *
-     * @return JsonResponse
      */
-    public function get(int $id)
-    {
-        $course = Course::where('id', $id)->firstOrFail();
-
-        return $this->http200Success($course);
-    }
 
 
     /**
@@ -84,26 +55,7 @@ class CourseController extends BaseController
      * @apiUse 401Unauthorized
      * @apiUse 422Validation
      * @apiUse 422Save
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function add(Request $request)
-    {
-        if ($request->user()->cant('add', Course::class)) {
-            return $this->http401Unauthorized();
-        }
-
-        $course = new Course();
-        $course->fill($request->all());
-
-        if (!$course->save()) {
-            return $course->handleResponse($this->http422Save());
-        }
-
-        return $this->http200Success($course);
-    }
 
 
     /**
@@ -121,29 +73,7 @@ class CourseController extends BaseController
      * @apiUse 404ModelNotFound
      * @apiUse 422Save
      * @apiUse 422Validation
-     *
-     * @param Request $request
-     * @param int $id
-     *
-     * @return JsonResponse
      */
-    public function edit(Request $request, int $id)
-    {
-        /** @var Course $course */
-        $course = Course::where('id', $id)->firstOrFail();
-
-        if ($request->user()->cant('edit', $course)) {
-            return $this->http401Unauthorized();
-        }
-
-        $course->fill($request->all());
-
-        if (!$course->save()) {
-            return $course->handleResponse($this->http422Save());
-        }
-
-        return $this->http200Success($course);
-    }
 
 
     /**
@@ -157,25 +87,5 @@ class CourseController extends BaseController
      * @apiParam {int} id The course id
      * @apiUse 401Unauthorized
      * @apiUse 404ModelNotFound
-     *
-     * @param Request $request
-     * @param int $id
-     *
-     * @return JsonResponse
      */
-    public function delete(Request $request, int $id)
-    {
-        /** @var Course $course */
-        $course = Course::where('id', $id)->firstOrFail();
-
-        if ($request->user()->cant('delete', $course)) {
-            return $this->http401Unauthorized();
-        }
-
-        if (!$course->delete()) {
-            return $course->handleResponse($this->http422Delete());
-        }
-
-        return $this->http200Success();
-    }
 }

@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('token', 36);
             $table->integer('points')->default(0);
             $table->integer('level')->default(1);
-            $table->integer('daily')->default(0);
+            $table->integer('daily')->default(20);
             $table->integer('daily_achievements')->default(0);
             $table->text('settings');
             $table->integer('class_id')->unsigned()->nullable();

@@ -19,7 +19,7 @@ class UserObserver extends BaseObserver
     /**
      * @param User $user
      *
-     * @return bool|null|void
+     * @return bool
      */
     public function saving($user)
     {
@@ -77,7 +77,7 @@ class UserObserver extends BaseObserver
             }
         }
 
-        parent::saving($user);
+        return parent::saving($user);
     }
 
 

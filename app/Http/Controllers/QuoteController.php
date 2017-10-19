@@ -37,17 +37,54 @@ class QuoteController extends BaseController
      * @apiParam {int} id The quote id
      * @apiUse Quote
      * @apiUse 404ModelNotFound
-     *
-     * @param int $id
-     *
-     * @return JsonResponse
      */
-    public function get(int $id)
-    {
-        $quote = Quote::where('id', $id)->firstOrFail();
 
-        return $this->http200Success($quote);
-    }
+
+    /**
+     * @apiVersion 0.8.1
+     * @api {post} /quotes Add
+     * @apiGroup Quotes
+     * @apiName QuoteAdd
+     * @apiDescription Add a quote
+     * @apiPermission admin
+     * @apiUse Bearer
+     * @apiUse QuoteData
+     * @apiUse Quote
+     * @apiUse 401Unauthorized
+     * @apiUse 422Validation
+     * @apiUse 422Save
+     */
+
+    /**
+     * @apiVersion 0.8.1
+     * @api {patch} /quotes/{id} Edit
+     * @apiGroup Quotes
+     * @apiName QuoteEdit
+     * @apiDescription Edit a quote
+     * @apiPermission admin
+     * @apiUse Bearer
+     * @apiParam {int} id The quote id
+     * @apiUse QuoteData
+     * @apiUse Quote
+     * @apiUse 401Unauthorized
+     * @apiUse 404ModelNotFound
+     * @apiUse 422Save
+     * @apiUse 422Validation
+     */
+
+
+    /**
+     * @apiVersion 0.8.1
+     * @api {delete} /quotes/{id} Delete
+     * @apiGroup Quotes
+     * @apiName QuoteDelete
+     * @apiDescription Delete a quote
+     * @apiUse Bearer
+     * @apiPermission admin
+     * @apiParam {int} id The quote id
+     * @apiUse 401Unauthorized
+     * @apiUse 404ModelNotFound
+     */
 
 
     /**
@@ -66,119 +103,10 @@ class QuoteController extends BaseController
      */
     public function random($count = 1)
     {
-        return $this->http200Success(
+        return response()->json(
             Quote::inRandomOrder()
                 ->limit($count)
                 ->get()
         );
-    }
-
-
-    /**
-     * @apiVersion 0.8.1
-     * @api {post} /quotes Add
-     * @apiGroup Quotes
-     * @apiName QuoteAdd
-     * @apiDescription Add a quote
-     * @apiPermission admin
-     * @apiUse Bearer
-     * @apiUse QuoteData
-     * @apiUse Quote
-     * @apiUse 401Unauthorized
-     * @apiUse 422Validation
-     * @apiUse 422Save
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function add(Request $request)
-    {
-        if ($request->user()->cant('add', Quote::class)) {
-            return $this->http401Unauthorized();
-        }
-
-        $quote = new Quote();
-        $quote->fill($request->all());
-
-        if (!$quote->save()) {
-            return $quote->handleResponse($this->http422Save());
-        }
-
-        return $this->http200Success($quote);
-    }
-
-
-    /**
-     * @apiVersion 0.8.1
-     * @api {patch} /quotes/{id} Edit
-     * @apiGroup Quotes
-     * @apiName QuoteEdit
-     * @apiDescription Edit a quote
-     * @apiPermission admin
-     * @apiUse Bearer
-     * @apiParam {int} id The quote id
-     * @apiUse QuoteData
-     * @apiUse Quote
-     * @apiUse 401Unauthorized
-     * @apiUse 404ModelNotFound
-     * @apiUse 422Save
-     * @apiUse 422Validation
-     *
-     * @param Request $request
-     * @param int $id
-     *
-     * @return JsonResponse
-     */
-    public function edit(Request $request, int $id)
-    {
-        /** @var Quote $quote */
-        $quote = Quote::where('id', $id)->firstOrFail();
-
-        if ($request->user()->cant('edit', $quote)) {
-            return $this->http401Unauthorized();
-        }
-
-        $quote->fill($request->all());
-
-        if (!$quote->save()) {
-            return $quote->handleResponse($this->http422Save());
-        }
-
-        return $this->http200Success($quote);
-    }
-
-
-    /**
-     * @apiVersion 0.8.1
-     * @api {delete} /quotes/{id} Delete
-     * @apiGroup Quotes
-     * @apiName QuoteDelete
-     * @apiDescription Delete a quote
-     * @apiUse Bearer
-     * @apiPermission admin
-     * @apiParam {int} id The quote id
-     * @apiUse 401Unauthorized
-     * @apiUse 404ModelNotFound
-     *
-     * @param Request $request
-     * @param int $id
-     *
-     * @return JsonResponse
-     */
-    public function delete(Request $request, int $id)
-    {
-        /** @var Quote $quote */
-        $quote = Quote::where('id', '=', $id)->firstOrFail();
-
-        if ($request->user()->cant('delete', $quote)) {
-            return $this->http401Unauthorized();
-        }
-
-        if (!$quote->delete()) {
-            return $quote->handleResponse($this->http422Delete());
-        }
-
-        return $this->http200Success();
     }
 }

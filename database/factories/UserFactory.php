@@ -27,9 +27,7 @@ $factory->define(User::class, function (Generator $faker) {
         'daily' => $faker->randomElement([20, 40, 70]),
         'settings' => [
             'daily_goal' => $faker->numberBetween(0, 10) * 10,
-            'sound' => $faker->boolean(70),
-            'email_newsletter' => $faker->boolean(90),
-            'email_comment' => $faker->boolean(85)
+            'sound' => $faker->boolean(70)
         ],
         'class_id' => $faker->randomElement(Class_::all()->pluck('id')->toArray())
     ];
@@ -45,21 +43,6 @@ $factory->define(User::class, function (Generator $faker) {
 $factory->defineAs(User::class, 'registered', function (Generator $faker) use ($factory) {
     $data = [
         'type' => 'registered',
-    ];
-
-    return array_merge($factory->raw(User::class), $data);
-});
-
-
-/**
- * UserPremiumFactory
- *
- * @author Mathrix Team
- * @var Illuminate\Database\Eloquent\Factory $factory
- */
-$factory->defineAs(User::class, 'premium', function (Generator $faker) use ($factory) {
-    $data = [
-        'type' => 'premium',
     ];
 
     return array_merge($factory->raw(User::class), $data);

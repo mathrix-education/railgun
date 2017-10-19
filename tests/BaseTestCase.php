@@ -20,6 +20,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  */
 abstract class BaseTestCase extends TestCase
 {
+    use HttpAssertions;
     // use DatabaseTransactions; // Revert test database after each test // TODO: fix Too Many Connections bug
 
     /** @var Generator */

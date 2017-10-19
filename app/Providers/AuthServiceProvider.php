@@ -28,7 +28,6 @@ use App\Policies\NotionPolicy;
 use App\Policies\PostPolicy;
 use App\Policies\QuotePolicy;
 use App\Policies\UserPolicy;
-use App\Policies\VotePolicy;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;

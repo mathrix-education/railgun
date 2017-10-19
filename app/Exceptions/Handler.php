@@ -43,41 +43,30 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        $handled = glob(__DIR__ . '/*ExceptionHandler.php');
-        $handledExceptions = array_map(function ($filename) {
-            return str_replace(['Handler.php', __DIR__ . 'Handler.php/'], '', $filename);
-        }, $handled);
+        if ($e instanceof \App\Exceptions\HttpException) {
+            /** @var $e \App\Exceptions\HttpException */
+            return $e->getResponse();
+        }
 
         $exceptionClass = (new ReflectionClass($e))->getShortName(); // Get the Exception class name
 
-        if (in_array($exceptionClass, $handledExceptions)) {
-            // Exception has a custom handler
-            $exceptionHandlerClass = 'App\\Exceptions\\' . $exceptionClass . 'Handler';
+        // Default exception handler
+        $error = Str::snake($exceptionClass, '_');
+        $error = str_replace('_exception', '', $error);
 
-            /**
-             * @var ExceptionHandler $exceptionHandler
-             */
-            $exceptionHandler = new $exceptionHandlerClass();
+        $json = [
+            'error' => $error,
+            'message' => $e->getMessage()
+        ];
 
-            return $exceptionHandler->render($request, $e);
-        } else {
-            // Default exception handler
-            $error = Str::snake($exceptionClass, '_');
-            $error = str_replace('_exception', '', $error);
-
-            $json = [
-                'error' => $error,
-                'message' => $e->getMessage()
-            ];
-
-            // Include trace in debug mode
-            if (env('APP_DEBUG')) {
-                $json['trace'] = explode("\n", $e->getTraceAsString());
-            }
-
-            $rendered = parent::render($request, $e);
-
-            return response()->json($json, $rendered->getStatusCode());
+        // Include trace in debug mode
+        if (env('APP_DEBUG')) {
+            $json['trace'] = explode("\n", $e->getTraceAsString());
         }
+
+        $rendered = parent::render($request, $e);
+
+        return response()->json($json, $rendered->getStatusCode());
+
     }
 }

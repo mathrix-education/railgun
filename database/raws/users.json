@@ -32,22 +32,5 @@
       "email_comment": true
     },
     "class_id": null
-  },
-  {
-    "username": "premium",
-    "email": "premium@mathrix.fr",
-    "firstname": "premium",
-    "lastname": "Premium",
-    "password": "test",
-    "type": "premium",
-    "token": "78221072-3f63-3cce-aabc-0bd8ba32bbd9",
-    "points": 0,
-    "settings": {
-      "daily_goal": 0,
-      "sound": true,
-      "email_newsletter": true,
-      "email_comment": true
-    },
-    "class_id": null
   }
 ]

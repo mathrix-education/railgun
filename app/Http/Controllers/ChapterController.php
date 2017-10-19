@@ -26,6 +26,7 @@ class ChapterController extends BaseController
      * @apiUse ChapterArray
      */
 
+
     /**
      * @apiVersion 0.8.1
      * @api {get} /chapters/{id} Get
@@ -36,17 +37,7 @@ class ChapterController extends BaseController
      * @apiParam {int} id The chapter id
      * @apiUse Chapter
      * @apiUse 404ModelNotFound
-     *
-     * @param int $id
-     *
-     * @return JsonResponse
      */
-    public function get(int $id)
-    {
-        $chapter = Chapter::where('id', $id)->firstOrFail();
-
-        return $this->http200Success($chapter);
-    }
 
 
     /**
@@ -62,26 +53,7 @@ class ChapterController extends BaseController
      * @apiUse 401Unauthorized
      * @apiUse 422Validation
      * @apiUse 422Save
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function add(Request $request)
-    {
-        if ($request->user()->cant('add', Chapter::class)) {
-            return $this->http401Unauthorized();
-        }
-
-        $chapter = new Chapter();
-        $chapter->fill($request->all());
-
-        if (!$chapter->save()) {
-            return $chapter->handleResponse($this->http422Save());
-        }
-
-        return $this->http200Success($chapter);
-    }
 
 
     /**
@@ -99,29 +71,7 @@ class ChapterController extends BaseController
      * @apiUse 404ModelNotFound
      * @apiUse 422Save
      * @apiUse 422Validation
-     *
-     * @param Request $request
-     * @param int $id
-     *
-     * @return JsonResponse
      */
-    public function edit(Request $request, int $id)
-    {
-        /** @var Chapter $chapter */
-        $chapter = Chapter::where('id', $id)->firstOrFail();
-
-        if ($request->user()->cant('edit', Chapter::class)) {
-            return $this->http401Unauthorized();
-        }
-
-        $chapter->fill($request->all());
-
-        if (!$chapter->save()) {
-            return $chapter->handleResponse($this->http422Save());
-        }
-
-        return $this->http200Success($chapter);
-    }
 
 
     /**
@@ -135,25 +85,5 @@ class ChapterController extends BaseController
      * @apiParam {int} id The chapter id
      * @apiUse 401Unauthorized
      * @apiUse 404ModelNotFound
-     *
-     * @param Request $request
-     * @param int $id
-     *
-     * @return JsonResponse
      */
-    public function delete(Request $request, int $id)
-    {
-        /** @var Chapter $chapter */
-        $chapter = Chapter::where('id', '=', $id)->firstOrFail();
-
-        if ($request->user()->cant('delete', $chapter)) {
-            return $this->http401Unauthorized();
-        }
-
-        if (!$chapter->delete()) {
-            return $chapter->handleResponse($this->http422Delete());
-        }
-
-        return $this->http200Success();
-    }
 }

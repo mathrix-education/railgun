@@ -1,10 +1,10 @@
 # Mathrix.fr REST API
 [![pipeline status](https://gitlab.com/mathrix/mathrix-api/badges/master/pipeline.svg)](https://gitlab.com/mathrix/mathrix-api/commits/master)
 
-Written by Mathieu Bour for Mathrix.
+Written by Mathieu Bour and Dimitri Bret for Mathrix.
 
 - [Documentation](https://docs.institut.mathrix.fr)
-- [Lumen Utils](https://gitlab.com/mathrix/lumen-utils)
+- [Code conventions](md/conventions.md)
 
 
 ### Installation

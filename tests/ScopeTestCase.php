@@ -17,7 +17,7 @@ use Tests\Generics\Generics;
  */
 abstract class ScopeTestCase extends BaseTestCase
 {
-    use HttpAssertions, Generics;
+    use Generics;
 
     /** @var User the user used in the test */
     public $user = null;
