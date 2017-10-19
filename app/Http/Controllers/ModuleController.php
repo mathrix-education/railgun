@@ -46,7 +46,7 @@ class ModuleController extends BaseController
      *
      * @return JsonResponse
      */
-    public function get(int $id)
+    public function get(int $id): JsonResponse
     {
         $module = Module::where('id', $id)->with([
             'comments' => function (MorphMany $query) use ($id) {
@@ -60,7 +60,7 @@ class ModuleController extends BaseController
             }
         ])->firstOrFail();
 
-        return $this->http200Success($module);
+        return response()->json($module);
     }
 
 
@@ -77,26 +77,7 @@ class ModuleController extends BaseController
      * @apiUse 401Unauthorized
      * @apiUse 422Validation
      * @apiUse 422Save
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function add(Request $request)
-    {
-        if ($request->user()->cant('add', Module::class)) {
-            return $this->http401Unauthorized();
-        }
-
-        $module = new Module();
-        $module->fill($request->all());
-
-        if (!$module->save()) {
-            return $module->handleResponse($this->http422Save());
-        }
-
-        return $this->http200Success($module);
-    }
 
 
     /**
@@ -114,29 +95,7 @@ class ModuleController extends BaseController
      * @apiUse 404ModelNotFound
      * @apiUse 422Save
      * @apiUse 422Validation
-     *
-     * @param Request $request
-     * @param int $id
-     *
-     * @return JsonResponse
      */
-    public function edit(Request $request, int $id)
-    {
-        /** @var Module $module */
-        $module = Module::where('id', $id)->firstOrFail();
-
-        if ($request->user()->cant('edit', Module::class)) {
-            return $this->http401Unauthorized();
-        }
-
-        $module->fill($request->all());
-
-        if (!$module->save()) {
-            return $module->handleResponse($this->http422Save());
-        }
-
-        return $this->http200Success($module);
-    }
 
 
     /**
@@ -150,25 +109,5 @@ class ModuleController extends BaseController
      * @apiParam {int} id The module id
      * @apiUse 401Unauthorized
      * @apiUse 404ModelNotFound
-     *
-     * @param Request $request
-     * @param int $id
-     *
-     * @return JsonResponse
      */
-    public function delete(Request $request, int $id)
-    {
-        /** @var Module $module */
-        $module = Module::where('id', '=', $id)->firstOrFail();
-
-        if ($request->user()->cant('delete', $module)) {
-            return $this->http401Unauthorized();
-        }
-
-        if (!$module->delete()) {
-            return $module->handleResponse($this->http422Delete());
-        }
-
-        return $this->http200Success();
-    }
 }

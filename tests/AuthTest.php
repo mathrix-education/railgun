@@ -267,7 +267,7 @@ class AuthTest extends BaseTestCase
         $this->call('post', '/users/reset/foo');
 
         // Assertions
-        $this->assertJsonError('validation', 422);
+        $this->assertHttp400InvalidRequest();
     }
 
 

@@ -38,17 +38,7 @@ class NotionController extends BaseController
      * @apiParam {int} id The notion id
      * @apiUse Notion
      * @apiUse 404ModelNotFound
-     *
-     * @param int $id
-     *
-     * @return JsonResponse
      */
-    public function get(int $id)
-    {
-        $notion = Notion::where('id', $id)->firstOrFail();
-
-        return $this->http200Success($notion);
-    }
 
 
     /**
@@ -64,26 +54,7 @@ class NotionController extends BaseController
      * @apiUse 401Unauthorized
      * @apiUse 422Validation
      * @apiUse 422Save
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function add(Request $request)
-    {
-        if ($request->user()->cant('add', Notion::class)) {
-            return $this->http401Unauthorized();
-        }
-
-        $notion = new Notion();
-        $notion->fill($request->all());
-
-        if (!$notion->save()) {
-            return $notion->handleResponse($this->http422Save());
-        }
-
-        return $this->http200Success($notion);
-    }
 
 
     /**
@@ -101,29 +72,7 @@ class NotionController extends BaseController
      * @apiUse 404ModelNotFound
      * @apiUse 422Save
      * @apiUse 422Validation
-     *
-     * @param Request $request
-     * @param int $id
-     *
-     * @return JsonResponse
      */
-    public function edit(Request $request, int $id)
-    {
-        /** @var Notion $notion */
-        $notion = Notion::where('id', $id)->firstOrFail();
-
-        if ($request->user()->cant('edit', $notion)) {
-            return $this->http401Unauthorized();
-        }
-
-        $notion->fill($request->all());
-
-        if (!$notion->save()) {
-            return $notion->handleResponse($this->http422Save());
-        }
-
-        return $this->http200Success($notion);
-    }
 
 
     /**
@@ -137,25 +86,5 @@ class NotionController extends BaseController
      * @apiParam {int} id The notion id
      * @apiUse 401Unauthorized
      * @apiUse 404ModelNotFound
-     *
-     * @param Request $request
-     * @param int $id
-     *
-     * @return JsonResponse
      */
-    public function delete(Request $request, int $id)
-    {
-        /** @var Notion $notion */
-        $notion = Notion::where('id', '=', $id)->firstOrFail();
-
-        if ($request->user()->cant('delete', $notion)) {
-            return $this->http401Unauthorized();
-        }
-
-        if (!$notion->delete()) {
-            return $notion->handleResponse($this->http422Delete());
-        }
-
-        return $this->http200Success();
-    }
 }

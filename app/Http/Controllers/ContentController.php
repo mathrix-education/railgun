@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\Http400InvalidRequestException;
 use App\Models\Chapter;
 use App\Models\Class_;
 use App\Models\Country;
@@ -45,7 +46,7 @@ class ContentController extends BaseController
     {
         $data = Country::with('classes')->get();
 
-        return $this->http200Success($data);
+        return response()->json($data);
     }
 
 
@@ -98,7 +99,7 @@ class ContentController extends BaseController
             'disciplines.chapters.notions.activities'
         ])->where('id', $classId)->firstOrFail();
 
-        return $this->http200Success($data);
+        return response()->json($data);
     }
 
 
@@ -153,7 +154,7 @@ class ContentController extends BaseController
             'disciplines.chapters.notions.activities.modules'
         ])->where('id', $classId)->firstOrFail();
 
-        return $this->http200Success($data);
+        return response()->json($data);
     }
 
 
@@ -227,11 +228,12 @@ class ContentController extends BaseController
      * @param int $perPage
      *
      * @return JsonResponse
+     * @throws Http400InvalidRequestException
      */
     public function search(Request $request, string $query, int $page = 1, $perPage = 10)
     {
         if ($page < 1 || $perPage < 1) {
-            return $this->http400InvalidRequest('page and perPage have to be strictly positive');
+            throw new Http400InvalidRequestException('page and perPage have to be strictly positive');
         }
 
         $user = $request->user();
@@ -310,7 +312,7 @@ class ContentController extends BaseController
                 ->get();
         }
 
-        return $this->http200Success([
+        return response()->json([
             'videos' => $videos,
             'chapters' => $chapters,
             'notions' => $notions

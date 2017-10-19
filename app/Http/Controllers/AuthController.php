@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\Http400InvalidRequestException;
+use App\Exceptions\Http422ModelSaveException;
+use App\Exceptions\Http422ModelValidationException;
+use App\Exceptions\Http502EmailNotSentException;
 use App\Mails\User\PasswordForgotten;
 use App\Models\Log;
 use App\Models\User;
@@ -40,6 +44,8 @@ class AuthController extends BaseController
      * @param Request $request
      *
      * @return JsonResponse
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
      */
     public function login(Request $request)
     {
@@ -115,34 +121,25 @@ class AuthController extends BaseController
      * @param Request $request
      *
      * @return JsonResponse
+     * @throws Http502EmailNotSentException
      */
     public function forgot(Request $request)
     {
-        $this->validateRequire($request, ['email']);
-
         // Try to find the user with the given email
-        $user = User::whereEmail($request->input('email'))->firstOrFail();
+        /** @var User $user */
+        $user = User::where('email', $request->input('email'))->firstOrFail();
 
         // Generate token
-        $token = Factory::create()->uuid;
-
         $user->unguardAttributes(['token']);
-        $user->token = $token;
-
-        if (!$user->save()) {
-            return $user->handleResponse($this->http422Save());
-        }
+        $user->update(['token' => Factory::create()->uuid]);
 
         // Send PasswordForgotten email
         Mail::to($user->email)->send(new PasswordForgotten($user));
-        $emailErrors = Mail::failures();
-        if (!empty($emailErrors)) {
-            return $this->http502EmailNotSent([
-                'message' => $emailErrors
-            ]);
+        if (!empty(Mail::failures())) {
+            throw new Http502EmailNotSentException();
         }
 
-        return $this->http200Success('Reset email sent');
+        return response()->json(['message' => 'Reset email sent successfully']);
     }
 
 
@@ -163,22 +160,26 @@ class AuthController extends BaseController
      * @param string $token The reset token
      *
      * @return JsonResponse
+     * @throws Http400InvalidRequestException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
      */
     public function reset(Request $request, string $token)
     {
-        $this->validateRequire($request, ['password']);
+        if ($request->input('password') === null) {
+            throw new Http400InvalidRequestException('password cannot be null');
+        }
 
         // Try to find with the given token
         /** @var User $user */
         $user = User::where('token', $token)->firstOrFail();
 
         // Update password
-        $user->password = $request->input('password');
-        $user->token = Factory::create()->uuid; // Refresh token
-
-        if (!$user->save()) {
-            return $user->handleResponse($this->http422Save());
-        }
+        $user->unguardAttributes(['token']);
+        $user->update([
+            'password' => $request->input('password'),
+            'token' => Factory::create()->uuid // Refresh token
+        ]);
 
         // TODO Email
         /*Mail::to($user->email)->send(new UserPasswordChanged($user));
@@ -189,6 +190,6 @@ class AuthController extends BaseController
             ]);
         }*/
 
-        return $this->http200Success('Password successfully changed');
+        return response()->json('Password successfully changed');
     }
 }

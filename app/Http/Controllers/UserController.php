@@ -2,6 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\Http400InvalidRequestException;
+use App\Exceptions\Http401UnauthorizedException;
+use App\Exceptions\Http422ModelSaveException;
+use App\Exceptions\Http422ModelValidationException;
+use App\Exceptions\Http429TooManyRequests;
+use App\Exceptions\Http501NotImplementedException;
 use App\Models\Activity;
 use App\Models\Log;
 use App\Models\Module;
@@ -23,6 +29,100 @@ class UserController extends BaseController
 {
     /**
      * @apiVersion 0.8.1
+     * @api {get} /users/{?page}/{?perPage} Index
+     * @apiGroup Users
+     * @apiName UsersIndex
+     * @apiDescription Get a user by id
+     * @apiPermission admin
+     * @apiUse Bearer
+     * @apiParam {int} [page=1] The page number
+     * @apiParam {int} [perPage=10] The user count per page
+     * @apiUse UserArray
+     * @apiError (Error 400) invalid_request page and perPage have to be strictly positive
+     * @apiUse 401Unauthorized
+     */
+
+
+    /**
+     * @apiVersion 0.8.1
+     * @api {get} /users/{id} Get
+     * @apiGroup Users
+     * @apiName UserGet
+     * @apiDescription Get a user by id
+     * @apiPermission registered for self get, at least moderator for others registered
+     * @apiUse Bearer
+     * @apiParam {int} [id] The user id
+     * @apiUse User
+     * @apiUse 401Unauthorized
+     * @apiUse 404ModelNotFound
+     */
+
+
+    /**
+     * @apiVersion 0.8.1
+     * @api {patch} /users/{id} Edit
+     * @apiGroup Users
+     * @apiName UserEdit
+     * @apiDescription Edit a user
+     * @apiPermission registered for self get, at least admin for strangers
+     * @apiUse Bearer
+     * @apiUse UserData
+     * @apiUse User
+     * @apiUse 401Unauthorized
+     * @apiUse 404ModelNotFound
+     *
+     * @param Request $request
+     * @param int|null $id The user id; if null set edit the current user
+     *
+     * @return JsonResponse
+     * @throws Http401UnauthorizedException
+     */
+    public function edit(Request $request, int $id = null): JsonResponse
+    {
+        $user = $id === null ? $request->user() : User::where('id', $id)->firstOrFail();
+
+        // Check permission
+        if ($request->user()->cant('edit', $user)) {
+            throw new Http401UnauthorizedException();
+        }
+
+        // Unlock fields for admin
+        if ($request->user()->tokenCan('admin')) {
+            $user->unguardAttributes(['type']);
+        }
+
+        $user->fill($request->all());
+        $user->save();
+
+        return response()->json($user);
+    }
+
+
+    /**
+     * @apiVersion 0.8.1
+     * @api {delete} /users/{id} Delete (Not implemented)
+     * @apiGroup Users
+     * @apiName UserDelete
+     * @apiDescription Delete a user
+     * @apiPermission http501NotImplemented
+     * @apiUse Bearer
+     * @apiParam {int} id The user id
+     * @apiError (Error 401) unauthorized User does not have enough privileges
+     *
+     * @param Request $request
+     * @param int $id The user
+     *
+     * @return JsonResponse
+     * @throws Http501NotImplementedException
+     */
+    public function delete(Request $request, int $id)
+    {
+        throw new Http501NotImplementedException();
+    }
+
+
+    /**
+     * @apiVersion 0.8.1
      * @api {post} /users/register Register
      * @apiGroup Users
      * @apiName UserRegister
@@ -41,6 +141,9 @@ class UserController extends BaseController
      * @param Request $request
      *
      * @return JsonResponse
+     * @throws Http401UnauthorizedException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
      */
     public function register(Request $request): JsonResponse
     {
@@ -52,7 +155,7 @@ class UserController extends BaseController
             $request->input('type') != 'register' &&
             (!$user || !$user->tokenCan('admin'))
         ) {
-            return $this->http401Unauthorized();
+            throw new Http401UnauthorizedException();
         } else if (!$user || !$user->tokenCan('admin')) {
             $request->merge(['type' => 'registered']);
         }
@@ -70,31 +173,12 @@ class UserController extends BaseController
         $user = (new User())
             ->unguardAttributes(['type'])
             ->fill($request->all());
-
-        if (!$user->save()) {
-            return $user->handleResponse($this->http422Save());
-        }
+        $user->save();
 
         // TODO Send email
 
-        return $this->http200Success($user);
+        return response()->json($user);
     }
-
-
-    /**
-     * @apiVersion 0.8.1
-     * @api {get} /users/{?page}/{?perPage} Index
-     * @apiGroup Users
-     * @apiName UsersIndex
-     * @apiDescription Get a user by id
-     * @apiPermission admin
-     * @apiUse Bearer
-     * @apiParam {int} [page=1] The page number
-     * @apiParam {int} [perPage=10] The user count per page
-     * @apiUse UserArray
-     * @apiError (Error 400) invalid_request page and perPage have to be strictly positive
-     * @apiUse 401Unauthorized
-     */
 
 
     /**
@@ -111,15 +195,15 @@ class UserController extends BaseController
      * @param string $value
      *
      * @return JsonResponse
-     * @internal param string $email the email to search
+     * @throws Http400InvalidRequestException
      */
     public function exists(string $field, string $value)
     {
         if (!in_array($field, ['username', 'email'])) {
-            return $this->http400InvalidRequest();
+            throw new Http400InvalidRequestException();
         }
 
-        return $this->http200Success(['exists' => User::where($field, $value)->exists()]);
+        return response()->json(['exists' => User::where($field, $value)->exists()]);
     }
 
 
@@ -140,20 +224,22 @@ class UserController extends BaseController
      * @param $like
      *
      * @return JsonResponse
+     * @throws Http400InvalidRequestException
+     * @throws Http401UnauthorizedException
      */
     public function search(Request $request, $field, $like)
     {
         // Check permission
-        if ($request->user()->cant('index', User::class)) {
-            return $this->http401Unauthorized();
+        if ($request->user()->cant('search', User::class)) {
+            throw new Http401UnauthorizedException();
         }
         if (!in_array($field, \Schema::getColumnListing(User::getTableName()))) {
-            return $this->http400InvalidRequest($field . ' does not exists in ' . User::getTableName() . ' table');
+            throw new Http400InvalidRequestException($field . ' does not exists in ' . User::getTableName() . ' table');
         }
 
         $users = User::where($field, 'like', '%' . $like . '%')->get();
 
-        return $this->http200Success($users);
+        return response()->json($users);
     }
 
 
@@ -173,78 +259,7 @@ class UserController extends BaseController
      */
     public function me(Request $request)
     {
-        return $this->http200Success($request->user());
-    }
-
-
-    /**
-     * @apiVersion 0.8.1
-     * @api {get} /users/{id} Get
-     * @apiGroup Users
-     * @apiName UserGet
-     * @apiDescription Get a user by id
-     * @apiPermission registered for self get, at least moderator for others registered
-     * @apiUse Bearer
-     * @apiParam {int} [id] The user id
-     * @apiUse User
-     * @apiUse 401Unauthorized
-     * @apiUse 404ModelNotFound
-     *
-     * @param Request $request
-     * @param int $id
-     *
-     * @return JsonResponse
-     */
-    public function get(Request $request, int $id)
-    {
-        $user = User::whereId($id)->firstOrFail();
-
-        // Check permission
-        if ($request->user()->cant('get', $user)) {
-            return $this->http401Unauthorized();
-        }
-
-        return $this->http200Success($user);
-    }
-
-
-    /**
-     * @apiVersion 0.8.1
-     * @api {patch} /users/{id} Edit
-     * @apiGroup Users
-     * @apiName UserEdit
-     * @apiDescription Edit a user
-     * @apiPermission registered for self get, at least admin for strangers
-     * @apiUse Bearer
-     * @apiUse UserData
-     * @apiUse User
-     * @apiUse 401Unauthorized
-     * @apiUse 404ModelNotFound
-     *
-     * @param Request $request
-     * @param int|null $id The user id; if null set edit the current user
-     *
-     * @return JsonResponse
-     */
-    public function edit(Request $request, int $id = null)
-    {
-        $user = $id === null ? $request->user() : User::where('id', $id)->firstOrFail();
-
-        // Check permission
-        if ($request->user()->cant('edit', $user)) {
-            return $this->http401Unauthorized();
-        }
-
-        // Unlock fields for admin
-        if ($request->user()->tokenCan('admin')) {
-            $user->unguardAttributes(['type']);
-        }
-
-        if (!$user->update($request->all())) {
-            return $user->handleResponse($this->http422Save());
-        }
-
-        return $this->http200Success($user);
+        return response()->json($request->user());
     }
 
 
@@ -271,6 +286,11 @@ class UserController extends BaseController
      * @param int|null $id the user id
      *
      * @return JsonResponse
+     * @throws Http400InvalidRequestException
+     * @throws Http401UnauthorizedException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
+     * @throws Http429TooManyRequests
      */
     public function points(Request $request, $id = null)
     {
@@ -279,7 +299,7 @@ class UserController extends BaseController
 
         // Check permission
         if ($request->user()->cant('points', $user)) {
-            return $this->http401Unauthorized();
+            throw new Http401UnauthorizedException();
         }
 
 
@@ -294,7 +314,7 @@ class UserController extends BaseController
 
             // If null, abort
             if ($loggableModelClass === null) {
-                return $this->http400InvalidRequest('Invalid loggable model');
+                throw new Http400InvalidRequestException('Invalid loggable model');
             }
 
             // Else, try to find the loggable model
@@ -312,26 +332,23 @@ class UserController extends BaseController
 
             // User already gathered point from this loggable today
             if ($userHasAlreadyGatheredPointsWithThisModule) {
-                return $this->http429TooManyRequests('Already gathered points today for this model');
+                throw new Http429TooManyRequests('Already gathered points today for this model');
             }
         }
 
         $pointsToAdd = $request->input('points'); // Retrieve points to add from form data
 
         if ($pointsToAdd === null) { // Check field presence
-            return $this->http400InvalidRequest(['message' => 'points field is required']);
+            throw new Http400InvalidRequestException(['message' => 'points field is required']);
         } else if (!is_int($pointsToAdd) || $pointsToAdd < 0) { // Check if field is a valid positive integer
-            return $this->http400InvalidRequest(['message' => 'points field has to be a positive integer']);
+            throw new Http400InvalidRequestException(['message' => 'points field has to be a positive integer']);
         }
-        if (!$user->update(['points' => $user->points + $pointsToAdd])) {
 
-            return $user->handleResponse($this->http422Save());
-        }
+        $user->fill(['points' => $user->points + $pointsToAdd]);
+        $user->save();
 
         // Log the points update
-        $logData = [
-            'value' => ['points' => $pointsToAdd]
-        ];
+        $logData = ['value' => ['points' => $pointsToAdd]];
 
         if ($useLoggable) {
             $logData = array_merge($logData, [
@@ -343,28 +360,6 @@ class UserController extends BaseController
         // Then log the informations
         Log::log('user_gathered_points', $user, $logData);
 
-        return $this->http200Success($user);
-    }
-
-
-    /**
-     * @apiVersion 0.8.1
-     * @api {delete} /users/{id} Delete (Not implemented)
-     * @apiGroup Users
-     * @apiName UserDelete
-     * @apiDescription Delete a user
-     * @apiPermission http501NotImplemented
-     * @apiUse Bearer
-     * @apiParam {int} id The user id
-     * @apiError (Error 401) unauthorized User does not have enough privileges
-     *
-     * @param Request $request
-     * @param int $id The user
-     *
-     * @return JsonResponse
-     */
-    public function delete(Request $request, int $id)
-    {
-        return $this->http501NotImplemented();
+        return response()->json($user);
     }
 }

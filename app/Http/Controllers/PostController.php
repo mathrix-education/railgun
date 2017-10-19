@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\Http400InvalidRequestException;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -32,14 +33,15 @@ class PostController extends BaseController
      * @param int $perPage
      *
      * @return JsonResponse
+     * @throws Http400InvalidRequestException
      */
-    public function index(Request $request, int $page = 1, int $perPage = 10)
+    public function index(Request $request, int $page = 1, int $perPage = 10): JsonResponse
     {
         if ($page < 1 || $perPage < 1) {
-            return $this->http400InvalidRequest('page and perPage have to be strictly positive');
+            throw new Http400InvalidRequestException('page and perPage have to be strictly positive');
         }
 
-        return $this->http200Success(
+        return response()->json(
             Post::limit($perPage)
                 ->offset(($page - 1) * $perPage)
                 ->orderByDesc('created_at')
@@ -58,18 +60,7 @@ class PostController extends BaseController
      * @apiParam {int} id The post id
      * @apiUse Post
      * @apiUse 404ModelNotFound
-     *
-     * @param int $id
-     *
-     * @return JsonResponse
      */
-    public function get(int $id)
-    {
-        $post = Post::where('id', $id)->firstOrFail();
-
-        return $this->http200Success($post);
-    }
-
 
     /**
      * @apiVersion 0.8.1
@@ -84,26 +75,7 @@ class PostController extends BaseController
      * @apiUse 401Unauthorized
      * @apiUse 422Validation
      * @apiUse 422Save
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function add(Request $request)
-    {
-        if ($request->user()->cant('add', Post::class)) {
-            return $this->http401Unauthorized();
-        }
-
-        $post = new Post();
-        $post->fill($request->all());
-
-        if (!$post->save()) {
-            return $post->handleResponse($this->http422Save());
-        }
-
-        return $this->http200Success($post);
-    }
 
 
     /**
@@ -121,29 +93,7 @@ class PostController extends BaseController
      * @apiUse 404ModelNotFound
      * @apiUse 422Save
      * @apiUse 422Validation
-     *
-     * @param Request $request
-     * @param int $id , factory(Post::class)->raw()
-     *
-     * @return JsonResponse
      */
-    public function edit(Request $request, int $id)
-    {
-        /** @var Post $post */
-        $post = Post::where('id', $id)->firstOrFail();
-
-        if ($request->user()->cant('edit', $post)) {
-            return $this->http401Unauthorized();
-        }
-
-        $post->fill($request->all());
-
-        if (!$post->save()) {
-            return $post->handleResponse($this->http422Save());
-        }
-
-        return $this->http200Success($post);
-    }
 
 
     /**
@@ -157,25 +107,5 @@ class PostController extends BaseController
      * @apiParam {int} id The post id
      * @apiUse 401Unauthorized
      * @apiUse 404ModelNotFound
-     *
-     * @param Request $request
-     * @param int $id
-     *
-     * @return JsonResponse
      */
-    public function delete(Request $request, int $id)
-    {
-        /** @var Post $post */
-        $post = Post::where('id', $id)->firstOrFail();
-
-        if ($request->user()->cant('delete', $post)) {
-            return $this->http401Unauthorized();
-        }
-
-        if (!$post->delete()) {
-            return $post->handleResponse($this->http422Delete());
-        }
-
-        return $this->http200Success();
-    }
 }

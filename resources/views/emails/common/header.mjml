@@ -5,7 +5,7 @@
     <mj-column width="70%" padding-bottom="0">
         <mj-image src="http://cdn.mathrix.fr/img/logo-w.png" align="left" width="200"></mj-image>
         <mj-text color="#ffffff" padding-bottom="0">
-            <h1>{{ $title2 }}</h1>
+            <h1>{{ $title }}</h1>
         </mj-text>
     </mj-column>
     <mj-column width="30%" padding-bottom="0">

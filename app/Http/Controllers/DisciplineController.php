@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\Http501NotImplementedException;
 use App\Models\Discipline;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -37,18 +38,7 @@ class DisciplineController extends BaseController
      * @apiParam {int} id The discipline id
      * @apiUse Discipline
      * @apiUse 404ModelNotFound
-     *
-     * @param int $id
-     *
-     * @return JsonResponse
      */
-    public function get(int $id)
-    {
-        $discipline = Discipline::where('id', $id)->firstOrFail();
-
-        return $this->http200Success($discipline);
-    }
-
 
     /**
      * @apiVersion 0.8.1
@@ -63,26 +53,7 @@ class DisciplineController extends BaseController
      * @apiUse 401Unauthorized
      * @apiUse 422Validation
      * @apiUse 422Save
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function add(Request $request)
-    {
-        if ($request->user()->cant('add', Discipline::class)) {
-            return $this->http401Unauthorized();
-        }
-
-        $discipline = new Discipline();
-        $discipline->fill($request->all());
-
-        if (!$discipline->save()) {
-            return $discipline->handleResponse($this->http422Save());
-        }
-
-        return $this->http200Success($discipline);
-    }
 
 
     /**
@@ -100,29 +71,7 @@ class DisciplineController extends BaseController
      * @apiUse 404ModelNotFound
      * @apiUse 422Save
      * @apiUse 422Validation
-     *
-     * @param Request $request
-     * @param int $id
-     *
-     * @return JsonResponse
      */
-    public function edit(Request $request, int $id)
-    {
-        /** @var Discipline $discipline */
-        $discipline = Discipline::where('id', $id)->firstOrFail();
-
-        if ($request->user()->cant('edit', Discipline::class)) {
-            return $this->http401Unauthorized();
-        }
-
-        $discipline->fill($request->all());
-
-        if (!$discipline->save()) {
-            return $discipline->handleResponse($this->http422Save());
-        }
-
-        return $this->http200Success($discipline);
-    }
 
 
     /**
@@ -137,12 +86,14 @@ class DisciplineController extends BaseController
      * @apiUse 401Unauthorized
      * @apiUse 404ModelNotFound
      *
+     * @param Request $request
      * @param int $id
      *
      * @return JsonResponse
+     * @throws Http501NotImplementedException
      */
-    public function delete(int $id)
+    public function delete(Request $request, int $id)
     {
-        return $this->http501NotImplemented();
+        throw new Http501NotImplementedException();
     }
 }

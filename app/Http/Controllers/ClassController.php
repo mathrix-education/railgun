@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Exceptions\Http501NotImplementedException;
 use App\Models\Class_;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -35,17 +36,7 @@ class ClassController extends BaseController
      * @apiParam {int} id The class id
      * @apiUse Class
      * @apiUse 404ModelNotFound
-     *
-     * @param int $id
-     *
-     * @return JsonResponse
      */
-    public function get(int $id)
-    {
-        $class = Class_::where('id', $id)->firstOrFail();
-
-        return $this->http200Success($class);
-    }
 
 
     /**
@@ -61,26 +52,7 @@ class ClassController extends BaseController
      * @apiUse 401Unauthorized
      * @apiUse 422Validation
      * @apiUse 422Save
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function add(Request $request)
-    {
-        if ($request->user()->cant('add', Class_::class)) {
-            return $this->http401Unauthorized();
-        }
-
-        $class = new Class_();
-        $class->fill($request->all());
-
-        if (!$class->save()) {
-            return $class->handleResponse($this->http422Save());
-        }
-
-        return $this->http200Success($class);
-    }
 
 
     /**
@@ -98,29 +70,7 @@ class ClassController extends BaseController
      * @apiUse 404ModelNotFound
      * @apiUse 422Save
      * @apiUse 422Validation
-     *
-     * @param Request $request
-     * @param int $id
-     *
-     * @return JsonResponse
      */
-    public function edit(Request $request, int $id)
-    {
-        /** @var Class_ $class */
-        $class = Class_::where('id', $id)->firstOrFail();
-
-        if ($request->user()->cant('edit', $class)) {
-            return $this->http401Unauthorized();
-        }
-
-        $class->fill($request->all());
-
-        if (!$class->save()) {
-            return $class->handleResponse($this->http422Save());
-        }
-
-        return $this->http200Success($class);
-    }
 
 
     /**
@@ -135,12 +85,14 @@ class ClassController extends BaseController
      * @apiUse 401Unauthorized
      * @apiUse 404ModelNotFound
      *
+     * @param Request $request
      * @param int $id
      *
      * @return JsonResponse
+     * @throws Http501NotImplementedException
      */
-    public function delete(int $id)
+    public function delete(Request $request, int $id)
     {
-        return $this->http501NotImplemented();
+        throw new Http501NotImplementedException();
     }
 }

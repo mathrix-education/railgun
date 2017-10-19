@@ -14,6 +14,15 @@ use Carbon\Carbon;
 class CommentPolicy extends BasePolicy
 {
     /**
+     * @return bool
+     */
+    public function add()
+    {
+        return true;
+    }
+
+
+    /**
      * @param User $currentUser
      * @param Comment $comment
      *

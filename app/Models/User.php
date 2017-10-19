@@ -8,7 +8,6 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Cashier\Billable;
 use Laravel\Cashier\Subscription;
@@ -40,7 +39,6 @@ use Laravel\Passport\Token;
  * @property string|null $card_last_four
  * @property string|null $trial_ends_at
  * @property-read Class_ $class_
- * @property-read Collection|Activity[] $activities
  * @property-read Collection|Client[] $clients
  * @property-read Collection|Comment[] $comments
  * @property-read Collection|Log[] $logs
@@ -78,34 +76,65 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     protected $guarded = ['type'];
 
     /** @var array The hidden attributes from the model's JSON */
-    protected $hidden = ['password', 'token', 'facebook_token'];
+    protected $hidden = ['password', 'token'];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'settings' => 'array'
-    ];
+    /** @var array The attributes that should be cast to native types */
+    protected $casts = ['settings' => 'array'];
 
-    /**
-     * The validation rules on create
-     *
-     * @var array
-     */
+    /** @var array The validation rules on create */
     protected $rules = [
-        'email' => 'required|email|max:60',
-        'username' => 'nullable|max:20',
+        'email' => 'required|email|unique:users,email|max:60',
+        'username' => 'nullable|max:30',
         'firstname' => 'nullable|max:30',
         'lastname' => 'nullable|max:40',
         'password' => 'required|min:3',
         'type' => 'required|in:registered,moderator,admin',
         'token' => 'required|size:36',
         'points' => 'required|integer',
-        'daily' => 'required|in:20,40,70',
+        'daily' => 'nullable|in:20,40,70',
         'class_id' => 'nullable|exists:classes,id'
     ];
+
+    /** @var array The virtual attributes */
+    protected $appends = ['premium'];
+
+
+    /**
+     * Premium attributes
+     * @return bool
+     */
+    public function getPremiumAttribute()
+    {
+        return $this->subscribed('premium');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Passport
+    |--------------------------------------------------------------------------
+    */
+    /**
+     * Determine if user can do something according to its token
+     *
+     * @param string $scope the minimum scope
+     *
+     * @return bool
+     */
+    public function tokenCan($scope)
+    {
+        $order = ['admin', 'moderator', 'registered'];
+        $key = array_search($scope, $order);
+
+        if ($key !== false) {
+            foreach ($order as $k => $grantedScope) {
+                if ($this->passportTokenCan($grantedScope) && $k <= $key) {
+                    return true;
+                }
+            }
+        }
+
+        return $this->passportTokenCan($scope);
+    }
 
 
     /*
@@ -113,17 +142,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     | Relations
     |--------------------------------------------------------------------------
     */
-    /**
-     * BelongsToMany Activity
-     *
-     * @return BelongsToMany
-     */
-    public function activities()
-    {
-        return $this->belongsToMany(Activity::class);
-    }
-
-
     /**
      * BelongsTo Class_
      *
@@ -158,6 +176,17 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
 
     /**
+     * HasMany Activity
+     *
+     * @return HasMany
+     */
+    public function meta(): HasMany
+    {
+        return $this->hasMany(Activity::class);
+    }
+
+
+    /**
      * HasMany Vote
      *
      * @return HasMany
@@ -167,32 +196,4 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         return $this->hasMany(Vote::class);
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Passport
-    |--------------------------------------------------------------------------
-    */
-    /**
-     * Determine if user can do something according to its token
-     *
-     * @param string $scope the minimum scope
-     *
-     * @return bool
-     */
-    public function tokenCan($scope)
-    {
-        $order = ['admin', 'moderator', 'registered'];
-        $key = array_search($scope, $order);
-
-        if ($key !== false) {
-            foreach ($order as $k => $grantedScope) {
-                if ($this->passportTokenCan($grantedScope) && $k <= $key) {
-                    return true;
-                }
-            }
-        }
-
-        return $this->passportTokenCan($scope);
-    }
 }

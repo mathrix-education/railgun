@@ -24,6 +24,9 @@ use Illuminate\Support\Facades\Auth;
  * @method static Builder|Activity whereName($value)
  * @method static Builder|Activity whereSlug($value)
  * @mixin \Eloquent
+ * @property-read mixed $favorite
+ * @property-read mixed $permalink
+ * @property-read mixed $status
  */
 class Activity extends BaseModel
 {
@@ -42,70 +45,11 @@ class Activity extends BaseModel
         'description' => 'required|max:255'
     ];
 
-    protected $appends = ['favorite', 'status'];
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Virtual attributes
-    |--------------------------------------------------------------------------
-    */
-    public function getFavoriteAttribute()
-    {
-        /** @var User $user */
-        $user = Auth::user();
-
-        if ($user !== null) {
-            $pivot = $this->users()
-                ->wherePivot('user_id', '=', $user->id)
-                ->first();
-
-            if ($pivot !== null) {
-                return $pivot->favorite;
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * BelongsToMany Users
-     *
-     * @return BelongsToMany
-     */
-    public function users()
-    {
-        return $this->belongsToMany(User::class);
-    }
-
-
     /*
     |--------------------------------------------------------------------------
     | Relations
     |--------------------------------------------------------------------------
     */
-
-
-    public function getStatusAttribute()
-    {
-        /** @var User $user */
-        $user = Auth::user();
-
-        if ($user !== null) {
-            $pivot = $this->users()
-                ->wherePivot('user_id', '=', $user->id)
-                ->first();
-
-            if ($pivot !== null) {
-                return $pivot->status;
-            }
-        }
-
-        return null;
-    }
-
-
     /**
      * Get all of the post's logs.
      */
@@ -134,5 +78,16 @@ class Activity extends BaseModel
     public function notions(): BelongsToMany
     {
         return $this->belongsToMany(Notion::class);
+    }
+
+
+    /**
+     * BelongsToMany Users
+     *
+     * @return BelongsToMany
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
     }
 }

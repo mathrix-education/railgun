@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Middleware;
 
+use App\Exceptions\Http401UnauthorizedException;
 use Closure;
 use Illuminate\Contracts\Auth\Factory as Auth;
 use Illuminate\Http\Request;
@@ -39,15 +40,14 @@ class Authenticate
      * @param  Closure $next
      * @param  string|null $guard
      *
+     * @throws Http401UnauthorizedException
      * @return mixed
      */
     public function handle($request, Closure $next, $guard = null)
     {
         // Define unauthorized response
         if ($this->auth->guard($guard)->guest()) {
-            return response()->json([
-                'error' => 'unauthorized'
-            ], 401);
+            throw new Http401UnauthorizedException();
         }
 
         return $next($request);

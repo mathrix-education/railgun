@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Exceptions\Http501NotImplementedException;
 use App\Models\Country;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -36,16 +37,7 @@ class CountryController extends BaseController
      * @apiParam {int} id The country id
      * @apiUse Country
      * @apiUse 404ModelNotFound
-     *
-     * @param int $id
-     *
-     * @return JsonResponse
      */
-    public function get(int $id)
-    {
-        $country = Country::where('id', $id)->firstOrFail();
-        return $this->http200Success($country);
-    }
 
 
     /**
@@ -61,26 +53,7 @@ class CountryController extends BaseController
      * @apiUse 401Unauthorized
      * @apiUse 422Validation
      * @apiUse 422Save
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function add(Request $request)
-    {
-        if ($request->user()->cant('add', Country::class)) {
-            return $this->http401Unauthorized();
-        }
-
-        $country = new Country();
-        $country->fill($request->all());
-
-        if (!$country->save()) {
-            return $country->handleResponse($this->http422Save());
-        }
-
-        return $this->http200Success($country);
-    }
 
 
     /**
@@ -98,29 +71,7 @@ class CountryController extends BaseController
      * @apiUse 404ModelNotFound
      * @apiUse 422Save
      * @apiUse 422Validation
-     *
-     * @param Request $request
-     * @param int $id
-     *
-     * @return JsonResponse
      */
-    public function edit(Request $request, int $id)
-    {
-        /** @var Country $country */
-        $country = Country::where('id', $id)->firstOrFail();
-
-        if ($request->user()->cant('edit', $country)) {
-            return $this->http401Unauthorized();
-        }
-
-        $country->fill($request->all());
-
-        if (!$country->save()) {
-            return $country->handleResponse($this->http422Save());
-        }
-
-        return $this->http200Success($country);
-    }
 
 
     /**
@@ -135,12 +86,14 @@ class CountryController extends BaseController
      * @apiUse 401Unauthorized
      * @apiUse 404ModelNotFound
      *
+     * @param Request $request
      * @param int $id
      *
      * @return JsonResponse
+     * @throws Http501NotImplementedException
      */
-    public function delete(int $id)
+    public function delete(Request $request, int $id)
     {
-        return $this->http501NotImplemented();
+        throw new Http501NotImplementedException();
     }
 }

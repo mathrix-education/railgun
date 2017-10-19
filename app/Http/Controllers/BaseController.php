@@ -1,7 +1,14 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Http\HttpJsonResponseBuilderTrait;
+use App\Exceptions\Http400InvalidRequestException;
+use App\Exceptions\Http401UnauthorizedException;
+use App\Exceptions\Http404ModelNotFoundException;
+use App\Exceptions\Http422ModelSaveException;
+use App\Exceptions\Http422ModelValidationException;
+use App\Models\BaseModel;
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Validator;
 use Laravel\Lumen\Routing\Controller;
@@ -15,14 +22,21 @@ use Laravel\Lumen\Routing\Controller;
  */
 abstract class BaseController extends Controller
 {
-    use HttpJsonResponseBuilderTrait;
-
-    /** @var string The model class associated with the controller */
+    /** @var BaseModel The model class associated with the controller */
     public $modelClass = null;
     public $modelMap = ['Class' => 'Class_'];
 
 
     public function __construct()
+    {
+        $this->guessModelClass();
+    }
+
+
+    /**
+     * Guess the model class associated with the controller
+     */
+    protected function guessModelClass()
     {
         // Try to guess the model class
         $controllerClass = get_class($this);
@@ -45,47 +59,35 @@ abstract class BaseController extends Controller
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Utility methods
-    |--------------------------------------------------------------------------
-    */
     /**
-     * Check if a request contains the needed inputs
+     * Get the user according to a optional request key and its permission
      *
      * @param Request $request the request
-     * @param array $requiredInputs the required inputs
+     * @param string $minimumScope the minimum permission accepted
+     * @param string $key the key in request corresponding the user id
+     *
+     * @return User
+     * @throws Http400InvalidRequestException
+     * @throws Http401UnauthorizedException
      */
-    public function validateRequire(Request $request, array $requiredInputs): void
+    protected function getUserByRequestOrUnauthorized(Request $request, $minimumScope = 'admin', $key = 'user_id')
     {
-        $this->validate($request, array_fill_keys($requiredInputs, 'required'));
-    }
+        /** @var User $user */
+        $user = $request->user();
+        $userId = $request->input($key);
 
-
-    public function index(Request $request, int $page = 1, int $perPage = 10)
-    {
-        // Check permission
-        if ($request->user() !== null && $request->user()->cant('index', $this->modelClass)) {
-            return $this->http401Unauthorized();
+        // Check the the user key content is an integer
+        if ($userId !== null && !is_int($userId)) {
+            throw new Http400InvalidRequestException($key . ' has to be a positive integer');
         }
 
-        if ($page < 1 || $perPage < 1) {
-            return $this->http400InvalidRequest('page and perPage have to be strictly positive');
+        // Check authorization
+        if ($user === null || (!$user->tokenCan($minimumScope) && $user->id != $userId)) {
+            throw new Http401UnauthorizedException();
         }
 
-        return $this->http200Success(
-            $this->modelClass::limit($perPage)
-                ->offset(($page - 1) * $perPage)
-                ->get()
-        );
+        return $userId === null ? $request->user() : User::where('id', $userId)->firstOrFail();
     }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Generic actions
-    |--------------------------------------------------------------------------
-    */
 
 
     /**
@@ -104,4 +106,132 @@ abstract class BaseController extends Controller
             ]
         ];
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Generic actions
+    |--------------------------------------------------------------------------
+    */
+    /**
+     * Generic paginated index method
+     *
+     * @param Request $request
+     * @param int $page
+     * @param int $perPage
+     *
+     * @return JsonResponse
+     * @throws Http400InvalidRequestException
+     * @throws Http401UnauthorizedException
+     */
+    public function index(Request $request, int $page = 1, int $perPage = 10): JsonResponse
+    {
+        // Check permission
+        if ($request->user() !== null && $request->user()->cant('index', $this->modelClass)) {
+            throw new Http401UnauthorizedException();
+        }
+
+        if ($page < 1 || $perPage < 1) {
+            throw new Http400InvalidRequestException('page and perPage have to be strictly positive');
+        }
+
+        return response()->json(
+            $this->modelClass::limit($perPage)
+                ->offset(($page - 1) * $perPage)
+                ->get()
+        );
+    }
+
+
+    /**
+     * Generic get action
+     *
+     * @param int $id the model id
+     *
+     * @return JsonResponse
+     * @throws Http404ModelNotFoundException
+     */
+    public function get(int $id): JsonResponse
+    {
+        $model = $this->modelClass::where('id', $id)->firstOrFail();
+
+        return response()->json($model);
+    }
+
+
+    /**
+     * Generic add action
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     * @throws Http401UnauthorizedException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
+     */
+    public function add(Request $request): JsonResponse
+    {
+        if ($request->user() !== null && $request->user()->cant('add', $this->modelClass)) {
+            throw new Http401UnauthorizedException();
+        }
+
+        /** @var BaseModel $model */
+        $model = new $this->modelClass($request->all());
+        $model->save();
+
+        return response()->json($model);
+    }
+
+
+    /**
+     * Generic edit action
+     *
+     * @param Request $request
+     * @param int $id
+     *
+     * @return JsonResponse
+     * @throws Http401UnauthorizedException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
+     */
+    public function edit(Request $request, int $id): JsonResponse
+    {
+        /** @var BaseModel $model */
+        $model = $this->modelClass::where('id', $id)->firstOrFail();
+
+        if ($request->user() !== null && $request->user()->cant('edit', $model)) {
+            throw new Http401UnauthorizedException();
+        }
+
+        $model->update($request->all());
+
+        return response()->json($model);
+    }
+
+
+    /**
+     * Generic delete action
+     *
+     * @param Request $request
+     * @param int $id
+     *
+     * @return JsonResponse
+     * @throws Http401UnauthorizedException
+     * @throws Http422ModelSaveException
+     * @throws \Exception
+     */
+    public function delete(Request $request, int $id)
+    {
+        /** @var BaseModel $activity */
+        $model = $this->modelClass::where('id', $id)->firstOrFail();
+
+        if ($request->user() !== null && $request->user()->cant('delete', $model)) {
+            throw new Http401UnauthorizedException();
+        }
+
+        $model->delete();
+
+        return response()->json();
+    }
+
 }
