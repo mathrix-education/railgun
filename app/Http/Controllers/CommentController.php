@@ -30,6 +30,8 @@ class CommentController extends BaseController
      * @apiDescription Retrieve comments
      * @apiPermission moderator
      * @apiUse CommentArray
+     * @apiUse Http400InvalidRequest_Pagination
+     * @apiUse Http401Unauthorized
      */
 
 
@@ -42,7 +44,7 @@ class CommentController extends BaseController
      * @apiPermission public
      * @apiParam {int} id The class id
      * @apiUse Comment
-     * @apiUse 404ModelNotFound
+     * @apiUse Http404ModelNotFound
      */
 
 
@@ -56,9 +58,9 @@ class CommentController extends BaseController
      * @apiUse Bearer
      * @apiUse CommentData
      * @apiUse Comment
-     * @apiUse 401Unauthorized
-     * @apiUse 422Validation
-     * @apiUse 422Save
+     * @apiUse Http401Unauthorized
+     * @apiUse Http422ModelValidation
+     * @apiUse Http422ModelSave
      */
 
 
@@ -73,10 +75,10 @@ class CommentController extends BaseController
      * @apiParam {int} id The comment id
      * @apiUse CommentData
      * @apiUse Comment
-     * @apiUse 401Unauthorized
-     * @apiUse 404ModelNotFound
-     * @apiUse 422Save
-     * @apiUse 422Validation
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
+     * @apiUse Http422ModelSave
+     * @apiUse Http422ModelValidation
      */
 
 
@@ -89,8 +91,8 @@ class CommentController extends BaseController
      * @apiPermission moderator
      * @apiUse Bearer
      * @apiParam {int} id The comment id
-     * @apiUse 401Unauthorized
-     * @apiUse 404ModelNotFound
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
      */
 
 

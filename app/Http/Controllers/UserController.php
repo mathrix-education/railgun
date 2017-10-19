@@ -38,8 +38,8 @@ class UserController extends BaseController
      * @apiParam {int} [page=1] The page number
      * @apiParam {int} [perPage=10] The user count per page
      * @apiUse UserArray
-     * @apiError (Error 400) invalid_request page and perPage have to be strictly positive
-     * @apiUse 401Unauthorized
+     * @apiUse Http400InvalidRequest_Pagination
+     * @apiUse Http401Unauthorized
      */
 
 
@@ -53,8 +53,8 @@ class UserController extends BaseController
      * @apiUse Bearer
      * @apiParam {int} [id] The user id
      * @apiUse User
-     * @apiUse 401Unauthorized
-     * @apiUse 404ModelNotFound
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
      */
 
 
@@ -68,8 +68,8 @@ class UserController extends BaseController
      * @apiUse Bearer
      * @apiUse UserData
      * @apiUse User
-     * @apiUse 401Unauthorized
-     * @apiUse 404ModelNotFound
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
      *
      * @param Request $request
      * @param int|null $id The user id; if null set edit the current user
@@ -277,9 +277,9 @@ class UserController extends BaseController
      * @apiParam (Data) {int} [loggable_id] The loggable id
      * @apiError (Error 400) invalid_request points field is required
      * @apiError (Error 400) invalid_request points field has to be a positive integer
-     * @apiUse 401Unauthorized
-     * @apiUse 404ModelNotFound
-     * @apiUse 422Save
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
+     * @apiUse Http422ModelSave
      * @apiError (Error 429) too_many_requests Already gathered points today for this model
      *
      * @param Request $request

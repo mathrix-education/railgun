@@ -25,6 +25,7 @@ class DisciplineController extends BaseController
      * @apiDescription Retrieve disciplines
      * @apiPermission public
      * @apiUse DisciplineArray
+     * @apiUse Http400InvalidRequest_Pagination
      */
 
 
@@ -37,7 +38,7 @@ class DisciplineController extends BaseController
      * @apiPermission public
      * @apiParam {int} id The discipline id
      * @apiUse Discipline
-     * @apiUse 404ModelNotFound
+     * @apiUse Http404ModelNotFound
      */
 
     /**
@@ -50,9 +51,9 @@ class DisciplineController extends BaseController
      * @apiUse Bearer
      * @apiUse DisciplineData
      * @apiUse Discipline
-     * @apiUse 401Unauthorized
-     * @apiUse 422Validation
-     * @apiUse 422Save
+     * @apiUse Http401Unauthorized
+     * @apiUse Http422ModelValidation
+     * @apiUse Http422ModelSave
      */
 
 
@@ -67,10 +68,10 @@ class DisciplineController extends BaseController
      * @apiParam {int} id The discipline id
      * @apiUse DisciplineData
      * @apiUse Discipline
-     * @apiUse 401Unauthorized
-     * @apiUse 404ModelNotFound
-     * @apiUse 422Save
-     * @apiUse 422Validation
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
+     * @apiUse Http422ModelSave
+     * @apiUse Http422ModelValidation
      */
 
 
@@ -83,8 +84,8 @@ class DisciplineController extends BaseController
      * @apiUse Bearer
      * @apiPermission admin
      * @apiParam {int} id The discipline id
-     * @apiUse 401Unauthorized
-     * @apiUse 404ModelNotFound
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
      *
      * @param Request $request
      * @param int $id

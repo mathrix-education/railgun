@@ -1,17 +1,25 @@
 <?php
 /**
- * @apiDefine 401Unauthorized
+ * @apiDefine Http400InvalidRequest
+ * @apiError (Error 400) invalid_request Request is invalid
+ */
+/**
+ * @apiDefine Http400InvalidRequest_Pagination
+ * @apiError (Error 400) invalid_request page and perPage have to be strictly positive
+ */
+/**
+ * @apiDefine Http401Unauthorized
  * @apiError (Error 401) unauthorized User does not have enough privileges
  */
 /**
- * @apiDefine 404ModelNotFound
+ * @apiDefine Http404ModelNotFound
  * @apiError (Error 404) model_not_found Model matching given data does not exist
  */
 /**
- * @apiDefine 422Save
- * @apiError (Error 422) save Save failed
+ * @apiDefine Http422ModelSave
+ * @apiError (Error 422) model_save Model save failed
  */
 /**
- * @apiDefine 422Validation
- * @apiError (Error 422) validation Data failed to pass validation
+ * @apiDefine Http422ModelValidation
+ * @apiError (Error 422) model_validation Model data failed to pass validation
  */

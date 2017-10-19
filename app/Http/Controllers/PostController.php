@@ -27,6 +27,7 @@ class PostController extends BaseController
      * @apiParam {int} [page=1] The page number
      * @apiParam {int} [perPage=10] The post count per page
      * @apiUse PostArray
+     * @apiUse Http400InvalidRequest_Pagination
      *
      * @param Request $request
      * @param int $page
@@ -59,7 +60,7 @@ class PostController extends BaseController
      * @apiPermission public
      * @apiParam {int} id The post id
      * @apiUse Post
-     * @apiUse 404ModelNotFound
+     * @apiUse Http404ModelNotFound
      */
 
     /**
@@ -72,9 +73,9 @@ class PostController extends BaseController
      * @apiUse Bearer
      * @apiUse PostData
      * @apiUse Post
-     * @apiUse 401Unauthorized
-     * @apiUse 422Validation
-     * @apiUse 422Save
+     * @apiUse Http401Unauthorized
+     * @apiUse Http422ModelValidation
+     * @apiUse Http422ModelSave
      */
 
 
@@ -89,10 +90,10 @@ class PostController extends BaseController
      * @apiParam {int} id The post id
      * @apiUse PostData
      * @apiUse Post
-     * @apiUse 401Unauthorized
-     * @apiUse 404ModelNotFound
-     * @apiUse 422Save
-     * @apiUse 422Validation
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
+     * @apiUse Http422ModelSave
+     * @apiUse Http422ModelValidation
      */
 
 
@@ -105,7 +106,7 @@ class PostController extends BaseController
      * @apiUse Bearer
      * @apiPermission admin
      * @apiParam {int} id The post id
-     * @apiUse 401Unauthorized
-     * @apiUse 404ModelNotFound
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
      */
 }

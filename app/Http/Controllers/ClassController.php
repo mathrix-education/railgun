@@ -24,6 +24,7 @@ class ClassController extends BaseController
      * @apiDescription Retrieve classes
      * @apiPermission public
      * @apiUse ClassArray
+     * @apiUse Http400InvalidRequest_Pagination
      */
 
     /**
@@ -35,7 +36,7 @@ class ClassController extends BaseController
      * @apiPermission public
      * @apiParam {int} id The class id
      * @apiUse Class
-     * @apiUse 404ModelNotFound
+     * @apiUse Http404ModelNotFound
      */
 
 
@@ -49,9 +50,9 @@ class ClassController extends BaseController
      * @apiUse Bearer
      * @apiUse ClassData
      * @apiUse Class
-     * @apiUse 401Unauthorized
-     * @apiUse 422Validation
-     * @apiUse 422Save
+     * @apiUse Http401Unauthorized
+     * @apiUse Http422ModelValidation
+     * @apiUse Http422ModelSave
      */
 
 
@@ -66,10 +67,10 @@ class ClassController extends BaseController
      * @apiParam {int} id The class id
      * @apiUse ClassData
      * @apiUse Class
-     * @apiUse 401Unauthorized
-     * @apiUse 404ModelNotFound
-     * @apiUse 422Save
-     * @apiUse 422Validation
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
+     * @apiUse Http422ModelSave
+     * @apiUse Http422ModelValidation
      */
 
 
@@ -82,8 +83,8 @@ class ClassController extends BaseController
      * @apiPermission admin
      * @apiUse Bearer
      * @apiParam {int} id The class id
-     * @apiUse 401Unauthorized
-     * @apiUse 404ModelNotFound
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
      *
      * @param Request $request
      * @param int $id

@@ -37,6 +37,17 @@ class Meta extends BaseModel
 {
     public $fillable = ['status', 'favorite', 'user_id', 'country_id', 'class_id', 'discipline_id', 'chapter_id',
         'notion_id', 'activity_id'];
+
+    /** @var array The validation rules on create */
+    protected $rules = [
+        'user_id' => 'required|email|unique:|max:60',
+        'country_id' => 'nullable|exists:countries,id',
+        'class_id' => 'nullable|exists:classes,id',
+        'discipline_id' => 'nullable|exists:disciplines,id',
+        'chapters_id' => 'nullable|exists:chapters,id',
+        'notion_id' => 'nullable|exists:notions,id',
+        'activity_id' => 'nullable|exists:activities,id'
+    ];
     /*
     |--------------------------------------------------------------------------
     | Relations

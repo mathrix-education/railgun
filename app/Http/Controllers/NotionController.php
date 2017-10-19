@@ -25,6 +25,8 @@ class NotionController extends BaseController
      * @apiPermission moderator
      * @apiUse NotionArray
      * @return JsonResponse
+     * @apiUse Http400InvalidRequest_Pagination
+     * @apiUse Http401Unauthorized
      */
 
 
@@ -37,7 +39,7 @@ class NotionController extends BaseController
      * @apiPermission public
      * @apiParam {int} id The notion id
      * @apiUse Notion
-     * @apiUse 404ModelNotFound
+     * @apiUse Http404ModelNotFound
      */
 
 
@@ -51,9 +53,9 @@ class NotionController extends BaseController
      * @apiUse Bearer
      * @apiUse NotionData
      * @apiUse Notion
-     * @apiUse 401Unauthorized
-     * @apiUse 422Validation
-     * @apiUse 422Save
+     * @apiUse Http401Unauthorized
+     * @apiUse Http422ModelValidation
+     * @apiUse Http422ModelSave
      */
 
 
@@ -68,10 +70,10 @@ class NotionController extends BaseController
      * @apiParam {int} id The notion id
      * @apiUse NotionData
      * @apiUse Notion
-     * @apiUse 401Unauthorized
-     * @apiUse 404ModelNotFound
-     * @apiUse 422Save
-     * @apiUse 422Validation
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
+     * @apiUse Http422ModelSave
+     * @apiUse Http422ModelValidation
      */
 
 
@@ -84,7 +86,7 @@ class NotionController extends BaseController
      * @apiUse Bearer
      * @apiPermission moderator
      * @apiParam {int} id The notion id
-     * @apiUse 401Unauthorized
-     * @apiUse 404ModelNotFound
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
      */
 }

@@ -29,8 +29,8 @@ class VoteController extends BaseController
      * @apiDescription Up vote something
      * @apiPermission registered
      * @apiUse Bearer
-     * @apiUse 401Unauthorized
-     * @apiUse 422Save
+     * @apiUse Http401Unauthorized
+     * @apiUse Http422ModelSave
      *
      * @param Request $request
      * @param string $votable_type
@@ -56,8 +56,8 @@ class VoteController extends BaseController
      * @apiDescription Down vote something
      * @apiPermission registered
      * @apiUse Bearer
-     * @apiUse 401Unauthorized
-     * @apiUse 422Save
+     * @apiUse Http401Unauthorized
+     * @apiUse Http422ModelSave
      *
      * @param Request $request
      * @param string $votable_type

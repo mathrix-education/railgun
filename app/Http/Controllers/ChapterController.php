@@ -24,6 +24,8 @@ class ChapterController extends BaseController
      * @apiDescription Retrieve chapters
      * @apiPermission moderator
      * @apiUse ChapterArray
+     * @apiUse Http400InvalidRequest_Pagination
+     * @apiUse Http401Unauthorized
      */
 
 
@@ -36,7 +38,7 @@ class ChapterController extends BaseController
      * @apiPermission public
      * @apiParam {int} id The chapter id
      * @apiUse Chapter
-     * @apiUse 404ModelNotFound
+     * @apiUse Http404ModelNotFound
      */
 
 
@@ -50,9 +52,9 @@ class ChapterController extends BaseController
      * @apiUse Bearer
      * @apiUse ChapterData
      * @apiUse Chapter
-     * @apiUse 401Unauthorized
-     * @apiUse 422Validation
-     * @apiUse 422Save
+     * @apiUse Http401Unauthorized
+     * @apiUse Http422ModelValidation
+     * @apiUse Http422ModelSave
      */
 
 
@@ -67,10 +69,10 @@ class ChapterController extends BaseController
      * @apiParam {int} id The chapter id
      * @apiUse ChapterData
      * @apiUse Chapter
-     * @apiUse 401Unauthorized
-     * @apiUse 404ModelNotFound
-     * @apiUse 422Save
-     * @apiUse 422Validation
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
+     * @apiUse Http422ModelSave
+     * @apiUse Http422ModelValidation
      */
 
 
@@ -83,7 +85,7 @@ class ChapterController extends BaseController
      * @apiUse Bearer
      * @apiPermission moderator
      * @apiParam {int} id The chapter id
-     * @apiUse 401Unauthorized
-     * @apiUse 404ModelNotFound
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
      */
 }
