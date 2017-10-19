@@ -31,7 +31,7 @@ use Illuminate\Support\Facades\Auth;
 class Activity extends BaseModel
 {
     /** @var array The fillable attributes */
-    protected $fillable = ['name', 'slug', 'description'];
+    protected $fillable = ['name', 'slug', 'description', 'visible'];
 
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
@@ -42,7 +42,8 @@ class Activity extends BaseModel
     protected $rules = [
         'name' => 'required|max:255',
         'slug' => 'required|max:255',
-        'description' => 'required|max:255'
+        'description' => 'required|max:255',
+        'visible' => 'boolean'
     ];
 
     /*

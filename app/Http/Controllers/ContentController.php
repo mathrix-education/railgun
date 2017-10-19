@@ -246,11 +246,13 @@ class ContentController extends BaseController
         // Videos
         $videos = Activity::where('visible', true)
             ->whereHas('modules', function (Builder $q) use ($query) {
-                return $q->where('type', '=', 'video')
+                return $q->where('type', '=', 'course')
+                    ->where('content', 'LIKE', '%[video]%')
                     ->where('name', 'LIKE', '%' . $query . '%');
             })
             ->with(['modules' => function(BelongsToMany $q) use($query) {
-                return $q->where('type', '=', 'video')
+                return $q->where('type', '=', 'course')
+                    ->where('content', 'LIKE', '%[video]%')
                     ->where('name', 'LIKE', '%' . $query . '%');
             }])
             ->limit($perPage)

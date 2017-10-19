@@ -15,6 +15,7 @@ $factory->define(Notion::class, function (Generator $faker) {
     return [
         'name' => $name,
         'slug' => str_slug($name),
-        'chapter_id' => Chapter::inRandomOrder()->firstOrFail()->id
+        'chapter_id' => Chapter::inRandomOrder()->firstOrFail()->id,
+        'visible' => $faker->boolean(95)
     ];
 });

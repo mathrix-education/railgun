@@ -5,6 +5,7 @@
  * @apiParam (Data) {string} [name_short=name] The country short name
  * @apiParam (Data) {string} [slug=slug(name)] The country slug
  * @apiParam (Data) {string} [slug_short=slug(name_short)] The country short slug
+ * @apiParam (Data) {bool} visible The country visibility
  */
 /**
  * @apiDefine CountryArray
@@ -14,6 +15,7 @@
  * @apiSuccess {string} countries.name_short The country short name
  * @apiSuccess {string} countries.slug The country slug
  * @apiSuccess {string} countries.slug_short The country short slug
+ * @apiSuccess {bool} countries.visible The country visibility
  */
 /**
  * @apiDefine Country
@@ -22,4 +24,5 @@
  * @apiSuccess {string} name_short The country short name
  * @apiSuccess {string} slug The country slug
  * @apiSuccess {string} slug_short The country short slug
+ * @apiSuccess {bool} visible The country visibility
  */

@@ -4,6 +4,7 @@
  * @apiParam (Data) {string} name The activity name
  * @apiParam (Data) {string} [slug=slug(name)] The activity slug
  * @apiParam (Data) {string} description The activity description
+ * @apiParam (Data) {bool} visible The activity visibility
  * @apiParam (Data) {array} link The models to link with the notion
  * @apiParam (Data) {int[]} link.modules The modules ids to link
  * @apiParam (Data) {int[]} link.notions The notions ids to link
@@ -18,6 +19,7 @@
  * @apiSuccess {string} activities.name The activity name
  * @apiSuccess {string} activities.slug The activity slug
  * @apiSuccess {string} activities.description The activity description
+ * @apiSuccess {bool} activities.visible The activity visibility
  */
 /**
  * @apiDefine Activity
@@ -25,4 +27,5 @@
  * @apiSuccess {string} name The activity name
  * @apiSuccess {string} slug The activity slug
  * @apiSuccess {string} description The activity description
+ * @apiSuccess {bool} visible The activity visibility
  */

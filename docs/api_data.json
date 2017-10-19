@@ -215,6 +215,13 @@
             "optional": false,
             "field": "activities.description",
             "description": "<p>The activity description</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "activities.visible",
+            "description": "<p>The activity visibility</p>"
           }
         ]
       }
@@ -295,6 +302,13 @@
           },
           {
             "group": "Data",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The activity visibility</p>"
+          },
+          {
+            "group": "Data",
             "type": "array",
             "optional": false,
             "field": "link",
@@ -368,6 +382,13 @@
             "optional": false,
             "field": "description",
             "description": "<p>The activity description</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The activity visibility</p>"
           }
         ]
       }
@@ -406,7 +427,7 @@
     "title": "Delete",
     "group": "Activities",
     "name": "ActivityDelete",
-    "description": "<p>Delete a activity</p>",
+    "description": "<p>Delete an activity</p>",
     "permission": [
       {
         "name": "moderator"
@@ -468,7 +489,7 @@
     "title": "Edit",
     "group": "Activities",
     "name": "ActivityEdit",
-    "description": "<p>Edit a activity</p>",
+    "description": "<p>Edit an activity</p>",
     "permission": [
       {
         "name": "moderator"
@@ -507,6 +528,13 @@
             "optional": false,
             "field": "description",
             "description": "<p>The activity description</p>"
+          },
+          {
+            "group": "Data",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The activity visibility</p>"
           },
           {
             "group": "Data",
@@ -598,6 +626,13 @@
             "optional": false,
             "field": "description",
             "description": "<p>The activity description</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The activity visibility</p>"
           }
         ]
       }
@@ -644,7 +679,7 @@
     "title": "Get",
     "group": "Activities",
     "name": "ActivityGet",
-    "description": "<p>Get a activity by id</p>",
+    "description": "<p>Get an activity by id</p>",
     "permission": [
       {
         "name": "public"
@@ -695,6 +730,13 @@
             "optional": false,
             "field": "description",
             "description": "<p>The activity description</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The activity visibility</p>"
           }
         ]
       }
@@ -719,7 +761,7 @@
     "title": "Mark",
     "group": "Activities",
     "name": "ActivityMark",
-    "description": "<p>Mark activity as favorite or set its status completed or to_revise</p>",
+    "description": "<p>Mark an activity as favorite or set its status completed or to_revise</p>",
     "permission": [
       {
         "name": "registered"
@@ -1686,6 +1728,13 @@
             "optional": false,
             "field": "discipline_id",
             "description": "<p>The chapter discipline id</p>"
+          },
+          {
+            "group": "Data",
+            "type": "bool",
+            "optional": false,
+            "field": "chapters.visible",
+            "description": "<p>The chapter visibility</p>"
           }
         ]
       }
@@ -1727,6 +1776,13 @@
             "optional": false,
             "field": "discipline_id",
             "description": "<p>The chapter discipline id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The chapter visibility</p>"
           }
         ]
       }
@@ -1873,6 +1929,13 @@
             "optional": false,
             "field": "discipline_id",
             "description": "<p>The chapter discipline id</p>"
+          },
+          {
+            "group": "Data",
+            "type": "bool",
+            "optional": false,
+            "field": "chapters.visible",
+            "description": "<p>The chapter visibility</p>"
           }
         ]
       }
@@ -1929,6 +1992,13 @@
             "optional": false,
             "field": "discipline_id",
             "description": "<p>The chapter discipline id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The chapter visibility</p>"
           }
         ]
       }
@@ -2033,6 +2103,13 @@
             "optional": false,
             "field": "discipline_id",
             "description": "<p>The chapter discipline id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The chapter visibility</p>"
           }
         ]
       }
@@ -2109,6 +2186,13 @@
             "optional": false,
             "field": "chapters.discipline_id",
             "description": "<p>The chapter discipline id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "chapters.visible",
+            "description": "<p>The chapter visibility</p>"
           }
         ]
       }
@@ -2198,6 +2282,13 @@
           },
           {
             "group": "Data",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The chapter visibility</p>"
+          },
+          {
+            "group": "Data",
             "type": "int",
             "optional": false,
             "field": "country_id",
@@ -2271,6 +2362,13 @@
             "optional": false,
             "field": "slug_short",
             "description": "<p>The class short slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The class visibility</p>"
           },
           {
             "group": "Success 200",
@@ -2429,6 +2527,13 @@
           },
           {
             "group": "Data",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The chapter visibility</p>"
+          },
+          {
+            "group": "Data",
             "type": "int",
             "optional": false,
             "field": "country_id",
@@ -2517,6 +2622,13 @@
             "optional": false,
             "field": "slug_short",
             "description": "<p>The class short slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The class visibility</p>"
           },
           {
             "group": "Success 200",
@@ -2631,6 +2743,13 @@
           },
           {
             "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The class visibility</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "string",
             "optional": false,
             "field": "country_id",
@@ -2711,6 +2830,13 @@
             "optional": false,
             "field": "classes.slug_short",
             "description": "<p>The class short slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "classes.visible",
+            "description": "<p>The chapter visibility</p>"
           },
           {
             "group": "Success 200",
@@ -4085,6 +4211,18 @@
           }
         ]
       }
+    },
+    "error": {
+      "fields": {
+        "Error 400": [
+          {
+            "group": "Error 400",
+            "optional": false,
+            "field": "invalid_request",
+            "description": "<p>page and perPage have to be strictly positive</p>"
+          }
+        ]
+      }
     }
   },
   {
@@ -4193,6 +4331,13 @@
             "optional": false,
             "field": "countries.slug_short",
             "description": "<p>The country short slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "countries.visible",
+            "description": "<p>The country visibility</p>"
           }
         ]
       }
@@ -5123,6 +5268,13 @@
             "optional": false,
             "field": "countries.slug_short",
             "description": "<p>The country short slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "countries.visible",
+            "description": "<p>The country visibility</p>"
           }
         ]
       }
@@ -5201,6 +5353,13 @@
             "field": "slug_short",
             "defaultValue": "slug(name_short)",
             "description": "<p>The country short slug</p>"
+          },
+          {
+            "group": "Data",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The country visibility</p>"
           }
         ]
       }
@@ -5242,6 +5401,13 @@
             "optional": false,
             "field": "slug_short",
             "description": "<p>The country short slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The country visibility</p>"
           }
         ]
       }
@@ -5390,6 +5556,13 @@
             "field": "slug_short",
             "defaultValue": "slug(name_short)",
             "description": "<p>The country short slug</p>"
+          },
+          {
+            "group": "Data",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The country visibility</p>"
           }
         ]
       }
@@ -5446,6 +5619,13 @@
             "optional": false,
             "field": "slug_short",
             "description": "<p>The country short slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The country visibility</p>"
           }
         ]
       }
@@ -5550,6 +5730,13 @@
             "optional": false,
             "field": "slug_short",
             "description": "<p>The country short slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The country visibility</p>"
           }
         ]
       }
@@ -6842,6 +7029,13 @@
           },
           {
             "group": "Data",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The module visibility</p>"
+          },
+          {
+            "group": "Data",
             "type": "mixed",
             "optional": false,
             "field": "options",
@@ -6962,10 +7156,17 @@
           },
           {
             "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The module visibility</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "options",
-            "description": "<p>The modules options</p>"
+            "description": "<p>The module options</p>"
           },
           {
             "group": "Success 200",
@@ -7159,6 +7360,13 @@
           },
           {
             "group": "Data",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The module visibility</p>"
+          },
+          {
+            "group": "Data",
             "type": "mixed",
             "optional": false,
             "field": "options",
@@ -7294,10 +7502,17 @@
           },
           {
             "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The module visibility</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "options",
-            "description": "<p>The modules options</p>"
+            "description": "<p>The module options</p>"
           },
           {
             "group": "Success 200",
@@ -7449,10 +7664,17 @@
           },
           {
             "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The module visibility</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "options",
-            "description": "<p>The modules options</p>"
+            "description": "<p>The module options</p>"
           },
           {
             "group": "Success 200",
@@ -7757,10 +7979,17 @@
           },
           {
             "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "modules.visible",
+            "description": "<p>The module visibility</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "mixed",
             "optional": false,
             "field": "modules.options",
-            "description": "<p>The modules options</p>"
+            "description": "<p>The module options</p>"
           },
           {
             "group": "Success 200",
@@ -7841,6 +8070,13 @@
           },
           {
             "group": "Data",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The notion visibility</p>"
+          },
+          {
+            "group": "Data",
             "type": "int",
             "optional": false,
             "field": "chapter_id",
@@ -7900,6 +8136,13 @@
             "optional": false,
             "field": "slug",
             "description": "<p>The notion slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The notion visibility</p>"
           },
           {
             "group": "Success 200",
@@ -8042,6 +8285,13 @@
           },
           {
             "group": "Data",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The notion visibility</p>"
+          },
+          {
+            "group": "Data",
             "type": "int",
             "optional": false,
             "field": "chapter_id",
@@ -8116,6 +8366,13 @@
             "optional": false,
             "field": "slug",
             "description": "<p>The notion slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The notion visibility</p>"
           },
           {
             "group": "Success 200",
@@ -8216,6 +8473,13 @@
           },
           {
             "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "visible",
+            "description": "<p>The notion visibility</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "int",
             "optional": false,
             "field": "chapter_id",
@@ -8282,6 +8546,13 @@
             "optional": false,
             "field": "notions.slug",
             "description": "<p>The notion slug</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "notions.visible",
+            "description": "<p>The notion visibility</p>"
           },
           {
             "group": "Success 200",
