@@ -10,13 +10,13 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
-/** @var Router $router */
 
+/** @var Router $router */
 use Laravel\Lumen\Routing\Router;
 
 $router->get('/', function () use ($router) {
     return response()->json([
-        'message' => 'Welcome to Mathrix API version 1.0.0'
+        'message' => 'Welcome to Mathrix API version 0.8.1 by Mathieu Bour'
     ], 418);
 });
 
