@@ -4,7 +4,7 @@
 Written by Mathieu Bour and Dimitri Bret for Mathrix.
 
 - [Documentation](https://docs.institut.mathrix.fr)
-- [Code conventions](md/conventions.md)
+- [Code conventions](docs/md/conventions.md)
 
 
 ### Installation

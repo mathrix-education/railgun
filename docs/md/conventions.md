@@ -2,9 +2,7 @@
 
 ## PHP
 
-### PHPDoc
-
-#### Class header
+### Class header
 
 ```
 /**
