@@ -12,6 +12,7 @@
 @endstory
 
 @task('deploy')
+    echo 'Setting vars'
     @php
         $app_dir = '/var/www/' . $branch . '/api';
         $releases_dir = $app_dir . '/releases';
@@ -30,6 +31,7 @@
     composer install --prefer-dist --no-scripts -q -o
 
     echo 'Linking storage directory'
+    [ -d {{ $shared_dir }} || mkdir {{ $shared_dir }} ]
     [ -d {{ $shared_dir }}/storage ] || cp -r {{ $new_release_dir }}/storage {{ $shared_dir }}/storage
     rm -rf {{ $new_release_dir }}/storage
     ln -nfs {{ $shared_dir }}/storage {{ $new_release_dir }}/storage
