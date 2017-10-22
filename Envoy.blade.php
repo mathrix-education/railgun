@@ -1,26 +1,35 @@
-@servers(['web' => 'mathrix_dev@82.165.68.94'])
+@servers(['dev' => 'mathrix_dev@82.165.68.94'])
 
 @setup
     $repository = 'git@gitlab.com:mathrix/mathrix-api.git';
 @endsetup
 
+@story('deploy_dev', ['on' => 'dev'])
+    init_dev
+    deploy
+@endstory
+
+@task('init_dev')
+    @php
+        $branch = 'dev';
+        $app_dir = '/var/www/dev/api';
+        $releases_dir = $app_dir . '/releases';
+        $shared_dir = $app_dir . '/shared';
+        $release = date('Y-m-d_H-i-s');
+        $new_release_dir = $releases_dir .'/'. $release;
+    @endphp
+@endtask
+
 @task('deploy')
-    $app_dir = '/var/www/dev/api';
-    $releases_dir = $app_dir . '/releases';
-    $shared_dir = $app_dir . '/shared';
-
-    $release = date('Y-m-d_H-i-s');
-    $new_release_dir = $releases_dir .'/'. $release;
-
-    echo 'Cloning repository'
+    echo 'Cloning {{ $repository }}'
     [ -d {{ $releases_dir }} ] || mkdir {{ $releases_dir }}
-    git clone --depth 1 {{ $repository }} {{ $new_release_dir }} --branch dev
+    git clone --depth 1 {{ $repository }} {{ $new_release_dir }} --branch {{ $branch }}
 
-    echo "Starting deployment ({{ $release }})"
+    echo 'Starting deployment of {{ $release }}'
     cd {{ $new_release_dir }}
     composer install --prefer-dist --no-scripts -q -o
 
-    echo "Linking storage directory"
+    echo 'Linking storage directory'
     rm -rf {{ $new_release_dir }}/storage
     ln -nfs {{ $shared_dir }}/storage {{ $new_release_dir }}/storage
 
