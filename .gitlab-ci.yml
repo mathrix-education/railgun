@@ -31,6 +31,6 @@ deploy_dev:
     - ssh-add <(echo "$DEV_SSH_PRIVATE_KEY")
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - ~/.composer/vendor/bin/envoy run deploy
+    - ~/.composer/vendor/bin/envoy run deploy_dev
   only:
     - dev
