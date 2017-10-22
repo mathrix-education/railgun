@@ -5,36 +5,34 @@
 @endsetup
 
 @story('deploy_dev', ['on' => 'dev'])
-    init_dev
+    @php
+        $branch = 'dev';
+    @endphp
     deploy
 @endstory
 
-@task('init_dev')
+@task('deploy')
     @php
-        $branch = 'dev';
-        $app_dir = '/var/www/dev/api';
+        $app_dir = '/var/www/' . $branch . '/api';
         $releases_dir = $app_dir . '/releases';
         $shared_dir = $app_dir . '/shared';
         $release = date('Y-m-d_H-i-s');
         $new_release_dir = $releases_dir .'/'. $release;
     @endphp
-@endtask
 
-@task('deploy')
     echo 'Cloning {{ $repository }}'
     [ -d {{ $releases_dir }} ] || mkdir {{ $releases_dir }}
     git clone --depth 1 {{ $repository }} {{ $new_release_dir }} --branch {{ $branch }}
 
     echo 'Starting deployment of {{ $release }}'
+    cp {{ $new_release_dir }}/storage/env/.env.dev {{ $new_release_dir }}/.env
     cd {{ $new_release_dir }}
     composer install --prefer-dist --no-scripts -q -o
 
     echo 'Linking storage directory'
+    [ -d {{ $shared_dir }}/storage ] || cp -r {{ $new_release_dir }}/storage {{ $shared_dir }}/storage
     rm -rf {{ $new_release_dir }}/storage
     ln -nfs {{ $shared_dir }}/storage {{ $new_release_dir }}/storage
-
-    echo 'Linking .env file'
-    ln -nfs {{ $app_dir }}/.env {{ $new_release_dir }}/.env
 
     echo 'Linking current release'
     ln -nfs {{ $new_release_dir }} {{ $app_dir }}/current
