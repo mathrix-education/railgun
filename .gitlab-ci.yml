@@ -1,18 +1,17 @@
 image: edbizarro/gitlab-ci-pipeline-php:7.1-alpine
 
-services:
-  - mysql:latest
-
-variables:
-  MYSQL_DATABASE: mathrix_fr_pipelines
-  MYSQL_ROOT_PASSWORD: d3SnA4cBxckvHbyNXhAG
-
 stages:
   - test
   - deploy
 
-test:
+tests:
   stage: test
+  services:
+    - mysql:latest
+
+  variables:
+    MYSQL_DATABASE: mathrix_fr_pipelines
+    MYSQL_ROOT_PASSWORD: d3SnA4cBxckvHbyNXhAG
   script:
     # Setup project files
     - cp storage/env/.env.pipelines .env
