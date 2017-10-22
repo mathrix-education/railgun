@@ -1,4 +1,4 @@
-@servers(['web' => 'api_mathrix_fr_dev@51.255.174.100'])
+@servers(['web' => 'mathrix_dev@82.165.68.94'])
 
 @setup
     $repository = 'git@gitlab.com:mathrix/mathrix-api.git';
