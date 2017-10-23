@@ -1,7 +1,0 @@
-dev:
-    scheme: sftp
-    host: mathieu-bour.fr
-    port: 22
-    user: api_mathrix_fr_dev
-    pass: ndRxb8bZfrbM2adCST2X
-    check: true
