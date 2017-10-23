@@ -8,7 +8,6 @@ tests:
   stage: test
   services:
     - mysql:latest
-
   variables:
     MYSQL_DATABASE: mathrix_fr_pipelines
     MYSQL_ROOT_PASSWORD: d3SnA4cBxckvHbyNXhAG
@@ -20,7 +19,6 @@ tests:
     # Setup project database
     - ./vendor/phpunit/phpunit/phpunit -v --stderr
 
-
 deploy_dev:
   stage: deploy
   script:
@@ -29,7 +27,6 @@ deploy_dev:
     - eval $(ssh-agent -s)
     - ssh-add <(echo "$DEV_SSH_PRIVATE_KEY")
     - mkdir -p ~/.ssh
-    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - ~/.composer/vendor/bin/envoy run deploy_dev
   only:
     - dev
