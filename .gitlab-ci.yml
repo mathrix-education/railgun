@@ -3,7 +3,7 @@ stages:
   - deploy
 
 tests:
-  image: image: edbizarro/gitlab-ci-pipeline-php:7.1-alpine
+  image: edbizarro/gitlab-ci-pipeline-php:7.1-alpine
   stage: test
   services:
     - mysql:latest
