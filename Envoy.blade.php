@@ -45,8 +45,7 @@
     ln -nfs {{ $shared_dir }}/storage {{ $new_release_dir }}/storage
 
     echo 'Linking current release'
-    ln -nfs {{ $new_release_dir }} {{ $app_dir }}/current
-@endtask
+    ln -nfs {{ $new_release_dir }} {{ $app_dir }}/current @endtask
 
 
 @task('migrate')
