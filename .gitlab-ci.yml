@@ -21,12 +21,18 @@ tests:
 
 deploy_dev:
   stage: deploy
+  environment:
+    name: dev
+    url: https://dev.api.mathrix.fr
   script:
+    # Install envoy
     - composer global require laravel/envoy
+    # Setup SSH key
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)
     - ssh-add <(echo "$DEV_SSH_PRIVATE_KEY")
     - mkdir -p ~/.ssh
+    # Run envoy task
     - ~/.composer/vendor/bin/envoy run deploy_dev
   only:
     - dev
