@@ -14,8 +14,8 @@ tests:
     # Setup project files
     - cp storage/env/.env.pipelines .env
     - composer install --prefer-dist -q -o
-    #- php artisan migrate:refresh --seed
-    - sudo apt-get -yqq update && sudo apt-get install -yqq mysql-client
+    #- php artisan migrate:refresh --seed # We don't use artisan seeder anymore as MySQL import is much faster
+    - sudo apt-get -yqq update && sudo apt-get -yqq install mysql-client
     - mysql -u root -p$MYSQL_ROOT_PASSWORD -h mysql $MYSQL_DATABASE < storage/preseed/dev.sql
     # Setup project database
     - ./vendor/phpunit/phpunit/phpunit -v --stderr
