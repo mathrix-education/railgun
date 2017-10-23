@@ -2,6 +2,7 @@
 
 @setup
     $repository = 'git@gitlab.com:mathrix/mathrix-api.git';
+    $release = date('Y-m-d_H-i-s');
 @endsetup
 
 @story('deploy_dev', ['on' => 'dev'])
@@ -25,7 +26,6 @@
         $app_dir = '/var/www/' . $branch . '/api';
         $releases_dir = $app_dir . '/releases';
         $shared_dir = $app_dir . '/shared';
-        $release = date('Y-m-d_H-i-s');
         $new_release_dir = $releases_dir .'/'. $release;
     @endphp
 
@@ -45,7 +45,11 @@
     ln -nfs {{ $shared_dir }}/storage {{ $new_release_dir }}/storage
 
     echo 'Linking current release'
-    ln -nfs {{ $new_release_dir }} {{ $app_dir }}/current @endtask
+    ln -nfs {{ $new_release_dir }} {{ $app_dir }}/current
+
+    echo 'Done'
+    exit 0
+@endtask
 
 
 @task('migrate')
