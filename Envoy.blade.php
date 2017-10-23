@@ -43,9 +43,6 @@
     [ -d {{ $shared_dir }}/storage ] || cp -r {{ $new_release_dir }}/storage {{ $shared_dir }}/storage
     rm -rf {{ $new_release_dir }}/storage
     ln -nfs {{ $shared_dir }}/storage {{ $new_release_dir }}/storage
-
-    echo 'Linking current release'
-    ln -nfs {{ $new_release_dir }} {{ $app_dir }}/current
 @endtask
 
 
