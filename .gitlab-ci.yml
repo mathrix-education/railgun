@@ -35,4 +35,4 @@ deploy_dev:
     # Run envoy task
     - ~/.composer/vendor/bin/envoy run deploy_dev
   only:
-    - dev
+    - dev@mathrix-api/mathrix
