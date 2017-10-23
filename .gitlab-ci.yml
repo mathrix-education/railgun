@@ -29,9 +29,11 @@ deploy_dev:
     - composer global require laravel/envoy
     # Setup SSH key
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - chmod 0600 storage/ssh/*
     - eval $(ssh-agent -s)
-    - ssh-add <(echo "$DEV_SSH_PRIVATE_KEY")
+    - ssh-add storage/ssh/dev_id_rsa
     - mkdir -p ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     # Run envoy task
     - ~/.composer/vendor/bin/envoy run deploy_dev
   only:
