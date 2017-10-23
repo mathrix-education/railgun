@@ -1,10 +1,9 @@
-image: edbizarro/gitlab-ci-pipeline-php:7.1-alpine
-
 stages:
   - test
   - deploy
 
 tests:
+  image: image: edbizarro/gitlab-ci-pipeline-php:7.1-alpine
   stage: test
   services:
     - mysql:latest
@@ -15,11 +14,13 @@ tests:
     # Setup project files
     - cp storage/env/.env.pipelines .env
     - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
-    - php artisan migrate:refresh --seed
+    #- php artisan migrate:refresh --seed
+    - mysql -u root -p$MYSQL_ROOT_PASSWORD -h mysql $MYSQL_DATABASE < storage/preseed/dev.sql
     # Setup project database
     - ./vendor/phpunit/phpunit/phpunit -v --stderr
 
 deploy_dev:
+  image: mcuyar/docker-envoy
   stage: deploy
   environment:
     name: dev
