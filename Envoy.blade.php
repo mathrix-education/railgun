@@ -58,6 +58,7 @@
     @endphp
     cd {{ $current }}
     php artisan migrate
+    exit 0
 @endtask
 
 @task('seed')
@@ -66,6 +67,7 @@
     @endphp
     cd {{ $current }}
     php artisan db:seed
+    exit 0
 @endtask
 
 @task('reseed')
@@ -74,4 +76,5 @@
     @endphp
     cd {{ $current }}
     php artisan migrate:refresh --seed
+    exit 0
 @endtask
