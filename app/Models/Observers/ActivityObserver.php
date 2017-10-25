@@ -53,7 +53,7 @@ class ActivityObserver extends BaseObserver
             unset($activity->unlink['notions']);
         }
 
-        return parent::saving($activity);
+        return true;
     }
 
 

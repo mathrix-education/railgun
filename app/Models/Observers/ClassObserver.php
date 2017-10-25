@@ -72,6 +72,6 @@ class ClassObserver extends BaseObserver
             unset($class->unlink['disciplines']);
         }
 
-        return parent::saving($class);
+        return true;
     }
 }

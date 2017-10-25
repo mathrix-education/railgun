@@ -37,7 +37,7 @@ class PostObserver extends BaseObserver
             $post->slug = str_slug($post->title);
         }
 
-        return parent::saving($post);
+        return true;
     }
 
 

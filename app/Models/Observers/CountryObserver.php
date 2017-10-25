@@ -43,6 +43,6 @@ class CountryObserver extends BaseObserver
             $country->slug_short = str_slug($country->name_short);
         }
 
-        return parent::saving($country);
+        return true;
     }
 }

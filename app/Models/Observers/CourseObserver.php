@@ -36,6 +36,6 @@ class CourseObserver extends BaseObserver
             $course->slug = str_slug($course->title);
         }
 
-        return parent::saving($course);
+        return true;
     }
 }

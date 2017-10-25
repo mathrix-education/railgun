@@ -59,7 +59,7 @@ class NotionObserver extends BaseObserver
             unset($notion->unlink['activities']);
         }
 
-        return parent::saving($notion);
+        return true;
     }
 
 
