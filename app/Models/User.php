@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -38,6 +39,8 @@ use Laravel\Passport\Token;
  * @property string|null $card_brand
  * @property string|null $card_last_four
  * @property string|null $trial_ends_at
+ * @property-read bool $premium
+ * @property-read int $daily_points
  * @property-read Class_ $class_
  * @property-read Collection|Client[] $clients
  * @property-read Collection|Comment[] $comments
@@ -96,11 +99,11 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     ];
 
     /** @var array The virtual attributes */
-    protected $appends = ['premium'];
+    protected $appends = ['premium', 'daily_points'];
 
 
     /**
-     * Premium attributes
+     * premium attribute
      * @return bool
      */
     public function getPremiumAttribute()
@@ -108,8 +111,31 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         return $this->subscribed('premium');
     }
 
-    /*
-    |--------------------------------------------------------------------------
+
+    /**
+     * daily_points attribute
+     * @return int
+     */
+    public function getDailyPointsAttribute()
+    {
+        $logs = Log::where([
+            ['event_type', '=', 'user_gathered_points'],
+            ['user_id', '=', $this->id],
+            ['created_at', 'between', [Carbon::now()->setTime(0, 0, 0), Carbon::now()]]
+        ]);
+
+        $sum = 0;
+
+        /** @var Log $log */
+        foreach ($logs as $log) {
+            $sum += $log->value['points'];
+        }
+
+        return $sum;
+    }
+
+
+    /*_-----------------------------------------------------------
     | Passport
     |--------------------------------------------------------------------------
     */
