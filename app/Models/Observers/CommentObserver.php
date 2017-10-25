@@ -26,7 +26,7 @@ class CommentObserver extends BaseObserver
             }
         }
 
-        return parent::saving($comment);
+        return true;
     }
 
 

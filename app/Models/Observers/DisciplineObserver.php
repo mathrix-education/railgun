@@ -32,6 +32,6 @@ class DisciplineObserver extends BaseObserver
             $discipline->slug = str_slug($discipline->name);
         }
 
-        return parent::saving($discipline);
+        return true;
     }
 }

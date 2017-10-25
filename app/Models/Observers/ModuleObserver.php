@@ -59,7 +59,7 @@ class ModuleObserver extends BaseObserver
             unset($module->unlink['activities']);
         }
 
-        return parent::saving($module);
+        return true;
     }
 
 

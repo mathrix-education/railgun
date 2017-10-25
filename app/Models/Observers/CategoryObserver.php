@@ -32,7 +32,7 @@ class CategoryObserver extends BaseObserver
             $category->slug = str_slug($category->name);
         }
 
-        return parent::saving($category);
+        return true;
     }
 
 }

@@ -2,6 +2,8 @@
 
 namespace App\Models\Observers;
 
+use App\Exceptions\Http422ModelSaveException;
+use App\Exceptions\Http422ModelValidationException;
 use App\Models\Level;
 use App\Models\Log;
 use App\Models\User;
@@ -77,12 +79,15 @@ class UserObserver extends BaseObserver
             }
         }
 
-        return parent::saving($user);
+        return true;
     }
 
 
     /**
      * @param User $user
+     *
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
      */
     public function created($user)
     {
@@ -92,6 +97,9 @@ class UserObserver extends BaseObserver
 
     /**
      * @param User $user
+     *
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
      */
     public function updated($user)
     {

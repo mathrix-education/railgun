@@ -20,6 +20,13 @@
     seed
 @endstory
 
+@story('reseed_dev', ['on' => 'dev'])
+    @php
+        $branch = 'dev';
+    @endphp
+    reseed
+@endstory
+
 @task('deploy')
     echo 'Setting up vars'
     @php

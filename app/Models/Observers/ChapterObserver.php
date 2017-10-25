@@ -2,6 +2,7 @@
 
 namespace App\Models\Observers;
 
+use App\Exceptions\Http422ModelSaveException;
 use App\Models\Chapter;
 
 /**
@@ -32,7 +33,7 @@ class ChapterObserver extends BaseObserver
             $chapter->slug = str_slug($chapter->name);
         }
 
-        return parent::saving($chapter);
+        return true;
     }
 
 
@@ -42,6 +43,8 @@ class ChapterObserver extends BaseObserver
      * @param Chapter $chapter
      *
      * @return bool
+     * @throws Http422ModelSaveException
+     * @throws \Exception
      */
     public function deleting($chapter)
     {
