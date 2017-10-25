@@ -9,11 +9,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class AuthTest
- * Test auth actions
  *
- * @author Mathrix Team
+ * @author Mathrix Back-End Team
  * @package Tests
- * @since 1.0.0
+ * @since 0.8.1
+ * @copyright Mathrix
  */
 class AuthTest extends BaseTestCase
 {

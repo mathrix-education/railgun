@@ -47,20 +47,7 @@ class UserObserver extends BaseObserver
             | Trigger the daily_achievements incrementation
             |--------------------------------------------------------------------------
             */
-            $sum = $pointsAdded;
-            $logs = Log::where([
-                ['user_id', '=', $user->id],
-                ['event', '=', 'user_gathered_points']
-
-            ])
-                ->whereBetween('created_at', [Carbon::now()->setTime(0, 0, 0), Carbon::now()]);
-
-            /** @var Log $log */
-            foreach ($logs as $log) {
-                $sum += $log->value['points'];
-            }
-
-            if ($sum >= $user->daily) {
+            if ($user->daily_points + $pointsAdded >= $user->daily) {
                 $user->daily_achievements++;
             }
 
