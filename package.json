@@ -1,6 +1,6 @@
 {
   "name": "mathrix-api",
-  "version": "0.9a-1",
+  "version": "0.8.1",
   "description": "[![pipeline status](https://gitlab.com/mathrix/mathrix-api/badges/master/pipeline.svg)](https://gitlab.com/mathrix/mathrix-api/commits/master)",
   "main": "gulpfile.js",
   "directories": {
