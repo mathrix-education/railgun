@@ -3,6 +3,7 @@ namespace App\Models;
 
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator as ValidatorFacade;
@@ -12,6 +13,7 @@ use Illuminate\Validation\Validator;
  * Class BaseModel
  * Base for all models, implement validation on save useless manual disable
  *
+ * @mixin Builder
  * @package App\Models
  */
 abstract class BaseModel extends Model
