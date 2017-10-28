@@ -1,8 +1,9 @@
 <?php
 /**
  * @apiDefine MetaData
- * @apiParam (Data) {bool} [favorite=false] If the activity is a favorite
- * @apiParam (Data) {string=completed,to_revise,null} [status=null] If the activity is a favorite
+ * @apiParam (Data) {bool} [favorite=false] The meta favorite
+ * @apiParam (Data) {string=completed,to_revise,null} [status=null] The meta status
+ * @apiParam (Data) {int} user_id The meta user id
  * @apiParam (Data) {int} country_id The meta country_id
  * @apiParam (Data) {int} class_id_id The meta class_id_id
  * @apiParam (Data) {int} discipline_id The meta discipline_id
@@ -14,8 +15,9 @@
  * @apiDefine MetaArray
  * @apiSuccess {Meta[]} metas Array of metas
  * @apiSuccess {int} metas.id The meta id
- * @apiSuccess {bool} metas.favorite If the activity is a favorite
+ * @apiSuccess {bool} metas.favorite The meta favorite
  * @apiSuccess {string=completed,to_revise,null} metas.status The meta status
+ * @apiSuccess {int} metas.user_id The meta user id
  * @apiSuccess {int} metas.country_id The meta country_id
  * @apiSuccess {int} metas.class_id_id The meta class_id_id
  * @apiSuccess {int} metas.discipline_id The meta discipline_id
@@ -32,8 +34,9 @@
 /**
  * @apiDefine Meta
  * @apiSuccess {int} id The meta id
- * @apiSuccess {bool} favorite If the activity is a favorite
+ * @apiSuccess {bool} favorite The meta favorite
  * @apiSuccess {string=completed,to_revise,null} status The meta status
+ * @apiSuccess {int} user_id The meta user id
  * @apiSuccess {int} country_id The meta country_id
  * @apiSuccess {int} class_id_id The meta class_id_id
  * @apiSuccess {int} discipline_id The meta discipline_id

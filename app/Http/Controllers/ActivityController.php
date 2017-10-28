@@ -9,8 +9,6 @@ use App\Models\Meta;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-
-
 /**
  * Class ActivityController
  *
@@ -112,16 +110,17 @@ class ActivityController extends BaseController
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
      */
-    public function favorites(Request $request)
+    public function favorites(Request $request): JsonResponse
     {
         $user = $this->getUserByRequestOrUnauthorized($request);
 
-        $metas = Meta::with(['country', 'class_', 'discipline', 'notion', 'activity'])
+        $metas = Meta::with(['country', 'class_', 'discipline', 'chapter', 'notion', 'activity'])
             ->where([
                 ['user_id', $user->id],
                 ['favorite', true]
             ])
             ->get();
+
         return response()->json($metas);
     }
 
@@ -150,7 +149,7 @@ class ActivityController extends BaseController
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      */
-    public function mark(Request $request, int $id)
+    public function mark(Request $request, int $id): JsonResponse
     {
         $user = $this->getUserByRequestOrUnauthorized($request);
 
