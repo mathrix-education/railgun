@@ -55,6 +55,9 @@
     echo 'Generating docs'
     apidoc -i app/ -o docs/ --silent
 
+    echo 'Generating emails'
+    gulp mjml
+
     echo 'Linking storage directory'
     [ -d {{ $shared_dir }} ] || mkdir {{ $shared_dir }}
     [ -d {{ $shared_dir }}/storage ] || cp -r {{ $new_release_dir }}/storage {{ $shared_dir }}/storage
