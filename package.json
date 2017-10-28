@@ -20,14 +20,12 @@
     "url": "https://gitlab.com/mathrix/mathrix-api/issues"
   },
   "homepage": "https://gitlab.com/mathrix/mathrix-api#README",
-  "devDependencies": {
+  "dependencies": {
     "gulp": "^3.9.1",
     "gulp-apidoc": "^0.2.6",
     "gulp-ext-replace": "^0.3.0",
     "gulp-livereload": "^3.8.1",
-    "gulp-rename": "^1.2.2"
-  },
-  "dependencies": {
+    "gulp-rename": "^1.2.2",
     "gulp-mjml": "^2.3.0"
   }
 }
