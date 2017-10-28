@@ -3,6 +3,8 @@ _ide_helper.php
 .phpstorm.meta.php
 
 /.idea
+/docs
+!/docs/md
 /node_modules
 /resources/views/emails/**/*.html
 /vendor
