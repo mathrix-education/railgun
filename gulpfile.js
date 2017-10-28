@@ -4,7 +4,6 @@
 |--------------------------------------------------------------------------
 */
 const gulp = require('gulp');
-const apidoc = require('gulp-apidoc');
 const mjml = require('gulp-mjml');
 const extReplace = require('gulp-ext-replace');
 const livereload = require('gulp-livereload');
@@ -20,20 +19,6 @@ const mjmlSelector = [
     '!resources/views/emails/common/*.blade.mjml'
 ];
 const mjmlOptions = {base: 'resources/views/emails/'};
-
-/*
-|--------------------------------------------------------------------------
-| apidoc: Generate the REST API documentation
-|--------------------------------------------------------------------------
-*/
-gulp.task('apidoc', function (done) {
-    apidoc({
-        src: "app/",
-        dest: "docs/",
-        silent: true
-    }, done);
-});
-
 
 /*
 |--------------------------------------------------------------------------

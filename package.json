@@ -25,7 +25,9 @@
     "gulp-apidoc": "^0.2.6",
     "gulp-ext-replace": "^0.3.0",
     "gulp-livereload": "^3.8.1",
-    "gulp-mjml": "^2.2.0",
     "gulp-rename": "^1.2.2"
+  },
+  "dependencies": {
+    "gulp-mjml": "^2.3.0"
   }
 }
