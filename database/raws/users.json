@@ -32,5 +32,22 @@
       "email_comment": true
     },
     "class_id": null
+  },
+  {
+    "username": "unit-test",
+    "email": "unit-test@mathrix.fr",
+    "firstname": "Unit",
+    "lastname": "Test",
+    "password": "test",
+    "type": "admin",
+    "token": "db6c58ee-6f5f-45ea-8453-5a961f1c339c",
+    "points": 0,
+    "settings": {
+      "daily_goal": 0,
+      "sound": true,
+      "email_newsletter": true,
+      "email_comment": true
+    },
+    "class_id": null
   }
 ]
