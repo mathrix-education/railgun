@@ -5,6 +5,7 @@
     $release = date('Y-m-d_H-i-s');
 @endsetup
 
+
 @story('deploy_dev', ['on' => 'dev'])
     @php
         $branch = 'dev';
@@ -27,6 +28,7 @@
     reseed
 @endstory
 
+
 @task('deploy')
     echo 'Setting up vars'
     @php
@@ -43,7 +45,12 @@
     echo 'Starting deployment of {{ $release }}'
     cp {{ $new_release_dir }}/storage/env/.env.dev {{ $new_release_dir }}/.env
     cd {{ $new_release_dir }}
+
+    echo 'Running composer'
     composer install --prefer-dist --no-scripts -q -o
+
+    echo 'Generating docs'
+    apidoc -i app/ -o docs/
 
     echo 'Linking storage directory'
     [ -d {{ $shared_dir }} ] || mkdir {{ $shared_dir }}
@@ -56,7 +63,6 @@
 
     echo 'Done'
 @endtask
-
 
 @task('migrate')
     @php
