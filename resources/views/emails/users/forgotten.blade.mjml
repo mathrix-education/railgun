@@ -8,7 +8,7 @@
                     <mj-text>
                         <p>Bonjour {{ $firstname }}</p>
 
-                        <p>Veuillez cliquer sur <a href="mathrix.fr/users/reset/{{ $token }}">ce lien</a> pour
+                        <p>Veuillez cliquer sur <a href="https://mathrix.fr/renouveler-mot-de-passe/:token/{{ $token }}">ce lien</a> pour
                             pouvoir modifier votre mot de passe.</p>
                         <p>Si vous n’êtes pas à l’origine de cette action, veuillez envoyer un email à
                             <a href="mailto:contact@mathrix.fr">contact@institut.mathrix.fr</a>.</p>

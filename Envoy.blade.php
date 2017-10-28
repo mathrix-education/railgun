@@ -46,11 +46,14 @@
     cp {{ $new_release_dir }}/storage/env/.env.dev {{ $new_release_dir }}/.env
     cd {{ $new_release_dir }}
 
-    echo 'Running composer'
+    echo 'Running composer install'
     composer install --prefer-dist --no-scripts -q -o
 
+    echo 'Running npm install'
+    npm install --silent
+
     echo 'Generating docs'
-    apidoc -i app/ -o docs/
+    apidoc -i app/ -o docs/ --silent
 
     echo 'Linking storage directory'
     [ -d {{ $shared_dir }} ] || mkdir {{ $shared_dir }}
