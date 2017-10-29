@@ -46,7 +46,9 @@ class Meta extends BaseModel
         'discipline_id' => 'required|exists:disciplines,id',
         'chapters_id' => 'required|exists:chapters,id',
         'notion_id' => 'required|exists:notions,id',
-        'activity_id' => 'required|exists:activities,id'
+        'activity_id' => 'required|exists:activities,id',
+        'favorite' => 'required|boolean',
+        'status' => 'required|nullable|in:completed,to_revise'
     ];
 
     /*
