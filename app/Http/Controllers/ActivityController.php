@@ -164,7 +164,7 @@ class ActivityController extends BaseController
 
         $favorite = $request->input('favorite');
         if ($favorite === null) {
-            if ($meta->exists()) {
+            if (!$meta->exists()) {
                 $meta->favorite = false;
             }
         } else {
@@ -173,8 +173,8 @@ class ActivityController extends BaseController
 
         $status = $request->input('status');
         if ($status === null) {
-            if ($meta->exists()) {
-                $meta->status = false;
+            if (!$meta->exists()) {
+                $meta->status = null;
             }
         } else {
             $meta->status = $status;
