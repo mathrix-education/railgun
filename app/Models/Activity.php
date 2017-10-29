@@ -63,7 +63,7 @@ class Activity extends BaseModel
             ['user_id', '=', $user->id]
         ])->first();
 
-        return $meta === null ? false : $meta->favorite;
+        return $meta === null ? false : (bool)$meta->favorite;
     }
 
 
