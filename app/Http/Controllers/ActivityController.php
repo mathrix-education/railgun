@@ -96,7 +96,7 @@ class ActivityController extends BaseController
 
     /**
      * @apiVersion 0.8.1
-     * @api {get} /activities/favorite Favorites
+     * @api {get} /activities/favorites Favorites
      * @apiGroup Activities
      * @apiName ActivitiesFavorite
      * @apiDescription Get user favorite activities
