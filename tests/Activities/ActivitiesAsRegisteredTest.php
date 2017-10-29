@@ -77,7 +77,6 @@ class ActivitiesAsRegisteredTest extends ScopeTestCase
 
         $this->call('patch', '/activities/' . $activity->id . '/mark', [
             'favorite' => true,
-            'status' => null,
             'country_id' => $country->id,
             'class_id' => $class->id,
             'discipline_id' => $discipline->id,
@@ -88,12 +87,12 @@ class ActivitiesAsRegisteredTest extends ScopeTestCase
         $this->assertHttp200Success();
     }
 
+
     public function testMarkStatus()
     {
         [$country, $class, $discipline, $chapter, $notion, $activity] = $this->buildObjects();
 
         $this->call('patch', '/activities/' . $activity->id . '/mark', [
-            'favorite' => false,
             'status' => $this->faker->boolean() ? 'completed' : 'to_revise',
             'country_id' => $country->id,
             'class_id' => $class->id,

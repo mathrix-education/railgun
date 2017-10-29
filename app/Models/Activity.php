@@ -58,10 +58,12 @@ class Activity extends BaseModel
             return false;
         }
 
-        return Meta::where([
+        $meta = Meta::where([
             ['activity_id', '=', $this->id],
             ['user_id', '=', $user->id]
         ])->exists();
+
+        return $meta === null ? false : $meta->favorite;
     }
 
 
