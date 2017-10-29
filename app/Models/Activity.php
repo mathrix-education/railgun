@@ -61,7 +61,7 @@ class Activity extends BaseModel
         $meta = Meta::where([
             ['activity_id', '=', $this->id],
             ['user_id', '=', $user->id]
-        ])->exists();
+        ])->first();
 
         return $meta === null ? false : $meta->favorite;
     }
