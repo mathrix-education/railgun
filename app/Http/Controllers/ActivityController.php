@@ -117,8 +117,40 @@ class ActivityController extends BaseController
 
         $metas = Meta::with(['country', 'class_', 'discipline', 'chapter', 'notion', 'activity', 'activity.modules'])
             ->where([
-                ['user_id', $user->id],
-                ['favorite', true]
+                ['user_id', '=', $user->id],
+                ['favorite', '=', true]
+            ])
+            ->get();
+
+        return response()->json($metas);
+    }
+
+
+    /**
+     * @apiVersion 0.8.1
+     * @api {get} /activities/to-revise To revise
+     * @apiGroup Activities
+     * @apiName ActivitiesToRevise
+     * @apiDescription Get user to_revise activities
+     * @apiUse Bearer
+     * @apiPermission registered
+     * @apiUse MetaArray
+     * @apiUse Http401Unauthorized
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     * @throws Http400InvalidRequestException
+     * @throws Http401UnauthorizedException
+     */
+    public function to_revise(Request $request): JsonResponse
+    {
+        $user = $this->getUserByRequestOrUnauthorized($request);
+
+        $metas = Meta::with(['country', 'class_', 'discipline', 'chapter', 'notion', 'activity', 'activity.modules'])
+            ->where([
+                ['user_id', '=', $user->id],
+                ['status', '=', 'to_revise']
             ])
             ->get();
 

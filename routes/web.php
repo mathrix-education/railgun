@@ -164,6 +164,7 @@ $router->group(['prefix' => 'activities'], function () use ($router) {
         $router->patch('{id:[0-9]+}', 'ActivityController@edit');
         $router->delete('{id:[0-9]+}', 'ActivityController@delete');
         $router->get('favorites', 'ActivityController@favorites');
+        $router->get('to-revise', 'ActivityController@to_revise');
         $router->patch('{id:[0-9]+}/mark', 'ActivityController@mark');
     });
 });
