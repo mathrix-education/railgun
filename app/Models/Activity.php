@@ -65,11 +65,12 @@ class Activity extends BaseModel
     {
         /** @var User $user */
         $user = Auth::user();
-
-        return Meta::where([
+        $meta = Meta::where([
             ['activity_id', '=', $this->id],
             ['user_id', '=', $user->id]
-        ])->first()->status;
+        ])->first();
+
+        return $meta === null ? null : $meta->status;
     }
 
 
