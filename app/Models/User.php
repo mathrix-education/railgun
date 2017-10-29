@@ -104,6 +104,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     /**
      * premium attribute
+     *
      * @return bool
      */
     public function getPremiumAttribute()
@@ -114,15 +115,17 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     /**
      * daily_points attribute
+     *
      * @return int
      */
     public function getDailyPointsAttribute()
     {
         $logs = Log::where([
-            ['event_type', '=', 'user_gathered_points'],
+            ['event', '=', 'user_gathered_points'],
             ['user_id', '=', $this->id],
-            ['created_at', 'between', [Carbon::now()->setTime(0, 0, 0), Carbon::now()]]
-        ]);
+        ])
+            ->whereBetween('created_at', [Carbon::now()->setTime(0, 0, 0), Carbon::now()])
+            ->get();
 
         $sum = 0;
 

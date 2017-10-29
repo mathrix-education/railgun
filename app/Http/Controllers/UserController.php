@@ -259,7 +259,13 @@ class UserController extends BaseController
      */
     public function me(Request $request)
     {
-        return response()->json($request->user());
+        /** @var User $user */
+        $user = $request->user();
+        $user = User::where('id', '=', $user->id)
+            ->with('subscriptions')
+            ->firstOrFail();
+
+        return response()->json($user);
     }
 
 
@@ -339,10 +345,12 @@ class UserController extends BaseController
         $pointsToAdd = $request->input('points'); // Retrieve points to add from form data
 
         if ($pointsToAdd === null) { // Check field presence
-            throw new Http400InvalidRequestException(['message' => 'points field is required']);
-        } else if (!is_int($pointsToAdd) || $pointsToAdd < 0) { // Check if field is a valid positive integer
-            throw new Http400InvalidRequestException(['message' => 'points field has to be a positive integer']);
+            throw new Http400InvalidRequestException('points field is required');
+        } else if (!is_numeric($pointsToAdd) || (int)$pointsToAdd < 0) { // Check if field is a valid positive integer
+            throw new Http400InvalidRequestException('points field has to be a positive integer');
         }
+
+        $pointsToAdd = (int)$pointsToAdd;
 
         $user->fill(['points' => $user->points + $pointsToAdd]);
         $user->save();
