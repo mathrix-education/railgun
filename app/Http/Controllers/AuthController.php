@@ -185,6 +185,6 @@ class AuthController extends BaseController
             ]);
         }*/
 
-        return response()->json('Password successfully changed');
+        return response()->json($user);
     }
 }

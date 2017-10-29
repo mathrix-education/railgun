@@ -5,11 +5,28 @@ namespace Tests\Users;
 use App\Models\Level;
 use App\Models\Log;
 use App\Models\Module;
+use App\Models\User;
 use Carbon\Carbon;
 use Tests\ScopeTestCase;
 
 class UsersAsRegisteredTest extends ScopeTestCase
 {
+    public function testEdit()
+    {
+        $newUser = factory(User::class, $this->user->type)->raw();
+
+        // TODO: Handle cancerous fields
+        unset($newUser['password']);
+        unset($newUser['token']);
+        unset($newUser['settings']);
+
+        $this->call('patch', '/users/' . $this->user->id, $newUser);
+
+        $this->assertHttp200Success();
+        $this->assertInDatabase('users', $newUser);
+    }
+
+
     public function testPointsWithoutLoggable()
     {
         $pointsBefore = $this->user->points;

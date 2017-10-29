@@ -1,6 +1,6 @@
 # License
 
-Copyright &copy; Mathrix.fr
+Copyright &copy; Mathrix SA
 
 ## Developers
 

@@ -4,8 +4,13 @@ namespace Tests\Users;
 
 use Tests\ScopeTestCase;
 
-class UsersAsModeratorTest extends ScopeTestCase
+class UsersAsAdminTest extends ScopeTestCase
 {
+    public function testEdit()
+    {
+        $this->sameAs('registered');
+    }
+
     public function testPointsWithoutLoggable()
     {
         $this->sameAs('registered');
