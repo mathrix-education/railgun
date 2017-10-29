@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\Http400InvalidRequestException;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -28,14 +29,16 @@ class StripeController extends CashierController
      * @apiDescription Subscribe user to plan
      * @apiPermission registered
      * @apiUse Bearer
-     * @apiParam (Data) {string} stripe_token The stripe token
+     * @apiParam (Data) {string} [stripe_token] The stripe token; can be null if a coupon is given
      * @apiParam (Data) {string=v3_annually,v3_monthly} stripe_plan The stripe plan
      * @apiParam (Data) {string} [stripe_coupon=null] The stripe coupon
-     * @apiError (Error 401) invalid_request Invalid stripe_plan
+     * @apiError (Error 400) invalid_request stripe_token and stripe_coupon cannot be null at the same time
+     * @apiError (Error 400) invalid_request stripe_plan has to be in the allowed stripe plans
      *
      * @param Request $request
      *
      * @return Response
+     * @throws Http400InvalidRequestException
      */
     public function subscribe(Request $request)
     {
@@ -43,11 +46,13 @@ class StripeController extends CashierController
         $stripePlan = $request->input('stripe_plan');
         $stripeCoupon = $request->input('stripe_coupon');
 
+        if ($stripeToken === null && $stripeCoupon === null) {
+            throw new Http400InvalidRequestException('stripe_token and stripe_coupon cannot be null at the same time');
+        }
+
         if (!in_array($stripePlan, self::ALLOWED_STRIPE_PLANS)) {
-            return response()->json([
-                'error' => 'invalid_request',
-                'message' => 'stripe_plan has to be in [' . implode(', ', self::ALLOWED_STRIPE_PLANS) . ']'
-            ], 401);
+            throw new Http400InvalidRequestException('stripe_plan has to be in [' . implode(', ',
+                    self::ALLOWED_STRIPE_PLANS) . ']');
         }
 
         /** @var User $user */
