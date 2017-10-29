@@ -17,8 +17,9 @@ use Laravel\Lumen\Routing\Router;
 
 $router->get('/', function () use ($router) {
     return response()->json([
-        'message' => 'Welcome to Mathrix API version 0.8.1 by Mathieu Bour'
-    ], 418);
+        'message' => 'Welcome to Mathrix API version 0.8.1 by Mathieu Bour',
+        'build' => basename(dirname(__DIR__))
+    ]);
 });
 
 
