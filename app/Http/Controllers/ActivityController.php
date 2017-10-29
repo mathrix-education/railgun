@@ -161,8 +161,25 @@ class ActivityController extends BaseController
 
         /** @var Meta $meta */
         $meta = Meta::firstOrNew($metaData);
-        $meta->favorite = $request->input('favorite', false);
-        $meta->status = $request->input('status');
+
+        $favorite = $request->input('favorite');
+        if ($favorite === null) {
+            if ($meta->exists()) {
+                $meta->favorite = false;
+            }
+        } else {
+            $meta->favorite = $favorite;
+        }
+
+        $status = $request->input('status');
+        if ($status === null) {
+            if ($meta->exists()) {
+                $meta->status = false;
+            }
+        } else {
+            $meta->status = $status;
+        }
+
         $meta->save();
 
         return response()->json(Activity::find($id));

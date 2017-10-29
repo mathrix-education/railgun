@@ -103,6 +103,7 @@
     "QuoteEdit",
     "QuoteDelete",
     "Stripe",
-    "StripeSubscribe"
+    "StripeSubscribe",
+    "LevelsIndex"
   ]
 }
