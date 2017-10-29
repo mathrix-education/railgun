@@ -10,6 +10,7 @@ use App\Models\Comment;
 use App\Models\Country;
 use App\Models\Course;
 use App\Models\Discipline;
+use App\Models\Level;
 use App\Models\Module;
 use App\Models\Notion;
 use App\Models\Post;
@@ -23,6 +24,7 @@ use App\Policies\CommentPolicy;
 use App\Policies\CountryPolicy;
 use App\Policies\CoursePolicy;
 use App\Policies\DisciplinePolicy;
+use App\Policies\LevelPolicy;
 use App\Policies\ModulePolicy;
 use App\Policies\NotionPolicy;
 use App\Policies\PostPolicy;
@@ -74,5 +76,6 @@ class AuthServiceProvider extends ServiceProvider
         Gate::policy(Comment::class, CommentPolicy::class);
         Gate::policy(Quote::class, QuotePolicy::class);
         // No policy for logs as it is a system-side process
+        Gate::policy(Level::class, LevelPolicy::class);
     }
 }
