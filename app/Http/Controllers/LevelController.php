@@ -18,7 +18,7 @@ class LevelController extends BaseController
      * @apiName LevelsIndex
      * @apiDescription Retrieve levels
      * @apiPermission public
-     * @apiUse LevelsArray
+     * @apiUse LevelArray
      * @apiUse Http400InvalidRequest_Pagination
      */
 }
