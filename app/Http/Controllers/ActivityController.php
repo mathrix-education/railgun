@@ -127,7 +127,7 @@ class ActivityController extends BaseController
 
     /**
      * @apiVersion 0.8.1
-     * @api {post} /activities/{id}/mark Mark
+     * @api {patch} /activities/{id}/mark Mark
      * @apiGroup Activities
      * @apiName ActivityMark
      * @apiDescription Mark an activity as favorite or set its status completed or to_revise

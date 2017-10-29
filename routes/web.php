@@ -11,8 +11,9 @@
 |
 */
 
-/** @var Router $router */
 use Laravel\Lumen\Routing\Router;
+
+/** @var Router $router */
 
 $router->get('/', function () use ($router) {
     return response()->json([
@@ -160,8 +161,7 @@ $router->group(['prefix' => 'activities'], function () use ($router) {
         $router->get('', 'ActivityController@index');
         $router->post('', 'ActivityController@add');
         $router->get('favorites', 'ActivityController@favorites');
-        $router->patch('{id:[0-9]+}/favorite', 'ActivityController@favorite');
-        $router->delete('{id:[0-9]+}/mark', 'ActivityController@mark');
+        $router->patch('{id:[0-9]+}/mark', 'ActivityController@mark');
         $router->patch('{id:[0-9]+}', 'ActivityController@edit');
         $router->delete('{id:[0-9]+}', 'ActivityController@delete');
     });
