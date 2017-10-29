@@ -55,7 +55,7 @@ return [
             'host' => 'mysql',
             'database' => 'mathrix_fr_pipelines',
             'username' => 'root',
-            'password' => 'vM5qJKdng2B3WVBCz5e5',
+            'password' => '3AEzrLrSh8j8xJfyHAdB',
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
