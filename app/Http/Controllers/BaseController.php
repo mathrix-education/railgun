@@ -82,11 +82,11 @@ abstract class BaseController extends Controller
         }
 
         // Check authorization
-        if ($user === null || (!$user->tokenCan($minimumScope) && $user->id != $userId)) {
+        if ($user === null || ($userId !== null && $user->id != $userId && !$user->tokenCan($minimumScope))) {
             throw new Http401UnauthorizedException();
         }
 
-        return $userId === null ? $request->user() : User::where('id', $userId)->firstOrFail();
+        return $userId === null ? $request->user() : User::where('id', '=', $userId)->firstOrFail();
     }
 
 
