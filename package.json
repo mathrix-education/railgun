@@ -7,15 +7,12 @@
     "doc": "docs",
     "test": "tests"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@gitlab.com/mathrix/mathrix-api.git"
   },
-  "author": "",
-  "license": "proprietary",
+  "author": "Mathrix Back-End Team",
+  "license": "SEE LICENSE IN LICENSE.md",
   "bugs": {
     "url": "https://gitlab.com/mathrix/mathrix-api/issues"
   },
@@ -25,7 +22,7 @@
     "gulp-apidoc": "^0.2.6",
     "gulp-ext-replace": "^0.3.0",
     "gulp-livereload": "^3.8.1",
-    "gulp-rename": "^1.2.2",
-    "gulp-mjml": "^2.3.0"
+    "gulp-mjml": "^2.3.0",
+    "gulp-rename": "^1.2.2"
   }
 }

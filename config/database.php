@@ -47,23 +47,6 @@ return [
 
         /*
         |--------------------------------------------------------------------------
-        | Tests connection
-        |--------------------------------------------------------------------------
-        */
-        'tests' => [
-            'driver' => 'mysql',
-            'host' => '127.0.0.1',
-            'database' => 'mathrix_fr_tests',
-            'username' => 'mathrix_fr_tests',
-            'password' => 'uFFgY3pt2TEVc9NRAgac',
-            'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix' => '',
-            'strict' => false,
-        ],
-
-        /*
-        |--------------------------------------------------------------------------
         | Pipelines connection
         |--------------------------------------------------------------------------
         */
@@ -72,11 +55,11 @@ return [
             'host' => 'mysql',
             'database' => 'mathrix_fr_pipelines',
             'username' => 'root',
-            'password' => 'd3SnA4cBxckvHbyNXhAG',
+            'password' => 'vM5qJKdng2B3WVBCz5e5',
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
-            'strict' => false,
-        ]
+            'strict' => false
+        ],
     ]
 ];
