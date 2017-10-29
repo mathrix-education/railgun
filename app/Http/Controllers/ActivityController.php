@@ -5,6 +5,7 @@ use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http401UnauthorizedException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
+use App\Models\Activity;
 use App\Models\Meta;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -160,11 +161,10 @@ class ActivityController extends BaseController
 
         /** @var Meta $meta */
         $meta = Meta::firstOrNew($metaData);
-        $meta->favorite = $request->input('favorite');
+        $meta->favorite = $request->input('favorite', false);
         $meta->status = $request->input('status');
-
         $meta->save();
 
-        return response()->json($user);
+        return response()->json(Activity::find($id));
     }
 }
