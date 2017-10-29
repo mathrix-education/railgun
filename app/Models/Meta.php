@@ -47,8 +47,8 @@ class Meta extends BaseModel
         'chapters_id' => 'required|exists:chapters,id',
         'notion_id' => 'required|exists:notions,id',
         'activity_id' => 'required|exists:activities,id',
-        'favorite' => 'required|boolean',
-        'status' => 'required|nullable|in:completed,to_revise'
+        'favorite' => 'boolean',
+        'status' => 'nullable|in:completed,to_revise'
     ];
 
     /*
