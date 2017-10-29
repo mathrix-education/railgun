@@ -46,14 +46,9 @@ class Activity extends BaseModel
         'visible' => 'boolean'
     ];
 
-    protected $appends = ['favorite'];
+    protected $appends = ['favorite', 'status'];
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Relations
-    |--------------------------------------------------------------------------
-    */
     public function getFavoriteAttribute()
     {
         /** @var User $user */
@@ -66,6 +61,23 @@ class Activity extends BaseModel
     }
 
 
+    public function getStatusAttribute()
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        return Meta::where([
+            ['activity_id', '=', $this->id],
+            ['user_id', '=', $user->id]
+        ])->first()->status;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
     /**
      * Get all of the post's logs.
      */
