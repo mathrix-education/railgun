@@ -115,7 +115,7 @@ class ActivityController extends BaseController
     {
         $user = $this->getUserByRequestOrUnauthorized($request);
 
-        $metas = Meta::with(['country', 'class_', 'discipline', 'chapter', 'notion', 'activity'])
+        $metas = Meta::with(['country', 'class_', 'discipline', 'chapter', 'notion', 'activity', 'activity.modules'])
             ->where([
                 ['user_id', $user->id],
                 ['favorite', true]
