@@ -38,4 +38,16 @@ class ActivitiesAsModeratorTest extends ScopeTestCase
         $this->assertNotInDatabase('activity_notion', ['activity_id' => $this->deleteModelId]);
         $this->assertNotInDatabase('activity_module', ['activity_id' => $this->deleteModelId]);
     }
+
+
+    public function testMarkFavorite()
+    {
+        $this->sameAs('registered');
+    }
+
+
+    public function testMarkStatus()
+    {
+        $this->sameAs('registered');
+    }
 }

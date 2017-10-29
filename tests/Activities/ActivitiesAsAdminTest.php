@@ -36,4 +36,16 @@ class ActivitiesAsAdminTest extends ScopeTestCase
     {
         $this->sameAs('moderator');
     }
+
+
+    public function testMarkFavorite()
+    {
+        $this->sameAs('registered');
+    }
+
+
+    public function testMarkStatus()
+    {
+        $this->sameAs('registered');
+    }
 }

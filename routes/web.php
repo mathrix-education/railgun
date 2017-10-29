@@ -161,10 +161,10 @@ $router->group(['prefix' => 'activities'], function () use ($router) {
     $router->group(['middleware' => 'auth:api'], function () use ($router) {
         $router->get('', 'ActivityController@index');
         $router->post('', 'ActivityController@add');
-        $router->get('favorites', 'ActivityController@favorites');
-        $router->patch('{id:[0-9]+}/mark', 'ActivityController@mark');
         $router->patch('{id:[0-9]+}', 'ActivityController@edit');
         $router->delete('{id:[0-9]+}', 'ActivityController@delete');
+        $router->get('favorites', 'ActivityController@favorites');
+        $router->patch('{id:[0-9]+}/mark', 'ActivityController@mark');
     });
 });
 

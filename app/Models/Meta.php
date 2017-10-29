@@ -40,14 +40,15 @@ class Meta extends BaseModel
 
     /** @var array The validation rules on create */
     protected $rules = [
-        'user_id' => 'required|email|unique:|max:60',
-        'country_id' => 'nullable|exists:countries,id',
-        'class_id' => 'nullable|exists:classes,id',
-        'discipline_id' => 'nullable|exists:disciplines,id',
-        'chapters_id' => 'nullable|exists:chapters,id',
-        'notion_id' => 'nullable|exists:notions,id',
-        'activity_id' => 'nullable|exists:activities,id'
+        'user_id' => 'required|exists:users,id',
+        'country_id' => 'required|exists:countries,id',
+        'class_id' => 'required|exists:classes,id',
+        'discipline_id' => 'required|exists:disciplines,id',
+        'chapters_id' => 'required|exists:chapters,id',
+        'notion_id' => 'required|exists:notions,id',
+        'activity_id' => 'required|exists:activities,id'
     ];
+
     /*
     |--------------------------------------------------------------------------
     | Relations
