@@ -8,6 +8,7 @@ use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\BaseModel;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Validator;
@@ -17,13 +18,16 @@ use Laravel\Lumen\Routing\Controller;
  * Class BaseController
  * Add a few methods to all controllers
  *
- * @author Mathrix Team
+ * @author Mathrix Back-End Team
  * @package App\Http\Controllers
+ * @since 0.8.1
+ * @copyright Mathrix
  */
 abstract class BaseController extends Controller
 {
     /** @var BaseModel The model class associated with the controller */
     public $modelClass = null;
+    /** @var array The model map to handle cancerous models name */
     public $modelMap = ['Class' => 'Class_'];
 
 
@@ -140,6 +144,63 @@ abstract class BaseController extends Controller
                 ->offset(($page - 1) * $perPage)
                 ->get()
         );
+    }
+
+
+    /**
+     * Generic search action
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     * @throws Http400InvalidRequestException
+     *
+     */
+    public function search(Request $request): JsonResponse
+    {
+        $inputs = $request->except(['order', 'having']);
+        $order = array_merge([
+            'column' => 'id',
+            'dir' => 'asc'
+        ], $request->input('order', []));
+
+        $conditions = [];
+        $having = [];
+
+        if (!empty($inputs['order']) && !in_array($order['dir'], ['asc', 'desc'])) {
+            throw new Http400InvalidRequestException('order allowed values: ["asc", "desc"]');
+        }
+
+        foreach ($inputs as $column => $value) {
+            $operator = '=';
+            if (strstr($value, '%') !== false) {
+                $operator = 'LIKE';
+            }
+            $conditions[] = [$column, $operator, $value];
+        }
+
+        foreach ($request->input('having', []) as $relation => $relationConditions) {
+            foreach ($relationConditions as $column => $value) {
+                $operator = '=';
+                if (strstr($value, '%') !== false) {
+                    $operator = 'LIKE';
+                }
+                $having[$relation][] = [$column, $operator, $value];
+            }
+        }
+
+        // Build query
+        $queryBuilder = $this->modelClass::where($conditions);
+
+        foreach ($having as $relation => $havingConditions) {
+            $queryBuilder = $queryBuilder->whereHas($relation, function (Builder $query) use ($havingConditions) {
+                return $query->where($havingConditions);
+            });
+        }
+
+        $queryBuilder = $queryBuilder->orderBy($order['column'], $order['dir']);
+
+        return response()->json($queryBuilder->get());
     }
 
 
