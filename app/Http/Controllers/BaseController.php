@@ -199,8 +199,12 @@ abstract class BaseController extends Controller
         }
 
         $queryBuilder = $queryBuilder->orderBy($order['column'], $order['dir']);
+        $data = $queryBuilder->get();
 
-        return response()->json($queryBuilder->get());
+        return response()->json([
+            'count' => $data->count(),
+            'data' => $data
+        ]);
     }
 
 
