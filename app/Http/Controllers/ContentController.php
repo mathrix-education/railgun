@@ -231,7 +231,7 @@ class ContentController extends BaseController
      * @return JsonResponse
      * @throws Http400InvalidRequestException
      */
-    public function search(Request $request, string $query, int $page = 1, $perPage = 10)
+    public function searchGlobal(Request $request, string $query, int $page = 1, $perPage = 10)
     {
         if ($page < 1 || $perPage < 1) {
             throw new Http400InvalidRequestException('page and perPage have to be strictly positive');

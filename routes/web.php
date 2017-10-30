@@ -39,14 +39,15 @@ $router->group(['prefix' => 'users'], function () use ($router) {
     $router->group(['middleware' => 'auth:api'], function () use ($router) {
         $router->get('', 'UserController@index');
         $router->get('me', 'UserController@me');
-        $router->post('points', 'UserController@points');
-        $router->post('points/{id:[0-9]+}', 'UserController@points');
-        $router->get('search/{field}/{like}', 'UserController@search');
 
         $router->get('{page:[0-9]+}/{perPage:[0-9]+}', 'UserController@index');
         $router->get('{id:[0-9]+}', 'UserController@get');
         $router->patch('{id:[0-9]+}', 'UserController@edit');
         $router->delete('{id:[0-9]+}', 'UserController@delete');
+        $router->post('search', 'UserController@search');
+
+        $router->post('points', 'UserController@points');
+        $router->post('points/{id:[0-9]+}', 'UserController@points');
     });
 });
 
@@ -60,8 +61,8 @@ $router->group(['prefix' => 'content'], function () use ($router) {
     $router->get('countries', 'ContentController@countries');
     $router->get('program/{classId:[0-9]+}', 'ContentController@program');
     $router->get('modules/{activityId:[0-9]+}', 'ContentController@modules');
-    $router->get('search/{query}', 'ContentController@search');
-    $router->get('search/{query}/{page:[0-9]+}/{perPage:[0-9]+}', 'ContentController@search');
+    $router->get('search/{query}', 'ContentController@searchGlobal');
+    $router->get('search/{query}/{page:[0-9]+}/{perPage:[0-9]+}', 'ContentController@searchGlobal');
 });
 
 
@@ -163,6 +164,8 @@ $router->group(['prefix' => 'activities'], function () use ($router) {
         $router->post('', 'ActivityController@add');
         $router->patch('{id:[0-9]+}', 'ActivityController@edit');
         $router->delete('{id:[0-9]+}', 'ActivityController@delete');
+        $router->post('search', 'ActivityController@search');
+
         $router->get('favorites', 'ActivityController@favorites');
         $router->get('to-revise', 'ActivityController@to_revise');
         $router->patch('{id:[0-9]+}/mark', 'ActivityController@mark');

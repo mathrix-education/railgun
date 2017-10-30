@@ -96,6 +96,20 @@ class ActivityController extends BaseController
 
     /**
      * @apiVersion 0.8.1
+     * @api {post} /activities/search Search
+     * @apiGroup Activities
+     * @apiName ActivitiesSearch
+     * @apiDescription Search in activities
+     * @apiPermission moderator
+     * @apiUse Bearer
+     * @apiUse ActivityArray
+     * @apiUse Http400InvalidRequest
+     * @apiUse Http401Unauthorized
+     */
+
+
+    /**
+     * @apiVersion 0.8.1
      * @api {get} /activities/favorites Favorites
      * @apiGroup Activities
      * @apiName ActivitiesFavorite

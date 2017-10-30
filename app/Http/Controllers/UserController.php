@@ -123,6 +123,20 @@ class UserController extends BaseController
 
     /**
      * @apiVersion 0.8.1
+     * @api {post} /users/search Search
+     * @apiGroup Users
+     * @apiName UsersSearch
+     * @apiDescription Search user matching criteria
+     * @apiPermission moderator
+     * @apiUse Bearer
+     * @apiUse UserArray
+     * @apiUse Http400InvalidRequest
+     * @apiUse Http401Unauthorized
+     */
+
+
+    /**
+     * @apiVersion 0.8.1
      * @api {post} /users/register Register
      * @apiGroup Users
      * @apiName UserRegister
@@ -204,42 +218,6 @@ class UserController extends BaseController
         }
 
         return response()->json(['exists' => User::where($field, $value)->exists()]);
-    }
-
-
-    /**
-     * @apiVersion 0.8.1
-     * @api {get} /users/search/{field}/{value} Search
-     * @apiGroup Users
-     * @apiName UsersSearch
-     * @apiDescription Search user matching criteria
-     * @apiPermission admin
-     * @apiUse Bearer
-     * @apiParam {string} field The field to search
-     * @apiParam {string} like The value to search
-     * @apiUse UserArray
-     *
-     * @param Request $request
-     * @param $field
-     * @param $like
-     *
-     * @return JsonResponse
-     * @throws Http400InvalidRequestException
-     * @throws Http401UnauthorizedException
-     */
-    public function search(Request $request, $field, $like)
-    {
-        // Check permission
-        if ($request->user()->cant('search', User::class)) {
-            throw new Http401UnauthorizedException();
-        }
-        if (!in_array($field, \Schema::getColumnListing(User::getTableName()))) {
-            throw new Http400InvalidRequestException($field . ' does not exists in ' . User::getTableName() . ' table');
-        }
-
-        $users = User::where($field, 'like', '%' . $like . '%')->get();
-
-        return response()->json($users);
     }
 
 
