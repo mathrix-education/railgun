@@ -31,6 +31,22 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  */
 class Log extends BaseModel
 {
+    public const EVENTS = [
+        'user_registered',
+        'user_logged',
+        'user_changed_password',
+        'user_requested_new_password',
+        'user_gathered_points',
+        'user_passed_level',
+        'user_edited_profile',
+        'user_set_daily',
+        'user_achieved_daily',
+        'user_paid_for_premium',
+        'user_added_favorite',
+        'user_deleted_favorite',
+        'user_marked_activity_as',
+        'user_cancelled_premium'
+    ];
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
 
@@ -48,29 +64,6 @@ class Log extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
-
-    /**
-     * Add a log line the the database
-     *
-     * @param string $event the event name
-     * @param User|int|null $user the user as model, its id or njull for system log
-     * @param array $data the optional data to associate with the log, such as the loggable type and id
-     *
-     * @return bool
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
-     */
-    public static function log(string $event, $user = null, $data = [])
-    {
-        $data = array_merge([
-            'event' => $event,
-            'user_id' => $user === null || is_int($user) ? $user : $user->id,
-        ], $data);
-
-        $log = new Log($data);
-
-        return $log->save();
-    }
 
 
     /**
@@ -103,5 +96,29 @@ class Log extends BaseModel
     public function setUpdatedAt($value)
     {
         return $this;
+    }
+
+
+    /**
+     * Add a log line the the database
+     *
+     * @param string $event the event name
+     * @param User|int|null $user the user as model, its id or njull for system log
+     * @param array $data the optional data to associate with the log, such as the loggable type and id
+     *
+     * @return bool
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
+     */
+    public static function log(string $event, $user = null, $data = [])
+    {
+        $data = array_merge([
+            'event' => $event,
+            'user_id' => $user === null || is_int($user) ? $user : $user->id,
+        ], $data);
+
+        $log = new Log($data);
+
+        return $log->save();
     }
 }
