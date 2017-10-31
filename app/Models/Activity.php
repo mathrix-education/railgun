@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Auth;
  * @property string $name
  * @property string $slug
  * @property string $description
+ * @property-read bool $favorite
+ * @property-read string|null $status
  * @property-read Collection|Log[] $logs
  * @property-read Collection|Module[] $modules
  * @property-read Collection|Notion[] $notions
@@ -24,14 +26,13 @@ use Illuminate\Support\Facades\Auth;
  * @method static Builder|Activity whereName($value)
  * @method static Builder|Activity whereSlug($value)
  * @mixin \Eloquent
- * @property-read mixed $favorite
- * @property-read mixed $permalink
- * @property-read mixed $status
  */
 class Activity extends BaseModel
 {
+    public const TYPES = ['video', 'course', 'test', 'exercise', 'summary', 'flashcard'];
+
     /** @var array The fillable attributes */
-    protected $fillable = ['name', 'slug', 'description', 'visible'];
+    protected $fillable = ['name', 'slug', 'description', 'type', 'visible'];
 
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
@@ -46,42 +47,16 @@ class Activity extends BaseModel
         'visible' => 'boolean'
     ];
 
+    /** @var array Appends attributes */
     protected $appends = ['favorite', 'status'];
 
 
-    public function getFavoriteAttribute()
+    public function __construct(array $attributes = [])
     {
-        /** @var User $user */
-        $user = Auth::user();
+        // Dynamic rules
+        $this->rules['type'] = 'required|in:' . implode(',', self::TYPES);
 
-        if ($user === null) {
-            return false;
-        }
-
-        $meta = Meta::where([
-            ['activity_id', '=', $this->id],
-            ['user_id', '=', $user->id]
-        ])->first();
-
-        return $meta === null ? false : (bool)$meta->favorite;
-    }
-
-
-    public function getStatusAttribute()
-    {
-        /** @var User $user */
-        $user = Auth::user();
-
-        if ($user === null) {
-            return null;
-        }
-
-        $meta = Meta::where([
-            ['activity_id', '=', $this->id],
-            ['user_id', '=', $user->id]
-        ])->first();
-
-        return $meta === null ? null : $meta->status;
+        parent::__construct($attributes);
     }
 
 
@@ -129,5 +104,44 @@ class Activity extends BaseModel
     public function users()
     {
         return $this->belongsToMany(User::class);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Appends fields
+    |--------------------------------------------------------------------------
+    */
+    public function getFavoriteAttribute()
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        if ($user === null) {
+            return false;
+        }
+
+        $meta = Meta::where([
+            ['activity_id', '=', $this->id],
+            ['user_id', '=', $user->id]
+        ])->first();
+
+        return $meta === null ? false : (bool)$meta->favorite;
+    }
+
+    public function getStatusAttribute()
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        if ($user === null) {
+            return null;
+        }
+
+        $meta = Meta::where([
+            ['activity_id', '=', $this->id],
+            ['user_id', '=', $user->id]
+        ])->first();
+
+        return $meta === null ? null : $meta->status;
     }
 }
