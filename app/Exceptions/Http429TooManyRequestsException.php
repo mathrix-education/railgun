@@ -9,7 +9,7 @@ namespace App\Exceptions;
  * @since 0.8.1
  * @copyright Mathrix
  */
-class Http429TooManyRequests extends HttpException
+class Http429TooManyRequestsException extends HttpException
 {
 
 }

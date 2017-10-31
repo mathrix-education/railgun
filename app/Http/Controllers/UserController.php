@@ -6,7 +6,7 @@ use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http401UnauthorizedException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
-use App\Exceptions\Http429TooManyRequests;
+use App\Exceptions\Http429TooManyRequestsException;
 use App\Exceptions\Http501NotImplementedException;
 use App\Models\Activity;
 use App\Models\Log;
@@ -274,7 +274,7 @@ class UserController extends BaseController
      * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
-     * @throws Http429TooManyRequests
+     * @throws Http429TooManyRequestsException
      */
     public function points(Request $request, $id = null)
     {
@@ -316,7 +316,7 @@ class UserController extends BaseController
 
             // User already gathered point from this loggable today
             if ($userHasAlreadyGatheredPointsWithThisModule) {
-                throw new Http429TooManyRequests('Already gathered points today for this model');
+                throw new Http429TooManyRequestsException('Already gathered points today for this model');
             }
         }
 
