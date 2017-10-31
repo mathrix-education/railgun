@@ -158,10 +158,14 @@ abstract class BaseController extends Controller
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
-     *
+     * @throws Http401UnauthorizedException
      */
     public function search(Request $request): JsonResponse
     {
+        if ($request->user()->cant('search', $this->modelClass)) {
+            throw new Http401UnauthorizedException();
+        }
+
         $inputs = $request->except(['order', 'having']);
         $order = array_merge([
             'column' => 'id',
