@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read Notion $notion
  * @property-read Activity $activity
  * @property-read Discipline $discipline
+ * @property-read Module $module
  * @method static Builder|Meta whereId($value)
  * @method static Builder|Meta whereFavorite($value)
  * @method static Builder|Meta whereStatus($value)
@@ -31,6 +32,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Meta whereDisciplineId($value)
  * @method static Builder|Meta whereNotionId($value)
  * @method static Builder|Meta whereActivityId($value)
+ * @method static Builder|Meta whereModuleId($value)
  * @mixin \Eloquent
  */
 class Meta extends BaseModel
@@ -47,6 +49,7 @@ class Meta extends BaseModel
         'chapters_id' => 'required|exists:chapters,id',
         'notion_id' => 'required|exists:notions,id',
         'activity_id' => 'required|exists:activities,id',
+        'module_id' => 'nullable|exists:modules,id',
         'favorite' => 'boolean',
         'status' => 'nullable|in:completed,to_revise'
     ];
@@ -130,5 +133,16 @@ class Meta extends BaseModel
     public function activity(): BelongsTo
     {
         return $this->belongsTo(Activity::class);
+    }
+
+
+    /**
+     * BelongsTo Module
+     *
+     * @return BelongsTo
+     */
+    public function module(): BelongsTo
+    {
+        return $this->belongsTo(Module::class);
     }
 }

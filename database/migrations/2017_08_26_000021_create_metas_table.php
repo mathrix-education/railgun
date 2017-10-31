@@ -24,6 +24,7 @@ class CreateMetasTable extends Migration
             $table->integer('chapter_id')->unsigned()->nullable();
             $table->integer('notion_id')->unsigned()->nullable();
             $table->integer('activity_id')->unsigned()->nullable();
+            $table->integer('module_id')->unsigned()->nullable();
 
             // Foreign keys
             $table->foreign('user_id')->references('id')->on('users');
@@ -33,6 +34,7 @@ class CreateMetasTable extends Migration
             $table->foreign('chapter_id')->references('id')->on('chapters');
             $table->foreign('notion_id')->references('id')->on('notions');
             $table->foreign('activity_id')->references('id')->on('activities');
+            $table->foreign('module_id')->references('id')->on('modules');
         });
     }
 
@@ -52,6 +54,7 @@ class CreateMetasTable extends Migration
             $table->dropForeign('metas_chapter_id_foreign');
             $table->dropForeign('metas_notion_id_foreign');
             $table->dropForeign('metas_activity_id_foreign');
+            $table->dropForeign('metas_module_id_foreign');
         });
 
         Schema::dropIfExists('metas');

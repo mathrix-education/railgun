@@ -9,7 +9,7 @@
  * @apiParam (Data) {int} discipline_id The meta discipline_id
  * @apiParam (Data) {int} chapter_id The meta chapter_id
  * @apiParam (Data) {int} notion_id The meta notion_id
- * @apiParam (Data) {int} activity_id The meta activity_id
+ * @apiParam (Data) {int} [activity_id=null] The meta activity_id
  */
 /**
  * @apiDefine MetaArray
@@ -30,6 +30,7 @@
  * @apiSuccess {Chapter} metas.chapter The meta chapter
  * @apiSuccess {Notion} metas.notion The meta notion
  * @apiSuccess {Activity} metas.activity The meta activity
+ * @apiSuccess {Module} metas.module The meta module
  */
 /**
  * @apiDefine Meta
@@ -49,4 +50,5 @@
  * @apiSuccess {Chapter} chapter The meta chapter
  * @apiSuccess {Notion} notion The meta notion
  * @apiSuccess {Activity} activity The meta activity
+ * @apiSuccess {Module} module The meta module
  */

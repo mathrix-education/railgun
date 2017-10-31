@@ -24,9 +24,8 @@ $factory->define(User::class, function (Generator $faker) {
         'token' => $faker->uuid,
         'points' => $points,
         'level' => Level::getLevelByPoints($points),
-        'daily' => $faker->randomElement([20, 40, 70]),
+        'daily' => $faker->randomElement([10, 20, 40]),
         'settings' => [
-            'daily_goal' => $faker->numberBetween(0, 10) * 10,
             'sound' => $faker->boolean(70)
         ],
         'class_id' => $faker->randomElement(Class_::all()->pluck('id')->toArray())
