@@ -15,6 +15,7 @@ $factory->define(Activity::class, function (Generator $faker) {
         'name' => $name,
         'slug' => str_slug($name),
         'description' => $faker->sentence(),
+        'type' => $faker->randomElement(Activity::TYPES),
         'visible' => $faker->boolean(95)
     ];
 });

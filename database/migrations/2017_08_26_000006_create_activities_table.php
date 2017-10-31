@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Activity;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,6 +19,7 @@ class CreateActivitiesTable extends Migration
             $table->string('name');
             $table->string('slug');
             $table->string('description');
+            $table->enum('type', Activity::TYPES);
             $table->boolean('visible')->default(true);
         });
     }
