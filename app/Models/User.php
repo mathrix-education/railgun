@@ -94,7 +94,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         'type' => 'required|in:registered,moderator,admin',
         'token' => 'required|size:36',
         'points' => 'required|integer',
-        'daily' => 'nullable|in:20,40,70',
+        'daily' => 'nullable|in:10,20,40',
         'class_id' => 'nullable|exists:classes,id'
     ];
 

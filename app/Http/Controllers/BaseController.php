@@ -31,6 +31,10 @@ abstract class BaseController extends Controller
     public $modelMap = ['Class' => 'Class_'];
 
 
+    /**
+     * BaseController constructor
+     * Build model class
+     */
     public function __construct()
     {
         $this->guessModelClass();
@@ -167,11 +171,13 @@ abstract class BaseController extends Controller
         $conditions = [];
         $having = [];
 
+        // Check if order diir is valid
         if (!empty($inputs['order']) && !in_array($order['dir'], ['asc', 'desc'])) {
             throw new Http400InvalidRequestException('order allowed values: ["asc", "desc"]');
         }
 
-        foreach ($inputs as $column => $value) {
+        // Convert request form data to valid eloquent conditions
+        foreach($inputs as $column => $value) {
             $operator = '=';
             if (strstr($value, '%') !== false) {
                 $operator = 'LIKE';
@@ -179,8 +185,8 @@ abstract class BaseController extends Controller
             $conditions[] = [$column, $operator, $value];
         }
 
-        foreach ($request->input('having', []) as $relation => $relationConditions) {
-            foreach ($relationConditions as $column => $value) {
+        foreach($request->input('having', []) as $relation => $relationConditions) {
+            foreach($relationConditions as $column => $value) {
                 $operator = '=';
                 if (strstr($value, '%') !== false) {
                     $operator = 'LIKE';
@@ -192,7 +198,7 @@ abstract class BaseController extends Controller
         // Build query
         $queryBuilder = $this->modelClass::where($conditions);
 
-        foreach ($having as $relation => $havingConditions) {
+        foreach($having as $relation => $havingConditions) {
             $queryBuilder = $queryBuilder->whereHas($relation, function (Builder $query) use ($havingConditions) {
                 return $query->where($havingConditions);
             });

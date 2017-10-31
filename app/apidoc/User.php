@@ -9,7 +9,7 @@
  * @apiParam (Data) {string=registered,moderator,admin} type The user type
  * @apiParam (Data) {int} points The user points
  * @apiParam (Data) {int} level The user level
- * @apiParam (Data) {int=20,40,70} daily The user daily goal
+ * @apiParam (Data) {int=10,20,40} daily The user daily goal
  * @apiParam (Data) {int} daily_achievements The user daily achievements
  * @apiParam (Data) {bool} premium If the user is premium or not
  * @apiParam (Data) {array} settings The user options
@@ -31,7 +31,7 @@
  * @apiSuccess {string=registered,moderator,admin} users.type The user type
  * @apiSuccess {int} users.points The user points
  * @apiSuccess {int} users.level The user level
- * @apiSuccess {int=20,40,70} users.daily The user daily goal
+ * @apiSuccess {int=10,20,40} users.daily The user daily goal
  * @apiSuccess {int} users.daily_achievements The user daily achievements
  * @apiSuccess {bool} users.premium If the user is premium or not
  * @apiSuccess {array} users.settings The user options
@@ -52,7 +52,7 @@
  * @apiSuccess {string=registered,moderator,admin} type The user type
  * @apiSuccess {int} points The user points
  * @apiSuccess {int} level The user level
- * @apiSuccess {int=20,40,70} daily The user daily goal
+ * @apiSuccess {int=10,20,40} daily The user daily goal
  * @apiSuccess {int} daily_achievements The user daily achievements
  * @apiSuccess {bool} premium If the user is premium or not
  * @apiSuccess {array} settings The user options

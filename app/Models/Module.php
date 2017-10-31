@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Facades\Auth;
 
 
 /**
@@ -61,6 +62,30 @@ class Module extends BaseModel
         'type' => 'required|in:course,fill,match,mcq,mcq-table,test,flashcard',
         'visible' => 'boolean'
     ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | Appends
+    |--------------------------------------------------------------------------
+    */
+    protected $appends = ['status'];
+
+    public function getStatusAttribute()
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        if ($user === null) {
+            return null;
+        }
+
+        $meta = Meta::where([
+            ['module_id', '=', $this->id],
+            ['user_id', '=', $user->id]
+        ])->first();
+
+        return $meta === null ? null : $meta->status;
+    }
 
 
     /*
