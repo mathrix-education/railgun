@@ -64,4 +64,17 @@ abstract class BasePolicy
 
         return null;
     }
+
+
+    /**
+     * Global search policy
+     *
+     * @param User $currentUser
+     *
+     * @return bool
+     */
+    public function search(User $currentUser)
+    {
+        return $this->atLeastModerator($currentUser);
+    }
 }
