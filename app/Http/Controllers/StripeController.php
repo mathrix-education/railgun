@@ -96,7 +96,7 @@ class StripeController extends CashierController
      * @apiVersion 0.8.1
      * @api {get} /stripe/estimate/{stripe_plan} Estimate
      * @apiGroup Stripe
-     * @apiName StripeSubscribe
+     * @apiName StripeEstimate
      * @apiDescription Estimate the price for a plan relatively to the current date
      * @apiPermission public
      * @apiParam {string=v3_biannually,v3_annually} stripe_plan The stripe plan
