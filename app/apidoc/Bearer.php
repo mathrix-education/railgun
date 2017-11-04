@@ -1,5 +1,5 @@
 <?php
 /**
  * @apiDefine Bearer
- * @apiHeader {String} Authorization Bearer `access_token`
+ * @apiHeader {string} Authorization Bearer `access_token`
  */

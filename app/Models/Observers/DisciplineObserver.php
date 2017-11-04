@@ -19,10 +19,8 @@ class DisciplineObserver extends BaseObserver
     public function saving($discipline)
     {
         // Sluggify if needed
-        if (
-            empty($discipline->slug) ||
-            ($discipline->isDirty('name') && !$discipline->isDirty('slug'))
-        ) {
+        if (empty($discipline->slug) ||
+            ($discipline->isDirty("name") && !$discipline->isDirty("slug"))) {
             $discipline->slug = str_slug($discipline->name);
         }
 

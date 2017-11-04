@@ -7,7 +7,7 @@ use App\Models\Level;
 use App\Models\Log;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Newsletter\Newsletter;
+use Spatie\Newsletter\NewsletterFacade as Newsletter;
 
 /**
  * Class UserObserver

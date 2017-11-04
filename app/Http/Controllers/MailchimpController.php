@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 use App\Exceptions\Http400InvalidRequestException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Spatie\Newsletter\NewsletterFacade;
+use Spatie\Newsletter\NewsletterFacade as Newsletter;
+
 
 /**
  * Class MailchimpController
@@ -39,7 +40,7 @@ class MailchimpController extends BaseController
             throw new Http400InvalidRequestException("email field is required");
         }
 
-        $response = NewsletterFacade::subscribeOrUpdate($email, [], $list);
+        $response = Newsletter::subscribeOrUpdate($email, [], $list);
 
         throw_if($response === false, Http400InvalidRequestException::class,
             "Mailchimp subscription failed");

@@ -303,8 +303,7 @@ $router->group(['prefix' => 'stripe'], function () use ($router) {
         $router->post('subscribe', 'StripeController@subscribe');
     });
 
-    $router->post('charge', 'StripeController@charge');
-
+    $router->get('estimate/{stripe_plan}', 'StripeController@estimate');
     $router->post('webhook', 'StripeController@handleWebhook');
 });
 
