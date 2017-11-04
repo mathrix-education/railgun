@@ -6,7 +6,7 @@
 | Define which api key and list ids should be used for the application
 */
 return [
-    "apiKey" => env("MAILCHIMP_APIKEY"),
+    "apiKey" => env("MAILCHIMP_API_KEY"),
     "defaultListName" => "subscribers",
     "lists" => [
         "subscribers" => [

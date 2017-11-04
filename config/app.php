@@ -52,6 +52,7 @@ return [
         "Mail" => \Illuminate\Support\Facades\Mail::class,
         "Gate" => \Illuminate\Support\Facades\Gate::class,
         "Validator" => \Illuminate\Support\Facades\Validator::class,
-        "Builder" => \Illuminate\Database\Eloquent\Builder::class
+        "Builder" => \Illuminate\Database\Eloquent\Builder::class,
+        "Newsletter" => \Spatie\Newsletter\NewsletterFacade::class
     ]
 ];
