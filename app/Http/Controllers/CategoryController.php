@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Exceptions\Http501NotImplementedException;
@@ -25,7 +24,6 @@ class CategoryController extends BaseController
      * @apiDescription Retrieve categories
      * @apiPermission public
      * @apiUse CategoryArray
-     * @apiUse Http400InvalidRequest_Pagination
      */
 
 

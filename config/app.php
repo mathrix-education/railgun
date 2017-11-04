@@ -10,8 +10,8 @@ return [
     | will not be safe. Please do this before deploying an application!
     |
     */
-    'key' => 'D4CXkZRn5s3ZMrak3EUaAHED7g8jh9ww',
-    'cipher' => 'AES-256-CBC',
+    "key" => "D4CXkZRn5s3ZMrak3EUaAHED7g8jh9ww",
+    "cipher" => "AES-256-CBC",
 
 
     /*
@@ -24,7 +24,7 @@ return [
     | to any of the locales which will be supported by the application.
     |
     */
-    'locale' => env('APP_LOCALE', 'en'),
+    "locale" => env("APP_LOCALE", "en"),
 
 
     /*
@@ -37,7 +37,7 @@ return [
     | the language folders that are provided through your application.
     |
     */
-    'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
+    "fallback_locale" => env("APP_FALLBACK_LOCALE", "en"),
 
 
     /*
@@ -48,10 +48,10 @@ return [
     | Used to generate right Facade docs
     |
     */
-    'aliases' => [
-        'Mail' => \Illuminate\Support\Facades\Mail::class,
-        'Gate' => \Illuminate\Support\Facades\Gate::class,
-        'Validator' => \Illuminate\Support\Facades\Validator::class,
-        'Builder' => \Illuminate\Database\Eloquent\Builder::class
+    "aliases" => [
+        "Mail" => \Illuminate\Support\Facades\Mail::class,
+        "Gate" => \Illuminate\Support\Facades\Gate::class,
+        "Validator" => \Illuminate\Support\Facades\Validator::class,
+        "Builder" => \Illuminate\Database\Eloquent\Builder::class
     ]
 ];

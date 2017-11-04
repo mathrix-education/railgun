@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Observers;
 
 use App\Models\Country;
@@ -19,16 +18,9 @@ class CountryObserver extends BaseObserver
      */
     public function saving($country)
     {
-        // Ensure the name is present
-        if (!$country->validate(['name' => 'required|max:255'])) {
-            return false;
-        }
-
         // Sluggify if needed
-        if (
-            empty($country->slug) ||
-            ($country->isDirty('name') && !$country->isDirty('slug'))
-        ) {
+        if (empty($country->slug) ||
+            ($country->isDirty("name") && !$country->isDirty("slug"))) {
             $country->slug = str_slug($country->name);
         }
         if (empty($country->name_short) || $country->isDirty('name')) {

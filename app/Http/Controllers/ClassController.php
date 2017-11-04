@@ -24,7 +24,6 @@ class ClassController extends BaseController
      * @apiDescription Retrieve classes
      * @apiPermission public
      * @apiUse ClassArray
-     * @apiUse Http400InvalidRequest_Pagination
      */
 
     /**

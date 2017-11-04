@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -98,14 +97,14 @@ class VoteController extends BaseController
         }
 
         $voteData = [
-            'user_id' => $request->user()->id,
-            'votable_id' => $votable_id,
-            'votable_type' => $votable_type
+            "user_id" => $request->user()->id,
+            "votable_id" => $votable_id,
+            "votable_type" => $votable_type
         ];
 
         $voteConditions = [];
         foreach ($voteData as $key => $v) {
-            $voteConditions[] = [$key, '=', $v];
+            $voteConditions[] = [$key, "=", $v];
         }
 
         if (!Vote::where($voteConditions)->exists()) {
@@ -120,7 +119,7 @@ class VoteController extends BaseController
             if ($vote->value == $value) {
                 $vote->delete();
             } else {
-                $vote->update(['value' => $value]);
+                $vote->update(["value" => $value]);
             }
         }
 

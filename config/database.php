@@ -8,24 +8,24 @@
 |
 */
 return [
-    'default' => env('DB_CONNECTION'),
-    'migrations' => 'migrations',
-    'connections' => [
+    "default" => env("DB_CONNECTION"),
+    "migrations" => "migrations",
+    "connections" => [
         /*
         |--------------------------------------------------------------------------
         | Development connection
         |--------------------------------------------------------------------------
         */
-        'live' => [
-            'driver' => 'mysql',
-            'host' => '127.0.0.1',
-            'database' => 'mathrix_fr',
-            'username' => 'mathrix_fr',
-            'password' => 't3QczMqKDBwKqRA83bKK',
-            'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix' => '',
-            'strict' => false,
+        "live" => [
+            "driver" => "mysql",
+            "host" => "127.0.0.1",
+            "database" => "mathrix_fr",
+            "username" => "mathrix_fr",
+            "password" => "t3QczMqKDBwKqRA83bKK",
+            "charset" => "utf8",
+            "collation" => "utf8_unicode_ci",
+            "prefix" => "",
+            "strict" => false,
         ],
 
         /*
@@ -33,16 +33,16 @@ return [
         | Development connection
         |--------------------------------------------------------------------------
         */
-        'dev' => [
-            'driver' => 'mysql',
-            'host' => '127.0.0.1',
-            'database' => 'mathrix_fr_dev',
-            'username' => 'mathrix_fr_dev',
-            'password' => 'vM5qJKdng2B3WVBCz5e5',
-            'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix' => '',
-            'strict' => false
+        "dev" => [
+            "driver" => "mysql",
+            "host" => "127.0.0.1",
+            "database" => "mathrix_fr_dev",
+            "username" => "mathrix_fr_dev",
+            "password" => "vM5qJKdng2B3WVBCz5e5",
+            "charset" => "utf8",
+            "collation" => "utf8_unicode_ci",
+            "prefix" => "",
+            "strict" => false
         ],
 
         /*
@@ -50,16 +50,16 @@ return [
         | Pipelines connection
         |--------------------------------------------------------------------------
         */
-        'pipelines' => [
-            'driver' => 'mysql',
-            'host' => 'mysql',
-            'database' => 'mathrix_fr_pipelines',
-            'username' => 'root',
-            'password' => '3AEzrLrSh8j8xJfyHAdB',
-            'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix' => '',
-            'strict' => false
+        "pipelines" => [
+            "driver" => "mysql",
+            "host" => "mysql",
+            "database" => "mathrix_fr_pipelines",
+            "username" => "root",
+            "password" => "3AEzrLrSh8j8xJfyHAdB",
+            "charset" => "utf8",
+            "collation" => "utf8_unicode_ci",
+            "prefix" => "",
+            "strict" => false
         ],
     ]
 ];

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Observers;
 
 use App\Exceptions\Http422ModelSaveException;
@@ -7,8 +6,8 @@ use App\Exceptions\Http422ModelValidationException;
 use App\Models\Level;
 use App\Models\Log;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Newsletter\Newsletter;
 
 /**
  * Class UserObserver
@@ -25,7 +24,12 @@ class UserObserver extends BaseObserver
      */
     public function saving($user)
     {
-        if ($user->isDirty('password')) {
+        if ($user->isDirty("email")) {
+            // Subscribe the user to "subscribers" Mailchimp list
+            Newsletter::subscribeOrUpdate($user->email); // TODO
+        }
+
+        if ($user->isDirty("password")) {
             /*
              * Hash if needed:
              * - password needs to be set
@@ -33,14 +37,14 @@ class UserObserver extends BaseObserver
              * - password does not contain the CRYPT_BLOWFISH identifier $2y$
              * Not 100% sure but practically null
              */
-            if (isset($user->password) && strlen($user->password) != 60 && !strpos($user->password, '$2y$')) {
+            if (isset($user->password) && strlen($user->password) != 60 && !strpos($user->password, "$2y$")) {
                 $user->password = Hash::make($user->password);
             }
         }
 
-        if ($user->isDirty('points')) {
+        if ($user->isDirty("points")) {
             /** @var int $pointsAdded the points added during the current request */
-            $pointsAdded = $user->points - $user->getOriginal('points');
+            $pointsAdded = $user->points - $user->getOriginal("points");
 
             /*
             |--------------------------------------------------------------------------
@@ -58,11 +62,11 @@ class UserObserver extends BaseObserver
             |--------------------------------------------------------------------------
             */
             /** @var Level $nextLevel */
-            $nextLevel = Level::where('level', $user->level + 1)->first();
+            $nextLevel = Level::where("level", $user->level + 1)->first();
 
             while ($nextLevel !== null && $user->points >= $nextLevel->objective) {
                 $user->level++;
-                $nextLevel = Level::where('level', $user->level + 1)->first();
+                $nextLevel = Level::where("level", $user->level + 1)->first();
             }
         }
 
@@ -78,7 +82,7 @@ class UserObserver extends BaseObserver
      */
     public function created($user)
     {
-        Log::log('user_registered', $user);
+        Log::log("user_registered", $user);
     }
 
 
@@ -92,16 +96,16 @@ class UserObserver extends BaseObserver
     {
         $changes = array_keys($user->getDirty());
 
-        if (in_array('password', $changes)) {
-            Log::log('user_changed_password', $user);
+        if (in_array("password", $changes)) {
+            Log::log("user_changed_password", $user);
         }
-        if (in_array('daily', $changes)) {
-            Log::log('user_set_daily', $user);
+        if (in_array("daily", $changes)) {
+            Log::log("user_set_daily", $user);
         }
-        if (in_array('level', $changes)) {
-            Log::log('user_passed_level', $user, [
-                'from' => $user->level - 1,
-                'to' => $user->level
+        if (in_array("level", $changes)) {
+            Log::log("user_passed_level", $user, [
+                "from" => $user->level - 1,
+                "to" => $user->level
             ]);
         }
     }

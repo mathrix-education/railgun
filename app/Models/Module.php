@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -24,6 +23,8 @@ use Illuminate\Support\Facades\Auth;
  * @property array $corrections
  * @property string $options
  * @property-read Collection|Activity[] $activities
+ * @property-read Collection|Comment[] $comments
+ * @property-read Collection|Log[] $logs
  * @method static Builder|Module whereChoices($value)
  * @method static Builder|Module whereContent($value)
  * @method static Builder|Module whereCorrections($value)
@@ -35,32 +36,29 @@ use Illuminate\Support\Facades\Auth;
  * @method static Builder|Module whereSlug($value)
  * @method static Builder|Module whereSolutions($value)
  * @method static Builder|Module whereType($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
- * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Log[] $logs
  */
 class Module extends BaseModel
 {
     /** @var array The fillable attributes */
-    protected $fillable = ['name', 'slug', 'description', 'type', 'content', 'questions', 'choices', 'solutions',
-        'corrections', 'options'];
+    protected $fillable = ["name", "slug", "description", "type", "content", "questions", "choices", "solutions",
+        "corrections", "options"];
 
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
-        'questions' => 'array',
-        'choices' => 'array',
-        'solutions' => 'array',
-        'corrections' => 'array',
-        'options' => 'array'
+        "questions" => "array",
+        "choices" => "array",
+        "solutions" => "array",
+        "corrections" => "array",
+        "options" => "array"
     ];
 
     /** @var array The validation rules */
     protected $rules = [
-        'name' => 'required|max:255',
-        'slug' => 'required|max:255',
-        'description' => 'required|max:255',
-        'type' => 'required|in:course,fill,match,mcq,mcq-table,test,flashcard',
-        'visible' => 'boolean'
+        "name" => "required|max:255",
+        "slug" => "required|max:255",
+        "description" => "required|max:255",
+        "type" => "required|in:course,fill,match,mcq,mcq-table,test,flashcard",
+        "visible" => "boolean"
     ];
 
     /*
@@ -68,7 +66,7 @@ class Module extends BaseModel
     | Appends
     |--------------------------------------------------------------------------
     */
-    protected $appends = ['status'];
+    protected $appends = ["status"];
 
     public function getStatusAttribute()
     {
@@ -80,8 +78,8 @@ class Module extends BaseModel
         }
 
         $meta = Meta::where([
-            ['module_id', '=', $this->id],
-            ['user_id', '=', $user->id]
+            ["module_id", "=", $this->id],
+            ["user_id", "=", $user->id]
         ])->first();
 
         return $meta === null ? null : $meta->status;
@@ -111,7 +109,7 @@ class Module extends BaseModel
      */
     public function comments(): MorphMany
     {
-        return $this->morphMany(Comment::class, 'commentable');
+        return $this->morphMany(Comment::class, "commentable");
     }
 
 
@@ -122,6 +120,6 @@ class Module extends BaseModel
      */
     public function logs(): MorphMany
     {
-        return $this->morphMany(Log::class, 'loggable');
+        return $this->morphMany(Log::class, "loggable");
     }
 }

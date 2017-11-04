@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\Users;
 
 use Tests\ScopeTestCase;

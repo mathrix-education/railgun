@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use Illuminate\Database\Eloquent\Builder;
@@ -27,67 +28,46 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @method static Builder|Log whereLoggableType($value)
  * @method static Builder|Log whereUserId($value)
  * @method static Builder|Log whereValue($value)
- * @mixin \Eloquent
  */
 class Log extends BaseModel
 {
+    /**
+     * Available events
+     */
     public const EVENTS = [
-        'user_registered',
-        'user_logged',
-        'user_changed_password',
-        'user_requested_new_password',
-        'user_gathered_points',
-        'user_passed_level',
-        'user_edited_profile',
-        'user_set_daily',
-        'user_achieved_daily',
-        'user_paid_for_premium',
-        'user_added_favorite',
-        'user_deleted_favorite',
-        'user_marked_activity_as',
-        'user_cancelled_premium'
+        // User-related
+        "user_registered",
+        "user_logged",
+        "user_edited_profile",
+        "user_changed_password",
+        "user_requested_new_password",
+        // Points-related
+        "user_gathered_points",
+        "user_passed_level",
+        "user_set_daily",
+        "user_achieved_daily",
+        // Content-related
+        "user_added_favorite",
+        "user_deleted_favorite",
+        "user_marked_activity_as",
+        // Premium-related
+        "user_payment_succeed_for_premium",
+        "user_payment_failed_for_premium",
+        "user_cancelled_premium"
     ];
+
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
 
     /** @var array */
-    public $fillable = ['event', 'user_id', 'value', 'created_at', 'loggable_type', 'loggable_id'];
+    public $fillable = ["event", "user_id", "value", "created_at", "loggable_type", "loggable_id"];
 
     /** @var array The attributes that should be cast to native types */
-    protected $casts = [
-        'value' => 'array'
-    ];
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Relations
-    |--------------------------------------------------------------------------
-    */
+    protected $casts = ["value" => "array"];
 
 
     /**
-     * BelongsTo User
-     *
-     * @return BelongsTo
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
-
-    /**
-     * MorphTo
-     */
-    public function loggable(): MorphTo
-    {
-        return $this->morphTo();
-    }
-
-
-    /**
-     * Disable updated_at field update
+     * Disable updated_at field update; seems to be a hack
      *
      * @param mixed $value
      *
@@ -107,18 +87,48 @@ class Log extends BaseModel
      * @param array $data the optional data to associate with the log, such as the loggable type and id
      *
      * @return bool
+     * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      */
     public static function log(string $event, $user = null, $data = [])
     {
+        throw_if(!in_array($event, self::EVENTS), Http400InvalidRequestException::class,
+            $event . " is not a valid event");
+
         $data = array_merge([
-            'event' => $event,
-            'user_id' => $user === null || is_int($user) ? $user : $user->id,
+            "event" => $event,
+            "user_id" => $user === null || is_int($user) ? $user : $user->id,
         ], $data);
 
         $log = new Log($data);
 
         return $log->save();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
+    /**
+     * BelongsTo User
+     *
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+
+    /**
+     * MorphTo Loggable
+     *
+     * @return MorphTo
+     */
+    public function loggable(): MorphTo
+    {
+        return $this->morphTo();
     }
 }

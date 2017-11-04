@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Course;
@@ -26,7 +25,6 @@ class CourseController extends BaseController
      * @apiParam {int} [page=1] The page number
      * @apiParam {int} [perPage=10] The course count per page
      * @apiUse CourseArray
-     * @apiUse Http400InvalidRequest_Pagination
      */
 
 

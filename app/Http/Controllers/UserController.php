@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -38,7 +37,6 @@ class UserController extends BaseController
      * @apiParam {int} [page=1] The page number
      * @apiParam {int} [perPage=10] The user count per page
      * @apiUse UserArray
-     * @apiUse Http400InvalidRequest_Pagination
      * @apiUse Http401Unauthorized
      */
 
@@ -79,16 +77,16 @@ class UserController extends BaseController
      */
     public function edit(Request $request, int $id = null): JsonResponse
     {
-        $user = $id === null ? $request->user() : User::where('id', $id)->firstOrFail();
+        $user = $id === null ? $request->user() : User::where("id", $id)->firstOrFail();
 
         // Check permission
-        if ($request->user()->cant('edit', $user)) {
+        if ($request->user()->cant("edit", $user)) {
             throw new Http401UnauthorizedException();
         }
 
         // Unlock fields for admin
-        if ($request->user()->tokenCan('admin')) {
-            $user->unguardAttributes(['type']);
+        if ($request->user()->tokenCan("admin")) {
+            $user->unguardAttributes(["type"]);
         }
 
         $user->fill($request->all());
@@ -147,8 +145,7 @@ class UserController extends BaseController
      * @apiParam (Data) {string=registered,moderator,admin} type The user type
      * @apiParam (Data) {int} [class_id=null] The class id; should be `null` for `moderator` and `admin`
      * @apiUse User
-     * @apiError (Error 409) conflict The given data failed to pass validation
-     * @apiError (Error 422) validation The given email already exists
+     * @apiError (Error 422) validation The given data failed to pass validation
      * @apiError (Error 422) save The validated user save failed
      * @apiError (Error 502) email_not_sent Unable to sent reset email
      *
@@ -164,32 +161,27 @@ class UserController extends BaseController
         /** @var User $user */
         $user = $request->user();
 
-        if (
-            !empty($request->input('type')) &&
-            $request->input('type') != 'register' &&
-            (!$user || !$user->tokenCan('admin'))
-        ) {
-            throw new Http401UnauthorizedException();
-        } else if (!$user || !$user->tokenCan('admin')) {
-            $request->merge(['type' => 'registered']);
-        }
+        // Check if user is trying to create a non-registered user and if so, if he has enough privileges
+        throw_if(!empty($request->input("type")) && $request->input("type") != "register" &&
+            (!$user || !$user->tokenCan("admin")), Http401UnauthorizedException::class);
 
+        // Build and override request data
+        if (!$user || !$user->tokenCan("admin")) {
+            $request->merge(["type" => "registered"]);
+        }
         $request->merge([
-            'points' => 0,
-            'settings' => [
-                'daily_goal' => 0,
-                'sound' => true,
-                'email_newsletter' => true,
-                'email_comment' => true
+            "points" => 0,
+            "settings" => [
+                "sound" => true
             ]
         ]);
 
-        $user = (new User())
-            ->unguardAttributes(['type'])
-            ->fill($request->all());
-        $user->save();
+        // Build and save the user
+        $user = (new User())->unguardAttributes(["type"])
+            ->fill($request->all())
+            ->save();
 
-        // TODO Send email
+        // TODO: Send welcome email
 
         return response()->json($user);
     }
@@ -213,11 +205,11 @@ class UserController extends BaseController
      */
     public function exists(string $field, string $value)
     {
-        if (!in_array($field, ['username', 'email'])) {
+        if (!in_array($field, ["username", "email"])) {
             throw new Http400InvalidRequestException();
         }
 
-        return response()->json(['exists' => User::where($field, $value)->exists()]);
+        return response()->json(["exists" => User::where($field, $value)->exists()]);
     }
 
 
@@ -239,8 +231,8 @@ class UserController extends BaseController
     {
         /** @var User $user */
         $user = $request->user();
-        $user = User::where('id', '=', $user->id)
-            ->with('subscriptions')
+        $user = User::where("id", "=", $user->id)
+            ->with("subscriptions")
             ->firstOrFail();
 
         return response()->json($user);
@@ -279,72 +271,72 @@ class UserController extends BaseController
     public function points(Request $request, $id = null)
     {
         /** @var User $user */
-        $user = $id === null ? $request->user() : User::where('id', $id)->firstOrFail();
+        $user = $id === null ? $request->user() : User::where("id", $id)->firstOrFail();
 
         // Check permission
-        if ($request->user()->cant('points', $user)) {
-            throw new Http401UnauthorizedException();
-        }
+        $request->user()->canOrFail("points", $user);
 
-
-        $loggableType = $request->input('loggable_type');
-        $loggableId = $request->input('loggable_id');
+        $loggableType = $request->input("loggable_type");
+        $loggableId = $request->input("loggable_id");
         $useLoggable = $loggableType !== null && $loggableId !== null;
 
-        // Valid loggable informations were passed
+        // Valid loggable data were passed
         if ($useLoggable) {
             /** @var Activity|Module $loggableModelClass */
             $loggableModelClass = Relation::getMorphedModel($loggableType); // Retrieve morphed loggable model class
 
             // If null, abort
-            if ($loggableModelClass === null) {
-                throw new Http400InvalidRequestException('Invalid loggable model');
-            }
+            throw_if($loggableModelClass === null, Http400InvalidRequestException::class,
+                "Invalid loggable model");
 
             // Else, try to find the loggable model
             /** @var Activity|Module $loggable */
-            $loggable = $loggableModelClass::where('id', $loggableId)->firstOrFail();
+            $loggable = $loggableModelClass::where("id", $loggableId)->firstOrFail();
 
             $userHasAlreadyGatheredPointsWithThisModule = Log::where([
-                ['event', 'user_gathered_points'],
-                ['user_id', $user->id],
-                ['loggable_type', '=', $loggableType],
-                ['loggable_id', '=', $loggable->id],
+                ["event", "=", "user_gathered_points"],
+                ["user_id", "=", $user->id],
+                ["loggable_type", "=", $loggableType],
+                ["loggable_id", "=", $loggable->id],
             ])
-                ->whereBetween('created_at', [Carbon::now()->setTime(0, 0, 0), Carbon::now()])
+                ->whereBetween("created_at", [Carbon::now()->setTime(0, 0, 0), Carbon::now()])
                 ->exists();
 
             // User already gathered point from this loggable today
             if ($userHasAlreadyGatheredPointsWithThisModule) {
-                throw new Http429TooManyRequestsException('Already gathered points today for this model');
+                throw new Http429TooManyRequestsException("Already gathered points today for this model");
             }
         }
 
-        $pointsToAdd = $request->input('points'); // Retrieve points to add from form data
+        $pointsToAdd = $request->input("points"); // Retrieve points to add from form data
 
-        if ($pointsToAdd === null) { // Check field presence
-            throw new Http400InvalidRequestException('points field is required');
-        } else if (!is_numeric($pointsToAdd) || (int)$pointsToAdd < 0) { // Check if field is a valid positive integer
-            throw new Http400InvalidRequestException('points field has to be a positive integer');
-        }
+        // Check if points is defined
+        throw_if($pointsToAdd === null,
+            Http400InvalidRequestException::class,
+            "points field is required");
+
+        // Check if field is a valid positive integer
+        throw_if(!is_numeric($pointsToAdd) || (int)$pointsToAdd < 0,
+            Http400InvalidRequestException::class,
+            "points field has to be a positive integer");
 
         $pointsToAdd = (int)$pointsToAdd;
 
-        $user->fill(['points' => $user->points + $pointsToAdd]);
-        $user->save();
+        // Update the user points count
+        $user->update(["points" => $user->points + $pointsToAdd]);
 
         // Log the points update
-        $logData = ['value' => ['points' => $pointsToAdd]];
+        $logData = ["value" => ["points" => $pointsToAdd]];
 
         if ($useLoggable) {
             $logData = array_merge($logData, [
-                'loggable_type' => $loggableType,
-                'loggable_id' => $loggableId
+                "loggable_type" => $loggableType,
+                "loggable_id" => $loggableId
             ]);
         }
 
         // Then log the informations
-        Log::log('user_gathered_points', $user, $logData);
+        Log::log("user_gathered_points", $user, $logData);
 
         return response()->json($user);
     }

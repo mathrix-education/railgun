@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -27,21 +26,15 @@ class PostController extends BaseController
      * @apiParam {int} [page=1] The page number
      * @apiParam {int} [perPage=10] The post count per page
      * @apiUse PostArray
-     * @apiUse Http400InvalidRequest_Pagination
      *
      * @param Request $request
      * @param int $page
      * @param int $perPage
      *
      * @return JsonResponse
-     * @throws Http400InvalidRequestException
      */
     public function index(Request $request, int $page = 1, int $perPage = 10): JsonResponse
     {
-        if ($page < 1 || $perPage < 1) {
-            throw new Http400InvalidRequestException('page and perPage have to be strictly positive');
-        }
-
         return response()->json(
             Post::limit($perPage)
                 ->offset(($page - 1) * $perPage)

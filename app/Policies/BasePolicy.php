@@ -23,7 +23,7 @@ abstract class BasePolicy
      */
     public function before(User $currentUser)
     {
-        if ($currentUser->tokenCan('admin')) {
+        if ($currentUser->tokenCan("admin")) {
             return true;
         } else {
             return null;
@@ -49,12 +49,12 @@ abstract class BasePolicy
      */
     public function __call($name, $args)
     {
-        $potentialScopeIndex = strpos($name, 'atLeast');
+        $potentialScopeIndex = strpos($name, "atLeast");
 
         if ($potentialScopeIndex !== false) {
             $potentialScope = strtolower(substr($name, $potentialScopeIndex + 7));
 
-            if (in_array($potentialScope, ['admin', 'moderator']) && $args[0] instanceof User) {
+            if (in_array($potentialScope, ["admin", "moderator"]) && $args[0] instanceof User) {
                 /** @var User $user */
                 $user = $args[0];
 

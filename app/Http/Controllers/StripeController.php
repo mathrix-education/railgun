@@ -1,8 +1,8 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
+use App\Models\Log;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -18,7 +18,7 @@ use Laravel\Cashier\Http\Controllers\WebhookController as CashierController;
  */
 class StripeController extends CashierController
 {
-    private const ALLOWED_STRIPE_PLANS = ['v3_annually', 'v3_monthly'];
+    private const ALLOWED_STRIPE_PLANS = ["v3_annually", "v3_monthly"];
 
 
     /**
@@ -42,27 +42,29 @@ class StripeController extends CashierController
      */
     public function subscribe(Request $request)
     {
-        $stripeToken = $request->input('stripe_token');
-        $stripePlan = $request->input('stripe_plan');
-        $stripeCoupon = $request->input('stripe_coupon');
+        $stripeToken = $request->input("stripe_token");
+        $stripePlan = $request->input("stripe_plan");
+        $stripeCoupon = $request->input("stripe_coupon");
 
         if ($stripeToken === null && $stripeCoupon === null) {
-            throw new Http400InvalidRequestException('stripe_token and stripe_coupon cannot be null at the same time');
+            throw new Http400InvalidRequestException("'stripe_token' and 'stripe_coupon' cannot be both null");
         }
 
         if (!in_array($stripePlan, self::ALLOWED_STRIPE_PLANS)) {
-            throw new Http400InvalidRequestException('stripe_plan has to be in [' . implode(', ',
-                    self::ALLOWED_STRIPE_PLANS) . ']');
+            throw new Http400InvalidRequestException("stripe_plan has to be in ['" .
+                implode("', '", self::ALLOWED_STRIPE_PLANS) . "']");
         }
 
         /** @var User $user */
         $user = $request->user();
 
-        $user->newSubscription('premium', $stripePlan)
+        $user->newSubscription("premium", $stripePlan)
             ->withCoupon($stripeCoupon)
             ->create($stripeToken);
 
-        return response()->json(['status' => 'success']);
+        Log::log("user_paid_for_premium", $user);
+
+        return response()->json(["status" => "success"]);
     }
 
     /*
@@ -79,8 +81,18 @@ class StripeController extends CashierController
      */
     public function handleInvoicePaymentSucceeded($payload)
     {
-        // TODO: LOG IT
-        return new Response('Webhook Handled', 200);
+        /** @var \Symfony\Component\HttpFoundation\Response $response */
+        $response = parent::handleInvoicePaymentSucceeded($payload);
+
+        if ($response->getStatusCode() == 200) {
+            $user = $this->getUserByStripeId($payload['data']['object']['customer']);
+
+            if ($user) {
+                Log::log("user_payment_succeed_for_premium", $user);
+            }
+        }
+
+        return $response;
     }
 
 
@@ -94,8 +106,20 @@ class StripeController extends CashierController
      */
     public function handleInvoicePaymentFailed(array $payload)
     {
-        // TODO: LOG IT
-        return new Response('Webhook Handled', 200);
+        /** @var \Symfony\Component\HttpFoundation\Response $response */
+        $response = parent::handleInvoicePaymentFailed($payload);
+
+        if ($response->getStatusCode() == 200) {
+            $user = $this->getUserByStripeId($payload['data']['object']['customer']);
+
+            if ($user) {
+                Log::log("user_payment_failed_for_premium", $user);
+
+                // TODO: Send payment failed email
+            }
+        }
+
+        return $response;
     }
 
 
@@ -108,8 +132,19 @@ class StripeController extends CashierController
      */
     public function handleCustomerSubscriptionDeleted(array $payload)
     {
-        $reponse = parent::handleCustomerSubscriptionDeleted($payload);
+        /** @var \Symfony\Component\HttpFoundation\Response $response */
+        $response = parent::handleCustomerSubscriptionDeleted($payload);
 
-        return $reponse;
+        if ($response->getStatusCode() == 200) {
+            $user = $this->getUserByStripeId($payload['data']['object']['customer']);
+
+            if ($user) {
+                Log::log("user_cancelled_premium", $user);
+
+                // TODO: Send cancellation email
+            }
+        }
+
+        return $response;
     }
 }

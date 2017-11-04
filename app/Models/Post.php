@@ -29,7 +29,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Post whereUserId($value)
  * @method static Builder|Post whereCreatedAt($value)
  * @method static Builder|Post whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 class Post extends BaseModel
 {
@@ -37,15 +36,15 @@ class Post extends BaseModel
     public $timestamps = true;
 
     /** @var array The fillable attributes */
-    protected $fillable = ['title', 'slug', 'content', 'category_id', 'user_id', 'created_at', 'updated_at'];
+    protected $fillable = ["title", "slug", "content", "category_id", "user_id", "created_at", "updated_at"];
 
     /** @var array Validation rules */
     protected $rules = [
-        'title' => 'required|max:255',
-        'slug' => 'required|max:255',
-        'content' => 'required',
-        'category_id' => 'required|exists:categories,id',
-        'user_id' => 'required|exists:users,id'
+        "title" => "required|max:255",
+        "slug" => "required|max:255",
+        "content" => "required",
+        "category_id" => "required|exists:categories,id",
+        "user_id" => "required|exists:users,id"
     ];
 
 
@@ -78,10 +77,10 @@ class Post extends BaseModel
 
 
     /**
-     * Get all of the post's comments.
+     * Get all of the post"s comments.
      */
     public function comments()
     {
-        return $this->morphMany(Comment::class, 'commentable');
+        return $this->morphMany(Comment::class, "commentable");
     }
 }

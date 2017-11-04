@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Observers;
 
 use App\Models\Comment;
@@ -19,10 +18,10 @@ class CommentObserver extends BaseObserver
      */
     public function saving($comment)
     {
-        if ($comment->isDirty('deleted_at')) {
+        if ($comment->isDirty("deleted_at")) {
             /** @var Comment $child */
             foreach ($comment->children as $child) {
-                $child->forceDelete();
+                $child->delete();
             }
         }
 

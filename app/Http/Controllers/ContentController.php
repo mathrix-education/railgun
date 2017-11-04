@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -45,7 +44,7 @@ class ContentController extends BaseController
      */
     public function countries()
     {
-        $data = Country::with('classes')->get();
+        $data = Country::with("classes")->get();
 
         return response()->json($data);
     }
@@ -92,13 +91,13 @@ class ContentController extends BaseController
     public function program(int $classId)
     {
         $data = Class_::with([
-            'disciplines.chapters' => function (HasMany $query) use ($classId) {
+            "disciplines.chapters" => function (HasMany $query) use ($classId) {
                 $query->getQuery()
-                    ->where('class_id', $classId)
-                    ->get(['id', 'name', 'slug']);
+                    ->where("class_id", $classId)
+                    ->get(["id", "name", "slug"]);
             },
-            'disciplines.chapters.notions.activities'
-        ])->where('id', $classId)->firstOrFail();
+            "disciplines.chapters.notions.activities"
+        ])->where("id", $classId)->firstOrFail();
 
         return response()->json($data);
     }
@@ -147,13 +146,13 @@ class ContentController extends BaseController
     public function modules(int $classId)
     {
         $data = Class_::with([
-            'disciplines.chapters' => function (HasMany $query) use ($classId) {
+            "disciplines.chapters" => function (HasMany $query) use ($classId) {
                 $query->getQuery()
-                    ->where('class_id', $classId)
-                    ->get(['id', 'name', 'slug']);
+                    ->where("class_id", $classId)
+                    ->get(["id", "name", "slug"]);
             },
-            'disciplines.chapters.notions.activities.modules'
-        ])->where('id', $classId)->firstOrFail();
+            "disciplines.chapters.notions.activities.modules"
+        ])->where("id", $classId)->firstOrFail();
 
         return response()->json($data);
     }
@@ -234,7 +233,7 @@ class ContentController extends BaseController
     public function searchGlobal(Request $request, string $query, int $page = 1, $perPage = 10)
     {
         if ($page < 1 || $perPage < 1) {
-            throw new Http400InvalidRequestException('page and perPage have to be strictly positive');
+            throw new Http400InvalidRequestException("page and perPage have to be strictly positive");
         }
 
         $user = $request->user();
@@ -244,16 +243,16 @@ class ContentController extends BaseController
         $classIds = [];
 
         // Videos
-        $videos = Activity::where('visible', true)
-            ->whereHas('modules', function (Builder $q) use ($query) {
-                return $q->where('type', '=', 'course')
-                    ->where('content', 'LIKE', '%[video]%')
-                    ->where('name', 'LIKE', '%' . $query . '%');
+        $videos = Activity::where("visible", true)
+            ->whereHas("modules", function (Builder $q) use ($query) {
+                return $q->where("type", "=", "course")
+                    ->where("content", "LIKE", "%[video]%")
+                    ->where("name", "LIKE", "%" . $query . "%");
             })
-            ->with(['modules' => function(BelongsToMany $q) use($query) {
-                return $q->where('type', '=', 'course')
-                    ->where('content', 'LIKE', '%[video]%')
-                    ->where('name', 'LIKE', '%' . $query . '%');
+            ->with(["modules" => function (BelongsToMany $q) use ($query) {
+                return $q->where("type", "=", "course")
+                    ->where("content", "LIKE", "%[video]%")
+                    ->where("name", "LIKE", "%" . $query . "%");
             }])
             ->limit($perPage)
             ->offset(($page - 1) * $perPage)
@@ -263,25 +262,25 @@ class ContentController extends BaseController
         if ($user) {
             /** @var Class_ $userClass */
             $userClass = Class_::find($user->class_id);
-            $classIds = $userClass->cursus()->pluck('id')->toArray();
+            $classIds = $userClass->cursus()->pluck("id")->toArray();
 
-            $chapters = Chapter::whereIn('class_id', $classIds)
-                ->with(['discipline', 'class_', 'class_.country'])
-                ->where('name', 'LIKE', '%' . $query . '%')
-                ->orWhere('slug', 'LIKE', '%' . $query . '%')
+            $chapters = Chapter::whereIn("class_id", $classIds)
+                ->with(["discipline", "class_", "class_.country"])
+                ->where("name", "LIKE", "%" . $query . "%")
+                ->orWhere("slug", "LIKE", "%" . $query . "%")
                 ->limit($perPage)
-                ->orderByDesc('class_id')
+                ->orderByDesc("class_id")
                 ->offset(($page - 1) * $perPage)
                 ->get();
 
-            $notions = Notion::where('name', 'LIKE', '%' . $query . '%')
-                ->whereHas('chapter.class_', function (Builder $query) use ($classIds) {
-                    return $query->whereIn('id', $classIds);
+            $notions = Notion::where("name", "LIKE", "%" . $query . "%")
+                ->whereHas("chapter.class_", function (Builder $query) use ($classIds) {
+                    return $query->whereIn("id", $classIds);
                 })
-                ->with(['chapter.discipline', 'chapter.class_' => function (BelongsTo $query) use ($classIds) {
-                    return $query->orderByDesc('id');
-                }, 'chapter.class_.country'])
-                ->orWhere('slug', 'LIKE', '%' . $query . '%')
+                ->with(["chapter.discipline", "chapter.class_" => function (BelongsTo $query) use ($classIds) {
+                    return $query->orderByDesc("id");
+                }, "chapter.class_.country"])
+                ->orWhere("slug", "LIKE", "%" . $query . "%")
                 ->limit($perPage)
                 ->offset(($page - 1) * $perPage)
                 ->get();
@@ -289,16 +288,16 @@ class ContentController extends BaseController
 
         // Not logged user or not filled collection
         if ($chapters->count() < $perPage) {
-            $chaptersToAdd = Chapter::with(['discipline', 'class_', 'class_.country']);
+            $chaptersToAdd = Chapter::with(["discipline", "class_", "class_.country"]);
 
             if (!empty($classIds)) {
-                $chaptersToAdd = $chaptersToAdd->whereNotIn('class_id', $classIds);
+                $chaptersToAdd = $chaptersToAdd->whereNotIn("class_id", $classIds);
             }
 
-            $chaptersToAdd = $chaptersToAdd->where('name', 'LIKE', '%' . $query . '%')
-                ->orWhere('slug', 'LIKE', '%' . $query . '%')
+            $chaptersToAdd = $chaptersToAdd->where("name", "LIKE", "%" . $query . "%")
+                ->orWhere("slug", "LIKE", "%" . $query . "%")
                 ->limit($perPage - $chapters->count())
-                ->orderByDesc('class_id')
+                ->orderByDesc("class_id")
                 ->offset(($page - 1) * $perPage)
                 ->get();
 
@@ -306,18 +305,20 @@ class ContentController extends BaseController
         }
 
         if ($notions->count() < $perPage) {
-            $notionsToAdd = Notion::where('name', 'LIKE', '%' . $query . '%');
+            $notionsToAdd = Notion::where("name", "LIKE", "%$query%");
 
             if (!empty($classIds)) {
-                $notionsToAdd = $notionsToAdd->whereHas('chapter.class_', function (Builder $query) use ($classIds) {
-                    return $query->whereNotIn('id', $classIds);
+                $notionsToAdd = $notionsToAdd->whereHas("chapter.class_", function (Builder $query)
+                use ($classIds) {
+                    return $query->whereNotIn("id", $classIds);
                 });
             }
 
-            $notionsToAdd->with(['chapter.discipline', 'chapter.class_' => function (BelongsTo $query) use ($classIds) {
-                return $query->orderByDesc('id');
-            }, 'chapter.class_.country'])
-                ->orWhere('slug', 'LIKE', '%' . $query . '%')
+            $notionsToAdd->with(["chapter.discipline", "chapter.class_" => function (BelongsTo $query)
+            use ($classIds) {
+                return $query->orderByDesc("id");
+            }, "chapter.class_.country"])
+                ->orWhere("slug", "LIKE", "%$query%")
                 ->limit($perPage - $notions->count())
                 ->offset(($page - 1) * $perPage)
                 ->get();
@@ -326,9 +327,9 @@ class ContentController extends BaseController
         }
 
         return response()->json([
-            'videos' => $videos,
-            'chapters' => $chapters,
-            'notions' => $notions
+            "videos" => $videos,
+            "chapters" => $chapters,
+            "notions" => $notions
         ]);
     }
 }

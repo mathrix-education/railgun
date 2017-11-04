@@ -28,7 +28,6 @@ class ActivityController extends BaseController
      * @apiDescription Retrieve activities
      * @apiPermission moderator
      * @apiUse ActivityArray
-     * @apiUse Http400InvalidRequest_Pagination
      * @apiUse Http401Unauthorized
      */
 
@@ -129,14 +128,12 @@ class ActivityController extends BaseController
     {
         $user = $this->getUserByRequestOrUnauthorized($request);
 
-        $metas = Meta::with(['country', 'class_', 'discipline', 'chapter', 'notion', 'activity', 'activity.modules'])
+        return response()->json(Meta::with(["country", "class_", "discipline", "chapter", "notion", "activity",
+            "activity.modules"])
             ->where([
-                ['user_id', '=', $user->id],
-                ['favorite', '=', true]
-            ])
-            ->get();
-
-        return response()->json($metas);
+                ["user_id", "=", $user->id],
+                ["favorite", "=", true]
+            ]));
     }
 
 
@@ -161,14 +158,12 @@ class ActivityController extends BaseController
     {
         $user = $this->getUserByRequestOrUnauthorized($request);
 
-        $metas = Meta::with(['country', 'class_', 'discipline', 'chapter', 'notion', 'activity', 'activity.modules'])
+        return response()->json(Meta::with(["country", "class_", "discipline", "chapter", "notion", "activity",
+            "activity.modules"])
             ->where([
-                ['user_id', '=', $user->id],
-                ['status', '=', 'to_revise']
-            ])
-            ->get();
-
-        return response()->json($metas);
+                ["user_id", "=", $user->id],
+                ["status", "=", "to_revise"]
+            ]));
     }
 
 
@@ -201,14 +196,15 @@ class ActivityController extends BaseController
         $user = $this->getUserByRequestOrUnauthorized($request);
 
         $metaData = array_merge(
-            ['user_id' => $user->id, 'activity_id' => $id],
-            $request->only(['country_id', 'class_id', 'discipline_id', 'notion_id', 'chapter_id'])
+            ["user_id" => $user->id, "activity_id" => $id],
+            $request->only(["country_id", "class_id", "discipline_id", "notion_id", "chapter_id"])
         );
 
         /** @var Meta $meta */
         $meta = Meta::firstOrNew($metaData);
 
-        $favorite = $request->input('favorite');
+        // Set favorite
+        $favorite = $request->input("favorite");
         if ($favorite === null) {
             if (!$meta->exists()) {
                 $meta->favorite = false;
@@ -217,7 +213,8 @@ class ActivityController extends BaseController
             $meta->favorite = $favorite;
         }
 
-        $status = $request->input('status');
+        // Set status
+        $status = $request->input("status");
         if ($status === null) {
             if (!$meta->exists()) {
                 $meta->status = null;

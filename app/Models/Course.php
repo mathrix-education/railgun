@@ -26,7 +26,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Course whereCategoryId($value)
  * @method static Builder|Course whereCreatedAt($value)
  * @method static Builder|Course whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 class Course extends BaseModel
 {
@@ -34,14 +33,14 @@ class Course extends BaseModel
     public $timestamps = true;
 
     /** @var array The fillable attributes */
-    protected $fillable = ['title', 'slug', 'content', 'category_id', 'created_at', 'updated_at'];
+    protected $fillable = ["title", "slug", "content", "category_id", "created_at", "updated_at"];
 
     /** @var array Validation rules */
     protected $rules = [
-        'title' => 'required|max:255',
-        'slug' => 'required|max:255',
-        'content' => 'required',
-        'category_id' => 'required|exists:categories,id'
+        "title" => "required|max:255",
+        "slug" => "required|max:255",
+        "content" => "required",
+        "category_id" => "required|exists:categories,id"
     ];
 
 
@@ -63,10 +62,10 @@ class Course extends BaseModel
 
 
     /**
-     * Get all of the post's comments.
+     * Get all of the post"s comments.
      */
     public function comments()
     {
-        return $this->morphMany(Comment::class, 'commentable');
+        return $this->morphMany(Comment::class, "commentable");
     }
 }

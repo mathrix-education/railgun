@@ -15,17 +15,16 @@ use Illuminate\Database\Eloquent\Builder;
  * @method static Builder|Level whereLevel($value)
  * @method static Builder|Level whereObjective($value)
  * @method static Builder|Level whereYoutubeId($value)
- * @mixin \Eloquent
  */
 class Level extends BaseModel
 {
     /** @var array The fillable attributes */
-    public $fillable = ['level', 'objective', 'youtube_id'];
+    public $fillable = ["level", "objective", "youtube_id"];
 
     /** @var array The validation rules */
     protected $rules = [
-        'level' => 'required|integer',
-        'objective' => 'required|integer'
+        "level" => "required|integer",
+        "objective" => "required|integer"
     ];
 
 
@@ -39,8 +38,8 @@ class Level extends BaseModel
     public static function getLevelByPoints(int $points): Level
     {
         /** @var Level $level */
-        $level = Level::where('objective', '<=', $points)
-            ->orderByDesc('objective')
+        $level = Level::where("objective", "<=", $points)
+            ->orderByDesc("objective")
             ->firstOrFail();
 
         return $level;

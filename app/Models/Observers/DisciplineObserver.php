@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Observers;
 
 use App\Models\Discipline;
@@ -19,11 +18,6 @@ class DisciplineObserver extends BaseObserver
      */
     public function saving($discipline)
     {
-        // Ensure the name is present
-        if (!$discipline->validate(['name' => 'required|max:255'])) {
-            return false;
-        }
-
         // Sluggify if needed
         if (
             empty($discipline->slug) ||

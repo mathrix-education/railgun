@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -30,7 +29,6 @@ class CommentController extends BaseController
      * @apiDescription Retrieve comments
      * @apiPermission moderator
      * @apiUse CommentArray
-     * @apiUse Http400InvalidRequest_Pagination
      * @apiUse Http401Unauthorized
      */
 
@@ -108,7 +106,6 @@ class CommentController extends BaseController
      * @apiParam {int} [page=1] the page to fetch
      * @apiParam {int} [perPage=10] the comments per page to fetch (excluding children)
      * @apiUse CommentArray
-     * @apiUse Http400InvalidRequest_Pagination
      *
      * @param string $commentable_type
      * @param int $commentable_id
@@ -120,26 +117,20 @@ class CommentController extends BaseController
      */
     public function type(string $commentable_type, int $commentable_id, int $page = 1, int $perPage = 10)
     {
-        if ($page < 1 || $perPage < 1) {
-            throw new Http400InvalidRequestException('page and perPage have to be strictly positive');
-        }
-
         // Ensure that the commentable model is morphed
         /** @var BaseModel $commentable_class */
         $commentable_class = Relation::getMorphedModel($commentable_type);
 
-        if ($commentable_class === null) {
-            throw new Http400InvalidRequestException();
-        }
+        throw_if($commentable_class === null, Http400InvalidRequestException::class);
 
         // Ensure that the morphed exists
         /** @var Module|Post|Course $commentable */
-        $commentable = $commentable_class::where('id', '=', $commentable_id)->firstOrFail();
+        $commentable = $commentable_class::where("id", "=", $commentable_id)->firstOrFail();
 
         // Retrieve comments
         return response()->json(
             $commentable->comments()
-                ->with(['user', 'children', 'children.user'])
+                ->with(["user", "children", "children.user"])
                 ->limit($perPage)
                 ->offset(($page - 1) * $perPage)
                 ->get()

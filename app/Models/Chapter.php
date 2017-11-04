@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -24,20 +23,19 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Chapter whereId($value)
  * @method static Builder|Chapter whereName($value)
  * @method static Builder|Chapter whereSlug($value)
- * @mixin \Eloquent
  */
 class Chapter extends BaseModel
 {
     /** @var array The fillable attributes */
-    protected $fillable = ['name', 'slug', 'class_id', 'discipline_id', 'visible'];
+    protected $fillable = ["name", "slug", "class_id", "discipline_id", "visible"];
 
     /** @var array Validation rules */
     protected $rules = [
-        'name' => 'required|max:255',
-        'slug' => 'required|max:255',
-        'class_id' => 'required|exists:classes,id',
-        'discipline_id' => 'required|exists:disciplines,id',
-        'visible' => 'boolean'
+        "name" => "required|max:255",
+        "slug" => "required|max:255",
+        "class_id" => "required|exists:classes,id",
+        "discipline_id" => "required|exists:disciplines,id",
+        "visible" => "boolean"
     ];
 
 
@@ -53,7 +51,7 @@ class Chapter extends BaseModel
      */
     public function class_(): BelongsTo
     {
-        return $this->belongsTo(Class_::class, 'class_id');
+        return $this->belongsTo(Class_::class, "class_id");
     }
 
 

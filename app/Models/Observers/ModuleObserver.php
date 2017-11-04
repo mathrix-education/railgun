@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Observers;
 
 use App\Models\Activity;
@@ -20,15 +19,6 @@ class ModuleObserver extends BaseObserver
      */
     public function saving($module)
     {
-        // Ensure the name is present
-        if (!$module->validate(['name' => 'required|max:255'])) {
-            $module->setResponse($module->http422Validation([
-                'message' => $module->errors()
-            ]));
-
-            return false;
-        }
-
         // Sluggify if needed
         if (
             empty($module->slug) ||
@@ -52,7 +42,7 @@ class ModuleObserver extends BaseObserver
         if (!empty($module->unlink['activities'])) {
             foreach ($module->unlink['activities'] as $activityId) {
                 if (Activity::find($activityId)->exists()) {
-                    $module->activities()->attach($activityId);
+                    $module->activities()->detach($activityId);
 
                 }
             }
