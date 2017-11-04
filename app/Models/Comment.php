@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Carbon\Carbon;
@@ -56,18 +55,18 @@ class Comment extends BaseModel
     public $timestamps = true;
 
     /** @var array The fillable attributes */
-    protected $fillable = ['content', 'score', 'parent_id', 'user_id', 'commentable_id', 'commentable_type',
-        'created_at', 'updated_at', 'deleted_at'];
+    protected $fillable = ["content", "score", "parent_id", "user_id", "commentable_id", "commentable_type",
+        "created_at", "updated_at", "deleted_at"];
 
     /** @var array Validation rules */
     protected $rules = [
-        'content' => 'required',
-        'user_id' => 'required|exists:users,id',
-        'parent_id' => 'nullable|exists:comments,id'
+        "content" => "required",
+        "user_id" => "required|exists:users,id",
+        "parent_id" => "nullable|exists:comments,id"
     ];
 
     /** @var array The attributes that should be mutated to dates */
-    protected $dates = ['deleted_at'];
+    protected $dates = ["deleted_at"];
 
 
     /*
@@ -82,7 +81,7 @@ class Comment extends BaseModel
      */
     public function parent(): BelongsTo
     {
-        return $this->belongsTo(Comment::class, 'parent_id');
+        return $this->belongsTo(Comment::class, "parent_id");
     }
 
 
@@ -93,7 +92,7 @@ class Comment extends BaseModel
      */
     public function children(): HasMany
     {
-        return $this->hasMany(Comment::class, 'parent_id');
+        return $this->hasMany(Comment::class, "parent_id");
     }
 
 
@@ -118,10 +117,10 @@ class Comment extends BaseModel
 
 
     /**
-     * Get all of the post's comments.
+     * Get all of the post"s comments.
      */
     public function votes()
     {
-        return $this->morphMany(Vote::class, 'votable');
+        return $this->morphMany(Vote::class, "votable");
     }
 }

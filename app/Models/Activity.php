@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -25,36 +24,35 @@ use Illuminate\Support\Facades\Auth;
  * @method static Builder|Activity whereId($value)
  * @method static Builder|Activity whereName($value)
  * @method static Builder|Activity whereSlug($value)
- * @mixin \Eloquent
  */
 class Activity extends BaseModel
 {
-    public const TYPES = ['video', 'course', 'test', 'exercise', 'summary', 'flashcard'];
+    public const TYPES = ["video", "course", "test", "exercise", "summary", "flashcard"];
 
     /** @var array The fillable attributes */
-    protected $fillable = ['name', 'slug', 'description', 'type', 'visible'];
+    protected $fillable = ["name", "slug", "description", "type", "visible"];
 
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
-        'options' => 'array'
+        "options" => "array"
     ];
 
     /** @var array The validation rules */
     protected $rules = [
-        'name' => 'required|max:255',
-        'slug' => 'required|max:255',
-        'description' => 'required|max:255',
-        'visible' => 'boolean'
+        "name" => "required|max:255",
+        "slug" => "required|max:255",
+        "description" => "required|max:255",
+        "visible" => "boolean"
     ];
 
     /** @var array Appends attributes */
-    protected $appends = ['favorite', 'status'];
+    protected $appends = ["favorite", "status"];
 
 
     public function __construct(array $attributes = [])
     {
         // Dynamic rules
-        $this->rules['type'] = 'required|in:' . implode(',', self::TYPES);
+        $this->rules["type"] = "required|in:" . implode(",", self::TYPES);
 
         parent::__construct($attributes);
     }
@@ -66,11 +64,11 @@ class Activity extends BaseModel
     |--------------------------------------------------------------------------
     */
     /**
-     * Get all of the post's logs.
+     * Get all of the post"s logs.
      */
     public function logs()
     {
-        return $this->morphMany(Log::class, 'loggable');
+        return $this->morphMany(Log::class, "loggable");
     }
 
 
@@ -111,6 +109,10 @@ class Activity extends BaseModel
     | Appends fields
     |--------------------------------------------------------------------------
     */
+    /**
+     * favorite
+     * @return bool
+     */
     public function getFavoriteAttribute()
     {
         /** @var User $user */
@@ -121,13 +123,18 @@ class Activity extends BaseModel
         }
 
         $meta = Meta::where([
-            ['activity_id', '=', $this->id],
-            ['user_id', '=', $user->id]
+            ["activity_id", "=", $this->id],
+            ["user_id", "=", $user->id]
         ])->first();
 
         return $meta === null ? false : (bool)$meta->favorite;
     }
 
+
+    /**
+     * status
+     * @return string|null
+     */
     public function getStatusAttribute()
     {
         /** @var User $user */
@@ -138,8 +145,8 @@ class Activity extends BaseModel
         }
 
         $meta = Meta::where([
-            ['activity_id', '=', $this->id],
-            ['user_id', '=', $user->id]
+            ["activity_id", "=", $this->id],
+            ["user_id", "=", $user->id]
         ])->first();
 
         return $meta === null ? null : $meta->status;

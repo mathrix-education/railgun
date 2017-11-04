@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Notion;
@@ -25,7 +24,6 @@ class NotionController extends BaseController
      * @apiPermission moderator
      * @apiUse NotionArray
      * @return JsonResponse
-     * @apiUse Http400InvalidRequest_Pagination
      * @apiUse Http401Unauthorized
      */
 

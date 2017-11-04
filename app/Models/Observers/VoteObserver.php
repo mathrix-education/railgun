@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Observers;
 
 use App\Models\Vote;
@@ -17,7 +16,7 @@ class VoteObserver extends BaseObserver
      */
     public function created($vote)
     {
-        $vote->votable->update(['score' => (int)$vote->votable->score + (int)$vote->value]);
+        $vote->votable->update(["score" => (int)$vote->votable->score + (int)$vote->value]);
     }
 
 
@@ -26,7 +25,7 @@ class VoteObserver extends BaseObserver
      */
     public function updated($vote)
     {
-        $vote->votable->update(['score' => (int)$vote->votable->score + 2 * (int)$vote->value]);
+        $vote->votable->update(["score" => (int)$vote->votable->score + 2 * (int)$vote->value]);
     }
 
 
@@ -35,6 +34,6 @@ class VoteObserver extends BaseObserver
      */
     public function deleted($vote)
     {
-        $vote->votable->update(['score' => (int)$vote->votable->score - (int)$vote->value]);
+        $vote->votable->update(["score" => (int)$vote->votable->score - (int)$vote->value]);
     }
 }

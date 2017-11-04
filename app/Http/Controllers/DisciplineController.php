@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Exceptions\Http501NotImplementedException;
@@ -25,7 +24,6 @@ class DisciplineController extends BaseController
      * @apiDescription Retrieve disciplines
      * @apiPermission public
      * @apiUse DisciplineArray
-     * @apiUse Http400InvalidRequest_Pagination
      */
 
 

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Observers;
 
 use App\Models\Comment;
@@ -20,15 +19,6 @@ class PostObserver extends BaseObserver
      */
     public function saving($post)
     {
-        // Ensure the title is present
-        if (!$post->validate(['title' => 'required|max:255'])) {
-            $post->setResponse($post->http422Validation([
-                'message' => $post->errors()
-            ]));
-
-            return false;
-        }
-
         // Sluggify if needed
         if (
             empty($post->slug) ||

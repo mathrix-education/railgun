@@ -24,7 +24,6 @@ class CountryController extends BaseController
      * @apiDescription Retrieve countries
      * @apiPermission public
      * @apiUse CountryArray
-     * @apiUse Http400InvalidRequest_Pagination
      */
 
 

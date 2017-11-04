@@ -28,7 +28,7 @@ abstract class BaseController extends Controller
     /** @var BaseModel The model class associated with the controller */
     public $modelClass = null;
     /** @var array The model map to handle cancerous models name */
-    public $modelMap = ['Class' => 'Class_'];
+    public $modelMap = ["Class" => "Class_"];
 
 
     /**
@@ -50,8 +50,8 @@ abstract class BaseController extends Controller
         $controllerClass = get_class($this);
 
         // Remove namespace to avoid replace colliding
-        $guessedModelClass = str_replace('App\\Http\\Controllers\\', '', $controllerClass);
-        $guessedModelClass = str_replace('Controller', '', $guessedModelClass);
+        $guessedModelClass = str_replace("App\\Http\\Controllers\\", "", $controllerClass);
+        $guessedModelClass = str_replace("Controller", "", $guessedModelClass);
 
         // Handle cancer model name (i.e. Class_)
         if (in_array($guessedModelClass, array_keys($this->modelMap))) {
@@ -59,7 +59,7 @@ abstract class BaseController extends Controller
         }
 
         // Re-add models namespace
-        $guessedModelClass = 'App\\Models\\' . $guessedModelClass;
+        $guessedModelClass = "App\\Models\\" . $guessedModelClass;
 
         if (class_exists($guessedModelClass) && $this->modelClass === null) {
             $this->modelClass = $guessedModelClass;
@@ -78,23 +78,21 @@ abstract class BaseController extends Controller
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
      */
-    protected function getUserByRequestOrUnauthorized(Request $request, $minimumScope = 'admin', $key = 'user_id')
+    protected function getUserByRequestOrUnauthorized(Request $request, $minimumScope = "admin", $key = "user_id")
     {
         /** @var User $user */
         $user = $request->user();
         $userId = $request->input($key);
 
         // Check the the user key content is an integer
-        if ($userId !== null && !is_int($userId)) {
-            throw new Http400InvalidRequestException($key . ' has to be a positive integer');
-        }
+        throw_if($userId !== null && !is_int($userId), Http400InvalidRequestException::class,
+            "`$key` has to be a positive integer");
 
         // Check authorization
-        if ($user === null || ($userId !== null && $user->id != $userId && !$user->tokenCan($minimumScope))) {
-            throw new Http401UnauthorizedException();
-        }
+        throw_if($user === null || ($userId !== null && $user->id != $userId && !$user->tokenCan($minimumScope)),
+            Http401UnauthorizedException::class);
 
-        return $userId === null ? $request->user() : User::where('id', '=', $userId)->firstOrFail();
+        return $userId === null ? $request->user() : User::where("id", "=", $userId)->firstOrFail();
     }
 
 
@@ -108,8 +106,8 @@ abstract class BaseController extends Controller
     protected function formatValidationErrors(Validator $validator)
     {
         return [
-            'error' => 'validation',
-            'message' => [
+            "error" => "validation",
+            "message" => [
                 $validator->getMessageBag()->toArray()
             ]
         ];
@@ -135,12 +133,8 @@ abstract class BaseController extends Controller
     public function index(Request $request, int $page = 1, int $perPage = 10): JsonResponse
     {
         // Check permission
-        if ($request->user() !== null && $request->user()->cant('index', $this->modelClass)) {
+        if ($request->user() !== null && $request->user()->cant("index", $this->modelClass)) {
             throw new Http401UnauthorizedException();
-        }
-
-        if ($page < 1 || $perPage < 1) {
-            throw new Http400InvalidRequestException('page and perPage have to be strictly positive');
         }
 
         return response()->json(
@@ -162,38 +156,38 @@ abstract class BaseController extends Controller
      */
     public function search(Request $request): JsonResponse
     {
-        if ($request->user()->cant('search', $this->modelClass)) {
+        if ($request->user()->cant("search", $this->modelClass)) {
             throw new Http401UnauthorizedException();
         }
 
-        $inputs = $request->except(['order', 'having']);
+        $inputs = $request->except(["order", "having"]);
         $order = array_merge([
-            'column' => 'id',
-            'dir' => 'asc'
-        ], $request->input('order', []));
+            "column" => "id",
+            "dir" => "asc"
+        ], $request->input("order", []));
 
         $conditions = [];
         $having = [];
 
         // Check if order diir is valid
-        if (!empty($inputs['order']) && !in_array($order['dir'], ['asc', 'desc'])) {
-            throw new Http400InvalidRequestException('order allowed values: ["asc", "desc"]');
+        if (!empty($inputs["order"]) && !in_array($order["dir"], ["asc", "desc"])) {
+            throw new Http400InvalidRequestException("order allowed values: ['asc', 'desc']");
         }
 
         // Convert request form data to valid eloquent conditions
         foreach($inputs as $column => $value) {
-            $operator = '=';
-            if (strstr($value, '%') !== false) {
-                $operator = 'LIKE';
+            $operator = "=";
+            if (strstr($value, "%") !== false) {
+                $operator = "LIKE";
             }
             $conditions[] = [$column, $operator, $value];
         }
 
-        foreach($request->input('having', []) as $relation => $relationConditions) {
+        foreach($request->input("having", []) as $relation => $relationConditions) {
             foreach($relationConditions as $column => $value) {
-                $operator = '=';
-                if (strstr($value, '%') !== false) {
-                    $operator = 'LIKE';
+                $operator = "=";
+                if (strstr($value, "%") !== false) {
+                    $operator = "LIKE";
                 }
                 $having[$relation][] = [$column, $operator, $value];
             }
@@ -208,12 +202,12 @@ abstract class BaseController extends Controller
             });
         }
 
-        $queryBuilder = $queryBuilder->orderBy($order['column'], $order['dir']);
+        $queryBuilder = $queryBuilder->orderBy($order["column"], $order["dir"]);
         $data = $queryBuilder->get();
 
         return response()->json([
-            'count' => $data->count(),
-            'data' => $data
+            "count" => $data->count(),
+            "data" => $data
         ]);
     }
 
@@ -228,7 +222,7 @@ abstract class BaseController extends Controller
      */
     public function get(int $id): JsonResponse
     {
-        $model = $this->modelClass::where('id', $id)->firstOrFail();
+        $model = $this->modelClass::where("id", $id)->firstOrFail();
 
         return response()->json($model);
     }
@@ -246,7 +240,7 @@ abstract class BaseController extends Controller
      */
     public function add(Request $request): JsonResponse
     {
-        if ($request->user() !== null && $request->user()->cant('add', $this->modelClass)) {
+        if ($request->user() !== null && $request->user()->cant("add", $this->modelClass)) {
             throw new Http401UnauthorizedException();
         }
 
@@ -272,9 +266,9 @@ abstract class BaseController extends Controller
     public function edit(Request $request, int $id): JsonResponse
     {
         /** @var BaseModel $model */
-        $model = $this->modelClass::where('id', $id)->firstOrFail();
+        $model = $this->modelClass::where("id", $id)->firstOrFail();
 
-        if ($request->user() !== null && $request->user()->cant('edit', $model)) {
+        if ($request->user() !== null && $request->user()->cant("edit", $model)) {
             throw new Http401UnauthorizedException();
         }
 
@@ -298,9 +292,9 @@ abstract class BaseController extends Controller
     public function delete(Request $request, int $id)
     {
         /** @var BaseModel $activity */
-        $model = $this->modelClass::where('id', $id)->firstOrFail();
+        $model = $this->modelClass::where("id", $id)->firstOrFail();
 
-        if ($request->user() !== null && $request->user()->cant('delete', $model)) {
+        if ($request->user() !== null && $request->user()->cant("delete", $model)) {
             throw new Http401UnauthorizedException();
         }
 

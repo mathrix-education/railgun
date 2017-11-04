@@ -26,17 +26,10 @@ abstract class BaseModel extends Model
     protected $validate = true;
     /** @var array Default validation rules */
     protected $rules = [];
-    /** @var string the validation rules to use */
-    protected $useRules = 'rules';
-    /** @var bool if model has validation errors */
+    /** @var string Validation rules to use */
+    protected $useRules = "rules";
+    /** @var bool|array Validation errors */
     protected $errors = false;
-
-    /**
-     * The response which have to be sent if something goes wrong
-     *
-     * @var null|JsonResponse
-     */
-    protected $response = null;
 
     /**
      * Get the table name
@@ -157,7 +150,7 @@ abstract class BaseModel extends Model
      *
      * @return bool
      */
-    public function validate($rules = 'rules')
+    public function validate($rules = "rules")
     {
         if (is_string($rules)) {
             $this->useRules = $rules;
@@ -229,7 +222,7 @@ abstract class BaseModel extends Model
 
 
     /**
-     * Don't use appends
+     * Don"t use appends
      */
     public static function withoutAppends()
     {

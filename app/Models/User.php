@@ -1,7 +1,7 @@
 <?php
-
 namespace App\Models;
 
+use App\Exceptions\Http401UnauthorizedException;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -67,7 +67,6 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereCardLastFour($value)
  * @method static Builder|User whereStripeId($value)
  * @method static Builder|User whereTrialEndsAt($value)
- * @mixin \Eloquent
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
@@ -76,30 +75,30 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
     /** @var array The guarded attributes */
-    protected $guarded = ['type'];
+    protected $guarded = ["type"];
 
-    /** @var array The hidden attributes from the model's JSON */
-    protected $hidden = ['password', 'token'];
+    /** @var array The hidden attributes from the model"s JSON */
+    protected $hidden = ["password", "token"];
 
     /** @var array The attributes that should be cast to native types */
-    protected $casts = ['settings' => 'array'];
+    protected $casts = ["settings" => "array"];
 
     /** @var array The validation rules on create */
     protected $rules = [
-        'email' => 'required|email|unique:users,email|max:60',
-        'username' => 'nullable|max:30',
-        'firstname' => 'nullable|max:30',
-        'lastname' => 'nullable|max:40',
-        'password' => 'required|min:3',
-        'type' => 'required|in:registered,moderator,admin',
-        'token' => 'required|size:36',
-        'points' => 'required|integer',
-        'daily' => 'nullable|in:10,20,40',
-        'class_id' => 'nullable|exists:classes,id'
+        "email" => "required|email|unique:users,email|max:60",
+        "username" => "nullable|max:30",
+        "firstname" => "nullable|max:30",
+        "lastname" => "nullable|max:40",
+        "password" => "required|min:3",
+        "type" => "required|in:registered,moderator,admin",
+        "token" => "required|size:36",
+        "points" => "required|integer",
+        "daily" => "nullable|in:10,20,40",
+        "class_id" => "nullable|exists:classes,id"
     ];
 
     /** @var array The virtual attributes */
-    protected $appends = ['premium', 'daily_points'];
+    protected $appends = ["premium", "daily_points"];
 
 
     /**
@@ -109,7 +108,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function getPremiumAttribute()
     {
-        return $this->subscribed('premium');
+        return $this->subscribed("premium");
     }
 
 
@@ -121,17 +120,17 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function getDailyPointsAttribute()
     {
         $logs = Log::where([
-            ['event', '=', 'user_gathered_points'],
-            ['user_id', '=', $this->id],
+            ["event", "=", "user_gathered_points"],
+            ["user_id", "=", $this->id],
         ])
-            ->whereBetween('created_at', [Carbon::now()->setTime(0, 0, 0), Carbon::now()])
+            ->whereBetween("created_at", [Carbon::now()->setTime(0, 0, 0), Carbon::now()])
             ->get();
 
         $sum = 0;
 
         /** @var Log $log */
-        foreach ($logs as $log) {
-            $sum += $log->value['points'];
+        foreach($logs as $log) {
+            $sum += $log->value["points"];
         }
 
         return $sum;
@@ -143,6 +142,20 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     |--------------------------------------------------------------------------
     */
     /**
+     * Check if user is authorized to do something; if not throw an exception
+     * @see Authorizable
+     *
+     * @param $ability
+     * @param array $arguments
+     * @param string $exceptionClass
+     */
+    public function canOrFail($ability, $arguments = [], $exceptionClass = Http401UnauthorizedException::class)
+    {
+        throw_if($this->cant($ability, $arguments) && class_exists($exceptionClass), $exceptionClass);
+    }
+
+
+    /**
      * Determine if user can do something according to its token
      *
      * @param string $scope the minimum scope
@@ -151,11 +164,11 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function tokenCan($scope)
     {
-        $order = ['admin', 'moderator', 'registered'];
+        $order = ["admin", "moderator", "registered"];
         $key = array_search($scope, $order);
 
         if ($key !== false) {
-            foreach ($order as $k => $grantedScope) {
+            foreach($order as $k => $grantedScope) {
                 if ($this->passportTokenCan($grantedScope) && $k <= $key) {
                     return true;
                 }

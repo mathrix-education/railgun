@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Observers;
 
 use App\Models\Course;
@@ -19,20 +18,9 @@ class CourseObserver extends BaseObserver
      */
     public function saving($course)
     {
-        // Ensure the title is present
-        if (!$course->validate(['title' => 'required|max:255'])) {
-            $course->setResponse($course->http422Validation([
-                'message' => $course->errors()
-            ]));
-
-            return false;
-        }
-
         // Sluggify if needed
-        if (
-            empty($course->slug) ||
-            ($course->isDirty('title') && !$course->isDirty('slug'))
-        ) {
+        if (empty($course->slug) ||
+            ($course->isDirty("title") && !$course->isDirty("slug"))) {
             $course->slug = str_slug($course->title);
         }
 

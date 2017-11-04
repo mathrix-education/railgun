@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -51,20 +50,20 @@ class AuthController extends BaseController
     {
         // Try to find the user by email to get scope
         /** @var User $user */
-        $user = User::where('email', $request->input('username'))->first();
+        $user = User::where("email", $request->input("username"))->first();
 
         if ($user !== null) {
-            $request->merge(['scope' => $user->type]);
+            $request->merge(["scope" => $user->type]);
         }
 
         $response = app()->dispatch(
-            $request->create('/oauth/token', 'post', $request->all())
+            $request->create("/oauth/token", "post", $request->all())
         );
 
         // If user successfully logged, log it into the database
         if ($response->getStatusCode() == 200) {
-            Log::log('user_logged', $user->id, [
-                'ip' => $request->getClientIp()
+            Log::log("user_logged", $user->id, [
+                "ip" => $request->getClientIp()
             ]);
         }
 
@@ -95,7 +94,7 @@ class AuthController extends BaseController
     public function refresh(Request $request)
     {
         return app()->dispatch(
-            $request->create('/oauth/token', 'post', $request->all())
+            $request->create("/oauth/token", "post", $request->all())
         );
     }
 
@@ -122,11 +121,11 @@ class AuthController extends BaseController
     {
         // Try to find the user with the given email
         /** @var User $user */
-        $user = User::where('email', $request->input('email'))->firstOrFail();
+        $user = User::where("email", $request->input("email"))->firstOrFail();
 
         // Generate token
-        $user->unguardAttributes(['token']);
-        $user->update(['token' => Factory::create()->uuid]);
+        $user->unguardAttributes(["token"]);
+        $user->update(["token" => Factory::create()->uuid]);
 
         // Send PasswordForgotten email
         Mail::to($user->email)->send(new PasswordForgotten($user));
@@ -134,7 +133,7 @@ class AuthController extends BaseController
             throw new Http502EmailNotSentException();
         }
 
-        return response()->json(['message' => 'Reset email sent successfully']);
+        return response()->json(["message" => "Reset email sent successfully"]);
     }
 
 
@@ -161,19 +160,19 @@ class AuthController extends BaseController
      */
     public function reset(Request $request, string $token)
     {
-        if ($request->input('password') === null) {
-            throw new Http400InvalidRequestException('password cannot be null');
+        if ($request->input("password") === null) {
+            throw new Http400InvalidRequestException("password cannot be null");
         }
 
         // Try to find with the given token
         /** @var User $user */
-        $user = User::where('token', $token)->firstOrFail();
+        $user = User::where("token", $token)->firstOrFail();
 
         // Update password
-        $user->unguardAttributes(['token']);
+        $user->unguardAttributes(["token"]);
         $user->update([
-            'password' => $request->input('password'),
-            'token' => Factory::create()->uuid // Refresh token
+            "password" => $request->input("password"),
+            "token" => Factory::create()->uuid // Refresh token
         ]);
 
         // TODO Email
@@ -181,7 +180,7 @@ class AuthController extends BaseController
         $emailErrors = Mail::failures();
         if (!empty($emailErrors)) {
             return $this->http502EmailNotSent([
-                'message' => $emailErrors
+                "message" => $emailErrors
             ]);
         }*/
 

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Observers;
 
 use App\Models\Category;
@@ -19,16 +18,9 @@ class CategoryObserver extends BaseObserver
      */
     public function saving($category)
     {
-        // Ensure the name is present
-        if (!$category->validate(['name' => 'required|max:255'])) {
-            return false;
-        }
-
         // Sluggify if needed
-        if (
-            empty($category->slug) ||
-            ($category->isDirty('name') && !$category->isDirty('slug'))
-        ) {
+        if (empty($category->slug) ||
+            ($category->isDirty("name") && !$category->isDirty("slug"))) {
             $category->slug = str_slug($category->name);
         }
 

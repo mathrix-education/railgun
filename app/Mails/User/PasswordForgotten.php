@@ -39,12 +39,12 @@ class PasswordForgotten extends Mailable
      */
     public function build()
     {
-        $this->subject('Modification de mot de passe');
+        $this->subject("Modification de mot de passe");
 
-        return $this->view('emails.users.forgotten')->with([
-            'title' => 'Modification de mot de passe',
-            'firstname' => $this->user->firstname,
-            'token' => $this->user->token
+        return $this->view("emails.users.forgotten")->with([
+            "title" => "Modification de mot de passe",
+            "firstname" => $this->user->firstname,
+            "token" => $this->user->token
         ]);
     }
 }

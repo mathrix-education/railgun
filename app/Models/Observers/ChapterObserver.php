@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Observers;
 
 use App\Exceptions\Http422ModelSaveException;
@@ -20,15 +19,10 @@ class ChapterObserver extends BaseObserver
      */
     public function saving($chapter)
     {
-        // Ensure the name is present
-        if (!$chapter->validate(['name' => 'required|max:255'])) {
-            return false;
-        }
-
         // Sluggify if needed
         if (
             empty($chapter->slug) ||
-            ($chapter->isDirty('name') && !$chapter->isDirty('slug'))
+            ($chapter->isDirty("name") && !$chapter->isDirty("slug"))
         ) {
             $chapter->slug = str_slug($chapter->name);
         }

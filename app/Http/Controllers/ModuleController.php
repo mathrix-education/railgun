@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -32,7 +31,6 @@ class ModuleController extends BaseController
      * @apiPermission moderator
      * @apiUse ModuleArray
      * @return JsonResponse
-     * @apiUse Http400InvalidRequest_Pagination
      * @apiUse Http401Unauthorized
      */
 
@@ -55,15 +53,15 @@ class ModuleController extends BaseController
      */
     public function get(int $id): JsonResponse
     {
-        $module = Module::where('id', $id)->with([
-            'comments' => function (MorphMany $query) use ($id) {
+        $module = Module::where("id", $id)->with([
+            "comments" => function (MorphMany $query) use ($id) {
                 $query->getQuery()
-                    ->where('commentable_id', '=', $id)
-                    ->where('commentable_type', '=', 'module')
-                    ->orderByDesc('created_at');
+                    ->where("commentable_id", "=", $id)
+                    ->where("commentable_type", "=", "module")
+                    ->orderByDesc("created_at");
             },
-            'comments.children' => function (HasMany $query) {
-                $query->getQuery()->orderBy('created_at');
+            "comments.children" => function (HasMany $query) {
+                $query->getQuery()->orderBy("created_at");
             }
         ])->firstOrFail();
 
@@ -155,16 +153,16 @@ class ModuleController extends BaseController
         $user = $this->getUserByRequestOrUnauthorized($request);
 
         $metaData = array_merge(
-            ['user_id' => $user->id, 'module_id' => $id],
+            ["user_id" => $user->id, "module_id" => $id],
             $request->only(
-                ['country_id', 'class_id', 'discipline_id', 'notion_id', 'chapter_id', 'activity_id']
+                ["country_id", "class_id", "discipline_id", "notion_id", "chapter_id", "activity_id"]
             )
         );
 
         /** @var Meta $meta */
         $meta = Meta::firstOrNew($metaData);
 
-        $status = $request->input('status');
+        $status = $request->input("status");
         if ($status === null) {
             if (!$meta->exists()) {
                 $meta->status = null;

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Chapter;
@@ -24,7 +23,6 @@ class ChapterController extends BaseController
      * @apiDescription Retrieve chapters
      * @apiPermission moderator
      * @apiUse ChapterArray
-     * @apiUse Http400InvalidRequest_Pagination
      * @apiUse Http401Unauthorized
      */
 

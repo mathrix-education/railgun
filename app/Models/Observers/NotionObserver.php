@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Observers;
 
 use App\Models\Activity;
@@ -20,15 +19,6 @@ class NotionObserver extends BaseObserver
      */
     public function saving($notion)
     {
-        // Ensure the name is present
-        if (!$notion->validate(['name' => 'required|max:255'])) {
-            $notion->setResponse($notion->http422Validation([
-                'message' => $notion->errors()
-            ]));
-
-            return false;
-        }
-
         // Sluggify if needed
         if (
             empty($notion->slug) ||
@@ -52,7 +42,7 @@ class NotionObserver extends BaseObserver
         if (!empty($notion->unlink['activities'])) {
             foreach ($notion->unlink['activities'] as $activityId) {
                 if (Activity::find($activityId)->exists()) {
-                    $notion->activities()->attach($activityId);
+                    $notion->activities()->detach($activityId);
 
                 }
             }

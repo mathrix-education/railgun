@@ -19,12 +19,8 @@ try {
 |
 */
 
-$app = new Laravel\Lumen\Application(
-    realpath(__DIR__ . '/../')
-);
-
+$app = new Laravel\Lumen\Application(realpath(__DIR__ . '/../'));
 $app->withFacades();
-
 $app->withEloquent();
 
 /*
@@ -57,10 +53,10 @@ $app->singleton(
 |
 */
 
+$app->configure('app');
 $app->configure('auth');
 $app->configure('cors');
 $app->configure('mail');
-$app->configure('app');
 $app->configure('services');
 
 if ($app->environment() !== 'production') {
@@ -109,6 +105,7 @@ $app->register(Illuminate\Mail\MailServiceProvider::class);
 $app->register(Laravel\Passport\PassportServiceProvider::class);
 $app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
 $app->register(Barryvdh\Cors\ServiceProvider::class);
+$app->register(Spatie\Newsletter\NewsletterServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

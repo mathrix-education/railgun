@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 
@@ -33,25 +32,24 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Meta whereNotionId($value)
  * @method static Builder|Meta whereActivityId($value)
  * @method static Builder|Meta whereModuleId($value)
- * @mixin \Eloquent
  */
 class Meta extends BaseModel
 {
-    public $fillable = ['status', 'favorite', 'user_id', 'country_id', 'class_id', 'discipline_id', 'chapter_id',
-        'notion_id', 'activity_id'];
+    public $fillable = ["status", "favorite", "user_id", "country_id", "class_id", "discipline_id", "chapter_id",
+        "notion_id", "activity_id"];
 
     /** @var array The validation rules on create */
     protected $rules = [
-        'user_id' => 'required|exists:users,id',
-        'country_id' => 'required|exists:countries,id',
-        'class_id' => 'required|exists:classes,id',
-        'discipline_id' => 'required|exists:disciplines,id',
-        'chapters_id' => 'required|exists:chapters,id',
-        'notion_id' => 'required|exists:notions,id',
-        'activity_id' => 'required|exists:activities,id',
-        'module_id' => 'nullable|exists:modules,id',
-        'favorite' => 'boolean',
-        'status' => 'nullable|in:completed,to_revise'
+        "user_id" => "required|exists:users,id",
+        "country_id" => "required|exists:countries,id",
+        "class_id" => "required|exists:classes,id",
+        "discipline_id" => "required|exists:disciplines,id",
+        "chapters_id" => "required|exists:chapters,id",
+        "notion_id" => "required|exists:notions,id",
+        "activity_id" => "required|exists:activities,id",
+        "module_id" => "nullable|exists:modules,id",
+        "favorite" => "boolean",
+        "status" => "nullable|in:completed,to_revise"
     ];
 
     /*
@@ -88,7 +86,7 @@ class Meta extends BaseModel
      */
     public function class_(): BelongsTo
     {
-        return $this->belongsTo(Class_::class, 'class_id');
+        return $this->belongsTo(Class_::class, "class_id");
     }
 
 
