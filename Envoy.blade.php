@@ -65,7 +65,7 @@
     ln -nfs {{ $shared_dir }}/storage {{ $new_release_dir }}/storage
 
     echo 'Linking current release'
-    rm {{ $app_dir }}/current
+    [ -f {{ $app_dir }}/current ] && rm {{ $app_dir }}/current
     ln -nfs {{ $new_release_dir }} {{ $app_dir }}/current
 
     echo 'Done'

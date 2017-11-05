@@ -13,15 +13,15 @@ class CreateNotionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('notions', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->string('slug');
-            $table->boolean('visible')->default(true);
-            $table->integer('chapter_id')->unsigned();
+        Schema::create("notions", function (Blueprint $table) {
+            $table->increments("id");
+            $table->string("name");
+            $table->string("slug");
+            $table->boolean("visible")->default(true);
+            $table->integer("chapter_id")->unsigned();
 
             // Foreign keys
-            $table->foreign('chapter_id')->references('id')->on('chapters');
+            $table->foreign("chapter_id")->references("id")->on("chapters");
         });
     }
 
@@ -33,10 +33,10 @@ class CreateNotionsTable extends Migration
      */
     public function down()
     {
-        Schema::table('notions', function (Blueprint $table) {
-            $table->dropForeign('notions_chapter_id_foreign');
+        Schema::table("notions", function (Blueprint $table) {
+            $table->dropForeign("notions_chapter_id_foreign");
         });
 
-        Schema::dropIfExists('notions');
+        Schema::dropIfExists("notions");
     }
 }

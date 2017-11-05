@@ -13,14 +13,15 @@ class CreateActivityNotionTable extends Migration
      */
     public function up()
     {
-        Schema::create('activity_notion', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('activity_id')->unsigned();
-            $table->integer('notion_id')->unsigned();
+        Schema::create("activity_notion", function (Blueprint $table) {
+            $table->increments("id");
+            $table->integer("activity_id")->unsigned();
+            $table->integer("notion_id")->unsigned();
+            $table->integer("order")->default(0);
 
             // Foreign keys
-            $table->foreign('activity_id')->references('id')->on('activities');
-            $table->foreign('notion_id')->references('id')->on('notions');
+            $table->foreign("activity_id")->references("id")->on("activities");
+            $table->foreign("notion_id")->references("id")->on("notions");
         });
     }
 
@@ -32,11 +33,11 @@ class CreateActivityNotionTable extends Migration
      */
     public function down()
     {
-        Schema::table('activity_notion', function (Blueprint $table) {
-            $table->dropForeign('activity_notion_activity_id_foreign');
-            $table->dropForeign('activity_notion_notion_id_foreign');
+        Schema::table("activity_notion", function (Blueprint $table) {
+            $table->dropForeign("activity_notion_activity_id_foreign");
+            $table->dropForeign("activity_notion_notion_id_foreign");
         });
 
-        Schema::dropIfExists('activity_notion');
+        Schema::dropIfExists("activity_notion");
     }
 }

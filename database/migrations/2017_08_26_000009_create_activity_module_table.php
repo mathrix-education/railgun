@@ -13,14 +13,15 @@ class CreateActivityModuleTable extends Migration
      */
     public function up()
     {
-        Schema::create('activity_module', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('activity_id')->unsigned();
-            $table->integer('module_id')->unsigned();
+        Schema::create("activity_module", function (Blueprint $table) {
+            $table->increments("id");
+            $table->integer("activity_id")->unsigned();
+            $table->integer("module_id")->unsigned();
+            $table->integer("order")->default(0);
 
             // Foreign keys
-            $table->foreign('activity_id')->references('id')->on('activities');
-            $table->foreign('module_id')->references('id')->on('modules');
+            $table->foreign("activity_id")->references("id")->on("activities");
+            $table->foreign("module_id")->references("id")->on("modules");
         });
     }
 
@@ -32,11 +33,11 @@ class CreateActivityModuleTable extends Migration
      */
     public function down()
     {
-        Schema::table('activity_module', function (Blueprint $table) {
-            $table->dropForeign('activity_module_activity_id_foreign');
-            $table->dropForeign('activity_module_module_id_foreign');
+        Schema::table("activity_module", function (Blueprint $table) {
+            $table->dropForeign("activity_module_activity_id_foreign");
+            $table->dropForeign("activity_module_module_id_foreign");
         });
 
-        Schema::dropIfExists('activity_module');
+        Schema::dropIfExists("activity_module");
     }
 }

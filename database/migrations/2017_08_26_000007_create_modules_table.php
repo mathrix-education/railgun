@@ -13,19 +13,19 @@ class CreateModulesTable extends Migration
      */
     public function up()
     {
-        Schema::create('modules', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->string('slug');
-            $table->string('description');
-            $table->enum('type', ['course', 'test', 'mcq', 'mcq-table', 'match', 'fill', 'flashcard']);
-            $table->text('content')->nullable();
-            $table->text('questions')->nullable();
-            $table->text('choices')->nullable();
-            $table->text('solutions')->nullable();
-            $table->text('corrections')->nullable();
-            $table->text('options')->nullable();
-            $table->boolean('visible')->default(true);
+        Schema::create("modules", function (Blueprint $table) {
+            $table->increments("id");
+            $table->string("name");
+            $table->string("slug");
+            $table->string("description");
+            $table->enum("type", ["course", "test", "mcq", "mcq-table", "match", "fill", "flashcard"]);
+            $table->text("content")->nullable();
+            $table->text("questions")->nullable();
+            $table->text("choices")->nullable();
+            $table->text("solutions")->nullable();
+            $table->text("corrections")->nullable();
+            $table->text("options")->nullable();
+            $table->boolean("visible")->default(true);
         });
     }
 
@@ -37,6 +37,6 @@ class CreateModulesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('modules');
+        Schema::dropIfExists("modules");
     }
 }

@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use App\Models\Traits\Commentable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -32,6 +33,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Post extends BaseModel
 {
+    use Commentable;
+
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
 
@@ -73,14 +76,5 @@ class Post extends BaseModel
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-
-
-    /**
-     * Get all of the post"s comments.
-     */
-    public function comments()
-    {
-        return $this->morphMany(Comment::class, "commentable");
     }
 }

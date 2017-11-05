@@ -13,19 +13,19 @@ class CreateVotesTable extends Migration
      */
     public function up()
     {
-        Schema::create('votes', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('value');
-            $table->integer('user_id')->unsigned()->nullable();
-            $table->dateTime('created_at');
-            $table->dateTime('updated_at');
+        Schema::create("votes", function (Blueprint $table) {
+            $table->increments("id");
+            $table->integer("value");
+            $table->integer("user_id")->unsigned()->nullable();
+            $table->dateTime("created_at");
+            $table->dateTime("updated_at");
 
             // Polymorphic
-            $table->integer('votable_id')->unsigned();
-            $table->enum('votable_type', ['comment']);
+            $table->integer("votable_id")->unsigned();
+            $table->enum("votable_type", ["comment"]);
 
             // Foreign keys
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign("user_id")->references("id")->on("users");
         });
     }
 
@@ -37,10 +37,10 @@ class CreateVotesTable extends Migration
      */
     public function down()
     {
-        Schema::table('votes', function (Blueprint $table) {
-            $table->dropForeign('votes_user_id_foreign');
+        Schema::table("votes", function (Blueprint $table) {
+            $table->dropForeign("votes_user_id_foreign");
         });
 
-        Schema::dropIfExists('votes');
+        Schema::dropIfExists("votes");
     }
 }

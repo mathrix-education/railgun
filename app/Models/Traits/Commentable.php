@@ -1,0 +1,23 @@
+<?php
+namespace App\Models\Traits;
+
+use App\Models\Comment;
+
+/**
+ * Trait Commentable
+ *
+ * @author Mathrix Back-End Team
+ * @package App\Models\Traits
+ * @since 0.8.1
+ * @copyright Mathrix
+ */
+trait Commentable
+{
+    /**
+     * Get all of the post"s comments.
+     */
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, "commentable");
+    }
+}

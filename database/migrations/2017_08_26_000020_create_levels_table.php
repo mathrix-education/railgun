@@ -13,11 +13,11 @@ class CreateLevelsTable extends Migration
      */
     public function up()
     {
-        Schema::create('levels', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('level');
-            $table->integer('objective');
-            $table->string('youtube_id')->nullable();
+        Schema::create("levels", function (Blueprint $table) {
+            $table->increments("id");
+            $table->integer("level");
+            $table->integer("objective");
+            $table->string("youtube_id")->nullable();
         });
     }
 
@@ -29,6 +29,6 @@ class CreateLevelsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('levels');
+        Schema::dropIfExists("levels");
     }
 }

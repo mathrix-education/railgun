@@ -13,14 +13,14 @@ class CreateClassDisciplineTable extends Migration
      */
     public function up()
     {
-        Schema::create('class_discipline', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('class_id')->unsigned();
-            $table->integer('discipline_id')->unsigned();
+        Schema::create("class_discipline", function (Blueprint $table) {
+            $table->increments("id");
+            $table->integer("class_id")->unsigned();
+            $table->integer("discipline_id")->unsigned();
 
             // Foreign keys
-            $table->foreign('class_id')->references('id')->on('classes');
-            $table->foreign('discipline_id')->references('id')->on('disciplines');
+            $table->foreign("class_id")->references("id")->on("classes");
+            $table->foreign("discipline_id")->references("id")->on("disciplines");
         });
     }
 
@@ -32,11 +32,11 @@ class CreateClassDisciplineTable extends Migration
      */
     public function down()
     {
-        Schema::table('class_discipline', function (Blueprint $table) {
-            $table->dropForeign('class_discipline_class_id_foreign');
-            $table->dropForeign('class_discipline_discipline_id_foreign');
+        Schema::table("class_discipline", function (Blueprint $table) {
+            $table->dropForeign("class_discipline_class_id_foreign");
+            $table->dropForeign("class_discipline_discipline_id_foreign");
         });
 
-        Schema::dropIfExists('class_discipline');
+        Schema::dropIfExists("class_discipline");
     }
 }

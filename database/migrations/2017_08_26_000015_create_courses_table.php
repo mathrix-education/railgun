@@ -13,17 +13,17 @@ class CreateCoursesTable extends Migration
      */
     public function up()
     {
-        Schema::create('courses', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('title');
-            $table->string('slug');
-            $table->text('content');
-            $table->integer('category_id')->unsigned();
-            $table->dateTime('created_at');
-            $table->dateTime('updated_at');
+        Schema::create("courses", function (Blueprint $table) {
+            $table->increments("id");
+            $table->string("title");
+            $table->string("slug");
+            $table->text("content");
+            $table->integer("category_id")->unsigned();
+            $table->dateTime("created_at");
+            $table->dateTime("updated_at");
 
             // Foreign keys
-            $table->foreign('category_id')->references('id')->on('categories');
+            $table->foreign("category_id")->references("id")->on("categories");
         });
     }
 
@@ -35,10 +35,10 @@ class CreateCoursesTable extends Migration
      */
     public function down()
     {
-        Schema::table('courses', function (Blueprint $table) {
-            $table->dropForeign('courses_category_id_foreign');
+        Schema::table("courses", function (Blueprint $table) {
+            $table->dropForeign("courses_category_id_foreign");
         });
 
-        Schema::dropIfExists('courses');
+        Schema::dropIfExists("courses");
     }
 }
