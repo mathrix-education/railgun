@@ -20,6 +20,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Discipline whereName($value)
  * @method static Builder|Discipline whereSlug($value)
  * @method static Builder|Discipline whereBeta($value)
+ * @method static Builder|Discipline whereVisible($value)
+ * @property bool $visible
+ * @mixin \Eloquent
  */
 class Discipline extends BaseModel
 {

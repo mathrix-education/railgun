@@ -45,6 +45,7 @@ use Laravel\Passport\Token;
  * @property-read Collection|Client[] $clients
  * @property-read Collection|Comment[] $comments
  * @property-read Collection|Log[] $logs
+ * @property-read Collection|Activity[] $meta
  * @property-read Collection|Subscription[] $subscriptions
  * @property-read Collection|Token[] $tokens
  * @property-read Collection|Vote[] $votes
@@ -67,6 +68,7 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereCardLastFour($value)
  * @method static Builder|User whereStripeId($value)
  * @method static Builder|User whereTrialEndsAt($value)
+ * @mixin \Eloquent
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {

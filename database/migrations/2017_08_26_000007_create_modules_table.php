@@ -18,6 +18,7 @@ class CreateModulesTable extends Migration
             $table->string("name");
             $table->string("slug");
             $table->string("description");
+            $table->boolean("premium");
             $table->enum("type", ["course", "test", "mcq", "mcq-table", "match", "fill", "flashcard"]);
             $table->text("content")->nullable();
             $table->text("questions")->nullable();

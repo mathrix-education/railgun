@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Auth;
  * @property int $id
  * @property string $name
  * @property string $slug
+ * @property string|null $name_seo
+ * @property string $type
+ * @property bool $visible
  * @property-read bool $favorite
  * @property-read string|null $status
  * @property-read Collection|Log[] $logs
@@ -24,6 +27,10 @@ use Illuminate\Support\Facades\Auth;
  * @method static Builder|Activity whereId($value)
  * @method static Builder|Activity whereName($value)
  * @method static Builder|Activity whereSlug($value)
+ * @method static Builder|Activity whereNameSeo($value)
+ * @method static Builder|Activity whereType($value)
+ * @method static Builder|Activity whereVisible($value)
+ * @mixin \Eloquent
  */
 class Activity extends BaseModel
 {

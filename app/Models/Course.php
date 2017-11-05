@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Course whereCategoryId($value)
  * @method static Builder|Course whereCreatedAt($value)
  * @method static Builder|Course whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class Course extends BaseModel
 {
