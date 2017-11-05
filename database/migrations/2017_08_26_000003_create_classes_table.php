@@ -19,7 +19,6 @@ class CreateClassesTable extends Migration
             $table->string("name_short");
             $table->string("slug");
             $table->string("slug_short");
-            $table->integer("cursus");
             $table->integer("order")->default(0);
             $table->boolean("visible")->default(true);
             $table->integer("parent_id")->unsigned()->nullable();

@@ -12,7 +12,7 @@ tests:
     MYSQL_ROOT_PASSWORD: 3AEzrLrSh8j8xJfyHAdB
   script:
     # Setup project files
-    - cp storage/env/.env.pipelines .env
+    - cp config/.env.pipelines .env
     - composer install --prefer-dist -q -o
     #- php artisan migrate:refresh --seed # We don't use artisan seeder anymore as MySQL import is much faster
     - sudo apt-get -yqq update && sudo apt-get -yqq install mysql-client

@@ -43,7 +43,7 @@
     git clone --depth 1 {{ $repository }} {{ $new_release_dir }} --branch {{ $branch }}
 
     echo 'Starting deployment of {{ $release }}'
-    cp {{ $new_release_dir }}/storage/env/.env.dev {{ $new_release_dir }}/.env
+    cp {{ $new_release_dir }}/config/.env.{{ $branch }} {{ $new_release_dir }}/.env
     cd {{ $new_release_dir }}
 
     echo 'Running composer install'

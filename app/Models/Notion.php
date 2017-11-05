@@ -14,12 +14,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $name
  * @property string $slug
  * @property int $chapter_id
+ * @property bool $premium
+ * @property bool $visible
  * @property-read Collection|Activity[] $activities
  * @property-read Chapter $chapter
  * @method static Builder|Notion whereChapterId($value)
  * @method static Builder|Notion whereId($value)
  * @method static Builder|Notion whereName($value)
  * @method static Builder|Notion whereSlug($value)
+ * @method static Builder|Notion wherePremium($value)
+ * @method static Builder|Notion whereVisible($value)
+ * @mixin \Eloquent
  */
 class Notion extends BaseModel
 {

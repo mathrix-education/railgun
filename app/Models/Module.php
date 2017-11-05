@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Auth;
  * @property string $name
  * @property string $slug
  * @property string $description
+ * @property bool $premium
+ * @property bool $visible
  * @property string $type
  * @property string $content
  * @property array $questions
@@ -23,20 +25,24 @@ use Illuminate\Support\Facades\Auth;
  * @property array $solutions
  * @property array $corrections
  * @property string $options
+ * @property-read mixed $status
  * @property-read Collection|Activity[] $activities
  * @property-read Collection|Comment[] $comments
  * @property-read Collection|Log[] $logs
+ * @method static Builder|Module whereId($value)
+ * @method static Builder|Module whereName($value)
+ * @method static Builder|Module whereDescription($value)
+ * @method static Builder|Module wherePremium($value)
+ * @method static Builder|Module whereVisible($value)
+ * @method static Builder|Module whereType($value)
  * @method static Builder|Module whereChoices($value)
  * @method static Builder|Module whereContent($value)
  * @method static Builder|Module whereCorrections($value)
- * @method static Builder|Module whereDescription($value)
- * @method static Builder|Module whereId($value)
- * @method static Builder|Module whereName($value)
  * @method static Builder|Module whereOptions($value)
  * @method static Builder|Module whereQuestions($value)
  * @method static Builder|Module whereSlug($value)
  * @method static Builder|Module whereSolutions($value)
- * @method static Builder|Module whereType($value)
+ * @mixin \Eloquent
  */
 class Module extends BaseModel
 {

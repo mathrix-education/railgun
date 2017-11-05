@@ -9,19 +9,23 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * App\Models\Meta
  *
  * @property int $id
- * @property int $user_id
- * @property int $country_id
- * @property int $discipline_id
- * @property int $notion_id
- * @property int $activity_id
  * @property bool $favorite
  * @property string|null $status
+ * @property int $user_id
+ * @property int|null $country_id
+ * @property int|null $class_id
+ * @property int|null $discipline_id
+ * @property int|null $chapter_id
+ * @property int|null $notion_id
+ * @property int|null $activity_id
+ * @property int|null $module_id
  * @property-read User $user
  * @property-read Country $country
+ * @property-read Discipline $discipline
+ * @property-read Class_|null $class_
  * @property-read Chapter $chapter
  * @property-read Notion $notion
  * @property-read Activity $activity
- * @property-read Discipline $discipline
  * @property-read Module $module
  * @method static Builder|Meta whereId($value)
  * @method static Builder|Meta whereFavorite($value)
@@ -30,8 +34,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Meta whereCountryId($value)
  * @method static Builder|Meta whereDisciplineId($value)
  * @method static Builder|Meta whereNotionId($value)
+ * @method static Builder|Meta whereChapterId($value)
+ * @method static Builder|Meta whereClassId($value)
  * @method static Builder|Meta whereActivityId($value)
  * @method static Builder|Meta whereModuleId($value)
+ * @mixin \Eloquent
  */
 class Meta extends BaseModel
 {

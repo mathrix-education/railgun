@@ -17,20 +17,23 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $slug
  * @property string $slug_short
  * @property int $order
+ * @property bool $visible
  * @property int|null $parent_id
  * @property int $country_id
  * @property-read Country $country
  * @property-read Collection|Discipline[] $disciplines
  * @property-read Class_|null $parent
  * @property-read Collection|User[] $users
- * @method static Builder|Class_ whereCountryId($value)
  * @method static Builder|Class_ whereId($value)
  * @method static Builder|Class_ whereName($value)
  * @method static Builder|Class_ whereNameShort($value)
- * @method static Builder|Class_ whereOrder($value)
- * @method static Builder|Class_ whereParentId($value)
  * @method static Builder|Class_ whereSlug($value)
  * @method static Builder|Class_ whereSlugShort($value)
+ * @method static Builder|Class_ whereOrder($value)
+ * @method static Builder|Class_ whereVisible($value)
+ * @method static Builder|Class_ whereParentId($value)
+ * @method static Builder|Class_ whereCountryId($value)
+ * @mixin \Eloquent
  */
 class Class_ extends BaseModel
 {
