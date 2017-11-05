@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use App\Models\Traits\Commentable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -39,6 +40,8 @@ use Illuminate\Support\Facades\Auth;
  */
 class Module extends BaseModel
 {
+    use Commentable;
+
     /** @var array The fillable attributes */
     protected $fillable = ["name", "slug", "description", "type", "content", "questions", "choices", "solutions",
         "corrections", "options"];
@@ -67,6 +70,7 @@ class Module extends BaseModel
     |--------------------------------------------------------------------------
     */
     protected $appends = ["status"];
+
 
     public function getStatusAttribute()
     {
@@ -99,27 +103,5 @@ class Module extends BaseModel
     public function activities(): BelongsToMany
     {
         return $this->belongsToMany(Activity::class);
-    }
-
-
-    /**
-     * MorphMany Comment
-     *
-     * @return MorphMany
-     */
-    public function comments(): MorphMany
-    {
-        return $this->morphMany(Comment::class, "commentable");
-    }
-
-
-    /**
-     * MorphMany Log
-     *
-     * @return MorphMany
-     */
-    public function logs(): MorphMany
-    {
-        return $this->morphMany(Log::class, "loggable");
     }
 }

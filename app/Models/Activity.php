@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use App\Models\Traits\Loggable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -13,7 +14,6 @@ use Illuminate\Support\Facades\Auth;
  * @property int $id
  * @property string $name
  * @property string $slug
- * @property string $description
  * @property-read bool $favorite
  * @property-read string|null $status
  * @property-read Collection|Log[] $logs
@@ -27,10 +27,12 @@ use Illuminate\Support\Facades\Auth;
  */
 class Activity extends BaseModel
 {
+    use Loggable;
+
     public const TYPES = ["video", "course", "test", "exercise", "summary", "flashcard"];
 
     /** @var array The fillable attributes */
-    protected $fillable = ["name", "slug", "description", "type", "visible"];
+    protected $fillable = ["name", "slug", "type", "visible"];
 
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
@@ -41,7 +43,6 @@ class Activity extends BaseModel
     protected $rules = [
         "name" => "required|max:255",
         "slug" => "required|max:255",
-        "description" => "required|max:255",
         "visible" => "boolean"
     ];
 
@@ -63,15 +64,6 @@ class Activity extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
-    /**
-     * Get all of the post"s logs.
-     */
-    public function logs()
-    {
-        return $this->morphMany(Log::class, "loggable");
-    }
-
-
     /**
      * BelongsToMany Module
      *

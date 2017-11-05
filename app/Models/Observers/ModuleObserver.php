@@ -27,26 +27,18 @@ class ModuleObserver extends BaseObserver
             $module->slug = str_slug($module->name);
         }
 
-        // Attach activities
-        if (!empty($module->link['activities'])) {
-            foreach ($module->link['activities'] as $activityId) {
-                if (Activity::find($activityId)->exists()) {
-                    $module->activities()->attach($activityId);
-
+        // Sync activities
+        if (!empty($module->link["activities"])) {
+            $toSync = [];
+            foreach($module->link["activities"] as $order => $notionId) {
+                if (Activity::find($notionId)->exists()) {
+                    $toSync[$notionId] = ["order" => "order"];
                 }
             }
-            unset($module->link['activities']);
-        }
-
-        // Detach activities
-        if (!empty($module->unlink['activities'])) {
-            foreach ($module->unlink['activities'] as $activityId) {
-                if (Activity::find($activityId)->exists()) {
-                    $module->activities()->detach($activityId);
-
-                }
+            if (!empty($toSync)) {
+                $module->activities()->sync($toSync);
             }
-            unset($module->unlink['activities']);
+            unset($module->link["activities"]);
         }
 
         return true;

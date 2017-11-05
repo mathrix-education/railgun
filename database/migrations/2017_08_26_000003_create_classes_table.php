@@ -13,20 +13,21 @@ class CreateClassesTable extends Migration
      */
     public function up()
     {
-        Schema::create('classes', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->string('name_short');
-            $table->string('slug');
-            $table->string('slug_short');
-            $table->integer('order');
-            $table->boolean('visible')->default(true);
-            $table->integer('parent_id')->unsigned()->nullable();
-            $table->integer('country_id')->unsigned();
+        Schema::create("classes", function (Blueprint $table) {
+            $table->increments("id");
+            $table->string("name");
+            $table->string("name_short");
+            $table->string("slug");
+            $table->string("slug_short");
+            $table->integer("cursus");
+            $table->integer("order")->default(0);
+            $table->boolean("visible")->default(true);
+            $table->integer("parent_id")->unsigned()->nullable();
+            $table->integer("country_id")->unsigned();
 
             // Foreign keys
-            $table->foreign('parent_id')->references('id')->on('classes');
-            $table->foreign('country_id')->references('id')->on('countries');
+            $table->foreign("parent_id")->references("id")->on("classes");
+            $table->foreign("country_id")->references("id")->on("countries");
         });
     }
 
@@ -38,11 +39,11 @@ class CreateClassesTable extends Migration
      */
     public function down()
     {
-        Schema::table('classes', function (Blueprint $table) {
-            $table->dropForeign('classes_parent_id_foreign');
-            $table->dropForeign('classes_country_id_foreign');
+        Schema::table("classes", function (Blueprint $table) {
+            $table->dropForeign("classes_parent_id_foreign");
+            $table->dropForeign("classes_country_id_foreign");
         });
 
-        Schema::dropIfExists('classes');
+        Schema::dropIfExists("classes");
     }
 }

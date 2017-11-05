@@ -46,8 +46,9 @@ class Class_ extends BaseModel
         "name_short" => "required|max:255",
         "slug" => "required|max:255",
         "slug_short" => "required|max:255",
-        "country_id" => "required|exists:countries,id",
-        "visible" => "boolean"
+        "order" => "required|integer",
+        "visible" => "boolean",
+        "country_id" => "required|exists:countries,id"
     ];
 
 
@@ -85,7 +86,7 @@ class Class_ extends BaseModel
      */
     public function parent(): BelongsTo
     {
-        return $this->belongsTo("App\Models\Class_", "parent_id");
+        return $this->belongsTo(Class_::class, "parent_id");
     }
 
 

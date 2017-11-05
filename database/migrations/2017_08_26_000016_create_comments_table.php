@@ -13,23 +13,23 @@ class CreateCommentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('comments', function (Blueprint $table) {
-            $table->increments('id');
-            $table->text('content')->nullable();
-            $table->integer('score')->default(0);
-            $table->integer('parent_id')->unsigned()->nullable();
-            $table->integer('user_id')->unsigned()->nullable();
-            $table->dateTime('created_at');
-            $table->dateTime('updated_at');
-            $table->dateTime('deleted_at')->nullable();
+        Schema::create("comments", function (Blueprint $table) {
+            $table->increments("id");
+            $table->text("content")->nullable();
+            $table->integer("score")->default(0);
+            $table->integer("parent_id")->unsigned()->nullable();
+            $table->integer("user_id")->unsigned()->nullable();
+            $table->dateTime("created_at");
+            $table->dateTime("updated_at");
+            $table->dateTime("deleted_at")->nullable();
 
             // Polymorphic
-            $table->integer('commentable_id')->unsigned();
-            $table->enum('commentable_type', ['module', 'post', 'course']);
+            $table->integer("commentable_id")->unsigned();
+            $table->enum("commentable_type", ["module", "post", "course"]);
 
             // Foreign keys
-            $table->foreign('parent_id')->references('id')->on('comments');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign("parent_id")->references("id")->on("comments");
+            $table->foreign("user_id")->references("id")->on("users");
         });
     }
 
@@ -41,11 +41,11 @@ class CreateCommentsTable extends Migration
      */
     public function down()
     {
-        Schema::table('comments', function (Blueprint $table) {
-            $table->dropForeign('comments_parent_id_foreign');
-            $table->dropForeign('comments_user_id_foreign');
+        Schema::table("comments", function (Blueprint $table) {
+            $table->dropForeign("comments_parent_id_foreign");
+            $table->dropForeign("comments_user_id_foreign");
         });
 
-        Schema::dropIfExists('comments');
+        Schema::dropIfExists("comments");
     }
 }

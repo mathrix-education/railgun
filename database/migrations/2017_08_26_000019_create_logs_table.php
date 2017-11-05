@@ -14,22 +14,22 @@ class CreateLogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('logs', function (Blueprint $table) {
-            $table->increments('id');
-            $table->enum('event', Log::EVENTS);
-            $table->integer('user_id')->unsigned()->nullable();
-            $table->string('value')->nullable();
-            $table->dateTime('created_at');
+        Schema::create("logs", function (Blueprint $table) {
+            $table->increments("id");
+            $table->enum("event", Log::EVENTS);
+            $table->integer("user_id")->unsigned()->nullable();
+            $table->string("value")->nullable();
+            $table->dateTime("created_at");
 
             // Polymorphic
-            $table->enum('loggable_type', [
-                'activity',
-                'module'
+            $table->enum("loggable_type", [
+                "activity",
+                "module"
             ])->nullable();
-            $table->integer('loggable_id')->unsigned()->nullable();
+            $table->integer("loggable_id")->unsigned()->nullable();
 
             // Foreign keys
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign("user_id")->references("id")->on("users");
         });
     }
 
@@ -41,6 +41,6 @@ class CreateLogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('logs');
+        Schema::dropIfExists("logs");
     }
 }

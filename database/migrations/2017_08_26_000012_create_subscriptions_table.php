@@ -13,19 +13,19 @@ class CreateSubscriptionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('subscriptions', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('user_id')->unsigned();
-            $table->string('name');
-            $table->string('stripe_id');
-            $table->string('stripe_plan');
-            $table->integer('quantity');
-            $table->timestamp('trial_ends_at')->nullable();
-            $table->timestamp('ends_at')->nullable();
+        Schema::create("subscriptions", function (Blueprint $table) {
+            $table->increments("id");
+            $table->integer("user_id")->unsigned();
+            $table->string("name");
+            $table->string("stripe_id");
+            $table->string("stripe_plan");
+            $table->integer("quantity");
+            $table->timestamp("trial_ends_at")->nullable();
+            $table->timestamp("ends_at")->nullable();
             $table->timestamps();
 
             // Foreign keys
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign("user_id")->references("id")->on("users");
         });
     }
 
@@ -37,6 +37,6 @@ class CreateSubscriptionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subscriptions');
+        Schema::dropIfExists("subscriptions");
     }
 }

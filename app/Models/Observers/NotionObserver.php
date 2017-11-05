@@ -27,26 +27,18 @@ class NotionObserver extends BaseObserver
             $notion->slug = str_slug($notion->name);
         }
 
-        // Attach activities
-        if (!empty($notion->link['activities'])) {
-            foreach ($notion->link['activities'] as $activityId) {
-                if (Activity::find($activityId)->exists()) {
-                    $notion->activities()->attach($activityId);
-
+        // Sync activities
+        if (!empty($notion->link["activities"])) {
+            $toSync = [];
+            foreach($notion->link["activities"] as $order => $notionId) {
+                if (Activity::find($notionId)->exists()) {
+                    $toSync[$notionId] = ["order" => "order"];
                 }
             }
-            unset($notion->link['activities']);
-        }
-
-        // Detach activities
-        if (!empty($notion->unlink['activities'])) {
-            foreach ($notion->unlink['activities'] as $activityId) {
-                if (Activity::find($activityId)->exists()) {
-                    $notion->activities()->detach($activityId);
-
-                }
+            if (!empty($toSync)) {
+                $notion->activities()->sync($toSync);
             }
-            unset($notion->unlink['activities']);
+            unset($notion->link["activities"]);
         }
 
         return true;

@@ -66,7 +66,7 @@ class StripeController extends CashierController
             throw new Http400InvalidRequestException("stripe_token and stripe_coupon cannot be both null");
         }
 
-        if (!in_array($stripePlan, self::ALLOWED_STRIPE_PLANS)) {
+        if (!in_array($stripePlan, array_keys(self::ALLOWED_STRIPE_PLANS))) {
             throw new Http400InvalidRequestException("$stripePlan is not a valid Stripe plan");
         }
 

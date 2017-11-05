@@ -13,13 +13,13 @@ class CreateCountriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('countries', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->string('name_short');
-            $table->string('slug');
-            $table->string('slug_short');
-            $table->boolean('visible')->default(true);
+        Schema::create("countries", function (Blueprint $table) {
+            $table->increments("id");
+            $table->string("name");
+            $table->string("name_short");
+            $table->string("slug");
+            $table->string("slug_short");
+            $table->boolean("visible")->default(true);
         });
     }
 
@@ -31,6 +31,6 @@ class CreateCountriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('countries');
+        Schema::dropIfExists("countries");
     }
 }

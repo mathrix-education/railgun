@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use App\Models\Traits\Votable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -49,7 +50,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  */
 class Comment extends BaseModel
 {
-    use SoftDeletes;
+    use Votable, SoftDeletes;
 
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
@@ -113,14 +114,5 @@ class Comment extends BaseModel
     public function commentable(): MorphTo
     {
         return $this->morphTo();
-    }
-
-
-    /**
-     * Get all of the post"s comments.
-     */
-    public function votes()
-    {
-        return $this->morphMany(Vote::class, "votable");
     }
 }

@@ -13,13 +13,12 @@ class CreateDisciplinesTable extends Migration
      */
     public function up()
     {
-        Schema::create('disciplines', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->string('slug');
-            $table->boolean('beta')->default(0);
-            $table->string('image')->nullable()->default(null);
-            $table->boolean('visible')->default(true);
+        Schema::create("disciplines", function (Blueprint $table) {
+            $table->increments("id");
+            $table->string("name");
+            $table->string("slug");
+            $table->boolean("beta")->default(0);
+            $table->boolean("visible")->default(true);
         });
     }
 
@@ -31,6 +30,6 @@ class CreateDisciplinesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('disciplines');
+        Schema::dropIfExists("disciplines");
     }
 }

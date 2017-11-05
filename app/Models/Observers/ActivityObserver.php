@@ -2,6 +2,8 @@
 namespace App\Models\Observers;
 
 use App\Models\Activity;
+use App\Models\Module;
+use App\Models\Notion;
 
 /**
  * Class ActivityObserver
@@ -24,25 +26,32 @@ class ActivityObserver extends BaseObserver
             $activity->slug = str_slug($activity->name);
         }
 
-
-        // Attach notions
+        // Sync notions
         if (!empty($activity->link["notions"])) {
-            foreach ($activity->link["notions"] as $notionId) {
-                if (Activity::find($notionId)->exists()) {
-                    $activity->notions()->attach($notionId);
+            $toSync = [];
+            foreach($activity->link["notions"] as $order => $notionId) {
+                if (Notion::find($notionId)->exists()) {
+                    $toSync[$notionId] = ["order" => "order"];
                 }
+            }
+            if (!empty($toSync)) {
+                $activity->notions()->sync($toSync);
             }
             unset($activity->link["notions"]);
         }
 
-        // Detach notions
-        if (!empty($activity->unlink["notions"])) {
-            foreach ($activity->unlink["notions"] as $notionId) {
-                if (Activity::find($notionId)->exists()) {
-                    $activity->notions()->detach($notionId);
+        // Sync modules
+        if (!empty($activity->link["modules"])) {
+            $toSync = [];
+            foreach($activity->link["modules"] as $order => $notionId) {
+                if (Module::find($notionId)->exists()) {
+                    $toSync[$notionId] = ["order" => "order"];
                 }
             }
-            unset($activity->unlink["notions"]);
+            if (!empty($toSync)) {
+                $activity->modules()->sync($toSync);
+            }
+            unset($activity->link["modules"]);
         }
 
         return true;
