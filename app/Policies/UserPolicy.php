@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Policies;
 
 use App\Models\User;
@@ -7,11 +6,22 @@ use App\Models\User;
 /**
  * Class UserPolicy
  *
- * @author Mathrix Team
+ * @author Mathrix Back-End Team
  * @package App\Policies
+ * @since 0.8.1
+ * @copyright Mathrix
  */
 class UserPolicy extends BasePolicy
 {
+    /**
+     * @return bool
+     */
+    /*public function search()
+    {
+        return false;
+    }*/
+
+
     /**
      * @param User $currentUser
      * @param User $user
@@ -20,9 +30,9 @@ class UserPolicy extends BasePolicy
      */
     public function get(User $currentUser, User $user)
     {
-        return $currentUser->id === $user->id ||
-            (in_array($user->type, ['registered', 'premium']) && $currentUser->tokenCan('moderator'));
+        return $currentUser->id === $user->id || $this->atLeastModerator($currentUser) && $user->type == 'registered';
     }
+
 
     /**
      * @param User $currentUser
@@ -32,8 +42,21 @@ class UserPolicy extends BasePolicy
      */
     public function edit(User $currentUser, User $user)
     {
-        return $currentUser->id === $user->id || $user->tokenCan('admin');
+        return $currentUser->id === $user->id;
     }
+
+
+    /**
+     * @param User $currentUser
+     * @param User $user
+     *
+     * @return bool
+     */
+    public function points(User $currentUser, User $user)
+    {
+        return $currentUser->id === $user->id;
+    }
+
 
     /**
      * @param User $currentUser
@@ -43,6 +66,6 @@ class UserPolicy extends BasePolicy
      */
     public function delete(User $currentUser, User $user)
     {
-        return $currentUser->id === $user->id || $user->tokenCan('admin');
+        return $currentUser->id === $user->id;
     }
 }

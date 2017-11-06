@@ -2,7 +2,6 @@
 namespace App\Models\Observers;
 
 use App\Models\Discipline;
-use Mathrix\Lumen\Observers\BaseObserver;
 
 /**
  * Class DisciplineObserver
@@ -19,19 +18,12 @@ class DisciplineObserver extends BaseObserver
      */
     public function saving($discipline)
     {
-        // Ensure the name is present
-        if (!$discipline->validate(['name' => 'required|max:255'])) {
-            return false;
-        }
-
         // Sluggify if needed
-        if (
-            empty($discipline->slug) ||
-            ($discipline->isDirty('name') && !$discipline->isDirty('slug'))
-        ) {
+        if (empty($discipline->slug) ||
+            ($discipline->isDirty("name") && !$discipline->isDirty("slug"))) {
             $discipline->slug = str_slug($discipline->name);
         }
 
-        return parent::saving($discipline);
+        return true;
     }
 }

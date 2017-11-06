@@ -1,60 +1,60 @@
 <?php
 namespace Tests;
 
+use App\Mails\User\PasswordForgotten;
 use App\Models\User;
-use Faker\Factory;
-use Mathrix\Lumen\Tests\BaseTestCase;
+use Illuminate\Support\Facades\Mail;
+use Laravel\Lumen\Testing\DatabaseTransactions;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class AuthTest
- * Test auth actions
- * @author Mathrix Team
+ *
+ * @author Mathrix Back-End Team
  * @package Tests
+ * @since 0.8.1
+ * @copyright Mathrix
  */
 class AuthTest extends BaseTestCase
 {
+    // oAuth configuration
+    const OAUTH_CLIENT_ID = 3;
+    const OAUTH_CLIENT_SECRET = 'NCeWoR1cKpqEJQ6pW9gIOPXiH3iNCiV3f39fvyji';
+
     /** @var User $user */
     public $user;
 
+
+    /**
+     * Setup the test
+     */
     public function setUp()
     {
         parent::setUp();
 
         // Ensure that the test user has been generated during the seeding process
-        $this->user = User::where('id', '<', 100)
-            ->whereNotNull('email')
-            ->inRandomOrder()
-            ->first();
+        $this->user = User::inRandomOrder()->first();
     }
 
-    /**
-     * Build login data from existing user
-     * @return array
-     */
-    public function loginData()
-    {
-        return [
-            'grant_type' => 'password',
-            'client_id' => env('TEST_OAUTH_CLIENT_ID'),
-            'client_secret' => env('TEST_OAUTH_CLIENT_SECRET'),
-            'username' => $this->user->email,
-            'password' => 'test'
-        ];
-    }
 
     /**
-     * Build refresh data from login
+     * Expect HTTP 200 success
      */
-    public function refreshData()
+    public function testLogin()
     {
         $this->call('post', '/users/login', $this->loginData());
 
-        return [
-            'grant_type' => 'refresh',
-            'client_id' => env('TEST_OAUTH_CLIENT_ID'),
-            'client_secret' => env('TEST_OAUTH_CLIENT_SECRET'),
-            'refresh_token' => json_decode($this->response->getContent())->refresh_token
-        ];
+        // Assertions
+        $this->assertResponseStatus(200);
+        $this->seeJsonStructure([
+            'token_type',
+            'expires_in',
+            'access_token',
+            'refresh_token'
+        ]);
+        $this->assertLogged('user_logged', $this->user);
+
+        return $this->response;
     }
 
 
@@ -64,58 +64,76 @@ class AuthTest extends BaseTestCase
     |--------------------------------------------------------------------------
     */
     /**
-     * Test POST /users/login with 200 success
+     * Build login form data
+     *
+     * @return array
      */
-    public function testLoginSuccess()
+    public function loginData(): array
     {
-        $this->call('post', '/users/login', $this->loginData());
+        return [
+            'grant_type' => 'password',
+            'client_id' => self::OAUTH_CLIENT_ID,
+            'client_secret' => self::OAUTH_CLIENT_SECRET,
+            'username' => $this->user->email,
+            'password' => 'test'
+        ];
+    }
 
+
+    /**
+     * Expect HTTP 401 invalid_client
+     */
+    public function testLoginInvalidClient()
+    {
+        $data = $this->loginData();
+        $data['client_secret'] .= 'wrong';
+
+        $this->call('post', '/users/login', $data);
+
+        // Assertions
+        $this->assertJsonError('invalid_client', 401);
+    }
+
+
+    /**
+     * Expect HTTP 401 unauthorized
+     */
+    public function testLoginInvalidCredentials()
+    {
+        $data = $this->loginData();
+        $data['password'] = 'test2';
+
+        $this->call('post', '/users/login', $data);
+
+        // Assertions
+        $this->assertJsonError('invalid_credentials', 401);
+    }
+
+
+    /**
+     * Expect HTTP 200 success
+     *
+     * @depends testLogin
+     *
+     * @param Response $response
+     */
+    public function testRefresh(Response $response)
+    {
+        $this->call('post', '/users/refresh', [
+            'grant_type' => 'refresh_token',
+            'client_id' => self::OAUTH_CLIENT_ID,
+            'client_secret' => self::OAUTH_CLIENT_SECRET,
+            'refresh_token' => json_decode($response->getContent())->refresh_token
+        ]);
+
+        // Assertions
+        $this->assertResponseStatus(200);
         $this->seeJsonStructure([
             'token_type',
             'expires_in',
             'access_token',
             'refresh_token'
         ]);
-
-        $this->assertResponseStatus(200);
-    }
-
-    /**
-     * Test POST /users/login with 401 invalid_credentials
-     */
-    public function testLoginInvalidCredentials()
-    {
-        $data = $this->loginData();
-        $data['password'] = 'test2';
-        $this->call('post', '/users/login', $data);
-
-        $this->assertJsonError('invalid_credentials', 401);
-    }
-
-    /**
-     * Test POST /users/login with 404 model_not_found
-     */
-    public function testLoginModelNotFound()
-    {
-        $data = $this->loginData();
-        $data['username'] .= 'x';
-        $this->call('post', '/users/login', $data);
-
-        $this->assertJsonError('model_not_found', 404);
-    }
-
-    /**
-     * Test POST /users/login with 422 validation
-     */
-    public function testLoginValidation()
-    {
-        $data = $this->loginData();
-        $keyToDelete = Factory::create()->randomElement(array_keys($data));
-        unset($data[$keyToDelete]);
-
-        $this->call('post', '/users/login', $data);
-
-        $this->assertJsonError('validation', 422);
     }
 
 
@@ -124,49 +142,61 @@ class AuthTest extends BaseTestCase
     | POST /users/refresh
     |--------------------------------------------------------------------------
     */
-    /**
-     * Test POST /users/refresh with 200 success
-     */
-    public function testRefreshSuccess()
-    {
-        $this->call('post', '/users/refresh', $this->refreshData());
 
-        $this->seeJsonStructure([
-            'token_type',
-            'expires_in',
-            'access_token',
-            'refresh_token'
+
+    /**
+     * Expect HTTP 401 invalid_client
+     *
+     * @depends testLogin
+     *
+     * @param Response $response
+     */
+    public function testRefreshInvalidClient(Response $response)
+    {
+
+        $this->call('post', '/users/refresh', [
+            'grant_type' => 'refresh_token',
+            'client_id' => self::OAUTH_CLIENT_ID,
+            'client_secret' => self::OAUTH_CLIENT_SECRET . 'wrong',
+            'refresh_token' => json_decode($response->getContent())->refresh_token
         ]);
-        $this->assertResponseStatus(200);
+
+        // Assertions
+        $this->assertJsonError('invalid_client', 401);
     }
 
+
     /**
-     * Test POST /users/refresh with 400 invalid_request
+     * Expect HTTP 400 invalid_request
      */
-    public function testRefreshInvalidRequest()
+    public function testRefreshInvalidToken()
     {
         $this->call('post', '/users/refresh', [
             'grant_type' => 'refresh_token',
-            'client_id' => env('TEST_OAUTH_CLIENT_ID'),
-            'client_secret' => env('TEST_OAUTH_CLIENT_SECRET'),
-            'refresh_token' => 'foo'
+            'client_id' => self::OAUTH_CLIENT_ID,
+            'client_secret' => self::OAUTH_CLIENT_SECRET,
+            'refresh_token' => 'wrong_token'
         ]);
 
+        // Assertions
         $this->assertJsonError('invalid_request', 401);
     }
 
+
     /**
-     * Test POST /users/login with 422 validation
+     * Expect HTTP 200 success
      */
-    public function testRefreshValidation()
+    public function testForgot()
     {
-        $data = $this->loginData();
-        $keyToDelete = Factory::create()->randomElement(array_keys($data));
-        unset($data[$keyToDelete]);
+        Mail::fake();
 
-        $this->call('post', '/users/login', $data);
+        $this->call('post', '/users/forgot', ['email' => $this->user->email]);
 
-        $this->assertJsonError('validation', 422);
+        // Assertions
+        $this->assertResponseStatus(200);
+        Mail::assertSent(PasswordForgotten::class, function (PasswordForgotten $email) {
+            return $email->hasTo($this->user->email);
+        });
     }
 
 
@@ -176,23 +206,34 @@ class AuthTest extends BaseTestCase
     |--------------------------------------------------------------------------
     */
     /**
-     * Test POST /users/forgot with 200 success
-     */
-    public function testForgotSuccess()
-    {
-        $this->call('post', '/users/forgot', ['email' => $this->user->email]);
-
-        $this->assertResponseStatus(200);
-    }
-
-    /**
-     * Test POST /users/forgot with 404 model_not_found
+     * Expect HTTP 404 model_not_found
      */
     public function testForgotModelNotFound()
     {
+        Mail::fake();
+
         $this->call('post', '/users/forgot', ['email' => $this->user->email . '2']);
 
+        // AssertionsS
         $this->assertJsonError('model_not_found', 404);
+        Mail::assertNotSent(PasswordForgotten::class);
+    }
+
+
+    /**
+     * Expect HTTP 200 success
+     */
+    public function testReset()
+    {
+        /** @var User $user */
+        $user = User::whereNotNull('token')->first();
+
+        $this->call('post', '/users/reset/' . $user->token, [
+            'password' => 'test'
+        ]);
+
+        // Assertions
+        $this->assertResponseStatus(200);
     }
 
 
@@ -201,25 +242,10 @@ class AuthTest extends BaseTestCase
     | POST /users/reset
     |--------------------------------------------------------------------------
     */
-    /**
-     * Test POST /users/reset with 200 success
-     */
-    public function testResetSuccess()
-    {
-        /**
-         * @var User $user
-         */
-        $user = User::whereNotNull('token')->first();
 
-        $this->call('post', '/users/reset/' . $user->token, [
-            'password' => 'test'
-        ]);
-
-        $this->assertResponseStatus(200);
-    }
 
     /**
-     * Test POST /users/reset with 404 model_not_found
+     * Expect HTTP 404 model_not_found
      */
     public function testResetModelNotFound()
     {
@@ -227,16 +253,38 @@ class AuthTest extends BaseTestCase
             'password' => 'test'
         ]);
 
+
+        // Assertions
         $this->assertJsonError('model_not_found', 404);
     }
 
+
     /**
-     * Test POST /users/reset with 422 validation
+     * Expect HTTP 422 validation
      */
     public function testResetValidation()
     {
         $this->call('post', '/users/reset/foo');
 
-        $this->assertJsonError('validation', 422);
+        // Assertions
+        $this->assertHttp400InvalidRequest();
+    }
+
+
+    protected function setUpTraits()
+    {
+        parent::setUpTraits();
+
+        $uses = array_flip(class_uses_recursive(static::class));
+
+        if (isset($uses[DatabaseTransactions::class])) {
+            $database = $this->app->make('db');
+
+            $this->beforeApplicationDestroyed(function () use ($database) {
+                foreach ($this->connectionsToTransact() as $name) {
+                    $database->connection($name)->disconnect();
+                }
+            });
+        }
     }
 }

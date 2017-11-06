@@ -1,0 +1,6346 @@
+[
+  {
+    "id": 181,
+    "name": "M\u00e9thode de r\u00e9solution",
+    "slug": "methode-de-resolution",
+    "type": "video",
+    "visible": true,
+    "name_seo": "R\u00e9soudre une \u00c9quation et In\u00e9quation (Cours)"
+  },
+  {
+    "id": 182,
+    "name": "Calculs basiques",
+    "slug": "calculs-basiques",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "R\u00e9soudre une \u00c9quation et In\u00e9quation"
+  },
+  {
+    "id": 183,
+    "name": "Comment pr\u00e9senter ses solutions",
+    "slug": "comment-presenter-ses-solutions",
+    "type": "video",
+    "visible": true,
+    "name_seo": "R\u00e9soudre une \u00c9quation : Pr\u00e9senter la Solution"
+  },
+  {
+    "id": 184,
+    "name": "Ecrire des solutions continues",
+    "slug": "ecrire-des-solutions-continues",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "R\u00e9soudre une \u00c9quation - \u00c9crire les Solutions"
+  },
+  {
+    "id": 251,
+    "name": "Comprendre le changement de signe lors d'un inverse",
+    "slug": "comprendre-le-changement-de-signe-lors-dun-inverse",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Inverse et Changement de Signe (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 762,
+    "name": "R\u00e9solution d'une \u00e9quation",
+    "slug": "resolution-dune-equation",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "R\u00e9solution d'une \u00e9quation"
+  },
+  {
+    "id": 912,
+    "name": "intero",
+    "slug": "intero",
+    "type": "test",
+    "visible": false,
+    "name_seo": "intero"
+  },
+  {
+    "id": 263,
+    "name": "M\u00e9thode : mise en probl\u00e8me d'une in\u00e9quation (premier degr\u00e9)",
+    "slug": "methode-mise-en-probleme-dune-inequation-premier-degre",
+    "type": "video",
+    "visible": true,
+    "name_seo": "In\u00e9quation (Cours Vid\u00e9o) Mise en Probl\u00e8me"
+  },
+  {
+    "id": 265,
+    "name": "R\u00e9soudre un probl\u00e8me avec les in\u00e9quations",
+    "slug": "resoudre-un-probleme-avec-les-inequations",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "In\u00e9quation (Exercices) R\u00e9soudre un probl\u00e8me"
+  },
+  {
+    "id": 267,
+    "name": " M\u00e9thode : r\u00e9solution d'une \u00e9quation (second degr\u00e9) ",
+    "slug": "methode-resolution-dune-equation-second-degre",
+    "type": "video",
+    "visible": true,
+    "name_seo": "R\u00e9solution d'une Equation du Second Degr\u00e9"
+  },
+  {
+    "id": 268,
+    "name": "Factorisation et \u00e9quation produit",
+    "slug": "factorisation-et-equation-produit",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Factorisation et \u00c9quation Produit (Exercices)"
+  },
+  {
+    "id": 264,
+    "name": "M\u00e9thode : estimer graphiquement et affiner une solution",
+    "slug": "methode-estimer-graphiquement-et-affiner-une-solution",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Equation (Cours Vid\u00e9o) Estimer une Solution"
+  },
+  {
+    "id": 913,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 158,
+    "name": "M\u00e9thode de r\u00e9solution",
+    "slug": "methode-de-resolution",
+    "type": "video",
+    "visible": true,
+    "name_seo": "R\u00e9soudre des \u00c9quations et In\u00e9quations"
+  },
+  {
+    "id": 159,
+    "name": "R\u00e9solutions d'\u00e9quations produits",
+    "slug": "resolutions-dequations-produits",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "R\u00e9solution d'\u00c9quations Produits (Exercices)"
+  },
+  {
+    "id": 160,
+    "name": "Mettre un probl\u00e8me en \u00e9quation",
+    "slug": "mettre-un-probleme-en-equation",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Mettre un Probl\u00e8me en \u00c9quation (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 761,
+    "name": "R\u00e9soudre une \u00e9quation produit",
+    "slug": "resoudre-une-equation-produit",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "R\u00e9soudre une \u00e9quation produit"
+  },
+  {
+    "id": 923,
+    "name": "r\u00e9soudre une \u00e9quation produit",
+    "slug": "resoudre-une-equation-produit",
+    "type": "test",
+    "visible": false,
+    "name_seo": "r\u00e9soudre une \u00e9quation produit"
+  },
+  {
+    "id": 808,
+    "name": "R\u00e9soudre une Equation et In\u00e9quation",
+    "slug": "resoudre-une-equation-et-inequation",
+    "type": "course",
+    "visible": true,
+    "name_seo": "R\u00e9soudre une Equation et In\u00e9quation"
+  },
+  {
+    "id": 837,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 194,
+    "name": "Approche concr\u00e8te des images et ant\u00e9c\u00e9dents",
+    "slug": "approche-concrete-des-images-et-antecedents",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Fonctions (Cours Vid\u00e9o) Images et Ant\u00e9c\u00e9dents"
+  },
+  {
+    "id": 195,
+    "name": "Calculs d'images",
+    "slug": "calculs-dimages",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Fonctions (Exercices) Calculs d'Image"
+  },
+  {
+    "id": 196,
+    "name": "Calculs d'ant\u00e9c\u00e9dents",
+    "slug": "calculs-dantecedents",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Fonctions (Exercices) Calculs d'Ant\u00e9c\u00e9dents"
+  },
+  {
+    "id": 253,
+    "name": " Repr\u00e9sentation graphique, image et ant\u00e9c\u00e9dents",
+    "slug": "representation-graphique-image-et-antecedents",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Fonctions (Cours Vid\u00e9o) Image et Ant\u00e9c\u00e9dent"
+  },
+  {
+    "id": 198,
+    "name": "M\u00e9thode : calcul d'un tableau de signe et tracer un graphique",
+    "slug": "methode-calcul-dun-tableau-de-signe-et-tracer-un-graphique",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Tableau de Signe - Fonctions (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 199,
+    "name": "Savoir lire une image sur un graphique ",
+    "slug": "savoir-lire-une-image-sur-un-graphique",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Fonctions (Exercices) Lire une Image"
+  },
+  {
+    "id": 349,
+    "name": "Savoir lire les ant\u00e9c\u00e9dents sur un graphique",
+    "slug": "savoir-lire-les-antecedents-sur-un-graphique",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Lire un Ant\u00e9c\u00e9dent sur un Graphique (Exo)"
+  },
+  {
+    "id": 820,
+    "name": "G\u00e9n\u00e9ralit\u00e9s sur les Fonctions",
+    "slug": "generalites-sur-les-fonctions",
+    "type": "course",
+    "visible": true,
+    "name_seo": "G\u00e9n\u00e9ralit\u00e9s sur les Fonctions"
+  },
+  {
+    "id": 258,
+    "name": "La fonction carr\u00e9 $x^2$",
+    "slug": "la-fonction-carre-x2",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Fonction Carr\u00e9 (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 259,
+    "name": "Lire sur un graphique et calculer l'image de $x^2$",
+    "slug": "lire-sur-un-graphique-et-calculer-limage-de-x2",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Image de la Fonction Carr\u00e9 (Exercices)"
+  },
+  {
+    "id": 261,
+    "name": "Lire sur un graphique et calculer le(s) ant\u00e9c\u00e9dent(s) de $x^2$",
+    "slug": "lire-sur-un-graphique-et-calculer-les-antecedents-de-x2",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Ant\u00e9c\u00e9dents de la Fonction Carr\u00e9e (Exercices)"
+  },
+  {
+    "id": 358,
+    "name": "La fonction inverse $\\frac{1}{x}$",
+    "slug": "la-fonction-inverse-frac1x",
+    "type": "video",
+    "visible": true,
+    "name_seo": "La Fonction Inverse 1\/x (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 353,
+    "name": "Lire sur un graphique et calculer l'image de $\\frac{1}{x}$",
+    "slug": "lire-sur-un-graphique-et-calculer-limage-de-frac1x",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Image de la Fonction Inverse 1\/x (Exercices)"
+  },
+  {
+    "id": 354,
+    "name": "Lire sur un graphique et calculer le(s) ant\u00e9c\u00e9dent(s) de $\\frac{1}{x}$",
+    "slug": "lire-sur-un-graphique-et-calculer-les-antecedents-de-frac1x",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Ant\u00e9c\u00e9dents de la Fonction 1\/x (Exercices)"
+  },
+  {
+    "id": 262,
+    "name": "M\u00e9thode : calcul d'un tableau de valeurs",
+    "slug": "methode-calcul-dun-tableau-de-valeurs",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Tableau de Valeurs (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 778,
+    "name": "G\u00e9n\u00e9ralit\u00e9s sur les Fonctions",
+    "slug": "generalites-sur-les-fonctions",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "G\u00e9n\u00e9ralit\u00e9s sur les Fonctions"
+  },
+  {
+    "id": 1007,
+    "name": "Fonctions de r\u00e9f\u00e9rence",
+    "slug": "fonctions-de-reference",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Fonctions de r\u00e9f\u00e9rence"
+  },
+  {
+    "id": 200,
+    "name": "Les fonctions affines et lin\u00e9aires",
+    "slug": "les-fonctions-affines-et-lineaires",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Fonctions Affines et Lin\u00e9aires (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 202,
+    "name": "M\u00e9thode : tracer une fonction affine",
+    "slug": "methode-tracer-une-fonction-affine",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Tracer une Fonction Affine (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 201,
+    "name": "Identifier graphiquement une fonction affine",
+    "slug": "identifier-graphiquement-une-fonction-affine",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Identifier une Fonction Affine (Exercices)"
+  },
+  {
+    "id": 823,
+    "name": "G\u00e9n\u00e9ralit\u00e9s sur les Fonctions (Rappel)",
+    "slug": "generalites-sur-les-fonctions-rappel",
+    "type": "course",
+    "visible": true,
+    "name_seo": "G\u00e9n\u00e9ralit\u00e9s sur les Fonctions (Rappel)"
+  },
+  {
+    "id": 853,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 270,
+    "name": "Sens de variation et tableau de variation",
+    "slug": "sens-de-variation-et-tableau-de-variation",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Tableau de Variation (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 272,
+    "name": "Dresser un tableau de variation",
+    "slug": "dresser-un-tableau-de-variation",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Dresser un Tableau de Variation (Exercices)"
+  },
+  {
+    "id": 273,
+    "name": "D\u00e9finition d\u2019une fonction croissante et d\u00e9croissante avec extrema",
+    "slug": "definition-dune-fonction-croissante-et-decroissante-avec-extrema",
+    "type": "video",
+    "visible": true,
+    "name_seo": "D\u00e9finition d'une Fonction Croissante (Cours)"
+  },
+  {
+    "id": 274,
+    "name": "Extrema et tableaux de variation des fonctions r\u00e9f\u00e9rences",
+    "slug": "extrema-et-tableaux-de-variation-des-fonctions-references",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Tableau de Variation : Fonctions de R\u00e9f\u00e9rence"
+  },
+  {
+    "id": 271,
+    "name": "Extrema et tableaux de variations des fonctions trigonom\u00e9triques",
+    "slug": "extrema-et-tableaux-de-variations-des-fonctions-trigonometriques",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Tableau de Variation et Extrema (Exercices)"
+  },
+  {
+    "id": 801,
+    "name": "Variations et Extremum de Fonctions",
+    "slug": "variations-et-extremum-de-fonctions",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Variations et Extremum de Fonctions"
+  },
+  {
+    "id": 836,
+    "name": "Variations et Extremums de Fonctions",
+    "slug": "variations-et-extremums-de-fonctions",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Variations et Extremums de Fonctions"
+  },
+  {
+    "id": 854,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 275,
+    "name": "M\u00e9thode : Tableau de signe d'un produit de fonctions affines",
+    "slug": "methode-tableau-de-signe-dun-produit-de-fonctions-affines",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Tableau de Signe d'un Produit (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 276,
+    "name": "Dresser un tableau de signe d'une fonction affine",
+    "slug": "dresser-un-tableau-de-signe-dune-fonction-affine",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Tableau de Signe d'une Fonction Affine"
+  },
+  {
+    "id": 277,
+    "name": "Dresser un tableau de signe de plusieurs fonctions affines",
+    "slug": "dresser-un-tableau-de-signe-de-plusieurs-fonctions-affines",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Tableau de Signe d'une Fonction Affine"
+  },
+  {
+    "id": 280,
+    "name": "M\u00e9thode : dresser un tableau de signe d'une fonction homographique",
+    "slug": "methode-dresser-un-tableau-de-signe-dune-fonction-homographique",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Tableau de Signe d'une Fonction Homographique"
+  },
+  {
+    "id": 282,
+    "name": "Dresser des tableaux de signe",
+    "slug": "dresser-des-tableaux-de-signe",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Dresser un Tableau de Signe (Exercices)"
+  },
+  {
+    "id": 796,
+    "name": "Domaine de d\u00e9finition d'une fonction polyn\u00f4me",
+    "slug": "domaine-de-definition-dune-fonction-polynome",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Domaine de d\u00e9finition d'une fonction polyn\u00f4me"
+  },
+  {
+    "id": 797,
+    "name": "Domaine de d\u00e9finition d'une fonction racine carr\u00e9e",
+    "slug": "domaine-de-definition-dune-fonction-racine-carree",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Domaine de d\u00e9finition d'une fonction racine carr\u00e9e"
+  },
+  {
+    "id": 798,
+    "name": "Domaine de d\u00e9finition d'une fonction homographique",
+    "slug": "domaine-de-definition-dune-fonction-homographique",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Domaine de d\u00e9finition d'une fonction homographique"
+  },
+  {
+    "id": 780,
+    "name": "Signes de fonction polyn\u00f4mes et homographiques",
+    "slug": "signes-de-fonction-polynomes-et-homographiques",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Signes de fonction polyn\u00f4mes et homographiques"
+  },
+  {
+    "id": 856,
+    "name": "Factorisation",
+    "slug": "factorisation",
+    "type": "exercise",
+    "visible": false,
+    "name_seo": "Factorisation"
+  },
+  {
+    "id": 861,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 847,
+    "name": "Factorisation et Etude de Signe",
+    "slug": "factorisation-et-etude-de-signe",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Factorisation et Etude de Signe"
+  },
+  {
+    "id": 285,
+    "name": "Fonctions trin\u00f4mes",
+    "slug": "fonctions-trinomes",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Second Degr\u00e9 (Cours Vid\u00e9o) Fonction Trin\u00f4me"
+  },
+  {
+    "id": 286,
+    "name": "Etude d'une fonction trin\u00f4me",
+    "slug": "etude-dune-fonction-trinome",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Second Degr\u00e9 (Exercices) Fonction Trin\u00f4me"
+  },
+  {
+    "id": 284,
+    "name": "M\u00e9thode : savoir quelle forme (d\u00e9velopp\u00e9e, factoris\u00e9e et canonique) utiliser",
+    "slug": "methode-savoir-quelle-forme-developpee-factorisee-et-canonique-utiliser",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Polyn\u00f4me (Cours Vid\u00e9o) Comment R\u00e9soudre"
+  },
+  {
+    "id": 287,
+    "name": "Les diff\u00e9rentes formes du trin\u00f4me",
+    "slug": "les-differentes-formes-du-trinome",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Second Degr\u00e9 (Exercices) Formes du Trin\u00f4me"
+  },
+  {
+    "id": 771,
+    "name": "Fonctions du Second Degr\u00e9 et Polyn\u00f4mes",
+    "slug": "fonctions-du-second-degre-et-polynomes",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Fonctions du Second Degr\u00e9 et Polyn\u00f4mes"
+  },
+  {
+    "id": 794,
+    "name": "Forme canonique d'une fonction polyn\u00f4me",
+    "slug": "forme-canonique-dune-fonction-polynome",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Forme canonique d'une fonction polyn\u00f4me"
+  },
+  {
+    "id": 890,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 857,
+    "name": "Fonctions du Second Degr\u00e9 et Polyn\u00f4mes",
+    "slug": "fonctions-du-second-degre-et-polynomes",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Fonctions du Second Degr\u00e9 et Polyn\u00f4mes"
+  },
+  {
+    "id": 859,
+    "name": "Solides, Sections et Coefficient de R\u00e9duction",
+    "slug": "solides-sections-et-coefficient-de-reduction",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Solides, Sections et Coefficient de R\u00e9duction"
+  },
+  {
+    "id": 117,
+    "name": "D\u00e9finition et propri\u00e9t\u00e9 des agrandissements et r\u00e9ductions",
+    "slug": "definition-et-propriete-des-agrandissements-et-reductions",
+    "type": "video",
+    "visible": true,
+    "name_seo": "G\u00e9om\u00e9trie dans l'Espace (Cours Vid\u00e9o) Solides"
+  },
+  {
+    "id": 118,
+    "name": "Application des rapports aux figures",
+    "slug": "application-des-rapports-aux-figures",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "G\u00e9om\u00e9trie dans l'Espace (Exercices) Solides"
+  },
+  {
+    "id": 873,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 290,
+    "name": "Positions relatives des droites et plans",
+    "slug": "positions-relatives-des-droites-et-plans",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Position Relative des Droites et des Plans"
+  },
+  {
+    "id": 293,
+    "name": "Coupe d'un cube et calcul de section",
+    "slug": "coupe-dun-cube-et-calcul-de-section",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Coupe d'un Cube et Calcul de Section (Exo)"
+  },
+  {
+    "id": 858,
+    "name": "G\u00e9om\u00e9trie dans l'Espace",
+    "slug": "geometrie-dans-lespace",
+    "type": "course",
+    "visible": true,
+    "name_seo": "G\u00e9om\u00e9trie dans l'Espace"
+  },
+  {
+    "id": 312,
+    "name": "D\u00e9finition d'un rep\u00e8re orthogonal, norm\u00e9 et orhonorm\u00e9",
+    "slug": "definition-dun-repere-orthogonal-norme-et-orhonorme",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Rep\u00e8re Orthogonal, Norm\u00e9 et Orthonorm\u00e9 (Cours)"
+  },
+  {
+    "id": 315,
+    "name": "Lire les coordonn\u00e9es sur un rep\u00e8re quelconque",
+    "slug": "lire-les-coordonnees-sur-un-repere-quelconque",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Lire les Coordonn\u00e9es d'un Rep\u00e8re (Exercices)"
+  },
+  {
+    "id": 316,
+    "name": "M\u00e9thode : calculer une longueur et le milieu d'un segment ou vecteur",
+    "slug": "methode-calculer-une-longueur-et-le-milieu-dun-segment-ou-vecteur",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Calculer la Longueur d'un Vecteur (Vid\u00e9o)"
+  },
+  {
+    "id": 317,
+    "name": "Coordonn\u00e9es de milieux de segment",
+    "slug": "coordonnees-de-milieux-de-segment",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Coordonn\u00e9es du Milieu d'un Vecteur (Exercices)"
+  },
+  {
+    "id": 318,
+    "name": "Calculs de la longueur d'un segment ou vecteur",
+    "slug": "calculs-de-la-longueur-dun-segment-ou-vecteur",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Calculer la Longueur d'un Vecteur (Exercices)"
+  },
+  {
+    "id": 784,
+    "name": "Rep\u00e9rage dans le Plan",
+    "slug": "reperage-dans-le-plan",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Rep\u00e9rage dans le Plan"
+  },
+  {
+    "id": 860,
+    "name": "Rep\u00e9rage dans le Plan",
+    "slug": "reperage-dans-le-plan",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Rep\u00e9rage dans le Plan"
+  },
+  {
+    "id": 874,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 294,
+    "name": "Un vecteur .. c'est quoi ?",
+    "slug": "un-vecteur-cest-quoi",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Les Vecteurs (Cours) Qu'est-ce qu'un Vecteur ?"
+  },
+  {
+    "id": 296,
+    "name": "Relation de Chasles",
+    "slug": "relation-de-chasles",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Relation de Chasles (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 297,
+    "name": "Propri\u00e9t\u00e9 du parall\u00e9logramme",
+    "slug": "propriete-du-parallelogramme",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Propri\u00e9t\u00e9 du Parall\u00e9logramme (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 308,
+    "name": "Lire la somme de deux vecteurs ",
+    "slug": "lire-la-somme-de-deux-vecteurs",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Somme de 2 Vecteurs (Exercices)"
+  },
+  {
+    "id": 310,
+    "name": "Lire la diff\u00e9rence de deux vecteurs ",
+    "slug": "lire-la-difference-de-deux-vecteurs",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Diff\u00e9rence de 2 Vecteurs (Exercices)"
+  },
+  {
+    "id": 806,
+    "name": "Construire un vecteur",
+    "slug": "construire-un-vecteur",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Construire un vecteur"
+  },
+  {
+    "id": 298,
+    "name": "Les vecteurs dans le rep\u00e8re",
+    "slug": "les-vecteurs-dans-le-repere",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Vecteurs dans le Rep\u00e8re (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 295,
+    "name": "Lire graphiquement les coordonn\u00e9es d'un vecteur ",
+    "slug": "lire-graphiquement-les-coordonnees-dun-vecteur",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Lire les Coordonn\u00e9es d'un Vecteur (Exercices)"
+  },
+  {
+    "id": 300,
+    "name": "Calculer les coordonn\u00e9es d'un vecteur",
+    "slug": "calculer-les-coordonnees-dun-vecteur",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Calculer les Coordonn\u00e9es d'un Vecteur"
+  },
+  {
+    "id": 356,
+    "name": "M\u00e9thode : Situer un point par une \u00e9galit\u00e9 v\u00e9ctorielle",
+    "slug": "methode-situer-un-point-par-une-egalite-vectorielle",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Vecteurs (Cours Vid\u00e9o) Situer un Point"
+  },
+  {
+    "id": 305,
+    "name": "M\u00e9thode : les deux techniques pour montrer la colin\u00e9arit\u00e9 et que 3 points sont align\u00e9s",
+    "slug": "methode-les-deux-techniques-pour-montrer-la-colinearite-et-que-3-points-sont-alignes",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Vecteurs (Cours Vid\u00e9o) Montrer la Colin\u00e9arit\u00e9"
+  },
+  {
+    "id": 307,
+    "name": "V\u00e9rifier la colin\u00e9arit\u00e9 de deux vecteurs dans le rep\u00e8re",
+    "slug": "verifier-la-colinearite-de-deux-vecteurs-dans-le-repere",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Vecteurs (Exercices) Montrer la Colin\u00e9arit\u00e9"
+  },
+  {
+    "id": 357,
+    "name": "M\u00e9thode : Additionner et soustraire dans le rep\u00e8re",
+    "slug": "methode-additionner-et-soustraire-dans-le-repere",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Les Vecteurs - Additionner et soustraire"
+  },
+  {
+    "id": 303,
+    "name": "Calculs de sommes vectorielles",
+    "slug": "calculs-de-sommes-vectorielles",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Vecteurs (Exercices) Sommes Vectorielles"
+  },
+  {
+    "id": 302,
+    "name": "M\u00e9thode : Multiplier par un scalaire dans le rep\u00e8re",
+    "slug": "methode-multiplier-par-un-scalaire-dans-le-repere",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Multiplier un Vecteur par un Nombre (Cours)"
+  },
+  {
+    "id": 304,
+    "name": "Calculs de multiplications par un scalaire",
+    "slug": "calculs-de-multiplications-par-un-scalaire",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Multiplier un Vecteur par un Nombre (Exercice)"
+  },
+  {
+    "id": 793,
+    "name": "Relations vectorielles",
+    "slug": "relations-vectorielles",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Relations vectorielles"
+  },
+  {
+    "id": 928,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 866,
+    "name": "Les Vecteurs",
+    "slug": "les-vecteurs",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Les Vecteurs"
+  },
+  {
+    "id": 876,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 350,
+    "name": "Retrouver graphiquement l'\u00e9quation d'une fonction affine",
+    "slug": "retrouver-graphiquement-lequation-dune-fonction-affine",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "\u00c9quation d'une Fonction Affine (Exercices)"
+  },
+  {
+    "id": 203,
+    "name": "R\u00e9soudre un syst\u00e8me \u00e0 2 inconnues du premier degr\u00e9",
+    "slug": "resoudre-un-systeme-a-2-inconnues-du-premier-degre",
+    "type": "video",
+    "visible": true,
+    "name_seo": "R\u00e9soudre un Syst\u00e8me \u00e0 2 Inconnues (Vid\u00e9o)"
+  },
+  {
+    "id": 204,
+    "name": "Application de la formule $a=\\frac{y(x_1)-y(x_2)}{x_1-x_2}$",
+    "slug": "application-de-la-formule-afracyx-1-yx-2x-1-x-2",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Coefficient Directeur d'une Fonction Affine"
+  },
+  {
+    "id": 206,
+    "name": "Application avec un syst\u00e8me d'\u00e9quations",
+    "slug": "application-avec-un-systeme-dequations",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Equations de Droites et Syst\u00e8me d'Equation"
+  },
+  {
+    "id": 319,
+    "name": "M\u00e9thode : Interpre\u0301ter un syste\u0300me d'e\u0301quations line\u0301aires ",
+    "slug": "methode-interpreter-un-systeme-dequations-lineaires",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Interpr\u00e9ter un Syst\u00e8me d'\u00c9quation Lin\u00e9aire"
+  },
+  {
+    "id": 786,
+    "name": "Equations de Droites",
+    "slug": "equations-de-droites",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Equations de Droites"
+  },
+  {
+    "id": 867,
+    "name": "Equations de Droites",
+    "slug": "equations-de-droites",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Equations de Droites"
+  },
+  {
+    "id": 875,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 321,
+    "name": "Se familiariser avec le cercle trigonom\u00e9trique",
+    "slug": "se-familiariser-avec-le-cercle-trigonometrique",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Cercle Trigonom\u00e9trique (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 324,
+    "name": "Coordonn\u00e9es d'un point du cercle avec le $\\cos$, $\\sin$ et valeurs remarquables",
+    "slug": "coordonnees-dun-point-du-cercle-avec-le-cos-sin-et-valeurs-remarquables",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Trigonom\u00e9trie et Angles Orient\u00e9s (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 327,
+    "name": "Le quizz des valeurs remarquables",
+    "slug": "le-quizz-des-valeurs-remarquables",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Trigonom\u00e9trie (Exercices) Valeurs Remarquables"
+  },
+  {
+    "id": 322,
+    "name": "Lire l\u2019abscisse associe\u0301e a\u0300 un point avec le $\\cos$ et le $\\sin$",
+    "slug": "lire-labscisse-associee-a-un-point-avec-le-cos-et-le-sin",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Cercle Trigonom\u00e9trique et Abscisse (Exercices)"
+  },
+  {
+    "id": 787,
+    "name": "Rep\u00e9rage sur le Cercle Trigonom\u00e9trique",
+    "slug": "reperage-sur-le-cercle-trigonometrique",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Rep\u00e9rage sur le Cercle Trigonom\u00e9trique"
+  },
+  {
+    "id": 219,
+    "name": "Comment calculer une longueur avec le $\\cos, \\sin$ et $\\tan$",
+    "slug": "comment-calculer-une-longueur-avec-le-cos-sin-et-tan",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Calculer une Longueur avec Cos, Sin, Tan"
+  },
+  {
+    "id": 128,
+    "name": "Calculer un c\u00f4t\u00e9 adjacent avec la formule $\\cos(\\alpha)=\\frac{\\text{adjacent}}{\\text{hypotenuse}}$",
+    "slug": "calculer-un-cote-adjacent-avec-la-formule-cosalphafractextadjacenttexthypotenuse",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Relation Trigonom\u00e9trique Cosinus (Exercices)"
+  },
+  {
+    "id": 220,
+    "name": "Calculs avec le $\\sin$",
+    "slug": "calculs-avec-le-sin",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Cercle Trigonom\u00e9trique (Exercices) Le Sinus"
+  },
+  {
+    "id": 221,
+    "name": "Calculs avec la $\\tan$",
+    "slug": "calculs-avec-la-tan",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Cercle Trigonom\u00e9trique (Exercices) La Tangente"
+  },
+  {
+    "id": 878,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 223,
+    "name": "Comment calculer un angle avec le $\\cos, \\sin$ et $\\tan$",
+    "slug": "comment-calculer-un-angle-avec-le-cos-sin-et-tan",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Cos, Sin, Tan : Calcul d'Angle (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 225,
+    "name": "Calculs d'angles avec le $\\sin$",
+    "slug": "calculs-dangles-avec-le-sin",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Sinus : Calcul d'Angle (Exercices)"
+  },
+  {
+    "id": 226,
+    "name": "Calculs d'angles avec la $\\tan$",
+    "slug": "calculs-dangles-avec-la-tan",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Tangente : Calcul d'Angle (Exercices)"
+  },
+  {
+    "id": 869,
+    "name": "Rep\u00e9rage sur le Cercle Trigonom\u00e9trique",
+    "slug": "reperage-sur-le-cercle-trigonometrique",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Rep\u00e9rage sur le Cercle Trigonom\u00e9trique"
+  },
+  {
+    "id": 207,
+    "name": "Notions de m\u00e9diane, quartile et \u00e9tendue",
+    "slug": "notions-de-mediane-quartile-et-etendue",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Statistique (Cours) M\u00e9diane, Quartile, \u00c9tendue"
+  },
+  {
+    "id": 208,
+    "name": "Calculs de quartiles, m\u00e9diane et \u00e9tendue",
+    "slug": "calculs-de-quartiles-mediane-et-etendue",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Statistique - M\u00e9diane, Quartile, \u00c9tendue"
+  },
+  {
+    "id": 329,
+    "name": "M\u00e9thode : M\u00e9diane, quartiles et moyenne a\u0300 partir des fr\u00e9quences",
+    "slug": "methode-mediane-quartiles-et-moyenne-a-partir-des-frequences",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Statistiques (Cours Vid\u00e9o) M\u00e9diane, Quartiles"
+  },
+  {
+    "id": 331,
+    "name": "Quartiles et fr\u00e9quences d'apparition",
+    "slug": "quartiles-et-frequences-dapparition",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Statistiques - Quartiles et Fr\u00e9quences"
+  },
+  {
+    "id": 332,
+    "name": "Moyennes et fr\u00e9quence d'apparition",
+    "slug": "moyennes-et-frequence-dapparition",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Moyennes et Fr\u00e9quence d'Apparition (Exercices)"
+  },
+  {
+    "id": 800,
+    "name": "Statistiques Descriptives",
+    "slug": "statistiques-descriptives",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Statistiques Descriptives"
+  },
+  {
+    "id": 926,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 97,
+    "name": "M\u00e9thode et diff\u00e9rence de la moyenne et la moyenne pond\u00e9r\u00e9e",
+    "slug": "methode-et-difference-de-la-moyenne-et-la-moyenne-ponderee",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Moyenne Pond\u00e9r\u00e9e Calcul (Cours Vid\u00e9o) Exemple"
+  },
+  {
+    "id": 98,
+    "name": "Calculs de moyennes",
+    "slug": "calculs-de-moyennes",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Moyenne Statistique (Exercices Corrig\u00e9s)"
+  },
+  {
+    "id": 100,
+    "name": "Calculs de moyennes pond\u00e9r\u00e9es",
+    "slug": "calculs-de-moyennes-ponderees",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Moyenne Pond\u00e9r\u00e9e Calcul (Exercices Corrig\u00e9s)"
+  },
+  {
+    "id": 726,
+    "name": "Statistiques - Param\u00e8tres",
+    "slug": "statistiques-parametres",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Statistiques - Param\u00e8tres"
+  },
+  {
+    "id": 782,
+    "name": "Statistiques - Diagrammes",
+    "slug": "statistiques-diagrammes",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Statistiques - Diagrammes"
+  },
+  {
+    "id": 889,
+    "name": "Statistiques - Fr\u00e9quences",
+    "slug": "statistiques-frequences",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Statistiques - Fr\u00e9quences"
+  },
+  {
+    "id": 334,
+    "name": "Intervalle de fluctuation ($p$ est connu) ",
+    "slug": "intervalle-de-fluctuation-p-est-connu",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Intervalle de Fluctuation (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 335,
+    "name": "Prendre une d\u00e9cision avec un intervalle de fluctuation",
+    "slug": "prendre-une-decision-avec-un-intervalle-de-fluctuation",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "\u00c9chantillonnage - Prendre une D\u00e9cision"
+  },
+  {
+    "id": 336,
+    "name": "Estimation : Intervalle de confiance ($p$ est inconnu)",
+    "slug": "estimation-intervalle-de-confiance-p-est-inconnu",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Intervalle de Confiance (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 337,
+    "name": "Comprendre et interpr\u00e9ter un intervalle de confiance",
+    "slug": "comprendre-et-interpreter-un-intervalle-de-confiance",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Interpr\u00e9ter un Sondage (Exercices)"
+  },
+  {
+    "id": 818,
+    "name": "D\u00e9terminer la fr\u00e9quence f, la proportion th\u00e9orique p et la taille n de l\u2019\u00e9chantillon.",
+    "slug": "determiner-la-frequence-f-la-proportion-theorique-p-et-la-taille-n-de-lechantillon",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "D\u00e9terminer la fr\u00e9quence f, la proportion th\u00e9orique p et la taille n de l\u2019\u00e9chantillon."
+  },
+  {
+    "id": 881,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 210,
+    "name": "M\u00e9thode : m\u00e9diane, quartile et \u00e9tendue",
+    "slug": "methode-mediane-quartile-et-etendue",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Probabilit\u00e9 (Cours) M\u00e9diane, Quartile, \u00c9tendue"
+  },
+  {
+    "id": 211,
+    "name": "Notions de probabilit\u00e9",
+    "slug": "notions-de-probabilite",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Probabilit\u00e9 (Cours) Notions de Probabilit\u00e9"
+  },
+  {
+    "id": 212,
+    "name": "Calculs de probabilit\u00e9s",
+    "slug": "calculs-de-probabilites",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Probabilits (Exercice) Calcul de Probabilit\u00e9"
+  },
+  {
+    "id": 338,
+    "name": "Arbre et mod\u00e8le \u00e9quir\u00e9parti",
+    "slug": "arbre-et-modele-equireparti",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Probabilit\u00e9 - Arbre et Mod\u00e8le \u00c9quir\u00e9parti"
+  },
+  {
+    "id": 351,
+    "name": "Calculs avec arbre de probabilit\u00e9",
+    "slug": "calculs-avec-arbre-de-probabilite",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Calculs avec Arbre de Probabilit\u00e9"
+  },
+  {
+    "id": 339,
+    "name": "M\u00e9thode : utiliser les fr\u00e9quences pour \u00e9tablir un mod\u00e8le",
+    "slug": "methode-utiliser-les-frequences-pour-etablir-un-modele",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Probabilit\u00e9 (Cours) Calculs de Fr\u00e9quences"
+  },
+  {
+    "id": 340,
+    "name": "Calculs de probabilit\u00e9s - \u00e9v\u00e9nements compl\u00e9mentaires, intersections et unions",
+    "slug": "calculs-de-probabilites-evenements-complementaires-intersections-et-unions",
+    "type": "video",
+    "visible": true,
+    "name_seo": "\u00c9v\u00e9nements : Union et Intersection (Vid\u00e9o)"
+  },
+  {
+    "id": 341,
+    "name": "Calculs de probabilit\u00e9s - \u00e9v\u00e9nements et compl\u00e9mentaires",
+    "slug": "calculs-de-probabilites-evenements-et-complementaires",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Probabilit\u00e9s, Evenements Compl\u00e9mentaires"
+  },
+  {
+    "id": 342,
+    "name": "Calculs de probabilit\u00e9s avec la formule $P(A\\cup B)$ ",
+    "slug": "calculs-de-probabilites-avec-la-formule-pacup-b",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Probabilit\u00e9s et Unions (Exercices)"
+  },
+  {
+    "id": 598,
+    "name": "Les probabilit\u00e9s totales et arbres",
+    "slug": "les-probabilites-totales-et-arbres",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Arbre de Probabilit\u00e9 (Exercice Corrig\u00e9)"
+  },
+  {
+    "id": 804,
+    "name": "Probabilit\u00e9s et arbres",
+    "slug": "probabilites-et-arbres",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Probabilit\u00e9s et arbres"
+  },
+  {
+    "id": 927,
+    "name": "interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "interro"
+  },
+  {
+    "id": 880,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 360,
+    "name": "R\u00e9soudre $ax^2+bx+c=0$ avec $\\Delta$",
+    "slug": "resoudre-ax2bxc0-avec-delta",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Second Degr\u00e9 (Cours) R\u00e9soudre ax^2+bx+c=0"
+  },
+  {
+    "id": 361,
+    "name": " R\u00e9soudre une \u00e9quation de type $ax^2+bx+c=0$",
+    "slug": "resoudre-une-equation-de-type-ax2bxc0",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Second Degr\u00e9 - R\u00e9soudre ax^2+bx+c"
+  },
+  {
+    "id": 362,
+    "name": "In\u00e9quations produit du second degr\u00e9 avec tableau de signe",
+    "slug": "inequations-produit-du-second-degre-avec-tableau-de-signe",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Second Degr\u00e9 (Cours) In\u00e9quations Produit"
+  },
+  {
+    "id": 572,
+    "name": "D\u00e9duire le signe d'un trin\u00f4me gr\u00e2ce \u00e0 ses racines",
+    "slug": "deduire-le-signe-dun-trinome-grace-a-ses-racines",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Signe du Trin\u00f4me du Second Degr\u00e9"
+  },
+  {
+    "id": 682,
+    "name": "Le second degr\u00e9",
+    "slug": "le-second-degre",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Le second degr\u00e9"
+  },
+  {
+    "id": 375,
+    "name": "Lien entre graphique d'une fonction et sa d\u00e9riv\u00e9e",
+    "slug": "lien-entre-graphique-dune-fonction-et-sa-derivee",
+    "type": "video",
+    "visible": true,
+    "name_seo": "D\u00e9rivation (Cours) Interpr\u00e9tation Graphique"
+  },
+  {
+    "id": 405,
+    "name": "Lien entre $f'(a)$ et la tangente de $f$ en $a$",
+    "slug": "lien-entre-fa-et-la-tangente-de-f-en-a",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "D\u00e9riv\u00e9e et Tangente (Exercices et Exemples)"
+  },
+  {
+    "id": 622,
+    "name": "Co\u00fbt marginal et d\u00e9riv\u00e9e",
+    "slug": "cout-marginal-et-derivee",
+    "type": "exercise",
+    "visible": false,
+    "name_seo": "Cout Marginal et D\u00e9riv\u00e9e"
+  },
+  {
+    "id": 376,
+    "name": "Les formules \u00e0 connaitre avec application",
+    "slug": "les-formules-a-connaitre-avec-application",
+    "type": "video",
+    "visible": true,
+    "name_seo": "D\u00e9rivation (Cours) Les formules \u00e0 Connaitre"
+  },
+  {
+    "id": 380,
+    "name": "M\u00e9thode : d\u00e9river des fonctions de r\u00e9f\u00e9rence",
+    "slug": "methode-deriver-des-fonctions-de-reference",
+    "type": "video",
+    "visible": true,
+    "name_seo": "D\u00e9river des Fonctions de R\u00e9f\u00e9rence (Cours)"
+  },
+  {
+    "id": 377,
+    "name": "Appliquer la formule $(x^n)^{'}=nx^{n-1}$",
+    "slug": "appliquer-la-formule-xnnxn-1",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "D\u00e9river un Polyn\u00f4me (Exercices)"
+  },
+  {
+    "id": 378,
+    "name": "Appliquer la formule $\\left(\\frac{1}{x}\\right)^{'}=-\\frac{1}{x^2}$",
+    "slug": "appliquer-la-formule-leftfrac1xright-frac1x2",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "D\u00e9river la Fonction Inverse (Exercices)"
+  },
+  {
+    "id": 379,
+    "name": "Appliquer la formule $(\\sqrt{x})^{'}=\\frac{1}{2\\sqrt{x}}$",
+    "slug": "appliquer-la-formule-sqrtxfrac12sqrtx",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "D\u00e9river la Racine Carr\u00e9 (Exercices)"
+  },
+  {
+    "id": 381,
+    "name": "Formules de d\u00e9rivation d'op\u00e9rations",
+    "slug": "formules-de-derivation-doperations",
+    "type": "video",
+    "visible": true,
+    "name_seo": "D\u00e9river des op\u00e9rations (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 387,
+    "name": "M\u00e9thode : Les \u00e9tapes \u00e0 connaitre pour ne jamais se tromper !",
+    "slug": "methode-les-etapes-a-connaitre-pour-ne-jamais-se-tromper",
+    "type": "video",
+    "visible": true,
+    "name_seo": "D\u00e9rivation (Cours) Les \u00c9tapes pour R\u00e9ussir"
+  },
+  {
+    "id": 382,
+    "name": "Appliquer la formule $(u+v)'=u'+v'$",
+    "slug": "appliquer-la-formule-uvuv",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "D\u00e9river une Addition de Fonctions"
+  },
+  {
+    "id": 513,
+    "name": "Appliquer la formule $(u\\times v)^{'}=u'\\times v+u\\times v'$",
+    "slug": "appliquer-la-formule-utimes-vutimes-vutimes-v",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "D\u00e9riv\u00e9e d'une Multiplication u'v + uv'"
+  },
+  {
+    "id": 386,
+    "name": "Appliquer la formule $\\left(\\frac{u}{v}\\right)^{'}=\\frac{u'\\times v-u\\times v'}{v^2}$",
+    "slug": "appliquer-la-formule-leftfracuvrightfracutimes-v-utimes-vv2",
+    "type": "exercise",
+    "visible": false,
+    "name_seo": "D\u00e9river un Produit de Fonctions (Exercices)"
+  },
+  {
+    "id": 389,
+    "name": "D\u00e9rivation et sens de variation d'une fonction",
+    "slug": "derivation-et-sens-de-variation-dune-fonction",
+    "type": "video",
+    "visible": true,
+    "name_seo": "D\u00e9rivation et Sens de Variation (Vid\u00e9o)"
+  },
+  {
+    "id": 390,
+    "name": "Tableau de signes de $f'$ et variations de $f$",
+    "slug": "tableau-de-signes-de-f-et-variations-de-f",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "D\u00e9rivation et Tableau de signe (Exercices)"
+  },
+  {
+    "id": 669,
+    "name": "La D\u00e9rivation",
+    "slug": "la-derivation",
+    "type": "course",
+    "visible": true,
+    "name_seo": "La D\u00e9rivation"
+  },
+  {
+    "id": 421,
+    "name": "D\u00e9finition de la fonction racine carr\u00e9e",
+    "slug": "definition-de-la-fonction-racine-carree",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Fonction Carr\u00e9e - D\u00e9finition (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 621,
+    "name": "D\u00e9finir le domaine de d\u00e9finition d'une fonction racine",
+    "slug": "definir-le-domaine-de-definition-dune-fonction-racine",
+    "type": "exercise",
+    "visible": false,
+    "name_seo": "Domaine de D\u00e9finition de la Fonction Racine"
+  },
+  {
+    "id": 374,
+    "name": "Suites explicites et r\u00e9currentes",
+    "slug": "suites-explicites-et-recurrentes",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Suites Explicites et R\u00e9currentes"
+  },
+  {
+    "id": 407,
+    "name": " Calculer les premiers termes d'une suite explicite",
+    "slug": "calculer-les-premiers-termes-dune-suite-explicite",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Premiers Termes d'une Suite Explicite"
+  },
+  {
+    "id": 573,
+    "name": "Calculer les premiers termes d'une suite r\u00e9currente",
+    "slug": "calculer-les-premiers-termes-dune-suite-recurrente",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Suite R\u00e9currente (Exercice Corrig\u00e9)"
+  },
+  {
+    "id": 610,
+    "name": "Sens de variation d'une suite",
+    "slug": "sens-de-variation-dune-suite",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Sens de Variation d'une Suite (Vid\u00e9o)"
+  },
+  {
+    "id": 368,
+    "name": "Les suites arithm\u00e9tiques",
+    "slug": "les-suites-arithmetiques",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Suite Arithm\u00e9tique (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 410,
+    "name": "D\u00e9finir une suite arithm\u00e9tique",
+    "slug": "definir-une-suite-arithmetique",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "D\u00e9finir une Suite Arithm\u00e9tique (Exercices)"
+  },
+  {
+    "id": 409,
+    "name": "Ecrire les suites arithm\u00e9tiques en fonction de $n$",
+    "slug": "ecrire-les-suites-arithmetiques-en-fonction-de-n",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Suite Arithm\u00e9tique \u00e0 Explicite (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 574,
+    "name": "Montrer qu'une suite est arithm\u00e9tique",
+    "slug": "montrer-quune-suite-est-arithmetique",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Suite Arithm\u00e9tique (Exercice Corrig\u00e9)"
+  },
+  {
+    "id": 411,
+    "name": "Ecrire une suite arithm\u00e9tique de mani\u00e8re explicite",
+    "slug": "ecrire-une-suite-arithmetique-de-maniere-explicite",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Suite Arithm\u00e9tique vers Suite Explicite"
+  },
+  {
+    "id": 372,
+    "name": "Somme des termes d'une suite arithm\u00e9tique",
+    "slug": "somme-des-termes-dune-suite-arithmetique",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Somme des Termes d'une Suite Arithm\u00e9tique"
+  },
+  {
+    "id": 414,
+    "name": "Application de la formule",
+    "slug": "application-de-la-formule",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Les Suites (Exercices) Formule A Savoir"
+  },
+  {
+    "id": 764,
+    "name": "Les suites arithm\u00e9tiques",
+    "slug": "les-suites-arithmetiques",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Les suites arithm\u00e9tiques"
+  },
+  {
+    "id": 391,
+    "name": "*Comment construire un diagramme de bo\u00eete",
+    "slug": "comment-construire-un-diagramme-de-boite",
+    "type": "video",
+    "visible": false,
+    "name_seo": "Construire un Diagramme de Boite (Vid\u00e9o)"
+  },
+  {
+    "id": 521,
+    "name": "Formules de la variance et de l'\u00e9cart-type avec application",
+    "slug": "formules-de-la-variance-et-de-lecart-type-avec-application",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Statistiques -Variance et Ecart-Type"
+  },
+  {
+    "id": 526,
+    "name": "Calculs de variance et \u00e9cart type",
+    "slug": "calculs-de-variance-et-ecart-type",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Variance et Ecart-Type (Exercice)"
+  },
+  {
+    "id": 393,
+    "name": "Variable ale\u0301atoire et loi de probabilite\u0301",
+    "slug": "variable-aleatoire-et-loi-de-probabilite",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Variable ale\u0301atoire et Loi de Probabilite\u0301"
+  },
+  {
+    "id": 597,
+    "name": "D\u00e9finir une variable al\u00e9atoire",
+    "slug": "definir-une-variable-aleatoire",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Variable Al\u00e9atoire (Exercices Corrig\u00e9s)"
+  },
+  {
+    "id": 523,
+    "name": "M\u00e9thode : Comment utiliser une variable al\u00e9atoire discr\u00e8te",
+    "slug": "methode-comment-utiliser-une-variable-aleatoire-discrete",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Variable Al\u00e9atoire Discr\u00e8te (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 392,
+    "name": "L'Esp\u00e9rance et son application",
+    "slug": "lesperance-et-son-application",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Probabilit\u00e9 et \u00c9sp\u00e9rance (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 524,
+    "name": "Calculs d'esp\u00e9rance",
+    "slug": "calculs-desperance",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Probabilit\u00e9 (Exercice) Calcul d'Esp\u00e9rance"
+  },
+  {
+    "id": 522,
+    "name": "Gagner de l'argent gr\u00e2ce \u00e0 une variable al\u00e9atoire discr\u00e8te",
+    "slug": "gagner-de-largent-grace-a-une-variable-aleatoire-discrete",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Variable Al\u00e9atoire Discr\u00e8te et Jeux"
+  },
+  {
+    "id": 396,
+    "name": "M\u00e9thode : Exercice type loi binomiale",
+    "slug": "methode-exercice-type-loi-binomiale",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Exercice Type sur la Loi Binomiale"
+  },
+  {
+    "id": 528,
+    "name": "Calculs de probabilit\u00e9 avec la loi Binomiale",
+    "slug": "calculs-de-probabilite-avec-la-loi-binomiale",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Loi Binomiale - Calcul de Probabilit\u00e9"
+  },
+  {
+    "id": 599,
+    "name": "Intervalle de fluctuation avec loi Binomiale",
+    "slug": "intervalle-de-fluctuation-avec-loi-binomiale",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Intervalle de Fluctuation : Loi Binomiale"
+  },
+  {
+    "id": 1008,
+    "name": "R\u00e9soudre une (in)\u00e9quation du type $ax^2+bx+c=0$",
+    "slug": "resoudre-une-inequation-du-type-ax2bxc0",
+    "type": "test",
+    "visible": false,
+    "name_seo": "R\u00e9soudre une (in)\u00e9quation du type $ax^2+bx+c=0$"
+  },
+  {
+    "id": 1009,
+    "name": "D\u00e9rivation d'op\u00e9rations",
+    "slug": "derivation-doperations",
+    "type": "test",
+    "visible": false,
+    "name_seo": "D\u00e9rivation d'op\u00e9rations"
+  },
+  {
+    "id": 1025,
+    "name": "Les Fonctions Lin\u00e9aires : Approche Graphique",
+    "slug": "les-fonctions-lineaires-approche-graphique",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Les Fonctions Lin\u00e9aires : Approche Graphique"
+  },
+  {
+    "id": 1015,
+    "name": "Suites arithm\u00e9tiques",
+    "slug": "suites-arithmetiques",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Suites arithm\u00e9tiques"
+  },
+  {
+    "id": 1013,
+    "name": "Moyenne, variance et \u00e9cart-type",
+    "slug": "moyenne-variance-et-ecart-type",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Moyenne, variance et \u00e9cart-type"
+  },
+  {
+    "id": 1010,
+    "name": "Variable al\u00e9atoire et loi de probabilit\u00e9",
+    "slug": "variable-aleatoire-et-loi-de-probabilite",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Variable al\u00e9atoire et loi de probabilit\u00e9"
+  },
+  {
+    "id": 855,
+    "name": "Sch\u00e9ma de Bernoulli et introduction \u00e0 la loi Binomiale",
+    "slug": "schema-de-bernoulli-et-introduction-a-la-loi-binomiale",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Sch\u00e9ma de Bernoulli et introduction \u00e0 la loi Binomiale"
+  },
+  {
+    "id": 398,
+    "name": "Loi Binomiale",
+    "slug": "loi-binomiale",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Loi Binomiale et \u00c9chantillonnage (Vid\u00e9o)"
+  },
+  {
+    "id": 1012,
+    "name": "Loi Binomiale et Sch\u00e9ma de Bernoulli",
+    "slug": "loi-binomiale-et-schema-de-bernoulli",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Loi Binomiale et Sch\u00e9ma de Bernoulli"
+  },
+  {
+    "id": 658,
+    "name": "Application \u00e9conomique du trin\u00f4me",
+    "slug": "application-economique-du-trinome",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Application \u00e9conomique du trin\u00f4me"
+  },
+  {
+    "id": 909,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 363,
+    "name": "R\u00e9soudre des In\u00e9quations avec tableau de signe",
+    "slug": "resoudre-des-inequations-avec-tableau-de-signe",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "In\u00e9quation et Tableau de Signe (Exercices)"
+  },
+  {
+    "id": 364,
+    "name": " In\u00e9quations quotient du second degr\u00e9 avec tableau de signe",
+    "slug": "inequations-quotient-du-second-degre-avec-tableau-de-signe",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Second Degr\u00e9 (Cours Vid\u00e9o) Tableau de Signe"
+  },
+  {
+    "id": 660,
+    "name": "Application \u00e0 la balistique",
+    "slug": "application-a-la-balistique",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Application \u00e0 la balistique"
+  },
+  {
+    "id": 910,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 839,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 849,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 924,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 915,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 365,
+    "name": "Translation et dilatation d'une fonction",
+    "slug": "translation-et-dilatation-dune-fonction",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Translation et Dilatation d'une Fonction"
+  },
+  {
+    "id": 758,
+    "name": "Variations, extrema, translations et dilatations",
+    "slug": "variations-extrema-translations-et-dilatations",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Variations, extrema, translations et dilatations"
+  },
+  {
+    "id": 914,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 422,
+    "name": "D\u00e9finition de la fonction valeur absolue",
+    "slug": "definition-de-la-fonction-valeur-absolue",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Valeur Absolue - D\u00e9finition (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 916,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 852,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 765,
+    "name": "D\u00e9rivabilit\u00e9",
+    "slug": "derivabilite",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "D\u00e9rivabilit\u00e9"
+  },
+  {
+    "id": 918,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 863,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 868,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 370,
+    "name": "Les suites g\u00e9om\u00e9triques",
+    "slug": "les-suites-geometriques",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Suite G\u00e9om\u00e9trique (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 415,
+    "name": "D\u00e9finir une suite g\u00e9om\u00e9trique",
+    "slug": "definir-une-suite-geometrique",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "D\u00e9finir une Suite G\u00e9om\u00e9trique (Exercices)"
+  },
+  {
+    "id": 416,
+    "name": "Ecrire les suites g\u00e9om\u00e9triques en fonction de $n$",
+    "slug": "ecrire-les-suites-geometriques-en-fonction-de-n",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Suite G\u00e9om\u00e9trique \u00e0 Explicite (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 417,
+    "name": "Ecrire une suite g\u00e9om\u00e9trique de mani\u00e8re explicite",
+    "slug": "ecrire-une-suite-geometrique-de-maniere-explicite",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Suite G\u00e9om\u00e9trique \u00e0 Explicite (Exercices)"
+  },
+  {
+    "id": 373,
+    "name": "Somme des termes d'une suite g\u00e9om\u00e9trique",
+    "slug": "somme-des-termes-dune-suite-geometrique",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Somme des Termes d'une Suite G\u00e9om\u00e9trique"
+  },
+  {
+    "id": 420,
+    "name": "Application de la formule",
+    "slug": "application-de-la-formule",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Suites (Exercices) Application de la Formule"
+  },
+  {
+    "id": 653,
+    "name": "Chute des feuilles en automne",
+    "slug": "chute-des-feuilles-en-automne",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Chute des feuilles en automne"
+  },
+  {
+    "id": 870,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 919,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 371,
+    "name": " Limites \u00e0 l'infini d'une suite g\u00e9om\u00e9trique",
+    "slug": "limites-a-linfini-dune-suite-geometrique",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Limite d'une Suite G\u00e9om\u00e9trique (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 418,
+    "name": "Trouver le sens de variation",
+    "slug": "trouver-le-sens-de-variation",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Sens de Variation d'une Suite G\u00e9om\u00e9trique"
+  },
+  {
+    "id": 419,
+    "name": "Calculs de limites de suites g\u00e9om\u00e9trique",
+    "slug": "calculs-de-limites-de-suites-geometrique",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Limite de Suite G\u00e9om\u00e9trique (Exercices)"
+  },
+  {
+    "id": 922,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 366,
+    "name": "Limite d'une suite arithm\u00e9tique ",
+    "slug": "limite-dune-suite-arithmetique",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Suites - Limite d'une Suite Arithm\u00e9tique"
+  },
+  {
+    "id": 412,
+    "name": "Trouver le sens de variation ",
+    "slug": "trouver-le-sens-de-variation",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Sens de Variation d'une Suite (Exercices)"
+  },
+  {
+    "id": 491,
+    "name": "Calculs de limites de suites explicites",
+    "slug": "calculs-de-limites-de-suites-explicites",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Calcul de Limites de Suites Explicites"
+  },
+  {
+    "id": 576,
+    "name": "Calculs de limites de suites arithm\u00e9tiques",
+    "slug": "calculs-de-limites-de-suites-arithmetiques",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Suite Arithm\u00e9tique : Calcul de Limite"
+  },
+  {
+    "id": 654,
+    "name": "Sandrine s'entra\u00eene pour le marathon",
+    "slug": "sandrine-sentraine-pour-le-marathon",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Sandrine s'entra\u00eene pour le marathon"
+  },
+  {
+    "id": 921,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 636,
+    "name": "Les Suites Arithm\u00e9tiques et G\u00e9om\u00e9triques",
+    "slug": "les-suites-arithmetiques-et-geometriques",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Les Suites Arithm\u00e9tiques et G\u00e9om\u00e9triques (Fiche de R\u00e9vision)"
+  },
+  {
+    "id": 795,
+    "name": "Relations vectorielles avanc\u00e9es",
+    "slug": "relations-vectorielles-avancees",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Relations vectorielles avanc\u00e9es"
+  },
+  {
+    "id": 932,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 514,
+    "name": "Equation cart\u00e9sienne d'une droite $(d)$ et propri\u00e9t\u00e9s",
+    "slug": "equation-cartesienne-dune-droite-d-et-proprietes",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Equation Cart\u00e9sienne d'une Droite (Cours)"
+  },
+  {
+    "id": 515,
+    "name": "D\u00e9duire le coefficient directeur \u00e0 partir d'une equation cart\u00e9sienne",
+    "slug": "deduire-le-coefficient-directeur-a-partir-dune-equation-cartesienne",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Equation Cart\u00e9sienne (Exercice Corrig\u00e9)"
+  },
+  {
+    "id": 611,
+    "name": "Calculer l'\u00e9quation cart\u00e9sienne \u00e0 partir d'un vecteur $\\vec{u}$ et un point $A$",
+    "slug": "calculer-lequation-cartesienne-a-partir-dun-vecteur-vecu-et-un-point-a",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "\u00c9quation Cart\u00e9sienne d'une Droite"
+  },
+  {
+    "id": 655,
+    "name": "Donner l'\u00e9quation cart\u00e9sienne d'une droite passant par deux points",
+    "slug": "donner-lequation-cartesienne-dune-droite-passant-par-deux-points",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Donner l'\u00e9quation cart\u00e9sienne d'une droite passant par deux points"
+  },
+  {
+    "id": 886,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 404,
+    "name": "G\u00e9n\u00e9raliser du premier cadran \u00e0 tout le cercle trigonom\u00e9trique",
+    "slug": "generaliser-du-premier-cadran-a-tout-le-cercle-trigonometrique",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Trigonom\u00e9trie et Angles Orient\u00e9s (Cours)"
+  },
+  {
+    "id": 612,
+    "name": "M\u00e9thode : Simplifier les expression du $\\cos$ et $\\sin$ avec le cercle trigonom\u00e9trique",
+    "slug": "methode-simplifier-les-expression-du-cos-et-sin-avec-le-cercle-trigonometrique",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Cercle Trigonom\u00e9trique (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 613,
+    "name": "Formules du $\\cos(a+b)$ et $\\sin(a+b)$",
+    "slug": "formules-du-cosab-et-sinab",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Trigonom\u00e9trie (Vid\u00e9o) Formule Cos et Sin"
+  },
+  {
+    "id": 614,
+    "name": "\u00c9quations trigonom\u00e9triques",
+    "slug": "equations-trigonometriques",
+    "type": "video",
+    "visible": true,
+    "name_seo": "\u00c9quation Trigonom\u00e9trique (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 790,
+    "name": "Trigonom\u00e9trie et Angles Orient\u00e9s",
+    "slug": "trigonometrie-et-angles-orientes",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Trigonom\u00e9trie et Angles Orient\u00e9s"
+  },
+  {
+    "id": 887,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 517,
+    "name": "Mesure principale d'un angle",
+    "slug": "mesure-principale-dun-angle",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Trigonom\u00e9trie : Mesure Principale d'un Angle"
+  },
+  {
+    "id": 518,
+    "name": "Calculs de mesure principale d'un angle",
+    "slug": "calculs-de-mesure-principale-dun-angle",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Mesure principale d'un angle (Exercices)"
+  },
+  {
+    "id": 519,
+    "name": "Relation de Chasles et propri\u00e9t\u00e9 d'angles",
+    "slug": "relation-de-chasles-et-propriete-dangles",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Relation de Chasles et Propri\u00e9t\u00e9 d'Angles"
+  },
+  {
+    "id": 579,
+    "name": " Simplification d'angles avec des propri\u00e9t\u00e9s et la relation de Chasles",
+    "slug": "simplification-dangles-avec-des-proprietes-et-la-relation-de-chasles",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Relation de Chasles : Angles Orient\u00e9s"
+  },
+  {
+    "id": 400,
+    "name": "Produit scalaire et orthogonalit\u00e9",
+    "slug": "produit-scalaire-et-orthogonalite",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Produit Scalaire et Orthogonalit\u00e9 (Vid\u00e9o)"
+  },
+  {
+    "id": 401,
+    "name": "Produit scalaire et coordonn\u00e9es",
+    "slug": "produit-scalaire-et-coordonnees",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Produit Scalaire et Coordonn\u00e9es dans le Plan"
+  },
+  {
+    "id": 577,
+    "name": "Calculer un produit scalaire dans un rep\u00e8re",
+    "slug": "calculer-un-produit-scalaire-dans-un-repere",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Produit Scalaire dans le Plan : Calculs"
+  },
+  {
+    "id": 402,
+    "name": "Produit scalaire formule du cosinus",
+    "slug": "produit-scalaire-formule-du-cosinus",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Produit Scalaire  et Cosinus (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 578,
+    "name": "Calculer un produit scalaire avec le cosinus",
+    "slug": "calculer-un-produit-scalaire-avec-le-cosinus",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Produit Scalaire dans le Plan : Cosinus"
+  },
+  {
+    "id": 799,
+    "name": "Calculs du produit scalaire dans le plan",
+    "slug": "calculs-du-produit-scalaire-dans-le-plan",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Calculs du produit scalaire dans le plan"
+  },
+  {
+    "id": 933,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 520,
+    "name": "Les propri\u00e9t\u00e9s du produit scalaire",
+    "slug": "les-proprietes-du-produit-scalaire",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Propri\u00e9t\u00e9s du Produit Scalaire (Vid\u00e9o)"
+  },
+  {
+    "id": 529,
+    "name": "Appliquer les propri\u00e9t\u00e9s du produit scalaire",
+    "slug": "appliquer-les-proprietes-du-produit-scalaire",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Produit Scalaire (Exercices) Propri\u00e9t\u00e9s"
+  },
+  {
+    "id": 403,
+    "name": "Produit scalaire et projet\u00e9 orthogonal",
+    "slug": "produit-scalaire-et-projete-orthogonal",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Produit Scalaire et Projet\u00e9 Orthogonal"
+  },
+  {
+    "id": 531,
+    "name": "Appliquer le projet\u00e9 orthogonal",
+    "slug": "appliquer-le-projete-orthogonal",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Produit Scalaire et Projet\u00e9 Orthogonal"
+  },
+  {
+    "id": 805,
+    "name": "Les propri\u00e9t\u00e9s du produit scalaire",
+    "slug": "les-proprietes-du-produit-scalaire",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Les propri\u00e9t\u00e9s du produit scalaire"
+  },
+  {
+    "id": 872,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 802,
+    "name": "Diagramme de boite : r\u00e9sum\u00e9 de la m\u00e9diane et des quartiles",
+    "slug": "diagramme-de-boite-resume-de-la-mediane-et-des-quartiles",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Diagramme de boite : r\u00e9sum\u00e9 de la m\u00e9diane et des quartiles"
+  },
+  {
+    "id": 807,
+    "name": "Moyenne, variance et \u00e9cart-type",
+    "slug": "moyenne-variance-et-ecart-type",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Moyenne, variance et \u00e9cart-type"
+  },
+  {
+    "id": 865,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 721,
+    "name": "Mettre en situation un probl\u00e8me avec une variable al\u00e9atoire",
+    "slug": "mettre-en-situation-un-probleme-avec-une-variable-aleatoire",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Mettre en situation un probl\u00e8me avec une variable al\u00e9atoire"
+  },
+  {
+    "id": 394,
+    "name": "Variance, \u00e9cart-type et son application",
+    "slug": "variance-ecart-type-et-son-application",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Variables Al\u00e9atoires, Variance, \u00c9cart-type"
+  },
+  {
+    "id": 525,
+    "name": "Calculs de variance et \u00e9cart-type",
+    "slug": "calculs-de-variance-et-ecart-type",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Variance et Ecart-Type (Exercices)"
+  },
+  {
+    "id": 397,
+    "name": "*Formules de transformation d\u2019une variable ale\u0301atoire",
+    "slug": "formules-de-transformation-dune-variable-aleatoire",
+    "type": "video",
+    "visible": false,
+    "name_seo": "Transformation d'une Variable Al\u00e9atoire (Vid\u00e9o)"
+  },
+  {
+    "id": 527,
+    "name": "Appliquer les formules de transformation d'une variable al\u00e9toire",
+    "slug": "appliquer-les-formules-de-transformation-dune-variable-aletoire",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Transformation de Variable Al\u00e9atoire"
+  },
+  {
+    "id": 871,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 877,
+    "name": "interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "interro"
+  },
+  {
+    "id": 615,
+    "name": "M\u00e9thode : Suites arithm\u00e9rico-g\u00e9om\u00e9triques",
+    "slug": "methode-suites-arithmerico-geometriques",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Suite Arithm\u00e9rico-G\u00e9om\u00e9trique (Vid\u00e9o Bac)"
+  },
+  {
+    "id": 616,
+    "name": "Les suites arithm\u00e9rico-g\u00e9om\u00e9triques pas \u00e0 pas",
+    "slug": "les-suites-arithmerico-geometriques-pas-a-pas",
+    "type": "exercise",
+    "visible": false,
+    "name_seo": "Les Suites Arithm\u00e9tico-G\u00e9om\u00e9triques pas \u00e0 pas"
+  },
+  {
+    "id": 504,
+    "name": "La continuit\u00e9 et le lien avec la d\u00e9rivabilit\u00e9",
+    "slug": "la-continuite-et-le-lien-avec-la-derivabilite",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Continuit\u00e9 et D\u00e9rivation (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 506,
+    "name": "Reconnaitre une fonction continue",
+    "slug": "reconnaitre-une-fonction-continue",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Fonction Continue (Exercice Corrig\u00e9)"
+  },
+  {
+    "id": 505,
+    "name": "Le Th\u00e9or\u00e8me de la Valeur Interm\u00e9diaire T.V.I avec application",
+    "slug": "le-theoreme-de-la-valeur-intermediaire-tvi-avec-application",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Th\u00e9or\u00e8me des Valeurs Interm\u00e9diaires (Vid\u00e9o)"
+  },
+  {
+    "id": 507,
+    "name": "Appliquer le Th\u00e9or\u00e8me de la Valeur Interm\u00e9diaire",
+    "slug": "appliquer-le-theoreme-de-la-valeur-intermediaire",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Th\u00e9or\u00e8me des Valeurs Interm\u00e9diaires"
+  },
+  {
+    "id": 458,
+    "name": "La Fonction exponentielle et ses propri\u00e9t\u00e9s",
+    "slug": "la-fonction-exponentielle-et-ses-proprietes",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Exponentielle (Cours Vid\u00e9o) Propri\u00e9t\u00e9s"
+  },
+  {
+    "id": 459,
+    "name": "M\u00e9thode : Simplifier avec les propri\u00e9t\u00e9s de l'exponentielle",
+    "slug": "methode-simplifier-avec-les-proprietes-de-lexponentielle",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Exponentielle (Exercices) Simplification"
+  },
+  {
+    "id": 460,
+    "name": "Simplifier des produits avec l'exponentielle ",
+    "slug": "simplifier-des-produits-avec-lexponentielle",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Exponentielle (Exercice) Simplification"
+  },
+  {
+    "id": 591,
+    "name": "Simplifier des quotients avec l'exponentielle",
+    "slug": "simplifier-des-quotients-avec-lexponentielle",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Fonction Exponentielle (Exercices)"
+  },
+  {
+    "id": 461,
+    "name": "D\u00e9rivation de l'exponentielle et tableau de variations",
+    "slug": "derivation-de-lexponentielle-et-tableau-de-variations",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Exponentielle (Exercice Vid\u00e9o) D\u00e9rivation"
+  },
+  {
+    "id": 464,
+    "name": "D\u00e9river des expressions de la forme $e^{u}$",
+    "slug": "deriver-des-expressions-de-la-forme-eu",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Exponentielle (Exercices) D\u00e9rivation"
+  },
+  {
+    "id": 466,
+    "name": "La Fonction logarithme et ses propri\u00e9t\u00e9s",
+    "slug": "la-fonction-logarithme-et-ses-proprietes",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Logarithme N\u00e9p\u00e9rien : D\u00e9finition (Vid\u00e9o)"
+  },
+  {
+    "id": 467,
+    "name": "Domaine de d\u00e9finition et simplifications avec le logarithme",
+    "slug": "domaine-de-definition-et-simplifications-avec-le-logarithme",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Logarithme N\u00e9p\u00e9rien (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 469,
+    "name": "Simplifier des produits avec le logarithme ",
+    "slug": "simplifier-des-produits-avec-le-logarithme",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Logarithme N\u00e9p\u00e9rien : Simplifications"
+  },
+  {
+    "id": 592,
+    "name": "Simplifier des quotients avec le logarithme",
+    "slug": "simplifier-des-quotients-avec-le-logarithme",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Logarithme N\u00e9p\u00e9rien : Simplifications"
+  },
+  {
+    "id": 470,
+    "name": "\u00c9tude de fonction du logarithme avec tableau de variations",
+    "slug": "etude-de-fonction-du-logarithme-avec-tableau-de-variations",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Logarithme : \u00c9tude de Fonction (Vid\u00e9o)"
+  },
+  {
+    "id": 474,
+    "name": "M\u00e9thode : R\u00e9soudre une \u00e9quation du type $x^k$",
+    "slug": "methode-resoudre-une-equation-du-type-xk",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Logarithme : Equations Puissance (Vid\u00e9o)"
+  },
+  {
+    "id": 476,
+    "name": "R\u00e9soudre une \u00e9quation puissance $x^k=a$",
+    "slug": "resoudre-une-equation-puissance-xka",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Logarithme N\u00e9p\u00e9rien : Equation Puissance"
+  },
+  {
+    "id": 617,
+    "name": "D\u00e9finition d'une fonction convexe, concave et d'un point d'inflexion",
+    "slug": "definition-dune-fonction-convexe-concave-et-dun-point-dinflexion",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Fonctions Concave et Convexe (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 618,
+    "name": "Les r\u00e9sultats importants des fonction convexes et concaves",
+    "slug": "les-resultats-importants-des-fonction-convexes-et-concaves",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Fonctions Concave et Convexe : Th\u00e9or\u00e8mes"
+  },
+  {
+    "id": 619,
+    "name": "D\u00e9finir si oui ou non une fonction est convexe\/concave",
+    "slug": "definir-si-oui-ou-non-une-fonction-est-convexeconcave",
+    "type": "exercise",
+    "visible": false,
+    "name_seo": "Fonctions Concave et Convexe (Exercices)"
+  },
+  {
+    "id": 620,
+    "name": "Analyse d'une fonction convexe et concave",
+    "slug": "analyse-dune-fonction-convexe-et-concave",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Fonctions Concave et Convexe (Vid\u00e9o)"
+  },
+  {
+    "id": 448,
+    "name": "Les int\u00e9grales graphiquement et le lien avec les primitives",
+    "slug": "les-integrales-graphiquement-et-le-lien-avec-les-primitives",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Integrale (Cours Vid\u00e9o) D\u00e9finition"
+  },
+  {
+    "id": 449,
+    "name": "Les primitives usuelles $x^k$ et $\\frac{1}{x^k}, k>1$",
+    "slug": "les-primitives-usuelles-xk-et-frac1xk-k1",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Integrale : Primitives Usuelles (Vid\u00e9o)"
+  },
+  {
+    "id": 451,
+    "name": "Calculs de primitives de la forme $x^k, k>1$ ",
+    "slug": "calculs-de-primitives-de-la-forme-xk-k1",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Integrale (Exercice) Calcul de Primitive"
+  },
+  {
+    "id": 450,
+    "name": "Les primitives usuelles $\\frac{1}{x}$ et $\\sqrt{x},x>0$ ",
+    "slug": "les-primitives-usuelles-frac1x-et-sqrtxx0",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Integrale (Cours Vid\u00e9o) Primitive Usuelle"
+  },
+  {
+    "id": 453,
+    "name": "Calculs de primitives de la forme $\\frac{1}{x}$ ",
+    "slug": "calculs-de-primitives-de-la-forme-frac1x",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Integrale (Exercice) Calcul de Primitive"
+  },
+  {
+    "id": 556,
+    "name": "M\u00e9thode : primitives sur les polyn\u00f4mes",
+    "slug": "methode-primitives-sur-les-polynomes",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Int\u00e9gration et Primitive de Polynomes"
+  },
+  {
+    "id": 583,
+    "name": "Calculs de primitives mixtes",
+    "slug": "calculs-de-primitives-mixtes",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Integrale : Calculs de Primitives"
+  },
+  {
+    "id": 557,
+    "name": "M\u00e9thode : primitives des racines carr\u00e9es",
+    "slug": "methode-primitives-des-racines-carrees",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Int\u00e9gration et Primitive de Racine Carr\u00e9e"
+  },
+  {
+    "id": 584,
+    "name": "Calculs de primitives mixtes (2)",
+    "slug": "calculs-de-primitives-mixtes-2",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Integrale : Calcul de Primitive"
+  },
+  {
+    "id": 454,
+    "name": "D\u00e9finition et propri\u00e9t\u00e9s essentielles des int\u00e9grales ",
+    "slug": "definition-et-proprietes-essentielles-des-integrales",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Integrale (Cours Vid\u00e9o) Propri\u00e9t\u00e9s"
+  },
+  {
+    "id": 457,
+    "name": "Choisir quelle propri\u00e9t\u00e9 utiliser",
+    "slug": "choisir-quelle-propriete-utiliser",
+    "type": "exercise",
+    "visible": false,
+    "name_seo": "Calcul d'Aires et Int\u00e9grales (Exercices)"
+  },
+  {
+    "id": 607,
+    "name": "Calculer une int\u00e9grale",
+    "slug": "calculer-une-integrale",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Integrale (Exercice Corrig\u00e9) Calculs"
+  },
+  {
+    "id": 455,
+    "name": "M\u00e9thode : calculs d'aires avec les int\u00e9grales",
+    "slug": "methode-calculs-daires-avec-les-integrales",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Integrale : Calcul d'Aire (Vid\u00e9o)"
+  },
+  {
+    "id": 559,
+    "name": " M\u00e9thode : calculs d'aires avec les int\u00e9grales (2)",
+    "slug": "methode-calculs-daires-avec-les-integrales-2",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Calcul d'Aire avec les Int\u00e9grales (Vid\u00e9o)"
+  },
+  {
+    "id": 456,
+    "name": "Calculer l'aire sous la courbe d'un graphique",
+    "slug": "calculer-laire-sous-la-courbe-dun-graphique",
+    "type": "exercise",
+    "visible": false,
+    "name_seo": "Integrale : Calcul d'Aire (Exercice)"
+  },
+  {
+    "id": 608,
+    "name": "Calculer l'aire entre deux courbes",
+    "slug": "calculer-laire-entre-deux-courbes",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Integrale : Aire entre deux Courbes"
+  },
+  {
+    "id": 535,
+    "name": "Les probabilit\u00e9s conditionnelles",
+    "slug": "les-probabilites-conditionnelles",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Probabilit\u00e9s Conditionnelles (Vid\u00e9o)"
+  },
+  {
+    "id": 536,
+    "name": "M\u00e9thode : Calculs de probabilit\u00e9s conditionnelles",
+    "slug": "methode-calculs-de-probabilites-conditionnelles",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Probabilit\u00e9s Conditionnelles (M\u00e9thode)"
+  },
+  {
+    "id": 539,
+    "name": "Calculs de probabilit\u00e9s conditionnelles simples",
+    "slug": "calculs-de-probabilites-conditionnelles-simples",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Probabilit\u00e9s Conditionnelles (Exercices)"
+  },
+  {
+    "id": 541,
+    "name": "Fonction de densit\u00e9 continue",
+    "slug": "fonction-de-densite-continue",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Fonction de Densit\u00e9 Continue (Cours)"
+  },
+  {
+    "id": 542,
+    "name": "Esp\u00e9rance d'une fonction de densit\u00e9",
+    "slug": "esperance-dune-fonction-de-densite",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Esp\u00e9rance d'une Fonction de Densit\u00e9 (Vid\u00e9o)"
+  },
+  {
+    "id": 543,
+    "name": "Loi Uniforme $\\mathcal{U}[a,b]$",
+    "slug": "loi-uniforme-mathcaluab",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Loi Uniforme (Vid\u00e9o) Fonction de Densit\u00e9"
+  },
+  {
+    "id": 544,
+    "name": "Exercice type sur la loi Uniforme",
+    "slug": "exercice-type-sur-la-loi-uniforme",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Loi Uniforme (Vid\u00e9o) Exercice Corrig\u00e9"
+  },
+  {
+    "id": 545,
+    "name": "Calculs avec la loi Uniforme",
+    "slug": "calculs-avec-la-loi-uniforme",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Loi Uniforme (Exercices Type)"
+  },
+  {
+    "id": 549,
+    "name": "Loi Normale centr\u00e9e r\u00e9duite $\\mathcal{N}(0,1)$",
+    "slug": "loi-normale-centree-reduite-mathcaln01",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Loi Normale Centr\u00e9e R\u00e9duite (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 550,
+    "name": "Loi Normale g\u00e9n\u00e9ralis\u00e9e $\\mathcal{N}(\\mu,\\sigma^2)$",
+    "slug": "loi-normale-generalisee-mathcalnmusigma2",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Loi Normale (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 551,
+    "name": "M\u00e9thode : Passer d'une loi $\\mathcal{N}(\\mu,\\sigma^2)$ \u00e0 $\\mathcal{N}(0,1)$",
+    "slug": "methode-passer-dune-loi-mathcalnmusigma2-a-mathcaln01",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Loi Normale \u00e0 la Centr\u00e9e R\u00e9duite (Vid\u00e9o)"
+  },
+  {
+    "id": 552,
+    "name": "Calculs avec la loi Normale",
+    "slug": "calculs-avec-la-loi-normale",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Loi Normale (Exercices Corrig\u00e9s Vid\u00e9o)"
+  },
+  {
+    "id": 600,
+    "name": "Intervalle de fluctuation asymptotique",
+    "slug": "intervalle-de-fluctuation-asymptotique",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Intervalle de Fluctuation Asymptotique"
+  },
+  {
+    "id": 631,
+    "name": "Exercice 1 : QCM - Probabilit\u00e9 et Suites",
+    "slug": "exercice-1-qcm-probabilite-et-suites",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Exercice BAC : Qcm, Probabilit\u00e9s et Suites"
+  },
+  {
+    "id": 639,
+    "name": "Exercice 3 : Arbre de Probabilit\u00e9 et Loi Normale",
+    "slug": "exercice-3-arbre-de-probabilite-et-loi-normale",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Exercice 3 : Arbre de Probabilit\u00e9 et Loi Normale"
+  },
+  {
+    "id": 641,
+    "name": "Exercice 4 : Etude de Fonction avec Application Economique",
+    "slug": "exercice-4-etude-de-fonction-avec-application-economique",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Exercice 4 : Etude de Fonction avec Application Economique"
+  },
+  {
+    "id": 1018,
+    "name": "Suites g\u00e9om\u00e9triques",
+    "slug": "suites-geometriques",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Suites g\u00e9om\u00e9triques"
+  },
+  {
+    "id": 637,
+    "name": "Variations et Bornes",
+    "slug": "variations-et-bornes",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Variations et Bornes (Fiche de R\u00e9vision)"
+  },
+  {
+    "id": 635,
+    "name": "La Continuit\u00e9",
+    "slug": "la-continuite",
+    "type": "course",
+    "visible": true,
+    "name_seo": "La Continuit\u00e9 (Fiche de R\u00e9vision)"
+  },
+  {
+    "id": 1026,
+    "name": "D\u00e9rivation",
+    "slug": "derivation",
+    "type": "test",
+    "visible": false,
+    "name_seo": "D\u00e9rivation"
+  },
+  {
+    "id": 1017,
+    "name": "Les propri\u00e9t\u00e9s de la fonction exponentielle",
+    "slug": "les-proprietes-de-la-fonction-exponentielle",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Les propri\u00e9t\u00e9s de la fonction exponentielle"
+  },
+  {
+    "id": 633,
+    "name": "Fonction exponentielle",
+    "slug": "fonction-exponentielle",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Fonction Exponentielle (Fiche de R\u00e9vision)"
+  },
+  {
+    "id": 593,
+    "name": "Domaine de d\u00e9finition du logarithme",
+    "slug": "domaine-de-definition-du-logarithme",
+    "type": "exercise",
+    "visible": false,
+    "name_seo": "Domaine de D\u00e9finition du Logarithme (Exercices)"
+  },
+  {
+    "id": 1016,
+    "name": "Les propri\u00e9t\u00e9s de la fonction logarithme",
+    "slug": "les-proprietes-de-la-fonction-logarithme",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Les propri\u00e9t\u00e9s de la fonction logarithme"
+  },
+  {
+    "id": 634,
+    "name": "Logarithme N\u00e9p\u00e9rien",
+    "slug": "logarithme-neperien",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Logarithme N\u00e9p\u00e9rien (Fiche de R\u00e9vision)"
+  },
+  {
+    "id": 1019,
+    "name": "Fonctions Convexes et Concaves",
+    "slug": "fonctions-convexes-et-concaves",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Fonctions Convexes et Concaves"
+  },
+  {
+    "id": 1023,
+    "name": "Calcul d'aires et int\u00e9grales",
+    "slug": "calcul-daires-et-integrales",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Calcul d'aires et int\u00e9grales"
+  },
+  {
+    "id": 638,
+    "name": "Primitives",
+    "slug": "primitives",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Les Primitives (Fiche de R\u00e9vision)"
+  },
+  {
+    "id": 1020,
+    "name": "Probabilit\u00e9s conditionnelles et arbres",
+    "slug": "probabilites-conditionnelles-et-arbres",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Probabilit\u00e9s conditionnelles et arbres"
+  },
+  {
+    "id": 1022,
+    "name": "Variable al\u00e9atoire continue et loi Uniforme $\\mathcal{U}[a,b]$",
+    "slug": "variable-aleatoire-continue-et-loi-uniforme-mathcaluab",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Variable al\u00e9atoire continue et loi Uniforme $\\mathcal{U}[a,b]$"
+  },
+  {
+    "id": 1021,
+    "name": "Echantillon, simulation, intervalle de fluctuation et estimations",
+    "slug": "echantillon-simulation-intervalle-de-fluctuation-et-estimations",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Echantillon, simulation, intervalle de fluctuation et estimations"
+  },
+  {
+    "id": 810,
+    "name": "Introduction aux Matrices",
+    "slug": "introduction-aux-matrices",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Introduction aux Matrices"
+  },
+  {
+    "id": 811,
+    "name": "Op\u00e9rations sur les matrices : $\\pm$, transpos\u00e9e et multiplication par un scalaire",
+    "slug": "operations-sur-les-matrices-pm-transposee-et-multiplication-par-un-scalaire",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Op\u00e9rations sur les matrices : $\\pm$, transpos\u00e9e et multiplication par un scalaire"
+  },
+  {
+    "id": 812,
+    "name": "La multiplication des matrices",
+    "slug": "la-multiplication-des-matrices",
+    "type": "video",
+    "visible": true,
+    "name_seo": "La multiplication des matrices"
+  },
+  {
+    "id": 1024,
+    "name": "D\u00e9finition et Op\u00e9rations sur les Matrices",
+    "slug": "definition-et-operations-sur-les-matrices",
+    "type": "test",
+    "visible": false,
+    "name_seo": "D\u00e9finition et Op\u00e9rations sur les Matrices"
+  },
+  {
+    "id": 813,
+    "name": "L'inverse d'une matrice $M(2\\times 2)$",
+    "slug": "linverse-dune-matrice-m2times-2",
+    "type": "video",
+    "visible": true,
+    "name_seo": "L'inverse d'une matrice $M(2\\times 2)$"
+  },
+  {
+    "id": 814,
+    "name": "R\u00e9soudre une syst\u00e8me avec les matrices",
+    "slug": "resoudre-une-systeme-avec-les-matrices",
+    "type": "video",
+    "visible": true,
+    "name_seo": "R\u00e9soudre une syst\u00e8me avec les matrices"
+  },
+  {
+    "id": 815,
+    "name": "Les \u00e9tapes pour diagonaliser une matrice",
+    "slug": "les-etapes-pour-diagonaliser-une-matrice",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Les \u00e9tapes pour diagonaliser une matrice"
+  },
+  {
+    "id": 816,
+    "name": "Les suites de matrices",
+    "slug": "les-suites-de-matrices",
+    "type": "video",
+    "visible": false,
+    "name_seo": "Les suites de matrices"
+  },
+  {
+    "id": 624,
+    "name": "Exercice 1 : Probabilit\u00e9s",
+    "slug": "exercice-1-probabilites",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Bac S Pondichery 2016 (Corrig\u00e9 Vid\u00e9o) Exercice 1"
+  },
+  {
+    "id": 629,
+    "name": "Exercice 2 : Nombres Complexes",
+    "slug": "exercice-2-nombres-complexes",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Bac S M\u00e9tropole 2015 (Corrig\u00e9 Vid\u00e9o) Exercice 2"
+  },
+  {
+    "id": 625,
+    "name": "Exercice 3 : G\u00e9om\u00e9trie dans l'Espace",
+    "slug": "exercice-3-geometrie-dans-lespace",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Bac S Pondichery 2016 (Corrig\u00e9 Vid\u00e9o) Exercice 3"
+  },
+  {
+    "id": 628,
+    "name": "Exercice 4 : Etude de fonction et Logarithme",
+    "slug": "exercice-4-etude-de-fonction-et-logarithme",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Bac S M\u00e9tropole 2015 (Corrig\u00e9 Vid\u00e9o) Exercice 4"
+  },
+  {
+    "id": 627,
+    "name": "Exercice 5 : Int\u00e9grales et R\u00e9currence",
+    "slug": "exercice-5-integrales-et-recurrence",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Bac S M\u00e9tropole 2015 (Corrig\u00e9 Vid\u00e9o) Exercice 5"
+  },
+  {
+    "id": 626,
+    "name": "Exercice 1 : Probabilit\u00e9s",
+    "slug": "exercice-1-probabilites",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Bac S M\u00e9tropole 2015 (Corrig\u00e9 Vid\u00e9o) Exercice 1"
+  },
+  {
+    "id": 640,
+    "name": "Exercice 2 : G\u00e9om\u00e9trie dans l'Espace",
+    "slug": "exercice-2-geometrie-dans-lespace",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Exercice 2 : G\u00e9om\u00e9trie dans l'Espace"
+  },
+  {
+    "id": 630,
+    "name": "Exercice 3 : Nombres Complexes",
+    "slug": "exercice-3-nombres-complexes",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Exercice BAC : Nombres Complexes"
+  },
+  {
+    "id": 632,
+    "name": "Exercice 4 : Int\u00e9gration, \u00c9tude de fonction et Algorithme",
+    "slug": "exercice-4-integration-etude-de-fonction-et-algorithme",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Exercice BAC : Int\u00e9gration, Etude de Fonction"
+  },
+  {
+    "id": 477,
+    "name": "Limite infinie et asymptote horizontale lorsque $x$ tend vers l'infini",
+    "slug": "limite-infinie-et-asymptote-horizontale-lorsque-x-tend-vers-linfini",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Asymptote Horizontale (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 478,
+    "name": "Dresser un tableau de variations complet",
+    "slug": "dresser-un-tableau-de-variations-complet",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Tableau de Variation et Limite (Exercice)"
+  },
+  {
+    "id": 480,
+    "name": "Interpr\u00e9ter les asymptotes horizontales*",
+    "slug": "interpreter-les-asymptotes-horizontales",
+    "type": "exercise",
+    "visible": false,
+    "name_seo": "Interpr\u00e9ter les Asymptote Horizontales"
+  },
+  {
+    "id": 678,
+    "name": "Interpr\u00e9ter les asymptotes horizontales",
+    "slug": "interpreter-les-asymptotes-horizontales",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Interpr\u00e9ter les asymptotes horizontales"
+  },
+  {
+    "id": 882,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 481,
+    "name": "Limite infinie lorsque $x$ tend vers un r\u00e9el $a$ et asymptote verticale",
+    "slug": "limite-infinie-lorsque-x-tend-vers-un-reel-a-et-asymptote-verticale",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Asymptote Verticale et Limite Infinie (Vid\u00e9o)"
+  },
+  {
+    "id": 482,
+    "name": "*M\u00e9thode : Calculs de limites avec asymptotes verticales",
+    "slug": "methode-calculs-de-limites-avec-asymptotes-verticales",
+    "type": "video",
+    "visible": false,
+    "name_seo": "Asymptote Verticale et Limite (Vid\u00e9o)"
+  },
+  {
+    "id": 483,
+    "name": "Interpr\u00e9ter les asymptotes verticales",
+    "slug": "interpreter-les-asymptotes-verticales",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Interpr\u00e9ter les asymptotes verticales"
+  },
+  {
+    "id": 683,
+    "name": "Calculs de limites avec asymptotes verticales",
+    "slug": "calculs-de-limites-avec-asymptotes-verticales",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Calculs de limites avec asymptotes verticales"
+  },
+  {
+    "id": 894,
+    "name": "Limite infinie lorsque $x$ tend vers un r\u00e9el $a$",
+    "slug": "limite-infinie-lorsque-x-tend-vers-un-reel-a",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Limite infinie lorsque $x$ tend vers un r\u00e9el $a$"
+  },
+  {
+    "id": 484,
+    "name": "Propri\u00e9t\u00e9s et th\u00e9or\u00e8me d'op\u00e9rations des limites",
+    "slug": "proprietes-et-theoreme-doperations-des-limites",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Limites de Fonctions - Op\u00e9rations (Cours)"
+  },
+  {
+    "id": 485,
+    "name": "Calculs de limites avec le th\u00e9or\u00e8me d'op\u00e9rations",
+    "slug": "calculs-de-limites-avec-le-theoreme-doperations",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Calcul de Limite (Exercices)"
+  },
+  {
+    "id": 487,
+    "name": "Calculs de limites de polyn\u00f4mes et fonctions rationnelles",
+    "slug": "calculs-de-limites-de-polynomes-et-fonctions-rationnelles",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Calcul de Limite Polyn\u00f4mes (Exercices)"
+  },
+  {
+    "id": 488,
+    "name": "Th\u00e9or\u00e8me de comparaison et des gendarmes",
+    "slug": "theoreme-de-comparaison-et-des-gendarmes",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Th\u00e9or\u00e8me des Gendarmes (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 489,
+    "name": "Calculs de limites par comparaison",
+    "slug": "calculs-de-limites-par-comparaison",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Calcul de Limite (Exercice) Comparaison"
+  },
+  {
+    "id": 589,
+    "name": "Calcul de limites avec le th\u00e9or\u00e8me des gendarmes",
+    "slug": "calcul-de-limites-avec-le-theoreme-des-gendarmes",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Th\u00e9or\u00e8me des Gendarmes (Exercice)"
+  },
+  {
+    "id": 893,
+    "name": "Limite et forme ind\u00e9termin\u00e9e",
+    "slug": "limite-et-forme-indeterminee",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Limite et forme ind\u00e9termin\u00e9e"
+  },
+  {
+    "id": 672,
+    "name": "Limites avanc\u00e9es de fonctions",
+    "slug": "limites-avancees-de-fonctions",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Limites avanc\u00e9es de fonctions"
+  },
+  {
+    "id": 696,
+    "name": "Limites de fonctions",
+    "slug": "limites-de-fonctions",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Limites de fonctions"
+  },
+  {
+    "id": 895,
+    "name": "Th\u00e9or\u00e8mes importants sur les limites",
+    "slug": "theoremes-importants-sur-les-limites",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Th\u00e9or\u00e8mes importants sur les limites"
+  },
+  {
+    "id": 666,
+    "name": "Limites de fonctions",
+    "slug": "limites-de-fonctions",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Limites de fonctions"
+  },
+  {
+    "id": 685,
+    "name": "La continuit\u00e9 d'une fonction $f$ en un point $a$",
+    "slug": "la-continuite-dune-fonction-f-en-un-point-a",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "La continuit\u00e9 d'une fonction $f$ en un point $a$"
+  },
+  {
+    "id": 509,
+    "name": "Composition de deux fonctions  $f \\circ g$",
+    "slug": "composition-de-deux-fonctions-f-circ-g",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Composition de deux fonctions (Vid\u00e9o)"
+  },
+  {
+    "id": 510,
+    "name": "Calculs de compositions de fonctions ",
+    "slug": "calculs-de-compositions-de-fonctions",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Composition de fonctions (Exercices)"
+  },
+  {
+    "id": 511,
+    "name": "D\u00e9river une composition $(f\\circ g)'$",
+    "slug": "deriver-une-composition-fcirc-g",
+    "type": "video",
+    "visible": true,
+    "name_seo": "D\u00e9riv\u00e9e une Composition de Fonctions"
+  },
+  {
+    "id": 512,
+    "name": "Calculs de d\u00e9riv\u00e9es de compositions de fonctions",
+    "slug": "calculs-de-derivees-de-compositions-de-fonctions",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "D\u00e9riv\u00e9e de Compositions de Fonctions"
+  },
+  {
+    "id": 686,
+    "name": "Composition de fonction avec l'exponentielle",
+    "slug": "composition-de-fonction-avec-lexponentielle",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Composition de fonction avec l'exponentielle"
+  },
+  {
+    "id": 699,
+    "name": "D\u00e9rivation de deux fonctions compos\u00e9es $(f\\circ g)'$",
+    "slug": "derivation-de-deux-fonctions-composees-fcirc-g",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "D\u00e9rivation de deux fonctions compos\u00e9es $(f\\circ g)'$"
+  },
+  {
+    "id": 892,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 532,
+    "name": "Parit\u00e9, p\u00e9riodicit\u00e9 et d\u00e9riv\u00e9e du $\\cos$ et $\\sin$",
+    "slug": "parite-periodicite-et-derivee-du-cos-et-sin",
+    "type": "video",
+    "visible": true,
+    "name_seo": "D\u00e9riv\u00e9e du Cosinus et Sinus (Vid\u00e9o)"
+  },
+  {
+    "id": 533,
+    "name": "Calculs de d\u00e9riv\u00e9es avec $\\cos$ et $\\sin$",
+    "slug": "calculs-de-derivees-avec-cos-et-sin",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "D\u00e9riv\u00e9e du Cosinus et Sinus (Exercices)"
+  },
+  {
+    "id": 534,
+    "name": "M\u00e9thode : Etude d'une fonction trigonom\u00e9trique",
+    "slug": "methode-etude-dune-fonction-trigonometrique",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Etude d'une Fonction Trigonom\u00e9trique"
+  },
+  {
+    "id": 590,
+    "name": "Variation d'une fonction trigonom\u00e9trique",
+    "slug": "variation-dune-fonction-trigonometrique",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Fonction Trigonom\u00e9trique (Exercice)"
+  },
+  {
+    "id": 700,
+    "name": "Parit\u00e9, p\u00e9riodicit\u00e9 et d\u00e9riv\u00e9e des fonctions $\\cos$ et $\\sin$",
+    "slug": "parite-periodicite-et-derivee-des-fonctions-cos-et-sin",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Parit\u00e9, p\u00e9riodicit\u00e9 et d\u00e9riv\u00e9e des fonctions $\\cos$ et $\\sin$"
+  },
+  {
+    "id": 673,
+    "name": "Fonctions Trigonom\u00e9triques",
+    "slug": "fonctions-trigonometriques",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Fonctions Trigonom\u00e9triques"
+  },
+  {
+    "id": 902,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 462,
+    "name": "M\u00e9thode : Equations et In\u00e9quations avec l'exponentielle",
+    "slug": "methode-equations-et-inequations-avec-lexponentielle",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Exponentielle : Equations et In\u00e9quations"
+  },
+  {
+    "id": 463,
+    "name": "R\u00e9soudre une \u00e9quation avec $e^x$",
+    "slug": "resoudre-une-equation-avec-ex",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Exponentielle : R\u00e9soudre une \u00c9quation"
+  },
+  {
+    "id": 688,
+    "name": "Propri\u00e9t\u00e9s et in\u00e9quations avec la fonction exponentielle",
+    "slug": "proprietes-et-inequations-avec-la-fonction-exponentielle",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Propri\u00e9t\u00e9s et in\u00e9quations avec la fonction exponentielle"
+  },
+  {
+    "id": 907,
+    "name": "Propri\u00e9t\u00e9s et (in)\u00e9quations avec la fonction exponentielle",
+    "slug": "proprietes-et-inequations-avec-la-fonction-exponentielle",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Propri\u00e9t\u00e9s et (in)\u00e9quations avec la fonction exponentielle"
+  },
+  {
+    "id": 715,
+    "name": "D\u00e9riv\u00e9e de la fonction exponentielle",
+    "slug": "derivee-de-la-fonction-exponentielle",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "D\u00e9riv\u00e9e de la fonction exponentielle"
+  },
+  {
+    "id": 465,
+    "name": "M\u00e9thode : Etude de fonction avec d\u00e9riv\u00e9e",
+    "slug": "methode-etude-de-fonction-avec-derivee",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Exponentielle \u00c9tude de Fonction (Vid\u00e9o)"
+  },
+  {
+    "id": 690,
+    "name": "Etude de fonction avec l'exponentielle",
+    "slug": "etude-de-fonction-avec-lexponentielle",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Etude de fonction avec l'exponentielle"
+  },
+  {
+    "id": 896,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 490,
+    "name": "Sens de variation et suite major\u00e9e, minor\u00e9e ou born\u00e9e",
+    "slug": "sens-de-variation-et-suite-majoree-minoree-ou-bornee",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Sens de Variation d'une Suite Major\u00e9e"
+  },
+  {
+    "id": 493,
+    "name": "M\u00e9thode : Etudier le sens de variation d'une suite du type $u_n=f(n)$",
+    "slug": "methode-etudier-le-sens-de-variation-dune-suite-du-type-u-nfn",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Sens de Variation d'une Suite R\u00e9currente"
+  },
+  {
+    "id": 494,
+    "name": "M\u00e9thode : Etudier une suite r\u00e9currente du type $u_{n+1}=f(u_n)$",
+    "slug": "methode-etudier-une-suite-recurrente-du-type-u-n1fu-n",
+    "type": "video",
+    "visible": true,
+    "name_seo": "M\u00e9thode : Etudier une Suite R\u00e9currente"
+  },
+  {
+    "id": 495,
+    "name": "Retrouver une suite minor\u00e9e, major\u00e9e et born\u00e9e",
+    "slug": "retrouver-une-suite-minoree-majoree-et-bornee",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Suite Minor\u00e9e ou Major\u00e9e (Exercices)"
+  },
+  {
+    "id": 662,
+    "name": "Retrouver une suite minor\u00e9e, major\u00e9e et born\u00e9e",
+    "slug": "retrouver-une-suite-minoree-majoree-et-bornee",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Retrouver une suite minor\u00e9e, major\u00e9e et born\u00e9e"
+  },
+  {
+    "id": 908,
+    "name": "G\u00e9n\u00e9ralit\u00e9s sur les suites",
+    "slug": "generalites-sur-les-suites",
+    "type": "test",
+    "visible": false,
+    "name_seo": "G\u00e9n\u00e9ralit\u00e9s sur les suites"
+  },
+  {
+    "id": 496,
+    "name": "Limite finie et infinie d'une suite $(u_n)$",
+    "slug": "limite-finie-et-infinie-dune-suite-u-n",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Limite Finie et Infinie d'une Suite"
+  },
+  {
+    "id": 500,
+    "name": "Limites des suites et op\u00e9rations ",
+    "slug": "limites-des-suites-et-operations",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Limite des Suites et Op\u00e9rations"
+  },
+  {
+    "id": 501,
+    "name": "Calcul de limites avec additions et soustractions",
+    "slug": "calcul-de-limites-avec-additions-et-soustractions",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Limite avec Additions et Soustractions"
+  },
+  {
+    "id": 499,
+    "name": "Calcul de limites avec multiplications et divisions",
+    "slug": "calcul-de-limites-avec-multiplications-et-divisions",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Limite avec Multiplications et Divisions"
+  },
+  {
+    "id": 585,
+    "name": "Calcul de limites ind\u00e9termin\u00e9es",
+    "slug": "calcul-de-limites-indeterminees",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Limites Ind\u00e9termin\u00e9es (Exercices)"
+  },
+  {
+    "id": 502,
+    "name": "Th\u00e9or\u00e8me des gendarmes et de comparaison",
+    "slug": "theoreme-des-gendarmes-et-de-comparaison",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Th\u00e9or\u00e8me des Gendarmes (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 503,
+    "name": "Appliquer le th\u00e9or\u00e8me des gendarmes et de comparaison",
+    "slug": "appliquer-le-theoreme-des-gendarmes-et-de-comparaison",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Th\u00e9or\u00e8me des Gendarmes (Exercices)"
+  },
+  {
+    "id": 661,
+    "name": "Calcul avanc\u00e9 de limites",
+    "slug": "calcul-avance-de-limites",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Calcul avanc\u00e9 de limites"
+  },
+  {
+    "id": 891,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 553,
+    "name": "Raisonnement par r\u00e9currence",
+    "slug": "raisonnement-par-recurrence",
+    "type": "video",
+    "visible": false,
+    "name_seo": "Le Raisonnement par R\u00e9currence (Vid\u00e9o)"
+  },
+  {
+    "id": 554,
+    "name": "D\u00e9montrer une \u00e9galit\u00e9 et in\u00e9galit\u00e9 par r\u00e9currence",
+    "slug": "demontrer-une-egalite-et-inegalite-par-recurrence",
+    "type": "video",
+    "visible": true,
+    "name_seo": "R\u00e9currence et Suites (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 582,
+    "name": "Applications de la r\u00e9currence",
+    "slug": "applications-de-la-recurrence",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Raisonnement par R\u00e9currence : Suites"
+  },
+  {
+    "id": 555,
+    "name": "Applications plus g\u00e9n\u00e9rales de la r\u00e9currence",
+    "slug": "applications-plus-generales-de-la-recurrence",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "R\u00e9currence et Suites (Exercices)"
+  },
+  {
+    "id": 663,
+    "name": "Le principe de r\u00e9currence",
+    "slug": "le-principe-de-recurrence",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Le principe de r\u00e9currence"
+  },
+  {
+    "id": 659,
+    "name": "Les Suites Arithm\u00e9tiques et G\u00e9om\u00e9triques",
+    "slug": "les-suites-arithmetiques-et-geometriques",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Les Suites Arithm\u00e9tiques et G\u00e9om\u00e9triques"
+  },
+  {
+    "id": 695,
+    "name": "Les Suites Arithm\u00e9tiques et G\u00e9om\u00e9triques-Variations et Bornes",
+    "slug": "les-suites-arithmetiques-et-geometriques-variations-et-bornes",
+    "type": "exercise",
+    "visible": false,
+    "name_seo": "Les Suites Arithm\u00e9tiques et G\u00e9om\u00e9triques-Variations et Bornes"
+  },
+  {
+    "id": 898,
+    "name": "D\u00e9finition et propri\u00e9t\u00e9s de la fonction logarithme",
+    "slug": "definition-et-proprietes-de-la-fonction-logarithme",
+    "type": "test",
+    "visible": false,
+    "name_seo": "D\u00e9finition et propri\u00e9t\u00e9s de la fonction logarithme"
+  },
+  {
+    "id": 471,
+    "name": "D\u00e9river des expressions de la forme $\\ln(u)$",
+    "slug": "deriver-des-expressions-de-la-forme-lnu",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Logarithme N\u00e9p\u00e9rien : D\u00e9rivation (Vid\u00e9o)"
+  },
+  {
+    "id": 472,
+    "name": "D\u00e9river des expressions de la forme $\\ln(u)$",
+    "slug": "deriver-des-expressions-de-la-forme-lnu",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Logarithme N\u00e9p\u00e9rien : D\u00e9rivation (Exercice)"
+  },
+  {
+    "id": 713,
+    "name": "Etude de fonction avec le logarithme",
+    "slug": "etude-de-fonction-avec-le-logarithme",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Etude de fonction avec le logarithme"
+  },
+  {
+    "id": 931,
+    "name": "Etude de fonction avec le logarithme",
+    "slug": "etude-de-fonction-avec-le-logarithme",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Etude de fonction avec le logarithme"
+  },
+  {
+    "id": 473,
+    "name": "M\u00e9thode : Equations et In\u00e9quations avec le logarithme",
+    "slug": "methode-equations-et-inequations-avec-le-logarithme",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Logarithme N\u00e9p\u00e9rien : Equations (Vid\u00e9o)"
+  },
+  {
+    "id": 475,
+    "name": "R\u00e9soudre une \u00e9quation avec $\\ln(x)$",
+    "slug": "resoudre-une-equation-avec-lnx",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Logarithme N\u00e9p\u00e9rien : Equation"
+  },
+  {
+    "id": 595,
+    "name": "R\u00e9soudre une \u00e9quation avec $e^x$",
+    "slug": "resoudre-une-equation-avec-ex",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Logarithme N\u00e9p\u00e9rien (Exercice) Equation"
+  },
+  {
+    "id": 596,
+    "name": "*FAIRE INEQUATION (mixte)",
+    "slug": "faire-inequation-mixte",
+    "type": "exercise",
+    "visible": false,
+    "name_seo": "*FAIRE INEQUATION (mixte)"
+  },
+  {
+    "id": 720,
+    "name": "R\u00e9soudre une \u00e9quation avec $\\ln(x)$",
+    "slug": "resoudre-une-equation-avec-lnx",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "R\u00e9soudre une \u00e9quation avec $\\ln(x)$"
+  },
+  {
+    "id": 717,
+    "name": "Aller plus loin avec le logarithme n\u00e9p\u00e9rien",
+    "slug": "aller-plus-loin-avec-le-logarithme-neperien",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Aller plus loin avec le logarithme n\u00e9p\u00e9rien"
+  },
+  {
+    "id": 900,
+    "name": "Equations et in\u00e9quations avec le logarithme",
+    "slug": "equations-et-inequations-avec-le-logarithme",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Equations et in\u00e9quations avec le logarithme"
+  },
+  {
+    "id": 897,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 580,
+    "name": "Calculs de primitives de la forme $\\frac{1}{\\sqrt{x}}$",
+    "slug": "calculs-de-primitives-de-la-forme-frac1sqrtx",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Integrale : Primitive et Racine Carr\u00e9e"
+  },
+  {
+    "id": 581,
+    "name": "Calculs de primitives de la forme $\\frac{1}{x^n}$",
+    "slug": "calculs-de-primitives-de-la-forme-frac1xn",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Integrale : Calcul de Primitives"
+  },
+  {
+    "id": 718,
+    "name": "Les primitives usuelles",
+    "slug": "les-primitives-usuelles",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Les primitives usuelles"
+  },
+  {
+    "id": 751,
+    "name": "Calcul d'aires et int\u00e9grales",
+    "slug": "calcul-daires-et-integrales",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Calcul d'aires et int\u00e9grales"
+  },
+  {
+    "id": 719,
+    "name": "Calculer des primitives en d\u00e9finissant leur constante",
+    "slug": "calculer-des-primitives-en-definissant-leur-constante",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Calculer des primitives en d\u00e9finissant leur constante"
+  },
+  {
+    "id": 1002,
+    "name": "S'entrainer \u00e0 calculer des primitives en d\u00e9finissant leur constante",
+    "slug": "sentrainer-a-calculer-des-primitives-en-definissant-leur-constante",
+    "type": "test",
+    "visible": false,
+    "name_seo": "S'entrainer \u00e0 calculer des primitives en d\u00e9finissant leur constante"
+  },
+  {
+    "id": 905,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 423,
+    "name": "Forme alg\u00e9brique et op\u00e9rations sur les complexes",
+    "slug": "forme-algebrique-et-operations-sur-les-complexes",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Nombre Complexe - Forme Alg\u00e9brique (Vid\u00e9o)"
+  },
+  {
+    "id": 424,
+    "name": "Mettre un nombre complexe $z$ sous forme alg\u00e9brique $z = a+ib$",
+    "slug": "mettre-un-nombre-complexe-z-sous-forme-algebrique-z-aib",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Nombre Complexe (Exercice) Forme Alg\u00e9brique"
+  },
+  {
+    "id": 560,
+    "name": "Comment additionner et multiplier des nombres complexes",
+    "slug": "comment-additionner-et-multiplier-des-nombres-complexes",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Nombre Complexe : Addition et Multiplication"
+  },
+  {
+    "id": 426,
+    "name": "Calculer des affixes",
+    "slug": "calculer-des-affixes",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Nombre Complexe (Exercice) Calcul d'Affixes"
+  },
+  {
+    "id": 425,
+    "name": "Le plan complexe et l'affixe d'un point et vecteur",
+    "slug": "le-plan-complexe-et-laffixe-dun-point-et-vecteur",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Nombre Complexe (Cours Vid\u00e9o) Plan Complexe"
+  },
+  {
+    "id": 752,
+    "name": "Quizz de d\u00e9finitions en vrac",
+    "slug": "quizz-de-definitions-en-vrac",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Quizz de d\u00e9finitions en vrac"
+  },
+  {
+    "id": 427,
+    "name": "Le conjugu\u00e9 d'un nombre complexe et ses propri\u00e9t\u00e9s",
+    "slug": "le-conjugue-dun-nombre-complexe-et-ses-proprietes",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Conjugu\u00e9 d'un Nombre Complexe (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 428,
+    "name": "Calculer le conjugu\u00e9 $\\bar{z}$ d'un nombre complexe $z$",
+    "slug": "calculer-le-conjugue-barz-dun-nombre-complexe-z",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Nombre Complexe (Exercice) Conjugu\u00e9"
+  },
+  {
+    "id": 429,
+    "name": "M\u00e9thode : Calculer un inverse et l'\u00e9crire sous la forme $z=a+ib$",
+    "slug": "methode-calculer-un-inverse-et-lecrire-sous-la-forme-zaib",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Nombre Complexe : Calcul d'Inverse (Vid\u00e9o)"
+  },
+  {
+    "id": 430,
+    "name": "Transformer un quotient en forme alg\u00e9brique $z=a+ib$",
+    "slug": "transformer-un-quotient-en-forme-algebrique-zaib",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Nombre Complexe : Calcul de Quotients"
+  },
+  {
+    "id": 431,
+    "name": "M\u00e9thode : Equations du premier degr\u00e9 dans $\\mathbb{C}$",
+    "slug": "methode-equations-du-premier-degre-dans-mathbbc",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Nombre Complexe : R\u00e9soudre une \u00c9quation"
+  },
+  {
+    "id": 432,
+    "name": "R\u00e9soudre des \u00e9quations simples dans $\\mathbb{C}$",
+    "slug": "resoudre-des-equations-simples-dans-mathbbc",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Nombre Complexe (Exercice) \u00c9quation"
+  },
+  {
+    "id": 586,
+    "name": "R\u00e9soudre des \u00e9quations dans $\\mathbb{C}$ \u00e0 l'aide des formes alg\u00e9briques",
+    "slug": "resoudre-des-equations-dans-mathbbc-a-laide-des-formes-algebriques",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Equations et Formes Alg\u00e9briques (Exercices)"
+  },
+  {
+    "id": 753,
+    "name": "Forme alg\u00e9brique avanc\u00e9e des nombres complexes",
+    "slug": "forme-algebrique-avancee-des-nombres-complexes",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Forme alg\u00e9brique avanc\u00e9e des nombres complexes"
+  },
+  {
+    "id": 903,
+    "name": "Op\u00e9rations sur les nombres complexes",
+    "slug": "operations-sur-les-nombres-complexes",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Op\u00e9rations sur les nombres complexes"
+  },
+  {
+    "id": 434,
+    "name": "Module et argument d'un nombre complexe",
+    "slug": "module-et-argument-dun-nombre-complexe",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Nombre Complexe : Module et Argument"
+  },
+  {
+    "id": 436,
+    "name": "Calculs de modules",
+    "slug": "calculs-de-modules",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Nombre Complexe (Exercice Corrig\u00e9) Module"
+  },
+  {
+    "id": 438,
+    "name": "Calculs d'arguments",
+    "slug": "calculs-darguments",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Nombre Complexe (Exercice) Arguments"
+  },
+  {
+    "id": 439,
+    "name": "Forme trigonom\u00e9trique et ses propri\u00e9t\u00e9s",
+    "slug": "forme-trigonometrique-et-ses-proprietes",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Nombre Complexe : Forme Trigonom\u00e9trique"
+  },
+  {
+    "id": 441,
+    "name": "Forme exponentielle et ses propri\u00e9t\u00e9s",
+    "slug": "forme-exponentielle-et-ses-proprietes",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Nombre Complexe : Forme Exponentielle"
+  },
+  {
+    "id": 561,
+    "name": "Ecrire $z$ sous sa forme exponentielle",
+    "slug": "ecrire-z-sous-sa-forme-exponentielle",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Nombres Complexes - Forme Exponentielle"
+  },
+  {
+    "id": 587,
+    "name": "Calcul de formes exponentielles",
+    "slug": "calcul-de-formes-exponentielles",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Formes Exponentielle : Nombre Complexe"
+  },
+  {
+    "id": 759,
+    "name": "Diff\u00e9rentes formes d'un nombre complexe",
+    "slug": "differentes-formes-dun-nombre-complexe",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Diff\u00e9rentes formes d'un nombre complexe"
+  },
+  {
+    "id": 901,
+    "name": "Module et argument d'un nombre complexe",
+    "slug": "module-et-argument-dun-nombre-complexe",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Module et argument d'un nombre complexe"
+  },
+  {
+    "id": 443,
+    "name": "Equations du second degr\u00e9 \u00e0 coefficients r\u00e9els",
+    "slug": "equations-du-second-degre-a-coefficients-reels",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Nombre Complexe : \u00c9quation du Second Degr\u00e9"
+  },
+  {
+    "id": 444,
+    "name": "R\u00e9soudre $ax^2+bx+c=0$ avec $a,b,c \\in \\mathbb{R}$",
+    "slug": "resoudre-ax2bxc0-avec-abc-in-mathbbr",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Nombre Complexe : Second Degr\u00e9"
+  },
+  {
+    "id": 445,
+    "name": "Calculs de longueurs et d'angles",
+    "slug": "calculs-de-longueurs-et-dangles",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Nombre Complexe : Angles (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 446,
+    "name": "Calculs de longueurs",
+    "slug": "calculs-de-longueurs",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Nombre Complexe : Calcul de Longueur"
+  },
+  {
+    "id": 447,
+    "name": "Calculs d'angles",
+    "slug": "calculs-dangles",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Nombre Complexe (Exercice) Calcul d'Angle"
+  },
+  {
+    "id": 760,
+    "name": "Le second degr\u00e9 et les calculs de longueurs et d'angles",
+    "slug": "le-second-degre-et-les-calculs-de-longueurs-et-dangles",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Le second degr\u00e9 et les calculs de longueurs et d'angles"
+  },
+  {
+    "id": 433,
+    "name": "M\u00e9thode : D\u00e9terminer un ensemble de points",
+    "slug": "methode-determiner-un-ensemble-de-points",
+    "type": "video",
+    "visible": true,
+    "name_seo": "M\u00e9thode : D\u00e9terminer un ensemble de points"
+  },
+  {
+    "id": 667,
+    "name": "Les Nombres Complexes",
+    "slug": "les-nombres-complexes",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Les Nombres Complexes"
+  },
+  {
+    "id": 885,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 779,
+    "name": "Droites et plans",
+    "slug": "droites-et-plans",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Droites et plans"
+  },
+  {
+    "id": 929,
+    "name": "Droites et plans",
+    "slug": "droites-et-plans",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Droites et plans"
+  },
+  {
+    "id": 562,
+    "name": "Caract\u00e9risation d'une droite",
+    "slug": "caracterisation-dune-droite",
+    "type": "video",
+    "visible": true,
+    "name_seo": "G\u00e9om\u00e9trie dans l'Espace (Vid\u00e9o) La Droite"
+  },
+  {
+    "id": 564,
+    "name": "Caract\u00e9risation d'un plan",
+    "slug": "caracterisation-dun-plan",
+    "type": "video",
+    "visible": true,
+    "name_seo": "G\u00e9om\u00e9trie dans l'Espace (Vid\u00e9o) Le Plan"
+  },
+  {
+    "id": 566,
+    "name": "Repr\u00e9sentation param\u00e9triques de droites et plans",
+    "slug": "representation-parametriques-de-droites-et-plans",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Repr\u00e9sentation Param\u00e9trique (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 565,
+    "name": "M\u00e9thode : Points et vecteurs coplanaires ",
+    "slug": "methode-points-et-vecteurs-coplanaires",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Vecteurs Coplanaires - G\u00e9om\u00e9trie (Vid\u00e9o)"
+  },
+  {
+    "id": 605,
+    "name": "Intersection d'une droite et d'un plan",
+    "slug": "intersection-dune-droite-et-dun-plan",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Intersection d'une droite et d'un plan"
+  },
+  {
+    "id": 569,
+    "name": "Montrer que des droites sont strictement parall\u00e8les et s\u00e9cantes dans un rep\u00e8re",
+    "slug": "montrer-que-des-droites-sont-strictement-paralleles-et-secantes-dans-un-repere",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Droites Parall\u00e8les et S\u00e9cantes (Vid\u00e9o)"
+  },
+  {
+    "id": 606,
+    "name": "Intersection de deux plans",
+    "slug": "intersection-de-deux-plans",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Intersection de deux plans (Exercice)"
+  },
+  {
+    "id": 777,
+    "name": "Repr\u00e9sentation param\u00e9trique et intersections de plans",
+    "slug": "representation-parametrique-et-intersections-de-plans",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Repr\u00e9sentation param\u00e9trique et intersections de plans"
+  },
+  {
+    "id": 681,
+    "name": "G\u00e9om\u00e9trie dans l'espace",
+    "slug": "geometrie-dans-lespace",
+    "type": "course",
+    "visible": false,
+    "name_seo": "G\u00e9om\u00e9trie dans l'espace"
+  },
+  {
+    "id": 904,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 568,
+    "name": "L'orthogonalit\u00e9 dans l'espace ",
+    "slug": "lorthogonalite-dans-lespace",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Produit Scalaire dans l'Espace (Vid\u00e9o)"
+  },
+  {
+    "id": 601,
+    "name": "Vecteurs orthogonaux dans l'Espace",
+    "slug": "vecteurs-orthogonaux-dans-lespace",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Produit Scalaire - Vecteurs Orthogonaux"
+  },
+  {
+    "id": 570,
+    "name": "Le produit scalaire et ses propri\u00e9t\u00e9s avec application",
+    "slug": "le-produit-scalaire-et-ses-proprietes-avec-application",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Produit Scalaire dans l'Espace (Vid\u00e9o)"
+  },
+  {
+    "id": 602,
+    "name": "Calculs de produits scalaires dans l'Espace",
+    "slug": "calculs-de-produits-scalaires-dans-lespace",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Produit Scalaire (Exercices) Calculs"
+  },
+  {
+    "id": 571,
+    "name": "Vecteur normal et \u00e9quation cart\u00e9sienne d'un plan",
+    "slug": "vecteur-normal-et-equation-cartesienne-dun-plan",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Vecteur Normal, \u00c9quation Cart\u00e9sienne (Plan)"
+  },
+  {
+    "id": 603,
+    "name": "D\u00e9terminer un plan avec un vecteur normal",
+    "slug": "determiner-un-plan-avec-un-vecteur-normal",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Produit Scalaire - Vecteur Normal"
+  },
+  {
+    "id": 781,
+    "name": "Loi Normale la r\u00e8gle des \"3 sigmas\"",
+    "slug": "loi-normale-la-regle-des-3-sigmas",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Loi Normale la r\u00e8gle des \"3 sigmas\""
+  },
+  {
+    "id": 888,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 537,
+    "name": "Les \u00e9v\u00e9nements ind\u00e9pendants",
+    "slug": "les-evenements-independants",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Ev\u00e9nements Ind\u00e9pendants et Probabilit\u00e9"
+  },
+  {
+    "id": 538,
+    "name": "M\u00e9thode : calculs avec \u00e9v\u00e9nements ind\u00e9pendants",
+    "slug": "methode-calculs-avec-evenements-independants",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Calculs avec des Ev\u00e9nements Ind\u00e9pendants"
+  },
+  {
+    "id": 540,
+    "name": "Calculs avec des \u00e9v\u00e9nements ind\u00e9pendants",
+    "slug": "calculs-avec-des-evenements-independants",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Ev\u00e9nements Ind\u00e9pendants (Exercices)"
+  },
+  {
+    "id": 785,
+    "name": "Probabilit\u00e9s conditionnelles, \u00e9v\u00e9nements ind\u00e9pendants et arbres",
+    "slug": "probabilites-conditionnelles-evenements-independants-et-arbres",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Probabilit\u00e9s conditionnelles, \u00e9v\u00e9nements ind\u00e9pendants et arbres"
+  },
+  {
+    "id": 906,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 788,
+    "name": "Variable al\u00e9atoire continue et loi Uniforme $\\mathcal{U}[a,b]$",
+    "slug": "variable-aleatoire-continue-et-loi-uniforme-mathcaluab",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Variable al\u00e9atoire continue et loi Uniforme $\\mathcal{U}[a,b]$"
+  },
+  {
+    "id": 714,
+    "name": "Fonctions de densit\u00e9",
+    "slug": "fonctions-de-densite",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Fonctions de densit\u00e9"
+  },
+  {
+    "id": 1003,
+    "name": "Variable al\u00e9atoire continue et loi Uniforme $\\mathcal{U}[a,b]$",
+    "slug": "variable-aleatoire-continue-et-loi-uniforme-mathcaluab",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Variable al\u00e9atoire continue et loi Uniforme $\\mathcal{U}[a,b]$"
+  },
+  {
+    "id": 546,
+    "name": "Loi Exponentielle $\\mathcal{E}{(\\lambda)}$",
+    "slug": "loi-exponentielle-mathcalelambda",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Loi Exponentielle (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 547,
+    "name": "Exercice type sur la loi Exponentielle",
+    "slug": "exercice-type-sur-la-loi-exponentielle",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Loi Exponentielle (Exercice Corrig\u00e9s)"
+  },
+  {
+    "id": 548,
+    "name": "Calculs avec la loi exponentielle",
+    "slug": "calculs-avec-la-loi-exponentielle",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Loi Exponentielle (Exercices Corrig\u00e9s)"
+  },
+  {
+    "id": 789,
+    "name": "La loi Exponentielle $\\mathcal{E}{(\\lambda)}$",
+    "slug": "la-loi-exponentielle-mathcalelambda",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "La loi Exponentielle $\\mathcal{E}{(\\lambda)}$"
+  },
+  {
+    "id": 687,
+    "name": "D\u00e9terminer $\\mu$ ou $\\sigma$ d'une loi normale",
+    "slug": "determiner-mu-ou-sigma-dune-loi-normale",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "D\u00e9terminer $\\mu$ ou $\\sigma$ d'une loi normale"
+  },
+  {
+    "id": 657,
+    "name": "Fonctions de densit\u00e9",
+    "slug": "fonctions-de-densite",
+    "type": "course",
+    "visible": false,
+    "name_seo": "Fonctions de Densit\u00e9 (Fiche de R\u00e9vision)"
+  },
+  {
+    "id": 1004,
+    "name": "Echantillon, simulation, intervalle de fluctuation et estimations",
+    "slug": "echantillon-simulation-intervalle-de-fluctuation-et-estimations",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Echantillon, simulation, intervalle de fluctuation et estimations"
+  },
+  {
+    "id": 841,
+    "name": "D\u00e9terminer la taille d'une matrice",
+    "slug": "determiner-la-taille-dune-matrice",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "D\u00e9terminer la taille d'une matrice"
+  },
+  {
+    "id": 842,
+    "name": "Transposer une matrice",
+    "slug": "transposer-une-matrice",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Transposer une matrice"
+  },
+  {
+    "id": 843,
+    "name": "Additionner et soustraire deux matrices",
+    "slug": "additionner-et-soustraire-deux-matrices",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Additionner et soustraire deux matrices"
+  },
+  {
+    "id": 844,
+    "name": "Multiplier une matrice par un scalaire",
+    "slug": "multiplier-une-matrice-par-un-scalaire",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Multiplier une matrice par un scalaire"
+  },
+  {
+    "id": 845,
+    "name": "Multiplier des matrices",
+    "slug": "multiplier-des-matrices",
+    "type": "exercise",
+    "visible": false,
+    "name_seo": "Multiplier des matrices"
+  },
+  {
+    "id": 846,
+    "name": "Toutes les op\u00e9rations sur les matrices",
+    "slug": "toutes-les-operations-sur-les-matrices",
+    "type": "exercise",
+    "visible": false,
+    "name_seo": "Toutes les op\u00e9rations sur les matrices"
+  },
+  {
+    "id": 884,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 824,
+    "name": "Multiples et diviseurs",
+    "slug": "multiples-et-diviseurs",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Multiples et diviseurs"
+  },
+  {
+    "id": 825,
+    "name": "Multiples et diviseurs - Exercice type",
+    "slug": "multiples-et-diviseurs-exercice-type",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Multiples et diviseurs - Exercice type"
+  },
+  {
+    "id": 826,
+    "name": "Divisibilit\u00e9 et congruence",
+    "slug": "divisibilite-et-congruence",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Divisibilit\u00e9 et congruence"
+  },
+  {
+    "id": 827,
+    "name": "Divisibilit\u00e9 et division euclidienne",
+    "slug": "divisibilite-et-division-euclidienne",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Divisibilit\u00e9 et division euclidienne"
+  },
+  {
+    "id": 883,
+    "name": "Interro",
+    "slug": "interro",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Interro"
+  },
+  {
+    "id": 828,
+    "name": "La congruence modulo n",
+    "slug": "la-congruence-modulo-n",
+    "type": "video",
+    "visible": true,
+    "name_seo": "La congruence modulo n"
+  },
+  {
+    "id": 829,
+    "name": "Congruence et compatibilit\u00e9 avec $+, -, \\times, \\div $",
+    "slug": "congruence-et-compatibilite-avec-times-div",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Congruence et compatibilit\u00e9 avec $+, -, \\times, \\div $"
+  },
+  {
+    "id": 830,
+    "name": "Th\u00e9or\u00e8me de B\u00e9zout",
+    "slug": "theoreme-de-bezout",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Th\u00e9or\u00e8me de B\u00e9zout"
+  },
+  {
+    "id": 831,
+    "name": "Th\u00e9or\u00e8me de Gauss",
+    "slug": "theoreme-de-gauss",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Th\u00e9or\u00e8me de Gauss"
+  },
+  {
+    "id": 832,
+    "name": "\u00c9quation diophantienne : la r\u00e9solution pas \u00e0 pas",
+    "slug": "equation-diophantienne-la-resolution-pas-a-pas",
+    "type": "video",
+    "visible": true,
+    "name_seo": "\u00c9quation diophantienne : la r\u00e9solution pas \u00e0 pas"
+  },
+  {
+    "id": 833,
+    "name": "Plus Grand Commun Diviseur (PGCD) et Plus Petit Commun Multiple (PPCM)",
+    "slug": "plus-grand-commun-diviseur-pgcd-et-plus-petit-commun-multiple-ppcm",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Plus Grand Commun Diviseur (PGCD) et Plus Petit Commun Multiple (PPCM)"
+  },
+  {
+    "id": 994,
+    "name": "Exercices de PPCM",
+    "slug": "exercices-de-ppcm",
+    "type": "exercise",
+    "visible": false,
+    "name_seo": "Exercices de PPCM"
+  },
+  {
+    "id": 834,
+    "name": "Nombres premiers et crit\u00e8re d'arr\u00eat",
+    "slug": "nombres-premiers-et-critere-darret",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Nombres premiers et crit\u00e8re d'arr\u00eat"
+  },
+  {
+    "id": 835,
+    "name": "Nombres premiers et divisibilit\u00e9",
+    "slug": "nombres-premiers-et-divisibilite",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Nombres premiers et divisibilit\u00e9"
+  },
+  {
+    "id": 1,
+    "name": "R\u00e8gle des signes",
+    "slug": "regle-des-signes",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Nombres Relatifs (Cours) R\u00e8gle des signes"
+  },
+  {
+    "id": 2,
+    "name": "Simplifications",
+    "slug": "simplifications",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Nombres Relatifs (Exercices) Simplifications"
+  },
+  {
+    "id": 3,
+    "name": "Additionner et soustraire",
+    "slug": "additionner-et-soustraire",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Additionner des Nombres Relatifs (Vid\u00e9o)"
+  },
+  {
+    "id": 4,
+    "name": "Additionner et soustraire",
+    "slug": "additionner-et-soustraire",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Nombres Relatifs (Exercices)"
+  },
+  {
+    "id": 6,
+    "name": "Enchainement de calculs",
+    "slug": "enchainement-de-calculs",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Calculs de Nombres Relatifs (Cours)"
+  },
+  {
+    "id": 7,
+    "name": "Op\u00e9rations avec plus de nombres",
+    "slug": "operations-avec-plus-de-nombres",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Nombres Relatifs (Exercices) Op\u00e9rations"
+  },
+  {
+    "id": 945,
+    "name": "Additions et Soustractions",
+    "slug": "additions-et-soustractions",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Additions et Soustractions"
+  },
+  {
+    "id": 9,
+    "name": "R\u00e8gle des signes appliqu\u00e9e aux multiplications et divisions",
+    "slug": "regle-des-signes-appliquee-aux-multiplications-et-divisions",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Nombres Relatifs (Cours Vid\u00e9o) Multiplications"
+  },
+  {
+    "id": 10,
+    "name": "Multiplications",
+    "slug": "multiplications",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Nombres Relatifs (Exercices) Multiplications"
+  },
+  {
+    "id": 12,
+    "name": "Divisions",
+    "slug": "divisions",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Nombres Relatifs (Exercices) Divisions"
+  },
+  {
+    "id": 13,
+    "name": "Enchainement de calculs",
+    "slug": "enchainement-de-calculs",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Nombres Relatifs - Enchainement de Calculs"
+  },
+  {
+    "id": 15,
+    "name": "Op\u00e9rations mixtes avec plus de nombres ",
+    "slug": "operations-mixtes-avec-plus-de-nombres",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Nombres Relatifs (Exercices) Op\u00e9rations"
+  },
+  {
+    "id": 16,
+    "name": "Priorit\u00e9 des calculs",
+    "slug": "priorite-des-calculs",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Nombres Relatifs (Cours) Priorit\u00e9 de Calculs"
+  },
+  {
+    "id": 17,
+    "name": "Appliquer les priorit\u00e9s ",
+    "slug": "appliquer-les-priorites",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Nombres Relatifs (Exercices) Priorit\u00e9s"
+  },
+  {
+    "id": 944,
+    "name": "Priorit\u00e9s de Calcul et Ordre de Grandeur",
+    "slug": "priorites-de-calcul-et-ordre-de-grandeur",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Priorit\u00e9s de Calcul et Ordre de Grandeur"
+  },
+  {
+    "id": 723,
+    "name": "Nombres Relatifs",
+    "slug": "nombres-relatifs",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Nombres Relatifs"
+  },
+  {
+    "id": 701,
+    "name": "D\u00e9terminer un ordre de grandeur",
+    "slug": "determiner-un-ordre-de-grandeur",
+    "type": "video",
+    "visible": true,
+    "name_seo": "D\u00e9terminer un ordre de grandeur"
+  },
+  {
+    "id": 702,
+    "name": "V\u00e9rifier un r\u00e9sultat sans calculatrice",
+    "slug": "verifier-un-resultat-sans-calculatrice",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "V\u00e9rifier un r\u00e9sultat sans calculatrice"
+  },
+  {
+    "id": 703,
+    "name": "V\u00e9rifier un r\u00e9sultat sans calculatrice - avanc\u00e9",
+    "slug": "verifier-un-resultat-sans-calculatrice-avance",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "V\u00e9rifier un r\u00e9sultat sans calculatrice - avanc\u00e9"
+  },
+  {
+    "id": 27,
+    "name": "Approche concr\u00e8te des fractions",
+    "slug": "approche-concrete-des-fractions",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Les Fractions (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 36,
+    "name": "Formule de multiplication",
+    "slug": "formule-de-multiplication",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Multiplication de Fractions (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 37,
+    "name": "Multiplier deux fractions",
+    "slug": "multiplier-deux-fractions",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Multiplication de Fractions (Exercices)"
+  },
+  {
+    "id": 38,
+    "name": "Multiplier un nombre et une fraction ",
+    "slug": "multiplier-un-nombre-et-une-fraction",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Multiplier un Nombre et une Fraction"
+  },
+  {
+    "id": 965,
+    "name": "Multiplication de Fractions",
+    "slug": "multiplication-de-fractions",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Multiplication de Fractions"
+  },
+  {
+    "id": 19,
+    "name": "M\u00e9thode de simplification",
+    "slug": "methode-de-simplification",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Ecriture Fractionnaire (Cours) Simplifications"
+  },
+  {
+    "id": 20,
+    "name": "Simplifications basiques",
+    "slug": "simplifications-basiques",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Ecriture Fractionnaire - Simplifications"
+  },
+  {
+    "id": 21,
+    "name": "Crit\u00e8res de divisibilit\u00e9",
+    "slug": "criteres-de-divisibilite",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Ecriture Fractionnaire : Crit\u00e8re de Divisibilit\u00e9"
+  },
+  {
+    "id": 22,
+    "name": "Simplifications plus avanc\u00e9es",
+    "slug": "simplifications-plus-avancees",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Ecriture Fractionnaire - Simplifications"
+  },
+  {
+    "id": 28,
+    "name": "Montrer que deux fractions sont \u00e9gales",
+    "slug": "montrer-que-deux-fractions-sont-egales",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Montrer que Deux Fractions sont \u00c9gales"
+  },
+  {
+    "id": 30,
+    "name": "Application du produit en croix",
+    "slug": "application-du-produit-en-croix",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Application du Produit en Croix (Exercices)"
+  },
+  {
+    "id": 31,
+    "name": "Fractions \u00e0 d\u00e9nominateurs communs",
+    "slug": "fractions-a-denominateurs-communs",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Fraction \u00e0 d\u00e9nominateurs commun (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 33,
+    "name": "Calculs mixtes",
+    "slug": "calculs-mixtes",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Ecriture Fractionnaire (Exercices) Calculs"
+  },
+  {
+    "id": 32,
+    "name": "Fractions sans d\u00e9nominateurs communs",
+    "slug": "fractions-sans-denominateurs-communs",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Fractions sans d\u00e9nominateurs communs (Cours)"
+  },
+  {
+    "id": 34,
+    "name": "D\u00e9nominateurs dans la m\u00eame table",
+    "slug": "denominateurs-dans-la-meme-table",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Fractions et D\u00e9nominateur Commun (Exercices)"
+  },
+  {
+    "id": 35,
+    "name": "Tout type de d\u00e9nominateur",
+    "slug": "tout-type-de-denominateur",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Ecriture Fractionnaire (Exercices)"
+  },
+  {
+    "id": 960,
+    "name": "Addition et Soustraction de Fractions",
+    "slug": "addition-et-soustraction-de-fractions",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Addition et Soustraction de Fractions"
+  },
+  {
+    "id": 39,
+    "name": "L'inverse d'un nombre et formule de division",
+    "slug": "linverse-dun-nombre-et-formule-de-division",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Inverse d'une Fraction (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 40,
+    "name": "Calcul d'inverses",
+    "slug": "calcul-dinverses",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Ecriture Fractionnaire - Calcul d'inverses"
+  },
+  {
+    "id": 43,
+    "name": "Diviser un nombre et une fraction",
+    "slug": "diviser-un-nombre-et-une-fraction",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Diviser un Nombre et Une Fraction (Exercices)"
+  },
+  {
+    "id": 42,
+    "name": "Diviser deux fractions",
+    "slug": "diviser-deux-fractions",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Diviser deux Fractions (Exercices)"
+  },
+  {
+    "id": 722,
+    "name": "Nombres Rationnels et Fractions",
+    "slug": "nombres-rationnels-et-fractions",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Nombres Rationnels et Fractions"
+  },
+  {
+    "id": 140,
+    "name": "Division euclidienne et les deux m\u00e9thodes pour le PGCD",
+    "slug": "division-euclidienne-et-les-deux-methodes-pour-le-pgcd",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Division Euclidienne et PGCD (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 142,
+    "name": "M\u00e9thode : PGCD avec l'algorithme d'Euclide et les soustractions successives",
+    "slug": "methode-pgcd-avec-lalgorithme-deuclide-et-les-soustractions-successives",
+    "type": "video",
+    "visible": true,
+    "name_seo": "PGCD avec l'Algorithme d'Euclide (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 143,
+    "name": "Calculs de PGCD avec l'algorithme d'Euclide (divisions successives)",
+    "slug": "calculs-de-pgcd-avec-lalgorithme-deuclide-divisions-successives",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "PGCD avec l'Algorithme d'Euclide (Exercices)"
+  },
+  {
+    "id": 346,
+    "name": "Calculs de PGCD avec les soustractions succ\u00e9ssives",
+    "slug": "calculs-de-pgcd-avec-les-soustractions-successives",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Nombres Rationnels - Calcul de PGCD"
+  },
+  {
+    "id": 704,
+    "name": "*D\u00e9composer un nombre en facteurs premiers",
+    "slug": "decomposer-un-nombre-en-facteurs-premiers",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "*D\u00e9composer un nombre en facteurs premiers"
+  },
+  {
+    "id": 943,
+    "name": "Plus Grand Commun Diviseur (PGCD) et Division Euclidienne",
+    "slug": "plus-grand-commun-diviseur-pgcd-et-division-euclidienne",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Plus Grand Commun Diviseur (PGCD) et Division Euclidienne"
+  },
+  {
+    "id": 741,
+    "name": "Nombre entier et PGCD",
+    "slug": "nombre-entier-et-pgcd",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Nombre entier et PGCD"
+  },
+  {
+    "id": 44,
+    "name": "Approche des puissances et r\u00e8gle des signes g\u00e9n\u00e9ralis\u00e9e",
+    "slug": "approche-des-puissances-et-regle-des-signes-generalisee",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Puissance et R\u00e8gle des Signes (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 343,
+    "name": "Simplification avec les puissances",
+    "slug": "simplification-avec-les-puissances",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Puissance (Exercices) Simplification"
+  },
+  {
+    "id": 247,
+    "name": "Application de la r\u00e9gle des signes g\u00e9n\u00e9ralis\u00e9s",
+    "slug": "application-de-la-regle-des-signes-generalises",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "R\u00e8gle des Signes G\u00e9n\u00e9ralis\u00e9e (Exercices)"
+  },
+  {
+    "id": 48,
+    "name": "Le cas particulier des puissances de 10 et $10^{-n}$",
+    "slug": "le-cas-particulier-des-puissances-de-10-et-10-n",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Puissance de 10 (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 51,
+    "name": "Simplifier des nombres avec les puissances de 10",
+    "slug": "simplifier-des-nombres-avec-les-puissances-de-10",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Simplifier les Puissances de 10 (Exercices)"
+  },
+  {
+    "id": 49,
+    "name": "Multiplier et diviser un nombre par une puissance de 10",
+    "slug": "multiplier-et-diviser-un-nombre-par-une-puissance-de-10",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Multiplier par une Puissance de 10 (Exercices)"
+  },
+  {
+    "id": 52,
+    "name": "La formule de multiplication et division",
+    "slug": "la-formule-de-multiplication-et-division",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Puissance (Cours) Formule de Multiplication"
+  },
+  {
+    "id": 53,
+    "name": "Appliquer $10^n\\times 10^m=10^{n+m}$",
+    "slug": "appliquer-10ntimes-10m10nm",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Puissance (Exercices) 10^n+m = 10^n * 10^m"
+  },
+  {
+    "id": 55,
+    "name": "Appliquer $\\frac{10^n}{10^m}=10^{n-m}$",
+    "slug": "appliquer-frac10n10m10n-m",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Puissance - Appliquer 10^n-m = 10^n\/10^m"
+  },
+  {
+    "id": 56,
+    "name": "La formule des puissances",
+    "slug": "la-formule-des-puissances",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Puissance (Cours) La Formule des Puissances"
+  },
+  {
+    "id": 57,
+    "name": "Appliquer $(10^n)^m=10^{n\\times m}$",
+    "slug": "appliquer-10nm10ntimes-m",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Puissance (Exercices) (10^n)^m=10^n*m"
+  },
+  {
+    "id": 58,
+    "name": "L'\u00e9criture scientifique",
+    "slug": "lecriture-scientifique",
+    "type": "video",
+    "visible": true,
+    "name_seo": "L'\u00c9criture Scientifique (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 59,
+    "name": "Appliqu\u00e9 aux grands nombres (puissance positive)",
+    "slug": "applique-aux-grands-nombres-puissance-positive",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "L'\u00c9criture Scientifique - (Exercices)"
+  },
+  {
+    "id": 60,
+    "name": "Appliqu\u00e9 aux petits nombres (puissance n\u00e9gative)",
+    "slug": "applique-aux-petits-nombres-puissance-negative",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "L'\u00c9criture Scientifique - Puissances"
+  },
+  {
+    "id": 61,
+    "name": "Comparer des nombres",
+    "slug": "comparer-des-nombres",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "L'\u00c9criture Scientifique - Comparer des Nombres"
+  },
+  {
+    "id": 185,
+    "name": "Multiplications et puissances de puissances ",
+    "slug": "multiplications-et-puissances-de-puissances",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Multiplication de Puissance (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 186,
+    "name": "Application de la formule $x^n x^m=x^{n+m}$",
+    "slug": "application-de-la-formule-xn-xmxnm",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Puissance (Exercice) Formule x^n * x^m = x^n+m"
+  },
+  {
+    "id": 252,
+    "name": "Application de la formule $(x^n)^m=x^{n\\times m}$",
+    "slug": "application-de-la-formule-xnmxntimes-m",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Formule (x^n)^m = x^(n*m) (Exercices)"
+  },
+  {
+    "id": 187,
+    "name": "Divisions et quotients de puissances",
+    "slug": "divisions-et-quotients-de-puissances",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Puissance (Cours Vid\u00e9o) Division et Quotient"
+  },
+  {
+    "id": 188,
+    "name": "Application de la formule $\\frac{x^n}{x^m}=x^{n-m}$ ",
+    "slug": "application-de-la-formule-fracxnxmxn-m",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Puissance : Formule x^n \/x^m = x^n-m (Exemple)"
+  },
+  {
+    "id": 189,
+    "name": "Bon \u00e0 savoir : puissances d'un produit",
+    "slug": "bon-a-savoir-puissances-dun-produit",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Puissance d'un produit (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 190,
+    "name": "Application de la formule $(xy)^n=x^n y^n$",
+    "slug": "application-de-la-formule-xynxn-yn",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Puissance (Exercices) Formule (xy)^n = x^n*y^n"
+  },
+  {
+    "id": 757,
+    "name": "Les puissances",
+    "slug": "les-puissances",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Les puissances"
+  },
+  {
+    "id": 62,
+    "name": "Approche concr\u00e8te du calcul litt\u00e9ral",
+    "slug": "approche-concrete-du-calcul-litteral",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Calcul Litt\u00e9ral - Cours Vid\u00e9o et Exemples"
+  },
+  {
+    "id": 63,
+    "name": "R\u00e8gles importantes pour simplifier les expressions et r\u00e9duire",
+    "slug": "regles-importantes-pour-simplifier-les-expressions-et-reduire",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Simplifier une Expression (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 64,
+    "name": "Mieux \u00e9crire une expression",
+    "slug": "mieux-ecrire-une-expression",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Simplifier une Expression (Exercices)"
+  },
+  {
+    "id": 67,
+    "name": "R\u00e9duction d'expressions",
+    "slug": "reduction-dexpressions",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "R\u00e9duire une Expression (Exercices Corrig\u00e9s)"
+  },
+  {
+    "id": 969,
+    "name": "Utilit\u00e9 du Calcul Litt\u00e9ral et R\u00e9duction d'une Expression",
+    "slug": "utilite-du-calcul-litteral-et-reduction-dune-expression",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Utilit\u00e9 du Calcul Litt\u00e9ral et R\u00e9duction d'une Expression"
+  },
+  {
+    "id": 69,
+    "name": "Distributivit\u00e9 simple",
+    "slug": "distributivite-simple",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Distributivit\u00e9 Simple (Cours Vid\u00e9o) Exemple"
+  },
+  {
+    "id": 70,
+    "name": "Avec des nombres positifs",
+    "slug": "avec-des-nombres-positifs",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Distributivit\u00e9 Simple (Exercices Corrig\u00e9s)"
+  },
+  {
+    "id": 71,
+    "name": "Avec des nombres relatifs",
+    "slug": "avec-des-nombres-relatifs",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Distributivit\u00e9 Simple (Exercice Corrig\u00e9)"
+  },
+  {
+    "id": 72,
+    "name": "Distributivit\u00e9 double",
+    "slug": "distributivite-double",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Distributivit\u00e9 Double (Cours Vid\u00e9o) Exemple"
+  },
+  {
+    "id": 73,
+    "name": "Avec des nombres positifs",
+    "slug": "avec-des-nombres-positifs",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Distributivit\u00e9 Double (Exercices Corrig\u00e9s)"
+  },
+  {
+    "id": 74,
+    "name": "Avec des nombres relatifs",
+    "slug": "avec-des-nombres-relatifs",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Distributivit\u00e9 Double (Exercice Corrig\u00e9)"
+  },
+  {
+    "id": 75,
+    "name": "Motivation et m\u00e9thode du facteur commun",
+    "slug": "motivation-et-methode-du-facteur-commun",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Facteur Commun (Cours Vid\u00e9o) Exemple"
+  },
+  {
+    "id": 76,
+    "name": "Premi\u00e8res factorisations",
+    "slug": "premieres-factorisations",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Factorisation (Exercices Corrig\u00e9s) D\u00e9butant"
+  },
+  {
+    "id": 151,
+    "name": "Factorisations avec facteur commun",
+    "slug": "factorisations-avec-facteur-commun",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Factorisations et Facteur Commun (Exercices)"
+  },
+  {
+    "id": 152,
+    "name": "Factorisations avec facteur commun cach\u00e9",
+    "slug": "factorisations-avec-facteur-commun-cache",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Factorisations et Facteur Commun"
+  },
+  {
+    "id": 949,
+    "name": "Factoriser avec le Facteur Commun",
+    "slug": "factoriser-avec-le-facteur-commun",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Factoriser avec le Facteur Commun"
+  },
+  {
+    "id": 145,
+    "name": "Les trois identit\u00e9s remarquables",
+    "slug": "les-trois-identites-remarquables",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Les identit\u00e9s remarquables (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 147,
+    "name": "M\u00e9thode : Calculs avec les trois identit\u00e9s remarquables",
+    "slug": "methode-calculs-avec-les-trois-identites-remarquables",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Calculs avec les Trois Identit\u00e9s Remarquables"
+  },
+  {
+    "id": 146,
+    "name": "Calculs de la 1\u00e8re identit\u00e9 remarquable",
+    "slug": "calculs-de-la-1ere-identite-remarquable",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Calculs avec la 1\u00e8re Identit\u00e9 Remarquable"
+  },
+  {
+    "id": 249,
+    "name": "Calculs de la 2\u00e8 identit\u00e9 remarquable",
+    "slug": "calculs-de-la-2e-identite-remarquable",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Calcul de la 2\u00e8me Identit\u00e9 Remarquable (Vid\u00e9o)"
+  },
+  {
+    "id": 250,
+    "name": "Calculs de la 3\u00e8 identit\u00e9 remarquable",
+    "slug": "calculs-de-la-3e-identite-remarquable",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "3\u00e8me Identit\u00e9 Remarquable (Exercices)"
+  },
+  {
+    "id": 153,
+    "name": "Factoriser avec la 1\u00e8re et 2\u00e8 identit\u00e9 remarquable",
+    "slug": "factoriser-avec-la-1ere-et-2e-identite-remarquable",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Factoriser avec les Identit\u00e9s Remarquables"
+  },
+  {
+    "id": 154,
+    "name": "Application avec la 1\u00e8re et 2\u00e8 identit\u00e9 remarquable",
+    "slug": "application-avec-la-1ere-et-2e-identite-remarquable",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Calcul avec les deux Identit\u00e9s Remarquables"
+  },
+  {
+    "id": 157,
+    "name": "Factoriser avec la 3\u00e8 identit\u00e9 remarquable",
+    "slug": "factoriser-avec-la-3e-identite-remarquable",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Factoriser avec la 3\u00e8 Identit\u00e9 Remarquable"
+  },
+  {
+    "id": 156,
+    "name": "Application avec la 3\u00e8 identit\u00e9 remarquable",
+    "slug": "application-avec-la-3e-identite-remarquable",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "La 3\u00e8me Identit\u00e9 Remarquable (Exercices)"
+  },
+  {
+    "id": 724,
+    "name": "Calcul litt\u00e9ral - 5\u00e8me",
+    "slug": "calcul-litteral-5eme",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Calcul litt\u00e9ral - 5\u00e8me"
+  },
+  {
+    "id": 89,
+    "name": "La proportionnalit\u00e9 concr\u00e8tement",
+    "slug": "la-proportionnalite-concretement",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Proportionnalit\u00e9 (Cours Vid\u00e9o) Exemple"
+  },
+  {
+    "id": 90,
+    "name": "Appliquer la quatri\u00e8me proportionnelle",
+    "slug": "appliquer-la-quatrieme-proportionnelle",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Proportionnalit\u00e9 (Exercices) Produit en Croix"
+  },
+  {
+    "id": 91,
+    "name": "Repr\u00e9senter la proportionnalit\u00e9 graphiquement",
+    "slug": "representer-la-proportionnalite-graphiquement",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Proportionnalit\u00e9 (Cours Vid\u00e9o) Graphique"
+  },
+  {
+    "id": 92,
+    "name": "Tableaux de proportionnalit\u00e9s",
+    "slug": "tableaux-de-proportionnalites",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Tableau de Proportionnalit\u00e9 (Exercices)"
+  },
+  {
+    "id": 952,
+    "name": "Quatri\u00e8me Proportionnalit\u00e9 et Repr\u00e9sentation Graphique",
+    "slug": "quatrieme-proportionnalite-et-representation-graphique",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Quatri\u00e8me Proportionnalit\u00e9 et Repr\u00e9sentation Graphique"
+  },
+  {
+    "id": 94,
+    "name": "Proportionnalit\u00e9 et pourcentages",
+    "slug": "proportionnalite-et-pourcentages",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Proportionnalit\u00e9 (Cours Vid\u00e9o) Pourcentage"
+  },
+  {
+    "id": 96,
+    "name": "Application aux pourcentages",
+    "slug": "application-aux-pourcentages",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Proportionnalit\u00e9 (Exercices) Pourcentage"
+  },
+  {
+    "id": 939,
+    "name": "Application de la Proportionnalit\u00e9",
+    "slug": "application-de-la-proportionnalite",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Application de la Proportionnalit\u00e9"
+  },
+  {
+    "id": 725,
+    "name": "Proportionnalit\u00e9 - 5\u00e8me",
+    "slug": "proportionnalite-5eme",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Proportionnalit\u00e9 - 5\u00e8me"
+  },
+  {
+    "id": 953,
+    "name": "Moyenne et Moyenne Pond\u00e9r\u00e9e d'une S\u00e9rie Statistique",
+    "slug": "moyenne-et-moyenne-ponderee-dune-serie-statistique",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Moyenne et Moyenne Pond\u00e9r\u00e9e d'une S\u00e9rie Statistique"
+  },
+  {
+    "id": 671,
+    "name": "Probl\u00e8mes de probabilit\u00e9",
+    "slug": "problemes-de-probabilite",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Probl\u00e8mes de probabilit\u00e9"
+  },
+  {
+    "id": 984,
+    "name": "Additions et Soustractions",
+    "slug": "additions-et-soustractions",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Additions et Soustractions"
+  },
+  {
+    "id": 959,
+    "name": "Multiplications et Divisions",
+    "slug": "multiplications-et-divisions",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Multiplications et Divisions"
+  },
+  {
+    "id": 727,
+    "name": "Nombres relatifs",
+    "slug": "nombres-relatifs",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Nombres relatifs"
+  },
+  {
+    "id": 981,
+    "name": "Simplifier une Fraction",
+    "slug": "simplifier-une-fraction",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Simplifier une Fraction"
+  },
+  {
+    "id": 946,
+    "name": "Addition et Soustraction de Fractions",
+    "slug": "addition-et-soustraction-de-fractions",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Addition et Soustraction de Fractions"
+  },
+  {
+    "id": 728,
+    "name": "Nombres rationnels et fractions",
+    "slug": "nombres-rationnels-et-fractions",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Nombres rationnels et fractions"
+  },
+  {
+    "id": 989,
+    "name": "Plus Grand Commun Diviseur (PGCD) et Division Euclidienne",
+    "slug": "plus-grand-commun-diviseur-pgcd-et-division-euclidienne",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Plus Grand Commun Diviseur (PGCD) et Division Euclidienne"
+  },
+  {
+    "id": 978,
+    "name": "Puissances de 10",
+    "slug": "puissances-de-10",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Puissances de 10"
+  },
+  {
+    "id": 948,
+    "name": "Ecriture Scientifique et Comparaison de Nombres",
+    "slug": "ecriture-scientifique-et-comparaison-de-nombres",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Ecriture Scientifique et Comparaison de Nombres"
+  },
+  {
+    "id": 947,
+    "name": "Formule des Puissances G\u00e9n\u00e9ralis\u00e9e",
+    "slug": "formule-des-puissances-generalisee",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Formule des Puissances G\u00e9n\u00e9ralis\u00e9e"
+  },
+  {
+    "id": 729,
+    "name": "Les puissances",
+    "slug": "les-puissances",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Les puissances"
+  },
+  {
+    "id": 950,
+    "name": "Utilit\u00e9 du Calcul Litt\u00e9ral et R\u00e9duction d'une Expression",
+    "slug": "utilite-du-calcul-litteral-et-reduction-dune-expression",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Utilit\u00e9 du Calcul Litt\u00e9ral et R\u00e9duction d'une Expression"
+  },
+  {
+    "id": 951,
+    "name": "D\u00e9velopper une Expression",
+    "slug": "developper-une-expression",
+    "type": "test",
+    "visible": false,
+    "name_seo": "D\u00e9velopper une Expression"
+  },
+  {
+    "id": 730,
+    "name": "Calcul litt\u00e9ral - 4\u00e8me",
+    "slug": "calcul-litteral-4eme",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Calcul litt\u00e9ral - 4\u00e8me"
+  },
+  {
+    "id": 80,
+    "name": "R\u00e9solution en trois \u00e9tapes",
+    "slug": "resolution-en-trois-etapes",
+    "type": "video",
+    "visible": true,
+    "name_seo": "\u00c9quation du Premier Degr\u00e9 (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 81,
+    "name": "R\u00e9soudre les \u00e9quations du type  $x+a=b$",
+    "slug": "resoudre-les-equations-du-type-xab",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "\u00c9quation du Premier Degr\u00e9 (Exercices Corrig\u00e9s)"
+  },
+  {
+    "id": 82,
+    "name": "R\u00e9soudre les \u00e9quations du type $ax=b$",
+    "slug": "resoudre-les-equations-du-type-axb",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "\u00c9quation du Premier Degr\u00e9 (Exercice Corrig\u00e9)"
+  },
+  {
+    "id": 83,
+    "name": "R\u00e9soudre les \u00e9quations du premier degr\u00e9",
+    "slug": "resoudre-les-equations-du-premier-degre",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "\u00c9quation du Premier Degr\u00e9 (Exercices)"
+  },
+  {
+    "id": 347,
+    "name": "Equations du premier degr\u00e9 sp\u00e9ciale divisions",
+    "slug": "equations-du-premier-degre-speciale-divisions",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Equations du Premier Degr\u00e9 (Exercices)"
+  },
+  {
+    "id": 84,
+    "name": "Comment raisonner face \u00e0 un probl\u00e8me",
+    "slug": "comment-raisonner-face-a-un-probleme",
+    "type": "video",
+    "visible": true,
+    "name_seo": "\u00c9quation du Premier Degr\u00e9 (Vid\u00e9o) Probl\u00e8me"
+  },
+  {
+    "id": 85,
+    "name": " Mise en probl\u00e8me et traduction d'un \u00e9nonc\u00e9 en \u00e9quations",
+    "slug": "mise-en-probleme-et-traduction-dun-enonce-en-equations",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "\u00c9quation du Premier Degr\u00e9 (Exercices) Probl\u00e8me"
+  },
+  {
+    "id": 956,
+    "name": "Equation Produit",
+    "slug": "equation-produit",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Equation Produit"
+  },
+  {
+    "id": 731,
+    "name": "Equations du premier degr\u00e9",
+    "slug": "equations-du-premier-degre",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Equations du premier degr\u00e9"
+  },
+  {
+    "id": 86,
+    "name": "Introduction \u00e0 la r\u00e9solution d'in\u00e9quations",
+    "slug": "introduction-a-la-resolution-dinequations",
+    "type": "video",
+    "visible": true,
+    "name_seo": "In\u00e9quation (Cours Vid\u00e9o) Introduction"
+  },
+  {
+    "id": 88,
+    "name": "R\u00e9solution d'in\u00e9quations",
+    "slug": "resolution-dinequations",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "In\u00e9quation (Exercices Corrig\u00e9s) R\u00e9solution"
+  },
+  {
+    "id": 732,
+    "name": "In\u00e9galit\u00e9s et in\u00e9quations",
+    "slug": "inegalites-et-inequations",
+    "type": "course",
+    "visible": true,
+    "name_seo": "In\u00e9galit\u00e9s et in\u00e9quations"
+  },
+  {
+    "id": 348,
+    "name": "Ecrire des solutions discontinues avec $\\cup$",
+    "slug": "ecrire-des-solutions-discontinues-avec-cup",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "In\u00e9galit\u00e9s et In\u00e9quations - Les Solutions"
+  },
+  {
+    "id": 957,
+    "name": "Re\u0301solution d'In\u00e9quations",
+    "slug": "resolution-dinequations",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Re\u0301solution d'In\u00e9quations"
+  },
+  {
+    "id": 940,
+    "name": "Application de la Proportionnalit\u00e9",
+    "slug": "application-de-la-proportionnalite",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Application de la Proportionnalit\u00e9"
+  },
+  {
+    "id": 770,
+    "name": "Proportionnalit\u00e9",
+    "slug": "proportionnalite",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Proportionnalit\u00e9"
+  },
+  {
+    "id": 954,
+    "name": "Moyenne et Moyenne Pond\u00e9r\u00e9e d'une S\u00e9rie Statistique",
+    "slug": "moyenne-et-moyenne-ponderee-dune-serie-statistique",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Moyenne et Moyenne Pond\u00e9r\u00e9e d'une S\u00e9rie Statistique"
+  },
+  {
+    "id": 963,
+    "name": "Caracte\u0301ristiques d'une Se\u0301rie Statistique",
+    "slug": "caracteristiques-dune-serie-statistique",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Caracte\u0301ristiques d'une Se\u0301rie Statistique"
+  },
+  {
+    "id": 971,
+    "name": "Approche Concr\u00e8te des Fonctions",
+    "slug": "approche-concrete-des-fonctions",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Approche Concr\u00e8te des Fonctions"
+  },
+  {
+    "id": 734,
+    "name": "Les fonctions - 4\u00e8me",
+    "slug": "les-fonctions-4eme",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Les fonctions - 4\u00e8me"
+  },
+  {
+    "id": 735,
+    "name": "Fonction lin\u00e9aires et affines",
+    "slug": "fonction-lineaires-et-affines",
+    "type": "course",
+    "visible": false,
+    "name_seo": "Fonction lin\u00e9aires et affines"
+  },
+  {
+    "id": 237,
+    "name": "La sph\u00e8re et la boule",
+    "slug": "la-sphere-et-la-boule",
+    "type": "video",
+    "visible": true,
+    "name_seo": "G\u00e9om\u00e9trie (Cours Vid\u00e9o) Sph\u00e8re et Boule"
+  },
+  {
+    "id": 256,
+    "name": "*Calculs de la dimension et nature des sections",
+    "slug": "calculs-de-la-dimension-et-nature-des-sections",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Calculs de Sections (Exercices)"
+  },
+  {
+    "id": 238,
+    "name": "Calculs d'aires et de volumes",
+    "slug": "calculs-daires-et-de-volumes",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Calcul d'Aire et de Volume (Exercices)"
+  },
+  {
+    "id": 693,
+    "name": "Mise en situation d'un calcul d'aire et de volume",
+    "slug": "mise-en-situation-dun-calcul-daire-et-de-volume",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Mise en situation d'un calcul d'aire et de volume"
+  },
+  {
+    "id": 239,
+    "name": "*Calculs de coefficients de r\u00e9duction",
+    "slug": "calculs-de-coefficients-de-reduction",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Coefficients de R\u00e9duction (Exercices)"
+  },
+  {
+    "id": 131,
+    "name": "Pyramide r\u00e9guli\u00e8re, patron et volume",
+    "slug": "pyramide-reguliere-patron-et-volume",
+    "type": "video",
+    "visible": true,
+    "name_seo": "G\u00e9om\u00e9trie dans l'Espace (Cours) Pyramide"
+  },
+  {
+    "id": 134,
+    "name": "Calculs de volumes",
+    "slug": "calculs-de-volumes",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "G\u00e9om\u00e9trie dans l'Espace (Exercices) Pyramide"
+  },
+  {
+    "id": 642,
+    "name": "Mise en situation d'un calcul de volume",
+    "slug": "mise-en-situation-dun-calcul-de-volume",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Mise en situation d'un calcul de volume"
+  },
+  {
+    "id": 961,
+    "name": "Pyramide et C\u00f4ne de R\u00e9volution",
+    "slug": "pyramide-et-cone-de-revolution",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Pyramide et C\u00f4ne de R\u00e9volution"
+  },
+  {
+    "id": 231,
+    "name": "Sections de parall\u00e9l\u00e9pip\u00e8des, cylindres de r\u00e9volution, c\u00f4nes et pyramides",
+    "slug": "sections-de-parallelepipedes-cylindres-de-revolution-cones-et-pyramides",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Section de Pyramide, C\u00f4ne, ... (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 234,
+    "name": "*Calculs de sections de parall\u00e9l\u00e9pip\u00e8des",
+    "slug": "calculs-de-sections-de-parallelepipedes",
+    "type": "exercise",
+    "visible": false,
+    "name_seo": "Section de Parall\u00e9l\u00e9pip\u00e8de (Exercices)"
+  },
+  {
+    "id": 236,
+    "name": "*Calculs de sections de cylindres de r\u00e9volution",
+    "slug": "calculs-de-sections-de-cylindres-de-revolution",
+    "type": "exercise",
+    "visible": false,
+    "name_seo": "Section de Cylindre (Exercices)"
+  },
+  {
+    "id": 257,
+    "name": "*Calculs de volumes avec coefficient de r\u00e9duction",
+    "slug": "calculs-de-volumes-avec-coefficient-de-reduction",
+    "type": "exercise",
+    "visible": false,
+    "name_seo": "Calculs de Volumes (Exercices)"
+  },
+  {
+    "id": 736,
+    "name": "Aires et Volumes - 4\u00e8me",
+    "slug": "aires-et-volumes-4eme",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Aires et Volumes - 4\u00e8me"
+  },
+  {
+    "id": 102,
+    "name": "Deux th\u00e9or\u00e8mes sur les triangles rectangles",
+    "slug": "deux-theoremes-sur-les-triangles-rectangles",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Cercle Circonscrit (Cours Vid\u00e9o) Triangle"
+  },
+  {
+    "id": 103,
+    "name": "Triangle rectangle et cercle circonscrit",
+    "slug": "triangle-rectangle-et-cercle-circonscrit",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Cercle Circonscrit (Exercice Corrig\u00e9)"
+  },
+  {
+    "id": 344,
+    "name": "Triangle et m\u00e9dianes",
+    "slug": "triangle-et-medianes",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Triangle et M\u00e9dianes (Exercices Corrig\u00e9s)"
+  },
+  {
+    "id": 980,
+    "name": "Triangle Rectangle, Cercle Circonscrit et M\u00e9diane",
+    "slug": "triangle-rectangle-cercle-circonscrit-et-mediane",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Triangle Rectangle, Cercle Circonscrit et M\u00e9diane"
+  },
+  {
+    "id": 105,
+    "name": "L'\u00e9nonc\u00e9 du th\u00e9or\u00e8me de Pythagore",
+    "slug": "lenonce-du-theoreme-de-pythagore",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Th\u00e9or\u00e8me de Pythagore (Cours Vid\u00e9o) Exemple"
+  },
+  {
+    "id": 106,
+    "name": "Calcul de l'hypot\u00e9nuse",
+    "slug": "calcul-de-lhypotenuse",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Th\u00e9or\u00e8me de Pythagore (Exercice Corrig\u00e9)"
+  },
+  {
+    "id": 107,
+    "name": "Calcul d'un c\u00f4t\u00e9 adjacent",
+    "slug": "calcul-dun-cote-adjacent",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Th\u00e9or\u00e8me de Pythagore (Exercice Corrig\u00e9)"
+  },
+  {
+    "id": 108,
+    "name": "La r\u00e9ciproque du th\u00e9or\u00e8me de Pythagore",
+    "slug": "la-reciproque-du-theoreme-de-pythagore",
+    "type": "video",
+    "visible": true,
+    "name_seo": "R\u00e9ciproque de Pythagore (Cours Vid\u00e9o) Exemple"
+  },
+  {
+    "id": 109,
+    "name": "Montrer qu'un triangle est rectangle",
+    "slug": "montrer-quun-triangle-est-rectangle",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "R\u00e9ciproque de Pythagore (Exercice Corrig\u00e9)"
+  },
+  {
+    "id": 968,
+    "name": "Le Th\u00e9or\u00e8me de Pythagore",
+    "slug": "le-theoreme-de-pythagore",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Le Th\u00e9or\u00e8me de Pythagore"
+  },
+  {
+    "id": 737,
+    "name": "Th\u00e9or\u00e8me de Pythagore",
+    "slug": "theoreme-de-pythagore",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Th\u00e9or\u00e8me de Pythagore"
+  },
+  {
+    "id": 114,
+    "name": "Le th\u00e9or\u00e8me de Thal\u00e8s",
+    "slug": "le-theoreme-de-thales",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Th\u00e9or\u00e8me de Thal\u00e8s (Cours Vid\u00e9o) Exemple"
+  },
+  {
+    "id": 115,
+    "name": "Calcul de longueurs avec le th\u00e9or\u00e8me de Thal\u00e8s",
+    "slug": "calcul-de-longueurs-avec-le-theoreme-de-thales",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Th\u00e9or\u00e8me de Thal\u00e8s (Exercices Corrig\u00e9s)"
+  },
+  {
+    "id": 213,
+    "name": "Th\u00e9or\u00e8me de Thal\u00e8s avec \"formation papillon\"",
+    "slug": "theoreme-de-thales-avec-formation-papillon",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Th\u00e9or\u00e8me de Thal\u00e8s (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 214,
+    "name": "Calculs de longueurs en situation papillon",
+    "slug": "calculs-de-longueurs-en-situation-papillon",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Th\u00e9or\u00e8me de Thal\u00e8s (Exercices)"
+  },
+  {
+    "id": 716,
+    "name": "Calculs de longueurs - avanc\u00e9",
+    "slug": "calculs-de-longueurs-avance",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Calculs de longueurs - avanc\u00e9"
+  },
+  {
+    "id": 215,
+    "name": "La r\u00e9ciproque du th\u00e9or\u00e8me de Thal\u00e8s",
+    "slug": "la-reciproque-du-theoreme-de-thales",
+    "type": "video",
+    "visible": true,
+    "name_seo": "R\u00e9ciproque du Th\u00e9or\u00e8me de Thal\u00e8s (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 216,
+    "name": "Montrer que deux droites sont (ou pas) parall\u00e8les",
+    "slug": "montrer-que-deux-droites-sont-ou-pas-paralleles",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Th\u00e9or\u00e8me de Thal\u00e8s et Parall\u00e8les (Exercices)"
+  },
+  {
+    "id": 982,
+    "name": "L'\u00e9nonc\u00e9 du th\u00e9or\u00e8me de Thal\u00e8s",
+    "slug": "lenonce-du-theoreme-de-thales",
+    "type": "test",
+    "visible": false,
+    "name_seo": "L'\u00e9nonc\u00e9 du th\u00e9or\u00e8me de Thal\u00e8s"
+  },
+  {
+    "id": 113,
+    "name": "Les trois applications du th\u00e9or\u00e8me des milieux",
+    "slug": "les-trois-applications-du-theoreme-des-milieux",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Th\u00e9or\u00e8me des Milieux (Cours Vid\u00e9o) Exemple"
+  },
+  {
+    "id": 110,
+    "name": "Les deux droites sont-elles paralle\u0300les ?",
+    "slug": "les-deux-droites-sont-elles-paralleles",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Th\u00e9or\u00e8me des Milieux (Exercices Corrig\u00e9s)"
+  },
+  {
+    "id": 111,
+    "name": "Calculer des longueurs gr\u00e2ce aux milieux",
+    "slug": "calculer-des-longueurs-grace-aux-milieux",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Th\u00e9or\u00e8me des Milieux (Exercices)"
+  },
+  {
+    "id": 112,
+    "name": "Montrer qu'un point est le milieu d'un segment",
+    "slug": "montrer-quun-point-est-le-milieu-dun-segment",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Th\u00e9or\u00e8me des Milieux (Exercice Corrig\u00e9)"
+  },
+  {
+    "id": 738,
+    "name": "Th\u00e9or\u00e8me de Thal\u00e8s et agrandissement - 4\u00e8me",
+    "slug": "theoreme-de-thales-et-agrandissement-4eme",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Th\u00e9or\u00e8me de Thal\u00e8s et agrandissement - 4\u00e8me"
+  },
+  {
+    "id": 123,
+    "name": "Vocabulaire et calcul de  longueurs avec le cosinus",
+    "slug": "vocabulaire-et-calcul-de-longueurs-avec-le-cosinus",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Trigonom\u00e9trie Cosinus : Calcul de Longueurs"
+  },
+  {
+    "id": 124,
+    "name": "Diff\u00e9rencier l'hypot\u00e9nuse et les c\u00f4t\u00e9s adjacents",
+    "slug": "differencier-lhypotenuse-et-les-cotes-adjacents",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Trigonom\u00e9trie Cosinus (Exercices Corrig\u00e9s)"
+  },
+  {
+    "id": 345,
+    "name": " Calculer l'hypot\u00e9nuse avec la formule $\\cos(\\alpha)=\\frac{\\text{adjacent}}{\\text{hypotenuse}}$",
+    "slug": "calculer-lhypotenuse-avec-la-formule-cosalphafractextadjacenttexthypotenuse",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Trigonom\u00e9trie - Calcul d'Hypot\u00e9nuse"
+  },
+  {
+    "id": 126,
+    "name": "Calculer un angle avec le cosinus",
+    "slug": "calculer-un-angle-avec-le-cosinus",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Relation Trigonom\u00e9trique Cosinus (Cours Vid\u00e9o)"
+  },
+  {
+    "id": 125,
+    "name": " Calculer un angle avec la formule $\\cos(\\alpha)=\\frac{\\text{adjacent}}{\\text{hypotenuse}}$",
+    "slug": "calculer-un-angle-avec-la-formule-cosalphafractextadjacenttexthypotenuse",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Trigonom\u00e9trie Cosinus : Calcul d'Angles"
+  },
+  {
+    "id": 970,
+    "name": "Calcul d'Angle et de Longueur avec le Cosinus",
+    "slug": "calcul-dangle-et-de-longueur-avec-le-cosinus",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Calcul d'Angle et de Longueur avec le Cosinus"
+  },
+  {
+    "id": 228,
+    "name": " Relation fondamentale de trigonom\u00e9trie*",
+    "slug": "relation-fondamentale-de-trigonometrie",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Relation Fondamentale de la Trigonom\u00e9trie"
+  },
+  {
+    "id": 739,
+    "name": "Trigonom\u00e9trie - 4\u00e8me",
+    "slug": "trigonometrie-4eme",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Trigonom\u00e9trie - 4\u00e8me"
+  },
+  {
+    "id": 983,
+    "name": "Additions et Soustractions -",
+    "slug": "additions-et-soustractions",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Additions et Soustractions -"
+  },
+  {
+    "id": 976,
+    "name": "Multiplication de Fractions",
+    "slug": "multiplication-de-fractions",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Multiplication de Fractions"
+  },
+  {
+    "id": 740,
+    "name": "Nombre rationnel et fraction",
+    "slug": "nombre-rationnel-et-fraction",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Nombre rationnel et fraction"
+  },
+  {
+    "id": 763,
+    "name": "Probl\u00e8mes en relation avec le PGCD",
+    "slug": "problemes-en-relation-avec-le-pgcd",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Probl\u00e8mes en relation avec le PGCD"
+  },
+  {
+    "id": 938,
+    "name": "Plus Grand Commun Diviseur (PGCD) et Division Euclidienne",
+    "slug": "plus-grand-commun-diviseur-pgcd-et-division-euclidienne",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Plus Grand Commun Diviseur (PGCD) et Division Euclidienne"
+  },
+  {
+    "id": 955,
+    "name": "Ecriture Scientifique et Comparaison de Nombres",
+    "slug": "ecriture-scientifique-et-comparaison-de-nombres",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Ecriture Scientifique et Comparaison de Nombres"
+  },
+  {
+    "id": 766,
+    "name": "Probl\u00e8mes en relation avec les puissances",
+    "slug": "problemes-en-relation-avec-les-puissances",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Probl\u00e8mes en relation avec les puissances"
+  },
+  {
+    "id": 975,
+    "name": "D\u00e9velopper une Expression",
+    "slug": "developper-une-expression",
+    "type": "test",
+    "visible": false,
+    "name_seo": "D\u00e9velopper une Expression"
+  },
+  {
+    "id": 769,
+    "name": "*Probl\u00e8mes de factorisation",
+    "slug": "problemes-de-factorisation",
+    "type": "exercise",
+    "visible": false,
+    "name_seo": "*Probl\u00e8mes de factorisation"
+  },
+  {
+    "id": 934,
+    "name": "Factoriser avec le Facteur Commun",
+    "slug": "factoriser-avec-le-facteur-commun",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Factoriser avec le Facteur Commun"
+  },
+  {
+    "id": 743,
+    "name": "Calcul litt\u00e9ral",
+    "slug": "calcul-litteral",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Calcul litt\u00e9ral"
+  },
+  {
+    "id": 935,
+    "name": "Equation Produit",
+    "slug": "equation-produit",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Equation Produit"
+  },
+  {
+    "id": 178,
+    "name": "Mise en situation et r\u00e9solution par substitution et combinaison",
+    "slug": "mise-en-situation-et-resolution-par-substitution-et-combinaison",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Syst\u00e8me d'\u00c9quation (Cours Vid\u00e9o) R\u00e9solution"
+  },
+  {
+    "id": 176,
+    "name": " Application par substitution",
+    "slug": "application-par-substitution",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Syst\u00e8me d'\u00c9quation (Exercices)  Substitution"
+  },
+  {
+    "id": 175,
+    "name": "Application par combinaison",
+    "slug": "application-par-combinaison",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Syst\u00e8me d'\u00c9quation (Exercices) Combinaison"
+  },
+  {
+    "id": 179,
+    "name": "R\u00e9soudre un probl\u00e8me avec un syst\u00e8me d'\u00e9quations",
+    "slug": "resoudre-un-probleme-avec-un-systeme-dequations",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Syst\u00e8me d'\u00c9quation (Exercices) Exemples"
+  },
+  {
+    "id": 744,
+    "name": "Equations du premier degr\u00e9",
+    "slug": "equations-du-premier-degre",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Equations du premier degr\u00e9"
+  },
+  {
+    "id": 745,
+    "name": "In\u00e9galit\u00e9 et in\u00e9quations",
+    "slug": "inegalite-et-inequations",
+    "type": "course",
+    "visible": true,
+    "name_seo": "In\u00e9galit\u00e9 et in\u00e9quations"
+  },
+  {
+    "id": 936,
+    "name": "Re\u0301solution d'In\u00e9quations",
+    "slug": "resolution-dinequations",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Re\u0301solution d'In\u00e9quations"
+  },
+  {
+    "id": 776,
+    "name": "Probl\u00e8me en relation avec les pourcentages",
+    "slug": "probleme-en-relation-avec-les-pourcentages",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Probl\u00e8me en relation avec les pourcentages"
+  },
+  {
+    "id": 977,
+    "name": "Application de la Proportionnalit\u00e9",
+    "slug": "application-de-la-proportionnalite",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Application de la Proportionnalit\u00e9"
+  },
+  {
+    "id": 733,
+    "name": "Proportionnalit\u00e9",
+    "slug": "proportionnalite",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Proportionnalit\u00e9"
+  },
+  {
+    "id": 964,
+    "name": "Caracte\u0301ristiques d'une Se\u0301rie Statistique",
+    "slug": "caracteristiques-dune-serie-statistique",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Caracte\u0301ristiques d'une Se\u0301rie Statistique"
+  },
+  {
+    "id": 941,
+    "name": "Probabilit\u00e9s",
+    "slug": "probabilites",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Probabilit\u00e9s"
+  },
+  {
+    "id": 775,
+    "name": "Probl\u00e8mes en relation avec les fonctions",
+    "slug": "problemes-en-relation-avec-les-fonctions",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Probl\u00e8mes en relation avec les fonctions"
+  },
+  {
+    "id": 972,
+    "name": "Approche Concr\u00e8te des Fonctions",
+    "slug": "approche-concrete-des-fonctions",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Approche Concr\u00e8te des Fonctions"
+  },
+  {
+    "id": 746,
+    "name": "Les fonctions",
+    "slug": "les-fonctions",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Les fonctions"
+  },
+  {
+    "id": 988,
+    "name": "Les Fonctions Lin\u00e9aires : Approche Graphique",
+    "slug": "les-fonctions-lineaires-approche-graphique",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Les Fonctions Lin\u00e9aires : Approche Graphique"
+  },
+  {
+    "id": 973,
+    "name": "La Sph\u00e8re et la Boule : Section, Aire et Volume",
+    "slug": "la-sphere-et-la-boule-section-aire-et-volume",
+    "type": "test",
+    "visible": false,
+    "name_seo": "La Sph\u00e8re et la Boule : Section, Aire et Volume"
+  },
+  {
+    "id": 747,
+    "name": "Aire et Volume",
+    "slug": "aire-et-volume",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Aire et Volume"
+  },
+  {
+    "id": 163,
+    "name": "Application concr\u00e8te de la racine carr\u00e9e",
+    "slug": "application-concrete-de-la-racine-carree",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Application de la Racine Carr\u00e9e (Exercices)"
+  },
+  {
+    "id": 162,
+    "name": "La formule fondamentale des racines",
+    "slug": "la-formule-fondamentale-des-racines",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Formule Fondamentale de la Racine Carr\u00e9e"
+  },
+  {
+    "id": 164,
+    "name": "Application de la formule fondamentale",
+    "slug": "application-de-la-formule-fondamentale",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Racine Carr\u00e9e (Exercices) Exemples"
+  },
+  {
+    "id": 167,
+    "name": "Quotients de racines carre\u0301e",
+    "slug": "quotients-de-racines-carree",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Racine Carr\u00e9e (Cours) Calculs de Quotients"
+  },
+  {
+    "id": 165,
+    "name": "R\u00e9duire des expression avec des racines",
+    "slug": "reduire-des-expression-avec-des-racines",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Simplifier la Racine Carr\u00e9e (Exercices)"
+  },
+  {
+    "id": 170,
+    "name": "Puissances et racines carre\u0301es",
+    "slug": "puissances-et-racines-carrees",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Racine Carr\u00e9e (Cours) Calculs de Puissance"
+  },
+  {
+    "id": 171,
+    "name": "Simplification des puissances",
+    "slug": "simplification-des-puissances",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Racine Carr\u00e9e - Simplification des Puissances"
+  },
+  {
+    "id": 172,
+    "name": "M\u00e9thode de r\u00e9solution",
+    "slug": "methode-de-resolution",
+    "type": "video",
+    "visible": true,
+    "name_seo": "Racine Carr\u00e9e (Cours) M\u00e9thode de r\u00e9solution"
+  },
+  {
+    "id": 173,
+    "name": "R\u00e9soudre une \u00e9quation du type $x^2=a$",
+    "slug": "resoudre-une-equation-du-type-x2a",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "R\u00e9soudre une Equation Type x^2 = a (Exercices)"
+  },
+  {
+    "id": 958,
+    "name": "Re\u0301solution d'e\u0301quation du type $x^2 = a$",
+    "slug": "resolution-dequation-du-type-x2-a",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Re\u0301solution d'e\u0301quation du type $x^2 = a$"
+  },
+  {
+    "id": 748,
+    "name": "Racine carr\u00e9e",
+    "slug": "racine-carree",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Racine carr\u00e9e"
+  },
+  {
+    "id": 966,
+    "name": "Le Th\u00e9or\u00e8me de Pythagore",
+    "slug": "le-theoreme-de-pythagore",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Le Th\u00e9or\u00e8me de Pythagore"
+  },
+  {
+    "id": 792,
+    "name": "Probl\u00e8mes en lien avec le th\u00e9oreme de Thales",
+    "slug": "problemes-en-lien-avec-le-theoreme-de-thales",
+    "type": "exercise",
+    "visible": true,
+    "name_seo": "Probl\u00e8mes en lien avec le th\u00e9oreme de Thales"
+  },
+  {
+    "id": 967,
+    "name": "L'\u00e9nonc\u00e9 du th\u00e9or\u00e8me de Thal\u00e8s",
+    "slug": "lenonce-du-theoreme-de-thales",
+    "type": "test",
+    "visible": false,
+    "name_seo": "L'\u00e9nonc\u00e9 du th\u00e9or\u00e8me de Thal\u00e8s"
+  },
+  {
+    "id": 749,
+    "name": "Th\u00e9or\u00e8me de Thal\u00e8s et agrandissement",
+    "slug": "theoreme-de-thales-et-agrandissement",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Th\u00e9or\u00e8me de Thal\u00e8s et agrandissement"
+  },
+  {
+    "id": 962,
+    "name": "Calcul de Longueur avec le Cosinus, Sinus et Tangente",
+    "slug": "calcul-de-longueur-avec-le-cosinus-sinus-et-tangente",
+    "type": "test",
+    "visible": false,
+    "name_seo": "Calcul de Longueur avec le Cosinus, Sinus et Tangente"
+  },
+  {
+    "id": 750,
+    "name": "Trigonom\u00e9trie",
+    "slug": "trigonometrie",
+    "type": "course",
+    "visible": true,
+    "name_seo": "Trigonom\u00e9trie"
+  }
+]

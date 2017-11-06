@@ -4,14 +4,15 @@ use Faker\Generator;
 
 /**
  * ModuleTestFactory
+ *
  * @author Mathrix Team
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->defineAs(Module::class, 'test', function (Generator $faker) use ($factory) {
     $data = $factory->rawOf(Module::class, 'mcq');
 
-    unset($data['choices']);
-    unset($data['solutions']);
+    $data['choices'] = null;
+    $data['solutions'] = null;
 
     $data['type'] = 'test';
     $data['options'] = [

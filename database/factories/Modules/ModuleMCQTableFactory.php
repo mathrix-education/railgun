@@ -4,6 +4,7 @@ use Faker\Generator;
 
 /**
  * ModuleMCQTableFactory
+ *
  * @author Mathrix Team
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
@@ -12,9 +13,13 @@ $factory->defineAs(Module::class, 'mcq-table', function (Generator $faker) use (
 
     $data['choices'] = $data['choices'][0];
 
+    foreach ($data['corrections'] as $k => $v) {
+        $data['corrections'][$k] = $v[0];
+    }
+
     foreach ($data['solutions'] as $k => $v) {
         $data['solutions'][$k] = $faker->randomElements(
-            $data['choices'],
+            array_keys($data['choices']),
             $faker->numberBetween(1, count($data['choices']))
         );
     }

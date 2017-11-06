@@ -1,0 +1,47 @@
+<?php
+use App\Models\Module;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+/**
+ * Class CreateModulesTable
+ *
+ * @author Mathrix Back-End Team
+ * @since 0.8.1
+ * @copyright Mathrix
+ */
+class CreateModulesTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create("modules", function (Blueprint $table) {
+            $table->increments("id");
+            $table->boolean("premium");
+            $table->enum("type", Module::TYPES);
+            $table->text("content")->nullable();
+            $table->text("questions")->nullable();
+            $table->text("choices")->nullable();
+            $table->text("solutions")->nullable();
+            $table->text("corrections")->nullable();
+            $table->text("options")->nullable();
+            $table->boolean("visible")->default(true);
+        });
+    }
+
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists("modules");
+    }
+}

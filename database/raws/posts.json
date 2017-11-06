@@ -1,0 +1,335 @@
+[
+  {
+    "id": 1,
+    "title": "Tu \u00e9tudies et tu n'y arrives toujours pas ?",
+    "slug": "tu-etudies-mais-arrives-toujours-pas",
+    "content": "[video]JRymwVL89fQ[\/video]",
+    "category_id": 1,
+    "created_at": "2016-11-27",
+    "updated_at": "2016-11-27"
+  },
+  {
+    "id": 2,
+    "title": "Comment mieux r\u00e9viser ?",
+    "slug": "comment-mieux-reviser",
+    "content": "[video]bhJ46EhmhZc[\/video]",
+    "category_id": 1,
+    "created_at": "2016-11-04",
+    "updated_at": "2016-11-04"
+  },
+  {
+    "id": 3,
+    "title": "Les Conseils qu'un prof ne te donne Jamais",
+    "slug": "les-conseils-un-prof-ne-donne-jamais",
+    "content": "[video]2fBx4ZOzwq0[\/video]",
+    "category_id": 1,
+    "created_at": "2016-10-09",
+    "updated_at": "2016-10-09"
+  },
+  {
+    "id": 4,
+    "title": "Comment se motiver ?",
+    "slug": "comment-se-motiver",
+    "content": "[video]Bb3OC731LHo[\/video]",
+    "category_id": 1,
+    "created_at": "2016-10-23",
+    "updated_at": "2016-10-23"
+  },
+  {
+    "id": 5,
+    "title": "La Science de la R\u00e9ussite et de l'Echec",
+    "slug": "la-science-de-la-reussite",
+    "content": "[video]jqqYOt_tf-Y[\/video]",
+    "category_id": 1,
+    "created_at": "2016-10-30",
+    "updated_at": "2016-10-30"
+  },
+  {
+    "id": 6,
+    "title": "La Le\u00e7on de Trump",
+    "slug": "la-lecon-de-trump",
+    "content": "[video]zvMt_tG72Tc[\/video]",
+    "category_id": 3,
+    "created_at": "2016-11-11",
+    "updated_at": "2016-11-11"
+  },
+  {
+    "id": 7,
+    "title": "Au del\u00e0 des cours tu R\u00e9ussiras",
+    "slug": "au-dela-des-cours-tu-reussiras",
+    "content": "[video]4wU7eJkJUsw[\/video]",
+    "category_id": 1,
+    "created_at": "2016-11-20",
+    "updated_at": "2016-11-20"
+  },
+  {
+    "id": 8,
+    "title": "Mathrix fait Fortune sur Youtube",
+    "slug": "mathrix-fait-fortune-sur-youtube",
+    "content": "[video]8fkGY3gOqTE[\/video]",
+    "category_id": 3,
+    "created_at": "2016-12-04",
+    "updated_at": "2016-12-04"
+  },
+  {
+    "id": 9,
+    "title": "Tu D\u00e9sep\u00e8res Pour ton Bac ? Ce n'est pas Perdu !",
+    "slug": "tu-desesperes-pour-ton-bac",
+    "content": "[video]KKFgLfWYcGo[\/video]",
+    "category_id": 1,
+    "created_at": "2017-03-05",
+    "updated_at": "2017-03-05"
+  },
+  {
+    "id": 10,
+    "title": "Les Cours Nous Abrutissent",
+    "slug": "les-cours-nous-abrutissent",
+    "content": "[video]yhu5MdaDShA[\/video]",
+    "category_id": 1,
+    "created_at": "2017-03-12",
+    "updated_at": "2017-03-12"
+  },
+  {
+    "id": 11,
+    "title": "Le Secret de la R\u00e9ussite en 1 Mot",
+    "slug": "le-secret-de-la-reussite-en-un-mot",
+    "content": "[video]86V4jF-0ths[\/video]",
+    "category_id": 1,
+    "created_at": "2017-03-19",
+    "updated_at": "2017-03-19"
+  },
+  {
+    "id": 12,
+    "title": "Comment avoir Confiance en Soi ?",
+    "slug": "avoir-confiance-en-soi",
+    "content": "[video]cPgv0z0HwBE[\/video]",
+    "category_id": 1,
+    "created_at": "2017-03-26",
+    "updated_at": "2017-03-26"
+  },
+  {
+    "id": 13,
+    "title": "Ma\u00eetrise ton Mental face \u00e0 un Probl\u00e8me",
+    "slug": "maitrise-ton-mental",
+    "content": "[video]_BvGEC8Zjug[\/video]",
+    "category_id": 1,
+    "created_at": "2017-04-02",
+    "updated_at": "2017-04-02"
+  },
+  {
+    "id": 14,
+    "title": "#1 Je r\u00e9pond \u00e0 tes questions",
+    "slug": "je-repond-a-tes-questions",
+    "content": "[video]-PWDBZ3HpMk[\/video]",
+    "category_id": 2,
+    "created_at": "2017-04-02",
+    "updated_at": "2017-04-02"
+  },
+  {
+    "id": 15,
+    "title": "#2 Ton prof ne cro\u00eet pas en toi",
+    "slug": "ton-prof-ne-croit-pas-en-toi",
+    "content": "[video]dTtcDGRGvcY[\/video]",
+    "category_id": 2,
+    "created_at": "2017-04-05",
+    "updated_at": "2017-04-05"
+  },
+  {
+    "id": 16,
+    "title": "#3 J'\u00e9tudie et je ne vois pas de r\u00e9sultat",
+    "slug": "jetudie-et-je-ne-vois-pas-de-resultat",
+    "content": "[video]zGa1dN7t1pQ[\/video]",
+    "category_id": 2,
+    "created_at": "0000-00-00",
+    "updated_at": "0000-00-00"
+  },
+  {
+    "id": 17,
+    "title": "#4 Faut-il Apprendre Par Coeur ?",
+    "slug": "apprendre-par-coeur",
+    "content": "[video]F6ZtXZIyk5Y[\/video]",
+    "category_id": 2,
+    "created_at": "0000-00-00",
+    "updated_at": "0000-00-00"
+  },
+  {
+    "id": 18,
+    "title": "#5 Faire des Fiches de R\u00e9vision ?",
+    "slug": "faire-des-fiches-de-revision",
+    "content": "[video]OcSGrMpfmtg[\/video]",
+    "category_id": 2,
+    "created_at": "0000-00-00",
+    "updated_at": "0000-00-00"
+  },
+  {
+    "id": 19,
+    "title": "#6 Mes Potes ont des Meilleurs R\u00e9sultats",
+    "slug": "mes-potes-ont-meilleurs-resultats",
+    "content": "[video]TCF3GFL35Wg[\/video]",
+    "category_id": 2,
+    "created_at": "0000-00-00",
+    "updated_at": "0000-00-00"
+  },
+  {
+    "id": 20,
+    "title": "#7 Je n'arrive pas \u00e0 bosser de chez moi",
+    "slug": "je-narrive-pas-a-bosser-de-chez-moi",
+    "content": "[video]gMzCEC1uH2w[\/video]",
+    "category_id": 2,
+    "created_at": "0000-00-00",
+    "updated_at": "0000-00-00"
+  },
+  {
+    "id": 21,
+    "title": "#8 Comment Motiver Ses Potes \u00e0 Travailler ?",
+    "slug": "motiver-ses-potes-a-travailler",
+    "content": "[video]5vIrrkReBwk[\/video]",
+    "category_id": 2,
+    "created_at": "0000-00-00",
+    "updated_at": "0000-00-00"
+  },
+  {
+    "id": 22,
+    "title": "#9 J'ai TROP \u00e0 faire",
+    "slug": "jai-trop-a-faire",
+    "content": "[video]H-xEKanHLpw[\/video]",
+    "category_id": 2,
+    "created_at": "0000-00-00",
+    "updated_at": "0000-00-00"
+  },
+  {
+    "id": 23,
+    "title": "#10 Organiser rapidement son Week-End",
+    "slug": "organiser-rapidement-son-weekend",
+    "content": "[video]1-MHCzDQqIA[\/video]",
+    "category_id": 2,
+    "created_at": "0000-00-00",
+    "updated_at": "0000-00-00"
+  },
+  {
+    "id": 24,
+    "title": "#11 Dormir ou R\u00e9viser ?",
+    "slug": "dormir-ou-reviser",
+    "content": "[video]rjBWTKSs7Kc[\/video]",
+    "category_id": 2,
+    "created_at": "0000-00-00",
+    "updated_at": "0000-00-00"
+  },
+  {
+    "id": 25,
+    "title": "#12 Je fais QUE de R\u00e9viser .. et rien !",
+    "slug": "je-fais-que-reviser-et-rien",
+    "content": "[video]BKgi06_2BPg[\/video]",
+    "category_id": 2,
+    "created_at": "0000-00-00",
+    "updated_at": "0000-00-00"
+  },
+  {
+    "id": 26,
+    "title": "#13 4 Conseils pour G\u00e9rer son Oral",
+    "slug": "4-conseils-gerer-oral",
+    "content": "[video]xJoPuGKGZd8[\/video]",
+    "category_id": 2,
+    "created_at": "0000-00-00",
+    "updated_at": "0000-00-00"
+  },
+  {
+    "id": 27,
+    "title": "#14 Je n'arrive pas \u00e0 me concentrer en cours !",
+    "slug": "je-narrive-pas-a-me-concentrer",
+    "content": "[video]sP3LW0osQl4[\/video]",
+    "category_id": 2,
+    "created_at": "0000-00-00",
+    "updated_at": "0000-00-00"
+  },
+  {
+    "id": 28,
+    "title": "#15 Annales de Bac, Brevet .. la Mort !",
+    "slug": "annales-de-bac-brevet",
+    "content": "[video]AyHQ2Q6QLro[\/video]",
+    "category_id": 2,
+    "created_at": "0000-00-00",
+    "updated_at": "0000-00-00"
+  },
+  {
+    "id": 29,
+    "title": "#16 Comment se concentrer plus rapidement ?",
+    "slug": "se-concentrer-plus-rapidement",
+    "content": "[video]8nP4XzLa_AI[\/video]",
+    "category_id": 2,
+    "created_at": "0000-00-00",
+    "updated_at": "0000-00-00"
+  },
+  {
+    "id": 30,
+    "title": "#17 Ne plus faire de Fautes d'Innatention",
+    "slug": "ne-plus-faire-de-fautes-dinnatention",
+    "content": "[video]bVMkgWRYud8[\/video]",
+    "category_id": 2,
+    "created_at": "0000-00-00",
+    "updated_at": "0000-00-00"
+  },
+  {
+    "id": 31,
+    "title": "#18 R\u00e9viser plus rapidement l'Histoire",
+    "slug": "reviser-plus-rapidement-lhistoire",
+    "content": "[video]59LR1gA75fg[\/video]",
+    "category_id": 2,
+    "created_at": "0000-00-00",
+    "updated_at": "0000-00-00"
+  },
+  {
+    "id": 32,
+    "title": "#19 Orientation : Quelle Sp\u00e9 choisir ?",
+    "slug": "quelle-spe-choisir",
+    "content": "[video]FNypcmJBJhQ[\/video]",
+    "category_id": 2,
+    "created_at": "0000-00-00",
+    "updated_at": "0000-00-00"
+  },
+  {
+    "id": 33,
+    "title": "Le Pen et Macron ne sont qu'une illusion",
+    "slug": "le-pen-et-macron-illusion",
+    "content": "[video]HZ8hsFDETFM[\/video]",
+    "category_id": 3,
+    "created_at": "0000-00-00",
+    "updated_at": "0000-00-00"
+  },
+  {
+    "id": 34,
+    "title": "R\u00e9visions et Vacances : Comment s'organiser ?",
+    "slug": "revisions-vacances-organiser",
+    "content": "[video]NSy5GTSaGLM[\/video]",
+    "category_id": 1,
+    "created_at": "0000-00-00",
+    "updated_at": "0000-00-00"
+  },
+  {
+    "id": 35,
+    "title": "Vos Plannings de R\u00e9visions",
+    "slug": "plannings-de-revision",
+    "content": "[video]ap-1UKcQDyw[\/video]",
+    "category_id": 1,
+    "created_at": "0000-00-00",
+    "updated_at": "0000-00-00"
+  },
+  {
+    "id": 36,
+    "title": "G\u00e9rer le Stress pendant les Examens",
+    "slug": "gerer-le-stress-examens",
+    "content": "[video]TJG911UKy_c[\/video]",
+    "category_id": 1,
+    "created_at": "0000-00-00",
+    "updated_at": "0000-00-00"
+  },
+  {
+    "id": 37,
+    "title": "Crois en Toi - Motivation en Mode Machine",
+    "slug": "crois-en-toi-motivation-mode-machine",
+    "content": "[video]yCPArDSDsl0[\/video]",
+    "category_id": 1,
+    "created_at": "0000-00-00",
+    "updated_at": "0000-00-00"
+  }
+]

@@ -1,6 +1,5 @@
 <?php
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Encryption Key
@@ -11,10 +10,9 @@ return [
     | will not be safe. Please do this before deploying an application!
     |
     */
+    "key" => env('APP_KEY'),
+    "cipher" => "AES-256-CBC",
 
-    'key' => env('APP_KEY', 'SomeRandomString!!!'),
-
-    'cipher' => 'AES-256-CBC',
 
     /*
     |--------------------------------------------------------------------------
@@ -26,7 +24,9 @@ return [
     | to any of the locales which will be supported by the application.
     |
     */
-    'locale' => env('APP_LOCALE', 'en'),
+    "locale" => env("APP_LOCALE", "en"),
+
+
     /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale
@@ -37,8 +37,9 @@ return [
     | the language folders that are provided through your application.
     |
     */
-    'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
-    
+    "fallback_locale" => env("APP_FALLBACK_LOCALE", "en"),
+
+
     /*
     |--------------------------------------------------------------------------
     | Aliases
@@ -47,10 +48,11 @@ return [
     | Used to generate right Facade docs
     |
     */
-    'aliases' => [
-        'Mail' => \Illuminate\Support\Facades\Mail::class,
-        'Gate' => \Illuminate\Support\Facades\Gate::class,
-        'Validator' => \Illuminate\Support\Facades\Validator::class,
-        'Builder' => \Illuminate\Database\Eloquent\Builder::class
+    "aliases" => [
+        "Mail" => \Illuminate\Support\Facades\Mail::class,
+        "Gate" => \Illuminate\Support\Facades\Gate::class,
+        "Validator" => \Illuminate\Support\Facades\Validator::class,
+        "Builder" => \Illuminate\Database\Eloquent\Builder::class,
+        "Newsletter" => \Spatie\Newsletter\NewsletterFacade::class
     ]
 ];

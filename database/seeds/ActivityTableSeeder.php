@@ -1,21 +1,30 @@
 <?php
 use App\Models\Activity;
 use App\Models\Notion;
-use Mathrix\Lumen\Database\BaseTableSeeder;
 
+/**
+ * Class ActivityTableSeeder
+ *
+ * @author Mathrix Back-End Team
+ * @since 0.8.1
+ * @copyright Mathrix
+ */
 class ActivityTableSeeder extends BaseTableSeeder
 {
     public function run()
     {
-        $this->println('<info>Seeding</info> activities from factory');
-
-        $notions = Notion::get(['id']);
+        $notionIds = Notion::get(["id"])->pluck("id")->toArray();
 
         /** @var Notion $notion */
-        foreach ($notions as $notion) {
-            factory(Activity::class, random_int(1, 3))->create()->each(function(Activity $activity) use ($notion) {
-                $notion->activities()->attach($activity->id);
-            });
+        foreach ($notionIds as $notionId) {
+            $this->seedFromFactory(Activity::class, [
+                "count" => random_int(1, 3),
+                "callback" => function (Activity $activity) use ($notionId) {
+                    $activity->notions()->attach($notionId);
+                },
+                "loop" => $notionIds,
+                "iterate" => $notionId
+            ]);
         }
     }
 }
