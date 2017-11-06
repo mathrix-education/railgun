@@ -13,7 +13,9 @@ use App\Models\Module;
 use App\Models\Notion;
 use App\Models\Post;
 use App\Models\Quote;
+use App\Models\User;
 use App\Models\Vote;
+use Laravel\Cashier\Subscription;
 use Laravel\Passport\Client;
 
 /**
@@ -41,7 +43,6 @@ class DatabaseSeeder extends BaseTableSeeder
     {
         // Main site
         $this->seedFromJson(Client::class);
-        //$this->seedFromFactory(Quote::class, ["count" => 50]);
 
         // Content
         $this->seedFromJson(Country::class);
@@ -58,13 +59,11 @@ class DatabaseSeeder extends BaseTableSeeder
 
         // Users
         $this->seedFromJson(Level::class);
-        //$this->call(UserTableSeeder::class);
+        $this->seedFromJson(User::class);
+        $this->seedFromJson(Subscription::class);
 
         // Blog
         $this->seedFromJson(Category::class);
         $this->seedFromJson(Post::class);
-
-        //$this->seedFromFactory(Comment::class, ["count" => 200]);
-        //$this->seedFromFactory(Vote::class, ["count" => random_int(450, 550)]);
     }
 }

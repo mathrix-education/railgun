@@ -43,6 +43,9 @@ abstract class BaseTableSeeder extends Seeder
             case "Laravel\\Passport\\Client":
                 $table = "oauth_clients";
                 break;
+            case "Laravel\\Cashier\\Subscription":
+                $table = "subscriptions";
+                break;
             default:
                 $table = $modelClass::getTableName();
                 break;

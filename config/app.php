@@ -10,7 +10,7 @@ return [
     | will not be safe. Please do this before deploying an application!
     |
     */
-    "key" => "D4CXkZRn5s3ZMrak3EUaAHED7g8jh9ww",
+    "key" => env('APP_KEY'),
     "cipher" => "AES-256-CBC",
 
 
