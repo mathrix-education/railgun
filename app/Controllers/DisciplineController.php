@@ -1,6 +1,8 @@
 <?php
 namespace App\Controllers;
 
+use App\Exceptions\Http401UnauthorizedException;
+use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http501NotImplementedException;
 use App\Models\Discipline;
 use Illuminate\Http\JsonResponse;
@@ -91,6 +93,9 @@ class DisciplineController extends BaseController
      *
      * @return JsonResponse
      * @throws Http501NotImplementedException
+     * @throws Http401UnauthorizedException
+     * @throws Http422ModelSaveException
+     * @throws \Exception
      */
     public function delete(Request $request, int $id): JsonResponse
     {

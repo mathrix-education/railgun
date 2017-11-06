@@ -110,11 +110,16 @@ class UserController extends BaseController
      * @param int $id The user
      *
      * @return JsonResponse
+     * @throws Http401UnauthorizedException
+     * @throws Http422ModelSaveException
      * @throws Http501NotImplementedException
+     * @throws \Exception
      */
-    public function delete(Request $request, int $id)
+    public function delete(Request $request, int $id): JsonResponse
     {
         throw new Http501NotImplementedException();
+
+        return parent::delete($request, $id);
     }
 
 
