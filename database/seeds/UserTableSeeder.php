@@ -1,27 +1,30 @@
 <?php
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
-use Mathrix\Lumen\Database\BaseTableSeeder;
 
+/**
+ * Class UserTableSeeder
+ *
+ * @author Mathrix Back-End Team
+ * @since 0.8.1
+ * @copyright Mathrix
+ */
 class UserTableSeeder extends BaseTableSeeder
 {
     public function run()
     {
-        $this->seedFromJson('users', function () {
-            // Hash passwords
-            $users = DB::select('SELECT * FROM `users` WHERE `password` NOT LIKE \'$2y$%\'');
-            foreach ($users as $user) {
-                DB::update('UPDATE users SET `password` = ? WHERE `id` = ?', [
-                    Hash::make($user->password),
-                    $user->id
-                ]);
-            }
-        });
+        $this->seedFromJson(User::class);
 
-        $this->seedFromFactory(User::class, 'admin', 2);
-        $this->seedFromFactory(User::class, 'moderator', 7);
-        $this->seedFromFactory(User::class, 'premium', 20);
-        $this->seedFromFactory(User::class, 'registered', 50);
-
+        $this->seedFromFactory(User::class, [
+            "subFactory" => "admin",
+            "count" => random_int(2, 4)
+        ]);
+        $this->seedFromFactory(User::class, [
+            "subFactory" => "moderator",
+            "count" => random_int(10, 20)
+        ]);
+        $this->seedFromFactory(User::class, [
+            "subFactory" => "registered",
+            "count" => random_int(40, 60)
+        ]);
     }
 }

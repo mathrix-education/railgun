@@ -3,11 +3,23 @@ namespace App\Policies;
 
 /**
  * Class DisciplinePolicy
- * @author Mathrix Team
+ *
+ * @author Mathrix Back-End Team
  * @package App\Policies
+ * @since 0.8.1
+ * @copyright Mathrix
  */
 class DisciplinePolicy extends BasePolicy
 {
+    /**
+     * @return bool
+     */
+    public function add()
+    {
+        return false;
+    }
+
+
     /**
      * @return bool
      */
@@ -16,10 +28,12 @@ class DisciplinePolicy extends BasePolicy
         return false;
     }
 
+
     /**
      * @return bool
      */
-    public function delete() {
+    public function delete()
+    {
         return false;
     }
 }

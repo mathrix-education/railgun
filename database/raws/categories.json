@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "name": "Acc\u00e8de \u00e0 la R\u00e9ussite",
+    "slug": "reussite"
+  },
+  {
+    "id": 2,
+    "name": "Le #AskMathrixShow",
+    "slug": "ask-mathrix-show"
+  },
+  {
+    "id": 3,
+    "name": "Autre",
+    "slug": "autre"
+  }
+]

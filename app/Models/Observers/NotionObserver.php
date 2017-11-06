@@ -3,7 +3,6 @@ namespace App\Models\Observers;
 
 use App\Models\Activity;
 use App\Models\Notion;
-use Mathrix\Lumen\Observers\BaseObserver;
 
 /**
  * Class NotionObserver
@@ -20,15 +19,6 @@ class NotionObserver extends BaseObserver
      */
     public function saving($notion)
     {
-        // Ensure the name is present
-        if (!$notion->validate(['name' => 'required|max:255'])) {
-            $notion->setResponse($notion->http422Validation([
-                'message' => $notion->errors()
-            ]));
-
-            return false;
-        }
-
         // Sluggify if needed
         if (
             empty($notion->slug) ||
@@ -37,28 +27,35 @@ class NotionObserver extends BaseObserver
             $notion->slug = str_slug($notion->name);
         }
 
-        // Attach activities
-        if (!empty($notion->link['activities'])) {
-            foreach ($notion->link['activities'] as $activityId) {
-                if(Activity::find($activityId)->exists()) {
-                    $notion->activities()->attach($activityId);
-
+        // Sync activities
+        if (!empty($notion->link["activities"])) {
+            $toSync = [];
+            foreach($notion->link["activities"] as $order => $notionId) {
+                if (Activity::find($notionId)->exists()) {
+                    $toSync[$notionId] = ["order" => "order"];
                 }
             }
-            unset($notion->link['activities']);
-        }
-
-        // Detach activities
-        if (!empty($notion->unlink['activities'])) {
-            foreach ($notion->unlink['activities'] as $activityId) {
-                if(Activity::find($activityId)->exists()) {
-                    $notion->activities()->attach($activityId);
-
-                }
+            if (!empty($toSync)) {
+                $notion->activities()->sync($toSync);
             }
-            unset($notion->unlink['activities']);
+            unset($notion->link["activities"]);
         }
 
-        return parent::saving($notion);
+        return true;
+    }
+
+
+    /**
+     * Detach all activities link with the deleting notion
+     *
+     * @param Notion $notion
+     *
+     * @return bool
+     */
+    public function deleting($notion)
+    {
+        $notion->activities()->detach();
+
+        return true;
     }
 }

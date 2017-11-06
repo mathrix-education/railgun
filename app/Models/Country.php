@@ -4,7 +4,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Mathrix\Lumen\Models\BaseModel;
+
 
 /**
  * App\Models\Country
@@ -14,22 +14,30 @@ use Mathrix\Lumen\Models\BaseModel;
  * @property string $name_short
  * @property string $slug
  * @property string $slug_short
+ * @property bool $visible
  * @property-read Collection|Class_[] $classes
  * @method static Builder|Country whereId($value)
  * @method static Builder|Country whereName($value)
  * @method static Builder|Country whereNameShort($value)
  * @method static Builder|Country whereSlug($value)
  * @method static Builder|Country whereSlugShort($value)
+ * @method static Builder|Country whereVisible($value)
+ * @mixin \Eloquent
  */
 class Country extends BaseModel
 {
+    /** @var array The fillable attributes */
+    protected $fillable = ["name", "name_short", "slug", "slug_short", "visible"];
+
     /** @var array Validation rules */
     protected $rules = [
-        'name' => 'required|max:255',
-        'name_short' => 'required|max:255',
-        'slug' => 'required|max:255',
-        'slug_short' => 'required|max:255',
+        "name" => "required|max:255",
+        "name_short" => "required|max:255",
+        "slug" => "required|max:255",
+        "slug_short" => "required|max:255",
+        "visible" => "boolean"
     ];
+
 
     /*
     |--------------------------------------------------------------------------
@@ -43,7 +51,7 @@ class Country extends BaseModel
      */
     public function classes(): HasMany
     {
-        return $this->hasMany('App\Models\Class_');
+        return $this->hasMany(Class_::class);
     }
 
 }

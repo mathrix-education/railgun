@@ -2,7 +2,8 @@
 namespace App\Models\Observers;
 
 use App\Models\Activity;
-use Mathrix\Lumen\Observers\BaseObserver;
+use App\Models\Module;
+use App\Models\Notion;
 
 /**
  * Class ActivityObserver
@@ -19,40 +20,56 @@ class ActivityObserver extends BaseObserver
      */
     public function saving($activity)
     {
-        // Ensure the name is present
-        if (!$activity->validate(['name' => 'required|max:255'])) {
-            return false;
-        }
-
         // Sluggify if needed
-        if (
-            empty($activity->slug) ||
-            ($activity->isDirty('name') && !$activity->isDirty('slug'))
-        ) {
+        if (empty($activity->slug) ||
+            ($activity->isDirty("name") && !$activity->isDirty("slug"))) {
             $activity->slug = str_slug($activity->name);
         }
 
-
-        // Attach notions
-        if (!empty($activity->link['notions'])) {
-            foreach ($activity->link['notions'] as $notionId) {
-                if(Activity::find($notionId)->exists()) {
-                    $activity->notions()->attach($notionId);
+        // Sync notions
+        if (!empty($activity->link["notions"])) {
+            $toSync = [];
+            foreach($activity->link["notions"] as $order => $notionId) {
+                if (Notion::find($notionId)->exists()) {
+                    $toSync[$notionId] = ["order" => "order"];
                 }
             }
-            unset($activity->link['notions']);
+            if (!empty($toSync)) {
+                $activity->notions()->sync($toSync);
+            }
+            unset($activity->link["notions"]);
         }
 
-        // Detach notions
-        if (!empty($activity->unlink['notions'])) {
-            foreach ($activity->unlink['notions'] as $notionId) {
-                if(Activity::find($notionId)->exists()) {
-                    $activity->notions()->attach($notionId);
+        // Sync modules
+        if (!empty($activity->link["modules"])) {
+            $toSync = [];
+            foreach($activity->link["modules"] as $order => $notionId) {
+                if (Module::find($notionId)->exists()) {
+                    $toSync[$notionId] = ["order" => "order"];
                 }
             }
-            unset($activity->unlink['notions']);
+            if (!empty($toSync)) {
+                $activity->modules()->sync($toSync);
+            }
+            unset($activity->link["modules"]);
         }
 
-        return parent::saving($activity);
+        return true;
+    }
+
+
+    /**
+     * Detach all modules and notions linked with the deleting notion
+     *
+     * @param Activity $activity
+     *
+     * @return bool
+     */
+    public function deleting($activity)
+    {
+        $activity->notions()->detach();
+        $activity->modules()->detach();
+
+        return true;
     }
 }

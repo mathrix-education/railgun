@@ -1,4 +1,4 @@
 <?php
 return [
-    'include_fluent' => true
+    "include_fluent" => true
 ];

@@ -1,25 +1,58 @@
 <?php
 namespace App\Policies;
 
+use App\Models\User;
+
 /**
  * Class ChapterPolicy
- * @author Mathrix Team
+ *
+ * @author Mathrix Back-End Team
  * @package App\Policies
+ * @since 0.8.1
+ * @copyright Mathrix
  */
 class ChapterPolicy extends BasePolicy
 {
     /**
+     * @param User $currentUser
+     *
      * @return bool
      */
-    public function edit()
+    public function index(User $currentUser)
     {
-        return false;
+        return $this->atLeastModerator($currentUser);
     }
 
+
     /**
+     * @param User $currentUser
+     *
      * @return bool
      */
-    public function delete() {
-        return false;
+    public function add(User $currentUser)
+    {
+        return $this->atLeastModerator($currentUser);
+    }
+
+
+    /**
+     * @param User $currentUser
+     *
+     * @return bool
+     */
+    public function edit(User $currentUser)
+    {
+        return $this->atLeastModerator($currentUser);
+    }
+
+
+    /**
+     * @param User $currentUser
+     *
+     * @return bool
+     */
+    public function delete(User $currentUser)
+    {
+        return $this->atLeastModerator($currentUser);
     }
 }

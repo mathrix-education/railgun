@@ -3,7 +3,6 @@ namespace App\Models\Observers;
 
 use App\Models\Activity;
 use App\Models\Module;
-use Mathrix\Lumen\Observers\BaseObserver;
 
 /**
  * Class ModuleObserver
@@ -20,45 +19,35 @@ class ModuleObserver extends BaseObserver
      */
     public function saving($module)
     {
-        // Ensure the name is present
-        if (!$module->validate(['name' => 'required|max:255'])) {
-            $module->setResponse($module->http422Validation([
-                'message' => $module->errors()
-            ]));
-
-            return false;
-        }
-
-        // Sluggify if needed
-        if (
-            empty($module->slug) ||
-            ($module->isDirty('name') && !$module->isDirty('slug'))
-        ) {
-            $module->slug = str_slug($module->name);
-        }
-
-        // Attach activities
-        if (!empty($module->link['activities'])) {
-            foreach ($module->link['activities'] as $activityId) {
-                if(Activity::find($activityId)->exists()) {
-                    $module->activities()->attach($activityId);
-
+        // Sync activities
+        if (!empty($module->link["activities"])) {
+            $toSync = [];
+            foreach($module->link["activities"] as $order => $notionId) {
+                if (Activity::find($notionId)->exists()) {
+                    $toSync[$notionId] = ["order" => "order"];
                 }
             }
-            unset($module->link['activities']);
-        }
-
-        // Detach activities
-        if (!empty($module->unlink['activities'])) {
-            foreach ($module->unlink['activities'] as $activityId) {
-                if(Activity::find($activityId)->exists()) {
-                    $module->activities()->attach($activityId);
-
-                }
+            if (!empty($toSync)) {
+                $module->activities()->sync($toSync);
             }
-            unset($module->unlink['activities']);
+            unset($module->link["activities"]);
         }
 
-        return parent::saving($module);
+        return true;
+    }
+
+
+    /**
+     * Detach all activities linked with the deleting module
+     *
+     * @param Module $module
+     *
+     * @return bool
+     */
+    public function deleting($module)
+    {
+        $module->activities()->detach();
+
+        return true;
     }
 }

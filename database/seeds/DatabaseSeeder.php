@@ -1,12 +1,22 @@
 <?php
+use App\Exceptions\Http422ModelSaveException;
+use App\Exceptions\Http422ModelValidationException;
 use App\Models\Activity;
+use App\Models\Category;
 use App\Models\Chapter;
+use App\Models\Class_;
+use App\Models\Comment;
+use App\Models\Country;
+use App\Models\Discipline;
+use App\Models\Level;
 use App\Models\Module;
 use App\Models\Notion;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
-use Mathrix\Lumen\Database\BaseTableSeeder;
+use App\Models\Post;
+use App\Models\Quote;
+use App\Models\User;
+use App\Models\Vote;
+use Laravel\Cashier\Subscription;
+use Laravel\Passport\Client;
 
 /**
  * Class DatabaseSeeder
@@ -24,23 +34,36 @@ class DatabaseSeeder extends BaseTableSeeder
 
     /**
      * Run the database seeds.
+     *
      * @return void
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
      */
     public function run()
     {
         // Main site
-        $this->seedFromJson('countries');
-        $this->seedFromJson('classes');
-        $this->seedFromJson('disciplines');
+        $this->seedFromJson(Client::class);
 
-        $this->seedFromJson('class_discipline');
-        $this->call(ChapterTableSeeder::class);
-        $this->call(NotionTableSeeder::class);
-        $this->call(ActivityTableSeeder::class);
-        $this->call(ModuleTableSeeder::class);
-        //$this->call(ContentSeeder::class);
+        // Content
+        $this->seedFromJson(Country::class);
+        $this->seedFromJson(Class_::class);
+        $this->seedFromJson(Discipline::class);
+        $this->seedFromJson(Chapter::class);
+        $this->seedFromJson(Notion::class);
+        $this->seedFromJson(Activity::class);
+        $this->seedFromJson(Module::class);
 
-        $this->call(UserTableSeeder::class);
-        $this->seedFromJson('oauth_clients');
+        $this->seedAttachmentsFromJson(Class_::class, Discipline::class);
+        $this->seedAttachmentsFromJson(Activity::class, Notion::class);
+        $this->seedAttachmentsFromJson(Activity::class, Module::class);
+
+        // Users
+        $this->seedFromJson(Level::class);
+        $this->seedFromJson(User::class);
+        $this->seedFromJson(Subscription::class);
+
+        // Blog
+        $this->seedFromJson(Category::class);
+        $this->seedFromJson(Post::class);
     }
 }
