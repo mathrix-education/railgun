@@ -11,5 +11,5 @@ namespace App\Exceptions;
  */
 class Http401UnauthorizedException extends HttpException
 {
-    protected $message = 'Not enough privileges';
+    protected $message = "Not enough privileges";
 }

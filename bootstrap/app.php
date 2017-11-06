@@ -53,7 +53,6 @@ $app->singleton(
 |
 */
 
-$app->configure('app');
 $app->configure('auth');
 $app->configure('cors');
 $app->configure('mail');
@@ -79,7 +78,7 @@ $app->middleware([
 ]);
 
 $app->routeMiddleware([
-    'auth' => App\Http\Middleware\Authenticate::class,
+    'auth' => App\Middleware\Authenticate::class,
 ]);
 
 /*
@@ -93,9 +92,7 @@ $app->routeMiddleware([
 |
 */
 
-//$app->register(App\Providers\AppServiceProvider::class);
-
-if ($app->environment() !== 'production') {
+if ($app->environment("dev")) {
     $app->register(Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
 }
 
@@ -106,6 +103,10 @@ $app->register(App\Providers\NewsletterServiceProvider::class);
 $app->register(Laravel\Passport\PassportServiceProvider::class);
 $app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
 $app->register(Barryvdh\Cors\ServiceProvider::class);
+
+if ($app->environment("stage", "master")) {
+    $app->register(Sentry\SentryLaravel\SentryLumenServiceProvider::class);
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -120,8 +121,8 @@ $app->register(Barryvdh\Cors\ServiceProvider::class);
 
 Dusterio\LumenPassport\LumenPassport::routes($app->router);
 
-$app->router->group(['namespace' => 'App\Http\Controllers'], function ($router) {
-    require __DIR__ . '/../routes/web.php';
+$app->router->group(['namespace' => 'App\Controllers'], function ($router) {
+    require __DIR__ . '/../app/Routes/web.php';
 });
 
 return $app;

@@ -131,7 +131,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         $sum = 0;
 
         /** @var Log $log */
-        foreach($logs as $log) {
+        foreach ($logs as $log) {
             $sum += $log->value["points"];
         }
 
@@ -139,12 +139,14 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
 
-    /*_-----------------------------------------------------------
+    /*
+    |--------------------------------------------------------------------------
     | Passport
     |--------------------------------------------------------------------------
     */
     /**
      * Check if user is authorized to do something; if not throw an exception
+     *
      * @see Authorizable
      *
      * @param $ability
@@ -153,7 +155,9 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function canOrFail($ability, $arguments = [], $exceptionClass = Http401UnauthorizedException::class)
     {
-        throw_if($this->cant($ability, $arguments) && class_exists($exceptionClass), $exceptionClass);
+        if ($this->cant($ability, $arguments) && class_exists($exceptionClass)) {
+            throw new $exceptionClass();
+        }
     }
 
 
@@ -170,7 +174,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         $key = array_search($scope, $order);
 
         if ($key !== false) {
-            foreach($order as $k => $grantedScope) {
+            foreach ($order as $k => $grantedScope) {
                 if ($this->passportTokenCan($grantedScope) && $k <= $key) {
                     return true;
                 }

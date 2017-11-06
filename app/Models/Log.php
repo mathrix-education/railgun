@@ -94,8 +94,9 @@ class Log extends BaseModel
      */
     public static function log(string $event, $user = null, $data = [])
     {
-        throw_if(!in_array($event, self::EVENTS), Http400InvalidRequestException::class,
-            $event . " is not a valid event");
+        if (!in_array($event, self::EVENTS)) {
+            throw new Http400InvalidRequestException("`$event` is not a valid event");
+        }
 
         $data = array_merge([
             "event" => $event,

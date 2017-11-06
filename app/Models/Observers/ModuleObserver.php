@@ -19,14 +19,6 @@ class ModuleObserver extends BaseObserver
      */
     public function saving($module)
     {
-        // Sluggify if needed
-        if (
-            empty($module->slug) ||
-            ($module->isDirty('name') && !$module->isDirty('slug'))
-        ) {
-            $module->slug = str_slug($module->name);
-        }
-
         // Sync activities
         if (!empty($module->link["activities"])) {
             $toSync = [];

@@ -18,7 +18,7 @@ use Throwable;
 abstract class HttpException extends \Exception
 {
     /** The HTTP Exception pattern for class name */
-    protected const PATTERN = '/Http([0-9]{3})([a-zA-Z]+)Exception/';
+    protected const PATTERN = "/Http([0-9]{3})([a-zA-Z]+)Exception/";
 
     /** @var int Exception code seen as HTTP code; class-dependent */
     protected $code;
@@ -46,7 +46,7 @@ abstract class HttpException extends \Exception
         $matches = null;
 
         if (preg_match(self::PATTERN, $class, $matches) === 0) {
-            throw new \Exception($class . ' has to follow the pattern ' . self::PATTERN);
+            throw new \Exception($class . " has to follow the pattern " . self::PATTERN);
         } else {
             // Define the HTTP code
             if (300 <= $code && $code < 600) {
@@ -78,10 +78,10 @@ abstract class HttpException extends \Exception
      */
     public function getResponse()
     {
-        $responseData = ['error' => $this->error];
+        $responseData = ["error" => $this->error];
 
         if (!empty($this->message)) {
-            $responseData['message'] = $this->message;
+            $responseData["message"] = $this->message;
         }
 
         if (!empty($this->data)) {

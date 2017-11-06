@@ -9,6 +9,9 @@ use Spatie\Newsletter\NewsletterListCollection;
 
 /**
  * Class NewsletterServiceProvider
+ * Adapted for Lumen
+ *
+ * @see \Spatie\Newsletter\NewsletterServiceProvider
  *
  * @author Mathrix Back-End Team
  * @package App\Providers
@@ -17,17 +20,11 @@ use Spatie\Newsletter\NewsletterListCollection;
  */
 class NewsletterServiceProvider extends ServiceProvider
 {
-    protected $defer = false;
-
     public function boot()
     {
-        //$this->mergeConfigFrom(__DIR__.'/../config/newsletter.php', 'newsletter'); // Original
-        $this->mergeConfigFrom(config_path('newsletter.php'), 'newsletter');
-
-        $this->publishes([
-            __DIR__.'/../config/newsletter.php' => config_path('newsletter.php'),
-        ]);
+        $this->app->configure('newsletter');
     }
+
 
     public function register()
     {

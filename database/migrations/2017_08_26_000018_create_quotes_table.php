@@ -1,9 +1,15 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Class CreateQuotesTable
+ *
+ * @author Mathrix Back-End Team
+ * @since 0.8.1
+ * @copyright Mathrix
+ */
 class CreateQuotesTable extends Migration
 {
     /**
