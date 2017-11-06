@@ -1,11 +1,13 @@
 <?php
 namespace App\Models\Observers;
 
+use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\Level;
 use App\Models\Log;
 use App\Models\User;
+use Faker\Factory;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Newsletter\NewsletterFacade as Newsletter;
 
@@ -26,7 +28,7 @@ class UserObserver extends BaseObserver
     {
         if ($user->isDirty("email")) {
             // Subscribe the user to "subscribers" Mailchimp list
-            Newsletter::subscribeOrUpdate($user->email); // TODO
+            //Newsletter::subscribeOrUpdate($user->email); // TODO
         }
 
         if ($user->isDirty("password")) {
@@ -76,7 +78,17 @@ class UserObserver extends BaseObserver
 
     /**
      * @param User $user
+     */
+    public function creating($user)
+    {
+        $user->token = Factory::create()->uuid;
+    }
+
+
+    /**
+     * @param User $user
      *
+     * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      */
@@ -89,6 +101,7 @@ class UserObserver extends BaseObserver
     /**
      * @param User $user
      *
+     * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      */

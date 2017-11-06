@@ -90,7 +90,7 @@ class StripeController extends CashierController
                 ->create($stripeToken);
         }
 
-        Log::log("user_paid_for_premium", $user);
+        Log::log("user_payment_succeed_for_premium", $user);
 
         return response()->json(User::with("subscriptions")->find($user->id));
     }

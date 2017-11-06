@@ -88,9 +88,9 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     /** @var array The validation rules on create */
     protected $rules = [
         "email" => "required|email|unique:users,email|max:60",
-        "username" => "nullable|max:30",
-        "firstname" => "nullable|max:30",
-        "lastname" => "nullable|max:40",
+        "username" => "nullable|max:60",
+        "firstname" => "nullable|max:60",
+        "lastname" => "nullable|max:60",
         "password" => "required|min:3",
         "type" => "required|in:registered,moderator,admin",
         "token" => "required|size:36",

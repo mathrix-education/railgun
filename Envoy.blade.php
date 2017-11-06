@@ -1,10 +1,18 @@
-@servers(['dev' => 'mathrix_dev@82.165.68.94'])
+@servers(['web01' => 'mathrix@web01.mathrix.fr', 'web00' => 'mathrix_dev@web00.mathrix.fr'])
 
 @setup
     $repository = 'git@gitlab.com:mathrix/mathrix-api.git';
     $release = date('Y-m-d_H-i-s');
 @endsetup
 
+
+@story('deploy_master', ['on' => 'dev'])
+    @php
+        $branch = 'dev';
+    @endphp
+    deploy
+    migrate
+@endstory
 
 @story('deploy_dev', ['on' => 'dev'])
     @php

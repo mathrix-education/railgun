@@ -50,7 +50,7 @@ abstract class BaseController extends Controller
         $controllerClass = get_class($this);
 
         // Remove namespace to avoid replace colliding
-        $guessedModelClass = str_replace("App\\Http\\Controllers\\", "", $controllerClass);
+        $guessedModelClass = str_replace("App\\Controllers\\", "", $controllerClass);
         $guessedModelClass = str_replace("Controller", "", $guessedModelClass);
 
         // Handle cancer model name (i.e. Class_)

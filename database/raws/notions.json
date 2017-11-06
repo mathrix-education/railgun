@@ -1,1 +1,2970 @@
-  [{"id":92,"name":"Re\u0301solution d'In\u00e9galit\u00e9s","slug":"resolution-inequations","visible":true,"chapter_id":28,"premium":false},{"id":93,"name":"R\u00e9solution approch\u00e9e d'in\u00e9quations","slug":"inequations-solution-approchee","visible":true,"chapter_id":28,"premium":false},{"id":109,"name":"Equation Produit","slug":"equation-produit","visible":true,"chapter_id":28,"premium":false},{"id":300,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":28,"premium":false},{"id":86,"name":"Approche Concr\u00e8te des Fonctions","slug":"generalites-fonctions-representation-graphique","visible":true,"chapter_id":27,"premium":false},{"id":88,"name":"Fonctions de r\u00e9f\u00e9rence","slug":"fonctions-de-reference","visible":true,"chapter_id":27,"premium":false},{"id":89,"name":"Les Fonctions Lin\u00e9aires : Approche Graphique","slug":"fonctions-lineaires-approche-graphique","visible":true,"chapter_id":27,"premium":false},{"id":301,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":27,"premium":false},{"id":95,"name":"Lire les variations et extremas graphiquement","slug":"variations-et-extrema-graphiquement","visible":true,"chapter_id":29,"premium":false},{"id":96,"name":"Variations, extrema, translations et dilatations","slug":"variations-extrema-translation-dilatation","visible":true,"chapter_id":29,"premium":false},{"id":302,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":29,"premium":false},{"id":97,"name":"D\u00e9terminer le signe d'une fonction affine","slug":"signe-fonction-affine","visible":true,"chapter_id":30,"premium":false},{"id":98,"name":"Signes et fonctions homographique","slug":"signe-fonctions-homographique","visible":true,"chapter_id":30,"premium":false},{"id":303,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":30,"premium":false},{"id":99,"name":"Polyn\u00f4me du second degr\u00e9 et variations","slug":"polynome-second-degre-variations","visible":true,"chapter_id":31,"premium":false},{"id":304,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":31,"premium":false},{"id":103,"name":"Solides, Sections et Coefficient de R\u00e9duction","slug":"solides-et-sections-coefficients-reduction","visible":true,"chapter_id":40,"premium":false},{"id":104,"name":"Droites et plans","slug":"droites-et-plans","visible":true,"chapter_id":40,"premium":false},{"id":305,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":40,"premium":false},{"id":110,"name":"Coordonne\u0301es d\u2019un point, longueur et milieu d'un s\u00e8gment","slug":"longueur-et-milieu-segment","visible":true,"chapter_id":33,"premium":false},{"id":306,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":33,"premium":false},{"id":106,"name":"Vecteurs, translations et op\u00e9rations ","slug":"vecteurs-translations-et-operations","visible":true,"chapter_id":34,"premium":false},{"id":107,"name":"Coordonne\u0301es d\u2019un vecteur","slug":"coordonnes-de-vecteurs","visible":true,"chapter_id":34,"premium":false},{"id":108,"name":"Coline\u0301arite\u0301 de vecteurs","slug":"colinearite-de-vecteurs","visible":true,"chapter_id":34,"premium":false},{"id":121,"name":"Op\u00e9rations de vecteurs dans le rep\u00e8re","slug":"operations-de-vecteurs-repere","visible":true,"chapter_id":34,"premium":false},{"id":307,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":34,"premium":false},{"id":111,"name":"Les Fonctions Lin\u00e9aires : Approche Graphique","slug":"fonctions-lineaires-approche-graphique","visible":true,"chapter_id":35,"premium":false},{"id":122,"name":"Les fonctions lin\u00e9aires : approche alg\u00e9brique","slug":"fonctions-lineaires-graphique","visible":true,"chapter_id":35,"premium":false},{"id":308,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":35,"premium":false},{"id":114,"name":"Coordonn\u00e9es du cercle trigonom\u00e9trique","slug":"coordonnes-cercle-trigonometrique","visible":true,"chapter_id":36,"premium":false},{"id":123,"name":"Calcul de Longueur avec le Cosinus, Sinus et Tangente","slug":"calculs-longueurs-cosinus-sinus-tangente","visible":true,"chapter_id":36,"premium":false},{"id":124,"name":"Calcul d'Angle avec le Cosinus, Sinus et Tangente","slug":"calculs-angles-cosinus-sinus-tangente","visible":true,"chapter_id":36,"premium":false},{"id":309,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":36,"premium":false},{"id":115,"name":"Caracte\u0301ristiques d'une Se\u0301rie Statistique","slug":"caracteristiques-serie-statistique","visible":true,"chapter_id":37,"premium":false},{"id":116,"name":"Modalit\u00e9, fre\u0301quences d\u2019apparition et moyenne","slug":"modalite-frequence-apparition-moyenne","visible":true,"chapter_id":37,"premium":false},{"id":117,"name":"Moyenne et Moyenne Pond\u00e9r\u00e9e d'une S\u00e9rie Statistique ","slug":"moyenne-et-moyenne-ponderee","visible":true,"chapter_id":37,"premium":false},{"id":568,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":37,"premium":false},{"id":118,"name":"Echantillon, simulation, intervalle de fluctuation et estimations ","slug":"echantillon-simulation-intervalle-fluctuation","visible":true,"chapter_id":38,"premium":false},{"id":311,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":38,"premium":false},{"id":119,"name":"Probabilit\u00e9s","slug":"probabilites","visible":true,"chapter_id":39,"premium":false},{"id":120,"name":"Choix du mode\u0300le et calculs de probabilit\u00e9s","slug":"choix-modele-calculs-probabilites","visible":true,"chapter_id":39,"premium":false},{"id":312,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":39,"premium":false},{"id":231,"name":"Polyn\u00f4me du second degr\u00e9 et variations","slug":"polynome-second-degre-variations","visible":true,"chapter_id":90,"premium":false},{"id":232,"name":"R\u00e9soudre une (in)\u00e9quation du type $ax^2+bx+c=0$","slug":"resoudre-equation-second-degre","visible":true,"chapter_id":90,"premium":false},{"id":551,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":90,"premium":false},{"id":233,"name":"Interpr\u00e9tation graphique et utilit\u00e9","slug":"interpretation-graphique-et-utilite","visible":true,"chapter_id":91,"premium":false},{"id":234,"name":"Les formules de d\u00e9rivation","slug":"formules-de-derivation","visible":true,"chapter_id":91,"premium":false},{"id":235,"name":"D\u00e9rivation d'op\u00e9rations","slug":"derivation-des-operations","visible":true,"chapter_id":91,"premium":false},{"id":236,"name":"Tableau de signe de la d\u00e9riv\u00e9e $f'$ et sens de variation de $f$","slug":"tableau-de-signe-et-sens-de-variation","visible":true,"chapter_id":91,"premium":false},{"id":552,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":91,"premium":false},{"id":237,"name":"Les Fonctions Lin\u00e9aires : Approche Graphique","slug":"fonctions-lineaires-approche-graphique","visible":true,"chapter_id":92,"premium":false},{"id":238,"name":"La fonction carr\u00e9 et racine carr\u00e9e","slug":"fonction-carree-racine","visible":true,"chapter_id":92,"premium":false},{"id":239,"name":"G\u00e9n\u00e9ralit\u00e9s sur les suites","slug":"generaites-sur-les-suites","visible":true,"chapter_id":93,"premium":false},{"id":265,"name":"Suites arithm\u00e9tiques","slug":"suites-arithmetiques","visible":true,"chapter_id":93,"premium":false},{"id":553,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":93,"premium":false},{"id":240,"name":"Diagramme de boite : r\u00e9sum\u00e9 de la m\u00e9diane et des quartiles ","slug":"diagramme-de-boite-mediane-quartiles","visible":true,"chapter_id":94,"premium":false},{"id":241,"name":"Moyenne, variance et \u00e9cart-type","slug":"moyenne-variance-ecart-type","visible":true,"chapter_id":94,"premium":false},{"id":242,"name":"Notions \u00e9l\u00e9mentaires de probabilit\u00e9","slug":"notion-probabilite","visible":true,"chapter_id":95,"premium":false},{"id":243,"name":"Variable al\u00e9atoire et loi de probabilit\u00e9","slug":"variable-aleatoire-et-loi-de-probabilite","visible":true,"chapter_id":95,"premium":false},{"id":244,"name":"Loi Binomiale et Sch\u00e9ma de Bernoulli","slug":"loi-binomiale-schema-bernoulli","visible":true,"chapter_id":96,"premium":false},{"id":245,"name":"Echantillon, simulation, intervalle de fluctuation et estimations ","slug":"echantillon-simulation-intervalle-fluctuation","visible":true,"chapter_id":96,"premium":false},{"id":215,"name":"Polyn\u00f4me du second degr\u00e9 et variations","slug":"polynome-second-degre-variations","visible":true,"chapter_id":51,"premium":false},{"id":216,"name":"R\u00e9soudre une (in)\u00e9quation du type $ax^2+bx+c=0$","slug":"resoudre-equation-second-degre","visible":true,"chapter_id":51,"premium":false},{"id":547,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":51,"premium":false},{"id":222,"name":"Interpr\u00e9tation graphique et utilit\u00e9","slug":"interpretation-graphique-et-utilite","visible":true,"chapter_id":53,"premium":false},{"id":223,"name":"Les formules de d\u00e9rivation","slug":"formules-de-derivation","visible":true,"chapter_id":53,"premium":false},{"id":224,"name":"D\u00e9rivation d'op\u00e9rations","slug":"derivation-des-operations","visible":true,"chapter_id":53,"premium":false},{"id":225,"name":"Tableau de signe de la d\u00e9riv\u00e9e $f'$ et sens de variation de $f$","slug":"tableau-de-signe-et-sens-de-variation","visible":true,"chapter_id":53,"premium":false},{"id":548,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":53,"premium":false},{"id":219,"name":"Les Fonctions Lin\u00e9aires : Approche Graphique","slug":"fonctions-lineaires-approche-graphique","visible":true,"chapter_id":54,"premium":false},{"id":220,"name":"La fonction carr\u00e9 et racine carr\u00e9e","slug":"fonction-carree-racine","visible":true,"chapter_id":54,"premium":false},{"id":230,"name":"G\u00e9n\u00e9ralit\u00e9s sur les suites","slug":"generaites-sur-les-suites","visible":true,"chapter_id":55,"premium":false},{"id":264,"name":"Suites arithm\u00e9tiques","slug":"suites-arithmetiques","visible":true,"chapter_id":55,"premium":false},{"id":549,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":55,"premium":false},{"id":217,"name":"Diagramme de boite : r\u00e9sum\u00e9 de la m\u00e9diane et des quartiles ","slug":"diagramme-de-boite-mediane-quartiles","visible":true,"chapter_id":56,"premium":false},{"id":218,"name":"Moyenne, variance et \u00e9cart-type","slug":"moyenne-variance-ecart-type","visible":true,"chapter_id":56,"premium":false},{"id":226,"name":"Notions \u00e9l\u00e9mentaires de probabilit\u00e9","slug":"notion-probabilite","visible":true,"chapter_id":57,"premium":false},{"id":228,"name":"Variable al\u00e9atoire et loi de probabilit\u00e9","slug":"variable-aleatoire-et-loi-de-probabilite","visible":true,"chapter_id":57,"premium":false},{"id":214,"name":"Loi Binomiale et Sch\u00e9ma de Bernoulli","slug":"loi-binomiale-schema-bernoulli","visible":true,"chapter_id":58,"premium":false},{"id":229,"name":"Echantillon, simulation, intervalle de fluctuation et estimations ","slug":"echantillon-simulation-intervalle-fluctuation","visible":true,"chapter_id":58,"premium":false},{"id":125,"name":"Polyn\u00f4me du second degr\u00e9 et variations","slug":"polynome-second-degre-variations","visible":true,"chapter_id":41,"premium":false},{"id":126,"name":"R\u00e9soudre une (in)\u00e9quation du type $ax^2+bx+c=0$","slug":"resoudre-equation-second-degre","visible":true,"chapter_id":41,"premium":false},{"id":290,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":41,"premium":false},{"id":127,"name":"La fonction carr\u00e9 et inverse","slug":"fonction-carre-et-inverse","visible":true,"chapter_id":42,"premium":false},{"id":128,"name":"Variations, extrema, translations et dilatations","slug":"variations-extrema-translation-dilatation","visible":true,"chapter_id":42,"premium":false},{"id":129,"name":"La fonction racine carr\u00e9e et valeur absolue","slug":"fonction-racine-carree-et-valeur-absolue","visible":true,"chapter_id":42,"premium":false},{"id":291,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":42,"premium":false},{"id":132,"name":"Interpr\u00e9tation graphique et utilit\u00e9","slug":"interpretation-graphique-et-utilite","visible":true,"chapter_id":43,"premium":false},{"id":133,"name":"Les formules de d\u00e9rivation","slug":"formules-de-derivation","visible":true,"chapter_id":43,"premium":false},{"id":134,"name":"D\u00e9rivation d'op\u00e9rations","slug":"derivation-des-operations","visible":true,"chapter_id":43,"premium":false},{"id":135,"name":"Tableau de signe de la d\u00e9riv\u00e9e $f'$ et sens de variation de $f$","slug":"tableau-de-signe-et-sens-de-variation","visible":true,"chapter_id":43,"premium":false},{"id":292,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":43,"premium":false},{"id":136,"name":"Suites arithm\u00e9tiques","slug":"suites-arithmetiques","visible":true,"chapter_id":44,"premium":false},{"id":137,"name":"Suites g\u00e9om\u00e9triques","slug":"suites-geometriques","visible":true,"chapter_id":44,"premium":false},{"id":138,"name":"G\u00e9n\u00e9ralit\u00e9s sur les suites","slug":"generaites-sur-les-suites","visible":true,"chapter_id":44,"premium":false},{"id":167,"name":"Sens de variation et limites de suites g\u00e9om\u00e9triques","slug":"sens-de-variation-limites-suite-geometrique","visible":true,"chapter_id":44,"premium":false},{"id":168,"name":"Sens de variations et limites de suites arithm\u00e9tiques","slug":"sens-de-variation-limites-suite-arithmetrique","visible":true,"chapter_id":44,"premium":false},{"id":293,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":44,"premium":false},{"id":139,"name":"Coordonne\u0301es d\u2019un vecteur","slug":"coordonnes-de-vecteurs","visible":true,"chapter_id":45,"premium":false},{"id":140,"name":"Coline\u0301arite\u0301 de vecteurs","slug":"colinearite-de-vecteurs","visible":true,"chapter_id":45,"premium":false},{"id":141,"name":"D\u00e9composition et norme d'un vecteur","slug":"decomposition-et-norme-vecteur","visible":true,"chapter_id":45,"premium":false},{"id":173,"name":"Equation cart\u00e9sienne","slug":"equation-cartesienne","visible":true,"chapter_id":45,"premium":false},{"id":294,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":45,"premium":false},{"id":149,"name":"Coordonn\u00e9es du cercle trigonom\u00e9trique","slug":"coordonnes-cercle-trigonometrique","visible":true,"chapter_id":46,"premium":false},{"id":174,"name":"Propri\u00e9t\u00e9s sur les angles orient\u00e9s et cercle trigonom\u00e9trique","slug":"propriete-des-angles-orientes-et-cercle-trigo","visible":true,"chapter_id":46,"premium":false},{"id":295,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":46,"premium":false},{"id":148,"name":"D\u00e9finition du produit scalaire dans le plan","slug":"produit-scalaire-dans-le-plan","visible":true,"chapter_id":47,"premium":false},{"id":176,"name":"Les propri\u00e9t\u00e9s du produit scalaire","slug":"proprietes-produit-scalaire","visible":true,"chapter_id":47,"premium":false},{"id":296,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":47,"premium":false},{"id":142,"name":"Diagramme de boite : r\u00e9sum\u00e9 de la m\u00e9diane et des quartiles ","slug":"diagramme-de-boite-mediane-quartiles","visible":true,"chapter_id":48,"premium":false},{"id":177,"name":"Moyenne, variance et \u00e9cart-type","slug":"moyenne-variance-ecart-type","visible":true,"chapter_id":48,"premium":false},{"id":297,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":48,"premium":false},{"id":144,"name":"Variable al\u00e9atoire et loi de probabilit\u00e9","slug":"variable-aleatoire-et-loi-de-probabilite","visible":true,"chapter_id":49,"premium":false},{"id":175,"name":"Variance, \u00e9cart-type et transformations de variables al\u00e9atoires","slug":"variance-ecart-type-transformations-variables","visible":true,"chapter_id":49,"premium":false},{"id":298,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":49,"premium":false},{"id":146,"name":"Loi Binomiale et Sch\u00e9ma de Bernoulli","slug":"loi-binomiale-schema-bernoulli","visible":true,"chapter_id":59,"premium":false},{"id":147,"name":"Echantillonnage","slug":"echantillonnage","visible":true,"chapter_id":59,"premium":false},{"id":299,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":59,"premium":false},{"id":246,"name":"Suites g\u00e9om\u00e9triques","slug":"suites-geometriques","visible":true,"chapter_id":97,"premium":false},{"id":247,"name":"Sens de variation et limites de suites g\u00e9om\u00e9triques","slug":"sens-de-variation-limites-suite-geometrique","visible":true,"chapter_id":97,"premium":false},{"id":248,"name":"Suites arithm\u00e9tico-g\u00e9om\u00e9triques","slug":"suite-arithmetico-geometrique","visible":true,"chapter_id":97,"premium":false},{"id":249,"name":"La continuit\u00e9 d'une fonction $f$ en un point $a$ ","slug":"continuite-fonction-en-un-point","visible":true,"chapter_id":98,"premium":false},{"id":251,"name":"Les propri\u00e9t\u00e9s de la fonction exponentielle","slug":"proprietes-exponentielle","visible":true,"chapter_id":99,"premium":false},{"id":252,"name":"D\u00e9riv\u00e9e de $e^u$ et \u00e9tude de la fonction exponentielle ","slug":"derivee-etude-exponentielle","visible":true,"chapter_id":99,"premium":false},{"id":253,"name":"Les propri\u00e9t\u00e9s de la fonction logarithme","slug":"propriete-logarithme","visible":true,"chapter_id":100,"premium":false},{"id":254,"name":"Etude de la fonction exponentielle et r\u00e9solution d'\u00e9quation $x^k=a$","slug":"etude-exponentielle","visible":true,"chapter_id":100,"premium":false},{"id":255,"name":"D\u00e9finition de la concavit\u00e9 et convexit\u00e9 avec les r\u00e9sultats importants","slug":"definition-concavite","visible":true,"chapter_id":101,"premium":false},{"id":256,"name":"D\u00e9finition intuitive de l'int\u00e9grale et des primitives","slug":"integrale-primitive","visible":true,"chapter_id":102,"premium":false},{"id":257,"name":"Calculer une primitive avec condition initiale","slug":"calcul-primitive","visible":true,"chapter_id":102,"premium":false},{"id":258,"name":"Calcul d'aires et int\u00e9grales","slug":"calcul-aires-et-integrales","visible":true,"chapter_id":102,"premium":false},{"id":259,"name":"Probabilit\u00e9s conditionnelles et arbres","slug":"probabilite-conditionelle-arbre","visible":true,"chapter_id":103,"premium":false},{"id":260,"name":"Variable al\u00e9atoire continue et loi Uniforme $\\mathcal{U}[a,b]$","slug":"loi-uniforme","visible":true,"chapter_id":104,"premium":false},{"id":261,"name":"La loi Normale centr\u00e9e r\u00e9duite $\\mathcal{N}(0,1)$ et $\\mathcal{N}(\\mu,\\sigma^2)$","slug":"loi-normale-centree-reduite","visible":true,"chapter_id":104,"premium":false},{"id":262,"name":"Echantillon, simulation, intervalle de fluctuation et estimations ","slug":"echantillon-simulation-intervalle-fluctuation","visible":true,"chapter_id":105,"premium":false},{"id":268,"name":"Bac ES : Pondich\u00e9ry 2016","slug":"bac-es-pondichery-2016","visible":true,"chapter_id":107,"premium":false},{"id":195,"name":"Suites g\u00e9om\u00e9triques","slug":"suites-geometriques","visible":true,"chapter_id":79,"premium":false},{"id":196,"name":"Sens de variation et limites de suites g\u00e9om\u00e9triques","slug":"sens-de-variation-limites-suite-geometrique","visible":true,"chapter_id":79,"premium":false},{"id":197,"name":"Suites arithm\u00e9tico-g\u00e9om\u00e9triques","slug":"suite-arithmetico-geometrique","visible":true,"chapter_id":79,"premium":false},{"id":275,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":79,"premium":false},{"id":198,"name":"La continuit\u00e9 d'une fonction $f$ en un point $a$ ","slug":"continuite-fonction-en-un-point","visible":true,"chapter_id":80,"premium":false},{"id":274,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":80,"premium":false},{"id":199,"name":"Les propri\u00e9t\u00e9s de la fonction exponentielle","slug":"proprietes-exponentielle","visible":true,"chapter_id":81,"premium":false},{"id":200,"name":"D\u00e9riv\u00e9e de $e^u$ et \u00e9tude de la fonction exponentielle ","slug":"derivee-etude-exponentielle","visible":true,"chapter_id":81,"premium":false},{"id":272,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":81,"premium":false},{"id":201,"name":"Les propri\u00e9t\u00e9s de la fonction logarithme","slug":"propriete-logarithme","visible":true,"chapter_id":82,"premium":false},{"id":202,"name":"Etude de la fonction exponentielle et r\u00e9solution d'\u00e9quation $x^k=a$","slug":"etude-exponentielle","visible":true,"chapter_id":82,"premium":false},{"id":273,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":82,"premium":false},{"id":203,"name":"D\u00e9finition de la concavit\u00e9 et convexit\u00e9 avec les r\u00e9sultats importants","slug":"definition-concavite","visible":true,"chapter_id":83,"premium":false},{"id":204,"name":"Calculer une primitive avec condition initiale","slug":"calcul-primitive","visible":true,"chapter_id":84,"premium":false},{"id":206,"name":"D\u00e9finition intuitive de l'int\u00e9grale et des primitives","slug":"integrale-primitive","visible":true,"chapter_id":84,"premium":false},{"id":207,"name":"Calcul d'aires et int\u00e9grales","slug":"calcul-aires-et-integrales","visible":true,"chapter_id":84,"premium":false},{"id":545,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":84,"premium":false},{"id":209,"name":"Probabilit\u00e9s conditionnelles et arbres","slug":"probabilite-conditionelle-arbre","visible":true,"chapter_id":85,"premium":false},{"id":210,"name":"Variable al\u00e9atoire continue et loi Uniforme $\\mathcal{U}[a,b]$","slug":"loi-uniforme","visible":true,"chapter_id":86,"premium":false},{"id":211,"name":"La loi Normale centr\u00e9e r\u00e9duite $\\mathcal{N}(0,1)$ et $\\mathcal{N}(\\mu,\\sigma^2)$","slug":"loi-normale-centree-reduite","visible":true,"chapter_id":86,"premium":false},{"id":566,"name":"Loi Binomiale et Sch\u00e9ma de Bernoulli","slug":"loi-binomiale-schema-bernoulli","visible":true,"chapter_id":86,"premium":false},{"id":212,"name":"Echantillon, simulation, intervalle de fluctuation et estimations ","slug":"echantillon-simulation-intervalle-fluctuation","visible":true,"chapter_id":87,"premium":false},{"id":558,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":247,"premium":false},{"id":559,"name":"D\u00e9finition et Op\u00e9rations sur les Matrices","slug":"definition-operations-matrices","visible":true,"chapter_id":247,"premium":false},{"id":560,"name":"Application des Matrices : Syt\u00e8mes Lin\u00e9aires et Suites","slug":"matrices-systeme-lineaire-suites","visible":true,"chapter_id":247,"premium":false},{"id":266,"name":"Bac S : Pondich\u00e9ry 2016","slug":"bac-s-pondichery-2016","visible":true,"chapter_id":106,"premium":false},{"id":267,"name":"Bac S : M\u00e9tropole 2015","slug":"bac-s-metropole-2015","visible":true,"chapter_id":106,"premium":false},{"id":164,"name":"Limite finie et infinie lorsque $x$ tend vers l'infini ","slug":"limite-finie-et-infinie","visible":true,"chapter_id":61,"premium":false},{"id":165,"name":"Limite infinie lorsque $x$ tend vers un r\u00e9el $a$","slug":"limite-finie","visible":true,"chapter_id":61,"premium":false},{"id":166,"name":"Th\u00e9or\u00e8mes importants sur les limites","slug":"theoremes-importants-limites","visible":true,"chapter_id":61,"premium":false},{"id":278,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":61,"premium":false},{"id":171,"name":"La continuit\u00e9 d'une fonction $f$ en un point $a$ ","slug":"continuite-fonction-en-un-point","visible":true,"chapter_id":62,"premium":false},{"id":184,"name":"D\u00e9rivation de deux fonctions compos\u00e9es $(f\\circ g)'$","slug":"deriver-fonctions-composees","visible":true,"chapter_id":62,"premium":false},{"id":271,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":62,"premium":false},{"id":178,"name":"Parit\u00e9, p\u00e9riodicit\u00e9 et d\u00e9riv\u00e9e des fonctions $\\cos$ et $\\sin$","slug":"parite-periodicite-derivee-cosinus-et-sinus","visible":true,"chapter_id":64,"premium":false},{"id":280,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":64,"premium":false},{"id":158,"name":"Propri\u00e9t\u00e9s et (in)\u00e9quations avec la fonction exponentielle","slug":"proprietes-et-equations-exponentielle","visible":true,"chapter_id":65,"premium":false},{"id":159,"name":"Etude de fonction avec l'exponentielle","slug":"etude-de-fonction-exponentielle","visible":true,"chapter_id":65,"premium":false},{"id":288,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":65,"premium":false},{"id":169,"name":"G\u00e9n\u00e9ralit\u00e9s sur les suites","slug":"generaites-sur-les-suites","visible":true,"chapter_id":60,"premium":false},{"id":170,"name":"Limites et suites","slug":"limites-et-suites","visible":true,"chapter_id":60,"premium":false},{"id":192,"name":"Raisonner par r\u00e9currence","slug":"raisonnement-par-recurrence","visible":true,"chapter_id":60,"premium":false},{"id":263,"name":"Suites arithm\u00e9tico-g\u00e9om\u00e9triques","slug":"suite-arithmetico-geometrique","visible":true,"chapter_id":60,"premium":false},{"id":276,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":60,"premium":false},{"id":160,"name":"D\u00e9finition et propri\u00e9t\u00e9s de la fonction logarithme","slug":"propriete-fonction-logarithme","visible":true,"chapter_id":66,"premium":false},{"id":161,"name":"Etude de fonction avec le logarithme","slug":"etude-de-fonction-avec-logarithme","visible":true,"chapter_id":66,"premium":false},{"id":163,"name":"Equations et in\u00e9quations avec le logarithme","slug":"equations-et-in\u00e9quations-logarithme","visible":true,"chapter_id":66,"premium":false},{"id":270,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":66,"premium":false},{"id":156,"name":"Les primitives usuelles","slug":"primitives-usuelles","visible":true,"chapter_id":67,"premium":false},{"id":157,"name":"Calcul d'aires et int\u00e9grales","slug":"calcul-aires-et-integrales","visible":true,"chapter_id":67,"premium":false},{"id":185,"name":"S'entrainer \u00e0 calculer des primitives en d\u00e9finissant leur constante","slug":"calculs-primitives-avec-constantes","visible":true,"chapter_id":67,"premium":false},{"id":277,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":67,"premium":false},{"id":151,"name":"D\u00e9finitions et repr\u00e9sentation graphique","slug":"definitions-et-representations-graphiques","visible":true,"chapter_id":68,"premium":false},{"id":152,"name":"Op\u00e9rations sur les nombres complexes","slug":"operations-sur-les-complexes","visible":true,"chapter_id":68,"premium":false},{"id":153,"name":"Module et argument d'un nombre complexe","slug":"module-et-argument","visible":true,"chapter_id":68,"premium":false},{"id":155,"name":"Second degr\u00e9, calculs de longueurs, d'angles et de domaines","slug":"second-degre-longueurs-et-angles","visible":true,"chapter_id":68,"premium":false},{"id":282,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":68,"premium":false},{"id":186,"name":"Droites et plans","slug":"droites-et-plans","visible":true,"chapter_id":69,"premium":false},{"id":188,"name":"Rep\u00e8re et repr\u00e9sentation param\u00e9trique d'une droite","slug":"repere-et-representation-parametrique-droite","visible":true,"chapter_id":69,"premium":false},{"id":313,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":69,"premium":false},{"id":189,"name":"Produit scalaire et \u00e9quation cart\u00e9sienne d'un plan","slug":"produit-scalaire-equation-cartesienne-plan","visible":true,"chapter_id":75,"premium":false},{"id":179,"name":"Probabilit\u00e9s conditionnelles, \u00e9v\u00e9nements ind\u00e9pendants et arbres","slug":"probabilite-conditionnelle-evenements-independents","visible":true,"chapter_id":72,"premium":false},{"id":180,"name":"Variable al\u00e9atoire continue et loi Uniforme $\\mathcal{U}[a,b]$","slug":"loi-uniforme","visible":true,"chapter_id":73,"premium":false},{"id":181,"name":"La loi Exponentielle $\\mathcal{E}{(\\lambda)}$","slug":"loi-exponentielle","visible":true,"chapter_id":73,"premium":false},{"id":182,"name":"La loi Normale centr\u00e9e r\u00e9duite $\\mathcal{N}(0,1)$ et $\\mathcal{N}(\\mu,\\sigma^2)$","slug":"loi-normale-centree-reduite","visible":true,"chapter_id":73,"premium":false},{"id":286,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":73,"premium":false},{"id":567,"name":"Loi Binomiale et Sch\u00e9ma de Bernoulli","slug":"loi-binomiale-schema-bernoulli","visible":true,"chapter_id":73,"premium":false},{"id":193,"name":"Echantillon, simulation, intervalle de fluctuation et estimations ","slug":"echantillon-simulation-intervalle-fluctuation","visible":true,"chapter_id":74,"premium":false},{"id":287,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":74,"premium":false},{"id":555,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":192,"premium":false},{"id":556,"name":"D\u00e9finition et Op\u00e9rations sur les Matrices","slug":"definition-operations-matrices","visible":true,"chapter_id":192,"premium":false},{"id":557,"name":"Application des Matrices : Syt\u00e8mes Lin\u00e9aires et Suites","slug":"matrices-systeme-lineaire-suites","visible":true,"chapter_id":192,"premium":false},{"id":561,"name":"Multiples, Diviseurs et Congruence","slug":"multiplies-diviseurs-congruence","visible":true,"chapter_id":248,"premium":false},{"id":562,"name":"La Congruence","slug":"congruence","visible":true,"chapter_id":248,"premium":false},{"id":563,"name":"\u00c9quation Diophantienne : Th\u00e9or\u00e8me de Bezout et Gauss","slug":"bezout-gauss","visible":true,"chapter_id":248,"premium":false},{"id":564,"name":"Nombres Premiers, PGCD et PPCM","slug":"nombres-premiers-pgcd-ppcm","visible":true,"chapter_id":248,"premium":false},{"id":314,"name":"Additions et Soustractions","slug":"additions-et-soustractions","visible":true,"chapter_id":126,"premium":false},{"id":315,"name":"Multiplications et Divisions","slug":"multiplications-et-divisions","visible":true,"chapter_id":126,"premium":false},{"id":316,"name":"Priorit\u00e9s de Calcul et Ordre de Grandeur","slug":"calculs-nombres-relatifs","visible":true,"chapter_id":126,"premium":false},{"id":494,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":126,"premium":false},{"id":318,"name":"*Nombres D\u00e9cimaux","slug":"nombres-decimaux","visible":true,"chapter_id":127,"premium":false},{"id":320,"name":"Multiplication de Fractions","slug":"multiplications","visible":true,"chapter_id":127,"premium":false},{"id":321,"name":"Simplifier une Fraction","slug":"simplifier-une-fraction","visible":true,"chapter_id":127,"premium":false},{"id":322,"name":"Egalit\u00e9 de Fractions et Produit en Croix","slug":"egalite-fractions-produit-croix","visible":true,"chapter_id":127,"premium":false},{"id":323,"name":"Addition et Soustraction de Fractions","slug":"addition-et-soustraction-fraction","visible":true,"chapter_id":127,"premium":false},{"id":324,"name":"Division de Fractions","slug":"division-fraction","visible":true,"chapter_id":127,"premium":false},{"id":493,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":127,"premium":false},{"id":326,"name":"Plus Grand Commun Diviseur (PGCD) et Division Euclidienne","slug":"plus-grand-commun-diviseur-pgcd","visible":true,"chapter_id":128,"premium":false},{"id":541,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":128,"premium":false},{"id":327,"name":"A Quoi Servent les Puissances","slug":"utilite-puissances","visible":true,"chapter_id":129,"premium":false},{"id":328,"name":"Puissances de 10","slug":"puissance-de-10","visible":true,"chapter_id":129,"premium":false},{"id":329,"name":"Formule des Puissances - Cas des Puissances de 10","slug":"regle-des-puissances-de-10","visible":true,"chapter_id":129,"premium":false},{"id":330,"name":"Ecriture Scientifique et Comparaison de Nombres","slug":"ecriture-scientifique-comparaison","visible":true,"chapter_id":129,"premium":false},{"id":331,"name":"Formule des Puissances G\u00e9n\u00e9ralis\u00e9e","slug":"formules-des-puissances","visible":true,"chapter_id":129,"premium":false},{"id":543,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":129,"premium":false},{"id":332,"name":"Utilit\u00e9 du Calcul Litt\u00e9ral et R\u00e9duction d'une Expression","slug":"utilite-calcul-litteral","visible":true,"chapter_id":130,"premium":false},{"id":333,"name":"D\u00e9velopper une Expression","slug":"developpement","visible":true,"chapter_id":130,"premium":false},{"id":334,"name":"Factoriser avec le Facteur Commun","slug":"utilite-factorisation","visible":true,"chapter_id":130,"premium":false},{"id":335,"name":"Identit\u00e9s Remarquables","slug":"identites-remarquables","visible":true,"chapter_id":130,"premium":false},{"id":336,"name":"Factoriser avec les Identit\u00e9s Remarquables","slug":"factorisation","visible":true,"chapter_id":130,"premium":false},{"id":496,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":130,"premium":false},{"id":342,"name":"Quatri\u00e8me Proportionnalit\u00e9 et Repr\u00e9sentation Graphique","slug":"quatrieme-proportionnelle","visible":true,"chapter_id":133,"premium":false},{"id":343,"name":"Application de la Proportionnalit\u00e9","slug":"proportionnalite-application","visible":true,"chapter_id":133,"premium":false},{"id":497,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":133,"premium":false},{"id":345,"name":"Moyenne et Moyenne Pond\u00e9r\u00e9e d'une S\u00e9rie Statistique ","slug":"moyenne-et-moyenne-ponderee","visible":true,"chapter_id":147,"premium":false},{"id":346,"name":"Caracte\u0301ristiques d'une Se\u0301rie Statistique","slug":"caracteristiques-serie-statistique","visible":true,"chapter_id":147,"premium":false},{"id":347,"name":"Probabilit\u00e9s","slug":"probabilites","visible":true,"chapter_id":147,"premium":false},{"id":498,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":147,"premium":false},{"id":377,"name":"Additions et Soustractions","slug":"additions-et-soustractions","visible":true,"chapter_id":152,"premium":false},{"id":378,"name":"Multiplications et Divisions","slug":"multiplications-et-divisions","visible":true,"chapter_id":152,"premium":false},{"id":379,"name":"Priorit\u00e9s de Calcul et Ordre de Grandeur","slug":"calculs-nombres-relatifs","visible":true,"chapter_id":152,"premium":false},{"id":501,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":152,"premium":false},{"id":380,"name":"*Nombres D\u00e9cimaux","slug":"nombres-decimaux","visible":true,"chapter_id":153,"premium":false},{"id":381,"name":"Multiplication de Fractions","slug":"multiplications","visible":true,"chapter_id":153,"premium":false},{"id":382,"name":"Simplifier une Fraction","slug":"simplifier-une-fraction","visible":true,"chapter_id":153,"premium":false},{"id":383,"name":"Egalit\u00e9 de Fractions et Produit en Croix","slug":"egalite-fractions-produit-croix","visible":true,"chapter_id":153,"premium":false},{"id":384,"name":"Addition et Soustraction de Fractions","slug":"addition-et-soustraction-fraction","visible":true,"chapter_id":153,"premium":false},{"id":385,"name":"Division de Fractions","slug":"division-fraction","visible":true,"chapter_id":153,"premium":false},{"id":503,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":153,"premium":false},{"id":386,"name":"Plus Grand Commun Diviseur (PGCD) et Division Euclidienne","slug":"plus-grand-commun-diviseur-pgcd","visible":true,"chapter_id":154,"premium":false},{"id":542,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":154,"premium":false},{"id":387,"name":"A Quoi Servent les Puissances","slug":"utilite-puissances","visible":true,"chapter_id":155,"premium":false},{"id":388,"name":"Puissances de 10","slug":"puissance-de-10","visible":true,"chapter_id":155,"premium":false},{"id":389,"name":"Formule des Puissances - Cas des Puissances de 10","slug":"regle-des-puissances-de-10","visible":true,"chapter_id":155,"premium":false},{"id":390,"name":"Ecriture Scientifique et Comparaison de Nombres","slug":"ecriture-scientifique-comparaison","visible":true,"chapter_id":155,"premium":false},{"id":391,"name":"Formule des Puissances G\u00e9n\u00e9ralis\u00e9e","slug":"formules-des-puissances","visible":true,"chapter_id":155,"premium":false},{"id":506,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":155,"premium":false},{"id":392,"name":"Utilit\u00e9 du Calcul Litt\u00e9ral et R\u00e9duction d'une Expression","slug":"utilite-calcul-litteral","visible":true,"chapter_id":156,"premium":false},{"id":393,"name":"D\u00e9velopper une Expression","slug":"developpement","visible":true,"chapter_id":156,"premium":false},{"id":394,"name":"Factoriser avec le Facteur Commun","slug":"utilite-factorisation","visible":true,"chapter_id":156,"premium":false},{"id":395,"name":"Identit\u00e9s Remarquables","slug":"identites-remarquables","visible":true,"chapter_id":156,"premium":false},{"id":396,"name":"Factoriser avec les Identit\u00e9s Remarquables","slug":"factorisation","visible":true,"chapter_id":156,"premium":false},{"id":511,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":156,"premium":false},{"id":397,"name":"Approche Concr\u00e8te des \u00c9quations du Premier Degr\u00e9","slug":"equation-premier-degre-concrete","visible":true,"chapter_id":157,"premium":false},{"id":398,"name":"\u00c9quations et Mises en Situation","slug":"equations-mise-en-situation","visible":true,"chapter_id":157,"premium":false},{"id":399,"name":"Equation Produit","slug":"equation-produit","visible":true,"chapter_id":157,"premium":false},{"id":514,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":157,"premium":false},{"id":400,"name":"Introduction aux In\u00e9galit\u00e9s et In\u00e9quations","slug":"introduction-aux-equations","visible":true,"chapter_id":158,"premium":false},{"id":401,"name":"Re\u0301solution d'In\u00e9galit\u00e9s","slug":"resolution-inequations","visible":true,"chapter_id":158,"premium":false},{"id":516,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":158,"premium":false},{"id":550,"name":"Re\u0301solution d'In\u00e9quations","slug":"resolution-inequations-intervalle","visible":true,"chapter_id":158,"premium":false},{"id":402,"name":"Quatri\u00e8me Proportionnalit\u00e9 et Repr\u00e9sentation Graphique","slug":"quatrieme-proportionnelle","visible":true,"chapter_id":159,"premium":false},{"id":403,"name":"Application de la Proportionnalit\u00e9","slug":"proportionnalite-application","visible":true,"chapter_id":159,"premium":false},{"id":518,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":159,"premium":false},{"id":421,"name":"Moyenne et Moyenne Pond\u00e9r\u00e9e d'une S\u00e9rie Statistique ","slug":"moyenne-et-moyenne-ponderee","visible":true,"chapter_id":167,"premium":false},{"id":422,"name":"Caracte\u0301ristiques d'une Se\u0301rie Statistique","slug":"caracteristiques-serie-statistique","visible":true,"chapter_id":167,"premium":false},{"id":423,"name":"Probabilit\u00e9s","slug":"probabilites","visible":true,"chapter_id":167,"premium":false},{"id":500,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":167,"premium":false},{"id":404,"name":"Approche Concr\u00e8te des Fonctions","slug":"generalites-fonctions-representation-graphique","visible":true,"chapter_id":160,"premium":false},{"id":405,"name":"Fonction et Repr\u00e9sentation Graphique","slug":"representation-graphique","visible":true,"chapter_id":160,"premium":false},{"id":524,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":160,"premium":false},{"id":410,"name":"Les Fonctions Lin\u00e9aires : Approche Graphique","slug":"fonctions-lineaires-approche-graphique","visible":true,"chapter_id":162,"premium":false},{"id":411,"name":"D\u00e9terminer une Fonction Affine avec Deux Points","slug":"fonction-lineaire-calcul-avec-deux-points","visible":true,"chapter_id":162,"premium":false},{"id":527,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":162,"premium":false},{"id":406,"name":"La Sph\u00e8re et la Boule : Section, Aire et Volume","slug":"sphere-et-boule-sections-aires-volumes","visible":true,"chapter_id":161,"premium":false},{"id":407,"name":"Pyramide et C\u00f4ne de R\u00e9volution","slug":"pyramides-et-cone-de-revolution","visible":true,"chapter_id":161,"premium":false},{"id":408,"name":"Solides, Sections et Coefficient de R\u00e9duction","slug":"solides-et-sections-coefficients-reduction","visible":true,"chapter_id":161,"premium":false},{"id":528,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":161,"premium":false},{"id":427,"name":"Triangle Rectangle, Cercle Circonscrit et M\u00e9diane","slug":"triangle-rectangle-cercle-circonscrit","visible":true,"chapter_id":169,"premium":false},{"id":428,"name":"Le Th\u00e9or\u00e8me de Pythagore","slug":"theoreme-de-pythagore","visible":true,"chapter_id":169,"premium":false},{"id":535,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":169,"premium":false},{"id":429,"name":"Proportionnalite\u0301 des Longueurs et Th\u00e9or\u00e8me de Thal\u00e8s","slug":"proportionnalite-longueurs-thales","visible":true,"chapter_id":170,"premium":false},{"id":430,"name":"L'\u00e9nonc\u00e9 du th\u00e9or\u00e8me de Thal\u00e8s","slug":"enonce-theoreme-de-thales","visible":true,"chapter_id":170,"premium":false},{"id":432,"name":"Les trois variantes du th\u00e9or\u00e8me des milieux","slug":"theoreme-des-milieux","visible":true,"chapter_id":170,"premium":false},{"id":536,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":170,"premium":false},{"id":424,"name":"Calcul d'Angle et de Longueur avec le Cosinus","slug":"calculs-angles-longueurs-cosinus","visible":true,"chapter_id":168,"premium":false},{"id":425,"name":"Calcul de Longueur avec le Cosinus, Sinus et Tangente","slug":"calculs-longueurs-cosinus-sinus-tangente","visible":true,"chapter_id":168,"premium":false},{"id":426,"name":"Calcul d'Angle avec le Cosinus, Sinus et Tangente","slug":"calculs-angles-cosinus-sinus-tangente","visible":true,"chapter_id":168,"premium":false},{"id":537,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":168,"premium":false},{"id":433,"name":"Additions et Soustractions","slug":"additions-et-soustractions","visible":true,"chapter_id":171,"premium":false},{"id":434,"name":"Multiplications et Divisions","slug":"multiplications-et-divisions","visible":true,"chapter_id":171,"premium":false},{"id":435,"name":"Priorit\u00e9s de Calcul et Ordre de Grandeur","slug":"calculs-nombres-relatifs","visible":true,"chapter_id":171,"premium":false},{"id":502,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":171,"premium":false},{"id":436,"name":"*Nombres D\u00e9cimaux","slug":"nombres-decimaux","visible":true,"chapter_id":172,"premium":false},{"id":437,"name":"Multiplication de Fractions","slug":"multiplications","visible":true,"chapter_id":172,"premium":false},{"id":438,"name":"Simplifier une Fraction","slug":"simplifier-une-fraction","visible":true,"chapter_id":172,"premium":false},{"id":439,"name":"Egalit\u00e9 de Fractions et Produit en Croix","slug":"egalite-fractions-produit-croix","visible":true,"chapter_id":172,"premium":false},{"id":440,"name":"Addition et Soustraction de Fractions","slug":"addition-et-soustraction-fraction","visible":true,"chapter_id":172,"premium":false},{"id":441,"name":"Division de Fractions","slug":"division-fraction","visible":true,"chapter_id":172,"premium":false},{"id":504,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":172,"premium":false},{"id":442,"name":"Plus Grand Commun Diviseur (PGCD) et Division Euclidienne","slug":"plus-grand-commun-diviseur-pgcd","visible":true,"chapter_id":173,"premium":false},{"id":505,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":173,"premium":false},{"id":443,"name":"A Quoi Servent les Puissances","slug":"utilite-puissances","visible":true,"chapter_id":174,"premium":false},{"id":444,"name":"Puissances de 10","slug":"puissance-de-10","visible":true,"chapter_id":174,"premium":false},{"id":445,"name":"Formule des Puissances - Cas des Puissances de 10","slug":"regle-des-puissances-de-10","visible":true,"chapter_id":174,"premium":false},{"id":446,"name":"Ecriture Scientifique et Comparaison de Nombres","slug":"ecriture-scientifique-comparaison","visible":true,"chapter_id":174,"premium":false},{"id":447,"name":"Formule des Puissances G\u00e9n\u00e9ralis\u00e9e","slug":"formules-des-puissances","visible":true,"chapter_id":174,"premium":false},{"id":544,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":174,"premium":false},{"id":448,"name":"Utilit\u00e9 du Calcul Litt\u00e9ral et R\u00e9duction d'une Expression","slug":"utilite-calcul-litteral","visible":true,"chapter_id":175,"premium":false},{"id":449,"name":"D\u00e9velopper une Expression","slug":"developpement","visible":true,"chapter_id":175,"premium":false},{"id":450,"name":"Factoriser avec le Facteur Commun","slug":"utilite-factorisation","visible":true,"chapter_id":175,"premium":false},{"id":451,"name":"Identit\u00e9s Remarquables","slug":"identites-remarquables","visible":true,"chapter_id":175,"premium":false},{"id":452,"name":"Factoriser avec les Identit\u00e9s Remarquables","slug":"factorisation","visible":true,"chapter_id":175,"premium":false},{"id":508,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":175,"premium":false},{"id":453,"name":"Approche Concr\u00e8te des \u00c9quations du Premier Degr\u00e9","slug":"equation-premier-degre-concrete","visible":true,"chapter_id":176,"premium":false},{"id":454,"name":"\u00c9quations et Mises en Situation","slug":"equations-mise-en-situation","visible":true,"chapter_id":176,"premium":false},{"id":455,"name":"Equation Produit","slug":"equation-produit","visible":true,"chapter_id":176,"premium":false},{"id":492,"name":"R\u00e9solution d'un syst\u00e8me par combinaison ou substitution","slug":"resolution-systeme-combinaison-substitution","visible":true,"chapter_id":176,"premium":false},{"id":509,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":176,"premium":false},{"id":456,"name":"Introduction aux In\u00e9galit\u00e9s et In\u00e9quations","slug":"introduction-aux-equations","visible":true,"chapter_id":177,"premium":false},{"id":457,"name":"Re\u0301solution d'In\u00e9galit\u00e9s","slug":"resolution-inequations","visible":true,"chapter_id":177,"premium":false},{"id":510,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":177,"premium":false},{"id":546,"name":"Re\u0301solution d'In\u00e9quations","slug":"resolution-inequations-intervalle","visible":true,"chapter_id":177,"premium":false},{"id":458,"name":"Quatri\u00e8me Proportionnalit\u00e9 et Repr\u00e9sentation Graphique","slug":"quatrieme-proportionnelle","visible":true,"chapter_id":178,"premium":false},{"id":459,"name":"Application de la Proportionnalit\u00e9","slug":"proportionnalite-application","visible":true,"chapter_id":178,"premium":false},{"id":512,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":178,"premium":false},{"id":477,"name":"Moyenne et Moyenne Pond\u00e9r\u00e9e d'une S\u00e9rie Statistique ","slug":"moyenne-et-moyenne-ponderee","visible":true,"chapter_id":186,"premium":false},{"id":478,"name":"Caracte\u0301ristiques d'une Se\u0301rie Statistique","slug":"caracteristiques-serie-statistique","visible":true,"chapter_id":186,"premium":false},{"id":479,"name":"Probabilit\u00e9s","slug":"probabilites","visible":true,"chapter_id":186,"premium":false},{"id":499,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":186,"premium":false},{"id":569,"name":"Modalit\u00e9, fre\u0301quences d\u2019apparition et moyenne","slug":"modalite-frequence-apparition-moyenne","visible":true,"chapter_id":186,"premium":false},{"id":460,"name":"Approche Concr\u00e8te des Fonctions","slug":"generalites-fonctions-representation-graphique","visible":true,"chapter_id":179,"premium":false},{"id":461,"name":"Fonction et Repr\u00e9sentation Graphique","slug":"representation-graphique","visible":true,"chapter_id":179,"premium":false},{"id":513,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":179,"premium":false},{"id":466,"name":"Les Fonctions Lin\u00e9aires : Approche Graphique","slug":"fonctions-lineaires-approche-graphique","visible":true,"chapter_id":181,"premium":false},{"id":467,"name":"D\u00e9terminer une Fonction Affine avec Deux Points","slug":"fonction-lineaire-calcul-avec-deux-points","visible":true,"chapter_id":181,"premium":false},{"id":515,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":181,"premium":false},{"id":462,"name":"La Sph\u00e8re et la Boule : Section, Aire et Volume","slug":"sphere-et-boule-sections-aires-volumes","visible":true,"chapter_id":180,"premium":false},{"id":463,"name":"Pyramide et C\u00f4ne de R\u00e9volution","slug":"pyramides-et-cone-de-revolution","visible":true,"chapter_id":180,"premium":false},{"id":464,"name":"Solides, Sections et Coefficient de R\u00e9duction","slug":"solides-et-sections-coefficients-reduction","visible":true,"chapter_id":180,"premium":false},{"id":517,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":180,"premium":false},{"id":489,"name":"Applications et r\u00e8gles de calcul de la racine carr\u00e9e","slug":"regle-de-calcul-racine-carre","visible":true,"chapter_id":190,"premium":false},{"id":490,"name":"Puissances de racines carre\u0301es ","slug":"puissances-de-racines-carrees","visible":true,"chapter_id":190,"premium":false},{"id":491,"name":"Re\u0301solution d'e\u0301quation du type $x^2 = a$","slug":"resolution-equation-second-degre-simple","visible":true,"chapter_id":190,"premium":false},{"id":519,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":190,"premium":false},{"id":483,"name":"Triangle Rectangle, Cercle Circonscrit et M\u00e9diane","slug":"triangle-rectangle-cercle-circonscrit","visible":true,"chapter_id":188,"premium":false},{"id":484,"name":"Le Th\u00e9or\u00e8me de Pythagore","slug":"theoreme-de-pythagore","visible":true,"chapter_id":188,"premium":false},{"id":522,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":188,"premium":false},{"id":485,"name":"Proportionnalite\u0301 des Longueurs et Th\u00e9or\u00e8me de Thal\u00e8s","slug":"proportionnalite-longueurs-thales","visible":true,"chapter_id":189,"premium":false},{"id":486,"name":"L'\u00e9nonc\u00e9 du th\u00e9or\u00e8me de Thal\u00e8s","slug":"enonce-theoreme-de-thales","visible":true,"chapter_id":189,"premium":false},{"id":488,"name":"Les trois variantes du th\u00e9or\u00e8me des milieux","slug":"theoreme-des-milieux","visible":true,"chapter_id":189,"premium":false},{"id":523,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":189,"premium":false},{"id":480,"name":"Calcul d'Angle et de Longueur avec le Cosinus","slug":"calculs-angles-longueurs-cosinus","visible":true,"chapter_id":187,"premium":false},{"id":481,"name":"Calcul de Longueur avec le Cosinus, Sinus et Tangente","slug":"calculs-longueurs-cosinus-sinus-tangente","visible":true,"chapter_id":187,"premium":false},{"id":482,"name":"Calcul d'Angle avec le Cosinus, Sinus et Tangente","slug":"calculs-angles-cosinus-sinus-tangente","visible":true,"chapter_id":187,"premium":false},{"id":525,"name":"Fiche R\u00e9vision","slug":"fiche","visible":true,"chapter_id":187,"premium":false}]
+[
+  {
+    "id": 92,
+    "name": "Re\u0301solution d'In\u00e9galit\u00e9s",
+    "slug": "resolution-inequations",
+    "visible": true,
+    "chapter_id": 28,
+    "premium": false
+  },
+  {
+    "id": 93,
+    "name": "R\u00e9solution approch\u00e9e d'in\u00e9quations",
+    "slug": "inequations-solution-approchee",
+    "visible": true,
+    "chapter_id": 28,
+    "premium": false
+  },
+  {
+    "id": 109,
+    "name": "Equation Produit",
+    "slug": "equation-produit",
+    "visible": true,
+    "chapter_id": 28,
+    "premium": false
+  },
+  {
+    "id": 300,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 28,
+    "premium": false
+  },
+  {
+    "id": 86,
+    "name": "Approche Concr\u00e8te des Fonctions",
+    "slug": "generalites-fonctions-representation-graphique",
+    "visible": true,
+    "chapter_id": 27,
+    "premium": false
+  },
+  {
+    "id": 88,
+    "name": "Fonctions de r\u00e9f\u00e9rence",
+    "slug": "fonctions-de-reference",
+    "visible": true,
+    "chapter_id": 27,
+    "premium": false
+  },
+  {
+    "id": 89,
+    "name": "Les Fonctions Lin\u00e9aires : Approche Graphique",
+    "slug": "fonctions-lineaires-approche-graphique",
+    "visible": true,
+    "chapter_id": 27,
+    "premium": false
+  },
+  {
+    "id": 301,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 27,
+    "premium": false
+  },
+  {
+    "id": 95,
+    "name": "Lire les variations et extremas graphiquement",
+    "slug": "variations-et-extrema-graphiquement",
+    "visible": true,
+    "chapter_id": 29,
+    "premium": false
+  },
+  {
+    "id": 96,
+    "name": "Variations, extrema, translations et dilatations",
+    "slug": "variations-extrema-translation-dilatation",
+    "visible": true,
+    "chapter_id": 29,
+    "premium": false
+  },
+  {
+    "id": 302,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 29,
+    "premium": false
+  },
+  {
+    "id": 97,
+    "name": "D\u00e9terminer le signe d'une fonction affine",
+    "slug": "signe-fonction-affine",
+    "visible": true,
+    "chapter_id": 30,
+    "premium": false
+  },
+  {
+    "id": 98,
+    "name": "Signes et fonctions homographique",
+    "slug": "signe-fonctions-homographique",
+    "visible": true,
+    "chapter_id": 30,
+    "premium": false
+  },
+  {
+    "id": 303,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 30,
+    "premium": false
+  },
+  {
+    "id": 99,
+    "name": "Polyn\u00f4me du second degr\u00e9 et variations",
+    "slug": "polynome-second-degre-variations",
+    "visible": true,
+    "chapter_id": 31,
+    "premium": false
+  },
+  {
+    "id": 304,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 31,
+    "premium": false
+  },
+  {
+    "id": 103,
+    "name": "Solides, Sections et Coefficient de R\u00e9duction",
+    "slug": "solides-et-sections-coefficients-reduction",
+    "visible": true,
+    "chapter_id": 40,
+    "premium": false
+  },
+  {
+    "id": 104,
+    "name": "Droites et plans",
+    "slug": "droites-et-plans",
+    "visible": true,
+    "chapter_id": 40,
+    "premium": false
+  },
+  {
+    "id": 305,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 40,
+    "premium": false
+  },
+  {
+    "id": 110,
+    "name": "Coordonne\u0301es d\u2019un point, longueur et milieu d'un s\u00e8gment",
+    "slug": "longueur-et-milieu-segment",
+    "visible": true,
+    "chapter_id": 33,
+    "premium": false
+  },
+  {
+    "id": 306,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 33,
+    "premium": false
+  },
+  {
+    "id": 106,
+    "name": "Vecteurs, translations et op\u00e9rations ",
+    "slug": "vecteurs-translations-et-operations",
+    "visible": true,
+    "chapter_id": 34,
+    "premium": false
+  },
+  {
+    "id": 107,
+    "name": "Coordonne\u0301es d\u2019un vecteur",
+    "slug": "coordonnes-de-vecteurs",
+    "visible": true,
+    "chapter_id": 34,
+    "premium": false
+  },
+  {
+    "id": 108,
+    "name": "Coline\u0301arite\u0301 de vecteurs",
+    "slug": "colinearite-de-vecteurs",
+    "visible": true,
+    "chapter_id": 34,
+    "premium": false
+  },
+  {
+    "id": 121,
+    "name": "Op\u00e9rations de vecteurs dans le rep\u00e8re",
+    "slug": "operations-de-vecteurs-repere",
+    "visible": true,
+    "chapter_id": 34,
+    "premium": false
+  },
+  {
+    "id": 307,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 34,
+    "premium": false
+  },
+  {
+    "id": 111,
+    "name": "Les Fonctions Lin\u00e9aires : Approche Graphique",
+    "slug": "fonctions-lineaires-approche-graphique",
+    "visible": true,
+    "chapter_id": 35,
+    "premium": false
+  },
+  {
+    "id": 122,
+    "name": "Les fonctions lin\u00e9aires : approche alg\u00e9brique",
+    "slug": "fonctions-lineaires-graphique",
+    "visible": true,
+    "chapter_id": 35,
+    "premium": false
+  },
+  {
+    "id": 308,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 35,
+    "premium": false
+  },
+  {
+    "id": 114,
+    "name": "Coordonn\u00e9es du cercle trigonom\u00e9trique",
+    "slug": "coordonnes-cercle-trigonometrique",
+    "visible": true,
+    "chapter_id": 36,
+    "premium": false
+  },
+  {
+    "id": 123,
+    "name": "Calcul de Longueur avec le Cosinus, Sinus et Tangente",
+    "slug": "calculs-longueurs-cosinus-sinus-tangente",
+    "visible": true,
+    "chapter_id": 36,
+    "premium": false
+  },
+  {
+    "id": 124,
+    "name": "Calcul d'Angle avec le Cosinus, Sinus et Tangente",
+    "slug": "calculs-angles-cosinus-sinus-tangente",
+    "visible": true,
+    "chapter_id": 36,
+    "premium": false
+  },
+  {
+    "id": 309,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 36,
+    "premium": false
+  },
+  {
+    "id": 115,
+    "name": "Caracte\u0301ristiques d'une Se\u0301rie Statistique",
+    "slug": "caracteristiques-serie-statistique",
+    "visible": true,
+    "chapter_id": 37,
+    "premium": false
+  },
+  {
+    "id": 116,
+    "name": "Modalit\u00e9, fre\u0301quences d\u2019apparition et moyenne",
+    "slug": "modalite-frequence-apparition-moyenne",
+    "visible": true,
+    "chapter_id": 37,
+    "premium": false
+  },
+  {
+    "id": 117,
+    "name": "Moyenne et Moyenne Pond\u00e9r\u00e9e d'une S\u00e9rie Statistique ",
+    "slug": "moyenne-et-moyenne-ponderee",
+    "visible": true,
+    "chapter_id": 37,
+    "premium": false
+  },
+  {
+    "id": 568,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 37,
+    "premium": false
+  },
+  {
+    "id": 118,
+    "name": "Echantillon, simulation, intervalle de fluctuation et estimations ",
+    "slug": "echantillon-simulation-intervalle-fluctuation",
+    "visible": true,
+    "chapter_id": 38,
+    "premium": false
+  },
+  {
+    "id": 311,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 38,
+    "premium": false
+  },
+  {
+    "id": 119,
+    "name": "Probabilit\u00e9s",
+    "slug": "probabilites",
+    "visible": true,
+    "chapter_id": 39,
+    "premium": false
+  },
+  {
+    "id": 120,
+    "name": "Choix du mode\u0300le et calculs de probabilit\u00e9s",
+    "slug": "choix-modele-calculs-probabilites",
+    "visible": true,
+    "chapter_id": 39,
+    "premium": false
+  },
+  {
+    "id": 312,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 39,
+    "premium": false
+  },
+  {
+    "id": 231,
+    "name": "Polyn\u00f4me du second degr\u00e9 et variations",
+    "slug": "polynome-second-degre-variations",
+    "visible": true,
+    "chapter_id": 90,
+    "premium": false
+  },
+  {
+    "id": 232,
+    "name": "R\u00e9soudre une (in)\u00e9quation du type $ax^2+bx+c=0$",
+    "slug": "resoudre-equation-second-degre",
+    "visible": true,
+    "chapter_id": 90,
+    "premium": false
+  },
+  {
+    "id": 551,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 90,
+    "premium": false
+  },
+  {
+    "id": 233,
+    "name": "Interpr\u00e9tation graphique et utilit\u00e9",
+    "slug": "interpretation-graphique-et-utilite",
+    "visible": true,
+    "chapter_id": 91,
+    "premium": false
+  },
+  {
+    "id": 234,
+    "name": "Les formules de d\u00e9rivation",
+    "slug": "formules-de-derivation",
+    "visible": true,
+    "chapter_id": 91,
+    "premium": false
+  },
+  {
+    "id": 235,
+    "name": "D\u00e9rivation d'op\u00e9rations",
+    "slug": "derivation-des-operations",
+    "visible": true,
+    "chapter_id": 91,
+    "premium": false
+  },
+  {
+    "id": 236,
+    "name": "Tableau de signe de la d\u00e9riv\u00e9e $f'$ et sens de variation de $f$",
+    "slug": "tableau-de-signe-et-sens-de-variation",
+    "visible": true,
+    "chapter_id": 91,
+    "premium": false
+  },
+  {
+    "id": 552,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 91,
+    "premium": false
+  },
+  {
+    "id": 237,
+    "name": "Les Fonctions Lin\u00e9aires : Approche Graphique",
+    "slug": "fonctions-lineaires-approche-graphique",
+    "visible": true,
+    "chapter_id": 92,
+    "premium": false
+  },
+  {
+    "id": 238,
+    "name": "La fonction carr\u00e9 et racine carr\u00e9e",
+    "slug": "fonction-carree-racine",
+    "visible": true,
+    "chapter_id": 92,
+    "premium": false
+  },
+  {
+    "id": 239,
+    "name": "G\u00e9n\u00e9ralit\u00e9s sur les suites",
+    "slug": "generaites-sur-les-suites",
+    "visible": true,
+    "chapter_id": 93,
+    "premium": false
+  },
+  {
+    "id": 265,
+    "name": "Suites arithm\u00e9tiques",
+    "slug": "suites-arithmetiques",
+    "visible": true,
+    "chapter_id": 93,
+    "premium": false
+  },
+  {
+    "id": 553,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 93,
+    "premium": false
+  },
+  {
+    "id": 240,
+    "name": "Diagramme de boite : r\u00e9sum\u00e9 de la m\u00e9diane et des quartiles ",
+    "slug": "diagramme-de-boite-mediane-quartiles",
+    "visible": true,
+    "chapter_id": 94,
+    "premium": false
+  },
+  {
+    "id": 241,
+    "name": "Moyenne, variance et \u00e9cart-type",
+    "slug": "moyenne-variance-ecart-type",
+    "visible": true,
+    "chapter_id": 94,
+    "premium": false
+  },
+  {
+    "id": 242,
+    "name": "Notions \u00e9l\u00e9mentaires de probabilit\u00e9",
+    "slug": "notion-probabilite",
+    "visible": true,
+    "chapter_id": 95,
+    "premium": false
+  },
+  {
+    "id": 243,
+    "name": "Variable al\u00e9atoire et loi de probabilit\u00e9",
+    "slug": "variable-aleatoire-et-loi-de-probabilite",
+    "visible": true,
+    "chapter_id": 95,
+    "premium": false
+  },
+  {
+    "id": 244,
+    "name": "Loi Binomiale et Sch\u00e9ma de Bernoulli",
+    "slug": "loi-binomiale-schema-bernoulli",
+    "visible": true,
+    "chapter_id": 96,
+    "premium": false
+  },
+  {
+    "id": 245,
+    "name": "Echantillon, simulation, intervalle de fluctuation et estimations ",
+    "slug": "echantillon-simulation-intervalle-fluctuation",
+    "visible": true,
+    "chapter_id": 96,
+    "premium": false
+  },
+  {
+    "id": 215,
+    "name": "Polyn\u00f4me du second degr\u00e9 et variations",
+    "slug": "polynome-second-degre-variations",
+    "visible": true,
+    "chapter_id": 51,
+    "premium": false
+  },
+  {
+    "id": 216,
+    "name": "R\u00e9soudre une (in)\u00e9quation du type $ax^2+bx+c=0$",
+    "slug": "resoudre-equation-second-degre",
+    "visible": true,
+    "chapter_id": 51,
+    "premium": false
+  },
+  {
+    "id": 547,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 51,
+    "premium": false
+  },
+  {
+    "id": 222,
+    "name": "Interpr\u00e9tation graphique et utilit\u00e9",
+    "slug": "interpretation-graphique-et-utilite",
+    "visible": true,
+    "chapter_id": 53,
+    "premium": false
+  },
+  {
+    "id": 223,
+    "name": "Les formules de d\u00e9rivation",
+    "slug": "formules-de-derivation",
+    "visible": true,
+    "chapter_id": 53,
+    "premium": false
+  },
+  {
+    "id": 224,
+    "name": "D\u00e9rivation d'op\u00e9rations",
+    "slug": "derivation-des-operations",
+    "visible": true,
+    "chapter_id": 53,
+    "premium": false
+  },
+  {
+    "id": 225,
+    "name": "Tableau de signe de la d\u00e9riv\u00e9e $f'$ et sens de variation de $f$",
+    "slug": "tableau-de-signe-et-sens-de-variation",
+    "visible": true,
+    "chapter_id": 53,
+    "premium": false
+  },
+  {
+    "id": 548,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 53,
+    "premium": false
+  },
+  {
+    "id": 219,
+    "name": "Les Fonctions Lin\u00e9aires : Approche Graphique",
+    "slug": "fonctions-lineaires-approche-graphique",
+    "visible": true,
+    "chapter_id": 54,
+    "premium": false
+  },
+  {
+    "id": 220,
+    "name": "La fonction carr\u00e9 et racine carr\u00e9e",
+    "slug": "fonction-carree-racine",
+    "visible": true,
+    "chapter_id": 54,
+    "premium": false
+  },
+  {
+    "id": 230,
+    "name": "G\u00e9n\u00e9ralit\u00e9s sur les suites",
+    "slug": "generaites-sur-les-suites",
+    "visible": true,
+    "chapter_id": 55,
+    "premium": false
+  },
+  {
+    "id": 264,
+    "name": "Suites arithm\u00e9tiques",
+    "slug": "suites-arithmetiques",
+    "visible": true,
+    "chapter_id": 55,
+    "premium": false
+  },
+  {
+    "id": 549,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 55,
+    "premium": false
+  },
+  {
+    "id": 217,
+    "name": "Diagramme de boite : r\u00e9sum\u00e9 de la m\u00e9diane et des quartiles ",
+    "slug": "diagramme-de-boite-mediane-quartiles",
+    "visible": true,
+    "chapter_id": 56,
+    "premium": false
+  },
+  {
+    "id": 218,
+    "name": "Moyenne, variance et \u00e9cart-type",
+    "slug": "moyenne-variance-ecart-type",
+    "visible": true,
+    "chapter_id": 56,
+    "premium": false
+  },
+  {
+    "id": 226,
+    "name": "Notions \u00e9l\u00e9mentaires de probabilit\u00e9",
+    "slug": "notion-probabilite",
+    "visible": true,
+    "chapter_id": 57,
+    "premium": false
+  },
+  {
+    "id": 228,
+    "name": "Variable al\u00e9atoire et loi de probabilit\u00e9",
+    "slug": "variable-aleatoire-et-loi-de-probabilite",
+    "visible": true,
+    "chapter_id": 57,
+    "premium": false
+  },
+  {
+    "id": 214,
+    "name": "Loi Binomiale et Sch\u00e9ma de Bernoulli",
+    "slug": "loi-binomiale-schema-bernoulli",
+    "visible": true,
+    "chapter_id": 58,
+    "premium": false
+  },
+  {
+    "id": 229,
+    "name": "Echantillon, simulation, intervalle de fluctuation et estimations ",
+    "slug": "echantillon-simulation-intervalle-fluctuation",
+    "visible": true,
+    "chapter_id": 58,
+    "premium": false
+  },
+  {
+    "id": 125,
+    "name": "Polyn\u00f4me du second degr\u00e9 et variations",
+    "slug": "polynome-second-degre-variations",
+    "visible": true,
+    "chapter_id": 41,
+    "premium": false
+  },
+  {
+    "id": 126,
+    "name": "R\u00e9soudre une (in)\u00e9quation du type $ax^2+bx+c=0$",
+    "slug": "resoudre-equation-second-degre",
+    "visible": true,
+    "chapter_id": 41,
+    "premium": false
+  },
+  {
+    "id": 290,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 41,
+    "premium": false
+  },
+  {
+    "id": 127,
+    "name": "La fonction carr\u00e9 et inverse",
+    "slug": "fonction-carre-et-inverse",
+    "visible": true,
+    "chapter_id": 42,
+    "premium": false
+  },
+  {
+    "id": 128,
+    "name": "Variations, extrema, translations et dilatations",
+    "slug": "variations-extrema-translation-dilatation",
+    "visible": true,
+    "chapter_id": 42,
+    "premium": false
+  },
+  {
+    "id": 129,
+    "name": "La fonction racine carr\u00e9e et valeur absolue",
+    "slug": "fonction-racine-carree-et-valeur-absolue",
+    "visible": true,
+    "chapter_id": 42,
+    "premium": false
+  },
+  {
+    "id": 291,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 42,
+    "premium": false
+  },
+  {
+    "id": 132,
+    "name": "Interpr\u00e9tation graphique et utilit\u00e9",
+    "slug": "interpretation-graphique-et-utilite",
+    "visible": true,
+    "chapter_id": 43,
+    "premium": false
+  },
+  {
+    "id": 133,
+    "name": "Les formules de d\u00e9rivation",
+    "slug": "formules-de-derivation",
+    "visible": true,
+    "chapter_id": 43,
+    "premium": false
+  },
+  {
+    "id": 134,
+    "name": "D\u00e9rivation d'op\u00e9rations",
+    "slug": "derivation-des-operations",
+    "visible": true,
+    "chapter_id": 43,
+    "premium": false
+  },
+  {
+    "id": 135,
+    "name": "Tableau de signe de la d\u00e9riv\u00e9e $f'$ et sens de variation de $f$",
+    "slug": "tableau-de-signe-et-sens-de-variation",
+    "visible": true,
+    "chapter_id": 43,
+    "premium": false
+  },
+  {
+    "id": 292,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 43,
+    "premium": false
+  },
+  {
+    "id": 136,
+    "name": "Suites arithm\u00e9tiques",
+    "slug": "suites-arithmetiques",
+    "visible": true,
+    "chapter_id": 44,
+    "premium": false
+  },
+  {
+    "id": 137,
+    "name": "Suites g\u00e9om\u00e9triques",
+    "slug": "suites-geometriques",
+    "visible": true,
+    "chapter_id": 44,
+    "premium": false
+  },
+  {
+    "id": 138,
+    "name": "G\u00e9n\u00e9ralit\u00e9s sur les suites",
+    "slug": "generaites-sur-les-suites",
+    "visible": true,
+    "chapter_id": 44,
+    "premium": false
+  },
+  {
+    "id": 167,
+    "name": "Sens de variation et limites de suites g\u00e9om\u00e9triques",
+    "slug": "sens-de-variation-limites-suite-geometrique",
+    "visible": true,
+    "chapter_id": 44,
+    "premium": false
+  },
+  {
+    "id": 168,
+    "name": "Sens de variations et limites de suites arithm\u00e9tiques",
+    "slug": "sens-de-variation-limites-suite-arithmetrique",
+    "visible": true,
+    "chapter_id": 44,
+    "premium": false
+  },
+  {
+    "id": 293,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 44,
+    "premium": false
+  },
+  {
+    "id": 139,
+    "name": "Coordonne\u0301es d\u2019un vecteur",
+    "slug": "coordonnes-de-vecteurs",
+    "visible": true,
+    "chapter_id": 45,
+    "premium": false
+  },
+  {
+    "id": 140,
+    "name": "Coline\u0301arite\u0301 de vecteurs",
+    "slug": "colinearite-de-vecteurs",
+    "visible": true,
+    "chapter_id": 45,
+    "premium": false
+  },
+  {
+    "id": 141,
+    "name": "D\u00e9composition et norme d'un vecteur",
+    "slug": "decomposition-et-norme-vecteur",
+    "visible": true,
+    "chapter_id": 45,
+    "premium": false
+  },
+  {
+    "id": 173,
+    "name": "Equation cart\u00e9sienne",
+    "slug": "equation-cartesienne",
+    "visible": true,
+    "chapter_id": 45,
+    "premium": false
+  },
+  {
+    "id": 294,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 45,
+    "premium": false
+  },
+  {
+    "id": 149,
+    "name": "Coordonn\u00e9es du cercle trigonom\u00e9trique",
+    "slug": "coordonnes-cercle-trigonometrique",
+    "visible": true,
+    "chapter_id": 46,
+    "premium": false
+  },
+  {
+    "id": 174,
+    "name": "Propri\u00e9t\u00e9s sur les angles orient\u00e9s et cercle trigonom\u00e9trique",
+    "slug": "propriete-des-angles-orientes-et-cercle-trigo",
+    "visible": true,
+    "chapter_id": 46,
+    "premium": false
+  },
+  {
+    "id": 295,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 46,
+    "premium": false
+  },
+  {
+    "id": 148,
+    "name": "D\u00e9finition du produit scalaire dans le plan",
+    "slug": "produit-scalaire-dans-le-plan",
+    "visible": true,
+    "chapter_id": 47,
+    "premium": false
+  },
+  {
+    "id": 176,
+    "name": "Les propri\u00e9t\u00e9s du produit scalaire",
+    "slug": "proprietes-produit-scalaire",
+    "visible": true,
+    "chapter_id": 47,
+    "premium": false
+  },
+  {
+    "id": 296,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 47,
+    "premium": false
+  },
+  {
+    "id": 142,
+    "name": "Diagramme de boite : r\u00e9sum\u00e9 de la m\u00e9diane et des quartiles ",
+    "slug": "diagramme-de-boite-mediane-quartiles",
+    "visible": true,
+    "chapter_id": 48,
+    "premium": false
+  },
+  {
+    "id": 177,
+    "name": "Moyenne, variance et \u00e9cart-type",
+    "slug": "moyenne-variance-ecart-type",
+    "visible": true,
+    "chapter_id": 48,
+    "premium": false
+  },
+  {
+    "id": 297,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 48,
+    "premium": false
+  },
+  {
+    "id": 144,
+    "name": "Variable al\u00e9atoire et loi de probabilit\u00e9",
+    "slug": "variable-aleatoire-et-loi-de-probabilite",
+    "visible": true,
+    "chapter_id": 49,
+    "premium": false
+  },
+  {
+    "id": 175,
+    "name": "Variance, \u00e9cart-type et transformations de variables al\u00e9atoires",
+    "slug": "variance-ecart-type-transformations-variables",
+    "visible": true,
+    "chapter_id": 49,
+    "premium": false
+  },
+  {
+    "id": 298,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 49,
+    "premium": false
+  },
+  {
+    "id": 146,
+    "name": "Loi Binomiale et Sch\u00e9ma de Bernoulli",
+    "slug": "loi-binomiale-schema-bernoulli",
+    "visible": true,
+    "chapter_id": 59,
+    "premium": false
+  },
+  {
+    "id": 147,
+    "name": "Echantillonnage",
+    "slug": "echantillonnage",
+    "visible": true,
+    "chapter_id": 59,
+    "premium": false
+  },
+  {
+    "id": 299,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 59,
+    "premium": false
+  },
+  {
+    "id": 246,
+    "name": "Suites g\u00e9om\u00e9triques",
+    "slug": "suites-geometriques",
+    "visible": true,
+    "chapter_id": 97,
+    "premium": false
+  },
+  {
+    "id": 247,
+    "name": "Sens de variation et limites de suites g\u00e9om\u00e9triques",
+    "slug": "sens-de-variation-limites-suite-geometrique",
+    "visible": true,
+    "chapter_id": 97,
+    "premium": false
+  },
+  {
+    "id": 248,
+    "name": "Suites arithm\u00e9tico-g\u00e9om\u00e9triques",
+    "slug": "suite-arithmetico-geometrique",
+    "visible": true,
+    "chapter_id": 97,
+    "premium": false
+  },
+  {
+    "id": 249,
+    "name": "La continuit\u00e9 d'une fonction $f$ en un point $a$ ",
+    "slug": "continuite-fonction-en-un-point",
+    "visible": true,
+    "chapter_id": 98,
+    "premium": false
+  },
+  {
+    "id": 251,
+    "name": "Les propri\u00e9t\u00e9s de la fonction exponentielle",
+    "slug": "proprietes-exponentielle",
+    "visible": true,
+    "chapter_id": 99,
+    "premium": false
+  },
+  {
+    "id": 252,
+    "name": "D\u00e9riv\u00e9e de $e^u$ et \u00e9tude de la fonction exponentielle ",
+    "slug": "derivee-etude-exponentielle",
+    "visible": true,
+    "chapter_id": 99,
+    "premium": false
+  },
+  {
+    "id": 253,
+    "name": "Les propri\u00e9t\u00e9s de la fonction logarithme",
+    "slug": "propriete-logarithme",
+    "visible": true,
+    "chapter_id": 100,
+    "premium": false
+  },
+  {
+    "id": 254,
+    "name": "Etude de la fonction exponentielle et r\u00e9solution d'\u00e9quation $x^k=a$",
+    "slug": "etude-exponentielle",
+    "visible": true,
+    "chapter_id": 100,
+    "premium": false
+  },
+  {
+    "id": 255,
+    "name": "D\u00e9finition de la concavit\u00e9 et convexit\u00e9 avec les r\u00e9sultats importants",
+    "slug": "definition-concavite",
+    "visible": true,
+    "chapter_id": 101,
+    "premium": false
+  },
+  {
+    "id": 256,
+    "name": "D\u00e9finition intuitive de l'int\u00e9grale et des primitives",
+    "slug": "integrale-primitive",
+    "visible": true,
+    "chapter_id": 102,
+    "premium": false
+  },
+  {
+    "id": 257,
+    "name": "Calculer une primitive avec condition initiale",
+    "slug": "calcul-primitive",
+    "visible": true,
+    "chapter_id": 102,
+    "premium": false
+  },
+  {
+    "id": 258,
+    "name": "Calcul d'aires et int\u00e9grales",
+    "slug": "calcul-aires-et-integrales",
+    "visible": true,
+    "chapter_id": 102,
+    "premium": false
+  },
+  {
+    "id": 259,
+    "name": "Probabilit\u00e9s conditionnelles et arbres",
+    "slug": "probabilite-conditionelle-arbre",
+    "visible": true,
+    "chapter_id": 103,
+    "premium": false
+  },
+  {
+    "id": 260,
+    "name": "Variable al\u00e9atoire continue et loi Uniforme $\\mathcal{U}[a,b]$",
+    "slug": "loi-uniforme",
+    "visible": true,
+    "chapter_id": 104,
+    "premium": false
+  },
+  {
+    "id": 261,
+    "name": "La loi Normale centr\u00e9e r\u00e9duite $\\mathcal{N}(0,1)$ et $\\mathcal{N}(\\mu,\\sigma^2)$",
+    "slug": "loi-normale-centree-reduite",
+    "visible": true,
+    "chapter_id": 104,
+    "premium": false
+  },
+  {
+    "id": 262,
+    "name": "Echantillon, simulation, intervalle de fluctuation et estimations ",
+    "slug": "echantillon-simulation-intervalle-fluctuation",
+    "visible": true,
+    "chapter_id": 105,
+    "premium": false
+  },
+  {
+    "id": 268,
+    "name": "Bac ES : Pondich\u00e9ry 2016",
+    "slug": "bac-es-pondichery-2016",
+    "visible": true,
+    "chapter_id": 107,
+    "premium": false
+  },
+  {
+    "id": 195,
+    "name": "Suites g\u00e9om\u00e9triques",
+    "slug": "suites-geometriques",
+    "visible": true,
+    "chapter_id": 79,
+    "premium": false
+  },
+  {
+    "id": 196,
+    "name": "Sens de variation et limites de suites g\u00e9om\u00e9triques",
+    "slug": "sens-de-variation-limites-suite-geometrique",
+    "visible": true,
+    "chapter_id": 79,
+    "premium": false
+  },
+  {
+    "id": 197,
+    "name": "Suites arithm\u00e9tico-g\u00e9om\u00e9triques",
+    "slug": "suite-arithmetico-geometrique",
+    "visible": true,
+    "chapter_id": 79,
+    "premium": false
+  },
+  {
+    "id": 275,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 79,
+    "premium": false
+  },
+  {
+    "id": 198,
+    "name": "La continuit\u00e9 d'une fonction $f$ en un point $a$ ",
+    "slug": "continuite-fonction-en-un-point",
+    "visible": true,
+    "chapter_id": 80,
+    "premium": false
+  },
+  {
+    "id": 274,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 80,
+    "premium": false
+  },
+  {
+    "id": 199,
+    "name": "Les propri\u00e9t\u00e9s de la fonction exponentielle",
+    "slug": "proprietes-exponentielle",
+    "visible": true,
+    "chapter_id": 81,
+    "premium": false
+  },
+  {
+    "id": 200,
+    "name": "D\u00e9riv\u00e9e de $e^u$ et \u00e9tude de la fonction exponentielle ",
+    "slug": "derivee-etude-exponentielle",
+    "visible": true,
+    "chapter_id": 81,
+    "premium": false
+  },
+  {
+    "id": 272,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 81,
+    "premium": false
+  },
+  {
+    "id": 201,
+    "name": "Les propri\u00e9t\u00e9s de la fonction logarithme",
+    "slug": "propriete-logarithme",
+    "visible": true,
+    "chapter_id": 82,
+    "premium": false
+  },
+  {
+    "id": 202,
+    "name": "Etude de la fonction exponentielle et r\u00e9solution d'\u00e9quation $x^k=a$",
+    "slug": "etude-exponentielle",
+    "visible": true,
+    "chapter_id": 82,
+    "premium": false
+  },
+  {
+    "id": 273,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 82,
+    "premium": false
+  },
+  {
+    "id": 203,
+    "name": "D\u00e9finition de la concavit\u00e9 et convexit\u00e9 avec les r\u00e9sultats importants",
+    "slug": "definition-concavite",
+    "visible": true,
+    "chapter_id": 83,
+    "premium": false
+  },
+  {
+    "id": 204,
+    "name": "Calculer une primitive avec condition initiale",
+    "slug": "calcul-primitive",
+    "visible": true,
+    "chapter_id": 84,
+    "premium": false
+  },
+  {
+    "id": 206,
+    "name": "D\u00e9finition intuitive de l'int\u00e9grale et des primitives",
+    "slug": "integrale-primitive",
+    "visible": true,
+    "chapter_id": 84,
+    "premium": false
+  },
+  {
+    "id": 207,
+    "name": "Calcul d'aires et int\u00e9grales",
+    "slug": "calcul-aires-et-integrales",
+    "visible": true,
+    "chapter_id": 84,
+    "premium": false
+  },
+  {
+    "id": 545,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 84,
+    "premium": false
+  },
+  {
+    "id": 209,
+    "name": "Probabilit\u00e9s conditionnelles et arbres",
+    "slug": "probabilite-conditionelle-arbre",
+    "visible": true,
+    "chapter_id": 85,
+    "premium": false
+  },
+  {
+    "id": 210,
+    "name": "Variable al\u00e9atoire continue et loi Uniforme $\\mathcal{U}[a,b]$",
+    "slug": "loi-uniforme",
+    "visible": true,
+    "chapter_id": 86,
+    "premium": false
+  },
+  {
+    "id": 211,
+    "name": "La loi Normale centr\u00e9e r\u00e9duite $\\mathcal{N}(0,1)$ et $\\mathcal{N}(\\mu,\\sigma^2)$",
+    "slug": "loi-normale-centree-reduite",
+    "visible": true,
+    "chapter_id": 86,
+    "premium": false
+  },
+  {
+    "id": 566,
+    "name": "Loi Binomiale et Sch\u00e9ma de Bernoulli",
+    "slug": "loi-binomiale-schema-bernoulli",
+    "visible": true,
+    "chapter_id": 86,
+    "premium": false
+  },
+  {
+    "id": 212,
+    "name": "Echantillon, simulation, intervalle de fluctuation et estimations ",
+    "slug": "echantillon-simulation-intervalle-fluctuation",
+    "visible": true,
+    "chapter_id": 87,
+    "premium": false
+  },
+  {
+    "id": 558,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 247,
+    "premium": false
+  },
+  {
+    "id": 559,
+    "name": "D\u00e9finition et Op\u00e9rations sur les Matrices",
+    "slug": "definition-operations-matrices",
+    "visible": true,
+    "chapter_id": 247,
+    "premium": false
+  },
+  {
+    "id": 560,
+    "name": "Application des Matrices : Syt\u00e8mes Lin\u00e9aires et Suites",
+    "slug": "matrices-systeme-lineaire-suites",
+    "visible": true,
+    "chapter_id": 247,
+    "premium": false
+  },
+  {
+    "id": 266,
+    "name": "Bac S : Pondich\u00e9ry 2016",
+    "slug": "bac-s-pondichery-2016",
+    "visible": true,
+    "chapter_id": 106,
+    "premium": false
+  },
+  {
+    "id": 267,
+    "name": "Bac S : M\u00e9tropole 2015",
+    "slug": "bac-s-metropole-2015",
+    "visible": true,
+    "chapter_id": 106,
+    "premium": false
+  },
+  {
+    "id": 164,
+    "name": "Limite finie et infinie lorsque $x$ tend vers l'infini ",
+    "slug": "limite-finie-et-infinie",
+    "visible": true,
+    "chapter_id": 61,
+    "premium": false
+  },
+  {
+    "id": 165,
+    "name": "Limite infinie lorsque $x$ tend vers un r\u00e9el $a$",
+    "slug": "limite-finie",
+    "visible": true,
+    "chapter_id": 61,
+    "premium": false
+  },
+  {
+    "id": 166,
+    "name": "Th\u00e9or\u00e8mes importants sur les limites",
+    "slug": "theoremes-importants-limites",
+    "visible": true,
+    "chapter_id": 61,
+    "premium": false
+  },
+  {
+    "id": 278,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 61,
+    "premium": false
+  },
+  {
+    "id": 171,
+    "name": "La continuit\u00e9 d'une fonction $f$ en un point $a$ ",
+    "slug": "continuite-fonction-en-un-point",
+    "visible": true,
+    "chapter_id": 62,
+    "premium": false
+  },
+  {
+    "id": 184,
+    "name": "D\u00e9rivation de deux fonctions compos\u00e9es $(f\\circ g)'$",
+    "slug": "deriver-fonctions-composees",
+    "visible": true,
+    "chapter_id": 62,
+    "premium": false
+  },
+  {
+    "id": 271,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 62,
+    "premium": false
+  },
+  {
+    "id": 178,
+    "name": "Parit\u00e9, p\u00e9riodicit\u00e9 et d\u00e9riv\u00e9e des fonctions $\\cos$ et $\\sin$",
+    "slug": "parite-periodicite-derivee-cosinus-et-sinus",
+    "visible": true,
+    "chapter_id": 64,
+    "premium": false
+  },
+  {
+    "id": 280,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 64,
+    "premium": false
+  },
+  {
+    "id": 158,
+    "name": "Propri\u00e9t\u00e9s et (in)\u00e9quations avec la fonction exponentielle",
+    "slug": "proprietes-et-equations-exponentielle",
+    "visible": true,
+    "chapter_id": 65,
+    "premium": false
+  },
+  {
+    "id": 159,
+    "name": "Etude de fonction avec l'exponentielle",
+    "slug": "etude-de-fonction-exponentielle",
+    "visible": true,
+    "chapter_id": 65,
+    "premium": false
+  },
+  {
+    "id": 288,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 65,
+    "premium": false
+  },
+  {
+    "id": 169,
+    "name": "G\u00e9n\u00e9ralit\u00e9s sur les suites",
+    "slug": "generaites-sur-les-suites",
+    "visible": true,
+    "chapter_id": 60,
+    "premium": false
+  },
+  {
+    "id": 170,
+    "name": "Limites et suites",
+    "slug": "limites-et-suites",
+    "visible": true,
+    "chapter_id": 60,
+    "premium": false
+  },
+  {
+    "id": 192,
+    "name": "Raisonner par r\u00e9currence",
+    "slug": "raisonnement-par-recurrence",
+    "visible": true,
+    "chapter_id": 60,
+    "premium": false
+  },
+  {
+    "id": 263,
+    "name": "Suites arithm\u00e9tico-g\u00e9om\u00e9triques",
+    "slug": "suite-arithmetico-geometrique",
+    "visible": true,
+    "chapter_id": 60,
+    "premium": false
+  },
+  {
+    "id": 276,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 60,
+    "premium": false
+  },
+  {
+    "id": 160,
+    "name": "D\u00e9finition et propri\u00e9t\u00e9s de la fonction logarithme",
+    "slug": "propriete-fonction-logarithme",
+    "visible": true,
+    "chapter_id": 66,
+    "premium": false
+  },
+  {
+    "id": 161,
+    "name": "Etude de fonction avec le logarithme",
+    "slug": "etude-de-fonction-avec-logarithme",
+    "visible": true,
+    "chapter_id": 66,
+    "premium": false
+  },
+  {
+    "id": 163,
+    "name": "Equations et in\u00e9quations avec le logarithme",
+    "slug": "equations-et-in\u00e9quations-logarithme",
+    "visible": true,
+    "chapter_id": 66,
+    "premium": false
+  },
+  {
+    "id": 270,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 66,
+    "premium": false
+  },
+  {
+    "id": 156,
+    "name": "Les primitives usuelles",
+    "slug": "primitives-usuelles",
+    "visible": true,
+    "chapter_id": 67,
+    "premium": false
+  },
+  {
+    "id": 157,
+    "name": "Calcul d'aires et int\u00e9grales",
+    "slug": "calcul-aires-et-integrales",
+    "visible": true,
+    "chapter_id": 67,
+    "premium": false
+  },
+  {
+    "id": 185,
+    "name": "S'entrainer \u00e0 calculer des primitives en d\u00e9finissant leur constante",
+    "slug": "calculs-primitives-avec-constantes",
+    "visible": true,
+    "chapter_id": 67,
+    "premium": false
+  },
+  {
+    "id": 277,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 67,
+    "premium": false
+  },
+  {
+    "id": 151,
+    "name": "D\u00e9finitions et repr\u00e9sentation graphique",
+    "slug": "definitions-et-representations-graphiques",
+    "visible": true,
+    "chapter_id": 68,
+    "premium": false
+  },
+  {
+    "id": 152,
+    "name": "Op\u00e9rations sur les nombres complexes",
+    "slug": "operations-sur-les-complexes",
+    "visible": true,
+    "chapter_id": 68,
+    "premium": false
+  },
+  {
+    "id": 153,
+    "name": "Module et argument d'un nombre complexe",
+    "slug": "module-et-argument",
+    "visible": true,
+    "chapter_id": 68,
+    "premium": false
+  },
+  {
+    "id": 155,
+    "name": "Second degr\u00e9, calculs de longueurs, d'angles et de domaines",
+    "slug": "second-degre-longueurs-et-angles",
+    "visible": true,
+    "chapter_id": 68,
+    "premium": false
+  },
+  {
+    "id": 282,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 68,
+    "premium": false
+  },
+  {
+    "id": 186,
+    "name": "Droites et plans",
+    "slug": "droites-et-plans",
+    "visible": true,
+    "chapter_id": 69,
+    "premium": false
+  },
+  {
+    "id": 188,
+    "name": "Rep\u00e8re et repr\u00e9sentation param\u00e9trique d'une droite",
+    "slug": "repere-et-representation-parametrique-droite",
+    "visible": true,
+    "chapter_id": 69,
+    "premium": false
+  },
+  {
+    "id": 313,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 69,
+    "premium": false
+  },
+  {
+    "id": 189,
+    "name": "Produit scalaire et \u00e9quation cart\u00e9sienne d'un plan",
+    "slug": "produit-scalaire-equation-cartesienne-plan",
+    "visible": true,
+    "chapter_id": 75,
+    "premium": false
+  },
+  {
+    "id": 179,
+    "name": "Probabilit\u00e9s conditionnelles, \u00e9v\u00e9nements ind\u00e9pendants et arbres",
+    "slug": "probabilite-conditionnelle-evenements-independents",
+    "visible": true,
+    "chapter_id": 72,
+    "premium": false
+  },
+  {
+    "id": 180,
+    "name": "Variable al\u00e9atoire continue et loi Uniforme $\\mathcal{U}[a,b]$",
+    "slug": "loi-uniforme",
+    "visible": true,
+    "chapter_id": 73,
+    "premium": false
+  },
+  {
+    "id": 181,
+    "name": "La loi Exponentielle $\\mathcal{E}{(\\lambda)}$",
+    "slug": "loi-exponentielle",
+    "visible": true,
+    "chapter_id": 73,
+    "premium": false
+  },
+  {
+    "id": 182,
+    "name": "La loi Normale centr\u00e9e r\u00e9duite $\\mathcal{N}(0,1)$ et $\\mathcal{N}(\\mu,\\sigma^2)$",
+    "slug": "loi-normale-centree-reduite",
+    "visible": true,
+    "chapter_id": 73,
+    "premium": false
+  },
+  {
+    "id": 286,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 73,
+    "premium": false
+  },
+  {
+    "id": 567,
+    "name": "Loi Binomiale et Sch\u00e9ma de Bernoulli",
+    "slug": "loi-binomiale-schema-bernoulli",
+    "visible": true,
+    "chapter_id": 73,
+    "premium": false
+  },
+  {
+    "id": 193,
+    "name": "Echantillon, simulation, intervalle de fluctuation et estimations ",
+    "slug": "echantillon-simulation-intervalle-fluctuation",
+    "visible": true,
+    "chapter_id": 74,
+    "premium": false
+  },
+  {
+    "id": 287,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 74,
+    "premium": false
+  },
+  {
+    "id": 555,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 192,
+    "premium": false
+  },
+  {
+    "id": 556,
+    "name": "D\u00e9finition et Op\u00e9rations sur les Matrices",
+    "slug": "definition-operations-matrices",
+    "visible": true,
+    "chapter_id": 192,
+    "premium": false
+  },
+  {
+    "id": 557,
+    "name": "Application des Matrices : Syt\u00e8mes Lin\u00e9aires et Suites",
+    "slug": "matrices-systeme-lineaire-suites",
+    "visible": true,
+    "chapter_id": 192,
+    "premium": false
+  },
+  {
+    "id": 561,
+    "name": "Multiples, Diviseurs et Congruence",
+    "slug": "multiplies-diviseurs-congruence",
+    "visible": true,
+    "chapter_id": 248,
+    "premium": false
+  },
+  {
+    "id": 562,
+    "name": "La Congruence",
+    "slug": "congruence",
+    "visible": true,
+    "chapter_id": 248,
+    "premium": false
+  },
+  {
+    "id": 563,
+    "name": "\u00c9quation Diophantienne : Th\u00e9or\u00e8me de Bezout et Gauss",
+    "slug": "bezout-gauss",
+    "visible": true,
+    "chapter_id": 248,
+    "premium": false
+  },
+  {
+    "id": 564,
+    "name": "Nombres Premiers, PGCD et PPCM",
+    "slug": "nombres-premiers-pgcd-ppcm",
+    "visible": true,
+    "chapter_id": 248,
+    "premium": false
+  },
+  {
+    "id": 314,
+    "name": "Additions et Soustractions",
+    "slug": "additions-et-soustractions",
+    "visible": true,
+    "chapter_id": 126,
+    "premium": false
+  },
+  {
+    "id": 315,
+    "name": "Multiplications et Divisions",
+    "slug": "multiplications-et-divisions",
+    "visible": true,
+    "chapter_id": 126,
+    "premium": false
+  },
+  {
+    "id": 316,
+    "name": "Priorit\u00e9s de Calcul et Ordre de Grandeur",
+    "slug": "calculs-nombres-relatifs",
+    "visible": true,
+    "chapter_id": 126,
+    "premium": false
+  },
+  {
+    "id": 494,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 126,
+    "premium": false
+  },
+  {
+    "id": 318,
+    "name": "*Nombres D\u00e9cimaux",
+    "slug": "nombres-decimaux",
+    "visible": true,
+    "chapter_id": 127,
+    "premium": false
+  },
+  {
+    "id": 320,
+    "name": "Multiplication de Fractions",
+    "slug": "multiplications",
+    "visible": true,
+    "chapter_id": 127,
+    "premium": false
+  },
+  {
+    "id": 321,
+    "name": "Simplifier une Fraction",
+    "slug": "simplifier-une-fraction",
+    "visible": true,
+    "chapter_id": 127,
+    "premium": false
+  },
+  {
+    "id": 322,
+    "name": "Egalit\u00e9 de Fractions et Produit en Croix",
+    "slug": "egalite-fractions-produit-croix",
+    "visible": true,
+    "chapter_id": 127,
+    "premium": false
+  },
+  {
+    "id": 323,
+    "name": "Addition et Soustraction de Fractions",
+    "slug": "addition-et-soustraction-fraction",
+    "visible": true,
+    "chapter_id": 127,
+    "premium": false
+  },
+  {
+    "id": 324,
+    "name": "Division de Fractions",
+    "slug": "division-fraction",
+    "visible": true,
+    "chapter_id": 127,
+    "premium": false
+  },
+  {
+    "id": 493,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 127,
+    "premium": false
+  },
+  {
+    "id": 326,
+    "name": "Plus Grand Commun Diviseur (PGCD) et Division Euclidienne",
+    "slug": "plus-grand-commun-diviseur-pgcd",
+    "visible": true,
+    "chapter_id": 128,
+    "premium": false
+  },
+  {
+    "id": 541,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 128,
+    "premium": false
+  },
+  {
+    "id": 327,
+    "name": "A Quoi Servent les Puissances",
+    "slug": "utilite-puissances",
+    "visible": true,
+    "chapter_id": 129,
+    "premium": false
+  },
+  {
+    "id": 328,
+    "name": "Puissances de 10",
+    "slug": "puissance-de-10",
+    "visible": true,
+    "chapter_id": 129,
+    "premium": false
+  },
+  {
+    "id": 329,
+    "name": "Formule des Puissances - Cas des Puissances de 10",
+    "slug": "regle-des-puissances-de-10",
+    "visible": true,
+    "chapter_id": 129,
+    "premium": false
+  },
+  {
+    "id": 330,
+    "name": "Ecriture Scientifique et Comparaison de Nombres",
+    "slug": "ecriture-scientifique-comparaison",
+    "visible": true,
+    "chapter_id": 129,
+    "premium": false
+  },
+  {
+    "id": 331,
+    "name": "Formule des Puissances G\u00e9n\u00e9ralis\u00e9e",
+    "slug": "formules-des-puissances",
+    "visible": true,
+    "chapter_id": 129,
+    "premium": false
+  },
+  {
+    "id": 543,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 129,
+    "premium": false
+  },
+  {
+    "id": 332,
+    "name": "Utilit\u00e9 du Calcul Litt\u00e9ral et R\u00e9duction d'une Expression",
+    "slug": "utilite-calcul-litteral",
+    "visible": true,
+    "chapter_id": 130,
+    "premium": false
+  },
+  {
+    "id": 333,
+    "name": "D\u00e9velopper une Expression",
+    "slug": "developpement",
+    "visible": true,
+    "chapter_id": 130,
+    "premium": false
+  },
+  {
+    "id": 334,
+    "name": "Factoriser avec le Facteur Commun",
+    "slug": "utilite-factorisation",
+    "visible": true,
+    "chapter_id": 130,
+    "premium": false
+  },
+  {
+    "id": 335,
+    "name": "Identit\u00e9s Remarquables",
+    "slug": "identites-remarquables",
+    "visible": true,
+    "chapter_id": 130,
+    "premium": false
+  },
+  {
+    "id": 336,
+    "name": "Factoriser avec les Identit\u00e9s Remarquables",
+    "slug": "factorisation",
+    "visible": true,
+    "chapter_id": 130,
+    "premium": false
+  },
+  {
+    "id": 496,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 130,
+    "premium": false
+  },
+  {
+    "id": 342,
+    "name": "Quatri\u00e8me Proportionnalit\u00e9 et Repr\u00e9sentation Graphique",
+    "slug": "quatrieme-proportionnelle",
+    "visible": true,
+    "chapter_id": 133,
+    "premium": false
+  },
+  {
+    "id": 343,
+    "name": "Application de la Proportionnalit\u00e9",
+    "slug": "proportionnalite-application",
+    "visible": true,
+    "chapter_id": 133,
+    "premium": false
+  },
+  {
+    "id": 497,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 133,
+    "premium": false
+  },
+  {
+    "id": 345,
+    "name": "Moyenne et Moyenne Pond\u00e9r\u00e9e d'une S\u00e9rie Statistique ",
+    "slug": "moyenne-et-moyenne-ponderee",
+    "visible": true,
+    "chapter_id": 147,
+    "premium": false
+  },
+  {
+    "id": 346,
+    "name": "Caracte\u0301ristiques d'une Se\u0301rie Statistique",
+    "slug": "caracteristiques-serie-statistique",
+    "visible": true,
+    "chapter_id": 147,
+    "premium": false
+  },
+  {
+    "id": 347,
+    "name": "Probabilit\u00e9s",
+    "slug": "probabilites",
+    "visible": true,
+    "chapter_id": 147,
+    "premium": false
+  },
+  {
+    "id": 498,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 147,
+    "premium": false
+  },
+  {
+    "id": 377,
+    "name": "Additions et Soustractions",
+    "slug": "additions-et-soustractions",
+    "visible": true,
+    "chapter_id": 152,
+    "premium": false
+  },
+  {
+    "id": 378,
+    "name": "Multiplications et Divisions",
+    "slug": "multiplications-et-divisions",
+    "visible": true,
+    "chapter_id": 152,
+    "premium": false
+  },
+  {
+    "id": 379,
+    "name": "Priorit\u00e9s de Calcul et Ordre de Grandeur",
+    "slug": "calculs-nombres-relatifs",
+    "visible": true,
+    "chapter_id": 152,
+    "premium": false
+  },
+  {
+    "id": 501,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 152,
+    "premium": false
+  },
+  {
+    "id": 380,
+    "name": "*Nombres D\u00e9cimaux",
+    "slug": "nombres-decimaux",
+    "visible": true,
+    "chapter_id": 153,
+    "premium": false
+  },
+  {
+    "id": 381,
+    "name": "Multiplication de Fractions",
+    "slug": "multiplications",
+    "visible": true,
+    "chapter_id": 153,
+    "premium": false
+  },
+  {
+    "id": 382,
+    "name": "Simplifier une Fraction",
+    "slug": "simplifier-une-fraction",
+    "visible": true,
+    "chapter_id": 153,
+    "premium": false
+  },
+  {
+    "id": 383,
+    "name": "Egalit\u00e9 de Fractions et Produit en Croix",
+    "slug": "egalite-fractions-produit-croix",
+    "visible": true,
+    "chapter_id": 153,
+    "premium": false
+  },
+  {
+    "id": 384,
+    "name": "Addition et Soustraction de Fractions",
+    "slug": "addition-et-soustraction-fraction",
+    "visible": true,
+    "chapter_id": 153,
+    "premium": false
+  },
+  {
+    "id": 385,
+    "name": "Division de Fractions",
+    "slug": "division-fraction",
+    "visible": true,
+    "chapter_id": 153,
+    "premium": false
+  },
+  {
+    "id": 503,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 153,
+    "premium": false
+  },
+  {
+    "id": 386,
+    "name": "Plus Grand Commun Diviseur (PGCD) et Division Euclidienne",
+    "slug": "plus-grand-commun-diviseur-pgcd",
+    "visible": true,
+    "chapter_id": 154,
+    "premium": false
+  },
+  {
+    "id": 542,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 154,
+    "premium": false
+  },
+  {
+    "id": 387,
+    "name": "A Quoi Servent les Puissances",
+    "slug": "utilite-puissances",
+    "visible": true,
+    "chapter_id": 155,
+    "premium": false
+  },
+  {
+    "id": 388,
+    "name": "Puissances de 10",
+    "slug": "puissance-de-10",
+    "visible": true,
+    "chapter_id": 155,
+    "premium": false
+  },
+  {
+    "id": 389,
+    "name": "Formule des Puissances - Cas des Puissances de 10",
+    "slug": "regle-des-puissances-de-10",
+    "visible": true,
+    "chapter_id": 155,
+    "premium": false
+  },
+  {
+    "id": 390,
+    "name": "Ecriture Scientifique et Comparaison de Nombres",
+    "slug": "ecriture-scientifique-comparaison",
+    "visible": true,
+    "chapter_id": 155,
+    "premium": false
+  },
+  {
+    "id": 391,
+    "name": "Formule des Puissances G\u00e9n\u00e9ralis\u00e9e",
+    "slug": "formules-des-puissances",
+    "visible": true,
+    "chapter_id": 155,
+    "premium": false
+  },
+  {
+    "id": 506,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 155,
+    "premium": false
+  },
+  {
+    "id": 392,
+    "name": "Utilit\u00e9 du Calcul Litt\u00e9ral et R\u00e9duction d'une Expression",
+    "slug": "utilite-calcul-litteral",
+    "visible": true,
+    "chapter_id": 156,
+    "premium": false
+  },
+  {
+    "id": 393,
+    "name": "D\u00e9velopper une Expression",
+    "slug": "developpement",
+    "visible": true,
+    "chapter_id": 156,
+    "premium": false
+  },
+  {
+    "id": 394,
+    "name": "Factoriser avec le Facteur Commun",
+    "slug": "utilite-factorisation",
+    "visible": true,
+    "chapter_id": 156,
+    "premium": false
+  },
+  {
+    "id": 395,
+    "name": "Identit\u00e9s Remarquables",
+    "slug": "identites-remarquables",
+    "visible": true,
+    "chapter_id": 156,
+    "premium": false
+  },
+  {
+    "id": 396,
+    "name": "Factoriser avec les Identit\u00e9s Remarquables",
+    "slug": "factorisation",
+    "visible": true,
+    "chapter_id": 156,
+    "premium": false
+  },
+  {
+    "id": 511,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 156,
+    "premium": false
+  },
+  {
+    "id": 397,
+    "name": "Approche Concr\u00e8te des \u00c9quations du Premier Degr\u00e9",
+    "slug": "equation-premier-degre-concrete",
+    "visible": true,
+    "chapter_id": 157,
+    "premium": false
+  },
+  {
+    "id": 398,
+    "name": "\u00c9quations et Mises en Situation",
+    "slug": "equations-mise-en-situation",
+    "visible": true,
+    "chapter_id": 157,
+    "premium": false
+  },
+  {
+    "id": 399,
+    "name": "Equation Produit",
+    "slug": "equation-produit",
+    "visible": true,
+    "chapter_id": 157,
+    "premium": false
+  },
+  {
+    "id": 514,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 157,
+    "premium": false
+  },
+  {
+    "id": 400,
+    "name": "Introduction aux In\u00e9galit\u00e9s et In\u00e9quations",
+    "slug": "introduction-aux-equations",
+    "visible": true,
+    "chapter_id": 158,
+    "premium": false
+  },
+  {
+    "id": 401,
+    "name": "Re\u0301solution d'In\u00e9galit\u00e9s",
+    "slug": "resolution-inequations",
+    "visible": true,
+    "chapter_id": 158,
+    "premium": false
+  },
+  {
+    "id": 516,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 158,
+    "premium": false
+  },
+  {
+    "id": 550,
+    "name": "Re\u0301solution d'In\u00e9quations",
+    "slug": "resolution-inequations-intervalle",
+    "visible": true,
+    "chapter_id": 158,
+    "premium": false
+  },
+  {
+    "id": 402,
+    "name": "Quatri\u00e8me Proportionnalit\u00e9 et Repr\u00e9sentation Graphique",
+    "slug": "quatrieme-proportionnelle",
+    "visible": true,
+    "chapter_id": 159,
+    "premium": false
+  },
+  {
+    "id": 403,
+    "name": "Application de la Proportionnalit\u00e9",
+    "slug": "proportionnalite-application",
+    "visible": true,
+    "chapter_id": 159,
+    "premium": false
+  },
+  {
+    "id": 518,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 159,
+    "premium": false
+  },
+  {
+    "id": 421,
+    "name": "Moyenne et Moyenne Pond\u00e9r\u00e9e d'une S\u00e9rie Statistique ",
+    "slug": "moyenne-et-moyenne-ponderee",
+    "visible": true,
+    "chapter_id": 167,
+    "premium": false
+  },
+  {
+    "id": 422,
+    "name": "Caracte\u0301ristiques d'une Se\u0301rie Statistique",
+    "slug": "caracteristiques-serie-statistique",
+    "visible": true,
+    "chapter_id": 167,
+    "premium": false
+  },
+  {
+    "id": 423,
+    "name": "Probabilit\u00e9s",
+    "slug": "probabilites",
+    "visible": true,
+    "chapter_id": 167,
+    "premium": false
+  },
+  {
+    "id": 500,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 167,
+    "premium": false
+  },
+  {
+    "id": 404,
+    "name": "Approche Concr\u00e8te des Fonctions",
+    "slug": "generalites-fonctions-representation-graphique",
+    "visible": true,
+    "chapter_id": 160,
+    "premium": false
+  },
+  {
+    "id": 405,
+    "name": "Fonction et Repr\u00e9sentation Graphique",
+    "slug": "representation-graphique",
+    "visible": true,
+    "chapter_id": 160,
+    "premium": false
+  },
+  {
+    "id": 524,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 160,
+    "premium": false
+  },
+  {
+    "id": 410,
+    "name": "Les Fonctions Lin\u00e9aires : Approche Graphique",
+    "slug": "fonctions-lineaires-approche-graphique",
+    "visible": true,
+    "chapter_id": 162,
+    "premium": false
+  },
+  {
+    "id": 411,
+    "name": "D\u00e9terminer une Fonction Affine avec Deux Points",
+    "slug": "fonction-lineaire-calcul-avec-deux-points",
+    "visible": true,
+    "chapter_id": 162,
+    "premium": false
+  },
+  {
+    "id": 527,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 162,
+    "premium": false
+  },
+  {
+    "id": 406,
+    "name": "La Sph\u00e8re et la Boule : Section, Aire et Volume",
+    "slug": "sphere-et-boule-sections-aires-volumes",
+    "visible": true,
+    "chapter_id": 161,
+    "premium": false
+  },
+  {
+    "id": 407,
+    "name": "Pyramide et C\u00f4ne de R\u00e9volution",
+    "slug": "pyramides-et-cone-de-revolution",
+    "visible": true,
+    "chapter_id": 161,
+    "premium": false
+  },
+  {
+    "id": 408,
+    "name": "Solides, Sections et Coefficient de R\u00e9duction",
+    "slug": "solides-et-sections-coefficients-reduction",
+    "visible": true,
+    "chapter_id": 161,
+    "premium": false
+  },
+  {
+    "id": 528,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 161,
+    "premium": false
+  },
+  {
+    "id": 427,
+    "name": "Triangle Rectangle, Cercle Circonscrit et M\u00e9diane",
+    "slug": "triangle-rectangle-cercle-circonscrit",
+    "visible": true,
+    "chapter_id": 169,
+    "premium": false
+  },
+  {
+    "id": 428,
+    "name": "Le Th\u00e9or\u00e8me de Pythagore",
+    "slug": "theoreme-de-pythagore",
+    "visible": true,
+    "chapter_id": 169,
+    "premium": false
+  },
+  {
+    "id": 535,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 169,
+    "premium": false
+  },
+  {
+    "id": 429,
+    "name": "Proportionnalite\u0301 des Longueurs et Th\u00e9or\u00e8me de Thal\u00e8s",
+    "slug": "proportionnalite-longueurs-thales",
+    "visible": true,
+    "chapter_id": 170,
+    "premium": false
+  },
+  {
+    "id": 430,
+    "name": "L'\u00e9nonc\u00e9 du th\u00e9or\u00e8me de Thal\u00e8s",
+    "slug": "enonce-theoreme-de-thales",
+    "visible": true,
+    "chapter_id": 170,
+    "premium": false
+  },
+  {
+    "id": 432,
+    "name": "Les trois variantes du th\u00e9or\u00e8me des milieux",
+    "slug": "theoreme-des-milieux",
+    "visible": true,
+    "chapter_id": 170,
+    "premium": false
+  },
+  {
+    "id": 536,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 170,
+    "premium": false
+  },
+  {
+    "id": 424,
+    "name": "Calcul d'Angle et de Longueur avec le Cosinus",
+    "slug": "calculs-angles-longueurs-cosinus",
+    "visible": true,
+    "chapter_id": 168,
+    "premium": false
+  },
+  {
+    "id": 425,
+    "name": "Calcul de Longueur avec le Cosinus, Sinus et Tangente",
+    "slug": "calculs-longueurs-cosinus-sinus-tangente",
+    "visible": true,
+    "chapter_id": 168,
+    "premium": false
+  },
+  {
+    "id": 426,
+    "name": "Calcul d'Angle avec le Cosinus, Sinus et Tangente",
+    "slug": "calculs-angles-cosinus-sinus-tangente",
+    "visible": true,
+    "chapter_id": 168,
+    "premium": false
+  },
+  {
+    "id": 537,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 168,
+    "premium": false
+  },
+  {
+    "id": 433,
+    "name": "Additions et Soustractions",
+    "slug": "additions-et-soustractions",
+    "visible": true,
+    "chapter_id": 171,
+    "premium": false
+  },
+  {
+    "id": 434,
+    "name": "Multiplications et Divisions",
+    "slug": "multiplications-et-divisions",
+    "visible": true,
+    "chapter_id": 171,
+    "premium": false
+  },
+  {
+    "id": 435,
+    "name": "Priorit\u00e9s de Calcul et Ordre de Grandeur",
+    "slug": "calculs-nombres-relatifs",
+    "visible": true,
+    "chapter_id": 171,
+    "premium": false
+  },
+  {
+    "id": 502,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 171,
+    "premium": false
+  },
+  {
+    "id": 436,
+    "name": "*Nombres D\u00e9cimaux",
+    "slug": "nombres-decimaux",
+    "visible": true,
+    "chapter_id": 172,
+    "premium": false
+  },
+  {
+    "id": 437,
+    "name": "Multiplication de Fractions",
+    "slug": "multiplications",
+    "visible": true,
+    "chapter_id": 172,
+    "premium": false
+  },
+  {
+    "id": 438,
+    "name": "Simplifier une Fraction",
+    "slug": "simplifier-une-fraction",
+    "visible": true,
+    "chapter_id": 172,
+    "premium": false
+  },
+  {
+    "id": 439,
+    "name": "Egalit\u00e9 de Fractions et Produit en Croix",
+    "slug": "egalite-fractions-produit-croix",
+    "visible": true,
+    "chapter_id": 172,
+    "premium": false
+  },
+  {
+    "id": 440,
+    "name": "Addition et Soustraction de Fractions",
+    "slug": "addition-et-soustraction-fraction",
+    "visible": true,
+    "chapter_id": 172,
+    "premium": false
+  },
+  {
+    "id": 441,
+    "name": "Division de Fractions",
+    "slug": "division-fraction",
+    "visible": true,
+    "chapter_id": 172,
+    "premium": false
+  },
+  {
+    "id": 504,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 172,
+    "premium": false
+  },
+  {
+    "id": 442,
+    "name": "Plus Grand Commun Diviseur (PGCD) et Division Euclidienne",
+    "slug": "plus-grand-commun-diviseur-pgcd",
+    "visible": true,
+    "chapter_id": 173,
+    "premium": false
+  },
+  {
+    "id": 505,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 173,
+    "premium": false
+  },
+  {
+    "id": 443,
+    "name": "A Quoi Servent les Puissances",
+    "slug": "utilite-puissances",
+    "visible": true,
+    "chapter_id": 174,
+    "premium": false
+  },
+  {
+    "id": 444,
+    "name": "Puissances de 10",
+    "slug": "puissance-de-10",
+    "visible": true,
+    "chapter_id": 174,
+    "premium": false
+  },
+  {
+    "id": 445,
+    "name": "Formule des Puissances - Cas des Puissances de 10",
+    "slug": "regle-des-puissances-de-10",
+    "visible": true,
+    "chapter_id": 174,
+    "premium": false
+  },
+  {
+    "id": 446,
+    "name": "Ecriture Scientifique et Comparaison de Nombres",
+    "slug": "ecriture-scientifique-comparaison",
+    "visible": true,
+    "chapter_id": 174,
+    "premium": false
+  },
+  {
+    "id": 447,
+    "name": "Formule des Puissances G\u00e9n\u00e9ralis\u00e9e",
+    "slug": "formules-des-puissances",
+    "visible": true,
+    "chapter_id": 174,
+    "premium": false
+  },
+  {
+    "id": 544,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 174,
+    "premium": false
+  },
+  {
+    "id": 448,
+    "name": "Utilit\u00e9 du Calcul Litt\u00e9ral et R\u00e9duction d'une Expression",
+    "slug": "utilite-calcul-litteral",
+    "visible": true,
+    "chapter_id": 175,
+    "premium": false
+  },
+  {
+    "id": 449,
+    "name": "D\u00e9velopper une Expression",
+    "slug": "developpement",
+    "visible": true,
+    "chapter_id": 175,
+    "premium": false
+  },
+  {
+    "id": 450,
+    "name": "Factoriser avec le Facteur Commun",
+    "slug": "utilite-factorisation",
+    "visible": true,
+    "chapter_id": 175,
+    "premium": false
+  },
+  {
+    "id": 451,
+    "name": "Identit\u00e9s Remarquables",
+    "slug": "identites-remarquables",
+    "visible": true,
+    "chapter_id": 175,
+    "premium": false
+  },
+  {
+    "id": 452,
+    "name": "Factoriser avec les Identit\u00e9s Remarquables",
+    "slug": "factorisation",
+    "visible": true,
+    "chapter_id": 175,
+    "premium": false
+  },
+  {
+    "id": 508,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 175,
+    "premium": false
+  },
+  {
+    "id": 453,
+    "name": "Approche Concr\u00e8te des \u00c9quations du Premier Degr\u00e9",
+    "slug": "equation-premier-degre-concrete",
+    "visible": true,
+    "chapter_id": 176,
+    "premium": false
+  },
+  {
+    "id": 454,
+    "name": "\u00c9quations et Mises en Situation",
+    "slug": "equations-mise-en-situation",
+    "visible": true,
+    "chapter_id": 176,
+    "premium": false
+  },
+  {
+    "id": 455,
+    "name": "Equation Produit",
+    "slug": "equation-produit",
+    "visible": true,
+    "chapter_id": 176,
+    "premium": false
+  },
+  {
+    "id": 492,
+    "name": "R\u00e9solution d'un syst\u00e8me par combinaison ou substitution",
+    "slug": "resolution-systeme-combinaison-substitution",
+    "visible": true,
+    "chapter_id": 176,
+    "premium": false
+  },
+  {
+    "id": 509,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 176,
+    "premium": false
+  },
+  {
+    "id": 456,
+    "name": "Introduction aux In\u00e9galit\u00e9s et In\u00e9quations",
+    "slug": "introduction-aux-equations",
+    "visible": true,
+    "chapter_id": 177,
+    "premium": false
+  },
+  {
+    "id": 457,
+    "name": "Re\u0301solution d'In\u00e9galit\u00e9s",
+    "slug": "resolution-inequations",
+    "visible": true,
+    "chapter_id": 177,
+    "premium": false
+  },
+  {
+    "id": 510,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 177,
+    "premium": false
+  },
+  {
+    "id": 546,
+    "name": "Re\u0301solution d'In\u00e9quations",
+    "slug": "resolution-inequations-intervalle",
+    "visible": true,
+    "chapter_id": 177,
+    "premium": false
+  },
+  {
+    "id": 458,
+    "name": "Quatri\u00e8me Proportionnalit\u00e9 et Repr\u00e9sentation Graphique",
+    "slug": "quatrieme-proportionnelle",
+    "visible": true,
+    "chapter_id": 178,
+    "premium": false
+  },
+  {
+    "id": 459,
+    "name": "Application de la Proportionnalit\u00e9",
+    "slug": "proportionnalite-application",
+    "visible": true,
+    "chapter_id": 178,
+    "premium": false
+  },
+  {
+    "id": 512,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 178,
+    "premium": false
+  },
+  {
+    "id": 477,
+    "name": "Moyenne et Moyenne Pond\u00e9r\u00e9e d'une S\u00e9rie Statistique ",
+    "slug": "moyenne-et-moyenne-ponderee",
+    "visible": true,
+    "chapter_id": 186,
+    "premium": false
+  },
+  {
+    "id": 478,
+    "name": "Caracte\u0301ristiques d'une Se\u0301rie Statistique",
+    "slug": "caracteristiques-serie-statistique",
+    "visible": true,
+    "chapter_id": 186,
+    "premium": false
+  },
+  {
+    "id": 479,
+    "name": "Probabilit\u00e9s",
+    "slug": "probabilites",
+    "visible": true,
+    "chapter_id": 186,
+    "premium": false
+  },
+  {
+    "id": 499,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 186,
+    "premium": false
+  },
+  {
+    "id": 569,
+    "name": "Modalit\u00e9, fre\u0301quences d\u2019apparition et moyenne",
+    "slug": "modalite-frequence-apparition-moyenne",
+    "visible": true,
+    "chapter_id": 186,
+    "premium": false
+  },
+  {
+    "id": 460,
+    "name": "Approche Concr\u00e8te des Fonctions",
+    "slug": "generalites-fonctions-representation-graphique",
+    "visible": true,
+    "chapter_id": 179,
+    "premium": false
+  },
+  {
+    "id": 461,
+    "name": "Fonction et Repr\u00e9sentation Graphique",
+    "slug": "representation-graphique",
+    "visible": true,
+    "chapter_id": 179,
+    "premium": false
+  },
+  {
+    "id": 513,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 179,
+    "premium": false
+  },
+  {
+    "id": 466,
+    "name": "Les Fonctions Lin\u00e9aires : Approche Graphique",
+    "slug": "fonctions-lineaires-approche-graphique",
+    "visible": true,
+    "chapter_id": 181,
+    "premium": false
+  },
+  {
+    "id": 467,
+    "name": "D\u00e9terminer une Fonction Affine avec Deux Points",
+    "slug": "fonction-lineaire-calcul-avec-deux-points",
+    "visible": true,
+    "chapter_id": 181,
+    "premium": false
+  },
+  {
+    "id": 515,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 181,
+    "premium": false
+  },
+  {
+    "id": 462,
+    "name": "La Sph\u00e8re et la Boule : Section, Aire et Volume",
+    "slug": "sphere-et-boule-sections-aires-volumes",
+    "visible": true,
+    "chapter_id": 180,
+    "premium": false
+  },
+  {
+    "id": 463,
+    "name": "Pyramide et C\u00f4ne de R\u00e9volution",
+    "slug": "pyramides-et-cone-de-revolution",
+    "visible": true,
+    "chapter_id": 180,
+    "premium": false
+  },
+  {
+    "id": 464,
+    "name": "Solides, Sections et Coefficient de R\u00e9duction",
+    "slug": "solides-et-sections-coefficients-reduction",
+    "visible": true,
+    "chapter_id": 180,
+    "premium": false
+  },
+  {
+    "id": 517,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 180,
+    "premium": false
+  },
+  {
+    "id": 489,
+    "name": "Applications et r\u00e8gles de calcul de la racine carr\u00e9e",
+    "slug": "regle-de-calcul-racine-carre",
+    "visible": true,
+    "chapter_id": 190,
+    "premium": false
+  },
+  {
+    "id": 490,
+    "name": "Puissances de racines carre\u0301es ",
+    "slug": "puissances-de-racines-carrees",
+    "visible": true,
+    "chapter_id": 190,
+    "premium": false
+  },
+  {
+    "id": 491,
+    "name": "Re\u0301solution d'e\u0301quation du type $x^2 = a$",
+    "slug": "resolution-equation-second-degre-simple",
+    "visible": true,
+    "chapter_id": 190,
+    "premium": false
+  },
+  {
+    "id": 519,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 190,
+    "premium": false
+  },
+  {
+    "id": 483,
+    "name": "Triangle Rectangle, Cercle Circonscrit et M\u00e9diane",
+    "slug": "triangle-rectangle-cercle-circonscrit",
+    "visible": true,
+    "chapter_id": 188,
+    "premium": false
+  },
+  {
+    "id": 484,
+    "name": "Le Th\u00e9or\u00e8me de Pythagore",
+    "slug": "theoreme-de-pythagore",
+    "visible": true,
+    "chapter_id": 188,
+    "premium": false
+  },
+  {
+    "id": 522,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 188,
+    "premium": false
+  },
+  {
+    "id": 485,
+    "name": "Proportionnalite\u0301 des Longueurs et Th\u00e9or\u00e8me de Thal\u00e8s",
+    "slug": "proportionnalite-longueurs-thales",
+    "visible": true,
+    "chapter_id": 189,
+    "premium": false
+  },
+  {
+    "id": 486,
+    "name": "L'\u00e9nonc\u00e9 du th\u00e9or\u00e8me de Thal\u00e8s",
+    "slug": "enonce-theoreme-de-thales",
+    "visible": true,
+    "chapter_id": 189,
+    "premium": false
+  },
+  {
+    "id": 488,
+    "name": "Les trois variantes du th\u00e9or\u00e8me des milieux",
+    "slug": "theoreme-des-milieux",
+    "visible": true,
+    "chapter_id": 189,
+    "premium": false
+  },
+  {
+    "id": 523,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 189,
+    "premium": false
+  },
+  {
+    "id": 480,
+    "name": "Calcul d'Angle et de Longueur avec le Cosinus",
+    "slug": "calculs-angles-longueurs-cosinus",
+    "visible": true,
+    "chapter_id": 187,
+    "premium": false
+  },
+  {
+    "id": 481,
+    "name": "Calcul de Longueur avec le Cosinus, Sinus et Tangente",
+    "slug": "calculs-longueurs-cosinus-sinus-tangente",
+    "visible": true,
+    "chapter_id": 187,
+    "premium": false
+  },
+  {
+    "id": 482,
+    "name": "Calcul d'Angle avec le Cosinus, Sinus et Tangente",
+    "slug": "calculs-angles-cosinus-sinus-tangente",
+    "visible": true,
+    "chapter_id": 187,
+    "premium": false
+  },
+  {
+    "id": 525,
+    "name": "Fiche R\u00e9vision",
+    "slug": "fiche",
+    "visible": true,
+    "chapter_id": 187,
+    "premium": false
+  }
+]
