@@ -2,6 +2,8 @@
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
+use App\Exceptions\Http422ModelSaveException;
+use App\Exceptions\Http422ModelValidationException;
 use App\Models\Log;
 use App\Models\User;
 use Carbon\Carbon;
@@ -55,6 +57,8 @@ class StripeController extends CashierController
      *
      * @return Response
      * @throws Http400InvalidRequestException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
      */
     public function subscribe(Request $request)
     {
@@ -177,6 +181,9 @@ class StripeController extends CashierController
      * @param  array $payload
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws Http400InvalidRequestException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
      */
     public function handleInvoicePaymentSucceeded($payload)
     {
@@ -202,6 +209,9 @@ class StripeController extends CashierController
      * @param  array $payload
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws Http400InvalidRequestException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
      */
     public function handleInvoicePaymentFailed(array $payload)
     {
@@ -228,6 +238,9 @@ class StripeController extends CashierController
      * @param array $payload
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws Http400InvalidRequestException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
      */
     public function handleCustomerSubscriptionDeleted(array $payload)
     {
