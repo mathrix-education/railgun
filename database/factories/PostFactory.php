@@ -19,7 +19,6 @@ $factory->define(Post::class, function (Generator $faker) {
         'slug' => str_slug($title),
         'content' => $faker->text(),
         'category_id' => $faker->randomElement(Category::all()->pluck('id')->toArray()),
-        'user_id' => $faker->randomElement(User::all()->pluck('id')->toArray()),
         'created_at' => $created,
         'updated_at' => $faker->boolean(10) ? $faker->dateTimeBetween($created, 'now') : $created,
     ];

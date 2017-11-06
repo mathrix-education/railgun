@@ -15,13 +15,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $title
  * @property string $slug
  * @property string $content
- * @property int $user_id
  * @property int $category_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read Category $category
  * @property-read Collection|Comment[] $comments
- * @property-read User $user
  * @method static Builder|Post whereId($value)
  * @method static Builder|Post whereSlug($value)
  * @method static Builder|Post whereTitle($value)
@@ -40,15 +38,14 @@ class Post extends BaseModel
     public $timestamps = true;
 
     /** @var array The fillable attributes */
-    protected $fillable = ["title", "slug", "content", "category_id", "user_id", "created_at", "updated_at"];
+    protected $fillable = ["title", "slug", "content", "category_id", "created_at", "updated_at"];
 
     /** @var array Validation rules */
     protected $rules = [
         "title" => "required|max:255",
         "slug" => "required|max:255",
         "content" => "required",
-        "category_id" => "required|exists:categories,id",
-        "user_id" => "required|exists:users,id"
+        "category_id" => "required|exists:categories,id"
     ];
 
 
@@ -66,16 +63,5 @@ class Post extends BaseModel
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
-    }
-
-
-    /**
-     * BelongsTo User
-     *
-     * @return BelongsTo
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
     }
 }

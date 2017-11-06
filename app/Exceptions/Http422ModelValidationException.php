@@ -13,7 +13,7 @@ use Throwable;
  */
 class Http422ModelValidationException extends HttpException
 {
-    protected $message = 'Submitted data failed to pass validation';
+    protected $message = "Submitted data failed to pass validation";
 
     public function __construct($message = "", $code = 0, $previous = null, array $data = [])
     {
