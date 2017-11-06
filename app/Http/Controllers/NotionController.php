@@ -17,13 +17,13 @@ class NotionController extends BaseController
 {
     /**
      * @apiVersion 0.8.1
-     * @api {get} /notions Index
+     * @api {get} /notions/{?page}/{?perPage} Index
      * @apiGroup Notions
      * @apiName NotionsIndex
      * @apiDescription Retrieve notions
      * @apiPermission moderator
+     * @apiUse Pagination
      * @apiUse NotionArray
-     * @return JsonResponse
      * @apiUse Http401Unauthorized
      */
 

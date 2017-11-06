@@ -17,11 +17,12 @@ class QuoteController extends BaseController
 {
     /**
      * @apiVersion 0.8.1
-     * @api {get} /quotes Index
+     * @api {get} /quotes/{?page}/{?perPage} Index
      * @apiGroup Quotes
      * @apiName QuotesIndex
      * @apiDescription Retrieve quotes
      * @apiPermission public
+     * @apiUse Pagination
      * @apiUse QuoteArray
      */
 

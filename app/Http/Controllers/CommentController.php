@@ -23,11 +23,12 @@ class CommentController extends BaseController
 {
     /**
      * @apiVersion 0.8.1
-     * @api {get} /comments Index
+     * @api {get} /comments/{?page}/{?perPage} Index
      * @apiGroup Comments
      * @apiName CommentsIndex
      * @apiDescription Retrieve comments
      * @apiPermission moderator
+     * @apiUse Pagination
      * @apiUse CommentArray
      * @apiUse Http401Unauthorized
      */

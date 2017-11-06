@@ -289,7 +289,7 @@ abstract class BaseController extends Controller
      * @throws Http422ModelSaveException
      * @throws \Exception
      */
-    public function delete(Request $request, int $id)
+    public function delete(Request $request, int $id): JsonResponse
     {
         /** @var BaseModel $activity */
         $model = $this->modelClass::where("id", $id)->firstOrFail();

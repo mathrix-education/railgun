@@ -17,13 +17,12 @@ class CourseController extends BaseController
 {
     /**
      * @apiVersion 0.8.1
-     * @api {get} /courses Index
+     * @api {get} /courses/{?page}/{?perPage} Index
      * @apiGroup Courses
      * @apiName CoursesIndex
      * @apiDescription Retrieve courses
      * @apiPermission public
-     * @apiParam {int} [page=1] The page number
-     * @apiParam {int} [perPage=10] The course count per page
+     * @apiUse Pagination
      * @apiUse CourseArray
      */
 

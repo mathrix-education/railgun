@@ -20,5 +20,22 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class Report extends BaseModel
 {
+    public const STATUSES = ["todo", "done", "validated"];
+
+    /** @var array The validation rules */
+    protected $rules = [
+        "name" => "required|max:255",
+        "slug" => "required|max:255",
+        "visible" => "boolean"
+    ];
+
+
+    public function __construct(array $attributes = [])
+    {
+        // Dynamic rules
+        $this->rules["status"] = "required|in:" . implode(",", self::STATUSES);
+
+        parent::__construct($attributes);
+    }
 
 }

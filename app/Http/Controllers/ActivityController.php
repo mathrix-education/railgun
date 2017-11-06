@@ -22,11 +22,12 @@ class ActivityController extends BaseController
 {
     /**
      * @apiVersion 0.8.1
-     * @api {get} /activities Index
+     * @api {get} /activities/{?page}/{?perPage} Index
      * @apiGroup Activities
      * @apiName ActivitiesIndex
      * @apiDescription Retrieve activities
      * @apiPermission moderator
+     * @apiUse Pagination
      * @apiUse ActivityArray
      * @apiUse Http401Unauthorized
      */
@@ -53,7 +54,7 @@ class ActivityController extends BaseController
      * @apiDescription Add a activity
      * @apiPermission moderator
      * @apiUse Bearer
-     * @apiUse ActivityRequest
+     * @apiUse ActivityData
      * @apiUse Activity
      * @apiUse Http401Unauthorized
      * @apiUse Http422ModelValidation
@@ -70,7 +71,7 @@ class ActivityController extends BaseController
      * @apiPermission moderator
      * @apiUse Bearer
      * @apiParam {int} id The activity id
-     * @apiUse ActivityRequest
+     * @apiUse ActivityData
      * @apiUse Activity
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
