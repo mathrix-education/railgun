@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Exceptions\Http401UnauthorizedException;
+use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http501NotImplementedException;
 use App\Models\Category;
 use Illuminate\Http\JsonResponse;
@@ -18,11 +20,12 @@ class CategoryController extends BaseController
 {
     /**
      * @apiVersion 0.8.1
-     * @api {get} /categories Index
+     * @api {get} /categories/{?page}/{?perPage} Index
      * @apiGroup Categories
      * @apiName CategoriesIndex
      * @apiDescription Retrieve categories
      * @apiPermission public
+     * @apiUse Pagination
      * @apiUse CategoryArray
      */
 
@@ -90,10 +93,15 @@ class CategoryController extends BaseController
      * @param int $id
      *
      * @return JsonResponse
+     * @throws Http401UnauthorizedException
+     * @throws Http422ModelSaveException
      * @throws Http501NotImplementedException
+     * @throws \Exception
      */
-    public function delete(Request $request, int $id)
+    public function delete(Request $request, int $id): JsonResponse
     {
         throw new Http501NotImplementedException();
+
+        return parent::delete($request, $id);
     }
 }

@@ -43,6 +43,7 @@ class AuthController extends BaseController
      * @param Request $request
      *
      * @return JsonResponse
+     * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      */

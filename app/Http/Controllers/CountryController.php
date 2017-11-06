@@ -18,11 +18,12 @@ class CountryController extends BaseController
 {
     /**
      * @apiVersion 0.8.1
-     * @api {get} /countries Index
+     * @api {get} /countries/{?page}/{?perPage} Index
      * @apiGroup Countries
      * @apiName CountriesIndex
      * @apiDescription Retrieve countries
      * @apiPermission public
+     * @apiUse Pagination
      * @apiUse CountryArray
      */
 
@@ -92,8 +93,10 @@ class CountryController extends BaseController
      * @return JsonResponse
      * @throws Http501NotImplementedException
      */
-    public function delete(Request $request, int $id)
+    public function delete(Request $request, int $id): JsonResponse
     {
         throw new Http501NotImplementedException();
+
+        return parent::delete($request, $id);
     }
 }

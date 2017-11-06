@@ -6,8 +6,10 @@ use App\Models\User;
 /**
  * Class BasePolicy
  *
- * @author Mathrix Team
+ * @author Mathrix Back-End Team
  * @package App\Policies
+ * @since 0.8.1
+ * @copyright Mathrix
  *
  * @method bool atLeastAdmin(User $currentUser)
  * @method bool atLeastModerator(User $currentUser)

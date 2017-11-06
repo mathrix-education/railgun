@@ -13,9 +13,6 @@ use Illuminate\Support\Facades\Auth;
  * App\Models\Module
  *
  * @property int $id
- * @property string $name
- * @property string $slug
- * @property string $description
  * @property bool $premium
  * @property bool $visible
  * @property string $type
@@ -30,8 +27,6 @@ use Illuminate\Support\Facades\Auth;
  * @property-read Collection|Comment[] $comments
  * @property-read Collection|Log[] $logs
  * @method static Builder|Module whereId($value)
- * @method static Builder|Module whereName($value)
- * @method static Builder|Module whereDescription($value)
  * @method static Builder|Module wherePremium($value)
  * @method static Builder|Module whereVisible($value)
  * @method static Builder|Module whereType($value)
@@ -40,7 +35,6 @@ use Illuminate\Support\Facades\Auth;
  * @method static Builder|Module whereCorrections($value)
  * @method static Builder|Module whereOptions($value)
  * @method static Builder|Module whereQuestions($value)
- * @method static Builder|Module whereSlug($value)
  * @method static Builder|Module whereSolutions($value)
  * @mixin \Eloquent
  */
@@ -48,9 +42,10 @@ class Module extends BaseModel
 {
     use Commentable;
 
+    public const TYPES = ["course", "test", "mcq", "mcq-table", "match", "fill", "flashcard"];
+
     /** @var array The fillable attributes */
-    protected $fillable = ["name", "slug", "description", "type", "content", "questions", "choices", "solutions",
-        "corrections", "options"];
+    protected $fillable = ["type", "content", "questions", "choices", "solutions", "corrections", "options"];
 
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
@@ -63,12 +58,16 @@ class Module extends BaseModel
 
     /** @var array The validation rules */
     protected $rules = [
-        "name" => "required|max:255",
-        "slug" => "required|max:255",
-        "description" => "required|max:255",
-        "type" => "required|in:course,fill,match,mcq,mcq-table,test,flashcard",
         "visible" => "boolean"
     ];
+
+    public function __construct(array $attributes = [])
+    {
+        // Dynamic rules
+        $this->rules["type"] = "required|in:" . implode(",", self::TYPES);
+
+        parent::__construct($attributes);
+    }
 
     /*
     |--------------------------------------------------------------------------

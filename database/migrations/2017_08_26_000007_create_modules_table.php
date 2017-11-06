@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Module;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,11 +16,8 @@ class CreateModulesTable extends Migration
     {
         Schema::create("modules", function (Blueprint $table) {
             $table->increments("id");
-            $table->string("name");
-            $table->string("slug");
-            $table->string("description");
             $table->boolean("premium");
-            $table->enum("type", ["course", "test", "mcq", "mcq-table", "match", "fill", "flashcard"]);
+            $table->enum("type", Module::TYPES);
             $table->text("content")->nullable();
             $table->text("questions")->nullable();
             $table->text("choices")->nullable();

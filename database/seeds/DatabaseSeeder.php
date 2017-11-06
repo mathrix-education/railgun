@@ -1,10 +1,14 @@
 <?php
+use App\Models\Activity;
 use App\Models\Category;
+use App\Models\Chapter;
 use App\Models\Class_;
 use App\Models\Comment;
 use App\Models\Country;
 use App\Models\Discipline;
 use App\Models\Level;
+use App\Models\Module;
+use App\Models\Notion;
 use App\Models\Quote;
 use App\Models\Vote;
 use Laravel\Passport\Client;
@@ -37,20 +41,23 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->seedFromJson(Country::class);
         $this->seedFromJson(Class_::class);
         $this->seedFromJson(Discipline::class);
-        $this->seedAttachmentsFromJson(Class_::class, Discipline::class);
-        $this->call(ChapterTableSeeder::class);
+        //$this->seedAttachmentsFromJson(Class_::class, Discipline::class);
+        /*$this->call(ChapterTableSeeder::class);
         $this->call(NotionTableSeeder::class);
         $this->call(ActivityTableSeeder::class);
-        $this->call(ModuleTableSeeder::class);
+        $this->call(ModuleTableSeeder::class);*/
+        $this->seedFromJson(Chapter::class);
+        $this->seedFromJson(Notion::class);
+        $this->seedFromJson(Activity::class);
+        $this->seedFromJson(Module::class);
 
-        $this->seedFromJson(Level::class);
+        /*$this->seedFromJson(Level::class);
         $this->call(UserTableSeeder::class);
 
         $this->seedFromFactory(Category::class, ['count' => random_int(5, 8)]);
         $this->call(PostTableSeeder::class);
         $this->call(CourseTableSeeder::class);
         $this->seedFromFactory(Comment::class, ['count' => 200]);
-        $this->seedFromFactory(Vote::class, ['count' => random_int(450, 550)]);
-
+        $this->seedFromFactory(Vote::class, ['count' => random_int(450, 550)]);*/
     }
 }

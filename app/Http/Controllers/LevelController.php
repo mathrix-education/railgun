@@ -13,11 +13,12 @@ class LevelController extends BaseController
 {
     /**
      * @apiVersion 0.8.1
-     * @api {get} /levels Index
+     * @api {get} /levels/{?page}/{?perPage} Index
      * @apiGroup Levels
      * @apiName LevelsIndex
      * @apiDescription Retrieve levels
      * @apiPermission public
+     * @apiUse Pagination
      * @apiUse LevelArray
      */
 }

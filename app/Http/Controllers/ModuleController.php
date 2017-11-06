@@ -24,7 +24,7 @@ class ModuleController extends BaseController
 {
     /**
      * @apiVersion 0.8.1
-     * @api {get} /modules Index
+     * @api {get} /modules/{page} Index
      * @apiGroup Modules
      * @apiName ModulesIndex
      * @apiDescription Retrieve modules

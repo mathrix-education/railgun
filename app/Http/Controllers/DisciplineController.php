@@ -18,11 +18,12 @@ class DisciplineController extends BaseController
 {
     /**
      * @apiVersion 0.8.1
-     * @api {get} /disciplines Index
+     * @api {get} /disciplines/{?page}/{?perPage} Index
      * @apiGroup Disciplines
      * @apiName DisciplinesIndex
      * @apiDescription Retrieve disciplines
      * @apiPermission public
+     * @apiUse Pagination
      * @apiUse DisciplineArray
      */
 
@@ -91,8 +92,10 @@ class DisciplineController extends BaseController
      * @return JsonResponse
      * @throws Http501NotImplementedException
      */
-    public function delete(Request $request, int $id)
+    public function delete(Request $request, int $id): JsonResponse
     {
         throw new Http501NotImplementedException();
+
+        return parent::delete($request, $id);
     }
 }

@@ -18,13 +18,12 @@ class PostController extends BaseController
 {
     /**
      * @apiVersion 0.8.1
-     * @api {get} /posts Index
+     * @api {get} /posts/{?page}/{?perPage} Index
      * @apiGroup Posts
      * @apiName PostsIndex
      * @apiDescription Retrieve posts
      * @apiPermission public
-     * @apiParam {int} [page=1] The page number
-     * @apiParam {int} [perPage=10] The post count per page
+     * @apiUse Pagination
      * @apiUse PostArray
      *
      * @param Request $request

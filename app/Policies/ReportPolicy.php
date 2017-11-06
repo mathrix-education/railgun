@@ -1,6 +1,8 @@
 <?php
 namespace App\Policies;
 
+use App\Models\User;
+
 /**
  * Class ReportPolicy
  *
@@ -9,12 +11,13 @@ namespace App\Policies;
  * @since 0.8.1
  * @copyright Mathrix
  */
-class ReportPolicy
+class ReportPolicy extends BasePolicy
 {
-    public function index()
+    public function index(User $currentUser)
     {
-        return true;
+        return $this->atLeastAdmin($currentUser);
     }
+
 
     public function add()
     {

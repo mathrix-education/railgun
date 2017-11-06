@@ -17,11 +17,12 @@ class ChapterController extends BaseController
 {
     /**
      * @apiVersion 0.8.1
-     * @api {get} /chapters Index
+     * @api {get} /chapters/{?page}/{?perPage} Index
      * @apiGroup Chapters
      * @apiName ChaptersIndex
      * @apiDescription Retrieve chapters
      * @apiPermission moderator
+     * @apiUse Pagination
      * @apiUse ChapterArray
      * @apiUse Http401Unauthorized
      */

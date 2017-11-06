@@ -34,8 +34,7 @@ class UserController extends BaseController
      * @apiDescription Get a user by id
      * @apiPermission admin
      * @apiUse Bearer
-     * @apiParam {int} [page=1] The page number
-     * @apiParam {int} [perPage=10] The user count per page
+     * @apiUse Pagination
      * @apiUse UserArray
      * @apiUse Http401Unauthorized
      */

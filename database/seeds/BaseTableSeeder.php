@@ -1,5 +1,7 @@
 <?php
 
+use App\Exceptions\Http422ModelSaveException;
+use App\Exceptions\Http422ModelValidationException;
 use App\Models\BaseModel;
 use Illuminate\Database\Seeder;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
@@ -27,8 +29,10 @@ abstract class BaseTableSeeder extends Seeder
      * @param string $modelClass
      *
      * @return bool
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
      */
-    public function seedFromJson(string $modelClass)
+    public function seedFromJson(string $modelClass, bool $progressBar = true)
     {
         switch ($modelClass) {
             case 'Laravel\\Passport\\Client':
@@ -43,11 +47,24 @@ abstract class BaseTableSeeder extends Seeder
 
         $data = $this->loadFromRawJson($table);
 
+        // Progress bar
+        if ($progressBar) {
+            $this->command->getOutput()->progressStart(count($data));
+        }
+
         foreach ($data as $row) {
             /** @var BaseModel $model */
             $model = new $modelClass($row);
             $model->save();
+            if ($progressBar) {
+                $this->command->getOutput()->progressAdvance();
+            }
         }
+
+        if ($progressBar) {
+            $this->command->getOutput()->progressFinish();
+        }
+
 
         $this->println('<info>Seeded:</info>  ' . $table . ' from json');
     }

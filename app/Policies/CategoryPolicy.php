@@ -4,8 +4,10 @@ namespace App\Policies;
 /**
  * Class CategoryPolicy
  *
- * @author Mathrix Team
+ * @author Mathrix Back-End Team
  * @package App\Policies
+ * @since 0.8.1
+ * @copyright Mathrix
  */
 class CategoryPolicy extends BasePolicy
 {
