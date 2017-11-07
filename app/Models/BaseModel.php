@@ -73,7 +73,6 @@ abstract class BaseModel extends Model
     public function save(array $options = [])
     {
         if ($this->validateOnSave() && !$this->validate()) {
-            dd($this->errors);
             throw new Http422ModelValidationException(null, 422, null, $this->errors);
         }
 
