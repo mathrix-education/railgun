@@ -250,7 +250,8 @@ class ContentController extends BaseController
                 return $q->where("type", "=", "course")
                     ->where("content", "LIKE", "%[video]%");
             })
-            ->with(["modules" => function (BelongsToMany $q) use ($query) {
+            ->with(["notions", "notions.chapter", "notions.chapter.discipline", "notions.chapter.class_",
+                "notions.chapter.class_.country", "modules" => function (BelongsToMany $q) use ($query) {
                 return $q->where("type", "=", "course")
                     ->where("content", "LIKE", "%[video]%");
             }])
