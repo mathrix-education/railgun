@@ -20,13 +20,13 @@ use Illuminate\Support\Collection;
  *
  * @author Mathrix Back-End Team
  * @package App\Controllers
- * @since 0.8.1
+ * @since 1.0.0
  * @copyright Mathrix
  */
 class ContentController extends BaseController
 {
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {get} /content/countries Countries
      * @apiGroup Content
      * @apiName ContentCountries
@@ -51,7 +51,7 @@ class ContentController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {get} /content/program/{classId} Program
      * @apiGroup Content
      * @apiName ContentProgram
@@ -104,7 +104,7 @@ class ContentController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {get} /content/modules/{classId} Modules
      * @apiGroup Content
      * @apiName ContentModules
@@ -159,7 +159,7 @@ class ContentController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {get} /content/search/{query}/{?page}/{?perPage} Search
      * @apiGroup Content
      * @apiName ContentSearch
@@ -246,13 +246,11 @@ class ContentController extends BaseController
         $videos = Activity::where("visible", true)
             ->whereHas("modules", function (Builder $q) use ($query) {
                 return $q->where("type", "=", "course")
-                    ->where("content", "LIKE", "%[video]%")
-                    ->where("name", "LIKE", "%" . $query . "%");
+                    ->where("content", "LIKE", "%[video]%");
             })
             ->with(["modules" => function (BelongsToMany $q) use ($query) {
                 return $q->where("type", "=", "course")
-                    ->where("content", "LIKE", "%[video]%")
-                    ->where("name", "LIKE", "%" . $query . "%");
+                    ->where("content", "LIKE", "%[video]%");
             }])
             ->limit($perPage)
             ->offset(($page - 1) * $perPage)

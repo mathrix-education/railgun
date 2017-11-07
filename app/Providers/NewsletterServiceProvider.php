@@ -15,7 +15,7 @@ use Spatie\Newsletter\NewsletterListCollection;
  *
  * @author Mathrix Back-End Team
  * @package App\Providers
- * @since 0.8.1
+ * @since 1.0.0
  * @copyright Mathrix
  */
 class NewsletterServiceProvider extends ServiceProvider

@@ -20,7 +20,7 @@ use Laravel\Lumen\Routing\Controller;
  *
  * @author Mathrix Back-End Team
  * @package App\Controllers
- * @since 0.8.1
+ * @since 1.0.0
  * @copyright Mathrix
  */
 abstract class BaseController extends Controller
