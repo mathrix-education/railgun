@@ -314,8 +314,7 @@ class ContentController extends BaseController
                 });
             }
 
-            $notionsToAdd->with(["chapter.discipline", "chapter.class_" => function (BelongsTo $query)
-            use ($classIds) {
+            $notionsToAdd = $notionsToAdd->with(["chapter.discipline", "chapter.class_" => function (BelongsTo $query) use ($classIds) {
                 return $query->orderByDesc("id");
             }, "chapter.class_.country"])
                 ->orWhere("slug", "LIKE", "%$query%")
