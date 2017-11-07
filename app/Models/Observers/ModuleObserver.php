@@ -20,17 +20,19 @@ class ModuleObserver extends BaseObserver
     public function saving($module)
     {
         // Sync activities
-        if (!empty($module->link["activities"])) {
+        if (isset($module->link["activities"])) {
             $toSync = [];
             foreach($module->link["activities"] as $order => $notionId) {
                 if (Activity::find($notionId)->exists()) {
                     $toSync[$notionId] = ["order" => $order];
                 }
             }
-            if (!empty($toSync)) {
-                $module->activities()->sync($toSync);
-            }
-            unset($module->link["activities"]);
+
+            $module->activities()->sync($toSync);
+        }
+
+        if (isset($module->link)) {
+            unset($module->link);
         }
 
         return true;
