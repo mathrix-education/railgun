@@ -128,13 +128,14 @@ class ActivityController extends BaseController
     public function favorites(Request $request): JsonResponse
     {
         $user = $this->getUserByRequestOrUnauthorized($request);
-
-        return response()->json(Meta::with(["country", "class_", "discipline", "chapter", "notion", "activity",
-            "activity.modules"])
+        $metas = Meta::with(["country", "class_", "discipline", "chapter", "notion", "activity", "activity.modules"])
             ->where([
                 ["user_id", "=", $user->id],
                 ["favorite", "=", true]
-            ]));
+            ])
+            ->get();
+
+        return response()->json($metas);
     }
 
 
@@ -158,13 +159,14 @@ class ActivityController extends BaseController
     public function to_revise(Request $request): JsonResponse
     {
         $user = $this->getUserByRequestOrUnauthorized($request);
-
-        return response()->json(Meta::with(["country", "class_", "discipline", "chapter", "notion", "activity",
-            "activity.modules"])
+        $metas = Meta::with(["country", "class_", "discipline", "chapter", "notion", "activity", "activity.modules"])
             ->where([
                 ["user_id", "=", $user->id],
                 ["status", "=", "to_revise"]
-            ]));
+            ])
+            ->get();
+
+        return response()->json($metas);
     }
 
 
