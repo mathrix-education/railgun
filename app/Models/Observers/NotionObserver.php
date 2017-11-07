@@ -28,17 +28,19 @@ class NotionObserver extends BaseObserver
         }
 
         // Sync activities
-        if (!empty($notion->link["activities"])) {
+        if (isset($notion->link["activities"])) {
             $toSync = [];
             foreach($notion->link["activities"] as $order => $notionId) {
                 if (Activity::find($notionId)->exists()) {
                     $toSync[$notionId] = ["order" => $order];
                 }
             }
-            if (!empty($toSync)) {
-                $notion->activities()->sync($toSync);
-            }
-            unset($notion->link["activities"]);
+
+            $notion->activities()->sync($toSync);
+        }
+
+        if (isset($notion->link)) {
+            unset($notion->link);
         }
 
         return true;
