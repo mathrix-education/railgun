@@ -27,14 +27,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Discipline extends BaseModel
 {
     /** @var array The fillable attributes */
-    protected $fillable = ["name", "slug", "name_seo", "beta"];
+    protected $fillable = ["name", "slug", "name_seo", "beta", "visible"];
 
     /** @var array Validation rules */
     protected $rules = [
         "name" => "required|max:255",
         "slug" => "required|max:255",
         "name_seo" => "required|max:255",
-        "beta" => "boolean"
+        "beta" => "boolean",
+        "visible" => "boolean"
     ];
 
     /*
