@@ -32,7 +32,7 @@ class NotionObserver extends BaseObserver
             $toSync = [];
             foreach($notion->link["activities"] as $order => $notionId) {
                 if (Activity::find($notionId)->exists()) {
-                    $toSync[$notionId] = ["order" => "order"];
+                    $toSync[$notionId] = ["order" => $order];
                 }
             }
             if (!empty($toSync)) {

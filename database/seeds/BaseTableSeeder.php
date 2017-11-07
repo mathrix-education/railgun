@@ -131,7 +131,8 @@ abstract class BaseTableSeeder extends Seeder
             "override" => [],
             "callback" => null,
             "loop" => null,
-            "iterate" => null
+            "iterate" => null,
+            "progressBar" => true
         ];
         $options = array_merge($defaultOptions, $options);
 
