@@ -13,9 +13,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property int $id
  * @property string $name
  * @property string $slug
- * @property int $chapter_id
  * @property bool $premium
  * @property bool $visible
+ * @property int $chapter_id
  * @property-read Collection|Activity[] $activities
  * @property-read Chapter $chapter
  * @method static Builder|Notion whereChapterId($value)
@@ -29,7 +29,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Notion extends BaseModel
 {
     /** @var array The The fillable attributes */
-    protected $fillable = ["name", "slug", "chapter_id"];
+    protected $fillable = ["name", "slug", "visible", "chapter_id", "link"];
 
     /** @var array The validation rules */
     protected $rules = [
