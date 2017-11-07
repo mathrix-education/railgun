@@ -14,13 +14,13 @@ use Illuminate\Http\JsonResponse;
  *
  * @author Mathrix Back-End Team
  * @package App\Controllers
- * @since 0.8.1
+ * @since 1.0.0
  * @copyright Mathrix
  */
 class CommentController extends BaseController
 {
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {get} /comments/{?page}/{?perPage} Index
      * @apiGroup Comments
      * @apiName CommentsIndex
@@ -33,7 +33,7 @@ class CommentController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {get} /comments/{id} Get
      * @apiGroup Comments
      * @apiName CommentGet
@@ -46,7 +46,7 @@ class CommentController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {post} /comments Add
      * @apiGroup Comments
      * @apiName CommentAdd
@@ -62,7 +62,7 @@ class CommentController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {patch} /comments/{id} Edit
      * @apiGroup Comments
      * @apiName CommentEdit
@@ -80,7 +80,7 @@ class CommentController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {delete} /comments/{id} Delete
      * @apiGroup Comments
      * @apiName CommentDelete
@@ -94,7 +94,7 @@ class CommentController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {get} /comments/{commentable_type}/{commentable_id}/{?page}/{?perPage} Type
      * @apiGroup Comments
      * @apiName CommentsIndex

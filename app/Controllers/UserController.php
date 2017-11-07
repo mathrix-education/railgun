@@ -21,13 +21,13 @@ use Illuminate\Http\Request;
  *
  * @author Mathrix Back-End Team
  * @package App\Controllers
- * @since 0.8.1
+ * @since 1.0.0
  * @copyright Mathrix
  */
 class UserController extends BaseController
 {
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {get} /users/{?page}/{?perPage} Index
      * @apiGroup Users
      * @apiName UsersIndex
@@ -41,7 +41,7 @@ class UserController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {get} /users/{id} Get
      * @apiGroup Users
      * @apiName UserGet
@@ -56,7 +56,7 @@ class UserController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {patch} /users/{id} Edit
      * @apiGroup Users
      * @apiName UserEdit
@@ -96,7 +96,7 @@ class UserController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {delete} /users/{id} Delete (Not implemented)
      * @apiGroup Users
      * @apiName UserDelete
@@ -124,7 +124,7 @@ class UserController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {post} /users/search Search
      * @apiGroup Users
      * @apiName UsersSearch
@@ -138,7 +138,7 @@ class UserController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {post} /users/register Register
      * @apiGroup Users
      * @apiName UserRegister
@@ -196,7 +196,7 @@ class UserController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {get} /users/exists/{field}/{value} Exists
      * @apiGroup Users
      * @apiName UserExists
@@ -222,7 +222,7 @@ class UserController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {get} /users/me Me
      * @apiGroup Users
      * @apiName UserMe
@@ -248,7 +248,7 @@ class UserController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {post} /users/points/{?id} Points
      * @apiGroup Users
      * @apiName UserPoints

@@ -15,13 +15,13 @@ use Illuminate\Http\Request;
  *
  * @author Mathrix Back-End Team
  * @package App\Controllers
- * @since 0.8.1
+ * @since 1.0.0
  * @copyright Mathrix
  */
 class ActivityController extends BaseController
 {
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {get} /activities/{?page}/{?perPage} Index
      * @apiGroup Activities
      * @apiName ActivitiesIndex
@@ -34,7 +34,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {get} /activities/{id} Get
      * @apiGroup Activities
      * @apiName ActivityGet
@@ -47,7 +47,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {post} /activities Add
      * @apiGroup Activities
      * @apiName ActivityAdd
@@ -63,7 +63,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {patch} /activities/{id} Edit
      * @apiGroup Activities
      * @apiName ActivityEdit
@@ -81,7 +81,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {delete} /activities/{id} Delete
      * @apiGroup Activities
      * @apiName ActivityDelete
@@ -95,7 +95,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {post} /activities/search Search
      * @apiGroup Activities
      * @apiName ActivitiesSearch
@@ -109,7 +109,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {get} /activities/favorites Favorites
      * @apiGroup Activities
      * @apiName ActivitiesFavorite
@@ -139,7 +139,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {get} /activities/to-revise To revise
      * @apiGroup Activities
      * @apiName ActivitiesToRevise
@@ -169,7 +169,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {patch} /activities/{id}/mark Mark
      * @apiGroup Activities
      * @apiName ActivityMark

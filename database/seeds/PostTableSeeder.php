@@ -6,7 +6,7 @@ use App\Models\Post;
  * Class PostTableSeeder
  *
  * @author Mathrix Back-End Team
- * @since 0.8.1
+ * @since 1.0.0
  * @copyright Mathrix
  */
 class PostTableSeeder extends BaseTableSeeder
