@@ -233,6 +233,7 @@ class ContentController extends BaseController
     public function searchGlobal(Request $request, string $query, int $page = 1, $perPage = 10)
     {
         $query = trim(mb_strtolower(urldecode($query))); // Trim and decode query
+        $query = implode("%%", explode(" ", $query));
 
         if ($page < 1 || $perPage < 1) {
             throw new Http400InvalidRequestException("page and perPage have to be strictly positive");
