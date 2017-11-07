@@ -244,6 +244,8 @@ class ContentController extends BaseController
 
         // Videos
         $videos = Activity::where("visible", true)
+            ->where("name", "LIKE", "%$query%")
+            ->orWhere("slug", "LIKE", "%$query%")
             ->whereHas("modules", function (Builder $q) use ($query) {
                 return $q->where("type", "=", "course")
                     ->where("content", "LIKE", "%[video]%");
@@ -264,21 +266,21 @@ class ContentController extends BaseController
 
             $chapters = Chapter::whereIn("class_id", $classIds)
                 ->with(["discipline", "class_", "class_.country"])
-                ->where("name", "LIKE", "%" . $query . "%")
-                ->orWhere("slug", "LIKE", "%" . $query . "%")
+                ->where("name", "LIKE", "%$query%")
+                ->orWhere("slug", "LIKE", "%$query%")
                 ->limit($perPage)
                 ->orderByDesc("class_id")
                 ->offset(($page - 1) * $perPage)
                 ->get();
 
-            $notions = Notion::where("name", "LIKE", "%" . $query . "%")
+            $notions = Notion::where("name", "LIKE", "%$query%")
                 ->whereHas("chapter.class_", function (Builder $query) use ($classIds) {
                     return $query->whereIn("id", $classIds);
                 })
                 ->with(["chapter.discipline", "chapter.class_" => function (BelongsTo $query) use ($classIds) {
                     return $query->orderByDesc("id");
                 }, "chapter.class_.country"])
-                ->orWhere("slug", "LIKE", "%" . $query . "%")
+                ->orWhere("slug", "LIKE", "%$query%")
                 ->limit($perPage)
                 ->offset(($page - 1) * $perPage)
                 ->get();
@@ -292,8 +294,8 @@ class ContentController extends BaseController
                 $chaptersToAdd = $chaptersToAdd->whereNotIn("class_id", $classIds);
             }
 
-            $chaptersToAdd = $chaptersToAdd->where("name", "LIKE", "%" . $query . "%")
-                ->orWhere("slug", "LIKE", "%" . $query . "%")
+            $chaptersToAdd = $chaptersToAdd->where("name", "LIKE", "%$query%")
+                ->orWhere("slug", "LIKE", "%$query%")
                 ->limit($perPage - $chapters->count())
                 ->orderByDesc("class_id")
                 ->offset(($page - 1) * $perPage)
