@@ -108,6 +108,7 @@ class AuthController extends BaseController
      * @apiDescription Ask for a password reset email
      * @apiPermission public
      * @apiParam (Data) {string} email The user email
+     * @apiError (Error 400) invalid_request Cannot reset password of a facebook account
      * @apiError (Error 404) model_not_found The user with given `email` was not found
      * @apiError (Error 422) validation The email field is missing
      * @apiError (Error 422) save Unable to save the user
@@ -116,6 +117,7 @@ class AuthController extends BaseController
      * @param Request $request
      *
      * @return JsonResponse
+     * @throws Http400InvalidRequestException
      * @throws Http502EmailNotSentException
      */
     public function forgot(Request $request)
@@ -123,6 +125,10 @@ class AuthController extends BaseController
         // Try to find the user with the given email
         /** @var User $user */
         $user = User::where("email", $request->input("email"))->firstOrFail();
+
+        if(!empty($user->settings["facebook_id"])) {
+            throw new Http400InvalidRequestException("Cannot reset password of a facebook account");
+        }
 
         // Generate token
         $user->unguardAttributes(["token"]);

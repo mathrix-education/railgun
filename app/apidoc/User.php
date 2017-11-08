@@ -13,6 +13,7 @@
  * @apiParam (Data) {int} daily_achievements The user daily achievements
  * @apiParam (Data) {bool} premium If the user is premium or not
  * @apiParam (Data) {array} settings The user options
+ * @apiParam (Data) {string} [settings.facebook_id] If the user has a facebook id
  * @apiParam (Data) {bool} settings.sound If the user has enabled sounds
  * @apiParam (Data) {string} [stripe_id=null] The Stripe customer id
  * @apiParam (Data) {string} [card_brand=null] The card brand (Visa, etc.)
