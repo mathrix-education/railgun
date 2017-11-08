@@ -12,13 +12,13 @@ use Spatie\Newsletter\NewsletterFacade as Newsletter;
  *
  * @author Mathrix Back-End Team
  * @package App\Controllers
- * @since 0.8.1
+ * @since 1.0.0
  * @copyright Mathrix
  */
 class MailchimpController extends BaseController
 {
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {post} /newsletter/subscribe/{list}
      * @apiGroup Newsletters
      * @apiDescription Subscribe an email to a Mailchimp list

@@ -67,6 +67,5 @@ class AppServiceProvider extends ServiceProvider
         Category::observe(CategoryObserver::class);
         Comment::observe(CommentObserver::class);
         Vote::observe(VoteObserver::class);
-        Quote::observe(QuoteObserver::class);
     }
 }

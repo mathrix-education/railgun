@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
  * Class CreateNotionsTable
  *
  * @author Mathrix Back-End Team
- * @since 0.8.1
+ * @since 1.0.0
  * @copyright Mathrix
  */
 class CreateNotionsTable extends Migration
@@ -24,6 +24,7 @@ class CreateNotionsTable extends Migration
             $table->string("name");
             $table->string("slug");
             $table->boolean("premium");
+            $table->integer("order")->default(0);
             $table->boolean("visible")->default(true);
             $table->integer("chapter_id")->unsigned();
 

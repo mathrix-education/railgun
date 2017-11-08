@@ -17,7 +17,7 @@ use Laravel\Lumen\Routing\Router;
 
 $router->get('/', function () use ($router) {
     return response()->json([
-        'message' => 'Welcome to Mathrix API version 0.8.1 by Mathieu Bour',
+        'message' => 'Welcome to Mathrix API version 1.0.0 by Mathieu Bour',
         'commit' => trim(exec('git log --pretty="%h" -n1 HEAD')),
         'build' => basename(dirname(__DIR__, 2))
     ]);
@@ -59,6 +59,11 @@ $router->group(['prefix' => 'users'], function () use ($router) {
 |--------------------------------------------------------------------------
 */
 $router->group(['prefix' => 'content'], function () use ($router) {
+    $router->group(['middleware' => 'auth:api'], function () use ($router) {
+        $router->get('upload', 'ContentController@upload');
+    });
+    $router->get('tree', 'ContentController@tree');
+
     $router->get('countries', 'ContentController@countries');
     $router->get('program/{classId:[0-9]+}', 'ContentController@program');
     $router->get('modules/{activityId:[0-9]+}', 'ContentController@modules');

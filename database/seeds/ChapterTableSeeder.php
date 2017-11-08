@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
  * Class ChapterTableSeeder
  *
  * @author Mathrix Back-End Team
- * @since 0.8.1
+ * @since 1.0.0
  * @copyright Mathrix
  */
 class ChapterTableSeeder extends BaseTableSeeder

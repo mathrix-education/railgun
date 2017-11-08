@@ -27,31 +27,29 @@ class ActivityObserver extends BaseObserver
         }
 
         // Sync notions
-        if (!empty($activity->link["notions"])) {
+        if (isset($activity->link["notions"])) {
             $toSync = [];
             foreach($activity->link["notions"] as $order => $notionId) {
                 if (Notion::find($notionId)->exists()) {
-                    $toSync[$notionId] = ["order" => "order"];
+                    $toSync[$notionId] = ["order" => $order];
                 }
             }
-            if (!empty($toSync)) {
-                $activity->notions()->sync($toSync);
-            }
-            unset($activity->link["notions"]);
+            $activity->notions()->sync($toSync);
         }
 
         // Sync modules
-        if (!empty($activity->link["modules"])) {
+        if (isset($activity->link["modules"])) {
             $toSync = [];
             foreach($activity->link["modules"] as $order => $notionId) {
                 if (Module::find($notionId)->exists()) {
-                    $toSync[$notionId] = ["order" => "order"];
+                    $toSync[$notionId] = ["order" => $order];
                 }
             }
-            if (!empty($toSync)) {
-                $activity->modules()->sync($toSync);
-            }
-            unset($activity->link["modules"]);
+            $activity->modules()->sync($toSync);
+        }
+
+        if (isset($activity->link)) {
+            unset($activity->link);
         }
 
         return true;

@@ -18,13 +18,13 @@ use Illuminate\Support\Facades\Mail;
  *
  * @author Mathrix Back-End Team
  * @package App\Controllers
- * @since 0.8.1
+ * @since 1.0.0
  * @copyright Mathrix
  */
 class AuthController extends BaseController
 {
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {post} /users/login Login
      * @apiGroup Authentication
      * @apiName AuthenticationLogin
@@ -73,7 +73,7 @@ class AuthController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {post} /users/refresh Refresh
      * @apiGroup Authentication
      * @apiName AuthenticationRefresh
@@ -101,7 +101,7 @@ class AuthController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {post} /users/forgot Forgot password
      * @apiGroup Authentication
      * @apiName AuthenticationForgot
@@ -139,7 +139,7 @@ class AuthController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {post} /users/reset/{token} Reset password
      * @apiGroup Authentication
      * @apiName AuthenticationReset
