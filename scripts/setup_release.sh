@@ -27,6 +27,7 @@ gulp mjml --silent
 echo "Linking storage directory"
 [ -d ${shared_dir} ] || mkdir ${shared_dir} && chmod 0775 ${shared_dir}
 [ -d ${shared_dir}/storage ] || cp -r ${new_release_dir}/storage ${shared_dir}/storage
+[ -d ${shared_dir}/storage/cdn  ] || mkdir ${shared_dir}/cdn
 rm -rf ${new_release_dir}/storage
 ln -nfs ${shared_dir}/storage ${new_release_dir}/storage
 
