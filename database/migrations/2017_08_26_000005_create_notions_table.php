@@ -24,6 +24,7 @@ class CreateNotionsTable extends Migration
             $table->string("name");
             $table->string("slug");
             $table->boolean("premium");
+            $table->integer("order")->default(0);
             $table->boolean("visible")->default(true);
             $table->integer("chapter_id")->unsigned();
 

@@ -59,6 +59,11 @@ $router->group(['prefix' => 'users'], function () use ($router) {
 |--------------------------------------------------------------------------
 */
 $router->group(['prefix' => 'content'], function () use ($router) {
+    $router->group(['middleware' => 'auth:api'], function () use ($router) {
+        $router->get('upload', 'ContentController@upload');
+    });
+    $router->get('tree', 'ContentController@tree');
+
     $router->get('countries', 'ContentController@countries');
     $router->get('program/{classId:[0-9]+}', 'ContentController@program');
     $router->get('modules/{activityId:[0-9]+}', 'ContentController@modules');

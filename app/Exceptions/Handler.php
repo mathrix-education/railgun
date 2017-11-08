@@ -81,6 +81,10 @@ class Handler extends ExceptionHandler
             "message" => $e->getMessage()
         ];
 
+        if ($e instanceof ValidationException) {
+            $json["errors"] = $e->errors();
+        }
+
         // Include trace in debug mode
         if (app()->environment("dev", "stage")) {
             $json["trace"] = explode("\n", $e->getTraceAsString());
