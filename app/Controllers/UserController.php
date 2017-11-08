@@ -148,6 +148,7 @@ class UserController extends BaseController
      * @apiParam (Data) {string} password The user password or the user facebook token
      * @apiParam (Data) {string=registered,moderator,admin} type The user type
      * @apiParam (Data) {int} [class_id=null] The class id; should be `null` for `moderator` and `admin`
+     * @apiParam (Data) {int} [settings.facebook_id] The facebook id
      * @apiUse User
      * @apiError (Error 422) validation The given data failed to pass validation
      * @apiError (Error 422) save The validated user save failed

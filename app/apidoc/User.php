@@ -13,8 +13,8 @@
  * @apiParam (Data) {int} daily_achievements The user daily achievements
  * @apiParam (Data) {bool} premium If the user is premium or not
  * @apiParam (Data) {array} settings The user options
- * @apiParam (Data) {string} [settings.facebook_id] If the user has a facebook id
  * @apiParam (Data) {bool} settings.sound If the user has enabled sounds
+ * @apiParam (Data) {string} [settings.facebook_id] If the user has a facebook id
  * @apiParam (Data) {string} [stripe_id=null] The Stripe customer id
  * @apiParam (Data) {string} [card_brand=null] The card brand (Visa, etc.)
  * @apiParam (Data) {string} [card_last_four=null] The card last four digits
@@ -37,6 +37,7 @@
  * @apiSuccess {bool} users.premium If the user is premium or not
  * @apiSuccess {array} users.settings The user options
  * @apiSuccess {bool} users.settings.sound If the user has enabled sounds
+ * @apiSuccess {string} [users.settings.facebook_id] If the user has a facebook id
  * @apiSuccess {string} users.stripe_id The Stripe customer id
  * @apiSuccess {string} users.card_brand The card brand (Visa, etc.)
  * @apiSuccess {string} users.card_last_four The card last four digits
@@ -58,6 +59,7 @@
  * @apiSuccess {bool} premium If the user is premium or not
  * @apiSuccess {array} settings The user options
  * @apiSuccess {bool} settings.sound If the user has enabled sounds
+ * @apiSuccess {string} [settings.facebook_id] If the user has a facebook id
  * @apiSuccess {string} stripe_id The Stripe customer id
  * @apiSuccess {string} card_brand The card brand (Visa, etc.)
  * @apiSuccess {string} card_last_four The card last four digits
