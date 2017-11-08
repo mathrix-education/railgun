@@ -34,6 +34,9 @@ echo "Running migrations"
 cd ${new_release_dir}
 php artisan migrate
 
+echo "Delete oldest releases"
+ls -dt ${releases_dir}/*/ | tail -n +6 | xargs rm -rf
+
 echo "Linking current release"
 [ -f ${current} ] && rm ${current}
 ln -nfs ${new_release_dir} ${current}

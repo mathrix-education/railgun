@@ -10,13 +10,13 @@ use Illuminate\Http\Request;
  *
  * @author Mathrix Back-End Team
  * @package App\Controllers
- * @since 0.8.1
+ * @since 1.0.0
  * @copyright Mathrix
  */
 class NotionController extends BaseController
 {
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {get} /notions/{?page}/{?perPage} Index
      * @apiGroup Notions
      * @apiName NotionsIndex
@@ -29,7 +29,7 @@ class NotionController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {get} /notions/{id} Get
      * @apiGroup Notions
      * @apiName NotionGet
@@ -42,7 +42,7 @@ class NotionController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {post} /notions Add
      * @apiGroup Notions
      * @apiName NotionAdd
@@ -58,7 +58,7 @@ class NotionController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {patch} /notions/{id} Edit
      * @apiGroup Notions
      * @apiName NotionEdit
@@ -76,7 +76,7 @@ class NotionController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {delete} /notions/{id} Delete
      * @apiGroup Notions
      * @apiName NotionDelete

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
  * Class CreateVotesTable
  *
  * @author Mathrix Back-End Team
- * @since 0.8.1
+ * @since 1.0.0
  * @copyright Mathrix
  */
 class CreateVotesTable extends Migration

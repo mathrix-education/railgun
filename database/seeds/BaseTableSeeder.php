@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
  * Class BaseTableSeeder
  *
  * @author Mathrix Back-End Team
- * @since 0.8.1
+ * @since 1.0.0
  * @copyright Mathrix
  */
 abstract class BaseTableSeeder extends Seeder
@@ -131,7 +131,8 @@ abstract class BaseTableSeeder extends Seeder
             "override" => [],
             "callback" => null,
             "loop" => null,
-            "iterate" => null
+            "iterate" => null,
+            "progressBar" => true
         ];
         $options = array_merge($defaultOptions, $options);
 

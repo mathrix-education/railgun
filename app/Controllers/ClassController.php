@@ -13,13 +13,13 @@ use Illuminate\Http\Request;
  *
  * @author Mathrix Back-End Team
  * @package App\Controllers
- * @since 0.8.1
+ * @since 1.0.0
  * @copyright Mathrix
  */
 class ClassController extends BaseController
 {
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {get} /classes/{?page}/{?perPage} Index
      * @apiGroup Classes
      * @apiName ClassesIndex
@@ -30,7 +30,7 @@ class ClassController extends BaseController
      */
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {get} /classes/{id} Get
      * @apiGroup Classes
      * @apiName ClassGet
@@ -43,7 +43,7 @@ class ClassController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {post} /classes Add
      * @apiGroup Classes
      * @apiName ClassAdd
@@ -59,7 +59,7 @@ class ClassController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {patch} /classes/{id} Edit
      * @apiGroup Classes
      * @apiName ClassEdit
@@ -77,7 +77,7 @@ class ClassController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {delete} /classes/{id} Delete (Not implemented)
      * @apiGroup Classes
      * @apiName ClassDelete

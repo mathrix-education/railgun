@@ -12,13 +12,13 @@ use Illuminate\Http\Request;
  *
  * @author Mathrix Back-End Team
  * @package App\Controllers
- * @since 0.8.1
+ * @since 1.0.0
  * @copyright Mathrix
  */
 class ReportController extends BaseController
 {
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {get} /reports/{?page}/{?perPage} Index
      * @apiGroup Reports
      * @apiName ReportsIndex
@@ -56,7 +56,7 @@ class ReportController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {post} /reports Add
      * @apiGroup Reports
      * @apiName ReportAdd

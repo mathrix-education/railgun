@@ -17,7 +17,7 @@ use Laravel\Cashier\Http\Controllers\WebhookController as CashierController;
  *
  * @author Mathrix Back-End Team
  * @package App\Controllers
- * @since 0.8.1
+ * @since 1.0.0
  * @copyright Mathrix
  */
 class StripeController extends CashierController
@@ -39,7 +39,7 @@ class StripeController extends CashierController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {post} /stripe/subscribe/{stripe_plan} Subscribe
      * @apiGroup Stripe
      * @apiName StripeSubscribe
@@ -97,7 +97,7 @@ class StripeController extends CashierController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {get} /stripe/estimate/{stripe_plan} Estimate
      * @apiGroup Stripe
      * @apiName StripeEstimate

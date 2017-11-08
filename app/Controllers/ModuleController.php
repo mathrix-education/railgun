@@ -17,13 +17,13 @@ use Illuminate\Http\Request;
  *
  * @author Mathrix Back-End Team
  * @package App\Controllers
- * @since 0.8.1
+ * @since 1.0.0
  * @copyright Mathrix
  */
 class ModuleController extends BaseController
 {
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {get} /modules/{page} Index
      * @apiGroup Modules
      * @apiName ModulesIndex
@@ -36,7 +36,7 @@ class ModuleController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {get} /modules/{id} Get
      * @apiGroup Modules
      * @apiName ModuleGet
@@ -70,7 +70,7 @@ class ModuleController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {post} /modules Add
      * @apiGroup Modules
      * @apiName ModuleAdd
@@ -86,7 +86,7 @@ class ModuleController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {patch} /modules/{id} Edit
      * @apiGroup Modules
      * @apiName ModuleEdit
@@ -104,7 +104,7 @@ class ModuleController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {delete} /modules/{id} Delete
      * @apiGroup Modules
      * @apiName ModuleDelete
@@ -118,7 +118,7 @@ class ModuleController extends BaseController
 
 
     /**
-     * @apiVersion 0.8.1
+     * @apiVersion 1.0.0
      * @api {patch} /modules/{id}/mark Mark
      * @apiGroup Modules
      * @apiName ModuleMark

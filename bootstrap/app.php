@@ -44,6 +44,12 @@ $app->singleton(
     Laravel\Lumen\Console\Kernel::class
 );
 
+$app->singleton(
+    Illuminate\Contracts\Filesystem\Factory::class,
+    function ($app) {
+        return new Illuminate\Filesystem\FilesystemManager($app);
+    }
+);
 /*
 |--------------------------------------------------------------------------
 | External configurations
@@ -57,6 +63,7 @@ $app->configure('auth');
 $app->configure('cors');
 $app->configure('mail');
 $app->configure('services');
+$app->configure('filesystems');
 
 if ($app->environment() !== 'production') {
     $app->configure('ide-helper');
@@ -103,6 +110,8 @@ $app->register(App\Providers\NewsletterServiceProvider::class);
 $app->register(Laravel\Passport\PassportServiceProvider::class);
 $app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
 $app->register(Barryvdh\Cors\ServiceProvider::class);
+$app->register(Illuminate\Filesystem\FilesystemServiceProvider::class);
+
 
 if ($app->environment("stage", "master")) {
     $app->register(Sentry\SentryLaravel\SentryLumenServiceProvider::class);
