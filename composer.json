@@ -14,7 +14,8 @@
     "barryvdh/laravel-cors": "^0.9.3",
     "illuminate/routing": "^5.5",
     "spatie/laravel-newsletter": "^4.1",
-    "sentry/sentry-laravel": "^0.8.0"
+    "sentry/sentry-laravel": "^0.8.0",
+    "league/flysystem": " ~1.0"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

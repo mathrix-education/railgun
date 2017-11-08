@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
+use App\Exceptions\Http401UnauthorizedException;
 use App\Models\Activity;
 use App\Models\Chapter;
 use App\Models\Class_;
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class ContentController
@@ -45,59 +47,6 @@ class ContentController extends BaseController
     public function countries()
     {
         $data = Country::with("classes")->get();
-
-        return response()->json($data);
-    }
-
-
-    /**
-     * @apiVersion 1.0.0
-     * @api {get} /content/program/{classId} Program
-     * @apiGroup Content
-     * @apiName ContentProgram
-     * @apiDescription Retrieve content data by class id
-     * @apiPermission public
-     * @apiParam {int} id The class id
-     * @apiSuccess {int} id The class id
-     * @apiSuccess {string} name The class name
-     * @apiSuccess {string} name_short The class short name
-     * @apiSuccess {string} slug The class slug
-     * @apiSuccess {string} slug_short The class short slug
-     * @apiSuccess {string} country_id The class country id
-     * @apiSuccess {Discipline[]} disciplines The disciplines
-     * @apiSuccess {int} disciplines.id The discipline id
-     * @apiSuccess {int} disciplines.name The discipline name
-     * @apiSuccess {int} disciplines.slug The discipline slug
-     * @apiSuccess {Chapter[]} disciplines.chapters The chapters
-     * @apiSuccess {int} disciplines.chapters.id The chapter id
-     * @apiSuccess {string} disciplines.chapters.name The chapter name
-     * @apiSuccess {string} disciplines.chapters.slug The chapter slug
-     * @apiSuccess {Notion[]} disciplines.chapters.notions The notions
-     * @apiSuccess {int} disciplines.chapters.notions.id The notion id
-     * @apiSuccess {string} disciplines.chapters.notions.name The notion name
-     * @apiSuccess {string} disciplines.chapters.notions.slug The notion slug
-     * @apiSuccess {string} disciplines.chapters.notions.description The notion description
-     * @apiSuccess {Activity[]} disciplines.chapters.notion.activities The activities
-     * @apiSuccess {int} disciplines.chapters.notions.activities.id The activity id
-     * @apiSuccess {string} disciplines.chapters.notions.activities.name The activity name
-     * @apiSuccess {string} disciplines.chapters.notions.activities.slug The activity slug
-     * @apiSuccess {string} disciplines.chapters.notions.activities.description The activity description
-     * @apiError (Error 404) model_not_found Class with given id does not exist
-     *
-     * @param int $classId The class id
-     *
-     * @return JsonResponse
-     */
-    public function program(int $classId)
-    {
-        $data = Class_::with([
-            "disciplines.chapters" => function (HasMany $query) use ($classId) {
-                $query->getQuery()
-                    ->where("class_id", $classId)
-                    ->get(["id", "name", "slug"]);
-            },
-            "disciplines.chapters.notions.activities"
-        ])->where("id", $classId)->firstOrFail();
 
         return response()->json($data);
     }
@@ -255,9 +204,9 @@ class ContentController extends BaseController
             })
             ->with(["notions", "notions.chapter", "notions.chapter.discipline", "notions.chapter.class_",
                 "notions.chapter.class_.country", "modules" => function (BelongsToMany $q) use ($query) {
-                return $q->where("type", "=", "course")
-                    ->where("content", "LIKE", "%[video]%");
-            }])
+                    return $q->where("type", "=", "course")
+                        ->where("content", "LIKE", "%[video]%");
+                }])
             ->limit($perPage)
             ->offset(($page - 1) * $perPage)
             ->get();
@@ -335,5 +284,67 @@ class ContentController extends BaseController
             "chapters" => $chapters,
             "notions" => $notions
         ]);
+    }
+
+
+    /**
+     * @apiVersion 1.0.0
+     * @api {post} /content/upload Upload
+     * @apiGroup Content
+     * @apiName ContentUpload
+     * @apiDescription Upload a file to the cdn
+     * @apiPermission public
+     * @apiParam (Data) {file} file The file to upload (must be jpeg,jpg,png,gif,pdf,mp3,mp4)
+     * @apiParam (Data) {string} destination The file destination on the cdn
+     * @apiParam (Data) {string} name The file destination on the cdn
+     * @apiSuccess url The file url on the cdn
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     * @throws Http401UnauthorizedException
+     */
+    public function upload(Request $request)
+    {
+        if ($request->user()->cant('upload')) {
+            throw new Http401UnauthorizedException();
+        }
+
+        $this->validate($request, [
+            "file" => "required|file|max:15360|mimes:jpeg,jpg,png,gif,pdf,mp3,mp4",
+            "destination" => "required",
+            "name" => "required"
+        ]);
+
+        $request->file("file")->storeAs(
+            $request->input("destination"),
+            $request->input("name")
+        );
+
+        return response()->json([
+            "url" => env("APP_CDN") . "/{$request->input("destination")}/{$request->input("name")}"
+        ]);
+    }
+
+
+    /**
+     * @apiVersion 1.0.0
+     * @api {get} /content/tree Tree
+     * @apiGroup Content
+     * @apiName ContentTree
+     * @apiDescription Retrieve all cdn files
+     * @apiPermission public
+     * @apiSuccess {string[]} - The cdn files
+     * @return JsonResponse
+     */
+    public function tree()
+    {
+        $tree = Storage::disk("cdn")->allFiles();
+
+        foreach ($tree as $key => $file) {
+            $tree[$key] = env("APP_CDN") . "/$file";
+        }
+
+        return response()->json($tree);
     }
 }

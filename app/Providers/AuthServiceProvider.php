@@ -14,6 +14,7 @@ use App\Models\Module;
 use App\Models\Notion;
 use App\Models\Post;
 use App\Models\Quote;
+use App\Models\Report;
 use App\Models\User;
 use App\Policies\ActivityPolicy;
 use App\Policies\CategoryPolicy;
@@ -28,6 +29,7 @@ use App\Policies\ModulePolicy;
 use App\Policies\NotionPolicy;
 use App\Policies\PostPolicy;
 use App\Policies\QuotePolicy;
+use App\Policies\ReportPolicy;
 use App\Policies\UserPolicy;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
@@ -76,5 +78,6 @@ class AuthServiceProvider extends ServiceProvider
         Gate::policy(Quote::class, QuotePolicy::class);
         // No policy for logs as it is a system-side process
         Gate::policy(Level::class, LevelPolicy::class);
+        Gate::policy(Report::class, ReportPolicy::class);
     }
 }

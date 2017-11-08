@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $slug
  * @property bool $premium
  * @property bool $visible
+ * @property int $order
  * @property int $chapter_id
  * @property-read Collection|Activity[] $activities
  * @property-read Chapter $chapter
@@ -22,6 +23,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Notion whereId($value)
  * @method static Builder|Notion whereName($value)
  * @method static Builder|Notion whereSlug($value)
+ * @method static Builder|Notion whereOrder($value)
  * @method static Builder|Notion wherePremium($value)
  * @method static Builder|Notion whereVisible($value)
  * @mixin \Eloquent
