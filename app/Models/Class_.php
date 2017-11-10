@@ -41,7 +41,7 @@ class Class_ extends BaseModel
     protected $table = "classes";
 
     /** @var array The fillable attributes */
-    protected $fillable = ["name", "name_short", "slug", "slug_short", "order", "visible", "parent_id", "country_id"];
+    protected $fillable = ["id", "name", "name_short", "slug", "slug_short", "order", "visible", "parent_id", "country_id"];
 
     /** @var array Validation rules */
     protected $rules = [

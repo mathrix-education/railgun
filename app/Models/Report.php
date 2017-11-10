@@ -22,6 +22,12 @@ class Report extends BaseModel
 {
     public const STATUSES = ["todo", "done", "validated"];
 
+    /** @var array The fillable attributes */
+    protected $fillable = ["id", "name", "content", "status", "module_id", "created_at", "updated_at"];
+
+    /** @var bool If timestamps (created_at and updated_at) should be used */
+    public $timestamps = true;
+
     /** @var array The validation rules */
     protected $rules = [
         "name" => "required|max:255",
@@ -37,5 +43,4 @@ class Report extends BaseModel
 
         parent::__construct($attributes);
     }
-
 }

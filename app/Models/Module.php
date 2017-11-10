@@ -42,7 +42,7 @@ class Module extends BaseModel
 {
     use Commentable;
 
-    public const TYPES = ["course", "test", "mcq", "mcq-table", "match", "fill", "flashcard"];
+    public const TYPES = ["id", "course", "test", "mcq", "mcq-table", "match", "fill", "flashcard"];
 
     /** @var array The fillable attributes */
     protected $fillable = ["type", "content", "questions", "choices", "solutions", "corrections", "options", "link"];

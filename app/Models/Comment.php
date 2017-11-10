@@ -56,7 +56,7 @@ class Comment extends BaseModel
     public $timestamps = true;
 
     /** @var array The fillable attributes */
-    protected $fillable = ["content", "score", "parent_id", "user_id", "commentable_id", "commentable_type",
+    protected $fillable = ["id", "content", "score", "parent_id", "user_id", "commentable_id", "commentable_type",
         "created_at", "updated_at", "deleted_at"];
 
     /** @var array Validation rules */

@@ -37,7 +37,7 @@ class Course extends BaseModel
     public $timestamps = true;
 
     /** @var array The fillable attributes */
-    protected $fillable = ["title", "slug", "content", "category_id", "created_at", "updated_at"];
+    protected $fillable = ["id", "title", "slug", "content", "category_id", "created_at", "updated_at"];
 
     /** @var array Validation rules */
     protected $rules = [
