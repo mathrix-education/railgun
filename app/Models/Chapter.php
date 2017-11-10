@@ -32,7 +32,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Chapter extends BaseModel
 {
     /** @var array The fillable attributes */
-    protected $fillable = ["name", "slug", "class_id", "discipline_id", "visible", "order"];
+    protected $fillable = ["id", "name", "slug", "class_id", "discipline_id", "visible", "order"];
 
     /** @var array Validation rules */
     protected $rules = [

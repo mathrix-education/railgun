@@ -513,6 +513,15 @@
     "order": 11
   },
   {
+    "id": 249,
+    "name": "Les Graphes",
+    "slug": "",
+    "class_id": 10,
+    "discipline_id": 1,
+    "visible": true,
+    "order": 12
+  },
+  {
     "id": 106,
     "name": "Objectif BAC",
     "slug": "objectif-bac",
@@ -549,18 +558,18 @@
     "order": 4
   },
   {
-    "id": 65,
-    "name": "Fonction Exponentielle",
-    "slug": "fonction-exponentielle",
+    "id": 60,
+    "name": "Les Suites",
+    "slug": "suites-numeriques",
     "class_id": 11,
     "discipline_id": 1,
     "visible": true,
     "order": 6
   },
   {
-    "id": 60,
-    "name": "Les Suites",
-    "slug": "suites-numeriques",
+    "id": 65,
+    "name": "Fonction Exponentielle",
+    "slug": "fonction-exponentielle",
     "class_id": 11,
     "discipline_id": 1,
     "visible": true,
@@ -702,6 +711,24 @@
     "order": 5
   },
   {
+    "id": 131,
+    "name": "Equations du Premier Degr\u00e9",
+    "slug": "equations-premier-degre",
+    "class_id": 12,
+    "discipline_id": 1,
+    "visible": true,
+    "order": 6
+  },
+  {
+    "id": 132,
+    "name": "In\u00e9galit\u00e9s et In\u00e9quations",
+    "slug": "inegalites-et-inequations",
+    "class_id": 12,
+    "discipline_id": 1,
+    "visible": true,
+    "order": 7
+  },
+  {
     "id": 133,
     "name": "Proportionnalit\u00e9",
     "slug": "proportionnalite",
@@ -718,6 +745,96 @@
     "discipline_id": 1,
     "visible": true,
     "order": 9
+  },
+  {
+    "id": 136,
+    "name": "Notion de Fonction",
+    "slug": "notion-de-fonction",
+    "class_id": 12,
+    "discipline_id": 1,
+    "visible": true,
+    "order": 10
+  },
+  {
+    "id": 139,
+    "name": "Fonctions Lin\u00e9aires et Affines",
+    "slug": "fonctions-lineaires-affines",
+    "class_id": 12,
+    "discipline_id": 1,
+    "visible": true,
+    "order": 11
+  },
+  {
+    "id": 138,
+    "name": "Aires, Volumes et Grandeurs",
+    "slug": "aires-volumes-grandeurs",
+    "class_id": 12,
+    "discipline_id": 1,
+    "visible": true,
+    "order": 12
+  },
+  {
+    "id": 140,
+    "name": "Angles et Triangles",
+    "slug": "angles-triangles",
+    "class_id": 12,
+    "discipline_id": 1,
+    "visible": true,
+    "order": 13
+  },
+  {
+    "id": 141,
+    "name": "Parall\u00e9logramme et Transformations",
+    "slug": "parallelogramme-transformations",
+    "class_id": 12,
+    "discipline_id": 1,
+    "visible": true,
+    "order": 14
+  },
+  {
+    "id": 150,
+    "name": "Th\u00e9or\u00e8me de Pythagore",
+    "slug": "theoreme-pythagore",
+    "class_id": 12,
+    "discipline_id": 1,
+    "visible": true,
+    "order": 15
+  },
+  {
+    "id": 151,
+    "name": "Th\u00e9or\u00e8me de Thal\u00e8s et Proportionnalit\u00e9",
+    "slug": "theoreme-thales-proprtionnalite",
+    "class_id": 12,
+    "discipline_id": 1,
+    "visible": true,
+    "order": 16
+  },
+  {
+    "id": 148,
+    "name": "Trigonom\u00e9trie",
+    "slug": "trigonometrie",
+    "class_id": 12,
+    "discipline_id": 1,
+    "visible": true,
+    "order": 17
+  },
+  {
+    "id": 144,
+    "name": "G\u00e9om\u00e9trie dans l'Espace",
+    "slug": "geometrie-dans-espace",
+    "class_id": 12,
+    "discipline_id": 1,
+    "visible": true,
+    "order": 18
+  },
+  {
+    "id": 145,
+    "name": "Algorithmique et Programmation",
+    "slug": "algorithmique-programmation",
+    "class_id": 12,
+    "discipline_id": 1,
+    "visible": true,
+    "order": 19
   },
   {
     "id": 152,
@@ -828,6 +945,24 @@
     "order": 12
   },
   {
+    "id": 163,
+    "name": "Angles et Triangles",
+    "slug": "angles-triangles",
+    "class_id": 13,
+    "discipline_id": 1,
+    "visible": true,
+    "order": 13
+  },
+  {
+    "id": 164,
+    "name": "Parall\u00e9logramme et Transformations",
+    "slug": "parallelogramme-transformations",
+    "class_id": 13,
+    "discipline_id": 1,
+    "visible": true,
+    "order": 14
+  },
+  {
     "id": 169,
     "name": "Th\u00e9or\u00e8me de Pythagore",
     "slug": "theoreme-pythagore",
@@ -853,6 +988,24 @@
     "discipline_id": 1,
     "visible": true,
     "order": 17
+  },
+  {
+    "id": 165,
+    "name": "G\u00e9om\u00e9trie dans l'Espace",
+    "slug": "geometrie-dans-espace",
+    "class_id": 13,
+    "discipline_id": 1,
+    "visible": true,
+    "order": 18
+  },
+  {
+    "id": 166,
+    "name": "Algorithmique et Programmation",
+    "slug": "algorithmique-programmation",
+    "class_id": 13,
+    "discipline_id": 1,
+    "visible": true,
+    "order": 19
   },
   {
     "id": 171,
@@ -972,6 +1125,24 @@
     "order": 13
   },
   {
+    "id": 182,
+    "name": "Angles et Triangles",
+    "slug": "angles-triangles",
+    "class_id": 14,
+    "discipline_id": 1,
+    "visible": true,
+    "order": 14
+  },
+  {
+    "id": 183,
+    "name": "Parall\u00e9logramme et Transformations",
+    "slug": "parallelogramme-transformations",
+    "class_id": 14,
+    "discipline_id": 1,
+    "visible": true,
+    "order": 15
+  },
+  {
     "id": 188,
     "name": "Th\u00e9or\u00e8me de Pythagore",
     "slug": "theoreme-pythagore",
@@ -997,5 +1168,23 @@
     "discipline_id": 1,
     "visible": true,
     "order": 18
+  },
+  {
+    "id": 184,
+    "name": "G\u00e9om\u00e9trie dans l'Espace",
+    "slug": "geometrie-dans-espace",
+    "class_id": 14,
+    "discipline_id": 1,
+    "visible": true,
+    "order": 19
+  },
+  {
+    "id": 185,
+    "name": "Algorithmique et Programmation",
+    "slug": "algorithmique-programmation",
+    "class_id": 14,
+    "discipline_id": 1,
+    "visible": true,
+    "order": 20
   }
 ]

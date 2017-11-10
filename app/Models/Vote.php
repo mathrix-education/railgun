@@ -34,7 +34,7 @@ class Vote extends BaseModel
     public $timestamps = true;
 
     /** @var array The fillable attributes */
-    protected $fillable = ["value", "user_id", "votable_id", "votable_type"];
+    protected $fillable = ["id", "value", "user_id", "votable_id", "votable_type"];
 
     /** @var array Validation rules */
     protected $rules = [

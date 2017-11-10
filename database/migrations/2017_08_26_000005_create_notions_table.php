@@ -1,4 +1,5 @@
 <?php
+use App\Models\Notion;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -23,7 +24,7 @@ class CreateNotionsTable extends Migration
             $table->increments("id");
             $table->string("name");
             $table->string("slug");
-            $table->boolean("premium");
+            $table->enum("type", Notion::TYPES);
             $table->integer("order")->default(0);
             $table->boolean("visible")->default(true);
             $table->integer("chapter_id")->unsigned();

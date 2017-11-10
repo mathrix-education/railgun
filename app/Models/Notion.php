@@ -30,8 +30,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class Notion extends BaseModel
 {
+    public const TYPES = ["normal", "premium", "reminder", "further"];
+
     /** @var array The The fillable attributes */
-    protected $fillable = ["name", "slug", "visible", "chapter_id", "link"];
+    protected $fillable = ["id", "name", "slug", "type", "order", "visible", "chapter_id", "link"];
 
     /** @var array The validation rules */
     protected $rules = [
@@ -40,6 +42,14 @@ class Notion extends BaseModel
         "chapter_id" => "required|exists:chapters,id"
     ];
 
+
+    public function __construct(array $attributes = [])
+    {
+        // Dynamic rules
+        $this->rules["type"] = "required|in:" . implode(",", self::TYPES);
+
+        parent::__construct($attributes);
+    }
 
     /*
     |--------------------------------------------------------------------------

@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Category extends BaseModel
 {
     /** @var array The fillable attributes */
-    protected $fillable = ["name", "slug"];
+    protected $fillable = ["id", "name", "slug"];
 
     /** @var array Validation rules */
     protected $rules = [
