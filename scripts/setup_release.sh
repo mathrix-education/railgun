@@ -19,7 +19,7 @@ echo "Running npm install"
 npm install --silent
 
 echo "Generating docs"
-apidoc -i app/ -o docs/ --silent
+apidoc -i app/ -o docs/apidoc/ --silent
 
 echo "Generating emails"
 gulp mjml --silent
