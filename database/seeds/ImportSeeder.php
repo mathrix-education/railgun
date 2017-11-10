@@ -45,10 +45,10 @@ class ImportSeeder extends BaseTableSeeder
         // Users
         $this->seedFromJson(Level::class);
         $this->seedFromJson(User::class, "v2");
-        $this->seedFromJson(Subscription::class);
+        $this->seedFromJson(Subscription::class, "v2");
 
         // Blog
-        $this->seedFromJson(Category::class);
+        $this->seedFromJson(Category::class, "v2");
         $this->seedFromJson(Post::class, "v2");
     }
 }
