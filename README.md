@@ -5,6 +5,7 @@ Written by Mathieu Bour and Dimitri Bret for Mathrix.
 
 - [Documentation](https://docs.institut.mathrix.fr)
 - [Code conventions](docs/md/conventions.md)
+- [Scripts](docs/md/scripts.md)
 
 
 ### Installation

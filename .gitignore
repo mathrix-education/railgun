@@ -5,6 +5,7 @@ _ide_helper.php
 /.idea
 /docs
 !/docs/md
+/database/v2/
 /node_modules
 /resources/views/emails/**/*.html
 /resources/views/emails/**/*.blade.php
