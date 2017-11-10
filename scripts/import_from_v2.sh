@@ -21,9 +21,9 @@ echo "Downloaded:  activities"
 echo "Downloading: modules"
 wget https://mathrix.fr/test?table=modules -O database/v2/modules.json
 echo "Downloaded:  modules"
-echo "Downloading: modules"
-wget https://mathrix.fr/test?table=modules -O database/v2/modules.json
-echo "Downloaded:  modules"
+echo "Downloading: class_disicpline"
+wget https://mathrix.fr/test?table=class_disicpline -O database/v2/class_disicpline.json
+echo "Downloaded:  class_disicpline"
 echo "Downloading: activity_notion"
 wget https://mathrix.fr/test?table=notions_activities -O database/v2/activity_notion.json
 echo "Downloaded:  activity_notion"
