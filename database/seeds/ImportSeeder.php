@@ -30,25 +30,25 @@ class ImportSeeder extends BaseTableSeeder
         $this->seedFromJson(Client::class);
 
         // Content
-        $this->seedFromJson(Country::class);
-        $this->seedFromJson(Class_::class);
-        $this->seedFromJson(Discipline::class);
-        $this->seedFromJson(Chapter::class);
-        $this->seedFromJson(Notion::class);
-        $this->seedFromJson(Activity::class);
-        $this->seedFromJson(Module::class);
+        $this->seedFromJson(Country::class, "v2");
+        $this->seedFromJson(Class_::class, "v2");
+        $this->seedFromJson(Discipline::class, "v2");
+        $this->seedFromJson(Chapter::class, "v2");
+        $this->seedFromJson(Notion::class, "v2");
+        $this->seedFromJson(Activity::class, "v2");
+        $this->seedFromJson(Module::class, "v2");
 
-        $this->seedAttachmentsFromJson(Class_::class, Discipline::class);
-        $this->seedAttachmentsFromJson(Activity::class, Notion::class);
-        $this->seedAttachmentsFromJson(Activity::class, Module::class);
+        $this->seedAttachmentsFromJson(Class_::class, Discipline::class, "v2");
+        $this->seedAttachmentsFromJson(Activity::class, Notion::class, "v2");
+        $this->seedAttachmentsFromJson(Activity::class, Module::class, "v2");
 
         // Users
         $this->seedFromJson(Level::class);
-        $this->seedFromJson(User::class);
+        $this->seedFromJson(User::class, "v2");
         $this->seedFromJson(Subscription::class);
 
         // Blog
         $this->seedFromJson(Category::class);
-        $this->seedFromJson(Post::class);
+        $this->seedFromJson(Post::class, "v2");
     }
 }
