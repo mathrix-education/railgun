@@ -22,17 +22,17 @@ class DatabaseSeeder extends BaseTableSeeder
         // Main site
         $this->seedFromJson(Client::class);
 
-        // Users
-        $this->call(UserTableSeeder::class);
-
-        // Blog
-        $this->call(PostTableSeeder::class);
-        $this->call(CourseTableSeeder::class);
-
         // Content
         $this->call(ChapterTableSeeder::class);
         $this->call(NotionTableSeeder::class);
         $this->call(ActivityTableSeeder::class);
         $this->call(ModuleTableSeeder::class);
+
+        // Blog
+        $this->call(PostTableSeeder::class);
+        $this->call(CourseTableSeeder::class);
+
+        // Users
+        $this->call(UserTableSeeder::class);
     }
 }

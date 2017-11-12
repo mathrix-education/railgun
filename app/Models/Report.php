@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * App\Models\Report
@@ -42,5 +43,14 @@ class Report extends BaseModel
         $this->rules["status"] = "required|in:" . implode(",", self::STATUSES);
 
         parent::__construct($attributes);
+    }
+
+
+    /**
+     * BelongsTo Module
+     * @return BelongsTo
+     */
+    public function module() {
+        return $this->belongsTo(Module::class);
     }
 }
