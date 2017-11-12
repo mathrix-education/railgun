@@ -45,7 +45,8 @@ class Module extends BaseModel
     public const TYPES = ["id", "course", "test", "mcq", "mcq-table", "match", "fill", "flashcard"];
 
     /** @var array The fillable attributes */
-    protected $fillable = ["type", "content", "questions", "choices", "solutions", "corrections", "options", "link"];
+    protected $fillable = ["type", "content", "questions", "choices", "solutions", "corrections", "options", "visible",
+        "link"];
 
     /** @var array The attributes that should be cast to native types */
     protected $casts = [

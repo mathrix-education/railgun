@@ -125,7 +125,7 @@ class ModuleController extends BaseController
      * @apiDescription Mark an module as completed or not
      * @apiUse Bearer
      * @apiPermission registered
-     * @apiParam (Data) {string=completed,null} [status=null] The meta status
+     * @apiParam (Data) {string=completed,to_revise,null} [status=null] The meta status
      * @apiParam (Data) {int} user_id The meta user id
      * @apiParam (Data) {int} country_id The meta country_id
      * @apiParam (Data) {int} class_id_id The meta class_id_id
