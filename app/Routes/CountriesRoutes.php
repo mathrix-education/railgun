@@ -2,6 +2,7 @@
 /** @var Laravel\Lumen\Routing\Router $router */
 $router->group(["prefix" => "countries"], function () use ($router) {
     $router->get("", "CountryController@index");
+    $router->get("{page:[0-9]+}/{perPage:[0-9]+}", "CountryController@index");
     $router->get("{id:[0-9]+}", "CountryController@get");
 
     $router->group(["middleware" => "auth:api"], function () use ($router) {

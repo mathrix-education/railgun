@@ -2,6 +2,7 @@
 /** @var Laravel\Lumen\Routing\Router $router */
 $router->group(["prefix" => "notions"], function () use ($router) {
     $router->get("", "NotionController@index");
+    $router->get("{page:[0-9]+}/{perPage:[0-9]+}", "NotionController@index");
     $router->get("{id:[0-9]+}", "NotionController@get");
 
     $router->group(["middleware" => "auth:api"], function () use ($router) {
