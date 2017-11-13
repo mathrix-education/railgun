@@ -31,13 +31,12 @@ abstract class BaseTableSeeder extends Seeder
      * Seed database from a json file
      *
      * @param string $modelClass
+     * @param string $dir
      * @param bool $progressBar
      *
      * @return bool
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
      */
-    public function seedFromJson(string $modelClass, bool $progressBar = true)
+    public function seedFromJson(string $modelClass, string $dir = "raws", bool $progressBar = true)
     {
         switch ($modelClass) {
             case "Laravel\\Passport\\Client":
@@ -53,7 +52,7 @@ abstract class BaseTableSeeder extends Seeder
 
         $this->println("<comment>Seeding:</comment> $table from json");
 
-        $data = $this->loadFromRawJson($table);
+        $data = $this->loadFromRawJson($table, $dir);
 
         // Progress bar
         if ($progressBar) {
@@ -96,14 +95,15 @@ abstract class BaseTableSeeder extends Seeder
      *
      * @param string $table the json file
      *
+     * @param string $dir
+     *
      * @return array
-     * @throws FileNotFoundException
      */
-    public function loadFromRawJson(string $table): array
+    public function loadFromRawJson(string $table, $dir = "raws"): array
     {
         $childClass = new ReflectionClass($this);
 
-        $path = dirname($childClass->getFileName(), 2) . "/raws/$table.json";
+        $path = dirname($childClass->getFileName(), 2) . "/$dir/$table.json";
 
         if (file_exists($path)) {
             return json_decode(file_get_contents($path), true);
@@ -167,8 +167,10 @@ abstract class BaseTableSeeder extends Seeder
      *
      * @param BaseModel|string $modelClass1
      * @param BaseModel|string $modelClass2
+     * @param string $dir
+     * @param bool $progressBar
      */
-    public function seedAttachmentsFromJson($modelClass1, $modelClass2, bool $progressBar = true)
+    public function seedAttachmentsFromJson($modelClass1, $modelClass2, string $dir = "raws", bool $progressBar = true)
     {
         $model1Table = $modelClass1::getTableName();
         $model2Table = $modelClass2::getTableName();
@@ -180,7 +182,7 @@ abstract class BaseTableSeeder extends Seeder
 
         $this->println("<comment>Seeding:</comment> $joinTableName from json");
 
-        $data = $this->loadFromRawJson($joinTableName);
+        $data = $this->loadFromRawJson($joinTableName, $dir);
         $links = [];
 
         foreach ($data as $row) {

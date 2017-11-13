@@ -3,8 +3,8 @@ _ide_helper.php
 .phpstorm.meta.php
 
 /.idea
-/docs
-!/docs/md
+/docs/apidoc
+/database/v2/
 /node_modules
 /resources/views/emails/**/*.html
 /resources/views/emails/**/*.blade.php

@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
 class Quote extends BaseModel
 {
     /** @var array The fillable attributes */
-    protected $fillable = ["content", "author"];
+    protected $fillable = ["id", "content", "author"];
 
     /** @var array Validation rules */
     protected $rules = [

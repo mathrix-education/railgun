@@ -1,9 +1,9 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . "/../vendor/autoload.php";
 
 try {
-    (new Dotenv\Dotenv(__DIR__ . '/../'))->load();
+    (new Dotenv\Dotenv(__DIR__ . "/../"))->load();
 } catch (Dotenv\Exception\InvalidPathException $e) {
     //
 }
@@ -14,14 +14,15 @@ try {
 |--------------------------------------------------------------------------
 |
 | Here we will load the environment and create the application instance
-| that serves as the central piece of this framework. We'll use this
+| that serves as the central piece of this framework. We"ll use this
 | application as an "IoC" container and router for this framework.
 |
 */
 
-$app = new Laravel\Lumen\Application(realpath(__DIR__ . '/../'));
+$app = new Laravel\Lumen\Application(realpath(__DIR__ . "/../"));
 $app->withFacades();
 $app->withEloquent();
+
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,8 @@ $app->singleton(
         return new Illuminate\Filesystem\FilesystemManager($app);
     }
 );
+
+
 /*
 |--------------------------------------------------------------------------
 | External configurations
@@ -59,15 +62,16 @@ $app->singleton(
 |
 */
 
-$app->configure('auth');
-$app->configure('cors');
-$app->configure('mail');
-$app->configure('services');
-$app->configure('filesystems');
+$app->configure("auth");
+$app->configure("cors");
+$app->configure("mail");
+$app->configure("services");
+$app->configure("filesystems");
 
-if ($app->environment() !== 'production') {
-    $app->configure('ide-helper');
+if ($app->environment() !== "production") {
+    $app->configure("ide-helper");
 }
+
 
 /*
 |--------------------------------------------------------------------------
@@ -76,24 +80,25 @@ if ($app->environment() !== 'production') {
 |
 | Next, we will register the middleware with the application. These can
 | be global middleware that run before and after each request into a
-| route or middleware that'll be assigned to some specific routes.
+| route or middleware that"ll be assigned to some specific routes.
 |
 */
 
 $app->middleware([
-    \Barryvdh\Cors\HandleCors::class,
+    Barryvdh\Cors\HandleCors::class,
 ]);
 
 $app->routeMiddleware([
-    'auth' => App\Middleware\Authenticate::class,
+    "auth" => App\Middleware\Authenticate::class,
 ]);
+
 
 /*
 |--------------------------------------------------------------------------
 | Register Service Providers
 |--------------------------------------------------------------------------
 |
-| Here we will register all of the application's service providers which
+| Here we will register all of the application"s service providers which
 | are used to bind services into the container. Service providers are
 | totally optional, so you are not required to uncomment this line.
 |
@@ -117,6 +122,7 @@ if ($app->environment("stage", "master")) {
     $app->register(Sentry\SentryLaravel\SentryLumenServiceProvider::class);
 }
 
+
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes
@@ -127,11 +133,21 @@ if ($app->environment("stage", "master")) {
 | can respond to, as well as the controllers that may handle them.
 |
 */
-
 Dusterio\LumenPassport\LumenPassport::routes($app->router);
 
-$app->router->group(['namespace' => 'App\Controllers'], function ($router) {
-    require __DIR__ . '/../app/Routes/web.php';
+$app->router->group(["namespace" => "App\Controllers"], function ($router) {
+    /** @var Laravel\Lumen\Routing\Router $router */
+    $router->get("/", function () use ($router) {
+        return response()->json([
+            "message" => "Welcome to Mathrix API version 1.0.0 by Mathieu Bour",
+            "commit" => trim(exec("git log --pretty=\"%h\" -n1 HEAD")),
+            "build" => basename(dirname(__DIR__, 1))
+        ]);
+    });
+
+    foreach (glob(__DIR__ . "/../app/Routes/*.php") as $routeFile) {
+        require $routeFile;
+    }
 });
 
 return $app;

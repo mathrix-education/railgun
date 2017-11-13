@@ -27,7 +27,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Country extends BaseModel
 {
     /** @var array The fillable attributes */
-    protected $fillable = ["name", "name_short", "slug", "slug_short", "visible"];
+    protected $fillable = ["id", "name", "name_short", "slug", "slug_short", "visible"];
 
     /** @var array Validation rules */
     protected $rules = [

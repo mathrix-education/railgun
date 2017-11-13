@@ -20,12 +20,12 @@ class ChapterObserver extends BaseObserver
     public function saving($chapter)
     {
         // Sluggify if needed
-        if (
-            empty($chapter->slug) ||
+        if (empty($chapter->slug) ||
             ($chapter->isDirty("name") && !$chapter->isDirty("slug"))
         ) {
             $chapter->slug = str_slug($chapter->name);
         }
+        $chapter->slug = str_slug($chapter->name);
 
         return true;
     }

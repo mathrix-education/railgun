@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Builder;
 class Level extends BaseModel
 {
     /** @var array The fillable attributes */
-    public $fillable = ["level", "objective", "youtube_id"];
+    public $fillable = ["id", "level", "objective", "youtube_id"];
 
     /** @var array The validation rules */
     protected $rules = [
