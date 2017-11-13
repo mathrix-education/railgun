@@ -48,7 +48,7 @@ class ReportController extends BaseController
 
         return response()->json(
             Report::limit($perPage)
-                ->with("modules")
+                ->with("module")
                 ->offset(($page - 1) * $perPage)
                 ->get()
         );

@@ -31,6 +31,7 @@ abstract class BaseModel extends Model
     /** @var bool|array Validation errors */
     protected $errors = false;
 
+
     /**
      * Get the table name
      *
@@ -72,11 +73,15 @@ abstract class BaseModel extends Model
      */
     public function save(array $options = [])
     {
+        if ($this->fireModelEvent('saving') === false) {
+            return false;
+        }
+
         if ($this->validateOnSave() && !$this->validate()) {
             throw new Http422ModelValidationException(null, 422, null, $this->errors);
         }
-
         $saved = parent::save($options);
+
 
         if (!$saved) {
             throw new Http422ModelSaveException();
@@ -163,6 +168,10 @@ abstract class BaseModel extends Model
 
         if ($validator->fails()) {
             $this->errors = $validator->errors()->getMessages();
+
+            var_dump($this->errors);
+            dd($this->toArray());
+
 
             return false;
         }
