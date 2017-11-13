@@ -12,8 +12,6 @@ class UserTableSeeder extends BaseTableSeeder
 {
     public function run()
     {
-        $this->seedFromJson(User::class);
-
         $this->seedFromFactory(User::class, [
             "subFactory" => "admin",
             "count" => random_int(2, 4)
