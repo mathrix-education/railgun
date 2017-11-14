@@ -68,7 +68,7 @@ $app->configure("mail");
 $app->configure("services");
 $app->configure("filesystems");
 
-if ($app->environment() !== "production") {
+if ($app->environment("dev")) {
     $app->configure("ide-helper");
 }
 
