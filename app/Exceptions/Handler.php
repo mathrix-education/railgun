@@ -29,12 +29,13 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        /*AuthorizationException::class,
+        AuthorizationException::class,
         SymphonyHttpException::class,
         ModelNotFoundException::class,
         ValidationException::class,
         OAuthServerException::class,
-        HttpException::class*/
+        Http401UnauthorizedException::class,
+        Http501NotImplementedException::class
     ];
 
 
@@ -47,9 +48,9 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
-        if (app()->bound("sentry") && $this->shouldReport($e)) {
+        /*if (app()->environment("master", "stage") && app()->bound("sentry") && $this->shouldReport($e)) {
             app("sentry")->captureException($e);
-        }
+        }*/
 
         parent::report($e);
     }
