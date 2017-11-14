@@ -3,6 +3,9 @@
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\BaseModel;
+use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
@@ -15,6 +18,59 @@ use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
  */
 abstract class BaseTableSeeder extends Seeder
 {
+    /** @var Model|BaseModel|string|null */
+    protected $modelClass = null;
+    /** @var string|null */
+    protected $table = null;
+    /** @var Illuminate\Console\OutputStyle */
+    protected $output;
+
+
+    /**
+     * BaseTableSeeder constructor.
+     */
+    public function __construct()
+    {
+        $tableSeederClass = get_class($this);
+
+        // We are in a specific table seeder
+        if (strstr($tableSeederClass, "TableSeeder")) {
+            // Guess model if not defined
+            if (empty($this->modelClass)) {
+                // Try to guess the model class
+                $guessedModelClass = str_replace("TableSeeder", "", $tableSeederClass);
+
+                // Re-add models namespace
+                $guessedModelClass = "App\\Models\\" . $guessedModelClass;
+
+                if (class_exists($guessedModelClass) && $this->modelClass === null) {
+                    $this->modelClass = $guessedModelClass;
+                }
+            }
+
+            // Get table
+            if (empty($this->table)) {
+                if ($this->modelClass instanceof BaseModel) {
+                    $this->table = $this->modelClass::getTableName();
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Write output to console
+     *
+     * @param $message
+     */
+    public function println($message)
+    {
+        if (isset($this->command) && !$this->output->isQuiet()) {
+            $this->output->writeln($message);
+        }
+    }
+
+
     /**
      * Override default call
      *
@@ -28,137 +84,128 @@ abstract class BaseTableSeeder extends Seeder
 
 
     /**
-     * Seed database from a json file
+     * Set the console command instance.
      *
-     * @param string $modelClass
-     * @param string $dir
-     * @param bool $progressBar
+     * @param  \Illuminate\Console\Command $command
      *
-     * @return bool
+     * @return $this
      */
-    public function seedFromJson(string $modelClass, string $dir = "raws", bool $progressBar = true)
+    public function setCommand(Command $command)
     {
-        switch ($modelClass) {
-            case "Laravel\\Passport\\Client":
-                $table = "oauth_clients";
-                break;
-            case "Laravel\\Cashier\\Subscription":
-                $table = "subscriptions";
-                break;
-            default:
-                $table = $modelClass::getTableName();
-                break;
-        }
+        $this->command = $command;
+        $this->output = $command->getOutput();
 
-        $this->println("<comment>Seeding:</comment> $table from json");
-
-        $data = $this->loadFromRawJson($table, $dir);
-
-        // Progress bar
-        if ($progressBar) {
-            $this->command->getOutput()->progressStart(count($data));
-        }
-
-        foreach ($data as $row) {
-            /** @var BaseModel $model */
-            $model = new $modelClass($row);
-            $model->save();
-            if ($progressBar) {
-                $this->command->getOutput()->progressAdvance();
-            }
-        }
-
-        if ($progressBar) {
-            $this->command->getOutput()->progressFinish();
-        }
-
-
-        $this->println("<info>Seeded:</info>  $table from json");
+        return $this;
     }
 
 
     /**
-     * Write output to console
+     * Load data from a json file
      *
-     * @param $message
-     */
-    public function println($message)
-    {
-        if (isset($this->command) && !$this->command->getOutput()->isQuiet()) {
-            $this->command->getOutput()->writeln($message);
-        }
-    }
-
-
-    /**
-     * Load data from a JSON file
-     *
-     * @param string $table the json file
-     *
+     * @param $filename
      * @param string $dir
      *
      * @return array
      */
-    public function loadFromRawJson(string $table, $dir = "raws"): array
+    public function loadDataFromJson($filename, $dir = "raws")
     {
         $childClass = new ReflectionClass($this);
 
-        $path = dirname($childClass->getFileName(), 2) . "/$dir/$table.json";
+        $path = dirname($childClass->getFileName(), 2) . "/$dir/$filename.json";
 
-        if (file_exists($path)) {
-            return json_decode(file_get_contents($path), true);
-        } else {
+        if (!file_exists($path)) {
             throw new FileNotFoundException($path);
+        } else {
+            return json_decode(file_get_contents($path), true);
         }
+    }
+
+
+    /**
+     * @param array $data
+     *
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
+     */
+    public function seedFromArray(array $data)
+    {
+        $this->println("<comment>Seeding:</comment> {$this->table} from json");
+
+        // Progress bar
+        $this->output->progressStart(count($data));
+
+        foreach ($data as $row) {
+            /** @var BaseModel $model */
+            $model = new $this->modelClass($row);
+            $model->save();
+            $this->output->progressAdvance();
+        }
+
+        $this->output->progressFinish();
+
+
+        $this->println("<info>Seeded:</info>  {$this->table} from json");
+    }
+
+
+    /**
+     * Seed database from a json file
+     *
+     * @param string|null $filename
+     * @param string $dir
+     *
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
+     */
+    public function seedFromJson(string $filename = null, string $dir = "raws")
+    {
+        $table = $filename == null ? $this->table : $filename;
+        $this->println("<comment>Seeding:</comment> $table from json");
+        $data = $this->loadDataFromJson($table, $dir);
+        $this->seedFromArray($data);
+        $this->println("<info>Seeded:</info>  $table from json");
     }
 
 
     /**
      * Seed from a factory
      *
-     * @param string|BaseModel $modelClass The model class
      * @param array $options
      *  "subFactory" => null
      *  "count" => 1
      *  "override" => []
      *  "callback" => null
      */
-    public function seedFromFactory($modelClass, $options = [])
+    public function seedFromFactory(array $options = [])
     {
         $defaultOptions = [
+            "modelClass" => $this->modelClass,
             "subFactory" => null,
-            "count" => 1,
+            "count" => 100,
             "override" => [],
             "callback" => null,
             "loop" => null,
-            "iterate" => null,
-            "progressBar" => true
+            "iterate" => null
         ];
         $options = array_merge($defaultOptions, $options);
+        /** @var BaseModel|string $modelClass */
+        $factoryName = $options["modelClass"] . ($options["subFactory"] !== null ? ":" . $options["subFactory"] : "");
+        $data = new Collection();
 
-        $table = $modelClass::getTableName();
-        $factoryName = $table . ($options["subFactory"] !== null ? ":" . $options["subFactory"] : "");
-
-        if ($options["loop"] === null || array_values($options["loop"])[0] === $options["iterate"]) {
-            $this->println("<comment>Seeding:</comment> $factoryName from factory");
-        }
+        $this->println("<comment>Seeding:</comment> $factoryName from factory");
 
         // Run factory
         if (is_string($options["subFactory"])) {
-            $results = factory($modelClass, $options["subFactory"], $options["count"])
-                ->create($options["override"]);
+            $data->merge(factory($options["modelClass"], $options["subFactory"], $options["count"])->raw($options["override"]));
         } else {
-            $results = factory($modelClass, $options["count"])
-                ->create($options["override"]);
+            $data->merge(factory($options["modelClass"], $options["count"])->raw($options["override"]));
         }
 
         if ($options["callback"] !== null) {
-            $results->each($options["callback"]);
+            $data->each($options["callback"]);
         }
 
-        if ($options["loop"] === null || end($options["loop"]) === $options["iterate"]) {
-            $this->println("<info>Seeded:</info>  $factoryName from factory");
-        }
+        $this->println("<info>Seeded:</info>  $factoryName from factory");
     }
 
 
@@ -168,9 +215,8 @@ abstract class BaseTableSeeder extends Seeder
      * @param BaseModel|string $modelClass1
      * @param BaseModel|string $modelClass2
      * @param string $dir
-     * @param bool $progressBar
      */
-    public function seedAttachmentsFromJson($modelClass1, $modelClass2, string $dir = "raws", bool $progressBar = true)
+    public function seedAttachmentsFromJson($modelClass1, $modelClass2, string $dir = "raws")
     {
         $model1Table = $modelClass1::getTableName();
         $model2Table = $modelClass2::getTableName();
@@ -182,7 +228,7 @@ abstract class BaseTableSeeder extends Seeder
 
         $this->println("<comment>Seeding:</comment> $joinTableName from json");
 
-        $data = $this->loadFromRawJson($joinTableName, $dir);
+        $data = $this->loadDataFromJson($joinTableName, $dir);
         $links = [];
 
         foreach ($data as $row) {
@@ -193,23 +239,15 @@ abstract class BaseTableSeeder extends Seeder
             $links[(int)$model1Id][(int)$row[$model2Key]] = $joinData;
         }
 
-
-        // Progress bar
-        if ($progressBar) {
-            $this->command->getOutput()->progressStart(count($links));
-        }
+        $this->output->progressStart(count($links));
 
         foreach ($links as $model1Id => $model2IdsWithData) {
             $model1 = $modelClass1::where("id", $model1Id)->firstOrFail();
             $model1->$model2Table()->attach($model2IdsWithData);
-            if ($progressBar) {
-                $this->command->getOutput()->progressAdvance();
-            }
+            $this->output->progressAdvance();
         }
 
-        if ($progressBar) {
-            $this->command->getOutput()->progressFinish();
-        }
+        $this->output->progressFinish();
 
         $this->println("<info>Seeded:</info>  $joinTableName from json");
     }

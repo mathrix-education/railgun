@@ -43,7 +43,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Meta extends BaseModel
 {
     public $fillable = ["id", "status", "favorite", "user_id", "country_id", "class_id", "discipline_id", "chapter_id",
-        "notion_id", "activity_id"];
+        "notion_id", "activity_id", "module_id"];
 
     /** @var array The validation rules on create */
     protected $rules = [
