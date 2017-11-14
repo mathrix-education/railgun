@@ -68,7 +68,7 @@ $app->configure("mail");
 $app->configure("services");
 $app->configure("filesystems");
 
-if ($app->environment() !== "production") {
+if ($app->environment("dev")) {
     $app->configure("ide-helper");
 }
 
@@ -121,7 +121,6 @@ $app->register(Illuminate\Filesystem\FilesystemServiceProvider::class);
 if ($app->environment("stage", "master")) {
     $app->register(Sentry\SentryLaravel\SentryLumenServiceProvider::class);
 }
-
 
 /*
 |--------------------------------------------------------------------------
