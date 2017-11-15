@@ -27,10 +27,10 @@ class DatabaseSeeder extends BaseTableSeeder
     public function run()
     {
         // Main site
-        $this->seedFromJson([
+        /*$this->seedFromJson([
             "modelClass" => Client::class,
             "table" => "oauth_clients"
-        ]);
+        ]);*/
 
         // Content
         $this->seedFromFactory([
