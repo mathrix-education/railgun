@@ -102,16 +102,14 @@ abstract class BaseTableSeeder extends Seeder
     /**
      * Load data from a json file
      *
-     * @param $filename
-     * @param string $dir
+     * @param string $filename
+     * @param string $directory
      *
      * @return array
      */
-    public function loadDataFromJson($filename, $dir = "raws")
+    public function loadDataFromJson(string $filename, string $directory = "raws")
     {
-        $childClass = new ReflectionClass($this);
-
-        $path = dirname($childClass->getFileName(), 2) . "/$dir/$filename.json";
+        $path = app()->databasePath($directory) . DIRECTORY_SEPARATOR . "$filename.json";
 
         if (!file_exists($path)) {
             throw new FileNotFoundException($path);
@@ -122,48 +120,58 @@ abstract class BaseTableSeeder extends Seeder
 
 
     /**
+     * Save data using Eloquent models
+     *
      * @param array $data
+     * @param BaseModel|Model|null $modelClass
      *
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      */
-    public function seedFromArray(array $data)
+    public function seedFromArray(array $data, $modelClass = null)
     {
-        $this->println("<comment>Seeding:</comment> {$this->table} from json");
+        $modelClass = $modelClass ?? $this->modelClass;
 
         // Progress bar
         $this->output->progressStart(count($data));
 
         foreach ($data as $row) {
             /** @var BaseModel $model */
-            $model = new $this->modelClass($row);
+            $model = new $modelClass($row);
             $model->save();
             $this->output->progressAdvance();
         }
 
         $this->output->progressFinish();
-
-
-        $this->println("<info>Seeded:</info>  {$this->table} from json");
     }
 
 
     /**
      * Seed database from a json file
      *
-     * @param string|null $filename
-     * @param string $dir
+     * @param array $options The options
+     *  "table" => $this->>table, $this->modelClass::getTableName()
+     *  "directory" => "raws"
      *
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      */
-    public function seedFromJson(string $filename = null, string $dir = "raws")
+    public function seedFromJson(array $options)
     {
-        $table = $filename == null ? $this->table : $filename;
-        $this->println("<comment>Seeding:</comment> $table from json");
-        $data = $this->loadDataFromJson($table, $dir);
-        $this->seedFromArray($data);
-        $this->println("<info>Seeded:</info>  $table from json");
+        $default = [
+            "modelClass" => $options["modelClass"] ?? $this->modelClass ?? null,
+            "table" => $options["table"] ?? $this->table ??
+                !empty($options["modelClass"]) ? $options["modelClass"]::getTableName() :
+                    !empty($this->modelClass) ? $this->modelClass::getTableName() : null,
+            "directory" => "raws",
+        ];
+        dd($default);
+        $options = array_merge($default, $options);
+
+        $this->println("<comment>Seeding:</comment> {$options["table"]} from json");
+        $data = $this->loadDataFromJson($options["table"], $options["directory"]);
+        $this->seedFromArray($data, $options["modelClass"]);
+        $this->println("<info>Seeded:</info>  {$options["table"]} from json");
     }
 
 
@@ -175,24 +183,31 @@ abstract class BaseTableSeeder extends Seeder
      *  "count" => 1
      *  "override" => []
      *  "callback" => null
+     *
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
      */
     public function seedFromFactory(array $options = [])
     {
         $defaultOptions = [
-            "modelClass" => $this->modelClass,
+            "modelClass" => $options["modelClass"] ?? $this->modelClass ?? null,
+            "table" => $options["table"] ?? $this->table ??
+                empty($options["modelClass"]) ? $options["modelClass"]::getTableName() :
+                    empty($this->modelClass) ? $this->modelClass::getTableName() : null,
             "subFactory" => null,
             "count" => 100,
             "override" => [],
-            "callback" => null,
-            "loop" => null,
-            "iterate" => null
+            "callback" => null
         ];
         $options = array_merge($defaultOptions, $options);
+
+        dd($options);
+
         /** @var BaseModel|string $modelClass */
-        $factoryName = $options["modelClass"] . ($options["subFactory"] !== null ? ":" . $options["subFactory"] : "");
-        $data = new Collection();
+        $factoryName = $options["table"] . ($options["subFactory"] !== null ? ":" . $options["subFactory"] : "");
 
         $this->println("<comment>Seeding:</comment> $factoryName from factory");
+        $data = new Collection();
 
         // Run factory
         if (is_string($options["subFactory"])) {
@@ -200,6 +215,8 @@ abstract class BaseTableSeeder extends Seeder
         } else {
             $data->merge(factory($options["modelClass"], $options["count"])->raw($options["override"]));
         }
+
+        $this->seedFromArray($data->toArray());
 
         if ($options["callback"] !== null) {
             $data->each($options["callback"]);
