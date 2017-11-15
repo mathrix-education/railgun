@@ -58,7 +58,7 @@ class UserObserver extends BaseObserver
                 "user_id" => $user->id,
                 "event" => "user_achieved_daily"
             ])
-                ->whereBetween("created", [
+                ->whereBetween("created_at", [
                     Carbon::now()->setTime(0, 0, 0),
                     Carbon::now()
                 ])->exists();
