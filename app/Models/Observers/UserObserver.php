@@ -7,6 +7,7 @@ use App\Exceptions\Http422ModelValidationException;
 use App\Models\Level;
 use App\Models\Log;
 use App\Models\User;
+use Carbon\Carbon;
 use Faker\Factory;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Newsletter\NewsletterFacade as Newsletter;
@@ -28,7 +29,7 @@ class UserObserver extends BaseObserver
     {
         if ($user->isDirty("email")) {
             // Subscribe the user to "subscribers" Mailchimp list
-            //Newsletter::subscribeOrUpdate($user->email); // TODO
+            Newsletter::subscribeOrUpdate($user->email);
         }
 
         if ($user->isDirty("password")) {
@@ -53,11 +54,20 @@ class UserObserver extends BaseObserver
             | Trigger the daily_achievements incrementation
             |--------------------------------------------------------------------------
             */
-            if ($user->daily_points + $pointsAdded >= $user->daily) {
+            $alreadyAchievedDaily = Log::where([
+                "user_id" => $user->id,
+                "event" => "user_achieved_daily"
+            ])
+                ->whereBetween("created", [
+                    Carbon::now()->setTime(0, 0, 0),
+                    Carbon::now()
+                ])->exists();
+
+            if (!$alreadyAchievedDaily && $user->daily_points + $pointsAdded >= $user->daily) {
                 $user->daily_achievements++;
+                Log::log("user_achieved_daily", $user);
             }
-
-
+            
             /*
             |--------------------------------------------------------------------------
             | Trigger the level achievement

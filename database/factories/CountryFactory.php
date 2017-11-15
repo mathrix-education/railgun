@@ -10,7 +10,7 @@ use Faker\Generator;
  */
 $factory->define(Country::class, function (Generator $faker) {
     $nameShort = $faker->firstName;
-    $name = $nameShort . $faker->firstName;
+    $name = ucfirst(strtolower($nameShort . $faker->firstName));
 
     return [
         'name' => $name,
