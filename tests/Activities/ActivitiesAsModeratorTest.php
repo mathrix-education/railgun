@@ -1,6 +1,8 @@
 <?php
 namespace Tests\Activities;
 
+use App\Models\Module;
+use App\Models\Notion;
 use Tests\ScopeTestCase;
 
 /**
@@ -29,6 +31,40 @@ class ActivitiesAsModeratorTest extends ScopeTestCase
     public function testEdit()
     {
         $this->genericEditSuccess();
+    }
+
+
+    public function testEditWithLink()
+    {
+        $link = [
+            "notions" => $this->faker->randomElements(
+                Notion::inRandomOrder()->pluck("id")->toArray(),
+                $this->faker->numberBetween(3, 5)
+            ),
+            "modules" => $this->faker->randomElements(
+                Module::inRandomOrder()->pluck("id")->toArray(),
+                $this->faker->numberBetween(3, 5)
+            )
+        ];
+
+        $this->genericEditSuccess(["link" => $link]);
+
+        foreach($link["notions"] as $order => $id) {
+            $this->assertInDatabase("activity_notion", [
+                "activity_id" => $this->editModelId,
+                "notion_id" => $id,
+                "order" => $order
+            ]);
+        }
+
+        foreach($link["modules"] as $order => $id) {
+            $this->assertInDatabase("activity_module", [
+                "activity_id" => $this->editModelId,
+                "module_id" => $id,
+                "order" => $order
+            ]);
+        }
+
     }
 
 

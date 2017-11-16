@@ -13,7 +13,7 @@ use App\Models\Notion;
  * Class ContentTableSeeder
  *
  * @author Mathrix Back-End Team
- * @since 1.0.0
+ * @since 1.0.1
  * @copyright Mathrix
  */
 class ContentTableSeeder extends BaseTableSeeder
@@ -56,6 +56,7 @@ class ContentTableSeeder extends BaseTableSeeder
         ]);
 
         $this->link(Class_::class, Discipline::class);
+        $this->link(Chapter::class, Notion::class);
         $this->link(Notion::class, Activity::class);
         $this->link(Activity::class, Module::class);
     }

@@ -33,5 +33,6 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->call(BlogTableSeeder::class);
         $this->call(LevelTableSeeder::class);
         $this->call(UserTableSeeder::class);
+        $this->call(CommentTableSeeder::class);
     }
 }

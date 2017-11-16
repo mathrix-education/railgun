@@ -4,6 +4,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 
@@ -74,10 +75,10 @@ class Chapter extends BaseModel
     /**
      * HasMany Notion
      *
-     * @return HasMany
+     * @return BelongsToMany
      */
-    public function notions(): HasMany
+    public function notions(): BelongsToMany
     {
-        return $this->hasMany(Notion::class);
+        return $this->belongsToMany(Notion::class);
     }
 }

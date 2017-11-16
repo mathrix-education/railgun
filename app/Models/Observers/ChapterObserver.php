@@ -3,6 +3,7 @@ namespace App\Models\Observers;
 
 use App\Exceptions\Http422ModelSaveException;
 use App\Models\Chapter;
+use App\Models\Notion;
 
 /**
  * Class ChapterObserver
@@ -27,6 +28,21 @@ class ChapterObserver extends BaseObserver
         }
         $chapter->slug = str_slug($chapter->name);
 
+        // Sync notions
+        if (isset($chapter->link["notions"])) {
+            $toSync = [];
+            foreach($chapter->link["notions"] as $order => $notionId) {
+                if (Notion::find($notionId)->exists()) {
+                    $toSync[$notionId] = ["order" => $order];
+                }
+            }
+            $chapter->notions()->sync($toSync);
+        }
+
+        if (isset($chapter->link)) {
+            unset($chapter->link);
+        }
+
         return true;
     }
 
@@ -42,9 +58,7 @@ class ChapterObserver extends BaseObserver
      */
     public function deleting($chapter)
     {
-        foreach ($chapter->notions as $notion) {
-            $notion->delete();
-        }
+        $chapter->notions()->detach();
 
         return true;
     }
