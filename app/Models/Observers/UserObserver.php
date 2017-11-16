@@ -24,10 +24,13 @@ class UserObserver extends BaseObserver
      * @param User $user
      *
      * @return bool
+     * @throws Http400InvalidRequestException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
      */
     public function saving($user)
     {
-        if ($user->isDirty("email")) {
+        if (app()->environment("master", "stage") && $user->isDirty("email")) {
             // Subscribe the user to "subscribers" Mailchimp list
             Newsletter::subscribeOrUpdate($user->email);
         }
