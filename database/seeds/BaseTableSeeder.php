@@ -1,5 +1,4 @@
 <?php
-
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\BaseModel;
@@ -156,19 +155,17 @@ abstract class BaseTableSeeder extends Seeder
      * Save data using Eloquent models
      *
      * @param array $data
-     * @param BaseModel|Model|null $modelClass
+     * @param BaseModel|Model|string|null $modelClass
      *
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      */
-    public function seedFromArray(array $data, $modelClass = null)
+    public function seedFromArray(array $data, $modelClass)
     {
-        $modelClass = $modelClass ?? $this->modelClass ?? null;
-
         // Progress bar
         $this->output->progressStart(count($data));
 
-        foreach($data as $row) {
+        foreach ($data as $row) {
             /** @var BaseModel $model */
             $model = new $modelClass($row);
             $model->save();
@@ -241,7 +238,7 @@ abstract class BaseTableSeeder extends Seeder
             );
         }
 
-        $this->seedFromArray($data);
+        $this->seedFromArray($data, $options["modelClass"]);
 
         $this->println("<info>Seeded:</info>  $factoryName from factory");
     }
@@ -269,7 +266,7 @@ abstract class BaseTableSeeder extends Seeder
         $data = $this->loadDataFromJson($joinTableName, $dir);
         $links = [];
 
-        foreach($data as $row) {
+        foreach ($data as $row) {
             $model1Id = $row[$model1Key];
 
             $joinData = array_diff_assoc($row, [$model1Key => $row[$model1Key], $model2Key => $row[$model2Key]]);
@@ -279,7 +276,7 @@ abstract class BaseTableSeeder extends Seeder
 
         $this->output->progressStart(count($links));
 
-        foreach($links as $model1Id => $model2IdsWithData) {
+        foreach ($links as $model1Id => $model2IdsWithData) {
             $model1 = $modelClass1::where("id", $model1Id)->firstOrFail();
             $model1->$model2Table()->attach($model2IdsWithData);
             $this->output->progressAdvance();
@@ -288,5 +285,58 @@ abstract class BaseTableSeeder extends Seeder
         $this->output->progressFinish();
 
         $this->println("<info>Seeded:</info>  $joinTableName from json");
+    }
+
+
+    /**
+     * Link two tables using $model::link property
+     *
+     * @param BaseModel|string $modelClass1 the model class to use
+     * @param BaseModel|string $modelClass2 the model class to link
+     * @param int $min the minimum relations
+     * @param int $max the maximum relations
+     *
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
+     */
+    public function link($modelClass1, $modelClass2, $min = 3, $max = 5)
+    {
+        $faker = Faker\Factory::create();
+        $models1 = $modelClass1::all();
+        $model1Table = $modelClass1::getTableName();
+        $model2Ids = $modelClass2::get(["id"])->pluck("id")->toArray();
+        $model2Table = $modelClass2::getTableName();
+
+        $this->println("<comment>Linking:</comment> $model1Table <=> $model2Table");
+
+        $this->output->progressStart($models1->count());
+        foreach ($models1 as $model1) {
+            $model1->link = [
+                $model2Table => $faker->randomElements($model2Ids, $faker->numberBetween($min, $max))
+            ];
+            $model1->save();
+            $this->output->progressAdvance();
+        }
+        $this->output->progressFinish();
+
+        $this->println("<info>Linked:</info>  $model1Table <=> $model2Table");
+    }
+
+
+    /**
+     * Link two tables using $model::link property in both directions
+     *
+     * @param BaseModel|string $modelClass1 the model class to use and link
+     * @param BaseModel|string $modelClass2 the model class to use and link
+     * @param int $min the minimum relations
+     * @param int $max the maximum relations
+     *
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
+     */
+    public function linkAll($modelClass1, $modelClass2, $min = 3, $max = 5)
+    {
+        $this->link($modelClass1, $modelClass2, $min, $max);
+        $this->link($modelClass2, $modelClass1, $min, $max);
     }
 }

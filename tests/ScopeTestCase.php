@@ -26,7 +26,7 @@ abstract class ScopeTestCase extends BaseTestCase
     /** @var string the effective scope */
     protected $scope = 'public';
 
-    /** @var BaseModel the test main model class */
+    /** @var BaseModel|string the test main model class */
     protected $modelClass = null;
     /** @var string the test main model singular */
     protected $modelSingular = null;

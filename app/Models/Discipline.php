@@ -27,13 +27,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Discipline extends BaseModel
 {
     /** @var array The fillable attributes */
-    protected $fillable = ["id", "name", "slug", "name_seo", "beta", "visible"];
+    protected $fillable = ["id", "name", "slug", "beta", "visible", "link"];
 
     /** @var array Validation rules */
     protected $rules = [
         "name" => "required|max:255",
         "slug" => "required|max:255",
-        "name_seo" => "required|max:255",
         "beta" => "boolean",
         "visible" => "boolean"
     ];
@@ -61,6 +60,7 @@ class Discipline extends BaseModel
      */
     public function classes(): BelongsToMany
     {
-        return $this->belongsToMany(Class_::class, "class_discipline", "class_id");
+        return $this->belongsToMany(Class_::class, "class_discipline", "discipline_id",
+            "class_id");
     }
 }

@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Faker\Factory;
 use Faker\Generator;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Laravel\Lumen\Testing\DatabaseTransactions;
 use Laravel\Lumen\Testing\TestCase;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -21,7 +22,8 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 abstract class BaseTestCase extends TestCase
 {
     use HttpAssertions;
-    // use DatabaseTransactions; // Revert test database after each test // TODO: fix Too Many Connections bug
+
+    use DatabaseTransactions; // Revert test database after each test // TODO: fix Too Many Connections bug
 
     /** @var Generator */
     public $faker;
@@ -40,25 +42,7 @@ abstract class BaseTestCase extends TestCase
      */
     public function createApplication()
     {
-        $root = null;
-        $directory = dirname(__FILE__);
-
-        do {
-            $directory = dirname($directory);
-            $composer = $directory . '/composer.json';
-            $bootstrap = $directory . '/bootstrap/app.php';
-
-            if (file_exists($composer) && file_exists($bootstrap)) {
-                $root = $directory;
-            }
-        } while (is_null($root) && $directory != '/');
-
-        if (!is_null($root)) {
-            return require $root . '/bootstrap/app.php';
-
-        } else {
-            throw new FileNotFoundException('Unable to find Lumen Bootstrap');
-        }
+        return require __DIR__.'/../bootstrap/app.php';
     }
 
 
@@ -173,7 +157,7 @@ abstract class BaseTestCase extends TestCase
         ], $data);
 
         $count = Log::where($data)
-            ->whereBetween('created_at', [Carbon::now()->subSeconds(10), Carbon::now()])// 10 seconds
+            ->whereBetween('created_at', [Carbon::now()->subSeconds(10), Carbon::now()]) // 10 seconds delta
             ->count();
 
         $this->assertGreaterThan(0, $count, sprintf(
@@ -186,6 +170,8 @@ abstract class BaseTestCase extends TestCase
      * Handle response printing
      *
      * @param \Exception|\Throwable $e
+     *
+     * @throws \Throwable
      */
     protected function onNotSuccessfulTest(\Throwable $e)
     {
