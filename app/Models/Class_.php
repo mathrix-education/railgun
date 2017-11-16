@@ -41,7 +41,8 @@ class Class_ extends BaseModel
     protected $table = "classes";
 
     /** @var array The fillable attributes */
-    protected $fillable = ["id", "name", "name_short", "slug", "slug_short", "order", "visible", "parent_id", "country_id"];
+    protected $fillable = ["id", "name", "name_short", "slug", "slug_short", "order", "visible", "parent_id",
+        "country_id", "link"];
 
     /** @var array Validation rules */
     protected $rules = [
@@ -111,7 +112,8 @@ class Class_ extends BaseModel
      */
     public function disciplines(): BelongsToMany
     {
-        return $this->belongsToMany(Discipline::class, "class_discipline", "class_id");
+        return $this->belongsToMany(Discipline::class, "class_discipline", "class_id",
+            "discipline_id");
     }
 
 

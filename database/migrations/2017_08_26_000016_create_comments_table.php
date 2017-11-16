@@ -25,13 +25,15 @@ class CreateCommentsTable extends Migration
             $table->integer("score")->default(0);
             $table->integer("parent_id")->unsigned()->nullable();
             $table->integer("user_id")->unsigned()->nullable();
-            $table->dateTime("created_at");
-            $table->dateTime("updated_at");
-            $table->dateTime("deleted_at")->nullable();
 
             // Polymorphic
             $table->integer("commentable_id")->unsigned();
             $table->enum("commentable_type", ["module", "post", "course"]);
+
+            // Timestamps
+            $table->dateTime("created_at");
+            $table->dateTime("updated_at");
+            $table->dateTime("deleted_at")->nullable();
 
             // Foreign keys
             $table->foreign("parent_id")->references("id")->on("comments");

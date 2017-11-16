@@ -39,7 +39,7 @@ class Activity extends BaseModel
     public const TYPES = ["video", "course", "test", "exercise", "summary", "flashcard"];
 
     /** @var array The fillable attributes */
-    protected $fillable = ["id", "name", "slug", "type", "visible", "link"];
+    protected $fillable = ["id", "name", "slug", "name_seo", "type", "visible", "link"];
 
     /** @var array The attributes that should be cast to native types */
     protected $casts = [

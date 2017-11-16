@@ -62,8 +62,8 @@ class Comment extends BaseModel
     /** @var array Validation rules */
     protected $rules = [
         "content" => "required",
-        "user_id" => "required|exists:users,id",
-        "parent_id" => "nullable|exists:comments,id"
+        "parent_id" => "nullable|exists:comments,id",
+        "user_id" => "required|exists:users,id"
     ];
 
     /** @var array The attributes that should be mutated to dates */

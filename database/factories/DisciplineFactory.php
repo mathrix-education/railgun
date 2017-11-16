@@ -15,7 +15,6 @@ $factory->define(Discipline::class, function (Generator $faker) {
         'name' => $name,
         'slug' => str_slug($name),
         'beta' => $faker->boolean(),
-        'image' => null,
         'visible' => $faker->boolean(95)
     ];
 });
