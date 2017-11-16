@@ -35,6 +35,6 @@ class ChaptersAsModeratorTest extends ScopeTestCase
     public function testDelete()
     {
         $this->genericDeleteSuccess();
-        $this->assertNotInDatabase('notions', ['chapter_id' => $this->deleteModelId]);
+        $this->assertNotInDatabase('chapter_notion', ['chapter_id' => $this->deleteModelId]);
     }
 }

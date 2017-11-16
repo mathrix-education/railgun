@@ -1,7 +1,7 @@
 {
   "name": "mathrix/mathrix-api",
   "description": "The Mathrix API server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "proprietary",
   "type": "project",
   "require": {

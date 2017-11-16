@@ -19,10 +19,12 @@ trait Edit
 
     /**
      * Generic edit; expect HTTP 200 and data present in database
+     *
+     * @param array $override overridden attributes
      */
-    public function genericEditSuccess()
+    public function genericEditSuccess(array $override = [])
     {
-        $this->genericEdit();
+        $this->genericEdit($override);
 
         // Assertions
         $this->assertHttp200Success();
@@ -32,17 +34,23 @@ trait Edit
 
     /**
      * Generic edit call
+     *
+     * @param array $override Overridden attributes
      */
-    public function genericEdit()
+    public function genericEdit(array $override = [])
     {
         $this->genericUsableOrFail();
 
         $this->editModelId = ($this->modelClass)::inRandomOrder()->firstOrFail()->id;
         $this->editModelData = is_null($this->subFactory) ?
-            factory($this->modelClass)->raw() :
-            factory($this->modelClass, $this->subFactory)->raw();
+            factory($this->modelClass)->raw($override) :
+            factory($this->modelClass, $this->subFactory)->raw($override);
 
         $this->call('patch', '/' . $this->modelPlural . '/' . $this->editModelId, $this->editModelData);
+
+        if (isset($this->editModelData["link"])) {
+            unset($this->editModelData["link"]);
+        }
     }
 
 

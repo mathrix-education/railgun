@@ -1,4 +1,5 @@
 <?php
+use App\Models\BaseModel;
 use App\Models\Comment;
 use App\Models\User;
 use Faker\Generator;
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
  */
 $factory->define(Comment::class, function (Generator $faker) {
     $commentable_type = $faker->randomElement(['module', 'post', 'course']);
+    /** @var BaseModel|string $commentable_class */
     $commentable_class = Relation::getMorphedModel($commentable_type);
     $created = $faker->dateTimeBetween('-1 month');
 

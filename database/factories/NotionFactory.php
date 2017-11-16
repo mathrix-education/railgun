@@ -13,9 +13,9 @@ $factory->define(Notion::class, function (Generator $faker) {
     $name = substr($faker->sentence($faker->numberBetween(1, 3)), 0, -1);
 
     return [
-        'name' => $name,
-        'slug' => str_slug($name),
-        'chapter_id' => Chapter::inRandomOrder()->firstOrFail()->id,
-        'visible' => $faker->boolean(95)
+        "name" => $name,
+        "slug" => str_slug($name),
+        "type" => $faker->randomElement(Notion::TYPES),
+        "visible" => $faker->boolean(95)
     ];
 });

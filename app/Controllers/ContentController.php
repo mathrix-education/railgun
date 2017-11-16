@@ -145,30 +145,30 @@ class ContentController extends BaseController
      * @apiSuccess {int} notions.id The notion id
      * @apiSuccess {string} notions.name The notion name
      * @apiSuccess {string} notions.slug The notion slug
-     * @apiSuccess {int} notions.chapter_id The notion chapter_id
-     * @apiSuccess {Chapter} notions.chapter The chapter
-     * @apiSuccess {int} notions.chapter.id The chapter id
-     * @apiSuccess {string} notions.chapter.name The chapter name
-     * @apiSuccess {string} notions.chapter.slug The chapter slug
-     * @apiSuccess {Discipline} notions.chapter.discipline The discipline
-     * @apiSuccess {int} notions.chapter.discipline.id The discipline id
-     * @apiSuccess {string} notions.chapter.discipline.name The discipline name
-     * @apiSuccess {string} notions.chapter.discipline.slug The discipline slug
-     * @apiSuccess {bool} notions.chapter.discipline.beta If the discipline is in beta
-     * @apiSuccess {string} notions.chapter.discipline.image The discipline image
-     * @apiSuccess {Class} notions.chapter.class_ The class
-     * @apiSuccess {int} notions.chapter.class_.id The class id
-     * @apiSuccess {string} notions.chapter.class_.name The class name
-     * @apiSuccess {string} notions.chapter.class_.name_short The class short name
-     * @apiSuccess {string} notions.chapter.class_.slug The class slug
-     * @apiSuccess {string} notions.chapter.class_.slug_short The class short slug
-     * @apiSuccess {string} notions.chapter.class_.country_id The class country id
-     * @apiSuccess {Country} notions.chapter.class_.country The country
-     * @apiSuccess {int} notions.chapter.class_.country.id The country id
-     * @apiSuccess {string} notions.chapter.class_.country.name The country name
-     * @apiSuccess {string} notions.chapter.class_.country.name_short The country short name
-     * @apiSuccess {string} notions.chapter.class_.country.slug The country slug
-     * @apiSuccess {string} notions.chapter.class_.country.slug_short The country short slug
+     * @apiSuccess {int} notions.chapters_id The notion chapter_id
+     * @apiSuccess {Chapter} notions.chapters The chapter
+     * @apiSuccess {int} notions.chapters.id The chapter id
+     * @apiSuccess {string} notions.chapters.name The chapter name
+     * @apiSuccess {string} notions.chapters.slug The chapter slug
+     * @apiSuccess {Discipline} notions.chapters.discipline The discipline
+     * @apiSuccess {int} notions.chapters.discipline.id The discipline id
+     * @apiSuccess {string} notions.chapters.discipline.name The discipline name
+     * @apiSuccess {string} notions.chapters.discipline.slug The discipline slug
+     * @apiSuccess {bool} notions.chapters.discipline.beta If the discipline is in beta
+     * @apiSuccess {string} notions.chapters.discipline.image The discipline image
+     * @apiSuccess {Class} notions.chapters.class_ The class
+     * @apiSuccess {int} notions.chapters.class_.id The class id
+     * @apiSuccess {string} notions.chapters.class_.name The class name
+     * @apiSuccess {string} notions.chapters.class_.name_short The class short name
+     * @apiSuccess {string} notions.chapters.class_.slug The class slug
+     * @apiSuccess {string} notions.chapters.class_.slug_short The class short slug
+     * @apiSuccess {string} notions.chapters.class_.country_id The class country id
+     * @apiSuccess {Country} notions.chapters.class_.country The country
+     * @apiSuccess {int} notions.chapters.class_.country.id The country id
+     * @apiSuccess {string} notions.chapters.class_.country.name The country name
+     * @apiSuccess {string} notions.chapters.class_.country.name_short The country short name
+     * @apiSuccess {string} notions.chapters.class_.country.slug The country slug
+     * @apiSuccess {string} notions.chapters.class_.country.slug_short The country short slug
      * @apiError (Error 400) invalid_request page and perPage have to be strictly positive
      *
      * @param Request $request
@@ -202,8 +202,8 @@ class ContentController extends BaseController
                 return $q->where("type", "=", "course")
                     ->where("content", "LIKE", "%[video]%");
             })
-            ->with(["notions", "notions.chapter", "notions.chapter.discipline", "notions.chapter.class_",
-                "notions.chapter.class_.country", "modules" => function (BelongsToMany $q) use ($query) {
+            ->with(["notions", "notions.chapters", "notions.chapters.discipline", "notions.chapters.class_",
+                "notions.chapters.class_.country", "modules" => function (BelongsToMany $q) use ($query) {
                     return $q->where("type", "=", "course")
                         ->where("content", "LIKE", "%[video]%");
                 }])
@@ -227,12 +227,12 @@ class ContentController extends BaseController
                 ->get();
 
             $notions = Notion::where("name", "LIKE", "%$query%")
-                ->whereHas("chapter.class_", function (Builder $query) use ($classIds) {
+                ->whereHas("chapters.class_", function (Builder $query) use ($classIds) {
                     return $query->whereIn("id", $classIds);
                 })
-                ->with(["chapter.discipline", "chapter.class_" => function (BelongsTo $query) use ($classIds) {
+                ->with(["chapters.discipline", "chapters.class_" => function (BelongsTo $query) use ($classIds) {
                     return $query->orderByDesc("id");
-                }, "chapter.class_.country"])
+                }, "chapters.class_.country"])
                 ->orWhere("slug", "LIKE", "%$query%")
                 ->limit($perPage)
                 ->offset(($page - 1) * $perPage)
@@ -261,16 +261,16 @@ class ContentController extends BaseController
             $notionsToAdd = Notion::where("name", "LIKE", "%$query%");
 
             if (!empty($classIds)) {
-                $notionsToAdd = $notionsToAdd->whereHas("chapter.class_", function (Builder $query)
+                $notionsToAdd = $notionsToAdd->whereHas("chapters.class_", function (Builder $query)
                 use ($classIds) {
                     return $query->whereNotIn("id", $classIds);
                 });
             }
 
-            $notionsToAdd = $notionsToAdd->with(["chapter.discipline", "chapter.class_" => function (BelongsTo $query)
+            $notionsToAdd = $notionsToAdd->with(["chapters.discipline", "chapters.class_" => function (BelongsTo $query)
             use ($classIds) {
                 return $query->orderByDesc("id");
-            }, "chapter.class_.country"])
+            }, "chapters.class_.country"])
                 ->orWhere("slug", "LIKE", "%$query%")
                 ->limit($perPage - $notions->count())
                 ->offset(($page - 1) * $perPage)

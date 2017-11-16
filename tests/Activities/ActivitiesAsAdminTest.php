@@ -32,6 +32,12 @@ class ActivitiesAsAdminTest extends ScopeTestCase
     }
 
 
+    public function testEditWithLink()
+    {
+        $this->sameAs('moderator');
+    }
+
+
     public function testDelete()
     {
         $this->sameAs('moderator');
