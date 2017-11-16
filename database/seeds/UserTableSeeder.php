@@ -1,4 +1,6 @@
 <?php
+use App\Exceptions\Http422ModelSaveException;
+use App\Exceptions\Http422ModelValidationException;
 use App\Models\User;
 
 /**
@@ -10,6 +12,10 @@ use App\Models\User;
  */
 class UserTableSeeder extends BaseTableSeeder
 {
+    /**
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
+     */
     public function run()
     {
         $this->seedFromFactory([

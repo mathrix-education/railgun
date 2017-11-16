@@ -9,12 +9,8 @@ use Faker\Generator;
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->define(Module::class, function (Generator $faker) {
-    $name = $faker->sentence(3);
-
     return [
-        'name' => $name,
-        'slug' => str_slug($name),
-        'description' => $faker->sentence(),
+        'premium' => $faker->boolean(70),
         'visible' => $faker->boolean(95)
     ];
 });

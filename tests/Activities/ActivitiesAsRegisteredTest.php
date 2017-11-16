@@ -46,24 +46,16 @@ class ActivitiesAsRegisteredTest extends ScopeTestCase
 
     public function buildObjects()
     {
-        /** @var Country $country */
-        $country = Country::where('name', '=', 'France')->firstOrFail();
-
-        /** @var Class_ $class */
-        $class = $country->classes()->inRandomOrder()->firstOrFail();
-
-        /** @var Discipline $discipline */
-        $discipline = $class->disciplines()->inRandomOrder()->firstOrFail();
-
         /** @var Chapter $chapter */
-        $chapter = Chapter::where([
-            ['class_id', '=', $class->id],
-            ['discipline_id', '=', $discipline->id]
-        ])->inRandomOrder()->firstOrFail();
-
+        $chapter = Chapter::inRandomOrder()->firstOrFail();
+        /** @var Class_ $class */
+        $class = $chapter->class_()->firstOrFail();
+        /** @var Discipline $discipline */
+        $discipline = $chapter->discipline()->firstOrFail();
+        /** @var Country $country */
+        $country = $class->country()->firstOrFail();
         /** @var Notion $notion */
         $notion = $chapter->notions()->inRandomOrder()->firstOrFail();
-
         /** @var Activity $activity */
         $activity = $notion->activities()->inRandomOrder()->firstOrFail();
 

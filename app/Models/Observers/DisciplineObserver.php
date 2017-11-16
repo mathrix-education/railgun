@@ -1,6 +1,7 @@
 <?php
 namespace App\Models\Observers;
 
+use App\Models\Class_;
 use App\Models\Discipline;
 
 /**
@@ -22,6 +23,12 @@ class DisciplineObserver extends BaseObserver
         if (empty($discipline->slug) ||
             ($discipline->isDirty("name") && !$discipline->isDirty("slug"))) {
             $discipline->slug = str_slug($discipline->name);
+        }
+
+        // Sync classes
+        if (!empty($discipline->link["classes"])) {
+            $discipline->classes()->sync($discipline->link["classes"]);
+            unset($discipline->link);
         }
 
         return true;
