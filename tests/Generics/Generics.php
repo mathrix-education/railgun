@@ -26,7 +26,7 @@ trait Generics
     protected function genericUsableOrFail()
     {
         if (!$this->genericUsable()) {
-            throw new \Exception('Generic tests are not usable in this context');
+            throw new \Exception("Generic tests are not usable in this context");
         }
     }
 

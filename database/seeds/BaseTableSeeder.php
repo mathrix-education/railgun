@@ -57,19 +57,6 @@ abstract class BaseTableSeeder extends Seeder
 
 
     /**
-     * Write output to console
-     *
-     * @param $message
-     */
-    public function println($message)
-    {
-        if (isset($this->command) && !$this->output->isQuiet()) {
-            $this->output->writeln($message);
-        }
-    }
-
-
-    /**
      * Override default call
      *
      * @param string $class
@@ -94,6 +81,30 @@ abstract class BaseTableSeeder extends Seeder
         $this->output = $command->getOutput();
 
         return $this;
+    }
+
+
+    /**
+     * Seed database from a json file
+     *
+     * @param array $options The options
+     *  "table" => $this->>table, $this->modelClass::getTableName()
+     *  "directory" => "raws"
+     *
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
+     */
+    public function seedFromJson(array $options)
+    {
+        $default = [
+            "directory" => "raws"
+        ];
+        $options = $this->parseOptions($options, $default);
+
+        $this->println("<comment>Seeding:</comment> {$options["table"]} from json");
+        $data = $this->loadDataFromJson($options["table"], $options["directory"]);
+        $this->seedFromArray($data, $options["modelClass"]);
+        $this->println("<info>Seeded:</info>  {$options["table"]} from json");
     }
 
 
@@ -132,6 +143,19 @@ abstract class BaseTableSeeder extends Seeder
 
 
     /**
+     * Write output to console
+     *
+     * @param $message
+     */
+    public function println($message)
+    {
+        if (isset($this->command) && !$this->output->isQuiet()) {
+            $this->output->writeln($message);
+        }
+    }
+
+
+    /**
      * Load data from a json file
      *
      * @param string $filename
@@ -165,7 +189,7 @@ abstract class BaseTableSeeder extends Seeder
         // Progress bar
         $this->output->progressStart(count($data));
 
-        foreach ($data as $row) {
+        foreach($data as $row) {
             /** @var BaseModel $model */
             $model = new $modelClass($row);
             $model->save();
@@ -173,30 +197,6 @@ abstract class BaseTableSeeder extends Seeder
         }
 
         $this->output->progressFinish();
-    }
-
-
-    /**
-     * Seed database from a json file
-     *
-     * @param array $options The options
-     *  "table" => $this->>table, $this->modelClass::getTableName()
-     *  "directory" => "raws"
-     *
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
-     */
-    public function seedFromJson(array $options)
-    {
-        $default = [
-            "directory" => "raws"
-        ];
-        $options = $this->parseOptions($options, $default);
-
-        $this->println("<comment>Seeding:</comment> {$options["table"]} from json");
-        $data = $this->loadDataFromJson($options["table"], $options["directory"]);
-        $this->seedFromArray($data, $options["modelClass"]);
-        $this->println("<info>Seeded:</info>  {$options["table"]} from json");
     }
 
 
@@ -266,7 +266,7 @@ abstract class BaseTableSeeder extends Seeder
         $data = $this->loadDataFromJson($joinTableName, $dir);
         $links = [];
 
-        foreach ($data as $row) {
+        foreach($data as $row) {
             $model1Id = $row[$model1Key];
 
             $joinData = array_diff_assoc($row, [$model1Key => $row[$model1Key], $model2Key => $row[$model2Key]]);
@@ -276,7 +276,7 @@ abstract class BaseTableSeeder extends Seeder
 
         $this->output->progressStart(count($links));
 
-        foreach ($links as $model1Id => $model2IdsWithData) {
+        foreach($links as $model1Id => $model2IdsWithData) {
             $model1 = $modelClass1::where("id", $model1Id)->firstOrFail();
             $model1->$model2Table()->attach($model2IdsWithData);
             $this->output->progressAdvance();
@@ -285,6 +285,24 @@ abstract class BaseTableSeeder extends Seeder
         $this->output->progressFinish();
 
         $this->println("<info>Seeded:</info>  $joinTableName from json");
+    }
+
+
+    /**
+     * Link two tables using $model::link property in both directions
+     *
+     * @param BaseModel|string $modelClass1 the model class to use and link
+     * @param BaseModel|string $modelClass2 the model class to use and link
+     * @param int $min the minimum relations
+     * @param int $max the maximum relations
+     *
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
+     */
+    public function linkAll($modelClass1, $modelClass2, $min = 3, $max = 5)
+    {
+        $this->link($modelClass1, $modelClass2, $min, $max);
+        $this->link($modelClass2, $modelClass1, $min, $max);
     }
 
 
@@ -310,7 +328,7 @@ abstract class BaseTableSeeder extends Seeder
         $this->println("<comment>Linking:</comment> $model1Table <=> $model2Table");
 
         $this->output->progressStart($models1->count());
-        foreach ($models1 as $model1) {
+        foreach($models1 as $model1) {
             $model1->link = [
                 $model2Table => $faker->randomElements($model2Ids, $faker->numberBetween($min, $max))
             ];
@@ -320,23 +338,5 @@ abstract class BaseTableSeeder extends Seeder
         $this->output->progressFinish();
 
         $this->println("<info>Linked:</info>  $model1Table <=> $model2Table");
-    }
-
-
-    /**
-     * Link two tables using $model::link property in both directions
-     *
-     * @param BaseModel|string $modelClass1 the model class to use and link
-     * @param BaseModel|string $modelClass2 the model class to use and link
-     * @param int $min the minimum relations
-     * @param int $max the maximum relations
-     *
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
-     */
-    public function linkAll($modelClass1, $modelClass2, $min = 3, $max = 5)
-    {
-        $this->link($modelClass1, $modelClass2, $min, $max);
-        $this->link($modelClass2, $modelClass1, $min, $max);
     }
 }

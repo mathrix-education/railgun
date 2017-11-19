@@ -16,19 +16,19 @@ class QuotesAsAdminTest extends ScopeTestCase
 {
     public function testIndex()
     {
-        $this->sameAs('public');
+        $this->sameAs("public");
     }
 
 
     public function testRandom()
     {
-        $this->sameAs('public');
+        $this->sameAs("public");
     }
 
 
     public function testRandomMultiple()
     {
-        $this->sameAs('public');
+        $this->sameAs("public");
     }
 
 

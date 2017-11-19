@@ -2,6 +2,7 @@
 namespace App\Models\Observers;
 
 use App\Models\Activity;
+use App\Models\Meta;
 use App\Models\Module;
 use App\Models\Notion;
 
@@ -67,6 +68,7 @@ class ActivityObserver extends BaseObserver
     {
         $activity->notions()->detach();
         $activity->modules()->detach();
+        Meta::whereActivityId($activity->id)->delete();
 
         return true;
     }

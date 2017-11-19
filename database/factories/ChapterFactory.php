@@ -14,10 +14,10 @@ $factory->define(Chapter::class, function (Generator $faker) {
     $name = substr($faker->sentence($faker->numberBetween(1, 3)), 0, -1);
 
     return [
-        'name' => $name,
-        'slug' => str_slug($name),
-        'class_id' => Class_::inRandomOrder()->firstOrFail()->id,
-        'discipline_id' => Discipline::inRandomOrder()->firstOrFail()->id,
-        'visible' => $faker->boolean(95)
+        "name" => $name,
+        "slug" => str_slug($name),
+        "class_id" => Class_::inRandomOrder()->firstOrFail()->id,
+        "discipline_id" => Discipline::inRandomOrder()->firstOrFail()->id,
+        "visible" => $faker->boolean(95)
     ];
 });

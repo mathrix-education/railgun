@@ -1,7 +1,7 @@
 <?php
 namespace App\Exceptions;
 
-use Throwable;
+
 
 /**
  * Class Http422ModelValidationException

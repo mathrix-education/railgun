@@ -3,7 +3,6 @@ namespace Tests\Activities;
 
 use App\Models\Module;
 use App\Models\Notion;
-use Tests\ScopeTestCase;
 
 /**
  * Class ActivitiesAsModeratorTest
@@ -14,26 +13,38 @@ use Tests\ScopeTestCase;
  * @version 1.0.0
  * @package Tests\Activities
  */
-class ActivitiesAsModeratorTest extends ScopeTestCase
+class ActivitiesAsModeratorTest extends ActivitiesAsRegisteredTest
 {
+    /**
+     * GET /activities
+     */
     public function testIndex()
     {
         $this->genericIndexSuccess();
     }
 
 
+    /**
+     * POST /activities
+     */
     public function testAdd()
     {
         $this->genericAddSuccess();
     }
 
 
+    /**
+     * PATCH /activities/{id}
+     */
     public function testEdit()
     {
         $this->genericEditSuccess();
     }
 
 
+    /**
+     * PATCH /activities/{id} with linkable models
+     */
     public function testEditWithLink()
     {
         $link = [
@@ -64,26 +75,16 @@ class ActivitiesAsModeratorTest extends ScopeTestCase
                 "order" => $order
             ]);
         }
-
     }
 
 
+    /**
+     * DELETE /activities/{id}
+     */
     public function testDelete()
     {
         $this->genericDeleteSuccess();
-        $this->assertNotInDatabase('activity_notion', ['activity_id' => $this->deleteModelId]);
-        $this->assertNotInDatabase('activity_module', ['activity_id' => $this->deleteModelId]);
-    }
-
-
-    public function testMarkFavorite()
-    {
-        $this->sameAs('registered');
-    }
-
-
-    public function testMarkStatus()
-    {
-        $this->sameAs('registered');
+        $this->assertNotInDatabase("activity_notion", ["activity_id" => $this->deleteModelId]);
+        $this->assertNotInDatabase("activity_module", ["activity_id" => $this->deleteModelId]);
     }
 }

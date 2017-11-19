@@ -16,7 +16,7 @@ class NotionsAsAdminTest extends ScopeTestCase
 {
     public function testIndex()
     {
-        $this->sameAs('public');
+        $this->sameAs("public");
     }
 
 
@@ -35,6 +35,6 @@ class NotionsAsAdminTest extends ScopeTestCase
     public function testDelete()
     {
         $this->genericDeleteSuccess();
-        $this->assertNotInDatabase('activity_notion', ['notion_id' => $this->deleteModelId]);
+        $this->assertNotInDatabase("activity_notion", ["notion_id" => $this->deleteModelId]);
     }
 }

@@ -14,11 +14,11 @@ $factory->define(Class_::class, function (Generator $faker) {
     $name = ucfirst(strtolower($nameShort . $faker->firstName));
 
     return [
-        'name' => $name,
-        'slug' => str_slug($name),
-        'name_short' => $nameShort,
-        'slug_short' => str_slug($nameShort),
-        'country_id' => Country::inRandomOrder()->firstOrFail()->id,
-        'visible' => $faker->boolean(95)
+        "name" => $name,
+        "slug" => str_slug($name),
+        "name_short" => $nameShort,
+        "slug_short" => str_slug($nameShort),
+        "country_id" => Country::inRandomOrder()->firstOrFail()->id,
+        "visible" => $faker->boolean(95)
     ];
 });

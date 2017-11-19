@@ -10,7 +10,8 @@ use App\Models\Comment;
  */
 class CommentTableSeeder extends BaseTableSeeder
 {
-    public function run() {
+    public function run()
+    {
         $this->seedFromFactory([
             "modelClass" => Comment::class,
             "count" => random_int(200, 400)

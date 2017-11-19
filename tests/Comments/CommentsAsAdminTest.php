@@ -1,6 +1,7 @@
 <?php
 namespace Tests\Comments;
 
+use App\Models\Comment;
 use Tests\ScopeTestCase;
 
 /**
@@ -14,26 +15,29 @@ use Tests\ScopeTestCase;
  */
 class CommentsAsAdminTest extends ScopeTestCase
 {
+    /**
+     * GET /comments
+     */
     public function testIndex()
     {
         $this->genericIndexSuccess();
     }
 
 
-    public function testAdd()
+    /**
+     * POST /comments
+     */
+    public function testAddForStranger()
     {
-        $this->genericAddSuccess();
-    }
+        $stranger = $this->stranger();
 
+        $data = factory(Comment::class)->raw();
+        $data["user_id"] = $stranger->id;
+        unset($data["created_at"], $data["updated_at"]);
 
-    public function testEdit()
-    {
-        $this->genericEditSuccess();
-    }
+        $this->call("post", "/comments", $data);
 
-
-    public function testDelete()
-    {
-        $this->genericSoftDeleteSuccess();
+        $this->assertHttp200Success();
+        $this->assertInDatabase("comments", $data);
     }
 }

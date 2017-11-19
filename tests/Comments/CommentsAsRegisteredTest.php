@@ -1,7 +1,7 @@
 <?php
 namespace Tests\Comments;
 
-use Tests\ScopeTestCase;
+use App\Models\Comment;
 
 /**
  * Class CommentsAsPublicTest
@@ -12,28 +12,38 @@ use Tests\ScopeTestCase;
  * @version 1.0.0
  * @package Tests\Comments
  */
-class CommentsAsRegisteredTest extends ScopeTestCase
+class CommentsAsRegisteredTest extends CommentsAsPublicTest
 {
-    public function testIndex()
-    {
-        $this->sameAs('public');
-    }
-
-
+    /**
+     * POST /comments
+     */
     public function testAdd()
     {
-        $this->genericAddSuccess();
+        $data = factory(Comment::class)->raw();
+        unset($data["user_id"], $data["created_at"], $data["updated_at"]);
+
+        $this->call("post", "/comments", $data);
+
+        $expectedData = array_merge($data, ["user_id" => $this->user->id]);
+        $this->assertHttp200Success();
+        $this->assertInDatabase("comments", $expectedData);
     }
 
 
-    public function testEdit()
+    /**
+     * POST /comments
+     */
+    public function testAddForStranger()
     {
-        $this->sameAs('public');
-    }
+        $stranger = $this->stranger();
 
+        $data = factory(Comment::class)->raw();
+        $data["user_id"] = $stranger->id;
+        unset($data["created_at"], $data["updated_at"]);
 
-    public function testDelete()
-    {
-        $this->sameAs('public');
+        $this->call("post", "/comments", $data);
+
+        $this->assertHttp401Unauthorized();
+        $this->assertNotInDatabase("comments", $data);
     }
 }

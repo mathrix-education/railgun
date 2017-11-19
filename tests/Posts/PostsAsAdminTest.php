@@ -16,7 +16,7 @@ class PostsAsAdminTest extends ScopeTestCase
 {
     public function testIndex()
     {
-        $this->sameAs('public');
+        $this->sameAs("public");
     }
 
 

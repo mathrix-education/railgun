@@ -1,6 +1,7 @@
 <?php
 namespace Tests\Chapters;
 
+use Tests\Categories\CategoriesAsModeratorTest;
 use Tests\ScopeTestCase;
 
 /**
@@ -12,28 +13,6 @@ use Tests\ScopeTestCase;
  * @version 1.0.0
  * @package Tests\Chapters
  */
-class ChaptersAsAdminTest extends ScopeTestCase
+class ChaptersAsAdminTest extends ChaptersAsModeratorTest
 {
-    public function testIndex()
-    {
-        $this->sameAs('moderator');
-    }
-
-
-    public function testAdd()
-    {
-        $this->sameAs('moderator');
-    }
-
-
-    public function testEdit()
-    {
-        $this->sameAs('moderator');
-    }
-
-
-    public function testDelete()
-    {
-        $this->sameAs('moderator');
-    }
 }

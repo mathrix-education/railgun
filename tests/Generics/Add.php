@@ -39,7 +39,7 @@ trait Add
             factory($this->modelClass)->raw() :
             factory($this->modelClass, $this->subFactory)->raw();
 
-        $this->call('post', '/' . $this->modelPlural, $this->addModelData);
+        $this->call("post", "/" . $this->modelPlural, $this->addModelData);
     }
 
 

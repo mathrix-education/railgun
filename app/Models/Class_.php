@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $slug_short
  * @property int $order
  * @property bool $visible
+ * @property array $link
  * @property int|null $parent_id
  * @property int $country_id
  * @property-read Country $country

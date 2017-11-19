@@ -1,17 +1,6 @@
 <?php
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
-use App\Models\Activity;
-use App\Models\Category;
-use App\Models\Chapter;
-use App\Models\Class_;
-use App\Models\Country;
-use App\Models\Course;
-use App\Models\Discipline;
-use App\Models\Module;
-use App\Models\Notion;
-use App\Models\Post;
-use Laravel\Passport\Client;
 
 
 /**
