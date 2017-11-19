@@ -1,8 +1,6 @@
 <?php
 namespace Tests\Categories;
 
-use Tests\ScopeTestCase;
-
 /**
  * Class CategoriesAsPublicTest
  * Test Categories as registered user
@@ -12,28 +10,6 @@ use Tests\ScopeTestCase;
  * @version 1.0.0
  * @package Tests\Categories
  */
-class CategoriesAsRegisteredTest extends ScopeTestCase
+class CategoriesAsRegisteredTest extends CategoriesAsPublicTest
 {
-    public function testIndex()
-    {
-        $this->sameAs('public');
-    }
-
-
-    public function testAdd()
-    {
-        $this->sameAs('public');
-    }
-
-
-    public function testEdit()
-    {
-        $this->sameAs('public');
-    }
-
-
-    public function testDelete()
-    {
-        $this->sameAs('public');
-    }
 }

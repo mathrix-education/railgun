@@ -14,12 +14,12 @@ use Tests\ScopeTestCase;
  */
 class ModulesAsAdminTest extends ScopeTestCase
 {
-    protected $subFactory = 'random';
+    protected $subFactory = "random";
 
 
     public function testIndex()
     {
-        $this->sameAs('public');
+        $this->sameAs("public");
     }
 
 
@@ -40,6 +40,6 @@ class ModulesAsAdminTest extends ScopeTestCase
     public function testDelete()
     {
         $this->genericDeleteSuccess();
-        $this->assertNotInDatabase('activity_module', ['module_id' => $this->deleteModelId]);
+        $this->assertNotInDatabase("activity_module", ["module_id" => $this->deleteModelId]);
     }
 }

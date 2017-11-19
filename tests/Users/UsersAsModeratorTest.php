@@ -7,29 +7,29 @@ class UsersAsModeratorTest extends ScopeTestCase
 {
     public function testEdit()
     {
-        $this->sameAs('registered');
+        $this->sameAs("registered");
     }
 
     public function testPointsWithoutLoggable()
     {
-        $this->sameAs('registered');
+        $this->sameAs("registered");
     }
 
 
     public function testPointsWithLoggable()
     {
-        $this->sameAs('registered');
+        $this->sameAs("registered");
     }
 
 
     public function testDailyAchievementPass()
     {
-        $this->sameAs('registered');
+        $this->sameAs("registered");
     }
 
 
     public function testLevelPass()
     {
-        $this->sameAs('registered');
+        $this->sameAs("registered");
     }
 }

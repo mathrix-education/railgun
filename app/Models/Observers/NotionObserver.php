@@ -3,6 +3,7 @@ namespace App\Models\Observers;
 
 use App\Models\Activity;
 use App\Models\Chapter;
+use App\Models\Meta;
 use App\Models\Notion;
 
 /**
@@ -71,6 +72,7 @@ class NotionObserver extends BaseObserver
     {
         $notion->chapters()->detach();
         $notion->activities()->detach();
+        Meta::whereNotionId($notion->id)->delete();
 
         return true;
     }

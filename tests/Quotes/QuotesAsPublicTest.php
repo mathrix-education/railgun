@@ -23,7 +23,7 @@ class QuotesAsPublicTest extends ScopeTestCase
 
     public function testRandom()
     {
-        $this->call('get', '/quotes/random');
+        $this->call("get", "/quotes/random");
 
         // Assertions
         $this->assertHttp200Success();
@@ -34,7 +34,7 @@ class QuotesAsPublicTest extends ScopeTestCase
     public function testRandomMultiple()
     {
         $quoteCountToFetch = $this->faker->numberBetween(1, Quote::count());
-        $this->call('get', '/quotes/random/' . $quoteCountToFetch);
+        $this->call("get", "/quotes/random/" . $quoteCountToFetch);
 
         // Assertions
         $this->assertHttp200Success();

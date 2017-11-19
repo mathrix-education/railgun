@@ -14,29 +14,29 @@ use Tests\ScopeTestCase;
  */
 class ModulesAsModeratorTest extends ScopeTestCase
 {
-    protected $subFactory = 'random';
+    protected $subFactory = "random";
 
 
     public function testIndex()
     {
-        $this->sameAs('public');
+        $this->sameAs("public");
     }
 
 
     public function testAdd()
     {
-        $this->sameAs('public');
+        $this->sameAs("public");
     }
 
 
     public function testEdit()
     {
-        $this->sameAs('public');
+        $this->sameAs("public");
     }
 
 
     public function testDelete()
     {
-        $this->sameAs('public');
+        $this->sameAs("public");
     }
 }

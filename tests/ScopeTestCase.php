@@ -3,8 +3,8 @@ namespace Tests;
 
 use App\Models\BaseModel;
 use App\Models\User;
+use DB;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\DB;
 use Laravel\Passport\Passport;
 use Tests\Generics\Generics;
 
@@ -22,9 +22,9 @@ abstract class ScopeTestCase extends BaseTestCase
     /** @var User the user used in the test */
     public $user = null;
     /** @var array available scopes */
-    protected $scopes = ['admin', 'moderator', 'registered'];
+    protected $scopes = ["admin", "moderator", "registered"];
     /** @var string the effective scope */
-    protected $scope = 'public';
+    protected $scope = "public";
 
     /** @var BaseModel|string|null the test main model class */
     protected $modelClass = null;
@@ -35,7 +35,7 @@ abstract class ScopeTestCase extends BaseTestCase
 
     /** @var array Model map; will override model guessing process */
     protected $modelsMap = [
-        'Class' => 'Class_'
+        "Class" => "Class_"
     ];
 
 
@@ -53,50 +53,7 @@ abstract class ScopeTestCase extends BaseTestCase
 
 
     /**
-     * Call a test from a different test class of the same model
-     *
-     * @see QuotesAsRegisteredTest::testIndex() for a concrete example
-     *
-     * @param string $scope the scope
-     * @param null|string $testName the test name, default the same as the called
-     *
-     * @return void
-     * @throws \Exception
-     */
-    public function sameAs($scope, $testName = null)
-    {
-        $classNameToInstantiate = str_replace(
-            'As' . ucfirst($this->scope),
-            'As' . ucfirst($scope),
-            get_class($this)
-        );
-
-        // Check if class exists
-        if (!class_exists($classNameToInstantiate)) {
-            throw new \Exception($classNameToInstantiate . ' does not exists');
-        }
-
-        /** @var ScopeTestCase $testClassObject */
-        $testClassObject = new $classNameToInstantiate();
-        $testName = $testName ?? $this->getName();
-
-        // Pass the current user to the instantiate class test
-        $testClassObject->user = $this->user;
-
-        $testClassObject->setup();
-
-        // Check if method exists the class
-        if (!method_exists($testClassObject, $testName)) {
-            throw new \Exception('Test ' . $classNameToInstantiate . '::' . $testName . '() does not exists');
-        }
-
-        // Finally run the distant test
-        $testClassObject->{$testName}();
-    }
-
-
-    /**
-     * 1. Try to guess the model assiated with test class
+     * 1. Try to guess the model associated with test class
      * Ex: QuotesAsRegisteredTest -> \App\Models\Quotes
      * 2. Initialize user if needed using the test name
      * Ex: testExampleAsAdmin -> admin
@@ -107,11 +64,11 @@ abstract class ScopeTestCase extends BaseTestCase
     {
         parent::setUp();
         $className = get_class($this);
-        $classPath = explode('\\', get_class($this));
+        $classPath = explode("\\", get_class($this));
         $classNameWithoutNameSpace = array_pop($classPath);
 
-        // Check if the test class if matching the scope convention (i.e. contain 'As')
-        $matchingScopeConventions = strstr($className, 'As');
+        // Check if the test class if matching the scope convention (i.e. contain "As")
+        $matchingScopeConventions = strstr($className, "As");
 
         /*
         |--------------------------------------------------------------------------
@@ -122,13 +79,13 @@ abstract class ScopeTestCase extends BaseTestCase
 
         if ($matchingScopeConventions) {
             // Ex: QuotesAsRegisteredTest
-            $indexOfAsSuffix = strpos($classNameWithoutNameSpace, 'As');
+            $indexOfAsSuffix = strpos($classNameWithoutNameSpace, "As");
             if ($indexOfAsSuffix !== false) {
                 $guessedModelPlural = substr($classNameWithoutNameSpace, 0, $indexOfAsSuffix); // Ex: Quotes
             }
         } else {
             // Ex: QuotesTest
-            $indexOfTestSuffix = strpos($classNameWithoutNameSpace, 'Test');
+            $indexOfTestSuffix = strpos($classNameWithoutNameSpace, "Test");
             if ($indexOfTestSuffix !== false) {
                 $guessedModelPlural = substr($classNameWithoutNameSpace, 0, $indexOfTestSuffix); // Ex: Quotes
             }
@@ -140,9 +97,9 @@ abstract class ScopeTestCase extends BaseTestCase
             $guessedModelName = str_singular($guessedModelPlural);
 
             if (!empty($this->modelsMap[$guessedModelName])) {
-                $guessedModelClass = 'App\\Models\\' . $this->modelsMap[$guessedModelName];
+                $guessedModelClass = "App\\Models\\{$this->modelsMap[$guessedModelName]}";
             } else {
-                $guessedModelClass = 'App\\Models\\' . $guessedModelName;
+                $guessedModelClass = "App\\Models\\$guessedModelName";
             }
 
             if (class_exists($guessedModelClass)) {
@@ -158,7 +115,7 @@ abstract class ScopeTestCase extends BaseTestCase
         | Scope
         |--------------------------------------------------------------------------
         */
-        $potentialScope = 'public'; // Default to public, not in available scopes
+        $potentialScope = "public"; // Default to public, not in available scopes
 
         // Try to guess scope from class name
         if ($matchingScopeConventions) {
@@ -167,7 +124,7 @@ abstract class ScopeTestCase extends BaseTestCase
 
         // Scope may be overridden by test name
         $testName = $this->getName();
-        $potentialSubstringScopeFromTestName = strstr($testName, 'As');
+        $potentialSubstringScopeFromTestName = strstr($testName, "As");
 
 
         if ($potentialSubstringScopeFromTestName !== false) {
@@ -180,16 +137,80 @@ abstract class ScopeTestCase extends BaseTestCase
 
             // User has NOT be manually defined from a sameAs() method
             if ($this->user === null) {
-                $this->user = User::inRandomOrder()->where('type', '=', $this->scope)->first();
+                $this->user = User::inRandomOrder()->where("type", "=", $this->scope)->first();
             }
 
             // No user could be found, thje database is probably not seeded
             if (!$this->user instanceof User) {
-                throw new ModelNotFoundException('Could not find user with type `' . $this->scope .
-                    '`. Is database seeded?');
+                throw new ModelNotFoundException("Could not find user with type `{$this->scope}`. Is database seeded?");
             } else {
                 Passport::actingAs($this->user, [$this->user->type]); // Set Passport behavior
             }
         }
+    }
+
+
+    /**
+     * Call a test from a different test class of the same model
+     *
+     * @see QuotesAsRegisteredTest::testIndex() for a concrete example
+     *
+     * @param string $scope the scope
+     * @param null|string $testName the test name, default the same as the called
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function sameAs($scope, $testName = null)
+    {
+        $classNameToInstantiate = str_replace(
+            "As" . ucfirst($this->scope),
+            "As" . ucfirst($scope),
+            get_class($this)
+        );
+
+        // Check if class exists
+        if (!class_exists($classNameToInstantiate)) {
+            throw new \Exception("$classNameToInstantiate does not exists");
+        }
+
+        /** @var ScopeTestCase $testClassObject */
+        $testClassObject = new $classNameToInstantiate();
+        $testName = $testName ?? $this->getName();
+
+        // Pass the current user to the instantiate class test
+        $testClassObject->user = $this->user;
+
+        $testClassObject->setup();
+
+        // Check if method exists the class
+        if (!method_exists($testClassObject, $testName)) {
+            throw new \Exception("Test $classNameToInstantiate::$testName() does not exists");
+        }
+
+        // Finally run the distant test
+        $testClassObject->{$testName}();
+    }
+
+
+    /**
+     * Get a stranger
+     *
+     * @param string|null $type null for same as user
+     *
+     * @return User
+     */
+    public function stranger($type = null)
+    {
+        $type = $type !== null ? $type : $this->user !== null ? $this->user->type : "registered";
+        $conditions = [["type", "=", $type]];
+
+        if ($this->user !== null) {
+            $conditions[] = ["id", "!=", $this->user->id];
+        }
+
+        return User::inRandomOrder()
+            ->where($conditions)
+            ->firstOrFail();
     }
 }

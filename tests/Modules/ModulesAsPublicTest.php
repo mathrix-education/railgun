@@ -14,7 +14,7 @@ use Tests\ScopeTestCase;
  */
 class ModulesAsPublicTest extends ScopeTestCase
 {
-    protected $subFactory = 'random';
+    protected $subFactory = "random";
 
 
     public function testIndex()

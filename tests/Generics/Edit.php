@@ -46,7 +46,7 @@ trait Edit
             factory($this->modelClass)->raw($override) :
             factory($this->modelClass, $this->subFactory)->raw($override);
 
-        $this->call('patch', '/' . $this->modelPlural . '/' . $this->editModelId, $this->editModelData);
+        $this->call("patch", "/" . $this->modelPlural . "/" . $this->editModelId, $this->editModelData);
 
         if (isset($this->editModelData["link"])) {
             unset($this->editModelData["link"]);

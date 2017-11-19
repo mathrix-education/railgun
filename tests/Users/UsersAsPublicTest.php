@@ -24,23 +24,23 @@ class UsersAsPublicTest extends ScopeTestCase
     public function testRegister()
     {
         $data = [
-            'email' => $this->faker->email,
-            'password' => 'test',
-            'class_id' => Class_::inRandomOrder()->firstOrFail()->id
+            "email" => $this->faker->email,
+            "password" => "test",
+            "class_id" => Class_::inRandomOrder()->firstOrFail()->id
         ];
         $dataWithoutPassword = $data;
-        unset($dataWithoutPassword['password']);
+        unset($dataWithoutPassword["password"]);
 
-        $this->call('post', '/users/register', $data);
+        $this->call("post", "/users/register", $data);
 
-        $user = User::whereEmail($data['email'])->firstOrFail();
+        $user = User::whereEmail($data["email"])->firstOrFail();
 
         // Assertions
         $this->assertHttp200Success();
-        $this->assertInDatabase('users', $dataWithoutPassword);
-        $this->assertInDatabase('logs', [
-            'event' => 'user_registered',
-            'user_id' => $user->id
+        $this->assertInDatabase("users", $dataWithoutPassword);
+        $this->assertInDatabase("logs", [
+            "event" => "user_registered",
+            "user_id" => $user->id
         ]);
     }
 }

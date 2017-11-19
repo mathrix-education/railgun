@@ -1,7 +1,7 @@
 <?php
 namespace App\Models\Observers;
 
-use App\Models\Class_;
+
 use App\Models\Discipline;
 
 /**

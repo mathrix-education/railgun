@@ -3,7 +3,7 @@ namespace App\Controllers;
 
 use App\Models\Quote;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+
 
 /**
  * Class QuoteController
