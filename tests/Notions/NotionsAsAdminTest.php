@@ -1,8 +1,6 @@
 <?php
 namespace Tests\Notions;
 
-use Tests\ScopeTestCase;
-
 /**
  * Class NotionsAsAdminTest
  * Test notions as admin
@@ -12,29 +10,6 @@ use Tests\ScopeTestCase;
  * @version 1.0.0
  * @package Tests\Notions
  */
-class NotionsAsAdminTest extends ScopeTestCase
+class NotionsAsAdminTest extends NotionsAsModeratorTest
 {
-    public function testIndex()
-    {
-        $this->sameAs("public");
-    }
-
-
-    public function testAdd()
-    {
-        $this->genericAddSuccess();
-    }
-
-
-    public function testEdit()
-    {
-        $this->genericEditSuccess();
-    }
-
-
-    public function testDelete()
-    {
-        $this->genericDeleteSuccess();
-        $this->assertNotInDatabase("activity_notion", ["notion_id" => $this->deleteModelId]);
-    }
 }

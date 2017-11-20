@@ -16,11 +16,9 @@ use Tests\ScopeTestCase;
  */
 class UsersAsPublicTest extends ScopeTestCase
 {
-    /*
-    |--------------------------------------------------------------------------
-    | /users/register
-    |--------------------------------------------------------------------------
-    */
+    /**
+     * POST /users/register
+     */
     public function testRegister()
     {
         $data = [

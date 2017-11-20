@@ -2,7 +2,6 @@
 namespace Tests\Comments;
 
 use App\Models\Comment;
-use Tests\ScopeTestCase;
 
 /**
  * Class CommentsAsAdminTest
@@ -13,7 +12,7 @@ use Tests\ScopeTestCase;
  * @version 1.0.0
  * @package Tests\Comments
  */
-class CommentsAsAdminTest extends ScopeTestCase
+class CommentsAsAdminTest extends CommentsAsModeratorTest
 {
     /**
      * GET /comments

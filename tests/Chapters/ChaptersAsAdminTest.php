@@ -1,9 +1,6 @@
 <?php
 namespace Tests\Chapters;
 
-use Tests\Categories\CategoriesAsModeratorTest;
-use Tests\ScopeTestCase;
-
 /**
  * Class ChaptersAsAdminTest
  * Test chapters as admin

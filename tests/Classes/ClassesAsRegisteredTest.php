@@ -1,8 +1,6 @@
 <?php
 namespace Tests\Classes;
 
-use Tests\ScopeTestCase;
-
 /**
  * Class ClassesAsPublicTest
  * Test classes as registered user

@@ -15,6 +15,15 @@ use App\Models\User;
 class ModulePolicy extends BasePolicy
 {
     /**
+     * @return bool
+     */
+    public function index()
+    {
+        return true;
+    }
+
+
+    /**
      * @param User $currentUser
      *
      * @return bool

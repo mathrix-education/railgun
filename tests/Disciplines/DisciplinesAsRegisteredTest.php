@@ -1,8 +1,6 @@
 <?php
 namespace Tests\Disciplines;
 
-use Tests\ScopeTestCase;
-
 /**
  * Class DisciplinesAsPublicTest
  * Test disciplines as registered user
@@ -12,28 +10,6 @@ use Tests\ScopeTestCase;
  * @version 1.0.0
  * @package Tests\Disciplines
  */
-class DisciplinesAsRegisteredTest extends ScopeTestCase
+class DisciplinesAsRegisteredTest extends DisciplinesAsPublicTest
 {
-    public function testIndex()
-    {
-        $this->sameAs("public");
-    }
-
-
-    public function testAdd()
-    {
-        $this->sameAs("public");
-    }
-
-
-    public function testEdit()
-    {
-        $this->sameAs("public");
-    }
-
-
-    public function testDelete()
-    {
-        $this->sameAs("public");
-    }
 }

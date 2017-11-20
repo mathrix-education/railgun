@@ -1,8 +1,6 @@
 <?php
 namespace Tests\Disciplines;
 
-use Tests\ScopeTestCase;
-
 /**
  * Class DisciplinesAsAdminTest
  * Test disciplines as admin
@@ -12,26 +10,29 @@ use Tests\ScopeTestCase;
  * @version 1.0.0
  * @package Tests\Disciplines
  */
-class DisciplinesAsAdminTest extends ScopeTestCase
+class DisciplinesAsAdminTest extends DisciplinesAsModeratorTest
 {
-    public function testIndex()
-    {
-        $this->sameAs("public");
-    }
-
-
+    /**
+     * POST /disciplines
+     */
     public function testAdd()
     {
         $this->genericAddSuccess();
     }
 
 
+    /**
+     * PATCH /disciplines/{id}
+     */
     public function testEdit()
     {
         $this->genericEditSuccess();
     }
 
 
+    /**
+     * DELETE /disciplines/{id} -> HTTP 501 not_implemented
+     */
     public function testDelete()
     {
         $this->genericDelete();

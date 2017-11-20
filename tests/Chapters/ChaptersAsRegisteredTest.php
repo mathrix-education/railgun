@@ -1,8 +1,6 @@
 <?php
 namespace Tests\Chapters;
 
-use Tests\ScopeTestCase;
-
 /**
  * Class ChaptersAsPublicTest
  * Test chapters as registered user
