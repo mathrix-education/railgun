@@ -6,10 +6,20 @@ use App\Models\Log;
 use App\Models\Module;
 use App\Models\User;
 use Carbon\Carbon;
-use Tests\ScopeTestCase;
 
-class UsersAsRegisteredTest extends ScopeTestCase
+/**
+ * Class UsersAsRegisteredTest
+ *
+ * @author Mathrix Back-End Team
+ * @package Tests\Users
+ * @since 1.0.0
+ * @copyright Mathrix
+ */
+class UsersAsRegisteredTest extends UsersAsPublicTest
 {
+    /**
+     * PATCH /users/{id}
+     */
     public function testEdit()
     {
         $newUser = factory(User::class, $this->user->type)->raw();
@@ -26,6 +36,9 @@ class UsersAsRegisteredTest extends ScopeTestCase
     }
 
 
+    /**
+     * POST /users/points without loggable
+     */
     public function testPointsWithoutLoggable()
     {
         $pointsBefore = $this->user->points;
@@ -43,6 +56,9 @@ class UsersAsRegisteredTest extends ScopeTestCase
     }
 
 
+    /**
+     * POST /users/points with loggable
+     */
     public function testPointsWithLoggable()
     {
         $pointsBefore = $this->user->points;
@@ -78,7 +94,10 @@ class UsersAsRegisteredTest extends ScopeTestCase
     }
 
 
-    public function testDailyAchievementPass()
+    /**
+     * POST /users/points with daily achievement trigger
+     */
+    public function testPointsWithDailyAchievementPass()
     {
         $dailyAchievementsBefore = $this->user->daily_achievements;
         $potentialLog = Log::where([
@@ -106,7 +125,10 @@ class UsersAsRegisteredTest extends ScopeTestCase
     }
 
 
-    public function testLevelPass()
+    /**
+     * POST /users/points with level pass trigger
+     */
+    public function testPointsWithLevelPass()
     {
         /** @var Level $level */
         $level = Level::where("level", $this->user->level + 1)->first();

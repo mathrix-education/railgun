@@ -1,8 +1,6 @@
 <?php
 namespace Tests\Notions;
 
-use Tests\ScopeTestCase;
-
 /**
  * Class NotionsAsModeratorTest
  * Test notions as moderator
@@ -12,28 +10,32 @@ use Tests\ScopeTestCase;
  * @version 1.0.0
  * @package Tests\Notions
  */
-class NotionsAsModeratorTest extends ScopeTestCase
+class NotionsAsModeratorTest extends NotionsAsRegisteredTest
 {
-    public function testIndex()
-    {
-        $this->sameAs("public");
-    }
-
-
+    /**
+     * POST /notions
+     */
     public function testAdd()
     {
-        $this->sameAs("public");
+        $this->genericAddSuccess();
     }
 
 
+    /**
+     * PATCH /notions/{id}
+     */
     public function testEdit()
     {
-        $this->sameAs("public");
+        $this->genericEditSuccess();
     }
 
 
+    /**
+     * DELETE /notions/{id}
+     */
     public function testDelete()
     {
-        $this->sameAs("public");
+        $this->genericDeleteSuccess();
+        $this->assertNotInDatabase("activity_notion", ["notion_id" => $this->deleteModelId]);
     }
 }

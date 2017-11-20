@@ -1,8 +1,6 @@
 <?php
 namespace Tests\Modules;
 
-use Tests\ScopeTestCase;
-
 /**
  * Class ModulesAsModeratorTest
  * Test modules as moderator
@@ -12,31 +10,34 @@ use Tests\ScopeTestCase;
  * @version 1.0.0
  * @package Tests\Modules
  */
-class ModulesAsModeratorTest extends ScopeTestCase
+class ModulesAsModeratorTest extends ModulesAsRegisteredTest
 {
-    protected $subFactory = "random";
-
-
-    public function testIndex()
-    {
-        $this->sameAs("public");
-    }
-
-
+    /**
+     * POST /modules
+     */
     public function testAdd()
     {
-        $this->sameAs("public");
+        $this->genericAdd();
+        $this->assertHttp200Success();
     }
 
 
+    /**
+     * PATCH /modules/{id}
+     */
     public function testEdit()
     {
-        $this->sameAs("public");
+        $this->genericEdit();
+        $this->assertHttp200Success();
     }
 
 
+    /**
+     * DELETE /modules/{id}
+     */
     public function testDelete()
     {
-        $this->sameAs("public");
+        $this->genericDeleteSuccess();
+        $this->assertNotInDatabase("activity_module", ["module_id" => $this->deleteModelId]);
     }
 }

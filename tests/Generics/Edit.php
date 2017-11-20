@@ -1,6 +1,8 @@
 <?php
 namespace Tests\Generics;
 
+use Closure;
+
 /**
  * Trait Edit
  *
@@ -21,10 +23,11 @@ trait Edit
      * Generic edit; expect HTTP 200 and data present in database
      *
      * @param array $override overridden attributes
+     * @param \Closure|null $callback the callback on generated data
      */
-    public function genericEditSuccess(array $override = [])
+    public function genericEditSuccess(array $override = [], Closure $callback = null)
     {
-        $this->genericEdit($override);
+        $this->genericEdit($override, $callback);
 
         // Assertions
         $this->assertHttp200Success();
@@ -35,9 +38,10 @@ trait Edit
     /**
      * Generic edit call
      *
-     * @param array $override Overridden attributes
+     * @param array $override overridden attributes
+     * @param \Closure|null $callback the callback on generated data
      */
-    public function genericEdit(array $override = [])
+    public function genericEdit(array $override = [], Closure $callback = null)
     {
         $this->genericUsableOrFail();
 
@@ -45,6 +49,10 @@ trait Edit
         $this->editModelData = is_null($this->subFactory) ?
             factory($this->modelClass)->raw($override) :
             factory($this->modelClass, $this->subFactory)->raw($override);
+
+        if ($callback !== null) {
+            $this->editModelData = $callback($this->editModelData);
+        }
 
         $this->call("patch", "/" . $this->modelPlural . "/" . $this->editModelId, $this->editModelData);
 
@@ -56,10 +64,13 @@ trait Edit
 
     /**
      * Generic edit; expect HTTP 200 and data present in database
+     *
+     * @param array $override overridden attributes
+     * @param \Closure|null $callback the callback on generated data
      */
-    public function genericEditUnauthorized()
+    public function genericEditUnauthorized(array $override = [], Closure $callback = null)
     {
-        $this->genericEdit();
+        $this->genericEdit($override, $callback);
 
         // Assertions
         $this->assertHttp401Unauthorized();

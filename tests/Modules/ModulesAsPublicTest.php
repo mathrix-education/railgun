@@ -14,27 +14,42 @@ use Tests\ScopeTestCase;
  */
 class ModulesAsPublicTest extends ScopeTestCase
 {
+    /**
+     * @var string The subFactory to use
+     */
     protected $subFactory = "random";
 
 
+    /**
+     * GET /modules
+     */
     public function testIndex()
     {
         $this->genericIndexSuccess();
     }
 
 
+    /**
+     * POST /modules -> HTTP 401 unauthorized
+     */
     public function testAdd()
     {
         $this->genericAddUnauthorized();
     }
 
 
+    /**
+     * PATCH /modules/{id} -> HTTP 401 unauthorized
+     */
     public function testEdit()
     {
         $this->genericEditUnauthorized();
     }
 
 
+    /**
+     * DELETE /modules/{id} -> HTTP 401 unauthorized
+     */
     public function testDelete()
     {
         $this->genericDeleteUnauthorized();

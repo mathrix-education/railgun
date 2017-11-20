@@ -4,7 +4,7 @@ namespace App\Controllers;
 use App\Exceptions\Http401UnauthorizedException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http501NotImplementedException;
-
+use App\Models\Country;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -100,6 +100,9 @@ class CountryController extends BaseController
      */
     public function delete(Request $request, int $id): JsonResponse
     {
+        $country = Country::find($id);
+        $request->user()->canOrFail("delete", $country);
+
         throw new Http501NotImplementedException();
 
         return parent::delete($request, $id);

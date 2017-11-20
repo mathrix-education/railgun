@@ -1,36 +1,14 @@
 <?php
 namespace Tests\Users;
 
-use Tests\ScopeTestCase;
-
-class UsersAsAdminTest extends ScopeTestCase
+/**
+ * Class UsersAsAdminTest
+ *
+ * @author Mathrix Back-End Team
+ * @package Tests\Users
+ * @since 1.0.0
+ * @copyright Mathrix
+ */
+class UsersAsAdminTest extends UsersAsModeratorTest
 {
-    public function testEdit()
-    {
-        $this->sameAs("registered");
-    }
-
-    public function testPointsWithoutLoggable()
-    {
-        $this->sameAs("registered");
-    }
-
-
-    public function testPointsWithLoggable()
-    {
-        $this->sameAs("registered");
-    }
-
-
-    public function testDailyAchievementPass()
-    {
-        $this->sameAs("registered");
-    }
-
-
-    public function testLevelPass()
-    {
-        $this->sameAs("registered");
-    }
-
 }
