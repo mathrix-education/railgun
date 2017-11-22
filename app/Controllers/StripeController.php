@@ -7,6 +7,7 @@ use App\Exceptions\Http422ModelValidationException;
 use App\Models\Log;
 use App\Models\User;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -90,7 +91,12 @@ class StripeController extends CashierController
                 ->create($stripeToken);
 
             // Charge the user
-            $user->charge($this->getPriceFromStripePlan($stripePlan));
+            $response = $user->charge($this->getPriceFromStripePlan($stripePlan));
+
+            // Cancel subscription if charge is pending or failed
+            if ($response->status !== "succeeded") {
+                $user->subscription("premium")->cancelNow();
+            }
         }
 
         Log::log("user_payment_succeed_for_premium", $user);

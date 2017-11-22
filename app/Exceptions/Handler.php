@@ -9,6 +9,7 @@ use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use ReflectionClass;
+use Stripe\Error\Base;
 use Symfony\Component\HttpKernel\Exception\HttpException as SymphonyHttpException;
 
 
@@ -35,7 +36,8 @@ class Handler extends ExceptionHandler
         ValidationException::class,
         OAuthServerException::class,
         Http401UnauthorizedException::class,
-        Http501NotImplementedException::class
+        Http501NotImplementedException::class,
+        Base::class
     ];
 
 
@@ -70,11 +72,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        $overriddenStatusCode = false;
+
         if ($e instanceof HttpException) {
             /** @var $e HttpException */
             return $e->getResponse();
         }
-
         $exceptionClass = (new ReflectionClass($e))->getShortName(); // Get the Exception class name
 
         // Default exception handler
@@ -86,6 +89,22 @@ class Handler extends ExceptionHandler
             "message" => $e->getMessage()
         ];
 
+        // Handle stripe exceptions
+        if ($e instanceof Base) {
+            $jsonBody = $e->getJsonBody();
+
+            if (!empty($jsonBody["error"])) {
+                $jsonBody = $jsonBody["error"];
+                if(!empty($jsonBody["message"])) {
+                    unset($jsonBody["message"]);
+                    $json["data"] = $jsonBody;
+                }
+            }
+
+            $overriddenStatusCode = 400;
+        }
+
+        // Handle validation exceptions
         if ($e instanceof ValidationException) {
             $json["errors"] = $e->errors();
         }
@@ -97,7 +116,7 @@ class Handler extends ExceptionHandler
 
         $rendered = parent::render($request, $e);
 
-        return response()->json($json, $rendered->getStatusCode());
+        return response()->json($json, $overriddenStatusCode ? $overriddenStatusCode : $rendered->getStatusCode());
 
     }
 }
