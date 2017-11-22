@@ -88,6 +88,9 @@ class StripeController extends CashierController
                 ->withCoupon($stripeCoupon)
                 ->trialUntil($this->getEndDateFromStripePlan($stripePlan))
                 ->create($stripeToken);
+
+            // Charge the user
+            $user->charge($this->getPriceFromStripePlan($stripePlan));
         }
 
         Log::log("user_payment_succeed_for_premium", $user);
