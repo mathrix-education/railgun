@@ -7,6 +7,7 @@ use App\Exceptions\Http422ModelValidationException;
 use App\Models\Log;
 use App\Models\User;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -40,19 +41,30 @@ class StripeController extends CashierController
 
     /**
      * @apiVersion 1.0.0
-     * @api {post} /stripe/subscribe/{stripe_plan} Subscribe
+     * @api {post} /stripe/subscribe Subscribe
      * @apiGroup Stripe
      * @apiName StripeSubscribe
      * @apiDescription Subscribe user to plan
      * @apiPermission registered
      * @apiUse Bearer
-     * @apiParam {string=v3_biannually,v3_annually,v3_monthly} stripe_plan The stripe plan
+     * @apiParam (Data) {string=v3_biannually,v3_annually,v3_monthly} stripe_plan The stripe plan
      * @apiParam (Data) {string} [stripe_token] The stripe token; can be null if a coupon is given
      * @apiParam (Data) {string} [stripe_coupon=null] The stripe coupon
-     * @âpiUse User
+     * @apiUse User
      * @apiError (Error 400) invalid_request stripe_token and stripe_coupon cannot be null at the same time
      * @apiError (Error 400) invalid_request stripe_plan has to be in the allowed stripe plans
-     *
+     * @apiError (Error 400) `card invalid_number` The card number is not a valid credit card number.
+     *  `invalid_expiry_month` The card's expiration month is invalid.
+     *  `invalid_expiry_year` The card's expiration year is invalid.
+     *  `invalid_cvc` The card's security code is invalid.
+     *  `invalid_swipe_data` The card's swipe data is invalid.
+     *  `incorrect_number` The card number is incorrect.
+     *  `expired_card` The card has expired.
+     *  `incorrect_cvc` The card's security code is incorrect.
+     *  `incorrect_zip` The card's zip code failed validation.
+     *  `card_declined` The card was declined.
+     *  `missing` There is no card on a customer that is being charged.
+     *  `processing_error` An error occurred while processing the card.
      * @param Request $request
      *
      * @return Response
@@ -90,7 +102,12 @@ class StripeController extends CashierController
                 ->create($stripeToken);
 
             // Charge the user
-            $user->charge($this->getPriceFromStripePlan($stripePlan));
+            $response = $user->charge($this->getPriceFromStripePlan($stripePlan));
+
+            // Cancel subscription if charge is pending or failed
+            if ($response->status !== "succeeded") {
+                $user->subscription("premium")->cancelNow();
+            }
         }
 
         Log::log("user_payment_succeed_for_premium", $user);
