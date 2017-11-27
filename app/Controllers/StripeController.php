@@ -160,7 +160,7 @@ class StripeController extends CashierController
                 }
                 break;
             default:
-                throw new Http400InvalidRequestException("$stripePlan is not a valid estimatable plan");
+                throw new Http400InvalidRequestException("$stripePlan is not a valid estimable plan");
                 break;
         }
 
@@ -223,8 +223,7 @@ class StripeController extends CashierController
 
 
     /**
-     *
-     * Payment succeeded
+     * Payment failed
      *
      * @param  array $payload
      *
