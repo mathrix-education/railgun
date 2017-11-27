@@ -19,6 +19,7 @@ echo "Running npm install"
 npm install --silent
 
 echo "Generating docs"
+mkdir docs/apidoc
 apidoc -i app/ -o docs/apidoc/ --silent
 
 echo "Generating emails"
