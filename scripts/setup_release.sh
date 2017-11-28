@@ -15,14 +15,11 @@ cd ${new_release_dir}
 echo "Running composer install"
 composer install --prefer-dist --no-scripts -q -o
 
-echo "Running npm install"
-npm install --silent
+echo "Running yarn install"
+yarn install --silent
 
-echo "Generating docs"
-apidoc -i app/ -o docs/apidoc/ --silent
-
-echo "Generating emails"
-gulp mjml --silent
+echo "Running gulp install"
+gulp install --silent
 
 echo "Linking storage directory"
 [ -d ${shared_dir} ] || mkdir ${shared_dir} && chmod 0775 ${shared_dir}
@@ -41,3 +38,5 @@ ls -dt ${releases_dir}/*/ | tail -n +6 | xargs rm -rf
 echo "Linking current release"
 [ -f ${current} ] && rm ${current}
 ln -nfs ${new_release_dir} ${current}
+
+echo "$release successfully installed"
