@@ -5,8 +5,8 @@ use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Validator as ValidatorFacade;
+
+use Validator as ValidatorFacade;
 use Illuminate\Validation\Validator;
 
 /**

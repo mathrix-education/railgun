@@ -2,6 +2,7 @@
 namespace App\Models\Observers;
 
 use App\Models\Activity;
+use App\Models\Meta;
 use App\Models\Module;
 
 /**
@@ -49,6 +50,7 @@ class ModuleObserver extends BaseObserver
     public function deleting($module)
     {
         $module->activities()->detach();
+        Meta::whereModuleId($module->id)->delete();
 
         return true;
     }

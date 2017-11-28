@@ -1,8 +1,6 @@
 <?php
 namespace Tests\Categories;
 
-use Tests\ScopeTestCase;
-
 /**
  * Class CategoriesAsModeratorTest
  * Test Categories as moderator
@@ -12,28 +10,11 @@ use Tests\ScopeTestCase;
  * @version 1.0.0
  * @package Tests\Categories
  */
-class CategoriesAsModeratorTest extends ScopeTestCase
+class CategoriesAsModeratorTest extends CategoriesAsRegisteredTest
 {
-    public function testIndex()
-    {
-        $this->sameAs('public');
-    }
-
-
-    public function testAdd()
-    {
-        $this->sameAs('public');
-    }
-
-
-    public function testEdit()
-    {
-        $this->sameAs('public');
-    }
-
-
     public function testDelete()
     {
-        $this->sameAs('public');
+        $this->genericDelete();
+        $this->assertHttp501NotImplemented();
     }
 }

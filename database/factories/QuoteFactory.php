@@ -10,7 +10,7 @@ use Faker\Generator;
  */
 $factory->define(Quote::class, function (Generator $faker) {
     return [
-        'content' => $faker->sentence(10),
-        'author' => $faker->firstName . ' ' . $faker->lastName
+        "content" => $faker->sentence(10),
+        "author" => $faker->firstName . " " . $faker->lastName
     ];
 });

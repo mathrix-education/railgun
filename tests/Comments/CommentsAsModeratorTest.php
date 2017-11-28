@@ -1,7 +1,7 @@
 <?php
 namespace Tests\Comments;
 
-use Tests\ScopeTestCase;
+use App\Models\Comment;
 
 /**
  * Class CommentsAsModeratorTest
@@ -12,28 +12,30 @@ use Tests\ScopeTestCase;
  * @version 1.0.0
  * @package Tests\Comments
  */
-class CommentsAsModeratorTest extends ScopeTestCase
+class CommentsAsModeratorTest extends CommentsAsRegisteredTest
 {
-    public function testIndex()
-    {
-        $this->sameAs('public');
-    }
-
-
-    public function testAdd()
-    {
-        $this->sameAs('registered');
-    }
-
-
+    /**
+     * PATCH /comments/{id} without changing the user_id
+     */
     public function testEdit()
     {
-        $this->sameAs('public');
+        /** @var Comment $comment */
+        $commentId = Comment::inRandomOrder()->firstOrFail()->id;
+        $data = factory(Comment::class)->raw();
+        unset($data["user_id"], $data["created_at"], $data["updated_at"]);
+
+        $this->call("patch", "/comments/$commentId", $data);
+
+        $this->assertHttp200Success();
+        $this->assertInDatabase("comments", $data);
     }
 
 
+    /**
+     * DELETE /comments/{id}
+     */
     public function testDelete()
     {
-        $this->sameAs('public');
+        $this->genericSoftDeleteSuccess();
     }
 }

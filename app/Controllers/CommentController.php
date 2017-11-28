@@ -2,12 +2,15 @@
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
+use App\Exceptions\Http401UnauthorizedException;
 use App\Models\BaseModel;
+use App\Models\Comment;
 use App\Models\Course;
 use App\Models\Module;
 use App\Models\Post;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 /**
  * Class CommentController
@@ -58,7 +61,25 @@ class CommentController extends BaseController
      * @apiUse Http401Unauthorized
      * @apiUse Http422ModelValidation
      * @apiUse Http422ModelSave
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     * @throws Http401UnauthorizedException
      */
+    public function add(Request $request): JsonResponse
+    {
+        if ($request->user() !== null && $request->user()->cant("add", $this->modelClass)) {
+            throw new Http401UnauthorizedException();
+        }
+
+        /** @var BaseModel $model */
+        $comment = new Comment($request->all());
+        $comment->user_id = $this->getUserByRequestOrUnauthorized($request)->id;
+        $comment->save();
+
+        return response()->json($comment);
+    }
 
 
     /**

@@ -3,7 +3,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 
@@ -15,11 +15,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $slug
  * @property bool $premium
  * @property bool $visible
- * @property int $order
- * @property int $chapter_id
+ * @property array $link
  * @property-read Collection|Activity[] $activities
- * @property-read Chapter $chapter
- * @method static Builder|Notion whereChapterId($value)
+ * @property-read Collection|Chapter[] $chapters
  * @method static Builder|Notion whereId($value)
  * @method static Builder|Notion whereName($value)
  * @method static Builder|Notion whereSlug($value)
@@ -33,7 +31,7 @@ class Notion extends BaseModel
     public const TYPES = ["normal", "premium", "reminder", "further"];
 
     /** @var array The The fillable attributes */
-    protected $fillable = ["id", "name", "slug", "type", "order", "visible", "chapter_id", "link"];
+    protected $fillable = ["id", "name", "slug", "type", "visible", "link"];
 
     /** @var array The validation rules */
     protected $rules = [
@@ -68,12 +66,12 @@ class Notion extends BaseModel
 
 
     /**
-     * BelongsToChapter
+     * BelongsToMany Chapter
      *
-     * @return BelongsTo
+     * @return BelongsToMany
      */
-    public function chapter(): BelongsTo
+    public function chapters(): BelongsToMany
     {
-        return $this->belongsTo(Chapter::class);
+        return $this->belongsToMany(Chapter::class);
     }
 }

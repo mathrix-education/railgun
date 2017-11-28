@@ -1,9 +1,8 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\Chapter;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+
+
 
 /**
  * Class ChapterController

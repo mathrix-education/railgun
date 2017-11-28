@@ -1,8 +1,6 @@
 <?php
 namespace Tests\Countries;
 
-use Tests\ScopeTestCase;
-
 /**
  * Class CountriesAsPublicTest
  * Test countries as registered user
@@ -12,28 +10,6 @@ use Tests\ScopeTestCase;
  * @version 1.0.0
  * @package Tests\Countries
  */
-class CountriesAsRegisteredTest extends ScopeTestCase
+class CountriesAsRegisteredTest extends CountriesAsPublicTest
 {
-    public function testIndex()
-    {
-        $this->sameAs('public');
-    }
-
-
-    public function testAdd()
-    {
-        $this->sameAs('public');
-    }
-
-
-    public function testEdit()
-    {
-        $this->sameAs('public');
-    }
-
-
-    public function testDelete()
-    {
-        $this->sameAs('public');
-    }
 }

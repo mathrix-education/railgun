@@ -26,7 +26,7 @@ use App\Models\Observers\QuoteObserver;
 use App\Models\Observers\UserObserver;
 use App\Models\Observers\VoteObserver;
 use App\Models\Post;
-use App\Models\Quote;
+
 use App\Models\User;
 use App\Models\Vote;
 use Illuminate\Database\Eloquent\Relations\Relation;

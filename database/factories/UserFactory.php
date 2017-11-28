@@ -16,19 +16,19 @@ $factory->define(User::class, function (Generator $faker) {
     $points = $faker->numberBetween(0, 100) * 10;
 
     return [
-        'username' => $faker->boolean(30) ? $faker->userName : null,
-        'email' => $faker->email,
-        'firstName' => $names ? $faker->firstName : null,
-        'lastName' => $names ? $faker->lastName : null,
-        'password' => Hash::make('test'),
-        'token' => $faker->uuid,
-        'points' => $points,
-        'level' => Level::getLevelByPoints($points),
-        'daily' => $faker->randomElement([10, 20, 40]),
-        'settings' => [
-            'sound' => $faker->boolean(70)
+        "username" => $faker->boolean(30) ? $faker->userName : null,
+        "email" => $faker->email,
+        "firstName" => $names ? $faker->firstName : null,
+        "lastName" => $names ? $faker->lastName : null,
+        "password" => Hash::make("test"),
+        "token" => $faker->uuid,
+        "points" => $points,
+        "level" => Level::getLevelByPoints($points),
+        "daily" => $faker->randomElement([10, 20, 40]),
+        "settings" => [
+            "sound" => $faker->boolean(70)
         ],
-        'class_id' => $faker->randomElement(Class_::all()->pluck('id')->toArray())
+        "class_id" => Class_::inRandomOrder()->firstOrFail()->id
     ];
 });
 
@@ -39,9 +39,9 @@ $factory->define(User::class, function (Generator $faker) {
  * @author Mathrix Team
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
-$factory->defineAs(User::class, 'registered', function (Generator $faker) use ($factory) {
+$factory->defineAs(User::class, "registered", function () use ($factory) {
     $data = [
-        'type' => 'registered',
+        "type" => "registered",
     ];
 
     return array_merge($factory->raw(User::class), $data);
@@ -54,13 +54,13 @@ $factory->defineAs(User::class, 'registered', function (Generator $faker) use ($
  * @author Mathrix Team
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
-$factory->defineAs(User::class, 'moderator', function (Generator $faker) use ($factory) {
+$factory->defineAs(User::class, "moderator", function (Generator $faker) use ($factory) {
     $data = [
-        'username' => $faker->userName,
-        'firstName' => $faker->firstName,
-        'lastName' => $faker->lastName,
-        'type' => 'moderator',
-        'class_id' => null
+        "username" => $faker->userName,
+        "firstName" => $faker->firstName,
+        "lastName" => $faker->lastName,
+        "type" => "moderator",
+        "class_id" => null
     ];
 
     return array_merge($factory->raw(User::class), $data);
@@ -73,13 +73,13 @@ $factory->defineAs(User::class, 'moderator', function (Generator $faker) use ($f
  * @author Mathrix Team
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
-$factory->defineAs(User::class, 'admin', function (Generator $faker) use ($factory) {
+$factory->defineAs(User::class, "admin", function (Generator $faker) use ($factory) {
     $data = [
-        'username' => $faker->userName,
-        'firstName' => $faker->firstName,
-        'lastName' => $faker->lastName,
-        'type' => 'admin',
-        'class_id' => null
+        "username" => $faker->userName,
+        "firstName" => $faker->firstName,
+        "lastName" => $faker->lastName,
+        "type" => "admin",
+        "class_id" => null
     ];
 
     return array_merge($factory->raw(User::class), $data);

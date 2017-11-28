@@ -15,7 +15,7 @@ $factory->defineAs(Module::class, 'mcq', function (Generator $faker) use ($facto
     $solutions = [];
     $corrections = [];
 
-    for ($q = 0; $q < $questionCount; $q++) {
+    for($q = 0; $q < $questionCount; $q++) {
         $questions[] = str_replace('.', '?', $faker->sentence());
 
         $choiceCount = $faker->numberBetween(2, 4);
