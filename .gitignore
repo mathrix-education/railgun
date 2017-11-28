@@ -4,7 +4,6 @@ _ide_helper.php
 
 /.idea
 /docs/apidoc
-/database/v2/
 /node_modules
 /resources/views/emails/**/*.html
 /resources/views/emails/**/*.blade.php

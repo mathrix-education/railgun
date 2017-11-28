@@ -45,8 +45,6 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static QueryBuilder|Comment withTrashed()
  * @method static QueryBuilder|Comment withoutTrashed()
  * @mixin \Eloquent
- * @method static bool|null forceDelete()
- * @method static bool|null restore()
  */
 class Comment extends BaseModel
 {

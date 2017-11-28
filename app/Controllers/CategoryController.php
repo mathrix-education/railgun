@@ -4,7 +4,8 @@ namespace App\Controllers;
 use App\Exceptions\Http401UnauthorizedException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http501NotImplementedException;
-use App\Models\Category;
+
+use App\Models\Activity;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -100,6 +101,9 @@ class CategoryController extends BaseController
      */
     public function delete(Request $request, int $id): JsonResponse
     {
+        $activity = Activity::find($id);
+        $request->user()->canOrFail("delete", $activity);
+
         throw new Http501NotImplementedException();
 
         return parent::delete($request, $id);

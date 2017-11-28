@@ -14,10 +14,10 @@ $factory->define(Course::class, function (Generator $faker) {
     $created = $faker->dateTime();
 
     return [
-        'title' => $title,
-        'slug' => str_slug($title),
-        'content' => $faker->text(),
-        'category_id' => $faker->randomElement(Category::all()->pluck('id')->toArray()),
-        'created_at' => $created,
+        "title" => $title,
+        "slug" => str_slug($title),
+        "content" => $faker->text(),
+        "category_id" => $faker->randomElement(Category::all()->pluck("id")->toArray()),
+        "created_at" => $created,
     ];
 });

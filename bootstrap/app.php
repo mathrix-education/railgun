@@ -134,7 +134,7 @@ if ($app->environment("stage", "master")) {
 */
 Dusterio\LumenPassport\LumenPassport::routes($app->router);
 
-$app->router->group(["namespace" => "App\Controllers"], function ($router) {
+$app->router->group(["namespace" => "App\\Controllers"], function ($router) {
     /** @var Laravel\Lumen\Routing\Router $router */
     $router->get("/", function () use ($router) {
         return response()->json([
@@ -145,6 +145,7 @@ $app->router->group(["namespace" => "App\Controllers"], function ($router) {
     });
 
     foreach (glob(__DIR__ . "/../app/Routes/*.php") as $routeFile) {
+        /** @noinspection PhpIncludeInspection */
         require $routeFile;
     }
 });

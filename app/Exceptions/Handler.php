@@ -12,7 +12,6 @@ use ReflectionClass;
 use Stripe\Error\Base;
 use Symfony\Component\HttpKernel\Exception\HttpException as SymphonyHttpException;
 
-
 /**
  * Class Handler
  * Handle exceptions and display them in json as response
@@ -110,7 +109,7 @@ class Handler extends ExceptionHandler
         }
 
         // Include trace in debug mode
-        if (app()->environment("dev", "stage")) {
+        if (app()->environment("dev", "pipelines",  "stage")) {
             $json["trace"] = explode("\n", $e->getTraceAsString());
         }
 

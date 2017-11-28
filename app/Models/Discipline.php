@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $name
  * @property string $slug
  * @property bool $beta
+ * @property array $link
  * @property-read Collection|Chapter[] $chapters
  * @property-read Collection|Class_[] $classes
  * @method static Builder|Discipline whereId($value)

@@ -1,8 +1,6 @@
 <?php
 namespace Tests\Activities;
 
-use Tests\ScopeTestCase;
-
 /**
  * Class ActivitiesAsAdminTest
  * Test activities as admin
@@ -12,40 +10,7 @@ use Tests\ScopeTestCase;
  * @version 1.0.0
  * @package Tests\Activities
  */
-class ActivitiesAsAdminTest extends ScopeTestCase
+class ActivitiesAsAdminTest extends ActivitiesAsModeratorTest
 {
-    public function testIndex()
-    {
-        $this->sameAs('moderator');
-    }
-
-
-    public function testAdd()
-    {
-        $this->sameAs('moderator');
-    }
-
-
-    public function testEdit()
-    {
-        $this->sameAs('moderator');
-    }
-
-
-    public function testDelete()
-    {
-        $this->sameAs('moderator');
-    }
-
-
-    public function testMarkFavorite()
-    {
-        $this->sameAs('registered');
-    }
-
-
-    public function testMarkStatus()
-    {
-        $this->sameAs('registered');
-    }
+    // Inherited tests
 }

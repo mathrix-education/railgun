@@ -5,8 +5,8 @@ use App\Models\Traits\Commentable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Support\Facades\Auth;
+
+use Auth;
 
 
 /**
@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Auth;
  * @property array $solutions
  * @property array $corrections
  * @property string $options
+ * @property array $link
  * @property-read mixed $status
  * @property-read Collection|Activity[] $activities
  * @property-read Collection|Comment[] $comments

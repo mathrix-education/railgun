@@ -1,8 +1,6 @@
 <?php
 namespace Tests\Quotes;
 
-use Tests\ScopeTestCase;
-
 /**
  * Class CountriesAsAdminTest
  * Test quotes as admin
@@ -12,38 +10,29 @@ use Tests\ScopeTestCase;
  * @version 1.0.0
  * @package Tests\Quotes
  */
-class QuotesAsAdminTest extends ScopeTestCase
+class QuotesAsAdminTest extends QuotesAsModeratorTest
 {
-    public function testIndex()
-    {
-        $this->sameAs('public');
-    }
-
-
-    public function testRandom()
-    {
-        $this->sameAs('public');
-    }
-
-
-    public function testRandomMultiple()
-    {
-        $this->sameAs('public');
-    }
-
-
+    /**
+     * POST /quotes
+     */
     public function testAdd()
     {
         $this->genericAddSuccess();
     }
 
 
+    /**
+     * PATCH /quotes/{id}
+     */
     public function testEdit()
     {
         $this->genericEditSuccess();
     }
 
 
+    /**
+     * DELETE /quotes/{id}
+     */
     public function testDelete()
     {
         $this->genericDeleteSuccess();

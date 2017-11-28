@@ -49,6 +49,7 @@ return [
     |
     */
     "aliases" => [
+        "Hash" => \Illuminate\Support\Facades\Hash::class,
         "Mail" => \Illuminate\Support\Facades\Mail::class,
         "Gate" => \Illuminate\Support\Facades\Gate::class,
         "Validator" => \Illuminate\Support\Facades\Validator::class,

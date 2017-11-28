@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Exceptions\Http401UnauthorizedException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http501NotImplementedException;
+
 use App\Models\Class_;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -99,6 +100,9 @@ class ClassController extends BaseController
      */
     public function delete(Request $request, int $id): JsonResponse
     {
+        $class = Class_::find($id);
+        $request->user()->canOrFail("delete", $class);
+
         throw new Http501NotImplementedException();
 
         return parent::delete($request, $id);

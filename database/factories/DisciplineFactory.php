@@ -12,9 +12,9 @@ $factory->define(Discipline::class, function (Generator $faker) {
     $name = substr($faker->sentence($faker->numberBetween(1, 2)), 0, -1);
 
     return [
-        'name' => $name,
-        'slug' => str_slug($name),
-        'beta' => $faker->boolean(),
-        'visible' => $faker->boolean(95)
+        "name" => $name,
+        "slug" => str_slug($name),
+        "beta" => $faker->boolean(),
+        "visible" => $faker->boolean(95)
     ];
 });
