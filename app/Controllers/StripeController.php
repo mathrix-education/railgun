@@ -53,18 +53,18 @@ class StripeController extends CashierController
      * @apiUse User
      * @apiError (Error 400) invalid_request stripe_token and stripe_coupon cannot be null at the same time
      * @apiError (Error 400) invalid_request stripe_plan has to be in the allowed stripe plans
-     * @apiError (Error 400) `card invalid_number` The card number is not a valid credit card number.
-     *  `invalid_expiry_month` The card's expiration month is invalid.
-     *  `invalid_expiry_year` The card's expiration year is invalid.
-     *  `invalid_cvc` The card's security code is invalid.
-     *  `invalid_swipe_data` The card's swipe data is invalid.
-     *  `incorrect_number` The card number is incorrect.
-     *  `expired_card` The card has expired.
-     *  `incorrect_cvc` The card's security code is incorrect.
-     *  `incorrect_zip` The card's zip code failed validation.
-     *  `card_declined` The card was declined.
-     *  `missing` There is no card on a customer that is being charged.
-     *  `processing_error` An error occurred while processing the card.
+     * @apiError (Error 400) invalid_request `card invalid_number` The card number is not a valid credit card number<br>
+     *  `invalid_expiry_month` The card's expiration month is invalid<br>
+     *  `invalid_expiry_year` The card's expiration year is invalid<br>
+     *  `invalid_cvc` The card's security code is invalid<br>
+     *  `invalid_swipe_data` The card's swipe data is invalid<br>
+     *  `incorrect_number` The card number is incorrect<br>
+     *  `expired_card` The card has expired<br>
+     *  `incorrect_cvc` The card's security code is incorrect<br>
+     *  `incorrect_zip` The card's zip code failed validation<br>
+     *  `card_declined` The card was declined<br>
+     *  `missing` There is no card on a customer that is being charged<br>
+     *  `processing_error` An error occurred while processing the card
      * @param Request $request
      *
      * @return Response
