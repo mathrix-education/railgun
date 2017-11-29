@@ -1,0 +1,185 @@
+<?php
+namespace App\Console\Commands;
+
+
+use App\Models\Activity;
+use App\Models\Chapter;
+use App\Models\Class_;
+use App\Models\Country;
+use App\Models\Discipline;
+use App\Models\Module;
+use App\Models\Notion;
+use Carbon\Carbon;
+use Illuminate\Console\Command;
+
+/**
+ * Class SitemapContent
+ *
+ * @author Mathrix Back-End Team
+ * @package App\Console\Commands
+ * @since 1.0.1
+ * @copyright Mathrix
+ */
+class SitemapContent extends Command
+{
+    use SitemapUtils;
+    protected $signature = "sitemap:content";
+
+
+    public function handle()
+    {
+        $today = Carbon::today()->format("Y-m-d");
+        $sitemapArray = [
+            [
+                "url" => $this->url("/"),
+                "lastmod" => $today,
+                "priority" => 1
+            ],
+            [
+                "url" => $this->url("/pack-mode-machine"),
+                "lastmod" => $today,
+                "priority" => 1
+            ]
+        ];
+        $dashboardsSitemap = [];
+        $chaptersSitemap = [];
+        $notionsSitemap = [];
+        $modulesSitemap = [];
+
+        /** @var Country $country */
+        foreach (Country::all() as $country) {
+            /** @var Class_ $class */
+            foreach ($country->classes as $class) {
+                $dashboardsSitemap[] = [
+                    "url" => $this->url("/{$country->slug_short}/{$class->slug_short}"),
+                    "lastmod" => $today,
+                    "priority" => 0.9
+                ];
+
+                /** @var Discipline $discipline */
+                foreach ($class->disciplines as $discipline) {
+                    /** @var Chapter $chapter */
+                    foreach ($discipline->chapters as $chapter) {
+                        $chaptersSitemap[] = [
+                            "url" => $this->url("/" . implode("/", [
+                                    $country->slug_short,
+                                    $class->slug_short,
+                                    $discipline->slug,
+                                    $chapter->slug,
+                                ])),
+                            "lastmod" => $today,
+                            "priority" => 0.8
+                        ];
+
+                        /** @var Notion $notion */
+                        foreach ($chapter->notions()->where("type", "!=", "premium")->get()
+                                 as $notion) {
+                            $notionsSitemap[] = [
+                                "url" => $this->url("/" . implode("/", [
+                                        $country->slug_short,
+                                        $class->slug_short,
+                                        $discipline->slug,
+                                        $chapter->slug,
+                                        $notion->slug
+                                    ])),
+                                "lastmod" => $today,
+                                "priority" => 0.7
+                            ];
+
+                            /** @var Activity $activity */
+                            foreach ($notion->activities()
+                                         ->withPivot(["order"])
+                                         ->orderBy("pivot_order", "asc")
+                                         ->limit(2)
+                                         ->get()
+                                     as $activity) {
+                                /** @var Module $module */
+                                foreach ($activity->modules()
+                                             ->where("premium", " = ", 0)
+                                             ->get()
+                                         as $module) {
+
+                                    $type = $this->getModuleType($module);
+
+                                    if ($type === false) {
+                                        continue;
+                                    }
+
+                                    $videos = null;
+                                    // Add videos into modules
+                                    if ($type === "video") {
+                                        preg_match_all("/\[video\]([0-9A-Za-z]+)\[\/video\]/", $module->content, $matches);
+                                        $videosIds = $matches[1];
+
+                                        foreach ($videosIds as $videoId) {
+                                            $videos[] = [
+                                                "thumbnail_loc" => "http://img.youtube.com/vi/$videoId/sddefault.jpg",
+                                                "player_loc" => [
+                                                    "player_loc" => "https://www.youtube.com/v/$videoId",
+                                                    "allow_embed" => "yes",
+                                                    "autoplay" => false
+                                                ]
+                                            ];
+                                        }
+                                    }
+
+                                    $modulesSitemap[] = [
+                                        "url" => $this->url("/" . implode("/", [
+                                                $country->slug_short,
+                                                $class->slug_short,
+                                                $discipline->slug,
+                                                $chapter->slug,
+                                                $notion->slug,
+                                                $this->getModuleType($module),
+                                                $module->id
+                                            ])),
+                                        "lastmod" => $today,
+                                        "priority" => 0.6,
+                                        "videos" => $videos
+                                    ];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Finally, register all links
+        $sitemapArray = array_merge_recursive($sitemapArray, $dashboardsSitemap, $chaptersSitemap, $notionsSitemap,
+            $modulesSitemap);
+
+        $this->saveSitemap($sitemapArray);
+    }
+
+
+    /**
+     * Get the url-friendly module type
+     *
+     * @param Module $module
+     *
+     * @return string
+     * @throws \Exception
+     */
+    public function getModuleType(Module $module)
+    {
+        switch ($module->type) {
+            case "mcq":
+                return "exercice";
+            case "mcq-table":
+                return "exercice-qcm";
+            case "match":
+                return "correspondance";
+            case "test":
+                return "interro";
+            case "fill":
+                return "texte-trou";
+            case "course":
+                return preg_match("/[video][0-9a-z]+[\/video]/", $module->content) === 1 ? "video" : "cours";
+            default:
+                return false;
+            //throw new \Exception("Module type {$module->type} is not handled");
+
+        }
+    }
+}

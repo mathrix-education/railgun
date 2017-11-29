@@ -42,7 +42,7 @@ $app->singleton(
 
 $app->singleton(
     Illuminate\Contracts\Console\Kernel::class,
-    Laravel\Lumen\Console\Kernel::class
+    App\Console\Kernel::class
 );
 
 $app->singleton(
@@ -116,6 +116,7 @@ $app->register(Laravel\Passport\PassportServiceProvider::class);
 $app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
 $app->register(Barryvdh\Cors\ServiceProvider::class);
 $app->register(Illuminate\Filesystem\FilesystemServiceProvider::class);
+$app->register(Roumen\Sitemap\SitemapServiceProvider::class);
 
 
 if ($app->environment("stage", "master")) {
