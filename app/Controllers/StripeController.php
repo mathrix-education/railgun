@@ -88,7 +88,6 @@ class StripeController extends CashierController
 
         /** @var User $user */
         $user = $request->user();
-
         if ($stripePlan === null || $stripePlan === "v3_monthly") {
             // Coupon only or monthly, normal process
             $user->newSubscription("premium", $stripePlan)
@@ -96,17 +95,17 @@ class StripeController extends CashierController
                 ->create($stripeToken);
         } else {
             // v3_biannually or v3_annually
-            $user->newSubscription("premium", $stripePlan)
-                ->withCoupon($stripeCoupon)
-                ->trialUntil($this->getEndDateFromStripePlan($stripePlan))
-                ->create($stripeToken);
-
             // Charge the user
             $response = $user->charge($this->getPriceFromStripePlan($stripePlan));
 
-            // Cancel subscription if charge is pending or failed
-            if ($response->status !== "succeeded") {
-                $user->subscription("premium")->cancelNow();
+            // Give subscription if charge succeeded
+            if ($response->status == "succeeded") {
+                $user->newSubscription("premium", $stripePlan)
+                    ->withCoupon($stripeCoupon)
+                    ->trialUntil($this->getEndDateFromStripePlan($stripePlan))
+                    ->create($stripeToken);
+            } else {
+
             }
         }
 
@@ -207,7 +206,6 @@ class StripeController extends CashierController
      */
     public function handleInvoicePaymentSucceeded($payload)
     {
-        /** @var \Symfony\Component\HttpFoundation\Response $response */
         $user = $this->getUserByStripeId($payload["data"]["object"]["customer"]);
 
         if ($user) {

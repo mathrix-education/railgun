@@ -96,7 +96,7 @@ class SitemapContent extends Command
                                      as $activity) {
                                 /** @var Module $module */
                                 foreach ($activity->modules()
-                                             ->where("premium", " = ", 0)
+                                             ->where("premium", "=", 0)
                                              ->get()
                                          as $module) {
 
@@ -131,6 +131,7 @@ class SitemapContent extends Command
                                                 $discipline->slug,
                                                 $chapter->slug,
                                                 $notion->slug,
+                                                $activity->slug,
                                                 $this->getModuleType($module),
                                                 $module->id
                                             ])),
@@ -183,11 +184,12 @@ class SitemapContent extends Command
                 return "interro";
             case "fill":
                 return "texte-trou";
+            case "flashcard":
+                return "flashcard";
             case "course":
-                return preg_match("/[video][0-9a-z]+[\/video]/", $module->content) === 1 ? "video" : "cours";
+                return preg_match("/\[video\]([0-9A-Za-z]+)\[\/video\]/", $module->content) === 1 ? "video" : "cours";
             default:
-                return false;
-            //throw new \Exception("Module type {$module->type} is not handled");
+                throw new \Exception("Module type {$module->type} is not handled");
 
         }
     }
