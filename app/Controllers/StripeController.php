@@ -96,7 +96,17 @@ class StripeController extends CashierController
         } else {
             // v3_biannually or v3_annually
             // Charge the user
-            $response = $user->charge($this->getPriceFromStripePlan($stripePlan));
+            if (!$user->hasStripeId()) {
+                $user->createAsStripeCustomer($stripeToken);
+            } else {
+                $user->updateCard($stripeToken);
+            }
+
+            try {
+                $response = $user->charge($this->getPriceFromStripePlan($stripePlan));
+            } catch (\InvalidArgumentException $exception) {
+                throw new Http400InvalidRequestException($exception->getMessage());
+            }
 
             // Give subscription if charge succeeded
             if ($response->status == "succeeded") {
@@ -104,8 +114,6 @@ class StripeController extends CashierController
                     ->withCoupon($stripeCoupon)
                     ->trialUntil($this->getEndDateFromStripePlan($stripePlan))
                     ->create($stripeToken);
-            } else {
-
             }
         }
 
