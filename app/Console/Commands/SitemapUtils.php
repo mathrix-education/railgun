@@ -1,6 +1,7 @@
 <?php
 namespace App\Console\Commands;
 
+use Illuminate\Support\Facades\Storage;
 use Roumen\Sitemap\Sitemap;
 
 /**
@@ -40,8 +41,9 @@ trait SitemapUtils
      *
      * @param array $sitemapArray
      * @param string $name
+     * @param \Closure $callback
      */
-    public function saveSitemap(array $sitemapArray, string $name = "sitemap")
+    public function saveSitemap(array $sitemapArray, string $name = "sitemap", \Closure $callback = null)
     {
         /** @var Sitemap $sitemap */
         $sitemap = app()->make("sitemap");
@@ -61,6 +63,23 @@ trait SitemapUtils
             );
         }
 
+        if (!in_array("sitemaps", Storage::disk("storage")->directories())) {
+            Storage::disk("storage")->makeDirectory("sitemaps");
+        }
+
+        if ($callback !== null) {
+            $callback($sitemap);
+        }
+
         $sitemap->store("xml", $name, storage_path("sitemaps"));
+
+        // Generate symlink if not in local environment
+        if (env("APP_ENV") != "local") {
+            $sitemapFiles = Storage::disk("storage")->files("sitemaps");
+
+            foreach ($sitemapFiles as $sitemapFile) {
+                symlink($sitemapFile, "/var/www/" . env("APP_ENV") . "/client/current/dist/browser/$sitemapFile");
+            }
+        }
     }
 }
