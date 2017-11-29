@@ -78,8 +78,9 @@ trait SitemapUtils
             $sitemapFiles = Storage::disk("storage")->files("sitemaps");
 
             foreach ($sitemapFiles as $sitemapFile) {
-                $existing = "/var/www/" . env("APP_ENV") . "/api/current/storage/$sitemapFile";
-                $symbolic = "/var/www/" . env("APP_ENV") . "/client/current/dist/browser/$sitemapFile";
+                $sitemapName = str_replace("sitemaps/", "", $sitemapFile);
+                $existing = "/var/www/" . env("APP_ENV") . "/api/current/storage/sitemaps/$sitemapName";
+                $symbolic = "/var/www/" . env("APP_ENV") . "/client/current/dist/browser/$sitemapName";
 
                 exec("ls -s $existing $symbolic");
             }
