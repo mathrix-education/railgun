@@ -154,11 +154,11 @@ class SitemapContent extends Command
         $this->saveSitemap($modulesSitemap, "sitemap.modules");
         $this->saveSitemap($sitemapArray, "sitemap", function ($sitemap) {
             /** @var Sitemap $sitemap */
-            $sitemap->add($this->url("/sitemap.dashboards.xml"));
-            $sitemap->add($this->url("/sitemap.chapters.xml"));
-            $sitemap->add($this->url("/sitemap.notions.xml"));
-            $sitemap->add($this->url("/sitemap.modules.xml"));
-            $sitemap->add($this->url("/sitemap.videos.xml"));
+            $sitemap->addSitemap($this->url("/sitemap.dashboards.xml"));
+            $sitemap->addSitemap($this->url("/sitemap.chapters.xml"));
+            $sitemap->addSitemap($this->url("/sitemap.notions.xml"));
+            $sitemap->addSitemap($this->url("/sitemap.modules.xml"));
+            $sitemap->addSitemap($this->url("/sitemap.videos.xml"));
         });
     }
 
