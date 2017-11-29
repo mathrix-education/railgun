@@ -40,10 +40,10 @@ trait SitemapUtils
      * Save the sitemap
      *
      * @param array $sitemapArray
-     * @param string $name
+     * @param string $sitemapName
      * @param \Closure $callback
      */
-    public function saveSitemap(array $sitemapArray, string $name = "sitemap", \Closure $callback = null)
+    public function saveSitemap(array $sitemapArray, string $sitemapName = "sitemap", \Closure $callback = null)
     {
         /** @var Sitemap $sitemap */
         $sitemap = app()->make("sitemap");
@@ -71,19 +71,14 @@ trait SitemapUtils
             $callback($sitemap);
         }
 
-        $sitemap->store("xml", $name, storage_path("sitemaps"));
+        $sitemap->store("xml", $sitemapName, storage_path("sitemaps"));
 
         // Generate symlink if not in local environment
         if (env("APP_ENV") != "local") {
-            $sitemapFiles = Storage::disk("storage")->files("sitemaps");
+            $existing = "/var/www/" . env("APP_ENV") . "/api/current/storage/sitemaps/$sitemapName";
+            $symbolic = "/var/www/" . env("APP_ENV") . "/client/current/dist/browser/$sitemapName";
 
-            foreach ($sitemapFiles as $sitemapFile) {
-                $sitemapName = str_replace("sitemaps/", "", $sitemapFile);
-                $existing = "/var/www/" . env("APP_ENV") . "/api/current/storage/sitemaps/$sitemapName";
-                $symbolic = "/var/www/" . env("APP_ENV") . "/client/current/dist/browser/$sitemapName";
-
-                exec("ls -s $existing $symbolic");
-            }
+            exec("ln -s $existing $symbolic");
         }
     }
 }
