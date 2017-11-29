@@ -17,6 +17,9 @@ Written by Mathieu Bour and Dimitri Bret for Mathrix.
 
 
 ### Gulp tasks
+#### apidoc
+Build the documentation.
+
 #### mjml
 Build all .html and .php files from .mjml files.
 
