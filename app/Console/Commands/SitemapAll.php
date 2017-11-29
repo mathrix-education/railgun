@@ -18,7 +18,7 @@ class SitemapAll extends Command
 
     public function handle()
     {
-        $this->call("sitemap:content");
         $this->call("sitemap:videos");
+        $this->call("sitemap:content");
     }
 }

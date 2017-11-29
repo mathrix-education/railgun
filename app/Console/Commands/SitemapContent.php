@@ -11,6 +11,7 @@ use App\Models\Module;
 use App\Models\Notion;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Roumen\Sitemap\Sitemap;
 
 /**
  * Class SitemapContent
@@ -146,10 +147,18 @@ class SitemapContent extends Command
         }
 
         // Finally, register all links
-        $sitemapArray = array_merge_recursive($sitemapArray, $dashboardsSitemap, $chaptersSitemap, $notionsSitemap,
-            $modulesSitemap);
-
-        $this->saveSitemap($sitemapArray);
+        $this->saveSitemap($dashboardsSitemap, "sitemap.dashboards");
+        $this->saveSitemap($chaptersSitemap, "sitemap.chapters");
+        $this->saveSitemap($notionsSitemap, "sitemap.notions");
+        $this->saveSitemap($modulesSitemap, "sitemap.modules");
+        $this->saveSitemap($sitemapArray, "sitemap", function ($sitemap) {
+            /** @var Sitemap $sitemap */
+            $sitemap->add($this->url("/sitemap.dashboards.xml"));
+            $sitemap->add($this->url("/sitemap.chapters.xml"));
+            $sitemap->add($this->url("/sitemap.notions.xml"));
+            $sitemap->add($this->url("/sitemap.modules.xml"));
+            $sitemap->add($this->url("/sitemap.videos.xml"));
+        });
     }
 
 
