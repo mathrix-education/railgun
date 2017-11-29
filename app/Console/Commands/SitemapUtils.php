@@ -78,10 +78,10 @@ trait SitemapUtils
             $sitemapFiles = Storage::disk("storage")->files("sitemaps");
 
             foreach ($sitemapFiles as $sitemapFile) {
-                symlink(
-                    "/var/www/" . env("APP_ENV") . "/api/current/storage/sitemaps/$sitemapFile",
-                    "/var/www/" . env("APP_ENV") . "/client/current/dist/browser/$sitemapFile"
-                );
+                $existing = "/var/www/" . env("APP_ENV") . "/api/current/storage/$sitemapFile";
+                $symbolic = "/var/www/" . env("APP_ENV") . "/client/current/dist/browser/$sitemapFile";
+
+                exec("ls -s $existing $symbolic");
             }
         }
     }
