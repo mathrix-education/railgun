@@ -255,7 +255,7 @@ class StripeController extends CashierController
     public function handleCustomerSubscriptionDeleted(array $payload)
     {
         parent::handleCustomerSubscriptionDeleted($payload);
-        
+
         $user = $this->getUserByStripeId($payload["data"]["object"]["customer"]);
 
         if ($user) {
