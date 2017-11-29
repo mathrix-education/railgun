@@ -78,7 +78,10 @@ trait SitemapUtils
             $sitemapFiles = Storage::disk("storage")->files("sitemaps");
 
             foreach ($sitemapFiles as $sitemapFile) {
-                symlink(storage_path() . "/$sitemapFile", "/var/www/" . env("APP_ENV") . "/client/current/dist/browser/$sitemapFile");
+                symlink(
+                    "/var/www/" . env("APP_ENV") . "/api/current/$sitemapFile",
+                    "/var/www/" . env("APP_ENV") . "/client/current/dist/browser/$sitemapFile"
+                );
             }
         }
     }
