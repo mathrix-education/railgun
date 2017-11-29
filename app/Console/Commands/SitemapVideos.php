@@ -3,7 +3,6 @@ namespace App\Console\Commands;
 
 use App\Models\Post;
 use Illuminate\Console\Command;
-use Roumen\Sitemap\Sitemap;
 
 /**
  * Class SitemapVideos
