@@ -1,6 +1,5 @@
 <?php
 use App\Models\Module;
-use Faker\Generator;
 
 /**
  * ModuleMatchFactory
@@ -8,10 +7,10 @@ use Faker\Generator;
  * @author Mathrix Team
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
-$factory->defineAs(Module::class, 'match', function (Generator $faker) use ($factory) {
+$factory->defineAs(Module::class, 'match', function () use ($factory) {
     $data = $factory->rawOf(Module::class, 'mcq');
 
-    foreach ($data['corrections'] as $k => $v) {
+    foreach($data['corrections'] as $k => $v) {
         $data['corrections'][$k] = $v[0];
     }
 

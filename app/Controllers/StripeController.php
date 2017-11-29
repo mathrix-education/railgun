@@ -7,7 +7,6 @@ use App\Exceptions\Http422ModelValidationException;
 use App\Models\Log;
 use App\Models\User;
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -65,6 +64,7 @@ class StripeController extends CashierController
      *  `card_declined` The card was declined<br>
      *  `missing` There is no card on a customer that is being charged<br>
      *  `processing_error` An error occurred while processing the card
+     *
      * @param Request $request
      *
      * @return Response
@@ -88,7 +88,6 @@ class StripeController extends CashierController
 
         /** @var User $user */
         $user = $request->user();
-
         if ($stripePlan === null || $stripePlan === "v3_monthly") {
             // Coupon only or monthly, normal process
             $user->newSubscription("premium", $stripePlan)
@@ -96,17 +95,25 @@ class StripeController extends CashierController
                 ->create($stripeToken);
         } else {
             // v3_biannually or v3_annually
-            $user->newSubscription("premium", $stripePlan)
-                ->withCoupon($stripeCoupon)
-                ->trialUntil($this->getEndDateFromStripePlan($stripePlan))
-                ->create($stripeToken);
-
             // Charge the user
-            $response = $user->charge($this->getPriceFromStripePlan($stripePlan));
+            if (!$user->hasStripeId()) {
+                $user->createAsStripeCustomer($stripeToken);
+            } else {
+                $user->updateCard($stripeToken);
+            }
 
-            // Cancel subscription if charge is pending or failed
-            if ($response->status !== "succeeded") {
-                $user->subscription("premium")->cancelNow();
+            try {
+                $response = $user->charge($this->getPriceFromStripePlan($stripePlan));
+            } catch (\InvalidArgumentException $exception) {
+                throw new Http400InvalidRequestException($exception->getMessage());
+            }
+
+            // Give subscription if charge succeeded
+            if ($response->status == "succeeded") {
+                $user->newSubscription("premium", $stripePlan)
+                    ->withCoupon($stripeCoupon)
+                    ->trialUntil($this->getEndDateFromStripePlan($stripePlan))
+                    ->create($stripeToken);
             }
         }
 
@@ -207,18 +214,13 @@ class StripeController extends CashierController
      */
     public function handleInvoicePaymentSucceeded($payload)
     {
-        /** @var \Symfony\Component\HttpFoundation\Response $response */
-        $response = parent::handleInvoicePaymentSucceeded($payload);
+        $user = $this->getUserByStripeId($payload["data"]["object"]["customer"]);
 
-        if ($response->getStatusCode() == 200) {
-            $user = $this->getUserByStripeId($payload["data"]["object"]["customer"]);
-
-            if ($user) {
-                Log::log("user_payment_succeed_for_premium", $user);
-            }
+        if ($user) {
+            Log::log("user_payment_succeed_for_premium", $user);
         }
 
-        return $response;
+        return new Response('Webhook Handled', 200);
     }
 
 
@@ -234,20 +236,15 @@ class StripeController extends CashierController
      */
     public function handleInvoicePaymentFailed(array $payload)
     {
-        /** @var \Symfony\Component\HttpFoundation\Response $response */
-        $response = parent::handleInvoicePaymentFailed($payload);
+        $user = $this->getUserByStripeId($payload["data"]["object"]["customer"]);
 
-        if ($response->getStatusCode() == 200) {
-            $user = $this->getUserByStripeId($payload["data"]["object"]["customer"]);
+        if ($user) {
+            Log::log("user_payment_failed_for_premium", $user);
 
-            if ($user) {
-                Log::log("user_payment_failed_for_premium", $user);
-
-                // TODO: Send payment failed email
-            }
+            // TODO: Send payment failed email
         }
 
-        return $response;
+        return new Response('Webhook Handled', 200);
     }
 
 
@@ -263,19 +260,16 @@ class StripeController extends CashierController
      */
     public function handleCustomerSubscriptionDeleted(array $payload)
     {
-        /** @var \Symfony\Component\HttpFoundation\Response $response */
-        $response = parent::handleCustomerSubscriptionDeleted($payload);
+        parent::handleCustomerSubscriptionDeleted($payload);
 
-        if ($response->getStatusCode() == 200) {
-            $user = $this->getUserByStripeId($payload["data"]["object"]["customer"]);
+        $user = $this->getUserByStripeId($payload["data"]["object"]["customer"]);
 
-            if ($user) {
-                Log::log("user_cancelled_premium", $user);
+        if ($user) {
+            Log::log("user_cancelled_premium", $user);
 
-                // TODO: Send cancellation email
-            }
+            // TODO: Send cancellation email
         }
 
-        return $response;
+        return new Response('Webhook Handled', 200);
     }
 }

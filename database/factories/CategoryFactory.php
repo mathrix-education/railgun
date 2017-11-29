@@ -9,10 +9,10 @@ use Faker\Generator;
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->define(Category::class, function (Generator $faker) {
-    $name = substr($faker->sentence($faker->numberBetween(1, 2)), 0, -1);
+    $name = substr($faker->sentence($faker->numberBetween(3, 5)), 0, -1);
 
     return [
-        'name' => $name,
-        'slug' => str_slug($name)
+        "name" => $name,
+        "slug" => str_slug($name)
     ];
 });

@@ -7,7 +7,6 @@ use App\Models\Class_;
 use App\Models\Country;
 use App\Models\Discipline;
 use App\Models\Notion;
-use Tests\ScopeTestCase;
 
 /**
  * Class ActivitiesAsPublicTest
@@ -18,32 +17,18 @@ use Tests\ScopeTestCase;
  * @version 1.0.0
  * @package Tests\Activities
  */
-class ActivitiesAsRegisteredTest extends ScopeTestCase
+class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
 {
-    public function testIndex()
-    {
-        $this->sameAs('public');
-    }
-
-
-    public function testAdd()
-    {
-        $this->sameAs('public');
-    }
-
-
-    public function testEdit()
-    {
-        $this->sameAs('public');
-    }
-
-
-    public function testDelete()
-    {
-        $this->sameAs('public');
-    }
-
-
+    /**
+     * Build objects for /activities/mark
+     * @return array
+     *  int country_id
+     *  int class_id
+     *  int discipline_id
+     *  int chapter_id
+     *  int notion_id
+     *  int activity_id
+     */
     public function buildObjects()
     {
         /** @var Chapter $chapter */
@@ -59,40 +44,49 @@ class ActivitiesAsRegisteredTest extends ScopeTestCase
         /** @var Activity $activity */
         $activity = $notion->activities()->inRandomOrder()->firstOrFail();
 
-        return [$country, $class, $discipline, $chapter, $notion, $activity];
+        return [
+            "country_id" => $country->id,
+            "class_id" => $class->id,
+            "discipline_id" => $discipline->id,
+            "chapter_id" => $chapter->id,
+            "notion_id" => $notion->id,
+            "activity_id" => $activity->id
+        ];
     }
 
 
+    /**
+     * PATCH /activities/{id}/mark with {favorite: true}
+     */
     public function testMarkFavorite()
     {
-        [$country, $class, $discipline, $chapter, $notion, $activity] = $this->buildObjects();
+        $data = $this->buildObjects();
+        $activityId = $data["activity_id"];
+        unset($data["activity_id"]);
+        $data["favorite"] = true;
 
-        $this->call('patch', '/activities/' . $activity->id . '/mark', [
-            'favorite' => true,
-            'country_id' => $country->id,
-            'class_id' => $class->id,
-            'discipline_id' => $discipline->id,
-            'chapter_id' => $chapter->id,
-            'notion_id' => $notion->id
-        ]);
+        $this->call("patch", "/activities/$activityId/mark", $data);
 
+        $expectedData = array_merge($data, ["user_id" => $this->user->id]);
         $this->assertHttp200Success();
+        $this->assertInDatabase("metas", $expectedData);
     }
 
 
+    /**
+     * PATCH /activities/{id}/mark with {status: completed|to_revise}
+     */
     public function testMarkStatus()
     {
-        [$country, $class, $discipline, $chapter, $notion, $activity] = $this->buildObjects();
+        $data = $this->buildObjects();
+        $activityId = $data["activity_id"];
+        unset($data["activity_id"]);
+        $data["status"] = $this->faker->randomElement(["completed", "to_revise"]);
 
-        $this->call('patch', '/activities/' . $activity->id . '/mark', [
-            'status' => $this->faker->boolean() ? 'completed' : 'to_revise',
-            'country_id' => $country->id,
-            'class_id' => $class->id,
-            'discipline_id' => $discipline->id,
-            'chapter_id' => $chapter->id,
-            'notion_id' => $notion->id
-        ]);
+        $this->call("patch", "/activities/$activityId/mark", $data);
 
+        $expectedData = array_merge($data, ["user_id" => $this->user->id]);
         $this->assertHttp200Success();
+        $this->assertInDatabase("metas", $expectedData);
     }
 }

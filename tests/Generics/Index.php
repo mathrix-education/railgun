@@ -13,13 +13,13 @@ namespace Tests\Generics;
 trait Index
 {
     /**
-     * Generic index without pagination; expect HTTP 200
+     * Generic index call
      */
-    public function genericIndexSuccessWithoutPagination()
+    public function genericIndex()
     {
-        $this->genericIndexSuccess();
-        $modelCount = ($this->modelClass)::count();
-        $this->assertJsonLength($modelCount);
+        $this->genericUsableOrFail();
+
+        $this->call("get", "/" . $this->modelPlural);
     }
 
 
@@ -36,17 +36,6 @@ trait Index
 
 
     /**
-     * Generic index call
-     */
-    public function genericIndex()
-    {
-        $this->genericUsableOrFail();
-
-        $this->call('get', '/' . $this->modelPlural);
-    }
-
-
-    /**
      * Generic index with pagination; expect HTTP 200
      *
      * @param int $perPage model count per page
@@ -55,6 +44,17 @@ trait Index
     {
         $this->genericIndexSuccess();
         $this->assertJsonLength($perPage);
+    }
+
+
+    /**
+     * Generic index without pagination; expect HTTP 200
+     */
+    public function genericIndexSuccessWithoutPagination()
+    {
+        $this->genericIndexSuccess();
+        $modelCount = ($this->modelClass)::count();
+        $this->assertJsonLength($modelCount);
     }
 
 

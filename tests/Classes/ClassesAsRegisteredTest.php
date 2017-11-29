@@ -1,8 +1,6 @@
 <?php
 namespace Tests\Classes;
 
-use Tests\ScopeTestCase;
-
 /**
  * Class ClassesAsPublicTest
  * Test classes as registered user
@@ -12,28 +10,6 @@ use Tests\ScopeTestCase;
  * @version 1.0.0
  * @package Tests\Classes
  */
-class ClassesAsRegisteredTest extends ScopeTestCase
+class ClassesAsRegisteredTest extends ClassesAsPublicTest
 {
-    public function testIndex()
-    {
-        $this->sameAs('public');
-    }
-
-
-    public function testAdd()
-    {
-        $this->sameAs('public');
-    }
-
-
-    public function testEdit()
-    {
-        $this->sameAs('public');
-    }
-
-
-    public function testDelete()
-    {
-        $this->sameAs('public');
-    }
 }

@@ -14,16 +14,14 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * Class BaseTest
- * Base class for each test
+ * Base class for every test
  *
  * @author Mathrix Team
  * @package Test
  */
 abstract class BaseTestCase extends TestCase
 {
-    use HttpAssertions;
-
-    use DatabaseTransactions; // Revert test database after each test // TODO: fix Too Many Connections bug
+    use HttpAssertions, DatabaseTransactions;
 
     /** @var Generator */
     public $faker;
@@ -42,7 +40,7 @@ abstract class BaseTestCase extends TestCase
      */
     public function createApplication()
     {
-        return require __DIR__.'/../bootstrap/app.php';
+        return require __DIR__ . "/../bootstrap/app.php";
     }
 
 
@@ -56,113 +54,6 @@ abstract class BaseTestCase extends TestCase
     {
         $this->faker = Factory::create();
         parent::setUp();
-    }
-
-
-    /**
-     * Assert the response has the right error and status code
-     *
-     * @param string $error the error name
-     * @param int $status the status code
-     */
-    public function assertJsonError(string $error, int $status): void
-    {
-        $this->seeJsonContains(['error' => $error]); // Check for error
-        $this->assertResponseStatus($status); // Check for code
-    }
-
-
-    /**
-     * Assert the response has the right length
-     *
-     * @param int $expectedLength
-     */
-    public function assertJsonLength(int $expectedLength): void
-    {
-        $content = json_decode($this->response->getContent(), true);
-        $this->assertEquals($expectedLength, count($content));
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Additional assertions
-    |--------------------------------------------------------------------------
-    */
-
-
-    /**
-     * Assert that a given where condition exists in the database.
-     *
-     * @param  string $table
-     * @param  array $data
-     * @param  string|null $onConnection
-     */
-    public function assertInDatabase(string $table, array $data, $onConnection = null)
-    {
-        $this->seeInDatabase($table, $this->castData($data), $onConnection);
-    }
-
-
-    /**
-     * Cast data to its right MySQL values
-     *
-     * @param array $data
-     *
-     * @return array
-     */
-    public function castData(array $data)
-    {
-        foreach ($data as $field => $value) {
-            if ($value instanceof \DateTime) {
-                $data[$field] = $value->format('Y-m-d H:i:s');
-            }
-        }
-
-        return $data;
-    }
-
-
-    /**
-     * Assert that a given where condition does not exist in the database.
-     *
-     * @param  string $table
-     * @param  array $data
-     * @param  string|null $onConnection
-     */
-    public function assertNotInDatabase(string $table, array $data, $onConnection = null)
-    {
-        $this->notSeeInDatabase($table, $this->castData($data), $onConnection);
-    }
-
-
-    /**
-     * Assert that an event is logged in the database
-     *
-     * @param string $event The event type
-     * @param User|int|null $user The user as object, the user_id or null if not relying on user
-     * @param array $data The additional data to filter the event (associative or Eloquent mode)
-     */
-    public function assertLogged(string $event, $user = null, array $data = [])
-    {
-        foreach ($data as $key => $value) {
-            if (is_array($value)) {
-                $data[] = [$key, $value];
-                unset($data[$key]);
-            }
-        }
-
-        $data = array_merge([
-            ['event', $event],
-            ['user_id', $user === null || is_int($user) ? $user : $user->id]
-        ], $data);
-
-        $count = Log::where($data)
-            ->whereBetween('created_at', [Carbon::now()->subSeconds(10), Carbon::now()]) // 10 seconds delta
-            ->count();
-
-        $this->assertGreaterThan(0, $count, sprintf(
-            'Unable to find row in database table [logs] that matched attributes [%s].', json_encode($data)
-        ));
     }
 
 
@@ -195,5 +86,111 @@ abstract class BaseTestCase extends TestCase
                 echo $response;
             }
         }
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Additional assertions
+    |--------------------------------------------------------------------------
+    */
+    /**
+     * Assert the response has the right error and status code
+     *
+     * @param string $error the error name
+     * @param int $status the status code
+     */
+    public function assertJsonError(string $error, int $status): void
+    {
+        $this->seeJsonContains(["error" => $error]); // Check for error
+        $this->assertResponseStatus($status); // Check for code
+    }
+
+
+    /**
+     * Assert the response has the right length
+     *
+     * @param int $expectedLength
+     */
+    public function assertJsonLength(int $expectedLength): void
+    {
+        $content = json_decode($this->response->getContent(), true);
+        $this->assertEquals($expectedLength, count($content));
+    }
+
+
+    /**
+     * Assert that a given where condition exists in the database.
+     *
+     * @param  string $table
+     * @param  array $data
+     * @param  string|null $onConnection
+     */
+    public function assertInDatabase(string $table, array $data, $onConnection = null)
+    {
+        $this->seeInDatabase($table, $this->castData($data), $onConnection);
+    }
+
+
+    /**
+     * Cast data to its right MySQL values
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    public function castData(array $data)
+    {
+        foreach($data as $field => $value) {
+            if ($value instanceof \DateTime) {
+                $data[$field] = $value->format("Y-m-d H:i:s");
+            }
+        }
+
+        return $data;
+    }
+
+
+    /**
+     * Assert that a given where condition does not exist in the database.
+     *
+     * @param  string $table
+     * @param  array $data
+     * @param  string|null $onConnection
+     */
+    public function assertNotInDatabase(string $table, array $data, $onConnection = null)
+    {
+        $this->notSeeInDatabase($table, $this->castData($data), $onConnection);
+    }
+
+
+    /**
+     * Assert that an event is logged in the database
+     *
+     * @param string $event The event type
+     * @param User|int|null $user The user as object, the user_id or null if not relying on user
+     * @param array $data The additional data to filter the event (associative or Eloquent mode)
+     */
+    public function assertLogged(string $event, $user = null, array $data = [])
+    {
+        foreach($data as $key => $value) {
+            if (is_array($value)) {
+                $data[] = [$key, $value];
+                unset($data[$key]);
+            }
+        }
+
+        $data = array_merge([
+            ["event", $event],
+            ["user_id", $user === null || is_int($user) ? $user : $user->id]
+        ], $data);
+
+        $count = Log::where($data)
+            ->whereBetween("created_at", [Carbon::now()->subSeconds(10), Carbon::now()])// 10 seconds diff
+            ->count();
+
+        $this->assertGreaterThan(0, $count, sprintf(
+            "Unable to find row in database table [logs] that matched attributes [%s].", json_encode($data)
+        ));
     }
 }

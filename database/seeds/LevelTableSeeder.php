@@ -26,7 +26,7 @@ class LevelTableSeeder extends BaseTableSeeder
         $this->println("<comment>Seeding:</comment> levels from generation");
         $levels = [];
 
-        for ($i = 1; $i <= self::COUNT; $i++) {
+        for($i = 1; $i <= self::COUNT; $i++) {
             $levels[] = [
                 "level" => $i,
                 "objective" => (int)pow(($i - 1) * 10, self::POWER),

@@ -1,6 +1,8 @@
 <?php
 namespace Tests\Generics;
 
+use Closure;
+
 /**
  * Trait Add
  *
@@ -16,11 +18,36 @@ trait Add
 
 
     /**
-     * Generic add; expect HTTP 200 and data present in database
+     * Generic add call
+     *
+     * @param array $override the overridden properties
+     * @param \Closure|null $callback the callback on generated data
      */
-    public function genericAddSuccess()
+    public function genericAdd(array $override = [], Closure $callback = null)
     {
-        $this->genericAdd();
+        $this->genericUsableOrFail();
+
+        $this->addModelData = is_null($this->subFactory) ?
+            factory($this->modelClass)->raw($override) :
+            factory($this->modelClass, $this->subFactory)->raw($override);
+
+        if ($callback !== null) {
+            $this->addModelData = $callback($this->addModelData);
+        }
+
+        $this->call("post", "/" . $this->modelPlural, $this->addModelData);
+    }
+
+
+    /**
+     * Generic add; expect HTTP 200 and data present in database
+     *
+     * @param array $override the overridden properties
+     * @param \Closure|null $callback the callback on generated data
+     */
+    public function genericAddSuccess(array $override = [], Closure $callback = null)
+    {
+        $this->genericAdd($override, $callback);
 
         // Assertions
         $this->assertHttp200Success();
@@ -29,26 +56,14 @@ trait Add
 
 
     /**
-     * Generic add call
-     */
-    public function genericAdd()
-    {
-        $this->genericUsableOrFail();
-
-        $this->addModelData = is_null($this->subFactory) ?
-            factory($this->modelClass)->raw() :
-            factory($this->modelClass, $this->subFactory)->raw();
-
-        $this->call('post', '/' . $this->modelPlural, $this->addModelData);
-    }
-
-
-    /**
      * Generic add; expect HTTP 200 and data present in database
+     *
+     * @param array $override the overridden properties
+     * @param \Closure|null $callback the callback on generated data
      */
-    public function genericAddUnauthorized()
+    public function genericAddUnauthorized(array $override = [], Closure $callback = null)
     {
-        $this->genericAdd();
+        $this->genericAdd($override, $callback);
 
         // Assertions
         $this->assertHttp401Unauthorized();

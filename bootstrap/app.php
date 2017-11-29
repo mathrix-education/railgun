@@ -42,7 +42,7 @@ $app->singleton(
 
 $app->singleton(
     Illuminate\Contracts\Console\Kernel::class,
-    Laravel\Lumen\Console\Kernel::class
+    App\Console\Kernel::class
 );
 
 $app->singleton(
@@ -116,6 +116,7 @@ $app->register(Laravel\Passport\PassportServiceProvider::class);
 $app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
 $app->register(Barryvdh\Cors\ServiceProvider::class);
 $app->register(Illuminate\Filesystem\FilesystemServiceProvider::class);
+$app->register(Roumen\Sitemap\SitemapServiceProvider::class);
 
 
 if ($app->environment("stage", "master")) {
@@ -134,7 +135,7 @@ if ($app->environment("stage", "master")) {
 */
 Dusterio\LumenPassport\LumenPassport::routes($app->router);
 
-$app->router->group(["namespace" => "App\Controllers"], function ($router) {
+$app->router->group(["namespace" => "App\\Controllers"], function ($router) {
     /** @var Laravel\Lumen\Routing\Router $router */
     $router->get("/", function () use ($router) {
         return response()->json([
@@ -145,6 +146,7 @@ $app->router->group(["namespace" => "App\Controllers"], function ($router) {
     });
 
     foreach (glob(__DIR__ . "/../app/Routes/*.php") as $routeFile) {
+        /** @noinspection PhpIncludeInspection */
         require $routeFile;
     }
 });

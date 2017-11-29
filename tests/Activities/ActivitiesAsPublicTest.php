@@ -14,24 +14,36 @@ use Tests\ScopeTestCase;
  */
 class ActivitiesAsPublicTest extends ScopeTestCase
 {
+    /**
+     * GET /activities -> HTTP 401 unauthorized
+     */
     public function testIndex()
     {
         $this->genericIndexUnauthorized();
     }
 
 
+    /**
+     * POST /activities -> HTTP 401 unauthorized
+     */
     public function testAdd()
     {
         $this->genericAddUnauthorized();
     }
 
 
+    /**
+     * PATCH /activities/{id} -> HTTP 401 unauthorized
+     */
     public function testEdit()
     {
         $this->genericEditUnauthorized();
     }
 
 
+    /**
+     * DELETE /activities/{id} -> HTTP 401 unauthorized
+     */
     public function testDelete()
     {
         $this->genericDeleteUnauthorized();

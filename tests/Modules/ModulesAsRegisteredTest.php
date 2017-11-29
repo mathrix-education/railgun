@@ -1,8 +1,6 @@
 <?php
 namespace Tests\Modules;
 
-use Tests\ScopeTestCase;
-
 /**
  * Class ModulesAsPublicTest
  * Test modules as registered user
@@ -12,31 +10,6 @@ use Tests\ScopeTestCase;
  * @version 1.0.0
  * @package Tests\Modules
  */
-class ModulesAsRegisteredTest extends ScopeTestCase
+class ModulesAsRegisteredTest extends ModulesAsPublicTest
 {
-    protected $subFactory = 'random';
-
-
-    public function testIndex()
-    {
-        $this->sameAs('public');
-    }
-
-
-    public function testAdd()
-    {
-        $this->sameAs('public');
-    }
-
-
-    public function testEdit()
-    {
-        $this->sameAs('public');
-    }
-
-
-    public function testDelete()
-    {
-        $this->sameAs('public');
-    }
 }
