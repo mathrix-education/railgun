@@ -2,6 +2,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Roumen\Sitemap\Sitemap;
 
 /**
  * Class SitemapAll
@@ -13,6 +14,8 @@ use Illuminate\Console\Command;
  */
 class SitemapAll extends Command
 {
+    use SitemapUtils;
+
     protected $signature = "sitemap:all";
 
 
@@ -20,5 +23,27 @@ class SitemapAll extends Command
     {
         $this->call("sitemap:videos");
         $this->call("sitemap:content");
+
+        /** @var Sitemap $sitemap */
+        $sitemap = app()->make("sitemap");
+        $sitemap->addSitemap($this->url("/sitemap.main.xml"));
+        $sitemap->addSitemap($this->url("/sitemap.dashboards.xml"));
+        $sitemap->addSitemap($this->url("/sitemap.chapters.xml"));
+        $sitemap->addSitemap($this->url("/sitemap.notions.xml"));
+        $sitemap->addSitemap($this->url("/sitemap.modules.xml"));
+        $sitemap->addSitemap($this->url("/sitemap.videos.xml"));
+
+        $sitemap->store("sitemapindex", "sitemap", storage_path("sitemaps"));
+
+        if (env("APP_ENV") != "local") {
+            $existing = "/var/www/" . env("APP_ENV") . "/api/current/storage/sitemaps/sitemap.xml";
+            $symbolic = "/var/www/" . env("APP_ENV") . "/client/current/dist/browser/sitemap.xml";
+
+            if (file_exists($symbolic)) {
+                unlink($symbolic);
+            }
+
+            exec("ln -s $existing $symbolic");
+        }
     }
 }
