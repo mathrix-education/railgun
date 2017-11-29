@@ -75,10 +75,10 @@ trait SitemapUtils
 
         // Generate symlink if not in local environment
         if (env("APP_ENV") != "local") {
-            $sitemapFiles = storage_path() . Storage::disk("storage")->files("sitemaps");
+            $sitemapFiles = Storage::disk("storage")->files("sitemaps");
 
             foreach ($sitemapFiles as $sitemapFile) {
-                symlink($sitemapFile, "/var/www/" . env("APP_ENV") . "/client/current/dist/browser/$sitemapFile");
+                symlink(storage_path() . $sitemapFile, "/var/www/" . env("APP_ENV") . "/client/current/dist/browser/$sitemapFile");
             }
         }
     }
