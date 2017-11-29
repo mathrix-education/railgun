@@ -6,6 +6,9 @@ namespace Tests;
  * Some shortcuts for HTTP codes & errors
  *
  * @package Tests
+ *
+ * @method assertHttp401Unauthorized()
+ * @method assertHttp501NotImplemented()
  */
 trait HttpAssertions
 {
@@ -20,9 +23,9 @@ trait HttpAssertions
 
     public function __call($name, $arguments)
     {
-        $strCleaned = str_replace('assertHttp', '', $name);
+        $strCleaned = str_replace("assertHttp", "", $name);
         $errorCode = substr($strCleaned, 0, 3);
-        $errorName = str_replace($errorCode, '', $strCleaned);
+        $errorName = str_replace($errorCode, "", $strCleaned);
         $errorName = snake_case($errorName);
         $this->assertJsonError($errorName, $errorCode);
     }

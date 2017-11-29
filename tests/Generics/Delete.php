@@ -24,7 +24,7 @@ trait Delete
 
         // Assertions
         $this->assertHttp200Success();
-        $this->assertNotInDatabase($this->modelPlural, ['id' => $this->deleteModelId]);
+        $this->assertNotInDatabase($this->modelPlural, ["id" => $this->deleteModelId]);
     }
 
 
@@ -37,7 +37,7 @@ trait Delete
 
         $this->deleteModelId = ($this->modelClass)::inRandomOrder()->firstOrFail()->id;
 
-        $this->call('delete', '/' . $this->modelPlural . '/' . $this->deleteModelId);
+        $this->call("delete", "/" . $this->modelPlural . "/" . $this->deleteModelId);
     }
 
 
@@ -48,11 +48,11 @@ trait Delete
     {
         $this->genericDelete();
 
-        $deletedAt = ($this->modelClass)::where('id', $this->deleteModelId)->withTrashed()->first()->deleted_at;
+        $deletedAt = ($this->modelClass)::where("id", $this->deleteModelId)->withTrashed()->first()->deleted_at;
 
         // Assertions
         $this->assertHttp200Success();
-        $this->assertInDatabase($this->modelPlural, ['id' => $this->deleteModelId, 'deleted_at' => $deletedAt]);
+        $this->assertInDatabase($this->modelPlural, ["id" => $this->deleteModelId, "deleted_at" => $deletedAt]);
     }
 
 
@@ -65,6 +65,6 @@ trait Delete
 
         // Assertions
         $this->assertHttp401Unauthorized();
-        $this->assertInDatabase($this->modelPlural, ['id' => $this->deleteModelId]);
+        $this->assertInDatabase($this->modelPlural, ["id" => $this->deleteModelId]);
     }
 }

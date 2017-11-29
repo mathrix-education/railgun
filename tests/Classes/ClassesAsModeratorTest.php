@@ -1,8 +1,6 @@
 <?php
 namespace Tests\Classes;
 
-use Tests\ScopeTestCase;
-
 /**
  * Class ClassesAsModeratorTest
  * Test classes as moderator
@@ -12,28 +10,6 @@ use Tests\ScopeTestCase;
  * @version 1.0.0
  * @package Tests\Classes
  */
-class ClassesAsModeratorTest extends ScopeTestCase
+class ClassesAsModeratorTest extends ClassesAsRegisteredTest
 {
-    public function testIndex()
-    {
-        $this->sameAs('public');
-    }
-
-
-    public function testAdd()
-    {
-        $this->sameAs('public');
-    }
-
-
-    public function testEdit()
-    {
-        $this->sameAs('public');
-    }
-
-
-    public function testDelete()
-    {
-        $this->sameAs('public');
-    }
 }

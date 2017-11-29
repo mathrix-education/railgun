@@ -32,7 +32,7 @@ use App\Policies\QuotePolicy;
 use App\Policies\ReportPolicy;
 use App\Policies\UserPolicy;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Gate;
+use Gate;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
 

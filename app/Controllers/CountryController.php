@@ -100,6 +100,9 @@ class CountryController extends BaseController
      */
     public function delete(Request $request, int $id): JsonResponse
     {
+        $country = Country::find($id);
+        $request->user()->canOrFail("delete", $country);
+
         throw new Http501NotImplementedException();
 
         return parent::delete($request, $id);

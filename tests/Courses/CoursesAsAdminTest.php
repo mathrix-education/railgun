@@ -1,8 +1,6 @@
 <?php
 namespace Tests\Courses;
 
-use Tests\ScopeTestCase;
-
 /**
  * Class CoursesAsAdminTest
  * Test Courses as admin
@@ -12,26 +10,29 @@ use Tests\ScopeTestCase;
  * @version 1.0.0
  * @package Tests\Courses
  */
-class CoursesAsAdminTest extends ScopeTestCase
+class CoursesAsAdminTest extends CoursesAsModeratorTest
 {
-    public function testIndex()
-    {
-        $this->sameAs('public');
-    }
-
-
+    /**
+     * POST /courses
+     */
     public function testAdd()
     {
         $this->genericAddSuccess();
     }
 
 
+    /**
+     * PATCH /courses/{id}
+     */
     public function testEdit()
     {
         $this->genericEditSuccess();
     }
 
 
+    /**
+     * DELETE /courses/{id}
+     */
     public function testDelete()
     {
         $this->genericDeleteSuccess();

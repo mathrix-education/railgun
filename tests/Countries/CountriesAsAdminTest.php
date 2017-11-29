@@ -1,8 +1,6 @@
 <?php
 namespace Tests\Countries;
 
-use Tests\ScopeTestCase;
-
 /**
  * Class CountriesAsAdminTest
  * Test countries as admin
@@ -12,14 +10,8 @@ use Tests\ScopeTestCase;
  * @version 1.0.0
  * @package Tests\Countries
  */
-class CountriesAsAdminTest extends ScopeTestCase
+class CountriesAsAdminTest extends CountriesAsModeratorTest
 {
-    public function testIndex()
-    {
-        $this->sameAs('public');
-    }
-
-
     public function testAdd()
     {
         $this->genericAddSuccess();

@@ -6,6 +6,8 @@
  * @apiParam (Data) {int} class_id The chapter class id
  * @apiParam (Data) {int} discipline_id The chapter discipline id
  * @apiParam (Data) {bool} chapters.visible The chapter visibility
+ * @apiParam (Data) {int[]} [link.notions] The notions ids to sync with the chapter. The given order wll be used to set
+ * the order in the many-to-many relationship. If not specified, do not change anything.
  */
 /**
  * @apiDefine ChapterArray
