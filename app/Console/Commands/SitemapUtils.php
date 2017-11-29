@@ -75,8 +75,8 @@ trait SitemapUtils
 
         // Generate symlink if not in local environment
         if (env("APP_ENV") != "local") {
-            $existing = "/var/www/" . env("APP_ENV") . "/api/current/storage/sitemaps/$sitemapName";
-            $symbolic = "/var/www/" . env("APP_ENV") . "/client/current/dist/browser/$sitemapName";
+            $existing = "/var/www/" . env("APP_ENV") . "/api/current/storage/sitemaps/$sitemapName.xml";
+            $symbolic = "/var/www/" . env("APP_ENV") . "/client/current/dist/browser/$sitemapName.xml";
 
             exec("ln -s $existing $symbolic");
         }
