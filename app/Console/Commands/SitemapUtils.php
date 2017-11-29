@@ -68,7 +68,7 @@ trait SitemapUtils
         }
 
         if ($callback !== null) {
-            $callback($sitemap);
+            $sitemap = $callback($sitemap);
         }
 
         $sitemap->store("xml", $sitemapName, storage_path("sitemaps"));
