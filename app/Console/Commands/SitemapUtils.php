@@ -79,7 +79,7 @@ trait SitemapUtils
 
             foreach ($sitemapFiles as $sitemapFile) {
                 symlink(
-                    "/var/www/" . env("APP_ENV") . "/api/current/storage/$sitemapFile",
+                    "/var/www/" . env("APP_ENV") . "/api/current/storage/sitemaps/$sitemapFile",
                     "/var/www/" . env("APP_ENV") . "/client/current/dist/browser/$sitemapFile"
                 );
             }
