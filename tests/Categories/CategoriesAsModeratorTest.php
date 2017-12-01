@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Categories;
 
 /**
@@ -12,6 +13,11 @@ namespace Tests\Categories;
  */
 class CategoriesAsModeratorTest extends CategoriesAsRegisteredTest
 {
+    /**
+     * POST /categories/{id}
+     *
+     * @throws \Exception
+     */
     public function testDelete()
     {
         $this->genericDelete();

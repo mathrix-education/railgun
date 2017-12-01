@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -7,19 +8,23 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 
 /**
- * App\Models\Category
+ * Class Category
+ *
+ * @author Mathrix Back-End Team
+ * @package App\Models
+ * @since 1.0.0
+ * @copyright Mathrix
  *
  * @property int $id
  * @property string $name
  * @property string $slug
- * @property-read Collection|Course[] $courses
- * @property-read Collection|Post[] $posts
  * @property string|null $image
+ * @property-read Collection|Post[] $posts
+ *
  * @method static Builder|Category whereImage($value)
  * @method static Builder|Category whereId($value)
  * @method static Builder|Category whereName($value)
  * @method static Builder|Category whereSlug($value)
- * @mixin \Eloquent
  */
 class Category extends BaseModel
 {
@@ -47,16 +52,5 @@ class Category extends BaseModel
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
-    }
-
-
-    /**
-     * HasMany Post
-     *
-     * @return HasMany
-     */
-    public function courses(): HasMany
-    {
-        return $this->hasMany(Course::class);
     }
 }

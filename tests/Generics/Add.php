@@ -2,6 +2,7 @@
 namespace Tests\Generics;
 
 use Closure;
+use Illuminate\Http\Response;
 
 /**
  * Trait Add
@@ -22,6 +23,8 @@ trait Add
      *
      * @param array $override the overridden properties
      * @param \Closure|null $callback the callback on generated data
+     *
+     * @throws \Exception
      */
     public function genericAdd(array $override = [], Closure $callback = null)
     {
@@ -36,6 +39,20 @@ trait Add
         }
 
         $this->call("post", "/" . $this->modelPlural, $this->addModelData);
+
+        // Dynamically add id from the response
+        if ($this->response instanceof Response) {
+            $response = $this->response->getContent();
+            $json = json_decode($response);
+
+            if (json_last_error() === JSON_ERROR_NONE && !empty($json["id"]) && is_numeric($json["id"])) {
+                $this->addModelData["id"] = (int)$json["id"];
+            }
+        }
+
+        if (isset($this->addModelData["link"])) {
+            unset($this->addModelData["link"]);
+        }
     }
 
 
@@ -44,6 +61,8 @@ trait Add
      *
      * @param array $override the overridden properties
      * @param \Closure|null $callback the callback on generated data
+     *
+     * @throws \Exception
      */
     public function genericAddSuccess(array $override = [], Closure $callback = null)
     {
@@ -60,6 +79,8 @@ trait Add
      *
      * @param array $override the overridden properties
      * @param \Closure|null $callback the callback on generated data
+     *
+     * @throws \Exception
      */
     public function genericAddUnauthorized(array $override = [], Closure $callback = null)
     {

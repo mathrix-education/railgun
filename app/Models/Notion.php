@@ -3,7 +3,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 
@@ -25,6 +24,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Notion wherePremium($value)
  * @method static Builder|Notion whereVisible($value)
  * @mixin \Eloquent
+ * @property string $type
+ * @method static Builder|Notion whereType($value)
  */
 class Notion extends BaseModel
 {

@@ -3,7 +3,7 @@ namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http401UnauthorizedException;
-use App\Exceptions\Http404ModelNotFoundException;
+
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\BaseModel;
@@ -129,7 +129,6 @@ abstract class BaseController extends Controller
      * @param int $perPage
      *
      * @return JsonResponse
-     * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
      */
     public function index(Request $request, int $page = 1, int $perPage = 10): JsonResponse
@@ -220,7 +219,6 @@ abstract class BaseController extends Controller
      * @param int $id the model id
      *
      * @return JsonResponse
-     * @throws Http404ModelNotFoundException
      */
     public function get(int $id): JsonResponse
     {
@@ -262,8 +260,6 @@ abstract class BaseController extends Controller
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
      */
     public function edit(Request $request, int $id): JsonResponse
     {
@@ -288,8 +284,6 @@ abstract class BaseController extends Controller
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
-     * @throws Http422ModelSaveException
-     * @throws \Exception
      */
     public function delete(Request $request, int $id): JsonResponse
     {

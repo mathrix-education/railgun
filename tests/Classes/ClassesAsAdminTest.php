@@ -14,6 +14,8 @@ class ClassesAsAdminTest extends ClassesAsModeratorTest
 {
     /**
      * POST /classes
+     *
+     * @throws \Exception
      */
     public function testAdd()
     {
@@ -23,6 +25,8 @@ class ClassesAsAdminTest extends ClassesAsModeratorTest
 
     /**
      * PATCH /classes/{id}
+     *
+     * @throws \Exception
      */
     public function testEdit()
     {
@@ -32,6 +36,8 @@ class ClassesAsAdminTest extends ClassesAsModeratorTest
 
     /**
      * DELETE /classes/{id} -> HTTP 501 not_implemented
+     *
+     * @throws \Exception
      */
     public function testDelete()
     {

@@ -49,7 +49,9 @@
  * @apiParam (Data) {mixed} options The modules options
  * @apiParam (Data) {int} options.duration [test] The test duration (in seconds)
  * @apiParam (Data) {array} [link] The models to link with the notion
- * @apiParam (Data) {int[]} [link.activities] The activities ids to sync with the activity. The given order wll be used to set
+ * @apiParam (Data) {int[]} [link.activities] The activities ids to sync with the module. The given order wll be used to set
+ * the order in the many-to-many relationship. If not specified, do not change anything.
+ * @apiParam (Data) {int[]} [link.sections] The sections ids to sync with the module. The given order wll be used to set
  * the order in the many-to-many relationship. If not specified, do not change anything.
  */
 /**

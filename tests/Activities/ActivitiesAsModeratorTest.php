@@ -17,6 +17,8 @@ class ActivitiesAsModeratorTest extends ActivitiesAsRegisteredTest
 {
     /**
      * GET /activities
+     *
+     * @throws \Exception
      */
     public function testIndex()
     {
@@ -26,6 +28,8 @@ class ActivitiesAsModeratorTest extends ActivitiesAsRegisteredTest
 
     /**
      * POST /activities
+     *
+     * @throws \Exception
      */
     public function testAdd()
     {
@@ -35,6 +39,8 @@ class ActivitiesAsModeratorTest extends ActivitiesAsRegisteredTest
 
     /**
      * PATCH /activities/{id}
+     *
+     * @throws \Exception
      */
     public function testEdit()
     {
@@ -44,6 +50,8 @@ class ActivitiesAsModeratorTest extends ActivitiesAsRegisteredTest
 
     /**
      * PATCH /activities/{id} with linkable models
+     *
+     * @throws \Exception
      */
     public function testEditWithLink()
     {
@@ -80,6 +88,8 @@ class ActivitiesAsModeratorTest extends ActivitiesAsRegisteredTest
 
     /**
      * DELETE /activities/{id}
+     *
+     * @throws \Exception
      */
     public function testDelete()
     {

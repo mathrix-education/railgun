@@ -17,6 +17,8 @@ trait Delete
 
     /**
      * Generic delete; expect HTTP 200 and data present in database
+     *
+     * @throws \Exception
      */
     public function genericDeleteSuccess()
     {
@@ -30,6 +32,8 @@ trait Delete
 
     /**
      * Generic delete call
+     *
+     * @throws \Exception
      */
     public function genericDelete()
     {
@@ -43,6 +47,8 @@ trait Delete
 
     /**
      * Generic delete; expect HTTP 200 and data present in database
+     *
+     * @throws \Exception
      */
     public function genericSoftDeleteSuccess()
     {
@@ -58,6 +64,8 @@ trait Delete
 
     /**
      * Generic delete; expect HTTP 200 and data present in database
+     *
+     * @throws \Exception
      */
     public function genericDeleteUnauthorized()
     {

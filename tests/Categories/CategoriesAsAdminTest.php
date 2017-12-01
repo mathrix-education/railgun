@@ -14,6 +14,8 @@ class CategoriesAsAdminTest extends CategoriesAsModeratorTest
 {
     /**
      * POST /categories
+     *
+     * @throws \Exception
      */
     public function testAdd()
     {
@@ -23,6 +25,8 @@ class CategoriesAsAdminTest extends CategoriesAsModeratorTest
 
     /**
      * PATCH /categories/{id}
+     *
+     * @throws \Exception
      */
     public function testEdit()
     {
@@ -32,6 +36,8 @@ class CategoriesAsAdminTest extends CategoriesAsModeratorTest
 
     /**
      * DELETE /categories/{id} -> HTTP 501 not_implemented
+     *
+     * @throws \Exception
      */
     public function testDelete()
     {

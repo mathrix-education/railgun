@@ -7,7 +7,6 @@ use App\Models\Chapter;
 use App\Models\Class_;
 use App\Models\Comment;
 use App\Models\Country;
-use App\Models\Course;
 use App\Models\Discipline;
 use App\Models\Module;
 use App\Models\Notion;
@@ -17,16 +16,17 @@ use App\Models\Observers\ChapterObserver;
 use App\Models\Observers\ClassObserver;
 use App\Models\Observers\CommentObserver;
 use App\Models\Observers\CountryObserver;
-use App\Models\Observers\CourseObserver;
 use App\Models\Observers\DisciplineObserver;
 use App\Models\Observers\ModuleObserver;
 use App\Models\Observers\NotionObserver;
 use App\Models\Observers\PostObserver;
-use App\Models\Observers\QuoteObserver;
+use App\Models\Observers\SectionObserver;
+use App\Models\Observers\TrainingObserver;
 use App\Models\Observers\UserObserver;
 use App\Models\Observers\VoteObserver;
 use App\Models\Post;
-
+use App\Models\Section;
+use App\Models\Training;
 use App\Models\User;
 use App\Models\Vote;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -49,7 +49,6 @@ class AppServiceProvider extends ServiceProvider
             'activity' => Activity::class,
             'module' => Module::class,
             'post' => Post::class,
-            'course' => Course::class,
             'comment' => Comment::class
         ]);
 
@@ -63,9 +62,10 @@ class AppServiceProvider extends ServiceProvider
         Activity::observe(ActivityObserver::class);
         Module::observe(ModuleObserver::class);
         Post::observe(PostObserver::class);
-        Course::observe(CourseObserver::class);
         Category::observe(CategoryObserver::class);
         Comment::observe(CommentObserver::class);
         Vote::observe(VoteObserver::class);
+        Training::observe(TrainingObserver::class);
+        Section::observe(SectionObserver::class);
     }
 }

@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read User|null $user
- * @property-read Post|Course|Comment $votable
+ * @property-read Post|Comment $votable
  * @method static Builder|Vote whereId($value)
  * @method static Builder|Vote whereValue($value)
  * @method static Builder|Vote whereUserId($value)
@@ -26,7 +26,6 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @method static Builder|Vote whereVotableType($value)
  * @method static Builder|Vote whereUpdatedAt($value)
  * @method static Builder|Vote whereCreatedAt($value)
- * @mixin \Eloquent
  */
 class Vote extends BaseModel
 {

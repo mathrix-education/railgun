@@ -3,9 +3,10 @@ namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http401UnauthorizedException;
+use App\Exceptions\Http422ModelSaveException;
+use App\Exceptions\Http422ModelValidationException;
 use App\Models\BaseModel;
 use App\Models\Comment;
-use App\Models\Course;
 use App\Models\Module;
 use App\Models\Post;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -65,7 +66,10 @@ class CommentController extends BaseController
      * @param Request $request
      *
      * @return JsonResponse
+     * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
      */
     public function add(Request $request): JsonResponse
     {
@@ -146,7 +150,7 @@ class CommentController extends BaseController
         }
 
         // Ensure that the morphed exists
-        /** @var Module|Post|Course $commentable */
+        /** @var Module|Post $commentable */
         $commentable = $commentable_class::where("id", "=", $commentable_id)->firstOrFail();
 
         // Retrieve comments
