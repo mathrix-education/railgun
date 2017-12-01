@@ -7,5 +7,6 @@ _ide_helper.php
 /node_modules
 /resources/views/emails/**/*.html
 /resources/views/emails/**/*.blade.php
+/storage/backups
 /storage/sitemaps
 /vendor
