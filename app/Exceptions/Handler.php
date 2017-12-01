@@ -49,10 +49,6 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
-        if (app()->environment("dev")) {
-            $this->dontReport = [];
-        }
-
         if (app()->environment("master", "stage") && app()->bound("sentry") && $this->shouldReport($e)) {
             app("sentry")->captureException($e);
         }

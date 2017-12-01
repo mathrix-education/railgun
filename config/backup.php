@@ -1,0 +1,19 @@
+<?php
+return [
+    "mysql" => [
+        "mysql_path" => "mysql",
+        "mysqldump_path" => "mysqldump",
+        "compress" => true,
+        "local-storage" => [
+            "disk" => "storage",
+            "path" => "backups",
+        ],
+
+        "cloud-storage" => [
+            "enabled" => true,
+            "disk" => "drive",
+            "path" => ".",
+            "keep-local" => true,
+        ]
+    ]
+];

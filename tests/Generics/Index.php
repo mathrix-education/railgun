@@ -14,6 +14,8 @@ trait Index
 {
     /**
      * Generic index call
+     *
+     * @throws \Exception
      */
     public function genericIndex()
     {
@@ -25,6 +27,8 @@ trait Index
 
     /**
      * Generic index; expect HTTP 200
+     *
+     * @throws \Exception
      */
     public function genericIndexSuccess()
     {
@@ -39,6 +43,8 @@ trait Index
      * Generic index with pagination; expect HTTP 200
      *
      * @param int $perPage model count per page
+     *
+     * @throws \Exception
      */
     public function genericIndexSuccessWithPagination($perPage = 10)
     {
@@ -49,6 +55,8 @@ trait Index
 
     /**
      * Generic index without pagination; expect HTTP 200
+     *
+     * @throws \Exception
      */
     public function genericIndexSuccessWithoutPagination()
     {
@@ -60,6 +68,8 @@ trait Index
 
     /**
      * Generic index; expect HTTP 422 Unauthorized
+     *
+     * @throws \Exception
      */
     public function genericIndexUnauthorized()
     {

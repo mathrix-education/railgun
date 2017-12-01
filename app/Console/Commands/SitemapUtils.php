@@ -74,16 +74,11 @@ trait SitemapUtils
         $sitemap->store("xml", $sitemapName, storage_path("sitemaps"));
 
         // Generate symlink if not in local environment
-
         if (env("APP_ENV") != "local") {
             $existing = "/var/www/" . env("APP_ENV") . "/api/current/storage/sitemaps/$sitemapName.xml";
             $symbolic = "/var/www/" . env("APP_ENV") . "/client/current/dist/browser/$sitemapName.xml";
 
-            if (file_exists($symbolic)) {
-                unlink($symbolic);
-            }
-
-            exec("ln -s $existing $symbolic");
+            exec("ln -s -f $existing $symbolic");
         }
     }
 }

@@ -2,11 +2,10 @@
 namespace App\Models;
 
 use App\Models\Traits\Commentable;
+use Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-
-use Auth;
 
 
 /**
@@ -37,7 +36,6 @@ use Auth;
  * @method static Builder|Module whereOptions($value)
  * @method static Builder|Module whereQuestions($value)
  * @method static Builder|Module whereSolutions($value)
- * @mixin \Eloquent
  */
 class Module extends BaseModel
 {
@@ -111,4 +109,16 @@ class Module extends BaseModel
     {
         return $this->belongsToMany(Activity::class);
     }
+
+
+    /**
+     * BelongsToMany Activity
+     *
+     * @return BelongsToMany
+     */
+    public function trainings(): BelongsToMany
+    {
+        return $this->belongsToMany(Training::class);
+    }
+
 }

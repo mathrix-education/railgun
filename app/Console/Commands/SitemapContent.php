@@ -11,7 +11,6 @@ use App\Models\Module;
 use App\Models\Notion;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Roumen\Sitemap\Sitemap;
 
 /**
  * Class SitemapContent
@@ -27,6 +26,9 @@ class SitemapContent extends Command
     protected $signature = "sitemap:content";
 
 
+    /**
+     * @throws \Exception
+     */
     public function handle()
     {
         $today = Carbon::today()->format("Y-m-d");

@@ -14,6 +14,8 @@ class DisciplinesAsAdminTest extends DisciplinesAsModeratorTest
 {
     /**
      * POST /disciplines
+     *
+     * @throws \Exception
      */
     public function testAdd()
     {
@@ -23,6 +25,8 @@ class DisciplinesAsAdminTest extends DisciplinesAsModeratorTest
 
     /**
      * PATCH /disciplines/{id}
+     *
+     * @throws \Exception
      */
     public function testEdit()
     {
@@ -32,6 +36,8 @@ class DisciplinesAsAdminTest extends DisciplinesAsModeratorTest
 
     /**
      * DELETE /disciplines/{id} -> HTTP 501 not_implemented
+     *
+     * @throws \Exception
      */
     public function testDelete()
     {

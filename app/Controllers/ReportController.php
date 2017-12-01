@@ -1,7 +1,7 @@
 <?php
 namespace App\Controllers;
 
-use App\Exceptions\Http400InvalidRequestException;
+
 use App\Exceptions\Http401UnauthorizedException;
 use App\Models\Report;
 use Illuminate\Http\JsonResponse;
@@ -36,7 +36,6 @@ class ReportController extends BaseController
      * @param int $perPage
      *
      * @return JsonResponse
-     * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
      */
     public function index(Request $request, int $page = 1, int $perPage = 10): JsonResponse
