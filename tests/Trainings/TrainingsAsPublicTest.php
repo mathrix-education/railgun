@@ -1,30 +1,30 @@
 <?php
-namespace Tests\Courses;
+namespace Tests\Trainings;
 
 use Tests\ScopeTestCase;
 
 /**
- * Class CoursesAsPublicTest
- * Test Courses as public (non-logged user)
+ * Class TrainingAsPublicTest
+ * Test training as public (non-logged user)
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix
  * @version 1.0.0
- * @package Tests\Courses
+ * @package Tests\Training
  */
-class CoursesAsPublicTest extends ScopeTestCase
+class TrainingsAsPublicTest extends ScopeTestCase
 {
     /**
-     * GET /courses
+     * GET /training/index
      */
     public function testIndex()
     {
-        $this->genericIndexSuccess();
+        $this->genericIndexUnauthorized();
     }
 
 
     /**
-     * POST /courses -> HTTP 401 unauthorized
+     * POST /training -> HTTP 401 unauthorized
      */
     public function testAdd()
     {
@@ -33,7 +33,7 @@ class CoursesAsPublicTest extends ScopeTestCase
 
 
     /**
-     * PATCH /courses/{id} -> HTTP 401 unauthorized
+     * PATCH /training/{id} -> HTTP 401 unauthorized
      */
     public function testEdit()
     {
@@ -42,7 +42,7 @@ class CoursesAsPublicTest extends ScopeTestCase
 
 
     /**
-     * DELETE /courses/{id} -> HTTP 401 unauthorized
+     * DELETE /training/{id} -> HTTP 401 unauthorized
      */
     public function testDelete()
     {

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -11,6 +12,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Laravel\Cashier\Http\Controllers\WebhookController as CashierController;
+use Laravel\Cashier\Subscription;
 
 /**
  * Class StripeController
@@ -260,9 +262,22 @@ class StripeController extends CashierController
      */
     public function handleCustomerSubscriptionDeleted(array $payload)
     {
-        parent::handleCustomerSubscriptionDeleted($payload);
-
+        /** @var User $user */
         $user = $this->getUserByStripeId($payload["data"]["object"]["customer"]);
+
+        if ($user) {
+            $user->subscriptions->filter(function ($subscription) use ($payload) {
+                /** @var Subscription $subscription */
+                return $subscription->stripe_id === $payload['data']['object']['id'];
+            })->each(function ($subscription) {
+                /** @var Subscription $subscription */
+                if ($subscription->onTrial()) {
+                    $subscription->skipTrial();
+                }
+
+                $subscription->cancelNow();
+            });
+        }
 
         if ($user) {
             Log::log("user_cancelled_premium", $user);

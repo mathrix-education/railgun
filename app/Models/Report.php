@@ -18,6 +18,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Report whereModuleId($value)
  * @method static Builder|Report whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string $status
+ * @property-read \App\Models\Module $module
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Report whereStatus($value)
  */
 class Report extends BaseModel
 {

@@ -9,7 +9,12 @@ use Auth;
 
 
 /**
- * App\Models\Activity
+ * Class Activity
+ *
+ * @author Mathrix Back-End Team
+ * @package App\Models
+ * @since 1.0.0
+ * @copyright Mathrix
  *
  * @property int $id
  * @property string $name
@@ -24,6 +29,7 @@ use Auth;
  * @property-read Collection|Module[] $modules
  * @property-read Collection|Notion[] $notions
  * @property-read Collection|User[] $users
+ *
  * @method static Builder|Activity whereDescription($value)
  * @method static Builder|Activity whereId($value)
  * @method static Builder|Activity whereName($value)
@@ -31,7 +37,6 @@ use Auth;
  * @method static Builder|Activity whereNameSeo($value)
  * @method static Builder|Activity whereType($value)
  * @method static Builder|Activity whereVisible($value)
- * @mixin \Eloquent
  */
 class Activity extends BaseModel
 {

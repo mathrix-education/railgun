@@ -67,6 +67,7 @@ $app->configure("cors");
 $app->configure("mail");
 $app->configure("services");
 $app->configure("filesystems");
+$app->configure("backup");
 
 if ($app->environment("dev")) {
     $app->configure("ide-helper");
@@ -104,7 +105,7 @@ $app->routeMiddleware([
 |
 */
 
-if ($app->environment("dev")) {
+if ($app->environment("local", "dev")) {
     $app->register(Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
 }
 
@@ -117,6 +118,7 @@ $app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
 $app->register(Barryvdh\Cors\ServiceProvider::class);
 $app->register(Illuminate\Filesystem\FilesystemServiceProvider::class);
 $app->register(Roumen\Sitemap\SitemapServiceProvider::class);
+$app->register(Backup\BackupServiceProvider::class);
 
 
 if ($app->environment("stage", "master")) {
