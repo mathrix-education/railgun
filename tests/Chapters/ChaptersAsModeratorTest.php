@@ -1,5 +1,7 @@
 <?php
+
 namespace Tests\Chapters;
+use App\Models\Notion;
 
 /**
  * Class ChaptersAsModeratorTest
@@ -14,6 +16,8 @@ class ChaptersAsModeratorTest extends ChaptersAsRegisteredTest
 {
     /**
      * GET /chapters
+     *
+     * @throws \Exception
      */
     public function testIndex()
     {
@@ -23,6 +27,8 @@ class ChaptersAsModeratorTest extends ChaptersAsRegisteredTest
 
     /**
      * POST /chapters
+     *
+     * @throws \Exception
      */
     public function testAdd()
     {
@@ -32,6 +38,8 @@ class ChaptersAsModeratorTest extends ChaptersAsRegisteredTest
 
     /**
      * PATCH /chapters/{id}
+     *
+     * @throws \Exception
      */
     public function testEdit()
     {
@@ -40,7 +48,34 @@ class ChaptersAsModeratorTest extends ChaptersAsRegisteredTest
 
 
     /**
+     * PATCH /chapters/{id} with linkable models
+     *
+     * @throws \Exception
+     */
+    public function testEditWithLink()
+    {
+        $link = [
+            "notions" => $this->faker->randomElements(
+                Notion::inRandomOrder()->pluck("id")->toArray(),
+                $this->faker->numberBetween(3, 5)
+            )
+        ];
+
+        $this->genericEditSuccess(["link" => $link]);
+
+        foreach ($link["notions"] as $order => $id) {
+            $this->assertInDatabase("chapter_notion", [
+                "chapter_id" => $this->editModelId,
+                "notion_id" => $id,
+                "order" => $order
+            ]);
+        }
+    }
+
+    /**
      * DELETE /chapters/{id}
+     *
+     * @throws \Exception
      */
     public function testDelete()
     {

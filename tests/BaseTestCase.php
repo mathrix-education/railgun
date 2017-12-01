@@ -6,7 +6,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Faker\Factory;
 use Faker\Generator;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
+
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Laravel\Lumen\Testing\TestCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,7 +36,6 @@ abstract class BaseTestCase extends TestCase
      * Needs to be implemented by subclasses.
      *
      * @return HttpKernelInterface
-     * @throws FileNotFoundException
      */
     public function createApplication()
     {

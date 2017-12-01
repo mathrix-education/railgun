@@ -111,7 +111,6 @@ class UserController extends BaseController
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
-     * @throws Http422ModelSaveException
      * @throws Http501NotImplementedException
      * @throws \Exception
      */
@@ -272,7 +271,6 @@ class UserController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
-     * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      * @throws Http429TooManyRequestsException

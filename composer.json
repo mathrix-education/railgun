@@ -26,7 +26,8 @@
     "mockery/mockery": "~0.9",
     "barryvdh/laravel-ide-helper": "^2.4",
     "doctrine/dbal": "^2.5",
-    "filp/whoops": "~2.0"
+    "filp/whoops": "~2.0",
+    "brianium/paratest": "^1.0"
   },
   "autoload": {
     "psr-4": {

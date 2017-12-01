@@ -1,10 +1,7 @@
 <?php
 namespace App\Models\Observers;
 
-use App\Models\Activity;
-use App\Models\Meta;
 use App\Models\Module;
-use App\Models\Notion;
 use App\Models\Section;
 
 /**

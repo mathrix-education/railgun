@@ -16,6 +16,8 @@ class CategoriesAsPublicTest extends ScopeTestCase
 {
     /**
      * GET /categories -> HTTP 401 unauthorized
+     *
+     * @throws \Exception
      */
     public function testIndex()
     {
@@ -25,6 +27,8 @@ class CategoriesAsPublicTest extends ScopeTestCase
 
     /**
      * POST /categories -> HTTP 401 unauthorized
+     *
+     * @throws \Exception
      */
     public function testAdd()
     {
@@ -34,6 +38,8 @@ class CategoriesAsPublicTest extends ScopeTestCase
 
     /**
      * PATCH /categories/{id} -> HTTP 401 unauthorized
+     *
+     * @throws \Exception
      */
     public function testEdit()
     {
@@ -43,6 +49,8 @@ class CategoriesAsPublicTest extends ScopeTestCase
 
     /**
      * DELETE /categories/{id} -> HTTP 401 unauthorized
+     *
+     * @throws \Exception
      */
     public function testDelete()
     {

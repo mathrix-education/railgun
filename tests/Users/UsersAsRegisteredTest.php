@@ -96,6 +96,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
 
     /**
      * POST /users/points with daily achievement trigger
+     * @throws \Exception
      */
     public function testPointsWithDailyAchievementPass()
     {

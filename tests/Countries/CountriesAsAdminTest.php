@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Countries;
 
 /**
@@ -12,18 +13,33 @@ namespace Tests\Countries;
  */
 class CountriesAsAdminTest extends CountriesAsModeratorTest
 {
+    /**
+     * POST /countries
+     *
+     * @throws \Exception
+     */
     public function testAdd()
     {
         $this->genericAddSuccess();
     }
 
 
+    /**
+     * PATCH /countries/{id}
+     *
+     * @throws \Exception
+     */
     public function testEdit()
     {
         $this->genericEditSuccess();
     }
 
 
+    /**
+     * DELETE /countries/{id}
+     *
+     * @throws \Exception
+     */
     public function testDelete()
     {
         $this->genericDelete();

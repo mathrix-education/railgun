@@ -16,6 +16,8 @@ class ClassesAsPublicTest extends ScopeTestCase
 {
     /**
      * GET /classes/index
+     *
+     * @throws \Exception
      */
     public function testIndex()
     {
@@ -25,6 +27,8 @@ class ClassesAsPublicTest extends ScopeTestCase
 
     /**
      * POST /classes -> HTTP 401 unauthorized
+     *
+     * @throws \Exception
      */
     public function testAdd()
     {
@@ -34,6 +38,8 @@ class ClassesAsPublicTest extends ScopeTestCase
 
     /**
      * PATCH /classes/{id} -> HTTP 401 unauthorized
+     *
+     * @throws \Exception
      */
     public function testEdit()
     {
@@ -43,6 +49,8 @@ class ClassesAsPublicTest extends ScopeTestCase
 
     /**
      * DELETE /classes/{id} -> HTTP 401 unauthorized
+     *
+     * @throws \Exception
      */
     public function testDelete()
     {

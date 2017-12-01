@@ -2,11 +2,10 @@
 namespace App\Models;
 
 use App\Models\Traits\Commentable;
+use Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-
-use Auth;
 
 
 /**

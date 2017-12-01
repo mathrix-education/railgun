@@ -118,6 +118,7 @@ $app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
 $app->register(Barryvdh\Cors\ServiceProvider::class);
 $app->register(Illuminate\Filesystem\FilesystemServiceProvider::class);
 $app->register(Roumen\Sitemap\SitemapServiceProvider::class);
+$app->register(App\Providers\GoogleDriveServiceProvider::class);
 $app->register(Backup\BackupServiceProvider::class);
 
 

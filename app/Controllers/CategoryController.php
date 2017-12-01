@@ -4,7 +4,6 @@ namespace App\Controllers;
 use App\Exceptions\Http401UnauthorizedException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http501NotImplementedException;
-
 use App\Models\Activity;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -95,7 +94,6 @@ class CategoryController extends BaseController
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
-     * @throws Http422ModelSaveException
      * @throws Http501NotImplementedException
      * @throws \Exception
      */

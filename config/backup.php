@@ -10,9 +10,9 @@ return [
         ],
 
         "cloud-storage" => [
-            "enabled" => false,
+            "enabled" => true,
             "disk" => "drive",
-            "path" => "db_backups",
+            "path" => ".",
             "keep-local" => true,
         ]
     ]

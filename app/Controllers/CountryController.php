@@ -95,7 +95,6 @@ class CountryController extends BaseController
      * @return JsonResponse
      * @throws Http501NotImplementedException
      * @throws Http401UnauthorizedException
-     * @throws Http422ModelSaveException
      * @throws \Exception
      */
     public function delete(Request $request, int $id): JsonResponse

@@ -24,6 +24,8 @@ trait Edit
      *
      * @param array $override overridden attributes
      * @param \Closure|null $callback the callback on generated data
+     *
+     * @throws \Exception
      */
     public function genericEditSuccess(array $override = [], Closure $callback = null)
     {
@@ -40,6 +42,8 @@ trait Edit
      *
      * @param array $override overridden attributes
      * @param \Closure|null $callback the callback on generated data
+     *
+     * @throws \Exception
      */
     public function genericEdit(array $override = [], Closure $callback = null)
     {
@@ -67,6 +71,8 @@ trait Edit
      *
      * @param array $override overridden attributes
      * @param \Closure|null $callback the callback on generated data
+     *
+     * @throws \Exception
      */
     public function genericEditUnauthorized(array $override = [], Closure $callback = null)
     {
