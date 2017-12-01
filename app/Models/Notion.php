@@ -25,6 +25,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Notion wherePremium($value)
  * @method static Builder|Notion whereVisible($value)
  * @mixin \Eloquent
+ * @property string $type
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Notion whereType($value)
  */
 class Notion extends BaseModel
 {

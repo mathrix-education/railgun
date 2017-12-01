@@ -32,7 +32,7 @@ class CommentsAsPublicTest extends ScopeTestCase
      */
     public function testType()
     {
-        $commentableType = $this->faker->randomElement(["Module", "Post", "Course"]);
+        $commentableType = $this->faker->randomElement(["Module", "Post"]);
         /** @var Module|Post|Course|string $typeClass */
         $typeClass = "App\\Models\\" . $commentableType;
         $commentableType = strtolower($commentableType);

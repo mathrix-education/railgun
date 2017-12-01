@@ -22,7 +22,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Country whereSlug($value)
  * @method static Builder|Country whereSlugShort($value)
  * @method static Builder|Country whereVisible($value)
- * @mixin \Eloquent
  */
 class Country extends BaseModel
 {
