@@ -5,40 +5,40 @@ class TrainingController extends BaseController
 {
     /**
      * @apiVersion 1.0.0
-     * @api {get} /sections/{?page}/{?perPage} Index
-     * @apiGroup Sections
-     * @apiName SectionsIndex
-     * @apiDescription Retrieve sections
+     * @api {get} /trainings/{?page}/{?perPage} Index
+     * @apiGroup Trainings
+     * @apiName TrainingsIndex
+     * @apiDescription Retrieve trainings
      * @apiPermission moderator
      * @apiUse Pagination
-     * @apiUse SectionArray
+     * @apiUse TrainingArray
      * @apiUse Http401Unauthorized
      */
 
 
     /**
      * @apiVersion 1.0.0
-     * @api {get} /sections/{id} Get
-     * @apiGroup Sections
-     * @apiName SectionGet
-     * @apiDescription Get an section by id
+     * @api {get} /trainings/{id} Get
+     * @apiGroup Trainings
+     * @apiName TrainingGet
+     * @apiDescription Get an training by id
      * @apiPermission public
-     * @apiParam {int} id The section id
-     * @apiUse Section
+     * @apiParam {int} id The training id
+     * @apiUse Training
      * @apiUse Http404ModelNotFound
      */
 
 
     /**
      * @apiVersion 1.0.0
-     * @api {post} /sections Add
-     * @apiGroup Sections
-     * @apiName SectionAdd
-     * @apiDescription Add a section
+     * @api {post} /trainings Add
+     * @apiGroup Trainings
+     * @apiName TrainingAdd
+     * @apiDescription Add a training
      * @apiPermission moderator
      * @apiUse Bearer
-     * @apiUse SectionData
-     * @apiUse Section
+     * @apiUse TrainingData
+     * @apiUse Training
      * @apiUse Http401Unauthorized
      * @apiUse Http422ModelValidation
      * @apiUse Http422ModelSave
@@ -47,15 +47,15 @@ class TrainingController extends BaseController
 
     /**
      * @apiVersion 1.0.0
-     * @api {patch} /sections/{id} Edit
-     * @apiGroup Sections
-     * @apiName SectionEdit
-     * @apiDescription Edit an section
+     * @api {patch} /trainings/{id} Edit
+     * @apiGroup Trainings
+     * @apiName TrainingEdit
+     * @apiDescription Edit an training
      * @apiPermission moderator
      * @apiUse Bearer
-     * @apiParam {int} id The section id
-     * @apiUse SectionData
-     * @apiUse Section
+     * @apiParam {int} id The training id
+     * @apiUse TrainingData
+     * @apiUse Training
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
      * @apiUse Http422ModelSave
@@ -65,13 +65,13 @@ class TrainingController extends BaseController
 
     /**
      * @apiVersion 1.0.0
-     * @api {delete} /sections/{id} Delete
-     * @apiGroup Sections
-     * @apiName SectionDelete
-     * @apiDescription Delete an section
+     * @api {delete} /trainings/{id} Delete
+     * @apiGroup Trainings
+     * @apiName TrainingDelete
+     * @apiDescription Delete an training
      * @apiUse Bearer
      * @apiPermission moderator
-     * @apiParam {int} id The section id
+     * @apiParam {int} id The training id
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
      */
