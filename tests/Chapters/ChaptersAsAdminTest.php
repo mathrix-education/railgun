@@ -12,4 +12,5 @@ namespace Tests\Chapters;
  */
 class ChaptersAsAdminTest extends ChaptersAsModeratorTest
 {
+    // Inherited tests
 }

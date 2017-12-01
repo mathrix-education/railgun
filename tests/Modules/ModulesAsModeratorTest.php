@@ -14,6 +14,8 @@ class ModulesAsModeratorTest extends ModulesAsRegisteredTest
 {
     /**
      * POST /modules
+     *
+     * @throws \Exception
      */
     public function testAdd()
     {
@@ -24,6 +26,8 @@ class ModulesAsModeratorTest extends ModulesAsRegisteredTest
 
     /**
      * PATCH /modules/{id}
+     *
+     * @throws \Exception
      */
     public function testEdit()
     {
@@ -34,6 +38,8 @@ class ModulesAsModeratorTest extends ModulesAsRegisteredTest
 
     /**
      * DELETE /modules/{id}
+     *
+     * @throws \Exception
      */
     public function testDelete()
     {

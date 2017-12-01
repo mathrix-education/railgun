@@ -25,7 +25,6 @@ use App\Models\Observers\TrainingObserver;
 use App\Models\Observers\UserObserver;
 use App\Models\Observers\VoteObserver;
 use App\Models\Post;
-
 use App\Models\Section;
 use App\Models\Training;
 use App\Models\User;

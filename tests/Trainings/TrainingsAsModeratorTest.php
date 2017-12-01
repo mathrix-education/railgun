@@ -15,6 +15,8 @@ class TrainingsAsModeratorTest extends TrainingsAsRegisteredTest
 {
     /**
      * GET /training
+     *
+     * @throws \Exception
      */
     public function testIndex()
     {
@@ -23,6 +25,8 @@ class TrainingsAsModeratorTest extends TrainingsAsRegisteredTest
 
     /**
      * POST /training
+     *
+     * @throws \Exception
      */
     public function testAdd()
     {
@@ -32,6 +36,8 @@ class TrainingsAsModeratorTest extends TrainingsAsRegisteredTest
 
     /**
      * PATCH /training/{id}
+     *
+     * @throws \Exception
      */
     public function testEdit()
     {
@@ -41,6 +47,8 @@ class TrainingsAsModeratorTest extends TrainingsAsRegisteredTest
 
     /**
      * DELETE /training/{id}
+     *
+     * @throws \Exception
      */
     public function testDelete()
     {

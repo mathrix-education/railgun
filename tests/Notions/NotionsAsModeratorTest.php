@@ -14,6 +14,8 @@ class NotionsAsModeratorTest extends NotionsAsRegisteredTest
 {
     /**
      * POST /notions
+     *
+     * @throws \Exception
      */
     public function testAdd()
     {
@@ -23,6 +25,8 @@ class NotionsAsModeratorTest extends NotionsAsRegisteredTest
 
     /**
      * PATCH /notions/{id}
+     *
+     * @throws \Exception
      */
     public function testEdit()
     {
@@ -32,6 +36,8 @@ class NotionsAsModeratorTest extends NotionsAsRegisteredTest
 
     /**
      * DELETE /notions/{id}
+     *
+     * @throws \Exception
      */
     public function testDelete()
     {

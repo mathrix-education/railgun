@@ -162,8 +162,6 @@ class AuthController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
      */
     public function reset(Request $request, string $token)
     {

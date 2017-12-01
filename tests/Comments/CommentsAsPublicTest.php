@@ -1,8 +1,7 @@
 <?php
 namespace Tests\Comments;
 
-use App\Models\BaseModel;
-use App\Models\Course;
+
 use App\Models\Module;
 use App\Models\Post;
 use Tests\ScopeTestCase;
@@ -20,6 +19,8 @@ class CommentsAsPublicTest extends ScopeTestCase
 {
     /**
      * GET /comments
+     *
+     * @throws \Exception
      */
     public function testIndex()
     {
@@ -33,7 +34,7 @@ class CommentsAsPublicTest extends ScopeTestCase
     public function testType()
     {
         $commentableType = $this->faker->randomElement(["Module", "Post"]);
-        /** @var Module|Post|Course|string $typeClass */
+        /** @var Module|Post|string $typeClass */
         $typeClass = "App\\Models\\" . $commentableType;
         $commentableType = strtolower($commentableType);
         $commentableId = $typeClass::inRandomOrder()
@@ -49,6 +50,8 @@ class CommentsAsPublicTest extends ScopeTestCase
 
     /**
      * POST /comments -> HTTP 401 unauthorized
+     *
+     * @throws \Exception
      */
     public function testAdd()
     {
@@ -58,6 +61,8 @@ class CommentsAsPublicTest extends ScopeTestCase
 
     /**
      * PATCH /comments/{id} -> HTTP 401 unauthorized
+     *
+     * @throws \Exception
      */
     public function testEdit()
     {
@@ -67,6 +72,8 @@ class CommentsAsPublicTest extends ScopeTestCase
 
     /**
      * DELETE /comments/{id} -> HTTP 401 unauthorized
+     *
+     * @throws \Exception
      */
     public function testDelete()
     {

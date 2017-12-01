@@ -1,7 +1,9 @@
 <?php
 namespace App\Models\Observers;
 
+use App\Exceptions\Http422ModelSaveException;
 use App\Models\Comment;
+use Exception;
 
 /**
  * Class CommentObserver
@@ -15,6 +17,8 @@ class CommentObserver extends BaseObserver
      * @param Comment $comment
      *
      * @return bool
+     * @throws Http422ModelSaveException
+     * @throws Exception
      */
     public function saving($comment)
     {

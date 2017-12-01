@@ -33,6 +33,8 @@ class CommentsAsModeratorTest extends CommentsAsRegisteredTest
 
     /**
      * DELETE /comments/{id}
+     *
+     * @throws \Exception
      */
     public function testDelete()
     {

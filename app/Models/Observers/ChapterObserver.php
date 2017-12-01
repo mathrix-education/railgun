@@ -1,7 +1,7 @@
 <?php
 namespace App\Models\Observers;
 
-use App\Exceptions\Http422ModelSaveException;
+
 use App\Models\Chapter;
 use App\Models\Meta;
 use App\Models\Notion;
@@ -54,8 +54,6 @@ class ChapterObserver extends BaseObserver
      * @param Chapter $chapter
      *
      * @return bool
-     * @throws Http422ModelSaveException
-     * @throws \Exception
      */
     public function deleting($chapter)
     {

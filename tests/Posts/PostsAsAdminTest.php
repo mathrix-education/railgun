@@ -14,6 +14,8 @@ class PostsAsAdminTest extends PostsAsModeratorTest
 {
     /**
      * POST /posts
+     *
+     * @throws \Exception
      */
     public function testAdd()
     {
@@ -23,6 +25,8 @@ class PostsAsAdminTest extends PostsAsModeratorTest
 
     /**
      * PATCH /posts/{id}
+     *
+     * @throws \Exception
      */
     public function testEdit()
     {
@@ -32,6 +36,8 @@ class PostsAsAdminTest extends PostsAsModeratorTest
 
     /**
      * DELETE /posts/{id}
+     *
+     * @throws \Exception
      */
     public function testDelete()
     {

@@ -16,6 +16,8 @@ class NotionsAsPublicTest extends ScopeTestCase
 {
     /**
      * GET /notions
+     *
+     * @throws \Exception
      */
     public function testIndex()
     {
@@ -25,6 +27,8 @@ class NotionsAsPublicTest extends ScopeTestCase
 
     /**
      * POST /notions -> HTTP 401 unauthorized
+     *
+     * @throws \Exception
      */
     public function testAdd()
     {
@@ -34,6 +38,8 @@ class NotionsAsPublicTest extends ScopeTestCase
 
     /**
      * PATCH /notions/{id} -> HTTP 401 unauthorized
+     *
+     * @throws \Exception
      */
     public function testEdit()
     {
@@ -43,6 +49,8 @@ class NotionsAsPublicTest extends ScopeTestCase
 
     /**
      * DELETE /notions/{id} -> HTTP 401 unauthorized
+     *
+     * @throws \Exception
      */
     public function testDelete()
     {

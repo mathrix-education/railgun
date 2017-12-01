@@ -140,7 +140,7 @@ abstract class ScopeTestCase extends BaseTestCase
                 $this->user = User::inRandomOrder()->where("type", "=", $this->scope)->first();
             }
 
-            // No user could be found, thje database is probably not seeded
+            // No user could be found, the database is probably not seeded
             if (!$this->user instanceof User) {
                 throw new ModelNotFoundException("Could not find user with type `{$this->scope}`. Is database seeded?");
             } else {

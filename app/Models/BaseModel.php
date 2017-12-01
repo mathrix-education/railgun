@@ -5,9 +5,8 @@ use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-
-use Validator as ValidatorFacade;
 use Illuminate\Validation\Validator;
+use Validator as ValidatorFacade;
 
 /**
  * Class BaseModel
