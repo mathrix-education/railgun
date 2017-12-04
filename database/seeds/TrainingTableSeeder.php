@@ -13,7 +13,7 @@ use App\Models\Training;
  *
  * @author Mathrix Back-End Team
  * @since 1.0.0
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class TrainingTableSeeder extends BaseTableSeeder
 {

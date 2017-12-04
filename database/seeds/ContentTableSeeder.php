@@ -14,7 +14,7 @@ use App\Models\Notion;
  *
  * @author Mathrix Back-End Team
  * @since 1.0.1
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class ContentTableSeeder extends BaseTableSeeder
 {

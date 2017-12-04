@@ -10,7 +10,7 @@ use App\Models\Quote;
  *
  * @author Mathrix Back-End Team
  * @since 1.0.0
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class BlogTableSeeder extends BaseTableSeeder
 {

@@ -14,7 +14,7 @@ use Laravel\Lumen\Console\Kernel as ConsoleKernel;
  * @author Mathrix Back-End Team
  * @package App\Console
  * @since 1.0.1
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class Kernel extends ConsoleKernel
 {

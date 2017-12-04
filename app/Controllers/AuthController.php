@@ -19,7 +19,7 @@ use Mail;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class AuthController extends BaseController
 {

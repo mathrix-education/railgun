@@ -11,7 +11,7 @@ use App\Models\Training;
  * @author Mathrix Back-End Team
  * @package App\Models\Observers
  * @since 1.0.1
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class TrainingObserver extends BaseObserver
 {

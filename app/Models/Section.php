@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @author Mathrix Back-End Team
  * @package App\Models
  * @since 1.0.1
- * @copyright Mathrix
+ * @copyright Mathrix SA
  *
  * @property int $id
  * @property string $name

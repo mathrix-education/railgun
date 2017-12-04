@@ -6,7 +6,7 @@ use App\Models\Comment;
  *
  * @author Mathrix Back-End Team
  * @since 1.0.1
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class CommentTableSeeder extends BaseTableSeeder
 {

@@ -12,7 +12,7 @@ use Carbon\Carbon;
  * @author Mathrix Back-End Team
  * @package App\Policies
  * @since 1.0.0
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class CommentPolicy extends BasePolicy
 {
