@@ -170,7 +170,7 @@ abstract class BaseController extends Controller
         $conditions = [];
         $having = [];
 
-        // Check if order diir is valid
+        // Check if order dir is valid
         if (!empty($inputs["order"]) && !in_array($order["dir"], ["asc", "desc"])) {
             throw new Http400InvalidRequestException("order allowed values: ['asc', 'desc']");
         }

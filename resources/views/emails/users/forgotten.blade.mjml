@@ -1,7 +1,7 @@
 <mjml>
     <mj-body>
         <mj-container>
-            <mj-include path="resources/views/emails/common/header"></mj-include>
+            <mj-include path="../common/header"></mj-include>
 
             <mj-section background-color="#ffffff">
                 <mj-column>
@@ -16,7 +16,7 @@
                 </mj-column>
             </mj-section>
 
-            <mj-include path="resources/views/emails/common/footer"></mj-include>
+            <mj-include path="../common/footer"></mj-include>
         </mj-container>
     </mj-body>
 </mjml>
