@@ -23,7 +23,7 @@ class CreateCommentsTable extends Migration
             $table->text("content")->nullable();
             $table->integer("score")->default(0);
             $table->integer("parent_id")->unsigned()->nullable();
-            $table->integer("user_id")->unsigned()->nullable();
+            $table->integer("user_id")->unsigned();
 
             // Polymorphic
             $table->integer("commentable_id")->unsigned();
