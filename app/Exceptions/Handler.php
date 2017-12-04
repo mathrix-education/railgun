@@ -4,6 +4,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
@@ -86,18 +87,8 @@ class Handler extends ExceptionHandler
             "message" => $e->getMessage()
         ];
 
-        // Handle stripe exceptions
-        if ($e instanceof StripeException) {
-            $jsonBody = $e->getJsonBody();
-
-            if (!empty($jsonBody["error"])) {
-                $jsonBody = $jsonBody["error"];
-                if(!empty($jsonBody["message"])) {
-                    unset($jsonBody["message"]);
-                    $json["data"] = $jsonBody;
-                }
-            }
-
+        // Handle MySQL query exceptions
+        if ($e instanceof QueryException) {
             $overriddenStatusCode = 400;
         }
 
@@ -106,8 +97,23 @@ class Handler extends ExceptionHandler
             $json["errors"] = $e->errors();
         }
 
+        // Handle stripe exceptions
+        if ($e instanceof StripeException) {
+            $jsonBody = $e->getJsonBody();
+
+            if (!empty($jsonBody["error"])) {
+                $jsonBody = $jsonBody["error"];
+                if (!empty($jsonBody["message"])) {
+                    unset($jsonBody["message"]);
+                    $json["data"] = $jsonBody;
+                }
+            }
+
+            $overriddenStatusCode = 400;
+        }
+
         // Include trace in debug mode
-        if (app()->environment("dev", "pipelines",  "stage")) {
+        if (app()->environment("dev", "pipelines", "stage")) {
             $json["trace"] = explode("\n", $e->getTraceAsString());
         }
 

@@ -25,7 +25,7 @@ class CommentsAsModeratorTest extends CommentsAsRegisteredTest
         $this->genericIndexSuccess();
     }
 
-    
+
     /**
      * PATCH /comments/{id} without changing the user_id
      */
@@ -51,5 +51,18 @@ class CommentsAsModeratorTest extends CommentsAsRegisteredTest
     public function testDelete()
     {
         $this->genericSoftDeleteSuccess();
+    }
+
+
+    /**
+     * POST /comments/search
+     */
+    public function testSearch()
+    {
+        $this->call("POST", "/comments/search", [
+            "content" => "%lorem%"
+        ]);
+
+        $this->assertHttp200Success();
     }
 }
