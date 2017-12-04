@@ -162,4 +162,20 @@ class CommentController extends BaseController
                 ->get()
         );
     }
+
+
+    /**
+     * @apiVersion 1.0.1
+     * @api {post} /comments/search Search
+     * @apiGroup Comments
+     * @apiName CommentSearch
+     * @apiDescription Search for comments
+     * @apiPermission moderator
+     * @apiUse Bearer
+     * @apiParam (Data) {string} [field1] The comment field1 search value (use % as wildcard)
+     * @apiParam (Data) {string} [field2] The comment field2 search value (use % as wildcard)
+     * @apiParam (Data) {array} order The order data
+     * @apiParam (Data) {string} order.column The order column
+     * @apiParam (Data) {string=asc,desc} order.dir The order direction
+     */
 }
