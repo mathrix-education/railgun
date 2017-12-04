@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException as SymphonyHttpExceptio
  * @author Mathrix Back-End Team
  * @package App\Exceptions
  * @since 1.0.0
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class Handler extends ExceptionHandler
 {

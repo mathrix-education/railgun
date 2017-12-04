@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @author Mathrix Back-End Team
  * @package App\Models\Traits
  * @since 1.0.0
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 trait Loggable
 {

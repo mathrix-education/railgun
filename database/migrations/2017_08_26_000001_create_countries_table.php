@@ -7,7 +7,7 @@ use Illuminate\Database\Schema\Blueprint;
  *
  * @author Mathrix Back-End Team
  * @since 1.0.0
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class CreateCountriesTable extends Migration
 {

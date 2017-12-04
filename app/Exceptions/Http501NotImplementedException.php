@@ -7,7 +7,7 @@ namespace App\Exceptions;
  * @author Mathrix Back-End Team
  * @package App\Exceptions
  * @since 1.0.0
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class Http501NotImplementedException extends HttpException
 {

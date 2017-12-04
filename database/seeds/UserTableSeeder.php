@@ -8,7 +8,7 @@ use App\Models\User;
  *
  * @author Mathrix Back-End Team
  * @since 1.0.0
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class UserTableSeeder extends BaseTableSeeder
 {

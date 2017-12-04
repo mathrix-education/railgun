@@ -8,7 +8,7 @@ use App\Exceptions\Http422ModelValidationException;
  *
  * @author Mathrix Back-End Team
  * @since 1.0.0
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class DatabaseSeeder extends BaseTableSeeder
 {
