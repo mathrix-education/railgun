@@ -24,6 +24,9 @@ use Symfony\Component\HttpKernel\Exception\HttpException as SymphonyHttpExceptio
  */
 class Handler extends ExceptionHandler
 {
+    const REGEX_MYSQL_GENERIC = "/SQLSTATE\[([A-Z0-9]+)\][\s\S]+\(SQL: ([\s\S]+)\)/g";
+    const REGEX_MYSQL_UNKNOWN_COLUMN = "/SQLSTATE\[([A-Z0-9]+)\][\s\S]+Column not found: 1054 Unknown column '([a-z0-9\_]+)'[\s\S]+\(SQL: ([\s\S]+)\)/g";
+
     /**
      * A list of the exception types that should not be reported.
      *
@@ -89,6 +92,21 @@ class Handler extends ExceptionHandler
 
         // Handle MySQL query exceptions
         if ($e instanceof QueryException) {
+            if (preg_match(self::REGEX_MYSQL_UNKNOWN_COLUMN, $e->getMessage(), $matches)) {
+                $json = array_merge($json, [
+                    "type" => "unknown_column",
+                    "sqlstate" => $matches[1],
+                    "column" => $matches[2],
+                    "sql" => $matches[3]
+                ]);
+            } else if (preg_match(self::REGEX_MYSQL_GENERIC, $e->getMessage(), $matches)) {
+                $json = array_merge($json, [
+                    "type" => "generic",
+                    "sqlstate" => $matches[1],
+                    "sql" => $matches[2]
+                ]);
+            }
+
             $overriddenStatusCode = 400;
         }
 
