@@ -5,5 +5,5 @@
 #if (${NAMESPACE}) * @package ${NAMESPACE}
 #end
  * @since ${CARET}
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
