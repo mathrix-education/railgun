@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\MakeApidoc;
 use App\Console\Commands\SitemapAll;
 use App\Console\Commands\SitemapContent;
 use App\Console\Commands\SitemapVideos;
@@ -24,6 +25,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+        MakeApidoc::class,
         SitemapAll::class,
         SitemapContent::class,
         SitemapVideos::class

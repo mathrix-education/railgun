@@ -1,0 +1,10 @@
+<?php
+/**
+ * @apiDefine ActivityModel
+ * @apiSuccess {int} id The activity id
+ * @apiSuccess {string} name The activity name
+ * @apiSuccess {string} slug The activity slug
+ * @apiSUccess {string=video,course,test,exercise,summary,flashcard} type The activity type
+ * @apiSuccess {string} description The activity description
+ * @apiSuccess {bool} visible The activity visibility
+ */

@@ -44,7 +44,7 @@ class CommentController extends BaseController
      * @apiDescription Get a class by id
      * @apiPermission public
      * @apiParam {int} id The class id
-     * @apiUse Comment
+     * @apiUse CommentModel
      * @apiUse Http404ModelNotFound
      */
 
@@ -57,8 +57,8 @@ class CommentController extends BaseController
      * @apiDescription Add class
      * @apiPermission registered
      * @apiUse Bearer
-     * @apiUse CommentData
-     * @apiUse Comment
+     * @apiUse CommentRequest
+     * @apiUse CommentModel
      * @apiUse Http401Unauthorized
      * @apiUse Http422ModelValidation
      * @apiUse Http422ModelSave
@@ -95,8 +95,8 @@ class CommentController extends BaseController
      * @apiPermission registered for own comment, moderator otherwise
      * @apiUse Bearer
      * @apiParam {int} id The comment id
-     * @apiUse CommentData
-     * @apiUse Comment
+     * @apiUse CommentRequest
+     * @apiUse CommentModel
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
      * @apiUse Http422ModelSave

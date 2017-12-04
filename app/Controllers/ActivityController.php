@@ -41,7 +41,7 @@ class ActivityController extends BaseController
      * @apiDescription Get an activity by id
      * @apiPermission public
      * @apiParam {int} id The activity id
-     * @apiUse Activity
+     * @apiUse ActivityModel
      * @apiUse Http404ModelNotFound
      */
 
@@ -54,8 +54,8 @@ class ActivityController extends BaseController
      * @apiDescription Add a activity
      * @apiPermission moderator
      * @apiUse Bearer
-     * @apiUse ActivityData
-     * @apiUse Activity
+     * @apiUse ActivityRequest
+     * @apiUse ActivityModel
      * @apiUse Http401Unauthorized
      * @apiUse Http422ModelValidation
      * @apiUse Http422ModelSave
@@ -71,8 +71,8 @@ class ActivityController extends BaseController
      * @apiPermission moderator
      * @apiUse Bearer
      * @apiParam {int} id The activity id
-     * @apiUse ActivityData
-     * @apiUse Activity
+     * @apiUse ActivityRequest
+     * @apiUse ActivityModel
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
      * @apiUse Http422ModelSave

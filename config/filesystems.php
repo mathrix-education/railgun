@@ -4,6 +4,11 @@ return [
     "default" => env("FILESYSTEM_DRIVER", "cdn"),
 
     "disks" => [
+        "apidoc" => [
+            "driver" => "local",
+            "root" => app()->basePath("apidoc"),
+            "visibility" => "public",
+        ],
         "storage" => [
             "driver" => "local",
             "root" => storage_path(),

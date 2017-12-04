@@ -37,7 +37,7 @@ class ClassController extends BaseController
      * @apiDescription Get a class by id
      * @apiPermission public
      * @apiParam {int} id The class id
-     * @apiUse Class
+     * @apiUse ClassModel
      * @apiUse Http404ModelNotFound
      */
 
@@ -50,8 +50,8 @@ class ClassController extends BaseController
      * @apiDescription Add class
      * @apiPermission admin
      * @apiUse Bearer
-     * @apiUse ClassData
-     * @apiUse Class
+     * @apiUse ClassRequest
+     * @apiUse ClassModel
      * @apiUse Http401Unauthorized
      * @apiUse Http422ModelValidation
      * @apiUse Http422ModelSave
@@ -67,8 +67,8 @@ class ClassController extends BaseController
      * @apiPermission admin
      * @apiUse Bearer
      * @apiParam {int} id The class id
-     * @apiUse ClassData
-     * @apiUse Class
+     * @apiUse ClassRequest
+     * @apiUse ClassModel
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
      * @apiUse Http422ModelSave

@@ -38,11 +38,12 @@ gulp.task("mjml", function () {
 */
 gulp.task("apidoc", function (done) {
     apidoc({
-        src: "app/",
+        src: "./",
         dest: "docs/apidoc/",
         config: "./",
-        includeFilters: [".*\\.php$"],
-        silent: true
+        includeFilters: ["apidoc/.*\\.php$", "app/Controllers/.*\\.php$"],
+        silent: true,
+        //debug: true
     }, done);
 });
 
