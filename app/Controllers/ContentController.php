@@ -215,7 +215,8 @@ class ContentController extends BaseController
         if ($user) {
             /** @var Class_ $userClass */
             $userClass = Class_::find($user->class_id);
-            $classIds = $userClass->cursus()->pluck("id")->toArray();
+            $cursus = $userClass->cursus();
+            $classIds = $cursus->isNotEmpty() ? $cursus->pluck("id")->toArray() : [];
 
             $chapters = Chapter::whereIn("class_id", $classIds)
                 ->with(["discipline", "class_", "class_.country"])
