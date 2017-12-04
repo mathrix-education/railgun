@@ -59,7 +59,7 @@ abstract class BaseController extends Controller
         }
 
         // Re-add models namespace
-        $guessedModelClass = "App\\Models\\" . $guessedModelClass;
+        $guessedModelClass = "App\\Models\\$guessedModelClass";
 
         if (class_exists($guessedModelClass) && $this->modelClass === null) {
             $this->modelClass = $guessedModelClass;

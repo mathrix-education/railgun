@@ -117,9 +117,9 @@ class StripeController extends CashierController
                     ->trialUntil($this->getEndDateFromStripePlan($stripePlan))
                     ->create($stripeToken);
             }
-        }
 
-        Log::log("user_payment_succeed_for_premium", $user);
+            Log::log("user_payment_succeed_for_premium", $user);
+        }
 
         return response()->json(User::with("subscriptions")->find($user->id));
     }

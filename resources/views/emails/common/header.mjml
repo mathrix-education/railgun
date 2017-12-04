@@ -1,14 +1,14 @@
 <mj-section padding-bottom="0"
-            background-url="http://cdn.mathrix.fr/img/email-header-bg.png"
+            background-url="{{ env("APP_CDN") }}/img/email-header-bg.png"
             background-height="50px"
             background-repeat="repeat-x">
     <mj-column width="70%" padding-bottom="0">
-        <mj-image src="http://cdn.mathrix.fr/img/logo-w.png" align="left" width="200"></mj-image>
+        <mj-image src="{{ env("APP_CDN") }}/img/logo-w.png" align="left" width="200"></mj-image>
         <mj-text color="#ffffff" padding-bottom="0">
             <h1>{{ $title }}</h1>
         </mj-text>
     </mj-column>
     <mj-column width="30%" padding-bottom="0">
-        <mj-image src="http://cdn.mathrix.fr/img/lumix.png" height="200px"></mj-image>
+        <mj-image src="{{ env("APP_CDN") }}/img/lumix.png" height="200"></mj-image>
     </mj-column>
 </mj-section>

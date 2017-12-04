@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use App\Models\Traits\Commentable;
@@ -19,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read Category $category
+ * @property-read User $user
  * @property-read Collection|Comment[] $comments
  * @method static Builder|Post whereId($value)
  * @method static Builder|Post whereSlug($value)
@@ -64,5 +66,16 @@ class Post extends BaseModel
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+
+    /**
+     * BelongsTo User
+     *
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }
