@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Comments;
 
 use App\Models\Comment;
@@ -14,6 +15,17 @@ use App\Models\Comment;
  */
 class CommentsAsModeratorTest extends CommentsAsRegisteredTest
 {
+    /**
+     * GET /comments
+     *
+     * @throws \Exception
+     */
+    public function testIndex()
+    {
+        $this->genericIndexSuccess();
+    }
+
+    
     /**
      * PATCH /comments/{id} without changing the user_id
      */

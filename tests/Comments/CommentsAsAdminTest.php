@@ -14,16 +14,6 @@ use App\Models\Comment;
  */
 class CommentsAsAdminTest extends CommentsAsModeratorTest
 {
-    /**
-     * GET /comments
-     *
-     * @throws \Exception
-     */
-    public function testIndex()
-    {
-        $this->genericIndexSuccess();
-    }
-
 
     /**
      * POST /comments
