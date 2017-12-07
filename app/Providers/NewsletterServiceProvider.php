@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use DrewM\MailChimp\MailChimp;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Lumen\Application;
 use Spatie\Newsletter\Newsletter;
 use Spatie\Newsletter\NewsletterListCollection;
 
@@ -17,6 +18,8 @@ use Spatie\Newsletter\NewsletterListCollection;
  * @package App\Providers
  * @since 1.0.0
  * @copyright Mathrix SA
+ *
+ * @property-read Application $app
  */
 class NewsletterServiceProvider extends ServiceProvider
 {

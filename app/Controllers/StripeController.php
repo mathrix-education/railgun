@@ -26,10 +26,12 @@ class StripeController extends CashierController
 {
     private const ALLOWED_STRIPE_PLANS = [
         "v3_biannually" => [
+            "name" => "Pack bi-annuel",
             "price_per_month" => 9.90,
             "price_per_day" => 0.33
         ],
         "v3_annually" => [
+            "name" => "Pack annuel",
             "price_per_month" => 12.90,
             "price_per_day" => 0.43
         ],
@@ -77,6 +79,7 @@ class StripeController extends CashierController
     public function subscribe(Request $request)
     {
         $stripeToken = $request->input("stripe_token");
+        /** @var string $stripePlan */
         $stripePlan = $request->input("stripe_plan");
         $stripeCoupon = $request->input("stripe_coupon");
 
@@ -97,15 +100,21 @@ class StripeController extends CashierController
                 ->create($stripeToken);
         } else {
             // v3_biannually or v3_annually
-            // Charge the user
+
+            // Charge the user by creating him if he does not exists
             if (!$user->hasStripeId()) {
                 $user->createAsStripeCustomer($stripeToken);
             } else {
                 $user->updateCard($stripeToken);
             }
 
+            // Pipe Stripe exception to our HTTP 400 Bad Request exception
             try {
-                $response = $user->charge($this->getPriceFromStripePlan($stripePlan));
+                $description = self::ALLOWED_STRIPE_PLANS[$stripePlan]["name"] . " (fin " .
+                    $this->getEndDateFromStripePlan($stripePlan)->format("d/m/Y") . ")";
+                $response = $user->charge($this->getPriceFromStripePlan($request, $stripePlan), [
+                    "description" => $description
+                ]);
             } catch (\InvalidArgumentException $exception) {
                 throw new Http400InvalidRequestException($exception->getMessage());
             }
@@ -136,15 +145,16 @@ class StripeController extends CashierController
      * @apiSuccess {int} price The price if the user orders today
      * @apiError (Error 400) invalid_request stripe_plan has to be in the allowed stripe plans
      *
+     * @param Request $request
      * @param string $stripePlan
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
      */
-    public function estimate(string $stripePlan)
+    public function estimate(Request $request, string $stripePlan)
     {
         return response()->json([
-            "price" => $this->getPriceFromStripePlan($stripePlan)
+            "price" => $this->getPriceFromStripePlan($request, $stripePlan)
         ]);
     }
 
@@ -173,20 +183,23 @@ class StripeController extends CashierController
                 break;
         }
 
-        return $nextJuly;
+        return $nextJuly->setTime(0, 0, 0);
     }
 
 
     /**
      * Get the price of a Stripe plan based on the current date
      *
+     * @param Request $request
      * @param string $stripePlan
      *
      * @return int The price, in cents
      * @throws Http400InvalidRequestException
      */
-    private function getPriceFromStripePlan(string $stripePlan)
+    private function getPriceFromStripePlan(Request $request, string $stripePlan)
     {
+        $coupon = $request->input("coupon");
+
         $now = Carbon::now();
         $nextJuly = $this->getEndDateFromStripePlan($stripePlan);
 
@@ -196,7 +209,15 @@ class StripeController extends CashierController
         $pricePerMonth = self::ALLOWED_STRIPE_PLANS[$stripePlan]["price_per_month"];
         $pricePerDay = self::ALLOWED_STRIPE_PLANS[$stripePlan]["price_per_day"];
 
-        return round($pricePerMonth * $months + $pricePerDay * $days, 1) * 100;
+        $costInCents = round($pricePerMonth * $months + $pricePerDay * $days, 1) * 100;
+
+        switch ($coupon) {
+            case "MODEMACHINE2017":
+                $costInCents *= 0.8;
+                break;
+        }
+
+        return $costInCents;
     }
 
     /*

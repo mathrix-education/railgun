@@ -23,6 +23,7 @@ class TrainingsAsModeratorTest extends TrainingsAsRegisteredTest
         $this->genericIndexSuccess();
     }
 
+
     /**
      * POST /training
      *
@@ -31,6 +32,18 @@ class TrainingsAsModeratorTest extends TrainingsAsRegisteredTest
     public function testAdd()
     {
         $this->genericAddSuccess();
+    }
+
+
+    /**
+     * POST /training
+     * With a different name/slug couple
+     *
+     * @throws \Exception
+     */
+    public function testAddWidthDifferentSlug()
+    {
+        $this->genericAddSuccess(["slug" => $this->faker->slug()]);
     }
 
 

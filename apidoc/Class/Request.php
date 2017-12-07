@@ -10,6 +10,7 @@
  * @apiParam (Data) {int-null} [parent_id=null] The class parent_id
  * @apiParam (Data) {int} country_id The class country_id
  * @apiParam (Data) {array} [link] The models to link with the class.
- * @apiParam (Data) {int[]} [link.disciplines] The disciplines ids to sync with the class. __Destructive__! Filling this
- * field will erase old values.If not specified, do not change anything.
+ * @apiParam (Data) {int[]} [link.disciplines] The disciplines ids to sync with the class.<br>
+ * __Destructive__! Filling this field will erase old values.<br>
+ * If not specified, do not change anything.
  */
