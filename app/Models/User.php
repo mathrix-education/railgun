@@ -196,7 +196,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function class_(): BelongsTo
     {
-        return $this->belongsTo(Class_::class);
+        return $this->belongsTo(Class_::class, "class_id");
     }
 
 

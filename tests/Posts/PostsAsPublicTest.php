@@ -15,7 +15,7 @@ use Tests\ScopeTestCase;
 class PostsAsPublicTest extends ScopeTestCase
 {
     /**
-     * GET /notions
+     * GET /posts
      *
      * @throws \Exception
      */
