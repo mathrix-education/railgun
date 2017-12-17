@@ -178,7 +178,7 @@ class ActivityController extends BaseController
      * @apiDescription Mark an activity as favorite or set its status completed or to_revise
      * @apiUse Bearer
      * @apiPermission registered
-     * @apiUse MetaData
+     * @apiUse MetaRequest
      * @apiUse Http400InvalidRequest
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound

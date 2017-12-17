@@ -13,8 +13,4 @@ resources/views/emails/**/*.blade.php
 storage/backups
 storage/sitemaps
 vendor
-.idea/fileTemplates/code/
-.idea/fileTemplates/internal/
-.idea/fileTemplates/j2ee/
-docs/
 storage/cdn/

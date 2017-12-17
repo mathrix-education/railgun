@@ -38,7 +38,7 @@ class DisciplineController extends BaseController
      * @apiDescription Get a discipline by id
      * @apiPermission public
      * @apiParam {int} id The discipline id
-     * @apiUse Discipline
+     * @apiUse DisciplineModel
      * @apiUse Http404ModelNotFound
      */
 
@@ -50,8 +50,8 @@ class DisciplineController extends BaseController
      * @apiDescription Add a discipline
      * @apiPermission admin
      * @apiUse Bearer
-     * @apiUse DisciplineData
-     * @apiUse Discipline
+     * @apiUse DisciplineRequest
+     * @apiUse DisciplineModel
      * @apiUse Http401Unauthorized
      * @apiUse Http422ModelValidation
      * @apiUse Http422ModelSave
@@ -67,8 +67,8 @@ class DisciplineController extends BaseController
      * @apiPermission admin
      * @apiUse Bearer
      * @apiParam {int} id The discipline id
-     * @apiUse DisciplineData
-     * @apiUse Discipline
+     * @apiUse DisciplineRequest
+     * @apiUse DisciplineModel
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
      * @apiUse Http422ModelSave
