@@ -35,7 +35,7 @@ class NotionController extends BaseController
      * @apiDescription Get a notion by id
      * @apiPermission public
      * @apiParam {int} id The notion id
-     * @apiUse Notion
+     * @apiUse NotionModel
      * @apiUse Http404ModelNotFound
      */
 
@@ -48,8 +48,8 @@ class NotionController extends BaseController
      * @apiDescription Add a notion
      * @apiPermission moderator
      * @apiUse Bearer
-     * @apiUse NotionData
-     * @apiUse Notion
+     * @apiUse NotionRequest
+     * @apiUse NotionModel
      * @apiUse Http401Unauthorized
      * @apiUse Http422ModelValidation
      * @apiUse Http422ModelSave
@@ -65,8 +65,8 @@ class NotionController extends BaseController
      * @apiPermission moderator
      * @apiUse Bearer
      * @apiParam {int} id The notion id
-     * @apiUse NotionData
-     * @apiUse Notion
+     * @apiUse NotionRequest
+     * @apiUse NotionModel
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
      * @apiUse Http422ModelSave

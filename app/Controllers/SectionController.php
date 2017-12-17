@@ -24,7 +24,7 @@ class SectionController extends BaseController
      * @apiDescription Get an section by id
      * @apiPermission public
      * @apiParam {int} id The section id
-     * @apiUse Section
+     * @apiUse SectionModel
      * @apiUse Http404ModelNotFound
      */
 
@@ -37,8 +37,8 @@ class SectionController extends BaseController
      * @apiDescription Add a section
      * @apiPermission moderator
      * @apiUse Bearer
-     * @apiUse SectionData
-     * @apiUse Section
+     * @apiUse SectionRequest
+     * @apiUse SectionModel
      * @apiUse Http401Unauthorized
      * @apiUse Http422ModelValidation
      * @apiUse Http422ModelSave
@@ -54,8 +54,8 @@ class SectionController extends BaseController
      * @apiPermission moderator
      * @apiUse Bearer
      * @apiParam {int} id The section id
-     * @apiUse SectionData
-     * @apiUse Section
+     * @apiUse SectionRequest
+     * @apiUse SectionModel
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
      * @apiUse Http422ModelSave

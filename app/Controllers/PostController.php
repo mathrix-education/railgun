@@ -51,7 +51,7 @@ class PostController extends BaseController
      * @apiDescription Get a post by id
      * @apiPermission public
      * @apiParam {int} id The post id
-     * @apiUse Post
+     * @apiUse PostModel
      * @apiUse Http404ModelNotFound
      */
 
@@ -63,8 +63,8 @@ class PostController extends BaseController
      * @apiDescription Add a post
      * @apiPermission admin
      * @apiUse Bearer
-     * @apiUse PostData
-     * @apiUse Post
+     * @apiUse PostRequest
+     * @apiUse PostModel
      * @apiUse Http401Unauthorized
      * @apiUse Http422ModelValidation
      * @apiUse Http422ModelSave
@@ -80,8 +80,8 @@ class PostController extends BaseController
      * @apiPermission admin
      * @apiUse Bearer
      * @apiParam {int} id The post id
-     * @apiUse PostData
-     * @apiUse Post
+     * @apiUse PostRequest
+     * @apiUse PostModel
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
      * @apiUse Http422ModelSave

@@ -26,7 +26,7 @@ class ReportController extends BaseController
      * @apiPermission public
      * @apiUse Bearer
      * @apiUse Pagination
-     * @apiUse Report
+     * @apiUse ReportModel
      * @apiUse Http401Unauthorized
      * @apiUse Http422ModelValidation
      * @apiUse Http422ModelSave
@@ -62,7 +62,7 @@ class ReportController extends BaseController
      * @apiDescription Add a report
      * @apiPermission public
      * @apiUse Bearer
-     * @apiUse ReportData
+     * @apiUse ReportRequest
      * @apiUse Http401Unauthorized
      * @apiUse Http422ModelValidation
      * @apiUse Http422ModelSave

@@ -53,7 +53,7 @@ class StripeController extends CashierController
      * @apiParam (Data) {string=v3_biannually,v3_annually,v3_monthly} stripe_plan The stripe plan
      * @apiParam (Data) {string} [stripe_token] The stripe token; can be null if a coupon is given
      * @apiParam (Data) {string} [stripe_coupon=null] The stripe coupon
-     * @apiUse User
+     * @apiUse UserModel
      * @apiError (Error 400) invalid_request stripe_token and stripe_coupon cannot be null at the same time
      * @apiError (Error 400) invalid_request stripe_plan has to be in the allowed stripe plans
      * @apiError (Error 400) invalid_request `card invalid_number` The card number is not a valid credit card number<br>
