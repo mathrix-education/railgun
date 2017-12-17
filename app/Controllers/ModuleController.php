@@ -43,7 +43,7 @@ class ModuleController extends BaseController
      * @apiDescription Get a module by id
      * @apiPermission public
      * @apiParam {int} id The module id
-     * @apiUse Module
+     * @apiUse ModuleModel
      * @apiUse CommentArray
      * @apiUse Http404ModelNotFound
      *
@@ -77,8 +77,8 @@ class ModuleController extends BaseController
      * @apiDescription Add a module
      * @apiPermission moderator
      * @apiUse Bearer
-     * @apiUse ModuleData
-     * @apiUse Module
+     * @apiUse ModuleArray
+     * @apiUse ModuleModel
      * @apiUse Http401Unauthorized
      * @apiUse Http422ModelValidation
      * @apiUse Http422ModelSave
@@ -94,8 +94,8 @@ class ModuleController extends BaseController
      * @apiPermission moderator
      * @apiUse Bearer
      * @apiParam {int} id The module id
-     * @apiUse ModuleData
-     * @apiUse Module
+     * @apiUse ModuleArray
+     * @apiUse ModuleModel
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
      * @apiUse Http422ModelSave

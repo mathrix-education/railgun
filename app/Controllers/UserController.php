@@ -49,7 +49,7 @@ class UserController extends BaseController
      * @apiPermission registered for self get, at least moderator for others registered
      * @apiUse Bearer
      * @apiParam {int} [id] The user id
-     * @apiUse User
+     * @apiUse UserModel
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
      */
@@ -63,8 +63,8 @@ class UserController extends BaseController
      * @apiDescription Edit a user
      * @apiPermission registered for self get, at least admin for strangers
      * @apiUse Bearer
-     * @apiUse UserData
-     * @apiUse User
+     * @apiUse UserRequest
+     * @apiUse UserModel
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
      *
@@ -148,7 +148,7 @@ class UserController extends BaseController
      * @apiParam (Data) {string=registered,moderator,admin} type The user type
      * @apiParam (Data) {int} [class_id=null] The class id; should be `null` for `moderator` and `admin`
      * @apiParam (Data) {int} [settings.facebook_id] The facebook id
-     * @apiUse User
+     * @apiUse UserModel
      * @apiError (Error 422) validation The given data failed to pass validation
      * @apiError (Error 422) save The validated user save failed
      * @apiError (Error 502) email_not_sent Unable to sent reset email
@@ -229,7 +229,7 @@ class UserController extends BaseController
      * @apiDescription Get the current user
      * @apiPermission registered
      * @apiUse Bearer
-     * @apiUse User
+     * @apiUse UserModel
      *
      * @param Request $request
      *
