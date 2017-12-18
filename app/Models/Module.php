@@ -6,6 +6,7 @@ use Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 
 /**
@@ -36,6 +37,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Module whereOptions($value)
  * @method static Builder|Module whereQuestions($value)
  * @method static Builder|Module whereSolutions($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Training[] $trainings
+ * @mixin \Eloquent
  */
 class Module extends BaseModel
 {
@@ -112,13 +115,13 @@ class Module extends BaseModel
 
 
     /**
-     * BelongsToMany Activity
+     * HasMany Lesson
      *
-     * @return BelongsToMany
+     * @return HasMany
      */
-    public function trainings(): BelongsToMany
+    public function lessons(): HasMany
     {
-        return $this->belongsToMany(Training::class);
+        return $this->hasMany(Lesson::class);
     }
 
 }

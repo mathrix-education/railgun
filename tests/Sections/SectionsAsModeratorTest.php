@@ -25,6 +25,7 @@ class SectionsAsModeratorTest extends SectionsAsRegisteredTest
         $this->genericIndexSuccess();
     }
 
+
     /**
      * POST /section
      *
@@ -35,6 +36,7 @@ class SectionsAsModeratorTest extends SectionsAsRegisteredTest
         $this->genericAddSuccess();
     }
 
+
     /**
      * PATCH /section/{id}
      *
@@ -43,31 +45,6 @@ class SectionsAsModeratorTest extends SectionsAsRegisteredTest
     public function testEdit()
     {
         $this->genericEditSuccess();
-    }
-
-    /**
-     * POST /section
-     *
-     * @throws \Exception
-     */
-    public function testEditWithLink()
-    {
-        $link = [
-            "modules" => $this->faker->randomElements(
-                Module::inRandomOrder()->pluck("id")->toArray(),
-                $this->faker->numberBetween(3, 5)
-            )
-        ];
-
-        $this->genericEditSuccess(["link" => $link]);
-
-        foreach ($link["modules"] as $order => $moduleId) {
-            $this->assertInDatabase("module_section", [
-                "section_id" => $this->editModelId,
-                "module_id" => $moduleId,
-                "order" => $order
-            ]);
-        }
     }
 
 
