@@ -2,6 +2,7 @@
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\Category;
+use App\Models\Module;
 use App\Models\Post;
 use App\Models\Quote;
 
@@ -23,6 +24,11 @@ class BlogTableSeeder extends BaseTableSeeder
         $this->seedFromFactory([
             "modelClass" => Category::class,
             "count" => random_int(20, 40)
+        ]);
+        $this->seedFromFactory([
+            "modelClass" => Module::class,
+            "subFactory" => "course",
+            "count" => 40
         ]);
         $this->seedFromFactory([
             "modelClass" => Post::class,

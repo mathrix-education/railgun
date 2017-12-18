@@ -1,6 +1,8 @@
 <?php
 use App\Models\Category;
+use App\Models\Module;
 use App\Models\Post;
+use App\Models\User;
 use Faker\Generator;
 
 /**
@@ -16,8 +18,9 @@ $factory->define(Post::class, function (Generator $faker) {
     return [
         "title" => $title,
         "slug" => str_slug($title),
-        "content" => $faker->text(),
-        "category_id" => $faker->randomElement(Category::all()->pluck("id")->toArray()),
+        "module_id" => Module::where("type", "course")->inRandomOrder()->first()->id,
+        "category_id" => Category::inRandomOrder()->first()->id,
+        "user_id" => User::where("type", "admin")->inRandomOrder()->first()->id,
         "created_at" => $created,
         "updated_at" => $faker->boolean(10) ? $faker->dateTimeBetween($created, "now") : $created,
     ];

@@ -2,6 +2,10 @@
 namespace App\Controllers;
 
 
+use App\Exceptions\Http400InvalidRequestException;
+use App\Exceptions\Http401UnauthorizedException;
+use App\Exceptions\Http422ModelSaveException;
+use App\Exceptions\Http422ModelValidationException;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -68,7 +72,28 @@ class PostController extends BaseController
      * @apiUse Http401Unauthorized
      * @apiUse Http422ModelValidation
      * @apiUse Http422ModelSave
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     * @throws Http400InvalidRequestException
+     * @throws Http401UnauthorizedException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
      */
+    public function add(Request $request): JsonResponse
+    {
+        if ($request->user() !== null && $request->user()->cant("add", Post::class)) {
+            throw new Http401UnauthorizedException();
+        }
+
+        /** @var Post $post */
+        $post = new Post($request->all());
+        $post->user_id = $this->getUserByRequestOrUnauthorized($request)->id;
+        $post->save();
+
+        return response()->json($post);
+    }
 
 
     /**
