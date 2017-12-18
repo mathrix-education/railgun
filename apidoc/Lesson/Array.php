@@ -7,7 +7,7 @@
  * @apiSuccess {string} lessons.slug The lesson slug
  * @apiSuccess {string} lessons.image The lesson image
  * @apiSuccess {int} lessons.section_id The lesson section_id
- * @apiSuccess {int} lessons.module.id The lesson module_id
+ * @apiSuccess {int} lessons.module_id The lesson module_id
  * @apiSuccess {int} lessons.module The lesson module
  * @apiSuccess {int} lessons.module.id The lesson module id
  * @apiSuccess {string=course} lessons.module.type The lesson module type
