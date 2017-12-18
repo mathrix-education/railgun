@@ -16,3 +16,5 @@ vendor
 storage/cdn/
 
 \.idea/deployment\.xml
+
+\.idea/php\.xml

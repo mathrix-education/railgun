@@ -55,7 +55,11 @@ abstract class BaseModel extends Model
             $attributes = [$attributes];
         }
 
-        $this->guarded = array_diff($this->guarded, $attributes);
+        if(!empty($this->fillable)) {
+            $this->fillable = array_merge($this->fillable, $attributes);
+        } else {
+            $this->guarded = array_diff($this->guarded, $attributes);
+        }
 
         return $this;
     }
