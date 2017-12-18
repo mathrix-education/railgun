@@ -39,7 +39,8 @@ class PostController extends BaseController
     public function index(Request $request, int $page = 1, int $perPage = 10): JsonResponse
     {
         return response()->json(
-            Post::limit($perPage)
+            Post::with("module")
+                ->limit($perPage)
                 ->offset(($page - 1) * $perPage)
                 ->orderByDesc('created_at')
                 ->get()
@@ -57,7 +58,17 @@ class PostController extends BaseController
      * @apiParam {int} id The post id
      * @apiUse PostModel
      * @apiUse Http404ModelNotFound
+     *
+     * @param int $id
+     *
+     * @return JsonResponse
      */
+    public function get(int $id): JsonResponse
+    {
+        $model = Post::with("module")->where("id", $id)->firstOrFail();
+
+        return response()->json($model);
+    }
 
     /**
      * @apiVersion 1.0.0
