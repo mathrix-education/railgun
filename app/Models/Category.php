@@ -14,17 +14,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @package App\Models
  * @since 1.0.0
  * @copyright Mathrix SA
- *
  * @property int $id
  * @property string $name
  * @property string $slug
  * @property string|null $image
  * @property-read Collection|Post[] $posts
- *
  * @method static Builder|Category whereImage($value)
  * @method static Builder|Category whereId($value)
  * @method static Builder|Category whereName($value)
  * @method static Builder|Category whereSlug($value)
+ * @mixin \Eloquent
  */
 class Category extends BaseModel
 {

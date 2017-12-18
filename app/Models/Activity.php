@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @package App\Models
  * @since 1.0.0
  * @copyright Mathrix SA
- *
  * @property int $id
  * @property string $name
  * @property string $slug
@@ -29,7 +28,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read Collection|Module[] $modules
  * @property-read Collection|Notion[] $notions
  * @property-read Collection|User[] $users
- *
  * @method static Builder|Activity whereDescription($value)
  * @method static Builder|Activity whereId($value)
  * @method static Builder|Activity whereName($value)
@@ -37,6 +35,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Activity whereNameSeo($value)
  * @method static Builder|Activity whereType($value)
  * @method static Builder|Activity whereVisible($value)
+ * @mixin \Eloquent
  */
 class Activity extends BaseModel
 {

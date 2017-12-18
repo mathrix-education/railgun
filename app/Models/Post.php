@@ -11,7 +11,12 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 
 /**
- * App\Models\Post
+ * Class Post
+ *
+ * @author Mathrix Back-End Team
+ * @package App\Models
+ * @since 1.0.1
+ * @copyright Mathrix SA
  *
  * @property int $id
  * @property string $title
