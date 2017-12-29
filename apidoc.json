@@ -5,9 +5,9 @@
   "title": "Mathrix API",
   "url": "",
   "header": {
-    "filename": "apidoc/header.md"
+    "filename": "apidoc/templates/header.md"
   },
   "footer": {
-    "filename": "apidoc/footer.md"
+    "filename": "apidoc/templates/footer.md"
   }
 }
