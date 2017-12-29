@@ -5,8 +5,11 @@ _ide_helper.php
 # User-specific stuff:
 .idea/**/workspace.xml
 .idea/dictionaries
+.idea/deployment.xml
+.idea/php.xml
 
-docs/apidoc
+docs/apidoc/api_*
+
 node_modules
 resources/views/emails/**/*.html
 resources/views/emails/**/*.blade.php
@@ -14,7 +17,3 @@ storage/backups
 storage/sitemaps
 vendor
 storage/cdn/
-
-\.idea/deployment\.xml
-
-\.idea/php\.xml
