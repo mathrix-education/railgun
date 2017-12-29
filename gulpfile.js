@@ -41,10 +41,27 @@ gulp.task("apidoc", function (done) {
         src: "./",
         dest: "docs/apidoc/",
         config: "./",
+        template: "apidoc/templates/talview-material",
         includeFilters: ["apidoc/.*\\.php$", "app/Controllers/.*\\.php$"],
         silent: true,
         //debug: true
     }, done);
+});
+
+gulp.task("apidoc-watch", ["apidoc"], function() {
+    livereload.listen();
+
+    gulp.watch("docs/apidoc/index.html", function(event) {
+        livereload.reload(event.path);
+    });
+
+    gulp.watch("docs/apidoc/**.js", function(event) {
+        livereload.reload(event.path);
+    });
+
+    return gulp.watch("less/*.less", ["less"]);
+
+
 });
 
 /*
