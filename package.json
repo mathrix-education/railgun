@@ -26,6 +26,7 @@
     "mjml": "^3.3.5"
   },
   "devDependencies": {
+    "gulp-clean": "^0.3.2",
     "gulp-livereload": "^3.8.1"
   }
 }

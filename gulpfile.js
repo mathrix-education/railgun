@@ -9,6 +9,7 @@ const mjml = require("gulp-mjml");
 const extReplace = require("gulp-ext-replace");
 const livereload = require("gulp-livereload");
 const apidoc = require("gulp-apidoc");
+const clean = require("gulp-clean");
 
 // mjml-related constants
 const mjmlSelector = [
@@ -36,32 +37,20 @@ gulp.task("mjml", function () {
 | apidoc: Generate the documentation
 |--------------------------------------------------------------------------
 */
-gulp.task("apidoc", function (done) {
+gulp.task("apidoc", ["apidoc-clean"], function (done) {
     apidoc({
         src: "./",
         dest: "docs/apidoc/",
         config: "./",
-        template: "apidoc/templates/talview-material",
+        template: "apidoc/templates/apidoc-bs3-template",
         includeFilters: ["apidoc/.*\\.php$", "app/Controllers/.*\\.php$"],
         silent: true,
         //debug: true
     }, done);
 });
 
-gulp.task("apidoc-watch", ["apidoc"], function() {
-    livereload.listen();
-
-    gulp.watch("docs/apidoc/index.html", function(event) {
-        livereload.reload(event.path);
-    });
-
-    gulp.watch("docs/apidoc/**.js", function(event) {
-        livereload.reload(event.path);
-    });
-
-    return gulp.watch("less/*.less", ["less"]);
-
-
+gulp.task("apidoc-clean", function () {
+    gulp.src("docs/apidoc/", {read: false}).pipe(clean());
 });
 
 /*
