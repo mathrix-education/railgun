@@ -1,19 +1,19 @@
-.env
-_ide_helper.php
-.phpstorm.meta.php
+/.env
+/_ide_helper.php
+/.phpstorm.meta.php
 
 # User-specific stuff:
-.idea/**/workspace.xml
-.idea/dictionaries
-.idea/deployment.xml
-.idea/php.xml
+/.idea/**/workspace.xml
+/.idea/dictionaries
+/.idea/deployment.xml
+/.idea/php.xml
 
-docs/apidoc/
+/docs/apidoc/
 
-node_modules
-resources/views/emails/**/*.html
-resources/views/emails/**/*.blade.php
-storage/backups
-storage/sitemaps
-vendor
-storage/cdn/
+/node_modules/
+/resources/views/emails/**/*.html
+/resources/views/emails/**/*.blade.php
+/storage/backups/
+/storage/sitemaps/
+/vendor/
+/storage/cdn/

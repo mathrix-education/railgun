@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Users;
 
 use App\Models\Class_;
@@ -40,5 +41,10 @@ class UsersAsPublicTest extends ScopeTestCase
             "event" => "user_registered",
             "user_id" => $user->id
         ]);
+    }
+
+    public function testForgotten()
+    {
+
     }
 }
