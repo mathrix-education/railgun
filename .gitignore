@@ -8,7 +8,7 @@ _ide_helper.php
 .idea/deployment.xml
 .idea/php.xml
 
-docs/apidoc/api_*
+docs/apidoc/
 
 node_modules
 resources/views/emails/**/*.html
