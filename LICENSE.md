@@ -1,6 +1,6 @@
 # License
 
-Copyright &copy; Mathrix SA
+Copyright &copy; Mathrix SA. No external use, copy without explicit agreement from Mathrix SA.
 
 ## Developers
 
