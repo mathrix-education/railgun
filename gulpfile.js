@@ -38,7 +38,7 @@ gulp.task("mjml", function () {
 |--------------------------------------------------------------------------
 */
 gulp.task("apidoc", ["apidoc-clean"], function (done) {
-    apidoc({
+    return apidoc({
         src: "./",
         dest: "docs/apidoc/",
         config: "./",
@@ -50,7 +50,7 @@ gulp.task("apidoc", ["apidoc-clean"], function (done) {
 });
 
 gulp.task("apidoc-clean", function () {
-    gulp.src("docs/apidoc/", {read: false}).pipe(clean());
+    return gulp.src("docs/apidoc/", {read: false}).pipe(clean());
 });
 
 /*
