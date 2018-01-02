@@ -8,6 +8,7 @@
 /.idea/deployment.xml
 /.idea/php.xml
 
+# apidoc location, as we generate it directly on production
 /docs/apidoc/
 
 /node_modules/

@@ -1,14 +1,5 @@
-<mj-section padding-bottom="0"
-            background-url="https://cdn.mathrix.fr/img/email-header-bg.png"
-            background-height="50px"
-            background-repeat="repeat-x">
-    <mj-column width="70%" padding-bottom="0">
-        <mj-image src="https://cdn.mathrix.fr/img/logo-w.png" align="left" width="200"></mj-image>
-        <mj-text color="#ffffff" padding-bottom="0">
-            <h1>{{ $title }}</h1>
-        </mj-text>
-    </mj-column>
-    <mj-column width="30%" padding-bottom="0">
-        <mj-image src="https://cdn.mathrix.fr/img/lumix.png" height="200"></mj-image>
+<mj-section background-color="#3c8d80">
+    <mj-column padding-bottom="0">
+        <mj-image src="{{ $cdn }}/img/logo-no-arrow.png" align="left" width="250"></mj-image>
     </mj-column>
 </mj-section>

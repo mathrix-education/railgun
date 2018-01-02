@@ -5,13 +5,14 @@ use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Exceptions\Http502EmailNotSentException;
-use App\Mails\User\PasswordForgotten;
+use App\Mails\PasswordForgottenMail;
+use App\Mails\PasswordResetMail;
 use App\Models\Log;
 use App\Models\User;
 use Faker\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Mail;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * Class AuthController
@@ -134,8 +135,9 @@ class AuthController extends BaseController
         $user->unguardAttributes(["token"]);
         $user->update(["token" => Factory::create()->uuid]);
 
-        // Send PasswordForgotten email
-        Mail::to($user->email)->send(new PasswordForgotten($user));
+        // Send PasswordForgottenMail
+        // TODO ceci est à faire
+        Mail::to($user->email)->send(new PasswordForgottenMail($user));
         if (!empty(Mail::failures())) {
             throw new Http502EmailNotSentException();
         }
@@ -162,6 +164,7 @@ class AuthController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
+     * @throws Http502EmailNotSentException
      */
     public function reset(Request $request, string $token)
     {
@@ -180,14 +183,11 @@ class AuthController extends BaseController
             "token" => Factory::create()->uuid // Refresh token
         ]);
 
-        // TODO Email
-        /*Mail::to($user->email)->send(new UserPasswordChanged($user));
-        $emailErrors = Mail::failures();
-        if (!empty($emailErrors)) {
-            return $this->http502EmailNotSent([
-                "message" => $emailErrors
-            ]);
-        }*/
+        // Send PasswordResetMail
+        Mail::to($user->email)->send(new PasswordResetMail($user));
+        if (!empty(Mail::failures())) {
+            throw new Http502EmailNotSentException();
+        }
 
         return response()->json($user);
     }
