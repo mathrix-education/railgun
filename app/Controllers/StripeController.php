@@ -171,10 +171,10 @@ class StripeController extends CashierController
         $nextJuly = Carbon::create(null, 7, 31);
         switch ($stripePlan) {
             case "v3_biannually":
-                $nextJuly->addYears($nextJuly->isNextYear() ? 1 : 2);
+                $nextJuly->addYears(!$nextJuly->isPast() ? 1 : 2);
                 break;
             case "v3_annually":
-                if (!$nextJuly->isNextYear()) {
+                if ($nextJuly->isPast()) {
                     $nextJuly->addYear();
                 }
                 break;

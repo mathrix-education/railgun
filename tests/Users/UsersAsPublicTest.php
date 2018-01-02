@@ -2,8 +2,10 @@
 
 namespace Tests\Users;
 
+use App\Mails\PasswordForgottenMail;
 use App\Models\Class_;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 use Tests\ScopeTestCase;
 
 /**
@@ -43,8 +45,19 @@ class UsersAsPublicTest extends ScopeTestCase
         ]);
     }
 
-    public function testForgotten()
+    /**
+     * POST /users/forgot
+     */
+    public function testForgot()
     {
+        Mail::fake();
 
+        $email = User::inRandomOrder()->first()->email;
+        $this->call("POST", "/users/forgot", ["email" => $email]);
+
+        $this->assertHttp200Success();
+        Mail::assertSent(PasswordForgottenMail::class, function (PasswordForgottenMail $mail) use ($email) {
+            return $mail->hasTo($email);
+        });
     }
 }

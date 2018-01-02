@@ -1,10 +1,8 @@
 <mj-section background-color="#dbd2d5">
-    <mj-column width="25%">
-        <mj-image src="http://cdn.mathrix.fr/img/logo-b.png" align-left></mj-image>
-    </mj-column>
-    <mj-column width="50%">
-        <mj-text align="center">Copyright &copy; Mathrix 2017</mj-text>
-    </mj-column>
-    <mj-column width="25%">
+    <mj-column>
+        <mj-text align="center" color="#9d9d9d">
+            Copyright &copy; Mathrix SA 2017<br>
+            Vous recevez cet e-mail car vous êtes inscrit sur le site <a href="https://mathrix.fr">mathrix.fr</a>
+        </mj-text>
     </mj-column>
 </mj-section>
