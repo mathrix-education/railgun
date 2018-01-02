@@ -30,7 +30,7 @@ class MailchimpUpdate extends Command
     public function handle()
     {
         $list = $this->option("list");
-        $users = User::with(["class_"])->inRandomOrder()->limit(10)->get();
+        $users = User::with(["class_"])->get();
 
         $this->output->progressStart(count($users));
 
@@ -59,8 +59,6 @@ class MailchimpUpdate extends Command
 
             $this->output->progressAdvance();
         }
-
-        dd(Newsletter::getLastError());
 
         $this->output->progressFinish();
     }
