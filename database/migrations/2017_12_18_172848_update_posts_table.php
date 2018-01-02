@@ -66,7 +66,6 @@ class UpdatePostsTable extends Migration
      */
     public function down()
     {
-
         Schema::table("posts", function (Blueprint $table) {
             $table->text("content")->after("slug");
             $table->dropForeign("posts_module_id_foreign");
@@ -82,8 +81,7 @@ class UpdatePostsTable extends Migration
             $modulesToDelete[] = $post->module->id;
         }
 
-        Module::whereIn("id", $modulesToDelete)->delete();
-
+        //Module::whereIn("id", $modulesToDelete)->delete();
 
         Schema::table("posts", function (Blueprint $table) {
             $table->dropColumn("module_id");

@@ -100,7 +100,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     ];
 
     /** @var array The virtual attributes */
-    protected $appends = ["premium", "daily_points"];
+    protected $appends = ["premium", "daily_points", "class"];
 
 
     /**
@@ -136,6 +136,10 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         }
 
         return $sum;
+    }
+
+    public function getClassAttribute() {
+        return $this->class_id !== null ? $this->class_()->first() : null;
     }
 
 
