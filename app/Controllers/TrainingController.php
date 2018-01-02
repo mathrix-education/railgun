@@ -24,7 +24,7 @@ class TrainingController extends BaseController
      * @apiDescription Get an training by id
      * @apiPermission public
      * @apiParam {int} id The training id
-     * @apiUse Training
+     * @apiUse TrainingModel
      * @apiUse Http404ModelNotFound
      */
 
@@ -37,8 +37,8 @@ class TrainingController extends BaseController
      * @apiDescription Add a training
      * @apiPermission moderator
      * @apiUse Bearer
-     * @apiUse TrainingData
-     * @apiUse Training
+     * @apiUse TrainingRequest
+     * @apiUse TrainingModel
      * @apiUse Http401Unauthorized
      * @apiUse Http422ModelValidation
      * @apiUse Http422ModelSave
@@ -54,8 +54,8 @@ class TrainingController extends BaseController
      * @apiPermission moderator
      * @apiUse Bearer
      * @apiParam {int} id The training id
-     * @apiUse TrainingData
-     * @apiUse Training
+     * @apiUse TrainingRequest
+     * @apiUse TrainingModel
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
      * @apiUse Http422ModelSave

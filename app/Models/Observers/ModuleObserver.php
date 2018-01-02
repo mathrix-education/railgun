@@ -2,6 +2,7 @@
 namespace App\Models\Observers;
 
 use App\Models\Activity;
+use App\Models\Lesson;
 use App\Models\Meta;
 use App\Models\Module;
 
@@ -51,6 +52,7 @@ class ModuleObserver extends BaseObserver
     {
         $module->activities()->detach();
         Meta::whereModuleId($module->id)->delete();
+        Lesson::whereModuleId($module->id)->delete();
 
         return true;
     }

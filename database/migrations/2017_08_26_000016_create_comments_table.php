@@ -7,7 +7,7 @@ use Illuminate\Database\Schema\Blueprint;
  *
  * @author Mathrix Back-End Team
  * @since 1.0.0
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class CreateCommentsTable extends Migration
 {
@@ -23,7 +23,7 @@ class CreateCommentsTable extends Migration
             $table->text("content")->nullable();
             $table->integer("score")->default(0);
             $table->integer("parent_id")->unsigned()->nullable();
-            $table->integer("user_id")->unsigned()->nullable();
+            $table->integer("user_id")->unsigned();
 
             // Polymorphic
             $table->integer("commentable_id")->unsigned();

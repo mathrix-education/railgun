@@ -8,22 +8,12 @@ use App\Models\Comment;
  * Test Comments as admin
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix
+ * @copyright Mathrix SA
  * @version 1.0.0
  * @package Tests\Comments
  */
 class CommentsAsAdminTest extends CommentsAsModeratorTest
 {
-    /**
-     * GET /comments
-     *
-     * @throws \Exception
-     */
-    public function testIndex()
-    {
-        $this->genericIndexSuccess();
-    }
-
 
     /**
      * POST /comments

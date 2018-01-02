@@ -11,7 +11,7 @@ use Tests\ScopeTestCase;
  * Test Comments as public (non-logged user)
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix
+ * @copyright Mathrix SA
  * @version 1.0.0
  * @package Tests\Comments
  */

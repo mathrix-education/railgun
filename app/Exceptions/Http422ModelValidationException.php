@@ -9,7 +9,7 @@ namespace App\Exceptions;
  * @author Mathrix Back-End Team
  * @package App\Exceptions
  * @since
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class Http422ModelValidationException extends HttpException
 {

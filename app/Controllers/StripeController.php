@@ -20,16 +20,18 @@ use Laravel\Cashier\Subscription;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class StripeController extends CashierController
 {
     private const ALLOWED_STRIPE_PLANS = [
         "v3_biannually" => [
+            "name" => "Pack bi-annuel",
             "price_per_month" => 9.90,
             "price_per_day" => 0.33
         ],
         "v3_annually" => [
+            "name" => "Pack annuel",
             "price_per_month" => 12.90,
             "price_per_day" => 0.43
         ],
@@ -51,7 +53,7 @@ class StripeController extends CashierController
      * @apiParam (Data) {string=v3_biannually,v3_annually,v3_monthly} stripe_plan The stripe plan
      * @apiParam (Data) {string} [stripe_token] The stripe token; can be null if a coupon is given
      * @apiParam (Data) {string} [stripe_coupon=null] The stripe coupon
-     * @apiUse User
+     * @apiUse UserModel
      * @apiError (Error 400) invalid_request stripe_token and stripe_coupon cannot be null at the same time
      * @apiError (Error 400) invalid_request stripe_plan has to be in the allowed stripe plans
      * @apiError (Error 400) invalid_request `card invalid_number` The card number is not a valid credit card number<br>
@@ -77,6 +79,7 @@ class StripeController extends CashierController
     public function subscribe(Request $request)
     {
         $stripeToken = $request->input("stripe_token");
+        /** @var string $stripePlan */
         $stripePlan = $request->input("stripe_plan");
         $stripeCoupon = $request->input("stripe_coupon");
 
@@ -97,15 +100,21 @@ class StripeController extends CashierController
                 ->create($stripeToken);
         } else {
             // v3_biannually or v3_annually
-            // Charge the user
+
+            // Charge the user by creating him if he does not exists
             if (!$user->hasStripeId()) {
                 $user->createAsStripeCustomer($stripeToken);
             } else {
                 $user->updateCard($stripeToken);
             }
 
+            // Pipe Stripe exception to our HTTP 400 Bad Request exception
             try {
-                $response = $user->charge($this->getPriceFromStripePlan($stripePlan));
+                $description = self::ALLOWED_STRIPE_PLANS[$stripePlan]["name"] . " (fin " .
+                    $this->getEndDateFromStripePlan($stripePlan)->format("d/m/Y") . ")";
+                $response = $user->charge($this->getPriceFromStripePlan($request, $stripePlan), [
+                    "description" => $description
+                ]);
             } catch (\InvalidArgumentException $exception) {
                 throw new Http400InvalidRequestException($exception->getMessage());
             }
@@ -117,9 +126,9 @@ class StripeController extends CashierController
                     ->trialUntil($this->getEndDateFromStripePlan($stripePlan))
                     ->create($stripeToken);
             }
-        }
 
-        Log::log("user_payment_succeed_for_premium", $user);
+            Log::log("user_payment_succeed_for_premium", $user);
+        }
 
         return response()->json(User::with("subscriptions")->find($user->id));
     }
@@ -127,7 +136,7 @@ class StripeController extends CashierController
 
     /**
      * @apiVersion 1.0.0
-     * @api {get} /stripe/estimate/{stripe_plan} Estimate
+     * @api {post} /stripe/estimate/{stripe_plan} Estimate
      * @apiGroup Stripe
      * @apiName StripeEstimate
      * @apiDescription Estimate the price for a plan relatively to the current date
@@ -136,15 +145,16 @@ class StripeController extends CashierController
      * @apiSuccess {int} price The price if the user orders today
      * @apiError (Error 400) invalid_request stripe_plan has to be in the allowed stripe plans
      *
+     * @param Request $request
      * @param string $stripePlan
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
      */
-    public function estimate(string $stripePlan)
+    public function estimate(Request $request, string $stripePlan)
     {
         return response()->json([
-            "price" => $this->getPriceFromStripePlan($stripePlan)
+            "price" => $this->getPriceFromStripePlan($request, $stripePlan)
         ]);
     }
 
@@ -161,10 +171,10 @@ class StripeController extends CashierController
         $nextJuly = Carbon::create(null, 7, 31);
         switch ($stripePlan) {
             case "v3_biannually":
-                $nextJuly->addYears($nextJuly->isNextYear() ? 1 : 2);
+                $nextJuly->addYears(!$nextJuly->isPast() ? 1 : 2);
                 break;
             case "v3_annually":
-                if (!$nextJuly->isNextYear()) {
+                if ($nextJuly->isPast()) {
                     $nextJuly->addYear();
                 }
                 break;
@@ -173,20 +183,23 @@ class StripeController extends CashierController
                 break;
         }
 
-        return $nextJuly;
+        return $nextJuly->setTime(0, 0, 0);
     }
 
 
     /**
      * Get the price of a Stripe plan based on the current date
      *
+     * @param Request $request
      * @param string $stripePlan
      *
      * @return int The price, in cents
      * @throws Http400InvalidRequestException
      */
-    private function getPriceFromStripePlan(string $stripePlan)
+    private function getPriceFromStripePlan(Request $request, string $stripePlan)
     {
+        $coupon = $request->input("coupon");
+
         $now = Carbon::now();
         $nextJuly = $this->getEndDateFromStripePlan($stripePlan);
 
@@ -196,7 +209,15 @@ class StripeController extends CashierController
         $pricePerMonth = self::ALLOWED_STRIPE_PLANS[$stripePlan]["price_per_month"];
         $pricePerDay = self::ALLOWED_STRIPE_PLANS[$stripePlan]["price_per_day"];
 
-        return round($pricePerMonth * $months + $pricePerDay * $days, 1) * 100;
+        $costInCents = round($pricePerMonth * $months + $pricePerDay * $days, 1) * 100;
+
+        switch ($coupon) {
+            case "MODEMACHINE2017":
+                $costInCents *= 0.8;
+                break;
+        }
+
+        return $costInCents;
     }
 
     /*

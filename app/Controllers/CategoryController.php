@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class CategoryController extends BaseController
 {
@@ -38,7 +38,7 @@ class CategoryController extends BaseController
      * @apiDescription Get a category by id
      * @apiPermission public
      * @apiParam {int} id The category id
-     * @apiUse Category
+     * @apiUse CategoryModel
      * @apiUse Http404ModelNotFound
      */
 
@@ -51,8 +51,8 @@ class CategoryController extends BaseController
      * @apiDescription Add a category
      * @apiPermission admin
      * @apiUse Bearer
-     * @apiUse CategoryData
-     * @apiUse Category
+     * @apiUse CategoryRequest
+     * @apiUse CategoryModel
      * @apiUse Http401Unauthorized
      * @apiUse Http422ModelValidation
      * @apiUse Http422ModelSave
@@ -68,8 +68,8 @@ class CategoryController extends BaseController
      * @apiPermission admin
      * @apiUse Bearer
      * @apiParam {int} id The category id
-     * @apiUse CategoryData
-     * @apiUse Category
+     * @apiUse CategoryRequest
+     * @apiUse CategoryModel
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
      * @apiUse Http422ModelSave

@@ -10,7 +10,7 @@ use Roumen\Sitemap\Sitemap;
  * @author Mathrix Back-End Team
  * @package App\Console\Commands
  * @since 1.0.1
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class SitemapAll extends Command
 {

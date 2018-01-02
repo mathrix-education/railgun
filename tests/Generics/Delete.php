@@ -5,7 +5,7 @@ namespace Tests\Generics;
  * Trait Delete
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix
+ * @copyright Mathrix SA
  * @version 1.0.0
  * @package Tests\GenericTests
  */

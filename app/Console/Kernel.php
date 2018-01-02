@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Console\Commands\MailchimpUpdate;
+use App\Console\Commands\MakeApidoc;
 use App\Console\Commands\SitemapAll;
 use App\Console\Commands\SitemapContent;
 use App\Console\Commands\SitemapVideos;
@@ -14,7 +16,7 @@ use Laravel\Lumen\Console\Kernel as ConsoleKernel;
  * @author Mathrix Back-End Team
  * @package App\Console
  * @since 1.0.1
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class Kernel extends ConsoleKernel
 {
@@ -24,6 +26,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+        MailchimpUpdate::class,
+        MakeApidoc::class,
         SitemapAll::class,
         SitemapContent::class,
         SitemapVideos::class

@@ -1,12 +1,19 @@
-.env
-_ide_helper.php
-.phpstorm.meta.php
+/.env
+/_ide_helper.php
+/.phpstorm.meta.php
 
-/.idea
-/docs/apidoc
-/node_modules
+# User-specific stuff:
+/.idea/**/workspace.xml
+/.idea/dictionaries
+/.idea/deployment.xml
+/.idea/php.xml
+
+# apidoc location, as we generate it directly on production
+/docs/apidoc/
+
+/node_modules/
 /resources/views/emails/**/*.html
 /resources/views/emails/**/*.blade.php
-/storage/backups
-/storage/sitemaps
-/vendor
+/storage/backups/
+/storage/sitemaps/
+/vendor/

@@ -4,12 +4,13 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use ReflectionClass;
-use Stripe\Error\Base;
+use Stripe\Error\Base as StripeException;
 use Symfony\Component\HttpKernel\Exception\HttpException as SymphonyHttpException;
 
 /**
@@ -19,10 +20,13 @@ use Symfony\Component\HttpKernel\Exception\HttpException as SymphonyHttpExceptio
  * @author Mathrix Back-End Team
  * @package App\Exceptions
  * @since 1.0.0
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class Handler extends ExceptionHandler
 {
+    const REGEX_MYSQL_GENERIC = "/SQLSTATE\[([A-Z0-9]+)\][\s\S]+\(SQL: ([\s\S]+)\)/i";
+    const REGEX_MYSQL_UNKNOWN_COLUMN = "/SQLSTATE\[([A-Z0-9]+)\][\s\S]+Column not found: 1054 Unknown column '([a-z0-9\_]+)'[\s\S]+\(SQL: ([\s\S]+)\)/i";
+
     /**
      * A list of the exception types that should not be reported.
      *
@@ -35,8 +39,10 @@ class Handler extends ExceptionHandler
         ValidationException::class,
         OAuthServerException::class,
         Http401UnauthorizedException::class,
+        Http404ModelNotFoundException::class,
+        Http429TooManyRequestsException::class,
         Http501NotImplementedException::class,
-        Base::class
+        StripeException::class
     ];
 
 
@@ -84,16 +90,21 @@ class Handler extends ExceptionHandler
             "message" => $e->getMessage()
         ];
 
-        // Handle stripe exceptions
-        if ($e instanceof Base) {
-            $jsonBody = $e->getJsonBody();
-
-            if (!empty($jsonBody["error"])) {
-                $jsonBody = $jsonBody["error"];
-                if(!empty($jsonBody["message"])) {
-                    unset($jsonBody["message"]);
-                    $json["data"] = $jsonBody;
-                }
+        // Handle MySQL query exceptions
+        if ($e instanceof QueryException) {
+            if (preg_match(self::REGEX_MYSQL_UNKNOWN_COLUMN, $e->getMessage(), $matches)) {
+                $json = array_merge($json, [
+                    "type" => "unknown_column",
+                    "sqlstate" => $matches[1],
+                    "column" => $matches[2],
+                    "sql" => $matches[3]
+                ]);
+            } else if (preg_match(self::REGEX_MYSQL_GENERIC, $e->getMessage(), $matches)) {
+                $json = array_merge($json, [
+                    "type" => "generic",
+                    "sqlstate" => $matches[1],
+                    "sql" => $matches[2]
+                ]);
             }
 
             $overriddenStatusCode = 400;
@@ -104,8 +115,23 @@ class Handler extends ExceptionHandler
             $json["errors"] = $e->errors();
         }
 
+        // Handle stripe exceptions
+        if ($e instanceof StripeException) {
+            $jsonBody = $e->getJsonBody();
+
+            if (!empty($jsonBody["error"])) {
+                $jsonBody = $jsonBody["error"];
+                if (!empty($jsonBody["message"])) {
+                    unset($jsonBody["message"]);
+                    $json["data"] = $jsonBody;
+                }
+            }
+
+            $overriddenStatusCode = 400;
+        }
+
         // Include trace in debug mode
-        if (app()->environment("dev", "pipelines",  "stage")) {
+        if (app()->environment("dev", "pipelines", "stage")) {
             $json["trace"] = explode("\n", $e->getTraceAsString());
         }
 

@@ -126,6 +126,7 @@ if ($app->environment("stage", "master")) {
     $app->register(Sentry\SentryLaravel\SentryLumenServiceProvider::class);
 }
 
+
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes
@@ -140,9 +141,9 @@ Dusterio\LumenPassport\LumenPassport::routes($app->router);
 
 $app->router->group(["namespace" => "App\\Controllers"], function ($router) {
     /** @var Laravel\Lumen\Routing\Router $router */
-    $router->get("/", function () use ($router) {
+    $router->get("/", function () {
         return response()->json([
-            "message" => "Welcome to Mathrix API version 1.0.0 by Mathieu Bour",
+            "message" => "Welcome to Mathrix API version " . env("APP_VERSION") . " by Mathieu Bour",
             "commit" => trim(exec("git log --pretty=\"%h\" -n1 HEAD")),
             "build" => basename(dirname(__DIR__, 1))
         ]);

@@ -21,7 +21,7 @@ use Laravel\Lumen\Routing\Controller;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 abstract class BaseController extends Controller
 {
@@ -59,7 +59,7 @@ abstract class BaseController extends Controller
         }
 
         // Re-add models namespace
-        $guessedModelClass = "App\\Models\\" . $guessedModelClass;
+        $guessedModelClass = "App\\Models\\$guessedModelClass";
 
         if (class_exists($guessedModelClass) && $this->modelClass === null) {
             $this->modelClass = $guessedModelClass;
@@ -170,7 +170,7 @@ abstract class BaseController extends Controller
         $conditions = [];
         $having = [];
 
-        // Check if order diir is valid
+        // Check if order dir is valid
         if (!empty($inputs["order"]) && !in_array($order["dir"], ["asc", "desc"])) {
             throw new Http400InvalidRequestException("order allowed values: ['asc', 'desc']");
         }

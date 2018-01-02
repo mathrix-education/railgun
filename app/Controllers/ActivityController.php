@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class ActivityController extends BaseController
 {
@@ -41,7 +41,7 @@ class ActivityController extends BaseController
      * @apiDescription Get an activity by id
      * @apiPermission public
      * @apiParam {int} id The activity id
-     * @apiUse Activity
+     * @apiUse ActivityModel
      * @apiUse Http404ModelNotFound
      */
 
@@ -54,8 +54,8 @@ class ActivityController extends BaseController
      * @apiDescription Add a activity
      * @apiPermission moderator
      * @apiUse Bearer
-     * @apiUse ActivityData
-     * @apiUse Activity
+     * @apiUse ActivityRequest
+     * @apiUse ActivityModel
      * @apiUse Http401Unauthorized
      * @apiUse Http422ModelValidation
      * @apiUse Http422ModelSave
@@ -71,8 +71,8 @@ class ActivityController extends BaseController
      * @apiPermission moderator
      * @apiUse Bearer
      * @apiParam {int} id The activity id
-     * @apiUse ActivityData
-     * @apiUse Activity
+     * @apiUse ActivityRequest
+     * @apiUse ActivityModel
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
      * @apiUse Http422ModelSave
@@ -178,7 +178,7 @@ class ActivityController extends BaseController
      * @apiDescription Mark an activity as favorite or set its status completed or to_revise
      * @apiUse Bearer
      * @apiPermission registered
-     * @apiUse MetaData
+     * @apiUse MetaRequest
      * @apiUse Http400InvalidRequest
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound

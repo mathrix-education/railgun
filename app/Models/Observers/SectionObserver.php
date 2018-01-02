@@ -25,21 +25,6 @@ class SectionObserver extends BaseObserver
             $section->slug = str_slug($section->name);
         }
 
-        // Sync modules
-        if (isset($section->link["modules"])) {
-            $toSync = [];
-            foreach($section->link["modules"] as $order => $moduleId) {
-                if (Module::find($moduleId)->exists()) {
-                    $toSync[$moduleId] = ["order" => $order];
-                }
-            }
-            $section->modules()->sync($toSync);
-        }
-
-        if (isset($section->link)) {
-            unset($section->link);
-        }
-
         return true;
     }
 

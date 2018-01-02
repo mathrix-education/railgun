@@ -18,7 +18,7 @@ use Illuminate\Console\Command;
  * @author Mathrix Back-End Team
  * @package App\Console\Commands
  * @since 1.0.1
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class SitemapContent extends Command
 {

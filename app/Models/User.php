@@ -68,6 +68,7 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereCardLastFour($value)
  * @method static Builder|User whereStripeId($value)
  * @method static Builder|User whereTrialEndsAt($value)
+ * @mixin \Eloquent
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
@@ -99,7 +100,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     ];
 
     /** @var array The virtual attributes */
-    protected $appends = ["premium", "daily_points"];
+    protected $appends = ["premium", "daily_points", "class"];
 
 
     /**
@@ -135,6 +136,10 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         }
 
         return $sum;
+    }
+
+    public function getClassAttribute() {
+        return $this->class_id !== null ? $this->class_()->first() : null;
     }
 
 
@@ -196,7 +201,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function class_(): BelongsTo
     {
-        return $this->belongsTo(Class_::class);
+        return $this->belongsTo(Class_::class, "class_id");
     }
 
 

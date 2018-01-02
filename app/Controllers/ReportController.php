@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class ReportController extends BaseController
 {
@@ -26,7 +26,7 @@ class ReportController extends BaseController
      * @apiPermission public
      * @apiUse Bearer
      * @apiUse Pagination
-     * @apiUse Report
+     * @apiUse ReportModel
      * @apiUse Http401Unauthorized
      * @apiUse Http422ModelValidation
      * @apiUse Http422ModelSave
@@ -62,7 +62,7 @@ class ReportController extends BaseController
      * @apiDescription Add a report
      * @apiPermission public
      * @apiUse Bearer
-     * @apiUse ReportData
+     * @apiUse ReportRequest
      * @apiUse Http401Unauthorized
      * @apiUse Http422ModelValidation
      * @apiUse Http422ModelSave

@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Comments;
 
 use App\Models\Comment;
@@ -8,12 +9,23 @@ use App\Models\Comment;
  * Test Comments as moderator
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix
+ * @copyright Mathrix SA
  * @version 1.0.0
  * @package Tests\Comments
  */
 class CommentsAsModeratorTest extends CommentsAsRegisteredTest
 {
+    /**
+     * GET /comments
+     *
+     * @throws \Exception
+     */
+    public function testIndex()
+    {
+        $this->genericIndexSuccess();
+    }
+
+
     /**
      * PATCH /comments/{id} without changing the user_id
      */
@@ -39,5 +51,18 @@ class CommentsAsModeratorTest extends CommentsAsRegisteredTest
     public function testDelete()
     {
         $this->genericSoftDeleteSuccess();
+    }
+
+
+    /**
+     * POST /comments/search
+     */
+    public function testSearch()
+    {
+        $this->call("POST", "/comments/search", [
+            "content" => "%lorem%"
+        ]);
+
+        $this->assertHttp200Success();
     }
 }

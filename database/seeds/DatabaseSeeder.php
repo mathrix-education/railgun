@@ -8,17 +8,17 @@ use App\Exceptions\Http422ModelValidationException;
  *
  * @author Mathrix Back-End Team
  * @since 1.0.0
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class DatabaseSeeder extends BaseTableSeeder
 {
     public function run()
     {
         $this->call(ContentTableSeeder::class);
-        $this->call(BlogTableSeeder::class);
         $this->call(TrainingTableSeeder::class);
         $this->call(LevelTableSeeder::class);
         $this->call(UserTableSeeder::class);
+        $this->call(BlogTableSeeder::class);
         $this->call(CommentTableSeeder::class);
     }
 }
