@@ -1,0 +1,14 @@
+<mjml>
+    <mj-include path="../common/head"></mj-include>
+
+    <mj-body>
+        <mj-container>
+            <mj-include path="../common/header"></mj-include>
+
+            <mj-section background-color="#ffffff">
+            </mj-section>
+
+            <mj-include path="../common/footer"></mj-include>
+        </mj-container>
+    </mj-body>
+</mjml>

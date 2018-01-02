@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\Comment;
@@ -11,10 +12,20 @@ use Carbon\Carbon;
  * @author Mathrix Back-End Team
  * @package App\Policies
  * @since 1.0.0
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class CommentPolicy extends BasePolicy
 {
+    /**
+     * @param User $currentUser
+     *
+     * @return bool
+     */
+    public function index(User $currentUser)
+    {
+        return $this->atLeastModerator($currentUser);
+    }
+
     /**
      * @return bool
      */
@@ -53,4 +64,16 @@ class CommentPolicy extends BasePolicy
     {
         return $this->atLeastModerator($currentUser);
     }
+
+
+    /**
+     * @param User $currentUser
+     *
+     * @return bool
+     */
+    public function search(User $currentUser)
+    {
+        return $this->atLeastModerator($currentUser);
+    }
+
 }

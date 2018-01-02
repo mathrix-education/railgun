@@ -1,6 +1,6 @@
 <?php
 
-if (!function_exists('config_path')) {
+if (!function_exists("config_path")) {
     /**
      * Get the configuration path.
      *
@@ -8,13 +8,13 @@ if (!function_exists('config_path')) {
      *
      * @return string
      */
-    function config_path($path = '')
+    function config_path($path = "")
     {
-        return app()->basePath() . '/config' . ($path ? '/' . $path : $path);
+        return app()->basePath() . "/config" . ($path ? "/" . $path : $path);
     }
 }
 
-if (!function_exists('public_path')) {
+if (!function_exists("public_path")) {
     /**
      * Get the public path.
      *
@@ -22,8 +22,8 @@ if (!function_exists('public_path')) {
      *
      * @return string
      */
-    function public_path($path = '')
+    function public_path($path = "")
     {
-        return app()->basePath() . '/public' . ($path ? '/' . $path : $path);
+        return app()->basePath() . "/public" . ($path ? "/" . $path : $path);
     }
 }

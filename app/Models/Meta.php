@@ -38,6 +38,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Meta whereClassId($value)
  * @method static Builder|Meta whereActivityId($value)
  * @method static Builder|Meta whereModuleId($value)
+ * @mixin \Eloquent
  */
 class Meta extends BaseModel
 {

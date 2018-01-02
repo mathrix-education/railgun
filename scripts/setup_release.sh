@@ -23,8 +23,9 @@ gulp install --silent
 
 echo "Linking storage directory"
 [ -d ${shared_dir} ] || mkdir ${shared_dir} && chmod 0775 ${shared_dir}
-[ -d ${shared_dir}/storage ] || cp -r ${new_release_dir}/storage ${shared_dir}/storage
+[ -d ${shared_dir}/storage ] || cp -R ${new_release_dir}/storage ${shared_dir}/storage
 [ -d ${shared_dir}/storage/cdn ] || mkdir ${shared_dir}/storage/cdn
+[ -d ${new_release_dir}/storage/cdn ] && cp -R ${new_release_dir}/storage/cdn/* ${shared_dir}/storage/cdn
 rm -rf ${new_release_dir}/storage
 ln -nfs ${shared_dir}/storage ${new_release_dir}/storage
 

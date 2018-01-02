@@ -19,7 +19,7 @@ use Illuminate\Http\Request;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class CommentController extends BaseController
 {
@@ -44,7 +44,7 @@ class CommentController extends BaseController
      * @apiDescription Get a class by id
      * @apiPermission public
      * @apiParam {int} id The class id
-     * @apiUse Comment
+     * @apiUse CommentModel
      * @apiUse Http404ModelNotFound
      */
 
@@ -57,8 +57,8 @@ class CommentController extends BaseController
      * @apiDescription Add class
      * @apiPermission registered
      * @apiUse Bearer
-     * @apiUse CommentData
-     * @apiUse Comment
+     * @apiUse CommentRequest
+     * @apiUse CommentModel
      * @apiUse Http401Unauthorized
      * @apiUse Http422ModelValidation
      * @apiUse Http422ModelSave
@@ -95,8 +95,8 @@ class CommentController extends BaseController
      * @apiPermission registered for own comment, moderator otherwise
      * @apiUse Bearer
      * @apiParam {int} id The comment id
-     * @apiUse CommentData
-     * @apiUse Comment
+     * @apiUse CommentRequest
+     * @apiUse CommentModel
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
      * @apiUse Http422ModelSave
@@ -162,4 +162,20 @@ class CommentController extends BaseController
                 ->get()
         );
     }
+
+
+    /**
+     * @apiVersion 1.0.1
+     * @api {post} /comments/search Search
+     * @apiGroup Comments
+     * @apiName CommentSearch
+     * @apiDescription Search for comments
+     * @apiPermission moderator
+     * @apiUse Bearer
+     * @apiParam (Data) {string} [field1] The comment field1 search value (use % as wildcard)
+     * @apiParam (Data) {string} [field2] The comment field2 search value (use % as wildcard)
+     * @apiParam (Data) {array} order The order data
+     * @apiParam (Data) {string} order.column The order column
+     * @apiParam (Data) {string=asc,desc} order.dir The order direction
+     */
 }

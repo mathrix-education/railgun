@@ -3,5 +3,11 @@
   "version": "1.0.1",
   "description": "Mathrix API",
   "title": "Mathrix API",
-  "url" : ""
+  "url": "",
+  "header": {
+    "filename": "apidoc/templates/header.md"
+  },
+  "footer": {
+    "filename": "apidoc/templates/footer.md"
+  }
 }

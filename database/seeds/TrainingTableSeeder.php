@@ -1,10 +1,8 @@
 <?php
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
-use App\Models\Category;
+use App\Models\Lesson;
 use App\Models\Module;
-use App\Models\Post;
-use App\Models\Quote;
 use App\Models\Section;
 use App\Models\Training;
 
@@ -13,7 +11,7 @@ use App\Models\Training;
  *
  * @author Mathrix Back-End Team
  * @since 1.0.0
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class TrainingTableSeeder extends BaseTableSeeder
 {
@@ -29,9 +27,11 @@ class TrainingTableSeeder extends BaseTableSeeder
         ]);
         $this->seedFromFactory([
             "modelClass" => Section::class,
-            "count" => random_int(20, 40)
+            "count" => random_int(60, 120)
         ]);
-
-        $this->link(Section::class, Module::class);
+        $this->seedFromFactory([
+            "modelClass" => Lesson::class,
+            "count" => random_int(180, 360)
+        ]);
     }
 }

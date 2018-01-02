@@ -151,49 +151,6 @@ abstract class ScopeTestCase extends BaseTestCase
 
 
     /**
-     * Call a test from a different test class of the same model
-     *
-     * @see QuotesAsRegisteredTest::testIndex() for a concrete example
-     *
-     * @param string $scope the scope
-     * @param null|string $testName the test name, default the same as the called
-     *
-     * @return void
-     * @throws \Exception
-     */
-    public function sameAs($scope, $testName = null)
-    {
-        $classNameToInstantiate = str_replace(
-            "As" . ucfirst($this->scope),
-            "As" . ucfirst($scope),
-            get_class($this)
-        );
-
-        // Check if class exists
-        if (!class_exists($classNameToInstantiate)) {
-            throw new \Exception("$classNameToInstantiate does not exists");
-        }
-
-        /** @var ScopeTestCase $testClassObject */
-        $testClassObject = new $classNameToInstantiate();
-        $testName = $testName ?? $this->getName();
-
-        // Pass the current user to the instantiate class test
-        $testClassObject->user = $this->user;
-
-        $testClassObject->setup();
-
-        // Check if method exists the class
-        if (!method_exists($testClassObject, $testName)) {
-            throw new \Exception("Test $classNameToInstantiate::$testName() does not exists");
-        }
-
-        // Finally run the distant test
-        $testClassObject->{$testName}();
-    }
-
-
-    /**
      * Get a stranger
      *
      * @param string|null $type null for same as user

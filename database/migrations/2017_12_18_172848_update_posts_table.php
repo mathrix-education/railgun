@@ -1,0 +1,90 @@
+<?php
+
+use App\Exceptions\Http422ModelSaveException;
+use App\Models\Module;
+use App\Models\Post;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+/**
+ * Class UpdatePostsTable
+ *
+ * @author Mathrix Back-End Team
+ * @since 1.0.1
+ * @copyright Mathrix SA
+ */
+class UpdatePostsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     * @throws Http422ModelSaveException
+     * @throws \App\Exceptions\Http422ModelValidationException
+     */
+    public function up()
+    {
+        Schema::table("posts", function (Blueprint $table) {
+            $table->integer("module_id")->unsigned()->after("slug")->nullable();
+
+            // Foreign
+            $table->foreign("module_id")->references("id")->on("modules");
+        });
+
+        $posts = Post::all();
+
+        foreach ($posts as $post) {
+            $module = new Module([
+                "premium" => false,
+                "type" => "course",
+                "content" => $post->content,
+                "questions" => null,
+                "choices" => null,
+                "solutions" => null,
+                "corrections" => null,
+                "options" => null,
+                "visible" => true
+            ]);
+            $module->save();
+
+            $post->update(["module_id" => $module->id]);
+        }
+
+        Schema::table("posts", function (Blueprint $table) {
+            $table->dropColumn("content");
+        });
+    }
+
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     * @throws Exception
+     * @throws Http422ModelSaveException
+     */
+    public function down()
+    {
+        Schema::table("posts", function (Blueprint $table) {
+            $table->text("content")->after("slug");
+            $table->dropForeign("posts_module_id_foreign");
+        });
+
+        $posts = Post::all();
+        $modulesToDelete = [];
+
+        foreach ($posts as $post) {
+            $post->unguardAttributes(["content"]);
+            $post->update(["content" => $post->module->content]);
+
+            $modulesToDelete[] = $post->module->id;
+        }
+
+        //Module::whereIn("id", $modulesToDelete)->delete();
+
+        Schema::table("posts", function (Blueprint $table) {
+            $table->dropColumn("module_id");
+        });
+    }
+}

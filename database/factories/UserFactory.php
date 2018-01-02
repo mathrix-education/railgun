@@ -16,7 +16,7 @@ $factory->define(User::class, function (Generator $faker) {
     $points = $faker->numberBetween(0, 100) * 10;
 
     return [
-        "username" => $faker->boolean(30) ? $faker->userName : null,
+        "username" => !$names ? $faker->userName : null,
         "email" => $faker->email,
         "firstName" => $names ? $faker->firstName : null,
         "lastName" => $names ? $faker->lastName : null,

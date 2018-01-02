@@ -11,21 +11,21 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @author Mathrix Back-End Team
  * @package App\Models
  * @since 1.0.1
- * @copyright Mathrix
- *
+ * @copyright Mathrix SA
  * @property int $id
  * @property string $name
  * @property string $slug
  * @property string $description
  * @property string|null $created_at
  * @property string|null $updated_at
- *
  * @method static Builder|Training whereId($value)
  * @method static Builder|Training whereName($value)
  * @method static Builder|Training whereSlug($value)
  * @method static Builder|Training whereDescription($value)
  * @method static Builder|Training whereCreatedAt($value)
  * @method static Builder|Training whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Section[] $sections
+ * @mixin \Eloquent
  */
 class Training extends BaseModel
 {

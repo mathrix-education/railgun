@@ -8,6 +8,7 @@ use App\Models\Class_;
 use App\Models\Comment;
 use App\Models\Country;
 use App\Models\Discipline;
+use App\Models\Lesson;
 use App\Models\Module;
 use App\Models\Notion;
 use App\Models\Observers\ActivityObserver;
@@ -17,6 +18,7 @@ use App\Models\Observers\ClassObserver;
 use App\Models\Observers\CommentObserver;
 use App\Models\Observers\CountryObserver;
 use App\Models\Observers\DisciplineObserver;
+use App\Models\Observers\LessonObserver;
 use App\Models\Observers\ModuleObserver;
 use App\Models\Observers\NotionObserver;
 use App\Models\Observers\PostObserver;
@@ -67,5 +69,6 @@ class AppServiceProvider extends ServiceProvider
         Vote::observe(VoteObserver::class);
         Training::observe(TrainingObserver::class);
         Section::observe(SectionObserver::class);
+        Lesson::observe(LessonObserver::class);
     }
 }

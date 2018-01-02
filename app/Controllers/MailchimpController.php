@@ -13,7 +13,7 @@ use Spatie\Newsletter\NewsletterFacade as Newsletter;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class MailchimpController extends BaseController
 {

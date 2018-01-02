@@ -12,8 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @author Mathrix Back-End Team
  * @package App\Models
  * @since 1.0.1
- * @copyright Mathrix
- *
+ * @copyright Mathrix SA
  * @property int $id
  * @property string $name
  * @property string $slug
@@ -21,7 +20,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property int $training_id
  * @property string|null $created_at
  * @property string|null $updated_at
- *
  * @method static Builder|Section whereId($value)
  * @method static Builder|Section whereName($value)
  * @method static Builder|Section whereOrder($value)
@@ -29,6 +27,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Section whereTrainingId($value)
  * @method static Builder|Section whereCreatedAt($value)
  * @method static Builder|Section whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Module[] $modules
+ * @property-read \App\Models\Training $training
+ * @mixin \Eloquent
  */
 class Section extends BaseModel
 {

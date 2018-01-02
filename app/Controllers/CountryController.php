@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class CountryController extends BaseController
 {
@@ -38,7 +38,7 @@ class CountryController extends BaseController
      * @apiDescription Get a country by id
      * @apiPermission public
      * @apiParam {int} id The country id
-     * @apiUse Country
+     * @apiUse CountryModel
      * @apiUse Http404ModelNotFound
      */
 
@@ -51,8 +51,8 @@ class CountryController extends BaseController
      * @apiDescription Add a country
      * @apiPermission admin
      * @apiUse Bearer
-     * @apiUse CountryData
-     * @apiUse Country
+     * @apiUse CountryRequest
+     * @apiUse CountryModel
      * @apiUse Http401Unauthorized
      * @apiUse Http422ModelValidation
      * @apiUse Http422ModelSave
@@ -68,8 +68,8 @@ class CountryController extends BaseController
      * @apiPermission admin
      * @apiUse Bearer
      * @apiParam {int} id The country id
-     * @apiUse CountryData
-     * @apiUse Country
+     * @apiUse CountryRequest
+     * @apiUse CountryModel
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
      * @apiUse Http422ModelSave

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use App\Models\Traits\Commentable;
@@ -6,30 +7,38 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 
 /**
- * App\Models\Post
+ * Class Post
+ *
+ * @author Mathrix Back-End Team
+ * @package App\Models
+ * @since 1.0.1
+ * @copyright Mathrix SA
  *
  * @property int $id
  * @property string $title
  * @property string $slug
- * @property string $content
+ * @property int $module_id
+ * @property int $user_id
  * @property int $category_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property-read Module $module
  * @property-read Category $category
+ * @property-read User $user
  * @property-read Collection|Comment[] $comments
  * @method static Builder|Post whereId($value)
  * @method static Builder|Post whereSlug($value)
  * @method static Builder|Post whereTitle($value)
- * @method static Builder|Post whereContent($value)
+ * @method static Builder|Post whereModuleId($value)
  * @method static Builder|Post whereCategoryId($value)
  * @method static Builder|Post whereUserId($value)
  * @method static Builder|Post whereCreatedAt($value)
  * @method static Builder|Post whereUpdatedAt($value)
  * @mixin \Eloquent
- * @property int $user_id
  */
 class Post extends BaseModel
 {
@@ -39,7 +48,7 @@ class Post extends BaseModel
     public $timestamps = true;
 
     /** @var array The fillable attributes */
-    protected $fillable = ["id", "title", "slug", "content", "category_id", "created_at", "updated_at"];
+    protected $fillable = ["id", "title", "slug", "module_id", "category_id", "created_at", "updated_at"];
 
     /** @var array Validation rules */
     protected $rules = [
@@ -57,6 +66,14 @@ class Post extends BaseModel
     */
 
     /**
+     * BelongsTo Module
+     * @return BelongsTo
+     */
+    public function module() {
+        return $this->belongsTo(Module::class);
+    }
+
+    /**
      * BelongsTo Category
      *
      * @return BelongsTo
@@ -64,5 +81,16 @@ class Post extends BaseModel
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+
+    /**
+     * BelongsTo User
+     *
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

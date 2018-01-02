@@ -9,7 +9,7 @@ use App\Models\User;
  * @author Mathrix Back-End Team
  * @package App\Policies
  * @since 1.0.1
- * @copyright Mathrix
+ * @copyright Mathrix SA
  */
 class SectionPolicy extends BasePolicy
 {

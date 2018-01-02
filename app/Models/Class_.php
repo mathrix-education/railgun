@@ -34,6 +34,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Class_ whereVisible($value)
  * @method static Builder|Class_ whereParentId($value)
  * @method static Builder|Class_ whereCountryId($value)
+ * @mixin \Eloquent
  */
 class Class_ extends BaseModel
 {

@@ -55,7 +55,11 @@ abstract class BaseModel extends Model
             $attributes = [$attributes];
         }
 
-        $this->guarded = array_diff($this->guarded, $attributes);
+        if(!empty($this->fillable)) {
+            $this->fillable = array_merge($this->fillable, $attributes);
+        } else {
+            $this->guarded = array_diff($this->guarded, $attributes);
+        }
 
         return $this;
     }
@@ -99,7 +103,7 @@ abstract class BaseModel extends Model
         else {
             $saved = $this->performInsert($query);
 
-            if (! $this->getConnectionName() &&
+            if (!$this->getConnectionName() &&
                 $connection = $query->getConnection()) {
                 $this->setConnection($connection->getName());
             }
@@ -260,12 +264,75 @@ abstract class BaseModel extends Model
 
 
     /**
-     * Don"t use appends
+     * Don't use appends
      */
     public static function withoutAppends()
     {
         self::$withAppends = false;
 
         return (new static);
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function getTableStructure()
+    {
+        $table = $this->getConnection()->getTablePrefix() . $this->getTable();
+        $schema = $this->getConnection()->getDoctrineSchemaManager();
+        $databasePlatform = $schema->getDatabasePlatform();
+        $databasePlatform->registerDoctrineTypeMapping('enum', 'string');
+
+        $database = null;
+        if (strpos($table, '.')) {
+            list($database, $table) = explode('.', $table);
+        }
+
+        $columns = $schema->listTableColumns($table, $database);
+
+        $structure = [];
+
+        if ($columns) {
+            foreach ($columns as $column) {
+                $name = $column->getName();
+
+                $type = $column->getType()->getName();
+                switch ($type) {
+                    case 'string':
+                    case 'text':
+                    case 'date':
+                    case 'time':
+                    case 'guid':
+                    case 'datetimetz':
+                    case 'datetime':
+                        $type = 'string';
+                        break;
+                    case 'integer':
+                    case 'bigint':
+                    case 'smallint':
+                        $type = 'int';
+                        break;
+                    case 'boolean':
+                        $type = 'bool';
+                        break;
+                    case 'decimal':
+                    case 'float':
+                        $type = 'float';
+                        break;
+                    default:
+                        $type = 'mixed';
+                        break;
+                }
+
+                $structure[] = [
+                    "name" => $name,
+                    "type" => $type,
+                    "nullable" => !$column->getNotnull(),
+                    "default" => $column->getDefault() === null && $column->getNotnull() ? "required" : $column->getDefault()
+                ];
+            }
+        }
+
+        return $structure;
     }
 }
