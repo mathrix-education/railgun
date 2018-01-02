@@ -31,8 +31,27 @@ class UserObserver extends BaseObserver
     public function saving($user)
     {
         if (app()->environment("master", "stage") && $user->isDirty("email")) {
+            $options = [];
+
+            if ($user->username !== null) {
+                $options["USERNAME"] = $user->username;
+            } else if ($user->firstname !== null) {
+                $options["USERNAME"] = $user->firstname;
+            }
+
+            if ($user->class_ !== null) {
+                $options["CLASS"] = $user->class_->name;
+            }
+
+            if ($user->subscribed("premium")) {
+                $options["TYPE"] = "premium";
+            } else {
+                $options["TYPE"] = $user->type;
+            }
+
             // Subscribe the user to "subscribers" Mailchimp list
-            Newsletter::subscribeOrUpdate($user->email);
+            Newsletter::subscribeOrUpdate($user->email, $options, env("MAILCHIMP_LIST_SUBSCRIBERS"));
+
         }
 
         if ($user->isDirty("password")) {
