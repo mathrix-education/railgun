@@ -1,4 +1,5 @@
 #!/bin/bash
+# Bash file for release setup on distant server
 branch=$1
 release=$2
 
