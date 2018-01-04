@@ -1,6 +1,8 @@
 <?php
 namespace App\Controllers;
 
+use App\Events\PasswordForgottenEvent;
+use App\Events\PasswordResetEvent;
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
@@ -136,11 +138,7 @@ class AuthController extends BaseController
         $user->update(["token" => Factory::create()->uuid]);
 
         // Send PasswordForgottenMail
-        // TODO ceci est à faire
-        Mail::to($user->email)->send(new PasswordForgottenMail($user));
-        if (!empty(Mail::failures())) {
-            throw new Http502EmailNotSentException();
-        }
+        event(new PasswordForgottenEvent($user));
 
         return response()->json(["message" => "Reset email sent successfully"]);
     }
@@ -164,7 +162,6 @@ class AuthController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
-     * @throws Http502EmailNotSentException
      */
     public function reset(Request $request, string $token)
     {
@@ -184,10 +181,7 @@ class AuthController extends BaseController
         ]);
 
         // Send PasswordResetMail
-        Mail::to($user->email)->send(new PasswordResetMail($user));
-        if (!empty(Mail::failures())) {
-            throw new Http502EmailNotSentException();
-        }
+        event(new PasswordResetEvent($user));
 
         return response()->json($user);
     }

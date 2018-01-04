@@ -19,4 +19,7 @@
             <directory suffix=".php">./app</directory>
         </whitelist>
     </filter>
+    <logging>
+        <log type="coverage-html" target="storage/code-coverage-report" lowUpperBound="35" highLowerBound="70"/>
+    </logging>
 </phpunit>

@@ -68,7 +68,6 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereCardLastFour($value)
  * @method static Builder|User whereStripeId($value)
  * @method static Builder|User whereTrialEndsAt($value)
- * @mixin \Eloquent
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
