@@ -10,7 +10,7 @@ const livereload = require("gulp-livereload");
 const apidoc = require("gulp-apidoc");
 const clean = require("gulp-clean");
 const replace = require("gulp-replace");
-mjml = require("gulp-mjml");
+const mjml = require("gulp-mjml");
 
 // mjml-related constants
 const mjmlSelectors = {
@@ -20,16 +20,19 @@ const mjmlSelectors = {
     blade: "resources/views/emails/*/*.blade.php"
 };
 
+let mjmlPipeline = function (src) {
+    return src.pipe(mjml())
+        .pipe(extReplace(".php"))
+        .pipe(replace("&#36;", "$")) // Unescape dollar signs, as MJML tends to escape blade syntax
+        .pipe(gulp.dest("resources/views/emails/"))
+        .pipe(livereload());
+};
+
 /**
  * Build all mjml views and send a livereload event
  */
 gulp.task("mjml", function () {
-    return gulp.src(mjmlSelectors.views)
-        .pipe(mjml())
-        .pipe(extReplace(".php"))
-        .pipe(replace("&#36;", "$")) // Unescape dollar signs
-        .pipe(gulp.dest("resources/views/emails/"))
-        .pipe(livereload());
+    return mjmlPipeline(gulp.src(mjmlSelectors.views));
 });
 
 /**
@@ -37,7 +40,14 @@ gulp.task("mjml", function () {
  */
 gulp.task("mjml-watch", ["mjml"], function () {
     livereload.listen();
-    gulp.watch(mjmlSelectors.all, ["mjml"]);
+
+    // Common element changed: rebuild all views
+    gulp.watch(mjmlSelectors.common, ["mjml"]);
+
+    // A single view changed: rebuild and reload only the view
+    gulp.watch(mjmlSelectors.views, function (event) {
+        return mjmlPipeline(gulp.src(event.path));
+    });
 });
 
 /**

@@ -107,6 +107,11 @@ $app->routeMiddleware([
 
 if ($app->environment("local", "dev")) {
     $app->register(Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
+    $app->bind(
+        Illuminate\Database\ConnectionResolverInterface::class,
+        Illuminate\Database\ConnectionResolver::class
+    );
+    $app->register(Niellles\LumenCommands\LumenCommandsServiceProvider::class);
 }
 
 $app->register(App\Providers\AppServiceProvider::class);
