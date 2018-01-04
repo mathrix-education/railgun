@@ -19,4 +19,10 @@ That will setup composer and yarn packages and gulp will generate the mails blad
 
 You finally need to create a MySQL database and set it credentials in the `.env` file.
 
-You are now ready to work with Mathrix API!
+Finally, run:
+
+```bash
+php artisan migrate --seed
+```
+
+Make sure you are working on the dev branch and you are now ready to work with Mathrix API!

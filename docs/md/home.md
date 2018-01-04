@@ -15,3 +15,4 @@ Keep in mind that we are building, together, an awesome project.
 ## Development
 
 - Scripts
+- [gulp tasks](development/gulp-tasks.md)

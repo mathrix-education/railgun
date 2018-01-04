@@ -12,5 +12,5 @@ This project use a lot of technologies and languages. Before contributing, you s
 ## Frameworks and libraries
 
 - Lumen (micro framework based on Laravel 5)
-- Gulp (task runner written in JavaScript)
-- MJML (emails rendering)
+- gulp.js (task runner written in JavaScript)
+- MJML (universal email rendering)
