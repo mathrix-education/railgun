@@ -9,6 +9,7 @@ use App\Models\BaseModel;
 use App\Models\Comment;
 use App\Models\Module;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -195,14 +196,18 @@ class CommentController extends BaseController
      * @param int $perPage
      *
      * @return JsonResponse
-     * @throws Http401UnauthorizedException
      */
     public function latest(Request $request, $page = 1, $perPage = 10): JsonResponse
     {
-        return $this->index($request, $page, $perPage, [
-            "orderBy" => "created_at",
-            "dir" => "desc",
-            "policy" => "latest"
-        ]);
+        /** @var User $user */
+        $user = $request->user();
+
+        $user->canOrFail("latest", Comment::class);
+
+        return response()->json(Comment::orderBy("created_at", "desc")
+            ->with(["user", "children", "children.user"])
+            ->limit($perPage)
+            ->offset(($page - 1) * $perPage)
+            ->get());
     }
 }
