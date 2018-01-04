@@ -76,4 +76,14 @@ class CommentPolicy extends BasePolicy
         return $this->atLeastModerator($currentUser);
     }
 
+
+    /**
+     * @param User $currentUser
+     *
+     * @return bool
+     */
+    public function latest(User $currentUser)
+    {
+        return $this->atLeastModerator($currentUser);
+    }
 }

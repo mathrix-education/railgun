@@ -127,22 +127,28 @@ abstract class BaseController extends Controller
      * @param Request $request
      * @param int $page
      * @param int $perPage
+     * @param array $options
+     *  - orderBy
+     *  - dir
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
      */
-    public function index(Request $request, int $page = 1, int $perPage = 10): JsonResponse
+    public function index(Request $request, int $page = 1, int $perPage = 10, array $options = []): JsonResponse
     {
         // Check permission
-        if ($request->user() !== null && $request->user()->cant("index", $this->modelClass)) {
+        if ($request->user() !== null && $request->user()->cant($options["policy"] ?? "index", $this->modelClass)) {
             throw new Http401UnauthorizedException();
         }
 
-        return response()->json(
-            $this->modelClass::limit($perPage)
-                ->offset(($page - 1) * $perPage)
-                ->get()
-        );
+        $query = $this->modelClass::limit($perPage)
+            ->offset(($page - 1) * $perPage);
+
+        if (!empty($options["orderBy"])) {
+            $query = $query->orderBy($options["orderBy"], $options["dir"] ?? "asc");
+        }
+
+        return response()->json($query->get());
     }
 
 

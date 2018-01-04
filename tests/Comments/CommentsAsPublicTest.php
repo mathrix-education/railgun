@@ -79,4 +79,15 @@ class CommentsAsPublicTest extends ScopeTestCase
     {
         $this->genericDeleteUnauthorized();
     }
+
+
+    /**
+     * GET /comments/latest
+     *
+     * @throws \Exception
+     */
+    public function testLatest()
+    {
+        $this->genericIndexUnauthorized();
+    }
 }

@@ -28,11 +28,12 @@ class LessonController extends BaseController
      * @param Request $request
      * @param int $page
      * @param int $perPage
+     * @param array $options
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
      */
-    public function index(Request $request, int $page = 1, int $perPage = 10): JsonResponse
+    public function index(Request $request, int $page = 1, int $perPage = 10, array $options = []): JsonResponse
     {
         // Check permission
         if ($request->user() !== null && $request->user()->cant("index", $this->modelClass)) {

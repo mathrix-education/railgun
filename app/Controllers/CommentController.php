@@ -178,4 +178,31 @@ class CommentController extends BaseController
      * @apiParam (Data) {string} order.column The order column
      * @apiParam (Data) {string=asc,desc} order.dir The order direction
      */
+
+    /**
+     * @apiVersion 1.0.1
+     * @api {get} /comments/latest/{?page}/{?perPage} Latest
+     * @apiGroup Comments
+     * @apiName CommentLatest
+     * @apiDescription Get the latest comments
+     * @apiPermission moderator
+     * @apiUse Pagination
+     * @apiUse Bearer
+     * @apiUse CommentArray
+     *
+     * @param Request $request
+     * @param int $page
+     * @param int $perPage
+     *
+     * @return JsonResponse
+     * @throws Http401UnauthorizedException
+     */
+    public function latest(Request $request, $page = 1, $perPage = 10): JsonResponse
+    {
+        return $this->index($request, $page, $perPage, [
+            "orderBy" => "created_at",
+            "dir" => "desc",
+            "policy" => "latest"
+        ]);
+    }
 }
