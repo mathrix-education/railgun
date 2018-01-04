@@ -76,7 +76,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/nao-pon/flysystem-cached-extra" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/nao-pon/flysystem-google-drive" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/nesbot/carbon" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/niellles/lumen-commands" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/nikic/fast-route" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/paragonie/random_compat" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/paulvl/backup" />
@@ -216,7 +215,6 @@
           <root url="file://$MODULE_DIR$/vendor/nao-pon/flysystem-cached-extra" />
           <root url="file://$MODULE_DIR$/vendor/nao-pon/flysystem-google-drive" />
           <root url="file://$MODULE_DIR$/vendor/nesbot/carbon" />
-          <root url="file://$MODULE_DIR$/vendor/niellles/lumen-commands" />
           <root url="file://$MODULE_DIR$/vendor/nikic/fast-route" />
           <root url="file://$MODULE_DIR$/vendor/paragonie/random_compat" />
           <root url="file://$MODULE_DIR$/vendor/paulvl/backup" />
@@ -352,7 +350,6 @@
           <root url="file://$MODULE_DIR$/vendor/nao-pon/flysystem-cached-extra" />
           <root url="file://$MODULE_DIR$/vendor/nao-pon/flysystem-google-drive" />
           <root url="file://$MODULE_DIR$/vendor/nesbot/carbon" />
-          <root url="file://$MODULE_DIR$/vendor/niellles/lumen-commands" />
           <root url="file://$MODULE_DIR$/vendor/nikic/fast-route" />
           <root url="file://$MODULE_DIR$/vendor/paragonie/random_compat" />
           <root url="file://$MODULE_DIR$/vendor/paulvl/backup" />

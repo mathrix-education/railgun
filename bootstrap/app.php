@@ -68,6 +68,7 @@ $app->configure("mail");
 $app->configure("services");
 $app->configure("filesystems");
 $app->configure("backup");
+$app->configure("queue");
 
 if ($app->environment("dev")) {
     $app->configure("ide-helper");
@@ -111,7 +112,6 @@ if ($app->environment("local", "dev")) {
         Illuminate\Database\ConnectionResolverInterface::class,
         Illuminate\Database\ConnectionResolver::class
     );
-    $app->register(Niellles\LumenCommands\LumenCommandsServiceProvider::class);
 }
 
 $app->register(App\Providers\AppServiceProvider::class);
@@ -125,6 +125,7 @@ $app->register(Illuminate\Filesystem\FilesystemServiceProvider::class);
 $app->register(Roumen\Sitemap\SitemapServiceProvider::class);
 $app->register(App\Providers\GoogleDriveServiceProvider::class);
 $app->register(Backup\BackupServiceProvider::class);
+$app->register(App\Providers\EventServiceProvider::class);
 
 
 if ($app->environment("stage", "master")) {

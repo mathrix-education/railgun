@@ -28,7 +28,7 @@
     "doctrine/dbal": "^2.5",
     "filp/whoops": "~2.0",
     "brianium/paratest": "^1.0",
-    "niellles/lumen-commands": "dev-master"
+    "phpunit/php-code-coverage": "^5.3"
   },
   "autoload": {
     "psr-4": {

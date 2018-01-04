@@ -35,7 +35,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Activity whereNameSeo($value)
  * @method static Builder|Activity whereType($value)
  * @method static Builder|Activity whereVisible($value)
- * @mixin \Eloquent
  */
 class Activity extends BaseModel
 {

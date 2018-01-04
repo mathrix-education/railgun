@@ -4,6 +4,8 @@
 
 # User-specific stuff:
 /.idea/**/workspace.xml
+/.idea/dataSources/
+/.idea/dataSources*
 /.idea/dictionaries
 /.idea/deployment.xml
 /.idea/php.xml
@@ -15,5 +17,6 @@
 /resources/views/emails/**/*.html
 /resources/views/emails/**/*.blade.php
 /storage/backups/
+/storage/code-coverage-report/
 /storage/sitemaps/
 /vendor/

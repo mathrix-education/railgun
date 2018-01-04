@@ -29,7 +29,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Section whereUpdatedAt($value)
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Module[] $modules
  * @property-read \App\Models\Training $training
- * @mixin \Eloquent
  */
 class Section extends BaseModel
 {

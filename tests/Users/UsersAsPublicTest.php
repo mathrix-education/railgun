@@ -3,6 +3,7 @@
 namespace Tests\Users;
 
 use App\Mails\PasswordForgottenMail;
+use App\Mails\PasswordResetMail;
 use App\Models\Class_;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
@@ -45,6 +46,7 @@ class UsersAsPublicTest extends ScopeTestCase
         ]);
     }
 
+
     /**
      * POST /users/forgot
      */
@@ -53,11 +55,28 @@ class UsersAsPublicTest extends ScopeTestCase
         Mail::fake();
 
         $email = User::inRandomOrder()->first()->email;
-        $this->call("POST", "/users/forgot", ["email" => $email]);
+        $this->call("post", "/users/forgot", ["email" => $email]);
 
         $this->assertHttp200Success();
-        Mail::assertSent(PasswordForgottenMail::class, function (PasswordForgottenMail $mail) use ($email) {
+        Mail::assertQueued(PasswordForgottenMail::class, function (PasswordForgottenMail $mail) use ($email) {
             return $mail->hasTo($email);
+        });
+    }
+
+
+    /**
+     * POST /users/reset
+     */
+    public function testReset()
+    {
+        Mail::fake();
+
+        $user = User::inRandomOrder()->first();
+        $this->call("post", "/users/reset/{$user->token}", ["password" => "test"]);
+
+        $this->assertHttp200Success();
+        Mail::assertQueued(PasswordResetMail::class, function (PasswordResetMail $mail) use ($user) {
+            return $mail->hasTo($user->email);
         });
     }
 }

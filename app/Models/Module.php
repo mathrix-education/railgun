@@ -38,7 +38,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Module whereQuestions($value)
  * @method static Builder|Module whereSolutions($value)
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Training[] $trainings
- * @mixin \Eloquent
  */
 class Module extends BaseModel
 {
