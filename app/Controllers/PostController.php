@@ -33,10 +33,11 @@ class PostController extends BaseController
      * @param Request $request
      * @param int $page
      * @param int $perPage
+     * @param array $options
      *
      * @return JsonResponse
      */
-    public function index(Request $request, int $page = 1, int $perPage = 10): JsonResponse
+    public function index(Request $request, int $page = 1, int $perPage = 10, array $options = []): JsonResponse
     {
         return response()->json(
             Post::with("module")

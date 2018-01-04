@@ -41,7 +41,7 @@ class TrainingsAsModeratorTest extends TrainingsAsRegisteredTest
      *
      * @throws \Exception
      */
-    public function testAddWidthDifferentSlug()
+    public function testAddWithDifferentSlug()
     {
         $this->genericAddSuccess(["slug" => $this->faker->slug()]);
     }

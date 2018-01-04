@@ -65,4 +65,15 @@ class CommentsAsModeratorTest extends CommentsAsRegisteredTest
 
         $this->assertHttp200Success();
     }
+
+
+    /**
+     * GET /comments/latest
+     *
+     * @throws \Exception
+     */
+    public function testLatest() {
+        $this->genericIndexSuccess();
+        $this->assertJsonLength(10);
+    }
 }
