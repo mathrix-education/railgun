@@ -22,7 +22,7 @@ tests:
     - ./vendor/phpunit/phpunit/phpunit -v --coverage-text --colors=never --stderr
   artifacts:
     paths:
-      - ./storage/logs # for debugging
+      - storage/logs/lumen.log
     expire_in: 1 days
     when: always
 
