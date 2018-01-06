@@ -48,6 +48,15 @@ class CommentsAsPublicTest extends ScopeTestCase
     }
 
 
+    public function testTypeNotCommentable()
+    {
+        $this->call("get", "/comments/lorem/" . random_int(1, 1000));
+
+        // Assertions
+        $this->assertHttp400InvalidRequest();
+    }
+
+
     /**
      * POST /comments -> HTTP 401 unauthorized
      *
@@ -88,6 +97,8 @@ class CommentsAsPublicTest extends ScopeTestCase
      */
     public function testLatest()
     {
-        $this->genericIndexUnauthorized();
+        $this->call("get", "/comments/latest");
+
+        $this->assertHttp401Unauthorized();
     }
 }

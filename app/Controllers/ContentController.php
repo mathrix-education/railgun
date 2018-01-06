@@ -1,7 +1,6 @@
 <?php
 namespace App\Controllers;
 
-use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http401UnauthorizedException;
 use App\Models\Activity;
 use App\Models\Chapter;
@@ -15,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Storage;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class ContentController
@@ -169,7 +168,6 @@ class ContentController extends BaseController
      * @apiSuccess {string} notions.chapters.class_.country.name_short The country short name
      * @apiSuccess {string} notions.chapters.class_.country.slug The country slug
      * @apiSuccess {string} notions.chapters.class_.country.slug_short The country short slug
-     * @apiError (Error 400) invalid_request page and perPage have to be strictly positive
      *
      * @param Request $request
      * @param string $query
@@ -177,16 +175,11 @@ class ContentController extends BaseController
      * @param int $perPage
      *
      * @return JsonResponse
-     * @throws Http400InvalidRequestException
      */
     public function searchGlobal(Request $request, string $query, int $page = 1, $perPage = 10)
     {
         $query = trim(mb_strtolower(urldecode($query))); // Trim and decode query
         $query = implode("%%", explode(" ", $query));
-
-        if ($page < 1 || $perPage < 1) {
-            throw new Http400InvalidRequestException("page and perPage have to be strictly positive");
-        }
 
         $user = $request->user();
 
@@ -212,7 +205,7 @@ class ContentController extends BaseController
             ->get();
 
         // Custom requests for logged users
-        if ($user) {
+        if ($user && $user->class_id !== null) {
             /** @var Class_ $userClass */
             $userClass = Class_::find($user->class_id);
             $cursus = $userClass->cursus();

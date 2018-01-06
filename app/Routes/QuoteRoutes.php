@@ -1,15 +1,14 @@
 <?php
 /** @var Laravel\Lumen\Routing\Router $router */
+$router->get("quotes[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "QuoteController@index");
+
 $router->group(["prefix" => "quotes"], function () use ($router) {
-    $router->get("", "QuoteController@index");
-    $router->get("{page:[0-9]+}/{perPage:[0-9]+}", "QuoteController@index");
-    $router->get("{id:[0-9]+}", "QuoteController@get");
-    $router->get("random", "QuoteController@random");
-    $router->get("random/{count:[0-9]+}", "QuoteController@random");
+    $router->get("{id:[1-9]\d*}", "QuoteController@get");
+    $router->get("random[/{count:[1-9]\d*}]", "QuoteController@random");
 
     $router->group(["middleware" => "auth:api"], function () use ($router) {
         $router->post("", "QuoteController@add");
-        $router->patch("{id:[0-9]+}", "QuoteController@edit");
-        $router->delete("{id:[0-9]+}", "QuoteController@delete");
+        $router->patch("{id:[1-9]\d*}", "QuoteController@edit");
+        $router->delete("{id:[1-9]\d*}", "QuoteController@delete");
     });
 });

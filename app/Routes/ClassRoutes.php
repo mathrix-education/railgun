@@ -1,13 +1,13 @@
 <?php
 /** @var Laravel\Lumen\Routing\Router $router */
+$router->get("classes[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "ClassController@index");
 $router->group(["prefix" => "classes"], function () use ($router) {
-    $router->get("", "ClassController@index");
-    $router->get("{page:[0-9]+}/{perPage:[0-9]+}", "ClassController@index");
-    $router->get("{id:[0-9]+}", "ClassController@get");
+    $router->get("{id:[1-9]\d*}", "ClassController@get");
 
     $router->group(["middleware" => "auth:api"], function () use ($router) {
         $router->post("", "ClassController@add");
-        $router->patch("{id:[0-9]+}", "ClassController@edit");
-        $router->delete("{id:[0-9]+}", "ClassController@delete");
+        $router->patch("{id:[1-9]\d*}", "ClassController@edit");
+        $router->delete("{id:[1-9]\d*}", "ClassController@delete");
     });
 });
+

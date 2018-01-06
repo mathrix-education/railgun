@@ -23,36 +23,28 @@ class ReportController extends BaseController
      * @apiGroup Reports
      * @apiName ReportsIndex
      * @apiDescription Add a report
-     * @apiPermission public
+     * @apiPermission moderator
      * @apiUse Bearer
      * @apiUse Pagination
      * @apiUse ReportModel
      * @apiUse Http401Unauthorized
      * @apiUse Http422ModelValidation
      * @apiUse Http422ModelSave
-     *
-     * @param Request $request
-     * @param int $page
-     * @param int $perPage
-     * @param array $options
-     *
-     * @return JsonResponse
-     * @throws Http401UnauthorizedException
      */
-    public function index(Request $request, int $page = 1, int $perPage = 10, array $options = []): JsonResponse
-    {
-        // Check permission
-        if ($request->user() !== null && $request->user()->cant("index", $this->modelClass)) {
-            throw new Http401UnauthorizedException();
-        }
 
-        return response()->json(
-            Report::limit($perPage)
-                ->with("module")
-                ->offset(($page - 1) * $perPage)
-                ->get()
-        );
-    }
+
+    /**
+     * @apiVersion 1.0.0
+     * @api {get} /reports/{id} Get
+     * @apiGroup Reports
+     * @apiName ReportGet
+     * @apiDescription Get a report by id
+     * @apiPermission moderator
+     * @apiParam {int} id The report id
+     * @apiUse ReportModel
+     * @apiUse CommentArray
+     * @apiUse Http404ModelNotFound
+     */
 
 
     /**
@@ -62,6 +54,21 @@ class ReportController extends BaseController
      * @apiName ReportAdd
      * @apiDescription Add a report
      * @apiPermission public
+     * @apiUse Bearer
+     * @apiUse ReportRequest
+     * @apiUse Http401Unauthorized
+     * @apiUse Http422ModelValidation
+     * @apiUse Http422ModelSave
+     */
+
+
+    /**
+     * @apiVersion 1.0.0
+     * @api {patch} /reports Edit
+     * @apiGroup Reports
+     * @apiName ReportEdit
+     * @apiDescription Edit a report
+     * @apiPermission moderator
      * @apiUse Bearer
      * @apiUse ReportRequest
      * @apiUse Http401Unauthorized

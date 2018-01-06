@@ -74,9 +74,7 @@ class CommentController extends BaseController
      */
     public function add(Request $request): JsonResponse
     {
-        if ($request->user() !== null && $request->user()->cant("add", $this->modelClass)) {
-            throw new Http401UnauthorizedException();
-        }
+        $request->user()->canOrFail("add", Comment::class);
 
         /** @var BaseModel $model */
         $comment = new Comment($request->all());

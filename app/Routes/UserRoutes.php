@@ -1,5 +1,9 @@
 <?php
 /** @var Laravel\Lumen\Routing\Router $router */
+$router->group(["middleware" => "auth:api"], function () use ($router) {
+    $router->get("users[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "UserController@index");
+});
+
 $router->group(["prefix" => "users"], function () use ($router) {
     $router->post("register", "UserController@register");
     $router->post("login", "AuthController@login");
@@ -9,16 +13,14 @@ $router->group(["prefix" => "users"], function () use ($router) {
     $router->get("exists/{field}/{value}", "UserController@exists");
 
     $router->group(["middleware" => "auth:api"], function () use ($router) {
-        $router->get("", "UserController@index");
+        $router->get("[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "UserController@index");
         $router->get("me", "UserController@me");
-
-        $router->get("{page:[0-9]+}/{perPage:[0-9]+}", "UserController@index");
-        $router->get("{id:[0-9]+}", "UserController@get");
-        $router->patch("{id:[0-9]+}", "UserController@edit");
-        $router->delete("{id:[0-9]+}", "UserController@delete");
+        $router->get("{id:[1-9]\d*}", "UserController@get");
+        $router->patch("{id:[1-9]\d*}", "UserController@edit");
+        $router->delete("{id:[1-9]\d*}", "UserController@delete");
         $router->post("search", "UserController@search");
 
         $router->post("points", "UserController@points");
-        $router->post("points/{id:[0-9]+}", "UserController@points");
+        $router->post("points/{id:[1-9]\d*}", "UserController@points");
     });
 });

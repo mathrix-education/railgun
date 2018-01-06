@@ -1,4 +1,5 @@
 <?php
+
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\BaseModel;
@@ -180,16 +181,24 @@ abstract class BaseTableSeeder extends Seeder
      *
      * @param array $data
      * @param BaseModel|Model|string|null $modelClass
+     * @param bool $display
      *
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      */
-    public function seedFromArray(array $data, $modelClass)
+    public function seedFromArray(array $data, $modelClass, bool $display = false)
     {
+        $table = "";
+
+        if ($display) {
+            $table = $modelClass::getTableName();
+            $this->println("<comment>Seeding:</comment> $table from factory");
+        }
+
         // Progress bar
         $this->output->progressStart(count($data));
 
-        foreach($data as $row) {
+        foreach ($data as $row) {
             /** @var BaseModel $model */
             $model = new $modelClass($row);
             $model->save();
@@ -197,6 +206,10 @@ abstract class BaseTableSeeder extends Seeder
         }
 
         $this->output->progressFinish();
+
+        if ($display) {
+            $this->println("<info>Seeded:</info>  $table from factory");
+        }
     }
 
 
@@ -266,7 +279,7 @@ abstract class BaseTableSeeder extends Seeder
         $data = $this->loadDataFromJson($joinTableName, $dir);
         $links = [];
 
-        foreach($data as $row) {
+        foreach ($data as $row) {
             $model1Id = $row[$model1Key];
 
             $joinData = array_diff_assoc($row, [$model1Key => $row[$model1Key], $model2Key => $row[$model2Key]]);
@@ -276,7 +289,7 @@ abstract class BaseTableSeeder extends Seeder
 
         $this->output->progressStart(count($links));
 
-        foreach($links as $model1Id => $model2IdsWithData) {
+        foreach ($links as $model1Id => $model2IdsWithData) {
             $model1 = $modelClass1::where("id", $model1Id)->firstOrFail();
             $model1->$model2Table()->attach($model2IdsWithData);
             $this->output->progressAdvance();
@@ -328,7 +341,7 @@ abstract class BaseTableSeeder extends Seeder
         $this->println("<comment>Linking:</comment> $model1Table <=> $model2Table");
 
         $this->output->progressStart($models1->count());
-        foreach($models1 as $model1) {
+        foreach ($models1 as $model1) {
             $model1->link = [
                 $model2Table => $faker->randomElements($model2Ids, $faker->numberBetween($min, $max))
             ];

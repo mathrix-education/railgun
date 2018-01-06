@@ -121,7 +121,6 @@ class AuthController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
-     * @throws Http502EmailNotSentException
      */
     public function forgot(Request $request)
     {
@@ -129,18 +128,18 @@ class AuthController extends BaseController
         /** @var User $user */
         $user = User::where("email", $request->input("email"))->firstOrFail();
 
-        if(!empty($user->settings["facebook_id"])) {
+        if (!empty($user->settings["facebook_id"])) {
             throw new Http400InvalidRequestException("Cannot reset password of a facebook account");
+        } else {
+            // Generate token
+            $user->unguardAttributes(["token"]);
+            $user->update(["token" => Factory::create()->uuid]);
+
+            // Send PasswordForgottenMail
+            event(new PasswordForgottenEvent($user));
+
+            return response()->json(["message" => "Reset email sent successfully"]);
         }
-
-        // Generate token
-        $user->unguardAttributes(["token"]);
-        $user->update(["token" => Factory::create()->uuid]);
-
-        // Send PasswordForgottenMail
-        event(new PasswordForgottenEvent($user));
-
-        return response()->json(["message" => "Reset email sent successfully"]);
     }
 
 

@@ -12,7 +12,7 @@ namespace Tests\Generics;
  */
 trait Generics
 {
-    use Index, Add, Edit, Delete;
+    use Index, Get, Add, Edit, Delete;
 
     /** @var string|null the subfactory to use; null for default factory */
     protected $subFactory = null;

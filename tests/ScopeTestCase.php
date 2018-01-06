@@ -40,19 +40,6 @@ abstract class ScopeTestCase extends BaseTestCase
 
 
     /**
-     * Destroy database connection after each test to avoid the Too Many Connections error
-     */
-    public function tearDown()
-    {
-        $this->beforeApplicationDestroyed(function () {
-            DB::disconnect();
-        });
-
-        parent::tearDown();
-    }
-
-
-    /**
      * 1. Try to guess the model associated with test class
      * Ex: QuotesAsRegisteredTest -> \App\Models\Quotes
      * 2. Initialize user if needed using the test name

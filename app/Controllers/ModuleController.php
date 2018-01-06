@@ -47,11 +47,13 @@ class ModuleController extends BaseController
      * @apiUse CommentArray
      * @apiUse Http404ModelNotFound
      *
+     * @param Request $request
      * @param int $id
      *
      * @return JsonResponse
+     * @throws Http401UnauthorizedException
      */
-    public function get(int $id): JsonResponse
+    public function get(Request $request, int $id): JsonResponse
     {
         $module = Module::where("id", $id)->with([
             "comments" => function (MorphMany $query) use ($id) {
@@ -64,6 +66,10 @@ class ModuleController extends BaseController
                 $query->getQuery()->orderBy("created_at");
             }
         ])->firstOrFail();
+
+        if ($request->user() !== null && $request->user()->cant("get", $module)) {
+            throw new Http401UnauthorizedException();
+        }
 
         return response()->json($module);
     }

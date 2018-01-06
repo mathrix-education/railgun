@@ -1,6 +1,8 @@
 <?php
 namespace App\Policies;
 
+use App\Models\User;
+
 /**
  * Class LessonPolicy
  *
@@ -12,44 +14,56 @@ namespace App\Policies;
 class LessonPolicy extends BasePolicy
 {
     /**
+     * @param User $user
+     *
      * @return bool
      */
-    public function index()
+    public function index(User $user)
     {
-        return true;
-    }
-
-    /**
-     * @return bool
-     */
-    public function get()
-    {
-        return true;
-    }
-
-    /**
-     * @return bool
-     */
-    public function add()
-    {
-        return false;
+        return $this->atLeastModerator($user);
     }
 
 
     /**
+     * @param User $user
+     *
      * @return bool
      */
-    public function edit()
+    public function get(User $user)
     {
-        return false;
+        return $this->atLeastModerator($user);
     }
 
 
     /**
+     * @param User $user
+     *
      * @return bool
      */
-    public function delete()
+    public function add(User $user)
     {
-        return false;
+        return $this->atLeastModerator($user);
+    }
+
+
+    /**
+     * @param User $user
+     *
+     * @return bool
+     */
+    public function edit(User $user)
+    {
+        return $this->atLeastModerator($user);
+    }
+
+
+    /**
+     * @param User $user
+     *
+     * @return bool
+     */
+    public function delete(User $user)
+    {
+        return $this->atLeastModerator($user);
     }
 }

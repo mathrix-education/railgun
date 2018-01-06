@@ -1,14 +1,13 @@
 <?php
 /** @var Laravel\Lumen\Routing\Router $router */
+$router->get("disciplines[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "DisciplineController@index");
+
 $router->group(["prefix" => "disciplines"], function () use ($router) {
-    $router->get("", "DisciplineController@index");
-    $router->get("{page:[0-9]+}/{perPage:[0-9]+}", "DisciplinesController@index");
-    $router->get("{id:[0-9]+}", "DisciplineController@get");
+    $router->get("{id:[1-9]\d*}", "DisciplineController@get");
 
     $router->group(["middleware" => "auth:api"], function () use ($router) {
         $router->post("", "DisciplineController@add");
-        $router->patch("{id:[0-9]+}", "DisciplineController@edit");
-        $router->delete("{id:[0-9]+}", "DisciplineController@delete");
+        $router->patch("{id:[1-9]\d*}", "DisciplineController@edit");
+        $router->delete("{id:[1-9]\d*}", "DisciplineController@delete");
     });
 });
-
