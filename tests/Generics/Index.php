@@ -21,7 +21,7 @@ trait Index
     {
         $this->genericUsableOrFail();
 
-        $this->call("get", "/" . $this->modelPlural);
+        $this->call("get", "/" . $this->modelPlural . "/");
     }
 
 

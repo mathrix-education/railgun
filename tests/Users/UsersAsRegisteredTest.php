@@ -18,16 +18,23 @@ use Carbon\Carbon;
 class UsersAsRegisteredTest extends UsersAsPublicTest
 {
     /**
+     * GET /users/me
+     */
+    public function testMe()
+    {
+        $this->call("get", "/users/me");
+
+        $this->assertHttp200Success();
+    }
+
+
+    /**
      * PATCH /users/{id}
      */
     public function testEdit()
     {
         $newUser = factory(User::class, $this->user->type)->raw();
-
-        // TODO: Handle cancerous fields
-        unset($newUser["password"]);
-        unset($newUser["token"]);
-        unset($newUser["settings"]);
+        unset($newUser["password"], $newUser["token"], $newUser["settings"], $newUser["points"], $newUser["level"]);
 
         $this->call("patch", "/users/" . $this->user->id, $newUser);
 
@@ -96,6 +103,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
 
     /**
      * POST /users/points with daily achievement trigger
+     *
      * @throws \Exception
      */
     public function testPointsWithDailyAchievementPass()

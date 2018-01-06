@@ -1,13 +1,13 @@
 <?php
 /** @var Laravel\Lumen\Routing\Router $router */
+$router->get("categories[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "CategoryController@index");
+
 $router->group(["prefix" => "categories"], function () use ($router) {
-    $router->get("", "CategoryController@index");
-    $router->get("{page:[0-9]+}/{perPage:[0-9]+}", "CategoryController@index");
-    $router->get("{id:[0-9]+}", "CategoryController@get");
+    $router->get("{id:[1-9]\d*}", "CategoryController@get");
 
     $router->group(["middleware" => "auth:api"], function () use ($router) {
         $router->post("", "CategoryController@add");
-        $router->patch("{id:[0-9]+}", "CategoryController@edit");
-        $router->delete("{id:[0-9]+}", "CategoryController@delete");
+        $router->patch("{id:[1-9]\d*}", "CategoryController@edit");
+        $router->delete("{id:[1-9]\d*}", "CategoryController@delete");
     });
 });

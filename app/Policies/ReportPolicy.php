@@ -15,12 +15,21 @@ class ReportPolicy extends BasePolicy
 {
     public function index(User $currentUser)
     {
-        return $this->atLeastAdmin($currentUser);
+        return $this->atLeastModerator($currentUser);
     }
 
+    public function get(User $currentUser)
+    {
+        return $this->atLeastModerator($currentUser);
+    }
 
     public function add()
     {
         return true;
+    }
+
+    public function edit(User $currentUser)
+    {
+        return $this->atLeastModerator($currentUser);
     }
 }

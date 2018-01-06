@@ -6,6 +6,7 @@ use App\Models\Chapter;
 use App\Models\Class_;
 use App\Models\Country;
 use App\Models\Discipline;
+use App\Models\Meta;
 use App\Models\Notion;
 
 /**
@@ -21,6 +22,7 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
 {
     /**
      * Build objects for /activities/mark
+     *
      * @return array
      *  int country_id
      *  int class_id
@@ -52,6 +54,48 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
             "notion_id" => $notion->id,
             "activity_id" => $activity->id
         ];
+    }
+
+
+    /**
+     * GET /activities/favorites
+     *
+     * @throws \Exception
+     */
+    public function testFavorites()
+    {
+        $this->get("/activities/favorites");
+
+        $metas = $this->getResponseData();
+
+        $this->assertHttp200Success();
+
+        /** @var Meta $meta */
+        foreach ($metas as $meta) {
+            $this->assertEquals($this->user->id, $meta->user_id);
+            $this->assertTrue($meta->favorite);
+        }
+    }
+
+
+    /**
+     * GET /activities/to-revise
+     *
+     * @throws \Exception
+     */
+    public function testToRevise()
+    {
+        $this->get("/activities/to-revise");
+
+        $metas = $this->getResponseData();
+
+        $this->assertHttp200Success();
+
+        /** @var Meta $meta */
+        foreach ($metas as $meta) {
+            $this->assertEquals($this->user->id, $meta->user_id);
+            $this->assertEquals("to_revise", $meta->status);
+        }
     }
 
 

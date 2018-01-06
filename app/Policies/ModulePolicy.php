@@ -22,6 +22,14 @@ class ModulePolicy extends BasePolicy
         return true;
     }
 
+    /**
+     * @return bool
+     */
+    public function get()
+    {
+        return true;
+    }
+
 
     /**
      * @param User $currentUser

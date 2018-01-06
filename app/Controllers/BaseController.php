@@ -98,24 +98,6 @@ abstract class BaseController extends Controller
     }
 
 
-    /**
-     * Override validation response format
-     *
-     * @param Validator $validator
-     *
-     * @return array
-     */
-    protected function formatValidationErrors(Validator $validator)
-    {
-        return [
-            "error" => "validation",
-            "message" => [
-                $validator->getMessageBag()->toArray()
-            ]
-        ];
-    }
-
-
     /*
     |--------------------------------------------------------------------------
     | Generic actions
@@ -127,28 +109,22 @@ abstract class BaseController extends Controller
      * @param Request $request
      * @param int $page
      * @param int $perPage
-     * @param array $options
-     *  - orderBy
-     *  - dir
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
      */
-    public function index(Request $request, int $page = 1, int $perPage = 10, array $options = []): JsonResponse
+    public function index(Request $request, int $page = 1, int $perPage = 10): JsonResponse
     {
         // Check permission
-        if ($request->user() !== null && $request->user()->cant($options["policy"] ?? "index", $this->modelClass)) {
+        if ($request->user() !== null && $request->user()->cant("index", $this->modelClass)) {
             throw new Http401UnauthorizedException();
         }
 
-        $query = $this->modelClass::limit($perPage)
-            ->offset(($page - 1) * $perPage);
-
-        if (!empty($options["orderBy"])) {
-            $query = $query->orderBy($options["orderBy"], $options["dir"] ?? "asc");
-        }
-
-        return response()->json($query->get());
+        return response()->json(
+            $this->modelClass::limit($perPage)
+                ->offset(($page - 1) * $perPage)
+                ->get()
+        );
     }
 
 
@@ -163,7 +139,7 @@ abstract class BaseController extends Controller
      */
     public function search(Request $request): JsonResponse
     {
-        if ($request->user()->cant("search", $this->modelClass)) {
+        if ($request->user() !== null && $request->user()->cant("search", $this->modelClass)) {
             throw new Http401UnauthorizedException();
         }
 
@@ -222,13 +198,19 @@ abstract class BaseController extends Controller
     /**
      * Generic get action
      *
+     * @param Request $request
      * @param int $id the model id
      *
      * @return JsonResponse
+     * @throws Http401UnauthorizedException
      */
-    public function get(int $id): JsonResponse
+    public function get(Request $request,int $id): JsonResponse
     {
         $model = $this->modelClass::where("id", $id)->firstOrFail();
+
+        if ($request->user() !== null && $request->user()->cant("get", $model)) {
+            throw new Http401UnauthorizedException();
+        }
 
         return response()->json($model);
     }

@@ -1,15 +1,15 @@
 <?php
 /** @var Laravel\Lumen\Routing\Router $router */
+$router->get("modules[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "ModuleController@index");
+
 $router->group(["prefix" => "modules"], function () use ($router) {
-    $router->get("", "ModuleController@index");
-    $router->get("{page:[0-9]+}/{perPage:[0-9]+}", "ModuleController@index");
-    $router->get("{id:[0-9]+}", "ModuleController@get");
+    $router->get("{id:[1-9]\d*}", "ModuleController@get");
 
     $router->group(["middleware" => "auth:api"], function () use ($router) {
         $router->post("", "ModuleController@add");
-        $router->patch("{id:[0-9]+}", "ModuleController@edit");
-        $router->delete("{id:[0-9]+}", "ModuleController@delete");
+        $router->patch("{id:[1-9]\d*}", "ModuleController@edit");
+        $router->delete("{id:[1-9]\d*}", "ModuleController@delete");
 
-        $router->patch("{id:[0-9]+}/mark", "ModuleController@mark");
+        $router->patch("{id:[1-9]\d*}/mark", "ModuleController@mark");
     });
 });

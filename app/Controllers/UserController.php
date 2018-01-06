@@ -97,33 +97,6 @@ class UserController extends BaseController
 
     /**
      * @apiVersion 1.0.0
-     * @api {delete} /users/{id} Delete (Not implemented)
-     * @apiGroup Users
-     * @apiName UserDelete
-     * @apiDescription Delete a user
-     * @apiPermission http501NotImplemented
-     * @apiUse Bearer
-     * @apiParam {int} id The user id
-     * @apiError (Error 401) unauthorized User does not have enough privileges
-     *
-     * @param Request $request
-     * @param int $id The user
-     *
-     * @return JsonResponse
-     * @throws Http401UnauthorizedException
-     * @throws Http501NotImplementedException
-     * @throws \Exception
-     */
-    public function delete(Request $request, int $id): JsonResponse
-    {
-        throw new Http501NotImplementedException();
-
-        return parent::delete($request, $id);
-    }
-
-
-    /**
-     * @apiVersion 1.0.0
      * @api {post} /users/search Search
      * @apiGroup Users
      * @apiName UsersSearch
@@ -188,8 +161,6 @@ class UserController extends BaseController
         $user = (new User())->unguardAttributes(["type"])
             ->fill($request->all())
             ->save();
-
-        // TODO: Send welcome email
 
         return response()->json($user);
     }

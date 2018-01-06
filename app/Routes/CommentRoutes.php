@@ -1,20 +1,22 @@
 <?php
 /** @var Laravel\Lumen\Routing\Router $router */
+$router->group(["middleware" => "auth:api"], function () use ($router) {
+    $router->get("comments[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "CommentController@index");
+});
+
 $router->group(["prefix" => "comments"], function () use ($router) {
-    $router->get("{id:[0-9]+}", "CommentController@get");
+    $router->get("{id:[1-9]\d*}", "CommentController@get");
 
     $router->group(["middleware" => "auth:api"], function () use ($router) {
-        $router->get("", "CommentController@index");
-        $router->get("{page:[0-9]+}/{perPage:[0-9]+}", "CommentController@index");
         $router->get("latest", "CommentController@latest");
-        $router->get("latest/{page:[0-9]+}/{perPage:[0-9]+}", "CommentController@latest");
+        $router->get("latest/{page:[1-9]\d*}/{perPage:[1-9]\d*}", "CommentController@latest");
         $router->post("", "CommentController@add");
-        $router->patch("{id:[0-9]+}", "CommentController@edit");
-        $router->delete("{id:[0-9]+}", "CommentController@delete");
+        $router->patch("{id:[1-9]\d*}", "CommentController@edit");
+        $router->delete("{id:[1-9]\d*}", "CommentController@delete");
         $router->post("search", "CommentController@search");
     });
 
-    $router->get("{commentable_type}/{commentable_id:[0-9]+}", "CommentController@type");
-    $router->get("{commentable_type}/{commentable_id:[0-9]+}/{page:[0-9]+}/{perPage:[0-9]+}",
+    $router->get("{commentable_type}/{commentable_id:[1-9]\d*}", "CommentController@type");
+    $router->get("{commentable_type}/{commentable_id:[1-9]\d*}/{page:[1-9]\d*}/{perPage:[1-9]\d*}",
         "CommentController@type");
 });

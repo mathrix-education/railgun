@@ -1,13 +1,15 @@
 <?php
 /** @var Laravel\Lumen\Routing\Router $router */
+$router->group(["middleware" => "auth:api"], function () use ($router) {
+    $router->get("chapters[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "ChapterController@index");
+});
+
 $router->group(["prefix" => "chapters"], function () use ($router) {
-    $router->get("{id:[0-9]+}", "ChapterController@get");
+    $router->get("{id:[1-9]\d*}", "ChapterController@get");
 
     $router->group(["middleware" => "auth:api"], function () use ($router) {
-        $router->get("", "ChapterController@index");
-        $router->get("{page:[0-9]+}/{perPage:[0-9]+}", "ChapterController@index");
         $router->post("", "ChapterController@add");
-        $router->patch("{id:[0-9]+}", "ChapterController@edit");
-        $router->delete("{id:[0-9]+}", "ChapterController@delete");
+        $router->patch("{id:[1-9]\d*}", "ChapterController@edit");
+        $router->delete("{id:[1-9]\d*}", "ChapterController@delete");
     });
 });

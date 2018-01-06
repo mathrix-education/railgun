@@ -5,6 +5,7 @@ use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Validator;
 use Validator as ValidatorFacade;
 
@@ -55,13 +56,32 @@ abstract class BaseModel extends Model
             $attributes = [$attributes];
         }
 
-        if(!empty($this->fillable)) {
+        if (!empty($this->fillable)) {
             $this->fillable = array_merge($this->fillable, $attributes);
         } else {
             $this->guarded = array_diff($this->guarded, $attributes);
         }
 
         return $this;
+    }
+
+
+    /**
+     * Get a random model from the database
+     *
+     * @param int $count The set size; if set to 1, just return the model
+     *
+     * @return Collection|BaseModel
+     */
+    public static function random($count = 1)
+    {
+        $query = self::inRandomOrder();
+
+        if ($count == 1) {
+            return $query->firstOrFail();
+        } else {
+            return $query->get();
+        }
     }
 
 
@@ -272,6 +292,7 @@ abstract class BaseModel extends Model
 
         return (new static);
     }
+
 
     /**
      * @throws \Doctrine\DBAL\DBALException

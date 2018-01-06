@@ -38,6 +38,9 @@ class Report extends BaseModel
         "visible" => "boolean"
     ];
 
+    /** @var array Relation included by default */
+    protected $with = ["module"];
+
 
     public function __construct(array $attributes = [])
     {
@@ -50,9 +53,11 @@ class Report extends BaseModel
 
     /**
      * BelongsTo Module
+     *
      * @return BelongsTo
      */
-    public function module() {
+    public function module()
+    {
         return $this->belongsTo(Module::class);
     }
 }

@@ -1,6 +1,7 @@
 <?php
 namespace Tests\Modules;
 
+use App\Models\Module;
 use Tests\ScopeTestCase;
 
 /**
@@ -28,6 +29,19 @@ class ModulesAsPublicTest extends ScopeTestCase
     public function testIndex()
     {
         $this->genericIndexSuccess();
+    }
+
+
+    /**
+     * GET /modules/{id}
+     */
+    public function testGet()
+    {
+        /** @var Module $module */
+        $module = Module::random();
+        $this->get("/modules/{$module->id}");
+
+        $this->assertHttp200Success();
     }
 
 

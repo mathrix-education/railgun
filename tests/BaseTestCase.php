@@ -57,6 +57,19 @@ abstract class BaseTestCase extends TestCase
 
 
     /**
+     * Destroy database connection after each test to avoid the Too Many Connections error
+     */
+    public function tearDown()
+    {
+        $this->beforeApplicationDestroyed(function () {
+            app()->make("db")->disconnect();
+        });
+
+        parent::tearDown();
+    }
+
+
+    /**
      * Handle response printing
      *
      * @param \Exception|\Throwable $e
@@ -71,20 +84,33 @@ abstract class BaseTestCase extends TestCase
 
 
     /**
+     * Get the response data
+     *
+     * @return \stdClass
+     * @throws \Exception
+     */
+    public function getResponseData()
+    {
+        if (empty($this->response)) {
+            return null;
+        }
+        else if ($this->response instanceof Response) {
+            $response = $this->response->getContent();
+            return json_decode($response);
+        } else {
+            throw new \Exception("Response is not an instance of " . Response::class);
+        }
+    }
+
+
+    /**
      * Debug the response
+     *
+     * @throws \Exception
      */
     public function debug()
     {
-        if ($this->response instanceof Response) {
-            $response = $this->response->getContent();
-            $json = json_decode($response);
-
-            if (json_last_error() === JSON_ERROR_NONE) {
-                echo json_encode($json, JSON_PRETTY_PRINT);
-            } else {
-                echo $response;
-            }
-        }
+        echo json_encode($this->getResponseData(), JSON_PRETTY_PRINT);
     }
 
 
@@ -140,7 +166,7 @@ abstract class BaseTestCase extends TestCase
      */
     public function castData(array $data)
     {
-        foreach($data as $field => $value) {
+        foreach ($data as $field => $value) {
             if ($value instanceof \DateTime) {
                 $data[$field] = $value->format("Y-m-d H:i:s");
             }
@@ -172,7 +198,7 @@ abstract class BaseTestCase extends TestCase
      */
     public function assertLogged(string $event, $user = null, array $data = [])
     {
-        foreach($data as $key => $value) {
+        foreach ($data as $key => $value) {
             if (is_array($value)) {
                 $data[] = [$key, $value];
                 unset($data[$key]);

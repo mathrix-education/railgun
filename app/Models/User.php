@@ -76,7 +76,8 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
     /** @var array The guarded attributes */
-    protected $guarded = ["type"];
+    protected $fillable = ["email", "username", "firstname", "lastname", "password", "points", "daily",
+        "settings", "class_id"];
 
     /** @var array The hidden attributes from the model"s JSON */
     protected $hidden = ["password", "token"];
@@ -98,8 +99,11 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "class_id" => "nullable|exists:classes,id"
     ];
 
+    /** @var array The relations to include by default */
+    protected $with = ["class_"];
+
     /** @var array The virtual attributes */
-    protected $appends = ["premium", "daily_points", "class"];
+    protected $appends = ["premium", "daily_points"];
 
 
     /**
@@ -135,10 +139,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         }
 
         return $sum;
-    }
-
-    public function getClassAttribute() {
-        return $this->class_id !== null ? $this->class_()->first() : null;
     }
 
 

@@ -12,35 +12,4 @@ namespace Tests\Lessons;
  */
 class LessonsAsAdminTest extends LessonsAsModeratorTest
 {
-    /**
-     * POST /quotes
-     *
-     * @throws \Exception
-     */
-    public function testAdd()
-    {
-        $this->genericAddSuccess();
-    }
-
-
-    /**
-     * PATCH /quotes/{id}
-     *
-     * @throws \Exception
-     */
-    public function testEdit()
-    {
-        $this->genericEditSuccess();
-    }
-
-
-    /**
-     * DELETE /quotes/{id}
-     *
-     * @throws \Exception
-     */
-    public function testDelete()
-    {
-        $this->genericDeleteSuccess();
-    }
 }

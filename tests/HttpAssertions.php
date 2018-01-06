@@ -7,6 +7,7 @@ namespace Tests;
  *
  * @package Tests
  *
+ * @method assertHttp400InvalidRequest()
  * @method assertHttp401Unauthorized()
  * @method assertHttp501NotImplemented()
  */

@@ -73,7 +73,9 @@ class CommentsAsModeratorTest extends CommentsAsRegisteredTest
      * @throws \Exception
      */
     public function testLatest() {
-        $this->genericIndexSuccess();
+        $this->call("get", "/comments/latest");
+
+        $this->assertHttp200Success();
         $this->assertJsonLength(10);
     }
 }

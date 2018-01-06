@@ -31,14 +31,10 @@ class LessonController extends BaseController
      * @param array $options
      *
      * @return JsonResponse
-     * @throws Http401UnauthorizedException
      */
     public function index(Request $request, int $page = 1, int $perPage = 10, array $options = []): JsonResponse
     {
-        // Check permission
-        if ($request->user() !== null && $request->user()->cant("index", $this->modelClass)) {
-            throw new Http401UnauthorizedException();
-        }
+        $request->user()->canOrFail("index", Lesson::class);
 
         return response()->json(
             Lesson::with("module")
@@ -60,12 +56,15 @@ class LessonController extends BaseController
      * @apiUse LessonModel
      * @apiUse Http404ModelNotFound
      *
+     * @param Request $request
      * @param int $id
      *
      * @return JsonResponse
      */
-    public function get(int $id): JsonResponse
+    public function get(Request $request, int $id): JsonResponse
     {
+        $request->user()->canOrFail("get", Lesson::class);
+
         $model = Lesson::with("module")->where("id", $id)->firstOrFail();
 
         return response()->json($model);
