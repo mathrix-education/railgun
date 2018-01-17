@@ -25,6 +25,9 @@ class ContentTableSeeder extends BaseTableSeeder
     public function run()
     {
         // Content
+        $this->seedFromJson([
+            "modelClass" => Country::class
+        ]);
         $this->seedFromFactory([
             "modelClass" => Country::class,
             "count" => random_int(2, 3)

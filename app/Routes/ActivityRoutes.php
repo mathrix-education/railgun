@@ -5,7 +5,6 @@ $router->group(["middleware" => "auth:api"], function () use ($router) {
 });
 
 $router->group(["prefix" => "activities"], function () use ($router) {
-    $router->get("{id:[1-9]\d*}", "ActivityController@get");
 
     $router->group(["middleware" => "auth:api"], function () use ($router) {
         $router->post("", "ActivityController@add");
@@ -17,4 +16,7 @@ $router->group(["prefix" => "activities"], function () use ($router) {
         $router->get("to-revise", "ActivityController@to_revise");
         $router->patch("{id:[1-9]\d*}/mark", "ActivityController@mark");
     });
+
+    $router->get("by-{what:[a-z\-]+}/{id:[1-9]\d*}", "ActivityController@by");
+    $router->get("{key:[a-z\-]+}[/{value:[a-z0-9\-]+}]", "ActivityController@get");
 });

@@ -7,7 +7,7 @@ $router->group(["middleware" => "auth:api"], function () use ($router) {
 $router->group(["prefix" => "reports"], function () use ($router) {
     $router->post("", "ReportController@add");
     $router->group(["middleware" => "auth:api"], function () use ($router) {
-        $router->get("{id:[1-9]\d*}", "ReportController@get");
+        $router->get("{key:[1-9]\d*}", "ReportController@get");
         $router->patch("{id:[1-9]\d*}", "ReportController@edit");
     });
 });

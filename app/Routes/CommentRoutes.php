@@ -5,9 +5,10 @@ $router->group(["middleware" => "auth:api"], function () use ($router) {
 });
 
 $router->group(["prefix" => "comments"], function () use ($router) {
-    $router->get("{id:[1-9]\d*}", "CommentController@get");
 
     $router->group(["middleware" => "auth:api"], function () use ($router) {
+        $router->get("{id:[1-9]\d*}", "CommentController@get");
+
         $router->get("latest", "CommentController@latest");
         $router->get("latest/{page:[1-9]\d*}/{perPage:[1-9]\d*}", "CommentController@latest");
         $router->post("", "CommentController@add");
@@ -19,4 +20,5 @@ $router->group(["prefix" => "comments"], function () use ($router) {
     $router->get("{commentable_type}/{commentable_id:[1-9]\d*}", "CommentController@type");
     $router->get("{commentable_type}/{commentable_id:[1-9]\d*}/{page:[1-9]\d*}/{perPage:[1-9]\d*}",
         "CommentController@type");
+
 });

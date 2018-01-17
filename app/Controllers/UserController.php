@@ -194,9 +194,9 @@ class UserController extends BaseController
 
     /**
      * @apiVersion 1.0.0
-     * @api {get} /users/me Me
+     * @api {get} /users/profile Profile
      * @apiGroup Users
-     * @apiName UserMe
+     * @apiName UserProfile
      * @apiDescription Get the current user
      * @apiPermission registered
      * @apiUse Bearer
@@ -206,7 +206,7 @@ class UserController extends BaseController
      *
      * @return JsonResponse
      */
-    public function me(Request $request)
+    public function profile(Request $request)
     {
         /** @var User $user */
         $user = $request->user();
