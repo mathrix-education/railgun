@@ -45,4 +45,13 @@ class ClassPolicy extends BasePolicy
     {
         return false;
     }
+
+
+    /**
+     * @return bool
+     */
+    public function byCountry()
+    {
+        return true;
+    }
 }

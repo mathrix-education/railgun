@@ -9,14 +9,12 @@ use Faker\Generator;
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->define(Country::class, function (Generator $faker) {
-    $nameShort = $faker->firstName;
-    $name = ucfirst(strtolower($nameShort . $faker->firstName));
+    $name = $faker->firstName;
+    $slug = str_slug(substr($name, 0, random_int(2, 3)));
 
     return [
         "name" => $name,
-        "slug" => str_slug($name),
-        "name_short" => $nameShort,
-        "slug_short" => str_slug($nameShort),
+        "slug" => str_slug($slug),
         "visible" => $faker->boolean(95)
     ];
 });

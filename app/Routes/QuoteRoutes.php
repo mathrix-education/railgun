@@ -3,7 +3,7 @@
 $router->get("quotes[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "QuoteController@index");
 
 $router->group(["prefix" => "quotes"], function () use ($router) {
-    $router->get("{id:[1-9]\d*}", "QuoteController@get");
+    $router->get("{key:[1-9]\d*}", "QuoteController@get");
     $router->get("random[/{count:[1-9]\d*}]", "QuoteController@random");
 
     $router->group(["middleware" => "auth:api"], function () use ($router) {

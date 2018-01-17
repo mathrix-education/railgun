@@ -3,7 +3,6 @@ namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http401UnauthorizedException;
-
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\BaseModel;
@@ -11,7 +10,8 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Validator;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Laravel\Lumen\Routing\Controller;
 
 /**
@@ -120,78 +120,18 @@ abstract class BaseController extends Controller
             throw new Http401UnauthorizedException();
         }
 
-        return response()->json(
-            $this->modelClass::limit($perPage)
+        $modelsCollection = $this->modelClass::limit($perPage)
                 ->offset(($page - 1) * $perPage)
-                ->get()
-        );
-    }
+                ->get();
 
-
-    /**
-     * Generic search action
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
-     * @throws Http400InvalidRequestException
-     * @throws Http401UnauthorizedException
-     */
-    public function search(Request $request): JsonResponse
-    {
-        if ($request->user() !== null && $request->user()->cant("search", $this->modelClass)) {
-            throw new Http401UnauthorizedException();
-        }
-
-        $inputs = $request->except(["order", "having"]);
-        $order = array_merge([
-            "column" => "id",
-            "dir" => "asc"
-        ], $request->input("order", []));
-
-        $conditions = [];
-        $having = [];
-
-        // Check if order dir is valid
-        if (!empty($inputs["order"]) && !in_array($order["dir"], ["asc", "desc"])) {
-            throw new Http400InvalidRequestException("order allowed values: ['asc', 'desc']");
-        }
-
-        // Convert request form data to valid eloquent conditions
-        foreach ($inputs as $column => $value) {
-            $operator = "=";
-            if (strstr($value, "%") !== false) {
-                $operator = "LIKE";
-            }
-            $conditions[] = [$column, $operator, $value];
-        }
-
-        foreach ($request->input("having", []) as $relation => $relationConditions) {
-            foreach ($relationConditions as $column => $value) {
-                $operator = "=";
-                if (strstr($value, "%") !== false) {
-                    $operator = "LIKE";
-                }
-                $having[$relation][] = [$column, $operator, $value];
-            }
-        }
-
-        // Build query
-        $queryBuilder = $this->modelClass::where($conditions);
-
-        foreach ($having as $relation => $havingConditions) {
-            $queryBuilder = $queryBuilder->whereHas($relation, function (Builder $query) use ($havingConditions) {
-                return $query->where($havingConditions);
+        if (!empty($modelsCollection->first()->order)) {
+            $modelsCollection = $modelsCollection->sortBy(function ($model) {
+                return $model->order;
             });
         }
 
-        $queryBuilder = $queryBuilder->orderBy($order["column"], $order["dir"]);
-        $data = $queryBuilder->get();
 
-        return response()->json([
-            "count" => $data->count(),
-            "data" => $data
-        ]);
+        return response()->json($modelsCollection);
     }
 
 
@@ -199,14 +139,24 @@ abstract class BaseController extends Controller
      * Generic get action
      *
      * @param Request $request
-     * @param int $id the model id
+     * @param string|int $key the field or the id
+     * @param null $value if set, the field value to search
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
+     * @throws Http400InvalidRequestException
      */
-    public function get(Request $request,int $id): JsonResponse
+    public function get(Request $request, $key, $value = null): JsonResponse
     {
-        $model = $this->modelClass::where("id", $id)->firstOrFail();
+        if(!is_numeric($key) && $value === null) {
+            throw new Http400InvalidRequestException("The given id \"$key\" is not numeric");
+        }
+        if (is_numeric($key) && $value === null) {
+            $value = $key;
+            $key = "id";
+        }
+
+        $model = $this->modelClass::where($key, $value)->firstOrFail();
 
         if ($request->user() !== null && $request->user()->cant("get", $model)) {
             throw new Http401UnauthorizedException();
@@ -287,4 +237,121 @@ abstract class BaseController extends Controller
         return response()->json();
     }
 
+
+    /**
+     * Generic search action
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     * @throws Http400InvalidRequestException
+     * @throws Http401UnauthorizedException
+     */
+    public function search(Request $request): JsonResponse
+    {
+        if ($request->user() !== null && $request->user()->cant("search", $this->modelClass)) {
+            throw new Http401UnauthorizedException();
+        }
+
+        $inputs = $request->except(["order", "having"]);
+        $order = array_merge([
+            "column" => "id",
+            "dir" => "asc"
+        ], $request->input("order", []));
+
+        $conditions = [];
+        $having = [];
+
+        // Check if order dir is valid
+        if (!empty($inputs["order"]) && !in_array($order["dir"], ["asc", "desc"])) {
+            throw new Http400InvalidRequestException("order allowed values: ['asc', 'desc']");
+        }
+
+        // Convert request form data to valid eloquent conditions
+        foreach ($inputs as $column => $value) {
+            $operator = "=";
+            if (strstr($value, "%") !== false) {
+                $operator = "LIKE";
+            }
+            $conditions[] = [$column, $operator, $value];
+        }
+
+        foreach ($request->input("having", []) as $relation => $relationConditions) {
+            foreach ($relationConditions as $column => $value) {
+                $operator = "=";
+                if (strstr($value, "%") !== false) {
+                    $operator = "LIKE";
+                }
+                $having[$relation][] = [$column, $operator, $value];
+            }
+        }
+
+        // Build query
+        $queryBuilder = $this->modelClass::where($conditions);
+
+        foreach ($having as $relation => $havingConditions) {
+            $queryBuilder = $queryBuilder->whereHas($relation, function (Builder $query) use ($havingConditions) {
+                return $query->where($havingConditions);
+            });
+        }
+
+        $queryBuilder = $queryBuilder->orderBy($order["column"], $order["dir"]);
+        $data = $queryBuilder->get();
+
+        return response()->json([
+            "count" => $data->count(),
+            "data" => $data
+        ]);
+    }
+
+
+    /**
+     * @param Request $request
+     * @param $what
+     * @param $id
+     *
+     * @return JsonResponse
+     * @throws Http400InvalidRequestException
+     * @throws Http401UnauthorizedException
+     */
+    public function by(Request $request, $what, $id)
+    {
+        $potentialModel = Str::studly($what);
+
+        if (in_array($potentialModel, array_keys($this->modelMap))) {
+            $potentialModel = $this->modelMap[$potentialModel];
+        }
+
+        /** @var BaseModel $potentialModelClass */
+        $potentialModelClass = "App\\Models\\$potentialModel";
+
+        if (!class_exists($potentialModelClass)) {
+            throw new Http400InvalidRequestException("$potentialModelClass does not exist");
+        }
+
+        /** @var BaseModel $model */
+        $model = $potentialModelClass::where("id", $id)->firstOrFail();
+
+        $potentialRelation = Str::lower($this->modelClass::getTableName());
+
+        if (!method_exists($model, $potentialRelation)) {
+            throw new Http400InvalidRequestException("$potentialModelClass::$potentialRelation() does not exist");
+        }
+
+        if ($request->user() !== null && $request->user()->cant("by$potentialModel", $this->modelClass)) {
+            throw new Http401UnauthorizedException();
+        }
+
+        /** @var Collection $modelsCollection */
+        $modelsCollection = $model->{$potentialRelation}()->get();
+
+        if (!empty($modelsCollection->first()->order)) {
+            $modelsCollection = $modelsCollection->sortBy(function ($model) {
+                return $model->order;
+            });
+        }
+
+
+        return response()->json($modelsCollection);
+    }
 }

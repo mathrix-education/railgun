@@ -26,17 +26,6 @@ class ClassObserver extends BaseObserver
         ) {
             $class->slug = str_slug($class->name);
         }
-        if (
-            empty($class->name_short) ||
-            ($class->isDirty("name") && !$class->isDirty("name_short"))
-        ) {
-            $class->name_short = $class->name;
-        }
-        if (empty($class->slug_short) ||
-            ($class->isDirty("name_short") && !$class->isDirty("slug_short"))
-        ) {
-            $class->slug_short = str_slug($class->name_short);
-        }
 
         // Sync disciplines
         if (!empty($class->link["disciplines"])) {
