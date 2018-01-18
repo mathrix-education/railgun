@@ -17,39 +17,13 @@ use Tests\ScopeTestCase;
 class ContentAsPublicTest extends ScopeTestCase
 {
     /**
-     * GET /content/countries
-     */
-    public function testCountries()
-    {
-        $this->get("/content/countries");
-
-        $this->assertHttp200Success();
-        $this->assertJsonLength(Country::all()->count());
-    }
-
-
-    /**
-     * GET /content/modules
-     */
-    public function testModules()
-    {
-        /** @var Class_ $class_ */
-        $class_ = Class_::random();
-
-        $this->get("/content/modules/{$class_->id}");
-
-        $this->assertHttp200Success();
-    }
-
-
-    /**
      * GET /content/search
      *
      * @throws \Exception
      */
     public function testSearchGlobal()
     {
-        $this->call("get", "/content/search/lorem");
+        $this->call("get", "/search/lorem");
 
         $this->assertHttp200Success();
         $data = $this->getResponseData();

@@ -203,7 +203,7 @@ class CommentController extends BaseController
         $user->canOrFail("latest", Comment::class);
 
         return response()->json(Comment::orderBy("created_at", "desc")
-            ->with(["user", "children", "children.user"])
+            ->with(["commentable", "user", "children", "children.user"])
             ->limit($perPage)
             ->offset(($page - 1) * $perPage)
             ->get());
