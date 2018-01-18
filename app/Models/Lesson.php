@@ -46,6 +46,9 @@ class Lesson extends BaseModel
         "module_id" => "required|exists:modules,id"
     ];
 
+    /** @var array The default included relations */
+    protected $with = ["module"];
+
 
     /**
      * BelongsTo Module

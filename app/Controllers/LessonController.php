@@ -24,26 +24,7 @@ class LessonController extends BaseController
      * @apiPermission public
      * @apiUse Pagination
      * @apiUse LessonArray
-     *
-     * @param Request $request
-     * @param int $page
-     * @param int $perPage
-     * @param array $options
-     *
-     * @return JsonResponse
      */
-    public function index(Request $request, int $page = 1, int $perPage = 10, array $options = []): JsonResponse
-    {
-        $request->user()->canOrFail("index", Lesson::class);
-
-        return response()->json(
-            Lesson::with("module")
-                ->limit($perPage)
-                ->offset(($page - 1) * $perPage)
-                ->get()
-        );
-    }
-
 
     /**
      * @apiVersion 1.0.0
@@ -55,20 +36,7 @@ class LessonController extends BaseController
      * @apiParam {int} id The lesson id
      * @apiUse LessonModel
      * @apiUse Http404ModelNotFound
-     *
-     * @param Request $request
-     * @param int $id
-     *
-     * @return JsonResponse
      */
-    public function get(Request $request, int $id): JsonResponse
-    {
-        $request->user()->canOrFail("get", Lesson::class);
-
-        $model = Lesson::with("module")->where("id", $id)->firstOrFail();
-
-        return response()->json($model);
-    }
 
 
     /**

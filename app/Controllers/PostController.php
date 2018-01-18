@@ -59,20 +59,7 @@ class PostController extends BaseController
      * @apiParam {int} id The post id
      * @apiUse PostModel
      * @apiUse Http404ModelNotFound
-     *
-     * @param Request $request
-     * @param int $id
-     *
-     * @return JsonResponse
      */
-    public function get(Request $request, int $id): JsonResponse
-    {
-        $request->user()->canOrFail("get", Post::class);
-
-        $model = Post::with("module")->where("id", $id)->firstOrFail();
-
-        return response()->json($model);
-    }
 
 
     /**

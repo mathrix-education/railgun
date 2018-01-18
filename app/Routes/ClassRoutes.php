@@ -9,6 +9,7 @@ $router->group(["prefix" => "classes"], function () use ($router) {
     });
 
     $router->get("by-{what:[a-z\-]+}/{id:[1-9]\d*}", "ClassController@by");
-    $router->get("{key:[a-z\-]+}[/{value:[a-z0-9\-]+}]", "ClassController@get");
+    $router->get("{key:[1-9]\d*}", "ClassController@get");
+    $router->get("{key:[a-z\-]+}/{value:[a-z0-9\-]+}", "ClassController@get");
 });
 

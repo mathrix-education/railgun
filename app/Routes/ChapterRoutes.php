@@ -12,5 +12,6 @@ $router->group(["prefix" => "chapters"], function () use ($router) {
     });
 
     $router->get("by-{what:[a-z\-]+}/{id:[1-9]\d*}", "ChapterController@by");
-    $router->get("{key:[a-z\-]+}[/{value:[a-z0-9\-]+}]", "ChapterController@get");
+    $router->get("{id:[1-9]\d*}", "ChapterController@get");
+    $router->get("{key:[a-z\-]+}/{value:[a-z0-9\-]+}", "ChapterController@get");
 });

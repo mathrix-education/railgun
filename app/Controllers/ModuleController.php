@@ -48,17 +48,18 @@ class ModuleController extends BaseController
      * @apiUse Http404ModelNotFound
      *
      * @param Request $request
-     * @param int $id
+     * @param int $key the module id
+     * @param null $value not used here
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
      */
-    public function get(Request $request, int $id): JsonResponse
+    public function get(Request $request, $key, $value = null): JsonResponse
     {
-        $module = Module::where("id", $id)->with([
-            "comments" => function (MorphMany $query) use ($id) {
+        $module = Module::where("id", $key)->with([
+            "comments" => function (MorphMany $query) use ($key) {
                 $query->getQuery()
-                    ->where("commentable_id", "=", $id)
+                    ->where("commentable_id", "=", $key)
                     ->where("commentable_type", "=", "module")
                     ->orderByDesc("created_at");
             },
