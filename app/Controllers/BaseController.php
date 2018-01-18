@@ -127,7 +127,7 @@ abstract class BaseController extends Controller
         if (!empty($modelsCollection->first()->order)) {
             $modelsCollection = $modelsCollection->sortBy(function ($model) {
                 return $model->order;
-            });
+            })->values();
         }
 
 
@@ -345,10 +345,10 @@ abstract class BaseController extends Controller
         /** @var Collection $modelsCollection */
         $modelsCollection = $model->{$potentialRelation}()->get();
 
-        if (!empty($modelsCollection->first()->order)) {
+        if (isset($modelsCollection->first()->order)) {
             $modelsCollection = $modelsCollection->sortBy(function ($model) {
                 return $model->order;
-            });
+            })->values();
         }
 
 

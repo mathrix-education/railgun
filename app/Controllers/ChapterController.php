@@ -1,7 +1,8 @@
 <?php
 namespace App\Controllers;
 
-
+use App\Models\Chapter;
+use Illuminate\Http\JsonResponse;
 
 
 /**
@@ -86,4 +87,32 @@ class ChapterController extends BaseController
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
      */
+
+
+    /**
+     * @apiVersion 1.0.0
+     * @api {get} /chapters/by-class-discipline/{class_id}/{discipline_id} By Class and Discipline
+     * @apiGroup Chapters
+     * @apiName ChapterClassDiscipline
+     * @apiDescription Get chapters by class and discipline
+     * @apiUse Bearer
+     * @apiPermission public
+     * @apiParam {int} class_id The class id
+     * @apiParam {int} discipline_id The discipline id
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
+     *
+     * @param int $class_id
+     * @param int $discipline_id
+     *
+     * @return JsonResponse
+     */
+    public function by_class_discipline(int $class_id, int $discipline_id)
+    {
+        $chapters = Chapter::where([["class_id", $class_id], ["discipline_id", $discipline_id]])
+            ->orderBy("order")
+            ->get();
+
+        return response()->json($chapters);
+    }
 }
