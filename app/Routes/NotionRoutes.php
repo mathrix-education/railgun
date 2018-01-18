@@ -4,7 +4,9 @@ $router->get("notions[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "NotionController@i
 
 $router->group(["prefix" => "notions"], function () use ($router) {
     $router->get("[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "NotionController@index");
-    $router->get("{key:[a-z\-]+}[/{value:[a-z0-9\-]+}]", "NotionController@get");
+    $router->get("by-{what:[a-z\-]+}/{id:[1-9]\d*}", "NotionController@by");
+    $router->get("{key:[1-9]\d*}", "NotionController@get");
+    $router->get("{key:[a-z\-]+}/{value:[a-z0-9\-]+}", "NotionController@get");
 
     $router->group(["middleware" => "auth:api"], function () use ($router) {
         $router->post("", "NotionController@add");
@@ -12,6 +14,4 @@ $router->group(["prefix" => "notions"], function () use ($router) {
         $router->delete("{id:[1-9]\d*}", "NotionController@delete");
     });
 
-    $router->get("by-{what:[a-z\-]+}/{id:[1-9]\d*}", "NotionController@by");
-    $router->get("{key:[a-z\-]+}[/{value:[a-z0-9\-]+}]", "NotionController@get");
 });

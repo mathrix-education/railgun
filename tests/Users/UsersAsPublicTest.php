@@ -188,11 +188,11 @@ class UsersAsPublicTest extends ScopeTestCase
 
 
     /**
-     * GET /users/me
+     * GET /users/profile
      */
-    public function testMe()
+    public function testProfile()
     {
-        $this->call("get", "/users/me");
+        $this->call("get", "/users/profile");
 
         $this->assertHttp401Unauthorized();
     }

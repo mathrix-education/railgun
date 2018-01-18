@@ -7,8 +7,7 @@ $router->group(["middleware" => "auth:api"], function () use ($router) {
 $router->group(["prefix" => "comments"], function () use ($router) {
 
     $router->group(["middleware" => "auth:api"], function () use ($router) {
-        $router->get("{id:[1-9]\d*}", "CommentController@get");
-
+        $router->get("{key:[1-9]\d*}", "CommentController@get");
         $router->get("latest", "CommentController@latest");
         $router->get("latest/{page:[1-9]\d*}/{perPage:[1-9]\d*}", "CommentController@latest");
         $router->post("", "CommentController@add");

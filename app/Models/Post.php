@@ -57,6 +57,9 @@ class Post extends BaseModel
         "category_id" => "required|exists:categories,id"
     ];
 
+    /** @var array The default included relations */
+    protected $with = ["module"];
+
 
     /*
     |--------------------------------------------------------------------------

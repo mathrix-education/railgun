@@ -3,7 +3,8 @@
 $router->get("countries[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "CountryController@index");
 
 $router->group(["prefix" => "countries"], function () use ($router) {
-    $router->get("{key:[a-z\-]+}[/{value:[a-z0-9\-]+}]", "CountryController@get");
+    $router->get("{key:[1-9]\d*}", "CountryController@get");
+    $router->get("{key:[a-z\-]+}/{value:[a-z0-9\-]+}", "CountryController@get");
 
     $router->group(["middleware" => "auth:api"], function () use ($router) {
         $router->post("", "CountryController@add");
