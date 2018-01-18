@@ -26,6 +26,17 @@ class ChaptersAsPublicTest extends ScopeTestCase
 
 
     /**
+     * GET /chapters/{id}
+     *
+     * @throws \Exception
+     */
+    public function testGet()
+    {
+        $this->genericGetSuccess();
+    }
+
+
+    /**
      * POST /chapters -> HTTP 401 unauthorized
      *
      * @throws \Exception

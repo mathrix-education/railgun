@@ -34,36 +34,64 @@ abstract class BaseController extends Controller
     /**
      * BaseController constructor
      * Build model class
+     *
+     * @throws Http400InvalidRequestException
      */
     public function __construct()
     {
-        $this->guessModelClass();
+        $modelName = str_replace(["App\\Controllers\\", "Controller"], "", get_class($this));
+        $modelClass = $this->resolveModelClass($modelName, false);
+
+        if ($modelClass !== false) {
+            $this->modelClass = $modelClass;
+        }
     }
 
 
     /**
-     * Guess the model class associated with the controller
+     * @param string $name the model name
+     * @param bool $fail if true, raise and exception
+     *
+     * @return BaseModel|bool
+     * @throws Http400InvalidRequestException
      */
-    protected function guessModelClass()
+    protected function resolveModelClass($name, $fail = true)
     {
-        // Try to guess the model class
-        $controllerClass = get_class($this);
+        $potentialModel = Str::studly(Str::singular($name));
 
-        // Remove namespace to avoid replace colliding
-        $guessedModelClass = str_replace("App\\Controllers\\", "", $controllerClass);
-        $guessedModelClass = str_replace("Controller", "", $guessedModelClass);
-
-        // Handle cancer model name (i.e. Class_)
-        if (in_array($guessedModelClass, array_keys($this->modelMap))) {
-            $guessedModelClass = $this->modelMap[$guessedModelClass];
+        if (in_array($potentialModel, array_keys($this->modelMap))) {
+            $potentialModel = $this->modelMap[$potentialModel];
         }
 
-        // Re-add models namespace
-        $guessedModelClass = "App\\Models\\$guessedModelClass";
+        /** @var BaseModel $potentialModelClass */
+        $potentialModelClass = "App\\Models\\$potentialModel";
 
-        if (class_exists($guessedModelClass) && $this->modelClass === null) {
-            $this->modelClass = $guessedModelClass;
+        if (!class_exists($potentialModelClass) && $fail) {
+            throw new Http400InvalidRequestException("$potentialModelClass does not exist");
+        } else if (!class_exists($potentialModelClass) && !$fail) {
+            return false;
+        } else {
+            return $potentialModelClass;
         }
+    }
+
+
+    /**
+     * Order a collection of models by their order key if it exists. If not, just return the collection.
+     *
+     * @param Collection $collection
+     *
+     * @return Collection
+     */
+    protected function orderCollection(Collection $collection): Collection
+    {
+        if (!empty($collection->first()->order)) {
+            $collection = $collection->sortBy(function ($model) {
+                return $model->order;
+            })->values();
+        }
+
+        return $collection;
     }
 
 
@@ -120,18 +148,13 @@ abstract class BaseController extends Controller
             throw new Http401UnauthorizedException();
         }
 
-        $modelsCollection = $this->modelClass::limit($perPage)
-                ->offset(($page - 1) * $perPage)
-                ->get();
-
-        if (!empty($modelsCollection->first()->order)) {
-            $modelsCollection = $modelsCollection->sortBy(function ($model) {
-                return $model->order;
-            })->values();
-        }
-
-
-        return response()->json($modelsCollection);
+        return response()->json(
+            $this->orderCollection(
+                $this->modelClass::limit($perPage)
+                    ->offset(($page - 1) * $perPage)
+                    ->get()
+            )
+        );
     }
 
 
@@ -148,7 +171,7 @@ abstract class BaseController extends Controller
      */
     public function get(Request $request, $key, $value = null): JsonResponse
     {
-        if(!is_numeric($key) && $value === null) {
+        if (!is_numeric($key) && $value === null) {
             throw new Http400InvalidRequestException("The given id \"$key\" is not numeric");
         }
         if (is_numeric($key) && $value === null) {
@@ -242,12 +265,14 @@ abstract class BaseController extends Controller
      * Generic search action
      *
      * @param Request $request
+     * @param int $page
+     * @param int $perPage
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
      */
-    public function search(Request $request): JsonResponse
+    public function search(Request $request, $page = 1, $perPage = 10): JsonResponse
     {
         if ($request->user() !== null && $request->user()->cant("search", $this->modelClass)) {
             throw new Http401UnauthorizedException();
@@ -296,62 +321,88 @@ abstract class BaseController extends Controller
         }
 
         $queryBuilder = $queryBuilder->orderBy($order["column"], $order["dir"]);
+
+        $queryBuilder = $queryBuilder->limit($perPage)
+            ->offset(($page - 1) * $perPage);
+
+        $count = $queryBuilder->count();
         $data = $queryBuilder->get();
 
         return response()->json([
-            "count" => $data->count(),
+            "perPage" => $perPage,
+            "page" => $page,
+            "count" => $count,
             "data" => $data
         ]);
     }
 
 
     /**
+     * Get the models which satisfy a given relation
+     *
      * @param Request $request
-     * @param $what
-     * @param $id
+     * @param string $what
+     * @param int $id
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
      */
-    public function by(Request $request, $what, $id)
+    public function by(Request $request, string $what, int $id)
     {
-        $potentialModel = Str::studly($what);
-
-        if (in_array($potentialModel, array_keys($this->modelMap))) {
-            $potentialModel = $this->modelMap[$potentialModel];
-        }
-
-        /** @var BaseModel $potentialModelClass */
-        $potentialModelClass = "App\\Models\\$potentialModel";
-
-        if (!class_exists($potentialModelClass)) {
-            throw new Http400InvalidRequestException("$potentialModelClass does not exist");
-        }
+        $modelClass = $this->resolveModelClass($what);
 
         /** @var BaseModel $model */
-        $model = $potentialModelClass::where("id", $id)->firstOrFail();
+        $model = $modelClass::where("id", $id)->firstOrFail();
 
         $potentialRelation = Str::lower($this->modelClass::getTableName());
 
         if (!method_exists($model, $potentialRelation)) {
-            throw new Http400InvalidRequestException("$potentialModelClass::$potentialRelation() does not exist");
+            throw new Http400InvalidRequestException("$modelClass::$potentialRelation() does not exist");
         }
 
-        if ($request->user() !== null && $request->user()->cant("by$potentialModel", $this->modelClass)) {
+        if ($request->user() !== null && $request->user()->cant("by$modelClass", $this->modelClass)) {
             throw new Http401UnauthorizedException();
         }
 
-        /** @var Collection $modelsCollection */
-        $modelsCollection = $model->{$potentialRelation}()->get();
+        return response()->json(
+            $this->orderCollection($model->{$potentialRelation}()->get())
+        );
+    }
 
-        if (isset($modelsCollection->first()->order)) {
-            $modelsCollection = $modelsCollection->sortBy(function ($model) {
-                return $model->order;
-            })->values();
+
+    /**
+     * Get the model ids which satisfy a given relation
+     *
+     * @param Request $request
+     * @param string $what
+     * @param int $id
+     *
+     * @return JsonResponse
+     * @throws Http400InvalidRequestException
+     * @throws Http401UnauthorizedException
+     */
+    public function ids(Request $request, string $what, int $id)
+    {
+        $modelClass = $this->resolveModelClass($what);
+
+        /** @var BaseModel $model */
+        $model = $modelClass::where("id", $id)->firstOrFail();
+
+        $potentialRelation = Str::lower($this->modelClass::getTableName());
+
+        if (!method_exists($model, $potentialRelation)) {
+            throw new Http400InvalidRequestException("$modelClass::$potentialRelation() does not exist");
         }
 
+        if ($request->user() !== null && $request->user()->cant("by$modelClass", $this->modelClass)) {
+            throw new Http401UnauthorizedException();
+        }
 
-        return response()->json($modelsCollection);
+        return response()->json(
+            $this->orderCollection($model->{$potentialRelation}()
+                ->get(["id"])
+                ->pluck("id"))
+        );
     }
 }

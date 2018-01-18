@@ -2,9 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Lesson;
+use App\Models\Training;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Class Section
@@ -20,6 +24,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property int $training_id
  * @property string|null $created_at
  * @property string|null $updated_at
+ * @property-read Training $training
+ * @property-read Collection|Lesson[] $lesson
  * @method static Builder|Section whereId($value)
  * @method static Builder|Section whereName($value)
  * @method static Builder|Section whereOrder($value)
@@ -27,8 +33,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Section whereTrainingId($value)
  * @method static Builder|Section whereCreatedAt($value)
  * @method static Builder|Section whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Module[] $modules
- * @property-read \App\Models\Training $training
  */
 class Section extends BaseModel
 {
@@ -53,11 +57,11 @@ class Section extends BaseModel
     }
 
     /**
-     * BelongsToMany Training
-     * @return BelongsToMany
+     * HasMany Lesson
+     * @return HasMany
      */
-    public function modules()
+    public function lessons()
     {
-        return $this->belongsToMany(Module::class);
+        return $this->hasMany(Lesson::class);
     }
 }

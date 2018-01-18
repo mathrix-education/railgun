@@ -12,5 +12,4 @@ $router->group(["prefix" => "sections", "middleware" => "auth:api"], function ()
     $router->post("", "SectionController@add");
     $router->patch("{id:[1-9]\d*}", "SectionController@edit");
     $router->delete("{id:[1-9]\d*}", "SectionController@delete");
-
 });
