@@ -1,9 +1,6 @@
 <?php
 namespace App\Controllers;
-use App\Exceptions\Http401UnauthorizedException;
-use App\Models\Lesson;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+
 
 /**
  * Class LessonController

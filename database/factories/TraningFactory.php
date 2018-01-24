@@ -1,7 +1,6 @@
 <?php
 
-use App\Models\Activity;
-use App\Models\Section;
+
 use App\Models\Training;
 use Faker\Generator;
 

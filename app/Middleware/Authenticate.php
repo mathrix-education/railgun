@@ -43,8 +43,9 @@ class Authenticate
      * @param  Closure $next
      * @param  string|null $guard
      *
-     * @throws Http401UnauthorizedException
      * @return mixed
+     * @throws Http401UnauthorizedException
+     * @throws \Exception
      */
     public function handle($request, Closure $next, $guard = null)
     {

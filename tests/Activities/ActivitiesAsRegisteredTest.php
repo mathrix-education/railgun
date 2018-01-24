@@ -112,6 +112,9 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
         $this->call("patch", "/activities/$activityId/mark", $data);
 
         $expectedData = array_merge($data, ["user_id" => $this->user->id]);
+
+        dd($this->getResponseData());
+
         $this->assertHttp200Success();
         $this->assertInDatabase("metas", $expectedData);
     }

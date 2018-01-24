@@ -83,6 +83,7 @@ class PostController extends BaseController
      * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function add(Request $request): JsonResponse
     {

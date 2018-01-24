@@ -1,7 +1,7 @@
 <?php
 namespace Tests\Lessons;
 
-use App\Models\Quote;
+
 use Tests\ScopeTestCase;
 
 /**

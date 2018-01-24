@@ -1,4 +1,7 @@
 <?php
+
+use App\Exceptions\Http422ModelSaveException;
+use App\Exceptions\Http422ModelValidationException;
 use App\Models\Notion;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -49,6 +52,9 @@ class CreateChapterNotionTable extends Migration
      * Reverse the migrations.
      *
      * @return void
+     * @throws Exception
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
      */
     public function down()
     {

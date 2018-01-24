@@ -5,12 +5,12 @@ use App\Exceptions\Http401UnauthorizedException;
 use App\Models\Activity;
 use App\Models\Chapter;
 use App\Models\Class_;
-use App\Models\Country;
+
 use App\Models\Notion;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -194,9 +194,13 @@ class ContentController extends BaseController
         }
 
         return response()->json([
-            "videos" => $videos,
-            "chapters" => $chapters,
-            "notions" => $notions
+            "page" => $page,
+            "perPage" => $perPage,
+            "data" => [
+                "videos" => $videos,
+                "chapters" => $chapters,
+                "notions" => $notions
+            ]
         ]);
     }
 
@@ -239,6 +243,7 @@ class ContentController extends BaseController
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
+     * @throws \Exception
      */
     public function upload(Request $request)
     {

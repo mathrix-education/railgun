@@ -6,15 +6,11 @@ use App\Events\PasswordResetEvent;
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
-use App\Exceptions\Http502EmailNotSentException;
-use App\Mails\PasswordForgottenMail;
-use App\Mails\PasswordResetMail;
 use App\Models\Log;
 use App\Models\User;
 use Faker\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
 /**
  * Class AuthController
@@ -49,6 +45,7 @@ class AuthController extends BaseController
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function login(Request $request)
     {
@@ -121,6 +118,7 @@ class AuthController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
+     * @throws \Exception
      */
     public function forgot(Request $request)
     {
@@ -161,6 +159,7 @@ class AuthController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
+     * @throws \Exception
      */
     public function reset(Request $request, string $token)
     {

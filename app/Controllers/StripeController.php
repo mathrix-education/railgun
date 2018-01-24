@@ -75,6 +75,7 @@ class StripeController extends CashierController
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function subscribe(Request $request)
     {
@@ -150,6 +151,7 @@ class StripeController extends CashierController
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
+     * @throws \Exception
      */
     public function estimate(Request $request, string $stripePlan)
     {
@@ -164,6 +166,7 @@ class StripeController extends CashierController
      *
      * @return Carbon
      * @throws Http400InvalidRequestException
+     * @throws \Exception
      */
     private function getEndDateFromStripePlan(string $stripePlan)
     {
@@ -195,6 +198,7 @@ class StripeController extends CashierController
      *
      * @return int The price, in cents
      * @throws Http400InvalidRequestException
+     * @throws \Exception
      */
     private function getPriceFromStripePlan(Request $request, string $stripePlan)
     {
@@ -234,6 +238,7 @@ class StripeController extends CashierController
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function handleInvoicePaymentSucceeded($payload)
     {
@@ -256,6 +261,7 @@ class StripeController extends CashierController
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function handleInvoicePaymentFailed(array $payload)
     {
@@ -280,6 +286,7 @@ class StripeController extends CashierController
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function handleCustomerSubscriptionDeleted(array $payload)
     {

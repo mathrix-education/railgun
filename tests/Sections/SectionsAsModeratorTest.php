@@ -2,7 +2,7 @@
 
 namespace Tests\Sections;
 
-use App\Models\Module;
+
 
 /**
  * Class SectionAsModeratorTest

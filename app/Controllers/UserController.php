@@ -6,7 +6,6 @@ use App\Exceptions\Http401UnauthorizedException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Exceptions\Http429TooManyRequestsException;
-use App\Exceptions\Http501NotImplementedException;
 use App\Models\Activity;
 use App\Models\Log;
 use App\Models\Module;
@@ -73,6 +72,7 @@ class UserController extends BaseController
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
+     * @throws \Exception
      */
     public function edit(Request $request, int $id = null): JsonResponse
     {
@@ -133,6 +133,7 @@ class UserController extends BaseController
      * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function register(Request $request): JsonResponse
     {
@@ -169,27 +170,29 @@ class UserController extends BaseController
 
     /**
      * @apiVersion 1.0.0
-     * @api {get} /users/exists/{field}/{value} Exists
+     * @api {post} /users/exists Exists
      * @apiGroup Users
      * @apiName UserExists
      * @apiDescription Search for user matching given key-value
      * @apiPermission public
-     * @apiParam {string=username,email} field The field to check
-     * @apiParam {string} value The field value to search
+     * @apiParam (Data) {string} email The email to check
+     * @apiParam (Data) {string} username The username to check
+     * @apiSuccess {bool} exists if an user matching criteria exists
      *
-     * @param string $field
-     * @param string $value
+     * @param Request $request
      *
      * @return JsonResponse
-     * @throws Http400InvalidRequestException
      */
-    public function exists(string $field, string $value)
+    public function exists(Request $request)
     {
-        if (!in_array($field, ["username", "email"])) {
-            throw new Http400InvalidRequestException();
+        foreach ($request->all() as $key => $value) {
+            if(User::where($key, $value)->exists()) {
+                return response()->json(["exists" => true]);
+            }
         }
 
-        return response()->json(["exists" => User::where($field, $value)->exists()]);
+        return response()->json(["exists" => false]);
+
     }
 
 
@@ -246,6 +249,7 @@ class UserController extends BaseController
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      * @throws Http429TooManyRequestsException
+     * @throws \Exception
      */
     public function points(Request $request, $id = null)
     {

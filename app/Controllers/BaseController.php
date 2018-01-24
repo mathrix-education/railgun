@@ -36,6 +36,7 @@ abstract class BaseController extends Controller
      * Build model class
      *
      * @throws Http400InvalidRequestException
+     * @throws \Exception
      */
     public function __construct()
     {
@@ -54,6 +55,7 @@ abstract class BaseController extends Controller
      *
      * @return BaseModel|bool
      * @throws Http400InvalidRequestException
+     * @throws \Exception
      */
     protected function resolveModelClass($name, $fail = true)
     {
@@ -105,6 +107,7 @@ abstract class BaseController extends Controller
      * @return User
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
+     * @throws \Exception
      */
     protected function getUserByRequestOrUnauthorized(Request $request, $minimumScope = "admin", $key = "user_id")
     {
@@ -140,6 +143,7 @@ abstract class BaseController extends Controller
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
+     * @throws \Exception
      */
     public function index(Request $request, int $page = 1, int $perPage = 10): JsonResponse
     {
@@ -168,6 +172,7 @@ abstract class BaseController extends Controller
      * @return JsonResponse
      * @throws Http401UnauthorizedException
      * @throws Http400InvalidRequestException
+     * @throws \Exception
      */
     public function get(Request $request, $key, $value = null): JsonResponse
     {
@@ -198,6 +203,7 @@ abstract class BaseController extends Controller
      * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function add(Request $request): JsonResponse
     {
@@ -221,6 +227,7 @@ abstract class BaseController extends Controller
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
+     * @throws \Exception
      */
     public function edit(Request $request, int $id): JsonResponse
     {
@@ -245,6 +252,7 @@ abstract class BaseController extends Controller
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
+     * @throws \Exception
      */
     public function delete(Request $request, int $id): JsonResponse
     {
@@ -271,6 +279,7 @@ abstract class BaseController extends Controller
      * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
+     * @throws \Exception
      */
     public function search(Request $request, $page = 1, $perPage = 10): JsonResponse
     {
@@ -342,18 +351,28 @@ abstract class BaseController extends Controller
      *
      * @param Request $request
      * @param string $what
-     * @param int $id
+     * @param int|string $key
+     * @param int|string $value
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
+     * @throws \Exception
      */
-    public function by(Request $request, string $what, int $id)
+    public function by(Request $request, string $what, $key, $value = null)
     {
+        if (!is_numeric($key) && $value === null) {
+            throw new Http400InvalidRequestException("The given id \"$key\" is not numeric");
+        }
+        if (is_numeric($key) && $value === null) {
+            $value = $key;
+            $key = "id";
+        }
+
         $modelClass = $this->resolveModelClass($what);
 
         /** @var BaseModel $model */
-        $model = $modelClass::where("id", $id)->firstOrFail();
+        $model = $modelClass::where($key, $value)->firstOrFail();
 
         $potentialRelation = Str::lower($this->modelClass::getTableName());
 
@@ -381,6 +400,7 @@ abstract class BaseController extends Controller
      * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
+     * @throws \Exception
      */
     public function ids(Request $request, string $what, int $id)
     {

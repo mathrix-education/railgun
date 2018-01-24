@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Module;
-use App\Models\Quote;
+
 use App\Models\Report;
 use Faker\Generator;
 

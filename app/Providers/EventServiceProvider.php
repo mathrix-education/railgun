@@ -3,7 +3,6 @@ namespace App\Providers;
 
 use App\Events\PasswordForgottenEvent;
 use App\Events\PasswordResetEvent;
-use App\Listeners\PasswordForgottenListener;
 use Laravel\Lumen\Providers\EventServiceProvider as ServiceProvider;
 
 /**

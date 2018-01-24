@@ -95,9 +95,9 @@ gulp.task("remove-eloquent-mixin", function() {
 gulp.task("remove-empty-line-before-namespace", function() {
     return;
 
-    gulp.src(["app/**/*.php", "database/**/*.php", "tests/**/*.php"])
-        .pipe(replace("<?php\n\nnamespace", "<?php\nnamespace"))
-        .pipe(gulp.dest("./")); // TODO fix dest
+    //gulp.src(["app/**/*.php", "database/**/*.php", "tests/**/*.php"])
+    //    .pipe(replace("<?php\n\nnamespace", "<?php\nnamespace"))
+    //    .pipe(gulp.dest("./")); // TODO fix dest
 });
 
 gulp.task("install", ["mjml", "apidoc"]);

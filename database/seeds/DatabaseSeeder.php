@@ -1,6 +1,4 @@
 <?php
-use App\Exceptions\Http422ModelSaveException;
-use App\Exceptions\Http422ModelValidationException;
 
 
 /**

@@ -10,7 +10,7 @@ $router->group(["prefix" => "users"], function () use ($router) {
     $router->post("refresh", "AuthController@refresh");
     $router->post("forgot", "AuthController@forgot");
     $router->post("reset/{token}", "AuthController@reset");
-    $router->get("exists/{field}/{value}", "UserController@exists");
+    $router->post("exists", "UserController@exists");
 
     $router->group(["middleware" => "auth:api"], function () use ($router) {
         $router->get("[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "UserController@index");

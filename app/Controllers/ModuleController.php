@@ -53,6 +53,7 @@ class ModuleController extends BaseController
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
+     * @throws \Exception
      */
     public function get(Request $request, $key, $value = null): JsonResponse
     {
@@ -154,6 +155,7 @@ class ModuleController extends BaseController
      * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function mark(Request $request, int $id): JsonResponse
     {
