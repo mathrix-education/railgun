@@ -21,6 +21,7 @@ use App\Models\User;
 class UserTableSeeder extends BaseTableSeeder
 {
     /**
+     * @throws Exception
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      */

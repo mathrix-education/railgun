@@ -18,7 +18,7 @@ class LessonObserver extends BaseObserver
         // Sluggify if needed
         if (empty($lesson->slug) ||
             ($lesson->isDirty("name") && !$lesson->isDirty("slug"))) {
-            $lesson->slug = str_slug($lesson->name);
+            $lesson->slug = str_slug($lesson->title);
         }
     }
 }

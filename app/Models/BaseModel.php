@@ -93,6 +93,7 @@ abstract class BaseModel extends Model
      * @return bool
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function save(array $options = [])
     {

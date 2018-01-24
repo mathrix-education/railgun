@@ -92,6 +92,7 @@ abstract class BaseTableSeeder extends Seeder
      *  "table" => $this->>table, $this->modelClass::getTableName()
      *  "directory" => "raws"
      *
+     * @throws Exception
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      */
@@ -185,6 +186,7 @@ abstract class BaseTableSeeder extends Seeder
      *
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws Exception
      */
     public function seedFromArray(array $data, $modelClass, bool $display = false)
     {
@@ -222,6 +224,7 @@ abstract class BaseTableSeeder extends Seeder
      *  "override" => []
      *  "callback" => null
      *
+     * @throws Exception
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      */
@@ -309,6 +312,7 @@ abstract class BaseTableSeeder extends Seeder
      * @param int $min the minimum relations
      * @param int $max the maximum relations
      *
+     * @throws Exception
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      */
@@ -329,6 +333,7 @@ abstract class BaseTableSeeder extends Seeder
      *
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws Exception
      */
     public function link($modelClass1, $modelClass2, $min = 3, $max = 5)
     {

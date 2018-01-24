@@ -90,6 +90,7 @@ class Log extends BaseModel
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public static function log(string $event, $user = null, $data = [])
     {

@@ -7,6 +7,7 @@
 /.idea/dataSources/
 /.idea/dataSources*
 /.idea/dictionaries
+/.idea/httpRequests/
 /.idea/deployment.xml
 /.idea/php.xml
 
@@ -20,3 +21,4 @@
 /storage/code-coverage/
 /storage/sitemaps/
 /vendor/
+

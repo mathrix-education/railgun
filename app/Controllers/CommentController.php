@@ -71,6 +71,7 @@ class CommentController extends BaseController
      * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function add(Request $request): JsonResponse
     {
@@ -137,6 +138,7 @@ class CommentController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
+     * @throws \Exception
      */
     public function type(string $commentable_type, int $commentable_id, int $page = 1, int $perPage = 10)
     {

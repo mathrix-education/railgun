@@ -19,6 +19,7 @@ use App\Models\Notion;
 class ContentTableSeeder extends BaseTableSeeder
 {
     /**
+     * @throws Exception
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      */

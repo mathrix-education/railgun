@@ -13,7 +13,7 @@ A lot of templates and rules are included as PhpStorm configuration files. That'
 
 #### Generic class (included as PhpStorm template)
 
-```php
+```
 <?php
 namespace {namespace}
         // <-- 1 line

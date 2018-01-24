@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="API" pattern="file[mathrix-api]:app//*||file[mathrix-api]:database//*||file[mathrix-api]:tests//*||file[mathrix-api]:resources//*||file[mathrix-api]:bootstrap//*||file:README.md||file:LICENSE.md||file:gulpfile.js||file:Envoy.blade.php||file[mathrix-api]:docs/md//*||file[mathrix-api]:config//*" />
+</component>

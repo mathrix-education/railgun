@@ -27,6 +27,7 @@ class UserObserver extends BaseObserver
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function saving($user)
     {
@@ -123,6 +124,7 @@ class UserObserver extends BaseObserver
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function created($user)
     {
@@ -136,6 +138,7 @@ class UserObserver extends BaseObserver
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function updated($user)
     {

@@ -2,7 +2,7 @@
 namespace App\Controllers;
 
 use App\Exceptions\Http401UnauthorizedException;
-use App\Exceptions\Http422ModelSaveException;
+
 use App\Exceptions\Http501NotImplementedException;
 use App\Models\Class_;
 use Illuminate\Http\JsonResponse;
