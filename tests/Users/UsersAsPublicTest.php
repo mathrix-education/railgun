@@ -204,7 +204,7 @@ class UsersAsPublicTest extends ScopeTestCase
     public function testExistsTrue()
     {
         $user = User::inRandomOrder()->first();
-        $this->call("get", "/users/exists/email/{$user->email}");
+        $this->call("post", "/users/exists", ["email" => $user->email]);
 
         $this->assertHttp200Success();
     }

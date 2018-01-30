@@ -5,6 +5,7 @@ use App\Models\Activity;
 use App\Models\Lesson;
 use App\Models\Meta;
 use App\Models\Module;
+use App\Models\Post;
 use App\Models\Report;
 
 /**
@@ -53,6 +54,7 @@ class ModuleObserver extends BaseObserver
     {
         $module->activities()->detach();
         Meta::whereModuleId($module->id)->delete();
+        Post::whereModuleId($module->id)->delete();
         Lesson::whereModuleId($module->id)->delete();
         Report::whereModuleId($module->id)->delete();
 
