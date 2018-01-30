@@ -26,9 +26,9 @@ class ContentAsPublicTest extends ScopeTestCase
 
         $this->assertHttp200Success();
         $data = $this->getResponseData();
-        $this->assertTrue(isset($data->videos));
-        $this->assertTrue(isset($data->chapters));
-        $this->assertTrue(isset($data->notions));
+        $this->assertTrue(isset($data->data->videos));
+        $this->assertTrue(isset($data->data->chapters));
+        $this->assertTrue(isset($data->data->notions));
     }
 
 

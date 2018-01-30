@@ -113,8 +113,6 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
 
         $expectedData = array_merge($data, ["user_id" => $this->user->id]);
 
-        dd($this->getResponseData());
-
         $this->assertHttp200Success();
         $this->assertInDatabase("metas", $expectedData);
     }
