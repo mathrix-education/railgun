@@ -51,7 +51,7 @@ class UserObserver extends BaseObserver
             }
 
             // Subscribe the user to "subscribers" Mailchimp list
-            Newsletter::subscribeOrUpdate($user->email, $options, env("MAILCHIMP_LIST_SUBSCRIBERS"));
+            Newsletter::subscribeOrUpdate($user->email, $options, "subscribers");
 
         }
 

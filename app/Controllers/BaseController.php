@@ -370,6 +370,8 @@ abstract class BaseController extends Controller
         }
 
         $modelClass = $this->resolveModelClass($what);
+        $ucName = ucfirst($what);
+
 
         /** @var BaseModel $model */
         $model = $modelClass::where($key, $value)->firstOrFail();
@@ -380,7 +382,7 @@ abstract class BaseController extends Controller
             throw new Http400InvalidRequestException("$modelClass::$potentialRelation() does not exist");
         }
 
-        if ($request->user() !== null && $request->user()->cant("by$modelClass", $this->modelClass)) {
+        if ($request->user() !== null && $request->user()->cant("by$ucName", $this->modelClass)) {
             throw new Http401UnauthorizedException();
         }
 
