@@ -115,4 +115,28 @@ class ChapterController extends BaseController
 
         return response()->json($chapters);
     }
+
+
+    /**
+     * @apiVersion 1.1
+     * @api {get} /chapter/recursive/{id} Random
+     * @apiGroup Chapters
+     * @apiName ChapterRecursive
+     * @apiDescription Get a chapter and its linked models recursiveley
+     * @apiPermission public
+     * @apiParam {int} id the chapter id
+     * @apiUse ChapterArray
+     *
+     * @param int $id
+     *
+     * @return JsonResponse
+     */
+    public function recursive(int $id) {
+        return response()->json(
+            Chapter::with(["notions", "notions.activities", "notions.activities.modules"])
+                ->where("id", $id)
+                ->get()
+
+        );
+    }
 }
