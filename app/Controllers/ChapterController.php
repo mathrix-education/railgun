@@ -135,7 +135,7 @@ class ChapterController extends BaseController
         return response()->json(
             Chapter::with(["notions", "notions.activities", "notions.activities.modules"])
                 ->where("id", $id)
-                ->get()
+                ->first()
 
         );
     }
