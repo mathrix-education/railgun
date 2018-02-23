@@ -118,7 +118,7 @@ class ChapterController extends BaseController
 
 
     /**
-     * @apiVersion 1.1
+     * @apiVersion 1.1.0
      * @api {get} /chapter/recursive/{id} Random
      * @apiGroup Chapters
      * @apiName ChapterRecursive

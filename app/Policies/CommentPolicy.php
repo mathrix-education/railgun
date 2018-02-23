@@ -65,6 +65,22 @@ class CommentPolicy extends BasePolicy
         return $this->atLeastModerator($currentUser);
     }
 
+    /**
+     * @return bool
+     */
+    public function byNotion()
+    {
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function byPost()
+    {
+        return true;
+    }
+
 
     /**
      * @param User $currentUser

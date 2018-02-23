@@ -96,7 +96,7 @@ class ContentController extends BaseController
      *
      * @return JsonResponse
      */
-    public function searchGlobal(Request $request, string $query, int $page = 1, $perPage = 10)
+    public function searchGlobal(Request $request, string $query, int $page = 1, $perPage = 100)
     {
         $query = trim(mb_strtolower(urldecode($query))); // Trim and decode query
         $query = implode("%%", explode(" ", $query));

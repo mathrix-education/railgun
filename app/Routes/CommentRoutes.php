@@ -16,8 +16,6 @@ $router->group(["prefix" => "comments"], function () use ($router) {
         $router->post("search", "CommentController@search");
     });
 
-    $router->get("{commentable_type}/{commentable_id:[1-9]\d*}", "CommentController@type");
-    $router->get("{commentable_type}/{commentable_id:[1-9]\d*}/{page:[1-9]\d*}/{perPage:[1-9]\d*}",
-        "CommentController@type");
+    $router->get("by-{what:[a-z\-]+}/{id:[1-9]\d*}[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "CommentController@by");
 
 });

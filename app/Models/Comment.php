@@ -65,6 +65,9 @@ class Comment extends BaseModel
         "user_id" => "required|exists:users,id"
     ];
 
+    /** @var array The default relations included */
+    public $with = ["user", "children", "children.user"];
+
     /** @var array The attributes that should be mutated to dates */
     protected $dates = ["deleted_at"];
 

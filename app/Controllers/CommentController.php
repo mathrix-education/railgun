@@ -120,49 +120,17 @@ class CommentController extends BaseController
 
     /**
      * @apiVersion 1.0.0
-     * @api {get} /comments/{commentable_type}/{commentable_id}/{?page}/{?perPage} Type
+     * @api {get} /comments/by-{what}/{id}/{?page}/{?perPage} Type
      * @apiGroup Comments
      * @apiName CommentsIndex
      * @apiDescription Retrieve comments by type
      * @apiPermission public
-     * @apiParam {string=post,course,module} commentable_type the commentable_type
-     * @apiParam {int} commentable_id the commentable id
+     * @apiParam {string=post,course,notion} what the commentable_type
+     * @apiParam {int} id the commentable id
      * @apiParam {int} [page=1] the page to fetch
      * @apiParam {int} [perPage=10] the comments per page to fetch (excluding children)
      * @apiUse CommentArray
-     *
-     * @param string $commentable_type
-     * @param int $commentable_id
-     * @param int $page
-     * @param int $perPage
-     *
-     * @return JsonResponse
-     * @throws Http400InvalidRequestException
-     * @throws \Exception
      */
-    public function type(string $commentable_type, int $commentable_id, int $page = 1, int $perPage = 10)
-    {
-        // Ensure that the commentable model is morphed
-        /** @var BaseModel $commentable_class */
-        $commentable_class = Relation::getMorphedModel($commentable_type);
-
-        if ($commentable_class === null) {
-            throw new Http400InvalidRequestException();
-        }
-
-        // Ensure that the morphed exists
-        /** @var Module|Post $commentable */
-        $commentable = $commentable_class::where("id", "=", $commentable_id)->firstOrFail();
-
-        // Retrieve comments
-        return response()->json(
-            $commentable->comments()
-                ->with(["user", "children", "children.user"])
-                ->limit($perPage)
-                ->offset(($page - 1) * $perPage)
-                ->get()
-        );
-    }
 
 
     /**
@@ -179,6 +147,7 @@ class CommentController extends BaseController
      * @apiParam (Data) {string} order.column The order column
      * @apiParam (Data) {string=asc,desc} order.dir The order direction
      */
+
 
     /**
      * @apiVersion 1.0.1
@@ -197,7 +166,7 @@ class CommentController extends BaseController
      *
      * @return JsonResponse
      */
-    public function latest(Request $request, $page = 1, $perPage = 10): JsonResponse
+    public function latest(Request $request, $page = 1, $perPage = 100): JsonResponse
     {
         /** @var User $user */
         $user = $request->user();
