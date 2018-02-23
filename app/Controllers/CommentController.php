@@ -120,7 +120,7 @@ class CommentController extends BaseController
 
     /**
      * @apiVersion 1.0.0
-     * @api {get} /comments/by-{what}/{id}/{?page}/{?perPage} Type
+     * @api {get} /comments/by-{what}/{id}/{?page}/{?perPage} By
      * @apiGroup Comments
      * @apiName CommentsIndex
      * @apiDescription Retrieve comments by type
