@@ -103,7 +103,7 @@ class UserController extends BaseController
      * @apiDescription Search user matching criteria
      * @apiPermission moderator
      * @apiUse Bearer
-     * @apiUse Paginate
+     * @apiUse Pagination
      * @apiUse UserArray
      * @apiUse Http400InvalidRequest
      * @apiUse Http401Unauthorized

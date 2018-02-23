@@ -31,9 +31,9 @@ class CommentsAsPublicTest extends ScopeTestCase
     /**
      * GET /comments/{commentable_type}/{commentable_id}
      */
-    public function testType()
+    public function testBy()
     {
-        $commentableType = $this->faker->randomElement(["Module", "Post"]);
+        $commentableType = $this->faker->randomElement(["Notion", "Post"]);
         /** @var Module|Post|string $typeClass */
         $typeClass = "App\\Models\\" . $commentableType;
         $commentableType = strtolower($commentableType);
@@ -41,16 +41,16 @@ class CommentsAsPublicTest extends ScopeTestCase
             ->has("comments")
             ->firstOrFail()->id;
 
-        $this->call("get", "/comments/$commentableType/$commentableId");
+        $this->call("get", "/comments/by-$commentableType/$commentableId");
 
         // Assertions
         $this->assertHttp200Success();
     }
 
 
-    public function testTypeNotCommentable()
+    public function testByNotExist()
     {
-        $this->call("get", "/comments/lorem/" . random_int(1, 1000));
+        $this->call("get", "/comments/by-lorem/" . random_int(1, 1000));
 
         // Assertions
         $this->assertHttp400InvalidRequest();

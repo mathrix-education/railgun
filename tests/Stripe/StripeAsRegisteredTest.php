@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Quotes;
+namespace Tests\Stripe;
 
 use Tests\ScopeTestCase;
 

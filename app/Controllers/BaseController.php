@@ -145,7 +145,7 @@ abstract class BaseController extends Controller
      * @throws Http401UnauthorizedException
      * @throws \Exception
      */
-    public function index(Request $request, int $page = 1, int $perPage = 10): JsonResponse
+    public function index(Request $request, int $page = 1, int $perPage = 100): JsonResponse
     {
         // Check permission
         if ($request->user() !== null && $request->user()->cant("index", $this->modelClass)) {
@@ -281,7 +281,7 @@ abstract class BaseController extends Controller
      * @throws Http401UnauthorizedException
      * @throws \Exception
      */
-    public function search(Request $request, $page = 1, $perPage = 10): JsonResponse
+    public function search(Request $request, $page = 1, $perPage = 100): JsonResponse
     {
         if ($request->user() !== null && $request->user()->cant("search", $this->modelClass)) {
             throw new Http401UnauthorizedException();
@@ -350,31 +350,24 @@ abstract class BaseController extends Controller
      * Get the models which satisfy a given relation
      *
      * @param Request $request
-     * @param string $what
-     * @param int|string $key
-     * @param int|string $value
+     * @param string $what the linked model
+     * @param int $id the linked model id
+     * @param int $page the query page
+     * @param int $perPage the query per page
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
      * @throws \Exception
      */
-    public function by(Request $request, string $what, $key, $value = null)
+    public function by(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
     {
-        if (!is_numeric($key) && $value === null) {
-            throw new Http400InvalidRequestException("The given id \"$key\" is not numeric");
-        }
-        if (is_numeric($key) && $value === null) {
-            $value = $key;
-            $key = "id";
-        }
-
         $modelClass = $this->resolveModelClass($what);
         $ucName = ucfirst($what);
 
 
         /** @var BaseModel $model */
-        $model = $modelClass::where($key, $value)->firstOrFail();
+        $model = $modelClass::where("id", $id)->firstOrFail();
 
         $potentialRelation = Str::lower($this->modelClass::getTableName());
 
@@ -387,7 +380,12 @@ abstract class BaseController extends Controller
         }
 
         return response()->json(
-            $this->orderCollection($model->{$potentialRelation}()->get())
+            $this->orderCollection(
+                $model->{$potentialRelation}()
+                    ->limit($perPage)
+                    ->offset(($page - 1) * $perPage)
+                    ->get()
+            )
         );
     }
 

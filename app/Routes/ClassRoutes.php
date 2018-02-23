@@ -8,8 +8,7 @@ $router->group(["prefix" => "classes"], function () use ($router) {
         $router->delete("{id:[1-9]\d*}", "ClassController@delete");
     });
 
-    $router->get("by-{what:[a-z\-]+}/{key:[1-9]\d*}", "ClassController@by");
-    $router->get("by-{what:[a-z\-]+}/{key:[a-z\-]+}/{value:[a-z0-9\-]+}", "ClassController@by");
+    $router->get("by-{what:[a-z\-]+}/{id:[1-9]\d*}", "ClassController@by");
     $router->get("{key:[1-9]\d*}", "ClassController@get");
     $router->get("{key:[a-z\-]+}/{value:[a-z0-9\-]+}", "ClassController@get");
 });
