@@ -3,7 +3,8 @@
  * @apiDefine MetaModel
  * @apiSuccess {int} id The meta id
  * @apiSuccess {bool} favorite The meta favorite
- * @apiSuccess {string=completed,to_revise,null} status The meta status
+ * @apiSuccess {bool} to_revise The meta to_revise
+ * @apiSuccess {bool} completed The meta completed
  * @apiSuccess {int} user_id The meta user id
  * @apiSuccess {int} country_id The meta country_id
  * @apiSuccess {int} class_id_id The meta class_id_id
