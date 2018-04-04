@@ -58,6 +58,38 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
 
 
     /**
+     * Generic mark test
+     *
+     * @param bool|null $favorite
+     * @param bool|null $to_revise
+     * @param bool|null $completed
+     */
+    public function mark($favorite, $to_revise, $completed)
+    {
+        $data = $this->buildObjects();
+        $activityId = $data["activity_id"];
+        unset($data["activity_id"]);
+
+        if ($favorite !== null) {
+            $data["favorite"] = $favorite;
+        }
+        if ($to_revise !== null) {
+            $data["to_revise"] = $to_revise;
+        }
+        if ($completed !== null) {
+            $data["completed"] = $completed;
+        }
+
+        $this->call("patch", "/activities/$activityId/mark", $data);
+
+        $expectedData = array_merge($data, ["user_id" => $this->user->id]);
+
+        $this->assertHttp200Success();
+        $this->assertInDatabase("metas", $expectedData);
+    }
+
+
+    /**
      * GET /activities/favorites
      *
      * @throws \Exception
@@ -94,32 +126,29 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
         /** @var Meta $meta */
         foreach ($metas as $meta) {
             $this->assertEquals($this->user->id, $meta->user_id);
-            $this->assertEquals("to_revise", $meta->status);
+            $this->assertTrue($meta->to_revise);
         }
     }
 
 
     /**
-     * Generic mark test
-     * @param bool $favorite
-     * @param bool $to_revise
-     * @param bool $completed
+     * GET /activities/incomplete
+     *
+     * @throws \Exception
      */
-    public function mark(bool $favorite, bool $to_revise, bool $completed)
+    public function testIncomplete()
     {
-        $data = $this->buildObjects();
-        $activityId = $data["activity_id"];
-        unset($data["activity_id"]);
-        $data["favorite"] = $favorite;
-        $data["to_revise"] = $to_revise;
-        $data["completed"] = $completed;
+        $this->get("/activities/incomplete");
 
-        $this->call("patch", "/activities/$activityId/mark", $data);
-
-        $expectedData = array_merge($data, ["user_id" => $this->user->id]);
+        $metas = $this->getResponseData();
 
         $this->assertHttp200Success();
-        $this->assertInDatabase("metas", $expectedData);
+
+        /** @var Meta $meta */
+        foreach ($metas as $meta) {
+            $this->assertEquals($this->user->id, $meta->user_id);
+            $this->assertNotTrue($meta->completed);
+        }
     }
 
 
@@ -128,7 +157,7 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
      */
     public function testMarkFavorite()
     {
-        $this->mark(true, false, false);
+        $this->mark(null, null, false);
     }
 
 
@@ -137,13 +166,15 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
      */
     public function testMarkToRevise()
     {
-        $this->mark(false, true, false);
+        $this->mark(null, true, null);
     }
+
+
     /**
      * PATCH /activities/{id}/mark with {completed: true}
      */
     public function testMarkCompleted()
     {
-        $this->mark(false, false, true);
+        $this->mark(null, null, true);
     }
 }

@@ -9,6 +9,7 @@ $router->group(["prefix" => "activities"], function () use ($router) {
     $router->group(["middleware" => "auth:api"], function () use ($router) {
         $router->get("favorites", "ActivityController@favorites");
         $router->get("to-revise", "ActivityController@to_revise");
+        $router->get("incomplete", "ActivityController@incomplete");
 
         $router->post("", "ActivityController@add");
         $router->patch("{id:[1-9]\d*}", "ActivityController@edit");

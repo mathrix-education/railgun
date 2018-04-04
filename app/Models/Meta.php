@@ -10,7 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @property int $id
  * @property bool $favorite
- * @property string|null $status
+ * @property bool $to_revise
+ * @property bool $completed
  * @property int $user_id
  * @property int|null $country_id
  * @property int|null $class_id
@@ -41,15 +42,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Meta extends BaseModel
 {
-    public $fillable = ["id", "status", "favorite", "user_id", "country_id", "class_id", "discipline_id", "chapter_id",
-        "notion_id", "activity_id", "module_id"];
+    public $fillable = ["id", "favorite", "to_revise", "completed", "user_id", "country_id", "class_id", "discipline_id",
+        "chapter_id", "notion_id", "activity_id", "module_id"];
 
     protected $casts = [
-        "favorite" => "boolean"
+        "favorite" => "boolean",
+        "to_revise" => "boolean",
+        "completed" => "boolean"
     ];
 
     /** @var array The validation rules on create */
     protected $rules = [
+        "favorite" => "boolean",
+        "to_revise" => "boolean",
+        "completed" => "boolean",
         "user_id" => "required|exists:users,id",
         "country_id" => "required|exists:countries,id",
         "class_id" => "required|exists:classes,id",
@@ -58,9 +64,11 @@ class Meta extends BaseModel
         "notion_id" => "required|exists:notions,id",
         "activity_id" => "required|exists:activities,id",
         "module_id" => "nullable|exists:modules,id",
-        "favorite" => "boolean",
         "status" => "nullable|in:completed,to_revise"
     ];
+
+    /** @var bool Indicates if the model should be timestamped */
+    public $timestamps = true;
 
     /*
     |--------------------------------------------------------------------------

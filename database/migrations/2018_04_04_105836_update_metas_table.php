@@ -17,6 +17,8 @@ class UpdateMetasTable extends Migration
         Schema::table("metas", function(Blueprint $table) {
             $table->boolean("to_revise")->after("favorite")->default(false);
             $table->boolean("completed")->after("to_revise")->default(false);
+            $table->dateTime("created_at");
+            $table->dateTime("updated_at");
         });
 
         $metas = Meta::all();
@@ -55,6 +57,8 @@ class UpdateMetasTable extends Migration
         Schema::table("metas", function(Blueprint $table) {
             $table->dropColumn("to_revise");
             $table->dropColumn("completed");
+            $table->dropColumn("created_at");
+            $table->dropColumn("updated_at");
         });
     }
 }
