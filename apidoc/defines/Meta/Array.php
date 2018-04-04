@@ -4,7 +4,8 @@
  * @apiSuccess {Meta[]} metas Array of metas
  * @apiSuccess {int} metas.id The meta id
  * @apiSuccess {bool} metas.favorite The meta favorite
- * @apiSuccess {string=completed,to_revise,null} metas.status The meta status
+ * @apiSuccess {bool} metas.to_revise The meta to_revise
+ * @apiSuccess {bool} metas.completed The meta completed
  * @apiSuccess {int} metas.user_id The meta user id
  * @apiSuccess {int} metas.country_id The meta country_id
  * @apiSuccess {int} metas.class_id_id The meta class_id_id
