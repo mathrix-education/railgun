@@ -92,7 +92,8 @@ class UserTableSeeder extends BaseTableSeeder
                     "notion_id" => $notion->id,
                     "activity_id" => $activity->id,
                     "favorite" => (bool)random_int(0, 1),
-                    "status" => $statusId == 0 ? null : ($statusId == 1 ? "completed" : "to_revise")
+                    "completed" => $statusId == 0,
+                    "to_revise" => $statusId == 1
                 ];
             }
         }
