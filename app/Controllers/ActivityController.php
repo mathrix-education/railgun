@@ -164,7 +164,7 @@ class ActivityController extends BaseController
         $metas = Meta::with(["country", "class_", "discipline", "chapter", "notion", "activity", "activity.modules"])
             ->where([
                 ["user_id", "=", $user->id],
-                ["status", "=", "to_revise"]
+                ["to_revise", "=", true]
             ])
             ->get();
 
@@ -210,24 +210,9 @@ class ActivityController extends BaseController
         $meta = Meta::firstOrNew($metaData);
 
         // Set favorite
-        $favorite = $request->input("favorite");
-        if ($favorite === null) {
-            if (!$meta->exists()) {
-                $meta->favorite = false;
-            }
-        } else {
-            $meta->favorite = $favorite;
-        }
-
-        // Set status
-        $status = $request->input("status");
-        if ($status === null) {
-            if (!$meta->exists()) {
-                $meta->status = null;
-            }
-        } else {
-            $meta->status = $status;
-        }
+        $meta->favorite = $request->input("favorite") ?? $meta->exists() ? $meta->favorite : false;
+        $meta->completed = $request->input("completed") ?? $meta->exists() ? $meta->completed : false;
+        $meta->to_revise = $request->input("to_revise") ?? $meta->exists() ? $meta->to_revise : false;
 
         $meta->save();
 

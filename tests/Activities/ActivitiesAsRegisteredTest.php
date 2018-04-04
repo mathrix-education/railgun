@@ -100,14 +100,19 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
 
 
     /**
-     * PATCH /activities/{id}/mark with {favorite: true}
+     * Generic mark test
+     * @param bool $favorite
+     * @param bool $to_revise
+     * @param bool $completed
      */
-    public function testMarkFavorite()
+    public function mark(bool $favorite, bool $to_revise, bool $completed)
     {
         $data = $this->buildObjects();
         $activityId = $data["activity_id"];
         unset($data["activity_id"]);
-        $data["favorite"] = true;
+        $data["favorite"] = $favorite;
+        $data["to_revise"] = $to_revise;
+        $data["completed"] = $completed;
 
         $this->call("patch", "/activities/$activityId/mark", $data);
 
@@ -119,19 +124,26 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
 
 
     /**
-     * PATCH /activities/{id}/mark with {status: completed|to_revise}
+     * PATCH /activities/{id}/mark with {favorite: true}
      */
-    public function testMarkStatus()
+    public function testMarkFavorite()
     {
-        $data = $this->buildObjects();
-        $activityId = $data["activity_id"];
-        unset($data["activity_id"]);
-        $data["status"] = $this->faker->randomElement(["completed", "to_revise"]);
+        $this->mark(true, false, false);
+    }
 
-        $this->call("patch", "/activities/$activityId/mark", $data);
 
-        $expectedData = array_merge($data, ["user_id" => $this->user->id]);
-        $this->assertHttp200Success();
-        $this->assertInDatabase("metas", $expectedData);
+    /**
+     * PATCH /activities/{id}/mark with {to_revise: true}
+     */
+    public function testMarkToRevise()
+    {
+        $this->mark(false, true, false);
+    }
+    /**
+     * PATCH /activities/{id}/mark with {completed: true}
+     */
+    public function testMarkCompleted()
+    {
+        $this->mark(false, false, true);
     }
 }
