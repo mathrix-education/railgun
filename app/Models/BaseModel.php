@@ -222,11 +222,6 @@ abstract class BaseModel extends Model
 
         if ($validator->fails()) {
             $this->errors = $validator->errors()->getMessages();
-
-            var_dump($this->errors);
-            dd($this->toArray());
-
-
             return false;
         }
 

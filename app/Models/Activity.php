@@ -58,7 +58,7 @@ class Activity extends BaseModel
     ];
 
     /** @var array Appends attributes */
-    protected $appends = ["favorite", "status"];
+    protected $appends = ["favorite", "to_revise", "completed"];
 
 
     public function __construct(array $attributes = [])
@@ -135,10 +135,10 @@ class Activity extends BaseModel
 
 
     /**
-     * status
-     * @return string|null
+     * to_revise
+     * @return bool
      */
-    public function getStatusAttribute()
+    public function getToReviseAttribute()
     {
         /** @var User $user */
         $user = Auth::user();
@@ -152,6 +152,27 @@ class Activity extends BaseModel
             ["user_id", "=", $user->id]
         ])->first();
 
-        return $meta === null ? null : $meta->status;
+        return $meta === null ? null : $meta->to_revise;
+    }
+
+    /**
+     * completed
+     * @return bool
+     */
+    public function getCompletedAttribute()
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        if ($user === null) {
+            return null;
+        }
+
+        $meta = Meta::where([
+            ["activity_id", "=", $this->id],
+            ["user_id", "=", $user->id]
+        ])->first();
+
+        return $meta === null ? null : $meta->completed;
     }
 }

@@ -174,10 +174,43 @@ class ActivityController extends BaseController
 
     /**
      * @apiVersion 1.0.0
+     * @api {get} /activities/incomplete Incomplete
+     * @apiGroup Activities
+     * @apiName ActivitiesIncomplete
+     * @apiDescription Get user incomplete activities
+     * @apiUse Bearer
+     * @apiPermission registered
+     * @apiUse MetaArray
+     * @apiUse Http401Unauthorized
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     * @throws Http400InvalidRequestException
+     * @throws Http401UnauthorizedException
+     * @throws \Exception
+     */
+    public function incomplete(Request $request): JsonResponse
+    {
+        $user = $this->getUserByRequestOrUnauthorized($request);
+        $metas = Meta::with(["country", "class_", "discipline", "chapter", "notion", "activity", "activity.modules"])
+            ->where([
+                ["user_id", "=", $user->id],
+                ["completed", "=", false]
+            ])
+            ->orderBy("created_at", "desc")
+            ->get();
+
+        return response()->json($metas);
+    }
+
+
+    /**
+     * @apiVersion 1.0.0
      * @api {patch} /activities/{id}/mark Mark
      * @apiGroup Activities
      * @apiName ActivityMark
-     * @apiDescription Mark an activity as favorite or set its status completed or to_revise
+     * @apiDescription Mark an activity as favorite, to_revise, completed...
      * @apiUse Bearer
      * @apiPermission registered
      * @apiUse MetaRequest
@@ -210,9 +243,9 @@ class ActivityController extends BaseController
         $meta = Meta::firstOrNew($metaData);
 
         // Set favorite
-        $meta->favorite = $request->input("favorite") ?? $meta->exists() ? $meta->favorite : false;
-        $meta->completed = $request->input("completed") ?? $meta->exists() ? $meta->completed : false;
-        $meta->to_revise = $request->input("to_revise") ?? $meta->exists() ? $meta->to_revise : false;
+        $meta->favorite = $request->input("favorite") ?? $meta->favorite ?? false;
+        $meta->to_revise = $request->input("to_revise") ?? $meta->to_revise ?? false;
+        $meta->completed = $request->input("completed") ?? $meta->completed ?? false;
 
         $meta->save();
 
