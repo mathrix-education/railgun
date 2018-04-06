@@ -23,7 +23,7 @@ use Illuminate\Http\Request;
 class ModuleController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /modules/{page} Index
      * @apiGroup Modules
      * @apiName ModulesIndex
@@ -36,7 +36,7 @@ class ModuleController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /modules/{id} Get
      * @apiGroup Modules
      * @apiName ModuleGet
@@ -78,7 +78,7 @@ class ModuleController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /modules Add
      * @apiGroup Modules
      * @apiName ModuleAdd
@@ -94,7 +94,7 @@ class ModuleController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {patch} /modules/{id} Edit
      * @apiGroup Modules
      * @apiName ModuleEdit
@@ -112,7 +112,7 @@ class ModuleController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {delete} /modules/{id} Delete
      * @apiGroup Modules
      * @apiName ModuleDelete
@@ -126,7 +126,7 @@ class ModuleController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {patch} /modules/{id}/mark Mark
      * @apiGroup Modules
      * @apiName ModuleMark

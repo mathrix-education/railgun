@@ -39,6 +39,8 @@ use Laravel\Passport\Token;
  * @property string|null $card_brand
  * @property string|null $card_last_four
  * @property string|null $trial_ends_at
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  * @property-read bool $premium
  * @property-read int $daily_points
  * @property-read Class_ $class_
@@ -74,6 +76,9 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     use Authenticatable, Authorizable, HasApiTokens, Billable {
         HasApiTokens::tokenCan as passportTokenCan;
     }
+
+    /** @var bool If timestamps (created_at and updated_at) should be used */
+    public $timestamps = true;
 
     /** @var array The guarded attributes */
     protected $fillable = ["email", "username", "firstname", "lastname", "password", "points", "daily",

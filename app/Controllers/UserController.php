@@ -26,7 +26,7 @@ use Illuminate\Http\Request;
 class UserController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /users/{?page}/{?perPage} Index
      * @apiGroup Users
      * @apiName UsersIndex
@@ -40,7 +40,7 @@ class UserController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /users/{id} Get
      * @apiGroup Users
      * @apiName UserGet
@@ -55,7 +55,7 @@ class UserController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {patch} /users/{id} Edit
      * @apiGroup Users
      * @apiName UserEdit
@@ -96,7 +96,7 @@ class UserController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /users/search Search
      * @apiGroup Users
      * @apiName UsersSearch
@@ -111,7 +111,7 @@ class UserController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /users/register Register
      * @apiGroup Users
      * @apiName UserRegister
@@ -169,7 +169,7 @@ class UserController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /users/exists Exists
      * @apiGroup Users
      * @apiName UserExists
@@ -197,7 +197,7 @@ class UserController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /users/profile Profile
      * @apiGroup Users
      * @apiName UserProfile
@@ -223,7 +223,7 @@ class UserController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /users/points/{?id} Points
      * @apiGroup Users
      * @apiName UserPoints
@@ -232,7 +232,7 @@ class UserController extends BaseController
      * @apiUse Bearer
      * @apiParam (Data) {int} [id=null] The user id
      * @apiParam (Data) {int} points The points to add
-     * @apiParam (Data) {string=module} [loggable_type] The loggable type
+     * @apiParam (Data) {string=activity,module} [loggable_type] The loggable type
      * @apiParam (Data) {int} [loggable_id] The loggable id
      * @apiError (Error 400) invalid_request points field is required
      * @apiError (Error 400) invalid_request points field has to be a positive integer

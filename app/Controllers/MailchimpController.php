@@ -6,7 +6,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Spatie\Newsletter\NewsletterFacade as Newsletter;
 
-
 /**
  * Class MailchimpController
  *
@@ -18,7 +17,7 @@ use Spatie\Newsletter\NewsletterFacade as Newsletter;
 class MailchimpController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /newsletter/subscribe/{list}
      * @apiGroup Newsletters
      * @apiDescription Subscribe an email to a Mailchimp list

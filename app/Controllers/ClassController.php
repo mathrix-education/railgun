@@ -18,7 +18,7 @@ use Illuminate\Http\Request;
 class ClassController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /classes/{?page}/{?perPage} Index
      * @apiGroup Classes
      * @apiName ClassesIndex
@@ -29,7 +29,7 @@ class ClassController extends BaseController
      */
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /classes/{id} Get
      * @apiGroup Classes
      * @apiName ClassGet
@@ -42,7 +42,7 @@ class ClassController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /classes Add
      * @apiGroup Classes
      * @apiName ClassAdd
@@ -58,7 +58,7 @@ class ClassController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {patch} /classes/{id} Edit
      * @apiGroup Classes
      * @apiName ClassEdit
@@ -76,7 +76,7 @@ class ClassController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {delete} /classes/{id} Delete (Not implemented)
      * @apiGroup Classes
      * @apiName ClassDelete

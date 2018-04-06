@@ -23,7 +23,7 @@ use Illuminate\Http\Request;
 class AuthController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /users/login Login
      * @apiGroup Authentication
      * @apiName AuthenticationLogin
@@ -73,7 +73,7 @@ class AuthController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /users/refresh Refresh
      * @apiGroup Authentication
      * @apiName AuthenticationRefresh
@@ -101,7 +101,7 @@ class AuthController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /users/forgot Forgot password
      * @apiGroup Authentication
      * @apiName AuthenticationForgot
@@ -142,7 +142,7 @@ class AuthController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /users/reset/{token} Reset password
      * @apiGroup Authentication
      * @apiName AuthenticationReset

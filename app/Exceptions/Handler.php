@@ -135,7 +135,7 @@ class Handler extends ExceptionHandler
         }
 
         // Include trace in debug mode
-        if (app()->environment("dev", "pipelines", "stage")) {
+        if (app()->environment("local", "dev", "pipelines", "stage")) {
             $json["trace"] = explode("\n", $e->getTraceAsString());
         }
 

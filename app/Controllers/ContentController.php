@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Storage;
 class ContentController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /content/search/{query}/{?page}/{?perPage} Search
      * @apiGroup Content
      * @apiName ContentSearch
@@ -206,7 +206,7 @@ class ContentController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /content/tree Tree
      * @apiGroup Content
      * @apiName ContentTree
@@ -228,7 +228,7 @@ class ContentController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /content/upload Upload
      * @apiGroup Content
      * @apiName ContentUpload

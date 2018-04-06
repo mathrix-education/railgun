@@ -19,21 +19,17 @@ class StripeAsRegisteredTest extends ScopeTestCase
      */
     public function testMonthly()
     {
-        if (app()->environment("local")) {
-            $this->markTestSkipped();
-        } else {
-            $this->call("post", "/stripe/subscribe", [
-                "stripe_token" => "tok_visa",
-                "stripe_plan" => "v3_monthly"
-            ]);
+        $this->call("post", "/stripe/subscribe", [
+            "stripe_token" => "tok_visa",
+            "stripe_plan" => "v3_monthly"
+        ]);
 
-            $this->assertHttp200Success();
-            $this->assertInDatabase("subscriptions", [
-                "user_id" => $this->user->id,
-                "name" => "premium",
-                "stripe_plan" => "v3_monthly"
-            ]);
-        }
+        $this->assertHttp200Success();
+        $this->assertInDatabase("subscriptions", [
+            "user_id" => $this->user->id,
+            "name" => "premium",
+            "stripe_plan" => "v3_monthly"
+        ]);
     }
 
 
@@ -42,21 +38,17 @@ class StripeAsRegisteredTest extends ScopeTestCase
      */
     public function testAnnually()
     {
-        if (app()->environment("local")) {
-            $this->markTestSkipped();
-        } else {
-            $this->call("post", "/stripe/subscribe", [
-                "stripe_token" => "tok_visa",
-                "stripe_plan" => "v3_annually"
-            ]);
+        $this->call("post", "/stripe/subscribe", [
+            "stripe_token" => "tok_visa",
+            "stripe_plan" => "v3_annually"
+        ]);
 
-            $this->assertHttp200Success();
-            $this->assertInDatabase("subscriptions", [
-                "user_id" => $this->user->id,
-                "name" => "premium",
-                "stripe_plan" => "v3_annually"
-            ]);
-        }
+        $this->assertHttp200Success();
+        $this->assertInDatabase("subscriptions", [
+            "user_id" => $this->user->id,
+            "name" => "premium",
+            "stripe_plan" => "v3_annually"
+        ]);
     }
 
 
@@ -65,20 +57,17 @@ class StripeAsRegisteredTest extends ScopeTestCase
      */
     public function testBiannually()
     {
-        if (app()->environment("local")) {
-            $this->markTestSkipped();
-        } else {
-            $this->call("post", "/stripe/subscribe", [
-                "stripe_token" => "tok_visa",
-                "stripe_plan" => "v3_biannually"
-            ]);
+        $this->call("post", "/stripe/subscribe", [
+            "stripe_token" => "tok_visa",
+            "stripe_plan" => "v3_biannually"
+        ]);
 
-            $this->assertHttp200Success();
-            $this->assertInDatabase("subscriptions", [
-                "user_id" => $this->user->id,
-                "name" => "premium",
-                "stripe_plan" => "v3_biannually"
-            ]);
-        }
+        $this->assertHttp200Success();
+        $this->assertInDatabase("subscriptions", [
+            "user_id" => $this->user->id,
+            "name" => "premium",
+            "stripe_plan" => "v3_biannually"
+        ]);
+
     }
 }

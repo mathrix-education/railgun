@@ -132,7 +132,6 @@ if ($app->environment("stage", "master")) {
     $app->register(Sentry\SentryLaravel\SentryLumenServiceProvider::class);
 }
 
-
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes

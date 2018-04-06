@@ -34,7 +34,8 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
     public function testEdit()
     {
         $newUser = factory(User::class, $this->user->type)->raw();
-        unset($newUser["password"], $newUser["token"], $newUser["settings"], $newUser["points"], $newUser["level"]);
+        unset($newUser["password"], $newUser["token"], $newUser["settings"], $newUser["points"], $newUser["level"],
+            $newUser["created_at"]);
 
         $this->call("patch", "/users/" . $this->user->id, $newUser);
 

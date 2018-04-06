@@ -157,6 +157,19 @@ abstract class BaseTableSeeder extends Seeder
     }
 
 
+    public function overwrite($message)
+    {
+        // Move the cursor to the beginning of the line
+        $this->output->write("\x0D");
+
+        // Erase the line
+        $this->output->write("\x1B[2K");
+
+
+        $this->output->write($message);
+    }
+
+
     /**
      * Load data from a json file
      *
