@@ -29,17 +29,12 @@ class ContentTableSeeder extends BaseTableSeeder
         $this->seedFromJson([
             "modelClass" => Country::class
         ]);
-        $this->seedFromFactory([
-            "modelClass" => Country::class,
-            "count" => random_int(2, 3)
-        ]);
-        $this->seedFromFactory([
-            "modelClass" => Discipline::class,
-            "count" => random_int(5, 10)
-        ]);
-        $this->seedFromFactory([
+        $this->seedFromJson([
             "modelClass" => Class_::class,
-            "count" => random_int(10, 15)
+            "table" => "classes"
+        ]);
+        $this->seedFromJson([
+            "modelClass" => Discipline::class
         ]);
         $this->seedFromFactory([
             "modelClass" => Chapter::class,

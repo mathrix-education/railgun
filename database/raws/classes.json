@@ -1,0 +1,92 @@
+[
+  {
+    "id": 5,
+    "name": "Seconde",
+    "slug": "2nde",
+    "order": 4,
+    "visible": 1,
+    "parent_id": null,
+    "country_id": 1
+  },
+  {
+    "id": 6,
+    "name": "Première L",
+    "slug": "1ere-l",
+    "order": 5,
+    "visible": 1,
+    "parent_id": null,
+    "country_id": 1
+  },
+  {
+    "id": 7,
+    "name": "Première ES",
+    "slug": "1ere-es",
+    "order": 6,
+    "visible": 1,
+    "parent_id": null,
+    "country_id": 1
+  },
+  {
+    "id": 8,
+    "name": "Première S",
+    "slug": "1ere-s",
+    "order": 6,
+    "visible": 1,
+    "parent_id": null,
+    "country_id": 1
+  },
+  {
+    "id": 9,
+    "name": "Terminale L",
+    "slug": "terminale-l",
+    "order": 8,
+    "visible": 1,
+    "parent_id": null,
+    "country_id": 1
+  },
+  {
+    "id": 10,
+    "name": "Terminale ES",
+    "slug": "terminale-es",
+    "order": 9,
+    "visible": 1,
+    "parent_id": null,
+    "country_id": 1
+  },
+  {
+    "id": 11,
+    "name": "Terminale S",
+    "slug": "terminale-s",
+    "order": 10,
+    "visible": 1,
+    "parent_id": null,
+    "country_id": 1
+  },
+  {
+    "id": 12,
+    "name": "5ème",
+    "slug": "5eme",
+    "order": 1,
+    "visible": 1,
+    "parent_id": null,
+    "country_id": 1
+  },
+  {
+    "id": 13,
+    "name": "4ème",
+    "slug": "4eme",
+    "order": 2,
+    "visible": 1,
+    "parent_id": null,
+    "country_id": 1
+  },
+  {
+    "id": 14,
+    "name": "3ème",
+    "slug": "3eme",
+    "order": 3,
+    "visible": 1,
+    "parent_id": null,
+    "country_id": 1
+  }
+]
