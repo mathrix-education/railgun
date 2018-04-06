@@ -38,15 +38,15 @@ class ContentTableSeeder extends BaseTableSeeder
         ]);
         $this->seedFromFactory([
             "modelClass" => Chapter::class,
-            "count" => random_int(50, 75)
+            "count" => random_int(200, 300)
         ]);
         $this->seedFromFactory([
             "modelClass" => Notion::class,
-            "count" => random_int(100, 200)
+            "count" => random_int(400, 600)
         ]);
         $this->seedFromFactory([
             "modelClass" => Activity::class,
-            "count" => random_int(300, 500)
+            "count" => random_int(500, 800)
         ]);
         $this->seedFromFactory([
             "modelClass" => Module::class,
