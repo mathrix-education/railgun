@@ -45,4 +45,12 @@ class DisciplinePolicy extends BasePolicy
     {
         return false;
     }
+
+    /**
+     * @return bool
+     */
+    public function byClass()
+    {
+        return true;
+    }
 }
