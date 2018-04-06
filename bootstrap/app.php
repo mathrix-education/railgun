@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+
 require_once __DIR__ . "/../vendor/autoload.php";
 
 try {
@@ -147,10 +149,17 @@ Dusterio\LumenPassport\LumenPassport::routes($app->router);
 $app->router->group(["namespace" => "App\\Controllers"], function ($router) {
     /** @var Laravel\Lumen\Routing\Router $router */
     $router->get("/", function () {
+        $build = basename(dirname(__DIR__, 1));
+
+        try {
+            $build = Carbon::createFromFormat("Y-m-d_H-i-s", $build)->toAtomString();
+        } catch(InvalidArgumentException $e) {
+        }
+
         return response()->json([
             "message" => "Welcome to Mathrix API version " . env("APP_VERSION") . " by Mathieu Bour",
             "commit" => trim(exec("git log --pretty=\"%h\" -n1 HEAD")),
-            "build" => basename(dirname(__DIR__, 1))
+            "build" => $build
         ]);
     });
 
