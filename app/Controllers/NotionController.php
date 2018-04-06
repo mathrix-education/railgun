@@ -1,9 +1,6 @@
 <?php
 namespace App\Controllers;
 
-
-
-
 /**
  * Class NotionController
  *
@@ -15,7 +12,7 @@ namespace App\Controllers;
 class NotionController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /notions/{?page}/{?perPage} Index
      * @apiGroup Notions
      * @apiName NotionsIndex
@@ -28,7 +25,7 @@ class NotionController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /notions/{id} Get
      * @apiGroup Notions
      * @apiName NotionGet
@@ -41,7 +38,7 @@ class NotionController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /notions Add
      * @apiGroup Notions
      * @apiName NotionAdd
@@ -57,7 +54,7 @@ class NotionController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {patch} /notions/{id} Edit
      * @apiGroup Notions
      * @apiName NotionEdit
@@ -75,7 +72,7 @@ class NotionController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {delete} /notions/{id} Delete
      * @apiGroup Notions
      * @apiName NotionDelete

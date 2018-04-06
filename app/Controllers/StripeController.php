@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -43,7 +42,7 @@ class StripeController extends CashierController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /stripe/subscribe Subscribe
      * @apiGroup Stripe
      * @apiName StripeSubscribe
@@ -136,7 +135,7 @@ class StripeController extends CashierController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /stripe/estimate/{stripe_plan} Estimate
      * @apiGroup Stripe
      * @apiName StripeEstimate

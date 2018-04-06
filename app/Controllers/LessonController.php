@@ -1,7 +1,6 @@
 <?php
 namespace App\Controllers;
 
-
 /**
  * Class LessonController
  *
@@ -13,7 +12,7 @@ namespace App\Controllers;
 class LessonController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /lessons/{?page}/{?perPage} Index
      * @apiGroup Lessons
      * @apiName LessonsIndex
@@ -24,7 +23,7 @@ class LessonController extends BaseController
      */
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /lessons/{id} Get
      * @apiGroup Lessons
      * @apiName LessonGet
@@ -37,7 +36,7 @@ class LessonController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /lessons Add
      * @apiGroup Lessons
      * @apiName LessonAdd
@@ -52,7 +51,7 @@ class LessonController extends BaseController
      */
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {patch} /lessons/{id} Edit
      * @apiGroup Lessons
      * @apiName LessonEdit
@@ -70,7 +69,7 @@ class LessonController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {delete} /lessons/{id} Delete
      * @apiGroup Lessons
      * @apiName LessonDelete

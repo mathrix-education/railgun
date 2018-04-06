@@ -19,7 +19,7 @@ use Illuminate\Http\Request;
 class CategoryController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /categories/{?page}/{?perPage} Index
      * @apiGroup Categories
      * @apiName CategoriesIndex
@@ -31,7 +31,7 @@ class CategoryController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /categories/{id} Get
      * @apiGroup Categories
      * @apiName CategoryGet
@@ -44,7 +44,7 @@ class CategoryController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /categories Add
      * @apiGroup Categories
      * @apiName CategoryAdd
@@ -60,7 +60,7 @@ class CategoryController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {patch} /categories/{id} Edit
      * @apiGroup Categories
      * @apiName CategoryEdit
@@ -78,7 +78,7 @@ class CategoryController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {delete} /categories/{id} Delete (Not implemented)
      * @apiGroup Categories
      * @apiName CategoryDelete

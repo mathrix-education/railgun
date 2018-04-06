@@ -4,7 +4,6 @@ namespace App\Controllers;
 use App\Models\Chapter;
 use Illuminate\Http\JsonResponse;
 
-
 /**
  * Class ChapterController
  *
@@ -16,7 +15,7 @@ use Illuminate\Http\JsonResponse;
 class ChapterController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /chapters/{?page}/{?perPage} Index
      * @apiGroup Chapters
      * @apiName ChaptersIndex
@@ -29,7 +28,7 @@ class ChapterController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /chapters/{id} Get
      * @apiGroup Chapters
      * @apiName ChapterGet
@@ -42,7 +41,7 @@ class ChapterController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /chapters Add
      * @apiGroup Chapters
      * @apiName ChapterAdd
@@ -58,7 +57,7 @@ class ChapterController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {patch} /chapters/{id} Edit
      * @apiGroup Chapters
      * @apiName ChapterEdit
@@ -76,7 +75,7 @@ class ChapterController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {delete} /chapters/{id} Delete
      * @apiGroup Chapters
      * @apiName ChapterDelete
@@ -90,7 +89,7 @@ class ChapterController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /chapters/by-class-discipline/{class_id}/{discipline_id} By Class and Discipline
      * @apiGroup Chapters
      * @apiName ChapterClassDiscipline
@@ -118,7 +117,7 @@ class ChapterController extends BaseController
 
 
     /**
-     * @apiVersion 1.1.0
+     * @apiVersion 4.0.0
      * @api {get} /chapter/recursive/{id} Random
      * @apiGroup Chapters
      * @apiName ChapterRecursive
@@ -131,7 +130,8 @@ class ChapterController extends BaseController
      *
      * @return JsonResponse
      */
-    public function recursive(int $id) {
+    public function recursive(int $id)
+    {
         return response()->json(
             Chapter::with(["notions", "notions.activities", "notions.activities.modules"])
                 ->where("id", $id)

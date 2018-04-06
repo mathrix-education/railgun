@@ -1,7 +1,6 @@
 <?php
 namespace App\Controllers;
 
-
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http401UnauthorizedException;
 use App\Exceptions\Http422ModelSaveException;
@@ -21,7 +20,7 @@ use Illuminate\Http\Request;
 class PostController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /posts/{?page}/{?perPage} Index
      * @apiGroup Posts
      * @apiName PostsIndex
@@ -50,7 +49,7 @@ class PostController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /posts/{id} Get
      * @apiGroup Posts
      * @apiName PostGet
@@ -63,7 +62,7 @@ class PostController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /posts Add
      * @apiGroup Posts
      * @apiName PostAdd
@@ -101,7 +100,7 @@ class PostController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {patch} /posts/{id} Edit
      * @apiGroup Posts
      * @apiName PostEdit
@@ -119,7 +118,7 @@ class PostController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {delete} /posts/{id} Delete
      * @apiGroup Posts
      * @apiName PostDelete

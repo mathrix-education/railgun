@@ -21,7 +21,7 @@ use Illuminate\Http\Request;
 class ActivityController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /activities/{?page}/{?perPage} Index
      * @apiGroup Activities
      * @apiName ActivitiesIndex
@@ -34,7 +34,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /activities/{id} Get
      * @apiGroup Activities
      * @apiName ActivityGet
@@ -47,7 +47,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /activities Add
      * @apiGroup Activities
      * @apiName ActivityAdd
@@ -63,7 +63,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {patch} /activities/{id} Edit
      * @apiGroup Activities
      * @apiName ActivityEdit
@@ -81,7 +81,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {delete} /activities/{id} Delete
      * @apiGroup Activities
      * @apiName ActivityDelete
@@ -95,7 +95,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /activities/search Search
      * @apiGroup Activities
      * @apiName ActivitiesSearch
@@ -109,7 +109,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /activities/favorites Favorites
      * @apiGroup Activities
      * @apiName ActivitiesFavorite
@@ -141,7 +141,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /activities/to-revise To revise
      * @apiGroup Activities
      * @apiName ActivitiesToRevise
@@ -173,7 +173,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /activities/incomplete Incomplete
      * @apiGroup Activities
      * @apiName ActivitiesIncomplete
@@ -206,7 +206,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {patch} /activities/{id}/mark Mark
      * @apiGroup Activities
      * @apiName ActivityMark

@@ -1,7 +1,6 @@
 <?php
 namespace App\Controllers;
 
-
 /**
  * Class ReportController
  *
@@ -13,7 +12,7 @@ namespace App\Controllers;
 class ReportController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /reports/{?page}/{?perPage} Index
      * @apiGroup Reports
      * @apiName ReportsIndex
@@ -29,7 +28,7 @@ class ReportController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /reports/{id} Get
      * @apiGroup Reports
      * @apiName ReportGet
@@ -43,7 +42,7 @@ class ReportController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /reports Add
      * @apiGroup Reports
      * @apiName ReportAdd
@@ -58,7 +57,7 @@ class ReportController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {patch} /reports Edit
      * @apiGroup Reports
      * @apiName ReportEdit

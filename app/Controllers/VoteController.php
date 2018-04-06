@@ -21,7 +21,7 @@ use Illuminate\Http\Request;
 class VoteController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /votes/{votable_type}/{votable_id}/up Up
      * @apiGroup Votes
      * @apiName VoteUp
@@ -48,7 +48,7 @@ class VoteController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /votes/{votable_type}/{votable_id}/down Down
      * @apiGroup Votes
      * @apiName VoteDown

@@ -12,7 +12,7 @@ namespace App\Controllers;
 class LevelController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /levels/{?page}/{?perPage} Index
      * @apiGroup Levels
      * @apiName LevelsIndex

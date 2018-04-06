@@ -4,6 +4,7 @@ namespace App\Models;
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -16,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property string $event
  * @property int|null $user_id
  * @property string|null $value
- * @property string $created_at
+ * @property Carbon $created_at
  * @property string|null $loggable_type
  * @property int|null $loggable_id
  * @property-read User|null $user
@@ -80,6 +81,33 @@ class Log extends BaseModel
 
 
     /**
+     * Build a log line
+     *
+     * @param string $event the event name
+     * @param User|int|null $user the user as model, its id or njull for system log
+     * @param array $data the optional data to associate with the log, such as the loggable type and id
+     *
+     * @return Log
+     * @throws Http400InvalidRequestException
+     * @throws \Exception
+     */
+    public static function build(string $event, $user = null, $data = []): Log
+    {
+
+        if (!in_array($event, self::EVENTS)) {
+            throw new Http400InvalidRequestException("`$event` is not a valid event");
+        }
+
+        $data = array_merge([
+            "event" => $event,
+            "user_id" => $user === null || is_int($user) ? $user : $user->id,
+        ], $data);
+
+        return new Log($data);
+    }
+
+
+    /**
      * Add a log line the the database
      *
      * @param string $event the event name
@@ -94,18 +122,7 @@ class Log extends BaseModel
      */
     public static function log(string $event, $user = null, $data = [])
     {
-        if (!in_array($event, self::EVENTS)) {
-            throw new Http400InvalidRequestException("`$event` is not a valid event");
-        }
-
-        $data = array_merge([
-            "event" => $event,
-            "user_id" => $user === null || is_int($user) ? $user : $user->id,
-        ], $data);
-
-        $log = new Log($data);
-
-        return $log->save();
+        return self::build($event, $user, $data)->save();
     }
 
     /*

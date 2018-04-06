@@ -25,7 +25,7 @@ use Illuminate\Http\Request;
 class CommentController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /comments/{?page}/{?perPage} Index
      * @apiGroup Comments
      * @apiName CommentsIndex
@@ -38,7 +38,7 @@ class CommentController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /comments/{id} Get
      * @apiGroup Comments
      * @apiName CommentGet
@@ -51,7 +51,7 @@ class CommentController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /comments Add
      * @apiGroup Comments
      * @apiName CommentAdd
@@ -87,7 +87,7 @@ class CommentController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {patch} /comments/{id} Edit
      * @apiGroup Comments
      * @apiName CommentEdit
@@ -105,7 +105,7 @@ class CommentController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {delete} /comments/{id} Delete
      * @apiGroup Comments
      * @apiName CommentDelete
@@ -119,7 +119,7 @@ class CommentController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /comments/by-{what}/{id}/{?page}/{?perPage} By
      * @apiGroup Comments
      * @apiName CommentsIndex
@@ -134,7 +134,7 @@ class CommentController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.1
+     * @apiVersion 4.0.0
      * @api {post} /comments/search Search
      * @apiGroup Comments
      * @apiName CommentSearch
@@ -150,7 +150,7 @@ class CommentController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.1
+     * @apiVersion 4.0.0
      * @api {get} /comments/latest/{?page}/{?perPage} Latest
      * @apiGroup Comments
      * @apiName CommentLatest
