@@ -1,6 +1,7 @@
 <?php
 namespace Tests\Countries;
 
+use App\Models\Class_;
 use Tests\ScopeTestCase;
 
 /**

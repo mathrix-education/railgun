@@ -25,6 +25,15 @@ class ActivityPolicy extends BasePolicy
 
 
     /**
+     * @return bool
+     */
+    public function get()
+    {
+        return true;
+    }
+
+
+    /**
      * @param User $currentUser
      *
      * @return bool

@@ -1,6 +1,7 @@
 <?php
 namespace Tests\Disciplines;
 
+use App\Models\Class_;
 use Tests\ScopeTestCase;
 
 /**
@@ -55,5 +56,14 @@ class DisciplinesAsPublicTest extends ScopeTestCase
     public function testDelete()
     {
         $this->genericDeleteUnauthorized();
+    }
+
+
+    /**
+     * GET /classes/by-class/{class_id}
+     */
+    public function testByClass()
+    {
+        $this->genericBySuccess(Class_::class);
     }
 }

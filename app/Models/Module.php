@@ -51,6 +51,8 @@ class Module extends BaseModel
 
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
+        "premium" => "boolean",
+        "visible" => "boolean",
         "questions" => "array",
         "choices" => "array",
         "solutions" => "array",

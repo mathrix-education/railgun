@@ -242,7 +242,6 @@ class ActivityController extends BaseController
         /** @var Meta $meta */
         $meta = Meta::firstOrNew($metaData);
 
-        // Set favorite
         $meta->favorite = $request->input("favorite") ?? $meta->favorite ?? false;
         $meta->to_revise = $request->input("to_revise") ?? $meta->to_revise ?? false;
         $meta->completed = $request->input("completed") ?? $meta->completed ?? false;

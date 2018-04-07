@@ -1,6 +1,7 @@
 <?php
 namespace Tests\Classes;
 
+use App\Models\Country;
 use Tests\ScopeTestCase;
 
 /**
@@ -22,6 +23,17 @@ class ClassesAsPublicTest extends ScopeTestCase
     public function testIndex()
     {
         $this->genericIndexSuccess();
+    }
+
+
+    /**
+     * GET /classes/{id}
+     *
+     * @throws \Exception
+     */
+    public function testGet()
+    {
+        $this->genericGetSuccess();
     }
 
 
@@ -55,5 +67,14 @@ class ClassesAsPublicTest extends ScopeTestCase
     public function testDelete()
     {
         $this->genericDeleteUnauthorized();
+    }
+
+
+    /**
+     * GET /classes/by-country/{country_id}
+     */
+    public function testByCountry()
+    {
+        $this->genericBySuccess(Country::class);
     }
 }
