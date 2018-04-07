@@ -23,6 +23,15 @@ class CategoryPolicy extends BasePolicy
     /**
      * @return bool
      */
+    public function get()
+    {
+        return true;
+    }
+
+
+    /**
+     * @return bool
+     */
     public function add()
     {
         return false;

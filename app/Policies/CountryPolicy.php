@@ -14,15 +14,16 @@ class CountryPolicy extends BasePolicy
     /**
      * @return bool
      */
-    public function get()
+    public function index()
     {
         return true;
     }
 
+
     /**
      * @return bool
      */
-    public function index()
+    public function get()
     {
         return true;
     }

@@ -1,6 +1,7 @@
 <?php
 namespace App\Policies;
 
+use App\Models\Module;
 use App\Models\User;
 
 
@@ -22,12 +23,22 @@ class ModulePolicy extends BasePolicy
         return true;
     }
 
+
     /**
+     * @param User $currentUser
+     * @param Module $module
+     *
      * @return bool
      */
-    public function get()
+    public function get(User $currentUser, Module $module)
     {
-        return true;
+        if ($this->atLeastModerator($currentUser)) {
+            return true;
+        } else if ($module->premium) {
+            return $currentUser->premium;
+        } else {
+            return true;
+        }
     }
 
 

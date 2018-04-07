@@ -152,7 +152,7 @@ $app->router->group(["namespace" => "App\\Controllers"], function ($router) {
         $build = basename(dirname(__DIR__, 1));
 
         try {
-            $build = Carbon::createFromFormat("Y-m-d_H-i-s", $build)->toAtomString();
+            $build = Carbon::createFromFormat("Y-m-d_H-i-s", $build)->toIso8601String();
         } catch(InvalidArgumentException $e) {
         }
 

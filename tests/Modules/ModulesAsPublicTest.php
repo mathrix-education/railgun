@@ -2,6 +2,7 @@
 namespace Tests\Modules;
 
 use App\Models\Module;
+use App\Models\User;
 use Tests\ScopeTestCase;
 
 /**
@@ -38,10 +39,28 @@ class ModulesAsPublicTest extends ScopeTestCase
     public function testGet()
     {
         /** @var Module $module */
-        $module = Module::random();
+        $module = Module::wherePremium(false)->inRandomOrder()->firstOrFail();
         $this->get("/modules/{$module->id}");
 
         $this->assertHttp200Success();
+    }
+
+
+    /**
+     * GET /modules/{id} with a premium module as non premium user
+     */
+    public function testGetPremiumAsNonPremium()
+    {
+        $user = null;
+        do {
+            $user = User::random();
+        } while($user->premium);
+
+        /** @var Module $module */
+        $module = Module::wherePremium(true)->inRandomOrder()->firstOrFail();
+        $this->get("/modules/{$module->id}");
+
+        $this->assertHttp401Unauthorized();
     }
 
 

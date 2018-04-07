@@ -69,7 +69,10 @@ class ModuleController extends BaseController
             }
         ])->firstOrFail();
 
-        if ($request->user() !== null && $request->user()->cant("get", $module)) {
+        if (
+            $request->user() === null && $module->premium ||
+            $request->user() !== null && $request->user()->cant("get", $module)
+        ) {
             throw new Http401UnauthorizedException();
         }
 
@@ -171,14 +174,9 @@ class ModuleController extends BaseController
         /** @var Meta $meta */
         $meta = Meta::firstOrNew($metaData);
 
-        $status = $request->input("status");
-        if ($status === null) {
-            if (!$meta->exists()) {
-                $meta->status = null;
-            }
-        } else {
-            $meta->status = $status;
-        }
+        $meta->favorite = $request->input("favorite") ?? $meta->favorite ?? false;
+        $meta->to_revise = $request->input("to_revise") ?? $meta->to_revise ?? false;
+        $meta->completed = $request->input("completed") ?? $meta->completed ?? false;
 
         $meta->save();
 
