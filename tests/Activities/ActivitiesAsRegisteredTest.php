@@ -144,10 +144,14 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
 
         $this->assertHttp200Success();
 
+        $disciplinesIncluded = [];
+
         /** @var Meta $meta */
         foreach ($metas as $meta) {
             $this->assertEquals($this->user->id, $meta->user_id);
             $this->assertNotTrue($meta->completed);
+            $this->assertNotTrue(in_array($meta->discipline_id, $disciplinesIncluded));
+            $disciplinesIncluded[] = $meta->discipline_id;
         }
     }
 
