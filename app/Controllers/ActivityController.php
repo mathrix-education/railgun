@@ -6,7 +6,9 @@ use App\Exceptions\Http401UnauthorizedException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\Activity;
+use App\Models\Discipline;
 use App\Models\Meta;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -193,13 +195,31 @@ class ActivityController extends BaseController
     public function incomplete(Request $request): JsonResponse
     {
         $user = $this->getUserByRequestOrUnauthorized($request);
-        $metas = Meta::with(["country", "class_", "discipline", "chapter", "notion", "activity", "activity.modules"])
-            ->where([
-                ["user_id", "=", $user->id],
-                ["completed", "=", false]
-            ])
-            ->orderBy("created_at", "desc")
-            ->get();
+        $disciplinesIds = Discipline::all(["id"])->pluck("id")->toArray();
+
+        /**
+         * @var Builder|null
+         */
+        $query = null;
+
+        foreach ($disciplinesIds as $disciplineId) {
+            $subQuery = Meta::with(["country", "class_", "discipline", "chapter", "notion", "activity", "activity.modules"])
+                ->where([
+                    ["user_id", "=", $user->id],
+                    ["completed", "=", false],
+                    ["discipline_id", "=", $disciplineId]
+                ])
+                ->orderBy("created_at", "desc")
+                ->limit(1);
+
+            if ($query === null) {
+                $query = $subQuery;
+            } else {
+                $query->union($subQuery);
+            }
+        }
+
+        $metas = $query->get();
 
         return response()->json($metas);
     }
