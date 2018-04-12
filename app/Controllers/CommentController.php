@@ -7,10 +7,7 @@ use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\BaseModel;
 use App\Models\Comment;
-use App\Models\Module;
-use App\Models\Post;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -122,7 +119,7 @@ class CommentController extends BaseController
      * @apiVersion 4.0.0
      * @api {get} /comments/by-{what}/{id}/{?page}/{?perPage} By
      * @apiGroup Comments
-     * @apiName CommentsIndex
+     * @apiName CommentsBy
      * @apiDescription Retrieve comments by type
      * @apiPermission public
      * @apiParam {string=post,course,notion} what the commentable_type
@@ -130,7 +127,36 @@ class CommentController extends BaseController
      * @apiParam {int} [page=1] the page to fetch
      * @apiParam {int} [perPage=10] the comments per page to fetch (excluding children)
      * @apiUse CommentArray
+     *
+     * @param Request $request
+     * @param string $what
+     * @param int $id
+     * @param int $page
+     * @param int $perPage
+     *
+     * @return JsonResponse
+     * @throws Http400InvalidRequestException
+     * @throws \Exception
      */
+    public function by(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
+    {
+        if (!in_array($what, ["notion", "post"])) {
+            throw new Http400InvalidRequestException("Comment::$what() does not exist");
+        }
+
+        $comments = Comment::with(["user", "children", "children.user"])
+            ->where([
+                ["commentable_type", "=", $what],
+                ["commentable_id", "=", $id],
+                ["parent_id", "=", NULL]
+            ])
+            ->limit($perPage)
+            ->offset(($page - 1) * $perPage)
+            ->get();
+
+
+        return response()->json($comments);
+    }
 
 
     /**
