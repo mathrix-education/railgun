@@ -112,6 +112,28 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
 
     /**
+     * Check if user is at least moderator
+     *
+     * @return bool
+     */
+    public function isModerator()
+    {
+        return $this->tokenCan("moderator");
+    }
+
+
+    /**
+     * Check if user is administrator
+     *
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return $this->tokenCan("admin");
+    }
+
+
+    /**
      * premium attribute
      *
      * @return bool
