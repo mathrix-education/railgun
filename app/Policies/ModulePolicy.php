@@ -25,20 +25,11 @@ class ModulePolicy extends BasePolicy
 
 
     /**
-     * @param User $currentUser
-     * @param Module $module
-     *
      * @return bool
      */
-    public function get(User $currentUser, Module $module)
+    public function get()
     {
-        if ($this->atLeastModerator($currentUser)) {
-            return true;
-        } else if ($module->premium) {
-            return $currentUser->premium;
-        } else {
-            return true;
-        }
+        return true;
     }
 
 

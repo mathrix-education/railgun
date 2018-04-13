@@ -3,10 +3,12 @@ namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http401UnauthorizedException;
+use App\Exceptions\Http404ModelNotFoundException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\Meta;
 use App\Models\Module;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Http\JsonResponse;
@@ -57,6 +59,9 @@ class ModuleController extends BaseController
      */
     public function get(Request $request, $key, $value = null): JsonResponse
     {
+        /** @var User $user */
+        $user = $request->user();
+
         $module = Module::where("id", $key)->with([
             "comments" => function (MorphMany $query) use ($key) {
                 $query->getQuery()
@@ -69,12 +74,23 @@ class ModuleController extends BaseController
             }
         ])->firstOrFail();
 
-        if (
-            $request->user() === null && $module->premium ||
-            $request->user() !== null && $request->user()->cant("get", $module)
-        ) {
+        if ($user !== null && $user->cant("get", $module)) {
             throw new Http401UnauthorizedException();
         }
+
+        // 404 if module is not visible
+        if (!$module->visible && !$user->isModerator()) {
+            throw new Http404ModelNotFoundException();
+        }
+
+        // Hide module content if user is not premium nor moderator
+        /*if ($module->premium && ($user === null || !$user->premium && !$user->isModerator())) {
+            $id = $module->id;
+            $module = [
+                "id" => $id,
+                "premium" => true
+            ];
+        }*/
 
         return response()->json($module);
     }
