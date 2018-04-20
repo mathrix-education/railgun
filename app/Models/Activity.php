@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @author Mathrix Back-End Team
  * @package App\Models
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  * @property int $id
  * @property string $name
  * @property string $slug
@@ -22,7 +22,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $type
  * @property bool $visible
  * @property array $link
+ * @property-read bool $completed
  * @property-read bool $favorite
+ * @property-read bool $to_revise
  * @property-read string|null $status
  * @property-read Collection|Log[] $logs
  * @property-read Collection|Module[] $modules
@@ -114,6 +116,7 @@ class Activity extends BaseModel
     */
     /**
      * favorite
+     *
      * @return bool
      */
     public function getFavoriteAttribute()
@@ -126,8 +129,8 @@ class Activity extends BaseModel
         }
 
         $meta = Meta::where([
-            ["activity_id", "=", $this->id],
-            ["user_id", "=", $user->id]
+            ["activity_id", $this->id],
+            ["user_id", $user->id]
         ])->first();
 
         return $meta === null ? false : (bool)$meta->favorite;
@@ -136,6 +139,7 @@ class Activity extends BaseModel
 
     /**
      * to_revise
+     *
      * @return bool
      */
     public function getToReviseAttribute()
@@ -148,15 +152,17 @@ class Activity extends BaseModel
         }
 
         $meta = Meta::where([
-            ["activity_id", "=", $this->id],
-            ["user_id", "=", $user->id]
+            ["activity_id", $this->id],
+            ["user_id", $user->id]
         ])->first();
 
         return $meta === null ? null : $meta->to_revise;
     }
 
+
     /**
      * completed
+     *
      * @return bool
      */
     public function getCompletedAttribute()
@@ -169,8 +175,8 @@ class Activity extends BaseModel
         }
 
         $meta = Meta::where([
-            ["activity_id", "=", $this->id],
-            ["user_id", "=", $user->id]
+            ["activity_id", $this->id],
+            ["user_id", $user->id]
         ])->first();
 
         return $meta === null ? null : $meta->completed;

@@ -26,7 +26,7 @@ use ...
  * @author Mathrix Back-End Team
  * @package {namespace}
  * @since {version of introduction}
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class {class} {
     [...]

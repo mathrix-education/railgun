@@ -1,4 +1,5 @@
 <?php
+
 use App\Models\Category;
 use App\Models\Module;
 use App\Models\Post;

@@ -12,11 +12,12 @@ use Illuminate\Queue\SerializesModels;
  * @author Mathrix Back-End Team
  * @package App\Mails
  * @since 1.0.1
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 abstract class BaseMail extends Mailable
 {
     use Queueable, SerializesModels;
+
 
     public function __construct()
     {

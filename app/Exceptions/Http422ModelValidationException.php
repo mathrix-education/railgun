@@ -2,18 +2,18 @@
 namespace App\Exceptions;
 
 
-
 /**
  * Class Http422ModelValidationException
  *
  * @author Mathrix Back-End Team
  * @package App\Exceptions
  * @since
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class Http422ModelValidationException extends HttpException
 {
     protected $message = "Submitted data failed to pass validation";
+
 
     /**
      * Http422ModelValidationException constructor.

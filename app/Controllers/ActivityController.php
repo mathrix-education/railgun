@@ -18,7 +18,7 @@ use Illuminate\Http\Request;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class ActivityController extends BaseController
 {
@@ -133,8 +133,8 @@ class ActivityController extends BaseController
         $user = $this->getUserByRequestOrUnauthorized($request);
         $metas = Meta::with(["country", "class_", "discipline", "chapter", "notion", "activity", "activity.modules"])
             ->where([
-                ["user_id", "=", $user->id],
-                ["favorite", "=", true]
+                ["user_id", $user->id],
+                ["favorite", true]
             ])
             ->get();
 
@@ -165,8 +165,8 @@ class ActivityController extends BaseController
         $user = $this->getUserByRequestOrUnauthorized($request);
         $metas = Meta::with(["country", "class_", "discipline", "chapter", "notion", "activity", "activity.modules"])
             ->where([
-                ["user_id", "=", $user->id],
-                ["to_revise", "=", true]
+                ["user_id", $user->id],
+                ["to_revise", true]
             ])
             ->get();
 
@@ -205,9 +205,9 @@ class ActivityController extends BaseController
         foreach ($disciplinesIds as $disciplineId) {
             $subQuery = Meta::with(["country", "class_", "discipline", "chapter", "notion", "activity", "activity.modules"])
                 ->where([
-                    ["user_id", "=", $user->id],
-                    ["completed", "=", false],
-                    ["discipline_id", "=", $disciplineId]
+                    ["user_id", $user->id],
+                    ["completed", false],
+                    ["discipline_id", $disciplineId]
                 ])
                 ->orderBy("created_at", "desc")
                 ->limit(1);
@@ -215,6 +215,7 @@ class ActivityController extends BaseController
             if ($query === null) {
                 $query = $subQuery;
             } else {
+                /** @var Builder $query */
                 $query->union($subQuery);
             }
         }

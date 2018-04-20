@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Setup project for development
 composer install
 yarn install

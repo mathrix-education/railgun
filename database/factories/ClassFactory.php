@@ -1,4 +1,5 @@
 <?php
+
 use App\Models\Class_;
 use App\Models\Country;
 use Faker\Generator;

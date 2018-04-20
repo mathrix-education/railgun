@@ -10,7 +10,7 @@ use Tests\ScopeTestCase;
  * Test modules as public (non-logged user)
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  * @version 1.0.0
  * @package Tests\Modules
  */
@@ -53,10 +53,10 @@ class ModulesAsPublicTest extends ScopeTestCase
      */
     public function testGetPremiumAsNonPremium()
     {
-        $user = null;
         do {
+            /** @var User $user */
             $user = User::random();
-        } while($user->premium);
+        } while ($user->premium);
 
         /** @var Module $module */
         $module = Module::wherePremium(true)->inRandomOrder()->firstOrFail();

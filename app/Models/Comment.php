@@ -6,7 +6,6 @@ use Auth;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -27,10 +26,11 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property Carbon|null $deleted_at
  * @property int $commentable_id
  * @property string $commentable_type
+ * @property-read int|null $user_vote
+ * @property-read User|null $user
+ * @property-read BaseModel $commentable
  * @property-read Comment|null $parent
  * @property-read Collection|Comment[] $children
- * @property-read Model $commentable
- * @property-read User|null $user
  * @property-read Collection|Vote[] $votes
  * @method static Builder|Comment whereId($value)
  * @method static Builder|Comment whereContent($value)
@@ -54,25 +54,21 @@ class Comment extends BaseModel
 
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
-
+    /** @var array The default relations included */
+    public $with = ["user:id,username,firstname,level,class_id", "children", "children.user"];
     /** @var array The fillable attributes */
     protected $fillable = ["id", "content", "score", "parent_id", "user_id", "commentable_id", "commentable_type",
         "created_at", "updated_at", "deleted_at"];
-
     /** @var array Validation rules */
     protected $rules = [
         "content" => "required",
         "parent_id" => "nullable|exists:comments,id",
         "user_id" => "required|exists:users,id"
     ];
-
-    /** @var array The default relations included */
-    public $with = ["user:id,username,firstname,level,class_id", "children", "children.user"];
-
     /** @var array The attributes that should be mutated to dates */
     protected $dates = ["deleted_at"];
 
-
+    /** @var array Virtual fields */
     protected $appends = ["user_vote"];
 
 

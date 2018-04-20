@@ -21,7 +21,7 @@ use Illuminate\Http\Request;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class UserController extends BaseController
 {
@@ -186,7 +186,7 @@ class UserController extends BaseController
     public function exists(Request $request)
     {
         foreach ($request->all() as $key => $value) {
-            if(User::where($key, $value)->exists()) {
+            if (User::where($key, $value)->exists()) {
                 return response()->json(["exists" => true]);
             }
         }
@@ -214,7 +214,7 @@ class UserController extends BaseController
     {
         /** @var User $user */
         $user = $request->user();
-        $user = User::where("id", "=", $user->id)
+        $user = User::where("id", $user->id)
             ->with("subscriptions")
             ->firstOrFail();
 
@@ -278,10 +278,10 @@ class UserController extends BaseController
             $loggable = $loggableModelClass::where("id", $loggableId)->firstOrFail();
 
             $userHasAlreadyGatheredPointsWithThisModule = Log::where([
-                ["event", "=", "user_gathered_points"],
-                ["user_id", "=", $user->id],
-                ["loggable_type", "=", $loggableType],
-                ["loggable_id", "=", $loggable->id],
+                ["event", "user_gathered_points"],
+                ["user_id", $user->id],
+                ["loggable_type", $loggableType],
+                ["loggable_id", $loggable->id],
             ])
                 ->whereBetween("created_at", [Carbon::now()->setTime(0, 0, 0), Carbon::now()])
                 ->exists();

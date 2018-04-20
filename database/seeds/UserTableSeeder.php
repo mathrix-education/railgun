@@ -20,7 +20,7 @@ use Carbon\Carbon;
  *
  * @author Mathrix Back-End Team
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class UserTableSeeder extends BaseTableSeeder
 {

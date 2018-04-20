@@ -153,7 +153,7 @@ $app->router->group(["namespace" => "App\\Controllers"], function ($router) {
 
         try {
             $build = Carbon::createFromFormat("Y-m-d_H-i-s", $build)->toIso8601String();
-        } catch(InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
         }
 
         return response()->json([

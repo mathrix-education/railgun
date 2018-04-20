@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @author Mathrix Back-End Team
  * @package App\Models
  * @since 1.0.1
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  * @property int $id
  * @property string $name
  * @property string $slug
@@ -32,6 +32,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Section whereTrainingId($value)
  * @method static Builder|Section whereCreatedAt($value)
  * @method static Builder|Section whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Lesson[] $lessons
  */
 class Section extends BaseModel
 {
@@ -46,8 +47,10 @@ class Section extends BaseModel
         "description" => "nullable",
     ];
 
+
     /**
      * BelongsTo Training
+     *
      * @return BelongsTo
      */
     public function training()
@@ -55,8 +58,10 @@ class Section extends BaseModel
         return $this->belongsTo(Training::class);
     }
 
+
     /**
      * HasMany Lesson
+     *
      * @return HasMany
      */
     public function lessons()

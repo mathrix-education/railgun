@@ -1,4 +1,5 @@
 <?php
+
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\Activity;
@@ -14,7 +15,7 @@ use App\Models\Notion;
  *
  * @author Mathrix Back-End Team
  * @since 1.0.1
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class ContentTableSeeder extends BaseTableSeeder
 {

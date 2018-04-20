@@ -7,7 +7,7 @@ namespace Tests\Users;
  * @author Mathrix Back-End Team
  * @package Tests\Users
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class UsersAsAdminTest extends UsersAsModeratorTest
 {

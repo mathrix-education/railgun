@@ -26,7 +26,7 @@ class ModuleObserver extends BaseObserver
         // Sync activities
         if (isset($module->link["activities"])) {
             $toSync = [];
-            foreach($module->link["activities"] as $order => $notionId) {
+            foreach ($module->link["activities"] as $order => $notionId) {
                 if (Activity::find($notionId)->exists()) {
                     $toSync[$notionId] = ["order" => $order];
                 }

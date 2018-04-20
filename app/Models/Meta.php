@@ -30,7 +30,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read Module $module
  * @method static Builder|Meta whereId($value)
  * @method static Builder|Meta whereFavorite($value)
- * @method static Builder|Meta whereStatus($value)
+ * @method static Builder|Meta whereToRevise($value)
+ * @method static Builder|Meta whereCompleted($value)
  * @method static Builder|Meta whereUserId($value)
  * @method static Builder|Meta whereCountryId($value)
  * @method static Builder|Meta whereDisciplineId($value)
@@ -39,18 +40,22 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Meta whereClassId($value)
  * @method static Builder|Meta whereActivityId($value)
  * @method static Builder|Meta whereModuleId($value)
+ * @method static Builder|Meta whereCreatedAt($value)
+ * @method static Builder|Meta whereUpdatedAt($value)
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
  */
 class Meta extends BaseModel
 {
     public $fillable = ["id", "favorite", "to_revise", "completed", "user_id", "country_id", "class_id", "discipline_id",
         "chapter_id", "notion_id", "activity_id", "module_id"];
-
+    /** @var bool Indicates if the model should be timestamped */
+    public $timestamps = true;
     protected $casts = [
         "favorite" => "boolean",
         "to_revise" => "boolean",
         "completed" => "boolean"
     ];
-
     /** @var array The validation rules on create */
     protected $rules = [
         "favorite" => "boolean",
@@ -63,18 +68,16 @@ class Meta extends BaseModel
         "chapters_id" => "required|exists:chapters,id",
         "notion_id" => "required|exists:notions,id",
         "activity_id" => "required|exists:activities,id",
-        "module_id" => "nullable|exists:modules,id",
-        "status" => "nullable|in:completed,to_revise"
+        "module_id" => "nullable|exists:modules,id"
     ];
-
-    /** @var bool Indicates if the model should be timestamped */
-    public $timestamps = true;
 
     /*
     |--------------------------------------------------------------------------
     | Relations
     |--------------------------------------------------------------------------
     */
+
+
     /**
      * BelongsTo User
      *

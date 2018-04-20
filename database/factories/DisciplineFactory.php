@@ -1,4 +1,5 @@
 <?php
+
 use App\Models\Discipline;
 use Faker\Generator;
 

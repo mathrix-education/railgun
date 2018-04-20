@@ -9,7 +9,7 @@ use App\Models\User;
  * @author Mathrix Back-End Team
  * @package App\Policies
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class ReportPolicy extends BasePolicy
 {
@@ -18,15 +18,18 @@ class ReportPolicy extends BasePolicy
         return $this->atLeastModerator($currentUser);
     }
 
+
     public function get(User $currentUser)
     {
         return $this->atLeastModerator($currentUser);
     }
 
+
     public function add()
     {
         return true;
     }
+
 
     public function edit(User $currentUser)
     {

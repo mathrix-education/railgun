@@ -68,15 +68,21 @@ class Log extends BaseModel
 
 
     /**
-     * Disable updated_at field update; seems to be a hack
+     * Add a log line the the database
      *
-     * @param mixed $value
+     * @param string $event the event name
+     * @param User|int|null $user the user as model, its id or njull for system log
+     * @param array $data the optional data to associate with the log, such as the loggable type and id
      *
-     * @return $this
+     * @return bool
+     * @throws Http400InvalidRequestException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
+     * @throws \Exception
      */
-    public function setUpdatedAt($value)
+    public static function log(string $event, $user = null, $data = [])
     {
-        return $this;
+        return self::build($event, $user, $data)->save();
     }
 
 
@@ -108,21 +114,15 @@ class Log extends BaseModel
 
 
     /**
-     * Add a log line the the database
+     * Disable updated_at field update; seems to be a hack
      *
-     * @param string $event the event name
-     * @param User|int|null $user the user as model, its id or njull for system log
-     * @param array $data the optional data to associate with the log, such as the loggable type and id
+     * @param mixed $value
      *
-     * @return bool
-     * @throws Http400InvalidRequestException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
-     * @throws \Exception
+     * @return $this
      */
-    public static function log(string $event, $user = null, $data = [])
+    public function setUpdatedAt($value)
     {
-        return self::build($event, $user, $data)->save();
+        return $this;
     }
 
     /*
@@ -130,6 +130,8 @@ class Log extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
+
+
     /**
      * BelongsTo User
      *

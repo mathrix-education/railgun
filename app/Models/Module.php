@@ -38,6 +38,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Module whereQuestions($value)
  * @method static Builder|Module whereSolutions($value)
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Training[] $trainings
+ * @property-read mixed $favorite
+ * @property-read mixed $to_revise
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Lesson[] $lessons
  */
 class Module extends BaseModel
 {
@@ -64,6 +67,7 @@ class Module extends BaseModel
     protected $rules = [
         "visible" => "boolean"
     ];
+    protected $appends = ["favorite", "to_revise"];
 
 
     public function __construct(array $attributes = [])
@@ -75,8 +79,16 @@ class Module extends BaseModel
     }
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | Appends
+    |--------------------------------------------------------------------------
+    */
+
+
     /**
      * Handle too array strips if user is not premium
+     *
      * @return array
      */
     public function toArray()
@@ -99,14 +111,6 @@ class Module extends BaseModel
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Appends
-    |--------------------------------------------------------------------------
-    */
-    protected $appends = ["favorite", "to_revise"];
-
-
     public function getFavoriteAttribute()
     {
         /** @var User $user */
@@ -117,8 +121,8 @@ class Module extends BaseModel
         }
 
         $meta = Meta::where([
-            ["module_id", "=", $this->id],
-            ["user_id", "=", $user->id]
+            ["module_id", $this->id],
+            ["user_id", $user->id]
         ])->first();
 
         return $meta === null ? false : $meta->favorite;
@@ -135,8 +139,8 @@ class Module extends BaseModel
         }
 
         $meta = Meta::where([
-            ["module_id", "=", $this->id],
-            ["user_id", "=", $user->id]
+            ["module_id", $this->id],
+            ["user_id", $user->id]
         ])->first();
 
         return $meta === null ? false : $meta->to_revise;

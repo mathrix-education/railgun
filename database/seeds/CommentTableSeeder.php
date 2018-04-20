@@ -9,7 +9,7 @@ use App\Models\Comment;
  *
  * @author Mathrix Back-End Team
  * @since 1.0.1
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class CommentTableSeeder extends BaseTableSeeder
 {

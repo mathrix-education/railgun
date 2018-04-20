@@ -70,6 +70,8 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereCardLastFour($value)
  * @method static Builder|User whereStripeId($value)
  * @method static Builder|User whereTrialEndsAt($value)
+ * @method static Builder|User whereCreatedAt($value)
+ * @method static Builder|User whereUpdatedAt($value)
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
@@ -123,75 +125,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
 
     /**
-     * Check if user is administrator
-     *
-     * @return bool
-     */
-    public function isAdmin()
-    {
-        return $this->tokenCan("admin");
-    }
-
-
-    /**
-     * premium attribute
-     *
-     * @return bool
-     */
-    public function getPremiumAttribute()
-    {
-        return $this->subscribed("premium");
-    }
-
-
-    /**
-     * daily_points attribute
-     *
-     * @return int
-     */
-    public function getDailyPointsAttribute()
-    {
-        $logs = Log::where([
-            ["event", "=", "user_gathered_points"],
-            ["user_id", "=", $this->id],
-        ])
-            ->whereBetween("created_at", [Carbon::now()->setTime(0, 0, 0), Carbon::now()])
-            ->get();
-
-        $sum = 0;
-
-        /** @var Log $log */
-        foreach ($logs as $log) {
-            $sum += $log->value["points"];
-        }
-
-        return $sum;
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Passport
-    |--------------------------------------------------------------------------
-    */
-    /**
-     * Check if user is authorized to do something; if not throw an exception
-     *
-     * @see Authorizable
-     *
-     * @param $ability
-     * @param array $arguments
-     * @param string $exceptionClass
-     */
-    public function canOrFail($ability, $arguments = [], $exceptionClass = Http401UnauthorizedException::class)
-    {
-        if ($this->cant($ability, $arguments) && class_exists($exceptionClass)) {
-            throw new $exceptionClass();
-        }
-    }
-
-
-    /**
      * Determine if user can do something according to its token
      *
      * @param string $scope the minimum scope
@@ -215,11 +148,84 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
 
+    /**
+     * Check if user is administrator
+     *
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return $this->tokenCan("admin");
+    }
+
+
+    /**
+     * premium attribute
+     *
+     * @return bool
+     */
+    public function getPremiumAttribute()
+    {
+        return $this->subscribed("premium");
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Passport
+    |--------------------------------------------------------------------------
+    */
+
+
+    /**
+     * daily_points attribute
+     *
+     * @return int
+     */
+    public function getDailyPointsAttribute()
+    {
+        $logs = Log::where([
+            ["event", "user_gathered_points"],
+            ["user_id", $this->id],
+        ])
+            ->whereBetween("created_at", [Carbon::now()->setTime(0, 0, 0), Carbon::now()])
+            ->get();
+
+        $sum = 0;
+
+        /** @var Log $log */
+        foreach ($logs as $log) {
+            $sum += $log->value["points"];
+        }
+
+        return $sum;
+    }
+
+
+    /**
+     * Check if user is authorized to do something; if not throw an exception
+     *
+     * @see Authorizable
+     *
+     * @param $ability
+     * @param array $arguments
+     * @param string $exceptionClass
+     */
+    public function canOrFail($ability, $arguments = [], $exceptionClass = Http401UnauthorizedException::class)
+    {
+        if ($this->cant($ability, $arguments) && class_exists($exceptionClass)) {
+            throw new $exceptionClass();
+        }
+    }
+
+
     /*
     |--------------------------------------------------------------------------
     | Relations
     |--------------------------------------------------------------------------
     */
+
+
     /**
      * BelongsTo Class_
      *

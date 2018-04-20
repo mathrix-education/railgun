@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
@@ -25,6 +24,7 @@ class RemoveShortSlugs extends Migration
             $table->renameColumn("slug_short", "slug");
         });
     }
+
 
     /**
      * Reverse the migrations.

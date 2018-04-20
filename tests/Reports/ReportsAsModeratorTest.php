@@ -6,16 +6,17 @@ namespace Tests\Reports;
  * Test reports as moderator
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  * @version 1.0.0
  * @package Tests\Reports
  */
 class ReportsAsModeratorTest extends ReportsAsRegisteredTest
-{    /**
- * GET /reports
- *
- * @throws \Exception
- */
+{
+    /**
+     * GET /reports
+     *
+     * @throws \Exception
+     */
     public function testIndex()
     {
         $this->genericIndexSuccess();

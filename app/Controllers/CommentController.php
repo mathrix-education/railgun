@@ -17,7 +17,7 @@ use Illuminate\Http\Request;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class CommentController extends BaseController
 {
@@ -145,10 +145,10 @@ class CommentController extends BaseController
         }
 
         $comments = Comment::where([
-                ["commentable_type", "=", $what],
-                ["commentable_id", "=", $id],
-                ["parent_id", "=", NULL]
-            ])
+            ["commentable_type", $what],
+            ["commentable_id", $id],
+            ["parent_id", null]
+        ])
             ->limit($perPage)
             ->offset(($page - 1) * $perPage)
             ->get();
