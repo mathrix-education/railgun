@@ -23,7 +23,7 @@ class BlogTableSeeder extends BaseTableSeeder
     {
         $this->seedFromFactory([
             "modelClass" => Category::class,
-            "count" => random_int(20, 40)
+            "count" => random_int(5, 8)
         ]);
         $this->seedFromFactory([
             "modelClass" => Module::class,
@@ -32,11 +32,11 @@ class BlogTableSeeder extends BaseTableSeeder
         ]);
         $this->seedFromFactory([
             "modelClass" => Post::class,
-            "count" => random_int(20, 40)
+            "count" => random_int(10, 20)
         ]);
         $this->seedFromFactory([
             "modelClass" => Quote::class,
-            "count" => random_int(50, 100)
+            "count" => random_int(10, 20)
         ]);
     }
 }

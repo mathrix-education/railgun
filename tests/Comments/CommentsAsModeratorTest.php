@@ -76,6 +76,6 @@ class CommentsAsModeratorTest extends CommentsAsRegisteredTest
         $this->call("get", "/comments/latest");
 
         $this->assertHttp200Success();
-        $this->assertJsonLength(100);
+        $this->assertJsonLengthMax(100);
     }
 }

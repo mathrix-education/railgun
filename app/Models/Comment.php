@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use App\Models\Traits\Votable;
+use Auth;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -66,11 +67,41 @@ class Comment extends BaseModel
     ];
 
     /** @var array The default relations included */
-    public $with = ["user", "children", "children.user"];
+    public $with = ["user:id,username,firstname,level,class_id", "children", "children.user"];
 
     /** @var array The attributes that should be mutated to dates */
     protected $dates = ["deleted_at"];
 
+
+    protected $appends = ["user_vote"];
+
+
+    /**
+     * Get the user vote value (null|1|-1)
+     *
+     * @return int|null
+     */
+    public function getUserVoteAttribute()
+    {
+        $user = Auth::user();
+
+        if ($user === null) {
+            return null;
+        }
+
+        /** @var Vote $potentialVote */
+        $potentialVote = Vote::where([
+            ["user_id", $user->id],
+            ["votable_type", "comment"],
+            ["votable_id", $this->id]
+        ])->first();
+
+        if ($potentialVote === null) {
+            return null;
+        } else {
+            return $potentialVote->value;
+        }
+    }
 
     /*
     |--------------------------------------------------------------------------

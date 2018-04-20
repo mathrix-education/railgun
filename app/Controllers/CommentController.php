@@ -144,8 +144,7 @@ class CommentController extends BaseController
             throw new Http400InvalidRequestException("Comment::$what() does not exist");
         }
 
-        $comments = Comment::with(["user", "children", "children.user"])
-            ->where([
+        $comments = Comment::where([
                 ["commentable_type", "=", $what],
                 ["commentable_id", "=", $id],
                 ["parent_id", "=", NULL]
