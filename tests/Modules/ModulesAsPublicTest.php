@@ -48,6 +48,8 @@ class ModulesAsPublicTest extends ScopeTestCase
 
     /**
      * GET /modules/{id} with a premium module as non premium user
+     *
+     * @throws \Exception
      */
     public function testGetPremiumAsNonPremium()
     {
@@ -60,7 +62,11 @@ class ModulesAsPublicTest extends ScopeTestCase
         $module = Module::wherePremium(true)->inRandomOrder()->firstOrFail();
         $this->get("/modules/{$module->id}");
 
-        $this->assertHttp401Unauthorized();
+        $response = $this->getResponseData();
+        $responseKeys = array_keys((array)$response);
+        $expectedKeys = ["id", "premium"];
+        $this->assertTrue($response->premium);
+        $this->assertEquals($expectedKeys, $responseKeys);
     }
 
 

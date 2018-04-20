@@ -110,6 +110,7 @@ abstract class BaseTestCase extends TestCase
      */
     public function debug()
     {
+        echo $this->currentUri . "\n";
         echo json_encode($this->getResponseData(), JSON_PRETTY_PRINT);
     }
 
@@ -142,6 +143,19 @@ abstract class BaseTestCase extends TestCase
         $content = json_decode($this->response->getContent(), true);
         $this->assertEquals($expectedLength, count($content));
     }
+
+
+    /**
+     * Assert the response has the right length
+     *
+     * @param int $maxLength
+     */
+    public function assertJsonLengthMax(int $maxLength): void
+    {
+        $content = json_decode($this->response->getContent(), true);
+        $this->assertTrue($maxLength >= count($content));
+    }
+
 
 
     /**

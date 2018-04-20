@@ -34,7 +34,7 @@ class UserTableSeeder extends BaseTableSeeder
         $this->seedFromFactory([
             "modelClass" => User::class,
             "subFactory" => "admin",
-            "count" => random_int(2, 4)
+            "count" => 2
         ]);
         User::where("type", "admin")
             ->first()
@@ -44,7 +44,7 @@ class UserTableSeeder extends BaseTableSeeder
         $this->seedFromFactory([
             "modelClass" => User::class,
             "subFactory" => "moderator",
-            "count" => random_int(10, 20)
+            "count" => random_int(2, 4)
         ]);
         User::where("type", "moderator")
             ->first()
@@ -54,7 +54,7 @@ class UserTableSeeder extends BaseTableSeeder
         $this->seedFromFactory([
             "modelClass" => User::class,
             "subFactory" => "registered",
-            "count" => random_int(40, 60)
+            "count" => random_int(10, 15)
         ]);
         User::where("type", "registered")
             ->first()
