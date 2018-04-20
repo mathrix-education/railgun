@@ -7,7 +7,7 @@ namespace App\Exceptions;
  * @author Mathrix Back-End Team
  * @package App\Exceptions
  * @since
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class Http409ModelConflictException extends HttpException
 {

@@ -1,7 +1,6 @@
 <?php
 namespace Tests\Countries;
 
-use App\Models\Class_;
 use Tests\ScopeTestCase;
 
 /**
@@ -9,7 +8,7 @@ use Tests\ScopeTestCase;
  * Test countries as public (non-logged user)
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  * @version 1.0.0
  * @package Tests\Countries
  */

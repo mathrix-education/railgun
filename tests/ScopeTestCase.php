@@ -124,7 +124,7 @@ abstract class ScopeTestCase extends BaseTestCase
 
             // User has NOT be manually defined from a sameAs() method
             if ($this->user === null) {
-                $this->user = User::inRandomOrder()->where("type", "=", $this->scope)->first();
+                $this->user = User::inRandomOrder()->where("type", $this->scope)->first();
             }
 
             // No user could be found, the database is probably not seeded
@@ -147,7 +147,7 @@ abstract class ScopeTestCase extends BaseTestCase
     public function stranger($type = null)
     {
         $type = $type !== null ? $type : $this->user !== null ? $this->user->type : "registered";
-        $conditions = [["type", "=", $type]];
+        $conditions = [["type", $type]];
 
         if ($this->user !== null) {
             $conditions[] = ["id", "!=", $this->user->id];

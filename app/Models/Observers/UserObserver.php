@@ -90,7 +90,7 @@ class UserObserver extends BaseObserver
                 $user->daily_achievements++;
                 Log::log("user_achieved_daily", $user);
             }
-            
+
             /*
             |--------------------------------------------------------------------------
             | Trigger the level achievement

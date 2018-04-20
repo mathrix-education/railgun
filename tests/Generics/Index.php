@@ -6,22 +6,23 @@ namespace Tests\Generics;
  * Generic index tests
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  * @version 1.0.0
  * @package Tests\GenericTests
  */
 trait Index
 {
     /**
-     * Generic index call
+     * Generic index with pagination; expect HTTP 200
+     *
+     * @param int $perPage model count per page
      *
      * @throws \Exception
      */
-    public function genericIndex()
+    public function genericIndexSuccessWithPagination($perPage = 10)
     {
-        $this->genericUsableOrFail();
-
-        $this->call("get", "/" . $this->modelPlural . "/");
+        $this->genericIndexSuccess();
+        $this->assertJsonLength($perPage);
     }
 
 
@@ -40,16 +41,15 @@ trait Index
 
 
     /**
-     * Generic index with pagination; expect HTTP 200
-     *
-     * @param int $perPage model count per page
+     * Generic index call
      *
      * @throws \Exception
      */
-    public function genericIndexSuccessWithPagination($perPage = 10)
+    public function genericIndex()
     {
-        $this->genericIndexSuccess();
-        $this->assertJsonLength($perPage);
+        $this->genericUsableOrFail();
+
+        $this->call("get", "/" . $this->modelPlural . "/");
     }
 
 

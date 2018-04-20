@@ -11,7 +11,7 @@ use Illuminate\Database\Schema\Blueprint;
  *
  * @author Mathrix Back-End Team
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class CreateChapterNotionTable extends Migration
 {
@@ -35,7 +35,7 @@ class CreateChapterNotionTable extends Migration
 
         $notions = Notion::all();
         /** @var Notion $notion */
-        foreach($notions as $notion) {
+        foreach ($notions as $notion) {
             $notion->chapters()->attach([$notion->chapter_id => ["order" => $notion->order]]);
         }
 
@@ -67,7 +67,7 @@ class CreateChapterNotionTable extends Migration
 
         $notions = Notion::all();
         /** @var Notion $notion */
-        foreach($notions as $notion) {
+        foreach ($notions as $notion) {
             $chapter = $notion->chapters()->first();
 
             if ($chapter != null) {

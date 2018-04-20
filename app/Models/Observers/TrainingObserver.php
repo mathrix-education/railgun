@@ -11,7 +11,7 @@ use App\Models\Training;
  * @author Mathrix Back-End Team
  * @package App\Models\Observers
  * @since 1.0.1
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class TrainingObserver extends BaseObserver
 {
@@ -39,7 +39,8 @@ class TrainingObserver extends BaseObserver
      *
      * @return bool
      */
-    public function deleting($training) {
+    public function deleting($training)
+    {
         return Section::whereTrainingId($training)->delete();
     }
 }

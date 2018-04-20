@@ -17,7 +17,7 @@ use Spatie\Newsletter\NewsletterListCollection;
  * @author Mathrix Back-End Team
  * @package App\Providers
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  *
  * @property-read Application $app
  */

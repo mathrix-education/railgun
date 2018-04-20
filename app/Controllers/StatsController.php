@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class StatsController extends BaseController
 {
@@ -83,7 +83,7 @@ class StatsController extends BaseController
             $statsRequest = $statsRequest->whereDate("created_at", "<", $end);
         }
 
-        $statsRaw = $statsRequest->where("loggable_type", "=", "module")
+        $statsRaw = $statsRequest->where("loggable_type", "module")
             ->with(["loggable.activities"])
             ->get(["value", "loggable_type", "loggable_id", "created_at"]);
 

@@ -20,7 +20,7 @@ use Illuminate\Http\Request;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class ModuleController extends BaseController
 {
@@ -65,8 +65,8 @@ class ModuleController extends BaseController
         $module = Module::where("id", $key)->with([
             "comments" => function (MorphMany $query) use ($key) {
                 $query->getQuery()
-                    ->where("commentable_id", "=", $key)
-                    ->where("commentable_type", "=", "module")
+                    ->where("commentable_id", $key)
+                    ->where("commentable_type", "module")
                     ->orderByDesc("created_at");
             },
             "comments.children" => function (HasMany $query) {

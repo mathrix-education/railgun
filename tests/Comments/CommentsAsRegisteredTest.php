@@ -8,7 +8,7 @@ use App\Models\Comment;
  * Test Comments as registered user
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  * @version 1.0.0
  * @package Tests\Comments
  */

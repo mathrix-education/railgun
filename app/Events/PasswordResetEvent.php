@@ -11,12 +11,13 @@ use Illuminate\Support\Facades\Mail;
  * @author Mathrix Back-End Team
  * @package App\Events
  * @since 1.0.1
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class PasswordResetEvent extends BaseEvent
 {
     /** @var User */
     public $user;
+
 
     public function __construct(User $user)
     {

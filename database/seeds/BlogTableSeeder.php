@@ -1,4 +1,5 @@
 <?php
+
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\Category;
@@ -11,7 +12,7 @@ use App\Models\Quote;
  *
  * @author Mathrix Back-End Team
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class BlogTableSeeder extends BaseTableSeeder
 {

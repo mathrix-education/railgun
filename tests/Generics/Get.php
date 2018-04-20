@@ -7,10 +7,24 @@ namespace Tests\Generics;
  * @author Mathrix Back-End Team
  * @package Tests\Generics
  * @since 1.0.1
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 trait Get
 {
+    /**
+     * Generic get; expect HTTP 200
+     *
+     * @throws \Exception
+     */
+    public function genericGetSuccess()
+    {
+        $this->genericGet();
+
+        // Assertions
+        $this->assertHttp200Success();
+    }
+
+
     /**
      * Generic get call
      *
@@ -25,19 +39,6 @@ trait Get
         $this->call("get", "/" . $this->modelPlural . "/$id");
     }
 
-
-    /**
-     * Generic get; expect HTTP 200
-     *
-     * @throws \Exception
-     */
-    public function genericGetSuccess()
-    {
-        $this->genericGet();
-
-        // Assertions
-        $this->assertHttp200Success();
-    }
 
     /**
      * Generic get; expect HTTP 422 Unauthorized

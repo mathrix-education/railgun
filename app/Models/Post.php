@@ -15,8 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @author Mathrix Back-End Team
  * @package App\Models
  * @since 1.0.1
- * @copyright Mathrix SA
- *
+ * @copyright Mathrix Education SA
  * @property int $id
  * @property string $title
  * @property string $slug
@@ -68,11 +67,14 @@ class Post extends BaseModel
 
     /**
      * BelongsTo Module
+     *
      * @return BelongsTo
      */
-    public function module() {
+    public function module()
+    {
         return $this->belongsTo(Module::class);
     }
+
 
     /**
      * BelongsTo Category

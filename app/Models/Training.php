@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @author Mathrix Back-End Team
  * @package App\Models
  * @since 1.0.1
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  * @property int $id
  * @property string $name
  * @property string $slug
@@ -39,8 +39,10 @@ class Training extends BaseModel
         "description" => "nullable",
     ];
 
+
     /**
      * HasMany Section
+     *
      * @return HasMany
      */
     public function sections(): HasMany

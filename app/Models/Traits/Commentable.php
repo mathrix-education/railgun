@@ -9,7 +9,7 @@ use App\Models\Comment;
  * @author Mathrix Back-End Team
  * @package App\Models\Traits
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 trait Commentable
 {

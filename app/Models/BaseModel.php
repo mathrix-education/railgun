@@ -44,6 +44,47 @@ abstract class BaseModel extends Model
 
 
     /**
+     * Get a random model from the database
+     *
+     * @param int $count The set size; if set to 1, just return the model
+     *
+     * @return Collection|BaseModel
+     */
+    public static function random($count = 1)
+    {
+        $query = self::inRandomOrder();
+
+        if ($count == 1) {
+            return $query->firstOrFail();
+        } else {
+            return $query->get();
+        }
+    }
+
+
+    /**
+     * Use appends
+     */
+    public static function withAppends()
+    {
+        self::$withAppends = true;
+
+        return (new static);
+    }
+
+
+    /**
+     * Don't use appends
+     */
+    public static function withoutAppends()
+    {
+        self::$withAppends = false;
+
+        return (new static);
+    }
+
+
+    /**
      * Unguard some attributes
      *
      * @param string|array $attributes
@@ -65,24 +106,11 @@ abstract class BaseModel extends Model
         return $this;
     }
 
-
-    /**
-     * Get a random model from the database
-     *
-     * @param int $count The set size; if set to 1, just return the model
-     *
-     * @return Collection|BaseModel
-     */
-    public static function random($count = 1)
-    {
-        $query = self::inRandomOrder();
-
-        if ($count == 1) {
-            return $query->firstOrFail();
-        } else {
-            return $query->get();
-        }
-    }
+    /*
+    |--------------------------------------------------------------------------
+    | Response
+    |--------------------------------------------------------------------------
+    */
 
 
     /**
@@ -145,29 +173,12 @@ abstract class BaseModel extends Model
     }
 
 
-    /**
-     * Override to inject exception
-     *
-     * @return bool|null
-     * @throws Http422ModelSaveException
-     * @throws \Exception
-     */
-    public function delete()
-    {
-        $deleted = parent::delete();
-
-        if (!$deleted) {
-            throw new Http422ModelSaveException();
-        }
-
-        return $deleted;
-    }
-
     /*
     |--------------------------------------------------------------------------
-    | Response
+    | Validation
     |--------------------------------------------------------------------------
     */
+
 
     /**
      * @return bool If model need to be validated before save
@@ -175,30 +186,6 @@ abstract class BaseModel extends Model
     public function validateOnSave()
     {
         return $this->validate;
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Validation
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Enable the model validation
-     */
-    public function enableValidation()
-    {
-        $this->validate = true;
-    }
-
-
-    /**
-     * Disable the model validation
-     */
-    public function disableValidation()
-    {
-        $this->validate = false;
     }
 
 
@@ -243,6 +230,43 @@ abstract class BaseModel extends Model
 
 
     /**
+     * Override to inject exception
+     *
+     * @return bool|null
+     * @throws Http422ModelSaveException
+     * @throws \Exception
+     */
+    public function delete()
+    {
+        $deleted = parent::delete();
+
+        if (!$deleted) {
+            throw new Http422ModelSaveException();
+        }
+
+        return $deleted;
+    }
+
+
+    /**
+     * Enable the model validation
+     */
+    public function enableValidation()
+    {
+        $this->validate = true;
+    }
+
+
+    /**
+     * Disable the model validation
+     */
+    public function disableValidation()
+    {
+        $this->validate = false;
+    }
+
+
+    /**
      * Returns the validation errors
      *
      * @return bool|array
@@ -250,43 +274,6 @@ abstract class BaseModel extends Model
     public function errors()
     {
         return $this->errors;
-    }
-
-
-    /**
-     * Override to support appends togglers
-     *
-     * @return array
-     */
-    protected function getArrayableAppends()
-    {
-        if (!self::$withAppends) {
-            return [];
-        }
-
-        return parent::getArrayableAppends();
-    }
-
-
-    /**
-     * Use appends
-     */
-    public static function withAppends()
-    {
-        self::$withAppends = true;
-
-        return (new static);
-    }
-
-
-    /**
-     * Don't use appends
-     */
-    public static function withoutAppends()
-    {
-        self::$withAppends = false;
-
-        return (new static);
     }
 
 
@@ -351,5 +338,20 @@ abstract class BaseModel extends Model
         }
 
         return $structure;
+    }
+
+
+    /**
+     * Override to support appends togglers
+     *
+     * @return array
+     */
+    protected function getArrayableAppends()
+    {
+        if (!self::$withAppends) {
+            return [];
+        }
+
+        return parent::getArrayableAppends();
     }
 }

@@ -12,7 +12,7 @@ use Illuminate\Database\Migrations\Migration;
  *
  * @author Mathrix Back-End Team
  * @since 1.0.1
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class UpdatePostsTable extends Migration
 {

@@ -11,7 +11,7 @@ use Laravel\Lumen\Providers\EventServiceProvider as ServiceProvider;
  * @author Mathrix Back-End Team
  * @package App\Providers
  * @since 1.0.1
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class EventServiceProvider extends ServiceProvider
 {

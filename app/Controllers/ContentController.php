@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Storage;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class ContentController extends BaseController
 {
@@ -112,12 +112,12 @@ class ContentController extends BaseController
             ->where("name", "LIKE", "%$query%")
             ->orWhere("slug", "LIKE", "%$query%")
             ->whereHas("modules", function (Builder $q) use ($query) {
-                return $q->where("type", "=", "course")
+                return $q->where("type", "course")
                     ->where("content", "LIKE", "%[video]%");
             })
             ->with(["notions", "notions.chapters", "notions.chapters.discipline", "notions.chapters.class_",
                 "notions.chapters.class_.country", "modules" => function (BelongsToMany $q) use ($query) {
-                    return $q->where("type", "=", "course")
+                    return $q->where("type", "course")
                         ->where("content", "LIKE", "%[video]%");
                 }])
             ->limit($perPage)

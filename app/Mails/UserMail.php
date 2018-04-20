@@ -1,5 +1,6 @@
 <?php
 namespace App\Mails;
+
 use App\Models\User;
 
 /**
@@ -9,7 +10,7 @@ use App\Models\User;
  * @author Mathrix Back-End Team
  * @package App\Mails
  * @since 1.0.1
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 abstract class UserMail extends BaseMail
 {

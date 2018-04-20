@@ -6,7 +6,7 @@ namespace Tests\Notions;
  * Test notions as moderator
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  * @version 1.0.0
  * @package Tests\Notions
  */

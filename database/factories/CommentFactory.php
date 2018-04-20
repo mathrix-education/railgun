@@ -1,4 +1,5 @@
 <?php
+
 use App\Models\BaseModel;
 use App\Models\Comment;
 use App\Models\User;

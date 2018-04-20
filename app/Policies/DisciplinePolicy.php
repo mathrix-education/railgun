@@ -7,7 +7,7 @@ namespace App\Policies;
  * @author Mathrix Back-End Team
  * @package App\Policies
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class DisciplinePolicy extends BasePolicy
 {
@@ -54,6 +54,7 @@ class DisciplinePolicy extends BasePolicy
     {
         return false;
     }
+
 
     /**
      * @return bool

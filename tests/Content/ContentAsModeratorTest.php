@@ -9,7 +9,7 @@ namespace Tests\Content;
  * @author Mathrix Back-End Team
  * @package Tests\Content
  * @since
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class ContentAsModeratorTest extends ContentAsRegisteredTest
 {

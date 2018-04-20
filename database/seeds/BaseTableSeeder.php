@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
  *
  * @author Mathrix Back-End Team
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 abstract class BaseTableSeeder extends Seeder
 {
@@ -157,19 +157,6 @@ abstract class BaseTableSeeder extends Seeder
     }
 
 
-    public function overwrite($message)
-    {
-        // Move the cursor to the beginning of the line
-        $this->output->write("\x0D");
-
-        // Erase the line
-        $this->output->write("\x1B[2K");
-
-
-        $this->output->write($message);
-    }
-
-
     /**
      * Load data from a json file
      *
@@ -225,6 +212,19 @@ abstract class BaseTableSeeder extends Seeder
         if ($display) {
             $this->println("<info>Seeded:</info>  $table from factory");
         }
+    }
+
+
+    public function overwrite($message)
+    {
+        // Move the cursor to the beginning of the line
+        $this->output->write("\x0D");
+
+        // Erase the line
+        $this->output->write("\x1B[2K");
+
+
+        $this->output->write($message);
     }
 
 
@@ -326,8 +326,6 @@ abstract class BaseTableSeeder extends Seeder
      * @param int $max the maximum relations
      *
      * @throws Exception
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
      */
     public function linkAll($modelClass1, $modelClass2, $min = 3, $max = 5)
     {
@@ -344,8 +342,6 @@ abstract class BaseTableSeeder extends Seeder
      * @param int $min the minimum relations
      * @param int $max the maximum relations
      *
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
      * @throws Exception
      */
     public function link($modelClass1, $modelClass2, $min = 3, $max = 5)

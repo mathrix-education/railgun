@@ -70,57 +70,6 @@ abstract class BaseTestCase extends TestCase
 
 
     /**
-     * Handle response printing
-     *
-     * @param \Exception|\Throwable $e
-     *
-     * @throws \Throwable
-     */
-    protected function onNotSuccessfulTest(\Throwable $e)
-    {
-        $this->debug();
-        parent::onNotSuccessfulTest($e);
-    }
-
-
-    /**
-     * Get the response data
-     *
-     * @return \stdClass
-     * @throws \Exception
-     */
-    public function getResponseData()
-    {
-        if (empty($this->response)) {
-            return null;
-        }
-        else if ($this->response instanceof Response) {
-            $response = $this->response->getContent();
-            return json_decode($response);
-        } else {
-            throw new \Exception("Response is not an instance of " . Response::class);
-        }
-    }
-
-
-    /**
-     * Debug the response
-     *
-     * @throws \Exception
-     */
-    public function debug()
-    {
-        echo $this->currentUri . "\n";
-        echo json_encode($this->getResponseData(), JSON_PRETTY_PRINT);
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Additional assertions
-    |--------------------------------------------------------------------------
-    */
-    /**
      * Assert the response has the right error and status code
      *
      * @param string $error the error name
@@ -156,6 +105,12 @@ abstract class BaseTestCase extends TestCase
         $this->assertTrue($maxLength >= count($content));
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Additional assertions
+    |--------------------------------------------------------------------------
+    */
 
 
     /**
@@ -231,5 +186,50 @@ abstract class BaseTestCase extends TestCase
         $this->assertGreaterThan(0, $count, sprintf(
             "Unable to find row in database table [logs] that matched attributes [%s].", json_encode($data)
         ));
+    }
+
+
+    /**
+     * Handle response printing
+     *
+     * @param \Exception|\Throwable $e
+     *
+     * @throws \Throwable
+     */
+    protected function onNotSuccessfulTest(\Throwable $e)
+    {
+        $this->debug();
+        parent::onNotSuccessfulTest($e);
+    }
+
+
+    /**
+     * Debug the response
+     *
+     * @throws \Exception
+     */
+    public function debug()
+    {
+        echo $this->currentUri . "\n";
+        echo json_encode($this->getResponseData(), JSON_PRETTY_PRINT);
+    }
+
+
+    /**
+     * Get the response data
+     *
+     * @return \stdClass
+     * @throws \Exception
+     */
+    public function getResponseData()
+    {
+        if (empty($this->response)) {
+            return null;
+        } else if ($this->response instanceof Response) {
+            $response = $this->response->getContent();
+            return json_decode($response);
+        } else {
+            throw new \Exception("Response is not an instance of " . Response::class);
+        }
     }
 }

@@ -9,7 +9,7 @@ use App\Models\Level;
  *
  * @author Mathrix Back-End Team
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class LevelTableSeeder extends BaseTableSeeder
 {
@@ -27,7 +27,7 @@ class LevelTableSeeder extends BaseTableSeeder
         $this->println("<comment>Seeding:</comment> levels from generation");
         $levels = [];
 
-        for($i = 1; $i <= self::COUNT; $i++) {
+        for ($i = 1; $i <= self::COUNT; $i++) {
             $levels[] = [
                 "level" => $i,
                 "objective" => (int)pow(($i - 1) * 10, self::POWER),

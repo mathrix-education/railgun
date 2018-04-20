@@ -1,14 +1,5 @@
 <?php
-/**
- * @author Mathrix Back-End Team
- * @package App\Console\Commands
- * @since ${CARET}
- * @copyright Mathrix SA
- */
-
-
 namespace App\Console\Commands;
-
 
 use App\Models\User;
 use Illuminate\Console\Command;
@@ -20,7 +11,9 @@ use Spatie\Newsletter\NewsletterFacade as Newsletter;
  * @author Mathrix Back-End Team
  * @package App\Console\Commands
  * @since 1.0.1
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
+ *
+ * Used to fix Mailchimp list if they are broken
  */
 class MailchimpUpdate extends Command
 {

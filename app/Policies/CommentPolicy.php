@@ -12,7 +12,7 @@ use Carbon\Carbon;
  * @author Mathrix Back-End Team
  * @package App\Policies
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class CommentPolicy extends BasePolicy
 {
@@ -25,6 +25,7 @@ class CommentPolicy extends BasePolicy
     {
         return $this->atLeastModerator($currentUser);
     }
+
 
     /**
      * @return bool
@@ -65,6 +66,7 @@ class CommentPolicy extends BasePolicy
         return $this->atLeastModerator($currentUser);
     }
 
+
     /**
      * @return bool
      */
@@ -72,6 +74,7 @@ class CommentPolicy extends BasePolicy
     {
         return true;
     }
+
 
     /**
      * @return bool

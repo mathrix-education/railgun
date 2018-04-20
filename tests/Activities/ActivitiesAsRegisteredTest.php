@@ -14,81 +14,12 @@ use App\Models\Notion;
  * Test activities as registered user
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  * @version 1.0.0
  * @package Tests\Activities
  */
 class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
 {
-    /**
-     * Build objects for /activities/mark
-     *
-     * @return array
-     *  int country_id
-     *  int class_id
-     *  int discipline_id
-     *  int chapter_id
-     *  int notion_id
-     *  int activity_id
-     */
-    public function buildObjects()
-    {
-        /** @var Chapter $chapter */
-        $chapter = Chapter::inRandomOrder()->firstOrFail();
-        /** @var Class_ $class */
-        $class = $chapter->class_()->firstOrFail();
-        /** @var Discipline $discipline */
-        $discipline = $chapter->discipline()->firstOrFail();
-        /** @var Country $country */
-        $country = $class->country()->firstOrFail();
-        /** @var Notion $notion */
-        $notion = $chapter->notions()->inRandomOrder()->firstOrFail();
-        /** @var Activity $activity */
-        $activity = $notion->activities()->inRandomOrder()->firstOrFail();
-
-        return [
-            "country_id" => $country->id,
-            "class_id" => $class->id,
-            "discipline_id" => $discipline->id,
-            "chapter_id" => $chapter->id,
-            "notion_id" => $notion->id,
-            "activity_id" => $activity->id
-        ];
-    }
-
-
-    /**
-     * Generic mark test
-     *
-     * @param bool|null $favorite
-     * @param bool|null $to_revise
-     * @param bool|null $completed
-     */
-    public function mark($favorite, $to_revise, $completed)
-    {
-        $data = $this->buildObjects();
-        $activityId = $data["activity_id"];
-        unset($data["activity_id"]);
-
-        if ($favorite !== null) {
-            $data["favorite"] = $favorite;
-        }
-        if ($to_revise !== null) {
-            $data["to_revise"] = $to_revise;
-        }
-        if ($completed !== null) {
-            $data["completed"] = $completed;
-        }
-
-        $this->call("patch", "/activities/$activityId/mark", $data);
-
-        $expectedData = array_merge($data, ["user_id" => $this->user->id]);
-
-        $this->assertHttp200Success();
-        $this->assertInDatabase("metas", $expectedData);
-    }
-
-
     /**
      * GET /activities/favorites
      *
@@ -162,6 +93,75 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
     public function testMarkFavorite()
     {
         $this->mark(null, null, false);
+    }
+
+
+    /**
+     * Generic mark test
+     *
+     * @param bool|null $favorite
+     * @param bool|null $to_revise
+     * @param bool|null $completed
+     */
+    public function mark($favorite, $to_revise, $completed)
+    {
+        $data = $this->buildObjects();
+        $activityId = $data["activity_id"];
+        unset($data["activity_id"]);
+
+        if ($favorite !== null) {
+            $data["favorite"] = $favorite;
+        }
+        if ($to_revise !== null) {
+            $data["to_revise"] = $to_revise;
+        }
+        if ($completed !== null) {
+            $data["completed"] = $completed;
+        }
+
+        $this->call("patch", "/activities/$activityId/mark", $data);
+
+        $expectedData = array_merge($data, ["user_id" => $this->user->id]);
+
+        $this->assertHttp200Success();
+        $this->assertInDatabase("metas", $expectedData);
+    }
+
+
+    /**
+     * Build objects for /activities/mark
+     *
+     * @return array
+     *  int country_id
+     *  int class_id
+     *  int discipline_id
+     *  int chapter_id
+     *  int notion_id
+     *  int activity_id
+     */
+    public function buildObjects()
+    {
+        /** @var Chapter $chapter */
+        $chapter = Chapter::inRandomOrder()->firstOrFail();
+        /** @var Class_ $class */
+        $class = $chapter->class_()->firstOrFail();
+        /** @var Discipline $discipline */
+        $discipline = $chapter->discipline()->firstOrFail();
+        /** @var Country $country */
+        $country = $class->country()->firstOrFail();
+        /** @var Notion $notion */
+        $notion = $chapter->notions()->inRandomOrder()->firstOrFail();
+        /** @var Activity $activity */
+        $activity = $notion->activities()->inRandomOrder()->firstOrFail();
+
+        return [
+            "country_id" => $country->id,
+            "class_id" => $class->id,
+            "discipline_id" => $discipline->id,
+            "chapter_id" => $chapter->id,
+            "notion_id" => $notion->id,
+            "activity_id" => $activity->id
+        ];
     }
 
 

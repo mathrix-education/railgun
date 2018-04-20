@@ -21,7 +21,7 @@ use Laravel\Lumen\Routing\Controller;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 abstract class BaseController extends Controller
 {
@@ -79,62 +79,6 @@ abstract class BaseController extends Controller
 
 
     /**
-     * Order a collection of models by their order key if it exists. If not, just return the collection.
-     *
-     * @param Collection $collection
-     *
-     * @return Collection
-     */
-    protected function orderCollection(Collection $collection): Collection
-    {
-        if (!empty($collection->first()->order)) {
-            $collection = $collection->sortBy(function ($model) {
-                return $model->order;
-            })->values();
-        }
-
-        return $collection;
-    }
-
-
-    /**
-     * Get the user according to a optional request key and its permission
-     *
-     * @param Request $request the request
-     * @param string $minimumScope the minimum permission accepted
-     * @param string $key the key in request corresponding the user id
-     *
-     * @return User
-     * @throws Http400InvalidRequestException
-     * @throws Http401UnauthorizedException
-     * @throws \Exception
-     */
-    protected function getUserByRequestOrUnauthorized(Request $request, $minimumScope = "admin", $key = "user_id")
-    {
-        /** @var User $user */
-        $user = $request->user();
-        $userId = $request->input($key);
-
-        // Check the the user key content is an integer
-        if ($userId !== null && !is_int($userId)) {
-            throw new Http400InvalidRequestException("`$key` has to be a positive integer");
-        }
-
-        // Check authorization
-        if ($user === null || ($userId !== null && $user->id != $userId && !$user->tokenCan($minimumScope))) {
-            throw new Http401UnauthorizedException();
-        }
-
-        return $userId === null ? $request->user() : User::where("id", "=", $userId)->firstOrFail();
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Generic actions
-    |--------------------------------------------------------------------------
-    */
-    /**
      * Generic paginated index method
      *
      * @param Request $request
@@ -160,6 +104,32 @@ abstract class BaseController extends Controller
             )
         );
     }
+
+
+    /**
+     * Order a collection of models by their order key if it exists. If not, just return the collection.
+     *
+     * @param Collection $collection
+     *
+     * @return Collection
+     */
+    protected function orderCollection(Collection $collection): Collection
+    {
+        if (!empty($collection->first()->order)) {
+            $collection = $collection->sortBy(function ($model) {
+                return $model->order;
+            })->values();
+        }
+
+        return $collection;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Generic actions
+    |--------------------------------------------------------------------------
+    */
 
 
     /**
@@ -424,5 +394,37 @@ abstract class BaseController extends Controller
                 ->get(["id"])
                 ->pluck("id"))
         );
+    }
+
+
+    /**
+     * Get the user according to a optional request key and its permission
+     *
+     * @param Request $request the request
+     * @param string $minimumScope the minimum permission accepted
+     * @param string $key the key in request corresponding the user id
+     *
+     * @return User
+     * @throws Http400InvalidRequestException
+     * @throws Http401UnauthorizedException
+     * @throws \Exception
+     */
+    protected function getUserByRequestOrUnauthorized(Request $request, $minimumScope = "admin", $key = "user_id")
+    {
+        /** @var User $user */
+        $user = $request->user();
+        $userId = $request->input($key);
+
+        // Check the the user key content is an integer
+        if ($userId !== null && !is_int($userId)) {
+            throw new Http400InvalidRequestException("`$key` has to be a positive integer");
+        }
+
+        // Check authorization
+        if ($user === null || ($userId !== null && $user->id != $userId && !$user->tokenCan($minimumScope))) {
+            throw new Http401UnauthorizedException();
+        }
+
+        return $userId === null ? $request->user() : User::where("id", $userId)->firstOrFail();
     }
 }
