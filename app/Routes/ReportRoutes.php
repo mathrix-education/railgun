@@ -9,5 +9,6 @@ $router->group(["prefix" => "reports"], function () use ($router) {
     $router->group(["middleware" => "auth:api"], function () use ($router) {
         $router->get("{key:[1-9]\d*}", "ReportController@get");
         $router->patch("{id:[1-9]\d*}", "ReportController@edit");
+        $router->delete("{id:[1-9]\d*}", "ReportController@delete");
     });
 });

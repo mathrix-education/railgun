@@ -56,4 +56,15 @@ class ReportsAsPublicTest extends ScopeTestCase
     {
         $this->genericEditUnauthorized();
     }
+
+
+    /**
+     * DELETE /reports/{id}
+     *
+     * @throws \Exception
+     */
+    public function testDelete()
+    {
+        $this->genericDeleteUnauthorized();
+    }
 }

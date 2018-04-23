@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->define(Comment::class, function (Generator $faker) {
-    $commentable_type = $faker->randomElement(["notion", "post"]);
+    $commentable_type = $faker->randomElement(["activity", "post"]);
     /** @var BaseModel|string $commentable_class */
     $commentable_class = Relation::getMorphedModel($commentable_type);
     $created = $faker->dateTimeBetween("-1 month");

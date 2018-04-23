@@ -35,4 +35,10 @@ class ReportPolicy extends BasePolicy
     {
         return $this->atLeastModerator($currentUser);
     }
+
+
+    public function delete(User $currentUser)
+    {
+        return $this->atLeastModerator($currentUser);
+    }
 }

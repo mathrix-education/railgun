@@ -69,4 +69,19 @@ class ReportController extends BaseController
      * @apiUse Http422ModelValidation
      * @apiUse Http422ModelSave
      */
+
+
+    /**
+     * @apiVersion 4.0.0
+     * @api {delete} /reports Delete
+     * @apiGroup Reports
+     * @apiName ReportDelete
+     * @apiDescription Delete a report
+     * @apiPermission moderator
+     * @apiUse Bearer
+     * @apiUse ReportRequest
+     * @apiUse Http401Unauthorized
+     * @apiUse Http422ModelValidation
+     * @apiUse Http422ModelSave
+     */
 }
