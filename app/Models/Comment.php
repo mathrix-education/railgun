@@ -55,7 +55,11 @@ class Comment extends BaseModel
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
     /** @var array The default relations included */
-    public $with = ["user:id,username,firstname,level,class_id", "children", "children.user"];
+    public $with = [
+        "user:id,type,username,firstname,level,class_id",
+        "children",
+        "children.user:id,type,username,firstname,level,class_id"
+    ];
     /** @var array The fillable attributes */
     protected $fillable = ["id", "content", "score", "parent_id", "user_id", "commentable_id", "commentable_type",
         "created_at", "updated_at", "deleted_at"];

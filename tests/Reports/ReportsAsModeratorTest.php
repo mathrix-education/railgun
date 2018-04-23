@@ -43,4 +43,15 @@ class ReportsAsModeratorTest extends ReportsAsRegisteredTest
     {
         $this->genericEditSuccess();
     }
+
+
+    /**
+     * DELETE /reports/{id}
+     *
+     * @throws \Exception
+     */
+    public function testDelete()
+    {
+        $this->genericEditSuccess();
+    }
 }

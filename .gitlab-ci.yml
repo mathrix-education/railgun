@@ -9,7 +9,7 @@ tests:
   image: edbizarro/gitlab-ci-pipeline-php:7.1
   stage: test
   services:
-    - mysql:latest
+    - mysql:5.7
   variables:
     MYSQL_DATABASE: mathrix_fr_pipelines
     MYSQL_ROOT_PASSWORD: 3AEzrLrSh8j8xJfyHAdB

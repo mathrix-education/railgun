@@ -30,8 +30,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class Notion extends BaseModel
 {
-    use Commentable;
-
     public const TYPES = ["normal", "premium", "reminder", "further"];
 
     /** @var array The The fillable attributes */

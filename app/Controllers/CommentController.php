@@ -140,7 +140,7 @@ class CommentController extends BaseController
      */
     public function by(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
     {
-        if (!in_array($what, ["notion", "post"])) {
+        if (!in_array($what, ["activity", "post"])) {
             throw new Http400InvalidRequestException("Comment::$what() does not exist");
         }
 

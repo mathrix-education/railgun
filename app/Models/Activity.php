@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use App\Models\Traits\Commentable;
 use App\Models\Traits\Loggable;
 use Auth;
 use Illuminate\Database\Eloquent\Builder;
@@ -40,7 +41,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class Activity extends BaseModel
 {
-    use Loggable;
+    use Loggable, Commentable;
 
     public const TYPES = ["video", "course", "test", "exercise", "summary", "flashcard"];
 
