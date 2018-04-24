@@ -13,6 +13,7 @@ $router->group(["prefix" => "chapters"], function () use ($router) {
 
     $router->get("by-class-discipline/{class_id:[1-9]\d*}/{discipline_id:[1-9]\d*}", "ChapterController@by_class_discipline");
     $router->get("by-{what:[a-z\-]+}/{id:[1-9]\d*}", "ChapterController@by");
+    $router->get("by-{what:[a-z\-]+}/{id:[1-9]\d*}/ids", "ChapterController@ids");
     $router->get("recursive/{id:[1-9]\d*}", "ChapterController@recursive");
     $router->get("{key:[1-9]\d*}", "ChapterController@get");
     $router->get("{key:[a-z\-]+}/{value:[a-z0-9\-]+}", "ChapterController@get");

@@ -322,21 +322,22 @@ abstract class BaseController extends Controller
 
 
     /**
-     * Get the models which satisfy a given relation
+     * Handle foreign models queries
      *
      * @param Request $request
-     * @param string $what the linked model
-     * @param int $id the linked model id
-     * @param int $page the query page
-     * @param int $perPage the query per page
+     * @param string $what
+     * @param int $id
+     * @param int $page
+     * @param int $perPage
      *
-     * @return JsonResponse
+     * @return Collection
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
      * @throws \Exception
      */
-    public function by(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
+    protected function getByQuery(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
     {
+
         $modelClass = $this->resolveModelClass($what);
         $ucName = ucfirst($what);
 
@@ -354,51 +355,52 @@ abstract class BaseController extends Controller
             throw new Http401UnauthorizedException();
         }
 
-        return response()->json(
-            $this->orderCollection(
-                $model->{$potentialRelation}()
-                    ->limit($perPage)
-                    ->offset(($page - 1) * $perPage)
-                    ->get()
-            )
+        return $this->orderCollection(
+            $model->{$potentialRelation}()
+                ->limit($perPage)
+                ->offset(($page - 1) * $perPage)
+                ->get()
         );
     }
 
 
     /**
-     * Get the model ids which satisfy a given relation
+     * Get the models which satisfy a given relation
      *
      * @param Request $request
-     * @param string $what
-     * @param int $id
+     * @param string $what the linked model
+     * @param int $id the linked model id
+     * @param int $page the query page
+     * @param int $perPage the query per page
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
      * @throws \Exception
      */
-    public function ids(Request $request, string $what, int $id)
+    public function by(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
     {
-        $modelClass = $this->resolveModelClass($what);
+        return response()->json($this->getByQuery($request, $what, $id, $page, $perPage));
+    }
 
-        /** @var BaseModel $model */
-        $model = $modelClass::where("id", $id)->firstOrFail();
 
-        $potentialRelation = Str::lower($this->modelClass::getTableName());
-
-        if (!method_exists($model, $potentialRelation)) {
-            throw new Http400InvalidRequestException("$modelClass::$potentialRelation() does not exist");
-        }
-
-        if ($request->user() !== null && $request->user()->cant("by$modelClass", $this->modelClass)) {
-            throw new Http401UnauthorizedException();
-        }
-
-        return response()->json(
-            $this->orderCollection($model->{$potentialRelation}()
-                ->get(["id"])
-                ->pluck("id"))
-        );
+    /**
+     * Get the models ids which satisfy a given relation
+     *
+     * @param Request $request
+     * @param string $what the linked model
+     * @param int $id the linked model id
+     * @param int $page the query page
+     * @param int $perPage the query per page
+     *
+     * @return JsonResponse
+     * @throws Http400InvalidRequestException
+     * @throws Http401UnauthorizedException
+     * @throws \Exception
+     */
+    public function ids(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
+    {
+        return response()->json($this->getByQuery($request, $what, $id, $page, $perPage)->pluck("id"));
     }
 
 

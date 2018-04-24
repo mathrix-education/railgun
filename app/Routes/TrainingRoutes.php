@@ -13,6 +13,4 @@ $router->group(["prefix" => "trainings", "middleware" => "auth:api"], function (
     $router->post("", "TrainingController@add");
     $router->patch("{id:[1-9]\d*}", "TrainingController@edit");
     $router->delete("{id:[1-9]\d*}", "TrainingController@delete");
-
-
 });
