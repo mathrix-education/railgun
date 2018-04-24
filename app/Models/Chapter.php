@@ -78,6 +78,6 @@ class Chapter extends BaseModel
      */
     public function notions(): BelongsToMany
     {
-        return $this->belongsToMany(Notion::class);
+        return $this->belongsToMany(Notion::class)->withPivot(["order"]);
     }
 }

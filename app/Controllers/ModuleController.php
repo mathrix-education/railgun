@@ -78,19 +78,14 @@ class ModuleController extends BaseController
             throw new Http401UnauthorizedException();
         }
 
-        // 404 if module is not visible
-        if (!$module->visible && !$user->isModerator()) {
-            throw new Http404ModelNotFoundException();
-        }
-
         // Hide module content if user is not premium nor moderator
-        /*if ($module->premium && ($user === null || !$user->premium && !$user->isModerator())) {
+        if ($module->premium && ($user === null || !$user->premium && !$user->isModerator())) {
             $id = $module->id;
             $module = [
                 "id" => $id,
                 "premium" => true
             ];
-        }*/
+        }
 
         return response()->json($module);
     }

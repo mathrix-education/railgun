@@ -85,7 +85,7 @@ class Activity extends BaseModel
      */
     public function modules(): BelongsToMany
     {
-        return $this->belongsToMany(Module::class);
+        return $this->belongsToMany(Module::class)->withPivot(["order"]);
     }
 
 
@@ -96,7 +96,7 @@ class Activity extends BaseModel
      */
     public function notions(): BelongsToMany
     {
-        return $this->belongsToMany(Notion::class);
+        return $this->belongsToMany(Notion::class)->withPivot(["order"]);
     }
 
 
