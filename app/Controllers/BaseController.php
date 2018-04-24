@@ -119,6 +119,11 @@ abstract class BaseController extends Controller
             $collection = $collection->sortBy(function ($model) {
                 return $model->order;
             })->values();
+        } else if (!empty($collection->first()->pivot->order)) {
+            $collection = $collection->sortBy(function ($model) {
+                return $model->pivot->order;
+            })->values();
+
         }
 
         return $collection;
