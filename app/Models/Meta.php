@@ -48,7 +48,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Meta extends BaseModel
 {
     public $fillable = ["id", "favorite", "to_revise", "completed", "user_id", "country_id", "class_id", "discipline_id",
-        "chapter_id", "notion_id", "activity_id", "module_id"];
+        "chapter_id", "notion_id", "activity_id", "module_id", "created_at", "updated_at"];
     /** @var bool Indicates if the model should be timestamped */
     public $timestamps = true;
     protected $casts = [
