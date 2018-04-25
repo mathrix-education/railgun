@@ -8,6 +8,7 @@ use App\Exceptions\Http422ModelValidationException;
 use App\Models\Activity;
 use App\Models\Discipline;
 use App\Models\Meta;
+use Carbon\Carbon;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -266,6 +267,7 @@ class ActivityController extends BaseController
         $meta->favorite = $request->input("favorite") ?? $meta->favorite ?? false;
         $meta->to_revise = $request->input("to_revise") ?? $meta->to_revise ?? false;
         $meta->completed = $request->input("completed") ?? $meta->completed ?? false;
+        $meta->updated_at = Carbon::now();
 
         $meta->save();
 
