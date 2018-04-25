@@ -210,7 +210,7 @@ class ActivityController extends BaseController
                     ["completed", false],
                     ["discipline_id", $disciplineId]
                 ])
-                ->orderBy("created_at", "desc")
+                ->orderBy("updated_at", "desc")
                 ->limit(1);
 
             if ($query === null) {

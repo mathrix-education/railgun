@@ -8,6 +8,7 @@ use App\Models\Country;
 use App\Models\Discipline;
 use App\Models\Meta;
 use App\Models\Notion;
+use Laravel\Passport\Passport;
 
 /**
  * Class ActivitiesAsPublicTest
@@ -180,5 +181,24 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
     public function testMarkCompleted()
     {
         $this->mark(null, null, true);
+    }
+
+
+    /**
+     * PATCH /activities/{id}/mark
+     * Assert meta updated_at field changes even if the meta content is the same
+     */
+    public function testMarkForceUpdatedAt()
+    {
+        /** @var Meta $meta */
+        $meta = Meta::random();
+        Passport::actingAs($meta->user);
+        $oldDate = $meta->updated_at;
+
+        $this->call("patch", "/activities/{$meta->activity_id}/mark", $meta->toArray());
+
+        $meta = Meta::find($meta->id);
+
+        $this->assertTrue($oldDate < $meta->updated_at);
     }
 }
