@@ -172,7 +172,7 @@ class Module extends BaseModel
         }
 
         $meta = Meta::where([
-            ["activity_id", $this->id],
+            ["module_id", $this->id],
             ["user_id", $user->id]
         ])->first();
 
