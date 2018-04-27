@@ -67,7 +67,7 @@ class Module extends BaseModel
     protected $rules = [
         "visible" => "boolean"
     ];
-    protected $appends = ["favorite", "to_revise"];
+    protected $appends = ["favorite", "to_revise", "completed"];
 
 
     public function __construct(array $attributes = [])
@@ -111,6 +111,11 @@ class Module extends BaseModel
     }
 
 
+    /**
+     * favorite
+     *
+     * @return bool|mixed|null
+     */
     public function getFavoriteAttribute()
     {
         /** @var User $user */
@@ -129,6 +134,11 @@ class Module extends BaseModel
     }
 
 
+    /**
+     * to_revise
+     *
+     * @return bool
+     */
     public function getToReviseAttribute()
     {
         /** @var User $user */
@@ -144,6 +154,29 @@ class Module extends BaseModel
         ])->first();
 
         return $meta === null ? false : $meta->to_revise;
+    }
+
+
+    /**
+     * completed
+     *
+     * @return bool
+     */
+    public function getCompletedAttribute()
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        if ($user === null) {
+            return null;
+        }
+
+        $meta = Meta::where([
+            ["activity_id", $this->id],
+            ["user_id", $user->id]
+        ])->first();
+
+        return $meta === null ? null : $meta->completed;
     }
 
 
