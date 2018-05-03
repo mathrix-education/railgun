@@ -9,7 +9,7 @@ use App\Models\Notion;
  * Test activities as moderator
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  * @version 1.0.0
  * @package Tests\Activities
  */
@@ -68,7 +68,7 @@ class ActivitiesAsModeratorTest extends ActivitiesAsRegisteredTest
 
         $this->genericEditSuccess(["link" => $link]);
 
-        foreach($link["notions"] as $order => $id) {
+        foreach ($link["notions"] as $order => $id) {
             $this->assertInDatabase("activity_notion", [
                 "activity_id" => $this->editModelId,
                 "notion_id" => $id,
@@ -76,7 +76,7 @@ class ActivitiesAsModeratorTest extends ActivitiesAsRegisteredTest
             ]);
         }
 
-        foreach($link["modules"] as $order => $id) {
+        foreach ($link["modules"] as $order => $id) {
             $this->assertInDatabase("activity_module", [
                 "activity_id" => $this->editModelId,
                 "module_id" => $id,

@@ -1,4 +1,5 @@
 <?php
+
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\Activity;
@@ -14,45 +15,44 @@ use App\Models\Notion;
  *
  * @author Mathrix Back-End Team
  * @since 1.0.1
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class ContentTableSeeder extends BaseTableSeeder
 {
     /**
+     * @throws Exception
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      */
     public function run()
     {
         // Content
-        $this->seedFromFactory([
-            "modelClass" => Country::class,
-            "count" => random_int(2, 4)
+        $this->seedFromJson([
+            "modelClass" => Country::class
         ]);
-        $this->seedFromFactory([
-            "modelClass" => Discipline::class,
-            "count" => random_int(7, 15)
-        ]);
-        $this->seedFromFactory([
+        $this->seedFromJson([
             "modelClass" => Class_::class,
-            "count" => random_int(15, 30)
+            "table" => "classes"
+        ]);
+        $this->seedFromJson([
+            "modelClass" => Discipline::class
         ]);
         $this->seedFromFactory([
             "modelClass" => Chapter::class,
-            "count" => random_int(80, 100)
+            "count" => random_int(50, 70)
         ]);
         $this->seedFromFactory([
             "modelClass" => Notion::class,
-            "count" => random_int(200, 400)
+            "count" => random_int(100, 200)
         ]);
         $this->seedFromFactory([
             "modelClass" => Activity::class,
-            "count" => random_int(500, 1500)
+            "count" => random_int(150, 300)
         ]);
         $this->seedFromFactory([
             "modelClass" => Module::class,
             "subFactory" => "random",
-            "count" => random_int(2000, 4000)
+            "count" => random_int(200, 350)
         ]);
 
         $this->link(Class_::class, Discipline::class);

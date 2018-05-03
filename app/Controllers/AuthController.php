@@ -1,18 +1,16 @@
 <?php
 namespace App\Controllers;
 
+use App\Events\PasswordForgottenEvent;
+use App\Events\PasswordResetEvent;
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
-use App\Exceptions\Http502EmailNotSentException;
-use App\Mails\PasswordForgottenMail;
-use App\Mails\PasswordResetMail;
 use App\Models\Log;
 use App\Models\User;
 use Faker\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
 /**
  * Class AuthController
@@ -20,12 +18,12 @@ use Illuminate\Support\Facades\Mail;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class AuthController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /users/login Login
      * @apiGroup Authentication
      * @apiName AuthenticationLogin
@@ -47,6 +45,7 @@ class AuthController extends BaseController
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function login(Request $request)
     {
@@ -74,7 +73,7 @@ class AuthController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /users/refresh Refresh
      * @apiGroup Authentication
      * @apiName AuthenticationRefresh
@@ -102,7 +101,7 @@ class AuthController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /users/forgot Forgot password
      * @apiGroup Authentication
      * @apiName AuthenticationForgot
@@ -119,7 +118,7 @@ class AuthController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
-     * @throws Http502EmailNotSentException
+     * @throws \Exception
      */
     public function forgot(Request $request)
     {
@@ -127,27 +126,23 @@ class AuthController extends BaseController
         /** @var User $user */
         $user = User::where("email", $request->input("email"))->firstOrFail();
 
-        if(!empty($user->settings["facebook_id"])) {
+        if (!empty($user->settings["facebook_id"])) {
             throw new Http400InvalidRequestException("Cannot reset password of a facebook account");
+        } else {
+            // Generate token
+            $user->unguardAttributes(["token"]);
+            $user->update(["token" => Factory::create()->uuid]);
+
+            // Send PasswordForgottenMail
+            event(new PasswordForgottenEvent($user));
+
+            return response()->json(["message" => "Reset email sent successfully"]);
         }
-
-        // Generate token
-        $user->unguardAttributes(["token"]);
-        $user->update(["token" => Factory::create()->uuid]);
-
-        // Send PasswordForgottenMail
-        // TODO ceci est à faire
-        Mail::to($user->email)->send(new PasswordForgottenMail($user));
-        if (!empty(Mail::failures())) {
-            throw new Http502EmailNotSentException();
-        }
-
-        return response()->json(["message" => "Reset email sent successfully"]);
     }
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /users/reset/{token} Reset password
      * @apiGroup Authentication
      * @apiName AuthenticationReset
@@ -164,7 +159,7 @@ class AuthController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
-     * @throws Http502EmailNotSentException
+     * @throws \Exception
      */
     public function reset(Request $request, string $token)
     {
@@ -184,10 +179,7 @@ class AuthController extends BaseController
         ]);
 
         // Send PasswordResetMail
-        Mail::to($user->email)->send(new PasswordResetMail($user));
-        if (!empty(Mail::failures())) {
-            throw new Http502EmailNotSentException();
-        }
+        event(new PasswordResetEvent($user));
 
         return response()->json($user);
     }

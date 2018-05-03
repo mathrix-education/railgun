@@ -8,13 +8,14 @@ use Tests\ScopeTestCase;
  * Test activities as public (non-logged user)
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  * @version 1.0.0
  * @package Tests\Activities
  */
 class ActivitiesAsPublicTest extends ScopeTestCase
 {
     /**
+     * @covers \App\Controllers\ActivityController::index()
      * GET /activities -> HTTP 401 unauthorized
      *
      * @throws \Exception
@@ -26,6 +27,7 @@ class ActivitiesAsPublicTest extends ScopeTestCase
 
 
     /**
+     * @covers \App\Controllers\ActivityController::add()
      * POST /activities -> HTTP 401 unauthorized
      *
      * @throws \Exception
@@ -37,6 +39,7 @@ class ActivitiesAsPublicTest extends ScopeTestCase
 
 
     /**
+     * @covers \App\Controllers\ActivityController::edit()
      * PATCH /activities/{id} -> HTTP 401 unauthorized
      *
      * @throws \Exception
@@ -48,6 +51,7 @@ class ActivitiesAsPublicTest extends ScopeTestCase
 
 
     /**
+     * @covers \App\Controllers\ActivityController::delete()
      * DELETE /activities/{id} -> HTTP 401 unauthorized
      *
      * @throws \Exception

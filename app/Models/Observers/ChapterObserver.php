@@ -32,8 +32,8 @@ class ChapterObserver extends BaseObserver
         // Sync notions
         if (isset($chapter->link["notions"])) {
             $toSync = [];
-            foreach($chapter->link["notions"] as $order => $notionId) {
-                if (Notion::find($notionId)->exists()) {
+            foreach ($chapter->link["notions"] as $order => $notionId) {
+                if (Notion::whereId($notionId)->exists()) {
                     $toSync[$notionId] = ["order" => $order];
                 }
             }

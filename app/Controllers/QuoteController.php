@@ -4,19 +4,18 @@ namespace App\Controllers;
 use App\Models\Quote;
 use Illuminate\Http\JsonResponse;
 
-
 /**
  * Class QuoteController
  *
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class QuoteController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /quotes/{?page}/{?perPage} Index
      * @apiGroup Quotes
      * @apiName QuotesIndex
@@ -28,7 +27,7 @@ class QuoteController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /quotes/{id} Get
      * @apiGroup Quotes
      * @apiName QuoteGet
@@ -41,7 +40,7 @@ class QuoteController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /quotes Add
      * @apiGroup Quotes
      * @apiName QuoteAdd
@@ -56,7 +55,7 @@ class QuoteController extends BaseController
      */
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {patch} /quotes/{id} Edit
      * @apiGroup Quotes
      * @apiName QuoteEdit
@@ -74,7 +73,7 @@ class QuoteController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {delete} /quotes/{id} Delete
      * @apiGroup Quotes
      * @apiName QuoteDelete
@@ -88,7 +87,7 @@ class QuoteController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /quotes/random/{count} Random
      * @apiGroup Quotes
      * @apiName QuotesRandom

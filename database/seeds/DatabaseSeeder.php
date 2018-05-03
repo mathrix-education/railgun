@@ -1,6 +1,4 @@
 <?php
-use App\Exceptions\Http422ModelSaveException;
-use App\Exceptions\Http422ModelValidationException;
 
 
 /**
@@ -8,7 +6,7 @@ use App\Exceptions\Http422ModelValidationException;
  *
  * @author Mathrix Back-End Team
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class DatabaseSeeder extends BaseTableSeeder
 {

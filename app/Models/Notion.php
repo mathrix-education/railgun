@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use App\Models\Traits\Commentable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -15,16 +16,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property bool $premium
  * @property bool $visible
  * @property array $link
+ * @property string $type
  * @property-read Collection|Activity[] $activities
  * @property-read Collection|Chapter[] $chapters
+ * @property-read Collection|Comment[] $comments
  * @method static Builder|Notion whereId($value)
  * @method static Builder|Notion whereName($value)
  * @method static Builder|Notion whereSlug($value)
  * @method static Builder|Notion whereOrder($value)
  * @method static Builder|Notion wherePremium($value)
  * @method static Builder|Notion whereVisible($value)
- * @mixin \Eloquent
- * @property string $type
  * @method static Builder|Notion whereType($value)
  */
 class Notion extends BaseModel
@@ -62,7 +63,7 @@ class Notion extends BaseModel
      */
     public function activities(): BelongsToMany
     {
-        return $this->belongsToMany(Activity::class);
+        return $this->belongsToMany(Activity::class)->withPivot(["order"]);
     }
 
 
@@ -73,6 +74,6 @@ class Notion extends BaseModel
      */
     public function chapters(): BelongsToMany
     {
-        return $this->belongsToMany(Chapter::class);
+        return $this->belongsToMany(Chapter::class)->withPivot(["order"]);
     }
 }

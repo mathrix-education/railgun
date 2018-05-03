@@ -1,7 +1,6 @@
 <?php
 namespace App\Controllers;
 
-
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http401UnauthorizedException;
 use App\Exceptions\Http422ModelSaveException;
@@ -16,12 +15,12 @@ use Illuminate\Http\Request;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class PostController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /posts/{?page}/{?perPage} Index
      * @apiGroup Posts
      * @apiName PostsIndex
@@ -33,10 +32,11 @@ class PostController extends BaseController
      * @param Request $request
      * @param int $page
      * @param int $perPage
+     * @param array $options
      *
      * @return JsonResponse
      */
-    public function index(Request $request, int $page = 1, int $perPage = 10): JsonResponse
+    public function index(Request $request, int $page = 1, int $perPage = 10, array $options = []): JsonResponse
     {
         return response()->json(
             Post::with("module")
@@ -49,7 +49,7 @@ class PostController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /posts/{id} Get
      * @apiGroup Posts
      * @apiName PostGet
@@ -58,20 +58,11 @@ class PostController extends BaseController
      * @apiParam {int} id The post id
      * @apiUse PostModel
      * @apiUse Http404ModelNotFound
-     *
-     * @param int $id
-     *
-     * @return JsonResponse
      */
-    public function get(int $id): JsonResponse
-    {
-        $model = Post::with("module")->where("id", $id)->firstOrFail();
 
-        return response()->json($model);
-    }
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /posts Add
      * @apiGroup Posts
      * @apiName PostAdd
@@ -91,6 +82,7 @@ class PostController extends BaseController
      * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function add(Request $request): JsonResponse
     {
@@ -108,7 +100,7 @@ class PostController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {patch} /posts/{id} Edit
      * @apiGroup Posts
      * @apiName PostEdit
@@ -126,7 +118,7 @@ class PostController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {delete} /posts/{id} Delete
      * @apiGroup Posts
      * @apiName PostDelete

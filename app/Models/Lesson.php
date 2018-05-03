@@ -10,8 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @author Mathrix Back-End Team
  * @package App\Models
  * @since 1.0.1
- * @copyright Mathrix SA
- *
+ * @copyright Mathrix Education SA
  * @property int $id
  * @property string $title
  * @property string $slug
@@ -29,7 +28,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Lesson whereModuleId($value)
  * @method static Builder|Lesson whereCreatedAt($value)
  * @method static Builder|Lesson whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 class Lesson extends BaseModel
 {
@@ -46,6 +44,9 @@ class Lesson extends BaseModel
         "section_id" => "required|exists:sections,id",
         "module_id" => "required|exists:modules,id"
     ];
+
+    /** @var array The default included relations */
+    protected $with = ["module"];
 
 
     /**

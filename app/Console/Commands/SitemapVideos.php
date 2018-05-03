@@ -10,7 +10,7 @@ use Illuminate\Console\Command;
  * @author Mathrix Back-End Team
  * @package App\Console\Commands
  * @since 1.0.1
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class SitemapVideos extends Command
 {

@@ -9,7 +9,7 @@ use App\Models\Lesson;
  * @author Mathrix Back-End Team
  * @package App\Models\Observers
  * @since 1.0.1
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class LessonObserver extends BaseObserver
 {
@@ -18,7 +18,7 @@ class LessonObserver extends BaseObserver
         // Sluggify if needed
         if (empty($lesson->slug) ||
             ($lesson->isDirty("name") && !$lesson->isDirty("slug"))) {
-            $lesson->slug = str_slug($lesson->name);
+            $lesson->slug = str_slug($lesson->title);
         }
     }
 }

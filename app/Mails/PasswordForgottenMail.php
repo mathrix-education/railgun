@@ -7,7 +7,8 @@ namespace App\Mails;
  * @author Mathrix Back-End Team
  * @package App\Mails
  * @since 1.0.1
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
+ * @cover
  */
 class PasswordForgottenMail extends UserMail
 {

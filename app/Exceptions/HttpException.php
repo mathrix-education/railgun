@@ -13,7 +13,7 @@ use Throwable;
  * @author Mathrix Back-End Team
  * @package App\Exceptions
  * @since
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 abstract class HttpException extends \Exception
 {

@@ -12,7 +12,7 @@ use League\Flysystem\Filesystem;
  * @author Mathrix Back-End Team
  * @package App\Providers
  * @since 1.0.1
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class GoogleDriveServiceProvider extends ServiceProvider
 {
@@ -34,6 +34,7 @@ class GoogleDriveServiceProvider extends ServiceProvider
             return new Filesystem($adapter);
         });
     }
+
 
     /**
      * Register the application services.

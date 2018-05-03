@@ -9,7 +9,7 @@ use App\Models\User;
  * @author Mathrix Back-End Team
  * @package App\Policies
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  *
  * @method bool atLeastAdmin(User $currentUser)
  * @method bool atLeastModerator(User $currentUser)

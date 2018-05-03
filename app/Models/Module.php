@@ -38,7 +38,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Module whereQuestions($value)
  * @method static Builder|Module whereSolutions($value)
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Training[] $trainings
- * @mixin \Eloquent
+ * @property-read mixed $favorite
+ * @property-read mixed $to_revise
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Lesson[] $lessons
  */
 class Module extends BaseModel
 {
@@ -47,11 +49,13 @@ class Module extends BaseModel
     public const TYPES = ["id", "course", "test", "mcq", "mcq-table", "match", "fill", "flashcard"];
 
     /** @var array The fillable attributes */
-    protected $fillable = ["type", "content", "questions", "choices", "solutions", "corrections", "options", "visible",
-        "link"];
+    protected $fillable = ["premium", "type", "content", "questions", "choices", "solutions", "corrections", "options",
+        "visible", "link"];
 
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
+        "premium" => "boolean",
+        "visible" => "boolean",
         "questions" => "array",
         "choices" => "array",
         "solutions" => "array",
@@ -63,6 +67,8 @@ class Module extends BaseModel
     protected $rules = [
         "visible" => "boolean"
     ];
+    protected $appends = ["favorite", "to_revise", "completed"];
+
 
     public function __construct(array $attributes = [])
     {
@@ -72,15 +78,47 @@ class Module extends BaseModel
         parent::__construct($attributes);
     }
 
+
     /*
     |--------------------------------------------------------------------------
     | Appends
     |--------------------------------------------------------------------------
     */
-    protected $appends = ["status"];
 
 
-    public function getStatusAttribute()
+    /**
+     * Handle too array strips if user is not premium
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $array = parent::toArray();
+
+        $user = Auth::user();
+        $strip = $this->premium && ($user === null || !$user->premium && !$user->isModerator());
+
+        $keep = ["visible"];
+
+        if ($strip) {
+            foreach (array_merge($this->with, $this->appends, $this->fillable, ["comments"]) as $field) {
+                if (array_key_exists($field, $array) && !in_array($field, $keep)) {
+                    unset($array[$field]);
+                }
+            }
+            $array["premium"] = true;
+        }
+
+        return $array;
+    }
+
+
+    /**
+     * favorite
+     *
+     * @return bool|mixed|null
+     */
+    public function getFavoriteAttribute()
     {
         /** @var User $user */
         $user = Auth::user();
@@ -90,12 +128,59 @@ class Module extends BaseModel
         }
 
         $meta = Meta::where([
-            ["module_id", "=", $this->id],
-            ["user_id", "=", $user->id]
+            ["module_id", $this->id],
+            ["user_id", $user->id]
         ])->first();
 
-        return $meta === null ? null : $meta->status;
+        return $meta === null ? false : $meta->favorite;
     }
+
+
+    /**
+     * to_revise
+     *
+     * @return bool
+     */
+    public function getToReviseAttribute()
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        if ($user === null) {
+            return null;
+        }
+
+        $meta = Meta::where([
+            ["module_id", $this->id],
+            ["user_id", $user->id]
+        ])->first();
+
+        return $meta === null ? false : $meta->to_revise;
+    }
+
+
+    /**
+     * completed
+     *
+     * @return bool
+     */
+    public function getCompletedAttribute()
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        if ($user === null) {
+            return null;
+        }
+
+        $meta = Meta::where([
+            ["module_id", $this->id],
+            ["user_id", $user->id]
+        ])->first();
+
+        return $meta === null ? null : $meta->completed;
+    }
+
 
 
     /*
@@ -110,7 +195,7 @@ class Module extends BaseModel
      */
     public function activities(): BelongsToMany
     {
-        return $this->belongsToMany(Activity::class);
+        return $this->belongsToMany(Activity::class)->withPivot(["order"]);
     }
 
 

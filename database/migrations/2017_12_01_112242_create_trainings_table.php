@@ -1,5 +1,5 @@
 <?php
-use Illuminate\Support\Facades\Schema;
+
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
@@ -8,7 +8,7 @@ use Illuminate\Database\Migrations\Migration;
  *
  * @author Mathrix Back-End Team
  * @since 1.0.1
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class CreateTrainingsTable extends Migration
 {
@@ -27,6 +27,7 @@ class CreateTrainingsTable extends Migration
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.

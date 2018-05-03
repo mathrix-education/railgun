@@ -8,7 +8,7 @@ use Illuminate\Http\Response;
  * Trait Add
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  * @version 1.0.0
  * @package Tests\GenericTests
  */
@@ -16,6 +16,24 @@ trait Add
 {
     /** @var array factorized model data */
     protected $addModelData;
+
+
+    /**
+     * Generic add; expect HTTP 200 and data present in database
+     *
+     * @param array $override the overridden properties
+     * @param \Closure|null $callback the callback on generated data
+     *
+     * @throws \Exception
+     */
+    public function genericAddSuccess(array $override = [], Closure $callback = null)
+    {
+        $this->genericAdd($override, $callback);
+
+        // Assertions
+        $this->assertHttp200Success();
+        $this->assertInDatabase($this->modelPlural, $this->addModelData);
+    }
 
 
     /**
@@ -53,24 +71,6 @@ trait Add
         if (isset($this->addModelData["link"])) {
             unset($this->addModelData["link"]);
         }
-    }
-
-
-    /**
-     * Generic add; expect HTTP 200 and data present in database
-     *
-     * @param array $override the overridden properties
-     * @param \Closure|null $callback the callback on generated data
-     *
-     * @throws \Exception
-     */
-    public function genericAddSuccess(array $override = [], Closure $callback = null)
-    {
-        $this->genericAdd($override, $callback);
-
-        // Assertions
-        $this->assertHttp200Success();
-        $this->assertInDatabase($this->modelPlural, $this->addModelData);
     }
 
 

@@ -3,10 +3,12 @@ namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http401UnauthorizedException;
+use App\Exceptions\Http404ModelNotFoundException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\Meta;
 use App\Models\Module;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Http\JsonResponse;
@@ -18,12 +20,12 @@ use Illuminate\Http\Request;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class ModuleController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /modules/{page} Index
      * @apiGroup Modules
      * @apiName ModulesIndex
@@ -36,7 +38,7 @@ class ModuleController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /modules/{id} Get
      * @apiGroup Modules
      * @apiName ModuleGet
@@ -47,17 +49,24 @@ class ModuleController extends BaseController
      * @apiUse CommentArray
      * @apiUse Http404ModelNotFound
      *
-     * @param int $id
+     * @param Request $request
+     * @param int $key the module id
+     * @param null $value not used here
      *
      * @return JsonResponse
+     * @throws Http401UnauthorizedException
+     * @throws \Exception
      */
-    public function get(int $id): JsonResponse
+    public function get(Request $request, $key, $value = null): JsonResponse
     {
-        $module = Module::where("id", $id)->with([
-            "comments" => function (MorphMany $query) use ($id) {
+        /** @var User $user */
+        $user = $request->user();
+
+        $module = Module::where("id", $key)->with([
+            "comments" => function (MorphMany $query) use ($key) {
                 $query->getQuery()
-                    ->where("commentable_id", "=", $id)
-                    ->where("commentable_type", "=", "module")
+                    ->where("commentable_id", $key)
+                    ->where("commentable_type", "module")
                     ->orderByDesc("created_at");
             },
             "comments.children" => function (HasMany $query) {
@@ -65,12 +74,25 @@ class ModuleController extends BaseController
             }
         ])->firstOrFail();
 
+        if ($user !== null && $user->cant("get", $module)) {
+            throw new Http401UnauthorizedException();
+        }
+
+        // Hide module content if user is not premium nor moderator
+        if ($module->premium && ($user === null || !$user->premium && !$user->isModerator())) {
+            $id = $module->id;
+            $module = [
+                "id" => $id,
+                "premium" => true
+            ];
+        }
+
         return response()->json($module);
     }
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /modules Add
      * @apiGroup Modules
      * @apiName ModuleAdd
@@ -86,7 +108,7 @@ class ModuleController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {patch} /modules/{id} Edit
      * @apiGroup Modules
      * @apiName ModuleEdit
@@ -104,7 +126,7 @@ class ModuleController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {delete} /modules/{id} Delete
      * @apiGroup Modules
      * @apiName ModuleDelete
@@ -118,7 +140,7 @@ class ModuleController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {patch} /modules/{id}/mark Mark
      * @apiGroup Modules
      * @apiName ModuleMark
@@ -147,6 +169,7 @@ class ModuleController extends BaseController
      * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function mark(Request $request, int $id): JsonResponse
     {
@@ -162,14 +185,9 @@ class ModuleController extends BaseController
         /** @var Meta $meta */
         $meta = Meta::firstOrNew($metaData);
 
-        $status = $request->input("status");
-        if ($status === null) {
-            if (!$meta->exists()) {
-                $meta->status = null;
-            }
-        } else {
-            $meta->status = $status;
-        }
+        $meta->favorite = $request->input("favorite") ?? $meta->favorite ?? false;
+        $meta->to_revise = $request->input("to_revise") ?? $meta->to_revise ?? false;
+        $meta->completed = $request->input("completed") ?? $meta->completed ?? false;
 
         $meta->save();
 

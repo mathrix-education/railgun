@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
@@ -9,7 +8,7 @@ use Illuminate\Database\Migrations\Migration;
  *
  * @author Mathrix Back-End Team
  * @since 1.0.1
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class CreateLessonsTable extends Migration
 {
@@ -35,6 +34,7 @@ class CreateLessonsTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      *
@@ -42,7 +42,7 @@ class CreateLessonsTable extends Migration
      */
     public function down()
     {
-        Schema::table("lessons", function(Blueprint $table) {
+        Schema::table("lessons", function (Blueprint $table) {
             $table->dropForeign("lessons_section_id_foreign");
             $table->dropForeign("lessons_module_id_foreign");
         });

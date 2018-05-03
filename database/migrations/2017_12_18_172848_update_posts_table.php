@@ -1,9 +1,9 @@
 <?php
 
 use App\Exceptions\Http422ModelSaveException;
+use App\Exceptions\Http422ModelValidationException;
 use App\Models\Module;
 use App\Models\Post;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
@@ -12,7 +12,7 @@ use Illuminate\Database\Migrations\Migration;
  *
  * @author Mathrix Back-End Team
  * @since 1.0.1
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class UpdatePostsTable extends Migration
 {
@@ -21,7 +21,8 @@ class UpdatePostsTable extends Migration
      *
      * @return void
      * @throws Http422ModelSaveException
-     * @throws \App\Exceptions\Http422ModelValidationException
+     * @throws Http422ModelValidationException
+     * @throws Exception
      */
     public function up()
     {
@@ -62,7 +63,6 @@ class UpdatePostsTable extends Migration
      *
      * @return void
      * @throws Exception
-     * @throws Http422ModelSaveException
      */
     public function down()
     {

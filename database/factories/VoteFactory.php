@@ -1,4 +1,5 @@
 <?php
+
 use App\Models\BaseModel;
 use App\Models\User;
 use App\Models\Vote;
@@ -25,9 +26,9 @@ $factory->define(Vote::class, function (Generator $faker) {
             "created_at" => $faker->dateTimeBetween("-1 month")
         ];
     } while (Vote::where([
-        ["user_id", "=", $voteData["user_id"]],
-        ["votable_id", "=", $voteData["votable_id"]],
-        ["votable_type", "=", $voteData["votable_type"]]
+        ["user_id", $voteData["user_id"]],
+        ["votable_id", $voteData["votable_id"]],
+        ["votable_type", $voteData["votable_type"]]
     ])->exists());
 
     return $voteData;

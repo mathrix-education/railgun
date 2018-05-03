@@ -7,18 +7,21 @@ use Illuminate\Queue\SerializesModels;
 
 /**
  * Class BaseMail
+ * Base class for all mails
  *
  * @author Mathrix Back-End Team
  * @package App\Mails
  * @since 1.0.1
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 abstract class BaseMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+
     public function __construct()
     {
+        // Push to the email view the ap, cdn and webroot urls defined in the .env file
         $this->with([
             "api" => env("APP_API"),
             "cdn" => env("APP_CDN"),

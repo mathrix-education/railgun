@@ -1,4 +1,5 @@
 <?php
+
 use App\Models\Notion;
 use Faker\Generator;
 

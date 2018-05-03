@@ -1,4 +1,5 @@
 <?php
+
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\Category;
@@ -11,7 +12,7 @@ use App\Models\Quote;
  *
  * @author Mathrix Back-End Team
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class BlogTableSeeder extends BaseTableSeeder
 {
@@ -23,7 +24,7 @@ class BlogTableSeeder extends BaseTableSeeder
     {
         $this->seedFromFactory([
             "modelClass" => Category::class,
-            "count" => random_int(20, 40)
+            "count" => random_int(5, 8)
         ]);
         $this->seedFromFactory([
             "modelClass" => Module::class,
@@ -32,11 +33,11 @@ class BlogTableSeeder extends BaseTableSeeder
         ]);
         $this->seedFromFactory([
             "modelClass" => Post::class,
-            "count" => random_int(20, 40)
+            "count" => random_int(10, 20)
         ]);
         $this->seedFromFactory([
             "modelClass" => Quote::class,
-            "count" => random_int(50, 100)
+            "count" => random_int(10, 20)
         ]);
     }
 }

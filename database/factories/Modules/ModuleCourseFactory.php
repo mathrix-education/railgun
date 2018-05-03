@@ -1,4 +1,5 @@
 <?php
+
 use App\Models\Module;
 use Faker\Generator;
 
@@ -14,7 +15,7 @@ $factory->defineAs(Module::class, 'course', function (Generator $faker) use ($fa
 
     if ($hasVideo) {
         $videoCount = $faker->numberBetween(1, 3);
-        for($i = 0; $i < $videoCount; $i++) {
+        for ($i = 0; $i < $videoCount; $i++) {
             $content[] = '[video]FNUTWw17rkM[/video]';
             $content = array_merge($content, $faker->paragraphs($faker->numberBetween(1, 3)));
         }

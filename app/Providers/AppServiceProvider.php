@@ -49,6 +49,7 @@ class AppServiceProvider extends ServiceProvider
         // MorphMap
         Relation::morphMap([
             'activity' => Activity::class,
+            'notion' => Notion::class,
             'module' => Module::class,
             'post' => Post::class,
             'comment' => Comment::class

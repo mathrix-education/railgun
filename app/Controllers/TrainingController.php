@@ -1,10 +1,18 @@
 <?php
 namespace App\Controllers;
 
+/**
+ * Class TrainingController
+ *
+ * @author Mathrix Back-End Team
+ * @package App\Controllers
+ * @since 1.0.0
+ * @copyright Mathrix Education SA
+ */
 class TrainingController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /trainings/{?page}/{?perPage} Index
      * @apiGroup Trainings
      * @apiName TrainingsIndex
@@ -17,7 +25,7 @@ class TrainingController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /trainings/{id} Get
      * @apiGroup Trainings
      * @apiName TrainingGet
@@ -30,7 +38,7 @@ class TrainingController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /trainings Add
      * @apiGroup Trainings
      * @apiName TrainingAdd
@@ -46,7 +54,7 @@ class TrainingController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {patch} /trainings/{id} Edit
      * @apiGroup Trainings
      * @apiName TrainingEdit
@@ -64,7 +72,7 @@ class TrainingController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {delete} /trainings/{id} Delete
      * @apiGroup Trainings
      * @apiName TrainingDelete

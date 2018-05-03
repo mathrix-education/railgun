@@ -28,7 +28,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Chapter whereSlug($value)
  * @method static Builder|Chapter whereOrder($value)
  * @method static Builder|Chapter whereVisible($value)
- * @mixin \Eloquent
  */
 class Chapter extends BaseModel
 {
@@ -79,6 +78,6 @@ class Chapter extends BaseModel
      */
     public function notions(): BelongsToMany
     {
-        return $this->belongsToMany(Notion::class);
+        return $this->belongsToMany(Notion::class)->withPivot(["order"]);
     }
 }

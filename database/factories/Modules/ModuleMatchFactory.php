@@ -1,4 +1,5 @@
 <?php
+
 use App\Models\Module;
 
 /**
@@ -10,7 +11,7 @@ use App\Models\Module;
 $factory->defineAs(Module::class, 'match', function () use ($factory) {
     $data = $factory->rawOf(Module::class, 'mcq');
 
-    foreach($data['corrections'] as $k => $v) {
+    foreach ($data['corrections'] as $k => $v) {
         $data['corrections'][$k] = $v[0];
     }
 

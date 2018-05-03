@@ -1,10 +1,18 @@
 <?php
 namespace App\Controllers;
 
+/**
+ * Class SectionController
+ *
+ * @author Mathrix Back-End Team
+ * @package App\Controllers
+ * @since 1.0.0
+ * @copyright Mathrix Education SA
+ */
 class SectionController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /sections/{?page}/{?perPage} Index
      * @apiGroup Sections
      * @apiName SectionsIndex
@@ -17,7 +25,7 @@ class SectionController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /sections/{id} Get
      * @apiGroup Sections
      * @apiName SectionGet
@@ -30,7 +38,7 @@ class SectionController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /sections Add
      * @apiGroup Sections
      * @apiName SectionAdd
@@ -46,7 +54,7 @@ class SectionController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {patch} /sections/{id} Edit
      * @apiGroup Sections
      * @apiName SectionEdit
@@ -64,7 +72,7 @@ class SectionController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {delete} /sections/{id} Delete
      * @apiGroup Sections
      * @apiName SectionDelete

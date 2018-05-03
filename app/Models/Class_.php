@@ -34,7 +34,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Class_ whereVisible($value)
  * @method static Builder|Class_ whereParentId($value)
  * @method static Builder|Class_ whereCountryId($value)
- * @mixin \Eloquent
  */
 class Class_ extends BaseModel
 {
@@ -42,15 +41,13 @@ class Class_ extends BaseModel
     protected $table = "classes";
 
     /** @var array The fillable attributes */
-    protected $fillable = ["id", "name", "name_short", "slug", "slug_short", "order", "visible", "parent_id",
+    protected $fillable = ["id", "name", "slug", "order", "visible", "parent_id",
         "country_id", "link"];
 
     /** @var array Validation rules */
     protected $rules = [
         "name" => "required|max:255",
-        "name_short" => "required|max:255",
         "slug" => "required|max:255",
-        "slug_short" => "required|max:255",
         "order" => "required|integer",
         "visible" => "boolean",
         "country_id" => "required|exists:countries,id"

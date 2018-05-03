@@ -5,6 +5,9 @@ use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
@@ -20,7 +23,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException as SymphonyHttpExceptio
  * @author Mathrix Back-End Team
  * @package App\Exceptions
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class Handler extends ExceptionHandler
 {
@@ -66,10 +69,11 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  Request $request
      * @param  \Exception $e
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse|Response
+     * @throws \ReflectionException
      */
     public function render($request, Exception $e)
     {
@@ -131,7 +135,7 @@ class Handler extends ExceptionHandler
         }
 
         // Include trace in debug mode
-        if (app()->environment("dev", "pipelines", "stage")) {
+        if (app()->environment("local", "dev", "pipelines", "stage")) {
             $json["trace"] = explode("\n", $e->getTraceAsString());
         }
 

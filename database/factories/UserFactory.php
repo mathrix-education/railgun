@@ -1,4 +1,5 @@
 <?php
+
 use App\Models\Class_;
 use App\Models\Level;
 use App\Models\User;
@@ -14,12 +15,11 @@ use Illuminate\Support\Facades\Hash;
 $factory->define(User::class, function (Generator $faker) {
     $names = $faker->boolean(30);
     $points = $faker->numberBetween(0, 100) * 10;
-
-    return [
+    $data = [
         "username" => !$names ? $faker->userName : null,
         "email" => $faker->email,
-        "firstName" => $names ? $faker->firstName : null,
-        "lastName" => $names ? $faker->lastName : null,
+        "firstname" => $names ? $faker->firstName : null,
+        "lastname" => $names ? $faker->lastName : null,
         "password" => Hash::make("test"),
         "token" => $faker->uuid,
         "points" => $points,
@@ -28,8 +28,15 @@ $factory->define(User::class, function (Generator $faker) {
         "settings" => [
             "sound" => $faker->boolean(70)
         ],
-        "class_id" => Class_::inRandomOrder()->firstOrFail()->id
+        "class_id" => Class_::inRandomOrder()->firstOrFail()->id,
+        "created_at" => $faker->dateTimeBetween("-1 years")
     ];
+
+    if ($faker->boolean(10)) {
+        $data["settings"]["facebook_id"] = $faker->randomAscii;
+    }
+
+    return $data;
 });
 
 
@@ -57,8 +64,8 @@ $factory->defineAs(User::class, "registered", function () use ($factory) {
 $factory->defineAs(User::class, "moderator", function (Generator $faker) use ($factory) {
     $data = [
         "username" => $faker->userName,
-        "firstName" => $faker->firstName,
-        "lastName" => $faker->lastName,
+        "firstname" => $faker->firstName,
+        "lastname" => $faker->lastName,
         "type" => "moderator",
         "class_id" => null
     ];
@@ -76,8 +83,8 @@ $factory->defineAs(User::class, "moderator", function (Generator $faker) use ($f
 $factory->defineAs(User::class, "admin", function (Generator $faker) use ($factory) {
     $data = [
         "username" => $faker->userName,
-        "firstName" => $faker->firstName,
-        "lastName" => $faker->lastName,
+        "firstname" => $faker->firstName,
+        "lastname" => $faker->lastName,
         "type" => "admin",
         "class_id" => null
     ];

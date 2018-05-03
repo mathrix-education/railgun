@@ -1,9 +1,5 @@
 <?php
 namespace App\Controllers;
-use App\Exceptions\Http401UnauthorizedException;
-use App\Models\Lesson;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 /**
  * Class LessonController
@@ -11,12 +7,12 @@ use Illuminate\Http\Request;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.1
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class LessonController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /lessons/{?page}/{?perPage} Index
      * @apiGroup Lessons
      * @apiName LessonsIndex
@@ -24,32 +20,10 @@ class LessonController extends BaseController
      * @apiPermission public
      * @apiUse Pagination
      * @apiUse LessonArray
-     *
-     * @param Request $request
-     * @param int $page
-     * @param int $perPage
-     *
-     * @return JsonResponse
-     * @throws Http401UnauthorizedException
      */
-    public function index(Request $request, int $page = 1, int $perPage = 10): JsonResponse
-    {
-        // Check permission
-        if ($request->user() !== null && $request->user()->cant("index", $this->modelClass)) {
-            throw new Http401UnauthorizedException();
-        }
-
-        return response()->json(
-            Lesson::with("module")
-                ->limit($perPage)
-                ->offset(($page - 1) * $perPage)
-                ->get()
-        );
-    }
-
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /lessons/{id} Get
      * @apiGroup Lessons
      * @apiName LessonGet
@@ -58,21 +32,11 @@ class LessonController extends BaseController
      * @apiParam {int} id The lesson id
      * @apiUse LessonModel
      * @apiUse Http404ModelNotFound
-     *
-     * @param int $id
-     *
-     * @return JsonResponse
      */
-    public function get(int $id): JsonResponse
-    {
-        $model = Lesson::with("module")->where("id", $id)->firstOrFail();
-
-        return response()->json($model);
-    }
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /lessons Add
      * @apiGroup Lessons
      * @apiName LessonAdd
@@ -87,7 +51,7 @@ class LessonController extends BaseController
      */
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {patch} /lessons/{id} Edit
      * @apiGroup Lessons
      * @apiName LessonEdit
@@ -105,7 +69,7 @@ class LessonController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {delete} /lessons/{id} Delete
      * @apiGroup Lessons
      * @apiName LessonDelete

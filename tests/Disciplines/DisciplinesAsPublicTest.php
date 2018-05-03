@@ -1,6 +1,7 @@
 <?php
 namespace Tests\Disciplines;
 
+use App\Models\Class_;
 use Tests\ScopeTestCase;
 
 /**
@@ -8,7 +9,7 @@ use Tests\ScopeTestCase;
  * Test disciplines as public (non-logged user)
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  * @version 1.0.0
  * @package Tests\Disciplines
  */
@@ -55,5 +56,14 @@ class DisciplinesAsPublicTest extends ScopeTestCase
     public function testDelete()
     {
         $this->genericDeleteUnauthorized();
+    }
+
+
+    /**
+     * GET /classes/by-class/{class_id}
+     */
+    public function testByClass()
+    {
+        $this->genericBySuccess(Class_::class);
     }
 }

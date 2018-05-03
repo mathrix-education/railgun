@@ -1,6 +1,7 @@
 <?php
 
 namespace Tests\Chapters;
+
 use App\Models\Notion;
 
 /**
@@ -8,7 +9,7 @@ use App\Models\Notion;
  * Test chapters as moderator
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  * @version 1.0.0
  * @package Tests\Chapters
  */
@@ -71,6 +72,7 @@ class ChaptersAsModeratorTest extends ChaptersAsRegisteredTest
             ]);
         }
     }
+
 
     /**
      * DELETE /chapters/{id}

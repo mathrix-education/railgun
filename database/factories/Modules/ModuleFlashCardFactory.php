@@ -1,4 +1,5 @@
 <?php
+
 use App\Models\Module;
 
 /**
@@ -15,7 +16,7 @@ $factory->defineAs(Module::class, 'flashcard', function () use ($factory) {
     $data['choices'] = null;
     $data['solutions'] = null;
 
-    foreach($data['corrections'] as $k => $v) {
+    foreach ($data['corrections'] as $k => $v) {
         $data['corrections'][$k] = $v[0];
     }
 
