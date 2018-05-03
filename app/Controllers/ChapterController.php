@@ -1,9 +1,12 @@
 <?php
 namespace App\Controllers;
 
+use App\Exceptions\Http404ModelNotFoundException;
 use App\Models\Chapter;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 /**
  * Class ChapterController
@@ -119,7 +122,7 @@ class ChapterController extends BaseController
 
     /**
      * @apiVersion 4.0.0
-     * @api {get} /chapter/recursive/{id} Random
+     * @api {get} /chapter/recursive/{id} Recursive
      * @apiGroup Chapters
      * @apiName ChapterRecursive
      * @apiDescription Get a chapter and its linked models recursiveley
@@ -127,29 +130,40 @@ class ChapterController extends BaseController
      * @apiParam {int} id the chapter id
      * @apiUse ChapterArray
      *
+     * @param Request $request
      * @param int $id
      * => function($q) {
-                    return  $q->where(["visible", 1]);
-                }
+     * return  $q->where(["visible", 1]);
+     * }
+     *
      * @return JsonResponse
+     * @throws Http404ModelNotFoundException
+     * @throws \Exception
      */
-    public function recursive(int $id)
+    public function recursive(Request $request, int $id)
     {
-        return response()->json(
-            Chapter::with([
-                "notions" => function (BelongsToMany $q) {
-                    return $q->where("visible", 1);
-                },
-                "notions.activities" => function (BelongsToMany $q) {
-                    return $q->where("visible", 1);
-                },
-                "notions.activities.modules" => function (BelongsToMany $q) {
-                    return $q->where("visible", 1);
-                }
-            ])
-                ->where("id", $id)
-                ->first()
+        /** @var Chapter $data */
+        $data = Chapter::with([
+            "notions" => function (BelongsToMany $q) {
+                return $q->where("visible", 1);
+            },
+            "notions.activities" => function (BelongsToMany $q) {
+                return $q->where("visible", 1);
+            },
+            "notions.activities.modules" => function (BelongsToMany $q) {
+                return $q->where("visible", 1);
+            }
+        ])
+            ->where("id", $id)
+            ->first();
 
-        );
+        /** @var User $user */
+        $user = $request->user();
+
+        if (!$data->visible && $user === null || $user->type === "registered") {
+            throw new Http404ModelNotFoundException();
+        } else {
+            return response()->json($data);
+        }
     }
 }
