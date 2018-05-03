@@ -1,6 +1,7 @@
 <?php
 namespace Tests\Chapters;
 
+use App\Models\Chapter;
 use Tests\ScopeTestCase;
 
 /**
@@ -66,5 +67,29 @@ class ChaptersAsPublicTest extends ScopeTestCase
     public function testDelete()
     {
         $this->genericDeleteUnauthorized();
+    }
+
+
+    /**
+     * GET /chapters/recursive/{id}
+     *
+     * @throws \Exception
+     */
+    public function testRecursive()
+    {
+        /** @var Chapter $chapter */
+        $chapter = Chapter::random();
+        $this->call("GET", "/chapters/recursive/{$chapter->id}");
+        $this->assertHttp200Success();
+        $response = $this->getResponseData();
+
+        foreach ($response->notions as $notion) {
+            foreach ($notion->activities as $activity) {
+                $this->assertTrue($activity->visible);
+                foreach ($activity->modules as $module) {
+                    $this->assertTrue($module->visible);
+                }
+            }
+        }
     }
 }

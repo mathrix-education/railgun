@@ -98,9 +98,11 @@ class Module extends BaseModel
         $user = Auth::user();
         $strip = $this->premium && ($user === null || !$user->premium && !$user->isModerator());
 
+        $keep = ["visible"];
+
         if ($strip) {
             foreach (array_merge($this->with, $this->appends, $this->fillable, ["comments"]) as $field) {
-                if (array_key_exists($field, $array)) {
+                if (array_key_exists($field, $array) && !in_array($field, $keep)) {
                     unset($array[$field]);
                 }
             }
