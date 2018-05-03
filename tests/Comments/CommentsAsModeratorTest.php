@@ -9,7 +9,7 @@ use App\Models\Comment;
  * Test Comments as moderator
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  * @version 1.0.0
  * @package Tests\Comments
  */
@@ -64,5 +64,19 @@ class CommentsAsModeratorTest extends CommentsAsRegisteredTest
         ]);
 
         $this->assertHttp200Success();
+    }
+
+
+    /**
+     * GET /comments/latest
+     *
+     * @throws \Exception
+     */
+    public function testLatest()
+    {
+        $this->call("get", "/comments/latest");
+
+        $this->assertHttp200Success();
+        $this->assertJsonLengthMax(100);
     }
 }

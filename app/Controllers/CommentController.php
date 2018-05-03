@@ -7,9 +7,7 @@ use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\BaseModel;
 use App\Models\Comment;
-use App\Models\Module;
-use App\Models\Post;
-use Illuminate\Database\Eloquent\Relations\Relation;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -19,12 +17,12 @@ use Illuminate\Http\Request;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class CommentController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /comments/{?page}/{?perPage} Index
      * @apiGroup Comments
      * @apiName CommentsIndex
@@ -37,7 +35,7 @@ class CommentController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /comments/{id} Get
      * @apiGroup Comments
      * @apiName CommentGet
@@ -50,7 +48,7 @@ class CommentController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /comments Add
      * @apiGroup Comments
      * @apiName CommentAdd
@@ -70,12 +68,11 @@ class CommentController extends BaseController
      * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function add(Request $request): JsonResponse
     {
-        if ($request->user() !== null && $request->user()->cant("add", $this->modelClass)) {
-            throw new Http401UnauthorizedException();
-        }
+        $request->user()->canOrFail("add", Comment::class);
 
         /** @var BaseModel $model */
         $comment = new Comment($request->all());
@@ -87,7 +84,7 @@ class CommentController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {patch} /comments/{id} Edit
      * @apiGroup Comments
      * @apiName CommentEdit
@@ -105,7 +102,7 @@ class CommentController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {delete} /comments/{id} Delete
      * @apiGroup Comments
      * @apiName CommentDelete
@@ -119,53 +116,50 @@ class CommentController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
-     * @api {get} /comments/{commentable_type}/{commentable_id}/{?page}/{?perPage} Type
+     * @apiVersion 4.0.0
+     * @api {get} /comments/by-{what}/{id}/{?page}/{?perPage} By
      * @apiGroup Comments
-     * @apiName CommentsIndex
+     * @apiName CommentsBy
      * @apiDescription Retrieve comments by type
      * @apiPermission public
-     * @apiParam {string=post,course,module} commentable_type the commentable_type
-     * @apiParam {int} commentable_id the commentable id
+     * @apiParam {string=post,course,notion} what the commentable_type
+     * @apiParam {int} id the commentable id
      * @apiParam {int} [page=1] the page to fetch
      * @apiParam {int} [perPage=10] the comments per page to fetch (excluding children)
      * @apiUse CommentArray
      *
-     * @param string $commentable_type
-     * @param int $commentable_id
+     * @param Request $request
+     * @param string $what
+     * @param int $id
      * @param int $page
      * @param int $perPage
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
+     * @throws \Exception
      */
-    public function type(string $commentable_type, int $commentable_id, int $page = 1, int $perPage = 10)
+    public function by(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
     {
-        // Ensure that the commentable model is morphed
-        /** @var BaseModel $commentable_class */
-        $commentable_class = Relation::getMorphedModel($commentable_type);
-
-        if ($commentable_class === null) {
-            throw new Http400InvalidRequestException();
+        if (!in_array($what, ["activity", "post"])) {
+            throw new Http400InvalidRequestException("Comment::$what() does not exist");
         }
 
-        // Ensure that the morphed exists
-        /** @var Module|Post $commentable */
-        $commentable = $commentable_class::where("id", "=", $commentable_id)->firstOrFail();
+        $comments = Comment::where([
+            ["commentable_type", $what],
+            ["commentable_id", $id],
+            ["parent_id", null]
+        ])
+            ->limit($perPage)
+            ->offset(($page - 1) * $perPage)
+            ->get();
 
-        // Retrieve comments
-        return response()->json(
-            $commentable->comments()
-                ->with(["user", "children", "children.user"])
-                ->limit($perPage)
-                ->offset(($page - 1) * $perPage)
-                ->get()
-        );
+
+        return response()->json($comments);
     }
 
 
     /**
-     * @apiVersion 1.0.1
+     * @apiVersion 4.0.0
      * @api {post} /comments/search Search
      * @apiGroup Comments
      * @apiName CommentSearch
@@ -178,4 +172,36 @@ class CommentController extends BaseController
      * @apiParam (Data) {string} order.column The order column
      * @apiParam (Data) {string=asc,desc} order.dir The order direction
      */
+
+
+    /**
+     * @apiVersion 4.0.0
+     * @api {get} /comments/latest/{?page}/{?perPage} Latest
+     * @apiGroup Comments
+     * @apiName CommentLatest
+     * @apiDescription Get the latest comments
+     * @apiPermission moderator
+     * @apiUse Pagination
+     * @apiUse Bearer
+     * @apiUse CommentArray
+     *
+     * @param Request $request
+     * @param int $page
+     * @param int $perPage
+     *
+     * @return JsonResponse
+     */
+    public function latest(Request $request, $page = 1, $perPage = 100): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        $user->canOrFail("latest", Comment::class);
+
+        return response()->json(Comment::orderBy("created_at", "desc")
+            ->with(["commentable", "user", "children", "children.user"])
+            ->limit($perPage)
+            ->offset(($page - 1) * $perPage)
+            ->get());
+    }
 }

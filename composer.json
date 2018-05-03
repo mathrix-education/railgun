@@ -18,16 +18,18 @@
     "league/flysystem": " ~1.0",
     "roumen/sitemap": "^2.7",
     "paulvl/backup": "3.*",
-    "nao-pon/flysystem-google-drive": "^1.1"
+    "nao-pon/flysystem-google-drive": "^1.1",
+    "fzaninotto/faker": "~1.4"
   },
   "require-dev": {
-    "fzaninotto/faker": "~1.4",
     "phpunit/phpunit": "~6.0",
     "mockery/mockery": "~0.9",
     "barryvdh/laravel-ide-helper": "^2.4",
     "doctrine/dbal": "^2.5",
     "filp/whoops": "~2.0",
-    "brianium/paratest": "^1.0"
+    "brianium/paratest": "^1.0",
+    "phpunit/php-code-coverage": "^5.3",
+    "laravel/envoy": "^1.4"
   },
   "autoload": {
     "psr-4": {

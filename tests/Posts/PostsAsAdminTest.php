@@ -6,7 +6,7 @@ namespace Tests\Posts;
  * Test Posts as admin
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  * @version 1.0.0
  * @package Tests\Posts
  */
@@ -19,7 +19,7 @@ class PostsAsAdminTest extends PostsAsModeratorTest
      */
     public function testAdd()
     {
-        $this->genericAddSuccess([], function($data) {
+        $this->genericAddSuccess([], function ($data) {
             unset($data["user_id"]);
             return $data;
         });
@@ -33,7 +33,7 @@ class PostsAsAdminTest extends PostsAsModeratorTest
      */
     public function testEdit()
     {
-        $this->genericEditSuccess([], function($data) {
+        $this->genericEditSuccess([], function ($data) {
             unset($data["user_id"]);
             return $data;
         });

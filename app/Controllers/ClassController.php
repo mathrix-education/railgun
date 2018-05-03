@@ -2,7 +2,6 @@
 namespace App\Controllers;
 
 use App\Exceptions\Http401UnauthorizedException;
-use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http501NotImplementedException;
 use App\Models\Class_;
 use Illuminate\Http\JsonResponse;
@@ -14,12 +13,12 @@ use Illuminate\Http\Request;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class ClassController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /classes/{?page}/{?perPage} Index
      * @apiGroup Classes
      * @apiName ClassesIndex
@@ -30,7 +29,7 @@ class ClassController extends BaseController
      */
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /classes/{id} Get
      * @apiGroup Classes
      * @apiName ClassGet
@@ -43,7 +42,7 @@ class ClassController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /classes Add
      * @apiGroup Classes
      * @apiName ClassAdd
@@ -59,7 +58,7 @@ class ClassController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {patch} /classes/{id} Edit
      * @apiGroup Classes
      * @apiName ClassEdit
@@ -77,7 +76,7 @@ class ClassController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {delete} /classes/{id} Delete (Not implemented)
      * @apiGroup Classes
      * @apiName ClassDelete

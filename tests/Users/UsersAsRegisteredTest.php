@@ -13,21 +13,29 @@ use Carbon\Carbon;
  * @author Mathrix Back-End Team
  * @package Tests\Users
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class UsersAsRegisteredTest extends UsersAsPublicTest
 {
+    /**
+     * GET /users/profile
+     */
+    public function testProfile()
+    {
+        $this->call("get", "/users/profile");
+
+        $this->assertHttp200Success();
+    }
+
+
     /**
      * PATCH /users/{id}
      */
     public function testEdit()
     {
         $newUser = factory(User::class, $this->user->type)->raw();
-
-        // TODO: Handle cancerous fields
-        unset($newUser["password"]);
-        unset($newUser["token"]);
-        unset($newUser["settings"]);
+        unset($newUser["password"], $newUser["token"], $newUser["settings"], $newUser["points"], $newUser["level"],
+            $newUser["created_at"]);
 
         $this->call("patch", "/users/" . $this->user->id, $newUser);
 
@@ -96,6 +104,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
 
     /**
      * POST /users/points with daily achievement trigger
+     *
      * @throws \Exception
      */
     public function testPointsWithDailyAchievementPass()

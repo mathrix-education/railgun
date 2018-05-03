@@ -1,4 +1,7 @@
 <?php
+
+use App\Exceptions\Http422ModelSaveException;
+use App\Exceptions\Http422ModelValidationException;
 use App\Models\Notion;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -8,7 +11,7 @@ use Illuminate\Database\Schema\Blueprint;
  *
  * @author Mathrix Back-End Team
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class CreateChapterNotionTable extends Migration
 {
@@ -32,7 +35,7 @@ class CreateChapterNotionTable extends Migration
 
         $notions = Notion::all();
         /** @var Notion $notion */
-        foreach($notions as $notion) {
+        foreach ($notions as $notion) {
             $notion->chapters()->attach([$notion->chapter_id => ["order" => $notion->order]]);
         }
 
@@ -49,6 +52,9 @@ class CreateChapterNotionTable extends Migration
      * Reverse the migrations.
      *
      * @return void
+     * @throws Exception
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
      */
     public function down()
     {
@@ -61,7 +67,7 @@ class CreateChapterNotionTable extends Migration
 
         $notions = Notion::all();
         /** @var Notion $notion */
-        foreach($notions as $notion) {
+        foreach ($notions as $notion) {
             $chapter = $notion->chapters()->first();
 
             if ($chapter != null) {

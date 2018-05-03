@@ -9,7 +9,7 @@ use App\Models\User;
  * @author Mathrix Back-End Team
  * @package App\Policies
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class ActivityPolicy extends BasePolicy
 {
@@ -21,6 +21,15 @@ class ActivityPolicy extends BasePolicy
     public function index(User $currentUser)
     {
         return $this->atLeastModerator($currentUser);
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function get()
+    {
+        return true;
     }
 
 

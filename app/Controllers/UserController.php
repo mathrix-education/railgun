@@ -6,7 +6,6 @@ use App\Exceptions\Http401UnauthorizedException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Exceptions\Http429TooManyRequestsException;
-use App\Exceptions\Http501NotImplementedException;
 use App\Models\Activity;
 use App\Models\Log;
 use App\Models\Module;
@@ -22,12 +21,12 @@ use Illuminate\Http\Request;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class UserController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /users/{?page}/{?perPage} Index
      * @apiGroup Users
      * @apiName UsersIndex
@@ -41,7 +40,7 @@ class UserController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /users/{id} Get
      * @apiGroup Users
      * @apiName UserGet
@@ -56,7 +55,7 @@ class UserController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {patch} /users/{id} Edit
      * @apiGroup Users
      * @apiName UserEdit
@@ -73,6 +72,7 @@ class UserController extends BaseController
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
+     * @throws \Exception
      */
     public function edit(Request $request, int $id = null): JsonResponse
     {
@@ -96,40 +96,14 @@ class UserController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
-     * @api {delete} /users/{id} Delete (Not implemented)
-     * @apiGroup Users
-     * @apiName UserDelete
-     * @apiDescription Delete a user
-     * @apiPermission http501NotImplemented
-     * @apiUse Bearer
-     * @apiParam {int} id The user id
-     * @apiError (Error 401) unauthorized User does not have enough privileges
-     *
-     * @param Request $request
-     * @param int $id The user
-     *
-     * @return JsonResponse
-     * @throws Http401UnauthorizedException
-     * @throws Http501NotImplementedException
-     * @throws \Exception
-     */
-    public function delete(Request $request, int $id): JsonResponse
-    {
-        throw new Http501NotImplementedException();
-
-        return parent::delete($request, $id);
-    }
-
-
-    /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /users/search Search
      * @apiGroup Users
      * @apiName UsersSearch
      * @apiDescription Search user matching criteria
      * @apiPermission moderator
      * @apiUse Bearer
+     * @apiUse Pagination
      * @apiUse UserArray
      * @apiUse Http400InvalidRequest
      * @apiUse Http401Unauthorized
@@ -137,7 +111,7 @@ class UserController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /users/register Register
      * @apiGroup Users
      * @apiName UserRegister
@@ -159,6 +133,7 @@ class UserController extends BaseController
      * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function register(Request $request): JsonResponse
     {
@@ -189,43 +164,43 @@ class UserController extends BaseController
             ->fill($request->all())
             ->save();
 
-        // TODO: Send welcome email
-
         return response()->json($user);
     }
 
 
     /**
-     * @apiVersion 1.0.0
-     * @api {get} /users/exists/{field}/{value} Exists
+     * @apiVersion 4.0.0
+     * @api {post} /users/exists Exists
      * @apiGroup Users
      * @apiName UserExists
      * @apiDescription Search for user matching given key-value
      * @apiPermission public
-     * @apiParam {string=username,email} field The field to check
-     * @apiParam {string} value The field value to search
+     * @apiParam (Data) {string} email The email to check
+     * @apiParam (Data) {string} username The username to check
+     * @apiSuccess {bool} exists if an user matching criteria exists
      *
-     * @param string $field
-     * @param string $value
+     * @param Request $request
      *
      * @return JsonResponse
-     * @throws Http400InvalidRequestException
      */
-    public function exists(string $field, string $value)
+    public function exists(Request $request)
     {
-        if (!in_array($field, ["username", "email"])) {
-            throw new Http400InvalidRequestException();
+        foreach ($request->all() as $key => $value) {
+            if (User::where($key, $value)->exists()) {
+                return response()->json(["exists" => true]);
+            }
         }
 
-        return response()->json(["exists" => User::where($field, $value)->exists()]);
+        return response()->json(["exists" => false]);
+
     }
 
 
     /**
-     * @apiVersion 1.0.0
-     * @api {get} /users/me Me
+     * @apiVersion 4.0.0
+     * @api {get} /users/profile Profile
      * @apiGroup Users
-     * @apiName UserMe
+     * @apiName UserProfile
      * @apiDescription Get the current user
      * @apiPermission registered
      * @apiUse Bearer
@@ -235,11 +210,11 @@ class UserController extends BaseController
      *
      * @return JsonResponse
      */
-    public function me(Request $request)
+    public function profile(Request $request)
     {
         /** @var User $user */
         $user = $request->user();
-        $user = User::where("id", "=", $user->id)
+        $user = User::where("id", $user->id)
             ->with("subscriptions")
             ->firstOrFail();
 
@@ -248,7 +223,7 @@ class UserController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /users/points/{?id} Points
      * @apiGroup Users
      * @apiName UserPoints
@@ -257,7 +232,7 @@ class UserController extends BaseController
      * @apiUse Bearer
      * @apiParam (Data) {int} [id=null] The user id
      * @apiParam (Data) {int} points The points to add
-     * @apiParam (Data) {string=module} [loggable_type] The loggable type
+     * @apiParam (Data) {string=activity,module} [loggable_type] The loggable type
      * @apiParam (Data) {int} [loggable_id] The loggable id
      * @apiError (Error 400) invalid_request points field is required
      * @apiError (Error 400) invalid_request points field has to be a positive integer
@@ -274,6 +249,7 @@ class UserController extends BaseController
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      * @throws Http429TooManyRequestsException
+     * @throws \Exception
      */
     public function points(Request $request, $id = null)
     {
@@ -302,10 +278,10 @@ class UserController extends BaseController
             $loggable = $loggableModelClass::where("id", $loggableId)->firstOrFail();
 
             $userHasAlreadyGatheredPointsWithThisModule = Log::where([
-                ["event", "=", "user_gathered_points"],
-                ["user_id", "=", $user->id],
-                ["loggable_type", "=", $loggableType],
-                ["loggable_id", "=", $loggable->id],
+                ["event", "user_gathered_points"],
+                ["user_id", $user->id],
+                ["loggable_type", $loggableType],
+                ["loggable_id", $loggable->id],
             ])
                 ->whereBetween("created_at", [Carbon::now()->setTime(0, 0, 0), Carbon::now()])
                 ->exists();

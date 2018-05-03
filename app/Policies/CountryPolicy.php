@@ -7,7 +7,7 @@ namespace App\Policies;
  * @author Mathrix Back-End Team
  * @package App\Policies
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class CountryPolicy extends BasePolicy
 {
@@ -15,6 +15,15 @@ class CountryPolicy extends BasePolicy
      * @return bool
      */
     public function index()
+    {
+        return true;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function get()
     {
         return true;
     }

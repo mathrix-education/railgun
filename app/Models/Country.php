@@ -22,19 +22,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Country whereSlug($value)
  * @method static Builder|Country whereSlugShort($value)
  * @method static Builder|Country whereVisible($value)
- * @mixin \Eloquent
  */
 class Country extends BaseModel
 {
     /** @var array The fillable attributes */
-    protected $fillable = ["id", "name", "name_short", "slug", "slug_short", "visible"];
+    protected $fillable = ["id", "name", "slug", "visible"];
 
     /** @var array Validation rules */
     protected $rules = [
         "name" => "required|max:255",
-        "name_short" => "required|max:255",
         "slug" => "required|max:255",
-        "slug_short" => "required|max:255",
         "visible" => "boolean"
     ];
 

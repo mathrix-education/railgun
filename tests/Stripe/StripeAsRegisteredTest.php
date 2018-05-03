@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Quotes;
+namespace Tests\Stripe;
 
 use Tests\ScopeTestCase;
 
@@ -8,7 +8,7 @@ use Tests\ScopeTestCase;
  * Test quotes as registered user
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  * @version 1.0.0
  * @package Tests\Quotes
  */
@@ -68,5 +68,6 @@ class StripeAsRegisteredTest extends ScopeTestCase
             "name" => "premium",
             "stripe_plan" => "v3_biannually"
         ]);
+
     }
 }

@@ -1,6 +1,7 @@
 <?php
 namespace Tests\Classes;
 
+use App\Models\Country;
 use Tests\ScopeTestCase;
 
 /**
@@ -8,7 +9,7 @@ use Tests\ScopeTestCase;
  * Test classes as public (non-logged user)
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  * @version 1.0.0
  * @package Tests\Classes
  */
@@ -22,6 +23,17 @@ class ClassesAsPublicTest extends ScopeTestCase
     public function testIndex()
     {
         $this->genericIndexSuccess();
+    }
+
+
+    /**
+     * GET /classes/{id}
+     *
+     * @throws \Exception
+     */
+    public function testGet()
+    {
+        $this->genericGetSuccess();
     }
 
 
@@ -55,5 +67,14 @@ class ClassesAsPublicTest extends ScopeTestCase
     public function testDelete()
     {
         $this->genericDeleteUnauthorized();
+    }
+
+
+    /**
+     * GET /classes/by-country/{country_id}
+     */
+    public function testByCountry()
+    {
+        $this->genericBySuccess(Country::class);
     }
 }

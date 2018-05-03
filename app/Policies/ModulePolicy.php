@@ -10,7 +10,7 @@ use App\Models\User;
  * @author Mathrix Back-End Team
  * @package App\Policies
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class ModulePolicy extends BasePolicy
 {
@@ -18,6 +18,15 @@ class ModulePolicy extends BasePolicy
      * @return bool
      */
     public function index()
+    {
+        return true;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function get()
     {
         return true;
     }

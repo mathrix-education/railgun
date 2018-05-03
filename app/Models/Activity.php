@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use App\Models\Traits\Commentable;
 use App\Models\Traits\Loggable;
 use Auth;
 use Illuminate\Database\Eloquent\Builder;
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @author Mathrix Back-End Team
  * @package App\Models
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  * @property int $id
  * @property string $name
  * @property string $slug
@@ -22,7 +23,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $type
  * @property bool $visible
  * @property array $link
+ * @property-read bool $completed
  * @property-read bool $favorite
+ * @property-read bool $to_revise
  * @property-read string|null $status
  * @property-read Collection|Log[] $logs
  * @property-read Collection|Module[] $modules
@@ -35,11 +38,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Activity whereNameSeo($value)
  * @method static Builder|Activity whereType($value)
  * @method static Builder|Activity whereVisible($value)
- * @mixin \Eloquent
  */
 class Activity extends BaseModel
 {
-    use Loggable;
+    use Loggable, Commentable;
 
     public const TYPES = ["video", "course", "test", "exercise", "summary", "flashcard"];
 
@@ -48,6 +50,7 @@ class Activity extends BaseModel
 
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
+        "visible" => "boolean",
         "options" => "array"
     ];
 
@@ -59,7 +62,7 @@ class Activity extends BaseModel
     ];
 
     /** @var array Appends attributes */
-    protected $appends = ["favorite", "status"];
+    protected $appends = ["favorite", "to_revise", "completed"];
 
 
     public function __construct(array $attributes = [])
@@ -83,7 +86,7 @@ class Activity extends BaseModel
      */
     public function modules(): BelongsToMany
     {
-        return $this->belongsToMany(Module::class);
+        return $this->belongsToMany(Module::class)->withPivot(["order"]);
     }
 
 
@@ -94,7 +97,7 @@ class Activity extends BaseModel
      */
     public function notions(): BelongsToMany
     {
-        return $this->belongsToMany(Notion::class);
+        return $this->belongsToMany(Notion::class)->withPivot(["order"]);
     }
 
 
@@ -115,6 +118,7 @@ class Activity extends BaseModel
     */
     /**
      * favorite
+     *
      * @return bool
      */
     public function getFavoriteAttribute()
@@ -127,8 +131,8 @@ class Activity extends BaseModel
         }
 
         $meta = Meta::where([
-            ["activity_id", "=", $this->id],
-            ["user_id", "=", $user->id]
+            ["activity_id", $this->id],
+            ["user_id", $user->id]
         ])->first();
 
         return $meta === null ? false : (bool)$meta->favorite;
@@ -136,10 +140,11 @@ class Activity extends BaseModel
 
 
     /**
-     * status
-     * @return string|null
+     * to_revise
+     *
+     * @return bool
      */
-    public function getStatusAttribute()
+    public function getToReviseAttribute()
     {
         /** @var User $user */
         $user = Auth::user();
@@ -149,10 +154,33 @@ class Activity extends BaseModel
         }
 
         $meta = Meta::where([
-            ["activity_id", "=", $this->id],
-            ["user_id", "=", $user->id]
+            ["activity_id", $this->id],
+            ["user_id", $user->id]
         ])->first();
 
-        return $meta === null ? null : $meta->status;
+        return $meta === null ? null : $meta->to_revise;
+    }
+
+
+    /**
+     * completed
+     *
+     * @return bool
+     */
+    public function getCompletedAttribute()
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        if ($user === null) {
+            return null;
+        }
+
+        $meta = Meta::where([
+            ["activity_id", $this->id],
+            ["user_id", $user->id]
+        ])->first();
+
+        return $meta === null ? null : $meta->completed;
     }
 }

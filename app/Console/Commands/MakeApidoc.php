@@ -12,13 +12,16 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
  * @author Mathrix Back-End Team
  * @package App\Console\Commands
  * @since 1.0.1
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
+ *
+ * Used to generate apidoc defines for models from the database schema
  */
 class MakeApidoc extends Command
 {
     protected $signature = "make:apidoc {model} {--f|force}";
 
     private $disk;
+
 
     public function __construct()
     {
@@ -27,6 +30,7 @@ class MakeApidoc extends Command
         $this->disk = Storage::disk("apidoc");
 
     }
+
 
     /**
      * @throws \Doctrine\DBAL\DBALException
@@ -62,7 +66,7 @@ class MakeApidoc extends Command
                     "The $modelNameLow {$column["name"]}\n";
             }
             $buffer .= " */\n";
-            $this->disk->put("$modelNameUc/Array.php", $buffer);
+            $this->disk->put("defines/$modelNameUc/Array.php", $buffer);
 
 
             // Model file
@@ -73,7 +77,7 @@ class MakeApidoc extends Command
                 $buffer .= " * @apiSuccess {{$column["type"]}} {$column["name"]} The $modelNameLow {$column["name"]}\n";
             }
             $buffer .= " */\n";
-            $this->disk->put("$modelNameUc/Model.php", $buffer);
+            $this->disk->put("defines/$modelNameUc/Model.php", $buffer);
 
 
             // Request file
@@ -105,7 +109,7 @@ class MakeApidoc extends Command
                 $buffer .= "} {$column["name_parsed"]} The $modelNameLow {$column["name"]}\n";
             }
             $buffer .= " */\n";
-            $this->disk->put("$modelNameUc/Request.php", $buffer);
+            $this->disk->put("defines/$modelNameUc/Request.php", $buffer);
         } else if (!class_exists("App\\Models\\$modelNameUc")) {
             $this->warn("Could not find $modelClass, skipping");
         } else {

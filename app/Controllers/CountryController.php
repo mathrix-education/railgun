@@ -2,7 +2,7 @@
 namespace App\Controllers;
 
 use App\Exceptions\Http401UnauthorizedException;
-use App\Exceptions\Http422ModelSaveException;
+
 use App\Exceptions\Http501NotImplementedException;
 use App\Models\Country;
 use Illuminate\Http\JsonResponse;
@@ -14,12 +14,12 @@ use Illuminate\Http\Request;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class CountryController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /countries/{?page}/{?perPage} Index
      * @apiGroup Countries
      * @apiName CountriesIndex
@@ -31,7 +31,7 @@ class CountryController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /countries/{id} Get
      * @apiGroup Countries
      * @apiName CountryGet
@@ -44,7 +44,7 @@ class CountryController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /countries Add
      * @apiGroup Countries
      * @apiName CountryAdd
@@ -60,7 +60,7 @@ class CountryController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {patch} /countries/{id} Edit
      * @apiGroup Countries
      * @apiName CountryEdit
@@ -78,7 +78,7 @@ class CountryController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {delete} /countries/{id} Delete (Not implemented)
      * @apiGroup Countries
      * @apiName CountryDelete

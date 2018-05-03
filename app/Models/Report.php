@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Report whereId($value)
  * @method static Builder|Report whereModuleId($value)
  * @method static Builder|Report whereUpdatedAt($value)
- * @mixin \Eloquent
  * @property string $status
  * @property-read \App\Models\Module $module
  * @method static Builder|Report whereStatus($value)
@@ -25,19 +24,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Report extends BaseModel
 {
     public const STATUSES = ["todo", "done", "validated"];
-
-    /** @var array The fillable attributes */
-    protected $fillable = ["id", "name", "content", "status", "module_id", "created_at", "updated_at"];
-
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
-
+    /** @var array The fillable attributes */
+    protected $fillable = ["id", "name", "content", "status", "module_id", "created_at", "updated_at"];
     /** @var array The validation rules */
     protected $rules = [
         "name" => "required|max:255",
         "slug" => "required|max:255",
         "visible" => "boolean"
     ];
+
+    /** @var array Relation included by default */
+    protected $with = ["module"];
 
 
     public function __construct(array $attributes = [])
@@ -51,9 +50,11 @@ class Report extends BaseModel
 
     /**
      * BelongsTo Module
+     *
      * @return BelongsTo
      */
-    public function module() {
+    public function module()
+    {
         return $this->belongsTo(Module::class);
     }
 }

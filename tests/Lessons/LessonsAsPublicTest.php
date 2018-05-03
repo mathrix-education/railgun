@@ -1,33 +1,44 @@
 <?php
 namespace Tests\Lessons;
 
-use App\Models\Quote;
+
 use Tests\ScopeTestCase;
 
 /**
  * Class LessonsAsPublicTest
- * Test quotes as public (non-logged user)
+ * Test lessons as public (non-logged user)
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  * @version 1.0.1
  * @package Tests\Lessons
  */
 class LessonsAsPublicTest extends ScopeTestCase
 {
     /**
-     * GET /quotes
+     * GET /lessons
      *
      * @throws \Exception
      */
     public function testIndex()
     {
-        $this->genericIndexSuccess();
+        $this->genericIndexUnauthorized();
     }
 
 
     /**
-     * POST /quotes -> HTTP 401 unauthorized
+     * GET /lessons
+     *
+     * @throws \Exception
+     */
+    public function testGet()
+    {
+        $this->genericGetUnauthorized();
+    }
+
+
+    /**
+     * POST /lessons -> HTTP 401 unauthorized
      *
      * @throws \Exception
      */
@@ -38,7 +49,7 @@ class LessonsAsPublicTest extends ScopeTestCase
 
 
     /**
-     * PATCH /quotes/{id} -> HTTP 401 unauthorized
+     * PATCH /lessons/{id} -> HTTP 401 unauthorized
      *
      * @throws \Exception
      */
@@ -49,7 +60,7 @@ class LessonsAsPublicTest extends ScopeTestCase
 
 
     /**
-     * DELETE /quotes/{id} -> HTTP 401 unauthorized
+     * DELETE /lessons/{id} -> HTTP 401 unauthorized
      *
      * @throws \Exception
      */

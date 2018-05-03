@@ -6,19 +6,18 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Spatie\Newsletter\NewsletterFacade as Newsletter;
 
-
 /**
  * Class MailchimpController
  *
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class MailchimpController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /newsletter/subscribe/{list}
      * @apiGroup Newsletters
      * @apiDescription Subscribe an email to a Mailchimp list
@@ -32,6 +31,7 @@ class MailchimpController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
+     * @throws \Exception
      */
     public function subscribe(Request $request, string $list)
     {

@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+
 require_once __DIR__ . "/../vendor/autoload.php";
 
 try {
@@ -68,6 +70,7 @@ $app->configure("mail");
 $app->configure("services");
 $app->configure("filesystems");
 $app->configure("backup");
+$app->configure("queue");
 
 if ($app->environment("dev")) {
     $app->configure("ide-helper");
@@ -107,6 +110,10 @@ $app->routeMiddleware([
 
 if ($app->environment("local", "dev")) {
     $app->register(Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
+    $app->bind(
+        Illuminate\Database\ConnectionResolverInterface::class,
+        Illuminate\Database\ConnectionResolver::class
+    );
 }
 
 $app->register(App\Providers\AppServiceProvider::class);
@@ -120,12 +127,12 @@ $app->register(Illuminate\Filesystem\FilesystemServiceProvider::class);
 $app->register(Roumen\Sitemap\SitemapServiceProvider::class);
 $app->register(App\Providers\GoogleDriveServiceProvider::class);
 $app->register(Backup\BackupServiceProvider::class);
+$app->register(App\Providers\EventServiceProvider::class);
 
 
 if ($app->environment("stage", "master")) {
     $app->register(Sentry\SentryLaravel\SentryLumenServiceProvider::class);
 }
-
 
 /*
 |--------------------------------------------------------------------------
@@ -142,10 +149,17 @@ Dusterio\LumenPassport\LumenPassport::routes($app->router);
 $app->router->group(["namespace" => "App\\Controllers"], function ($router) {
     /** @var Laravel\Lumen\Routing\Router $router */
     $router->get("/", function () {
+        $build = basename(dirname(__DIR__, 1));
+
+        try {
+            $build = Carbon::createFromFormat("Y-m-d_H-i-s", $build)->toIso8601String();
+        } catch (InvalidArgumentException $e) {
+        }
+
         return response()->json([
             "message" => "Welcome to Mathrix API version " . env("APP_VERSION") . " by Mathieu Bour",
             "commit" => trim(exec("git log --pretty=\"%h\" -n1 HEAD")),
-            "build" => basename(dirname(__DIR__, 1))
+            "build" => $build
         ]);
     });
 

@@ -6,7 +6,10 @@ use App\Exceptions\Http401UnauthorizedException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\Activity;
+use App\Models\Discipline;
 use App\Models\Meta;
+use Carbon\Carbon;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -16,12 +19,12 @@ use Illuminate\Http\Request;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class ActivityController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /activities/{?page}/{?perPage} Index
      * @apiGroup Activities
      * @apiName ActivitiesIndex
@@ -34,7 +37,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /activities/{id} Get
      * @apiGroup Activities
      * @apiName ActivityGet
@@ -47,7 +50,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /activities Add
      * @apiGroup Activities
      * @apiName ActivityAdd
@@ -63,7 +66,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {patch} /activities/{id} Edit
      * @apiGroup Activities
      * @apiName ActivityEdit
@@ -81,7 +84,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {delete} /activities/{id} Delete
      * @apiGroup Activities
      * @apiName ActivityDelete
@@ -95,7 +98,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /activities/search Search
      * @apiGroup Activities
      * @apiName ActivitiesSearch
@@ -109,7 +112,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /activities/favorites Favorites
      * @apiGroup Activities
      * @apiName ActivitiesFavorite
@@ -124,14 +127,15 @@ class ActivityController extends BaseController
      * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
+     * @throws \Exception
      */
     public function favorites(Request $request): JsonResponse
     {
         $user = $this->getUserByRequestOrUnauthorized($request);
         $metas = Meta::with(["country", "class_", "discipline", "chapter", "notion", "activity", "activity.modules"])
             ->where([
-                ["user_id", "=", $user->id],
-                ["favorite", "=", true]
+                ["user_id", $user->id],
+                ["favorite", true]
             ])
             ->get();
 
@@ -140,7 +144,7 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /activities/to-revise To revise
      * @apiGroup Activities
      * @apiName ActivitiesToRevise
@@ -155,14 +159,15 @@ class ActivityController extends BaseController
      * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
+     * @throws \Exception
      */
     public function to_revise(Request $request): JsonResponse
     {
         $user = $this->getUserByRequestOrUnauthorized($request);
         $metas = Meta::with(["country", "class_", "discipline", "chapter", "notion", "activity", "activity.modules"])
             ->where([
-                ["user_id", "=", $user->id],
-                ["status", "=", "to_revise"]
+                ["user_id", $user->id],
+                ["to_revise", true]
             ])
             ->get();
 
@@ -171,11 +176,63 @@ class ActivityController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
+     * @api {get} /activities/incomplete Incomplete
+     * @apiGroup Activities
+     * @apiName ActivitiesIncomplete
+     * @apiDescription Get user incomplete activities
+     * @apiUse Bearer
+     * @apiPermission registered
+     * @apiUse MetaArray
+     * @apiUse Http401Unauthorized
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     * @throws Http400InvalidRequestException
+     * @throws Http401UnauthorizedException
+     * @throws \Exception
+     */
+    public function incomplete(Request $request): JsonResponse
+    {
+        $user = $this->getUserByRequestOrUnauthorized($request);
+        $disciplinesIds = Discipline::all(["id"])->pluck("id")->toArray();
+
+        /**
+         * @var Builder|null
+         */
+        $query = null;
+
+        foreach ($disciplinesIds as $disciplineId) {
+            $subQuery = Meta::with(["country", "class_", "discipline", "chapter", "notion", "activity", "activity.modules"])
+                ->where([
+                    ["user_id", $user->id],
+                    ["completed", false],
+                    ["discipline_id", $disciplineId]
+                ])
+                ->orderBy("updated_at", "desc")
+                ->limit(1);
+
+            if ($query === null) {
+                $query = $subQuery;
+            } else {
+                /** @var Builder $query */
+                $query->union($subQuery);
+            }
+        }
+
+        $metas = $query->get();
+
+        return response()->json($metas);
+    }
+
+
+    /**
+     * @apiVersion 4.0.0
      * @api {patch} /activities/{id}/mark Mark
      * @apiGroup Activities
      * @apiName ActivityMark
-     * @apiDescription Mark an activity as favorite or set its status completed or to_revise
+     * @apiDescription Mark an activity as favorite, to_revise, completed...
      * @apiUse Bearer
      * @apiPermission registered
      * @apiUse MetaRequest
@@ -193,6 +250,7 @@ class ActivityController extends BaseController
      * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function mark(Request $request, int $id): JsonResponse
     {
@@ -206,25 +264,10 @@ class ActivityController extends BaseController
         /** @var Meta $meta */
         $meta = Meta::firstOrNew($metaData);
 
-        // Set favorite
-        $favorite = $request->input("favorite");
-        if ($favorite === null) {
-            if (!$meta->exists()) {
-                $meta->favorite = false;
-            }
-        } else {
-            $meta->favorite = $favorite;
-        }
-
-        // Set status
-        $status = $request->input("status");
-        if ($status === null) {
-            if (!$meta->exists()) {
-                $meta->status = null;
-            }
-        } else {
-            $meta->status = $status;
-        }
+        $meta->favorite = $request->input("favorite") ?? $meta->favorite ?? false;
+        $meta->to_revise = $request->input("to_revise") ?? $meta->to_revise ?? false;
+        $meta->completed = $request->input("completed") ?? $meta->completed ?? false;
+        $meta->updated_at = Carbon::now();
 
         $meta->save();
 

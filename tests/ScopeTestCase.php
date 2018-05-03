@@ -3,7 +3,7 @@ namespace Tests;
 
 use App\Models\BaseModel;
 use App\Models\User;
-use DB;
+
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Laravel\Passport\Passport;
 use Tests\Generics\Generics;
@@ -37,19 +37,6 @@ abstract class ScopeTestCase extends BaseTestCase
     protected $modelsMap = [
         "Class" => "Class_"
     ];
-
-
-    /**
-     * Destroy database connection after each test to avoid the Too Many Connections error
-     */
-    public function tearDown()
-    {
-        $this->beforeApplicationDestroyed(function () {
-            DB::disconnect();
-        });
-
-        parent::tearDown();
-    }
 
 
     /**
@@ -137,7 +124,7 @@ abstract class ScopeTestCase extends BaseTestCase
 
             // User has NOT be manually defined from a sameAs() method
             if ($this->user === null) {
-                $this->user = User::inRandomOrder()->where("type", "=", $this->scope)->first();
+                $this->user = User::inRandomOrder()->where("type", $this->scope)->first();
             }
 
             // No user could be found, the database is probably not seeded
@@ -160,7 +147,7 @@ abstract class ScopeTestCase extends BaseTestCase
     public function stranger($type = null)
     {
         $type = $type !== null ? $type : $this->user !== null ? $this->user->type : "registered";
-        $conditions = [["type", "=", $type]];
+        $conditions = [["type", $type]];
 
         if ($this->user !== null) {
             $conditions[] = ["id", "!=", $this->user->id];

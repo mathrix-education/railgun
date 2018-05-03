@@ -6,13 +6,13 @@ namespace Tests\Generics;
  * Generic tests
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  * @version 1.0.0
  * @package Tests\GenericTests
  */
 trait Generics
 {
-    use Index, Add, Edit, Delete;
+    use Index, Get, Add, Edit, Delete, By;
 
     /** @var string|null the subfactory to use; null for default factory */
     protected $subFactory = null;

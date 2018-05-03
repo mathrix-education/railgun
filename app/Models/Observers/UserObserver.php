@@ -27,6 +27,7 @@ class UserObserver extends BaseObserver
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function saving($user)
     {
@@ -50,7 +51,7 @@ class UserObserver extends BaseObserver
             }
 
             // Subscribe the user to "subscribers" Mailchimp list
-            Newsletter::subscribeOrUpdate($user->email, $options, env("MAILCHIMP_LIST_SUBSCRIBERS"));
+            Newsletter::subscribeOrUpdate($user->email, $options, "subscribers");
 
         }
 
@@ -89,7 +90,7 @@ class UserObserver extends BaseObserver
                 $user->daily_achievements++;
                 Log::log("user_achieved_daily", $user);
             }
-            
+
             /*
             |--------------------------------------------------------------------------
             | Trigger the level achievement
@@ -123,6 +124,7 @@ class UserObserver extends BaseObserver
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function created($user)
     {
@@ -136,6 +138,7 @@ class UserObserver extends BaseObserver
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function updated($user)
     {

@@ -1,8 +1,12 @@
 <?php
 namespace App\Controllers;
 
-
-
+use App\Exceptions\Http404ModelNotFoundException;
+use App\Models\Chapter;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 /**
  * Class ChapterController
@@ -10,12 +14,12 @@ namespace App\Controllers;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class ChapterController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /chapters/{?page}/{?perPage} Index
      * @apiGroup Chapters
      * @apiName ChaptersIndex
@@ -28,7 +32,7 @@ class ChapterController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /chapters/{id} Get
      * @apiGroup Chapters
      * @apiName ChapterGet
@@ -41,7 +45,7 @@ class ChapterController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /chapters Add
      * @apiGroup Chapters
      * @apiName ChapterAdd
@@ -57,7 +61,7 @@ class ChapterController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {patch} /chapters/{id} Edit
      * @apiGroup Chapters
      * @apiName ChapterEdit
@@ -75,7 +79,7 @@ class ChapterController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {delete} /chapters/{id} Delete
      * @apiGroup Chapters
      * @apiName ChapterDelete
@@ -86,4 +90,73 @@ class ChapterController extends BaseController
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
      */
+
+
+    /**
+     * @apiVersion 4.0.0
+     * @api {get} /chapters/by-class-discipline/{class_id}/{discipline_id} By Class and Discipline
+     * @apiGroup Chapters
+     * @apiName ChapterClassDiscipline
+     * @apiDescription Get chapters by class and discipline
+     * @apiUse Bearer
+     * @apiPermission public
+     * @apiParam {int} class_id The class id
+     * @apiParam {int} discipline_id The discipline id
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
+     *
+     * @param int $class_id
+     * @param int $discipline_id
+     *
+     * @return JsonResponse
+     */
+    public function by_class_discipline(int $class_id, int $discipline_id)
+    {
+        $chapters = Chapter::where([["class_id", $class_id], ["discipline_id", $discipline_id]])
+            ->orderBy("order")
+            ->get();
+
+        return response()->json($chapters);
+    }
+
+
+    /**
+     * @apiVersion 4.0.0
+     * @api {get} /chapter/recursive/{id} Recursive
+     * @apiGroup Chapters
+     * @apiName ChapterRecursive
+     * @apiDescription Get a chapter and its linked models recursiveley
+     * @apiPermission public
+     * @apiParam {int} id the chapter id
+     * @apiUse ChapterArray
+     *
+     * @param Request $request
+     * @param int $id
+     * => function($q) {
+     * return  $q->where(["visible", 1]);
+     * }
+     *
+     * @return JsonResponse
+     * @throws Http404ModelNotFoundException
+     * @throws \Exception
+     */
+    public function recursive(Request $request, int $id)
+    {
+        /** @var Chapter $data */
+        $data = Chapter::with([
+            "notions" => function (BelongsToMany $q) {
+                return $q->where("visible", 1);
+            },
+            "notions.activities" => function (BelongsToMany $q) {
+                return $q->where("visible", 1);
+            },
+            "notions.activities.modules" => function (BelongsToMany $q) {
+                return $q->where("visible", 1);
+            }
+        ])
+            ->where("id", $id)
+            ->first();
+
+        return response()->json($data);
+    }
 }

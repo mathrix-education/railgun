@@ -16,12 +16,12 @@ use Illuminate\Http\Request;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class VoteController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /votes/{votable_type}/{votable_id}/up Up
      * @apiGroup Votes
      * @apiName VoteUp
@@ -44,33 +44,6 @@ class VoteController extends BaseController
     public function up(Request $request, string $votable_type, int $votable_id)
     {
         return $this->vote($request, $votable_type, $votable_id, 1);
-    }
-
-
-    /**
-     * @apiVersion 1.0.0
-     * @api {post} /votes/{votable_type}/{votable_id}/down Down
-     * @apiGroup Votes
-     * @apiName VoteDown
-     * @apiDescription Down vote something
-     * @apiPermission registered
-     * @apiUse Bearer
-     * @apiUse Http401Unauthorized
-     * @apiUse Http422ModelSave
-     *
-     * @param Request $request
-     * @param string $votable_type
-     * @param int $votable_id
-     *
-     * @return JsonResponse
-     * @throws Http400InvalidRequestException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
-     * @throws \Exception
-     */
-    public function down(Request $request, string $votable_type, int $votable_id)
-    {
-        return $this->vote($request, $votable_type, $votable_id, -1);
     }
 
 
@@ -104,7 +77,7 @@ class VoteController extends BaseController
 
         $voteConditions = [];
         foreach ($voteData as $key => $v) {
-            $voteConditions[] = [$key, "=", $v];
+            $voteConditions[] = [$key, $v];
         }
 
         if (!Vote::where($voteConditions)->exists()) {
@@ -124,5 +97,32 @@ class VoteController extends BaseController
         }
 
         return response()->json($vote->exists());
+    }
+
+
+    /**
+     * @apiVersion 4.0.0
+     * @api {post} /votes/{votable_type}/{votable_id}/down Down
+     * @apiGroup Votes
+     * @apiName VoteDown
+     * @apiDescription Down vote something
+     * @apiPermission registered
+     * @apiUse Bearer
+     * @apiUse Http401Unauthorized
+     * @apiUse Http422ModelSave
+     *
+     * @param Request $request
+     * @param string $votable_type
+     * @param int $votable_id
+     *
+     * @return JsonResponse
+     * @throws Http400InvalidRequestException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
+     * @throws \Exception
+     */
+    public function down(Request $request, string $votable_type, int $votable_id)
+    {
+        return $this->vote($request, $votable_type, $votable_id, -1);
     }
 }

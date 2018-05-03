@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -20,7 +19,7 @@ use Laravel\Cashier\Subscription;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class StripeController extends CashierController
 {
@@ -43,7 +42,7 @@ class StripeController extends CashierController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /stripe/subscribe Subscribe
      * @apiGroup Stripe
      * @apiName StripeSubscribe
@@ -75,6 +74,7 @@ class StripeController extends CashierController
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function subscribe(Request $request)
     {
@@ -135,35 +135,11 @@ class StripeController extends CashierController
 
 
     /**
-     * @apiVersion 1.0.0
-     * @api {post} /stripe/estimate/{stripe_plan} Estimate
-     * @apiGroup Stripe
-     * @apiName StripeEstimate
-     * @apiDescription Estimate the price for a plan relatively to the current date
-     * @apiPermission public
-     * @apiParam {string=v3_biannually,v3_annually} stripe_plan The stripe plan
-     * @apiSuccess {int} price The price if the user orders today
-     * @apiError (Error 400) invalid_request stripe_plan has to be in the allowed stripe plans
-     *
-     * @param Request $request
-     * @param string $stripePlan
-     *
-     * @return JsonResponse
-     * @throws Http400InvalidRequestException
-     */
-    public function estimate(Request $request, string $stripePlan)
-    {
-        return response()->json([
-            "price" => $this->getPriceFromStripePlan($request, $stripePlan)
-        ]);
-    }
-
-
-    /**
      * @param string $stripePlan
      *
      * @return Carbon
      * @throws Http400InvalidRequestException
+     * @throws \Exception
      */
     private function getEndDateFromStripePlan(string $stripePlan)
     {
@@ -195,6 +171,7 @@ class StripeController extends CashierController
      *
      * @return int The price, in cents
      * @throws Http400InvalidRequestException
+     * @throws \Exception
      */
     private function getPriceFromStripePlan(Request $request, string $stripePlan)
     {
@@ -220,11 +197,39 @@ class StripeController extends CashierController
         return $costInCents;
     }
 
+
+    /**
+     * @apiVersion 4.0.0
+     * @api {post} /stripe/estimate/{stripe_plan} Estimate
+     * @apiGroup Stripe
+     * @apiName StripeEstimate
+     * @apiDescription Estimate the price for a plan relatively to the current date
+     * @apiPermission public
+     * @apiParam {string=v3_biannually,v3_annually} stripe_plan The stripe plan
+     * @apiSuccess {int} price The price if the user orders today
+     * @apiError (Error 400) invalid_request stripe_plan has to be in the allowed stripe plans
+     *
+     * @param Request $request
+     * @param string $stripePlan
+     *
+     * @return JsonResponse
+     * @throws Http400InvalidRequestException
+     * @throws \Exception
+     */
+    public function estimate(Request $request, string $stripePlan)
+    {
+        return response()->json([
+            "price" => $this->getPriceFromStripePlan($request, $stripePlan)
+        ]);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Stripe webhooks
     |--------------------------------------------------------------------------
     */
+
+
     /**
      * Payment succeeded
      *
@@ -234,6 +239,7 @@ class StripeController extends CashierController
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function handleInvoicePaymentSucceeded($payload)
     {
@@ -256,6 +262,7 @@ class StripeController extends CashierController
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function handleInvoicePaymentFailed(array $payload)
     {
@@ -280,6 +287,7 @@ class StripeController extends CashierController
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function handleCustomerSubscriptionDeleted(array $payload)
     {

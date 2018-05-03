@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Class Section
@@ -12,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @author Mathrix Back-End Team
  * @package App\Models
  * @since 1.0.1
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  * @property int $id
  * @property string $name
  * @property string $slug
@@ -20,6 +23,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property int $training_id
  * @property string|null $created_at
  * @property string|null $updated_at
+ * @property-read Training $training
+ * @property-read Collection|Lesson[] $lesson
  * @method static Builder|Section whereId($value)
  * @method static Builder|Section whereName($value)
  * @method static Builder|Section whereOrder($value)
@@ -27,9 +32,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Section whereTrainingId($value)
  * @method static Builder|Section whereCreatedAt($value)
  * @method static Builder|Section whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Module[] $modules
- * @property-read \App\Models\Training $training
- * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Lesson[] $lessons
  */
 class Section extends BaseModel
 {
@@ -44,8 +47,10 @@ class Section extends BaseModel
         "description" => "nullable",
     ];
 
+
     /**
      * BelongsTo Training
+     *
      * @return BelongsTo
      */
     public function training()
@@ -53,12 +58,14 @@ class Section extends BaseModel
         return $this->belongsTo(Training::class);
     }
 
+
     /**
-     * BelongsToMany Training
-     * @return BelongsToMany
+     * HasMany Lesson
+     *
+     * @return HasMany
      */
-    public function modules()
+    public function lessons()
     {
-        return $this->belongsToMany(Module::class);
+        return $this->hasMany(Lesson::class);
     }
 }

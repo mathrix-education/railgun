@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
  * @author Mathrix Back-End Team
  * @package App\Middleware
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class Authenticate
 {
@@ -43,8 +43,9 @@ class Authenticate
      * @param  Closure $next
      * @param  string|null $guard
      *
-     * @throws Http401UnauthorizedException
      * @return mixed
+     * @throws Http401UnauthorizedException
+     * @throws \Exception
      */
     public function handle($request, Closure $next, $guard = null)
     {

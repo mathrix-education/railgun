@@ -57,42 +57,18 @@ abstract class BaseTestCase extends TestCase
 
 
     /**
-     * Handle response printing
-     *
-     * @param \Exception|\Throwable $e
-     *
-     * @throws \Throwable
+     * Destroy database connection after each test to avoid the Too Many Connections error
      */
-    protected function onNotSuccessfulTest(\Throwable $e)
+    public function tearDown()
     {
-        $this->debug();
-        parent::onNotSuccessfulTest($e);
+        $this->beforeApplicationDestroyed(function () {
+            app()->make("db")->disconnect();
+        });
+
+        parent::tearDown();
     }
 
 
-    /**
-     * Debug the response
-     */
-    public function debug()
-    {
-        if ($this->response instanceof Response) {
-            $response = $this->response->getContent();
-            $json = json_decode($response);
-
-            if (json_last_error() === JSON_ERROR_NONE) {
-                echo json_encode($json, JSON_PRETTY_PRINT);
-            } else {
-                echo $response;
-            }
-        }
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Additional assertions
-    |--------------------------------------------------------------------------
-    */
     /**
      * Assert the response has the right error and status code
      *
@@ -119,6 +95,25 @@ abstract class BaseTestCase extends TestCase
 
 
     /**
+     * Assert the response has the right length
+     *
+     * @param int $maxLength
+     */
+    public function assertJsonLengthMax(int $maxLength): void
+    {
+        $content = json_decode($this->response->getContent(), true);
+        $this->assertTrue($maxLength >= count($content));
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Additional assertions
+    |--------------------------------------------------------------------------
+    */
+
+
+    /**
      * Assert that a given where condition exists in the database.
      *
      * @param  string $table
@@ -140,7 +135,7 @@ abstract class BaseTestCase extends TestCase
      */
     public function castData(array $data)
     {
-        foreach($data as $field => $value) {
+        foreach ($data as $field => $value) {
             if ($value instanceof \DateTime) {
                 $data[$field] = $value->format("Y-m-d H:i:s");
             }
@@ -172,7 +167,7 @@ abstract class BaseTestCase extends TestCase
      */
     public function assertLogged(string $event, $user = null, array $data = [])
     {
-        foreach($data as $key => $value) {
+        foreach ($data as $key => $value) {
             if (is_array($value)) {
                 $data[] = [$key, $value];
                 unset($data[$key]);
@@ -191,5 +186,50 @@ abstract class BaseTestCase extends TestCase
         $this->assertGreaterThan(0, $count, sprintf(
             "Unable to find row in database table [logs] that matched attributes [%s].", json_encode($data)
         ));
+    }
+
+
+    /**
+     * Handle response printing
+     *
+     * @param \Exception|\Throwable $e
+     *
+     * @throws \Throwable
+     */
+    protected function onNotSuccessfulTest(\Throwable $e)
+    {
+        $this->debug();
+        parent::onNotSuccessfulTest($e);
+    }
+
+
+    /**
+     * Debug the response
+     *
+     * @throws \Exception
+     */
+    public function debug()
+    {
+        echo $this->currentUri . "\n";
+        echo json_encode($this->getResponseData(), JSON_PRETTY_PRINT);
+    }
+
+
+    /**
+     * Get the response data
+     *
+     * @return \stdClass
+     * @throws \Exception
+     */
+    public function getResponseData()
+    {
+        if (empty($this->response)) {
+            return null;
+        } else if ($this->response instanceof Response) {
+            $response = $this->response->getContent();
+            return json_decode($response);
+        } else {
+            throw new \Exception("Response is not an instance of " . Response::class);
+        }
     }
 }

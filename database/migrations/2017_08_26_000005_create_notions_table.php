@@ -1,4 +1,5 @@
 <?php
+
 use App\Models\Notion;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -8,7 +9,7 @@ use Illuminate\Database\Schema\Blueprint;
  *
  * @author Mathrix Back-End Team
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class CreateNotionsTable extends Migration
 {

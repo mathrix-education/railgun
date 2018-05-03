@@ -7,7 +7,6 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 
 /**
@@ -16,8 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @author Mathrix Back-End Team
  * @package App\Models
  * @since 1.0.1
- * @copyright Mathrix SA
- *
+ * @copyright Mathrix Education SA
  * @property int $id
  * @property string $title
  * @property string $slug
@@ -38,7 +36,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static Builder|Post whereUserId($value)
  * @method static Builder|Post whereCreatedAt($value)
  * @method static Builder|Post whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 class Post extends BaseModel
 {
@@ -58,6 +55,9 @@ class Post extends BaseModel
         "category_id" => "required|exists:categories,id"
     ];
 
+    /** @var array The default included relations */
+    protected $with = ["module"];
+
 
     /*
     |--------------------------------------------------------------------------
@@ -67,11 +67,14 @@ class Post extends BaseModel
 
     /**
      * BelongsTo Module
+     *
      * @return BelongsTo
      */
-    public function module() {
+    public function module()
+    {
         return $this->belongsTo(Module::class);
     }
+
 
     /**
      * BelongsTo Category

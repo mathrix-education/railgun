@@ -1,7 +1,7 @@
 <?php
 namespace App\Models\Observers;
 
-use App\Models\Module;
+
 use App\Models\Section;
 
 /**
@@ -38,7 +38,7 @@ class SectionObserver extends BaseObserver
      */
     public function deleting($section)
     {
-        $section->modules()->detach();
+        $section->lessons()->delete();
 
         return true;
     }

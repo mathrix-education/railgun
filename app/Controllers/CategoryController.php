@@ -2,7 +2,7 @@
 namespace App\Controllers;
 
 use App\Exceptions\Http401UnauthorizedException;
-use App\Exceptions\Http422ModelSaveException;
+
 use App\Exceptions\Http501NotImplementedException;
 use App\Models\Activity;
 use Illuminate\Http\JsonResponse;
@@ -14,12 +14,12 @@ use Illuminate\Http\Request;
  * @author Mathrix Back-End Team
  * @package App\Controllers
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class CategoryController extends BaseController
 {
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /categories/{?page}/{?perPage} Index
      * @apiGroup Categories
      * @apiName CategoriesIndex
@@ -31,7 +31,7 @@ class CategoryController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {get} /categories/{id} Get
      * @apiGroup Categories
      * @apiName CategoryGet
@@ -44,7 +44,7 @@ class CategoryController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {post} /categories Add
      * @apiGroup Categories
      * @apiName CategoryAdd
@@ -60,7 +60,7 @@ class CategoryController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {patch} /categories/{id} Edit
      * @apiGroup Categories
      * @apiName CategoryEdit
@@ -78,7 +78,7 @@ class CategoryController extends BaseController
 
 
     /**
-     * @apiVersion 1.0.0
+     * @apiVersion 4.0.0
      * @api {delete} /categories/{id} Delete (Not implemented)
      * @apiGroup Categories
      * @apiName CategoryDelete

@@ -1,7 +1,6 @@
 <?php
 namespace App\Console\Commands;
 
-
 use App\Models\Activity;
 use App\Models\Chapter;
 use App\Models\Class_;
@@ -18,7 +17,7 @@ use Illuminate\Console\Command;
  * @author Mathrix Back-End Team
  * @package App\Console\Commands
  * @since 1.0.1
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class SitemapContent extends Command
 {
@@ -98,7 +97,7 @@ class SitemapContent extends Command
                                      as $activity) {
                                 /** @var Module $module */
                                 foreach ($activity->modules()
-                                             ->where("premium", "=", 0)
+                                             ->where("premium", 0)
                                              ->get()
                                          as $module) {
 

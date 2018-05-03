@@ -5,6 +5,8 @@ use App\Models\Activity;
 use App\Models\Lesson;
 use App\Models\Meta;
 use App\Models\Module;
+use App\Models\Post;
+use App\Models\Report;
 
 /**
  * Class ModuleObserver
@@ -24,8 +26,8 @@ class ModuleObserver extends BaseObserver
         // Sync activities
         if (isset($module->link["activities"])) {
             $toSync = [];
-            foreach($module->link["activities"] as $order => $notionId) {
-                if (Activity::find($notionId)->exists()) {
+            foreach ($module->link["activities"] as $order => $notionId) {
+                if (Activity::whereId($notionId)->exists()) {
                     $toSync[$notionId] = ["order" => $order];
                 }
             }
@@ -52,7 +54,9 @@ class ModuleObserver extends BaseObserver
     {
         $module->activities()->detach();
         Meta::whereModuleId($module->id)->delete();
+        Post::whereModuleId($module->id)->delete();
         Lesson::whereModuleId($module->id)->delete();
+        Report::whereModuleId($module->id)->delete();
 
         return true;
     }

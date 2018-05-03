@@ -1,4 +1,5 @@
 <?php
+
 use App\Models\Activity;
 use Faker\Generator;
 

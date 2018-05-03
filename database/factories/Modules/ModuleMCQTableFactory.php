@@ -1,4 +1,5 @@
 <?php
+
 use App\Models\Module;
 use Faker\Generator;
 
@@ -13,11 +14,11 @@ $factory->defineAs(Module::class, 'mcq-table', function (Generator $faker) use (
 
     $data['choices'] = $data['choices'][0];
 
-    foreach($data['corrections'] as $k => $v) {
+    foreach ($data['corrections'] as $k => $v) {
         $data['corrections'][$k] = $v[0];
     }
 
-    foreach($data['solutions'] as $k => $v) {
+    foreach ($data['solutions'] as $k => $v) {
         $data['solutions'][$k] = $faker->randomElements(
             array_keys($data['choices']),
             $faker->numberBetween(1, count($data['choices']))

@@ -32,8 +32,8 @@ class NotionObserver extends BaseObserver
         // Sync chapters
         if (isset($notion->link["chapters"])) {
             $toSync = [];
-            foreach($notion->link["chapters"] as $order => $chapterId) {
-                if (Chapter::find($chapterId)->exists()) {
+            foreach ($notion->link["chapters"] as $order => $chapterId) {
+                if (Chapter::whereId($chapterId)->exists()) {
                     $toSync[$chapterId] = ["order" => $order];
                 }
             }
@@ -44,8 +44,8 @@ class NotionObserver extends BaseObserver
         // Sync activities
         if (isset($notion->link["activities"])) {
             $toSync = [];
-            foreach($notion->link["activities"] as $order => $activityId) {
-                if (Activity::find($activityId)->exists()) {
+            foreach ($notion->link["activities"] as $order => $activityId) {
+                if (Activity::whereId($activityId)->exists()) {
                     $toSync[$activityId] = ["order" => $order];
                 }
             }

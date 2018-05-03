@@ -30,8 +30,8 @@ class ActivityObserver extends BaseObserver
         // Sync notions
         if (isset($activity->link["notions"])) {
             $toSync = [];
-            foreach($activity->link["notions"] as $order => $notionId) {
-                if (Notion::find($notionId)->exists()) {
+            foreach ($activity->link["notions"] as $order => $notionId) {
+                if (Notion::whereId($notionId)->exists()) {
                     $toSync[$notionId] = ["order" => $order];
                 }
             }
@@ -41,8 +41,8 @@ class ActivityObserver extends BaseObserver
         // Sync modules
         if (isset($activity->link["modules"])) {
             $toSync = [];
-            foreach($activity->link["modules"] as $order => $moduleId) {
-                if (Module::find($moduleId)->exists()) {
+            foreach ($activity->link["modules"] as $order => $moduleId) {
+                if (Module::whereId($moduleId)->exists()) {
                     $toSync[$moduleId] = ["order" => $order];
                 }
             }

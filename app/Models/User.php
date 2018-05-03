@@ -39,6 +39,8 @@ use Laravel\Passport\Token;
  * @property string|null $card_brand
  * @property string|null $card_last_four
  * @property string|null $trial_ends_at
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  * @property-read bool $premium
  * @property-read int $daily_points
  * @property-read Class_ $class_
@@ -68,7 +70,8 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereCardLastFour($value)
  * @method static Builder|User whereStripeId($value)
  * @method static Builder|User whereTrialEndsAt($value)
- * @mixin \Eloquent
+ * @method static Builder|User whereCreatedAt($value)
+ * @method static Builder|User whereUpdatedAt($value)
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
@@ -76,8 +79,12 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         HasApiTokens::tokenCan as passportTokenCan;
     }
 
+    /** @var bool If timestamps (created_at and updated_at) should be used */
+    public $timestamps = true;
+
     /** @var array The guarded attributes */
-    protected $guarded = ["type"];
+    protected $fillable = ["email", "username", "firstname", "lastname", "password", "points", "daily",
+        "settings", "class_id"];
 
     /** @var array The hidden attributes from the model"s JSON */
     protected $hidden = ["password", "token"];
@@ -99,69 +106,21 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "class_id" => "nullable|exists:classes,id"
     ];
 
+    /** @var array The relations to include by default */
+    protected $with = ["class_"];
+
     /** @var array The virtual attributes */
-    protected $appends = ["premium", "daily_points", "class"];
+    protected $appends = ["premium", "daily_points"];
 
 
     /**
-     * premium attribute
+     * Check if user is at least moderator
      *
      * @return bool
      */
-    public function getPremiumAttribute()
+    public function isModerator()
     {
-        return $this->subscribed("premium");
-    }
-
-
-    /**
-     * daily_points attribute
-     *
-     * @return int
-     */
-    public function getDailyPointsAttribute()
-    {
-        $logs = Log::where([
-            ["event", "=", "user_gathered_points"],
-            ["user_id", "=", $this->id],
-        ])
-            ->whereBetween("created_at", [Carbon::now()->setTime(0, 0, 0), Carbon::now()])
-            ->get();
-
-        $sum = 0;
-
-        /** @var Log $log */
-        foreach ($logs as $log) {
-            $sum += $log->value["points"];
-        }
-
-        return $sum;
-    }
-
-    public function getClassAttribute() {
-        return $this->class_id !== null ? $this->class_()->first() : null;
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Passport
-    |--------------------------------------------------------------------------
-    */
-    /**
-     * Check if user is authorized to do something; if not throw an exception
-     *
-     * @see Authorizable
-     *
-     * @param $ability
-     * @param array $arguments
-     * @param string $exceptionClass
-     */
-    public function canOrFail($ability, $arguments = [], $exceptionClass = Http401UnauthorizedException::class)
-    {
-        if ($this->cant($ability, $arguments) && class_exists($exceptionClass)) {
-            throw new $exceptionClass();
-        }
+        return $this->tokenCan("moderator");
     }
 
 
@@ -189,11 +148,84 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
 
+    /**
+     * Check if user is administrator
+     *
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return $this->tokenCan("admin");
+    }
+
+
+    /**
+     * premium attribute
+     *
+     * @return bool
+     */
+    public function getPremiumAttribute()
+    {
+        return $this->subscribed("premium");
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Passport
+    |--------------------------------------------------------------------------
+    */
+
+
+    /**
+     * daily_points attribute
+     *
+     * @return int
+     */
+    public function getDailyPointsAttribute()
+    {
+        $logs = Log::where([
+            ["event", "user_gathered_points"],
+            ["user_id", $this->id],
+        ])
+            ->whereBetween("created_at", [Carbon::now()->setTime(0, 0, 0), Carbon::now()])
+            ->get();
+
+        $sum = 0;
+
+        /** @var Log $log */
+        foreach ($logs as $log) {
+            $sum += $log->value["points"];
+        }
+
+        return $sum;
+    }
+
+
+    /**
+     * Check if user is authorized to do something; if not throw an exception
+     *
+     * @see Authorizable
+     *
+     * @param $ability
+     * @param array $arguments
+     * @param string $exceptionClass
+     */
+    public function canOrFail($ability, $arguments = [], $exceptionClass = Http401UnauthorizedException::class)
+    {
+        if ($this->cant($ability, $arguments) && class_exists($exceptionClass)) {
+            throw new $exceptionClass();
+        }
+    }
+
+
     /*
     |--------------------------------------------------------------------------
     | Relations
     |--------------------------------------------------------------------------
     */
+
+
     /**
      * BelongsTo Class_
      *

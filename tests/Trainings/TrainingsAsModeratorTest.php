@@ -7,7 +7,7 @@ namespace Tests\Trainings;
  * Test training as moderator
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  * @version 1.0.0
  * @package Tests\Training
  */
@@ -41,7 +41,7 @@ class TrainingsAsModeratorTest extends TrainingsAsRegisteredTest
      *
      * @throws \Exception
      */
-    public function testAddWidthDifferentSlug()
+    public function testAddWithDifferentSlug()
     {
         $this->genericAddSuccess(["slug" => $this->faker->slug()]);
     }

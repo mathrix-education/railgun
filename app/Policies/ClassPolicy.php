@@ -7,10 +7,19 @@ namespace App\Policies;
  * @author Mathrix Back-End Team
  * @package App\Policies
  * @since 1.0.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class ClassPolicy extends BasePolicy
 {
+    /**
+     * @return bool
+     */
+    public function get()
+    {
+        return true;
+    }
+
+
     /**
      * @return bool
      */
@@ -44,5 +53,14 @@ class ClassPolicy extends BasePolicy
     public function delete()
     {
         return false;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function byCountry()
+    {
+        return true;
     }
 }
