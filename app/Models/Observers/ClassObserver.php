@@ -30,6 +30,9 @@ class ClassObserver extends BaseObserver
         // Sync disciplines
         if (!empty($class->link["disciplines"])) {
             $class->disciplines()->sync($class->link["disciplines"]);
+        }
+
+        if (!empty($class->link)) {
             unset($class->link);
         }
 

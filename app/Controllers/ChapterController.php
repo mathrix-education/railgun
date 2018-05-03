@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Models\Chapter;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -127,13 +128,23 @@ class ChapterController extends BaseController
      * @apiUse ChapterArray
      *
      * @param int $id
-     *
+     * => function($q) {
+                    return  $q->where(["visible", 1]);
+                }
      * @return JsonResponse
      */
     public function recursive(int $id)
     {
         return response()->json(
-            Chapter::with(["notions", "notions.activities", "notions.activities.modules"])
+            Chapter::with([
+                "notions",
+                "notions.activities" => function (BelongsToMany $q) {
+                    return $q->where("visible", 1);
+                },
+                "notions.activities.modules" => function (BelongsToMany $q) {
+                    return $q->where("visible", 1);
+                }
+            ])
                 ->where("id", $id)
                 ->first()
 

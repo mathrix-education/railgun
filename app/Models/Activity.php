@@ -50,6 +50,7 @@ class Activity extends BaseModel
 
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
+        "visible" => "boolean",
         "options" => "array"
     ];
 
