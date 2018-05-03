@@ -137,7 +137,9 @@ class ChapterController extends BaseController
     {
         return response()->json(
             Chapter::with([
-                "notions",
+                "notions" => function (BelongsToMany $q) {
+                    return $q->where("visible", 1);
+                },
                 "notions.activities" => function (BelongsToMany $q) {
                     return $q->where("visible", 1);
                 },
