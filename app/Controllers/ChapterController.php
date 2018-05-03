@@ -156,7 +156,7 @@ class ChapterController extends BaseController
         ])
             ->where("id", $id)
             ->first();
-        
+
         return response()->json($data);
     }
 }
