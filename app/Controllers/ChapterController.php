@@ -156,14 +156,7 @@ class ChapterController extends BaseController
         ])
             ->where("id", $id)
             ->first();
-
-        /** @var User $user */
-        $user = $request->user();
-
-        if (empty($data->visible) &&  $user === null || $user->type === "registered") {
-            throw new Http404ModelNotFoundException();
-        } else {
-            return response()->json($data);
-        }
+        
+        return response()->json($data);
     }
 }
