@@ -9,6 +9,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Cashier\Billable;
 use Laravel\Cashier\Subscription;
@@ -267,6 +268,17 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function meta(): HasMany
     {
         return $this->hasMany(Activity::class);
+    }
+
+
+    /**
+     * BelongsToMany Training
+     *
+     * @return BelongsToMany
+     */
+    public function trainings(): BelongsToMany
+    {
+        return $this->belongsToMany(Training::class);
     }
 
 

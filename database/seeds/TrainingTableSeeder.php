@@ -6,6 +6,7 @@ use App\Models\Lesson;
 
 use App\Models\Section;
 use App\Models\Training;
+use App\Models\User;
 
 /**
  * Class BlogTableSeeder
@@ -19,12 +20,13 @@ class TrainingTableSeeder extends BaseTableSeeder
     /**
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws Exception
      */
     public function run()
     {
         $this->seedFromFactory([
             "modelClass" => Training::class,
-            "count" => random_int(3, 7)
+            "count" => random_int(7, 10)
         ]);
         $this->seedFromFactory([
             "modelClass" => Section::class,
@@ -34,5 +36,7 @@ class TrainingTableSeeder extends BaseTableSeeder
             "modelClass" => Lesson::class,
             "count" => random_int(30, 50)
         ]);
+
+        $this->link(Training::class, User::class, 5, 10);
     }
 }
