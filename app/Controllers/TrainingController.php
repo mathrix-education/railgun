@@ -1,7 +1,11 @@
 <?php
 namespace App\Controllers;
 
+use App\Exceptions\Http400InvalidRequestException;
+use App\Models\Log;
 use App\Models\Training;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -21,7 +25,7 @@ class TrainingController extends BaseController
      * @apiGroup Trainings
      * @apiName TrainingsIndex
      * @apiDescription Retrieve trainings
-     * @apiPermission moderator
+     * @apiPermission public
      * @apiUse Pagination
      * @apiUse TrainingArray
      * @apiUse Http401Unauthorized
@@ -34,7 +38,7 @@ class TrainingController extends BaseController
      * @apiGroup Trainings
      * @apiName TrainingGet
      * @apiDescription Get an training by id
-     * @apiPermission public
+     * @apiPermission registered if paid, admin otherwise
      * @apiParam {int} id The training id
      * @apiUse TrainingModel
      * @apiUse Http404ModelNotFound
@@ -47,7 +51,7 @@ class TrainingController extends BaseController
      * @apiGroup Trainings
      * @apiName TrainingAdd
      * @apiDescription Add a training
-     * @apiPermission moderator
+     * @apiPermission admin
      * @apiUse Bearer
      * @apiUse TrainingRequest
      * @apiUse TrainingModel
@@ -63,7 +67,7 @@ class TrainingController extends BaseController
      * @apiGroup Trainings
      * @apiName TrainingEdit
      * @apiDescription Edit an training
-     * @apiPermission moderator
+     * @apiPermission admin
      * @apiUse Bearer
      * @apiParam {int} id The training id
      * @apiUse TrainingRequest
@@ -82,7 +86,7 @@ class TrainingController extends BaseController
      * @apiName TrainingDelete
      * @apiDescription Delete an training
      * @apiUse Bearer
-     * @apiPermission moderator
+     * @apiPermission admin
      * @apiParam {int} id The training id
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
@@ -95,8 +99,9 @@ class TrainingController extends BaseController
      * @apiName TrainingRecursive
      * @æpiDescription Recursively explore a training
      * @apiUse Bearer
-     * @apiPermission registered if paid
+     * @apiPermission registered if paid, admin otherwise
      * @apiParam {int} id The training id
+     * @apiUse TrainingModel
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
      *
@@ -108,8 +113,12 @@ class TrainingController extends BaseController
     public function recursive(Request $request, int $id): JsonResponse
     {
         $training = Training::with([
-            "sections",
-            "sections.lessons",
+            "sections" => function (HasMany $query) {
+                $query->orderBy("order");
+            },
+            "sections.lessons" => function (HasMany $query) {
+                $query->orderBy("order");
+            },
             "sections.lessons.module"
         ])
             ->whereId($id)
@@ -118,5 +127,79 @@ class TrainingController extends BaseController
         $request->user()->canOrFail("get", $training);
 
         return new JsonResponse($training);
+    }
+
+
+    /**
+     * @apiVersion 4.0.1
+     * @api {get} /training/{id}/recursive Recursive
+     * @apiGroup Trainings
+     * @apiName TrainingRecursive
+     * @æpiDescription Recursively explore a training
+     * @apiUse Bearer
+     * @apiPermission registered
+     * @apiParam {int} id The training id
+     * @apiSuccess {string=success,failure} message The result
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
+     *
+     * @param Request $request
+     * @param int $id
+     *
+     * @return JsonResponse
+     * @throws Http400InvalidRequestException
+     * @throws \Exception
+     */
+    public function buy(Request $request, int $id): JsonResponse
+    {
+        $training = Training::whereId($id)->firstOrFail();
+        $stripeToken = $request->input("stripe_token");
+
+        if ($stripeToken === null) {
+            throw new Http400InvalidRequestException("stripe_token cannot be null");
+        }
+
+        /** @var User $user */
+        $user = $request->user();
+
+        // Charge the user by creating him if he does not exists
+        if (!$user->hasStripeId()) {
+            $user->createAsStripeCustomer($stripeToken);
+        } else {
+            $user->updateCard($stripeToken);
+        }
+
+        $userTrainingIds = $user->trainings->pluck("id")->toArray();
+
+        if (in_array($training->id, $userTrainingIds)) {
+            throw new Http400InvalidRequestException("Already bought the training '{$training->name}'");
+        }
+
+        // Pipe Stripe exception to our HTTP 400 Bad Request exception
+        try {
+            $description = $training->name;
+            $response = $user->charge($training->price, [
+                "description" => $description
+            ]);
+        } catch (\InvalidArgumentException $exception) {
+            throw new Http400InvalidRequestException($exception->getMessage());
+        }
+
+        // Give subscription if charge succeeded
+        if ($response->status == "succeeded") {
+            $user->trainings()->attach($training->id);
+
+            Log::log("user_payment_succeed_for_training", $user, ["training_id" => $training->id]);
+
+            return new JsonResponse([
+                "status" => "success"
+            ]);
+        } else {
+            Log::log("user_payment_failed_for_training", $user, ["training_id" => $training->id]);
+
+            return new JsonResponse([
+                "status" => "failure"
+            ], 400);
+        }
     }
 }

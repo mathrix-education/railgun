@@ -60,9 +60,7 @@ class TrainingsAsRegisteredTest extends TrainingsAsPublicTest
     {
         $data = $this->getResponseData();
 
-        $this->assertTrue(!empty($data->sections));
-        $this->assertTrue(!empty($data->sections[0]->lessons));
-        $this->assertTrue(!empty($data->sections[0]->lessons[0]->module));
+        $this->assertTrue(isset($data->sections));
     }
 
 
@@ -102,5 +100,26 @@ class TrainingsAsRegisteredTest extends TrainingsAsPublicTest
     public function testRecursiveAsNonBuyer()
     {
         $this->generic(false, "/trainings/{id}/recursive");
+    }
+
+
+    /**
+     * POST /training/{id}/buy
+     */
+    public function testBuy()
+    {
+        if ($this->user->type != "registered") {
+            return;
+        }
+
+        $userTrainingIds = $this->user->trainings->pluck("id")->toArray();
+        $training = Training::inRandomOrder()->whereNotIn("id", $userTrainingIds)->firstOrFail();
+
+        $this->call("post", "/trainings/{$training->id}/buy", [
+            "stripe_token" => "tok_visa"
+        ]);
+
+        $this->assertHttp200Success();
+        $this->assertInDatabase("training_user", ["user_id" => $this->user->id, "training_id" => $training->id]);
     }
 }

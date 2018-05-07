@@ -21,7 +21,7 @@ class TrainingsAsPublicTest extends ScopeTestCase
      */
     public function testIndex()
     {
-        $this->genericIndexUnauthorized();
+        $this->genericIndexSuccess();
     }
 
 

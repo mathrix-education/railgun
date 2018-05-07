@@ -26,7 +26,7 @@ class TrainingTableSeeder extends BaseTableSeeder
     {
         $this->seedFromFactory([
             "modelClass" => Training::class,
-            "count" => random_int(7, 10)
+            "count" => random_int(5, 10)
         ]);
         $this->seedFromFactory([
             "modelClass" => Section::class,

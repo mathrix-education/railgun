@@ -16,6 +16,7 @@ $factory->define(Training::class, function (Generator $faker) {
     return [
         "name" => $name,
         "slug" => str_slug($name),
-        "description" => substr($faker->sentence(), -1)
+        "description" => substr($faker->sentence(), -1),
+        "price" => random_int(2, 5) * 1000
     ];
 });

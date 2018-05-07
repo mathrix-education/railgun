@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -17,17 +18,20 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $name
  * @property string $slug
  * @property string $description
+ * @property int $price
+ * @property int $order
  * @property string|null $created_at
  * @property string|null $updated_at
+ * @property-read Collection|Section[] $sections
+ * @property-read Collection|User[] $users
  * @method static Builder|Training whereId($value)
  * @method static Builder|Training whereName($value)
  * @method static Builder|Training whereSlug($value)
  * @method static Builder|Training whereDescription($value)
+ * @method static Builder|Training wherePrice($value)
+ * @method static Builder|Training whereOrder($value)
  * @method static Builder|Training whereCreatedAt($value)
  * @method static Builder|Training whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Section[] $sections
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
- * @mixin \Eloquent
  */
 class Training extends BaseModel
 {
