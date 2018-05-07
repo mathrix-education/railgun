@@ -1,3 +1,6 @@
+# gitlab-ci.yml
+# Define the GtLab Pipelines behaviour
+
 stages:
   - test
   - deploy

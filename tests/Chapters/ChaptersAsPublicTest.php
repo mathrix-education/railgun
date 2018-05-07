@@ -71,6 +71,24 @@ class ChaptersAsPublicTest extends ScopeTestCase
 
 
     /**
+     * GET /chapters/by-class-discipline/{class_id}/{discipline_id}
+     */
+    public function testByClassAndDiscipline()
+    {
+        // Ensure that a chapter exists with the given combination of class and discipline
+        /** @var Chapter $chapter */
+        $chapter = Chapter::random();
+        $class = $chapter->class_;
+        $discipline = $chapter->discipline;
+
+        $this->call("GET", "/chapters/by-class-discipline/{$class->id}/{$discipline->id}");
+
+        $this->assertHttp200Success();
+        $this->assertJsonLengthMin(1);
+    }
+
+
+    /**
      * GET /chapters/recursive/{id}
      *
      * @throws \Exception
