@@ -3,6 +3,7 @@ namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http401UnauthorizedException;
+use App\Exceptions\Http404ModelNotFoundException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\Activity;
@@ -248,6 +249,7 @@ class ActivityController extends BaseController
      * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
+     * @throws Http404ModelNotFoundException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      * @throws \Exception
@@ -255,6 +257,10 @@ class ActivityController extends BaseController
     public function mark(Request $request, int $id): JsonResponse
     {
         $user = $this->getUserByRequestOrUnauthorized($request);
+
+        if (Activity::find($id) === null) {
+            throw new Http404ModelNotFoundException();
+        }
 
         $metaData = array_merge(
             ["user_id" => $user->id, "activity_id" => $id],
