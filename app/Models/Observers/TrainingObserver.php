@@ -3,6 +3,7 @@ namespace App\Models\Observers;
 
 use App\Models\Section;
 use App\Models\Training;
+use App\Models\User;
 
 
 /**
@@ -28,6 +29,22 @@ class TrainingObserver extends BaseObserver
             ($training->isDirty("name") && !$training->isDirty("slug"))
         ) {
             $training->slug = str_slug($training->name);
+        }
+
+        // Link users
+        if (isset($training->link["users"])) {
+            $toSync = [];
+            foreach ($training->link["users"] as $order => $userId) {
+                if (User::whereId($userId)->exists()) {
+                    $toSync[] = $userId;
+                }
+            }
+
+            $training->users()->sync($toSync);
+        }
+
+        if (isset($training->link)) {
+            unset($training->link);
         }
 
         return true;

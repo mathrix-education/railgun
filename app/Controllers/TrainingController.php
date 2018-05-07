@@ -1,6 +1,10 @@
 <?php
 namespace App\Controllers;
 
+use App\Models\Training;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+
 /**
  * Class TrainingController
  *
@@ -83,4 +87,36 @@ class TrainingController extends BaseController
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
      */
+
+    /**
+     * @apiVersion 4.0.1
+     * @api {get} /training/{id}/recursive Recursive
+     * @apiGroup Trainings
+     * @apiName TrainingRecursive
+     * @æpiDescription Recursively explore a training
+     * @apiUse Bearer
+     * @apiPermission registered if paid
+     * @apiParam {int} id The training id
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
+     *
+     * @param Request $request
+     * @param int $id
+     *
+     * @return JsonResponse
+     */
+    public function recursive(Request $request, int $id): JsonResponse
+    {
+        $training = Training::with([
+            "sections",
+            "sections.lessons",
+            "sections.lessons.module"
+        ])
+            ->whereId($id)
+            ->firstOrFail();
+
+        $request->user()->canOrFail("get", $training);
+
+        return new JsonResponse($training);
+    }
 }
