@@ -1,6 +1,9 @@
 <?php
 namespace Tests\Modules;
 
+use App\Models\Module;
+use App\Models\User;
+
 /**
  * Class ModulesAsModeratorTest
  * Test modules as moderator
@@ -45,5 +48,23 @@ class ModulesAsModeratorTest extends ModulesAsRegisteredTest
     {
         $this->genericDeleteSuccess();
         $this->assertNotInDatabase("activity_module", ["module_id" => $this->deleteModelId]);
+    }
+
+
+    /**
+     * GET /modules/{id} with a premium module as non premium user
+     * Moderator privileges overrides the premium limitation
+     *
+     * @throws \Exception
+     */
+    public function testGetPremiumAsNonPremium()
+    {
+        /** @var Module $module */
+        $module = Module::wherePremium(true)->inRandomOrder()->firstOrFail();
+        $this->get("/modules/{$module->id}");
+
+        $response = $this->getResponseData();
+        $this->assertTrue($response->premium);
+        $this->assertTrue(!empty($response->type));
     }
 }
