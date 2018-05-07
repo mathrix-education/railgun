@@ -6,6 +6,7 @@
  * @apiSuccess {string} lessons.title The lesson title
  * @apiSuccess {string} lessons.slug The lesson slug
  * @apiSuccess {string} lessons.image The lesson image
+ * @apiSuccess {int} lessons.order The lesson order
  * @apiSuccess {int} lessons.section_id The lesson section_id
  * @apiSuccess {int} lessons.module_id The lesson module_id
  * @apiSuccess {int} lessons.module The lesson module

@@ -15,13 +15,11 @@ use App\Models\User;
 class TrainingPolicy extends BasePolicy
 {
     /**
-     * @param User $currentUser
-     *
      * @return bool
      */
-    public function index(User $currentUser)
+    public function index()
     {
-        return $this->atLeastModerator($currentUser);
+        return true;
     }
 
 
@@ -35,7 +33,7 @@ class TrainingPolicy extends BasePolicy
     {
         $userTrainingIds = $currentUser->trainings->pluck("id")->toArray();
         
-        return in_array($training->id, $userTrainingIds) || $this->atLeastModerator($currentUser);
+        return in_array($training->id, $userTrainingIds) || $this->atLeastAdmin($currentUser);
     }
 
 
@@ -46,7 +44,7 @@ class TrainingPolicy extends BasePolicy
      */
     public function add(User $currentUser)
     {
-        return $this->atLeastModerator($currentUser);
+        return $this->atLeastAdmin($currentUser);
     }
 
 
@@ -57,7 +55,7 @@ class TrainingPolicy extends BasePolicy
      */
     public function edit(User $currentUser)
     {
-        return $this->atLeastModerator($currentUser);
+        return $this->atLeastAdmin($currentUser);
     }
 
 
@@ -68,6 +66,6 @@ class TrainingPolicy extends BasePolicy
      */
     public function delete(User $currentUser)
     {
-        return $this->atLeastModerator($currentUser);
+        return $this->atLeastAdmin($currentUser);
     }
 }

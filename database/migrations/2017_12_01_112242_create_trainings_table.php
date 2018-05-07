@@ -19,8 +19,8 @@ class CreateTrainingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('trainings', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create("trainings", function (Blueprint $table) {
+            $table->increments("id");
             $table->string("name");
             $table->string("slug");
             $table->text("description");
@@ -36,6 +36,6 @@ class CreateTrainingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('trainings');
+        Schema::dropIfExists("trainings");
     }
 }
