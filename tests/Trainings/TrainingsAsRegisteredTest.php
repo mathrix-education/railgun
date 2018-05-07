@@ -1,6 +1,10 @@
 <?php
 namespace Tests\Trainings;
 
+use App\Models\Training;
+use App\Models\User;
+use Laravel\Passport\Passport;
+
 /**
  * Class TrainingAsPublicTest
  * Test training as registered user
@@ -12,4 +16,91 @@ namespace Tests\Trainings;
  */
 class TrainingsAsRegisteredTest extends TrainingsAsPublicTest
 {
+    public function generic($isBuyer, $url, $assertSuccess = false)
+    {
+        if ($isBuyer) {
+            /** @var User $user */
+            $user = User::whereHas("trainings")
+                ->where("type", $this->user->type)
+                ->inRandomOrder()
+                ->firstOrFail();
+            /** @var Training $training */
+            $training = $user->trainings()
+                ->inRandomOrder()
+                ->firstOrFail();
+        } else {
+            /** @var User $user */
+            $user = User::inRandomOrder()
+                ->where("type", $this->user->type)
+                ->firstOrFail();
+            $userTrainingIds = $user->trainings->pluck("id")->toArray();
+            /** @var Training $training */
+            $training = Training::inRandomOrder()
+                ->whereNotIn("id", $userTrainingIds)
+                ->firstOrFail();
+        }
+
+        Passport::actingAs($user, [$user->type]);
+        $this->call("get", str_replace("{id}", $training->id, $url));
+
+        if ($isBuyer || $assertSuccess) {
+            $this->assertHttp200Success();
+        } else {
+            $this->assertHttp401Unauthorized();
+        }
+    }
+
+
+    /**
+     * Assert response is a recursive training
+     *
+     * @throws \Exception
+     */
+    public function assertIsRecursive()
+    {
+        $data = $this->getResponseData();
+
+        $this->assertTrue(!empty($data->sections));
+        $this->assertTrue(!empty($data->sections[0]->lessons));
+        $this->assertTrue(!empty($data->sections[0]->lessons[0]->module));
+    }
+
+
+    /**
+     * GET /trainings/{id} as buyer
+     */
+    public function testGetAsBuyer()
+    {
+        $this->generic(true, "/trainings/{id}");
+    }
+
+
+    /**
+     * GET /trainings/{id} as non buyer
+     */
+    public function testGetAsNonBuyer()
+    {
+        $this->generic(false, "/trainings/{id}");
+    }
+
+
+    /**
+     * GET /trainings/{id}/recursive as buyer
+     *
+     * @throws \Exception
+     */
+    public function testRecursiveAsBuyer()
+    {
+        $this->generic(true, "/trainings/{id}/recursive");
+        $this->assertIsRecursive();
+    }
+
+
+    /**
+     * GET /trainings/{id}/recursive as non buyer
+     */
+    public function testRecursiveAsNonBuyer()
+    {
+        $this->generic(false, "/trainings/{id}/recursive");
+    }
 }

@@ -1,6 +1,7 @@
 <?php
 namespace App\Policies;
 
+use App\Models\Training;
 use App\Models\User;
 
 /**
@@ -21,6 +22,20 @@ class TrainingPolicy extends BasePolicy
     public function index(User $currentUser)
     {
         return $this->atLeastModerator($currentUser);
+    }
+
+
+    /**
+     * @param User $currentUser
+     * @param Training $training
+     *
+     * @return bool
+     */
+    public function get(User $currentUser, Training $training)
+    {
+        $userTrainingIds = $currentUser->trainings->pluck("id")->toArray();
+        
+        return in_array($training->id, $userTrainingIds) || $this->atLeastModerator($currentUser);
     }
 
 

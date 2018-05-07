@@ -67,4 +67,46 @@ class TrainingsAsModeratorTest extends TrainingsAsRegisteredTest
     {
         $this->genericDelete();
     }
+
+
+    /**
+     * GET /trainings/{id} as buyer
+     */
+    public function testGetAsBuyer()
+    {
+        $this->generic(true, "/trainings/{id}", true);
+    }
+
+
+    /**
+     * GET /trainings/{id} as non buyer
+     */
+    public function testGetAsNonBuyer()
+    {
+        $this->generic(false, "/trainings/{id}", true);
+    }
+
+
+    /**
+     * GET /trainings/{id}/recursive as buyer
+     *
+     * @throws \Exception
+     */
+    public function testRecursiveAsBuyer()
+    {
+        $this->generic(true, "/trainings/{id}/recursive", true);
+        $this->assertIsRecursive();
+    }
+
+
+    /**
+     * GET /trainings/{id}/recursive as non buyer
+     *
+     * @throws \Exception
+     */
+    public function testRecursiveAsNonBuyer()
+    {
+        $this->generic(false, "/trainings/{id}/recursive", true);
+        $this->assertIsRecursive();
+    }
 }

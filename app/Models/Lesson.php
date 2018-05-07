@@ -28,6 +28,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Lesson whereModuleId($value)
  * @method static Builder|Lesson whereCreatedAt($value)
  * @method static Builder|Lesson whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class Lesson extends BaseModel
 {

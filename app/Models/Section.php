@@ -33,6 +33,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Section whereCreatedAt($value)
  * @method static Builder|Section whereUpdatedAt($value)
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Lesson[] $lessons
+ * @mixin \Eloquent
  */
 class Section extends BaseModel
 {
