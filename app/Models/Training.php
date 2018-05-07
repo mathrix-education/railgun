@@ -26,6 +26,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Training whereCreatedAt($value)
  * @method static Builder|Training whereUpdatedAt($value)
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Section[] $sections
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
+ * @mixin \Eloquent
  */
 class Training extends BaseModel
 {
