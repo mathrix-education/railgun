@@ -132,7 +132,7 @@ class TrainingController extends BaseController
 
     /**
      * @apiVersion 4.0.1
-     * @api {get} /training/{id}/buy Buy
+     * @api {post} /trainings/{id}/buy Buy
      * @apiGroup Trainings
      * @apiName TrainingBuy
      * @æpiDescription Buy a training
