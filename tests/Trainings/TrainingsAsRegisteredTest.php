@@ -85,7 +85,7 @@ class TrainingsAsRegisteredTest extends TrainingsAsPublicTest
 
 
     /**
-     * POST /training/{id}/buy
+     * POST /trainings/{id}/buy
      */
     public function testBuy()
     {
