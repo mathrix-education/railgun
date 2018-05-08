@@ -125,9 +125,10 @@ class StripeController extends CashierController
                     ->withCoupon($stripeCoupon)
                     ->trialUntil($this->getEndDateFromStripePlan($stripePlan))
                     ->create($stripeToken);
+                Log::log("user_payment_succeed_for_premium", $user);
+            } else {
+                Log::log("user_payment_failed_for_premium", $user);
             }
-
-            Log::log("user_payment_succeed_for_premium", $user);
         }
 
         return response()->json(User::with("subscriptions")->find($user->id));
@@ -145,13 +146,25 @@ class StripeController extends CashierController
     {
         // Calculate the next July (ie. the ending date)
         $nextJuly = Carbon::create(null, 7, 31);
+        $firstMay = Carbon::create(null, 5, 1);
+
         switch ($stripePlan) {
             case "v3_biannually":
-                $nextJuly->addYears(!$nextJuly->isPast() ? 1 : 2);
+                if ($firstMay->isFuture()) {
+                    // January, 1st to April, 30th
+                    $nextJuly->addYears(1);
+                } else {
+                    // May, 1st to December, 31st
+                    $nextJuly->addYears(2);
+                }
                 break;
             case "v3_annually":
-                if ($nextJuly->isPast()) {
-                    $nextJuly->addYear();
+                if ($firstMay->isFuture()) {
+                    // January, 1st to April, 30th
+                    // Do nothing
+                } else {
+                    // May, 1st to December, 31st
+                    $nextJuly->addYears(1);
                 }
                 break;
             default:
@@ -177,11 +190,20 @@ class StripeController extends CashierController
     {
         $coupon = $request->input("coupon");
 
+        $firstMay = Carbon::create(null, 5, 1);
+        $firstAugust = Carbon::create(null, 8, 1);
+
+        // Calculate the next July (ie. the ending date)
+
         $now = Carbon::now();
         $nextJuly = $this->getEndDateFromStripePlan($stripePlan);
 
         $months = $nextJuly->diffInMonths($now);
         $days = $nextJuly->diffInDays($now->addMonths($months));
+
+        if ($firstMay->isPast() && $firstAugust->isFuture()) {
+            $months -= 2;
+        }
 
         $pricePerMonth = self::ALLOWED_STRIPE_PLANS[$stripePlan]["price_per_month"];
         $pricePerDay = self::ALLOWED_STRIPE_PLANS[$stripePlan]["price_per_day"];
