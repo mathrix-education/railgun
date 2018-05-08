@@ -69,24 +69,6 @@ class TrainingsAsAdminTest extends TrainingsAsModeratorTest
 
 
     /**
-     * GET /trainings/{id} as buyer
-     */
-    public function testGetAsBuyer()
-    {
-        $this->generic(true, "/trainings/{id}", true);
-    }
-
-
-    /**
-     * GET /trainings/{id} as non buyer
-     */
-    public function testGetAsNonBuyer()
-    {
-        $this->generic(false, "/trainings/{id}", true);
-    }
-
-
-    /**
      * GET /trainings/{id}/recursive as buyer
      *
      * @throws \Exception

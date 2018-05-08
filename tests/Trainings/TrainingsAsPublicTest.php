@@ -1,6 +1,7 @@
 <?php
 namespace Tests\Trainings;
 
+use App\Models\Training;
 use Tests\ScopeTestCase;
 
 /**
@@ -22,6 +23,33 @@ class TrainingsAsPublicTest extends ScopeTestCase
     public function testIndex()
     {
         $this->genericIndexSuccess();
+    }
+
+
+    /**
+     * GET /training/{id}
+     *
+     * @throws \Exception
+     */
+    public function testGet()
+    {
+        $this->genericGetSuccess();
+    }
+
+
+
+    /**
+     * GET /training/slug/{slug}
+     *
+     * @throws \Exception
+     */
+    public function testGetBySlug()
+    {
+        /** @var Training $training */
+        $training = Training::random();
+        $this->call("get", "/trainings/slug/{$training->slug}");
+
+        $this->assertHttp200Success();
     }
 
 

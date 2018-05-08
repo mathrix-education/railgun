@@ -24,15 +24,24 @@ class TrainingPolicy extends BasePolicy
 
 
     /**
+     * @return bool
+     */
+    public function get()
+    {
+        return true;
+    }
+
+
+    /**
      * @param User $currentUser
      * @param Training $training
      *
      * @return bool
      */
-    public function get(User $currentUser, Training $training)
+    public function recursive(User $currentUser, Training $training)
     {
         $userTrainingIds = $currentUser->trainings->pluck("id")->toArray();
-        
+
         return in_array($training->id, $userTrainingIds) || $this->atLeastAdmin($currentUser);
     }
 
