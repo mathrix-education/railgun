@@ -5,6 +5,6 @@ $router->group(["prefix" => "stripe"], function () use ($router) {
         $router->post("subscribe", "StripeController@subscribe");
     });
 
-    $router->post("estimate/{stripe_plan}", "StripeController@estimate");
+    $router->get("estimate/{stripe_plan}", "StripeController@estimate");
     $router->post("webhook", "StripeController@handleWebhook");
 });
