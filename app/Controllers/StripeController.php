@@ -182,7 +182,7 @@ class StripeController extends CashierController
      * @param Request $request
      * @param string $stripePlan
      *
-     * @return int The price, in cents
+     * @return array
      * @throws Http400InvalidRequestException
      * @throws \Exception
      */
@@ -216,7 +216,10 @@ class StripeController extends CashierController
                 break;
         }
 
-        return $costInCents;
+        return [
+            "price" => $costInCents,
+            "end_date" => $nextJuly->format("Y-m-d")
+        ];
     }
 
 
@@ -229,6 +232,7 @@ class StripeController extends CashierController
      * @apiPermission public
      * @apiParam {string=v3_biannually,v3_annually} stripe_plan The stripe plan
      * @apiSuccess {int} price The price if the user orders today
+     * @apiSuccess {string} end_date The ending date (Y-m-d)
      * @apiError (Error 400) invalid_request stripe_plan has to be in the allowed stripe plans
      *
      * @param Request $request
@@ -240,9 +244,7 @@ class StripeController extends CashierController
      */
     public function estimate(Request $request, string $stripePlan)
     {
-        return response()->json([
-            "price" => $this->getPriceFromStripePlan($request, $stripePlan)
-        ]);
+        return response()->json($this->getPriceFromStripePlan($request, $stripePlan));
     }
 
     /*

@@ -30,7 +30,7 @@ sh ${new_release_dir}/scripts/setup_release.sh ${branch} {{ $release }}
 @endtask
 
 
-@task('deploy_hotfix_dev', ['on' => 'web00'])
+@task('hotfix_dev', ['on' => 'web00'])
 releases_dir=/var/www/dev/api/releases
 new_release_dir=${releases_dir}/{{ $release }}
 
@@ -42,7 +42,7 @@ sh ${new_release_dir}/scripts/setup_release.sh dev {{ $release }}
 @endtask
 
 
-@task('deploy_hotfix_master', ['on' => 'web01'])
+@task('hotfix_master', ['on' => 'web01'])
 releases_dir=/var/www/master/api/releases
 new_release_dir=${releases_dir}/{{ $release }}
 
