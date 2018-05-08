@@ -132,13 +132,14 @@ class TrainingController extends BaseController
 
     /**
      * @apiVersion 4.0.1
-     * @api {get} /training/{id}/recursive Recursive
+     * @api {get} /training/{id}/buy Buy
      * @apiGroup Trainings
-     * @apiName TrainingRecursive
-     * @æpiDescription Recursively explore a training
+     * @apiName TrainingBuy
+     * @æpiDescription Buy a training
      * @apiUse Bearer
      * @apiPermission registered
      * @apiParam {int} id The training id
+     * @apiParam (Data) {int} stripe_token The stripe token
      * @apiSuccess {string=success,failure} message The result
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
