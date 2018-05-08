@@ -38,7 +38,7 @@ class TrainingController extends BaseController
      * @apiGroup Trainings
      * @apiName TrainingGet
      * @apiDescription Get an training by id
-     * @apiPermission registered if paid, admin otherwise
+     * @apiPermission public
      * @apiParam {int} id The training id
      * @apiUse TrainingModel
      * @apiUse Http404ModelNotFound
@@ -124,7 +124,7 @@ class TrainingController extends BaseController
             ->whereId($id)
             ->firstOrFail();
 
-        $request->user()->canOrFail("get", $training);
+        $request->user()->canOrFail("recursive", $training);
 
         return new JsonResponse($training);
     }

@@ -63,25 +63,6 @@ class TrainingsAsRegisteredTest extends TrainingsAsPublicTest
         $this->assertTrue(isset($data->sections));
     }
 
-
-    /**
-     * GET /trainings/{id} as buyer
-     */
-    public function testGetAsBuyer()
-    {
-        $this->generic(true, "/trainings/{id}");
-    }
-
-
-    /**
-     * GET /trainings/{id} as non buyer
-     */
-    public function testGetAsNonBuyer()
-    {
-        $this->generic(false, "/trainings/{id}");
-    }
-
-
     /**
      * GET /trainings/{id}/recursive as buyer
      *
