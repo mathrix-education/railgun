@@ -47,7 +47,7 @@ class TrainingsAsAdminTest extends TrainingsAsModeratorTest
 
 
     /**
-     * PATCH /training/{id}
+     * PATCH /trainings/{id}
      *
      * @throws \Exception
      */
@@ -58,7 +58,7 @@ class TrainingsAsAdminTest extends TrainingsAsModeratorTest
 
 
     /**
-     * DELETE /training/{id}
+     * DELETE /trainings/{id}
      *
      * @throws \Exception
      */

@@ -94,7 +94,7 @@ class TrainingController extends BaseController
 
     /**
      * @apiVersion 4.0.1
-     * @api {get} /training/{id}/recursive Recursive
+     * @api {get} /trainings/{id}/recursive Recursive
      * @apiGroup Trainings
      * @apiName TrainingRecursive
      * @æpiDescription Recursively explore a training

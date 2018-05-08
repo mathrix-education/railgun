@@ -16,7 +16,7 @@ use Tests\ScopeTestCase;
 class TrainingsAsPublicTest extends ScopeTestCase
 {
     /**
-     * GET /training/index
+     * GET /trainings/index
      *
      * @throws \Exception
      */
@@ -27,7 +27,7 @@ class TrainingsAsPublicTest extends ScopeTestCase
 
 
     /**
-     * GET /training/{id}
+     * GET /trainings/{id}
      *
      * @throws \Exception
      */
@@ -39,7 +39,7 @@ class TrainingsAsPublicTest extends ScopeTestCase
 
 
     /**
-     * GET /training/slug/{slug}
+     * GET /trainings/slug/{slug}
      *
      * @throws \Exception
      */
@@ -65,7 +65,7 @@ class TrainingsAsPublicTest extends ScopeTestCase
 
 
     /**
-     * PATCH /training/{id} -> HTTP 401 unauthorized
+     * PATCH /trainings/{id} -> HTTP 401 unauthorized
      *
      * @throws \Exception
      */
@@ -76,7 +76,7 @@ class TrainingsAsPublicTest extends ScopeTestCase
 
 
     /**
-     * DELETE /training/{id} -> HTTP 401 unauthorized
+     * DELETE /trainings/{id} -> HTTP 401 unauthorized
      *
      * @throws \Exception
      */
