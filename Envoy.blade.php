@@ -28,3 +28,27 @@ git clone --depth 1 {{ $repository }} ${new_release_dir} --branch ${branch}
 
 sh ${new_release_dir}/scripts/setup_release.sh ${branch} {{ $release }}
 @endtask
+
+
+@task('deploy_hotfix_dev', ['on' => 'web00'])
+releases_dir=/var/www/dev/api/releases
+new_release_dir=${releases_dir}/{{ $release }}
+
+echo Cloning {{ $repository }}
+[ -d ${releases_dir} ] || mkdir ${releases_dir}
+git clone --depth 1 {{ $repository }} ${new_release_dir} --branch hotfix
+
+sh ${new_release_dir}/scripts/setup_release.sh dev {{ $release }}
+@endtask
+
+
+@task('deploy_hotfix_master', ['on' => 'web01'])
+releases_dir=/var/www/master/api/releases
+new_release_dir=${releases_dir}/{{ $release }}
+
+echo Cloning {{ $repository }}
+[ -d ${releases_dir} ] || mkdir ${releases_dir}
+git clone --depth 1 {{ $repository }} ${new_release_dir} --branch hotfix
+
+sh ${new_release_dir}/scripts/setup_release.sh master {{ $release }}
+@endtask
