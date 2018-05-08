@@ -112,7 +112,7 @@ class StripeController extends CashierController
             try {
                 $description = self::ALLOWED_STRIPE_PLANS[$stripePlan]["name"] . " (fin " .
                     $this->getEndDateFromStripePlan($stripePlan)->format("d/m/Y") . ")";
-                $response = $user->charge($this->getPriceFromStripePlan($request, $stripePlan), [
+                $response = $user->charge($this->getPriceFromStripePlan($request, $stripePlan)["price"], [
                     "description" => $description
                 ]);
             } catch (\InvalidArgumentException $exception) {
