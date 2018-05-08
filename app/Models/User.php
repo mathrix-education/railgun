@@ -109,7 +109,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     ];
 
     /** @var array The relations to include by default */
-    protected $with = ["class_"];
+    protected $with = ["class_", "trainings"];
 
     /** @var array The virtual attributes */
     protected $appends = ["premium", "daily_points"];
