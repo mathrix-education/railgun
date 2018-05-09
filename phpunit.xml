@@ -15,10 +15,11 @@
         </testsuite>
     </testsuites>
     <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
+        <whitelist processUncoveredFilesFromWhitelist="false">
             <directory suffix=".php">./app</directory>
             <exclude>
                 <directory>./app/Console</directory>
+                <directory>./app/Mails</directory>
             </exclude>
         </whitelist>
     </filter>
