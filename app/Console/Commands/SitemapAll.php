@@ -32,8 +32,6 @@ class SitemapAll extends Command
         $sitemap->addSitemap($this->url("/sitemap.notions.xml"));
         $sitemap->addSitemap($this->url("/sitemap.modules.xml"));
 
-        //$sitemap->addSitemap($this->url("/sitemap.videos.xml"));
-
         $sitemap->store("sitemapindex", "sitemap", storage_path("sitemaps"));
 
         if (env("APP_ENV") != "local") {
