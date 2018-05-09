@@ -1,6 +1,7 @@
 <?php
 namespace Tests\Activities;
 
+use App\Models\Activity;
 use App\Models\Meta;
 use Laravel\Passport\Passport;
 use Tests\ScopeTestCase;
@@ -26,6 +27,17 @@ class ActivitiesAsPublicTest extends ScopeTestCase
     public function testIndex()
     {
         $this->genericIndexUnauthorized();
+    }
+
+
+    /**
+     * GET /activities/{id}
+     *
+     * @throws \Exception
+     */
+    public function testGetNotPremium()
+    {
+        $this->genericGetSuccess();
     }
 
 
