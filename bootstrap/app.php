@@ -54,6 +54,20 @@ $app->singleton(
     }
 );
 
+$app->singleton(
+    Illuminate\Contracts\Routing\ResponseFactory::class,
+    Illuminate\Routing\ResponseFactory::class
+);
+
+/**
+ * Fix the sitemap issue
+ *
+ * @see https://stackoverflow.com/questions/37945911/lumen-cache-store-is-not-instantiable
+ */
+$app->singleton(
+    Illuminate\Cache\Repository::class,
+    Illuminate\Contracts\Cache\Repository::class
+);
 
 /*
 |--------------------------------------------------------------------------

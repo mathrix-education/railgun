@@ -21,17 +21,18 @@ class SitemapAll extends Command
 
     public function handle()
     {
-        $this->call("sitemap:videos");
         $this->call("sitemap:content");
 
         /** @var Sitemap $sitemap */
         $sitemap = app()->make("sitemap");
+
         $sitemap->addSitemap($this->url("/sitemap.main.xml"));
         $sitemap->addSitemap($this->url("/sitemap.dashboards.xml"));
         $sitemap->addSitemap($this->url("/sitemap.chapters.xml"));
         $sitemap->addSitemap($this->url("/sitemap.notions.xml"));
         $sitemap->addSitemap($this->url("/sitemap.modules.xml"));
-        $sitemap->addSitemap($this->url("/sitemap.videos.xml"));
+
+        //$sitemap->addSitemap($this->url("/sitemap.videos.xml"));
 
         $sitemap->store("sitemapindex", "sitemap", storage_path("sitemaps"));
 

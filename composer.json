@@ -16,7 +16,7 @@
     "spatie/laravel-newsletter": "^4.1",
     "sentry/sentry-laravel": "^0.8.0",
     "league/flysystem": " ~1.0",
-    "roumen/sitemap": "^2.7",
+    "roumen/sitemap": "^2.8",
     "paulvl/backup": "3.*",
     "nao-pon/flysystem-google-drive": "^1.1",
     "fzaninotto/faker": "~1.4"
