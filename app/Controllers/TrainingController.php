@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
+use App\Exceptions\Http404ModelNotFoundException;
 use App\Models\Log;
 use App\Models\Training;
 use App\Models\User;
@@ -109,22 +110,42 @@ class TrainingController extends BaseController
      * @param int $id
      *
      * @return JsonResponse
+     * @throws Http404ModelNotFoundException
+     * @throws \Exception
      */
     public function recursive(Request $request, int $id): JsonResponse
     {
+        /** @var User $user */
+        $user = $request->user();
+
+        $canSeeInvisible = $user !== null && $user->isModerator();
+
+        /** @var Training $training */
         $training = Training::with([
-            "sections" => function (HasMany $query) {
+            "sections" => function (HasMany $query) use ($canSeeInvisible) {
                 $query->orderBy("order");
+
+                if (!$canSeeInvisible) {
+                    $query->where("visible", true);
+                }
             },
-            "sections.lessons" => function (HasMany $query) {
+            "sections.lessons" => function (HasMany $query) use ($canSeeInvisible) {
                 $query->orderBy("order");
+
+                if (!$canSeeInvisible) {
+                    $query->where("visible", true);
+                }
             },
             "sections.lessons.module"
         ])
             ->whereId($id)
             ->firstOrFail();
 
-        $request->user()->canOrFail("recursive", $training);
+        if (!$training->visible && !$canSeeInvisible) {
+            throw new Http404ModelNotFoundException();
+        }
+
+        $user->canOrFail("recursive", $training);
 
         return new JsonResponse($training);
     }
@@ -192,7 +213,7 @@ class TrainingController extends BaseController
 
             Log::log("user_payment_succeed_for_training", $user, ["training_id" => $training->id]);
 
-            return new JsonResponse($user);
+            return new JsonResponse($user->with(["class_", "subscriptions", "trainings"])->first());
         } else {
             Log::log("user_payment_failed_for_training", $user, ["training_id" => $training->id]);
 

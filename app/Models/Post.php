@@ -36,6 +36,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Post whereUserId($value)
  * @method static Builder|Post whereCreatedAt($value)
  * @method static Builder|Post whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class Post extends BaseModel
 {

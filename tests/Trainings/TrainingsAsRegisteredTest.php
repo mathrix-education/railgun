@@ -1,6 +1,8 @@
 <?php
 namespace Tests\Trainings;
 
+use App\Models\Lesson;
+use App\Models\Section;
 use App\Models\Training;
 use App\Models\User;
 use Laravel\Passport\Passport;
@@ -26,6 +28,7 @@ class TrainingsAsRegisteredTest extends TrainingsAsPublicTest
                 ->firstOrFail();
             /** @var Training $training */
             $training = $user->trainings()
+                ->where("visible", true)
                 ->inRandomOrder()
                 ->firstOrFail();
         } else {
@@ -36,6 +39,7 @@ class TrainingsAsRegisteredTest extends TrainingsAsPublicTest
             $userTrainingIds = $user->trainings->pluck("id")->toArray();
             /** @var Training $training */
             $training = Training::inRandomOrder()
+                ->where("visible", true)
                 ->whereNotIn("id", $userTrainingIds)
                 ->firstOrFail();
         }
@@ -61,7 +65,21 @@ class TrainingsAsRegisteredTest extends TrainingsAsPublicTest
         $data = $this->getResponseData();
 
         $this->assertTrue(isset($data->sections));
+
+        /** @var Section $section */
+        foreach ($data->sections as $section) {
+            $this->assertTrue($section->visible || $this->user->isModerator());
+            /** @var Lesson $lesson */
+            foreach ($section->lessons as $lesson) {
+                $this->assertTrue($lesson->visible || $this->user->isModerator());
+
+                if (!empty($lesson->module)) {
+                    $this->assertTrue($lesson->visible || $this->user->isModerator());
+                }
+            }
+        }
     }
+
 
     /**
      * GET /trainings/{id}/recursive as buyer
@@ -86,6 +104,8 @@ class TrainingsAsRegisteredTest extends TrainingsAsPublicTest
 
     /**
      * POST /trainings/{id}/buy
+     *
+     * @throws \Exception
      */
     public function testBuy()
     {
@@ -100,7 +120,11 @@ class TrainingsAsRegisteredTest extends TrainingsAsPublicTest
             "stripe_token" => "tok_visa"
         ]);
 
+        $responseData = $this->getResponseData();
+
         $this->assertHttp200Success();
+        $this->assertTrue(isset($responseData->subscriptions));
+        $this->assertTrue(!empty($responseData->trainings));
         $this->assertInDatabase("training_user", ["user_id" => $this->user->id, "training_id" => $training->id]);
     }
 }

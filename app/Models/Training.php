@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $slug
  * @property string $description
  * @property int $price
+ * @property bool $visible
  * @property int $order
  * @property string|null $created_at
  * @property string|null $updated_at
@@ -29,9 +30,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Training whereSlug($value)
  * @method static Builder|Training whereDescription($value)
  * @method static Builder|Training wherePrice($value)
+ * @method static Builder|Training whereVisible($value)
  * @method static Builder|Training whereOrder($value)
  * @method static Builder|Training whereCreatedAt($value)
  * @method static Builder|Training whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class Training extends BaseModel
 {
@@ -44,6 +47,10 @@ class Training extends BaseModel
         "name" => "required|max:255",
         "slug" => "required|max:255",
         "description" => "nullable",
+    ];
+
+    protected $casts = [
+        "visible" => "boolean"
     ];
 
 

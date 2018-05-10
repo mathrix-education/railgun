@@ -7,5 +7,6 @@
  * @apiSuccess {string} trainings.slug The training slug
  * @apiSuccess {string} trainings.description The training description
  * @apiSuccess {string} trainings.price The training price
+ * @apiSuccess {bool} trainings.visibility The training order
  * @apiSuccess {string} trainings.order The training order
  */

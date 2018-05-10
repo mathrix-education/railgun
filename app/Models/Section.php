@@ -3,6 +3,7 @@
 namespace App\Models;
 
 
+use App\Models\Lesson;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,20 +20,22 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $id
  * @property string $name
  * @property string $slug
+ * @property bool $visible
  * @property int $order
  * @property int $training_id
  * @property string|null $created_at
  * @property string|null $updated_at
  * @property-read Training $training
- * @property-read Collection|Lesson[] $lesson
+ * @property-read Collection|Lesson[] $lessons
  * @method static Builder|Section whereId($value)
  * @method static Builder|Section whereName($value)
  * @method static Builder|Section whereOrder($value)
  * @method static Builder|Section whereSlug($value)
+ * @method static Builder|Section whereVisible($value)
  * @method static Builder|Section whereTrainingId($value)
  * @method static Builder|Section whereCreatedAt($value)
  * @method static Builder|Section whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Lesson[] $lessons
+ * @mixin \Eloquent
  */
 class Section extends BaseModel
 {
@@ -45,6 +48,10 @@ class Section extends BaseModel
         "name" => "required|max:255",
         "slug" => "required|max:255",
         "description" => "nullable",
+    ];
+
+    protected $casts = [
+        "visible" => "boolean"
     ];
 
 

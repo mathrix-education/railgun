@@ -28,6 +28,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Chapter whereSlug($value)
  * @method static Builder|Chapter whereOrder($value)
  * @method static Builder|Chapter whereVisible($value)
+ * @mixin \Eloquent
  */
 class Chapter extends BaseModel
 {
