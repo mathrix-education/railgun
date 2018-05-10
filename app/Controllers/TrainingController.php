@@ -192,9 +192,7 @@ class TrainingController extends BaseController
 
             Log::log("user_payment_succeed_for_training", $user, ["training_id" => $training->id]);
 
-            return new JsonResponse([
-                "status" => "success"
-            ]);
+            return new JsonResponse($user);
         } else {
             Log::log("user_payment_failed_for_training", $user, ["training_id" => $training->id]);
 
