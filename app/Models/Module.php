@@ -42,6 +42,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read mixed $to_revise
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Lesson[] $lessons
  * @property-read bool $completed
+ * @mixin \Eloquent
  */
 class Module extends BaseModel
 {
