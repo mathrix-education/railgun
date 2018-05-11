@@ -6,6 +6,7 @@ use App\Exceptions\Http404ModelNotFoundException;
 use App\Models\Log;
 use App\Models\Training;
 use App\Models\User;
+use App\Utils\StripeUtils;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -176,6 +177,7 @@ class TrainingController extends BaseController
     {
         $training = Training::whereId($id)->firstOrFail();
         $stripeToken = $request->input("stripe_token");
+        $withPremium = (bool)$request->input("premium", false);
 
         if ($stripeToken === null) {
             throw new Http400InvalidRequestException("stripe_token cannot be null");
@@ -185,12 +187,9 @@ class TrainingController extends BaseController
         $user = $request->user();
 
         // Charge the user by creating him if he does not exists
-        if (!$user->hasStripeId()) {
-            $user->createAsStripeCustomer($stripeToken);
-        } else {
-            $user->updateCard($stripeToken);
-        }
+        $user->updateCardOrCreateStripeCustomer($stripeToken);
 
+        // User trainings ids to check if h=he has already bought the training
         $userTrainingIds = $user->trainings->pluck("id")->toArray();
 
         if (in_array($training->id, $userTrainingIds)) {
@@ -200,7 +199,15 @@ class TrainingController extends BaseController
         // Pipe Stripe exception to our HTTP 400 Bad Request exception
         try {
             $description = $training->name;
-            $response = $user->charge($training->price, [
+
+            /** @var int $totalPrice Total price to pay, including premium surcharge if needed */
+            $totalPrice = $training->price;
+
+            if ($withPremium) {
+                $totalPrice += StripeUtils::getSurchargeForPremium($training);
+            }
+
+            $response = $user->charge($totalPrice, [
                 "description" => $description
             ]);
         } catch (\InvalidArgumentException $exception) {
@@ -210,6 +217,13 @@ class TrainingController extends BaseController
         // Give subscription if charge succeeded
         if ($response->status == "succeeded") {
             $user->trainings()->attach($training->id);
+
+            // Add premium subscription if needed
+            if ($withPremium) {
+                $user->newSubscription("premium", "v3_annually")
+                    ->trialUntil(StripeUtils::getNextJuly())
+                    ->create();
+            }
 
             Log::log("user_payment_succeed_for_training", $user, ["training_id" => $training->id]);
 

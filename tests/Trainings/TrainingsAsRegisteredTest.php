@@ -5,6 +5,7 @@ use App\Models\Lesson;
 use App\Models\Section;
 use App\Models\Training;
 use App\Models\User;
+use App\Utils\StripeUtils;
 use Laravel\Passport\Passport;
 
 /**
@@ -126,5 +127,40 @@ class TrainingsAsRegisteredTest extends TrainingsAsPublicTest
         $this->assertTrue(isset($responseData->subscriptions));
         $this->assertTrue(!empty($responseData->trainings));
         $this->assertInDatabase("training_user", ["user_id" => $this->user->id, "training_id" => $training->id]);
+    }
+
+
+    /**
+     * POST /trainings/{id}/buy with ethe additional premium subscription
+     *
+     * @throws \Exception
+     */
+    public function testBuyWithPremium()
+    {
+        // Skip for moderators and admins
+        if ($this->user->type != "registered") {
+            return;
+        }
+
+        $userTrainingIds = $this->user->trainings->pluck("id")->toArray();
+        $training = Training::inRandomOrder()->whereNotIn("id", $userTrainingIds)->firstOrFail();
+
+        $this->call("post", "/trainings/{$training->id}/buy", [
+            "stripe_token" => "tok_visa",
+            "premium" => true
+        ]);
+
+        $responseData = $this->getResponseData();
+
+        $this->assertHttp200Success();
+        $this->assertTrue(isset($responseData->subscriptions));
+        $this->assertTrue(!empty($responseData->trainings));
+        $this->assertInDatabase("training_user", ["user_id" => $this->user->id, "training_id" => $training->id]);
+        $this->assertInDatabase("subscriptions", [
+            "user_id" => $this->user->id,
+            "name" => "premium",
+            "stripe_plan" => "v3_annually",
+            "trial_ends_at" => StripeUtils::getNextJuly()
+        ]);
     }
 }

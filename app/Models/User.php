@@ -222,6 +222,21 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
 
+    /**
+     * Update customer card or create the Stripe customer if the user is not already a Stripe customer
+     *
+     * @param string $stripeToken
+     */
+    public function updateCardOrCreateStripeCustomer(string $stripeToken)
+    {
+        if (!$this->hasStripeId()) {
+            $this->createAsStripeCustomer($stripeToken);
+        } else {
+            $this->updateCard($stripeToken);
+        }
+    }
+
+
     /*
     |--------------------------------------------------------------------------
     | Relations
