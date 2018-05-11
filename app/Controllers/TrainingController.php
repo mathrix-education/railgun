@@ -162,6 +162,7 @@ class TrainingController extends BaseController
      * @apiPermission registered
      * @apiParam {int} id The training id
      * @apiParam (Data) {int} stripe_token The stripe token
+     * @apiParam (Data) {bool} [premium=false] If a premium subscription must be applied
      * @apiSuccess {string=success,failure} message The result
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
@@ -227,7 +228,7 @@ class TrainingController extends BaseController
 
             Log::log("user_payment_succeed_for_training", $user, ["training_id" => $training->id]);
 
-            return new JsonResponse($user->with(["class_", "subscriptions", "trainings"])->first());
+            return new JsonResponse($user->with(["class_", "subscriptions", "trainings"])->find($user->id));
         } else {
             Log::log("user_payment_failed_for_training", $user, ["training_id" => $training->id]);
 
