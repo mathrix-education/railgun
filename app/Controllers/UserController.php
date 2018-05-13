@@ -94,6 +94,7 @@ class UserController extends BaseController
 
         $user->fill($requestData);
         $user->save();
+        $user = User::find($user->id);
 
         return response()->json($user);
     }
