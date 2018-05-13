@@ -11,7 +11,7 @@
  * @apiSuccess {string} created_at The comment created_at
  * @apiSuccess {string} updated_at The comment updated_at
  * @apiSuccess {string} deleted_at The comment deleted_at
- * @apiSuccess {int|null} user_vote The comment user vote value null if not voted, +1 for up-vote, -1 for down-vote
+ * @apiSuccess {int/null} user_vote The comment user vote value null if not voted, +1 for up-vote, -1 for down-vote
  * @apiSuccess {User} user The user
  * @apiSuccess {Comment[]} children The comment children
  */

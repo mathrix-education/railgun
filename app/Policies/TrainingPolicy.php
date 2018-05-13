@@ -1,6 +1,7 @@
 <?php
 namespace App\Policies;
 
+use App\Models\Training;
 use App\Models\User;
 
 /**
@@ -14,13 +15,34 @@ use App\Models\User;
 class TrainingPolicy extends BasePolicy
 {
     /**
+     * @return bool
+     */
+    public function index()
+    {
+        return true;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function get()
+    {
+        return true;
+    }
+
+
+    /**
      * @param User $currentUser
+     * @param Training $training
      *
      * @return bool
      */
-    public function index(User $currentUser)
+    public function recursive(User $currentUser, Training $training)
     {
-        return $this->atLeastModerator($currentUser);
+        $userTrainingIds = $currentUser->trainings->pluck("id")->toArray();
+
+        return in_array($training->id, $userTrainingIds) || $this->atLeastAdmin($currentUser);
     }
 
 
@@ -31,7 +53,7 @@ class TrainingPolicy extends BasePolicy
      */
     public function add(User $currentUser)
     {
-        return $this->atLeastModerator($currentUser);
+        return $this->atLeastAdmin($currentUser);
     }
 
 
@@ -42,7 +64,7 @@ class TrainingPolicy extends BasePolicy
      */
     public function edit(User $currentUser)
     {
-        return $this->atLeastModerator($currentUser);
+        return $this->atLeastAdmin($currentUser);
     }
 
 
@@ -53,6 +75,6 @@ class TrainingPolicy extends BasePolicy
      */
     public function delete(User $currentUser)
     {
-        return $this->atLeastModerator($currentUser);
+        return $this->atLeastAdmin($currentUser);
     }
 }

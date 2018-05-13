@@ -8,6 +8,7 @@ use App\Models\Country;
 use App\Models\Discipline;
 use App\Models\Module;
 use App\Models\Notion;
+use Tests\Tree;
 
 /**
  * Class ModulesAsPublicTest
@@ -20,46 +21,6 @@ use App\Models\Notion;
  */
 class ModulesAsRegisteredTest extends ModulesAsPublicTest
 {
-    /**
-     * Build objects for /activities/mark
-     *
-     * @return array
-     *  int country_id
-     *  int class_id
-     *  int discipline_id
-     *  int chapter_id
-     *  int notion_id
-     *  int activity_id
-     *  int module_id
-     */
-    public function buildObjects()
-    {
-        /** @var Chapter $chapter */
-        $chapter = Chapter::inRandomOrder()->firstOrFail();
-        /** @var Class_ $class */
-        $class = $chapter->class_()->firstOrFail();
-        /** @var Discipline $discipline */
-        $discipline = $chapter->discipline()->firstOrFail();
-        /** @var Country $country */
-        $country = $class->country()->firstOrFail();
-        /** @var Notion $notion */
-        $notion = $chapter->notions()->inRandomOrder()->firstOrFail();
-        /** @var Activity $activity */
-        $activity = $notion->activities()->inRandomOrder()->firstOrFail();
-        /** @var Module $module */
-        $module = $activity->modules()->inRandomOrder()->firstOrFail();
-
-        return [
-            "country_id" => $country->id,
-            "class_id" => $class->id,
-            "discipline_id" => $discipline->id,
-            "chapter_id" => $chapter->id,
-            "notion_id" => $notion->id,
-            "activity_id" => $activity->id,
-            "module_id" => $module->id
-        ];
-    }
-
 
     /**
      * Generic mark test
@@ -67,10 +28,13 @@ class ModulesAsRegisteredTest extends ModulesAsPublicTest
      * @param bool|null $favorite
      * @param bool|null $to_revise
      * @param bool|null $completed
+     *
+     * @throws \Exception
      */
     public function mark($favorite, $to_revise, $completed)
     {
-        $data = $this->buildObjects();
+        $tree = new Tree();
+        $data = $tree->flatIds();
         $moduleId = $data["module_id"];
         unset($data["module_id"]);
 
@@ -92,8 +56,22 @@ class ModulesAsRegisteredTest extends ModulesAsPublicTest
         $this->assertInDatabase("metas", $expectedData);
     }
 
+
+    /**
+     * PATCH /modules/{id}/mark with {favorite: true}
+     *
+     * @throws \Exception
+     */
+    public function testMarkFavorite()
+    {
+        $this->mark(true, null, null);
+    }
+
+
     /**
      * PATCH /modules/{id}/mark with {to_revise: true}
+     *
+     * @throws \Exception
      */
     public function testMarkToRevise()
     {
@@ -103,6 +81,8 @@ class ModulesAsRegisteredTest extends ModulesAsPublicTest
 
     /**
      * PATCH /modules/{id}/mark with {completed: true}
+     *
+     * @throws \Exception
      */
     public function testMarkCompleted()
     {

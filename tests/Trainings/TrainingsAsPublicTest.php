@@ -1,6 +1,7 @@
 <?php
 namespace Tests\Trainings;
 
+use App\Models\Training;
 use Tests\ScopeTestCase;
 
 /**
@@ -15,13 +16,40 @@ use Tests\ScopeTestCase;
 class TrainingsAsPublicTest extends ScopeTestCase
 {
     /**
-     * GET /training/index
+     * GET /trainings/index
      *
      * @throws \Exception
      */
     public function testIndex()
     {
-        $this->genericIndexUnauthorized();
+        $this->genericIndexSuccess();
+    }
+
+
+    /**
+     * GET /trainings/{id}
+     *
+     * @throws \Exception
+     */
+    public function testGet()
+    {
+        $this->genericGetSuccess();
+    }
+
+
+
+    /**
+     * GET /trainings/slug/{slug}
+     *
+     * @throws \Exception
+     */
+    public function testGetBySlug()
+    {
+        /** @var Training $training */
+        $training = Training::random();
+        $this->call("get", "/trainings/slug/{$training->slug}");
+
+        $this->assertHttp200Success();
     }
 
 
@@ -37,7 +65,7 @@ class TrainingsAsPublicTest extends ScopeTestCase
 
 
     /**
-     * PATCH /training/{id} -> HTTP 401 unauthorized
+     * PATCH /trainings/{id} -> HTTP 401 unauthorized
      *
      * @throws \Exception
      */
@@ -48,7 +76,7 @@ class TrainingsAsPublicTest extends ScopeTestCase
 
 
     /**
-     * DELETE /training/{id} -> HTTP 401 unauthorized
+     * DELETE /trainings/{id} -> HTTP 401 unauthorized
      *
      * @throws \Exception
      */

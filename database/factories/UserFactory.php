@@ -32,7 +32,7 @@ $factory->define(User::class, function (Generator $faker) {
         "created_at" => $faker->dateTimeBetween("-1 years")
     ];
 
-    if ($faker->boolean(10)) {
+    if ($faker->boolean(50)) {
         $data["settings"]["facebook_id"] = $faker->randomAscii;
     }
 

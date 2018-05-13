@@ -114,7 +114,8 @@ abstract class ScopeTestCase extends BaseTestCase
         $potentialSubstringScopeFromTestName = strstr($testName, "As");
 
 
-        if ($potentialSubstringScopeFromTestName !== false) {
+        if ($potentialSubstringScopeFromTestName !== false && in_array($potentialSubstringScopeFromTestName,
+                $this->scopes)) {
             $potentialScope = strtolower(substr($potentialSubstringScopeFromTestName, 2));
         }
 

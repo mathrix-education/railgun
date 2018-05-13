@@ -19,4 +19,8 @@
  * @apiParam (Data) {string} [card_brand=null] The card brand (Visa, etc.)
  * @apiParam (Data) {string} [card_last_four=null] The card last four digits
  * @apiParam (Data) {string} [trial_ends_at=null] The trial expire date
+ * @apiParam (Data) {array} [link] The models to link with the users
+ * @apiParam (Data) {int[]} [link.trainings] The trainings ids to sync with the activity.<br>
+ * __Destructive__! Filling this field will erase old values. Only admins can set this value.<br>
+ * If not specified, do not change anything.
  */

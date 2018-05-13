@@ -6,6 +6,7 @@ use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\Log;
 use App\Models\User;
+use App\Utils\StripeUtils;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -23,24 +24,6 @@ use Laravel\Cashier\Subscription;
  */
 class StripeController extends CashierController
 {
-    private const ALLOWED_STRIPE_PLANS = [
-        "v3_biannually" => [
-            "name" => "Pack bi-annuel",
-            "price_per_month" => 9.90,
-            "price_per_day" => 0.33
-        ],
-        "v3_annually" => [
-            "name" => "Pack annuel",
-            "price_per_month" => 12.90,
-            "price_per_day" => 0.43
-        ],
-        "v3_monthly" => [
-            "price_per_month" => 17.90,
-            "price_per_day" => 0.60
-        ]
-    ];
-
-
     /**
      * @apiVersion 4.0.0
      * @api {post} /stripe/subscribe Subscribe
@@ -87,7 +70,7 @@ class StripeController extends CashierController
             throw new Http400InvalidRequestException("stripe_token and stripe_coupon cannot be both null");
         }
 
-        if (!in_array($stripePlan, array_keys(self::ALLOWED_STRIPE_PLANS))) {
+        if (!in_array($stripePlan, array_keys(StripeUtils::ALLOWED_STRIPE_PLANS))) {
             throw new Http400InvalidRequestException("$stripePlan is not a valid Stripe plan");
         }
 
@@ -100,19 +83,13 @@ class StripeController extends CashierController
                 ->create($stripeToken);
         } else {
             // v3_biannually or v3_annually
-
-            // Charge the user by creating him if he does not exists
-            if (!$user->hasStripeId()) {
-                $user->createAsStripeCustomer($stripeToken);
-            } else {
-                $user->updateCard($stripeToken);
-            }
+            $user->updateCardOrCreateStripeCustomer($stripeToken);
 
             // Pipe Stripe exception to our HTTP 400 Bad Request exception
             try {
-                $description = self::ALLOWED_STRIPE_PLANS[$stripePlan]["name"] . " (fin " .
-                    $this->getEndDateFromStripePlan($stripePlan)->format("d/m/Y") . ")";
-                $response = $user->charge($this->getPriceFromStripePlan($request, $stripePlan), [
+                $description = StripeUtils::ALLOWED_STRIPE_PLANS[$stripePlan]["name"] . " (fin " .
+                    StripeUtils::getStripePlanEndDate($stripePlan)->format("d/m/Y") . ")";
+                $response = $user->charge(StripeUtils::getStripePlanPrice($stripePlan), [
                     "description" => $description
                 ]);
             } catch (\InvalidArgumentException $exception) {
@@ -123,11 +100,12 @@ class StripeController extends CashierController
             if ($response->status == "succeeded") {
                 $user->newSubscription("premium", $stripePlan)
                     ->withCoupon($stripeCoupon)
-                    ->trialUntil($this->getEndDateFromStripePlan($stripePlan))
+                    ->trialUntil(StripeUtils::getStripePlanEndDate($stripePlan))
                     ->create($stripeToken);
+                Log::log("user_payment_succeed_for_premium", $user);
+            } else {
+                Log::log("user_payment_failed_for_premium", $user);
             }
-
-            Log::log("user_payment_succeed_for_premium", $user);
         }
 
         return response()->json(User::with("subscriptions")->find($user->id));
@@ -135,91 +113,28 @@ class StripeController extends CashierController
 
 
     /**
-     * @param string $stripePlan
-     *
-     * @return Carbon
-     * @throws Http400InvalidRequestException
-     * @throws \Exception
-     */
-    private function getEndDateFromStripePlan(string $stripePlan)
-    {
-        // Calculate the next July (ie. the ending date)
-        $nextJuly = Carbon::create(null, 7, 31);
-        switch ($stripePlan) {
-            case "v3_biannually":
-                $nextJuly->addYears(!$nextJuly->isPast() ? 1 : 2);
-                break;
-            case "v3_annually":
-                if ($nextJuly->isPast()) {
-                    $nextJuly->addYear();
-                }
-                break;
-            default:
-                throw new Http400InvalidRequestException("$stripePlan is not a valid estimable plan");
-                break;
-        }
-
-        return $nextJuly->setTime(0, 0, 0);
-    }
-
-
-    /**
-     * Get the price of a Stripe plan based on the current date
-     *
-     * @param Request $request
-     * @param string $stripePlan
-     *
-     * @return int The price, in cents
-     * @throws Http400InvalidRequestException
-     * @throws \Exception
-     */
-    private function getPriceFromStripePlan(Request $request, string $stripePlan)
-    {
-        $coupon = $request->input("coupon");
-
-        $now = Carbon::now();
-        $nextJuly = $this->getEndDateFromStripePlan($stripePlan);
-
-        $months = $nextJuly->diffInMonths($now);
-        $days = $nextJuly->diffInDays($now->addMonths($months));
-
-        $pricePerMonth = self::ALLOWED_STRIPE_PLANS[$stripePlan]["price_per_month"];
-        $pricePerDay = self::ALLOWED_STRIPE_PLANS[$stripePlan]["price_per_day"];
-
-        $costInCents = round($pricePerMonth * $months + $pricePerDay * $days, 1) * 100;
-
-        switch ($coupon) {
-            case "MODEMACHINE2017":
-                $costInCents *= 0.8;
-                break;
-        }
-
-        return $costInCents;
-    }
-
-
-    /**
      * @apiVersion 4.0.0
-     * @api {post} /stripe/estimate/{stripe_plan} Estimate
+     * @api {get} /stripe/estimate/{stripe_plan} Estimate
      * @apiGroup Stripe
      * @apiName StripeEstimate
      * @apiDescription Estimate the price for a plan relatively to the current date
      * @apiPermission public
      * @apiParam {string=v3_biannually,v3_annually} stripe_plan The stripe plan
      * @apiSuccess {int} price The price if the user orders today
+     * @apiSuccess {string} end_date The ending date (Y-m-d)
      * @apiError (Error 400) invalid_request stripe_plan has to be in the allowed stripe plans
      *
-     * @param Request $request
      * @param string $stripePlan
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws \Exception
      */
-    public function estimate(Request $request, string $stripePlan)
+    public function estimate(string $stripePlan)
     {
         return response()->json([
-            "price" => $this->getPriceFromStripePlan($request, $stripePlan)
+            "price" => StripeUtils::getStripePlanPrice($stripePlan),
+            "end_date" => StripeUtils::getStripePlanEndDate($stripePlan)
         ]);
     }
 

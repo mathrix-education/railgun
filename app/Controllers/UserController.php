@@ -71,25 +71,30 @@ class UserController extends BaseController
      * @param int|null $id The user id; if null set edit the current user
      *
      * @return JsonResponse
-     * @throws Http401UnauthorizedException
      * @throws \Exception
      */
     public function edit(Request $request, int $id = null): JsonResponse
     {
+        /** @var User $user */
         $user = $id === null ? $request->user() : User::where("id", $id)->firstOrFail();
+        /** @var User $requestUser */
+        $requestUser = $request->user();
+        $requestData = $request->all();
 
         // Check permission
-        if ($request->user()->cant("edit", $user)) {
-            throw new Http401UnauthorizedException();
-        }
+        $requestUser->canOrFail("edit", $user);
 
         // Unlock fields for admin
-        if ($request->user()->tokenCan("admin")) {
+        if ($requestUser->tokenCan("admin")) {
             $user->unguardAttributes(["type"]);
+        } else if (!empty($requestData["link"]["trainings"])) {
+            // Prevent trainings to be accessible
+            unset($requestData["link"]["trainings"]);
         }
 
-        $user->fill($request->all());
+        $user->fill($requestData);
         $user->save();
+        $user = User::find($user->id);
 
         return response()->json($user);
     }
@@ -215,7 +220,7 @@ class UserController extends BaseController
         /** @var User $user */
         $user = $request->user();
         $user = User::where("id", $user->id)
-            ->with("subscriptions")
+            ->with(["class_", "subscriptions", "trainings"])
             ->firstOrFail();
 
         return response()->json($user);

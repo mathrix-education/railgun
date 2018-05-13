@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $status
  * @property-read \App\Models\Module $module
  * @method static Builder|Report whereStatus($value)
+ * @mixin \Eloquent
  */
 class Report extends BaseModel
 {
