@@ -9,6 +9,7 @@ use App\Models\Discipline;
 use App\Models\Meta;
 use App\Models\Notion;
 use Laravel\Passport\Passport;
+use Tests\Tree;
 
 /**
  * Class ActivitiesAsPublicTest
@@ -89,26 +90,19 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
 
 
     /**
-     * PATCH /activities/{id}/mark with {favorite: true}
-     */
-    public function testMarkFavorite()
-    {
-        $this->mark(null, null, false);
-    }
-
-
-    /**
      * Generic mark test
      *
      * @param bool|null $favorite
      * @param bool|null $to_revise
      * @param bool|null $completed
+     *
+     * @throws \Exception
      */
     public function mark($favorite, $to_revise, $completed)
     {
-        $data = $this->buildObjects();
-        $activityId = $data["activity_id"];
-        unset($data["activity_id"]);
+        $tree = new Tree();
+        $data = $tree->flatIds("notion");
+        $activityId = $tree->getActivity()->id;
 
         if ($favorite !== null) {
             $data["favorite"] = $favorite;
@@ -130,44 +124,20 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
 
 
     /**
-     * Build objects for /activities/mark
+     * PATCH /activities/{id}/mark with {favorite: true}
      *
-     * @return array
-     *  int country_id
-     *  int class_id
-     *  int discipline_id
-     *  int chapter_id
-     *  int notion_id
-     *  int activity_id
+     * @throws \Exception
      */
-    public function buildObjects()
+    public function testMarkFavorite()
     {
-        /** @var Chapter $chapter */
-        $chapter = Chapter::inRandomOrder()->firstOrFail();
-        /** @var Class_ $class */
-        $class = $chapter->class_()->firstOrFail();
-        /** @var Discipline $discipline */
-        $discipline = $chapter->discipline()->firstOrFail();
-        /** @var Country $country */
-        $country = $class->country()->firstOrFail();
-        /** @var Notion $notion */
-        $notion = $chapter->notions()->inRandomOrder()->firstOrFail();
-        /** @var Activity $activity */
-        $activity = $notion->activities()->inRandomOrder()->firstOrFail();
-
-        return [
-            "country_id" => $country->id,
-            "class_id" => $class->id,
-            "discipline_id" => $discipline->id,
-            "chapter_id" => $chapter->id,
-            "notion_id" => $notion->id,
-            "activity_id" => $activity->id
-        ];
+        $this->mark(null, null, false);
     }
 
 
     /**
      * PATCH /activities/{id}/mark with {to_revise: true}
+     *
+     * @throws \Exception
      */
     public function testMarkToRevise()
     {
@@ -177,6 +147,8 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
 
     /**
      * PATCH /activities/{id}/mark with {completed: true}
+     *
+     * @throws \Exception
      */
     public function testMarkCompleted()
     {

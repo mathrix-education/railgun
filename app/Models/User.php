@@ -9,6 +9,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Cashier\Billable;
 use Laravel\Cashier\Subscription;
@@ -72,6 +73,8 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereTrialEndsAt($value)
  * @method static Builder|User whereCreatedAt($value)
  * @method static Builder|User whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Training[] $trainings
+ * @mixin \Eloquent
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
@@ -107,7 +110,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     ];
 
     /** @var array The relations to include by default */
-    protected $with = ["class_"];
+    protected $with = ["class_", "trainings"];
 
     /** @var array The virtual attributes */
     protected $appends = ["premium", "daily_points"];
@@ -219,6 +222,21 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
 
+    /**
+     * Update customer card or create the Stripe customer if the user is not already a Stripe customer
+     *
+     * @param string $stripeToken
+     */
+    public function updateCardOrCreateStripeCustomer(string $stripeToken)
+    {
+        if (!$this->hasStripeId()) {
+            $this->createAsStripeCustomer($stripeToken);
+        } else {
+            $this->updateCard($stripeToken);
+        }
+    }
+
+
     /*
     |--------------------------------------------------------------------------
     | Relations
@@ -267,6 +285,17 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function meta(): HasMany
     {
         return $this->hasMany(Activity::class);
+    }
+
+
+    /**
+     * BelongsToMany Training
+     *
+     * @return BelongsToMany
+     */
+    public function trainings(): BelongsToMany
+    {
+        return $this->belongsToMany(Training::class);
     }
 
 

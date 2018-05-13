@@ -53,7 +53,7 @@ class SitemapContent extends Command
             /** @var Class_ $class */
             foreach ($country->classes as $class) {
                 $dashboardsSitemap[] = [
-                    "url" => $this->url("/{$country->slug_short}/{$class->slug_short}"),
+                    "url" => $this->url("/{$country->slug}/{$class->slug}"),
                     "lastmod" => $today,
                     "priority" => 0.9
                 ];
@@ -64,8 +64,8 @@ class SitemapContent extends Command
                     foreach ($discipline->chapters as $chapter) {
                         $chaptersSitemap[] = [
                             "url" => $this->url("/" . implode("/", [
-                                    $country->slug_short,
-                                    $class->slug_short,
+                                    $country->slug,
+                                    $class->slug,
                                     $discipline->slug,
                                     $chapter->slug,
                                 ])),
@@ -78,8 +78,8 @@ class SitemapContent extends Command
                                  as $notion) {
                             $notionsSitemap[] = [
                                 "url" => $this->url("/" . implode("/", [
-                                        $country->slug_short,
-                                        $class->slug_short,
+                                        $country->slug,
+                                        $class->slug,
                                         $discipline->slug,
                                         $chapter->slug,
                                         $notion->slug
@@ -127,8 +127,8 @@ class SitemapContent extends Command
 
                                     $modulesSitemap[] = [
                                         "url" => $this->url("/" . implode("/", [
-                                                $country->slug_short,
-                                                $class->slug_short,
+                                                $country->slug,
+                                                $class->slug,
                                                 $discipline->slug,
                                                 $chapter->slug,
                                                 $notion->slug,

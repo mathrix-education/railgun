@@ -59,6 +59,10 @@ class StatsAsRegisteredTest extends StatsAsPublicTest
             "end" => $end->toDateString()
         ]);
 
+        // Increase interval limits
+        $start->subDay();
+        $end->addDay();
+
         $data = $this->getResponseData();
 
         foreach ($data as $date => $stat) {

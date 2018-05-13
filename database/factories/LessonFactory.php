@@ -23,6 +23,7 @@ $factory->define(Lesson::class, function (Generator $faker) {
         "title" => $title,
         "slug" => str_slug($title),
         "image" => null,
+        "visible" => $faker->boolean,
         "section_id" => Section::inRandomOrder()->first()->id,
         "module_id" => Module::inRandomOrder()->first()->id
     ];

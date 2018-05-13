@@ -29,6 +29,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @method static Builder|Log whereLoggableType($value)
  * @method static Builder|Log whereUserId($value)
  * @method static Builder|Log whereValue($value)
+ * @mixin \Eloquent
  */
 class Log extends BaseModel
 {
@@ -54,7 +55,10 @@ class Log extends BaseModel
         // Premium-related
         "user_payment_succeed_for_premium",
         "user_payment_failed_for_premium",
-        "user_cancelled_premium"
+        "user_cancelled_premium",
+        // Trainings-related
+        "user_payment_succeed_for_training",
+        "user_payment_failed_for_training"
     ];
 
     /** @var bool If timestamps (created_at and updated_at) should be used */

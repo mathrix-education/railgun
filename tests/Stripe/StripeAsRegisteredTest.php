@@ -17,57 +17,19 @@ class StripeAsRegisteredTest extends ScopeTestCase
     /**
      * Test the monthly subscription
      */
-    public function testMonthly()
+    public function testSubscription()
     {
+        $stripePlan = $this->faker->randomElement(["v3_monthly", "v3_annually", "v3_biannually"]);
         $this->call("post", "/stripe/subscribe", [
             "stripe_token" => "tok_visa",
-            "stripe_plan" => "v3_monthly"
+            "stripe_plan" => $stripePlan
         ]);
 
         $this->assertHttp200Success();
         $this->assertInDatabase("subscriptions", [
             "user_id" => $this->user->id,
             "name" => "premium",
-            "stripe_plan" => "v3_monthly"
+            "stripe_plan" => $stripePlan
         ]);
-    }
-
-
-    /**
-     * Test the annually subscription
-     */
-    public function testAnnually()
-    {
-        $this->call("post", "/stripe/subscribe", [
-            "stripe_token" => "tok_visa",
-            "stripe_plan" => "v3_annually"
-        ]);
-
-        $this->assertHttp200Success();
-        $this->assertInDatabase("subscriptions", [
-            "user_id" => $this->user->id,
-            "name" => "premium",
-            "stripe_plan" => "v3_annually"
-        ]);
-    }
-
-
-    /**
-     * Test the biannually subscription
-     */
-    public function testBiannually()
-    {
-        $this->call("post", "/stripe/subscribe", [
-            "stripe_token" => "tok_visa",
-            "stripe_plan" => "v3_biannually"
-        ]);
-
-        $this->assertHttp200Success();
-        $this->assertInDatabase("subscriptions", [
-            "user_id" => $this->user->id,
-            "name" => "premium",
-            "stripe_plan" => "v3_biannually"
-        ]);
-
     }
 }

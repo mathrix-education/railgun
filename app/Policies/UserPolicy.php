@@ -13,14 +13,6 @@ use App\Models\User;
  */
 class UserPolicy extends BasePolicy
 {
-    /**
-     * @return bool
-     */
-    /*public function search()
-    {
-        return false;
-    }*/
-
 
     /**
      * @param User $currentUser

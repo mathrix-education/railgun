@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $title
  * @property string $slug
  * @property string $image
+ * @property bool $visible
+ * @property int $order
  * @property int $section_id
  * @property int $module_id
  * @property string|null $created_at
@@ -24,10 +26,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Lesson whereSlug($value)
  * @method static Builder|Lesson whereTitle($value)
  * @method static Builder|Lesson whereImage($value)
+ * @method static Builder|Lesson whereVisible($value)
+ * @method static Builder|Lesson whereOrder($value)
  * @method static Builder|Lesson whereSectionId($value)
  * @method static Builder|Lesson whereModuleId($value)
  * @method static Builder|Lesson whereCreatedAt($value)
  * @method static Builder|Lesson whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class Lesson extends BaseModel
 {
@@ -35,7 +40,8 @@ class Lesson extends BaseModel
     public $timestamps = true;
 
     /** @var array The fillable attributes */
-    protected $fillable = ["title", "slug", "image", "section_id", "module_id", "created_at", "updated_at"];
+    protected $fillable = ["title", "slug", "image", "visible", "order", "section_id", "module_id", "created_at",
+        "updated_at"];
 
     /** @var array Validation rules */
     protected $rules = [
@@ -47,6 +53,10 @@ class Lesson extends BaseModel
 
     /** @var array The default included relations */
     protected $with = ["module"];
+
+    protected $casts = [
+        "visible" => "boolean"
+    ];
 
 
     /**

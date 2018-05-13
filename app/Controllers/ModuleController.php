@@ -74,10 +74,6 @@ class ModuleController extends BaseController
             }
         ])->firstOrFail();
 
-        if ($user !== null && $user->cant("get", $module)) {
-            throw new Http401UnauthorizedException();
-        }
-
         // Hide module content if user is not premium nor moderator
         if ($module->premium && ($user === null || !$user->premium && !$user->isModerator())) {
             $id = $module->id;

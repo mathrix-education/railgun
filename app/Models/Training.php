@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
@@ -16,15 +18,23 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $name
  * @property string $slug
  * @property string $description
+ * @property int $price
+ * @property bool $visible
+ * @property int $order
  * @property string|null $created_at
  * @property string|null $updated_at
+ * @property-read Collection|Section[] $sections
+ * @property-read Collection|User[] $users
  * @method static Builder|Training whereId($value)
  * @method static Builder|Training whereName($value)
  * @method static Builder|Training whereSlug($value)
  * @method static Builder|Training whereDescription($value)
+ * @method static Builder|Training wherePrice($value)
+ * @method static Builder|Training whereVisible($value)
+ * @method static Builder|Training whereOrder($value)
  * @method static Builder|Training whereCreatedAt($value)
  * @method static Builder|Training whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Section[] $sections
+ * @mixin \Eloquent
  */
 class Training extends BaseModel
 {
@@ -39,6 +49,10 @@ class Training extends BaseModel
         "description" => "nullable",
     ];
 
+    protected $casts = [
+        "visible" => "boolean"
+    ];
+
 
     /**
      * HasMany Section
@@ -48,5 +62,16 @@ class Training extends BaseModel
     public function sections(): HasMany
     {
         return $this->hasMany(Section::class);
+    }
+
+
+    /**
+     * BelongsToMany User
+     *
+     * @return BelongsToMany
+     */
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class);
     }
 }

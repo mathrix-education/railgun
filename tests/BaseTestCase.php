@@ -97,6 +97,18 @@ abstract class BaseTestCase extends TestCase
     /**
      * Assert the response has the right length
      *
+     * @param int $minLength
+     */
+    public function assertJsonLengthMin(int $minLength): void
+    {
+        $content = json_decode($this->response->getContent(), true);
+        $this->assertTrue($minLength <= count($content));
+    }
+
+
+    /**
+     * Assert the response has the right length
+     *
      * @param int $maxLength
      */
     public function assertJsonLengthMax(int $maxLength): void
