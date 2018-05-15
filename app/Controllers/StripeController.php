@@ -134,7 +134,7 @@ class StripeController extends CashierController
     {
         return response()->json([
             "price" => StripeUtils::getStripePlanPrice($stripePlan),
-            "end_date" => StripeUtils::getStripePlanEndDate($stripePlan)
+            "end_date" => StripeUtils::getStripePlanEndDate($stripePlan)->format("Y-m-d")
         ]);
     }
 
