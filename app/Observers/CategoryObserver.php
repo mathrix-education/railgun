@@ -1,5 +1,5 @@
 <?php
-namespace App\Models\Observers;
+namespace App\Observers;
 
 use App\Models\Category;
 
@@ -7,7 +7,7 @@ use App\Models\Category;
  * Class CategoryObserver
  *
  * @author Mathrix Team
- * @package App\Models\Observers
+ * @package App\Observers
  */
 class CategoryObserver extends BaseObserver
 {

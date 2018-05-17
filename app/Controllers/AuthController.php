@@ -6,6 +6,7 @@ use App\Events\PasswordResetEvent;
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
+use App\Mails\PasswordForgottenMail;
 use App\Models\Log;
 use App\Models\User;
 use Faker\Factory;

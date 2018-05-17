@@ -1,5 +1,5 @@
 <?php
-namespace App\Models\Observers;
+namespace App\Observers;
 
 use App\Models\Lesson;
 
@@ -7,7 +7,7 @@ use App\Models\Lesson;
  * Class LessonObserver
  *
  * @author Mathrix Back-End Team
- * @package App\Models\Observers
+ * @package App\Observers
  * @since 1.0.1
  * @copyright Mathrix Education SA
  */

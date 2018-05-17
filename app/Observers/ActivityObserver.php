@@ -1,5 +1,5 @@
 <?php
-namespace App\Models\Observers;
+namespace App\Observers;
 
 use App\Models\Activity;
 use App\Models\Meta;
@@ -10,7 +10,7 @@ use App\Models\Notion;
  * Class ActivityObserver
  *
  * @author Mathrix Team
- * @package App\Models\Observers
+ * @package App\Observers
  */
 class ActivityObserver extends BaseObserver
 {

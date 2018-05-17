@@ -1,5 +1,5 @@
 <?php
-namespace App\Models\Observers;
+namespace App\Observers;
 
 use App\Models\Class_;
 
@@ -8,7 +8,7 @@ use App\Models\Class_;
  * Class UserObserver
  *
  * @author Mathrix Team
- * @package App\Models\Observers
+ * @package App\Observers
  */
 class ClassObserver extends BaseObserver
 {

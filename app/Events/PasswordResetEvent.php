@@ -31,6 +31,6 @@ class PasswordResetEvent extends BaseEvent
     public function handle(PasswordResetEvent $event)
     {
         Mail::to($event->user->email)
-            ->queue(new PasswordResetMail($event->user));
+            ->send(new PasswordResetMail($event->user));
     }
 }
