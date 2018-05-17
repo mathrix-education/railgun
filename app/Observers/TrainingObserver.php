@@ -1,5 +1,5 @@
 <?php
-namespace App\Models\Observers;
+namespace App\Observers;
 
 use App\Models\Section;
 use App\Models\Training;
@@ -10,7 +10,7 @@ use App\Models\User;
  * Class TrainingObserver
  *
  * @author Mathrix Back-End Team
- * @package App\Models\Observers
+ * @package App\Observers
  * @since 1.0.1
  * @copyright Mathrix Education SA
  */

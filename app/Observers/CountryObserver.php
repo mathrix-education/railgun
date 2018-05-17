@@ -1,5 +1,5 @@
 <?php
-namespace App\Models\Observers;
+namespace App\Observers;
 
 use App\Models\Country;
 
@@ -7,7 +7,7 @@ use App\Models\Country;
  * Class UserObserver
  *
  * @author Mathrix Team
- * @package App\Models\Observers
+ * @package App\Observers
  */
 class CountryObserver extends BaseObserver
 {

@@ -31,6 +31,6 @@ class PasswordForgottenEvent extends BaseEvent
     public function handle(PasswordForgottenEvent $event)
     {
         Mail::to($event->user->email)
-            ->queue(new PasswordForgottenMail($event->user));
+            ->send(new PasswordForgottenMail($event->user));
     }
 }

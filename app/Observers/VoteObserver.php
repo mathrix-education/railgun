@@ -1,5 +1,5 @@
 <?php
-namespace App\Models\Observers;
+namespace App\Observers;
 
 use App\Models\Vote;
 
@@ -7,7 +7,7 @@ use App\Models\Vote;
  * Class VoteObserver
  *
  * @author Mathrix Team
- * @package App\Models\Observers
+ * @package App\Observers
  */
 class VoteObserver extends BaseObserver
 {

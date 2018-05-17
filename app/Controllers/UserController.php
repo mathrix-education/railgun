@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * Class UserController
@@ -63,6 +64,7 @@ class UserController extends BaseController
      * @apiPermission registered for self get, at least admin for strangers
      * @apiUse Bearer
      * @apiUse UserRequest
+     * @apiParam (Data) {string} [current_password] The user current password. __Required for password change__.
      * @apiUse UserModel
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
@@ -90,6 +92,20 @@ class UserController extends BaseController
         } else if (!empty($requestData["link"]["trainings"])) {
             // Prevent trainings to be accessible
             unset($requestData["link"]["trainings"]);
+        }
+
+        // Check for current_password, skip for admins if they are editing another user
+        if (
+            ($requestUser->id == $user->id && $requestUser->tokenCan("admin")) ||
+            ($requestUser->id != $user->id || !$requestUser->tokenCan("admin")) &&
+            !empty($request->input("password", false))
+        ) {
+            $currentPassword = $request->input("current_password", false);
+            if (!$currentPassword) {
+                throw new Http400InvalidRequestException("`current_password` is required to change the password");
+            } else if (!Hash::check($currentPassword, $user->password)) {
+                throw new Http400InvalidRequestException("Current password is incorrect");
+            }
         }
 
         $user->fill($requestData);
