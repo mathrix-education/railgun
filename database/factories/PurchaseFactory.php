@@ -25,6 +25,7 @@ $factory->define(Purchase::class, function (Generator $faker) {
     $purchasableId = $modelClass::random()->id;
 
     return [
+        "uuid" => $faker->uuid,
         "price" => random_int(5, 10) * 100,
         "user_id" => User::random()->id,
         "purchasable_id" => $purchasableId,

@@ -236,6 +236,23 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
 
+    /**
+     * @param int $purchaseId
+     * @param string $purchaseType
+     *
+     * @return bool
+     */
+    public function hasPurchased(int $purchaseId, string $purchaseType): bool
+    {
+        return User::whereHas("purchases", function (Builder $query) use ($purchaseId, $purchaseType) {
+            $query->where([
+                ["purchasable_id", "=", $purchaseId],
+                ["purchasable_type", "=", "training"]
+            ]);
+        })->where("id", "=", $this->id)->exists();
+    }
+
+
     /*
     |--------------------------------------------------------------------------
     | Relations
