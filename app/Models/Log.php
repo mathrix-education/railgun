@@ -57,7 +57,10 @@ class Log extends BaseModel
         "user_cancelled_premium",
         // Trainings-related
         "user_payment_succeed_for_training",
-        "user_payment_failed_for_training"
+        "user_payment_failed_for_training",
+        // Sections-related
+        "user_payment_succeed_for_section",
+        "user_payment_failed_for_section"
     ];
 
     /** @var bool If timestamps (created_at and updated_at) should be used */

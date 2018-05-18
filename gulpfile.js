@@ -66,10 +66,10 @@ gulp.task("apidoc", ["apidoc-clean"], function (done) {
         src: "./",
         dest: "docs/apidoc/",
         config: "./",
-        template: "apidoc/templates/apidoc-bs3-template",
+        //template: "apidoc/templates/apidoc-bs3-template",
         includeFilters: ["apidoc/.*\\.php$", "app/Controllers/.*\\.php$"],
         //silent: true,
-        debug: true
+        //debug: true
     }, done);
 });
 

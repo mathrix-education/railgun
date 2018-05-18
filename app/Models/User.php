@@ -247,7 +247,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         return User::whereHas("purchases", function (Builder $query) use ($purchaseId, $purchaseType) {
             $query->where([
                 ["purchasable_id", "=", $purchaseId],
-                ["purchasable_type", "=", "training"]
+                ["purchasable_type", "=", $purchaseType]
             ]);
         })->where("id", "=", $this->id)->exists();
     }
