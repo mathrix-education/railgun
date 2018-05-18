@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Purchase;
+use App\Models\Traits\Purchasable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -22,7 +24,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property bool $visible
  * @property int $order
  * @property string|null $created_at
- * @property string|null $updated_at
+ * @property string|null
+ * @property-read Collection|Purchase[] $purchases
  * @property-read Collection|Section[] $sections
  * @property-read Collection|User[] $users
  * @method static Builder|Training whereId($value)
@@ -34,13 +37,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Training whereOrder($value)
  * @method static Builder|Training whereCreatedAt($value)
  * @method static Builder|Training whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 class Training extends BaseModel
 {
+    use Purchasable;
+
     /** @var array The guarded attributes */
     protected $guarded = [];
-
 
     /** @var array The validation rules on create */
     protected $rules = [
