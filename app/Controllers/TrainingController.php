@@ -4,9 +4,11 @@ namespace App\Controllers;
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http404ModelNotFoundException;
 use App\Models\Log;
+use App\Models\Purchase;
 use App\Models\Training;
 use App\Models\User;
 use App\Utils\StripeUtils;
+use Faker\Factory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -190,10 +192,8 @@ class TrainingController extends BaseController
         // Charge the user by creating him if he does not exists
         $user->updateCardOrCreateStripeCustomer($stripeToken);
 
-        // User trainings ids to check if h=he has already bought the training
-        $userTrainingIds = $user->trainings->pluck("id")->toArray();
 
-        if (in_array($training->id, $userTrainingIds)) {
+        if ($user->hasPurchased($training->id, "training")) {
             throw new Http400InvalidRequestException("Already bought the training '{$training->name}'");
         }
 
@@ -217,7 +217,14 @@ class TrainingController extends BaseController
 
         // Give subscription if charge succeeded
         if ($response->status == "succeeded") {
-            $user->trainings()->attach($training->id);
+            $purchase = new Purchase([
+                "uuid" => Factory::create()->uuid,
+                "price" => $training->price,
+                "user_id" => $user->id,
+                "purchasable_id" => $training->id,
+                "purchasable_type" => "training"
+            ]);
+            $purchase->save();
 
             // Add premium subscription if needed
             if ($withPremium) {
@@ -228,7 +235,7 @@ class TrainingController extends BaseController
 
             Log::log("user_payment_succeed_for_training", $user, ["training_id" => $training->id]);
 
-            return new JsonResponse($user->with(["class_", "subscriptions", "trainings"])->find($user->id));
+            return new JsonResponse($user->with(["class_", "subscriptions", "purchases"])->find($user->id));
         } else {
             Log::log("user_payment_failed_for_training", $user, ["training_id" => $training->id]);
 

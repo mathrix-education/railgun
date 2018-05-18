@@ -23,6 +23,7 @@ class CreateUserPurchaseTable extends Migration
         Schema::table("purchases", function (Blueprint $table) {
             $table->renameColumn("training_id", "purchasable_id");
             $table->string("purchasable_type")->after("training_id");
+            $table->uuid("uuid")->after("id");
             $table->integer("price")->after("id");
             $table->timestamps();
         });
@@ -41,9 +42,10 @@ class CreateUserPurchaseTable extends Migration
         DB::table("purchases")->where("purchasable_type", "!=", "training")->delete();
 
         Schema::table("purchases", function (Blueprint $table) {
+            $table->dropColumn("uuid");
+            $table->dropColumn("price");
             $table->renameColumn("purchasable_id", "training_id");
             $table->dropColumn("purchasable_type");
-            $table->dropColumn("price");
             $table->dropColumn("created_at");
             $table->dropColumn("updated_at");
         });
