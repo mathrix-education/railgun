@@ -40,9 +40,7 @@ class TrainingPolicy extends BasePolicy
      */
     public function recursive(User $currentUser, Training $training)
     {
-        $userTrainingIds = $currentUser->trainings->pluck("id")->toArray();
-
-        return in_array($training->id, $userTrainingIds) || $this->atLeastAdmin($currentUser);
+        return $currentUser->hasPurchased($training->id, "training") || $this->atLeastAdmin($currentUser);
     }
 
 

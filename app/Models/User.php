@@ -74,7 +74,6 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereCreatedAt($value)
  * @method static Builder|User whereUpdatedAt($value)
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Training[] $trainings
- * @mixin \Eloquent
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
@@ -110,7 +109,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     ];
 
     /** @var array The relations to include by default */
-    protected $with = ["class_", "trainings"];
+    protected $with = ["class_", "purchases"];
 
     /** @var array The virtual attributes */
     protected $appends = ["premium", "daily_points"];
@@ -237,6 +236,23 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
 
+    /**
+     * @param int $purchaseId
+     * @param string $purchaseType
+     *
+     * @return bool
+     */
+    public function hasPurchased(int $purchaseId, string $purchaseType): bool
+    {
+        return User::whereHas("purchases", function (Builder $query) use ($purchaseId, $purchaseType) {
+            $query->where([
+                ["purchasable_id", "=", $purchaseId],
+                ["purchasable_type", "=", $purchaseType]
+            ]);
+        })->where("id", "=", $this->id)->exists();
+    }
+
+
     /*
     |--------------------------------------------------------------------------
     | Relations
@@ -289,13 +305,13 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
 
     /**
-     * BelongsToMany Training
+     * HasMany Purchase
      *
-     * @return BelongsToMany
+     * @return HasMany
      */
-    public function trainings(): BelongsToMany
+    public function purchases(): HasMany
     {
-        return $this->belongsToMany(Training::class);
+        return $this->hasMany(Purchase::class);
     }
 
 

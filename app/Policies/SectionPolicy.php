@@ -1,6 +1,7 @@
 <?php
 namespace App\Policies;
 
+use App\Models\Section;
 use App\Models\User;
 
 /**
@@ -20,7 +21,28 @@ class SectionPolicy extends BasePolicy
      */
     public function index(User $currentUser)
     {
-        return $this->atLeastModerator($currentUser);
+        return $this->atLeastAdmin($currentUser);
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function get()
+    {
+        return true;
+    }
+
+
+    /**
+     * @param User $currentUser
+     * @param Section $section
+     *
+     * @return bool
+     */
+    public function recursive(User $currentUser, Section $section)
+    {
+        return $currentUser->hasPurchased($section->id, "section") || $this->atLeastAdmin($currentUser);
     }
 
 
@@ -31,7 +53,7 @@ class SectionPolicy extends BasePolicy
      */
     public function add(User $currentUser)
     {
-        return $this->atLeastModerator($currentUser);
+        return $this->atLeastAdmin($currentUser);
     }
 
 
@@ -42,7 +64,7 @@ class SectionPolicy extends BasePolicy
      */
     public function edit(User $currentUser)
     {
-        return $this->atLeastModerator($currentUser);
+        return $this->atLeastAdmin($currentUser);
     }
 
 
@@ -53,6 +75,6 @@ class SectionPolicy extends BasePolicy
      */
     public function delete(User $currentUser)
     {
-        return $this->atLeastModerator($currentUser);
+        return $this->atLeastAdmin($currentUser);
     }
 }
