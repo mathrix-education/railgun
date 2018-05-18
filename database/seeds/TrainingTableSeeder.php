@@ -4,6 +4,7 @@ use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\Lesson;
 
+use App\Models\Purchase;
 use App\Models\Section;
 use App\Models\Training;
 use App\Models\User;
@@ -36,7 +37,9 @@ class TrainingTableSeeder extends BaseTableSeeder
             "modelClass" => Lesson::class,
             "count" => random_int(300, 500)
         ]);
-
-        $this->link(Training::class, User::class, 5, 10);
+        $this->seedFromFactory([
+            "modelClass" => Purchase::class,
+            "count" => random_int(200, 500)
+        ]);
     }
 }

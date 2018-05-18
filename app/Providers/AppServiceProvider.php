@@ -52,7 +52,8 @@ class AppServiceProvider extends ServiceProvider
             'notion' => Notion::class,
             'module' => Module::class,
             'post' => Post::class,
-            'comment' => Comment::class
+            'training' => Training::class,
+            'section' => Section::class,
         ]);
 
         // Observers

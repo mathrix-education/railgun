@@ -107,18 +107,6 @@ class UserObserver extends BaseObserver
             }
         }
 
-        // Sync trainings
-        if (isset($user->link["trainings"])) {
-            $toSync = [];
-            foreach ($user->link["trainings"] as $order => $trainingId) {
-                if (Training::whereId($trainingId)->exists()) {
-                    $toSync[] = $trainingId;
-                }
-            }
-
-            $user->trainings()->sync($toSync);
-        }
-
         if (isset($user->link)) {
             unset($user->link);
         }

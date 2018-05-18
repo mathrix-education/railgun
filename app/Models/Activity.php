@@ -39,7 +39,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Activity whereType($value)
  * @method static Builder|Activity whereVisible($value)
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
- * @mixin \Eloquent
  */
 class Activity extends BaseModel
 {
