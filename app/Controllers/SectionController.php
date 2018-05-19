@@ -7,6 +7,7 @@ use App\Models\Log;
 use App\Models\Purchase;
 use App\Models\Section;
 use App\Models\User;
+use App\Utils\StripeUtils;
 use Faker\Factory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
@@ -22,8 +23,6 @@ use Illuminate\Http\Request;
  */
 class SectionController extends BaseController
 {
-    const SECTION_PRICE = 700;
-
     /**
      * @apiVersion 4.0.0
      * @api {get} /sections/{?page}/{?perPage} Index
@@ -195,7 +194,7 @@ class SectionController extends BaseController
             $description = $section->name;
 
             /** @var int $totalPrice Total price to pay, including premium surcharge if needed */
-            $totalPrice = self::SECTION_PRICE;
+            $totalPrice = StripeUtils::SECTION_PRICE;
 
             $response = $user->charge($totalPrice, [
                 "description" => $description
@@ -209,7 +208,7 @@ class SectionController extends BaseController
             // Save the purchase
             $purchase = new Purchase([
                 "uuid" => Factory::create()->uuid,
-                "price" => self::SECTION_PRICE,
+                "price" => StripeUtils::SECTION_PRICE,
                 "user_id" => $user->id,
                 "purchasable_id" => $section->id,
                 "purchasable_type" => "section"

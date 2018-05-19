@@ -5,5 +5,5 @@
 
 Written by Mathieu Bour and Dimitri Bret for Mathrix.
 
-- [REST API Documentation](https://docs.institut.mathrix.fr)
+- [REST API Documentation](https://dev.docs.mathrix.fr)
 - [Contributing Guide](docs/md/home.md)

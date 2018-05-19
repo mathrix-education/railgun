@@ -5,11 +5,12 @@ stages:
   - test
   - deploy
 
+
 #--------------------------------------------------------------------------
 # Run unit tests
 #--------------------------------------------------------------------------
 tests:
-  image: edbizarro/gitlab-ci-pipeline-php:7.1
+  image: edbizarro/gitlab-ci-pipeline-php:7.2
   stage: test
   services:
     - mysql:5.7
@@ -21,13 +22,16 @@ tests:
     - cp config/env/.env.pipelines .env
     - composer install --prefer-dist -q -o
     - php artisan migrate:refresh --seed
-    # PHPUnit
+    # PHPUnit (need to sudo to avoid permissions problems)
     - sudo ./vendor/phpunit/phpunit/phpunit -v --coverage-text --colors=never --stderr
   artifacts:
     paths:
       - storage/logs/lumen.log
     expire_in: 1 days
     when: always
+  only:
+    - dev
+    - master
 
 
 #--------------------------------------------------------------------------
