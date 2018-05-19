@@ -278,6 +278,7 @@ abstract class BaseModel extends Model
 
 
     /**
+     * @codeCoverageIgnore
      * @throws \Doctrine\DBAL\DBALException
      */
     public function getTableStructure()

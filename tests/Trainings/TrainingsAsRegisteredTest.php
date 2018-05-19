@@ -2,7 +2,6 @@
 namespace Tests\Trainings;
 
 use App\Models\Lesson;
-use App\Models\Purchase;
 use App\Models\Section;
 use App\Models\Training;
 use App\Models\User;
@@ -31,13 +30,12 @@ class TrainingsAsRegisteredTest extends TrainingsAsPublicTest
                 ->where("type", $this->user->type)
                 ->inRandomOrder()
                 ->firstOrFail();
-            /** @var Purchase $purchase */
-            $purchase = $user->purchases()
+            $trainingIds = $user->purchases()
                 ->where("purchasable_type", "=", "training")
-                ->inRandomOrder()
-                ->firstOrFail();
+                ->pluck("purchasable_id")
+                ->toArray();
             /** @var Training $training */
-            $training = $purchase->purchasable;
+            $training = Training::whereVisible(true)->whereIn("id", $trainingIds)->firstOrFail();
         } else {
             /** @var User $user */
             $user = User::inRandomOrder()

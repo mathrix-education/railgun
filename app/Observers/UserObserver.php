@@ -6,7 +6,6 @@ use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\Level;
 use App\Models\Log;
-use App\Models\Training;
 use App\Models\User;
 use Carbon\Carbon;
 use Faker\Factory;

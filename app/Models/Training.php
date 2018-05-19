@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Purchase;
 use App\Models\Traits\Purchasable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;

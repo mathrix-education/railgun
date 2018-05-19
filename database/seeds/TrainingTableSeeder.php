@@ -3,11 +3,9 @@
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\Lesson;
-
 use App\Models\Purchase;
 use App\Models\Section;
 use App\Models\Training;
-use App\Models\User;
 
 /**
  * Class BlogTableSeeder

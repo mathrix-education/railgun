@@ -30,12 +30,12 @@ class SectionsAsRegisteredTest extends SectionsAsPublicTest
                 ->inRandomOrder()
                 ->firstOrFail();
             /** @var Purchase $purchase */
-            $purchase = $user->purchases()
+            $sectionsIds = $user->purchases()
                 ->where("purchasable_type", "=", "section")
-                ->inRandomOrder()
-                ->firstOrFail();
+                ->pluck("purchasable_id")
+                ->toArray();
             /** @var Section $section */
-            $section = $purchase->purchasable;
+            $section = Section::whereVisible(true)->whereIn("id", $sectionsIds)->firstOrFail();
         } else {
             /** @var User $user */
             $user = User::inRandomOrder()
@@ -161,5 +161,35 @@ class SectionsAsRegisteredTest extends SectionsAsPublicTest
         $this->call("post", "sections/{$section->id}/buy", ["stripe_token" => "tok_visa"]);
 
         $this->assertHttp400InvalidRequest();
+    }
+
+
+    /**
+     * POST /sections/{id}/buy
+     */
+    public function testBuyInvalidToken()
+    {
+        // Skip for moderators and admins
+        if ($this->user->type != "registered") {
+            return;
+        }
+
+        $userSectionIds = $this->user->purchases()
+            ->where("purchasable_type", "=", "section")
+            ->get()
+            ->pluck("purchasable_id")
+            ->toArray();
+        $section = Section::whereVisible(true)
+            ->whereNotIn("id", $userSectionIds)
+            ->firstOrFail();
+
+        $this->call("post", "sections/{$section->id}/buy", ["stripe_token" => "tok_chargeCustomerFail"]);
+
+        $this->assertResponseStatus(400);
+        $this->assertNotInDatabase("purchases", [
+            "user_id" => $this->user->id,
+            "purchasable_id" => $section->id,
+            "purchasable_type" => "section"
+        ]);
     }
 }

@@ -9,6 +9,7 @@ namespace Tests;
  *
  * @method assertHttp400InvalidRequest()
  * @method assertHttp401Unauthorized()
+ * @method assertHttp404ModelNotFound()
  * @method assertHttp501NotImplemented()
  */
 trait HttpAssertions

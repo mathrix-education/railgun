@@ -3,7 +3,6 @@ namespace App\Controllers;
 
 use App\Exceptions\Http404ModelNotFoundException;
 use App\Models\Chapter;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
