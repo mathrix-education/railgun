@@ -75,6 +75,30 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
 
 
     /**
+     * PATCH /users/{id} with the incorrect current_password field
+     *
+     * @throws \Exception
+     */
+    public function testEditPasswordWithIncorrectCurrentPassword()
+    {
+        $newPassword = "test2";
+        $newUser = factory(User::class, $this->user->type)->raw();
+        unset($newUser["token"], $newUser["settings"], $newUser["points"], $newUser["level"],
+            $newUser["created_at"]);
+        $newUser["password"] = $newPassword;
+        $newUser["current_password"] = "test_incorrect";
+
+        $this->call("patch", "/users/" . $this->user->id, $newUser);
+
+        $this->assertHttp400InvalidRequest();
+
+        unset($newUser["current_password"], $newUser["password"]);
+
+        $this->assertNotInDatabase("users", $newUser);
+    }
+
+
+    /**
      * PATCH /users/{id} without the current_password field
      *
      * @throws \Exception

@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Module;
-
 use App\Models\Report;
 use Faker\Generator;
 

@@ -2,7 +2,6 @@
 namespace Tests\Modules;
 
 use App\Models\Module;
-use App\Models\User;
 
 /**
  * Class ModulesAsModeratorTest

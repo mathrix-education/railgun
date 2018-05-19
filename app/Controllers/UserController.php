@@ -89,9 +89,6 @@ class UserController extends BaseController
         // Unlock fields for admin
         if ($requestUser->tokenCan("admin")) {
             $user->unguardAttributes(["type"]);
-        } else if (!empty($requestData["link"]["trainings"])) {
-            // Prevent trainings to be accessible
-            unset($requestData["link"]["trainings"]);
         }
 
         // Check for current_password, skip for admins if they are editing another user

@@ -43,6 +43,7 @@ class Handler extends ExceptionHandler
         OAuthServerException::class,
         Http401UnauthorizedException::class,
         Http404ModelNotFoundException::class,
+        Http422ModelValidationException::class,
         Http429TooManyRequestsException::class,
         Http501NotImplementedException::class,
         StripeException::class
@@ -55,6 +56,8 @@ class Handler extends ExceptionHandler
      * @param Exception $e
      *
      * @throws Exception
+     *
+     * @codeCoverageIgnore
      */
     public function report(Exception $e)
     {

@@ -3,7 +3,6 @@ namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http401UnauthorizedException;
-use App\Exceptions\Http404ModelNotFoundException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\Meta;
@@ -54,7 +53,6 @@ class ModuleController extends BaseController
      * @param null $value not used here
      *
      * @return JsonResponse
-     * @throws Http401UnauthorizedException
      * @throws \Exception
      */
     public function get(Request $request, $key, $value = null): JsonResponse

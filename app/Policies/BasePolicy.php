@@ -32,13 +32,6 @@ abstract class BasePolicy
         }
     }
 
-
-    public function adminOnly()
-    {
-        return false;
-    }
-
-
     /**
      * Dynamically check for permission based on method name
      *

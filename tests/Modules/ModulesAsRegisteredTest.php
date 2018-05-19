@@ -1,13 +1,6 @@
 <?php
 namespace Tests\Modules;
 
-use App\Models\Activity;
-use App\Models\Chapter;
-use App\Models\Class_;
-use App\Models\Country;
-use App\Models\Discipline;
-use App\Models\Module;
-use App\Models\Notion;
 use Tests\Tree;
 
 /**

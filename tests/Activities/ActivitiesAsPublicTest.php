@@ -1,9 +1,7 @@
 <?php
 namespace Tests\Activities;
 
-use App\Models\Activity;
 use App\Models\Meta;
-use Laravel\Passport\Passport;
 use Tests\ScopeTestCase;
 use Tests\Tree;
 

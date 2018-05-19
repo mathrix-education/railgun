@@ -6,7 +6,6 @@ use App\Models\User;
 use Carbon\Carbon;
 use Faker\Factory;
 use Faker\Generator;
-
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Laravel\Lumen\Testing\TestCase;
 use Symfony\Component\HttpFoundation\Response;

@@ -1,8 +1,5 @@
 <?php
 
-use App\Models\Category;
-use App\Models\Module;
-use App\Models\Post;
 use App\Models\Purchase;
 use App\Models\Section;
 use App\Models\Training;

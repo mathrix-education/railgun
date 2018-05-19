@@ -3,7 +3,6 @@ namespace Tests;
 
 use App\Models\BaseModel;
 use App\Models\User;
-
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Laravel\Passport\Passport;
 use Tests\Generics\Generics;
