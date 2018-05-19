@@ -164,6 +164,7 @@ class TrainingController extends BaseController
      * @apiPermission registered
      * @apiParam {int} id The training id
      * @apiParam (Data) {int} stripe_token The stripe token
+     * @apiParam (Data) {bool} [sponsor_email=false] The sponsor email
      * @apiParam (Data) {bool} [premium=false] If a premium subscription must be applied
      * @apiUse UserModel
      * @apiUse PurchaseArray
@@ -181,6 +182,7 @@ class TrainingController extends BaseController
     {
         $training = Training::whereId($id)->firstOrFail();
         $stripeToken = $request->input("stripe_token");
+        $sponsorEmail = $request->input("sponsor_email", false);
         $withPremium = (bool)$request->input("premium", false);
 
         if ($stripeToken === null) {
@@ -194,20 +196,32 @@ class TrainingController extends BaseController
             throw new Http400InvalidRequestException("Already bought the training '{$training->name}'");
         }
 
-        // Charge the user by creating him if he does not exists
-        $user->updateCardOrCreateStripeCustomer($stripeToken);
+        /** @var int $totalPrice Total price to pay, including premium surcharge if needed */
+        $totalPrice = $training->price;
 
         // Pipe Stripe exception to our HTTP 400 Bad Request exception
         try {
             $description = $training->name;
 
-            /** @var int $totalPrice Total price to pay, including premium surcharge if needed */
-            $totalPrice = $training->price;
-
             if ($withPremium && !$user->premium) {
                 $totalPrice += StripeUtils::getSurchargeForPremium($training);
                 $description .= " with premium subscription";
             }
+
+            // Sponsorship discount
+            if ($sponsorEmail) {
+                $sponsor = User::whereEmail($sponsorEmail)->firstOr(function () use ($sponsorEmail) {
+                    throw new Http404ModelNotFoundException("Unable to find user with the email `$sponsorEmail`");
+                });
+
+                if ($sponsor->hasPurchased($training->id, "training")) {
+                    // Reduce total price
+                    $totalPrice -= StripeUtils::SPONSORSHIP_DISCOUNT;
+                }
+            }
+
+            // Charge the user by creating him if he does not exists
+            $user->updateCardOrCreateStripeCustomer($stripeToken);
 
             $response = $user->charge($totalPrice, [
                 "description" => $description
@@ -221,7 +235,7 @@ class TrainingController extends BaseController
             // Save the purchase
             $purchase = new Purchase([
                 "uuid" => Factory::create()->uuid,
-                "price" => $training->price,
+                "price" => $totalPrice,
                 "user_id" => $user->id,
                 "purchasable_id" => $training->id,
                 "purchasable_type" => "training"

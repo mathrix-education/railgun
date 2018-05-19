@@ -2,6 +2,7 @@
 namespace Tests\Trainings;
 
 use App\Models\Lesson;
+use App\Models\Purchase;
 use App\Models\Section;
 use App\Models\Training;
 use App\Models\User;
@@ -195,5 +196,52 @@ class TrainingsAsRegisteredTest extends TrainingsAsPublicTest
             "stripe_plan" => "v3_annually",
             "trial_ends_at" => StripeUtils::getNextJuly()
         ]);
+    }
+
+
+    /**
+     * @throws \Exception
+     */
+    public function testBuyWithSponsorship()
+    {
+        /** @var Purchase $purchase */
+        $purchase = Purchase::wherePurchasableType("training")->inRandomOrder()->firstOrFail();
+        /** @var Training $training */
+        $training = $purchase->purchasable;
+        /** @var User $sponsor */
+        $sponsor = $purchase->user;
+
+        /** @var array $userIdsWhoBoughtThisTraining */
+        $userIdsWhoBoughtThisTraining = Purchase::where([
+            ["purchasable_id", "=", $training->id],
+            ["purchasable_type", "=", "training"]
+        ])
+            ->pluck("user_id")
+            ->toArray();
+
+        /** @var User $buyer */
+        $buyer = User::whereType($this->user->type)
+            ->whereNotIn("id", $userIdsWhoBoughtThisTraining)
+            ->firstOrFail();
+
+        Passport::actingAs($buyer, [$buyer->type]);
+
+        $this->call("post", "/trainings/{$training->id}/buy", [
+            "stripe_token" => "tok_visa",
+            "sponsor_email" => $sponsor->email
+        ]);
+
+        $newPurchase = Purchase::where([
+            ["user_id", "=", $buyer->id],
+            ["purchasable_id", "=", $training->id],
+            ["purchasable_type", "=", "training"]
+        ])->first();
+        $responseData = $this->getResponseData();
+
+        $this->assertHttp200Success();
+        $this->assertTrue(isset($responseData->subscriptions));
+        $this->assertTrue(!empty($responseData->purchases));
+        $this->assertInstanceOf(Purchase::class, $newPurchase);
+        $this->assertEquals($training->price - StripeUtils::SPONSORSHIP_DISCOUNT, $newPurchase->price);
     }
 }
