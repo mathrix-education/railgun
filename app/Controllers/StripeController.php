@@ -7,7 +7,6 @@ use App\Exceptions\Http422ModelValidationException;
 use App\Models\Log;
 use App\Models\User;
 use App\Utils\StripeUtils;
-use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -155,6 +154,7 @@ class StripeController extends CashierController
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      * @throws \Exception
+     * @codeCoverageIgnore
      */
     public function handleInvoicePaymentSucceeded($payload)
     {
@@ -178,6 +178,7 @@ class StripeController extends CashierController
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      * @throws \Exception
+     * @codeCoverageIgnore
      */
     public function handleInvoicePaymentFailed(array $payload)
     {
@@ -203,6 +204,7 @@ class StripeController extends CashierController
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      * @throws \Exception
+     * @codeCoverageIgnore
      */
     public function handleCustomerSubscriptionDeleted(array $payload)
     {
@@ -212,7 +214,7 @@ class StripeController extends CashierController
         if ($user) {
             $user->subscriptions->filter(function ($subscription) use ($payload) {
                 /** @var Subscription $subscription */
-                return $subscription->stripe_id === $payload['data']['object']['id'];
+                return $subscription->stripe_id === $payload["data"]["object"]["id"];
             })->each(function ($subscription) {
                 /** @var Subscription $subscription */
                 if ($subscription->onTrial()) {

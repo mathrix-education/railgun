@@ -69,7 +69,7 @@ abstract class BaseController extends Controller
         $potentialModelClass = "App\\Models\\$potentialModel";
 
         if (!class_exists($potentialModelClass) && $fail) {
-            throw new Http400InvalidRequestException("$potentialModelClass does not exist");
+            throw new Http400InvalidRequestException("$potentialModelClass does not exist"); // @codeCoverageIgnore
         } else if (!class_exists($potentialModelClass) && !$fail) {
             return false;
         } else {
@@ -151,9 +151,6 @@ abstract class BaseController extends Controller
      */
     public function get(Request $request, $key, $value = null): JsonResponse
     {
-        if (!is_numeric($key) && $value === null) {
-            throw new Http400InvalidRequestException("The given id \"$key\" is not numeric");
-        }
         if (is_numeric($key) && $value === null) {
             $value = $key;
             $key = "id";
@@ -337,7 +334,6 @@ abstract class BaseController extends Controller
      */
     protected function getByQuery(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
     {
-
         $modelClass = $this->resolveModelClass($what);
         $ucName = ucfirst($what);
 

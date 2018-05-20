@@ -5,14 +5,13 @@ use App\Exceptions\Http401UnauthorizedException;
 use App\Models\Activity;
 use App\Models\Chapter;
 use App\Models\Class_;
-
 use App\Models\Notion;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
@@ -247,7 +246,7 @@ class ContentController extends BaseController
      */
     public function upload(Request $request)
     {
-        if ($request->user()->cant('upload')) {
+        if (!$request->user()->isModerator()) {
             throw new Http401UnauthorizedException();
         }
 
@@ -256,10 +255,12 @@ class ContentController extends BaseController
             "destination" => "required",
             "name" => "required"
         ]);
-
-        $request->file("file")->storeAs(
+        /** @var UploadedFile $file */
+        $file = $request->input("file");
+        $file->storeAs(
             $request->input("destination"),
-            $request->input("name")
+            $request->input("name"),
+            ["disk" => "cdn"]
         );
 
         return response()->json([

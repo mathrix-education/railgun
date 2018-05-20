@@ -1,5 +1,5 @@
 <?php
-namespace App\Models\Observers;
+namespace App\Observers;
 
 use App\Exceptions\Http422ModelSaveException;
 use App\Models\Comment;
@@ -9,7 +9,7 @@ use Exception;
  * Class CommentObserver
  *
  * @author Mathrix Team
- * @package App\Models\Observers
+ * @package App\Observers
  */
 class CommentObserver extends BaseObserver
 {

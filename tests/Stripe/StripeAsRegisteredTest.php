@@ -32,4 +32,20 @@ class StripeAsRegisteredTest extends ScopeTestCase
             "stripe_plan" => $stripePlan
         ]);
     }
+
+
+    /**
+     * GET /stripe/estimate
+     *
+     * @throws \Exception
+     */
+    public function testEstimate()
+    {
+        $this->call("get", "/stripe/estimate/v3_annually");
+        $response = $this->getResponseData() ;
+
+        $this->assertHttp200Success();
+        $this->assertTrue(isset($response->price));
+        $this->assertTrue(isset($response->end_date));
+    }
 }

@@ -8,6 +8,7 @@ namespace App\Mails;
  * @package App\Mails
  * @since 1.0.1
  * @copyright Mathrix Education SA
+ * @codeCoverageIgnore
  */
 class PasswordResetMail extends UserMail
 {

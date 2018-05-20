@@ -1,12 +1,11 @@
 <?php
-namespace App\Models\Observers;
+namespace App\Observers;
 
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\Level;
 use App\Models\Log;
-use App\Models\Training;
 use App\Models\User;
 use Carbon\Carbon;
 use Faker\Factory;
@@ -17,7 +16,7 @@ use Spatie\Newsletter\NewsletterFacade as Newsletter;
  * Class UserObserver
  *
  * @author Mathrix Team
- * @package App\Models\Observers
+ * @package App\Observers
  */
 class UserObserver extends BaseObserver
 {
@@ -32,6 +31,7 @@ class UserObserver extends BaseObserver
      */
     public function saving($user)
     {
+        // Subscribe the user to "subscribers" Mailchimp list
         if (app()->environment("master", "stage") && $user->isDirty("email")) {
             $options = [];
 
@@ -51,11 +51,11 @@ class UserObserver extends BaseObserver
                 $options["TYPE"] = $user->type;
             }
 
-            // Subscribe the user to "subscribers" Mailchimp list
             Newsletter::subscribeOrUpdate($user->email, $options, "subscribers");
 
         }
 
+        // Password hash check
         if ($user->isDirty("password")) {
             /*
              * Hash if needed:
@@ -104,18 +104,6 @@ class UserObserver extends BaseObserver
                 $user->level++;
                 $nextLevel = Level::where("level", $user->level + 1)->first();
             }
-        }
-
-        // Sync trainings
-        if (isset($user->link["trainings"])) {
-            $toSync = [];
-            foreach ($user->link["trainings"] as $order => $trainingId) {
-                if (Training::whereId($trainingId)->exists()) {
-                    $toSync[] = $trainingId;
-                }
-            }
-
-            $user->trainings()->sync($toSync);
         }
 
         if (isset($user->link)) {

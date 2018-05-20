@@ -1,13 +1,7 @@
 <?php
 namespace Tests\Activities;
 
-use App\Models\Activity;
-use App\Models\Chapter;
-use App\Models\Class_;
-use App\Models\Country;
-use App\Models\Discipline;
 use App\Models\Meta;
-use App\Models\Notion;
 use Laravel\Passport\Passport;
 use Tests\Tree;
 
@@ -172,5 +166,16 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
         $meta = Meta::find($meta->id);
 
         $this->assertTrue($oldDate < $meta->updated_at);
+    }
+
+
+    /**
+     * PATCH /activities/{id}/mark
+     * Try to mark an activity which does not exist, assert HTTP 404 model_not_found
+     */
+    public function testMarkNotExists()
+    {
+        $this->call("patch", "/activities/999999/mark", ["favorite" => true]);
+        $this->assertHttp404ModelNotFound();
     }
 }
