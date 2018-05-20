@@ -1,5 +1,5 @@
 <?php
-namespace App\Models\Observers;
+namespace App\Observers;
 
 
 use App\Models\Discipline;
@@ -8,7 +8,7 @@ use App\Models\Discipline;
  * Class DisciplineObserver
  *
  * @author Mathrix Team
- * @package App\Models\Observers
+ * @package App\Observers
  */
 class DisciplineObserver extends BaseObserver
 {

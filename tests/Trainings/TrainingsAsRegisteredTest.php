@@ -2,10 +2,12 @@
 namespace Tests\Trainings;
 
 use App\Models\Lesson;
+use App\Models\Purchase;
 use App\Models\Section;
 use App\Models\Training;
 use App\Models\User;
 use App\Utils\StripeUtils;
+use Illuminate\Database\Eloquent\Builder;
 use Laravel\Passport\Passport;
 
 /**
@@ -23,21 +25,27 @@ class TrainingsAsRegisteredTest extends TrainingsAsPublicTest
     {
         if ($isBuyer) {
             /** @var User $user */
-            $user = User::whereHas("trainings")
+            $user = User::whereHas("purchases", function (Builder $query) {
+                $query->where("purchasable_type", "=", "training");
+            })
                 ->where("type", $this->user->type)
                 ->inRandomOrder()
                 ->firstOrFail();
+            $trainingIds = $user->purchases()
+                ->where("purchasable_type", "=", "training")
+                ->pluck("purchasable_id")
+                ->toArray();
             /** @var Training $training */
-            $training = $user->trainings()
-                ->where("visible", true)
-                ->inRandomOrder()
-                ->firstOrFail();
+            $training = Training::whereVisible(true)->whereIn("id", $trainingIds)->firstOrFail();
         } else {
             /** @var User $user */
             $user = User::inRandomOrder()
                 ->where("type", $this->user->type)
                 ->firstOrFail();
-            $userTrainingIds = $user->trainings->pluck("id")->toArray();
+            $userTrainingIds = $user->purchases()
+                ->where("purchasable_type", "=", "training")
+                ->pluck("purchasable_id")
+                ->toArray();
             /** @var Training $training */
             $training = Training::inRandomOrder()
                 ->where("visible", true)
@@ -65,17 +73,20 @@ class TrainingsAsRegisteredTest extends TrainingsAsPublicTest
     {
         $data = $this->getResponseData();
 
-        $this->assertTrue(isset($data->sections));
+        $this->assertTrue(isset($data->sections), "No sections were sent.");
 
         /** @var Section $section */
         foreach ($data->sections as $section) {
-            $this->assertTrue($section->visible || $this->user->isModerator());
+            $this->assertTrue($section->visible || $this->user->isModerator(),
+                "An invisible section was sent.");
             /** @var Lesson $lesson */
             foreach ($section->lessons as $lesson) {
-                $this->assertTrue($lesson->visible || $this->user->isModerator());
+                $this->assertTrue($lesson->visible || $this->user->isModerator(),
+                    "An invisible lesson was sent.");
 
                 if (!empty($lesson->module)) {
-                    $this->assertTrue($lesson->visible || $this->user->isModerator());
+                    $this->assertTrue($lesson->visible || $this->user->isModerator(),
+                        "An invisible module was sent.");
                 }
             }
         }
@@ -114,8 +125,15 @@ class TrainingsAsRegisteredTest extends TrainingsAsPublicTest
             return;
         }
 
-        $userTrainingIds = $this->user->trainings->pluck("id")->toArray();
-        $training = Training::inRandomOrder()->whereNotIn("id", $userTrainingIds)->firstOrFail();
+        $userTrainingIds = $this->user->purchases()
+            ->where("purchasable_type", "=", "training")
+            ->get()
+            ->pluck("purchasable_id")
+            ->toArray();
+        $training = Training::inRandomOrder()
+            ->where("visible", "=", true)
+            ->whereNotIn("id", $userTrainingIds)
+            ->firstOrFail();
 
         $this->call("post", "/trainings/{$training->id}/buy", [
             "stripe_token" => "tok_visa"
@@ -125,8 +143,12 @@ class TrainingsAsRegisteredTest extends TrainingsAsPublicTest
 
         $this->assertHttp200Success();
         $this->assertTrue(isset($responseData->subscriptions));
-        $this->assertTrue(!empty($responseData->trainings));
-        $this->assertInDatabase("training_user", ["user_id" => $this->user->id, "training_id" => $training->id]);
+        $this->assertTrue(!empty($responseData->purchases));
+        $this->assertInDatabase("purchases", [
+            "user_id" => $this->user->id,
+            "purchasable_id" => $training->id,
+            "purchasable_type" => "training"
+        ]);
     }
 
 
@@ -142,8 +164,16 @@ class TrainingsAsRegisteredTest extends TrainingsAsPublicTest
             return;
         }
 
-        $userTrainingIds = $this->user->trainings->pluck("id")->toArray();
-        $training = Training::inRandomOrder()->whereNotIn("id", $userTrainingIds)->firstOrFail();
+        $userTrainingIds = $this->user->purchases()
+            ->where("purchasable_type", "=", "training")
+            ->get()
+            ->pluck("purchasable_id")
+            ->toArray();
+
+        $training = Training::inRandomOrder()
+            ->whereNotIn("id", $userTrainingIds)
+            ->where("visible", "=", true)
+            ->firstOrFail();
 
         $this->call("post", "/trainings/{$training->id}/buy", [
             "stripe_token" => "tok_visa",
@@ -154,13 +184,64 @@ class TrainingsAsRegisteredTest extends TrainingsAsPublicTest
 
         $this->assertHttp200Success();
         $this->assertTrue(isset($responseData->subscriptions));
-        $this->assertTrue(!empty($responseData->trainings));
-        $this->assertInDatabase("training_user", ["user_id" => $this->user->id, "training_id" => $training->id]);
+        $this->assertTrue(!empty($responseData->purchases));
+        $this->assertInDatabase("purchases", [
+            "user_id" => $this->user->id,
+            "purchasable_id" => $training->id,
+            "purchasable_type" => "training"
+        ]);
         $this->assertInDatabase("subscriptions", [
             "user_id" => $this->user->id,
             "name" => "premium",
             "stripe_plan" => "v3_annually",
             "trial_ends_at" => StripeUtils::getNextJuly()
         ]);
+    }
+
+
+    /**
+     * @throws \Exception
+     */
+    public function testBuyWithSponsorship()
+    {
+        /** @var Purchase $purchase */
+        $purchase = Purchase::wherePurchasableType("training")->inRandomOrder()->firstOrFail();
+        /** @var Training $training */
+        $training = $purchase->purchasable;
+        /** @var User $sponsor */
+        $sponsor = $purchase->user;
+
+        /** @var array $userIdsWhoBoughtThisTraining */
+        $userIdsWhoBoughtThisTraining = Purchase::where([
+            ["purchasable_id", "=", $training->id],
+            ["purchasable_type", "=", "training"]
+        ])
+            ->pluck("user_id")
+            ->toArray();
+
+        /** @var User $buyer */
+        $buyer = User::whereType($this->user->type)
+            ->whereNotIn("id", $userIdsWhoBoughtThisTraining)
+            ->firstOrFail();
+
+        Passport::actingAs($buyer, [$buyer->type]);
+
+        $this->call("post", "/trainings/{$training->id}/buy", [
+            "stripe_token" => "tok_visa",
+            "sponsor_email" => $sponsor->email
+        ]);
+
+        $newPurchase = Purchase::where([
+            ["user_id", "=", $buyer->id],
+            ["purchasable_id", "=", $training->id],
+            ["purchasable_type", "=", "training"]
+        ])->first();
+        $responseData = $this->getResponseData();
+
+        $this->assertHttp200Success();
+        $this->assertTrue(isset($responseData->subscriptions));
+        $this->assertTrue(!empty($responseData->purchases));
+        $this->assertInstanceOf(Purchase::class, $newPurchase);
+        $this->assertEquals($training->price - StripeUtils::SPONSORSHIP_DISCOUNT, $newPurchase->price);
     }
 }

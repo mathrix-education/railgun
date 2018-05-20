@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-
-use App\Models\Lesson;
+use App\Models\Traits\Purchasable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
@@ -25,8 +23,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $training_id
  * @property string|null $created_at
  * @property string|null $updated_at
- * @property-read Training $training
  * @property-read Collection|Lesson[] $lessons
+ * @property-read Collection|Purchase[] $purchases
+ * @property-read Training $training
  * @method static Builder|Section whereId($value)
  * @method static Builder|Section whereName($value)
  * @method static Builder|Section whereOrder($value)
@@ -35,10 +34,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Section whereTrainingId($value)
  * @method static Builder|Section whereCreatedAt($value)
  * @method static Builder|Section whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 class Section extends BaseModel
 {
+    use Purchasable;
+
     /** @var array The guarded attributes */
     protected $guarded = [];
 

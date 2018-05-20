@@ -5,9 +5,9 @@
  * @copyright Mathrix Education SA
  */
 
+use App\Models\Lesson;
 use App\Models\Module;
 use App\Models\Section;
-use App\Models\Lesson;
 use Faker\Generator;
 
 /**

@@ -6,6 +6,7 @@ use App\Models\Log;
 use App\Models\Module;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * Class UsersAsRegisteredTest
@@ -41,6 +42,78 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
 
         $this->assertHttp200Success();
         $this->assertInDatabase("users", $newUser);
+    }
+
+
+    /**
+     * PATCH /users/{id} with the current_password field
+     *
+     * @throws \Exception
+     */
+    public function testEditPassword()
+    {
+        $newPassword = "test2";
+        $newUser = factory(User::class, $this->user->type)->raw();
+        unset($newUser["token"], $newUser["settings"], $newUser["points"], $newUser["level"],
+            $newUser["created_at"]);
+        $newUser["password"] = $newPassword;
+        $newUser["current_password"] = "test";
+
+        $this->call("patch", "/users/" . $this->user->id, $newUser);
+
+        $responseData = $this->getResponseData();
+        unset($newUser["current_password"], $newUser["password"]);
+
+        $this->assertHttp200Success();
+        $this->assertInDatabase("users", $newUser);
+
+        $hashedPassword = User::whereId($responseData->id)->first()->password;
+
+        $this->assertTrue(Hash::check($newPassword, $hashedPassword), "New hashed password does not match " .
+            "with the one in the database");
+    }
+
+
+    /**
+     * PATCH /users/{id} with the incorrect current_password field
+     *
+     * @throws \Exception
+     */
+    public function testEditPasswordWithIncorrectCurrentPassword()
+    {
+        $newPassword = "test2";
+        $newUser = factory(User::class, $this->user->type)->raw();
+        unset($newUser["token"], $newUser["settings"], $newUser["points"], $newUser["level"],
+            $newUser["created_at"]);
+        $newUser["password"] = $newPassword;
+        $newUser["current_password"] = "test_incorrect";
+
+        $this->call("patch", "/users/" . $this->user->id, $newUser);
+
+        $this->assertHttp400InvalidRequest();
+
+        unset($newUser["current_password"], $newUser["password"]);
+
+        $this->assertNotInDatabase("users", $newUser);
+    }
+
+
+    /**
+     * PATCH /users/{id} without the current_password field
+     *
+     * @throws \Exception
+     */
+    public function testEditPasswordWithoutCurrentPasswordField()
+    {
+        $newPassword = "test2";
+        $newUser = factory(User::class, $this->user->type)->raw();
+        unset($newUser["token"], $newUser["settings"], $newUser["points"], $newUser["level"],
+            $newUser["created_at"]);
+        $newUser["password"] = $newPassword;
+
+        $this->call("patch", "/users/" . $this->user->id, $newUser);
+
+        $this->assertHttp400InvalidRequest();
     }
 
 

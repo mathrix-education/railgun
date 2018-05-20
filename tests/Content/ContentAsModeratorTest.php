@@ -1,6 +1,9 @@
 <?php
 namespace Tests\Content;
 
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+
 
 /**
  * Class ContentAsModeratorTest
@@ -13,4 +16,19 @@ namespace Tests\Content;
  */
 class ContentAsModeratorTest extends ContentAsRegisteredTest
 {
+    /**
+     * POST /content/upload
+     * Test file uploads on CDN
+     */
+    public function testUpload()
+    {
+        $this->call("post", "/content/upload", [
+            "file" => UploadedFile::fake()->image("avatar.jpg"),
+            "destination" => "test",
+            "name" => "avatar.jpg"
+        ]);
+
+        $this->assertHttp200Success();
+        Storage::disk("cdn")->assertExists("test/avatar.jpg");
+    }
 }

@@ -128,7 +128,7 @@ class UsersAsPublicTest extends ScopeTestCase
         $this->call("post", "/users/forgot", ["email" => $user->email]);
 
         $this->assertHttp200Success();
-        Mail::assertQueued(PasswordForgottenMail::class, function (PasswordForgottenMail $mail) use ($user) {
+        Mail::assertSent(PasswordForgottenMail::class, function (PasswordForgottenMail $mail) use ($user) {
             return $mail->hasTo($user->email);
         });
     }
@@ -157,7 +157,7 @@ class UsersAsPublicTest extends ScopeTestCase
         $this->call("post", "/users/reset/{$user->token}", ["password" => "test"]);
 
         $this->assertHttp200Success();
-        Mail::assertQueued(PasswordResetMail::class, function (PasswordResetMail $mail) use ($user) {
+        Mail::assertSent(PasswordResetMail::class, function (PasswordResetMail $mail) use ($user) {
             return $mail->hasTo($user->email);
         });
     }

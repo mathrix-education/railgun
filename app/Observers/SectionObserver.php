@@ -1,5 +1,5 @@
 <?php
-namespace App\Models\Observers;
+namespace App\Observers;
 
 
 use App\Models\Section;
@@ -8,7 +8,7 @@ use App\Models\Section;
  * Class ActivityObserver
  *
  * @author Mathrix Team
- * @package App\Models\Observers
+ * @package App\Observers
  */
 class SectionObserver extends BaseObserver
 {

@@ -4,9 +4,11 @@ namespace App\Controllers;
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http404ModelNotFoundException;
 use App\Models\Log;
+use App\Models\Purchase;
 use App\Models\Training;
 use App\Models\User;
 use App\Utils\StripeUtils;
+use Faker\Factory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -99,7 +101,7 @@ class TrainingController extends BaseController
      * @api {get} /trainings/{id}/recursive Recursive
      * @apiGroup Trainings
      * @apiName TrainingRecursive
-     * @æpiDescription Recursively explore a training
+     * @apiDescription Recursively explore a training
      * @apiUse Bearer
      * @apiPermission registered if paid, admin otherwise
      * @apiParam {int} id The training id
@@ -157,13 +159,15 @@ class TrainingController extends BaseController
      * @api {post} /trainings/{id}/buy Buy
      * @apiGroup Trainings
      * @apiName TrainingBuy
-     * @æpiDescription Buy a training
+     * @apiDescription Buy a training
      * @apiUse Bearer
      * @apiPermission registered
      * @apiParam {int} id The training id
      * @apiParam (Data) {int} stripe_token The stripe token
+     * @apiParam (Data) {bool} [sponsor_email=false] The sponsor email
      * @apiParam (Data) {bool} [premium=false] If a premium subscription must be applied
-     * @apiSuccess {string=success,failure} message The result
+     * @apiUse UserModel
+     * @apiUse PurchaseArray
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
      *
@@ -178,6 +182,7 @@ class TrainingController extends BaseController
     {
         $training = Training::whereId($id)->firstOrFail();
         $stripeToken = $request->input("stripe_token");
+        $sponsorEmail = $request->input("sponsor_email", false);
         $withPremium = (bool)$request->input("premium", false);
 
         if ($stripeToken === null) {
@@ -187,26 +192,36 @@ class TrainingController extends BaseController
         /** @var User $user */
         $user = $request->user();
 
-        // Charge the user by creating him if he does not exists
-        $user->updateCardOrCreateStripeCustomer($stripeToken);
-
-        // User trainings ids to check if h=he has already bought the training
-        $userTrainingIds = $user->trainings->pluck("id")->toArray();
-
-        if (in_array($training->id, $userTrainingIds)) {
+        if ($user->hasPurchased($training->id, "training")) {
             throw new Http400InvalidRequestException("Already bought the training '{$training->name}'");
         }
+
+        /** @var int $totalPrice Total price to pay, including premium surcharge if needed */
+        $totalPrice = $training->price;
 
         // Pipe Stripe exception to our HTTP 400 Bad Request exception
         try {
             $description = $training->name;
 
-            /** @var int $totalPrice Total price to pay, including premium surcharge if needed */
-            $totalPrice = $training->price;
-
-            if ($withPremium) {
+            if ($withPremium && !$user->premium) {
                 $totalPrice += StripeUtils::getSurchargeForPremium($training);
+                $description .= " with premium subscription";
             }
+
+            // Sponsorship discount
+            if ($sponsorEmail) {
+                $sponsor = User::whereEmail($sponsorEmail)->firstOr(function () use ($sponsorEmail) {
+                    throw new Http404ModelNotFoundException("Unable to find user with the email `$sponsorEmail`");
+                });
+
+                if ($sponsor->hasPurchased($training->id, "training")) {
+                    // Reduce total price
+                    $totalPrice -= StripeUtils::SPONSORSHIP_DISCOUNT;
+                }
+            }
+
+            // Charge the user by creating him if he does not exists
+            $user->updateCardOrCreateStripeCustomer($stripeToken);
 
             $response = $user->charge($totalPrice, [
                 "description" => $description
@@ -217,7 +232,15 @@ class TrainingController extends BaseController
 
         // Give subscription if charge succeeded
         if ($response->status == "succeeded") {
-            $user->trainings()->attach($training->id);
+            // Save the purchase
+            $purchase = new Purchase([
+                "uuid" => Factory::create()->uuid,
+                "price" => $totalPrice,
+                "user_id" => $user->id,
+                "purchasable_id" => $training->id,
+                "purchasable_type" => "training"
+            ]);
+            $purchase->save();
 
             // Add premium subscription if needed
             if ($withPremium) {
@@ -228,7 +251,10 @@ class TrainingController extends BaseController
 
             Log::log("user_payment_succeed_for_training", $user, ["training_id" => $training->id]);
 
-            return new JsonResponse($user->with(["class_", "subscriptions", "trainings"])->find($user->id));
+            return new JsonResponse(
+                $user->with(["class_", "subscriptions", "purchases", "purchases.purchasable"])
+                    ->find($user->id)
+            );
         } else {
             Log::log("user_payment_failed_for_training", $user, ["training_id" => $training->id]);
 

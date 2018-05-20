@@ -31,6 +31,10 @@ class StripeUtils
         ]
     ];
 
+    public const SPONSORSHIP_REFUND = 1000;
+    public const SPONSORSHIP_DISCOUNT = 1000;
+    public const SECTION_PRICE = 700;
+
 
     /**
      * Get the end date for a given Stripe plan

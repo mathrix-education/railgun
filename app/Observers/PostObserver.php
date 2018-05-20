@@ -1,5 +1,5 @@
 <?php
-namespace App\Models\Observers;
+namespace App\Observers;
 
 use App\Models\Comment;
 use App\Models\Post;
@@ -8,7 +8,7 @@ use App\Models\Post;
  * Class PostObserver
  *
  * @author Mathrix Team
- * @package App\Models\Observers
+ * @package App\Observers
  */
 class PostObserver extends BaseObserver
 {
