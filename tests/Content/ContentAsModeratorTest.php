@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
  * Class ContentAsModeratorTest
  * Test content as moderator
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package Tests\Content
  * @since
  * @copyright Mathrix Education SA

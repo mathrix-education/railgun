@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 /**
  * Trait Purchasable
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Models\Traits
  * @since 4.0.2
  * @copyright Mathrix Education SA

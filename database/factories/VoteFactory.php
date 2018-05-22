@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->define(Vote::class, function (Generator $faker) {
-    $type = $faker->randomElement(["comment"]);
+    $type = $faker->randomElement(Vote::VOTABLE_TYPES);
     /** @var BaseModel $class */
     $class = Relation::getMorphedModel($type);
 

@@ -14,11 +14,15 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
 
 
 /**
- * App\Models\Comment
+ * Model Comment
+ *
+ * @package App\Models
+ * @since 1.0.0
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
  *
  * @property int $id
  * @property string|null $content
- * @property int $score
  * @property int|null $parent_id
  * @property int|null $user_id
  * @property Carbon $created_at
@@ -26,6 +30,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property Carbon|null $deleted_at
  * @property int $commentable_id
  * @property string $commentable_type
+ * @property-read int $score
  * @property-read int|null $user_vote
  * @property-read User|null $user
  * @property-read BaseModel $commentable
@@ -60,7 +65,7 @@ class Comment extends BaseModel
         "children",
         "children.user:id,type,username,firstname,level,class_id"
     ];
-    /** @var array The fillable attributes */
+    /** @var array The attributes that are mass assignable */
     protected $fillable = ["id", "content", "score", "parent_id", "user_id", "commentable_id", "commentable_type",
         "created_at", "updated_at", "deleted_at"];
     /** @var array Validation rules */
@@ -71,9 +76,8 @@ class Comment extends BaseModel
     ];
     /** @var array The attributes that should be mutated to dates */
     protected $dates = ["deleted_at"];
-
     /** @var array Virtual fields */
-    protected $appends = ["user_vote"];
+    protected $appends = ["score", "user_vote"];
 
 
     /**

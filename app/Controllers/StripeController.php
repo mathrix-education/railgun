@@ -16,7 +16,7 @@ use Laravel\Cashier\Subscription;
 /**
  * Class StripeController
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Controllers
  * @since 1.0.0
  * @copyright Mathrix Education SA
@@ -85,15 +85,11 @@ class StripeController extends CashierController
             $user->updateCardOrCreateStripeCustomer($stripeToken);
 
             // Pipe Stripe exception to our HTTP 400 Bad Request exception
-            try {
-                $description = StripeUtils::ALLOWED_STRIPE_PLANS[$stripePlan]["name"] . " (fin " .
-                    StripeUtils::getStripePlanEndDate($stripePlan)->format("d/m/Y") . ")";
-                $response = $user->charge(StripeUtils::getStripePlanPrice($stripePlan), [
-                    "description" => $description
-                ]);
-            } catch (\InvalidArgumentException $exception) {
-                throw new Http400InvalidRequestException($exception->getMessage());
-            }
+            $description = StripeUtils::ALLOWED_STRIPE_PLANS[$stripePlan]["name"] . " (fin " .
+                StripeUtils::getStripePlanEndDate($stripePlan)->format("d/m/Y") . ")";
+            $response = $user->charge(StripeUtils::getStripePlanPrice($stripePlan), [
+                "description" => $description
+            ]);
 
             // Give subscription if charge succeeded
             if ($response->status == "succeeded") {

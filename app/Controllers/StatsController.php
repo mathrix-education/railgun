@@ -7,11 +7,12 @@ use App\Models\Log;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Class StatsController
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Controllers
  * @since 1.0.0
  * @copyright Mathrix Education SA
@@ -54,6 +55,7 @@ class StatsController extends BaseController
      * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
+     * @throws ValidationException
      */
     public function activities(Request $request)
     {

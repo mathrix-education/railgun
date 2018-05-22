@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException as SymphonyHttpExceptio
  * Class Handler
  * Handle exceptions and display them in json as response
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Exceptions
  * @since 1.0.0
  * @copyright Mathrix Education SA
@@ -61,7 +61,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
-        if (app()->environment("master", "stage") && app()->bound("sentry") && $this->shouldReport($e)) {
+        if (app()->environment("master") && app()->bound("sentry") && $this->shouldReport($e)) {
             app("sentry")->captureException($e);
         }
 
@@ -98,6 +98,7 @@ class Handler extends ExceptionHandler
         ];
 
         // Handle MySQL query exceptions
+        // @codeCoverageIgnoreStart
         if ($e instanceof QueryException) {
             if (preg_match(self::REGEX_MYSQL_UNKNOWN_COLUMN, $e->getMessage(), $matches)) {
                 $json = array_merge($json, [
@@ -116,6 +117,7 @@ class Handler extends ExceptionHandler
 
             $overriddenStatusCode = 400;
         }
+        // @codeCoverageIgnoreEnd
 
         // Handle validation exceptions
         if ($e instanceof ValidationException) {
@@ -138,7 +140,7 @@ class Handler extends ExceptionHandler
         }
 
         // Include trace in debug mode
-        if (app()->environment("local", "dev", "pipelines", "stage")) {
+        if (app()->environment("testing", "local", "dev", "pipelines")) {
             $json["trace"] = explode("\n", $e->getTraceAsString());
         }
 

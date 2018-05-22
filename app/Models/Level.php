@@ -5,7 +5,12 @@ use Illuminate\Database\Eloquent\Builder;
 
 
 /**
- * App\Models\Level
+ * Model Level
+ *
+ * @package App\Models
+ * @since 1.0.0
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
  *
  * @property int $id
  * @property int $level
@@ -18,9 +23,8 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class Level extends BaseModel
 {
-    /** @var array The fillable attributes */
+    /** @var array The attributes that are mass assignable */
     public $fillable = ["id", "level", "objective", "youtube_id"];
-
     /** @var array The validation rules */
     protected $rules = [
         "level" => "required|integer",

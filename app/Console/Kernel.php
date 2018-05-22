@@ -11,7 +11,7 @@ use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 /**
  * Class Kernel
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Console
  * @since 1.0.1
  * @copyright Mathrix Education SA
@@ -40,7 +40,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        if (app()->environment("stage", "master")) {
+        if (app()->environment("master")) {
             $schedule->command("backup:mysql-dump")->dailyAt("02:00");
             $schedule->command("sitemap:all")->dailyAt("02:10");
         }

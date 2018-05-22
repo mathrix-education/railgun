@@ -9,7 +9,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 
 /**
- * App\Models\Class_
+ * Model Class_
+ *
+ * @package App\Models
+ * @since 1.0.0
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
  *
  * @property int $id
  * @property string $name
@@ -39,11 +44,9 @@ class Class_ extends BaseModel
 {
     /** @var string Custom table definition */
     protected $table = "classes";
-
-    /** @var array The fillable attributes */
+    /** @var array The attributes that are mass assignable */
     protected $fillable = ["id", "name", "slug", "order", "visible", "parent_id",
         "country_id", "link"];
-
     /** @var array Validation rules */
     protected $rules = [
         "name" => "required|max:255",

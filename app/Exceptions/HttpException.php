@@ -10,7 +10,7 @@ use Throwable;
  *
  * @see https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Exceptions
  * @since
  * @copyright Mathrix Education SA

@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 /**
  * Class TrainingController
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Controllers
  * @since 1.0.0
  * @copyright Mathrix Education SA
@@ -223,7 +223,7 @@ class TrainingController extends BaseController
             // Charge the user by creating him if he does not exists
             $user->updateCardOrCreateStripeCustomer($stripeToken);
 
-            $response = $user->charge($totalPrice, [
+            $charge = $user->charge($totalPrice, [
                 "description" => $description
             ]);
         } catch (\InvalidArgumentException $exception) {
@@ -231,10 +231,10 @@ class TrainingController extends BaseController
         }
 
         // Give subscription if charge succeeded
-        if ($response->status == "succeeded") {
+        if ($charge->status == "succeeded") {
             // Save the purchase
             $purchase = new Purchase([
-                "uuid" => Factory::create()->uuid,
+                "stripe_id" => $charge->id,
                 "price" => $totalPrice,
                 "user_id" => $user->id,
                 "purchasable_id" => $training->id,
