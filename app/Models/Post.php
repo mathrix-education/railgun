@@ -10,12 +10,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 
 /**
- * Class Post
+ * Model Post
  *
- * @author Mathrix Back-End Team
  * @package App\Models
- * @since 1.0.1
+ * @since 1.0.0
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @property int $id
  * @property string $title
  * @property string $slug
@@ -43,10 +44,8 @@ class Post extends BaseModel
 
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
-
-    /** @var array The fillable attributes */
+    /** @var array The attributes that are mass assignable */
     protected $fillable = ["id", "title", "slug", "module_id", "category_id", "created_at", "updated_at"];
-
     /** @var array Validation rules */
     protected $rules = [
         "title" => "required|max:255",
@@ -54,7 +53,6 @@ class Post extends BaseModel
         "content" => "required",
         "category_id" => "required|exists:categories,id"
     ];
-
     /** @var array The default included relations */
     protected $with = ["module"];
 
@@ -64,7 +62,6 @@ class Post extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
-
     /**
      * BelongsTo Module
      *

@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * App\Models\Meta
+ * Model Meta
+ *
+ * @package App\Models
+ * @since 1.0.0
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
  *
  * @property int $id
  * @property bool $favorite
@@ -47,15 +52,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Meta extends BaseModel
 {
-    public $fillable = ["id", "favorite", "to_revise", "completed", "user_id", "country_id", "class_id", "discipline_id",
-        "chapter_id", "notion_id", "activity_id", "module_id", "created_at", "updated_at"];
     /** @var bool Indicates if the model should be timestamped */
     public $timestamps = true;
-    protected $casts = [
-        "favorite" => "boolean",
-        "to_revise" => "boolean",
-        "completed" => "boolean"
-    ];
+    /** @var array The attributes that are mass assignable */
+    public $fillable = ["id", "favorite", "to_revise", "completed", "user_id", "country_id", "class_id", "discipline_id",
+        "chapter_id", "notion_id", "activity_id", "module_id", "created_at", "updated_at"];
     /** @var array The validation rules on create */
     protected $rules = [
         "favorite" => "boolean",
@@ -69,6 +70,12 @@ class Meta extends BaseModel
         "notion_id" => "required|exists:notions,id",
         "activity_id" => "required|exists:activities,id",
         "module_id" => "nullable|exists:modules,id"
+    ];
+    /** @var array The attributes that should be cast to native types */
+    protected $casts = [
+        "favorite" => "boolean",
+        "to_revise" => "boolean",
+        "completed" => "boolean"
     ];
 
     /*

@@ -12,7 +12,7 @@ use App\Models\Notion;
 /**
  * Class Tree
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package Tests
  * @since 4.0.1
  * @copyright Mathrix Education SA

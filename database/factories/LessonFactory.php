@@ -1,10 +1,4 @@
 <?php
-/**
- * @author Mathrix Back-End Team
- * @since 1.0.1
- * @copyright Mathrix Education SA
- */
-
 use App\Models\Lesson;
 use App\Models\Module;
 use App\Models\Section;

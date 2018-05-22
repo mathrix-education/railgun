@@ -9,7 +9,7 @@ use Illuminate\Database\Schema\Blueprint;
 /**
  * Class CreateChapterNotionTable
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @since 1.0.0
  * @copyright Mathrix Education SA
  */

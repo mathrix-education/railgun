@@ -33,9 +33,16 @@ $factory->define(Purchase::class, function (Generator $faker) {
             $price = random_int(5, 50) * 100;
     }
 
+    $refund = 0;
+
+    if ($purchasableType == "training" && $faker->boolean) {
+        $refund = $faker->boolean ? random_int(1, ($price - 3) / 100) : $price;
+    }
+
     return [
-        "uuid" => $faker->uuid,
+        "stripe_id" => "ch_" . substr($faker->sha1, 0, 25),
         "price" => $price,
+        "refund" => $refund,
         "user_id" => User::random()->id,
         "purchasable_id" => $purchasable->id,
         "purchasable_type" => $purchasableType,

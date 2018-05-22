@@ -11,7 +11,12 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 
 /**
- * App\Models\Log
+ * Model Log
+ *
+ * @package App\Models
+ * @since 1.0.0
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
  *
  * @property int $id
  * @property string $event
@@ -63,12 +68,11 @@ class Log extends BaseModel
         "user_payment_failed_for_section"
     ];
 
+
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
-
     /** @var array */
     public $fillable = ["id", "event", "user_id", "value", "created_at", "loggable_type", "loggable_id"];
-
     /** @var array The attributes that should be cast to native types */
     protected $casts = ["value" => "array"];
 

@@ -13,8 +13,12 @@ use Validator as ValidatorFacade;
  * Class BaseModel
  * Base for all models, implement validation on save useless manual disable
  *
- * @mixin Builder
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Models
+ * @since 1.0.0
+ * @copyright Mathrix Education SA
+ *
+ * @mixin Builder
  */
 abstract class BaseModel extends Model
 {

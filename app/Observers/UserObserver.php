@@ -32,7 +32,7 @@ class UserObserver extends BaseObserver
     public function saving($user)
     {
         // Subscribe the user to "subscribers" Mailchimp list
-        if (app()->environment("master", "stage") && $user->isDirty("email")) {
+        if (app()->environment("master") && $user->isDirty("email")) {
             $options = [];
 
             if ($user->username !== null) {

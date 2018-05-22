@@ -4,7 +4,7 @@ namespace Tests\Generics;
 /**
  * Trait Get
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package Tests\Generics
  * @since 1.0.1
  * @copyright Mathrix Education SA

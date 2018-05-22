@@ -9,7 +9,7 @@ use Illuminate\Queue\SerializesModels;
  * Class BaseMail
  * Base class for all mails
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Mails
  * @since 1.0.1
  * @copyright Mathrix Education SA

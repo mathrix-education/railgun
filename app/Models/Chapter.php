@@ -8,7 +8,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 
 /**
- * App\Models\Chapter
+ * Model Chapter
+ *
+ * @package App\Models
+ * @since 1.0.0
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
  *
  * @property int $id
  * @property string $name
@@ -31,9 +36,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class Chapter extends BaseModel
 {
-    /** @var array The fillable attributes */
+    /** @var array The attributes that are mass assignable */
     protected $fillable = ["id", "name", "slug", "class_id", "discipline_id", "visible", "order", "link"];
-
     /** @var array Validation rules */
     protected $rules = [
         "name" => "required|max:255",

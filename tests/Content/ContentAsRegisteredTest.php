@@ -6,7 +6,7 @@ namespace Tests\Content;
  * Class ContentAsRegisteredTest
  * Test content as registered
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package Tests\Content
  * @since
  * @copyright Mathrix Education SA

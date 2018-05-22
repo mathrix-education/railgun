@@ -9,12 +9,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * Class Section
+ * Model Section
  *
- * @author Mathrix Back-End Team
  * @package App\Models
  * @since 1.0.1
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @property int $id
  * @property string $name
  * @property string $slug
@@ -40,21 +41,24 @@ class Section extends BaseModel
     use Purchasable;
 
     /** @var array The guarded attributes */
-    protected $guarded = [];
-
-
+    protected $fillable = ["id", "name", "slug", "visible", "order", "training_id"];
     /** @var array The validation rules on create */
     protected $rules = [
         "name" => "required|max:255",
         "slug" => "required|max:255",
         "description" => "nullable",
     ];
-
+    /** @var array The attributes that should be cast to native types */
     protected $casts = [
         "visible" => "boolean"
     ];
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
     /**
      * BelongsTo Training
      *

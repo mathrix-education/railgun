@@ -10,7 +10,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 
 /**
- * App\Models\Module
+ * Model Module
+ *
+ * @package App\Models
+ * @since 1.0.0
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
  *
  * @property int $id
  * @property bool $premium
@@ -49,10 +54,10 @@ class Module extends BaseModel
 
     public const TYPES = ["id", "course", "test", "mcq", "mcq-table", "match", "fill", "flashcard"];
 
-    /** @var array The fillable attributes */
+
+    /** @var array The attributes that are mass assignable */
     protected $fillable = ["premium", "type", "content", "questions", "choices", "solutions", "corrections", "options",
         "visible", "link"];
-
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
         "premium" => "boolean",
@@ -63,11 +68,11 @@ class Module extends BaseModel
         "corrections" => "array",
         "options" => "array"
     ];
-
     /** @var array The validation rules */
     protected $rules = [
         "visible" => "boolean"
     ];
+    /** @var array The accessors to append to the model's array form */
     protected $appends = ["favorite", "to_revise", "completed"];
 
 

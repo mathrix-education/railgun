@@ -8,7 +8,7 @@ use Tests\ScopeTestCase;
  * Class ContentAsPublicTest
  * Test content as public (non-logged user)
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package Tests\Content
  * @since
  * @copyright Mathrix Education SA

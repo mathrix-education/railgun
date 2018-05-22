@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 /**
  * Class BaseTableSeeder
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @since 1.0.0
  * @copyright Mathrix Education SA
  */

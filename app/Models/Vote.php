@@ -8,7 +8,12 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 
 /**
- * App\Models\Vote
+ * Model Vote
+ *
+ * @package App\Models
+ * @since 1.0.0
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
  *
  * @property int $id
  * @property int $value
@@ -29,12 +34,13 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  */
 class Vote extends BaseModel
 {
+    public const VOTABLE_TYPES = ["comment"];
+
+
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
-
-    /** @var array The fillable attributes */
+    /** @var array The attributes that are mass assignable */
     protected $fillable = ["id", "value", "user_id", "votable_id", "votable_type"];
-
     /** @var array Validation rules */
     protected $rules = [
         "user_id" => "required|exists:users,id",
@@ -48,7 +54,6 @@ class Vote extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
-
     /**
      * BelongsTo User
      *

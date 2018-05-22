@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Storage;
 /**
  * Class ContentController
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Controllers
  * @since 1.0.0
  * @copyright Mathrix Education SA
