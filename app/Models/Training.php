@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $order
  * @property string|null $created_at
  * @property string|null $updated_at
+ * @property-read Collection|Log[] $logs
  * @property-read Collection|Purchase[] $purchases
  * @property-read Collection|Section[] $sections
  * @property-read Collection|User[] $users

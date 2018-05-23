@@ -16,7 +16,7 @@ $factory->define(Section::class, function (Generator $faker) {
     return [
         "name" => $name,
         "slug" => str_slug($name),
-        "visible" => $faker->boolean,
+        "visible" => $faker->boolean(70),
         "training_id" => Training::inRandomOrder()->first()->id
     ];
 });

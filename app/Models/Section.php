@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string|null $created_at
  * @property string|null $updated_at
  * @property-read Collection|Lesson[] $lessons
+ * @property-read Collection|Log[] $logs
  * @property-read Collection|Purchase[] $purchases
  * @property-read Training $training
  * @method static Builder|Section whereId($value)

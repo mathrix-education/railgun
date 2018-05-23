@@ -23,6 +23,15 @@ class QuotePolicy extends BasePolicy
     /**
      * @return bool
      */
+    public function get()
+    {
+        return false;
+    }
+
+
+    /**
+     * @return bool
+     */
     public function add()
     {
         return false;
