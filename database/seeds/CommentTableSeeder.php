@@ -26,7 +26,7 @@ class CommentTableSeeder extends BaseTableSeeder
         ]);
         $this->seedFromFactory([
             "modelClass" => Vote::class,
-            "count" => random_int(300, 500)
+            "count" => random_int(50, 100)
         ]);
     }
 }

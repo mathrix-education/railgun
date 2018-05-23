@@ -17,17 +17,27 @@ class StripeUtils
     public const ALLOWED_STRIPE_PLANS = [
         "v3_biannually" => [
             "name" => "Pack bi-annuel",
+            "price_per_period" => 23760,
             "price_per_month" => 9.90,
-            "price_per_day" => 0.33
+            "price_per_day" => 0.33,
+            "interval" => "year",
+            "interval_count" => 2
         ],
         "v3_annually" => [
             "name" => "Pack annuel",
+            "price_per_period" => 15480,
             "price_per_month" => 12.90,
-            "price_per_day" => 0.43
+            "price_per_day" => 0.43,
+            "interval" => "year",
+            "interval_count" => 2
         ],
         "v3_monthly" => [
+            "name" => "Pack mensuel",
+            "price_per_period" => 1790,
             "price_per_month" => 17.90,
-            "price_per_day" => 0.60
+            "price_per_day" => 0.60,
+            "interval" => "monthly",
+            "interval_count" => 1
         ]
     ];
 

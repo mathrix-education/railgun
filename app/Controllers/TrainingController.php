@@ -249,7 +249,10 @@ class TrainingController extends BaseController
                     ->create();
             }
 
-            Log::log("user_payment_succeed_for_training", $user, ["training_id" => $training->id]);
+            Log::log("user_payment_succeed_for_training", $user, [
+                "loggable_id" => $training->id,
+                "loggable_type" => "training"
+            ]);
 
             return new JsonResponse(
                 $user->with(["class_", "subscriptions", "purchases", "purchases.purchasable"])

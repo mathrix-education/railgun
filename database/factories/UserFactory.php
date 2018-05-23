@@ -29,7 +29,7 @@ $factory->define(User::class, function (Generator $faker) {
             "sound" => $faker->boolean(70)
         ],
         "class_id" => Class_::inRandomOrder()->firstOrFail()->id,
-        "created_at" => $faker->dateTimeBetween("-1 years")
+        "created_at" => $faker->dateTimeBetween("-1 years"),
     ];
 
     if ($faker->boolean(50)) {
@@ -54,6 +54,22 @@ $factory->defineAs(User::class, "registered", function () use ($factory) {
     return array_merge($factory->raw(User::class), $data);
 });
 
+/**
+ * UserRegisteredCustomerFactory
+ *
+ * @author Mathrix Team
+ * @var Illuminate\Database\Eloquent\Factory $factory
+ */
+$factory->defineAs(User::class, "registeredCustomer", function (Generator $faker) use ($factory) {
+    $data = [
+        "type" => "registered",
+        "stripe_id" => "cus_" . substr($faker->md5, 0, 14)
+    ];
+
+    return array_merge($factory->raw(User::class), $data);
+});
+
+
 
 /**
  * UserModeratorFactory
@@ -67,7 +83,8 @@ $factory->defineAs(User::class, "moderator", function (Generator $faker) use ($f
         "firstname" => $faker->firstName,
         "lastname" => $faker->lastName,
         "type" => "moderator",
-        "class_id" => null
+        "class_id" => null,
+        "stripe_id" => null
     ];
 
     return array_merge($factory->raw(User::class), $data);
@@ -86,7 +103,8 @@ $factory->defineAs(User::class, "admin", function (Generator $faker) use ($facto
         "firstname" => $faker->firstName,
         "lastname" => $faker->lastName,
         "type" => "admin",
-        "class_id" => null
+        "class_id" => null,
+        "stripe_id" => null
     ];
 
     return array_merge($factory->raw(User::class), $data);

@@ -148,6 +148,7 @@ class SectionController extends BaseController
         return new JsonResponse($section);
     }
 
+
     /**
      * @apiVersion 4.0.2
      * @api {post} /sections/{id}/buy Buy
@@ -207,7 +208,7 @@ class SectionController extends BaseController
         if ($response->status == "succeeded") {
             // Save the purchase
             $purchase = new Purchase([
-                "uuid" => Factory::create()->uuid,
+                "stripe_id" => $response->id,
                 "price" => StripeUtils::SECTION_PRICE,
                 "user_id" => $user->id,
                 "purchasable_id" => $section->id,
@@ -215,14 +216,20 @@ class SectionController extends BaseController
             ]);
             $purchase->save();
 
-            Log::log("user_payment_succeed_for_section", $user, ["training_id" => $section->id]);
+            Log::log("user_payment_succeed_for_section", $user, [
+                "loggable_id" => $section->id,
+                "loggable_type" => "section"
+            ]);
 
             return new JsonResponse(
                 $user->with(["class_", "subscriptions", "purchases", "purchases.purchasable"])
                     ->find($user->id)
             );
         } else {
-            Log::log("user_payment_failed_for_section", $user, ["training_id" => $section->id]);
+            Log::log("user_payment_failed_for_section", $user, [
+                "loggable_id" => $section->id,
+                "loggable_type" => "section"
+            ]);
 
             return new JsonResponse([
                 "status" => "failure"

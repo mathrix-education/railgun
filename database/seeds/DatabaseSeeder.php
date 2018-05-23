@@ -18,5 +18,8 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->call(TrainingTableSeeder::class);
         $this->call(BlogTableSeeder::class);
         $this->call(CommentTableSeeder::class);
+        $this->call(SubscriptionTableSeeder::class);
+        $this->call(MetaTableSeeder::class);
+        $this->call(LogTableSeeder::class);
     }
 }
