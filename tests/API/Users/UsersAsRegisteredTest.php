@@ -4,8 +4,10 @@ namespace Tests\API\Users;
 use App\Models\Level;
 use App\Models\Log;
 use App\Models\Module;
+use App\Models\Training;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Hash;
 
 /**
@@ -226,6 +228,53 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
             "id" => $this->user->id,
             "level" => $levelBefore + 1
         ]);
+    }
+
+
+    /**
+     * POST /users/sponsor
+     *
+     * @throws \Exception
+     */
+    public function testSponsor()
+    {
+        $sponsor = User::whereHas("purchases", function (Builder $query) {
+            $query->where("purchasable_type", "=", "training");
+        })->first();
+        $training = $sponsor->purchases()
+            ->where("purchasable_type", "=", "training")
+            ->first()
+            ->purchasable;
+
+        $this->call("post", "/users/sponsor", [
+            "sponsor_email" => $sponsor->email,
+            "training_id" => $training->id
+        ]);
+
+        $responseData = $this->getResponseData();
+
+        $this->assertTrue($responseData->sponsor);
+    }
+
+
+    /**
+     * POST /users/sponsor
+     *
+     * @throws \Exception
+     */
+    public function testSponsorNotSponsor()
+    {
+        $training = Training::random();
+        $sponsor = User::doesntHave("purchases")->first();
+
+        $this->call("post", "/users/sponsor", [
+            "sponsor_email" => $sponsor->email,
+            "training_id" => $training->id
+        ]);
+
+        $responseData = $this->getResponseData();
+
+        $this->assertFalse($responseData->sponsor);
     }
 }
 

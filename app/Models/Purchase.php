@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property int $id
  * @property string $stripe_id
  * @property int $price
+ * @property int $refund
  * @property int $purchasable_id
  * @property string $purchasable_type
  * @property int $user_id
@@ -27,6 +28,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @method static Builder|Purchase whereId($value)
  * @method static Builder|Purchase whereStripeId($value)
  * @method static Builder|Purchase wherePrice($value)
+ * @method static Builder|Purchase whereRefund($value)
  * @method static Builder|Purchase whereUserId($value)
  * @method static Builder|Purchase wherePurchasableId($value)
  * @method static Builder|Purchase wherePurchasableType($value)

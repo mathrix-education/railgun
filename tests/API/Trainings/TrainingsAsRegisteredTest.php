@@ -1,6 +1,7 @@
 <?php
 namespace Tests\API\Trainings;
 
+use App\Models\Discount;
 use App\Models\Lesson;
 use App\Models\Purchase;
 use App\Models\Section;
@@ -252,5 +253,59 @@ class TrainingsAsRegisteredTest extends TrainingsAsPublicTest
         $this->assertTrue(!empty($responseData->purchases));
         $this->assertInstanceOf(Purchase::class, $newPurchase);
         $this->assertEquals($training->price - StripeUtils::SPONSORSHIP_DISCOUNT, $newPurchase->price);
+    }
+
+
+    /**
+     * POST /trainings/{id}/buy
+     *
+     * @throws \Exception
+     */
+    public function testBuyWithDiscount()
+    {
+        if ($this->user->type != "registered") {
+            return;
+        }
+
+        User::unguard();
+        $this->user->stripe_id = null;
+        $this->user->save();
+
+        $userTrainingIds = $this->user->purchases()
+            ->where("purchasable_type", "=", "training")
+            ->get()
+            ->pluck("purchasable_id")
+            ->toArray();
+        $training = Training::inRandomOrder()
+            ->where("visible", "=", true)
+            ->whereNotIn("id", $userTrainingIds)
+            ->firstOrFail();
+
+        /** @var Discount $discount */
+        $discount = Discount::where([
+            ["counter", ">", 0]
+        ])->inRandomOrder()->firstOrFail();
+
+        $countBefore = $discount->counter;
+
+        $this->call("post", "/trainings/{$training->id}/buy", [
+            "stripe_token" => "tok_visa",
+            "discount_code" => $discount->code
+        ]);
+
+        $responseData = $this->getResponseData();
+        $discount = Discount::find($discount->id);
+        $potentialPurchase = Purchase::where([
+            ["user_id", "=", $this->user->id],
+            ["purchasable_id", "=",$training->id],
+            ["purchasable_type", "=","training"]
+        ])->first();
+
+        $this->assertHttp200Success();
+        $this->assertEquals($countBefore - 1, $discount->counter);
+        $this->assertTrue(isset($responseData->subscriptions));
+        $this->assertTrue(!empty($responseData->purchases));
+        $this->assertNotNull($potentialPurchase);
+        $this->assertGreaterThan($potentialPurchase->price, $potentialPurchase->purchasable->price);
     }
 }

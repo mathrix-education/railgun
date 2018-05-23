@@ -8,6 +8,7 @@ use App\Models\Class_;
 use App\Models\Comment;
 use App\Models\Country;
 use App\Models\Discipline;
+use App\Models\Discount;
 use App\Models\Lesson;
 use App\Models\Level;
 use App\Models\Module;
@@ -25,6 +26,7 @@ use App\Policies\ClassPolicy;
 use App\Policies\CommentPolicy;
 use App\Policies\CountryPolicy;
 use App\Policies\DisciplinePolicy;
+use App\Policies\DiscountPolicy;
 use App\Policies\LessonPolicy;
 use App\Policies\LevelPolicy;
 use App\Policies\ModulePolicy;
@@ -68,10 +70,11 @@ class AuthServiceProvider extends ServiceProvider
 
         // Gates declarations
         Gate::policy(User::class, UserPolicy::class);
-        Gate::policy(Country::class, CountryPolicy::class);
-        Gate::policy(Class_::class, ClassPolicy::class);
-        Gate::policy(Discipline::class, DisciplinePolicy::class);
         Gate::policy(Chapter::class, ChapterPolicy::class);
+        Gate::policy(Class_::class, ClassPolicy::class);
+        Gate::policy(Country::class, CountryPolicy::class);
+        Gate::policy(Discipline::class, DisciplinePolicy::class);
+        Gate::policy(Discount::class, DiscountPolicy::class);
         Gate::policy(Notion::class, NotionPolicy::class);
         Gate::policy(Activity::class, ActivityPolicy::class);
         Gate::policy(Module::class, ModulePolicy::class);
