@@ -1,6 +1,7 @@
 <?php
 namespace Tests\Stripe;
 
+use Carbon\Carbon;
 use Tests\BaseTestCase;
 
 abstract class StripeWebhook extends BaseTestCase
@@ -38,15 +39,27 @@ abstract class StripeWebhook extends BaseTestCase
 
 
     /**
+     * @param $prefix
+     *
+     * @return string
+     */
+    public function generateStripeId($prefix)
+    {
+        return $prefix . "_" . substr($this->faker->md5, 0, 14);
+    }
+
+
+    /**
      * Make the mock data
      *
      * @return mixed
      */
-    public abstract function factory(): array;
+    public function factory(): array
+    {
+        $this->mockData["created"] = Carbon::now()->timestamp;
+        $this->mockData["id"] = "evt_" . substr($this->faker->md5, 0, 14);
+        $this->mockData["api_version"] = self::STRIPE_API_VERSION;
 
-
-    /**
-     * Test the mock
-     */
-    public abstract function testMock();
+        return $this->mockData;
+    }
 }
