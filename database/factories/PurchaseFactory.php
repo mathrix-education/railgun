@@ -20,7 +20,7 @@ $factory->define(Purchase::class, function (Generator $faker) {
     $purchasableType = $faker->randomElement(["training", "section"]);
     /** @var Training|Section $purchasable */
     $modelClass = Relation::getMorphedModel($purchasableType);
-    $purchasable = $modelClass::random();
+    $purchasable = $modelClass::whereVisible(true)->inRandomOrder()->firstOrFail();
 
     switch ($purchasableType) {
         case "training":

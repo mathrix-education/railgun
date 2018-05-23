@@ -121,15 +121,15 @@ class StatsController extends BaseController
                 }
 
                 $key = $dateIterator->toDateString();
-                $value = $statRaw->value;
+                $points = $statRaw->value["points"];
                 $type = $statRaw->loggable->activities->first()->type;
 
                 if (empty($stats[$key])) {
                     $stats[$key] = [
                         "points" => [
-                            "total" => $value,
+                            "total" => $points,
                             "details" => [
-                                $type => $value
+                                $type => $points
                             ]
                         ],
                         "counts" => [
@@ -140,14 +140,14 @@ class StatsController extends BaseController
                         ]
                     ];
                 } else if (empty($stats[$key]["points"]["details"][$type])) {
-                    $stats[$key]["points"]["total"] += $value;
-                    $stats[$key]["points"]["details"][$type] = $value;
+                    $stats[$key]["points"]["total"] += $points;
+                    $stats[$key]["points"]["details"][$type] = $points;
 
                     $stats[$key]["counts"]["total"]++;
                     $stats[$key]["counts"]["details"][$type] = 1;
                 } else {
-                    $stats[$key]["points"]["total"] += $value;
-                    $stats[$key]["points"]["details"][$type] += $value;
+                    $stats[$key]["points"]["total"] += $points;
+                    $stats[$key]["points"]["details"][$type] += $points;
 
                     $stats[$key]["counts"]["total"]++;
                     $stats[$key]["counts"]["details"][$type]++;

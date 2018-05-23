@@ -109,17 +109,29 @@ class Log extends BaseModel
      */
     public static function build(string $event, $user = null, $data = []): Log
     {
-
         if (!in_array($event, self::EVENTS)) {
             throw new Http400InvalidRequestException("`$event` is not a valid event");
         }
 
-        $data = array_merge([
+        $logData = [
             "event" => $event,
             "user_id" => $user === null || is_int($user) ? $user : $user->id,
-        ], $data);
+        ];
 
-        return new Log($data);
+        if (!empty($data["loggable_id"]) && !empty($data["loggable_type"])) {
+            $logData["loggable_id"] = $data["loggable_id"];
+            $logData["loggable_type"] = $data["loggable_type"];
+            unset($data["loggable_id"], $data["loggable_type"]);
+        }
+
+        if(!empty($data["created_at"])) {
+            $logData["created_at"] = $data["created_at"];
+            unset($data["created_at"]);
+        }
+
+        $logData["value"] = !empty($data) ? $data : null;
+
+        return new Log($logData);
     }
 
 

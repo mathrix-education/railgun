@@ -10,6 +10,7 @@ use Laravel\Lumen\Testing\DatabaseTransactions;
 use Laravel\Lumen\Testing\TestCase;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Tests\API\HttpAssertions;
 
 /**
  * Class BaseTest

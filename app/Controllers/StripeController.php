@@ -10,6 +10,7 @@ use App\Utils\StripeUtils;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Collection;
 use Laravel\Cashier\Http\Controllers\WebhookController as CashierController;
 use Laravel\Cashier\Subscription;
 
@@ -133,13 +134,12 @@ class StripeController extends CashierController
         ]);
     }
 
+
     /*
     |--------------------------------------------------------------------------
     | Stripe webhooks
     |--------------------------------------------------------------------------
     */
-
-
     /**
      * Payment succeeded
      *
@@ -200,33 +200,69 @@ class StripeController extends CashierController
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      * @throws \Exception
-     * @codeCoverageIgnore
      */
     public function handleCustomerSubscriptionDeleted(array $payload)
     {
-        /** @var User $user */
-        $user = $this->getUserByStripeId($payload["data"]["object"]["customer"]);
+        $requestSubscriptionIds = [];
+        $canceledSubscriptionIds = [];
 
-        if ($user) {
-            $user->subscriptions->filter(function ($subscription) use ($payload) {
-                /** @var Subscription $subscription */
-                return $subscription->stripe_id === $payload["data"]["object"]["id"];
-            })->each(function ($subscription) {
-                /** @var Subscription $subscription */
+        foreach ($payload["data"]["object"]["items"]["data"] as $data) {
+            $subscriptionStripeId = $data["subscription"];
+            $requestSubscriptionIds[] = $subscriptionStripeId;
+
+            /** @var Subscription $subscription */
+            $subscription = Subscription::where("stripe_id", "=", $data["subscription"])->first();
+
+            if ($subscription !== null) {
+                $user = $subscription->user;
+
                 if ($subscription->onTrial()) {
                     $subscription->skipTrial();
                 }
 
-                $subscription->cancelNow();
-            });
+                // @coverageIgnoreStart
+                if (!$this->isInTestingEnvironment()) {
+                    $subscription->cancelNow();
+                } // @coverageIgnoreEnd
+                else {
+                    $subscription->markAsCancelled();
+                }
+
+                $canceledSubscriptionIds[] = $subscription->stripe_id;
+
+                Log::log("user_cancelled_premium", $user, [
+                    "customer_id" => $user->stripe_id,
+                    "subscription_id" => $subscription->stripe_id
+                ]);
+
+                // TODO: Send email notification
+            }
         }
 
-        if ($user) {
-            Log::log("user_cancelled_premium", $user);
-
-            // TODO: Send cancellation email
+        if (empty($canceledSubscriptionIds)) {
+            if (!$this->isInTestingEnvironment()) {
+                return new JsonResponse([
+                    "message" => "Cannot delete any subscriptions",
+                    "data" => [
+                        "request_subscription_ids" => $requestSubscriptionIds
+                    ]
+                ], 400);
+            } else {
+                return new JsonResponse([
+                    "message" => "Successfully tried to cancel the following subscriptions",
+                    "data" => [
+                        "request_subscription_ids" => $requestSubscriptionIds
+                    ]
+                ]);
+            }
+        } else {
+            return new JsonResponse([
+                "message" => "Successfully canceled the following subscriptions",
+                "data" => [
+                    "request_subscription_ids" => $requestSubscriptionIds,
+                    "canceled_subscription_ids" => $canceledSubscriptionIds
+                ]
+            ]);
         }
-
-        return new Response('Webhook Handled', 200);
     }
 }

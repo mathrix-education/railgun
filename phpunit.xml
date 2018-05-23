@@ -11,7 +11,10 @@
          syntaxCheck="false">
     <testsuites>
         <testsuite name="REST API Test Suite">
-            <directory suffix="Test.php">./tests</directory>
+            <directory suffix="Test.php">./tests/API</directory>
+        </testsuite>
+        <testsuite name="Stripe Test Suite">
+            <directory suffix="Test.php">./tests/Stripe</directory>
         </testsuite>
     </testsuites>
     <filter>

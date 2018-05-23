@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Models\Training;
 use Faker\Generator;
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Loggable;
 use App\Models\Traits\Purchasable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -40,7 +41,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Training extends BaseModel
 {
-    use Purchasable;
+    use Purchasable, Loggable;
 
     /** @var array The guarded attributes */
     protected $fillable = ["id", "name", "slug", "description", "price", "visible", "order", "created_at", "updated_at"];

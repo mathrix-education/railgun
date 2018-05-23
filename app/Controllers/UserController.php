@@ -81,7 +81,7 @@ class UserController extends BaseController
         $user = $id === null ? $request->user() : User::where("id", $id)->firstOrFail();
         /** @var User $requestUser */
         $requestUser = $request->user();
-        $requestData = $request->all();
+        $requestData = $request->except("current_password");
 
         // Check permission
         $requestUser->canOrFail("edit", $user);
@@ -328,7 +328,7 @@ class UserController extends BaseController
         $user->update(["points" => $user->points + $pointsToAdd]);
 
         // Log the points update
-        $logData = ["value" => ["points" => $pointsToAdd]];
+        $logData = ["points" => $pointsToAdd];
 
         if ($useLoggable) {
             $logData = array_merge($logData, [
