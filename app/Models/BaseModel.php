@@ -52,7 +52,7 @@ abstract class BaseModel extends Model
      *
      * @param int $count The set size; if set to 1, just return the model
      *
-     * @return Collection|BaseModel
+     * @return Collection|static
      */
     public static function random($count = 1)
     {

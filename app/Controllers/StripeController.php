@@ -1,6 +1,8 @@
 <?php
 namespace App\Controllers;
 
+use App\Controllers\StripeWebhooks\CustomerSubscriptionDeleted;
+use App\Controllers\StripeWebhooks\InvoicePaymentSucceeded;
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
@@ -10,9 +12,7 @@ use App\Utils\StripeUtils;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Collection;
 use Laravel\Cashier\Http\Controllers\WebhookController as CashierController;
-use Laravel\Cashier\Subscription;
 
 /**
  * Class StripeController
@@ -24,6 +24,8 @@ use Laravel\Cashier\Subscription;
  */
 class StripeController extends CashierController
 {
+    use CustomerSubscriptionDeleted, InvoicePaymentSucceeded;
+
     /**
      * @apiVersion 4.0.0
      * @api {post} /stripe/subscribe Subscribe
@@ -39,14 +41,14 @@ class StripeController extends CashierController
      * @apiError (Error 400) invalid_request stripe_token and stripe_coupon cannot be null at the same time
      * @apiError (Error 400) invalid_request stripe_plan has to be in the allowed stripe plans
      * @apiError (Error 400) invalid_request `card invalid_number` The card number is not a valid credit card number<br>
-     *  `invalid_expiry_month` The card's expiration month is invalid<br>
-     *  `invalid_expiry_year` The card's expiration year is invalid<br>
-     *  `invalid_cvc` The card's security code is invalid<br>
-     *  `invalid_swipe_data` The card's swipe data is invalid<br>
+     *  `invalid_expiry_month` The card"s expiration month is invalid<br>
+     *  `invalid_expiry_year` The card"s expiration year is invalid<br>
+     *  `invalid_cvc` The card"s security code is invalid<br>
+     *  `invalid_swipe_data` The card"s swipe data is invalid<br>
      *  `incorrect_number` The card number is incorrect<br>
      *  `expired_card` The card has expired<br>
-     *  `incorrect_cvc` The card's security code is incorrect<br>
-     *  `incorrect_zip` The card's zip code failed validation<br>
+     *  `incorrect_cvc` The card"s security code is incorrect<br>
+     *  `incorrect_zip` The card"s zip code failed validation<br>
      *  `card_declined` The card was declined<br>
      *  `missing` There is no card on a customer that is being charged<br>
      *  `processing_error` An error occurred while processing the card
@@ -132,137 +134,5 @@ class StripeController extends CashierController
             "price" => StripeUtils::getStripePlanPrice($stripePlan),
             "end_date" => StripeUtils::getStripePlanEndDate($stripePlan)->format("Y-m-d")
         ]);
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Stripe webhooks
-    |--------------------------------------------------------------------------
-    */
-    /**
-     * Payment succeeded
-     *
-     * @param  array $payload
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws Http400InvalidRequestException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
-     * @throws \Exception
-     * @codeCoverageIgnore
-     */
-    public function handleInvoicePaymentSucceeded($payload)
-    {
-        $user = $this->getUserByStripeId($payload["data"]["object"]["customer"]);
-
-        if ($user) {
-            Log::log("user_payment_succeed_for_premium", $user);
-        }
-
-        return new Response('Webhook Handled', 200);
-    }
-
-
-    /**
-     * Payment failed
-     *
-     * @param  array $payload
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws Http400InvalidRequestException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
-     * @throws \Exception
-     * @codeCoverageIgnore
-     */
-    public function handleInvoicePaymentFailed(array $payload)
-    {
-        $user = $this->getUserByStripeId($payload["data"]["object"]["customer"]);
-
-        if ($user) {
-            Log::log("user_payment_failed_for_premium", $user);
-
-            // TODO: Send payment failed email
-        }
-
-        return new Response('Webhook Handled', 200);
-    }
-
-
-    /**
-     * Handle customer.subscription.deleted
-     *
-     * @param array $payload
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws Http400InvalidRequestException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
-     * @throws \Exception
-     */
-    public function handleCustomerSubscriptionDeleted(array $payload)
-    {
-        $requestSubscriptionIds = [];
-        $canceledSubscriptionIds = [];
-
-        foreach ($payload["data"]["object"]["items"]["data"] as $data) {
-            $subscriptionStripeId = $data["subscription"];
-            $requestSubscriptionIds[] = $subscriptionStripeId;
-
-            /** @var Subscription $subscription */
-            $subscription = Subscription::where("stripe_id", "=", $data["subscription"])->first();
-
-            if ($subscription !== null) {
-                $user = $subscription->user;
-
-                if ($subscription->onTrial()) {
-                    $subscription->skipTrial();
-                }
-
-                // @coverageIgnoreStart
-                if (!$this->isInTestingEnvironment()) {
-                    $subscription->cancelNow();
-                } // @coverageIgnoreEnd
-                else {
-                    $subscription->markAsCancelled();
-                }
-
-                $canceledSubscriptionIds[] = $subscription->stripe_id;
-
-                Log::log("user_cancelled_premium", $user, [
-                    "customer_id" => $user->stripe_id,
-                    "subscription_id" => $subscription->stripe_id
-                ]);
-
-                // TODO: Send email notification
-            }
-        }
-
-        if (empty($canceledSubscriptionIds)) {
-            if (!$this->isInTestingEnvironment()) {
-                return new JsonResponse([
-                    "message" => "Cannot delete any subscriptions",
-                    "data" => [
-                        "request_subscription_ids" => $requestSubscriptionIds
-                    ]
-                ], 400);
-            } else {
-                return new JsonResponse([
-                    "message" => "Successfully tried to cancel the following subscriptions",
-                    "data" => [
-                        "request_subscription_ids" => $requestSubscriptionIds
-                    ]
-                ]);
-            }
-        } else {
-            return new JsonResponse([
-                "message" => "Successfully canceled the following subscriptions",
-                "data" => [
-                    "request_subscription_ids" => $requestSubscriptionIds,
-                    "canceled_subscription_ids" => $canceledSubscriptionIds
-                ]
-            ]);
-        }
     }
 }
