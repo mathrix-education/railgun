@@ -33,7 +33,7 @@ $factory->define(User::class, function (Generator $faker) {
     ];
 
     if ($faker->boolean(50)) {
-        $data["settings"]["facebook_id"] = $faker->randomAscii;
+        $data["settings"]["facebook_id"] = $faker->password();
     }
 
     return $data;
