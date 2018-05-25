@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\Builder;
 class Setting extends BaseModel
 {
     /** @var array The guarded attributes */
-    protected $fillable = ["id", "key", "value"];
+    protected $fillable = ["id", "key", "value", "visible"];
     /** @var array The validation rules on create */
     protected $rules = [
         "name" => "required|max:255",
@@ -81,7 +81,7 @@ class Setting extends BaseModel
      */
     public static function forgot(string $key)
     {
-        return Setting::whereKey($key)->firstOrFail()->delete();
+        return Setting::where("key", "=", $key)->firstOrFail()->delete();
     }
 
 
@@ -102,11 +102,9 @@ class Setting extends BaseModel
      * Serialize value attribute
      *
      * @param $value
-     *
-     * @return string
      */
     public function setValueAttribute($value)
     {
-        return serialize($value);
+        $this->attributes["value"] = serialize($value);
     }
 }

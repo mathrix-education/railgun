@@ -184,6 +184,8 @@ class SectionsAsRegisteredTest extends SectionsAsPublicTest
 
     /**
      * POST /sections/{id}/buy
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
      */
     public function testBuyInvalidToken()
     {
