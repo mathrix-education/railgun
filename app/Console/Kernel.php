@@ -5,6 +5,7 @@ use App\Console\Commands\MailchimpUpdate;
 use App\Console\Commands\MakeApidoc;
 use App\Console\Commands\SitemapAll;
 use App\Console\Commands\SitemapContent;
+use App\Console\Commands\SyncStripeSubscriptions;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
@@ -27,7 +28,8 @@ class Kernel extends ConsoleKernel
         MailchimpUpdate::class,
         MakeApidoc::class,
         SitemapAll::class,
-        SitemapContent::class
+        SitemapContent::class,
+        SyncStripeSubscriptions::class
     ];
 
 

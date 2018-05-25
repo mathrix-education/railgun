@@ -148,6 +148,12 @@ abstract class BaseTestCase extends TestCase
     public function castData(array $data)
     {
         foreach ($data as $field => $value) {
+            if ($value === true) {
+                $data[$field] = 1;
+            }
+            if ($value === false) {
+                $data[$field] = 0;
+            }
             if ($value instanceof \DateTime) {
                 $data[$field] = $value->format("Y-m-d H:i:s");
             }
