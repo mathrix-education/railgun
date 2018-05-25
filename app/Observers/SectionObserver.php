@@ -2,6 +2,7 @@
 namespace App\Observers;
 
 
+use App\Exceptions\Http400InvalidRequestException;
 use App\Models\Section;
 
 /**
@@ -35,10 +36,16 @@ class SectionObserver extends BaseObserver
      * @param Section $section
      *
      * @return bool
+     * @throws Http400InvalidRequestException
+     * @throws \Exception
      */
     public function deleting($section)
     {
-        $section->lessons()->delete();
+        // $section->lessons()->delete(); // TODO: Talk about the force option
+        if ($section->lessons->isEmpty()) {
+            throw new Http400InvalidRequestException("Cannot delete section {$section->id} be cause it has " .
+                "attached lessons");
+        }
 
         return true;
     }
