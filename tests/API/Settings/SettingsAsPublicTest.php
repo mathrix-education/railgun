@@ -16,6 +16,16 @@ use Tests\API\ScopeTestCase;
  */
 class SettingsAsPublicTest extends ScopeTestCase
 {
+    public function castData(array $data)
+    {
+        if (!empty($data["value"])) {
+            $data["value"] = serialize($data["value"]);
+        }
+
+        return parent::castData($data);
+    }
+
+
     /**
      * GET /settings
      *

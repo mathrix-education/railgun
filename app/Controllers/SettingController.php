@@ -50,17 +50,14 @@ class SettingController extends BaseController
     public function read(Request $request, string $key): JsonResponse
     {
         /** @var Setting $setting */
-        $setting = Setting::whereKey($key)->first();
+        $setting = Setting::where("key", "=", $key)->first();
         /** @var User $user */
         $user = $request->user();
-
-        dd($setting);
 
         if (
             $setting === null ||
             ($user === null && !$setting->visible) ||
-            $user->cant("read", $setting)
-        ) {
+            ($user !== null && $user->cant("read", $setting))) {
             throw new Http404ModelNotFoundException("Setting with key `{$key}` does not exist");
         }
 
@@ -81,20 +78,15 @@ class SettingController extends BaseController
     {
         /** @var User $user */
         $user = $request->user();
-
         $user->canOrFail("write", Setting::class);
 
+        $settingData = $request->only(["key", "value", "visible"]);
+
         /** @var Setting $setting */
-        $setting = Setting::whereKey($request->input("key"))->firstOrNew([
-            "key" => $request->input("key"),
-            "value" => $request->input("value"),
-            "visibility" => $request->input("visibility", true)
-        ]);
+        $setting = Setting::where("key", "=", $settingData["key"])->firstOrNew($settingData);
         $setting->save();
 
-        return new JsonResponse([
-            "value" => $setting->value
-        ]);
+        return new JsonResponse($setting);
     }
 
 
@@ -109,7 +101,7 @@ class SettingController extends BaseController
         /** @var User $user */
         $user = $request->user();
 
-        $user->canOrFail("forgot");
+        $user->canOrFail("forgot", Setting::class);
 
         /** @var Setting $setting */
         $deleted = Setting::forgot($key);
