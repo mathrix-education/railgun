@@ -21,7 +21,18 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class Setting extends BaseModel
 {
+    /** @var array The guarded attributes */
     protected $fillable = ["id", "key", "value"];
+    /** @var array The validation rules on create */
+    protected $rules = [
+        "name" => "required|max:255",
+        "slug" => "required",
+        "visible" => "required|boolean",
+    ];
+    /** @var array The attributes that should be cast to native types */
+    protected $casts = [
+        "visible" => "boolean"
+    ];
 
 
     public static function read(string $key)
