@@ -17,6 +17,7 @@ use App\Models\Post;
 use App\Models\Quote;
 use App\Models\Report;
 use App\Models\Section;
+use App\Models\Setting;
 use App\Models\Training;
 use App\Models\User;
 use App\Policies\ActivityPolicy;
@@ -35,6 +36,7 @@ use App\Policies\PostPolicy;
 use App\Policies\QuotePolicy;
 use App\Policies\ReportPolicy;
 use App\Policies\SectionPolicy;
+use App\Policies\SettingPolicy;
 use App\Policies\TrainingPolicy;
 use App\Policies\UserPolicy;
 use Carbon\Carbon;
@@ -88,6 +90,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::policy(Level::class, LevelPolicy::class);
         Gate::policy(Report::class, ReportPolicy::class);
         Gate::policy(Lesson::class, LessonPolicy::class);
+        Gate::policy(Setting::class, SettingPolicy::class);
 
     }
 }
