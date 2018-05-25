@@ -252,11 +252,16 @@ class TrainingController extends BaseController
             /** @var Purchase $sponsorPurchase */
             $sponsorPurchase = $sponsor->getPurchase($training->id, "training");
 
-            if (
-                getenv('CASHIER_ENV') !== 'testing' &&
-                $sponsorPurchase->refund + StripeUtils::SPONSORSHIP_REFUND <= $sponsorPurchase->price
-            ) {
-                $refund = $sponsor->refund($sponsorPurchase->stripe_id, ["amount" => StripeUtils::SPONSORSHIP_REFUND]);
+            if ($sponsorPurchase->refund + StripeUtils::SPONSORSHIP_REFUND <= $sponsorPurchase->price) {
+                // @codeCoverageStart
+                if (getenv('CASHIER_ENV') !== 'testing') {
+                    $refund = $sponsor->refund($sponsorPurchase->stripe_id, ["amount" => StripeUtils::SPONSORSHIP_REFUND]);
+                } // @codeCoverageEnd
+                // Mock success for training
+                else {
+                    $refund = new \stdClass();
+                    $refund->status = "success";
+                }
 
                 if ($refund->status === "success") {
                     $sponsorPurchase->refund += StripeUtils::SPONSORSHIP_REFUND;
