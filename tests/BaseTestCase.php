@@ -237,17 +237,14 @@ abstract class BaseTestCase extends TestCase
      * Get the response data
      *
      * @return \stdClass
-     * @throws \Exception
      */
-    public function getResponseData()
+    public function getResponseData(): ?\stdClass
     {
-        if (empty($this->response)) {
-            return null;
-        } else if ($this->response instanceof Response) {
+        if ($this->response instanceof Response) {
             $response = $this->response->getContent();
             return json_decode($response);
         } else {
-            throw new \Exception("Response is not an instance of " . Response::class);
+            return null;
         }
     }
 }

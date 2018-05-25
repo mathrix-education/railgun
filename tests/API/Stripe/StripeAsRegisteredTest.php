@@ -17,32 +17,6 @@ use Tests\API\ScopeTestCase;
 class StripeAsRegisteredTest extends ScopeTestCase
 {
     /**
-     * Test the monthly subscription
-     */
-    public function testSubscription()
-    {
-        $user = User::where("type", "=", $this->user->type)
-            ->whereNull("stripe_id")
-            ->firstOrFail();
-        Passport::actingAs($user, [$user->type]);
-
-        $stripePlan = $this->faker->randomElement(["v3_monthly", "v3_annually", "v3_biannually"]);
-        $this->call("post", "/stripe/subscribe", [
-            "stripe_token" => "tok_visa",
-            "stripe_plan" => $stripePlan
-        ]);
-
-
-        $this->assertHttp200Success();
-        $this->assertInDatabase("subscriptions", [
-            "user_id" => $user->id,
-            "name" => "premium",
-            "stripe_plan" => $stripePlan
-        ]);
-    }
-
-
-    /**
      * GET /stripe/estimate
      *
      * @throws \Exception
