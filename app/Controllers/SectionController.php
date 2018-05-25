@@ -8,7 +8,6 @@ use App\Models\Purchase;
 use App\Models\Section;
 use App\Models\User;
 use App\Utils\StripeUtils;
-use Faker\Factory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
