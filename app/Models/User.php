@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Cashier\Billable;
@@ -230,12 +231,25 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function hasPurchased(int $purchaseId, string $purchaseType): bool
     {
-        return User::whereHas("purchases", function (Builder $query) use ($purchaseId, $purchaseType) {
-            $query->where([
-                ["purchasable_id", "=", $purchaseId],
-                ["purchasable_type", "=", $purchaseType]
-            ]);
-        })->where("id", "=", $this->id)->exists();
+        return $this->purchases()->where([
+            ["purchasable_id", "=", $purchaseId],
+            ["purchasable_type", "=", $purchaseType]
+        ])->exists();
+    }
+
+
+    /**
+     * @param int $purchaseId
+     * @param string $purchaseType
+     *
+     * @return Model|HasMany|object
+     */
+    public function getPurchase(int $purchaseId, string $purchaseType)
+    {
+        return $this->purchases()->where([
+            ["purchasable_id", "=", $purchaseId],
+            ["purchasable_type", "=", $purchaseType]
+        ])->first();
     }
 
 

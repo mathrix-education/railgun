@@ -242,9 +242,23 @@ class TrainingController extends BaseController
                 throw new Http404ModelNotFoundException("Unable to find user with the email `$sponsorEmail`");
             });
 
+            // Apply sponsor discount
             if ($sponsor->hasPurchased($training->id, "training")) {
                 // Reduce total price
                 $totalPrice -= StripeUtils::SPONSORSHIP_DISCOUNT;
+            }
+
+            // Refund sponsor
+            /** @var Purchase $sponsorPurchase */
+            $sponsorPurchase = $sponsor->getPurchase($training->id, "training");
+
+            if ($sponsorPurchase->refund + StripeUtils::SPONSORSHIP_REFUND <= $sponsorPurchase->price) {
+                $refund = $sponsor->refund($sponsorPurchase->stripe_id, ["amount" => StripeUtils::SPONSORSHIP_REFUND]);
+
+                if ($refund->status === "success") {
+                    $sponsorPurchase->refund += StripeUtils::SPONSORSHIP_REFUND;
+                    $sponsorPurchase->save();
+                }
             }
         }
 
