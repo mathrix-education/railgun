@@ -84,7 +84,7 @@ trait CustomerSubscriptionDeleted
      * @param $subscriptionId
      *
      * @return JsonResponse
-     * @coverageIgnore
+     * @codeCoverageIgnore
      */
     public function debugCustomerSubscriptionDeleted(string $customerId, string $subscriptionId): JsonResponse
     {

@@ -1,10 +1,12 @@
 <?php
 namespace Tests\Stripe;
 
+use App\Models\Discount;
 use App\Models\Purchase;
 use App\Models\Training;
 use App\Models\User;
 use App\Utils\StripeUtils;
+use Illuminate\Database\Eloquent\Builder;
 use Laravel\Passport\Passport;
 use Tests\BaseTestCase;
 
@@ -14,12 +16,12 @@ class TrainingBuyTest extends BaseTestCase
      * Base test for all training purchases
      *
      * @param User $user
-     * @param User $sponsor
+     * @param User|null $sponsor
      * @param bool $withPremium
      *
      * @return Training
      */
-    public function buy(User $user, User $sponsor, bool $withPremium): Training
+    public function buy(User $user, $sponsor, bool $withPremium): Training
     {
         Passport::actingAs($user, [$user->type]);
 
@@ -128,7 +130,7 @@ class TrainingBuyTest extends BaseTestCase
             ->toArray();
 
         /** @var User $buyer */
-        $buyer = User::whereType($this->user->type)
+        $buyer = User::whereType("registered")
             ->whereNotIn("id", $userIdsWhoBoughtThisTraining)
             ->whereNull("stripe_id")
             ->firstOrFail();
@@ -162,15 +164,10 @@ class TrainingBuyTest extends BaseTestCase
      */
     public function testBuyWithDiscount()
     {
-        if ($this->user->type != "registered") {
-            return;
-        }
+        $user = User::whereNull("stripe_id")->firstOrFail();
+        Passport::actingAs($user, ["registered"]);
 
-        User::unguard();
-        $this->user->stripe_id = null;
-        $this->user->save();
-
-        $userTrainingIds = $this->user->purchases()
+        $userTrainingIds = $user->purchases()
             ->where("purchasable_type", "=", "training")
             ->get()
             ->pluck("purchasable_id")
@@ -195,7 +192,7 @@ class TrainingBuyTest extends BaseTestCase
         $responseData = $this->getResponseData();
         $discount = Discount::find($discount->id);
         $potentialPurchase = Purchase::where([
-            ["user_id", "=", $this->user->id],
+            ["user_id", "=", $user->id],
             ["purchasable_id", "=", $training->id],
             ["purchasable_type", "=", "training"]
         ])->first();

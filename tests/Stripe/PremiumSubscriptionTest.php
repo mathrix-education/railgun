@@ -17,9 +17,9 @@ use Tests\BaseTestCase;
 class PremiumSubscriptionTest extends BaseTestCase
 {
     /**
-     * Test the monthly subscription
+     * @param string $stripePlan
      */
-    public function testSubscriptionMonthly()
+    private function subscribeToPlan(string $stripePlan)
     {
         $user = User::where("type", "=", "registered")
             ->whereNull("stripe_id")
@@ -28,39 +28,42 @@ class PremiumSubscriptionTest extends BaseTestCase
 
         $this->call("post", "/stripe/subscribe", [
             "stripe_token" => "tok_visa",
-            "stripe_plan" => "v3_monthly"
+            "stripe_plan" => $stripePlan
         ]);
 
         $this->assertHttp200Success();
         $this->assertInDatabase("subscriptions", [
             "user_id" => $user->id,
             "name" => "premium",
-            "stripe_plan" => "v3_monthly"
+            "stripe_plan" => $stripePlan
         ]);
+
     }
 
 
     /**
      * Test the monthly subscription
      */
-    public function testSubscriptionSpecial()
+    public function testSubscriptionMonthly()
     {
-        $user = User::where("type", "=", "registered")
-            ->whereNull("stripe_id")
-            ->firstOrFail();
-        $stripePlan = $this->faker->randomElement(["v3_annually", "v3_biannually"]);
-        Passport::actingAs($user, [$user->type]);
+        $this->subscribeToPlan("v3_monthly");
+    }
 
-        $this->call("post", "/stripe/subscribe", [
-            "stripe_token" => "tok_visa",
-            "stripe_plan" => $stripePlan
-        ]);
 
-        $this->assertHttp200Success();
-        $this->assertInDatabase("subscriptions", [
-            "user_id" => $user->id,
-            "name" => "premium",
-            "stripe_plan" => $stripePlan
-        ]);
+    /**
+     * Test the annually subscription
+     */
+    public function testSubscriptionAnnually()
+    {
+        $this->subscribeToPlan("v3_annually");
+    }
+
+
+    /**
+     * Test the biannually subscription
+     */
+    public function testSubscriptionBiannually()
+    {
+        $this->subscribeToPlan("v3_biannually");
     }
 }

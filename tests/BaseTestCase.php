@@ -236,9 +236,9 @@ abstract class BaseTestCase extends TestCase
     /**
      * Get the response data
      *
-     * @return \stdClass
+     * @return array|\stdClass|null
      */
-    public function getResponseData(): ?\stdClass
+    public function getResponseData()
     {
         if ($this->response instanceof Response) {
             $response = $this->response->getContent();
