@@ -118,6 +118,20 @@ abstract class BaseTestCase extends TestCase
     }
 
 
+    /**
+     * Assert the response has the keys
+     *
+     * @param array $keys
+     */
+    public function assertJsonKeys(array $keys): void
+    {
+        $content = json_decode($this->response->getContent(), true);
+        $contentKeys = array_keys($content);
+        sort($contentKeys);
+        sort($keys);
+        $this->assertArraySubset($keys, $contentKeys);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Additional assertions

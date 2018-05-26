@@ -208,4 +208,15 @@ class UsersAsPublicTest extends ScopeTestCase
 
         $this->assertHttp200Success();
     }
+
+
+    /**
+     * POST /users/search
+     */
+    public function testSearch()
+    {
+        $this->call("post", "/users/search");
+
+        $this->assertHttp401Unauthorized();
+    }
 }

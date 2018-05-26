@@ -32,6 +32,8 @@ class MailchimpController extends BaseController
      * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws \Exception
+     *
+     * @codeCoverageIgnore
      */
     public function subscribe(Request $request, string $list)
     {

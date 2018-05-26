@@ -2,6 +2,8 @@
 namespace Tests\API\Activities;
 
 use App\Models\Meta;
+use App\Models\Module;
+use App\Models\Notion;
 use Tests\API\ScopeTestCase;
 use Tests\API\Tree;
 
@@ -40,7 +42,53 @@ class ActivitiesAsPublicTest extends ScopeTestCase
 
 
     /**
-     * @covers \App\Controllers\ActivityController::add()
+     * GET /activities/by-notion/{id}
+     */
+    public function testByNotion()
+    {
+        $notion = Notion::whereVisible(true)->firstOrFail();
+
+        $this->call("get", "/activities/by-notion/{$notion->id}");
+
+        $activities = $this->getResponseData();
+
+        $this->assertHttp200Success();
+        foreach ($activities as $activity) {
+            $this->assertInDatabase("activity_notion", [
+                "activity_id" => $activity->id,
+                "notion_id" => $notion->id
+            ]);
+        }
+    }
+
+    /**
+     * GET /activities/by-notion/{id}
+     */
+    public function testByWtf()
+    {
+        $this->call("get", "/activities/by-wtf/4242666");
+
+        $this->assertHttp400InvalidRequest();
+    }
+
+
+    /**
+     * GET /activities/by-notion/{id}
+     */
+    public function testIds()
+    {
+        $module = Module::whereVisible(true)->firstOrFail();
+
+        $this->call("get", "/activities/by-module/{$module->id}/ids");
+
+        $activitiesIds = $this->getResponseData();
+
+        $this->assertHttp200Success();
+    }
+
+
+
+    /**
      * POST /activities -> HTTP 401 unauthorized
      *
      * @throws \Exception

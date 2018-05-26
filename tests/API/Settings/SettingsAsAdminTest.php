@@ -19,15 +19,11 @@ class SettingsAsAdminTest extends SettingsAsModeratorTest
      *
      * @throws \Exception
      */
-    public function all()
+    public function testAll()
     {
-        $this->call("get", "/settings/all");
-        $responseData = $this->getResponseData();
+        $this->call("get", "/settings");
 
         $this->assertHttp200Success();
-        $this->assertNull(Setting::whereVisible(false)
-            ->whereIn("key", array_keys((array)$responseData))
-            ->first());
     }
 
 

@@ -31,14 +31,19 @@ class SettingsAsPublicTest extends ScopeTestCase
      *
      * @throws \Exception
      */
-    public function all()
+    public function testAll()
     {
-        $this->call("get", "/settings/all");
+        $this->call("get", "/settings");
         $responseData = $this->getResponseData();
+        $settingKeys = [];
+
+        foreach ($responseData as $setting) {
+            $settingKeys[] = $setting->key;
+        }
 
         $this->assertHttp200Success();
         $this->assertNull(Setting::whereVisible(false)
-            ->whereIn("key", array_keys((array)$responseData))
+            ->whereIn("key", $settingKeys)
             ->first());
     }
 

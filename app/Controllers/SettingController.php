@@ -35,7 +35,7 @@ class SettingController extends BaseController
     public function all(Request $request)
     {
         $user = $request->user();
-        $canSeeHiddenSettings = $user !== null & $user->isAdmin();
+        $canSeeHiddenSettings = $user !== null && $user->isAdmin();
 
         if (!$canSeeHiddenSettings) {
             $settings = Setting::whereVisible(true)->get();

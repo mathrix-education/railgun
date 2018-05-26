@@ -50,7 +50,7 @@ abstract class HttpException extends \Exception
         } else {
             // Define the HTTP code
             if (300 <= $code && $code < 600) {
-                $this->code = $code;
+                $this->code = $code; // @codeCoverageIgnore
             } else {
                 $this->code = (int)$matches[1];
             }
@@ -63,7 +63,7 @@ abstract class HttpException extends \Exception
             }
 
             if (!empty($data)) {
-                $this->data = $data;
+                $this->data = $data; // @codeCoverageIgnore
             }
         }
 
@@ -85,7 +85,7 @@ abstract class HttpException extends \Exception
         }
 
         if (!empty($this->data)) {
-            $responseData = array_merge($responseData, $this->data);
+            $responseData = array_merge($responseData, $this->data); // @codeCoverageIgnore
         }
 
         return response()->json($responseData, $this->code);
