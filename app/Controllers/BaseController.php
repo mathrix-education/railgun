@@ -250,14 +250,11 @@ abstract class BaseController extends Controller
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
-     * @throws Http401UnauthorizedException
      * @throws \Exception
      */
     public function search(Request $request, $page = 1, $perPage = 100): JsonResponse
     {
-        if ($request->user() !== null && $request->user()->cant("search", $this->modelClass)) {
-            throw new Http401UnauthorizedException();
-        }
+        $request->user()->canOrFail("search", $this->modelClass);
 
         $inputs = $request->except(["order", "having"]);
         $order = array_merge([
@@ -269,7 +266,7 @@ abstract class BaseController extends Controller
         $having = [];
 
         // Check if order dir is valid
-        if (!empty($inputs["order"]) && !in_array($order["dir"], ["asc", "desc"])) {
+        if (!in_array($order["dir"], ["asc", "desc"])) {
             throw new Http400InvalidRequestException("order allowed values: ['asc', 'desc']");
         }
 

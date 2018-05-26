@@ -27,6 +27,22 @@ class ActivityPolicy extends BasePolicy
     /**
      * @return bool
      */
+    public function byNotion()
+    {
+        return true;
+    }
+    /**
+     * @return bool
+     */
+    public function byModule()
+    {
+        return true;
+    }
+
+
+    /**
+     * @return bool
+     */
     public function get()
     {
         return true;

@@ -26,6 +26,15 @@ class ModulePolicy extends BasePolicy
     /**
      * @return bool
      */
+    public function byActivity()
+    {
+        return true;
+    }
+
+
+    /**
+     * @return bool
+     */
     public function get()
     {
         return true;

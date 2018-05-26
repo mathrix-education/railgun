@@ -253,10 +253,10 @@ class TrainingController extends BaseController
             $sponsorPurchase = $sponsor->getPurchase($training->id, "training");
 
             if ($sponsorPurchase->refund + StripeUtils::SPONSORSHIP_REFUND <= $sponsorPurchase->price) {
-                // @codeCoverageStart
+                // @codeCoverageIgnoreStart
                 if (getenv('CASHIER_ENV') !== 'testing') {
                     $refund = $sponsor->refund($sponsorPurchase->stripe_id, ["amount" => StripeUtils::SPONSORSHIP_REFUND]);
-                } // @codeCoverageEnd
+                } // @codeCoverageIgnoreEnd
                 // Mock success for training
                 else {
                     $refund = new \stdClass();
@@ -306,11 +306,13 @@ class TrainingController extends BaseController
                     ->find($user->id)
             );
         } else {
+            // @codeCoverageIgnoreStart
             Log::log("user_payment_failed_for_training", $user, ["training_id" => $training->id]);
 
             return new JsonResponse([
                 "status" => "failure"
             ], 400);
+            // @codeCoverageIgnoreEnd
         }
     }
 }

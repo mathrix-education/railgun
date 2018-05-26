@@ -102,7 +102,7 @@ class StripeController extends CashierController
                     ->create($stripeToken);
                 Log::log("user_payment_succeed_for_premium", $user);
             } else {
-                Log::log("user_payment_failed_for_premium", $user);
+                Log::log("user_payment_failed_for_premium", $user); // @codeCoverageIgnore
             }
         }
 
