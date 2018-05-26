@@ -66,28 +66,4 @@ class TrainingsAsAdminTest extends TrainingsAsModeratorTest
     {
         $this->genericDelete();
     }
-
-
-    /**
-     * GET /trainings/{id}/recursive as buyer
-     *
-     * @throws \Exception
-     */
-    public function testRecursiveAsBuyer()
-    {
-        $this->generic(true, "/trainings/{id}/recursive", true);
-        $this->assertIsRecursive();
-    }
-
-
-    /**
-     * GET /trainings/{id}/recursive as non buyer
-     *
-     * @throws \Exception
-     */
-    public function testRecursiveAsNonBuyer()
-    {
-        $this->generic(false, "/trainings/{id}/recursive", true);
-        $this->assertIsRecursive();
-    }
 }

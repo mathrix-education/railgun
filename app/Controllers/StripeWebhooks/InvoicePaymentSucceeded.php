@@ -84,7 +84,7 @@ trait InvoicePaymentSucceeded
      * @param $subscriptionId
      *
      * @return JsonResponse
-     * @coverageIgnore
+     * @codeCoverageIgnore
      */
     public function debugInvoicePaymentSucceeded(string $customerId, string $subscriptionId): JsonResponse
     {
