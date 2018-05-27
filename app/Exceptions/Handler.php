@@ -121,7 +121,7 @@ class Handler extends ExceptionHandler
 
         // Handle validation exceptions
         if ($e instanceof ValidationException) {
-            $json["errors"] = $e->errors();
+            $json["errors"] = $e->errors(); // @codeCoverageIgnore
         }
 
         // Handle stripe exceptions

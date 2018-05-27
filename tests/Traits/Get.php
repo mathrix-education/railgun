@@ -1,5 +1,5 @@
 <?php
-namespace Tests\API\Generics;
+namespace Tests\Traits;
 
 /**
  * Trait Get

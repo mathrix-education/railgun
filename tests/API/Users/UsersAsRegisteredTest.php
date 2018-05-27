@@ -1,6 +1,10 @@
 <?php
 namespace Tests\API\Users;
 
+use App\Exceptions\Http400InvalidRequestException;
+use App\Exceptions\Http422ModelSaveException;
+use App\Exceptions\Http422ModelValidationException;
+use App\Models\Class_;
 use App\Models\Level;
 use App\Models\Log;
 use App\Models\Module;
@@ -20,6 +24,49 @@ use Illuminate\Support\Facades\Hash;
  */
 class UsersAsRegisteredTest extends UsersAsPublicTest
 {
+    /**
+     * POST /users/register
+     */
+    public function testRegisterAdmin()
+    {
+        $dataWithoutPassword = [
+            "email" => $this->faker->email,
+            "class_id" => Class_::inRandomOrder()->firstOrFail()->id,
+            "type" => "admin"
+        ];
+        $data = array_merge($dataWithoutPassword, ["password" => "test"]);
+
+        $this->call("post", "/users/register", $data);
+
+        $this->assertHttp401Unauthorized();
+        $this->assertNotInDatabase("users", $dataWithoutPassword);
+    }
+
+
+    /**
+     * GET /users/{id}
+     */
+    public function testGet()
+    {
+        $this->call("get", "/users/{$this->user->id}");
+
+        $this->assertHttp200Success();
+    }
+
+
+    /**
+     * GET /users/{id}
+     */
+    public function testGetStranger()
+    {
+        $stranger = $this->stranger();
+
+        $this->call("get", "/users/{$stranger->id}");
+
+        $this->assertHttp401Unauthorized();
+    }
+
+
     /**
      * GET /users/profile
      */
@@ -173,7 +220,85 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
             "points" => $pointsBefore + $pointsToAdd
         ]);
         $this->assertLogged("user_gathered_points", $this->user);
+    }
 
+
+    /**
+     * POST /users/points wrong loggable
+     */
+    public function testPointsWithWrongLoggable()
+    {
+        $this->call("post", "/users/points", [
+            "points" => $this->faker->numberBetween(1, 10),
+            "loggable_type" => "wrongloggable",
+            "loggable_id" => 6664242
+        ]);
+
+        // Assertions
+        $this->assertHttp400InvalidRequest();
+    }
+
+
+    /**
+     * POST /users/points without points field
+     */
+    public function testPointsWithoutPointsField()
+    {
+        $this->call("post", "/users/points");
+
+        // Assertions
+        $this->assertHttp400InvalidRequest();
+    }
+
+
+    /**
+     * POST /users/points without points field
+     */
+    public function testPointsWithInvalidPointsField()
+    {
+        $this->call("post", "/users/points", ["points" => "lol"]);
+
+        // Assertions
+        $this->assertHttp400InvalidRequest();
+    }
+
+
+    /**
+     * POST /users/points with loggable
+     * @throws Http400InvalidRequestException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
+     */
+    public function testPointsWithLoggableAlreadyGatheredPoints()
+    {
+        $pointsToAdd = $this->faker->numberBetween(1, 10);
+
+        $userModulesIdsToday = Log::where([
+            ["event", "user_gathered_points"],
+            ["user_id", $this->user->id],
+            ["loggable_type", "module"],
+            ["created_at", ">=", Carbon::now()->setTime(0, 0, 0)]
+        ])->pluck("loggable_id");
+
+        /** @var Module $loggable */
+        $loggable = Module::inRandomOrder()
+            ->whereNotIn("id", $userModulesIdsToday)
+            ->firstOrFail();
+
+        Log::log("user_gathered_points", $this->user, [
+            "loggable_type" => "module",
+            "loggable_id" => $loggable->id
+        ]);
+
+        $this->call("post", "/users/points", [
+            "points" => $pointsToAdd,
+            "loggable_type" => "module",
+            "loggable_id" => $loggable->id
+        ]);
+
+
+        // Assertions
+        $this->assertHttp429TooManyRequests();
     }
 
 
@@ -275,6 +400,25 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $responseData = $this->getResponseData();
 
         $this->assertFalse($responseData->sponsor);
+    }
+
+
+    /**
+     * POST /users/sponsor
+     *
+     * @throws \Exception
+     */
+    public function testSponsorNoTrainingId()
+    {
+        $sponsor = User::whereHas("purchases", function (Builder $query) {
+            $query->where("purchasable_type", "=", "training");
+        })->first();
+
+        $this->call("post", "/users/sponsor", [
+            "sponsor_email" => $sponsor->email,
+        ]);
+
+        $this->assertHttp400InvalidRequest();
     }
 }
 

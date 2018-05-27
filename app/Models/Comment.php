@@ -116,6 +116,7 @@ class Comment extends BaseModel
      * BelongsTo Comment
      *
      * @return BelongsTo
+     * @codeCoverageIgnore
      */
     public function parent(): BelongsTo
     {
@@ -127,6 +128,7 @@ class Comment extends BaseModel
      * HasMany Comment
      *
      * @return HasMany
+     * @codeCoverageIgnore
      */
     public function children(): HasMany
     {
@@ -138,6 +140,7 @@ class Comment extends BaseModel
      * BelongsTo Comment
      *
      * @return BelongsTo
+     * @codeCoverageIgnore
      */
     public function user(): BelongsTo
     {
@@ -147,6 +150,7 @@ class Comment extends BaseModel
 
     /**
      * MorphTo
+     * @codeCoverageIgnore
      */
     public function commentable(): MorphTo
     {

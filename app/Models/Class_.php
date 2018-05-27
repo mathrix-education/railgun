@@ -57,11 +57,6 @@ class Class_ extends BaseModel
     ];
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Relations
-    |--------------------------------------------------------------------------
-    */
     /**
      * Get the cursus (ie. the class it self and all its previous)
      *
@@ -84,10 +79,16 @@ class Class_ extends BaseModel
     }
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
     /**
      * BelongsTo Class_
      *
      * @return BelongsTo
+     * @codeCoverageIgnore
      */
     public function parent(): BelongsTo
     {
@@ -99,6 +100,7 @@ class Class_ extends BaseModel
      * BelongsTo Country
      *
      * @return BelongsTo
+     * @codeCoverageIgnore
      */
     public function country(): BelongsTo
     {
@@ -110,6 +112,7 @@ class Class_ extends BaseModel
      * BelongsToMany Discipline
      *
      * @return BelongsToMany
+     * @codeCoverageIgnore
      */
     public function disciplines(): BelongsToMany
     {
@@ -122,6 +125,7 @@ class Class_ extends BaseModel
      * HasMany User
      *
      * @return HasMany
+     * @codeCoverageIgnore
      */
     public function users(): HasMany
     {

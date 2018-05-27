@@ -1,6 +1,8 @@
 <?php
 namespace Tests\API\Categories;
 
+use App\Models\Category;
+
 /**
  * Class CategoriesAsAdminTest
  * Test Categories as admin
@@ -35,13 +37,28 @@ class CategoriesAsAdminTest extends CategoriesAsModeratorTest
 
 
     /**
-     * DELETE /categories/{id} -> HTTP 501 not_implemented
+     * DELETE /categories/{id}
      *
      * @throws \Exception
      */
     public function testDelete()
     {
+        $this->deleteModelId = Category::doesntHave("posts")->inRandomOrder()->firstOrFail()->id;
+        $this->genericDeleteSuccess();
+    }
+
+
+    /**
+     * DELETE /categories/{id}
+     *
+     * @throws \Exception
+     */
+    public function testDeleteWithPosts()
+    {
+        $this->deleteModelId = Category::has("posts")->inRandomOrder()->firstOrFail()->id;
+
         $this->genericDelete();
-        $this->assertHttp501NotImplemented();
+
+        $this->assertHttp400InvalidRequest();
     }
 }

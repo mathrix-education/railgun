@@ -35,6 +35,11 @@ class BlogTableSeeder extends BaseTableSeeder
             "modelClass" => Post::class,
             "count" => random_int(10, 20)
         ]);
+        // Seed categories without posts
+        $this->seedFromFactory([
+            "modelClass" => Category::class,
+            "count" => random_int(5, 8)
+        ]);
         $this->seedFromFactory([
             "modelClass" => Quote::class,
             "count" => random_int(10, 20)

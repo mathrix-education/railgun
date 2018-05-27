@@ -93,7 +93,6 @@ class DisciplineController extends BaseController
      * @return JsonResponse
      * @throws Http501NotImplementedException
      * @throws Http401UnauthorizedException
-     * @throws \Exception
      */
     public function delete(Request $request, int $id): JsonResponse
     {

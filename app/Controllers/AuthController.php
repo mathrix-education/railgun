@@ -45,7 +45,6 @@ class AuthController extends BaseController
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
-     * @throws \Exception
      */
     public function login(Request $request)
     {
@@ -118,7 +117,6 @@ class AuthController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
-     * @throws \Exception
      */
     public function forgot(Request $request)
     {
@@ -159,7 +157,6 @@ class AuthController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
-     * @throws \Exception
      */
     public function reset(Request $request, string $token)
     {

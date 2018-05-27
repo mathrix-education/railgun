@@ -65,6 +65,7 @@ class Lesson extends BaseModel
      * BelongsTo Module
      *
      * @return BelongsTo
+     * @codeCoverageIgnore
      */
     public function module(): BelongsTo
     {

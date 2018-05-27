@@ -50,8 +50,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Module extends BaseModel
 {
-    use Commentable;
-
     public const TYPES = ["id", "course", "test", "mcq", "mcq-table", "match", "fill", "flashcard"];
 
 
@@ -198,6 +196,7 @@ class Module extends BaseModel
      * BelongsToMany Activity
      *
      * @return BelongsToMany
+     * @codeCoverageIgnore
      */
     public function activities(): BelongsToMany
     {
@@ -209,6 +208,7 @@ class Module extends BaseModel
      * HasMany Lesson
      *
      * @return HasMany
+     * @codeCoverageIgnore
      */
     public function lessons(): HasMany
     {

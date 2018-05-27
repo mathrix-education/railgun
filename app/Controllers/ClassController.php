@@ -93,7 +93,6 @@ class ClassController extends BaseController
      * @return JsonResponse
      * @throws Http401UnauthorizedException
      * @throws Http501NotImplementedException
-     * @throws \Exception
      */
     public function delete(Request $request, int $id): JsonResponse
     {

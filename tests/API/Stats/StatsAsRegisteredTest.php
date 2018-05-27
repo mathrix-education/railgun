@@ -86,15 +86,14 @@ class StatsAsRegisteredTest extends StatsAsPublicTest
 
 
     /**
-     * POST /stats/activities
-     * Assert that stats are coherent and interval size is respected
+     * Test activities stats with the given interval
      *
-     * @throws \Exception
+     * @param $interval
      */
-    public function testActivitiesWithIntervalSize()
+    public function activitiesWithIntervalSize($interval)
     {
         $this->call("post", "/stats/activities", [
-            "interval" => "week"
+            "interval" => $interval
         ]);
 
         $data = $this->getResponseData();
@@ -122,6 +121,42 @@ class StatsAsRegisteredTest extends StatsAsPublicTest
             }
             $previousCarbonDate = $carbonDate;
         }
+    }
+
+
+    /**
+     * POST /stats/activities
+     * Assert that stats are coherent and interval size is respected
+     *
+     * @throws \Exception
+     */
+    public function testActivitiesWithIntervalWeek()
+    {
+        $this->activitiesWithIntervalSize("week");
+    }
+
+
+    /**
+     * POST /stats/activities
+     * Assert that stats are coherent and interval size is respected
+     *
+     * @throws \Exception
+     */
+    public function testActivitiesWithIntervalMonth()
+    {
+        $this->activitiesWithIntervalSize("month");
+    }
+
+
+    /**
+     * POST /stats/activities
+     * Assert that stats are coherent and interval size is respected
+     *
+     * @throws \Exception
+     */
+    public function testActivitiesWithIntervalYear()
+    {
+        $this->activitiesWithIntervalSize("year");
     }
 
 

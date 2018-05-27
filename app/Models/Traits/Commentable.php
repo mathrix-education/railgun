@@ -15,6 +15,7 @@ trait Commentable
 {
     /**
      * Get all of the post"s comments.
+     * @codeCoverageIgnore
      */
     public function comments()
     {

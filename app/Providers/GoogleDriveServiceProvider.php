@@ -13,6 +13,7 @@ use League\Flysystem\Filesystem;
  * @package App\Providers
  * @since 1.0.1
  * @copyright Mathrix Education SA
+ * @codeCoverageIgnore
  */
 class GoogleDriveServiceProvider extends ServiceProvider
 {

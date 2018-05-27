@@ -53,7 +53,8 @@ use Laravel\Passport\Token;
  * @property-read Collection|Client[] $clients
  * @property-read Collection|Comment[] $comments
  * @property-read Collection|Log[] $logs
- * @property-read Collection|Activity[] $meta
+ * @property-read Collection|Meta[] $meta
+ * @property-read Collection|Purchase[] $purchases
  * @property-read Collection|Subscription[] $subscriptions
  * @property-read Collection|Token[] $tokens
  * @property-read Collection|Vote[] $votes
@@ -78,8 +79,6 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereTrialEndsAt($value)
  * @method static Builder|User whereCreatedAt($value)
  * @method static Builder|User whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Training[] $trainings
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Purchase[] $purchases
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
@@ -262,6 +261,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * BelongsTo Class_
      *
      * @return BelongsTo
+     * @codeCoverageIgnore
      */
     public function class_(): BelongsTo
     {
@@ -273,6 +273,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * HasMany Comment
      *
      * @return HasMany
+     * @codeCoverageIgnore
      */
     public function comments(): HasMany
     {
@@ -284,6 +285,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * HasMany Log
      *
      * @return HasMany
+     * @codeCoverageIgnore
      */
     public function logs(): HasMany
     {
@@ -295,6 +297,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * HasMany Activity
      *
      * @return HasMany
+     * @codeCoverageIgnore
      */
     public function meta(): HasMany
     {
@@ -306,6 +309,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * HasMany Purchase
      *
      * @return HasMany
+     * @codeCoverageIgnore
      */
     public function purchases(): HasMany
     {
@@ -317,6 +321,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * HasMany Vote
      *
      * @return HasMany
+     * @codeCoverageIgnore
      */
     public function votes(): HasMany
     {

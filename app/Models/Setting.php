@@ -46,7 +46,7 @@ class Setting extends BaseModel
     public static function read(string $key)
     {
         /** @var Setting $setting */
-        $setting = Setting::whereKey($key)->firstOrFail();
+        $setting = Setting::where("key", "=", $key)->firstOrFail();
         return $setting->value;
     }
 
@@ -62,7 +62,7 @@ class Setting extends BaseModel
      */
     public static function write(string $key, $value, bool $visible = true)
     {
-        $setting = Setting::whereKey($key)->firstOrCreate([
+        $setting = Setting::where("key", "=", $key)->firstOrCreate([
             "key" => $key,
             "value" => $value,
             "visible" => $visible

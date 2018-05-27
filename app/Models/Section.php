@@ -65,6 +65,7 @@ class Section extends BaseModel
      * BelongsTo Training
      *
      * @return BelongsTo
+     * @codeCoverageIgnore
      */
     public function training()
     {
@@ -76,6 +77,7 @@ class Section extends BaseModel
      * HasMany Lesson
      *
      * @return HasMany
+     * @codeCoverageIgnore
      */
     public function lessons()
     {

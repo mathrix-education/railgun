@@ -20,6 +20,14 @@ use Illuminate\Http\Request;
 class SettingController extends BaseController
 {
     /**
+     * @apiVersion 4.0.3
+     * @api {get} /sections/all
+     * @apiGroup Settings
+     * @apiName SettingsAll
+     * @apiDescription Get all settings (hide secret settings for non-admin users)
+     * @apiPermission public for visible settings
+     * @apiUse SettingArray
+     *
      * @param Request $request
      *
      * @return JsonResponse
@@ -27,7 +35,7 @@ class SettingController extends BaseController
     public function all(Request $request)
     {
         $user = $request->user();
-        $canSeeHiddenSettings = $user !== null & $user->isAdmin();
+        $canSeeHiddenSettings = $user !== null && $user->isAdmin();
 
         if (!$canSeeHiddenSettings) {
             $settings = Setting::whereVisible(true)->get();
@@ -40,12 +48,21 @@ class SettingController extends BaseController
 
 
     /**
+     * @apiVersion 4.0.3
+     * @api {get} /settings/{key} Read
+     * @apiGroup Settings
+     * @apiName SettingRead
+     * @apiDescription Read an setting by key
+     * @apiPermission public for visible settings
+     * @apiParam {string} key The setting key
+     * @apiUse SettingModel
+     * @apiUse Http404ModelNotFound
+     *
      * @param Request $request
      * @param string $key
      *
      * @return JsonResponse
      * @throws Http404ModelNotFoundException
-     * @throws \Exception
      */
     public function read(Request $request, string $key): JsonResponse
     {
@@ -68,6 +85,19 @@ class SettingController extends BaseController
 
 
     /**
+     * @apiVersion 4.0.3
+     * @api {post} /settings Write
+     * @apiGroup Settings
+     * @apiName SettingWrite
+     * @apiDescription Write a setting
+     * @apiPermission admin
+     * @apiUse Bearer
+     * @apiUse SettingRequest
+     * @apiUse SettingModel
+     * @apiUse Http401Unauthorized
+     * @apiUse Http422ModelValidation
+     * @apiUse Http422ModelSave
+     *
      * @param Request $request
      *
      * @return JsonResponse
@@ -91,6 +121,17 @@ class SettingController extends BaseController
 
 
     /**
+     * @apiVersion 4.0.3
+     * @api {delete} /settings/{id} Forgot
+     * @apiGroup Settings
+     * @apiName SettingForgot
+     * @apiDescription Forgot a setting
+     * @apiUse Bearer
+     * @apiPermission moderator
+     * @apiParam {int} id The setting id
+     * @apiUse Http401Unauthorized
+     * @apiUse Http404ModelNotFound
+     *
      * @param Request $request
      * @param string $key
      *

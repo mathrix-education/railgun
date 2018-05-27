@@ -6,14 +6,16 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Laravel\Passport\Passport;
 use Tests\BaseTestCase;
-use Tests\API\Generics\Generics;
+use Tests\Traits\Generics;
 
 /**
  * Class ScopeTestCase
  * Base test case for actions which rely on permissions
  *
- * @author Mathrix Team
- * @package Tests
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
+ * @version 1.0.0
+ * @package Tests\API
  */
 abstract class ScopeTestCase extends BaseTestCase
 {

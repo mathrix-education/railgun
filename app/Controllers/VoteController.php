@@ -39,7 +39,6 @@ class VoteController extends BaseController
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
-     * @throws \Exception
      */
     public function up(Request $request, string $votable_type, int $votable_id)
     {
@@ -59,7 +58,6 @@ class VoteController extends BaseController
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
-     * @throws \Exception
      */
     private function vote(Request $request, string $votable_type, int $votable_id, int $value)
     {
@@ -119,7 +117,6 @@ class VoteController extends BaseController
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
-     * @throws \Exception
      */
     public function down(Request $request, string $votable_type, int $votable_id)
     {

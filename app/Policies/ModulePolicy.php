@@ -26,11 +26,12 @@ class ModulePolicy extends BasePolicy
     /**
      * @return bool
      */
-    public function get()
+    public function byActivity()
     {
         return true;
     }
 
+    // Get policy directly handled in the controller
 
     /**
      * @param User $currentUser

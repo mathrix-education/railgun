@@ -1,7 +1,6 @@
 <?php
 namespace Tests\API\Discounts;
 
-use App\Models\Discount;
 use Tests\API\ScopeTestCase;
 
 /**
@@ -67,5 +66,15 @@ class DiscountsAsPublicTest extends ScopeTestCase
     public function testDelete()
     {
         $this->genericDeleteUnauthorized();
+    }
+
+
+    /**
+     * POST /discounts/check -> HTTP 401 unauthorized
+     */
+    public function testCheck()
+    {
+        $this->post("/discounts/check")
+            ->assertHttp401Unauthorized();
     }
 }
