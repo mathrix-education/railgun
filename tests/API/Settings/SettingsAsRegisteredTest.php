@@ -2,7 +2,7 @@
 namespace Tests\API\Settings;
 
 /**
- * Class CountriesAsPublicTest
+ * Class SettingsAsPublicTest
  * Test settings as registered user
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>

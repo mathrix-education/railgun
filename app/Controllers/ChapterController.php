@@ -137,7 +137,6 @@ class ChapterController extends BaseController
      *
      * @return JsonResponse
      * @throws Http404ModelNotFoundException
-     * @throws \Exception
      */
     public function recursive(Request $request, int $id)
     {

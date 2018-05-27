@@ -61,6 +61,7 @@ class StripeUtils
         $nextJuly = Carbon::create(null, 7, 31);
         $firstMay = Carbon::create(null, 5, 1);
 
+        // @codeCoverageIgnoreStart
         switch ($stripePlan) {
             case "v3_biannually":
                 if ($firstMay->isFuture()) {
@@ -84,6 +85,7 @@ class StripeUtils
                 throw new Http400InvalidRequestException("$stripePlan is not a valid estimable plan");
                 break;
         }
+        // @codeCoverageIgnoreEnd
 
         return $nextJuly->setTime(0, 0, 0);
     }
@@ -144,7 +146,7 @@ class StripeUtils
         $nextJuly = Carbon::create(null, 7, 31);
 
         if ($nextJuly->isPast()) {
-            $nextJuly->addYear();
+            $nextJuly->addYear(); // @codeCoverageIgnore
         }
 
         $nextJuly->setTime(0, 0, 0);

@@ -151,4 +151,15 @@ class VotesAsRegisteredTest extends VotesAsPublicTest
         $this->assertHttp200Success();
         $this->assertEquals($scoreBefore - 2, $vote->votable->score);
     }
+
+
+    /**
+     * POST /tests/wtf/4242666/up
+     * Test with a not votable model
+     */
+    public function testNotVotable() {
+        $this->call("post", "/votes/wtf/4242666/up");
+
+        $this->assertHttp400InvalidRequest();
+    }
 }

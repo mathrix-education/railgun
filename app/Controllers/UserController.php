@@ -73,7 +73,9 @@ class UserController extends BaseController
      * @param int|null $id The user id; if null set edit the current user
      *
      * @return JsonResponse
-     * @throws \Exception
+     * @throws Http400InvalidRequestException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
      */
     public function edit(Request $request, int $id = null): JsonResponse
     {
@@ -151,7 +153,6 @@ class UserController extends BaseController
      * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
-     * @throws \Exception
      */
     public function register(Request $request): JsonResponse
     {
@@ -210,7 +211,6 @@ class UserController extends BaseController
         }
 
         return response()->json(["exists" => false]);
-
     }
 
 
@@ -267,7 +267,6 @@ class UserController extends BaseController
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      * @throws Http429TooManyRequestsException
-     * @throws \Exception
      */
     public function points(Request $request, $id = null)
     {
@@ -364,7 +363,6 @@ class UserController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
-     * @throws \Exception
      */
     public function sponsor(Request $request)
     {

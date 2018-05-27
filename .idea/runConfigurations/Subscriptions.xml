@@ -1,0 +1,6 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Subscriptions" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" folderName="Details" singleton="true">
+    <TestRunner directory="$PROJECT_DIR$/tests/API/Stripe" />
+    <method />
+  </configuration>
+</component>

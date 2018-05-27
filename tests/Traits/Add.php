@@ -1,5 +1,5 @@
 <?php
-namespace Tests\API\Generics;
+namespace Tests\Traits;
 
 use Closure;
 use Illuminate\Http\Response;
@@ -9,7 +9,7 @@ use Illuminate\Http\Response;
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * @version 1.0.0
+ * @since 1.0.0
  * @package Tests\GenericTests
  */
 trait Add
@@ -51,6 +51,11 @@ trait Add
         $this->addModelData = is_null($this->subFactory) ?
             factory($this->modelClass)->raw($override) :
             factory($this->modelClass, $this->subFactory)->raw($override);
+
+        // Automatically test slug generation
+        if (!empty($this->addModelData["slug"]) && empty($override["slug"])) {
+            unset($this->addModelData["slug"]);
+        }
 
         if ($callback !== null) {
             $this->addModelData = $callback($this->addModelData);

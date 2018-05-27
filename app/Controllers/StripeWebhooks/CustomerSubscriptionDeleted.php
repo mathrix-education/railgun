@@ -2,6 +2,8 @@
 namespace App\Controllers\StripeWebhooks;
 
 use App\Exceptions\Http400InvalidRequestException;
+use App\Exceptions\Http422ModelSaveException;
+use App\Exceptions\Http422ModelValidationException;
 use App\Models\Log;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -24,7 +26,9 @@ trait CustomerSubscriptionDeleted
      * @param array $payload
      *
      * @return JsonResponse
-     * @throws \Exception
+     * @throws Http400InvalidRequestException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
      */
     public function handleCustomerSubscriptionDeleted(array $payload)
     {
@@ -37,7 +41,7 @@ trait CustomerSubscriptionDeleted
         $subscription = Subscription::where("stripe_id", "=", $subscriptionId)->first();
 
         // Raise error if we are in production and were unable to find the user or the subscription
-        // @coverageIgnoreStart
+        // @codeCoverageIgnoreStart
         if (!$this->isInTestingEnvironment() && ($user === null || $subscription === null)) {
             throw new Http400InvalidRequestException("Unable to find a valid combination of user/subscription", [
                 "customer_id" => $customerId,
@@ -48,16 +52,16 @@ trait CustomerSubscriptionDeleted
         if ($user === null && $this->isInTestingEnvironment()) {
             return $this->debugCustomerSubscriptionDeleted($customerId, $subscriptionId);
         }
-        // @coverageIgnoreEnd
+        // @codeCoverageIgnoreEnd
 
         if ($subscription->onTrial()) {
             $subscription->skipTrial();
         }
 
-        // @coverageIgnoreStart
+        // @codeCoverageIgnoreStart
         if (!$this->isInTestingEnvironment()) {
             $subscription->cancelNow();
-        } // @coverageIgnoreEnd
+        } // @codeCoverageIgnoreEnd
         else {
             $subscription->markAsCancelled();
         }
@@ -84,7 +88,7 @@ trait CustomerSubscriptionDeleted
      * @param $subscriptionId
      *
      * @return JsonResponse
-     * @coverageIgnore
+     * @codeCoverageIgnore
      */
     public function debugCustomerSubscriptionDeleted(string $customerId, string $subscriptionId): JsonResponse
     {

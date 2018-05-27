@@ -1,18 +1,24 @@
 <?php
-namespace Tests\API;
+namespace Tests\Traits;
 
 /**
- * Trait HttpAssertions
+ * Trait HttpAssertionsTrait
  * Some shortcuts for HTTP codes & errors
  *
  * @package Tests
  *
- * @method assertHttp400InvalidRequest()
- * @method assertHttp401Unauthorized()
- * @method assertHttp404ModelNotFound()
- * @method assertHttp501NotImplemented()
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
+ * @version 4.0.3
+ * @package Tests\Votes
+ *
+ * @method assertHttp400InvalidRequest(): $this
+ * @method assertHttp401Unauthorized(): $this
+ * @method assertHttp404ModelNotFound(): $this
+ * @method assertHttp429TooManyRequests(): $this
+ * @method assertHttp501NotImplemented(): $this
  */
-trait HttpAssertions
+trait HttpAssertionsTrait
 {
     /**
      * Shortcut to assertResponseStatus(200)
@@ -20,6 +26,7 @@ trait HttpAssertions
     public function assertHttp200Success()
     {
         $this->assertResponseStatus(200);
+        return $this;
     }
 
 
@@ -30,5 +37,6 @@ trait HttpAssertions
         $errorName = str_replace($errorCode, "", $strCleaned);
         $errorName = snake_case($errorName);
         $this->assertJsonError($errorName, $errorCode);
+        return $this;
     }
 }

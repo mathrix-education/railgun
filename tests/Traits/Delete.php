@@ -1,12 +1,12 @@
 <?php
-namespace Tests\API\Generics;
+namespace Tests\Traits;
 
 /**
  * Trait Delete
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * @version 1.0.0
+ * @since 1.0.0
  * @package Tests\GenericTests
  */
 trait Delete
@@ -39,7 +39,9 @@ trait Delete
     {
         $this->genericUsableOrFail();
 
-        $this->deleteModelId = ($this->modelClass)::inRandomOrder()->firstOrFail()->id;
+        if (empty($this->deleteModelId)) {
+            $this->deleteModelId = ($this->modelClass)::inRandomOrder()->firstOrFail()->id;
+        }
 
         $this->call("delete", "/" . $this->modelPlural . "/" . $this->deleteModelId);
     }

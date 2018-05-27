@@ -26,6 +26,7 @@ class StripeController extends CashierController
 {
     use CustomerSubscriptionDeleted, InvoicePaymentSucceeded;
 
+
     /**
      * @apiVersion 4.0.0
      * @api {post} /stripe/subscribe Subscribe
@@ -59,7 +60,6 @@ class StripeController extends CashierController
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
-     * @throws \Exception
      */
     public function subscribe(Request $request)
     {
@@ -102,7 +102,7 @@ class StripeController extends CashierController
                     ->create($stripeToken);
                 Log::log("user_payment_succeed_for_premium", $user);
             } else {
-                Log::log("user_payment_failed_for_premium", $user);
+                Log::log("user_payment_failed_for_premium", $user); // @codeCoverageIgnore
             }
         }
 
@@ -126,7 +126,6 @@ class StripeController extends CashierController
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
-     * @throws \Exception
      */
     public function estimate(string $stripePlan)
     {

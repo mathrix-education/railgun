@@ -68,7 +68,6 @@ class CommentController extends BaseController
      * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
-     * @throws \Exception
      */
     public function add(Request $request): JsonResponse
     {
@@ -127,35 +126,7 @@ class CommentController extends BaseController
      * @apiParam {int} [page=1] the page to fetch
      * @apiParam {int} [perPage=10] the comments per page to fetch (excluding children)
      * @apiUse CommentArray
-     *
-     * @param Request $request
-     * @param string $what
-     * @param int $id
-     * @param int $page
-     * @param int $perPage
-     *
-     * @return JsonResponse
-     * @throws Http400InvalidRequestException
-     * @throws \Exception
      */
-    public function by(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
-    {
-        if (!in_array($what, ["activity", "post"])) {
-            throw new Http400InvalidRequestException("Comment::$what() does not exist");
-        }
-
-        $comments = Comment::where([
-            ["commentable_type", $what],
-            ["commentable_id", $id],
-            ["parent_id", null]
-        ])
-            ->limit($perPage)
-            ->offset(($page - 1) * $perPage)
-            ->get();
-
-
-        return response()->json($comments);
-    }
 
 
     /**

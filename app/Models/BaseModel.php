@@ -350,6 +350,7 @@ abstract class BaseModel extends Model
      * Override to support appends togglers
      *
      * @return array
+     * @codeCoverageIgnore // TODO: Unused?
      */
     protected function getArrayableAppends()
     {

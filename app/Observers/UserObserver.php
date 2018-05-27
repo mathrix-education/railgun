@@ -32,6 +32,8 @@ class UserObserver extends BaseObserver
     public function saving($user)
     {
         // Subscribe the user to "subscribers" Mailchimp list
+
+        // @codeCoverageIgnoreStart
         if (app()->environment("master") && $user->isDirty("email")) {
             $options = [];
 
@@ -52,8 +54,8 @@ class UserObserver extends BaseObserver
             }
 
             Newsletter::subscribeOrUpdate($user->email, $options, "subscribers");
-
         }
+        // @codeCoverageIgnoreEnd
 
         // Password hash check
         if ($user->isDirty("password")) {
@@ -104,10 +106,6 @@ class UserObserver extends BaseObserver
                 $user->level++;
                 $nextLevel = Level::where("level", $user->level + 1)->first();
             }
-        }
-
-        if (isset($user->link)) {
-            unset($user->link);
         }
 
         return true;

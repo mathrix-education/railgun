@@ -3,13 +3,14 @@ namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http404ModelNotFoundException;
+use App\Exceptions\Http422ModelSaveException;
+use App\Exceptions\Http422ModelValidationException;
 use App\Models\Discount;
 use App\Models\Log;
 use App\Models\Purchase;
 use App\Models\Training;
 use App\Models\User;
 use App\Utils\StripeUtils;
-use Faker\Factory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -115,7 +116,6 @@ class TrainingController extends BaseController
      *
      * @return JsonResponse
      * @throws Http404ModelNotFoundException
-     * @throws \Exception
      */
     public function recursive(Request $request, int $id): JsonResponse
     {
@@ -178,7 +178,8 @@ class TrainingController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
-     * @throws \Exception
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
      */
     public function buy(Request $request, int $id): JsonResponse
     {
@@ -252,11 +253,16 @@ class TrainingController extends BaseController
             /** @var Purchase $sponsorPurchase */
             $sponsorPurchase = $sponsor->getPurchase($training->id, "training");
 
-            if (
-                getenv('CASHIER_ENV') !== 'testing' &&
-                $sponsorPurchase->refund + StripeUtils::SPONSORSHIP_REFUND <= $sponsorPurchase->price
-            ) {
-                $refund = $sponsor->refund($sponsorPurchase->stripe_id, ["amount" => StripeUtils::SPONSORSHIP_REFUND]);
+            if ($sponsorPurchase->refund + StripeUtils::SPONSORSHIP_REFUND <= $sponsorPurchase->price) {
+                // @codeCoverageIgnoreStart
+                if (getenv('CASHIER_ENV') !== 'testing') {
+                    $refund = $sponsor->refund($sponsorPurchase->stripe_id, ["amount" => StripeUtils::SPONSORSHIP_REFUND]);
+                } // @codeCoverageIgnoreEnd
+                // Mock success for training
+                else {
+                    $refund = new \stdClass();
+                    $refund->status = "success";
+                }
 
                 if ($refund->status === "success") {
                     $sponsorPurchase->refund += StripeUtils::SPONSORSHIP_REFUND;
@@ -301,11 +307,13 @@ class TrainingController extends BaseController
                     ->find($user->id)
             );
         } else {
+            // @codeCoverageIgnoreStart
             Log::log("user_payment_failed_for_training", $user, ["training_id" => $training->id]);
 
             return new JsonResponse([
                 "status" => "failure"
             ], 400);
+            // @codeCoverageIgnoreEnd
         }
     }
 }

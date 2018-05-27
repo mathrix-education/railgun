@@ -15,7 +15,7 @@ use Tests\API\ScopeTestCase;
 class SectionsAsPublicTest extends ScopeTestCase
 {
     /**
-     * GET /section/index
+     * GET /sections
      *
      * @throws \Exception
      */
@@ -26,7 +26,19 @@ class SectionsAsPublicTest extends ScopeTestCase
 
 
     /**
-     * POST /section -> HTTP 401 unauthorized
+     * GET /sections/{id}
+     *
+     * @throws \Exception
+     */
+    public function testGet()
+    {
+        $this->genericGetSuccess();
+    }
+
+
+
+    /**
+     * POST /sections -> HTTP 401 unauthorized
      *
      * @throws \Exception
      */
@@ -37,7 +49,7 @@ class SectionsAsPublicTest extends ScopeTestCase
 
 
     /**
-     * PATCH /section/{id} -> HTTP 401 unauthorized
+     * PATCH /sections/{id} -> HTTP 401 unauthorized
      *
      * @throws \Exception
      */
@@ -48,7 +60,7 @@ class SectionsAsPublicTest extends ScopeTestCase
 
 
     /**
-     * DELETE /section/{id} -> HTTP 401 unauthorized
+     * DELETE /sections/{id} -> HTTP 401 unauthorized
      *
      * @throws \Exception
      */

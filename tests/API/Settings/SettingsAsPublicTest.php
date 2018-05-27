@@ -6,7 +6,7 @@ use Tests\API\ScopeTestCase;
 
 
 /**
- * Class CountriesAsPublicTest
+ * Class SettingsAsPublicTest
  * Test settings as public (non-logged user)
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
@@ -31,14 +31,19 @@ class SettingsAsPublicTest extends ScopeTestCase
      *
      * @throws \Exception
      */
-    public function all()
+    public function testAll()
     {
-        $this->call("get", "/settings/all");
+        $this->call("get", "/settings");
         $responseData = $this->getResponseData();
+        $settingKeys = [];
+
+        foreach ($responseData as $setting) {
+            $settingKeys[] = $setting->key;
+        }
 
         $this->assertHttp200Success();
         $this->assertNull(Setting::whereVisible(false)
-            ->whereIn("key", array_keys((array)$responseData))
+            ->whereIn("key", $settingKeys)
             ->first());
     }
 

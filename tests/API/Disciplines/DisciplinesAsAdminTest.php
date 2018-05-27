@@ -1,6 +1,8 @@
 <?php
 namespace Tests\API\Disciplines;
 
+use App\Models\Class_;
+
 /**
  * Class DisciplinesAsAdminTest
  * Test disciplines as admin
@@ -31,6 +33,30 @@ class DisciplinesAsAdminTest extends DisciplinesAsModeratorTest
     public function testEdit()
     {
         $this->genericEditSuccess();
+    }
+
+
+    /**
+     * PATCH /disciplines/{id}
+     *
+     * @throws \Exception
+     */
+    public function testEditWithClasses()
+    {
+        $classIds = Class_::inRandomOrder()->limit(3)->get(["id"])->pluck("id");
+
+        $this->genericEditSuccess([
+            "link" => [
+                "classes" => $classIds
+            ]
+        ]);
+
+        foreach ($classIds as $classId) {
+            $this->assertInDatabase("class_discipline", [
+                "class_id" => $classId,
+                "discipline_id" => $this->editModelId
+            ]);
+        }
     }
 
 

@@ -5,7 +5,7 @@ use App\Models\Quote;
 use Tests\API\ScopeTestCase;
 
 /**
- * Class CountriesAsPublicTest
+ * Class QuotesAsPublicTest
  * Test quotes as public (non-logged user)
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
@@ -23,6 +23,17 @@ class QuotesAsPublicTest extends ScopeTestCase
     public function testIndex()
     {
         $this->genericIndexSuccess();
+    }
+
+
+    /**
+     * GET /quotes/{id}
+     *
+     * @throws \Exception
+     */
+    public function testGet()
+    {
+        $this->genericGetSuccess();
     }
 
 

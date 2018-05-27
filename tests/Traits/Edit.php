@@ -1,5 +1,5 @@
 <?php
-namespace Tests\API\Generics;
+namespace Tests\Traits;
 
 use Closure;
 
@@ -8,7 +8,7 @@ use Closure;
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * @version 1.0.0
+ * @since 1.0.0
  * @package Tests\GenericTests
  */
 trait Edit
@@ -53,6 +53,11 @@ trait Edit
         $this->editModelData = is_null($this->subFactory) ?
             factory($this->modelClass)->raw($override) :
             factory($this->modelClass, $this->subFactory)->raw($override);
+
+        // Automatically test slug generation
+        if (!empty($this->editModelData["slug"]) && empty($override["slug"])) {
+            unset($this->editModelData["slug"]);
+        }
 
         if ($callback !== null) {
             $this->editModelData = $callback($this->editModelData);

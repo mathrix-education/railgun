@@ -16,6 +16,9 @@
         <testsuite name="Stripe Test Suite">
             <directory suffix="Test.php">./tests/Stripe</directory>
         </testsuite>
+        <testsuite name="Utils Test Suite">
+            <directory suffix="Test.php">./tests/Utils</directory>
+        </testsuite>
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="false">

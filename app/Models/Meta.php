@@ -83,12 +83,11 @@ class Meta extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
-
-
     /**
      * BelongsTo User
      *
      * @return BelongsTo
+     * @codeCoverageIgnore
      */
     public function user(): BelongsTo
     {
@@ -100,6 +99,7 @@ class Meta extends BaseModel
      * BelongsTo Country
      *
      * @return BelongsTo
+     * @codeCoverageIgnore
      */
     public function country(): BelongsTo
     {
@@ -111,6 +111,7 @@ class Meta extends BaseModel
      * BelongsTo Class_
      *
      * @return BelongsTo
+     * @codeCoverageIgnore
      */
     public function class_(): BelongsTo
     {
@@ -122,6 +123,7 @@ class Meta extends BaseModel
      * BelongsTo Discipline
      *
      * @return BelongsTo
+     * @codeCoverageIgnore
      */
     public function discipline(): BelongsTo
     {
@@ -133,6 +135,7 @@ class Meta extends BaseModel
      * BelongsTo Chapter
      *
      * @return BelongsTo
+     * @codeCoverageIgnore
      */
     public function chapter(): BelongsTo
     {
@@ -144,6 +147,7 @@ class Meta extends BaseModel
      * BelongsTo Notion
      *
      * @return BelongsTo
+     * @codeCoverageIgnore
      */
     public function notion(): BelongsTo
     {
@@ -155,6 +159,7 @@ class Meta extends BaseModel
      * BelongsTo Activity
      *
      * @return BelongsTo
+     * @codeCoverageIgnore
      */
     public function activity(): BelongsTo
     {
@@ -166,6 +171,7 @@ class Meta extends BaseModel
      * BelongsTo Module
      *
      * @return BelongsTo
+     * @codeCoverageIgnore
      */
     public function module(): BelongsTo
     {

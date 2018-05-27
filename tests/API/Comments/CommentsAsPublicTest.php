@@ -2,7 +2,7 @@
 namespace Tests\API\Comments;
 
 
-use App\Models\Module;
+use App\Models\Activity;
 use App\Models\Post;
 use Tests\API\ScopeTestCase;
 
@@ -29,28 +29,29 @@ class CommentsAsPublicTest extends ScopeTestCase
 
 
     /**
-     * GET /comments/{commentable_type}/{commentable_id}
+     * GET /comments/by-activity/{activity_id}
      */
-    public function testBy()
+    public function testByActivity()
     {
-        $commentableType = $this->faker->randomElement(["Activity", "Post"]);
-        /** @var Module|Post|string $typeClass */
-        $typeClass = "App\\Models\\" . $commentableType;
-        $commentableType = strtolower($commentableType);
-        $commentableId = $typeClass::inRandomOrder()
-            ->has("comments")
-            ->firstOrFail()->id;
-
-        $this->call("get", "/comments/by-$commentableType/$commentableId");
-
-        // Assertions
-        $this->assertHttp200Success();
+        $this->genericBySuccess(Activity::class);
     }
 
 
+    /**
+     * GET /comments/by-post/{post_id}
+     */
+    public function testByPost()
+    {
+        $this->genericBySuccess(Post::class);
+    }
+
+
+    /**
+     * GET /comments/by-wtf/{wtf_id} -> HTTP 400 Invalid Request
+     */
     public function testByNotExist()
     {
-        $this->call("get", "/comments/by-lorem/" . random_int(1, 1000));
+        $this->call("get", "/comments/by-wtf/" . random_int(1, 1000));
 
         // Assertions
         $this->assertHttp400InvalidRequest();

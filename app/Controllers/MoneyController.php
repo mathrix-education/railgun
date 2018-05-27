@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Laravel\Cashier\Subscription;
 
 /**
@@ -13,6 +14,11 @@ use Laravel\Cashier\Subscription;
  */
 class MoneyController extends BaseController
 {
+    /**
+     * 7twanud8v86umjhp8ujhr4y1nv1z7jh60gn96s9q
+     *
+     * @return JsonResponse
+     */
     public function last()
     {
         /** @var Subscription $subscription */

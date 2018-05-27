@@ -3,6 +3,8 @@ namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http404ModelNotFoundException;
+use App\Exceptions\Http422ModelSaveException;
+use App\Exceptions\Http422ModelValidationException;
 use App\Models\Log;
 use App\Models\Purchase;
 use App\Models\Section;
@@ -115,7 +117,6 @@ class SectionController extends BaseController
      *
      * @return JsonResponse
      * @throws Http404ModelNotFoundException
-     * @throws \Exception
      */
     public function recursive(Request $request, int $id): JsonResponse
     {
@@ -168,7 +169,8 @@ class SectionController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
-     * @throws \Exception
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
      */
     public function buy(Request $request, int $id): JsonResponse
     {
