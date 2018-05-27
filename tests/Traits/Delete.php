@@ -1,5 +1,5 @@
 <?php
-namespace Tests\API\Generics;
+namespace Tests\Traits;
 
 /**
  * Trait Delete
@@ -39,7 +39,9 @@ trait Delete
     {
         $this->genericUsableOrFail();
 
-        $this->deleteModelId = ($this->modelClass)::inRandomOrder()->firstOrFail()->id;
+        if (empty($this->deleteModelId)) {
+            $this->deleteModelId = ($this->modelClass)::inRandomOrder()->firstOrFail()->id;
+        }
 
         $this->call("delete", "/" . $this->modelPlural . "/" . $this->deleteModelId);
     }

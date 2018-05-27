@@ -1,5 +1,6 @@
 <?php
 namespace Tests\API\Classes;
+use App\Models\Discipline;
 
 /**
  * Class ClassesAsAdminTest
@@ -33,6 +34,29 @@ class ClassesAsAdminTest extends ClassesAsModeratorTest
         $this->genericEditSuccess();
     }
 
+
+    /**
+     * PATCH /classes/{id}
+     *
+     * @throws \Exception
+     */
+    public function testEditWithDisciplines()
+    {
+        $disciplineIds = Discipline::inRandomOrder()->limit(3)->get(["id"])->pluck("id");
+
+        $this->genericEditSuccess([
+            "link" => [
+                "disciplines" => $disciplineIds
+            ]
+        ]);
+
+        foreach ($disciplineIds as $disciplineId) {
+            $this->assertInDatabase("class_discipline", [
+                "class_id" => $this->editModelId,
+                "discipline_id" => $disciplineId
+            ]);
+        }
+    }
 
     /**
      * DELETE /classes/{id} -> HTTP 501 not_implemented

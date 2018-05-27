@@ -13,14 +13,4 @@ namespace Tests\API\Categories;
  */
 class CategoriesAsModeratorTest extends CategoriesAsRegisteredTest
 {
-    /**
-     * POST /categories/{id}
-     *
-     * @throws \Exception
-     */
-    public function testDelete()
-    {
-        $this->genericDelete();
-        $this->assertHttp501NotImplemented();
-    }
 }

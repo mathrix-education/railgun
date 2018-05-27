@@ -31,7 +31,6 @@ class MailchimpController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
-     * @throws \Exception
      *
      * @codeCoverageIgnore
      */

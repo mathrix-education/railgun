@@ -18,8 +18,8 @@ use Spatie\Newsletter\NewsletterListCollection;
  * @package App\Providers
  * @since 1.0.0
  * @copyright Mathrix Education SA
- *
  * @property-read Application $app
+ * @codeCoverageIgnore
  */
 class NewsletterServiceProvider extends ServiceProvider
 {

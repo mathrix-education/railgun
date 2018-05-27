@@ -30,6 +30,24 @@ class CommentPolicy extends BasePolicy
     /**
      * @return bool
      */
+    public function byActivity()
+    {
+        return true;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function byPost()
+    {
+        return true;
+    }
+
+
+    /**
+     * @return bool
+     */
     public function add()
     {
         return true;
@@ -64,24 +82,6 @@ class CommentPolicy extends BasePolicy
     public function delete(User $currentUser)
     {
         return $this->atLeastModerator($currentUser);
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function byNotion()
-    {
-        return true;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function byPost()
-    {
-        return true;
     }
 
 

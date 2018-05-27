@@ -2,7 +2,7 @@
 namespace Tests\API\Quotes;
 
 /**
- * Class CountriesAsPublicTest
+ * Class QuotesAsPublicTest
  * Test quotes as registered user
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>

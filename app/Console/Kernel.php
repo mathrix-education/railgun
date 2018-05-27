@@ -3,6 +3,7 @@ namespace App\Console;
 
 use App\Console\Commands\MailchimpUpdate;
 use App\Console\Commands\MakeApidoc;
+use App\Console\Commands\MakeTest;
 use App\Console\Commands\SitemapAll;
 use App\Console\Commands\SitemapContent;
 use App\Console\Commands\SyncStripeSubscriptions;
@@ -27,6 +28,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         MailchimpUpdate::class,
         MakeApidoc::class,
+        MakeTest::class,
         SitemapAll::class,
         SitemapContent::class,
         SyncStripeSubscriptions::class

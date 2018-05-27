@@ -18,6 +18,7 @@ trait Loggable
      * MorphMany Log
      *
      * @return MorphMany
+     * @codeCoverageIgnore
      */
     public function logs(): MorphMany
     {

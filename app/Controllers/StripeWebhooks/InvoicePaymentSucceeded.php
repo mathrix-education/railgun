@@ -2,6 +2,8 @@
 namespace App\Controllers\StripeWebhooks;
 
 use App\Exceptions\Http400InvalidRequestException;
+use App\Exceptions\Http422ModelSaveException;
+use App\Exceptions\Http422ModelValidationException;
 use App\Models\Log;
 use App\Models\Purchase;
 use App\Models\User;
@@ -23,7 +25,9 @@ trait InvoicePaymentSucceeded
      * @param array $payload
      *
      * @return JsonResponse
-     * @throws \Exception
+     * @throws Http400InvalidRequestException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
      */
     public function handleInvoicePaymentSucceeded(array $payload)
     {
@@ -36,7 +40,7 @@ trait InvoicePaymentSucceeded
         $subscription = Subscription::where("stripe_id", "=", $subscriptionId)->first();
 
         // Raise error if we are in production and were unable to find the user or the subscription
-        // @coverageIgnoreStart
+        // @codeCoverageIgnoreStart
         if (!$this->isInTestingEnvironment() && ($user === null || $subscription === null)) {
             throw new Http400InvalidRequestException("Unable to find a valid combination of user/subscription", [
                 "customer_id" => $customerId,
@@ -47,7 +51,7 @@ trait InvoicePaymentSucceeded
         if ($user === null && $this->isInTestingEnvironment()) {
             return $this->debugInvoicePaymentSucceeded($customerId, $subscriptionId);
         }
-        // @coverageIgnoreEnd
+        // @codeCoverageIgnoreEnd
 
         $chargeId = $payload["data"]["object"]["charge"];
 

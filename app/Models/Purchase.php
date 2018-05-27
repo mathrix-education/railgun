@@ -71,6 +71,7 @@ class Purchase extends BaseModel
      * BelongsTo User
      *
      * @return BelongsTo
+     * @codeCoverageIgnore
      */
     public function user()
     {
@@ -82,6 +83,7 @@ class Purchase extends BaseModel
      * MorphTo Purchasable
      *
      * @return MorphTo
+     * @codeCoverageIgnore
      */
     public function purchasable()
     {

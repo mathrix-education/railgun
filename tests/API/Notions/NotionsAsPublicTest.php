@@ -26,6 +26,17 @@ class NotionsAsPublicTest extends ScopeTestCase
 
 
     /**
+     * GET /notions/{id}
+     *
+     * @throws \Exception
+     */
+    public function testGet()
+    {
+        $this->genericGetSuccess();
+    }
+
+
+    /**
      * POST /notions -> HTTP 401 unauthorized
      *
      * @throws \Exception

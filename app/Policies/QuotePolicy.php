@@ -25,7 +25,7 @@ class QuotePolicy extends BasePolicy
      */
     public function get()
     {
-        return false;
+        return true;
     }
 
 

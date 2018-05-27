@@ -67,6 +67,7 @@ class Training extends BaseModel
      * HasMany Section
      *
      * @return HasMany
+     * @codeCoverageIgnore
      */
     public function sections(): HasMany
     {
@@ -78,6 +79,7 @@ class Training extends BaseModel
      * BelongsToMany User
      *
      * @return BelongsToMany
+     * @codeCoverageIgnore
      */
     public function users(): BelongsToMany
     {

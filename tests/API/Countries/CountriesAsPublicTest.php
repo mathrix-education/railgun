@@ -26,6 +26,17 @@ class CountriesAsPublicTest extends ScopeTestCase
 
 
     /**
+     * GET /countries/{id}
+     *
+     * @throws \Exception
+     */
+    public function testGet()
+    {
+        $this->genericGetSuccess();
+    }
+
+
+    /**
      * POST /countries -> HTTP 401 unauthorized
      *
      * @throws \Exception

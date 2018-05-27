@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Class ContentController
@@ -242,7 +243,7 @@ class ContentController extends BaseController
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
-     * @throws \Exception
+     * @throws ValidationException
      */
     public function upload(Request $request)
     {

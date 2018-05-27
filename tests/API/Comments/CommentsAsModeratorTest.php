@@ -55,6 +55,17 @@ class CommentsAsModeratorTest extends CommentsAsRegisteredTest
 
 
     /**
+     * DELETE /comments/{id}
+     *
+     * @throws \Exception
+     */
+    public function testDeleteWithChildren()
+    {
+        $this->deleteModelId = Comment::has("children")->firstOrFail()->id;
+        $this->genericSoftDeleteSuccess();
+    }
+
+    /**
      * POST /comments/search
      */
     public function testSearch()

@@ -18,6 +18,7 @@ trait Purchasable
      * MorphMany Purchase
      *
      * @return MorphMany
+     * @codeCoverageIgnore
      */
     public function purchases(): MorphMany
     {

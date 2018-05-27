@@ -80,6 +80,7 @@ class Activity extends BaseModel
      * BelongsToMany Module
      *
      * @return BelongsToMany
+     * @codeCoverageIgnore
      */
     public function modules(): BelongsToMany
     {
@@ -91,6 +92,7 @@ class Activity extends BaseModel
      * BelongsToMany Notion
      *
      * @return BelongsToMany
+     * @codeCoverageIgnore
      */
     public function notions(): BelongsToMany
     {

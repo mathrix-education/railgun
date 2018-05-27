@@ -1,6 +1,7 @@
 <?php
 namespace Tests\API\Modules;
 
+use App\Models\Activity;
 use App\Models\Module;
 
 /**
@@ -35,6 +36,30 @@ class ModulesAsModeratorTest extends ModulesAsRegisteredTest
     {
         $this->genericEdit();
         $this->assertHttp200Success();
+    }
+
+
+    /**
+     * PATCH /modules/{id}
+     *
+     * @throws \Exception
+     */
+    public function testEditWithActivities()
+    {
+        $activityIds = Activity::inRandomOrder()->limit(3)->get(["id"])->pluck("id");
+
+        $this->genericEdit([
+            "link" => [
+                "activities" => $activityIds
+            ]
+        ]);
+
+        foreach ($activityIds as $activityId) {
+            $this->assertInDatabase("activity_module", [
+                "activity_id" => $activityId,
+                "module_id" => $this->editModelId
+            ]);
+        }
     }
 
 
