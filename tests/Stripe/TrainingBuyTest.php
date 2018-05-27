@@ -156,6 +156,40 @@ class TrainingBuyTest extends BaseTestCase
         $this->assertEquals($training->price - StripeUtils::SPONSORSHIP_DISCOUNT, $newPurchase->price);
     }
 
+    /**
+     * @throws \Exception
+     */
+    public function testBuyWithSponsorshipSponsorDoesNotExist()
+    {
+        /** @var Purchase $purchase */
+        $purchase = Purchase::wherePurchasableType("training")->inRandomOrder()->firstOrFail();
+        /** @var Training $training */
+        $training = $purchase->purchasable;
+
+        /** @var array $userIdsWhoBoughtThisTraining */
+        $userIdsWhoBoughtThisTraining = Purchase::where([
+            ["purchasable_id", "=", $training->id],
+            ["purchasable_type", "=", "training"]
+        ])
+            ->pluck("user_id")
+            ->toArray();
+
+        /** @var User $buyer */
+        $buyer = User::whereType("registered")
+            ->whereNotIn("id", $userIdsWhoBoughtThisTraining)
+            ->whereNull("stripe_id")
+            ->firstOrFail();
+
+        Passport::actingAs($buyer, [$buyer->type]);
+
+        $this->call("post", "/trainings/{$training->id}/buy", [
+            "stripe_token" => "tok_visa",
+            "sponsor_email" => "wrongemail@test.com"
+        ]);
+
+        $this->assertHttp404ModelNotFound();
+    }
+
 
     /**
      * POST /trainings/{id}/buy

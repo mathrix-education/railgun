@@ -22,7 +22,6 @@ class Discount extends BaseModel
 {
     public const TYPES = ["absolute", "percentage"];
 
-
     /** @var array The attributes that are mass assignable */
     protected $fillable = ["id", "code", "type", "value", "counter"];
 }

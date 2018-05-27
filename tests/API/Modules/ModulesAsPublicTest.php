@@ -1,9 +1,8 @@
 <?php
 namespace Tests\API\Modules;
 
+use App\Models\Activity;
 use App\Models\Module;
-use App\Models\User;
-use Laravel\Passport\Passport;
 use Tests\API\ScopeTestCase;
 
 /**
@@ -31,6 +30,15 @@ class ModulesAsPublicTest extends ScopeTestCase
     public function testIndex()
     {
         $this->genericIndexSuccess();
+    }
+
+
+    /**
+     * GET /modules/by-activity/{activity_id}
+     */
+    public function testByActivity()
+    {
+        $this->genericBySuccess(Activity::class);
     }
 
 

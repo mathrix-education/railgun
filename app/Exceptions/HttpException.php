@@ -12,7 +12,7 @@ use Throwable;
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Exceptions
- * @since
+ * @since 1.0.0
  * @copyright Mathrix Education SA
  */
 abstract class HttpException extends \Exception
@@ -37,8 +37,6 @@ abstract class HttpException extends \Exception
      * @param int $code
      * @param Throwable|null $previous
      * @param array $data
-     *
-     * @throws \Exception
      */
     public function __construct($message = "", $code = 0, Throwable $previous = null, $data = [])
     {
@@ -46,7 +44,9 @@ abstract class HttpException extends \Exception
         $matches = null;
 
         if (preg_match(self::PATTERN, $class, $matches) === 0) {
-            throw new \Exception($class . " has to follow the pattern " . self::PATTERN); // @codeCoverageIgnore
+            // @codeCoverageIgnoreStart
+            parent::__construct($class . " has to follow the pattern " . self::PATTERN, $code, $previous);
+            // @codeCoverageIgnoreEnd
         } else {
             // Define the HTTP code
             if (300 <= $code && $code < 600) {

@@ -87,22 +87,5 @@ class CategoryController extends BaseController
      * @apiParam {int} id The category id
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
-     *
-     * @param Request $request
-     * @param int $id
-     *
-     * @return JsonResponse
-     * @throws Http401UnauthorizedException
-     * @throws Http501NotImplementedException
-     * @throws \Exception
      */
-    public function delete(Request $request, int $id): JsonResponse
-    {
-        $activity = Activity::find($id);
-        $request->user()->canOrFail("delete", $activity);
-
-        throw new Http501NotImplementedException();
-
-        return parent::delete($request, $id);
-    }
 }

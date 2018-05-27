@@ -30,3 +30,16 @@ $factory->define(Comment::class, function (Generator $faker) {
         "commentable_type" => $commentable_type
     ];
 });
+
+
+/**
+ * CommentChildFactory
+ *
+ * @author Mathrix Team
+ * @var Illuminate\Database\Eloquent\Factory $factory
+ */
+$factory->defineAs(Comment::class, "child", function () use ($factory) {
+    $parent = Comment::whereNull("parent_id")->firstOrFail();
+
+    return array_merge($factory->raw(Comment::class), ["parent_id" => $parent->id]);
+});

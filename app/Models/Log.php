@@ -158,6 +158,7 @@ class Log extends BaseModel
      * BelongsTo User
      *
      * @return BelongsTo
+     * @codeCoverageIgnore
      */
     public function user(): BelongsTo
     {
@@ -169,6 +170,7 @@ class Log extends BaseModel
      * MorphTo Loggable
      *
      * @return MorphTo
+     * @codeCoverageIgnore
      */
     public function loggable(): MorphTo
     {

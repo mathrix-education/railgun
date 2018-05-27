@@ -46,6 +46,7 @@ class Category extends BaseModel
      * HasMany Post
      *
      * @return HasMany
+     * @codeCoverageIgnore
      */
     public function posts(): HasMany
     {

@@ -31,15 +31,7 @@ class ModulePolicy extends BasePolicy
         return true;
     }
 
-
-    /**
-     * @return bool
-     */
-    public function get()
-    {
-        return true;
-    }
-
+    // Get policy directly handled in the controller
 
     /**
      * @param User $currentUser

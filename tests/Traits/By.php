@@ -1,5 +1,5 @@
 <?php
-namespace Tests\API\Generics;
+namespace Tests\Traits;
 
 use App\Models\BaseModel;
 

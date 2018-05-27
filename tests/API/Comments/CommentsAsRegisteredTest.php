@@ -1,7 +1,11 @@
 <?php
 namespace Tests\API\Comments;
 
+use App\Exceptions\Http422ModelSaveException;
+use App\Exceptions\Http422ModelValidationException;
 use App\Models\Comment;
+use Carbon\Carbon;
+use Laravel\Passport\Passport;
 
 /**
  * Class CommentsAsPublicTest
@@ -45,5 +49,28 @@ class CommentsAsRegisteredTest extends CommentsAsPublicTest
 
         $this->assertHttp401Unauthorized();
         $this->assertNotInDatabase("comments", $data);
+    }
+
+
+    /**
+     * PATCH /comments/{id}
+     *
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
+     */
+    public function testEditFresh()
+    {
+        $comment = Comment::random();
+        $comment->created_at = Carbon::now()->subDay();
+        $comment->save();
+        $user = $comment->user;
+        Passport::actingAs($user, [$user->type]);
+        $comment->content = $this->faker->sentence;
+
+        $this->call("patch", "/comments/{$comment->id}", [
+            "content" => $this->faker->sentence
+        ]);
+
+        $this->assertHttp200Success();
     }
 }

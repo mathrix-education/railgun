@@ -1,5 +1,6 @@
 <?php
 namespace Tests\API\Discounts;
+use App\Models\Discount;
 
 /**
  * Class DiscountsAsRegisteredTest
@@ -12,4 +13,16 @@ namespace Tests\API\Discounts;
  */
 class DiscountsAsRegisteredTest extends DiscountsAsPublicTest
 {
+    /**
+     * POST /discounts/check
+     */
+    public function testCheck()
+    {
+        /** @var Discount $discount */
+        $discount = Discount::where("counter", ">", 0)->firstOrFail();
+
+        $this->post("/discounts/check", ["code" => $discount->code])
+            ->assertHttp200Success()
+            ->assertJsonKeys(["id", "code", "counter"]);
+    }
 }

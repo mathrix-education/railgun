@@ -6,7 +6,7 @@ use Laravel\Passport\Passport;
 use Tests\API\ScopeTestCase;
 
 /**
- * Class CountriesAsPublicTest
+ * Class StripeAsRegisteredTest
  * Test quotes as registered user
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>

@@ -16,6 +16,7 @@ trait Votable
 {
     /**
      * Get the votes
+     * @codeCoverageIgnore
      */
     public function votes(): MorphMany
     {

@@ -54,11 +54,16 @@ class Report extends BaseModel
         parent::__construct($attributes);
     }
 
-
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
     /**
      * BelongsTo Module
      *
      * @return BelongsTo
+     * @codeCoverageIgnore
      */
     public function module()
     {

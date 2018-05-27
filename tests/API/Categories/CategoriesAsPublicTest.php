@@ -14,14 +14,28 @@ use Tests\API\ScopeTestCase;
  */
 class CategoriesAsPublicTest extends ScopeTestCase
 {
+    protected $modelClass = "\App\Models\Category";
+
+
     /**
-     * GET /categories -> HTTP 401 unauthorized
+     * GET /categories
      *
      * @throws \Exception
      */
     public function testIndex()
     {
         $this->genericIndexSuccess();
+    }
+
+
+    /**
+     * GET /categories/{id}
+     *
+     * @throws \Exception
+     */
+    public function testGet()
+    {
+        $this->genericGetSuccess();
     }
 
 

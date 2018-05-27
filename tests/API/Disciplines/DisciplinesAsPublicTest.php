@@ -27,6 +27,17 @@ class DisciplinesAsPublicTest extends ScopeTestCase
 
 
     /**
+     * GET /disciplines/{id}
+     *
+     * @throws \Exception
+     */
+    public function testGet()
+    {
+        $this->genericGetSuccess();
+    }
+
+
+    /**
      * POST /disciplines -> HTTP 401 unauthorized
      *
      * @throws \Exception

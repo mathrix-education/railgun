@@ -18,26 +18,40 @@ class PremiumSubscriptionTest extends BaseTestCase
 {
     /**
      * @param string $stripePlan
+     *
+     * @param array $data
+     *
+     * @return User
      */
-    private function subscribeToPlan(string $stripePlan)
+    private function subscribeToPlan(string $stripePlan, array $data = []): User
     {
+        /** @var User $user */
         $user = User::where("type", "=", "registered")
             ->whereNull("stripe_id")
             ->firstOrFail();
         Passport::actingAs($user, [$user->type]);
 
-        $this->call("post", "/stripe/subscribe", [
+        $this->call("post", "/stripe/subscribe", array_merge([
             "stripe_token" => "tok_visa",
             "stripe_plan" => $stripePlan
-        ]);
+        ], $data));
 
+        return $user;
+    }
+
+
+    /**
+     * @param string $stripePlan
+     */
+    private function subscribeToPlanSuccess(string $stripePlan)
+    {
+        $user = $this->subscribeToPlan($stripePlan);
         $this->assertHttp200Success();
         $this->assertInDatabase("subscriptions", [
             "user_id" => $user->id,
             "name" => "premium",
             "stripe_plan" => $stripePlan
         ]);
-
     }
 
 
@@ -46,7 +60,7 @@ class PremiumSubscriptionTest extends BaseTestCase
      */
     public function testSubscriptionMonthly()
     {
-        $this->subscribeToPlan("v3_monthly");
+        $this->subscribeToPlanSuccess("v3_monthly");
     }
 
 
@@ -55,7 +69,7 @@ class PremiumSubscriptionTest extends BaseTestCase
      */
     public function testSubscriptionAnnually()
     {
-        $this->subscribeToPlan("v3_annually");
+        $this->subscribeToPlanSuccess("v3_annually");
     }
 
 
@@ -64,6 +78,31 @@ class PremiumSubscriptionTest extends BaseTestCase
      */
     public function testSubscriptionBiannually()
     {
-        $this->subscribeToPlan("v3_biannually");
+        $this->subscribeToPlanSuccess("v3_biannually");
+    }
+
+
+    /**
+     * Test subscription with null token and coupon
+     */
+    public function testSubscriptionTokenAndCouponNull()
+    {
+        $this->subscribeToPlan("v3_monthly", [
+            "stripe_token" => null,
+            "stripe_coupon" => null
+        ]);
+
+        $this->assertHttp400InvalidRequest();
+    }
+
+
+    /**
+     * Test subscription with null token and coupon
+     */
+    public function testSubscriptionInvalidPlan()
+    {
+        $this->subscribeToPlan("invalid_plan");
+
+        $this->assertHttp400InvalidRequest();
     }
 }

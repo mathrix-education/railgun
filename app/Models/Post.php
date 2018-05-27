@@ -77,6 +77,7 @@ class Post extends BaseModel
      * BelongsTo Category
      *
      * @return BelongsTo
+     * @codeCoverageIgnore
      */
     public function category(): BelongsTo
     {
@@ -88,6 +89,7 @@ class Post extends BaseModel
      * BelongsTo User
      *
      * @return BelongsTo
+     * @codeCoverageIgnore
      */
     public function user(): BelongsTo
     {

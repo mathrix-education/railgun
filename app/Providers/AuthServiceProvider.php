@@ -86,11 +86,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::policy(Quote::class, QuotePolicy::class);
         Gate::policy(Training::class, TrainingPolicy::class);
         Gate::policy(Section::class, SectionPolicy::class);
-        // No policy for logs as it is a system-side process
         Gate::policy(Level::class, LevelPolicy::class);
         Gate::policy(Report::class, ReportPolicy::class);
         Gate::policy(Lesson::class, LessonPolicy::class);
         Gate::policy(Setting::class, SettingPolicy::class);
-
     }
 }

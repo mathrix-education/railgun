@@ -2,7 +2,7 @@
 namespace Tests\API\Settings;
 
 /**
- * Class CountriesAsModeratorTest
+ * Class SettingsAsModeratorTest
  * Test settings as moderator
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>

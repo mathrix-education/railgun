@@ -63,7 +63,6 @@ class SettingController extends BaseController
      *
      * @return JsonResponse
      * @throws Http404ModelNotFoundException
-     * @throws \Exception
      */
     public function read(Request $request, string $key): JsonResponse
     {
@@ -132,7 +131,7 @@ class SettingController extends BaseController
      * @apiParam {int} id The setting id
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
-     * 
+     *
      * @param Request $request
      * @param string $key
      *

@@ -3,13 +3,14 @@ namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http404ModelNotFoundException;
+use App\Exceptions\Http422ModelSaveException;
+use App\Exceptions\Http422ModelValidationException;
 use App\Models\Discount;
 use App\Models\Log;
 use App\Models\Purchase;
 use App\Models\Training;
 use App\Models\User;
 use App\Utils\StripeUtils;
-use Faker\Factory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -115,7 +116,6 @@ class TrainingController extends BaseController
      *
      * @return JsonResponse
      * @throws Http404ModelNotFoundException
-     * @throws \Exception
      */
     public function recursive(Request $request, int $id): JsonResponse
     {
@@ -178,7 +178,8 @@ class TrainingController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
-     * @throws \Exception
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
      */
     public function buy(Request $request, int $id): JsonResponse
     {
