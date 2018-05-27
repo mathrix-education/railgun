@@ -52,13 +52,11 @@ trait CustomerSubscriptionDeleted
         if ($user === null && $this->isInTestingEnvironment()) {
             return $this->debugCustomerSubscriptionDeleted($customerId, $subscriptionId);
         }
-        // @codeCoverageIgnoreEnd
-
+        
         if ($subscription->onTrial()) {
             $subscription->skipTrial();
         }
 
-        // @codeCoverageIgnoreStart
         if (!$this->isInTestingEnvironment()) {
             $subscription->cancelNow();
         } // @codeCoverageIgnoreEnd
