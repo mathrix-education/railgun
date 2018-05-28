@@ -78,9 +78,7 @@ class SettingController extends BaseController
             throw new Http404ModelNotFoundException("Setting with key `{$key}` does not exist");
         }
 
-        return new JsonResponse([
-            "value" => $setting->value
-        ]);
+        return new JsonResponse($setting);
     }
 
 
@@ -113,7 +111,15 @@ class SettingController extends BaseController
         $settingData = $request->only(["key", "value", "visible"]);
 
         /** @var Setting $setting */
-        $setting = Setting::where("key", "=", $settingData["key"])->firstOrNew($settingData);
+        $setting = Setting::where("key", "=", $settingData["key"])->first();
+
+        if ($setting == null) {
+            $setting = new Setting();
+            $setting->key = $settingData["key"];
+        }
+
+        $setting->value = $settingData["value"];
+        $setting->visible = $settingData["visible"];
         $setting->save();
 
         return new JsonResponse($setting);
