@@ -66,6 +66,18 @@ class SettingsAsAdminTest extends SettingsAsModeratorTest
 
 
     /**
+     * POST /settings
+     *
+     * @throws \Exception
+     */
+    public function testWriteExisting()
+    {
+        $key = Setting::random();
+        $this->genericAddSuccess(["key" => $key]);
+    }
+
+
+    /**
      * DELETE /settings/{key}
      *
      * @throws \Exception
