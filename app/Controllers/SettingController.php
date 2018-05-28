@@ -108,18 +108,16 @@ class SettingController extends BaseController
         $user = $request->user();
         $user->canOrFail("write", Setting::class);
 
-        $settingData = $request->only(["key", "value", "visible"]);
-
         /** @var Setting $setting */
-        $setting = Setting::where("key", "=", $settingData["key"])->first();
+        $setting = Setting::where("key", "=", $request->input("key"))->first();
 
-        if ($setting == null) {
+        if ($setting === null) {
             $setting = new Setting();
-            $setting->key = $settingData["key"];
+            $setting->key = $request->input("key");
         }
 
-        $setting->value = $settingData["value"];
-        $setting->visible = $settingData["visible"];
+        $setting->value = $request->input("value");
+        $setting->visible = $request->input("visible");
         $setting->save();
 
         return new JsonResponse($setting);
