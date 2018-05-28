@@ -6,6 +6,6 @@ $router->group(["prefix" => "settings"], function () use ($router) {
 
     $router->group(["middleware" => "auth:api"], function () use ($router) {
         $router->post("", "SettingController@write");
-        $router->delete("{key:[a-z0-9\-]+}", "SettingController@forgot");
+        $router->delete("{key:[a-z0-9\-\_]+}", "SettingController@forgot");
     });
 });
