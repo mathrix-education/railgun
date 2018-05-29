@@ -18,7 +18,7 @@ use Laravel\Lumen\Routing\Controller;
  * Class BaseController
  * Add a few methods to all controllers
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Controllers
  * @since 1.0.0
  * @copyright Mathrix Education SA
@@ -36,7 +36,6 @@ abstract class BaseController extends Controller
      * Build model class
      *
      * @throws Http400InvalidRequestException
-     * @throws \Exception
      */
     public function __construct()
     {
@@ -55,7 +54,6 @@ abstract class BaseController extends Controller
      *
      * @return BaseModel|bool
      * @throws Http400InvalidRequestException
-     * @throws \Exception
      */
     protected function resolveModelClass($name, $fail = true)
     {
@@ -87,7 +85,6 @@ abstract class BaseController extends Controller
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
-     * @throws \Exception
      */
     public function index(Request $request, int $page = 1, int $perPage = 100): JsonResponse
     {
@@ -119,12 +116,11 @@ abstract class BaseController extends Controller
             $collection = $collection->sortBy(function ($model) {
                 return $model->order;
             })->values();
-        } else if (!empty($collection->first()->pivot->order)) {
+        }/* else if (!empty($collection->first()->pivot->order)) {
             $collection = $collection->sortBy(function ($model) {
                 return $model->pivot->order;
             })->values();
-
-        }
+        }*/ // TODO: Is it really used?
 
         return $collection;
     }
@@ -146,8 +142,6 @@ abstract class BaseController extends Controller
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
-     * @throws Http400InvalidRequestException
-     * @throws \Exception
      */
     public function get(Request $request, $key, $value = null): JsonResponse
     {
@@ -175,7 +169,6 @@ abstract class BaseController extends Controller
      * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
-     * @throws \Exception
      */
     public function add(Request $request): JsonResponse
     {
@@ -199,7 +192,6 @@ abstract class BaseController extends Controller
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
-     * @throws \Exception
      */
     public function edit(Request $request, int $id): JsonResponse
     {
@@ -224,7 +216,6 @@ abstract class BaseController extends Controller
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
-     * @throws \Exception
      */
     public function delete(Request $request, int $id): JsonResponse
     {
@@ -250,14 +241,10 @@ abstract class BaseController extends Controller
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
-     * @throws Http401UnauthorizedException
-     * @throws \Exception
      */
     public function search(Request $request, $page = 1, $perPage = 100): JsonResponse
     {
-        if ($request->user() !== null && $request->user()->cant("search", $this->modelClass)) {
-            throw new Http401UnauthorizedException();
-        }
+        $request->user()->canOrFail("search", $this->modelClass);
 
         $inputs = $request->except(["order", "having"]);
         $order = array_merge([
@@ -269,7 +256,7 @@ abstract class BaseController extends Controller
         $having = [];
 
         // Check if order dir is valid
-        if (!empty($inputs["order"]) && !in_array($order["dir"], ["asc", "desc"])) {
+        if (!in_array($order["dir"], ["asc", "desc"])) {
             throw new Http400InvalidRequestException("order allowed values: ['asc', 'desc']");
         }
 
@@ -319,6 +306,25 @@ abstract class BaseController extends Controller
 
 
     /**
+     * Get the models which satisfy a given relation
+     *
+     * @param Request $request
+     * @param string $what the linked model
+     * @param int $id the linked model id
+     * @param int $page the query page
+     * @param int $perPage the query per page
+     *
+     * @return JsonResponse
+     * @throws Http400InvalidRequestException
+     * @throws Http401UnauthorizedException
+     */
+    public function by(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
+    {
+        return response()->json($this->getByQuery($request, $what, $id, $page, $perPage));
+    }
+
+
+    /**
      * Handle foreign models queries
      *
      * @param Request $request
@@ -330,7 +336,6 @@ abstract class BaseController extends Controller
      * @return Collection
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
-     * @throws \Exception
      */
     protected function getByQuery(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
     {
@@ -361,26 +366,6 @@ abstract class BaseController extends Controller
 
 
     /**
-     * Get the models which satisfy a given relation
-     *
-     * @param Request $request
-     * @param string $what the linked model
-     * @param int $id the linked model id
-     * @param int $page the query page
-     * @param int $perPage the query per page
-     *
-     * @return JsonResponse
-     * @throws Http400InvalidRequestException
-     * @throws Http401UnauthorizedException
-     * @throws \Exception
-     */
-    public function by(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
-    {
-        return response()->json($this->getByQuery($request, $what, $id, $page, $perPage));
-    }
-
-
-    /**
      * Get the models ids which satisfy a given relation
      *
      * @param Request $request
@@ -392,7 +377,6 @@ abstract class BaseController extends Controller
      * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
-     * @throws \Exception
      */
     public function ids(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
     {
@@ -410,7 +394,6 @@ abstract class BaseController extends Controller
      * @return User
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
-     * @throws \Exception
      */
     protected function getUserByRequestOrUnauthorized(Request $request, $minimumScope = "admin", $key = "user_id")
     {

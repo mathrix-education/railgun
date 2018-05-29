@@ -10,7 +10,7 @@ use App\Models\Quote;
 /**
  * Class BlogTableSeeder
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @since 1.0.0
  * @copyright Mathrix Education SA
  */
@@ -34,6 +34,11 @@ class BlogTableSeeder extends BaseTableSeeder
         $this->seedFromFactory([
             "modelClass" => Post::class,
             "count" => random_int(10, 20)
+        ]);
+        // Seed categories without posts
+        $this->seedFromFactory([
+            "modelClass" => Category::class,
+            "count" => random_int(5, 8)
         ]);
         $this->seedFromFactory([
             "modelClass" => Quote::class,

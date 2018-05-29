@@ -5,6 +5,7 @@ use App\Mails\PasswordForgottenMail;
 use App\Mails\PasswordResetMail;
 use App\Models\User;
 
+// @codeCoverageIgnoreStart
 if (app()->environment("dev")) {
     $router->group(["prefix" => "mails"], function () use ($router) {
         $router->get("password-forgotten", function () {
@@ -17,3 +18,4 @@ if (app()->environment("dev")) {
         });
     });
 }
+// @codeCoverageIgnoreEnd

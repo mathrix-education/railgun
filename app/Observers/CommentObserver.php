@@ -37,12 +37,13 @@ class CommentObserver extends BaseObserver
      * @param Comment $comment
      *
      * @return bool
+     * @throws Http422ModelSaveException
      */
     public function deleting($comment)
     {
         /** @var Comment $child */
         foreach ($comment->children as $child) {
-            $child->forceDelete();
+            $child->delete();
         }
 
         return true;

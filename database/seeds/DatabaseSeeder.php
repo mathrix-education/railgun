@@ -4,7 +4,7 @@
 /**
  * Class DatabaseSeeder
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @since 1.0.0
  * @copyright Mathrix Education SA
  */
@@ -18,5 +18,10 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->call(TrainingTableSeeder::class);
         $this->call(BlogTableSeeder::class);
         $this->call(CommentTableSeeder::class);
+        $this->call(SubscriptionTableSeeder::class);
+        $this->call(MetaTableSeeder::class);
+        $this->call(LogTableSeeder::class);
+        $this->call(DiscountTableSeeder::class);
+        $this->call(SettingTableSeeder::class);
     }
 }

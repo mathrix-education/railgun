@@ -1,0 +1,6 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Discounts" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" folderName="Details" singleton="true">
+    <TestRunner directory="$PROJECT_DIR$/tests/API/Discounts" />
+    <method />
+  </configuration>
+</component>

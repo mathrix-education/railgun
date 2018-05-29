@@ -13,8 +13,12 @@ use Validator as ValidatorFacade;
  * Class BaseModel
  * Base for all models, implement validation on save useless manual disable
  *
- * @mixin Builder
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Models
+ * @since 1.0.0
+ * @copyright Mathrix Education SA
+ *
+ * @mixin Builder
  */
 abstract class BaseModel extends Model
 {
@@ -48,7 +52,7 @@ abstract class BaseModel extends Model
      *
      * @param int $count The set size; if set to 1, just return the model
      *
-     * @return Collection|BaseModel
+     * @return Collection|static
      */
     public static function random($count = 1)
     {
@@ -346,6 +350,7 @@ abstract class BaseModel extends Model
      * Override to support appends togglers
      *
      * @return array
+     * @codeCoverageIgnore // TODO: Unused?
      */
     protected function getArrayableAppends()
     {

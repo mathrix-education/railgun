@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Mail;
 /**
  * Class PasswordForgottenEvent
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Events
  * @since 1.0.1
  * @copyright Mathrix Education SA

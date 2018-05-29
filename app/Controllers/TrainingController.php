@@ -3,12 +3,14 @@ namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http404ModelNotFoundException;
+use App\Exceptions\Http422ModelSaveException;
+use App\Exceptions\Http422ModelValidationException;
+use App\Models\Discount;
 use App\Models\Log;
 use App\Models\Purchase;
 use App\Models\Training;
 use App\Models\User;
 use App\Utils\StripeUtils;
-use Faker\Factory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -16,7 +18,7 @@ use Illuminate\Http\Request;
 /**
  * Class TrainingController
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Controllers
  * @since 1.0.0
  * @copyright Mathrix Education SA
@@ -114,7 +116,6 @@ class TrainingController extends BaseController
      *
      * @return JsonResponse
      * @throws Http404ModelNotFoundException
-     * @throws \Exception
      */
     public function recursive(Request $request, int $id): JsonResponse
     {
@@ -164,6 +165,7 @@ class TrainingController extends BaseController
      * @apiPermission registered
      * @apiParam {int} id The training id
      * @apiParam (Data) {int} stripe_token The stripe token
+     * @apiParam (Data) {string} [discount_code=false] The discount code
      * @apiParam (Data) {bool} [sponsor_email=false] The sponsor email
      * @apiParam (Data) {bool} [premium=false] If a premium subscription must be applied
      * @apiUse UserModel
@@ -176,13 +178,15 @@ class TrainingController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
-     * @throws \Exception
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
      */
     public function buy(Request $request, int $id): JsonResponse
     {
         $training = Training::whereId($id)->firstOrFail();
         $stripeToken = $request->input("stripe_token");
         $sponsorEmail = $request->input("sponsor_email", false);
+        $discountCode = $request->input("discount_code", false);
         $withPremium = (bool)$request->input("premium", false);
 
         if ($stripeToken === null) {
@@ -199,42 +203,86 @@ class TrainingController extends BaseController
         /** @var int $totalPrice Total price to pay, including premium surcharge if needed */
         $totalPrice = $training->price;
 
-        // Pipe Stripe exception to our HTTP 400 Bad Request exception
-        try {
-            $description = $training->name;
+        $description = $training->name;
 
-            if ($withPremium && !$user->premium) {
-                $totalPrice += StripeUtils::getSurchargeForPremium($training);
-                $description .= " with premium subscription";
-            }
-
-            // Sponsorship discount
-            if ($sponsorEmail) {
-                $sponsor = User::whereEmail($sponsorEmail)->firstOr(function () use ($sponsorEmail) {
-                    throw new Http404ModelNotFoundException("Unable to find user with the email `$sponsorEmail`");
-                });
-
-                if ($sponsor->hasPurchased($training->id, "training")) {
-                    // Reduce total price
-                    $totalPrice -= StripeUtils::SPONSORSHIP_DISCOUNT;
-                }
-            }
-
-            // Charge the user by creating him if he does not exists
-            $user->updateCardOrCreateStripeCustomer($stripeToken);
-
-            $response = $user->charge($totalPrice, [
-                "description" => $description
-            ]);
-        } catch (\InvalidArgumentException $exception) {
-            throw new Http400InvalidRequestException($exception->getMessage());
+        if ($withPremium && !$user->premium) {
+            $totalPrice += StripeUtils::getSurchargeForPremium($training);
+            $description .= " with premium subscription";
         }
 
+        // Code discount
+        if ($discountCode) {
+            /** @var Discount $discount */
+            $discount = Discount::whereCode($discountCode)->firstOrFail();
+
+            // Quota check
+            if ($discount->counter == 0) {
+                throw new Http400InvalidRequestException("This code has already been used");
+            }
+
+            // Apply discount
+            switch ($discount->type) {
+                case "absolute":
+                    $totalPrice -= $discount->value;
+                    break;
+                case "percentage":
+                    $totalPrice *= (100 - $discount->value) / 100;
+                    break;
+            }
+
+            // Decrement counter
+            if ($discount->counter != -1) {
+                $discount->counter--;
+                $discount->save();
+            }
+        }
+
+        // Sponsorship discount
+        if ($sponsorEmail) {
+            $sponsor = User::whereEmail($sponsorEmail)->firstOr(function () use ($sponsorEmail) {
+                throw new Http404ModelNotFoundException("Unable to find user with the email `$sponsorEmail`");
+            });
+
+            // Apply sponsor discount
+            if ($sponsor->hasPurchased($training->id, "training")) {
+                // Reduce total price
+                $totalPrice -= StripeUtils::SPONSORSHIP_DISCOUNT;
+            }
+
+            // Refund sponsor
+            /** @var Purchase $sponsorPurchase */
+            $sponsorPurchase = $sponsor->getPurchase($training->id, "training");
+
+            if ($sponsorPurchase->refund + StripeUtils::SPONSORSHIP_REFUND <= $sponsorPurchase->price) {
+                // @codeCoverageIgnoreStart
+                if (getenv('CASHIER_ENV') !== 'testing') {
+                    $refund = $sponsor->refund($sponsorPurchase->stripe_id, ["amount" => StripeUtils::SPONSORSHIP_REFUND]);
+                } // @codeCoverageIgnoreEnd
+                // Mock success for training
+                else {
+                    $refund = new \stdClass();
+                    $refund->status = "success";
+                }
+
+                if ($refund->status === "success") {
+                    $sponsorPurchase->refund += StripeUtils::SPONSORSHIP_REFUND;
+                    $sponsorPurchase->save();
+                }
+            }
+        }
+
+        // Charge the user by creating him if he does not exists
+        $user->updateCardOrCreateStripeCustomer($stripeToken);
+
+        $charge = $user->charge($totalPrice, [
+            "description" => $description
+        ]);
+
         // Give subscription if charge succeeded
-        if ($response->status == "succeeded") {
+        if ($charge->status == "succeeded") {
             // Save the purchase
             $purchase = new Purchase([
-                "uuid" => Factory::create()->uuid,
+                "stripe_id" => $charge->id,
                 "price" => $totalPrice,
                 "user_id" => $user->id,
                 "purchasable_id" => $training->id,
@@ -249,18 +297,23 @@ class TrainingController extends BaseController
                     ->create();
             }
 
-            Log::log("user_payment_succeed_for_training", $user, ["training_id" => $training->id]);
+            Log::log("user_payment_succeed_for_training", $user, [
+                "loggable_id" => $training->id,
+                "loggable_type" => "training"
+            ]);
 
             return new JsonResponse(
                 $user->with(["class_", "subscriptions", "purchases", "purchases.purchasable"])
                     ->find($user->id)
             );
         } else {
+            // @codeCoverageIgnoreStart
             Log::log("user_payment_failed_for_training", $user, ["training_id" => $training->id]);
 
             return new JsonResponse([
                 "status" => "failure"
             ], 400);
+            // @codeCoverageIgnoreEnd
         }
     }
 }

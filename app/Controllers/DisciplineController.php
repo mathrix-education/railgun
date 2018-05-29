@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 /**
  * Class DisciplineController
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Controllers
  * @since 1.0.0
  * @copyright Mathrix Education SA
@@ -93,7 +93,6 @@ class DisciplineController extends BaseController
      * @return JsonResponse
      * @throws Http501NotImplementedException
      * @throws Http401UnauthorizedException
-     * @throws \Exception
      */
     public function delete(Request $request, int $id): JsonResponse
     {

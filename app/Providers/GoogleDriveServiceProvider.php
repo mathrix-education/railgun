@@ -9,10 +9,11 @@ use League\Flysystem\Filesystem;
 /**
  * Class GoogleDriveServiceProvider
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Providers
  * @since 1.0.1
  * @copyright Mathrix Education SA
+ * @codeCoverageIgnore
  */
 class GoogleDriveServiceProvider extends ServiceProvider
 {

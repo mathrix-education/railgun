@@ -20,7 +20,6 @@ $factory->defineAs(Module::class, "random", function (Generator $faker) use ($fa
     return $factory->rawOf(Module::class, $faker->randomElement([
         "course",
         "fill",
-        //"match", // removed by direct instruction of the big boss
         "mcq",
         "mcq-table",
         "test",

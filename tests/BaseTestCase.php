@@ -8,8 +8,10 @@ use Faker\Factory;
 use Faker\Generator;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Laravel\Lumen\Testing\TestCase;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Tests\Traits\HttpAssertionsTrait;
+use Tests\Traits\JsonAssertionsTrait;
+use Tests\Traits\ResponseTrait;
 
 /**
  * Class BaseTest
@@ -20,7 +22,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  */
 abstract class BaseTestCase extends TestCase
 {
-    use HttpAssertions, DatabaseTransactions;
+    use ResponseTrait, JsonAssertionsTrait, HttpAssertionsTrait, DatabaseTransactions;
 
     /** @var Generator */
     public $faker;
@@ -68,55 +70,6 @@ abstract class BaseTestCase extends TestCase
     }
 
 
-    /**
-     * Assert the response has the right error and status code
-     *
-     * @param string $error the error name
-     * @param int $status the status code
-     */
-    public function assertJsonError(string $error, int $status): void
-    {
-        $this->seeJsonContains(["error" => $error]); // Check for error
-        $this->assertResponseStatus($status); // Check for code
-    }
-
-
-    /**
-     * Assert the response has the right length
-     *
-     * @param int $expectedLength
-     */
-    public function assertJsonLength(int $expectedLength): void
-    {
-        $content = json_decode($this->response->getContent(), true);
-        $this->assertEquals($expectedLength, count($content));
-    }
-
-
-    /**
-     * Assert the response has the right length
-     *
-     * @param int $minLength
-     */
-    public function assertJsonLengthMin(int $minLength): void
-    {
-        $content = json_decode($this->response->getContent(), true);
-        $this->assertTrue($minLength <= count($content));
-    }
-
-
-    /**
-     * Assert the response has the right length
-     *
-     * @param int $maxLength
-     */
-    public function assertJsonLengthMax(int $maxLength): void
-    {
-        $content = json_decode($this->response->getContent(), true);
-        $this->assertTrue($maxLength >= count($content));
-    }
-
-
     /*
     |--------------------------------------------------------------------------
     | Additional assertions
@@ -147,6 +100,12 @@ abstract class BaseTestCase extends TestCase
     public function castData(array $data)
     {
         foreach ($data as $field => $value) {
+            if ($value === true) {
+                $data[$field] = 1;
+            }
+            if ($value === false) {
+                $data[$field] = 0;
+            }
             if ($value instanceof \DateTime) {
                 $data[$field] = $value->format("Y-m-d H:i:s");
             }
@@ -223,24 +182,5 @@ abstract class BaseTestCase extends TestCase
     {
         echo $this->currentUri . "\n";
         echo json_encode($this->getResponseData(), JSON_PRETTY_PRINT);
-    }
-
-
-    /**
-     * Get the response data
-     *
-     * @return \stdClass
-     * @throws \Exception
-     */
-    public function getResponseData()
-    {
-        if (empty($this->response)) {
-            return null;
-        } else if ($this->response instanceof Response) {
-            $response = $this->response->getContent();
-            return json_decode($response);
-        } else {
-            throw new \Exception("Response is not an instance of " . Response::class);
-        }
     }
 }

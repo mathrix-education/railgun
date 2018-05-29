@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 /**
  * Class PostController
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Controllers
  * @since 1.0.0
  * @copyright Mathrix Education SA
@@ -82,7 +82,6 @@ class PostController extends BaseController
      * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
-     * @throws \Exception
      */
     public function add(Request $request): JsonResponse
     {

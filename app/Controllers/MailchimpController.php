@@ -9,7 +9,7 @@ use Spatie\Newsletter\NewsletterFacade as Newsletter;
 /**
  * Class MailchimpController
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Controllers
  * @since 1.0.0
  * @copyright Mathrix Education SA
@@ -31,7 +31,8 @@ class MailchimpController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
-     * @throws \Exception
+     *
+     * @codeCoverageIgnore
      */
     public function subscribe(Request $request, string $list)
     {

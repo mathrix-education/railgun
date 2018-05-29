@@ -5,7 +5,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * App\Models\Report
+ * Model Report
+ *
+ * @package App\Models
+ * @since 1.0.0
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
  *
  * @property int $id
  * @property string $content
@@ -24,9 +29,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Report extends BaseModel
 {
     public const STATUSES = ["todo", "done", "validated"];
+
+
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
-    /** @var array The fillable attributes */
+    /** @var array The attributes that are mass assignable */
     protected $fillable = ["id", "name", "content", "status", "module_id", "created_at", "updated_at"];
     /** @var array The validation rules */
     protected $rules = [
@@ -47,11 +54,16 @@ class Report extends BaseModel
         parent::__construct($attributes);
     }
 
-
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
     /**
      * BelongsTo Module
      *
      * @return BelongsTo
+     * @codeCoverageIgnore
      */
     public function module()
     {

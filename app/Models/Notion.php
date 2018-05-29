@@ -7,7 +7,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 
 /**
- * App\Models\Notion
+ * Model Notion
+ *
+ * @package App\Models
+ * @since 1.0.0
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
  *
  * @property int $id
  * @property string $name
@@ -31,9 +36,8 @@ class Notion extends BaseModel
 {
     public const TYPES = ["normal", "premium", "reminder", "further"];
 
-    /** @var array The The fillable attributes */
+    /** @var array The attributes that are mass assignable */
     protected $fillable = ["id", "name", "slug", "type", "visible", "link"];
-
     /** @var array The validation rules */
     protected $rules = [
         "name" => "required|max:255",
@@ -59,6 +63,7 @@ class Notion extends BaseModel
      * BelongsToMany Activity
      *
      * @return BelongsToMany
+     * @codeCoverageIgnore
      */
     public function activities(): BelongsToMany
     {
@@ -70,6 +75,7 @@ class Notion extends BaseModel
      * BelongsToMany Chapter
      *
      * @return BelongsToMany
+     * @codeCoverageIgnore
      */
     public function chapters(): BelongsToMany
     {

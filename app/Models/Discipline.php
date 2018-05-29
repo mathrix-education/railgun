@@ -8,7 +8,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 
 /**
- * App\Models\Discipline
+ * Model Discipline
+ *
+ * @package App\Models
+ * @since 1.0.0
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
  *
  * @property int $id
  * @property string $name
@@ -26,9 +31,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Discipline extends BaseModel
 {
-    /** @var array The fillable attributes */
+    /** @var array The attributes that are mass assignable */
     protected $fillable = ["id", "name", "slug", "beta", "visible", "link"];
-
     /** @var array Validation rules */
     protected $rules = [
         "name" => "required|max:255",
@@ -46,6 +50,7 @@ class Discipline extends BaseModel
      * HasMany Chapter
      *
      * @return HasMany
+     * @codeCoverageIgnore
      */
     public function chapters(): HasMany
     {
@@ -57,6 +62,7 @@ class Discipline extends BaseModel
      * BelongsToMany Class_
      *
      * @return BelongsToMany
+     * @codeCoverageIgnore
      */
     public function classes(): BelongsToMany
     {

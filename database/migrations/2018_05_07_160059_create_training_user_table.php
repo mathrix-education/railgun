@@ -4,6 +4,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Class CreateTrainingUserTable
+ *
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @since 4.0.0
+ * @copyright Mathrix Education SA
+ */
 class CreateTrainingUserTable extends Migration
 {
     /**

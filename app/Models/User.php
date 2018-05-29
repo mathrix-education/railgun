@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Cashier\Billable;
@@ -19,7 +20,12 @@ use Laravel\Passport\Token;
 
 
 /**
- * App\Models\User
+ * Model User
+ *
+ * @package App\Models
+ * @since 1.0.0
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
  *
  * @property int $id
  * @property string|null $username
@@ -47,7 +53,8 @@ use Laravel\Passport\Token;
  * @property-read Collection|Client[] $clients
  * @property-read Collection|Comment[] $comments
  * @property-read Collection|Log[] $logs
- * @property-read Collection|Activity[] $meta
+ * @property-read Collection|Meta[] $meta
+ * @property-read Collection|Purchase[] $purchases
  * @property-read Collection|Subscription[] $subscriptions
  * @property-read Collection|Token[] $tokens
  * @property-read Collection|Vote[] $votes
@@ -72,7 +79,6 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereTrialEndsAt($value)
  * @method static Builder|User whereCreatedAt($value)
  * @method static Builder|User whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Training[] $trainings
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
@@ -82,17 +88,13 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
-
     /** @var array The guarded attributes */
     protected $fillable = ["email", "username", "firstname", "lastname", "password", "points", "daily",
         "settings", "class_id"];
-
     /** @var array The hidden attributes from the model"s JSON */
     protected $hidden = ["password", "token"];
-
     /** @var array The attributes that should be cast to native types */
     protected $casts = ["settings" => "array"];
-
     /** @var array The validation rules on create */
     protected $rules = [
         "email" => "required|email|unique:users,email|max:60",
@@ -106,10 +108,8 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "daily" => "nullable|in:10,20,40",
         "class_id" => "nullable|exists:classes,id"
     ];
-
     /** @var array The relations to include by default */
     protected $with = ["class_", "purchases"];
-
     /** @var array The virtual attributes */
     protected $appends = ["premium", "daily_points"];
 
@@ -160,24 +160,11 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
 
-    /**
-     * premium attribute
-     *
-     * @return bool
-     */
-    public function getPremiumAttribute()
-    {
-        return $this->subscribed("premium");
-    }
-
-
     /*
     |--------------------------------------------------------------------------
     | Passport
     |--------------------------------------------------------------------------
     */
-
-
     /**
      * daily_points attribute
      *
@@ -243,12 +230,25 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function hasPurchased(int $purchaseId, string $purchaseType): bool
     {
-        return User::whereHas("purchases", function (Builder $query) use ($purchaseId, $purchaseType) {
-            $query->where([
-                ["purchasable_id", "=", $purchaseId],
-                ["purchasable_type", "=", $purchaseType]
-            ]);
-        })->where("id", "=", $this->id)->exists();
+        return $this->purchases()->where([
+            ["purchasable_id", "=", $purchaseId],
+            ["purchasable_type", "=", $purchaseType]
+        ])->exists();
+    }
+
+
+    /**
+     * @param int $purchaseId
+     * @param string $purchaseType
+     *
+     * @return Model|HasMany|object
+     */
+    public function getPurchase(int $purchaseId, string $purchaseType)
+    {
+        return $this->purchases()->where([
+            ["purchasable_id", "=", $purchaseId],
+            ["purchasable_type", "=", $purchaseType]
+        ])->first();
     }
 
 
@@ -257,12 +257,11 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     | Relations
     |--------------------------------------------------------------------------
     */
-
-
     /**
      * BelongsTo Class_
      *
      * @return BelongsTo
+     * @codeCoverageIgnore
      */
     public function class_(): BelongsTo
     {
@@ -274,6 +273,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * HasMany Comment
      *
      * @return HasMany
+     * @codeCoverageIgnore
      */
     public function comments(): HasMany
     {
@@ -285,6 +285,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * HasMany Log
      *
      * @return HasMany
+     * @codeCoverageIgnore
      */
     public function logs(): HasMany
     {
@@ -296,6 +297,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * HasMany Activity
      *
      * @return HasMany
+     * @codeCoverageIgnore
      */
     public function meta(): HasMany
     {
@@ -307,6 +309,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * HasMany Purchase
      *
      * @return HasMany
+     * @codeCoverageIgnore
      */
     public function purchases(): HasMany
     {
@@ -318,10 +321,26 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * HasMany Vote
      *
      * @return HasMany
+     * @codeCoverageIgnore
      */
     public function votes(): HasMany
     {
         return $this->hasMany(Vote::class);
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Attributes
+    |--------------------------------------------------------------------------
+    */
+    /**
+     * premium attribute
+     *
+     * @return bool
+     */
+    public function getPremiumAttribute()
+    {
+        return $this->subscribed("premium");
+    }
 }

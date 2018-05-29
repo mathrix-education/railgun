@@ -6,7 +6,7 @@ use App\Models\User;
 /**
  * Class ActivityPolicy
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Policies
  * @since 1.0.0
  * @copyright Mathrix Education SA
@@ -21,6 +21,22 @@ class ActivityPolicy extends BasePolicy
     public function index(User $currentUser)
     {
         return $this->atLeastModerator($currentUser);
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function byNotion()
+    {
+        return true;
+    }
+    /**
+     * @return bool
+     */
+    public function byModule()
+    {
+        return true;
     }
 
 

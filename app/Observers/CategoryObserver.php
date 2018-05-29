@@ -1,6 +1,7 @@
 <?php
 namespace App\Observers;
 
+use App\Exceptions\Http400InvalidRequestException;
 use App\Models\Category;
 
 /**
@@ -22,6 +23,24 @@ class CategoryObserver extends BaseObserver
         if (empty($category->slug) ||
             ($category->isDirty("name") && !$category->isDirty("slug"))) {
             $category->slug = str_slug($category->name);
+        }
+
+        return true;
+    }
+
+
+    /**
+     * @param Category $category
+     *
+     * @return bool
+     * @throws Http400InvalidRequestException
+     * @throws \Exception
+     */
+    public function deleting($category)
+    {
+        if (!$category->posts->isEmpty()) {
+            throw new Http400InvalidRequestException("Cannot delete category {$category->id} be cause it has " .
+                "attached posts");
         }
 
         return true;

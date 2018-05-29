@@ -44,16 +44,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        Cashier::useCurrency('eur', '€');
+        Cashier::useCurrency("eur", "€");
 
         // MorphMap
         Relation::morphMap([
-            'activity' => Activity::class,
-            'notion' => Notion::class,
-            'module' => Module::class,
-            'post' => Post::class,
-            'training' => Training::class,
-            'section' => Section::class,
+            "activity" => Activity::class,
+            "notion" => Notion::class,
+            "module" => Module::class,
+            "post" => Post::class,
+            "comment" => Comment::class,
+            "training" => Training::class,
+            "section" => Section::class
         ]);
 
         // Observers
@@ -68,7 +69,6 @@ class AppServiceProvider extends ServiceProvider
         Post::observe(PostObserver::class);
         Category::observe(CategoryObserver::class);
         Comment::observe(CommentObserver::class);
-        Vote::observe(VoteObserver::class);
         Training::observe(TrainingObserver::class);
         Section::observe(SectionObserver::class);
         Lesson::observe(LessonObserver::class);

@@ -10,12 +10,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 
 /**
- * Class Activity
+ * Model Activity
  *
- * @author Mathrix Back-End Team
  * @package App\Models
  * @since 1.0.0
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @property int $id
  * @property string $name
  * @property string $slug
@@ -26,19 +27,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read bool $completed
  * @property-read bool $favorite
  * @property-read bool $to_revise
- * @property-read string|null $status
+ * @property-read Collection|Comment[] $comments
  * @property-read Collection|Log[] $logs
  * @property-read Collection|Module[] $modules
  * @property-read Collection|Notion[] $notions
- * @property-read Collection|User[] $users
- * @method static Builder|Activity whereDescription($value)
  * @method static Builder|Activity whereId($value)
  * @method static Builder|Activity whereName($value)
  * @method static Builder|Activity whereSlug($value)
  * @method static Builder|Activity whereNameSeo($value)
  * @method static Builder|Activity whereType($value)
  * @method static Builder|Activity whereVisible($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
  */
 class Activity extends BaseModel
 {
@@ -46,22 +44,20 @@ class Activity extends BaseModel
 
     public const TYPES = ["video", "course", "test", "exercise", "summary", "flashcard"];
 
-    /** @var array The fillable attributes */
-    protected $fillable = ["id", "name", "slug", "name_seo", "type", "visible", "link"];
 
+    /** @var array The attributes that are mass assignable */
+    protected $fillable = ["id", "name", "slug", "name_seo", "type", "visible", "link"];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
         "visible" => "boolean",
         "options" => "array"
     ];
-
     /** @var array The validation rules */
     protected $rules = [
         "name" => "required|max:255",
         "slug" => "required|max:255",
         "visible" => "boolean"
     ];
-
     /** @var array Appends attributes */
     protected $appends = ["favorite", "to_revise", "completed"];
 
@@ -84,6 +80,7 @@ class Activity extends BaseModel
      * BelongsToMany Module
      *
      * @return BelongsToMany
+     * @codeCoverageIgnore
      */
     public function modules(): BelongsToMany
     {
@@ -95,21 +92,11 @@ class Activity extends BaseModel
      * BelongsToMany Notion
      *
      * @return BelongsToMany
+     * @codeCoverageIgnore
      */
     public function notions(): BelongsToMany
     {
         return $this->belongsToMany(Notion::class)->withPivot(["order"]);
-    }
-
-
-    /**
-     * BelongsToMany Users
-     *
-     * @return BelongsToMany
-     */
-    public function users()
-    {
-        return $this->belongsToMany(User::class);
     }
 
     /*

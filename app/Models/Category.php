@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 
 /**
- * Class Category
+ * Model Category
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Models
  * @since 1.0.0
  * @copyright Mathrix Education SA
+ *
  * @property int $id
  * @property string $name
  * @property string $slug
@@ -26,9 +27,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Category extends BaseModel
 {
-    /** @var array The fillable attributes */
+    /** @var array The attributes that are mass assignable */
     protected $fillable = ["id", "name", "slug"];
-
     /** @var array Validation rules */
     protected $rules = [
         "name" => "required|max:255",
@@ -46,6 +46,7 @@ class Category extends BaseModel
      * HasMany Post
      *
      * @return HasMany
+     * @codeCoverageIgnore
      */
     public function posts(): HasMany
     {
