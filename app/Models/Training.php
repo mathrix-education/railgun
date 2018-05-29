@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Loggable;
 use App\Models\Traits\Purchasable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -9,12 +10,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * Class Training
+ * Model Training
  *
- * @author Mathrix Back-End Team
  * @package App\Models
  * @since 1.0.1
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @property int $id
  * @property string $name
  * @property string $slug
@@ -23,7 +25,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property bool $visible
  * @property int $order
  * @property string|null $created_at
- * @property string|null
+ * @property string|null $updated_at
+ * @property-read Collection|Log[] $logs
  * @property-read Collection|Purchase[] $purchases
  * @property-read Collection|Section[] $sections
  * @property-read Collection|User[] $users
@@ -39,27 +42,32 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Training extends BaseModel
 {
-    use Purchasable;
+    use Purchasable, Loggable;
 
     /** @var array The guarded attributes */
-    protected $guarded = [];
-
+    protected $fillable = ["id", "name", "slug", "description", "price", "visible", "order", "created_at", "updated_at"];
     /** @var array The validation rules on create */
     protected $rules = [
         "name" => "required|max:255",
         "slug" => "required|max:255",
         "description" => "nullable",
     ];
-
+    /** @var array The attributes that should be cast to native types */
     protected $casts = [
         "visible" => "boolean"
     ];
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
     /**
      * HasMany Section
      *
      * @return HasMany
+     * @codeCoverageIgnore
      */
     public function sections(): HasMany
     {
@@ -71,6 +79,7 @@ class Training extends BaseModel
      * BelongsToMany User
      *
      * @return BelongsToMany
+     * @codeCoverageIgnore
      */
     public function users(): BelongsToMany
     {

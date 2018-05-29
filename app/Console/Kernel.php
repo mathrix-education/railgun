@@ -3,15 +3,17 @@ namespace App\Console;
 
 use App\Console\Commands\MailchimpUpdate;
 use App\Console\Commands\MakeApidoc;
+use App\Console\Commands\MakeTest;
 use App\Console\Commands\SitemapAll;
 use App\Console\Commands\SitemapContent;
+use App\Console\Commands\SyncStripeSubscriptions;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
 /**
  * Class Kernel
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Console
  * @since 1.0.1
  * @copyright Mathrix Education SA
@@ -26,8 +28,10 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         MailchimpUpdate::class,
         MakeApidoc::class,
+        MakeTest::class,
         SitemapAll::class,
-        SitemapContent::class
+        SitemapContent::class,
+        SyncStripeSubscriptions::class
     ];
 
 
@@ -40,7 +44,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        if (app()->environment("stage", "master")) {
+        if (app()->environment("master")) {
             $schedule->command("backup:mysql-dump")->dailyAt("02:00");
             $schedule->command("sitemap:all")->dailyAt("02:10");
         }

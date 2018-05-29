@@ -7,11 +7,12 @@ use App\Models\Log;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Class StatsController
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Controllers
  * @since 1.0.0
  * @copyright Mathrix Education SA
@@ -54,6 +55,7 @@ class StatsController extends BaseController
      * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
+     * @throws ValidationException
      */
     public function activities(Request $request)
     {
@@ -119,15 +121,15 @@ class StatsController extends BaseController
                 }
 
                 $key = $dateIterator->toDateString();
-                $value = $statRaw->value;
+                $points = $statRaw->value["points"];
                 $type = $statRaw->loggable->activities->first()->type;
 
                 if (empty($stats[$key])) {
                     $stats[$key] = [
                         "points" => [
-                            "total" => $value,
+                            "total" => $points,
                             "details" => [
-                                $type => $value
+                                $type => $points
                             ]
                         ],
                         "counts" => [
@@ -138,14 +140,14 @@ class StatsController extends BaseController
                         ]
                     ];
                 } else if (empty($stats[$key]["points"]["details"][$type])) {
-                    $stats[$key]["points"]["total"] += $value;
-                    $stats[$key]["points"]["details"][$type] = $value;
+                    $stats[$key]["points"]["total"] += $points;
+                    $stats[$key]["points"]["details"][$type] = $points;
 
                     $stats[$key]["counts"]["total"]++;
                     $stats[$key]["counts"]["details"][$type] = 1;
                 } else {
-                    $stats[$key]["points"]["total"] += $value;
-                    $stats[$key]["points"]["details"][$type] += $value;
+                    $stats[$key]["points"]["total"] += $points;
+                    $stats[$key]["points"]["details"][$type] += $points;
 
                     $stats[$key]["counts"]["total"]++;
                     $stats[$key]["counts"]["details"][$type]++;

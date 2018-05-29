@@ -6,7 +6,7 @@ use App\Models\User;
 /**
  * Class BasePolicy
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Policies
  * @since 1.0.0
  * @copyright Mathrix Education SA
@@ -32,6 +32,7 @@ abstract class BasePolicy
         }
     }
 
+
     /**
      * Dynamically check for permission based on method name
      *
@@ -40,7 +41,7 @@ abstract class BasePolicy
      * @param string $name
      * @param array $args
      *
-     * @return bool|null
+     * @return bool
      */
     public function __call($name, $args)
     {
@@ -57,7 +58,7 @@ abstract class BasePolicy
             }
         }
 
-        return null;
+        return false; // @codeCoverageIgnore
     }
 
 

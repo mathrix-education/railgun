@@ -9,7 +9,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 
 /**
- * App\Models\Class_
+ * Model Class_
+ *
+ * @package App\Models
+ * @since 1.0.0
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
  *
  * @property int $id
  * @property string $name
@@ -39,11 +44,9 @@ class Class_ extends BaseModel
 {
     /** @var string Custom table definition */
     protected $table = "classes";
-
-    /** @var array The fillable attributes */
+    /** @var array The attributes that are mass assignable */
     protected $fillable = ["id", "name", "slug", "order", "visible", "parent_id",
         "country_id", "link"];
-
     /** @var array Validation rules */
     protected $rules = [
         "name" => "required|max:255",
@@ -54,11 +57,6 @@ class Class_ extends BaseModel
     ];
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Relations
-    |--------------------------------------------------------------------------
-    */
     /**
      * Get the cursus (ie. the class it self and all its previous)
      *
@@ -81,10 +79,16 @@ class Class_ extends BaseModel
     }
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
     /**
      * BelongsTo Class_
      *
      * @return BelongsTo
+     * @codeCoverageIgnore
      */
     public function parent(): BelongsTo
     {
@@ -96,6 +100,7 @@ class Class_ extends BaseModel
      * BelongsTo Country
      *
      * @return BelongsTo
+     * @codeCoverageIgnore
      */
     public function country(): BelongsTo
     {
@@ -107,6 +112,7 @@ class Class_ extends BaseModel
      * BelongsToMany Discipline
      *
      * @return BelongsToMany
+     * @codeCoverageIgnore
      */
     public function disciplines(): BelongsToMany
     {
@@ -119,6 +125,7 @@ class Class_ extends BaseModel
      * HasMany User
      *
      * @return HasMany
+     * @codeCoverageIgnore
      */
     public function users(): HasMany
     {

@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 /**
  * Class ChapterController
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Controllers
  * @since 1.0.0
  * @copyright Mathrix Education SA
@@ -137,7 +137,6 @@ class ChapterController extends BaseController
      *
      * @return JsonResponse
      * @throws Http404ModelNotFoundException
-     * @throws \Exception
      */
     public function recursive(Request $request, int $id)
     {

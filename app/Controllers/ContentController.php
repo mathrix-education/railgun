@@ -14,11 +14,12 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Class ContentController
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Controllers
  * @since 1.0.0
  * @copyright Mathrix Education SA
@@ -242,7 +243,7 @@ class ContentController extends BaseController
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
-     * @throws \Exception
+     * @throws ValidationException
      */
     public function upload(Request $request)
     {

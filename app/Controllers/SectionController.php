@@ -3,12 +3,13 @@ namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http404ModelNotFoundException;
+use App\Exceptions\Http422ModelSaveException;
+use App\Exceptions\Http422ModelValidationException;
 use App\Models\Log;
 use App\Models\Purchase;
 use App\Models\Section;
 use App\Models\User;
 use App\Utils\StripeUtils;
-use Faker\Factory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ use Illuminate\Http\Request;
 /**
  * Class SectionController
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Controllers
  * @since 1.0.0
  * @copyright Mathrix Education SA
@@ -116,7 +117,6 @@ class SectionController extends BaseController
      *
      * @return JsonResponse
      * @throws Http404ModelNotFoundException
-     * @throws \Exception
      */
     public function recursive(Request $request, int $id): JsonResponse
     {
@@ -148,6 +148,7 @@ class SectionController extends BaseController
         return new JsonResponse($section);
     }
 
+
     /**
      * @apiVersion 4.0.2
      * @api {post} /sections/{id}/buy Buy
@@ -168,7 +169,8 @@ class SectionController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
-     * @throws \Exception
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
      */
     public function buy(Request $request, int $id): JsonResponse
     {
@@ -207,7 +209,7 @@ class SectionController extends BaseController
         if ($response->status == "succeeded") {
             // Save the purchase
             $purchase = new Purchase([
-                "uuid" => Factory::create()->uuid,
+                "stripe_id" => $response->id,
                 "price" => StripeUtils::SECTION_PRICE,
                 "user_id" => $user->id,
                 "purchasable_id" => $section->id,
@@ -215,14 +217,20 @@ class SectionController extends BaseController
             ]);
             $purchase->save();
 
-            Log::log("user_payment_succeed_for_section", $user, ["training_id" => $section->id]);
+            Log::log("user_payment_succeed_for_section", $user, [
+                "loggable_id" => $section->id,
+                "loggable_type" => "section"
+            ]);
 
             return new JsonResponse(
                 $user->with(["class_", "subscriptions", "purchases", "purchases.purchasable"])
                     ->find($user->id)
             );
         } else {
-            Log::log("user_payment_failed_for_section", $user, ["training_id" => $section->id]);
+            Log::log("user_payment_failed_for_section", $user, [
+                "loggable_id" => $section->id,
+                "loggable_type" => "section"
+            ]);
 
             return new JsonResponse([
                 "status" => "failure"

@@ -6,7 +6,7 @@ use App\Models\User;
 /**
  * Class UserPolicy
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Policies
  * @since 1.0.0
  * @copyright Mathrix Education SA
@@ -22,7 +22,7 @@ class UserPolicy extends BasePolicy
      */
     public function get(User $currentUser, User $user)
     {
-        return $currentUser->id === $user->id || $this->atLeastModerator($currentUser) && $user->type == 'registered';
+        return $currentUser->id === $user->id || $this->atLeastModerator($currentUser) && $user->type == "registered";
     }
 
 
@@ -55,6 +55,7 @@ class UserPolicy extends BasePolicy
      * @param User $user
      *
      * @return bool
+     * @codeCoverageIgnore // TODO: For now #GDPR
      */
     public function delete(User $currentUser, User $user)
     {

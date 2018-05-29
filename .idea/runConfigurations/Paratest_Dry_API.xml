@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Paratest Dry API" type="PhpLocalRunConfigurationType" factoryName="PHP Console" singleton="true" path="$PROJECT_DIR$/vendor/bin/paratest" scriptParameters="-p16 --runner=WrapperRunner --configuration=phpunit.xml $PROJECT_DIR$/tests/API">
+    <CommandLine workingDirectory="$PROJECT_DIR$" />
+    <option name="workingDirectory" value="$PROJECT_DIR$" />
+    <method />
+  </configuration>
+</component>

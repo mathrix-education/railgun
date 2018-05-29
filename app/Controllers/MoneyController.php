@@ -1,18 +1,24 @@
 <?php
 namespace App\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Laravel\Cashier\Subscription;
 
 /**
  * Class MoneyController
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Controllers
  * @since 1.0.0
  * @copyright Mathrix Education SA
  */
 class MoneyController extends BaseController
 {
+    /**
+     * 7twanud8v86umjhp8ujhr4y1nv1z7jh60gn96s9q
+     *
+     * @return JsonResponse
+     */
     public function last()
     {
         /** @var Subscription $subscription */

@@ -4,7 +4,7 @@ namespace App\Exceptions;
 /**
  * Class Http429TooManyRequests
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Exceptions
  * @since 1.0.0
  * @copyright Mathrix Education SA

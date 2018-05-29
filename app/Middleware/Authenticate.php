@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
  * Class Authenticate
  * Handle auth using oAuth via Passport
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Middleware
  * @since 1.0.0
  * @copyright Mathrix Education SA

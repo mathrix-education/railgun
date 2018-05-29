@@ -10,9 +10,9 @@ use Throwable;
  *
  * @see https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Exceptions
- * @since
+ * @since 1.0.0
  * @copyright Mathrix Education SA
  */
 abstract class HttpException extends \Exception
@@ -37,8 +37,6 @@ abstract class HttpException extends \Exception
      * @param int $code
      * @param Throwable|null $previous
      * @param array $data
-     *
-     * @throws \Exception
      */
     public function __construct($message = "", $code = 0, Throwable $previous = null, $data = [])
     {
@@ -46,11 +44,13 @@ abstract class HttpException extends \Exception
         $matches = null;
 
         if (preg_match(self::PATTERN, $class, $matches) === 0) {
-            throw new \Exception($class . " has to follow the pattern " . self::PATTERN); // @codeCoverageIgnore
+            // @codeCoverageIgnoreStart
+            parent::__construct($class . " has to follow the pattern " . self::PATTERN, $code, $previous);
+            // @codeCoverageIgnoreEnd
         } else {
             // Define the HTTP code
             if (300 <= $code && $code < 600) {
-                $this->code = $code;
+                $this->code = $code; // @codeCoverageIgnore
             } else {
                 $this->code = (int)$matches[1];
             }
@@ -63,7 +63,7 @@ abstract class HttpException extends \Exception
             }
 
             if (!empty($data)) {
-                $this->data = $data;
+                $this->data = $data; // @codeCoverageIgnore
             }
         }
 
@@ -85,7 +85,7 @@ abstract class HttpException extends \Exception
         }
 
         if (!empty($this->data)) {
-            $responseData = array_merge($responseData, $this->data);
+            $responseData = array_merge($responseData, $this->data); // @codeCoverageIgnore
         }
 
         return response()->json($responseData, $this->code);

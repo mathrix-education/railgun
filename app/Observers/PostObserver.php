@@ -20,10 +20,8 @@ class PostObserver extends BaseObserver
     public function saving($post)
     {
         // Sluggify if needed
-        if (
-            empty($post->slug) ||
-            ($post->isDirty('title') && !$post->isDirty('slug'))
-        ) {
+        if (empty($post->slug) ||
+            ($post->isDirty("title") && !$post->isDirty("slug"))) {
             $post->slug = str_slug($post->title);
         }
 

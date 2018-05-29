@@ -1,6 +1,8 @@
 <?php
 namespace App\Controllers;
 
+use App\Controllers\StripeWebhooks\CustomerSubscriptionDeleted;
+use App\Controllers\StripeWebhooks\InvoicePaymentSucceeded;
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
@@ -11,18 +13,20 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Laravel\Cashier\Http\Controllers\WebhookController as CashierController;
-use Laravel\Cashier\Subscription;
 
 /**
  * Class StripeController
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Controllers
  * @since 1.0.0
  * @copyright Mathrix Education SA
  */
 class StripeController extends CashierController
 {
+    use CustomerSubscriptionDeleted, InvoicePaymentSucceeded;
+
+
     /**
      * @apiVersion 4.0.0
      * @api {post} /stripe/subscribe Subscribe
@@ -38,14 +42,14 @@ class StripeController extends CashierController
      * @apiError (Error 400) invalid_request stripe_token and stripe_coupon cannot be null at the same time
      * @apiError (Error 400) invalid_request stripe_plan has to be in the allowed stripe plans
      * @apiError (Error 400) invalid_request `card invalid_number` The card number is not a valid credit card number<br>
-     *  `invalid_expiry_month` The card's expiration month is invalid<br>
-     *  `invalid_expiry_year` The card's expiration year is invalid<br>
-     *  `invalid_cvc` The card's security code is invalid<br>
-     *  `invalid_swipe_data` The card's swipe data is invalid<br>
+     *  `invalid_expiry_month` The card"s expiration month is invalid<br>
+     *  `invalid_expiry_year` The card"s expiration year is invalid<br>
+     *  `invalid_cvc` The card"s security code is invalid<br>
+     *  `invalid_swipe_data` The card"s swipe data is invalid<br>
      *  `incorrect_number` The card number is incorrect<br>
      *  `expired_card` The card has expired<br>
-     *  `incorrect_cvc` The card's security code is incorrect<br>
-     *  `incorrect_zip` The card's zip code failed validation<br>
+     *  `incorrect_cvc` The card"s security code is incorrect<br>
+     *  `incorrect_zip` The card"s zip code failed validation<br>
      *  `card_declined` The card was declined<br>
      *  `missing` There is no card on a customer that is being charged<br>
      *  `processing_error` An error occurred while processing the card
@@ -56,7 +60,6 @@ class StripeController extends CashierController
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
-     * @throws \Exception
      */
     public function subscribe(Request $request)
     {
@@ -85,15 +88,11 @@ class StripeController extends CashierController
             $user->updateCardOrCreateStripeCustomer($stripeToken);
 
             // Pipe Stripe exception to our HTTP 400 Bad Request exception
-            try {
-                $description = StripeUtils::ALLOWED_STRIPE_PLANS[$stripePlan]["name"] . " (fin " .
-                    StripeUtils::getStripePlanEndDate($stripePlan)->format("d/m/Y") . ")";
-                $response = $user->charge(StripeUtils::getStripePlanPrice($stripePlan), [
-                    "description" => $description
-                ]);
-            } catch (\InvalidArgumentException $exception) {
-                throw new Http400InvalidRequestException($exception->getMessage());
-            }
+            $description = StripeUtils::ALLOWED_STRIPE_PLANS[$stripePlan]["name"] . " (fin " .
+                StripeUtils::getStripePlanEndDate($stripePlan)->format("d/m/Y") . ")";
+            $response = $user->charge(StripeUtils::getStripePlanPrice($stripePlan), [
+                "description" => $description
+            ]);
 
             // Give subscription if charge succeeded
             if ($response->status == "succeeded") {
@@ -103,7 +102,7 @@ class StripeController extends CashierController
                     ->create($stripeToken);
                 Log::log("user_payment_succeed_for_premium", $user);
             } else {
-                Log::log("user_payment_failed_for_premium", $user);
+                Log::log("user_payment_failed_for_premium", $user); // @codeCoverageIgnore
             }
         }
 
@@ -127,7 +126,6 @@ class StripeController extends CashierController
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
-     * @throws \Exception
      */
     public function estimate(string $stripePlan)
     {
@@ -135,102 +133,5 @@ class StripeController extends CashierController
             "price" => StripeUtils::getStripePlanPrice($stripePlan),
             "end_date" => StripeUtils::getStripePlanEndDate($stripePlan)->format("Y-m-d")
         ]);
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Stripe webhooks
-    |--------------------------------------------------------------------------
-    */
-
-
-    /**
-     * Payment succeeded
-     *
-     * @param  array $payload
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws Http400InvalidRequestException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
-     * @throws \Exception
-     * @codeCoverageIgnore
-     */
-    public function handleInvoicePaymentSucceeded($payload)
-    {
-        $user = $this->getUserByStripeId($payload["data"]["object"]["customer"]);
-
-        if ($user) {
-            Log::log("user_payment_succeed_for_premium", $user);
-        }
-
-        return new Response('Webhook Handled', 200);
-    }
-
-
-    /**
-     * Payment failed
-     *
-     * @param  array $payload
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws Http400InvalidRequestException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
-     * @throws \Exception
-     * @codeCoverageIgnore
-     */
-    public function handleInvoicePaymentFailed(array $payload)
-    {
-        $user = $this->getUserByStripeId($payload["data"]["object"]["customer"]);
-
-        if ($user) {
-            Log::log("user_payment_failed_for_premium", $user);
-
-            // TODO: Send payment failed email
-        }
-
-        return new Response('Webhook Handled', 200);
-    }
-
-
-    /**
-     * Handle customer.subscription.deleted
-     *
-     * @param array $payload
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws Http400InvalidRequestException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
-     * @throws \Exception
-     * @codeCoverageIgnore
-     */
-    public function handleCustomerSubscriptionDeleted(array $payload)
-    {
-        /** @var User $user */
-        $user = $this->getUserByStripeId($payload["data"]["object"]["customer"]);
-
-        if ($user) {
-            $user->subscriptions->filter(function ($subscription) use ($payload) {
-                /** @var Subscription $subscription */
-                return $subscription->stripe_id === $payload["data"]["object"]["id"];
-            })->each(function ($subscription) {
-                /** @var Subscription $subscription */
-                if ($subscription->onTrial()) {
-                    $subscription->skipTrial();
-                }
-
-                $subscription->cancelNow();
-            });
-        }
-
-        if ($user) {
-            Log::log("user_cancelled_premium", $user);
-
-            // TODO: Send cancellation email
-        }
-
-        return new Response('Webhook Handled', 200);
     }
 }

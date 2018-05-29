@@ -2,6 +2,7 @@
 namespace App\Observers;
 
 
+use App\Exceptions\Http400InvalidRequestException;
 use App\Models\Section;
 
 /**
@@ -30,15 +31,18 @@ class SectionObserver extends BaseObserver
 
 
     /**
-     * Detach all modules and notions linked with the deleting notion
-     *
      * @param Section $section
      *
      * @return bool
+     * @throws Http400InvalidRequestException
+     * @throws \Exception
      */
     public function deleting($section)
     {
-        $section->lessons()->delete();
+        if ($section->lessons->isEmpty()) {
+            throw new Http400InvalidRequestException("Cannot delete section {$section->id} be cause it has " .
+                "attached lessons");
+        }
 
         return true;
     }

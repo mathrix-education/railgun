@@ -23,7 +23,7 @@ use ...
  * Class {class_name}
  * {optionnal comment (if not specified, line has to be removed)}
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package {namespace}
  * @since {version of introduction}
  * @copyright Mathrix Education SA

@@ -14,7 +14,7 @@ cp ${new_release_dir}/config/env/.env.${branch} ${new_release_dir}/.env
 cd ${new_release_dir}
 
 echo "Running composer install"
-composer install --prefer-dist --no-scripts -q -o
+composer install --prefer-dist --no-ansi --no-interaction --no-progress --optimize-autoloader
 
 echo "Running yarn install"
 yarn install --silent

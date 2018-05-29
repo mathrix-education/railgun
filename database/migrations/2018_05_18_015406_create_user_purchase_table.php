@@ -4,6 +4,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Class CreateUserPurchaseTable
+ *
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @since 4.0.2
+ * @copyright Mathrix Education SA
+ */
 class CreateUserPurchaseTable extends Migration
 {
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Loggable;
 use App\Models\Traits\Purchasable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -9,12 +10,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * Class Section
+ * Model Section
  *
- * @author Mathrix Back-End Team
  * @package App\Models
  * @since 1.0.1
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @property int $id
  * @property string $name
  * @property string $slug
@@ -24,6 +26,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string|null $created_at
  * @property string|null $updated_at
  * @property-read Collection|Lesson[] $lessons
+ * @property-read Collection|Log[] $logs
  * @property-read Collection|Purchase[] $purchases
  * @property-read Training $training
  * @method static Builder|Section whereId($value)
@@ -37,28 +40,32 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Section extends BaseModel
 {
-    use Purchasable;
+    use Purchasable, Loggable;
 
     /** @var array The guarded attributes */
-    protected $guarded = [];
-
-
+    protected $fillable = ["id", "name", "slug", "visible", "order", "training_id"];
     /** @var array The validation rules on create */
     protected $rules = [
         "name" => "required|max:255",
         "slug" => "required|max:255",
         "description" => "nullable",
     ];
-
+    /** @var array The attributes that should be cast to native types */
     protected $casts = [
         "visible" => "boolean"
     ];
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
     /**
      * BelongsTo Training
      *
      * @return BelongsTo
+     * @codeCoverageIgnore
      */
     public function training()
     {
@@ -70,6 +77,7 @@ class Section extends BaseModel
      * HasMany Lesson
      *
      * @return HasMany
+     * @codeCoverageIgnore
      */
     public function lessons()
     {

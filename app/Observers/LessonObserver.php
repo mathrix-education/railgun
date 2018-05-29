@@ -6,7 +6,7 @@ use App\Models\Lesson;
 /**
  * Class LessonObserver
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Observers
  * @since 1.0.1
  * @copyright Mathrix Education SA

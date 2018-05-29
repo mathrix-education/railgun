@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 /**
  * Class ModuleController
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Controllers
  * @since 1.0.0
  * @copyright Mathrix Education SA
@@ -53,24 +53,13 @@ class ModuleController extends BaseController
      * @param null $value not used here
      *
      * @return JsonResponse
-     * @throws \Exception
      */
     public function get(Request $request, $key, $value = null): JsonResponse
     {
         /** @var User $user */
         $user = $request->user();
 
-        $module = Module::where("id", $key)->with([
-            "comments" => function (MorphMany $query) use ($key) {
-                $query->getQuery()
-                    ->where("commentable_id", $key)
-                    ->where("commentable_type", "module")
-                    ->orderByDesc("created_at");
-            },
-            "comments.children" => function (HasMany $query) {
-                $query->getQuery()->orderBy("created_at");
-            }
-        ])->firstOrFail();
+        $module = Module::where("id", $key)->firstOrFail();
 
         // Hide module content if user is not premium nor moderator
         if ($module->premium && ($user === null || !$user->premium && !$user->isModerator())) {
@@ -163,7 +152,6 @@ class ModuleController extends BaseController
      * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
-     * @throws \Exception
      */
     public function mark(Request $request, int $id): JsonResponse
     {

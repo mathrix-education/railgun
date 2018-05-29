@@ -4,7 +4,7 @@ namespace App\Exceptions;
 /**
  * Class Http409ModelConflictException
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Exceptions
  * @since
  * @copyright Mathrix Education SA
