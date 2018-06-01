@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use App\Exceptions\Http401UnauthorizedException;
+use App\Models\Interfaces\Purchasable;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -223,16 +224,15 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
 
     /**
-     * @param int $purchaseId
-     * @param string $purchaseType
+     * @param Purchasable $purchasable
      *
      * @return bool
      */
-    public function hasPurchased(int $purchaseId, string $purchaseType): bool
+    public function hasPurchased(Purchasable $purchasable): bool
     {
         return $this->purchases()->where([
-            ["purchasable_id", "=", $purchaseId],
-            ["purchasable_type", "=", $purchaseType]
+            ["purchasable_id", "=", $purchasable->id],
+            ["purchasable_type", "=", $purchasable->getType()]
         ])->exists();
     }
 

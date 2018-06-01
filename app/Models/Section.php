@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Interfaces\Purchasable;
 use App\Models\Traits\Loggable;
-use App\Models\Traits\Purchasable;
+use App\Models\Traits\PurchasableTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -38,9 +39,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Section whereCreatedAt($value)
  * @method static Builder|Section whereUpdatedAt($value)
  */
-class Section extends BaseModel
+class Section extends BaseModel implements Purchasable
 {
-    use Purchasable, Loggable;
+    use PurchasableTrait, Loggable;
 
     /** @var array The guarded attributes */
     protected $fillable = ["id", "name", "slug", "visible", "order", "training_id"];
