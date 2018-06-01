@@ -50,19 +50,19 @@ abstract class BaseModel extends Model
     /**
      * Get a random model from the database
      *
-     * @param int $count The set size; if set to 1, just return the model
+     * @param array $conditions The conditions
      *
      * @return Collection|static
      */
-    public static function random($count = 1)
+    public static function random($conditions = [])
     {
         $query = self::inRandomOrder();
 
-        if ($count == 1) {
-            return $query->firstOrFail();
-        } else {
-            return $query->get();
+        if (!empty($conditions)) {
+            $query = $query->where($conditions);
         }
+
+        return $query->firstOrFail();
     }
 
 
