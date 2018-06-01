@@ -13,16 +13,4 @@ use App\Models\Discount;
  */
 class DiscountsAsRegisteredTest extends DiscountsAsPublicTest
 {
-    /**
-     * POST /discounts/check
-     */
-    public function testCheck()
-    {
-        /** @var Discount $discount */
-        $discount = Discount::where("counter", ">", 0)->firstOrFail();
-
-        $this->post("/discounts/check", ["code" => $discount->code])
-            ->assertHttp200Success()
-            ->assertJsonKeys(["id", "code", "counter"]);
-    }
 }
