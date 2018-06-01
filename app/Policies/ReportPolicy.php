@@ -13,32 +13,55 @@ use App\Models\User;
  */
 class ReportPolicy extends BasePolicy
 {
+    /**
+     * @param User $currentUser
+     *
+     * @return bool
+     */
     public function index(User $currentUser)
     {
-        return $this->atLeastModerator($currentUser);
+        return $currentUser->isModerator();
     }
 
 
+    /**
+     * @param User $currentUser
+     *
+     * @return bool
+     */
     public function get(User $currentUser)
     {
-        return $this->atLeastModerator($currentUser);
+        return $currentUser->isModerator();
     }
 
 
+    /**
+     * @return bool
+     */
     public function add()
     {
         return true;
     }
 
 
+    /**
+     * @param User $currentUser
+     *
+     * @return bool
+     */
     public function edit(User $currentUser)
     {
-        return $this->atLeastModerator($currentUser);
+        return $currentUser->isModerator();
     }
 
 
+    /**
+     * @param User $currentUser
+     *
+     * @return bool
+     */
     public function delete(User $currentUser)
     {
-        return $this->atLeastModerator($currentUser);
+        return $currentUser->isModerator();
     }
 }

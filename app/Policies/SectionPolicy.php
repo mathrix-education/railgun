@@ -21,7 +21,7 @@ class SectionPolicy extends BasePolicy
      */
     public function index(User $currentUser)
     {
-        return $this->atLeastAdmin($currentUser);
+        return $currentUser->isAdmin();
     }
 
 
@@ -42,7 +42,7 @@ class SectionPolicy extends BasePolicy
      */
     public function recursive(User $currentUser, Section $section)
     {
-        return $currentUser->hasPurchased($section->id, "section") || $this->atLeastAdmin($currentUser);
+        return $currentUser->hasPurchased($section) || $this->atLeastAdmin($currentUser);
     }
 
 
@@ -53,7 +53,7 @@ class SectionPolicy extends BasePolicy
      */
     public function add(User $currentUser)
     {
-        return $this->atLeastAdmin($currentUser);
+        return $currentUser->isAdmin();
     }
 
 
@@ -64,7 +64,7 @@ class SectionPolicy extends BasePolicy
      */
     public function edit(User $currentUser)
     {
-        return $this->atLeastAdmin($currentUser);
+        return $currentUser->isAdmin();
     }
 
 
@@ -75,6 +75,6 @@ class SectionPolicy extends BasePolicy
      */
     public function delete(User $currentUser)
     {
-        return $this->atLeastAdmin($currentUser);
+        return $currentUser->isAdmin();
     }
 }

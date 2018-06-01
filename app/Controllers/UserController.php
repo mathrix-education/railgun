@@ -9,6 +9,7 @@ use App\Exceptions\Http429TooManyRequestsException;
 use App\Models\Activity;
 use App\Models\Log;
 use App\Models\Module;
+use App\Models\Training;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -373,10 +374,11 @@ class UserController extends BaseController
             throw new Http400InvalidRequestException("training_id cannot be null");
         }
 
+        $training = Training::where("id", "=", $trainingId)->firstOrFail();
         $user = User::whereEmail($sponsorEmail)->firstOrFail();
 
         return new JsonResponse([
-            "sponsor" => $user->hasPurchased($trainingId, "training")
+            "sponsor" => $user->hasPurchased($training)
         ]);
     }
 }

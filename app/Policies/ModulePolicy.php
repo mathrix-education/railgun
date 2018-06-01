@@ -40,7 +40,7 @@ class ModulePolicy extends BasePolicy
      */
     public function add(User $currentUser)
     {
-        return $this->atLeastModerator($currentUser);
+        return $currentUser->isModerator();
     }
 
 
@@ -51,7 +51,7 @@ class ModulePolicy extends BasePolicy
      */
     public function edit(User $currentUser)
     {
-        return $this->atLeastModerator($currentUser);
+        return $currentUser->isModerator();
     }
 
 
@@ -62,6 +62,6 @@ class ModulePolicy extends BasePolicy
      */
     public function delete(User $currentUser)
     {
-        return $this->atLeastModerator($currentUser);
+        return $currentUser->isModerator();
     }
 }
