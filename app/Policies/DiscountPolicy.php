@@ -54,13 +54,4 @@ class DiscountPolicy extends BasePolicy
     {
         return false;
     }
-
-
-    /**
-     * @return bool
-     */
-    public function check()
-    {
-        return true;
-    }
 }
