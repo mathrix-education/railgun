@@ -1,5 +1,6 @@
 <?php
 namespace App\Policies;
+use App\Models\User;
 
 /**
  * Class CategoryPolicy
@@ -30,28 +31,34 @@ class CategoryPolicy extends BasePolicy
 
 
     /**
+     * @param User $currentUser
+     *
      * @return bool
      */
-    public function add()
+    public function add(User $currentUser)
     {
-        return false;
+        return $currentUser->isAdmin();
     }
 
 
     /**
+     * @param User $currentUser
+     *
      * @return bool
      */
-    public function edit()
+    public function edit(User $currentUser)
     {
-        return false;
+        return $currentUser->isAdmin();
     }
 
 
     /**
+     * @param User $currentUser
+     *
      * @return bool
      */
-    public function delete()
+    public function delete(User $currentUser)
     {
-        return false;
+        return $currentUser->isAdmin();
     }
 }

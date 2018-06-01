@@ -1,6 +1,7 @@
 <?php
 namespace Tests\API\Discounts;
 
+use App\Models\Discount;
 use Tests\API\ScopeTestCase;
 
 /**
@@ -70,11 +71,15 @@ class DiscountsAsPublicTest extends ScopeTestCase
 
 
     /**
-     * POST /discounts/check -> HTTP 401 unauthorized
+     * POST /discounts/check
      */
     public function testCheck()
     {
-        $this->post("/discounts/check")
-            ->assertHttp401Unauthorized();
+        /** @var Discount $discount */
+        $discount = Discount::where("counter", ">", 0)->firstOrFail();
+
+        $this->post("/discounts/check", ["code" => $discount->code])
+            ->assertHttp200Success()
+            ->assertJsonKeys(["id", "code", "counter"]);
     }
 }

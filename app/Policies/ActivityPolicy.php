@@ -20,7 +20,7 @@ class ActivityPolicy extends BasePolicy
      */
     public function index(User $currentUser)
     {
-        return $this->atLeastModerator($currentUser);
+        return $currentUser->isModerator();
     }
 
 
@@ -56,7 +56,7 @@ class ActivityPolicy extends BasePolicy
      */
     public function add(User $currentUser)
     {
-        return $this->atLeastModerator($currentUser);
+        return $currentUser->isModerator();
     }
 
 
@@ -67,7 +67,7 @@ class ActivityPolicy extends BasePolicy
      */
     public function edit(User $currentUser)
     {
-        return $this->atLeastModerator($currentUser);
+        return $currentUser->isModerator();
     }
 
 
@@ -78,6 +78,6 @@ class ActivityPolicy extends BasePolicy
      */
     public function delete(User $currentUser)
     {
-        return $this->atLeastModerator($currentUser);
+        return $currentUser->isModerator();
     }
 }
