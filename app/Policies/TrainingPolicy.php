@@ -40,7 +40,7 @@ class TrainingPolicy extends BasePolicy
      */
     public function recursive(User $currentUser, Training $training)
     {
-        return $currentUser->hasPurchased($training->id, "training") || $this->atLeastAdmin($currentUser);
+        return $currentUser->hasPurchased($training) || $this->atLeastAdmin($currentUser);
     }
 
 
@@ -51,7 +51,7 @@ class TrainingPolicy extends BasePolicy
      */
     public function add(User $currentUser)
     {
-        return $this->atLeastAdmin($currentUser);
+        return $currentUser->isAdmin();
     }
 
 
@@ -62,7 +62,7 @@ class TrainingPolicy extends BasePolicy
      */
     public function edit(User $currentUser)
     {
-        return $this->atLeastAdmin($currentUser);
+        return $currentUser->isAdmin();
     }
 
 
@@ -73,6 +73,6 @@ class TrainingPolicy extends BasePolicy
      */
     public function delete(User $currentUser)
     {
-        return $this->atLeastAdmin($currentUser);
+        return $currentUser->isAdmin();
     }
 }

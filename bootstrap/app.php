@@ -142,6 +142,7 @@ $app->register(Roumen\Sitemap\SitemapServiceProvider::class);
 $app->register(App\Providers\GoogleDriveServiceProvider::class);
 $app->register(Backup\BackupServiceProvider::class);
 $app->register(App\Providers\EventServiceProvider::class);
+$app->register(App\Providers\PolicyServiceProvider::class);
 
 
 if ($app->environment("stage", "master")) {

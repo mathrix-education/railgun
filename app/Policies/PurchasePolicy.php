@@ -1,5 +1,6 @@
 <?php
 namespace App\Policies;
+
 use App\Models\User;
 
 /**
@@ -20,5 +21,14 @@ class PurchasePolicy extends BasePolicy
     public function add(User $currentUser)
     {
         return $currentUser->isAdmin();
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function buy()
+    {
+        return true;
     }
 }

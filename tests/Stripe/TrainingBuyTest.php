@@ -6,10 +6,17 @@ use App\Models\Purchase;
 use App\Models\Training;
 use App\Models\User;
 use App\Utils\StripeUtils;
-use Illuminate\Database\Eloquent\Builder;
 use Laravel\Passport\Passport;
 use Tests\BaseTestCase;
 
+/**
+ * Class TrainingBuyTest
+ *
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @package Tests\Stripe
+ * @since 4.0.3
+ * @copyright Mathrix Education SA
+ */
 class TrainingBuyTest extends BaseTestCase
 {
     /**
@@ -32,7 +39,8 @@ class TrainingBuyTest extends BaseTestCase
             ->toArray();
 
         $buyRequestData = [
-            "stripe_token" => "tok_visa"
+            "stripe_token" => "tok_visa",
+            "purchasable_type" => "training"
         ];
 
         // Handle premium pack purchase
@@ -50,14 +58,14 @@ class TrainingBuyTest extends BaseTestCase
             ->whereNotIn("id", $userTrainingIds)
             ->firstOrFail();
 
-        $this->call("post", "/trainings/{$training->id}/buy", $buyRequestData);
+        $this->call("post", "/purchases/buy/training/{$training->id}", $buyRequestData);
 
         return $training;
     }
 
 
     /**
-     * POST /training/{id}/buy
+     * POST /purchases/buy/training/{training_id}
      *
      * As registered user who did not bought the training, without sponsor nor premium plan
      */
@@ -80,7 +88,7 @@ class TrainingBuyTest extends BaseTestCase
 
 
     /**
-     * POST /trainings/{id}/buy with ethe additional premium subscription
+     * POST /purchases/buy/training/{training_id}
      *
      * @throws \Exception
      */
@@ -110,6 +118,8 @@ class TrainingBuyTest extends BaseTestCase
 
 
     /**
+     * POST /purchases/buy/training/{training_id}
+     *
      * @throws \Exception
      */
     public function testBuyWithSponsorship()
@@ -137,7 +147,7 @@ class TrainingBuyTest extends BaseTestCase
 
         Passport::actingAs($buyer, [$buyer->type]);
 
-        $this->call("post", "/trainings/{$training->id}/buy", [
+        $this->call("post", "/purchases/buy/training/{$training->id}", [
             "stripe_token" => "tok_visa",
             "sponsor_email" => $sponsor->email
         ]);
@@ -156,7 +166,10 @@ class TrainingBuyTest extends BaseTestCase
         $this->assertEquals($training->price - StripeUtils::SPONSORSHIP_DISCOUNT, $newPurchase->price);
     }
 
+
     /**
+     * POST /purchases/buy/training/{training_id}
+     *
      * @throws \Exception
      */
     public function testBuyWithSponsorshipSponsorDoesNotExist()
@@ -182,17 +195,17 @@ class TrainingBuyTest extends BaseTestCase
 
         Passport::actingAs($buyer, [$buyer->type]);
 
-        $this->call("post", "/trainings/{$training->id}/buy", [
+        $this->call("post", "/purchases/buy/training/{$training->id}", [
             "stripe_token" => "tok_visa",
             "sponsor_email" => "wrongemail@test.com"
         ]);
 
-        $this->assertHttp404ModelNotFound();
+        $this->assertHttp422Validation();
     }
 
 
     /**
-     * POST /trainings/{id}/buy
+     * POST /purchases/buy/training/{training_id}
      *
      * @throws \Exception
      */
@@ -218,7 +231,7 @@ class TrainingBuyTest extends BaseTestCase
 
         $countBefore = $discount->counter;
 
-        $this->call("post", "/trainings/{$training->id}/buy", [
+        $this->call("post", "/purchases/buy/training/{$training->id}", [
             "stripe_token" => "tok_visa",
             "discount_code" => $discount->code
         ]);
@@ -237,5 +250,70 @@ class TrainingBuyTest extends BaseTestCase
         $this->assertTrue(!empty($responseData->purchases));
         $this->assertNotNull($potentialPurchase);
         $this->assertGreaterThan($potentialPurchase->price, $potentialPurchase->purchasable->price);
+    }
+
+
+    /**
+     * POST /purchases
+     */
+    public function testAdd()
+    {
+        $user = User::random(["type", "=", "admin"]);
+        Passport::actingAs($user, ["admin"]);
+
+        $customer = User::where("type", "=", "registered")
+            ->whereNotNull("stripe_id")
+            ->firstOrFail();
+        $customerTrainingIds = $customer->purchases()
+            ->where("purchasable_type", "=", "training")
+            ->get()
+            ->pluck("purchasable_id")
+            ->toArray();
+        $training = Training::inRandomOrder()
+            ->whereNotIn("id", $customerTrainingIds)
+            ->firstOrFail();
+
+        $this->post("/purchases", [
+            "user_id" => $customer->id,
+            "purchasable_type" => "training",
+            "purchasable_id" => $training->id
+        ]);
+
+        $this->assertHttp200Success();
+        $this->assertInDatabase("purchases", [
+            "user_id" => $customer->id,
+            "purchasable_type" => "training",
+            "purchasable_id" => $training->id
+        ]);
+    }
+
+
+    /**
+     * POST /purchases
+     */
+    public function testAddNoStripeId()
+    {
+        $user = User::random(["type", "=", "admin"]);
+        Passport::actingAs($user, ["admin"]);
+
+        $customer = User::where("type", "=", "registered")
+            ->whereNull("stripe_id")
+            ->firstOrFail();
+        $customerTrainingIds = $customer->purchases()
+            ->where("purchasable_type", "=", "training")
+            ->get()
+            ->pluck("purchasable_id")
+            ->toArray();
+        $training = Training::inRandomOrder()
+            ->whereNotIn("id", $customerTrainingIds)
+            ->firstOrFail();
+
+        $this->post("/purchases", [
+            "user_id" => $customer->id,
+            "purchasable_type" => "training",
+            "purchasable_id" => $training->id
+        ]);
+
+        $this->assertHttp400InvalidRequest();
     }
 }
