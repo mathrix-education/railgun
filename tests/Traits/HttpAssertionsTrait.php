@@ -15,6 +15,7 @@ namespace Tests\Traits;
  * @method assertHttp400InvalidRequest(): $this
  * @method assertHttp401Unauthorized(): $this
  * @method assertHttp404ModelNotFound(): $this
+ * @method assertHttp422Validation(): $this
  * @method assertHttp429TooManyRequests(): $this
  * @method assertHttp501NotImplemented(): $this
  */

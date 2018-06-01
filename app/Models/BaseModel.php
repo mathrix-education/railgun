@@ -59,6 +59,10 @@ abstract class BaseModel extends Model
         $query = self::inRandomOrder();
 
         if (!empty($conditions)) {
+            if (!is_array($conditions[0])) {
+                $conditions = [$conditions];
+            }
+
             $query = $query->where($conditions);
         }
 

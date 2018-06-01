@@ -238,16 +238,15 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
 
     /**
-     * @param int $purchaseId
-     * @param string $purchaseType
+     * @param Purchasable $purchasable
      *
      * @return Model|HasMany|object
      */
-    public function getPurchase(int $purchaseId, string $purchaseType)
+    public function getPurchase(Purchasable $purchasable)
     {
         return $this->purchases()->where([
-            ["purchasable_id", "=", $purchaseId],
-            ["purchasable_type", "=", $purchaseType]
+            ["purchasable_id", "=", $purchasable->id],
+            ["purchasable_type", "=", $purchasable->getType()]
         ])->first();
     }
 

@@ -8,7 +8,6 @@ use Tests\BaseTestCase;
 /**
  * Class PremiumSubscriptionTest
  *
- *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package Tests\Stripe
  * @since 4.0.3

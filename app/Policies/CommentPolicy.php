@@ -23,7 +23,7 @@ class CommentPolicy extends BasePolicy
      */
     public function index(User $currentUser)
     {
-        return $this->atLeastModerator($currentUser);
+        return $currentUser->isModerator();
     }
 
 
@@ -81,7 +81,7 @@ class CommentPolicy extends BasePolicy
      */
     public function delete(User $currentUser)
     {
-        return $this->atLeastModerator($currentUser);
+        return $currentUser->isModerator();
     }
 
 
@@ -92,7 +92,7 @@ class CommentPolicy extends BasePolicy
      */
     public function search(User $currentUser)
     {
-        return $this->atLeastModerator($currentUser);
+        return $currentUser->isModerator();
     }
 
 
@@ -103,6 +103,6 @@ class CommentPolicy extends BasePolicy
      */
     public function latest(User $currentUser)
     {
-        return $this->atLeastModerator($currentUser);
+        return $currentUser->isModerator();
     }
 }
