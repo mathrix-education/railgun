@@ -3,6 +3,7 @@ namespace App\Controllers;
 
 use App\Exceptions\Http404ModelNotFoundException;
 use App\Models\Chapter;
+use App\Models\Class_;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -116,6 +117,36 @@ class ChapterController extends BaseController
             ->get();
 
         return response()->json($chapters);
+    }
+
+
+    /**
+     * @apiVersion 4.0.4
+     * @api {get} /chapters/slug/{chapter_slug}/by-class-slug/{class_slug} Get by slug and class slug
+     * @apiGroup Chapters
+     * @apiName ChapterBySlugAndClassDiscipline
+     * @apiDescription Get chapters by class and discipline
+     * @apiUse Bearer
+     * @apiPermission public
+     * @apiParam {string} chapter_slug The chapter slug
+     * @apiParam {string} class_slug The class slug
+     * @apiUse ChapterModel
+     * @apiUse Http404ModelNotFound
+     *
+     * @param string $chapterSlug
+     * @param string $classSlug
+     *
+     * @return JsonResponse
+     */
+    public function getBySlugAndClassSlug(string $chapterSlug, string $classSlug): JsonResponse
+    {
+        $class = Class_::where("slug", "=", $classSlug)->firstOrFail();
+        $chapter = Chapter::where([
+            ["class_id", "=", $class->id],
+            ["slug", "=", $chapterSlug]
+        ])->firstOrFail();
+
+        return new JsonResponse($chapter);
     }
 
 
