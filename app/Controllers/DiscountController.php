@@ -93,7 +93,7 @@ class DiscountController extends BaseController
      * @apiGroup Discounts
      * @apiName DiscountCheck
      * @apiDescription Check if a discount is valid a discount
-     * @apiPermission registered
+     * @apiPermission public
      * @apiUse Bearer
      * @apiParam {string} code The discount code
      * @apiUse DiscountModel
@@ -105,11 +105,6 @@ class DiscountController extends BaseController
      */
     public function check(Request $request)
     {
-        /** @var User $user */
-        $user = $request->user();
-
-        $user->canOrFail("check", Discount::class);
-
         $discount = Discount::whereCode($request->input("code", "default"))->firstOrFail();
 
         return new JsonResponse($discount);

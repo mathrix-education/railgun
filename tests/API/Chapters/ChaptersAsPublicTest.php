@@ -38,6 +38,23 @@ class ChaptersAsPublicTest extends ScopeTestCase
 
 
     /**
+     * GET /chapters/slug/{chapterSlug}/by-class-slug/{classSlug}
+     *
+     * @throws \Exception
+     */
+    public function testGetBySlugAndClassSlug()
+    {
+        $chapter = Chapter::random();
+        $class = $chapter->class_;
+
+        $this->call("get", "/chapters/slug/{$chapter->slug}/by-class-slug/{$class->slug}");
+
+        $this->assertHttp200Success();
+        $this->assertJsonKeys(["id", "name", "slug"]);
+    }
+
+
+    /**
      * POST /chapters -> HTTP 401 unauthorized
      *
      * @throws \Exception
