@@ -193,18 +193,6 @@ class PurchaseController extends BaseController
 
 
     /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     * @throws ValidationException
-     * @throws Http400InvalidRequestException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
-     * @throws Http401UnauthorizedException
-     */
-
-
-    /**
      * @apiVersion 4.0.4
      * @api {post} /purchases
      * @apiGroup Purchases
@@ -246,8 +234,8 @@ class PurchaseController extends BaseController
      * @apiVersion 4.0.4
      * @api {post} /purchases/buy/{purchasable_type}/{purchasable_id}
      * @apiGroup Purchases
-     * @apiName PurchaseAdd
-     * @apiDescription Buy a section or a training for someone
+     * @apiName PurchaseBuy
+     * @apiDescription Buy a section or a training
      * @apiUse Bearer
      * @apiPermission admin
      * @apiParam {string=training,section} purchasable_type The purchasable type
