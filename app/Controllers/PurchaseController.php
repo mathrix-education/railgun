@@ -202,7 +202,7 @@ class PurchaseController extends BaseController
      * @apiPermission admin
      * @apiParam (Data) {string=training,section} purchasable_type The purchasable type
      * @apiParam (Data) {int} purchasable_id The purchasable id
-     * @apiParam (Data) {int} [stripe_token] The stripe token (if `null`, we will attempt to use its current card)
+     * @apiParam (Data) {string} [stripe_token] The stripe token (if `null`, we will attempt to use its current card)
      * @apiParam (Data) {string} [discount_code=false] The discount code
      * @apiParam (Data) {string} [sponsor_email=false] The sponsor email
      * @apiParam (Data) {bool} [premium=false] If a premium subscription must be applied (training-only)
@@ -240,7 +240,7 @@ class PurchaseController extends BaseController
      * @apiPermission admin
      * @apiParam {string=training,section} purchasable_type The purchasable type
      * @apiParam {int} purchasable_id The purchasable id
-     * @apiParam (Data) {int} [stripe_token] The stripe token (if `null`, we will attempt to use its current card)
+     * @apiParam (Data) {string} [stripe_token] The stripe token (if `null`, we will attempt to use its current card)
      * @apiParam (Data) {string} [discount_code=false] The discount code
      * @apiParam (Data) {string} [sponsor_email=false] The sponsor email
      * @apiParam (Data) {bool} [premium=false] If a premium subscription must be applied (training-only)

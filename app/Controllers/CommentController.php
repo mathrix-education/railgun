@@ -10,6 +10,7 @@ use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 /**
  * Class CommentController
@@ -126,7 +127,46 @@ class CommentController extends BaseController
      * @apiParam {int} [page=1] the page to fetch
      * @apiParam {int} [perPage=10] the comments per page to fetch (excluding children)
      * @apiUse CommentArray
+     *
+     * @param Request $request
+     * @param string $what
+     * @param int $id
+     * @param int $page
+     * @param int $perPage
+     *
+     * @return JsonResponse
+     * @throws Http400InvalidRequestException
+     * @throws Http401UnauthorizedException
      */
+    public function by(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
+    {
+        $modelClass = $this->resolveModelClass($what);
+        $ucName = ucfirst($what);
+
+
+        /** @var BaseModel $model */
+        $model = $modelClass::where("id", $id)->firstOrFail();
+
+        $potentialRelation = Str::lower($this->modelClass::getTableName());
+
+        if (!method_exists($model, $potentialRelation)) {
+            throw new Http400InvalidRequestException("$modelClass::$potentialRelation() does not exist");
+        }
+
+        if ($request->user() !== null && $request->user()->cant("by$ucName", $this->modelClass)) {
+            throw new Http401UnauthorizedException();
+        }
+
+        $comments = $this->orderCollection(
+            $model->{$potentialRelation}()
+                ->limit($perPage)
+                ->whereNull("parent_id")
+                ->offset(($page - 1) * $perPage)
+                ->get()
+        );
+
+        return new JsonResponse($comments);
+    }
 
 
     /**
