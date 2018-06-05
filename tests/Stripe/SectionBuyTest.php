@@ -70,7 +70,10 @@ class SectionBuyTest extends BaseTestCase
      */
     public function testBuyInvalidToken()
     {
-        $user = User::whereType("registered")->inRandomOrder()->firstOrFail();
+        $user = User::whereType("registered")
+            ->whereNull("stripe_id")
+            ->inRandomOrder()
+            ->firstOrFail();
         Passport::actingAs($user, [$user->type]);
 
         $userSectionIds = $user->purchases()
@@ -82,7 +85,7 @@ class SectionBuyTest extends BaseTestCase
             ->whereNotIn("id", $userSectionIds)
             ->firstOrFail();
 
-        $this->call("post", "/purchases/buy/section/{$section->id}", ["stripe_token" => "tok_chargeCustomerFail"]);
+        $this->call("post", "/purchases/buy/section/{$section->id}", ["stripe_token" => "dqsddsqqsd"]);
 
         $this->assertResponseStatus(400);
         $this->assertNotInDatabase("purchases", [
