@@ -194,7 +194,7 @@ class PurchaseController extends BaseController
 
     /**
      * @apiVersion 4.0.4
-     * @api {post} /purchases
+     * @api {post} /purchases Add
      * @apiGroup Purchases
      * @apiName PurchaseAdd
      * @apiDescription Buy a section or a training for someone
@@ -232,7 +232,7 @@ class PurchaseController extends BaseController
 
     /**
      * @apiVersion 4.0.4
-     * @api {post} /purchases/buy/{purchasable_type}/{purchasable_id}
+     * @api {post} /purchases/buy/{purchasable_type}/{purchasable_id} Buy
      * @apiGroup Purchases
      * @apiName PurchaseBuy
      * @apiDescription Buy a section or a training
