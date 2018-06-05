@@ -34,6 +34,11 @@ class CommentsAsPublicTest extends ScopeTestCase
     public function testByActivity()
     {
         $this->genericBySuccess(Activity::class);
+        $data = $this->getResponseData();
+
+        foreach ($data as $comment) {
+            $this->assertNull($comment->parent_id);
+        }
     }
 
 
@@ -43,6 +48,11 @@ class CommentsAsPublicTest extends ScopeTestCase
     public function testByPost()
     {
         $this->genericBySuccess(Post::class);
+        $data = $this->getResponseData();
+
+        foreach ($data as $comment) {
+            $this->assertNull($comment->parent_id);
+        }
     }
 
 
