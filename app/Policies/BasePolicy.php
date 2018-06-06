@@ -17,23 +17,6 @@ use App\Models\User;
 abstract class BasePolicy
 {
     /**
-     * Allow admin to bypass policies: return true for them, null otherwise
-     *
-     * @param User $currentUser
-     *
-     * @return bool|null
-     */
-    public function before(User $currentUser)
-    {
-        if ($currentUser->tokenCan("admin")) {
-            return true;
-        } else {
-            return null;
-        }
-    }
-
-
-    /**
      * Dynamically check for permission based on method name
      *
      * @see BasePolicy::before()
@@ -71,6 +54,6 @@ abstract class BasePolicy
      */
     public function search(User $currentUser)
     {
-        return $this->atLeastModerator($currentUser);
+        return $this->$currentUser->isModerator();
     }
 }

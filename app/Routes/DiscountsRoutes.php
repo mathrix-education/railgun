@@ -6,8 +6,9 @@ $router->group(["middleware" => "auth:api"], function () use ($router) {
 });
 
 $router->group(["prefix" => "discounts"], function () use ($router) {
+    $router->post("check", "DiscountController@check");
+
     $router->group(["middleware" => "auth:api"], function () use ($router) {
-        $router->post("check", "DiscountController@check");
         $router->post("", "DiscountController@add");
         $router->get("{key:[1-9]\d*}", "DiscountController@get");
         $router->get("{key:[a-z\-]+}/{value:[a-z0-9\-]+}", "DiscountController@get");

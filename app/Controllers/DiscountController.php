@@ -2,7 +2,6 @@
 namespace App\Controllers;
 
 use App\Models\Discount;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -87,13 +86,14 @@ class DiscountController extends BaseController
      * @apiUse Http404ModelNotFound
      */
 
+
     /**
-     * @apiVersion 4.0.0
-     * @api {patch} /discounts/check Check
+     * @apiVersion 4.0.3
+     * @api {post} /discounts/check Check
      * @apiGroup Discounts
      * @apiName DiscountCheck
      * @apiDescription Check if a discount is valid a discount
-     * @apiPermission registered
+     * @apiPermission public
      * @apiUse Bearer
      * @apiParam {string} code The discount code
      * @apiUse DiscountModel
@@ -105,11 +105,6 @@ class DiscountController extends BaseController
      */
     public function check(Request $request)
     {
-        /** @var User $user */
-        $user = $request->user();
-
-        $user->canOrFail("check", Discount::class);
-
         $discount = Discount::whereCode($request->input("code", "default"))->firstOrFail();
 
         return new JsonResponse($discount);
