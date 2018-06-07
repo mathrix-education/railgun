@@ -187,7 +187,7 @@ class PurchaseController extends BaseController
                     ->find($customer->id)
             );
         } else {
-            throw new Http400InvalidRequestException("Charge failed", 400, $charge); // @codeCoverageIgnore
+            throw new Http400InvalidRequestException("Charge failed", 400, null, $charge); // @codeCoverageIgnore
         }
     }
 
