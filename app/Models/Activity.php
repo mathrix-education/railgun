@@ -1,7 +1,8 @@
 <?php
 namespace App\Models;
 
-use App\Models\Traits\Commentable;
+use App\Models\Interfaces\Commentable;
+use App\Models\Traits\CommentableTrait;
 use App\Models\Traits\Loggable;
 use Auth;
 use Illuminate\Database\Eloquent\Builder;
@@ -38,9 +39,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Activity whereType($value)
  * @method static Builder|Activity whereVisible($value)
  */
-class Activity extends BaseModel
+class Activity extends BaseModel implements Commentable
 {
-    use Loggable, Commentable;
+    use Loggable, CommentableTrait;
 
     public const TYPES = ["video", "course", "test", "exercise", "summary", "flashcard"];
 

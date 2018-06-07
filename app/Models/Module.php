@@ -1,7 +1,6 @@
 <?php
 namespace App\Models;
 
-use App\Models\Traits\Commentable;
 use Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
