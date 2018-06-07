@@ -1,6 +1,8 @@
 <?php
 namespace Tests\API\Sections;
 
+use App\Models\Training;
+
 /**
  * Class SectionAsAdminTest
  * Test section as admin
@@ -20,6 +22,17 @@ class SectionsAsAdminTest extends SectionsAsModeratorTest
     public function testIndex()
     {
         $this->genericIndexSuccess();
+    }
+
+
+    /**
+     * GET /section
+     *
+     * @throws \Exception
+     */
+    public function testGet()
+    {
+        $this->genericGetSuccess();
     }
 
 
@@ -53,6 +66,15 @@ class SectionsAsAdminTest extends SectionsAsModeratorTest
     public function testDelete()
     {
         $this->genericDelete();
+    }
+
+
+    /**
+     * GET /trainings/by-training/{training_id}
+     */
+    public function testByTraining()
+    {
+        $this->genericBySuccess(Training::class);
     }
 
 
