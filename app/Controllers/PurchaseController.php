@@ -128,7 +128,7 @@ class PurchaseController extends BaseController
                     /** @var Discount $discount */
                     $discount = Discount::where("code", "=", $options["discount_code"])->first();
 
-                    if ($discount !== null && $discount->counter > 0) {
+                    if ($discount !== null && $discount->counter > 0 || $discount->counter === -1) {
                         // @codeCoverageIgnoreStart
                         if ($discount->type === "absolute") {
                             $price -= $discount->value;
@@ -153,13 +153,14 @@ class PurchaseController extends BaseController
         // Apply charge
         if (getenv("CASHIER_ENV") !== "testing") {
             $charge = $customer->charge($price, ["description" => $description]); // @codeCoverageIgnore
+            dd($charge);
         } else {
             // Mock charge status
             $charge = new \stdClass();
-            $charge->status = "success";
+            $charge->status = "succeeded";
         }
 
-        if ($charge->status === "success") {
+        if ($charge->status === "succeeded") {
             $purchase = new Purchase([
                 "user_id" => $customer->id,
                 "purchasable_id" => $purchasable->id,
