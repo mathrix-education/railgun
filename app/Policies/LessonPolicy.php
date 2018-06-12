@@ -66,4 +66,13 @@ class LessonPolicy extends BasePolicy
     {
         return $this->atLeastModerator($user);
     }
+
+
+    /**
+     * @return bool
+     */
+    public function bySection()
+    {
+        return true;
+    }
 }
