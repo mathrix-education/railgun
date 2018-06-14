@@ -153,7 +153,6 @@ class PurchaseController extends BaseController
         // Apply charge
         if (getenv("CASHIER_ENV") !== "testing") {
             $charge = $customer->charge($price, ["description" => $description]); // @codeCoverageIgnore
-            dd($charge);
         } else {
             // Mock charge status
             $charge = new \stdClass();

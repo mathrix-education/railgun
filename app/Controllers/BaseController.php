@@ -290,10 +290,11 @@ abstract class BaseController extends Controller
 
         $queryBuilder = $queryBuilder->orderBy($order["column"], $order["dir"]);
 
+        $count = $queryBuilder->count();
+
         $queryBuilder = $queryBuilder->limit($perPage)
             ->offset(($page - 1) * $perPage);
-
-        $count = $queryBuilder->count();
+        
         $data = $queryBuilder->get();
 
         return response()->json([

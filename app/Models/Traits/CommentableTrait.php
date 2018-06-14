@@ -2,6 +2,7 @@
 namespace App\Models\Traits;
 
 use App\Models\Comment;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
  * Trait Commentable
@@ -11,13 +12,13 @@ use App\Models\Comment;
  * @since 1.0.0
  * @copyright Mathrix Education SA
  */
-trait Commentable
+trait CommentableTrait
 {
     /**
      * Get all of the post"s comments.
      * @codeCoverageIgnore
      */
-    public function comments()
+    public function comments(): MorphMany
     {
         return $this->morphMany(Comment::class, "commentable");
     }

@@ -24,6 +24,15 @@ class SectionPolicy extends BasePolicy
         return $currentUser->isAdmin();
     }
 
+    /**
+     * @param User $currentUser
+     *
+     * @return bool
+     */
+    public function byTraining(User $currentUser)
+    {
+        return $currentUser->isAdmin();
+    }
 
     /**
      * @return bool

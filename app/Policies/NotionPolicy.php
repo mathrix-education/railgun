@@ -63,4 +63,13 @@ class NotionPolicy extends BasePolicy
     {
         return $currentUser->isModerator();
     }
+
+
+    /**
+     * @return bool
+     */
+    public function byChapter()
+    {
+        return true;
+    }
 }

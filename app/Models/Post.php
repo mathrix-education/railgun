@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\Traits\Commentable;
+use App\Models\Interfaces\Commentable;
+use App\Models\Traits\CommentableTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -38,9 +39,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Post whereCreatedAt($value)
  * @method static Builder|Post whereUpdatedAt($value)
  */
-class Post extends BaseModel
+class Post extends BaseModel implements Commentable
 {
-    use Commentable;
+    use CommentableTrait;
 
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;

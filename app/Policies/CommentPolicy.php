@@ -30,24 +30,6 @@ class CommentPolicy extends BasePolicy
     /**
      * @return bool
      */
-    public function byActivity()
-    {
-        return true;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function byPost()
-    {
-        return true;
-    }
-
-
-    /**
-     * @return bool
-     */
     public function add()
     {
         return true;

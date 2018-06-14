@@ -16,9 +16,9 @@ A lot of templates and rules are included as PhpStorm configuration files. That'
 ```
 <?php
 namespace {namespace}
-        // <-- 1 line
+// <-- 1 line
 use ...
-        // <-- 1 line
+// <-- 1 line
 /**
  * Class {class_name}
  * {optionnal comment (if not specified, line has to be removed)}
@@ -31,5 +31,14 @@ use ...
 class {class} {
     [...]
 }
-        // <-- 1 line at the END
+// <-- 1 line at the END
 ```
+
+### Rest Conventions
+
+1. Index (`GET /models`)
+2. Get (`GET /models/{id}`)
+3. Add (`POST /models`)
+4. Edit (`PATCH /models/{id}`)
+5. Delete (`DELETE /models/{id}`)
+6. By (`GET /models/by-{what}/{what_id}`)
