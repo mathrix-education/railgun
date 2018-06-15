@@ -54,6 +54,6 @@ abstract class BasePolicy
      */
     public function search(User $currentUser)
     {
-        return $this->$currentUser->isModerator();
+        return $currentUser->isModerator();
     }
 }
