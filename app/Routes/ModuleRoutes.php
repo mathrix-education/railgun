@@ -13,5 +13,7 @@ $router->group(["prefix" => "modules"], function () use ($router) {
         $router->patch("{id:[1-9]\d*}", "ModuleController@edit");
         $router->patch("{id:[1-9]\d*}/mark", "ModuleController@mark");
         $router->delete("{id:[1-9]\d*}", "ModuleController@delete");
+
+        $router->post("search", "ModuleController@search");
     });
 });

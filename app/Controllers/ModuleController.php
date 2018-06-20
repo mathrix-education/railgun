@@ -123,6 +123,20 @@ class ModuleController extends BaseController
 
 
     /**
+     * @apiVersion 4.0.5
+     * @api {post} /modules/search Search
+     * @apiGroup Modules
+     * @apiName ModulesSearch
+     * @apiDescription Search in modules
+     * @apiPermission moderator
+     * @apiUse Bearer
+     * @apiUse ModuleArray
+     * @apiUse Http400InvalidRequest
+     * @apiUse Http401Unauthorized
+     */
+
+
+    /**
      * @apiVersion 4.0.0
      * @api {patch} /modules/{id}/mark Mark
      * @apiGroup Modules
