@@ -77,6 +77,34 @@ abstract class BaseController extends Controller
 
 
     /**
+     * Order a collection of models by their order key if it exists. If not, just return the collection.
+     *
+     * @param Collection $collection
+     *
+     * @return Collection
+     */
+    protected function orderCollection(Collection $collection): Collection
+    {
+        if (!empty($collection->first()->order)) {
+            $collection = $collection->sortBy(function ($model) {
+                return $model->order;
+            })->values();
+        } else if (!empty($collection->first()->pivot->order)) {
+            $collection = $collection->sortBy(function ($model) {
+                return $model->pivot->order;
+            })->values();
+        }
+
+        return $collection;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Generic actions
+    |--------------------------------------------------------------------------
+    */
+    /**
      * Generic paginated index method
      *
      * @param Request $request
@@ -101,36 +129,6 @@ abstract class BaseController extends Controller
             )
         );
     }
-
-
-    /**
-     * Order a collection of models by their order key if it exists. If not, just return the collection.
-     *
-     * @param Collection $collection
-     *
-     * @return Collection
-     */
-    protected function orderCollection(Collection $collection): Collection
-    {
-        if (!empty($collection->first()->order)) {
-            $collection = $collection->sortBy(function ($model) {
-                return $model->order;
-            })->values();
-        }/* else if (!empty($collection->first()->pivot->order)) {
-            $collection = $collection->sortBy(function ($model) {
-                return $model->pivot->order;
-            })->values();
-        }*/ // TODO: Is it really used?
-
-        return $collection;
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Generic actions
-    |--------------------------------------------------------------------------
-    */
 
 
     /**
@@ -294,7 +292,7 @@ abstract class BaseController extends Controller
 
         $queryBuilder = $queryBuilder->limit($perPage)
             ->offset(($page - 1) * $perPage);
-        
+
         $data = $queryBuilder->get();
 
         return response()->json([
