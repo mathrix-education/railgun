@@ -5,6 +5,10 @@ $router->group(["middleware" => "auth:api"], function () use ($router) {
 });
 
 $router->group(["prefix" => "activities"], function () use ($router) {
+    $router->get("by-{what:[a-z\-]+}/{id:[1-9]\d*}/ids", "ActivityController@ids");
+    $router->get("by-{what:[a-z\-]+}/{id:[1-9]\d*}", "ActivityController@by");
+    $router->get("{key:[1-9]\d*}", "ActivityController@get");
+    $router->get("{key:[a-z\-]+}/{value:[a-z0-9\-]+}", "ActivityController@get");
 
     $router->group(["middleware" => "auth:api"], function () use ($router) {
         $router->get("favorites", "ActivityController@favorites");
@@ -18,9 +22,4 @@ $router->group(["prefix" => "activities"], function () use ($router) {
         $router->post("search", "ActivityController@search");
         $router->patch("{id:[1-9]\d*}/mark", "ActivityController@mark");
     });
-
-    $router->get("by-{what:[a-z\-]+}/{id:[1-9]\d*}/ids", "ActivityController@ids");
-    $router->get("by-{what:[a-z\-]+}/{id:[1-9]\d*}", "ActivityController@by");
-    $router->get("{key:[1-9]\d*}", "ActivityController@get");
-    $router->get("{key:[a-z\-]+}/{value:[a-z0-9\-]+}", "ActivityController@get");
 });

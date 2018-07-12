@@ -256,16 +256,20 @@ class ContentController extends BaseController
             "destination" => "required",
             "name" => "required"
         ]);
+
         /** @var UploadedFile $file */
-        $file = $request->input("file");
+        $file = $request->file("file");
+        $destination = trim($request->input("destination"), "/");
+        $name = trim($request->input("name"), "/");
+
         $file->storeAs(
-            $request->input("destination"),
-            $request->input("name"),
+            $destination,
+            $name,
             ["disk" => "cdn"]
         );
 
         return response()->json([
-            "url" => env("APP_CDN") . "/{$request->input("destination")}/{$request->input("name")}"
+            "url" => env("APP_CDN") . "/$destination/$name"
         ]);
     }
 }

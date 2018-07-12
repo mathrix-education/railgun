@@ -1,6 +1,7 @@
 <?php
 namespace Tests\API\Activities;
 
+use App\Models\Activity;
 use App\Models\Module;
 use App\Models\Notion;
 
@@ -80,6 +81,34 @@ class ActivitiesAsModeratorTest extends ActivitiesAsRegisteredTest
             $this->assertInDatabase("activity_module", [
                 "activity_id" => $this->editModelId,
                 "module_id" => $id,
+                "order" => $order
+            ]);
+        }
+    }
+
+
+    /**
+     * PATCH /activities/{id} while re-ordering module ids
+     */
+    public function testEditReorder()
+    {
+        do {
+            $activity = Activity::random();
+            $moduleIds = $activity->modules()->get()->pluck("id");
+        } while ($moduleIds->isEmpty());
+
+        $moduleIds->shuffle();
+
+        $this->json("patch", "/activities/{$activity->id}", [
+            "link" => [
+                "modules" => $moduleIds
+            ]
+        ]);
+
+        foreach ($moduleIds as $order => $moduleId) {
+            $this->assertInDatabase("activity_module", [
+                "activity_id" => $activity->id,
+                "module_id" => $moduleId,
                 "order" => $order
             ]);
         }

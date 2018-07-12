@@ -39,6 +39,12 @@ class ModulesAsPublicTest extends ScopeTestCase
     public function testByActivity()
     {
         $this->genericBySuccess(Activity::class);
+
+        $data = $this->getResponseData();
+
+        foreach ($data as $order => $module) {
+            $this->assertEquals($order, $module->pivot->order);
+        }
     }
 
 
