@@ -85,11 +85,11 @@ abstract class BaseController extends Controller
      */
     protected function orderCollection(Collection $collection): Collection
     {
-        if (!empty($collection->first()->order)) {
+        if (isset($collection->first()->order)) {
             $collection = $collection->sortBy(function ($model) {
                 return $model->order;
             })->values();
-        } else if (!empty($collection->first()->pivot->order)) {
+        } else if (isset($collection->first()->pivot->order)) {
             $collection = $collection->sortBy(function ($model) {
                 return $model->pivot->order;
             })->values();

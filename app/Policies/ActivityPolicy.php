@@ -31,6 +31,8 @@ class ActivityPolicy extends BasePolicy
     {
         return true;
     }
+
+
     /**
      * @return bool
      */
