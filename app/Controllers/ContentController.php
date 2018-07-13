@@ -218,12 +218,12 @@ class ContentController extends BaseController
 
         $directories = $storage->directories($directory);
         foreach ($directories as $key => $directory) {
-            $tree[$key] = env("APP_CDN") . "/$directory/";
+            $directories[$key] = env("APP_CDN") . "/$directory/";
         }
 
         $files = $storage->files($directory);
         foreach ($files as $key => $file) {
-            $tree[$key] = env("APP_CDN") . "/$file";
+            $files[$key] = env("APP_CDN") . "/$file";
         }
 
         return response()->json(array_merge($directories, $files));
