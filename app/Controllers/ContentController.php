@@ -212,14 +212,21 @@ class ContentController extends BaseController
      */
     public function tree(Request $request)
     {
-        $directory = $request->query("directory", "/");
-        $tree = Storage::disk("cdn")->files($directory);
+        $storage = Storage::disk("cdn");
 
-        foreach ($tree as $key => $file) {
+        $directory = $request->query("directory", "/");
+
+        $directories = $storage->directories($directory);
+        foreach ($directories as $key => $directory) {
+            $tree[$key] = env("APP_CDN") . "/$directory/";
+        }
+
+        $files = $storage->files($directory);
+        foreach ($files as $key => $file) {
             $tree[$key] = env("APP_CDN") . "/$file";
         }
 
-        return response()->json($tree);
+        return response()->json(array_merge($directories, $files));
     }
 
 
