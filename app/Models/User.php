@@ -103,7 +103,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "firstname" => "nullable|max:60",
         "lastname" => "nullable|max:60",
         "password" => "required|min:3",
-        "type" => "required|in:registered,moderator,admin",
+        "type" => "required|in:registered,redactor,moderator,admin",
         "token" => "required|size:36",
         "points" => "required|integer",
         "daily" => "nullable|in:10,20,40",
@@ -135,7 +135,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function tokenCan($scope)
     {
-        $order = ["admin", "moderator", "registered"];
+        $order = ["admin", "moderator", "redactor", "registered"];
         $key = array_search($scope, $order);
 
         if ($key !== false) {
@@ -147,6 +147,17 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         }
 
         return $this->passportTokenCan($scope);
+    }
+
+
+    /**
+     * Chec if user is redactor
+     *
+     * @return bool
+     */
+    public function isRedactor()
+    {
+        return $this->tokenCan("redactor");
     }
 
 

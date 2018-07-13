@@ -47,28 +47,27 @@ $factory->define(User::class, function (Generator $faker) {
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->defineAs(User::class, "registered", function () use ($factory) {
-    $data = [
-        "type" => "registered",
-    ];
-
-    return array_merge($factory->raw(User::class), $data);
+    return array_merge($factory->raw(User::class), ["type" => "registered"]);
 });
 
 /**
- * UserRegisteredCustomerFactory
+ * UserRedactorFactory
  *
  * @author Mathrix Team
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
-$factory->defineAs(User::class, "registeredCustomer", function (Generator $faker) use ($factory) {
+$factory->defineAs(User::class, "redactor", function (Generator $faker) use ($factory) {
     $data = [
-        "type" => "registered",
-        "stripe_id" => "cus_" . substr($faker->md5, 0, 14)
+        "username" => $faker->userName,
+        "firstname" => $faker->firstName,
+        "lastname" => $faker->lastName,
+        "type" => "redactor",
+        "class_id" => null,
+        "stripe_id" => null
     ];
 
     return array_merge($factory->raw(User::class), $data);
 });
-
 
 
 /**
@@ -77,17 +76,8 @@ $factory->defineAs(User::class, "registeredCustomer", function (Generator $faker
  * @author Mathrix Team
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
-$factory->defineAs(User::class, "moderator", function (Generator $faker) use ($factory) {
-    $data = [
-        "username" => $faker->userName,
-        "firstname" => $faker->firstName,
-        "lastname" => $faker->lastName,
-        "type" => "moderator",
-        "class_id" => null,
-        "stripe_id" => null
-    ];
-
-    return array_merge($factory->raw(User::class), $data);
+$factory->defineAs(User::class, "moderator", function () use ($factory) {
+    return array_merge($factory->rawOf(User::class, "redactor"), ["type" => "moderator"]);
 });
 
 
@@ -97,15 +87,6 @@ $factory->defineAs(User::class, "moderator", function (Generator $faker) use ($f
  * @author Mathrix Team
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
-$factory->defineAs(User::class, "admin", function (Generator $faker) use ($factory) {
-    $data = [
-        "username" => $faker->userName,
-        "firstname" => $faker->firstName,
-        "lastname" => $faker->lastName,
-        "type" => "admin",
-        "class_id" => null,
-        "stripe_id" => null
-    ];
-
-    return array_merge($factory->raw(User::class), $data);
+$factory->defineAs(User::class, "admin", function () use ($factory) {
+    return array_merge($factory->rawOf(User::class, "redactor"), ["type" => "admin"]);
 });

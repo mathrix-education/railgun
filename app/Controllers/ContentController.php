@@ -50,16 +50,12 @@ class ContentController extends BaseController
      * @apiSuccess {Class} chapters.class_ The class
      * @apiSuccess {int} chapters.class_.id The class id
      * @apiSuccess {string} chapters.class_.name The class name
-     * @apiSuccess {string} chapters.class_.name_short The class short name
      * @apiSuccess {string} chapters.class_.slug The class slug
-     * @apiSuccess {string} chapters.class_.slug_short The class short slug
      * @apiSuccess {string} chapters.class_.country_id The class country id
      * @apiSuccess {Country} chapters.class_.country The country
      * @apiSuccess {int} chapters.class_.country.id The country id
      * @apiSuccess {string} chapters.class_.country.name The country name
-     * @apiSuccess {string} chapters.class_.country.name_short The country short name
      * @apiSuccess {string} chapters.class_.country.slug The country slug
-     * @apiSuccess {string} chapters.class_.country.slug_short The country short slug
      * @apiSuccess {Notion[]} notions Array of notions
      * @apiSuccess {int} notions.id The notion id
      * @apiSuccess {string} notions.name The notion name
@@ -78,16 +74,12 @@ class ContentController extends BaseController
      * @apiSuccess {Class} notions.chapters.class_ The class
      * @apiSuccess {int} notions.chapters.class_.id The class id
      * @apiSuccess {string} notions.chapters.class_.name The class name
-     * @apiSuccess {string} notions.chapters.class_.name_short The class short name
      * @apiSuccess {string} notions.chapters.class_.slug The class slug
-     * @apiSuccess {string} notions.chapters.class_.slug_short The class short slug
      * @apiSuccess {string} notions.chapters.class_.country_id The class country id
      * @apiSuccess {Country} notions.chapters.class_.country The country
      * @apiSuccess {int} notions.chapters.class_.country.id The country id
      * @apiSuccess {string} notions.chapters.class_.country.name The country name
-     * @apiSuccess {string} notions.chapters.class_.country.name_short The country short name
      * @apiSuccess {string} notions.chapters.class_.country.slug The country slug
-     * @apiSuccess {string} notions.chapters.class_.country.slug_short The country short slug
      *
      * @param Request $request
      * @param string $query
@@ -213,11 +205,15 @@ class ContentController extends BaseController
      * @apiDescription Retrieve all cdn files
      * @apiPermission public
      * @apiSuccess {string[]} - The cdn files
+     *
+     * @param Request $request
+     *
      * @return JsonResponse
      */
-    public function tree()
+    public function tree(Request $request)
     {
-        $tree = Storage::disk("cdn")->allFiles();
+        $directory = $request->query("directory", "/");
+        $tree = Storage::disk("cdn")->files($directory);
 
         foreach ($tree as $key => $file) {
             $tree[$key] = env("APP_CDN") . "/$file";
@@ -258,7 +254,8 @@ class ContentController extends BaseController
         ]);
 
         /** @var UploadedFile $file */
-        $file = $request->file("file");
+        $file = $request->file("file") ?? $request->input("file");
+
         $destination = trim($request->input("destination"), "/");
         $name = trim($request->input("name"), "/");
 

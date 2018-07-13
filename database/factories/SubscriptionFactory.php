@@ -13,7 +13,6 @@ use Faker\Generator;
  */
 $factory->define(Subscription::class, function (Generator $faker) {
     $user = User::doesntHave("subscriptions")
-        ->whereNotNull("stripe_id")
         ->inRandomOrder()
         ->firstOrFail();
     $plan = $faker->randomElement(array_keys(StripeUtils::ALLOWED_STRIPE_PLANS));

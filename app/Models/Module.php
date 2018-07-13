@@ -213,5 +213,4 @@ class Module extends BaseModel
     {
         return $this->hasMany(Lesson::class);
     }
-
 }
