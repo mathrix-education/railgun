@@ -217,8 +217,8 @@ class ContentController extends BaseController
         $directory = $request->query("directory", "/");
 
         $directories = $storage->directories($directory);
-        foreach ($directories as $key => $directory) {
-            $directories[$key] = env("APP_CDN") . "/$directory/";
+        foreach ($directories as $key => $v) {
+            $directories[$key] = env("APP_CDN") . "/$v/";
         }
 
         $files = $storage->files($directory);
