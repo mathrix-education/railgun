@@ -15,6 +15,8 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
+use Tinify\Source;
+use Tinify\Tinify;
 
 /**
  * Class ContentController
@@ -271,6 +273,12 @@ class ContentController extends BaseController
             $name,
             ["disk" => "cdn"]
         );
+
+        // File is an image, try to optimize it
+        if (in_array($file->getExtension(), ["png", "jpg", "jpeg"]) &&  Tinify::getCompressionCount() < 500) {
+            $source = Source::fromFile($file->getRealPath());
+            $source->toFile($file->getRealPath());
+        }
 
         return response()->json([
             "url" => env("APP_CDN") . "/$destination/$name"

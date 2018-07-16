@@ -174,17 +174,18 @@ class ChapterController extends BaseController
         /** @var Chapter $data */
         $data = Chapter::with([
             "notions" => function (BelongsToMany $q) {
-                return $q->where("visible", 1);
+                return $q->where("visible", 1)->orderBy("chapter_notion.order");
             },
             "notions.activities" => function (BelongsToMany $q) {
-                return $q->where("visible", 1);
+                return $q->where("visible", 1)->orderBy("activity_notion.order");
             },
             "notions.activities.modules" => function (BelongsToMany $q) {
-                return $q->where("visible", 1);
+                return $q->where("visible", 1)->orderBy("activity_module.order");
             }
         ])
             ->where("id", $id)
-            ->first();
+            ->firstOrFail();
+
 
         return response()->json($data);
     }
