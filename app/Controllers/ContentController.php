@@ -275,7 +275,7 @@ class ContentController extends BaseController
         );
 
         // File is an image, try to optimize it
-        if (in_array($file->getExtension(), ["png", "jpg", "jpeg"]) &&  Tinify::getCompressionCount() < 500) {
+        if (in_array($file->getMimeType(), ["image/png", "image/jpeg"]) && Tinify::getCompressionCount() < 500) {
             $source = Source::fromFile($file->getRealPath());
             $source->toFile($file->getRealPath());
         }
