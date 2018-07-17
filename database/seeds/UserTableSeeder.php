@@ -53,24 +53,22 @@ class UserTableSeeder extends BaseTableSeeder
 
         $this->seedFromFactory([
             "modelClass" => User::class,
-            "subFactory" => "registered",
+            "subFactory" => "redactor",
             "count" => 10
         ]);
-        User::where("type", "=", "registered")
-            ->whereNull("stripe_id")
+        User::where("type", "redactor")
             ->first()
-            ->update(["email" => "registered@mathrix.fr"]);
+            ->update(["email" => "redactor@mathrix.fr"]);
 
 
         $this->seedFromFactory([
             "modelClass" => User::class,
-            "subFactory" => "registeredCustomer",
+            "subFactory" => "registered",
             "count" => 10
         ]);
-        User::where("type", "registered")
-            ->whereNotNull("stripe_id")
+        User::where("type", "=", "registered")
             ->first()
-            ->update(["email" => "customer@mathrix.fr"]);
+            ->update(["email" => "registered@mathrix.fr"]);
 
         $this->seedFromJson([
             "modelClass" => \Laravel\Passport\Client::class,

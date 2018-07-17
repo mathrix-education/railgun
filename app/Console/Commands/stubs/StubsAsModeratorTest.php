@@ -10,6 +10,6 @@ namespace Tests\API\Stubs;
  * @version {version}
  * @package Tests\API\Stubs
  */
-class StubsAsModeratorTest extends StubsAsRegisteredTest
+class StubsAsModeratorTest extends StubsAsRedactorTest
 {
 }

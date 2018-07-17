@@ -51,7 +51,7 @@ class ModulePolicy extends BasePolicy
      */
     public function edit(User $currentUser)
     {
-        return $currentUser->isModerator();
+        return $currentUser->isRedactor();
     }
 
 

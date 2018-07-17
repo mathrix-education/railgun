@@ -24,7 +24,7 @@ abstract class ScopeTestCase extends BaseTestCase
     /** @var User the user used in the test */
     public $user = null;
     /** @var array available scopes */
-    protected $scopes = ["admin", "moderator", "registered"];
+    protected $scopes = ["admin", "moderator", "redactor", "registered"];
     /** @var string the effective scope */
     protected $scope = "public";
 

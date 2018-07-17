@@ -15,6 +15,8 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
+use Tinify\Source;
+use Tinify\Tinify;
 
 /**
  * Class ContentController
@@ -50,16 +52,12 @@ class ContentController extends BaseController
      * @apiSuccess {Class} chapters.class_ The class
      * @apiSuccess {int} chapters.class_.id The class id
      * @apiSuccess {string} chapters.class_.name The class name
-     * @apiSuccess {string} chapters.class_.name_short The class short name
      * @apiSuccess {string} chapters.class_.slug The class slug
-     * @apiSuccess {string} chapters.class_.slug_short The class short slug
      * @apiSuccess {string} chapters.class_.country_id The class country id
      * @apiSuccess {Country} chapters.class_.country The country
      * @apiSuccess {int} chapters.class_.country.id The country id
      * @apiSuccess {string} chapters.class_.country.name The country name
-     * @apiSuccess {string} chapters.class_.country.name_short The country short name
      * @apiSuccess {string} chapters.class_.country.slug The country slug
-     * @apiSuccess {string} chapters.class_.country.slug_short The country short slug
      * @apiSuccess {Notion[]} notions Array of notions
      * @apiSuccess {int} notions.id The notion id
      * @apiSuccess {string} notions.name The notion name
@@ -78,16 +76,12 @@ class ContentController extends BaseController
      * @apiSuccess {Class} notions.chapters.class_ The class
      * @apiSuccess {int} notions.chapters.class_.id The class id
      * @apiSuccess {string} notions.chapters.class_.name The class name
-     * @apiSuccess {string} notions.chapters.class_.name_short The class short name
      * @apiSuccess {string} notions.chapters.class_.slug The class slug
-     * @apiSuccess {string} notions.chapters.class_.slug_short The class short slug
      * @apiSuccess {string} notions.chapters.class_.country_id The class country id
      * @apiSuccess {Country} notions.chapters.class_.country The country
      * @apiSuccess {int} notions.chapters.class_.country.id The country id
      * @apiSuccess {string} notions.chapters.class_.country.name The country name
-     * @apiSuccess {string} notions.chapters.class_.country.name_short The country short name
      * @apiSuccess {string} notions.chapters.class_.country.slug The country slug
-     * @apiSuccess {string} notions.chapters.class_.country.slug_short The country short slug
      *
      * @param Request $request
      * @param string $query
@@ -213,17 +207,28 @@ class ContentController extends BaseController
      * @apiDescription Retrieve all cdn files
      * @apiPermission public
      * @apiSuccess {string[]} - The cdn files
+     *
+     * @param Request $request
+     *
      * @return JsonResponse
      */
-    public function tree()
+    public function tree(Request $request)
     {
-        $tree = Storage::disk("cdn")->allFiles();
+        $storage = Storage::disk("cdn");
 
-        foreach ($tree as $key => $file) {
-            $tree[$key] = env("APP_CDN") . "/$file";
+        $directory = $request->query("directory", "/");
+
+        $directories = $storage->directories($directory);
+        foreach ($directories as $key => $v) {
+            $directories[$key] = env("APP_CDN") . "/$v/";
         }
 
-        return response()->json($tree);
+        $files = $storage->files($directory);
+        foreach ($files as $key => $file) {
+            $files[$key] = env("APP_CDN") . "/$file";
+        }
+
+        return response()->json(array_merge($directories, $files));
     }
 
 
@@ -258,7 +263,8 @@ class ContentController extends BaseController
         ]);
 
         /** @var UploadedFile $file */
-        $file = $request->file("file");
+        $file = $request->file("file") ?? $request->input("file");
+
         $destination = trim($request->input("destination"), "/");
         $name = trim($request->input("name"), "/");
 
@@ -267,6 +273,12 @@ class ContentController extends BaseController
             $name,
             ["disk" => "cdn"]
         );
+
+        // File is an image, try to optimize it
+        if (in_array($file->getExtension(), ["png", "jpg", "jpeg"]) &&  Tinify::getCompressionCount() < 500) {
+            $source = Source::fromFile($file->getRealPath());
+            $source->toFile($file->getRealPath());
+        }
 
         return response()->json([
             "url" => env("APP_CDN") . "/$destination/$name"

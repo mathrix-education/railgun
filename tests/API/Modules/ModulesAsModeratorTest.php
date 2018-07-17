@@ -13,7 +13,7 @@ use App\Models\Module;
  * @version 1.0.0
  * @package Tests\Modules
  */
-class ModulesAsModeratorTest extends ModulesAsRegisteredTest
+class ModulesAsModeratorTest extends ModulesAsRedactorTest
 {
     /**
      * POST /modules
@@ -23,18 +23,6 @@ class ModulesAsModeratorTest extends ModulesAsRegisteredTest
     public function testAdd()
     {
         $this->genericAdd();
-        $this->assertHttp200Success();
-    }
-
-
-    /**
-     * PATCH /modules/{id}
-     *
-     * @throws \Exception
-     */
-    public function testEdit()
-    {
-        $this->genericEdit();
         $this->assertHttp200Success();
     }
 
