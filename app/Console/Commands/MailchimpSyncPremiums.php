@@ -3,6 +3,7 @@ namespace App\Console\Commands;
 
 use App\Models\User;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Newsletter\Newsletter;
 
@@ -22,7 +23,7 @@ class MailchimpSyncPremiums extends Command
 
     public function handle()
     {
-        $users = User::whereHas("subscriptions", function (HasMany $query) {
+        $users = User::whereHas("subscriptions", function (Builder $query) {
             $query->where("name", "=", "premium");
         })->get();
 
