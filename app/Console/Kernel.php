@@ -1,6 +1,7 @@
 <?php
 namespace App\Console;
 
+use App\Console\Commands\MailchimpSyncPremiums;
 use App\Console\Commands\MailchimpUpdate;
 use App\Console\Commands\MakeApidoc;
 use App\Console\Commands\MakeTest;
@@ -31,7 +32,8 @@ class Kernel extends ConsoleKernel
         MakeTest::class,
         SitemapAll::class,
         SitemapContent::class,
-        SyncStripeSubscriptions::class
+        SyncStripeSubscriptions::class,
+        MailchimpSyncPremiums::class
     ];
 
 

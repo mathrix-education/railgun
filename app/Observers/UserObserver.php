@@ -31,32 +31,6 @@ class UserObserver extends BaseObserver
      */
     public function saving($user)
     {
-        // Subscribe the user to "subscribers" Mailchimp list
-
-        // @codeCoverageIgnoreStart
-        if (app()->environment("master") && $user->isDirty("email")) {
-            $options = [];
-
-            if ($user->username !== null) {
-                $options["USERNAME"] = $user->username;
-            } else if ($user->firstname !== null) {
-                $options["USERNAME"] = $user->firstname;
-            }
-
-            if ($user->class_ !== null) {
-                $options["CLASS"] = $user->class_->name;
-            }
-
-            if ($user->subscribed("premium")) {
-                $options["TYPE"] = "premium";
-            } else {
-                $options["TYPE"] = $user->type;
-            }
-
-            Newsletter::subscribeOrUpdate($user->email, $options, "subscribers");
-        }
-        // @codeCoverageIgnoreEnd
-
         // Password hash check
         if ($user->isDirty("password")) {
             /*
