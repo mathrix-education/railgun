@@ -17,6 +17,9 @@ return [
         ],
         "profs" => [
             "id" => env("MAILCHIMP_LIST_PROFS")
+        ],
+        "premium" => [
+            "id" => "7078e5e448"
         ]
     ],
     "ssl" => true

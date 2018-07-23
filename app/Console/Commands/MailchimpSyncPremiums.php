@@ -40,7 +40,7 @@ class MailchimpSyncPremiums extends Command
                 "PREMIUMTYP" => $user->subscriptions()->first()->stripe_plan
             ];
 
-            Newsletter::subscribeOrUpdate($user->email, $options, self::PREMIUM_LIST);
+            Newsletter::subscribeOrUpdate($user->email, $options, "premium");
 
             $this->output->progressAdvance();
         }
