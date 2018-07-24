@@ -1,6 +1,7 @@
 <?php
 namespace App\Console;
 
+use App\Console\Commands\MailchimpSyncFromStripe;
 use App\Console\Commands\MailchimpSyncPremiums;
 use App\Console\Commands\MailchimpUpdate;
 use App\Console\Commands\MakeApidoc;
@@ -33,7 +34,8 @@ class Kernel extends ConsoleKernel
         SitemapAll::class,
         SitemapContent::class,
         SyncStripeSubscriptions::class,
-        MailchimpSyncPremiums::class
+        MailchimpSyncPremiums::class,
+        MailchimpSyncFromStripe::class
     ];
 
 

@@ -21,7 +21,8 @@
     "paulvl/backup": "3.*",
     "nao-pon/flysystem-google-drive": "^1.1",
     "fzaninotto/faker": "~1.4",
-    "tinify/tinify": "^1.5"
+    "tinify/tinify": "^1.5",
+    "drewm/mailchimp-api": "^2.5"
   },
   "require-dev": {
     "mockery/mockery": "~0.9",
