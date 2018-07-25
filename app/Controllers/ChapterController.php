@@ -105,16 +105,24 @@ class ChapterController extends BaseController
      * @apiUse Http401Unauthorized
      * @apiUse Http404ModelNotFound
      *
+     * @param Request $request
      * @param int $class_id
      * @param int $discipline_id
      *
      * @return JsonResponse
      */
-    public function by_class_discipline(int $class_id, int $discipline_id)
+    public function by_class_discipline(Request $request, int $class_id, int $discipline_id)
     {
-        $chapters = Chapter::where([["class_id", $class_id], ["discipline_id", $discipline_id]])
-            ->orderBy("order")
-            ->get();
+        $fullyVisible = $request->query("fully-visible", false);
+
+        if ($fullyVisible === false) {
+            Chapter::withoutAppends();
+        }
+
+        $chaptersQuery = Chapter::where([["class_id", $class_id], ["discipline_id", $discipline_id]])
+            ->orderBy("order");
+
+        $chapters = $chaptersQuery->get();
 
         return response()->json($chapters);
     }
