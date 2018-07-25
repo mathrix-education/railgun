@@ -113,6 +113,7 @@ class ChapterController extends BaseController
     public function by_class_discipline(int $class_id, int $discipline_id)
     {
         $chapters = Chapter::where([["class_id", $class_id], ["discipline_id", $discipline_id]])
+            ->without(["notions"])
             ->orderBy("order")
             ->get();
 
@@ -144,7 +145,7 @@ class ChapterController extends BaseController
         $chapter = Chapter::where([
             ["class_id", "=", $class->id],
             ["slug", "=", $chapterSlug]
-        ])->without(["notions"])->firstOrFail();
+        ])->firstOrFail();
 
         return new JsonResponse($chapter);
     }
