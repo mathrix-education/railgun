@@ -144,7 +144,7 @@ class ChapterController extends BaseController
         $chapter = Chapter::where([
             ["class_id", "=", $class->id],
             ["slug", "=", $chapterSlug]
-        ])->firstOrFail();
+        ])->with([])->firstOrFail();
 
         return new JsonResponse($chapter);
     }
