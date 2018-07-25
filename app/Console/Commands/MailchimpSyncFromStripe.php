@@ -60,11 +60,11 @@ class MailchimpSyncFromStripe extends Command
                     "LNAME" => $user->lastname ?? "",
                     "USERNAME" => $user->username ?? "",
                     "CLASS" => $user->class_->name,
-                    "STARTDATE" => Carbon::createFromTimestamp($subscription->created)->format("d/m/Y"),
+                    "STARTDATE" => Carbon::createFromTimestamp($subscription->created)->format("m/d/Y"),
                     "TRIALENDDA" => $subscription->trial_end !== null ? Carbon::createFromTimestamp
-                    ($subscription->trial_end)->format("d/m/Y") : "",
+                    ($subscription->trial_end)->format("m/d/Y") : "",
                     "CANCELDATE" => $subscription->canceled_at !== null ? Carbon::createFromTimestamp
-                    ($subscription->canceled_at)->format("d/m/Y") : "",
+                    ($subscription->canceled_at)->format("m/d/Y") : "",
                 ]);
             }
 

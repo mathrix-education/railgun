@@ -8,6 +8,7 @@ use App\Console\Commands\MakeApidoc;
 use App\Console\Commands\MakeTest;
 use App\Console\Commands\SitemapAll;
 use App\Console\Commands\SitemapContent;
+use App\Console\Commands\StripeCancelPremiums;
 use App\Console\Commands\SyncStripeSubscriptions;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
@@ -28,14 +29,13 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        MailchimpUpdate::class,
         MakeApidoc::class,
         MakeTest::class,
         SitemapAll::class,
         SitemapContent::class,
         SyncStripeSubscriptions::class,
-        MailchimpSyncPremiums::class,
-        MailchimpSyncFromStripe::class
+        MailchimpSyncFromStripe::class,
+        StripeCancelPremiums::class
     ];
 
 
