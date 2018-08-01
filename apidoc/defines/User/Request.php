@@ -6,7 +6,7 @@
  * @apiParam (Data) {string} [firstname=null] The user firstname
  * @apiParam (Data) {string} [lastname=null] The user lastname
  * @apiParam (Data) {string} password The user password
- * @apiParam (Data) {string=registered,moderator,admin} type The user type
+ * @apiParam (Data) {string=registered,redactor,moderator,admin} type The user type
  * @apiParam (Data) {int} points The user points
  * @apiParam (Data) {int} level The user level
  * @apiParam (Data) {int=10,20,40} daily The user daily goal

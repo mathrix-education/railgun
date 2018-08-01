@@ -7,7 +7,7 @@
  * @apiSuccess {string} firstname The user firstname
  * @apiSuccess {string} lastname The user lastname
  * @apiSuccess {string} password The user password
- * @apiSuccess {string=registered,moderator,admin} type The user type
+ * @apiSuccess {string=registered,redactor,moderator,admin} type The user type
  * @apiSuccess {int} points The user points
  * @apiSuccess {int} level The user level
  * @apiSuccess {int=10,20,40} daily The user daily goal
