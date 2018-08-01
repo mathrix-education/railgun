@@ -2,6 +2,7 @@
 namespace App\Providers;
 
 use Carbon\Carbon;
+use Dusterio\LumenPassport\LumenPassport;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
 
@@ -26,6 +27,8 @@ class AuthServiceProvider extends ServiceProvider
         // Passport configuration
         Passport::tokensExpireIn(Carbon::now()->addMonth());
         Passport::refreshTokensExpireIn(Carbon::now()->addMonths(2));
+
+        LumenPassport::allowMultipleTokens();
 
         // Passport tokens definition
         Passport::tokensCan([
