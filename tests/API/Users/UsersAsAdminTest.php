@@ -51,4 +51,22 @@ class UsersAsAdminTest extends UsersAsModeratorTest
 
         $this->assertHttp200Success();
     }
+
+
+    public function testChangeType()
+    {
+        $user = User::whereType("registered")
+            ->inRandomOrder()
+            ->firstOrFail();
+
+        $this->json("patch", "/users/{$user->id}", [
+            "type" => "moderator"
+        ]);
+
+        $this->assertHttp200Success();
+        $this->assertInDatabase("users", [
+            "email" => $user->email,
+            "type" => "moderator"
+        ]);
+    }
 }
