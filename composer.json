@@ -22,7 +22,8 @@
     "nao-pon/flysystem-google-drive": "^1.1",
     "fzaninotto/faker": "~1.4",
     "tinify/tinify": "^1.5",
-    "drewm/mailchimp-api": "^2.5"
+    "drewm/mailchimp-api": "^2.5",
+    "braintree/braintree_php": "^3.35"
   },
   "require-dev": {
     "mockery/mockery": "~0.9",

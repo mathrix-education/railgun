@@ -5,7 +5,6 @@
 # User-specific stuff:
 /.idea/**/workspace.xml
 /.idea/dataSources/
-/.idea/dataSources*
 /.idea/dictionaries
 /.idea/httpRequests/
 /.idea/deployment.xml
@@ -21,4 +20,3 @@
 /storage/code-coverage/
 /storage/sitemaps/
 /vendor/
-
