@@ -7,9 +7,12 @@ use Laravel\Passport\Passport;
 
 /**
  * Class AuthServiceProvider
+ * Provide Laravel Passport configuration
  *
- * @author Mathrix Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Providers
+ * @since 1.0.0
+ * @copyright Mathrix Education SA
  */
 class AuthServiceProvider extends ServiceProvider
 {

@@ -1,52 +1,16 @@
 <?php
 namespace App\Providers;
 
-use App\Models\Activity;
-use App\Models\Category;
-use App\Models\Chapter;
+use App\Models\BaseModel;
 use App\Models\Class_;
-use App\Models\Comment;
-use App\Models\Country;
-use App\Models\Discipline;
-use App\Models\Discount;
-use App\Models\Lesson;
-use App\Models\Level;
-use App\Models\Module;
-use App\Models\Notion;
-use App\Models\Post;
-use App\Models\Purchase;
-use App\Models\Quote;
-use App\Models\Report;
-use App\Models\Section;
-use App\Models\Setting;
-use App\Models\Training;
-use App\Models\User;
-use App\Policies\ActivityPolicy;
-use App\Policies\CategoryPolicy;
-use App\Policies\ChapterPolicy;
+use App\Policies\BasePolicy;
 use App\Policies\ClassPolicy;
-use App\Policies\CommentPolicy;
-use App\Policies\CountryPolicy;
-use App\Policies\DisciplinePolicy;
-use App\Policies\DiscountPolicy;
-use App\Policies\LessonPolicy;
-use App\Policies\LevelPolicy;
-use App\Policies\ModulePolicy;
-use App\Policies\NotionPolicy;
-use App\Policies\PostPolicy;
-use App\Policies\PurchasePolicy;
-use App\Policies\QuotePolicy;
-use App\Policies\ReportPolicy;
-use App\Policies\SectionPolicy;
-use App\Policies\SettingPolicy;
-use App\Policies\TrainingPolicy;
-use App\Policies\UserPolicy;
 use Gate;
 use Illuminate\Support\ServiceProvider;
 
-
 /**
  * Class PolicyServiceProvider
+ * Automatically register policies
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Providers
@@ -55,28 +19,40 @@ use Illuminate\Support\ServiceProvider;
  */
 class PolicyServiceProvider extends ServiceProvider
 {
+    private const MODELS_NAMESPACE = "App\\Models\\";
+    private const POLICIES_NAMESPACE = "App\\Policies\\";
+    private const EXCLUDED_POLICIES = [
+        BasePolicy::class,
+        ClassPolicy::class
+    ];
+
+
+    /**
+     * @throws \Exception
+     */
     public function boot()
     {
-        // Gates declarations
-        Gate::policy(User::class, UserPolicy::class);
-        Gate::policy(Chapter::class, ChapterPolicy::class);
+        $policiesDir = $this->app->basePath() . "/app/Policies";
+        $policyFiles = glob($policiesDir . DIRECTORY_SEPARATOR . "*.php");
+
+        foreach ($policyFiles as $policyFile) {
+            $policyClass = self::POLICIES_NAMESPACE . substr(basename($policyFile), 0, -4);
+
+            if (in_array($policyClass, self::EXCLUDED_POLICIES)) {
+                continue;
+            }
+
+            /** @var BaseModel $modelClass */
+            $modelClass = str_replace([self::POLICIES_NAMESPACE, "Policy"], [self::MODELS_NAMESPACE, ""],
+                $policyClass);
+
+            if (class_exists($modelClass)) {
+                Gate::policy($modelClass, $policyClass);
+            } else {
+                throw new \Exception("$modelClass does not exist");
+            }
+        }
+
         Gate::policy(Class_::class, ClassPolicy::class);
-        Gate::policy(Country::class, CountryPolicy::class);
-        Gate::policy(Discipline::class, DisciplinePolicy::class);
-        Gate::policy(Discount::class, DiscountPolicy::class);
-        Gate::policy(Notion::class, NotionPolicy::class);
-        Gate::policy(Activity::class, ActivityPolicy::class);
-        Gate::policy(Module::class, ModulePolicy::class);
-        Gate::policy(Post::class, PostPolicy::class);
-        Gate::policy(Category::class, CategoryPolicy::class);
-        Gate::policy(Comment::class, CommentPolicy::class);
-        Gate::policy(Quote::class, QuotePolicy::class);
-        Gate::policy(Training::class, TrainingPolicy::class);
-        Gate::policy(Section::class, SectionPolicy::class);
-        Gate::policy(Level::class, LevelPolicy::class);
-        Gate::policy(Report::class, ReportPolicy::class);
-        Gate::policy(Lesson::class, LessonPolicy::class);
-        Gate::policy(Setting::class, SettingPolicy::class);
-        Gate::policy(Purchase::class, PurchasePolicy::class);
     }
 }
