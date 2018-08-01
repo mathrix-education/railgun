@@ -1,11 +1,13 @@
 <?php
 namespace App\Console;
 
+use App\Console\Commands\Format\FormatCopyrightChecker;
 use App\Console\Commands\MailchimpSyncFromStripe;
 use App\Console\Commands\MailchimpSyncPremiums;
 use App\Console\Commands\MailchimpUpdate;
 use App\Console\Commands\MakeApidoc;
 use App\Console\Commands\MakeTest;
+use App\Console\Commands\SetVersion;
 use App\Console\Commands\SitemapAll;
 use App\Console\Commands\SitemapContent;
 use App\Console\Commands\StripeCancelPremiums;
@@ -29,12 +31,17 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+        FormatCopyrightChecker::class,
+        SetVersion::class,
+        // make:
         MakeApidoc::class,
         MakeTest::class,
+        // sitemap:
         SitemapAll::class,
         SitemapContent::class,
-        SyncStripeSubscriptions::class,
+        // mailchimp:
         MailchimpSyncFromStripe::class,
+        // stripe:
         StripeCancelPremiums::class
     ];
 
