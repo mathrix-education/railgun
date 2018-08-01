@@ -131,19 +131,6 @@ if ($app->environment("local", "dev")) {
 }
 
 $app->register(App\Providers\AppServiceProvider::class);
-$app->register(App\Providers\AuthServiceProvider::class);
-$app->register(Illuminate\Mail\MailServiceProvider::class);
-$app->register(App\Providers\NewsletterServiceProvider::class);
-$app->register(Laravel\Passport\PassportServiceProvider::class);
-$app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
-$app->register(Barryvdh\Cors\ServiceProvider::class);
-$app->register(Illuminate\Filesystem\FilesystemServiceProvider::class);
-$app->register(Roumen\Sitemap\SitemapServiceProvider::class);
-$app->register(App\Providers\GoogleDriveServiceProvider::class);
-$app->register(Backup\BackupServiceProvider::class);
-$app->register(App\Providers\EventServiceProvider::class);
-$app->register(App\Providers\PolicyServiceProvider::class);
-$app->register(App\Providers\TinifyServiceProvider::class);
 
 
 if ($app->environment("stage", "master")) {

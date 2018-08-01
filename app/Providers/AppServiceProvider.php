@@ -35,6 +35,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(ObserverServiceProvider::class);
         $this->app->register(PolicyServiceProvider::class);
         $this->app->register(PayPalServiceProvider::class);
+        $this->app->register(BraintreeGatewayServiceProvider::class);
         $this->app->register(StripeServiceProvider::class);
         $this->app->register(TinifyServiceProvider::class);
 
@@ -57,7 +58,6 @@ class AppServiceProvider extends ServiceProvider
             "module" => Module::class,
             "post" => Post::class,
             "comment" => Comment::class,
-            "pack" => Pack::class,
             "training" => Training::class,
             "section" => Section::class
         ]);

@@ -19,7 +19,7 @@ class BraintreeGatewayServiceProvider extends ServiceProvider
     /**
      * @throws Http400InvalidRequestException
      */
-    public function boot()
+    public function register()
     {
         $environment = env("BRAINTREE_ENVIRONMENT");
 
@@ -27,8 +27,8 @@ class BraintreeGatewayServiceProvider extends ServiceProvider
             throw new Http400InvalidRequestException("`$environment` is not a valid Braintree environment");
         }
 
-        $this->app->singleton(Braintree_Gateway::class, function () use ($environment) {
-            return new Braintree_Gateway([
+        $this->app->singleton(\Braintree\Gateway::class, function () use ($environment) {
+            return new \Braintree\Gateway([
                 "environment" => $environment,
                 "merchantId" => env("BRAINTREE_MERCHANT_ID"),
                 "publicKey" => env("BRAINTREE_PUBLIC_KEY"),

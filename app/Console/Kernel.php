@@ -1,6 +1,7 @@
 <?php
 namespace App\Console;
 
+use App\Console\Commands\Dry;
 use App\Console\Commands\Format\FormatCopyrightChecker;
 use App\Console\Commands\MailchimpSyncFromStripe;
 use App\Console\Commands\MailchimpSyncPremiums;
@@ -31,6 +32,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+        Dry::class,
         FormatCopyrightChecker::class,
         SetVersion::class,
         // make:
@@ -56,7 +58,14 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         if (app()->environment("master")) {
-            $schedule->command("backup:mysql-dump")->dailyAt("02:00");
+            $schedule->
+/**
+ * @author Mathrix Back-End Team
+ * @package App\Console\Commands
+ * @since ${CARET}
+ * @copyright Mathrix SA
+ */
+command("backup:mysql-dump")->dailyAt("02:00");
             $schedule->command("sitemap:all")->dailyAt("02:10");
         }
     }
