@@ -96,9 +96,9 @@ class UserController extends BaseController
 
         // Check for current_password, skip for admins if they are editing another user
         if (
-            (($requestUser->id == $user->id && $requestUser->tokenCan("admin")) ||
-                ($requestUser->id != $user->id || !$requestUser->tokenCan("admin"))) &&
-            !empty($request->input("password", false))
+            ($requestUser->id === $user->id || !$requestUser->tokenCan("admin"))
+            && !empty($request->input("password", false)
+            )
         ) {
             $currentPassword = $request->input("current_password", false);
             if (!$currentPassword) {
