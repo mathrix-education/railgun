@@ -46,7 +46,7 @@ class UserPolicy extends BasePolicy
      */
     public function edit(User $currentUser, User $user)
     {
-        return $currentUser->id === $user->id;
+        return $currentUser->isAdmin() || $currentUser->id === $user->id;
     }
 
 
@@ -58,7 +58,7 @@ class UserPolicy extends BasePolicy
      */
     public function points(User $currentUser, User $user)
     {
-        return $currentUser->id === $user->id;
+        return $currentUser->isAdmin() || $currentUser->id === $user->id;
     }
 
 
@@ -71,6 +71,6 @@ class UserPolicy extends BasePolicy
      */
     public function delete(User $currentUser, User $user)
     {
-        return $currentUser->id === $user->id;
+        return $currentUser->isAdmin() || $currentUser->id === $user->id;
     }
 }

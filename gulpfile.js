@@ -68,7 +68,7 @@ gulp.task("apidoc", ["apidoc-clean"], function (done) {
         config: "./",
         //template: "apidoc/templates/apidoc-bs3-template",
         includeFilters: ["apidoc/.*\\.php$", "app/Controllers/.*\\.php$"],
-        //silent: true,
+        silent: true,
         //debug: true
     }, done);
 });

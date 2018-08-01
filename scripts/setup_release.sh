@@ -14,7 +14,7 @@ cp ${new_release_dir}/config/env/.env.${branch} ${new_release_dir}/.env
 cd ${new_release_dir}
 
 echo "Running composer install"
-composer install --prefer-dist --no-ansi --no-interaction --no-progress --optimize-autoloader --no-suggest
+composer install --quiet --prefer-dist --no-ansi --no-interaction --no-progress --optimize-autoloader --no-suggest
 
 echo "Running yarn install"
 yarn install --silent
@@ -23,7 +23,7 @@ echo "Running gulp install"
 gulp install --silent
 
 echo "Linking storage directory"
-[ -d ${shared_dir} ] || mkdir ${shared_dir} && chmod 0775 ${shared_dir}
+[ -d ${shared_dir} ] || mkdir ${shared_dir}
 [ -d ${shared_dir}/storage ] || cp -R ${new_release_dir}/storage ${shared_dir}/storage
 [ -d ${shared_dir}/storage/cdn ] || mkdir ${shared_dir}/storage/cdn
 [ -d ${new_release_dir}/storage/cdn ] && cp -R ${new_release_dir}/storage/cdn/* ${shared_dir}/storage/cdn
