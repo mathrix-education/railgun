@@ -9,6 +9,7 @@ use App\Exceptions\Http422ModelValidationException;
 use App\Models\Log;
 use App\Models\User;
 use App\Utils\StripeUtils;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -132,6 +133,60 @@ class StripeController extends CashierController
         return response()->json([
             "price" => StripeUtils::getStripePlanPrice($stripePlan),
             "end_date" => StripeUtils::getStripePlanEndDate($stripePlan)->format("Y-m-d")
+        ]);
+    }
+
+
+    /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     * @throws Http400InvalidRequestException
+     */
+    public function card(Request $request)
+    {
+        $stripeToken = $request->post("stripe_token");
+
+        /** @var User $user */
+        $user = $request->user();
+
+        if ($user->stripe_id === null) {
+            throw new Http400InvalidRequestException("User is not a Stripe customer");
+        }
+
+        $user->updateCard($stripeToken);
+
+        return new JsonResponse([
+            "status" => "success"
+        ]);
+    }
+
+
+    /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     * @throws Http400InvalidRequestException
+     */
+    public function expired(Request $request)
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if ($user->stripe_id === null) {
+            throw new Http400InvalidRequestException("User is not a Stripe customer");
+        }
+
+        if (!$user->hasCardOnFile()) {
+            throw new Http400InvalidRequestException("User has no card attached");
+        }
+
+        $card = $user->defaultCard();
+        $expiration = Carbon::createFromDate($card->exp_year, $card->exp_month, 1);
+
+        return new JsonResponse([
+            "expired" => $expiration->isPast(),
+            "expires" => $expiration->format("Y-m-d H:i:s")
         ]);
     }
 }
