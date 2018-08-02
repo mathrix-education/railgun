@@ -92,7 +92,8 @@ class StripeController extends CashierController
             $description = StripeUtils::ALLOWED_STRIPE_PLANS[$stripePlan]["name"] . " (fin " .
                 StripeUtils::getStripePlanEndDate($stripePlan)->format("d/m/Y") . ")";
             $response = $user->charge(StripeUtils::getStripePlanPrice($stripePlan), [
-                "description" => $description
+                "description" => $description,
+                "currency" => "eur"
             ]);
 
             // Give subscription if charge succeeded
