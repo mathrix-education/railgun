@@ -6,10 +6,10 @@ use Throwable;
 /**
  * Class Http400InvalidPlanException
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Exceptions
  * @since 4.1.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class Http400InvalidPlanException extends Http400InvalidRequestException
 {

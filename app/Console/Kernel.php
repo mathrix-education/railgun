@@ -3,16 +3,12 @@ namespace App\Console;
 
 use App\Console\Commands\Dry;
 use App\Console\Commands\Format\FormatCopyrightChecker;
-use App\Console\Commands\MailchimpSyncFromStripe;
-use App\Console\Commands\MailchimpSyncPremiums;
-use App\Console\Commands\MailchimpUpdate;
-use App\Console\Commands\MakeApidoc;
-use App\Console\Commands\MakeTest;
+use App\Console\Commands\Make\MakeApidoc;
+use App\Console\Commands\Make\MakeTest;
 use App\Console\Commands\SetVersion;
-use App\Console\Commands\SitemapAll;
-use App\Console\Commands\SitemapContent;
+use App\Console\Commands\Sitemap\SitemapAll;
+use App\Console\Commands\Sitemap\SitemapContent;
 use App\Console\Commands\StripeCancelPremiums;
-use App\Console\Commands\SyncStripeSubscriptions;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
@@ -41,8 +37,6 @@ class Kernel extends ConsoleKernel
         // sitemap:
         SitemapAll::class,
         SitemapContent::class,
-        // mailchimp:
-        MailchimpSyncFromStripe::class,
         // stripe:
         StripeCancelPremiums::class
     ];
@@ -58,14 +52,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         if (app()->environment("master")) {
-            $schedule->
-/**
- * @author Mathrix Back-End Team
- * @package App\Console\Commands
- * @since ${CARET}
- * @copyright Mathrix SA
- */
-command("backup:mysql-dump")->dailyAt("02:00");
+            $schedule->command("backup:mysql-dump")->dailyAt("02:00");
             $schedule->command("sitemap:all")->dailyAt("02:10");
         }
     }

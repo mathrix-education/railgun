@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Cache;
 /**
  * Trait Customer
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Models\Braintree
  * @since 4.1.0
  * @copyright Mathrix Education SA
@@ -80,9 +80,6 @@ trait Customer
     public function getBraintreeCustomer(): \Braintree_Customer
     {
         return Cache::remember(self::getBraintreeCustomerCacheKey(), 5, function () {
-            /*return $this->getBraintreeGateway()
-                ->customer()
-                ->find($this->braintree_id);*/
             return \Braintree_Customer::find($this->braintree_id);
         });
     }
@@ -99,9 +96,7 @@ trait Customer
     {
         /** @var \Braintree_Gateway $braintree */
         if (!$this->isBraintreeCustomer(true)) {
-            $faker = \Faker\Factory::create();
-
-            $braintreeId = $faker->uuid;
+            $braintreeId = "cus_" . str_replace("-", "", \Faker\Factory::create()->uuid);
 
             /** @var \Braintree_Result_Successful|\Braintree_Result_Error $result */
             $result = \Braintree_Customer::create([

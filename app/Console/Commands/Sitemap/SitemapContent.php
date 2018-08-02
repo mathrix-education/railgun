@@ -1,5 +1,5 @@
 <?php
-namespace App\Console\Commands;
+namespace App\Console\Commands\Sitemap;
 
 use App\Models\Activity;
 use App\Models\Chapter;

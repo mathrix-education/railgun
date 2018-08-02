@@ -6,19 +6,18 @@ use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http401UnauthorizedException;
 use App\Models\User;
 use Carbon\Carbon;
-use Faker\Factory;
 use Illuminate\Http\Request;
 use Zend\Diactoros\Response\JsonResponse;
 
 /**
- * Class SubscriptionsController
+ * Class SubscriptionController
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Controllers\Braintree
  * @since 4.1.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
-class SubscriptionsController extends BraintreeController
+class SubscriptionController extends BraintreeController
 {
     private const PRICE_PER_MONTH = [
         "v4_monthly" => 17.90,
@@ -51,6 +50,8 @@ class SubscriptionsController extends BraintreeController
         $nextThirtyFirstJuly = new Carbon("31st July");
 
         if ($nextThirtyFirstJuly->isPast()) {
+            $nextThirtyFirstJuly->addYear();
+        } else if ((new Carbon("1st May"))->isPast()) {
             $nextThirtyFirstJuly->addYear();
         }
 
@@ -190,7 +191,7 @@ class SubscriptionsController extends BraintreeController
             $data = array_merge($data, [
                 "trialPeriod" => true,
                 "trialDurationUnit" => "day",
-                "trialDuration" => $this->getStartDate($plan)->diffInDays(Carbon::now())
+                "trialDuration" => $this->getStartDate($plan)->diffInDays(Carbon::now()) + 1
             ]);
 
             // Charge for the trial

@@ -6,7 +6,7 @@ use Laravel\Lumen\Routing\Controller;
 /**
  * Class BraintreeController
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Controllers\Braintree
  * @since 4.1.0
  * @copyright Mathrix Education SA

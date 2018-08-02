@@ -11,7 +11,7 @@ use Tests\Traits\ResponseTrait;
  * Class BraintreeTestCase
  * Base class for Braintree tests
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package Tests\Braintree
  * @since 4.1.0
  * @copyright Mathrix Education SA

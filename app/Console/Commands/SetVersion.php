@@ -3,6 +3,15 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
+/**
+ * Class SetVersion
+ * Set app version from the local .env
+ *
+ * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @package App\Console\Commands
+ * @since 4.1.0
+ * @copyright Mathrix Education SA
+ */
 class SetVersion extends Command
 {
     private const VERSION_PATTERN = "[0-9]+.[0-9]+.[0-9]+";

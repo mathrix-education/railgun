@@ -9,10 +9,10 @@ use Stripe\Subscription;
 /**
  * Class StripeCancelPremiums
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Console\Commands
- * @since
- * @copyright Mathrix SA
+ * @since 4.1.0
+ * @copyright Mathrix Education SA
  */
 class StripeCancelPremiums extends Command
 {

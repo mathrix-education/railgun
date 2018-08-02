@@ -4,7 +4,7 @@ namespace Tests\Traits;
 /**
  * Trait DatabaseAssertions
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package Tests\Traits
  * @since 4.1.0
  * @copyright Mathrix Education SA

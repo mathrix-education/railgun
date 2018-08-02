@@ -2,6 +2,7 @@
 namespace App\Console\Commands\Format;
 
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 /**
  * Class FormatCopyrightChecker
@@ -30,11 +31,20 @@ class FormatCopyrightChecker extends Command
         "tests"
     ];
 
+    /** @var int The number of files with invalid copyright */
     private $invalidFileCount = 0;
 
 
     public function handle()
     {
+        $this->comment("Searching for invalid copyrights...");
+
+        if (!$this->output->getFormatter()->hasStyle('alert')) {
+            $style = new OutputFormatterStyle('red');
+            $this->output->getFormatter()->setStyle('alert', $style);
+        }
+
+
         foreach (self::SCOPE as $dir) {
             $glob = app()->basePath() . "/$dir/*.php";
             $files = glob_recursive($glob);
@@ -45,21 +55,26 @@ class FormatCopyrightChecker extends Command
         }
 
         if ($this->invalidFileCount == 0) {
-            $this->output->writeln("All file copyrights are valid!");
+            $this->output->success("All file copyrights are valid!");
         } else {
-            $this->output->writeln("{$this->invalidFileCount} file copyrights are invalid");
+            $this->comment("{$this->invalidFileCount} file copyrights are invalid");
         }
     }
 
 
-    public function assertCopyrightPresent($file)
+    /**
+     * Assert copyright is present in the given file
+     *
+     * @param string $file
+     */
+    public function assertCopyrightPresent(string $file)
     {
         $content = file_get_contents($file);
         $preg = preg_match("/" . self::COPYRIGHT_PATTERN . "/m", $content);
 
         if ($preg === 0) {
             $relativeFilePath = str_replace(app()->basePath(), "", $file);
-            $this->output->writeln("[X] $relativeFilePath");
+            $this->output->writeln("[<alert>\u{2718}</alert>] <alert>$relativeFilePath</alert>");
             $this->invalidFileCount++;
         }
     }

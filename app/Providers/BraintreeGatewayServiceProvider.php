@@ -10,10 +10,10 @@ use Illuminate\Support\ServiceProvider;
  * Class BraintreeGatewayServiceProvider
  * Provides Braintree_Gateway to the Laravel Container
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Providers
  * @since 4.1.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class BraintreeGatewayServiceProvider extends ServiceProvider
 {

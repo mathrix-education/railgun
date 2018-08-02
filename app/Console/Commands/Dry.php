@@ -8,30 +8,25 @@ use Illuminate\Console\Command;
 /**
  * Class Dry
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Console\Commands
  * @since 4.1.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class Dry extends Command
 {
     protected $signature = "dry";
-    private $braintree;
 
 
-    public function __construct(\Braintree\Gateway $braintree)
+    public function __construct()
     {
         parent::__construct();
-        $this->braintree = $braintree;
     }
 
-
-    /**
-     * @throws \Braintree\Exception\NotFound
-     */
     public function handle()
     {
-        $user = User::whereNull("braintree_id")->first();
-        dd($user->hasBraintreeSubscription("v4_annually"));
+        $user = User::find(28);
+
+        dd($user->getBraintreeDefaultPaymentMethodToken());
     }
 }

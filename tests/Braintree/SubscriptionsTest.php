@@ -7,10 +7,10 @@ use Laravel\Passport\Passport;
 /**
  * Class SubscriptionsTest
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package Tests\Braintree
  * @since 4.1.0
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
 class SubscriptionsTest extends BraintreeTestCase
 {

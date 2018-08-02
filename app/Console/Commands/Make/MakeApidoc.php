@@ -1,5 +1,5 @@
 <?php
-namespace App\Console\Commands;
+namespace App\Console\Commands\Make;
 
 use App\Models\BaseModel;
 use Illuminate\Console\Command;

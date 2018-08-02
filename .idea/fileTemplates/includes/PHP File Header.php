@@ -1,7 +1,5 @@
 /**
- * @author Mathrix Back-End Team
-#if (${NAMESPACE}) * @package ${NAMESPACE}
-#end
+ * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
  * @since ${CARET}
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */
