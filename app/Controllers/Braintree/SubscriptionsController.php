@@ -1,7 +1,9 @@
 <?php
 namespace App\Controllers\Braintree;
 
+use App\Exceptions\Http400InvalidPlanException;
 use App\Exceptions\Http400InvalidRequestException;
+use App\Exceptions\Http401UnauthorizedException;
 use App\Models\User;
 use Carbon\Carbon;
 use Faker\Factory;
@@ -85,6 +87,51 @@ class SubscriptionsController extends BraintreeController
 
 
     /**
+     * Estimate the price of the trial before the regular subscription billing cycles
+     *
+     * @param string $plan
+     *
+     * @return JsonResponse
+     * @throws Http400InvalidPlanException
+     */
+    public function estimate(string $plan)
+    {
+        if (!in_array($plan, array_keys(self::PRICE_PER_MONTH))) {
+            throw new Http400InvalidPlanException($plan);
+        }
+        return new JsonResponse([
+            "price" => $this->getTrialPrice($plan),
+            "end_date" => $this->getStartDate($plan)
+        ]);
+    }
+
+
+    /**
+     * Get a transaction by its id
+     *
+     * @param Request $request
+     * @param string $subscriptionId
+     *
+     * @return JsonResponse
+     * @throws Http401UnauthorizedException
+     */
+    public function find(Request $request, string $subscriptionId)
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (!$user->isSupport()) {
+            throw new Http401UnauthorizedException();
+        }
+
+        $subscription = \Braintree_Subscription::find($subscriptionId);
+        return new JsonResponse($subscription->jsonSerialize());
+    }
+
+
+    /**
+     * Get the user subscriptions
+     *
      * @param Request $request
      *
      * @return JsonResponse
@@ -97,12 +144,6 @@ class SubscriptionsController extends BraintreeController
         $user->requireBraintreeCustomer();
 
         return new JsonResponse($user->getBraintreeSubscriptions());
-    }
-
-
-    public function find(Request $request, string $subscriptionId)
-    {
-
     }
 
 
@@ -153,7 +194,7 @@ class SubscriptionsController extends BraintreeController
             ]);
 
             // Charge for the trial
-            $chargeResult = $this->getGateway()->transaction()->sale([
+            $chargeResult = \Braintree_Transaction::sale([
                 "amount" => $this->getTrialPrice($plan),
                 "customerId" => $user->braintree_id,
                 "options" => [
@@ -169,9 +210,7 @@ class SubscriptionsController extends BraintreeController
         }
 
         /** @var \Braintree\Result\Successful|\Braintree\Result\Error $subscriptionResult */
-        $subscriptionResult = $this->getGateway()
-            ->subscription()
-            ->create($data);
+        $subscriptionResult = \Braintree_Subscription::create($data);
 
         $user->forgetBraintreeCustomerCache(); // Forget cache about the user, as we updated his subscriptions
 
@@ -185,8 +224,35 @@ class SubscriptionsController extends BraintreeController
     }
 
 
+    /**
+     * Cancel a subscription for a user
+     *
+     * @param Request $request
+     * @param string $subscriptionId
+     *
+     * @return JsonResponse
+     * @throws Http400InvalidRequestException
+     * @throws Http401UnauthorizedException
+     */
     public function cancel(Request $request, string $subscriptionId)
     {
+        /** @var User $user */
+        $user = $request->user();
 
+        if (!$user->isSupport()) {
+            throw new Http401UnauthorizedException();
+        }
+
+        $subscriptionResult = \Braintree_Subscription::cancel($subscriptionId);
+
+        if ($subscriptionResult->success) {
+            return new JsonResponse([
+                "status" => "success"
+            ]);
+        } else {
+            throw new Http400InvalidRequestException([
+                "errors" => $subscriptionResult->errors
+            ]);
+        }
     }
 }

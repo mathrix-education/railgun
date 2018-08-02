@@ -99,7 +99,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "firstname" => "nullable|max:60",
         "lastname" => "nullable|max:60",
         "password" => "required|min:3",
-        "type" => "required|in:registered,redactor,moderator,admin",
+        "type" => "required|in:registered,redactor,moderator,admin,support",
         "token" => "required|size:36",
         "points" => "required|integer",
         "daily" => "nullable|in:10,20,40",
@@ -109,17 +109,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     protected $with = ["class_", "purchases"];
     /** @var array The virtual attributes */
     protected $appends = ["premium", "daily_points"];
-
-
-    /**
-     * Check if user is at least moderator
-     *
-     * @return bool
-     */
-    public function isModerator()
-    {
-        return $this->tokenCan("moderator");
-    }
 
 
     /**
@@ -158,6 +147,17 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
 
     /**
+     * Check if user is at least moderator
+     *
+     * @return bool
+     */
+    public function isModerator()
+    {
+        return $this->tokenCan("moderator");
+    }
+
+
+    /**
      * Check if user is administrator
      *
      * @return bool
@@ -165,6 +165,17 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function isAdmin()
     {
         return $this->tokenCan("admin");
+    }
+
+
+    /**
+     * Check if user is administrator
+     *
+     * @return bool
+     */
+    public function isSupport()
+    {
+        return $this->tokenCan("admin") || $this->tokenCan("support");
     }
 
 

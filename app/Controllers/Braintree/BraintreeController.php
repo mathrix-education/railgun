@@ -13,27 +13,6 @@ use Laravel\Lumen\Routing\Controller;
  */
 abstract class BraintreeController extends Controller
 {
-    /** @var \Braintree\Gateway $gateway */
-    private $gateway;
-
-
-    public function __construct(\Braintree\Gateway $gateway)
-    {
-        $this->gateway = $gateway;
-    }
-
-
-    /**
-     * Get the Braintree gateway
-     *
-     * @return \Braintree\Gateway
-     */
-    protected function getGateway()
-    {
-        return $this->gateway;
-    }
-
-
     /**
      * Generate id base on a prefix
      *

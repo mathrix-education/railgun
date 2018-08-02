@@ -3,7 +3,6 @@ namespace App\Models\Braintree;
 
 
 use App\Exceptions\Http400InvalidRequestException;
-use Braintree\Exception\NotFound;
 use Illuminate\Support\Facades\Cache;
 
 /**
@@ -37,17 +36,6 @@ trait Customer
 
 
     /**
-     * Get the Braintree Gateway
-     *
-     * @return \Braintree\Gateway
-     */
-    private function getBraintreeGateway(): \Braintree\Gateway
-    {
-        return app()->make(\Braintree\Gateway::class);
-    }
-
-
-    /**
      * Check if the user is already a Braintree customer
      *
      * @param bool $strict also check on the API
@@ -62,11 +50,9 @@ trait Customer
             return true;
         } else {
             try {
-                $this->getBraintreeGateway()
-                    ->customer()
-                    ->find($this->braintree_id);
+                \Braintree_Customer::find($this->braintree_id);
                 return true;
-            } catch (NotFound $e) {
+            } catch (\Braintree_Exception_NotFound $e) {
                 return false;
             }
         }
@@ -89,14 +75,15 @@ trait Customer
 
 
     /**
-     * @return \Braintree\Customer
+     * @return \Braintree_Customer
      */
-    public function getBraintreeCustomer(): \Braintree\Customer
+    public function getBraintreeCustomer(): \Braintree_Customer
     {
         return Cache::remember(self::getBraintreeCustomerCacheKey(), 5, function () {
-            return $this->getBraintreeGateway()
+            /*return $this->getBraintreeGateway()
                 ->customer()
-                ->find($this->braintree_id);
+                ->find($this->braintree_id);*/
+            return \Braintree_Customer::find($this->braintree_id);
         });
     }
 
@@ -106,26 +93,24 @@ trait Customer
      *
      * @param string|null $paymentMethodNonce a payment nonce to attach
      *
-     * @return \Braintree\Customer
+     * @return \Braintree_Customer
      */
-    public function createBraintreeCustomer(string $paymentMethodNonce = null): \Braintree\Customer
+    public function createBraintreeCustomer(string $paymentMethodNonce = null): \Braintree_Customer
     {
-        /** @var \Braintree\Gateway $braintree */
+        /** @var \Braintree_Gateway $braintree */
         if (!$this->isBraintreeCustomer(true)) {
             $faker = \Faker\Factory::create();
 
             $braintreeId = $faker->uuid;
 
-            /** @var \Braintree\Result\Successful|\Braintree\Result\Error $result */
-            $result = $this->getBraintreeGateway()
-                ->customer()
-                ->create([
-                    "id" => $braintreeId,
-                    "email" => $this->email,
-                    "firstName" => $this->firstname,
-                    "lastName" => $this->lastname,
-                    "paymentMethodNonce" => $paymentMethodNonce ?? null
-                ]);
+            /** @var \Braintree_Result_Successful|\Braintree_Result_Error $result */
+            $result = \Braintree_Customer::create([
+                "id" => $braintreeId,
+                "email" => $this->email,
+                "firstName" => $this->firstname,
+                "lastName" => $this->lastname,
+                "paymentMethodNonce" => $paymentMethodNonce ?? null
+            ]);
 
             if ($result->success) {
                 $this->braintree_id = $braintreeId;
@@ -170,7 +155,7 @@ trait Customer
      *
      * @param string $paymentMethodNonce
      *
-     * @return \Braintree\Result\Successful|\Braintree\Result\Error
+     * @return \Braintree_Result_Successful|\Braintree_Result_Error
      * @throws Http400InvalidRequestException
      */
     public function addBraintreePaymentMethod(string $paymentMethodNonce)
@@ -178,12 +163,10 @@ trait Customer
         $this->requireBraintreeCustomer();
         $this->forgetBraintreeCustomerCache();
 
-        return $this->getBraintreeGateway()
-            ->paymentMethod()
-            ->create([
-                "customerId" => $this->braintree_id,
-                "paymentMethodNonce" => $paymentMethodNonce
-            ]);
+        return \Braintree_PaymentMethod::create([
+            "customerId" => $this->braintree_id,
+            "paymentMethodNonce" => $paymentMethodNonce
+        ]);
     }
 
 
@@ -192,16 +175,14 @@ trait Customer
      *
      * @param string $paymentMethodToken
      *
-     * @return \Braintree\Result\Successful|\Braintree\Result\Error
+     * @return \Braintree_Result_Successful|\Braintree_Result_Error
      * @throws Http400InvalidRequestException
      */
     public function deleteBraintreePaymentMethod(string $paymentMethodToken)
     {
         $this->requireBraintreeCustomer();
 
-        return $this->getBraintreeGateway()
-            ->paymentMethod()
-            ->delete($paymentMethodToken);
+        return \Braintree_PaymentMethod::delete($paymentMethodToken);
     }
 
 
@@ -211,14 +192,14 @@ trait Customer
      * @param float $amount
      *
      * @throws Http400InvalidRequestException
-     * @return \Braintree\Result\Successful|\Braintree\Result\Error
+     * @return \Braintree_Result_Successful|\Braintree_Result_Error
      */
     public function chargeWithBraintree(float $amount)
     {
         $this->requireBraintreeCustomer();
         $this->forgetBraintreeCustomerCache();
 
-        return $this->getBraintreeGateway()->transaction()->sale([
+        return \Braintree_Transaction::sale([
             "amount" => $amount,
             "customerId" => $this->braintree_id,
             "transactionSource" => "merchant",
@@ -241,7 +222,7 @@ trait Customer
         $this->requireBraintreeCustomer();
         $this->forgetBraintreeCustomerCache();
 
-        $this->getBraintreeGateway()->subscription()->create([
+        \Braintree_Subscription::create([
             "paymentMethodToken" => $this->getBraintreeCustomer()
                 ->defaultPaymentMethod()
                 ->token,
@@ -253,7 +234,7 @@ trait Customer
     /**
      * Get the user subscriptions
      *
-     * @return \Braintree\Subscription[]
+     * @return \Braintree_Subscription[]
      * @throws Http400InvalidRequestException
      */
     public function getBraintreeSubscriptions(): array
@@ -262,18 +243,18 @@ trait Customer
 
         $subscriptions = [];
 
-        /** @var \Braintree\CreditCard $creditCard */
+        /** @var \Braintree_CreditCard $creditCard */
         foreach ($this->getBraintreeCustomer()->creditCards as $creditCard) {
-            /** @var \Braintree\Subscription $subscription */
+            /** @var \Braintree_Subscription $subscription */
             foreach ($creditCard->subscriptions as $subscription) {
                 $subscriptions[] = $subscription;
             }
         }
 
 
-        /** @var \Braintree\CreditCard $creditCard */
+        /** @var \Braintree_CreditCard $creditCard */
         foreach ($this->getBraintreeCustomer()->paypalAccounts as $paypalAccount) {
-            /** @var \Braintree\Subscription $subscription */
+            /** @var \Braintree_Subscription $subscription */
             foreach ($paypalAccount->subscriptions as $subscription) {
                 $subscriptions[] = $subscription;
             }
@@ -286,7 +267,7 @@ trait Customer
     /**
      * Check if the user has subscribed to the given plan
      *
-     * @param string|array $plan
+     * @param string|array $plans
      *
      * @return bool
      * @throws Http400InvalidRequestException
@@ -298,7 +279,7 @@ trait Customer
         }
 
         if ($this->isBraintreeCustomer()) {
-            /** @var \Braintree\Subscription $subscription */
+            /** @var \Braintree_Subscription $subscription */
             foreach ($this->getBraintreeSubscriptions() as $subscription) {
                 if (in_array($subscription->planId, $plans)) {
                     return true;
@@ -307,24 +288,5 @@ trait Customer
         }
 
         return false;
-    }
-
-
-    /**
-     * Cancel a subscription on Braintree
-     *
-     * @param $subscriptionId
-     *
-     * @throws Http400InvalidRequestException
-     * @return \Braintree\Result\Successful|\Braintree\Result\Error
-     */
-    public function cancelBraintreeSubscription(string $subscriptionId)
-    {
-        $this->requireBraintreeCustomer();
-        $this->forgetBraintreeCustomerCache();
-
-        return $this->getBraintreeGateway()
-            ->subscription()
-            ->cancel($subscriptionId);
     }
 }
