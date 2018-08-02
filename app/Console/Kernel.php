@@ -3,8 +3,6 @@ namespace App\Console;
 
 use App\Console\Commands\BackupCdn;
 use App\Console\Commands\MailchimpSyncFromStripe;
-use App\Console\Commands\MailchimpSyncPremiums;
-use App\Console\Commands\MailchimpUpdate;
 use App\Console\Commands\MakeApidoc;
 use App\Console\Commands\MakeTest;
 use App\Console\Commands\SitemapAll;
