@@ -1,6 +1,7 @@
 <?php
 namespace App\Console;
 
+use App\Console\Commands\BackupCdn;
 use App\Console\Commands\MailchimpSyncFromStripe;
 use App\Console\Commands\MailchimpSyncPremiums;
 use App\Console\Commands\MailchimpUpdate;
@@ -35,7 +36,8 @@ class Kernel extends ConsoleKernel
         SitemapContent::class,
         SyncStripeSubscriptions::class,
         MailchimpSyncFromStripe::class,
-        StripeCancelPremiums::class
+        StripeCancelPremiums::class,
+        BackupCdn::class
     ];
 
 
@@ -50,6 +52,9 @@ class Kernel extends ConsoleKernel
     {
         if (app()->environment("master")) {
             $schedule->command("backup:mysql-dump")->dailyAt("02:00");
+            $schedule->command("backup:mysql-dump")->dailyAt("12:00");
+            $schedule->command("backup:mysql-dump")->dailyAt("17:00");
+            $schedule->command("backup:cdn")->dailyAt("02:20");
             $schedule->command("sitemap:all")->dailyAt("02:10");
         }
     }
