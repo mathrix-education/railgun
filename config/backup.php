@@ -12,7 +12,7 @@ return [
         "cloud-storage" => [
             "enabled" => true,
             "disk" => "drive",
-            "path" => ".",
+            "path" => "1ep0UU49iVvWRh0QdZ-E7gbwPBIInJmqj",
             "keep-local" => true,
         ]
     ]
