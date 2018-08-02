@@ -1,6 +1,8 @@
 <?php
 namespace App\Console\Commands;
 
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 /**
@@ -16,6 +18,7 @@ class Dry extends Command
     protected $signature = "dry";
     private $braintree;
 
+
     public function __construct(\Braintree\Gateway $braintree)
     {
         parent::__construct();
@@ -23,8 +26,12 @@ class Dry extends Command
     }
 
 
+    /**
+     * @throws \Braintree\Exception\NotFound
+     */
     public function handle()
     {
-        dd($this->braintree->plan()->all());
+        $user = User::whereNull("braintree_id")->first();
+        dd($user->hasBraintreeSubscription("v4_annually"));
     }
 }

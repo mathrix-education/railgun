@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use App\Exceptions\Http401UnauthorizedException;
+use App\Models\Braintree\Customer;
 use App\Models\Interfaces\Purchasable;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
@@ -42,10 +43,8 @@ use Laravel\Passport\Token;
  * @property int $daily_achievements
  * @property array $settings
  * @property int|null $class_id
+ * @property string|null $braintree_id
  * @property string|null $stripe_id
- * @property string|null $card_brand
- * @property string|null $card_last_four
- * @property string|null $trial_ends_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read bool $premium
@@ -60,30 +59,27 @@ use Laravel\Passport\Token;
  * @property-read Collection|Token[] $tokens
  * @property-read Collection|Vote[] $votes
  * @method static Builder|User whereId($value)
- * @method static Builder|User whereClassId($value)
+ * @method static Builder|User whereUsername($value)
  * @method static Builder|User whereEmail($value)
- * @method static Builder|User whereFacebookToken($value)
  * @method static Builder|User whereFirstname($value)
  * @method static Builder|User whereLastname($value)
  * @method static Builder|User whereToken($value)
  * @method static Builder|User wherePassword($value)
+ * @method static Builder|User whereType($value)
  * @method static Builder|User wherePoints($value)
  * @method static Builder|User whereLevel($value)
  * @method static Builder|User whereDaily($value)
  * @method static Builder|User whereDailyAchievements($value)
  * @method static Builder|User whereSettings($value)
- * @method static Builder|User whereType($value)
- * @method static Builder|User whereUsername($value)
- * @method static Builder|User whereCardBrand($value)
- * @method static Builder|User whereCardLastFour($value)
+ * @method static Builder|User whereClassId($value)
+ * @method static Builder|User whereBraintreeId($value)
  * @method static Builder|User whereStripeId($value)
- * @method static Builder|User whereTrialEndsAt($value)
  * @method static Builder|User whereCreatedAt($value)
  * @method static Builder|User whereUpdatedAt($value)
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
-    use Authenticatable, Authorizable, HasApiTokens, Billable {
+    use Authenticatable, Authorizable, HasApiTokens, Billable, Customer {
         HasApiTokens::tokenCan as passportTokenCan;
     }
 
@@ -348,9 +344,14 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * premium attribute
      *
      * @return bool
+     * @throws \App\Exceptions\Http400InvalidRequestException
      */
     public function getPremiumAttribute()
     {
-        return $this->subscribed("premium");
+        return $this->subscribed("premium") || $this->hasBraintreeSubscription([
+                "v4_monthly",
+                "v4_annually",
+                "v_biannually"
+            ]);
     }
 }

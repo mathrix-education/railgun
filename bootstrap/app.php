@@ -172,4 +172,12 @@ $app->router->group(["namespace" => "App\\Controllers"], function ($router) {
     }
 });
 
+
+$app->router->group(["namespace" => "App\\Controllers\\Braintree", "prefix" => "braintree"], function ($router) {
+    foreach (glob(__DIR__ . "/../app/Routes/Braintree/*.php") as $routeFile) {
+        /** @noinspection PhpIncludeInspection */
+        require $routeFile;
+    }
+});
+
 return $app;
