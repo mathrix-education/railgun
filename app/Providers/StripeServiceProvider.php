@@ -2,6 +2,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Laravel\Cashier\Cashier;
 use Stripe\Stripe;
 
 /**
@@ -19,5 +20,6 @@ class StripeServiceProvider extends ServiceProvider
     {
         Stripe::setApiVersion(env("STRIPE_API_VERSION"));
         Stripe::setApiKey(env("STRIPE_SECRET"));
+        Cashier::useCurrency("eur");
     }
 }
