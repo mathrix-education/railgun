@@ -3,8 +3,9 @@ namespace App\Services\Braintree;
 
 use App\Exceptions\Http400InvalidRequestException;
 use App\Models\Discount;
-use App\Models\Interfaces\Purchasable;
-use Illuminate\Database\Eloquent\Relations\Relation;
+use App\Models\Product;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Class Cart
@@ -16,47 +17,97 @@ use Illuminate\Database\Eloquent\Relations\Relation;
  */
 class Cart
 {
+    /** @var User $customer */
+    private $customer;
+    /** @var Collection|Product[] */
     private $products;
+    /** @var Discount|null $discount */
     private $discount;
-    private $referal;
 
 
     /**
      * Cart constructor.
-     *
-     * @param $items
-     * @param $discountCode
-     * @param $referralEmail
+     */
+    public function __construct()
+    {
+    }
+
+
+    /**
+     * @param User $customer
      *
      * @throws Http400InvalidRequestException
      */
-    public function __construct(array $items, string $discountCode = null, string $referralEmail = null)
+    public function setCustomer(User $customer)
     {
-        foreach ($items as $item) {
-            if (empty($item["purchasable_id"]) || empty($item["purchasable_type"])) {
-                throw new Http400InvalidRequestException("Missing purchasable_id or purchasable_type");
-            }
-
-            $this->products[] = $this->getProduct($item["purchasable_id"], $item["purchasable_type"]);
+        if (!$customer->isBraintreeCustomer()) {
+            throw new Http400InvalidRequestException("User `id` {$customer->id} is not valid Braintree customer");
         }
+        $this->customer = $customer;
+    }
 
-        if (!empty($discountCode)) {
-            /** @var Discount $discount */
-            $discount = Discount::where("code", "=", $discountCode)->firstOrFail();
+
+    /**
+     * @param int[] $productIds
+     *
+     * @throws Http400InvalidRequestException
+     */
+    public function setCart(array $productIds)
+    {
+        foreach ($productIds as $productId) {
+            $product = Product::where("id", "=", $productId)->firstOrFail();
+
+            if ($this->customer->hasPurchased($product)) {
+                throw new Http400InvalidRequestException("User `id` {$this->customer->id} has already purchased"
+                    . " product `id` {$product->id}");
+            }
         }
     }
 
 
     /**
-     * @param int $id
-     * @param string $type
+     * @param string $discountCode
      *
-     * @return Purchasable
+     * @return Cart
+     * @throws Http400InvalidRequestException
      */
-    private function getProduct(int $id, string $type)
+    public function setDiscount(string $discountCode)
     {
-        /** @var Purchasable $purchasableClass */
-        $purchasableClass = Relation::getMorphedModel($type);
-        return $purchasableClass->where("id", "=", $id)->firstOrFail();
+        /** @var Discount $discount */
+        $discount = Discount::where("code", "=", $discountCode)->firstOrFail();
+
+        // Check for expiration
+        if ($discount->isExpired()) {
+            throw new Http400InvalidRequestException("Discount with code `$discountCode` has expired");
+        }
+        // Expiration OK
+
+        // Check if applicable
+        $isApplicable = false;
+
+        /** @var Product $product */
+        foreach ($this->products as $product) {
+            if ($discount->isApplicableOn($product)) {
+                $isApplicable = true;
+                break;
+            }
+        }
+
+        if (!$isApplicable) {
+            throw new Http400InvalidRequestException("Discount with code `$discountCode` is not applicable on current cart");
+        }
+        // Application OK
+
+        $this->discount = $discount;
+
+        return $this;
+    }
+
+
+    public function getBraintreeSaleRequest()
+    {
+        return [
+
+        ];
     }
 }

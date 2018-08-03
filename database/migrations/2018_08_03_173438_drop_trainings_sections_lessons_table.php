@@ -20,6 +20,8 @@ class DropTrainingsSectionsLessonsTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists("module_section");
+
         Schema::table("lessons", function (Blueprint $table) {
             $table->dropForeign("lessons_section_id_foreign");
             $table->dropForeign("lessons_module_id_foreign");

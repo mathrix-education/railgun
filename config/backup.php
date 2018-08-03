@@ -6,9 +6,8 @@ return [
         "compress" => true,
         "local-storage" => [
             "disk" => "storage",
-            "path" => "backups",
+            "path" => "backups/database",
         ],
-
         "cloud-storage" => [
             "enabled" => true,
             "disk" => "drive",

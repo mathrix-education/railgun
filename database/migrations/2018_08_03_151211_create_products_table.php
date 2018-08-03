@@ -30,12 +30,14 @@ class CreateProductsTable extends Migration
             $table->text("description")->nullable();
             $table->float("price")->nullable();
             $table->boolean("visible")->default(true);
+            $table->integer("order")->nullable();
             $table->integer("module_id")->unsigned()->nullable();
             $table->timestamps();
 
             // Foreign keys
             $table->foreign("module_id")->references("id")->on("modules");
         });
+
         Schema::create("product_product", function (Blueprint $table) {
             $table->increments("id");
             $table->integer("parent_id")->unsigned();
@@ -47,6 +49,13 @@ class CreateProductsTable extends Migration
             $table->foreign("child_id")->references("id")->on("products");
         });
 
+        Schema::table("purchases", function (Blueprint $table) {
+            $table->integer("product_id")->unsigned()->after("user_id");
+
+            // Foreign keys
+            $table->foreign("product_id")->references("id")->on("products");
+        });
+
         $trainings = DB::table("trainings")->get();
         $sections = DB::table("sections")->get();
         $lessons = DB::table("lessons")->get();
@@ -56,9 +65,10 @@ class CreateProductsTable extends Migration
         }
 
 
-        $lastSectionId = $sections->last()->id;
+        $sectionDelta = $trainings->last()->id;
+        $lessonsDelta = $sections->last()->id + $sectionDelta;
+
         $sections = $sections->toArray();
-        $lastTrainingId = $trainings->last()->id;
         $trainings = $trainings->toArray();
         $lessons = $lessons->toArray();
 
@@ -75,24 +85,28 @@ class CreateProductsTable extends Migration
             foreach ($family as $item) {
                 $id = $item->id;
                 $price = null;
+                $order = null;
 
                 switch ($type) {
                     case "training":
                         $price = $item->price / 100;
+                        $order = $item->order;
                         break;
                     case "section":
-                        $id += $lastTrainingId;
+                        $id += $sectionDelta;
                         $price = 7;
                         $productLinks[] = [
                             "parent_id" => $item->training_id,
-                            "child_id" => $id
+                            "child_id" => $id,
+                            "order" => $item->order
                         ];
                         break;
                     case "lesson":
-                        $id += $lastTrainingId + $lastSectionId;
+                        $id += $lessonsDelta;
                         $productLinks[] = [
-                            "parent_id" => $item->section_id + $lastTrainingId,
-                            "child_id" => $id
+                            "parent_id" => $item->section_id + $sectionDelta,
+                            "child_id" => $id,
+                            "order" => $item->order
                         ];
                         break;
                 }
@@ -106,6 +120,7 @@ class CreateProductsTable extends Migration
                     "description" => $item->description ?? null,
                     "price" => $price,
                     "visible" => $item->visible,
+                    "order" => $order,
                     "module_id" => $item->module_id ?? null,
                     "created_at" => $item->created_at ?? Carbon::now(),
                     "updated_at" => $item->updated_at ?? Carbon::now()
@@ -115,6 +130,19 @@ class CreateProductsTable extends Migration
 
         DB::table("products")->insert($products);
         DB::table("product_product")->insert($productLinks);
+
+        DB::statement("UPDATE purchases SET product_id = purchasable_id WHERE purchasable_type = 'training'");
+        DB::statement("UPDATE purchases SET product_id = purchasable_id + ? WHERE purchasable_type = 'section'",
+            [$sectionDelta]);
+        DB::statement("UPDATE purchases SET product_id = purchasable_id + ? WHERE purchasable_type = 'lessons'",
+            [$lessonsDelta]);
+
+
+        Schema::table("purchases", function (Blueprint $table) {
+            $table->dropColumn("purchasable_id");
+            $table->dropColumn("purchasable_type");
+        });
+
     }
 
 
@@ -125,6 +153,15 @@ class CreateProductsTable extends Migration
      */
     public function down()
     {
+        Schema::table("purchases", function (Blueprint $table) {
+            $table->dropForeign("purchases_product_id_foreign");
+        });
+        Schema::table("purchases", function (Blueprint $table) {
+            $table->dropColumn("product_id");
+            $table->integer("purchasable_id")->after("stripe_id");
+            $table->string("purchasable_type")->after("training_id")->after("stripe_id");
+        });
+
         Schema::table("product_product", function (Blueprint $table) {
             $table->dropForeign("product_product_parent_id_foreign");
             $table->dropForeign("product_product_child_id_foreign");

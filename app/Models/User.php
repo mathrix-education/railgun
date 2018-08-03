@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Laravel\Cashier\Billable;
 use Laravel\Cashier\Subscription;
 use Laravel\Lumen\Auth\Authorizable;
@@ -79,7 +80,7 @@ use Laravel\Passport\Token;
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
-    use Authenticatable, Authorizable, HasApiTokens, Billable, Customer {
+    use Authenticatable, Authorizable, HasApiTokens, Customer {
         HasApiTokens::tokenCan as passportTokenCan;
     }
 
@@ -227,45 +228,15 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
 
     /**
-     * Update customer card or create the Stripe customer if the user is not already a Stripe customer
-     *
-     * @param string $stripeToken
-     */
-    public function updateCardOrCreateStripeCustomer(string $stripeToken)
-    {
-        if (!$this->hasStripeId()) {
-            $this->createAsStripeCustomer($stripeToken);
-        } else {
-            $this->updateCard($stripeToken);
-        }
-    }
-
-
-    /**
-     * @param Purchasable $purchasable
+     * @param Product $product
      *
      * @return bool
      */
-    public function hasPurchased(Purchasable $purchasable): bool
+    public function hasPurchased(Product $product): bool
     {
-        return $this->purchases()->where([
-            ["purchasable_id", "=", $purchasable->id],
-            ["purchasable_type", "=", $purchasable->getType()]
-        ])->exists();
-    }
-
-
-    /**
-     * @param Purchasable $purchasable
-     *
-     * @return Model|HasMany|object
-     */
-    public function getPurchase(Purchasable $purchasable)
-    {
-        return $this->purchases()->where([
-            ["purchasable_id", "=", $purchasable->id],
-            ["purchasable_type", "=", $purchasable->getType()]
-        ])->first();
+        return $this->products()
+            ->where("product_id", "=", $product->id)
+            ->exists();
     }
 
 
@@ -323,6 +294,17 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
 
     /**
+     * HasManyThrough Product
+     *
+     * @return HasManyThrough
+     */
+    public function products()
+    {
+        return $this->hasManyThrough(Product::class, Purchase::class);
+    }
+
+
+    /**
      * HasMany Purchase
      *
      * @return HasMany
@@ -359,10 +341,10 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function getPremiumAttribute()
     {
-        return $this->subscribed("premium") || $this->hasBraintreeSubscription([
-                "v4_monthly",
-                "v4_annually",
-                "v_biannually"
-            ]);
+        return $this->hasBraintreeSubscription([
+            "v4_monthly",
+            "v4_annually",
+            "v4_biannually"
+        ]);
     }
 }
