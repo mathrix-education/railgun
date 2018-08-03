@@ -15,7 +15,6 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->call(ContentTableSeeder::class);
         $this->call(LevelTableSeeder::class);
         $this->call(UserTableSeeder::class);
-        $this->call(TrainingTableSeeder::class);
         $this->call(BlogTableSeeder::class);
         $this->call(CommentTableSeeder::class);
         $this->call(SubscriptionTableSeeder::class);
@@ -23,5 +22,6 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->call(LogTableSeeder::class);
         $this->call(DiscountTableSeeder::class);
         $this->call(SettingTableSeeder::class);
+        $this->call(ProductTableSeeder::class);
     }
 }

@@ -40,6 +40,7 @@ class CreateProductsTable extends Migration
             $table->increments("id");
             $table->integer("parent_id")->unsigned();
             $table->integer("child_id")->unsigned();
+            $table->integer("order");
 
             // Foreign keys
             $table->foreign("parent_id")->references("id")->on("products");
@@ -47,12 +48,19 @@ class CreateProductsTable extends Migration
         });
 
         $trainings = DB::table("trainings")->get();
-        $lastTrainingId = $trainings->last()->id;
-        $trainings = $trainings->toArray();
         $sections = DB::table("sections")->get();
+        $lessons = DB::table("lessons")->get();
+
+        if ($trainings->isEmpty() || $sections->isEmpty() || $lessons->isEmpty()) {
+            return;
+        }
+
+
         $lastSectionId = $sections->last()->id;
         $sections = $sections->toArray();
-        $lessons = DB::table("lessons")->get()->toArray();
+        $lastTrainingId = $trainings->last()->id;
+        $trainings = $trainings->toArray();
+        $lessons = $lessons->toArray();
 
         $toMigrate = [
             "training" => $trainings,

@@ -50,11 +50,11 @@ class DropTrainingsSectionsLessonsTable extends Migration
             $table->integer("order")->default(0);
             $table->timestamps();
         });
-        Schema::create('sections', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create("sections", function (Blueprint $table) {
+            $table->increments("id");
             $table->string("name");
             $table->string("slug");
-            $table->boolean("visible")->after("slug");
+            $table->boolean("visible");
             $table->integer("training_id")->unsigned();
             $table->integer("order");
             $table->timestamps();

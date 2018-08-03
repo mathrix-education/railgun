@@ -204,13 +204,13 @@ class Module extends BaseModel
 
 
     /**
-     * HasMany Lesson
+     * HasMany Product
      *
      * @return HasMany
      * @codeCoverageIgnore
      */
-    public function lessons(): HasMany
+    public function products(): HasMany
     {
-        return $this->hasMany(Lesson::class);
+        return $this->hasMany(Product::class);
     }
 }

@@ -4,6 +4,8 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * Class Product
@@ -23,6 +25,7 @@ use Illuminate\Database\Eloquent\Collection;
  * @property int|null $module_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property array $link
  * @property-read Collection|Product[] $children
  * @property-read Collection|Product[] $parents
  * @method static Builder|Product whereId($value)
@@ -46,11 +49,12 @@ class Product extends BaseModel
     protected $rules = [
         "name" => "required|max:255",
         "slug" => "required|max:255",
-        "image" => "required|max:255",
+        "image" => "nullable|max:255",
         "type" => "nullable",
         "description" => "required|min:10",
         "price" => "nullable|numeric",
-        "visible" => "required|boolean"
+        "visible" => "required|boolean",
+        "module_id" => "nullable|exists:modules,id"
     ];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
@@ -61,9 +65,20 @@ class Product extends BaseModel
 
 
     /**
+     * BelongsTo Module
+     *
+     * @return BelongsTo
+     */
+    public function module()
+    {
+        return $this->belongsTo(Module::class);
+    }
+
+
+    /**
      * BelongsToMany Products
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function parents()
     {
@@ -74,7 +89,7 @@ class Product extends BaseModel
     /**
      * BelongsToMany Products
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function children()
     {
