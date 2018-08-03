@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @package App\Models
  * @since 1.0.0
  * @copyright Mathrix Education SA
- *
  * @property int $id
  * @property string $name
  * @property string $slug
@@ -24,6 +23,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Category whereId($value)
  * @method static Builder|Category whereName($value)
  * @method static Builder|Category whereSlug($value)
+ * @mixin \Eloquent
  */
 class Category extends BaseModel
 {

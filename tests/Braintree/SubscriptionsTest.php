@@ -41,6 +41,8 @@ class SubscriptionsTest extends BraintreeTestCase
         ]);
         $this->assertTrue($user->hasBraintreeSubscription("v4_monthly"));
         $this->assertTrue($responseData->premium);
+
+        return $user->getBraintreeSubscriptions()[0]->id;
     }
 
 
@@ -71,5 +73,41 @@ class SubscriptionsTest extends BraintreeTestCase
         ]);
         $this->assertTrue($user->hasBraintreeSubscription("v4_annually"));
         $this->assertTrue($responseData->premium);
+
+        return $user->getBraintreeSubscriptions()[0]->id;
+    }
+
+
+    /**
+     * @depends testSubscribeMonthlyAsNonCustomer
+     *
+     * GET /braintree/subscriptions/{id}/transactions
+     *
+     * @param string $subscriptionId
+     */
+    public function testGetTransactions(string $subscriptionId)
+    {
+        $user = User::where("type", "=", "admin")->firstOrFail();
+        Passport::actingAs($user, ["admin"]);
+
+        $this->json("get", "/braintree/subscriptions/{$subscriptionId}/transactions");
+
+        $this->assertHttp200Success();
+    }
+
+
+    /**
+     * @depends testSubscribeAnnuallyAsNonCustomer
+     *
+     * @param string $subscriptionId
+     */
+    public function testCancelTransaction(string $subscriptionId)
+    {
+        $user = User::where("type", "=", "admin")->firstOrFail();
+        Passport::actingAs($user, ["admin"]);
+
+        $this->json("post", "/braintree/subscriptions/{$subscriptionId}/cancel");
+
+        $this->assertHttp200Success();
     }
 }

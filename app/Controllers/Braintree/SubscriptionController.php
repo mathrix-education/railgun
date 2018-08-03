@@ -27,10 +27,10 @@ class SubscriptionController extends BraintreeController
 
 
     /**
-     * Generate anb unique transaction id based on an uuid and the prefix sub_
+     * Generate an unique transaction id based on an uuid and the prefix sub_
      *
      * @return string
-     * @throws \Exception
+     * @throws Http400InvalidRequestException
      */
     private function generateTransactionId()
     {
@@ -155,12 +155,16 @@ class SubscriptionController extends BraintreeController
      *
      * @return JsonResponse
      * @throws \Illuminate\Validation\ValidationException
-     * @throws \Exception
+     * @throws Http400InvalidRequestException
      */
     public function create(Request $request)
     {
         /** @var User $user */
         $user = $request->user();
+
+        if ($user->premium) {
+            throw new Http400InvalidRequestException("User is already premium");
+        }
 
         $this->validate($request, [
             "plan" => "required|in:" . implode(",", array_keys(self::PRICE_PER_MONTH)),
@@ -176,7 +180,6 @@ class SubscriptionController extends BraintreeController
         }
 
         // Now we assume that the user is a Braintree customer
-
         $plan = $request->input("plan");
 
         $data = [
@@ -198,8 +201,13 @@ class SubscriptionController extends BraintreeController
             $chargeResult = \Braintree_Transaction::sale([
                 "amount" => $this->getTrialPrice($plan),
                 "customerId" => $user->braintree_id,
+                "descriptor" => self::BRAINTREE_DESCRIPTOR,
                 "options" => [
-                    "submitForSettlement" => true
+                    "submitForSettlement" => true,
+                    "paypal" => [
+                        "description" => "Abonnement Premium du " . Carbon::now()->format("d/m/Y") . " au " .
+                            $this->getStartDate($plan)->format("d/m/Y")
+                    ]
                 ]
             ]);
 
@@ -255,5 +263,29 @@ class SubscriptionController extends BraintreeController
                 "errors" => $subscriptionResult->errors
             ]);
         }
+    }
+
+
+    /**
+     * Get transactions linked with a subscription
+     *
+     * @param Request $request
+     * @param string $subscriptionId
+     *
+     * @return JsonResponse
+     * @throws Http401UnauthorizedException
+     */
+    public function transactions(Request $request, string $subscriptionId)
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (!$user->isSupport()) {
+            throw new Http401UnauthorizedException();
+        }
+
+        $subscription = \Braintree_Subscription::find($subscriptionId);
+
+        return new JsonResponse($subscription->jsonSerialize()["transactions"]);
     }
 }

@@ -28,7 +28,6 @@ use Laravel\Passport\Token;
  * @since 1.0.0
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- *
  * @property int $id
  * @property string|null $username
  * @property string $email
@@ -76,6 +75,7 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereStripeId($value)
  * @method static Builder|User whereCreatedAt($value)
  * @method static Builder|User whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {

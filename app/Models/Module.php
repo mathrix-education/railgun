@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @since 1.0.0
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- *
  * @property int $id
  * @property bool $premium
  * @property bool $visible
@@ -46,6 +45,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read mixed $to_revise
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Lesson[] $lessons
  * @property-read bool $completed
+ * @mixin \Eloquent
  */
 class Module extends BaseModel
 {

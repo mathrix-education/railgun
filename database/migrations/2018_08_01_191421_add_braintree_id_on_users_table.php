@@ -4,6 +4,13 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
+/**
+ * Class AddBraintreeIdOnUsersTable
+ *
+ * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @since 4.1.0
+ * @copyright Mathrix Education SA
+ */
 class AddBraintreeIdOnUsersTable extends Migration
 {
     /**
@@ -20,6 +27,7 @@ class AddBraintreeIdOnUsersTable extends Migration
             ]);
         });
     }
+
 
     /**
      * Reverse the migrations.

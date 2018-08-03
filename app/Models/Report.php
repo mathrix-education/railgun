@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @since 1.0.0
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- *
  * @property int $id
  * @property string $content
  * @property int $module_id
@@ -25,6 +24,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $status
  * @property-read \App\Models\Module $module
  * @method static Builder|Report whereStatus($value)
+ * @mixin \Eloquent
  */
 class Report extends BaseModel
 {

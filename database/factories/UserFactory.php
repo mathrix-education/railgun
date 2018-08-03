@@ -90,3 +90,14 @@ $factory->defineAs(User::class, "moderator", function () use ($factory) {
 $factory->defineAs(User::class, "admin", function () use ($factory) {
     return array_merge($factory->rawOf(User::class, "redactor"), ["type" => "admin"]);
 });
+
+
+/**
+ * UserSupportFactory
+ *
+ * @author Mathrix Team
+ * @var Illuminate\Database\Eloquent\Factory $factory
+ */
+$factory->defineAs(User::class, "support", function () use ($factory) {
+    return array_merge($factory->rawOf(User::class, "redactor"), ["type" => "support"]);
+});

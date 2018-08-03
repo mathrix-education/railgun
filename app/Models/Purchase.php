@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @since 4.0.1
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- *
  * @property int $id
  * @property string $stripe_id
  * @property int $price
@@ -34,6 +33,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @method static Builder|Purchase wherePurchasableType($value)
  * @method static Builder|Purchase whereCreatedAt($value)
  * @method static Builder|Purchase whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class Purchase extends BaseModel
 {

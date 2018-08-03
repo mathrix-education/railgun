@@ -25,8 +25,6 @@ class Dry extends Command
 
     public function handle()
     {
-        $user = User::find(28);
-
-        dd($user->getBraintreeDefaultPaymentMethodToken());
+        dd(\Braintree_Subscription::find("sub_3d2c8734b12f34cab73bd26689ece76f")->jsonSerialize()["transactions"]);
     }
 }
