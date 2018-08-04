@@ -222,7 +222,8 @@ class SubscriptionController extends BraintreeController
         $user->forgetBraintreeCustomerCache(); // Forget cache about the user, as we updated his subscriptions
 
         if ($subscriptionResult->success) {
-            return new JsonResponse(User::find($user->id));
+            $user = User::whereId($user->id)->firstOrFail();
+            return new JsonResponse($user);
         } else {
             throw new Http400InvalidRequestException("Unable to create the subscription");
         }
