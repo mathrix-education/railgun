@@ -50,10 +50,14 @@ class CreateProductsTable extends Migration
         });
 
         Schema::table("purchases", function (Blueprint $table) {
-            $table->integer("product_id")->unsigned()->after("user_id");
+            try {
+                $table->dropForeign("training_user_user_id_foreign");
+                $table->dropIndex("training_user_user_id_foreign");
+            } catch (Exception $e) {
+                // Do nothing
+            }
 
-            // Foreign keys
-            $table->foreign("product_id")->references("id")->on("products");
+            $table->integer("product_id")->unsigned()->after("user_id");
         });
 
         $trainings = DB::table("trainings")->get();
@@ -131,14 +135,12 @@ class CreateProductsTable extends Migration
         DB::table("products")->insert($products);
         DB::table("product_product")->insert($productLinks);
 
-        DB::statement("UPDATE purchases SET product_id = purchasable_id WHERE purchasable_type = 'training'");
-        DB::statement("UPDATE purchases SET product_id = purchasable_id + ? WHERE purchasable_type = 'section'",
-            [$sectionDelta]);
-        DB::statement("UPDATE purchases SET product_id = purchasable_id + ? WHERE purchasable_type = 'lessons'",
-            [$lessonsDelta]);
-
+        DB::statement("UPDATE purchases SET product_id = purchasable_id");
 
         Schema::table("purchases", function (Blueprint $table) {
+            $table->dropColumn("price");
+            $table->dropColumn("refund");
+            $table->dropColumn("stripe_id");
             $table->dropColumn("purchasable_id");
             $table->dropColumn("purchasable_type");
         });

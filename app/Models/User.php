@@ -296,11 +296,11 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     /**
      * HasManyThrough Product
      *
-     * @return HasManyThrough
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function products()
     {
-        return $this->hasManyThrough(Product::class, Purchase::class);
+        return $this->belongsToMany(Product::class, "purchases");
     }
 
 

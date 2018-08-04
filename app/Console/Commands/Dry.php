@@ -2,6 +2,7 @@
 namespace App\Console\Commands;
 
 use App\Models\User;
+use App\Services\Braintree\Cart;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
@@ -23,8 +24,23 @@ class Dry extends Command
         parent::__construct();
     }
 
+
+    /**
+     * @throws \App\Exceptions\Http400InvalidRequestException
+     */
     public function handle()
     {
-        dd(\Braintree_Subscription::find("sub_3d2c8734b12f34cab73bd26689ece76f")->jsonSerialize()["transactions"]);
+        $customer = User::find(8433);
+
+        $cart = new Cart();
+
+        $request = $cart->setCustomer($customer)
+            ->setProducts([3, 4, 5])
+            ->setDiscount("MODEMACHINE2018")
+            ->getBraintreeSaleRequest();
+
+        echo json_encode($request, JSON_PRETTY_PRINT) . "\n";
+
+        dd(\Braintree_Transaction::sale($request));
     }
 }

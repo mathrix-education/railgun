@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use App\Exceptions\Http400InvalidRequestException;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -94,5 +95,26 @@ class Product extends BaseModel
     public function children()
     {
         return $this->belongsToMany(Product::class, "product_product", "parent_id", "child_id");
+    }
+
+
+    /**
+     * Get the product price after the application of the given discount
+     *
+     * @param Discount $discount
+     *
+     * @return float|int|null
+     */
+    public function getNewPrice(Discount $discount = null)
+    {
+        if ($discount === null || !$discount->isApplicableOn($this)) {
+            return $this->price;
+        }
+
+        if ($discount->type === "percentage") {
+            return $this->price * (1 - $discount->value / 100);
+        } else if ($discount->type === "absolute") {
+            return $this->price - $discount->value;
+        }
     }
 }

@@ -342,43 +342,4 @@ class UserController extends BaseController
 
         return response()->json($user);
     }
-
-
-    /**
-     * @apiVersion 4.0.3
-     * @api {post} /users/sponsor Check sponsor
-     * @apiGroup Users
-     * @apiName UserSponsor
-     * @apiDescription Check if a user has bought the training
-     * @apiPermission registered for self update, admin otherwise
-     * @apiUse Bearer
-     * @apiParam (Data) {string} sponsor_email The sponsor email
-     * @apiParam (Data) {int} training_id The training id
-     * @apiSuccess {bool} sponsor If the user has bought the training
-     * @apiError (Error 400) invalid_request training_id cannot be null
-     * @apiError (Error 400) invalid_request points field has to be a positive integer
-     * @apiUse Http401Unauthorized
-     * @apiUse Http404ModelNotFound
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
-     * @throws Http400InvalidRequestException
-     */
-    public function sponsor(Request $request)
-    {
-        $sponsorEmail = $request->input("sponsor_email", false);
-        $trainingId = $request->input("training_id", false);
-
-        if (!$sponsorEmail || !$trainingId) {
-            throw new Http400InvalidRequestException("training_id cannot be null");
-        }
-
-        $training = Training::where("id", "=", $trainingId)->firstOrFail();
-        $user = User::whereEmail($sponsorEmail)->firstOrFail();
-
-        return new JsonResponse([
-            "sponsor" => $user->hasPurchased($training)
-        ]);
-    }
 }

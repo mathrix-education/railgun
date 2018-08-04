@@ -15,8 +15,8 @@ use Laravel\Lumen\Routing\Controller;
 abstract class BraintreeController extends Controller
 {
     /** @var array The Mathrix Education SA descriptor for payments */
-    protected const BRAINTREE_DESCRIPTOR = [
-        "name" => "mathrix.fr",
+    public const BRAINTREE_DESCRIPTOR = [
+        "name" => "mathrixfr",
         "phone" => "0970444668"
     ];
 

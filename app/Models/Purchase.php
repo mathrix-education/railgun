@@ -43,7 +43,7 @@ class Purchase extends BaseModel
     /** @var bool Indicates if the model should be timestamped */
     public $timestamps = true;
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "stripe_id", "price", "user_id", "purchasable_id", "purchasable_type"];
+    protected $fillable = ["id", "stripe_id", "price", "user_id", "product_id", "created_at", "updated_at"];
     /** @var array The validation rules */
     protected $rules = [
         "price" => "required|numeric",
@@ -76,17 +76,5 @@ class Purchase extends BaseModel
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-
-    /**
-     * MorphTo Purchasable
-     *
-     * @return MorphTo
-     * @codeCoverageIgnore
-     */
-    public function purchasable()
-    {
-        return $this->morphTo();
     }
 }

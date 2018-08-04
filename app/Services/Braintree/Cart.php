@@ -9,6 +9,10 @@ use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Class Cart
+ * Used to generate \Braintree_Transaction::sale() request data
+ *
+ * @see \Braintree_Transaction::sale()
+ * @see https://developers.braintreepayments.com/reference/request/transaction/sale/php
  *
  * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
  * @package App\Services\Braintree
@@ -30,84 +34,170 @@ class Cart
      */
     public function __construct()
     {
+        $this->products = new Collection();
     }
 
 
     /**
+     * Set the cart customer
+     *
      * @param User $customer
      *
-     * @throws Http400InvalidRequestException
+     * @return Cart
      */
     public function setCustomer(User $customer)
     {
-        if (!$customer->isBraintreeCustomer()) {
-            throw new Http400InvalidRequestException("User `id` {$customer->id} is not valid Braintree customer");
-        }
         $this->customer = $customer;
+        return $this;
     }
 
 
     /**
-     * @param int[] $productIds
+     * Set the cart products
      *
-     * @throws Http400InvalidRequestException
-     */
-    public function setCart(array $productIds)
-    {
-        foreach ($productIds as $productId) {
-            $product = Product::where("id", "=", $productId)->firstOrFail();
-
-            if ($this->customer->hasPurchased($product)) {
-                throw new Http400InvalidRequestException("User `id` {$this->customer->id} has already purchased"
-                    . " product `id` {$product->id}");
-            }
-        }
-    }
-
-
-    /**
-     * @param string $discountCode
+     * @param int[] $productIds
      *
      * @return Cart
      * @throws Http400InvalidRequestException
      */
-    public function setDiscount(string $discountCode)
+    public function setProducts(array $productIds)
     {
-        /** @var Discount $discount */
-        $discount = Discount::where("code", "=", $discountCode)->firstOrFail();
+        $productIds = array_unique($productIds); // Remove double ids
 
-        // Check for expiration
-        if ($discount->isExpired()) {
-            throw new Http400InvalidRequestException("Discount with code `$discountCode` has expired");
-        }
-        // Expiration OK
+        foreach ($productIds as $productId) {
+            $product = Product::where("id", "=", $productId)->firstOrFail();
 
-        // Check if applicable
-        $isApplicable = false;
-
-        /** @var Product $product */
-        foreach ($this->products as $product) {
-            if ($discount->isApplicableOn($product)) {
-                $isApplicable = true;
-                break;
+            if ($product->price === null) {
+                throw new Http400InvalidRequestException("Product `id` {$this->customer->id} cannot be "
+                    . "purchased");
             }
-        }
 
-        if (!$isApplicable) {
-            throw new Http400InvalidRequestException("Discount with code `$discountCode` is not applicable on current cart");
-        }
-        // Application OK
+            if ($this->customer->hasPurchased($product)) {
+                throw new Http400InvalidRequestException("User `id` {$this->customer->id} has already "
+                    . "purchased product `id` {$product->id}");
+            }
 
-        $this->discount = $discount;
+            $this->products->add($product);
+        }
 
         return $this;
     }
 
 
+    /**
+     * Get the cart products
+     *
+     * @return Product[]|Collection
+     */
+    public function getProducts()
+    {
+        return $this->products;
+    }
+
+
+    /**
+     * Set the discount based on its code
+     *
+     * @param string $discountCode
+     *
+     * @return Cart
+     */
+    public function setDiscount(string $discountCode)
+    {
+        $this->discount = Discount::where("code", "=", $discountCode)->firstOrFail();;
+
+        return $this;
+    }
+
+
+    /**
+     * Validate all properties before engaging the Braintree request data
+     *
+     * @throws Http400InvalidRequestException
+     */
+    private function validate()
+    {
+        // Check customer existence
+        if ($this->customer === null) {
+            throw new Http400InvalidRequestException("Not customer set in the cart");
+        }
+
+        // Check customer validity
+        if (!$this->customer->isBraintreeCustomer()) {
+            throw new Http400InvalidRequestException("User `id` {$this->customer->id} is not valid Braintree " .
+                "customer");
+        }
+
+        // Check for discount expiration
+        if ($this->discount->isExpired()) {
+            throw new Http400InvalidRequestException("Discount with code `{$this->discount->code}` has expired");
+        }
+
+        // Check discount application
+        if (!$this->discount->isApplicableBleOnAtLeastOneOf($this->products)) {
+            throw new Http400InvalidRequestException("Discount with code `{$this->discount->code}` is not"
+                . " applicable on current cart");
+        }
+    }
+
+
+    /**
+     * Get the \Braintree_Transaction::sale() request data
+     *
+     * @see \Braintree_Transaction::sale()
+     * @see https://developers.braintreepayments.com/reference/request/transaction/sale/php
+     * @return array
+     * @throws Http400InvalidRequestException
+     */
     public function getBraintreeSaleRequest()
     {
-        return [
+        $this->validate();
 
+        $lineItems = new Collection();
+
+        /** @var Product $product */
+        foreach ($this->products as $product) {
+            $lineItem = [
+                "description" => $product->description,
+                "kind" => "debit",
+                "name" => $product->name,
+                "productCode" => $product->id,
+                "quantity" => 1,
+                "totalAmount" => $product->getNewPrice($this->discount),
+                "unitAmount" => $product->price,
+                "unitOfMeasure" => "eur"
+            ];
+
+            if ($this->discount->isApplicableOn($product)) {
+                $lineItem["discountAmount"] = $product->price - $product->getNewPrice($this->discount);
+            }
+
+            $lineItems->add($lineItem);
+        }
+
+        $saleData = [
+            "amount" => $lineItems->sum(function ($lineItem) {
+                return $lineItem["totalAmount"];
+            }),
+            "customerId" => $this->customer->braintree_id,
+            //"descriptor" => BraintreeController::BRAINTREE_DESCRIPTOR, // TODO: Check descriptors rules
+            "discountAmount" => $lineItems->sum(function ($lineItem) {
+                return $lineItem["discountAmount"] ?? 0;
+            }),
+            "lineItems" => $lineItems->toArray(),
+            "options" => [
+                "submitForSettlement" => true
+            ]
         ];
+
+        // TODO: Custom fields?
+        /*if ($this->discount !== null) {
+            $saleData["customFields"] = [
+                "discountId" => $this->discount->id,
+                "discountCode" => $this->discount->code
+            ];
+        }*/
+
+        return $saleData;
     }
 }
