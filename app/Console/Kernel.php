@@ -2,6 +2,7 @@
 namespace App\Console;
 
 use App\Console\Commands\Dry;
+use App\Console\Commands\Format\FormatCheckEnvironments;
 use App\Console\Commands\Format\FormatCopyrightChecker;
 use App\Console\Commands\Make\MakeApidoc;
 use App\Console\Commands\Make\MakeTest;
@@ -28,8 +29,10 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Dry::class,
-        FormatCopyrightChecker::class,
         SetVersion::class,
+        // format:
+        FormatCopyrightChecker::class,
+        FormatCheckEnvironments::class,
         // make:
         MakeApidoc::class,
         MakeTest::class,

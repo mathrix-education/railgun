@@ -17,6 +17,7 @@ class CommentTableSeeder extends BaseTableSeeder
     /**
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws Exception
      */
     public function run()
     {
@@ -31,7 +32,7 @@ class CommentTableSeeder extends BaseTableSeeder
         ]);
         $this->seedFromFactory([
             "modelClass" => Vote::class,
-            "count" => random_int(50, 100)
+            "count" => random_int(250, 300)
         ]);
     }
 }

@@ -1,6 +1,9 @@
 <?php
 namespace Tests\Traits;
 
+use App\Models\Log;
+use Carbon\Carbon;
+
 /**
  * Trait DatabaseAssertions
  *

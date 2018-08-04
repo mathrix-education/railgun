@@ -87,8 +87,8 @@ class V4MonthlyIntegrationTest extends BraintreeTestCase
      */
     public function testCancel(string $subscriptionId)
     {
-        $user = User::where("type", "=", "admin")->firstOrFail();
-        Passport::actingAs($user, ["admin"]);
+        $user = User::where("type", "=", "support")->firstOrFail();
+        Passport::actingAs($user, ["support"]);
 
         $this->json("post", "/subscriptions/{$subscriptionId}/cancel");
 
@@ -133,8 +133,8 @@ class V4MonthlyIntegrationTest extends BraintreeTestCase
      */
     public function testRefundLastTransaction(string $transactionId)
     {
-        $user = User::where("type", "=", "admin")->firstOrFail();
-        Passport::actingAs($user, ["admin"]);
+        $user = User::where("type", "=", "support")->firstOrFail();
+        Passport::actingAs($user, ["support"]);
 
         $this->json("post", "/transactions/{$transactionId}/refund");
 
@@ -153,8 +153,8 @@ class V4MonthlyIntegrationTest extends BraintreeTestCase
      */
     public function testGetLastTransaction(string $transactionId)
     {
-        $user = User::where("type", "=", "admin")->firstOrFail();
-        Passport::actingAs($user, ["admin"]);
+        $user = User::where("type", "=", "support")->firstOrFail();
+        Passport::actingAs($user, ["support"]);
 
         $this->json("get", "/transactions/{$transactionId}");
 

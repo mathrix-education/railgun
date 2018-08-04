@@ -44,4 +44,19 @@ class ProductObserver extends BaseObserver
 
         return true;
     }
+
+
+    /**
+     * @param Product $product
+     *
+     * @return bool
+     */
+    public function deleting($product)
+    {
+        $product->parents()->detach();
+        $product->children()->detach();
+
+        return true;
+    }
+
 }

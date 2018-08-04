@@ -33,6 +33,12 @@ class SetVersion extends Command
         $this->setVersionInFile("composer.json", '\"version\": \"%version%\"');
         // package.json
         $this->setVersionInFile("package.json", '\"version\": \"%version%\"');
+
+        // config/env
+        $this->setVersionInFile("config/env/.env.dev", 'APP_VERSION=%version%');
+        $this->setVersionInFile("config/env/.env.local", 'APP_VERSION=%version%');
+        $this->setVersionInFile("config/env/.env.master", 'APP_VERSION=%version%');
+        $this->setVersionInFile("config/env/.env.pipelines", 'APP_VERSION=%version%');
     }
 
 

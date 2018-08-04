@@ -11,7 +11,6 @@ $router->group(["prefix" => "users"], function () use ($router) {
     $router->post("forgot", "AuthController@forgot");
     $router->post("reset/{token}", "AuthController@reset");
     $router->post("exists", "UserController@exists");
-    $router->post("sponsor", "UserController@sponsor");
 
     $router->group(["middleware" => "auth:api"], function () use ($router) {
         $router->get("[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "UserController@index");

@@ -234,7 +234,7 @@ class UserController extends BaseController
         /** @var User $user */
         $user = $request->user();
         $user = User::where("id", $user->id)
-            ->with(["class_", "purchases", "subscriptions"])
+            ->with(["class_", "purchases"])
             ->firstOrFail();
 
         return response()->json($user);
