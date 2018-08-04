@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
  * @property int $id
- * @property string $stripe_id
  * @property int $price
  * @property int $refund
  * @property int $purchasable_id
@@ -23,9 +22,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read User $user
- * @property-read Training|Section $purchasable
  * @method static Builder|Purchase whereId($value)
- * @method static Builder|Purchase whereStripeId($value)
  * @method static Builder|Purchase wherePrice($value)
  * @method static Builder|Purchase whereRefund($value)
  * @method static Builder|Purchase whereUserId($value)
@@ -43,7 +40,7 @@ class Purchase extends BaseModel
     /** @var bool Indicates if the model should be timestamped */
     public $timestamps = true;
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "stripe_id", "price", "user_id", "product_id", "created_at", "updated_at"];
+    protected $fillable = ["id", "user_id", "product_id", "created_at", "updated_at"];
     /** @var array The validation rules */
     protected $rules = [
         "price" => "required|numeric",

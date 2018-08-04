@@ -301,7 +301,10 @@ class UserController extends BaseController
                 ["loggable_type", $loggableType],
                 ["loggable_id", $loggable->id],
             ])
-                ->whereBetween("created_at", [Carbon::now()->setTime(0, 0, 0), Carbon::now()])
+                ->whereBetween("created_at", [
+                    Carbon::now()->setTime(0, 0, 0),
+                    Carbon::now()
+                ])
                 ->exists();
 
             // User already gathered point from this loggable today

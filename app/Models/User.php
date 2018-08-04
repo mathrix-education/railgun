@@ -55,7 +55,6 @@ use Laravel\Passport\Token;
  * @property-read Collection|Log[] $logs
  * @property-read Collection|Meta[] $meta
  * @property-read Collection|Purchase[] $purchases
- * @property-read Collection|Subscription[] $subscriptions
  * @property-read Collection|Token[] $tokens
  * @property-read Collection|Vote[] $votes
  * @method static Builder|User whereId($value)

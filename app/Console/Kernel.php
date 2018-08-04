@@ -5,11 +5,9 @@ use App\Console\Commands\Dry;
 use App\Console\Commands\Format\FormatCopyrightChecker;
 use App\Console\Commands\Make\MakeApidoc;
 use App\Console\Commands\Make\MakeTest;
-use App\Console\Commands\Migrate\MigrateStripeSubscriptionsToBraintree;
 use App\Console\Commands\SetVersion;
 use App\Console\Commands\Sitemap\SitemapAll;
 use App\Console\Commands\Sitemap\SitemapContent;
-use App\Console\Commands\StripeCancelPremiums;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
@@ -38,10 +36,6 @@ class Kernel extends ConsoleKernel
         // sitemap:
         SitemapAll::class,
         SitemapContent::class,
-        // stripe:
-        StripeCancelPremiums::class,
-        // migrate:
-        MigrateStripeSubscriptionsToBraintree::class
     ];
 
 
