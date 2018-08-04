@@ -57,8 +57,8 @@ class DropTrainingsSectionsLessonsTable extends Migration
             $table->string("name");
             $table->string("slug");
             $table->boolean("visible");
-            $table->integer("training_id")->unsigned();
             $table->integer("order");
+            $table->integer("training_id")->unsigned();
             $table->timestamps();
 
             // Foreign keys
@@ -70,6 +70,7 @@ class DropTrainingsSectionsLessonsTable extends Migration
             $table->string("slug");
             $table->boolean("visible");
             $table->string("image")->nullable();
+            $table->integer("order");
             $table->integer("section_id")->unsigned();
             $table->integer("module_id")->unsigned();
 

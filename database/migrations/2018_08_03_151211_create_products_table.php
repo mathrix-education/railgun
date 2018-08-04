@@ -50,12 +50,12 @@ class CreateProductsTable extends Migration
         });
 
         Schema::table("purchases", function (Blueprint $table) {
-            try {
+            /*try {
                 $table->dropForeign("training_user_user_id_foreign");
                 $table->dropIndex("training_user_user_id_foreign");
             } catch (Exception $e) {
                 // Do nothing
-            }
+            }*/
 
             $table->integer("product_id")->unsigned()->after("user_id");
         });
@@ -64,78 +64,76 @@ class CreateProductsTable extends Migration
         $sections = DB::table("sections")->get();
         $lessons = DB::table("lessons")->get();
 
-        if ($trainings->isEmpty() || $sections->isEmpty() || $lessons->isEmpty()) {
-            return;
-        }
+        if (!$trainings->isEmpty() && !$sections->isEmpty() && !$lessons->isEmpty()) {
+            $sectionDelta = $trainings->last()->id;
+            $lessonsDelta = $sections->last()->id + $sectionDelta;
+
+            $sections = $sections->toArray();
+            $trainings = $trainings->toArray();
+            $lessons = $lessons->toArray();
+
+            $toMigrate = [
+                "training" => $trainings,
+                "section" => $sections,
+                "lesson" => $lessons
+            ];
+            $products = [];
+            $productLinks = [];
 
 
-        $sectionDelta = $trainings->last()->id;
-        $lessonsDelta = $sections->last()->id + $sectionDelta;
+            foreach ($toMigrate as $type => $family) {
+                foreach ($family as $item) {
+                    $id = $item->id;
+                    $price = null;
+                    $order = null;
 
-        $sections = $sections->toArray();
-        $trainings = $trainings->toArray();
-        $lessons = $lessons->toArray();
+                    switch ($type) {
+                        case "training":
+                            $price = $item->price / 100;
+                            $order = $item->order;
+                            break;
+                        case "section":
+                            $id += $sectionDelta;
+                            $price = 7;
+                            $productLinks[] = [
+                                "parent_id" => $item->training_id,
+                                "child_id" => $id,
+                                "order" => $item->order
+                            ];
+                            break;
+                        case "lesson":
+                            $id += $lessonsDelta;
+                            $productLinks[] = [
+                                "parent_id" => $item->section_id + $sectionDelta,
+                                "child_id" => $id,
+                                "order" => $item->order
+                            ];
+                            break;
+                    }
 
-        $toMigrate = [
-            "training" => $trainings,
-            "section" => $sections,
-            "lesson" => $lessons
-        ];
-        $products = [];
-        $productLinks = [];
-
-
-        foreach ($toMigrate as $type => $family) {
-            foreach ($family as $item) {
-                $id = $item->id;
-                $price = null;
-                $order = null;
-
-                switch ($type) {
-                    case "training":
-                        $price = $item->price / 100;
-                        $order = $item->order;
-                        break;
-                    case "section":
-                        $id += $sectionDelta;
-                        $price = 7;
-                        $productLinks[] = [
-                            "parent_id" => $item->training_id,
-                            "child_id" => $id,
-                            "order" => $item->order
-                        ];
-                        break;
-                    case "lesson":
-                        $id += $lessonsDelta;
-                        $productLinks[] = [
-                            "parent_id" => $item->section_id + $sectionDelta,
-                            "child_id" => $id,
-                            "order" => $item->order
-                        ];
-                        break;
+                    $products[] = [
+                        "id" => $id,
+                        "name" => $item->name ?? $item->title,
+                        "slug" => $item->slug,
+                        "image" => $item->image ?? null,
+                        "type" => $type,
+                        "description" => $item->description ?? null,
+                        "price" => $price,
+                        "visible" => $item->visible,
+                        "order" => $order,
+                        "module_id" => $item->module_id ?? null,
+                        "created_at" => $item->created_at ?? Carbon::now(),
+                        "updated_at" => $item->updated_at ?? Carbon::now()
+                    ];
                 }
-
-                $products[] = [
-                    "id" => $id,
-                    "name" => $item->name ?? $item->title,
-                    "slug" => $item->slug,
-                    "image" => $item->image ?? null,
-                    "type" => $type,
-                    "description" => $item->description ?? null,
-                    "price" => $price,
-                    "visible" => $item->visible,
-                    "order" => $order,
-                    "module_id" => $item->module_id ?? null,
-                    "created_at" => $item->created_at ?? Carbon::now(),
-                    "updated_at" => $item->updated_at ?? Carbon::now()
-                ];
             }
+
+            DB::table("products")->insert($products);
+            DB::table("product_product")->insert($productLinks);
+
+            DB::statement("UPDATE purchases SET product_id = purchasable_id");
         }
 
-        DB::table("products")->insert($products);
-        DB::table("product_product")->insert($productLinks);
-
-        DB::statement("UPDATE purchases SET product_id = purchasable_id");
 
         Schema::table("purchases", function (Blueprint $table) {
             $table->dropColumn("price");
@@ -156,12 +154,15 @@ class CreateProductsTable extends Migration
     public function down()
     {
         Schema::table("purchases", function (Blueprint $table) {
-            $table->dropForeign("purchases_product_id_foreign");
+            //$table->dropForeign("purchases_product_id_foreign");
         });
         Schema::table("purchases", function (Blueprint $table) {
             $table->dropColumn("product_id");
-            $table->integer("purchasable_id")->after("stripe_id");
-            $table->string("purchasable_type")->after("training_id")->after("stripe_id");
+            $table->integer("price")->after("id");
+            $table->integer("refund")->after("id");
+            $table->string("stripe_id")->after("id");
+            $table->integer("purchasable_id")->unsigned()->after("user_id");
+            $table->string("purchasable_type")->after("user_id");
         });
 
         Schema::table("product_product", function (Blueprint $table) {

@@ -8,7 +8,7 @@ use App\Models\Product;
  * Class ProductTableSeeder
  *
  * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @since
+ * @since 4.1.0
  * @copyright Mathrix Education SA
  */
 class ProductTableSeeder extends BaseTableSeeder
