@@ -91,6 +91,7 @@ trait Customer
      * @param string|null $paymentMethodNonce a payment nonce to attach
      *
      * @return \Braintree_Customer
+     * @throws Http400InvalidRequestException
      */
     public function createBraintreeCustomer(string $paymentMethodNonce = null): \Braintree_Customer
     {
@@ -110,6 +111,8 @@ trait Customer
             if ($result->success) {
                 $this->braintree_id = $braintreeId;
                 $this->save();
+            } else {
+                throw new Http400InvalidRequestException("Unable to create Braintree customer");
             }
         }
 

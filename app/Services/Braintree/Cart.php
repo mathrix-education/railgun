@@ -123,10 +123,7 @@ class Cart
         }
 
         // Check customer validity
-        if (!$this->customer->isBraintreeCustomer()) {
-            throw new Http400InvalidRequestException("User `id` {$this->customer->id} is not valid Braintree " .
-                "customer");
-        }
+        $this->customer->requireBraintreeCustomer();
 
         // Check for discount expiration
         if ($this->discount->isExpired()) {

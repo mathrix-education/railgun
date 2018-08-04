@@ -1,5 +1,5 @@
 <?php
-namespace App\Controllers\Braintree;
+namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidPlanException;
 use App\Exceptions\Http400InvalidRequestException;
@@ -201,20 +201,18 @@ class SubscriptionController extends BraintreeController
             $chargeResult = \Braintree_Transaction::sale([
                 "amount" => $this->getTrialPrice($plan),
                 "customerId" => $user->braintree_id,
-                "descriptor" => self::BRAINTREE_DESCRIPTOR,
+                //"descriptor" => self::BRAINTREE_DESCRIPTOR,
                 "options" => [
                     "submitForSettlement" => true,
                     "paypal" => [
-                        "description" => "Abonnement Premium du " . Carbon::now()->format("d/m/Y") . " au " .
+                        "description" => "Abonnement premium du " . Carbon::now()->format("d/m/Y") . " au " .
                             $this->getStartDate($plan)->format("d/m/Y")
                     ]
                 ]
             ]);
 
             if (!$chargeResult->success) {
-                throw new Http400InvalidRequestException([
-                    "errors" => $chargeResult->errors
-                ]);
+                throw new Http400InvalidRequestException("Unable to charge customer for trial period");
             }
         }
 
@@ -226,9 +224,7 @@ class SubscriptionController extends BraintreeController
         if ($subscriptionResult->success) {
             return new JsonResponse(User::find($user->id));
         } else {
-            throw new Http400InvalidRequestException([
-                "errors" => $subscriptionResult->errors
-            ]);
+            throw new Http400InvalidRequestException("Unable to create the subscription");
         }
     }
 

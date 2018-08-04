@@ -4,6 +4,7 @@ namespace Tests\Braintree;
 
 use Laravel\Lumen\Testing\TestCase;
 use Tests\Traits\DatabaseAssertions;
+use Tests\Traits\Debug;
 use Tests\Traits\HttpAssertionsTrait;
 use Tests\Traits\ResponseTrait;
 
@@ -18,7 +19,7 @@ use Tests\Traits\ResponseTrait;
  */
 class BraintreeTestCase extends TestCase
 {
-    use HttpAssertionsTrait, DatabaseAssertions, ResponseTrait;
+    use HttpAssertionsTrait, DatabaseAssertions, ResponseTrait, Debug;
 
 
     /**

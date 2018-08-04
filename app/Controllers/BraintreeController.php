@@ -1,5 +1,5 @@
 <?php
-namespace App\Controllers\Braintree;
+namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
 use Laravel\Lumen\Routing\Controller;

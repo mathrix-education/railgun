@@ -10,6 +10,7 @@ use Laravel\Lumen\Testing\DatabaseTransactions;
 use Laravel\Lumen\Testing\TestCase;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Tests\Traits\DatabaseAssertions;
+use Tests\Traits\Debug;
 use Tests\Traits\HttpAssertionsTrait;
 use Tests\Traits\JsonAssertionsTrait;
 use Tests\Traits\ResponseTrait;
@@ -23,7 +24,7 @@ use Tests\Traits\ResponseTrait;
  */
 abstract class BaseTestCase extends TestCase
 {
-    use ResponseTrait, JsonAssertionsTrait, HttpAssertionsTrait, DatabaseTransactions, DatabaseAssertions;
+    use ResponseTrait, JsonAssertionsTrait, HttpAssertionsTrait, DatabaseTransactions, DatabaseAssertions, Debug;
 
     /** @var Generator */
     public $faker;
@@ -68,39 +69,5 @@ abstract class BaseTestCase extends TestCase
         });
 
         parent::tearDown();
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Additional assertions
-    |--------------------------------------------------------------------------
-    */
-
-
-
-    /**
-     * Handle response printing
-     *
-     * @param \Exception|\Throwable $e
-     *
-     * @throws \Throwable
-     */
-    protected function onNotSuccessfulTest(\Throwable $e)
-    {
-        $this->debug();
-        parent::onNotSuccessfulTest($e);
-    }
-
-
-    /**
-     * Debug the response
-     *
-     * @throws \Exception
-     */
-    public function debug()
-    {
-        echo $this->currentUri . "\n";
-        echo json_encode($this->getResponseData(), JSON_PRETTY_PRINT);
     }
 }
