@@ -31,14 +31,11 @@ class V4AnnuallyIntegrationTest extends BraintreeTestCase
             "payment_method_nonce" => "fake-valid-visa-nonce"
         ]);
 
-        $responseData = $this->getResponseData();
-
         $this->assertHttp200Success();
         $this->assertNotInDatabase("users", [
             "id" => $customer->id,
             "braintree_id" => null
         ]);
         $this->assertTrue($customer->hasBraintreeSubscription("v4_annually"));
-        $this->assertTrue($responseData->premium);
     }
 }
