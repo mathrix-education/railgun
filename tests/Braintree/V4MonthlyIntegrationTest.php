@@ -9,10 +9,12 @@ use Laravel\Passport\Passport;
  * Class SubscriptionsTest
  *
  * Scenario
- * - Non-Braintree Customer subscribes to v4_monthly plan
+ * - Non-Braintree Customer create is Braintree account by adding its payment method
+ * - Customer subscribe to v4_monthly plan
  * - Support cancels the subscription
  * - Support display the linked transactions
  * - Support refunds the last transaction
+ * - Support get the last transaction
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package Tests\Braintree
@@ -66,11 +68,8 @@ class V4MonthlyIntegrationTest extends BraintreeTestCase
             "plan" => "v4_monthly"
         ]);
 
-        $responseData = $this->getResponseData();
-
         $this->assertHttp200Success();
         $this->assertTrue($customer->hasBraintreeSubscription("v4_monthly"));
-        $this->assertTrue($responseData->premium);
 
         return $customer->getBraintreeSubscriptions()[0]->id;
     }
