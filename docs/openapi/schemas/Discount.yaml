@@ -1,0 +1,28 @@
+description: Discount.
+type: object
+properties:
+  id:
+    description: The discount id.
+    type: integer
+    exemple: 33
+  code:
+    description: The discount code.
+    type: string
+    exemple: lorem
+  type:
+    description: The discount type.
+    type: string
+    exemple: lorem
+  value:
+    description: The discount value
+    type: integer
+    exemple: 93270
+  counter:
+    description: The discount counter
+    type: integer
+    exemple: 93
+  expire_at:
+    description: The Date/timme when the discount was created.
+    type: string
+    format: date-time
+

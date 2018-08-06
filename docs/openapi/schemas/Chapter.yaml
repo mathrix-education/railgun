@@ -1,0 +1,24 @@
+description: Chapter
+type: object
+properties:
+  id:
+    description: The chapter id.
+    type: integer
+    exemple: 22
+  name:
+    description: The chapter name.
+    type: string
+    exemple: lorem ipsum
+  slug:
+    description: The chapter slug.
+    type: string
+    exemple: lorem_ipsum
+  order:
+    description: The chapter order.
+    type: integer
+    exemple: 22
+  visible:
+    description: The chapter visibility.
+    type: boolean
+    exemple: true
+

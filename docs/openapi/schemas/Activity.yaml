@@ -1,0 +1,31 @@
+description: Activity
+type: object
+properties:
+  id:
+    description: The activity id.
+    type: integer
+    exemple: 22
+  name:
+    description: The activity name.
+    type: string
+    exemple: lorem ipsum
+  slug:
+    description: The activity slug.
+    type: string
+    exemple: lorem_ipsum
+  name_seo:
+    description: The activity name_seo.
+    type: string
+    exemple: lorem_ipsum
+  type:
+    description: The activity type.
+    type: string
+    enum: [video,course,test,exercise,summary,flashcard]
+  visible:
+    description: The activity visibility.
+    type: boolean
+    exemple: true
+
+
+
+

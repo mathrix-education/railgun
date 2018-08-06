@@ -1,0 +1,20 @@
+description: Classe.
+type: object
+properties:
+  id:
+    description: The class id.
+    type: integer
+    exemple: 22
+  name:
+    description: The class name.
+    type: string
+    exemple: lorem ipsum
+  slug:
+    description: The class slug.
+    type: string
+    exemple: lorem_ipsum
+  image:
+    description: The class image.
+    type: string
+    exemple: lorem
+

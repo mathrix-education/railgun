@@ -1,0 +1,59 @@
+description: Meta
+type: object
+properties:
+  id:
+    description: The meta id.
+    type: integer
+    exemple: 33
+  favorite:
+    description: the meta favorite status.
+    type: boolean
+    exemple: false
+  to_revise:
+    description: the meta favorite status.
+    type: boolean
+    exemple: false
+  completed: the meta favorite status.
+    description: the meta completed status.
+    type: boolean
+    exemple: false
+  user_id:
+    description: the meta user id.
+    type: integer
+    exemple: 314
+  country_id:
+    description: the meta country id.
+    type: integer
+    exemple: 314
+  class_id:
+    description: the meta class id.
+    type: integer
+    exemple: 314
+  discpline_id:
+    description: the meta discipline id.
+    type: integer
+    exemple: 314
+  chapter_id:
+    description: the meta chapter id.
+    type: integer
+    exemple: 314
+  notion_id:
+    description: the meta notion id.
+    type: integer
+    exemple: 314
+  activity_id:
+    description: the meta activity id.
+    type: integer
+    exemple: 314
+  module_id:
+    description: the meta module id.
+    type: integer
+    exemple: 314
+  created_at:
+    description: The Date/timme when the meta was created.
+    type: string
+    format: date-time
+  updated_at:
+    description: The Date/timme when the discount was created.
+    type: string
+    format: date-time

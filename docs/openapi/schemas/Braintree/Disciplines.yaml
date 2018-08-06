@@ -1,0 +1,23 @@
+description: Disciplines
+type: object
+properties:
+  id:
+    description: The discipline id.
+    type: integer
+    exemple: 33
+  name:
+    description: The discipline name.
+    type: string
+    exemple: France
+  slug:
+    description: The discipline slug.
+    type: string
+    exemple: france
+  beta:
+    description: The discipline beta state.
+    type: boolean
+    exemple: true
+  visible:
+    description: The discipline visibility.
+    type: boolean
+    exemple: true

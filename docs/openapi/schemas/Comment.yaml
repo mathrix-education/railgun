@@ -1,0 +1,41 @@
+description: Comment.
+type: object
+properties:
+  id:
+    description: The comment id.
+    type: integer
+    exemple: 22
+  content:
+    description: The comment content.
+    type: string
+    exemple: lorem ipsum quae dolores.
+  parent_id:
+    description: The comment parent_id.
+    type: integer
+    exemple: 12
+  user_id:
+    description: The comment user_id.
+    type: integer
+    exemple: 10
+  commentable_id:
+    description: The comment commentable_id.
+    type: integer
+    exemple: created_ad
+  created_ad:
+    description: The Date/timme when the comment was created.
+    type: string
+    format: date-time
+  updated_at:
+    description: The Date/timme when the comment was updated.
+    type: string
+    format: date-time
+  deleted_ad:
+    description: The Date/timme when the comment was deleted.
+    type: string
+    format: date-time
+  commentable_type:
+    description: The comment commentable_type.
+    type: string
+    exemple: ipsum
+
+
