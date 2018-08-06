@@ -1,0 +1,28 @@
+Braintree_Add_on:
+  $ref: ./Braintree/Braintree_Add_on.yaml
+Braintree_AndroidPayCard:
+  $ref: ./Braintree/Braintree_AndroidPayCard.yaml
+Braintree_ApplePayCard:
+  $ref: ./Braintree/Braintree_ApplePayCard.yaml
+Braintree_CreditCardDetails:
+  $ref: ./Braintree/Braintree_CreditCardDetails.yaml
+Braintree_CustomerDetails:
+  $ref: ./Braintree/Braintree_CustomerDetails.yaml
+Braintree_Descriptor:
+  $ref: ./Braintree/Braintree_Descriptor.yaml
+Braintree_LineItem:
+  $ref: ./Braintree/Braintree_LineItem.yaml
+Braintree_PayPalDetails:
+  $ref: ./Braintree/Braintree_PayPalDetails.yaml
+Braintree_MasterpassCardDetails:
+  $ref: ./Braintree/Braintree_MasterpassCardDetails.yaml
+Braintree_Status:
+  $ref: ./Braintree/Braintree_SubscriptionStatus.yaml
+Braintree_Subscription:
+  $ref: ./Braintree/Braintree_Subscription.yaml
+Braintree_Transaction:
+  $ref: ./Braintree/Braintree_Transaction.yaml
+Braintree_TransactionStatus:
+  $ref: ./Braintree/Braintree_TransactionStatus.yaml
+Braintree_VisaCheckoutDetails:
+  $ref: ./Braintree/Braintree_VisaCheckoutDetails.yaml

@@ -107,11 +107,11 @@ class Product extends BaseModel
      */
     public function getNewPrice(Discount $discount = null)
     {
-        if ($discount === null || !$discount->isApplicableOn($this)) {
+        if ($discount === null) {
             return $this->price;
-        }
-
-        if ($discount->type === "percentage") {
+        } else if(!$discount->isApplicableOn($this)) {
+            return $this->price;
+        } else if ($discount->type === "percentage") {
             return $this->price * (1 - $discount->value / 100);
         } else if ($discount->type === "absolute") {
             return $this->price - $discount->value;

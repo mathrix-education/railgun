@@ -131,24 +131,6 @@ class SubscriptionController extends BraintreeController
 
 
     /**
-     * Get the user subscriptions
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
-     * @throws Http400InvalidRequestException
-     */
-    public function mine(Request $request)
-    {
-        /** @var User $user */
-        $user = $request->user();
-        $user->requireBraintreeCustomer();
-
-        return new JsonResponse($user->getBraintreeSubscriptions());
-    }
-
-
-    /**
      * Create a new subscriptions for a user
      *
      * @param Request $request
@@ -264,25 +246,28 @@ class SubscriptionController extends BraintreeController
 
 
     /**
-     * Get transactions linked with a subscription
+     * Get the user subscriptions
      *
      * @param Request $request
-     * @param string $subscriptionId
+     * @param int $userId
      *
      * @return JsonResponse
+     * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
      */
-    public function transactions(Request $request, string $subscriptionId)
+    public function byUser(Request $request, int $userId)
     {
         /** @var User $user */
         $user = $request->user();
 
-        if (!$user->isSupport()) {
+        if ($user->id !== $userId && !$user->isSupport()) {
             throw new Http401UnauthorizedException();
         }
 
-        $subscription = \Braintree_Subscription::find($subscriptionId);
+        /** @var User $customer */
+        $customer = User::findOrFail($userId);
+        $customer->requireBraintreeCustomer();
 
-        return new JsonResponse($subscription->jsonSerialize()["transactions"]);
+        return new JsonResponse($customer->getBraintreeSubscriptions());
     }
 }

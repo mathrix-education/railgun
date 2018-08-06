@@ -5,10 +5,8 @@ $router->group(["prefix" => "subscriptions"], function () use ($router) {
 
     $router->group(["middleware" => "auth:api"], function () use ($router) {
         $router->post("", "SubscriptionController@create");
-        $router->get("mine", "SubscriptionController@mine");
-
-        $router->get("{subscriptionId:[a-z0-9\_]+}", "SubscriptionController@mine");
-        $router->get("{subscriptionId:[a-z0-9\_]+}/transactions", "SubscriptionController@transactions");
+        $router->get("{subscriptionId:[a-z0-9\_]+}", "SubscriptionController@find");
         $router->post("{subscriptionId:[a-z0-9\_]+}/cancel", "SubscriptionController@cancel");
+        $router->get("by-user/{userId}", "SubscriptionController@byUser");
     });
 });

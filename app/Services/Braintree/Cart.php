@@ -125,15 +125,17 @@ class Cart
         // Check customer validity
         $this->customer->requireBraintreeCustomer();
 
-        // Check for discount expiration
-        if ($this->discount->isExpired()) {
-            throw new Http400InvalidRequestException("Discount with code `{$this->discount->code}` has expired");
-        }
+        if ($this->discount !== null) {
+            // Check for discount expiration
+            if ($this->discount->isExpired()) {
+                throw new Http400InvalidRequestException("Discount with code `{$this->discount->code}` has expired");
+            }
 
-        // Check discount application
-        if (!$this->discount->isApplicableBleOnAtLeastOneOf($this->products)) {
-            throw new Http400InvalidRequestException("Discount with code `{$this->discount->code}` is not"
-                . " applicable on current cart");
+            // Check discount application
+            if (!$this->discount->isApplicableBleOnAtLeastOneOf($this->products)) {
+                throw new Http400InvalidRequestException("Discount with code `{$this->discount->code}` is not"
+                    . " applicable on current cart");
+            }
         }
     }
 
@@ -165,7 +167,7 @@ class Cart
                 "unitOfMeasure" => "eur"
             ];
 
-            if ($this->discount->isApplicableOn($product)) {
+            if ($this->discount !== null && $this->discount->isApplicableOn($product)) {
                 $lineItem["discountAmount"] = $product->price - $product->getNewPrice($this->discount);
             }
 

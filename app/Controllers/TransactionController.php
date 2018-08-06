@@ -217,4 +217,28 @@ class TransactionController extends BraintreeController
             throw new Http400InvalidRequestException("Unable to refund transaction `id` $transactionId");
         }
     }
+
+
+    /**
+     * Get transactions linked with a subscription
+     *
+     * @param Request $request
+     * @param string $subscriptionId
+     *
+     * @return JsonResponse
+     * @throws Http401UnauthorizedException
+     */
+    public function bySubscription(Request $request, string $subscriptionId)
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (!$user->isSupport()) {
+            throw new Http401UnauthorizedException();
+        }
+
+        $subscription = \Braintree_Subscription::find($subscriptionId);
+
+        return new JsonResponse($subscription->jsonSerialize()["transactions"]);
+    }
 }

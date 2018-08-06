@@ -1,0 +1,14 @@
+/subscriptions:
+  $ref: ./subscriptions/base.yaml
+'/subscriptions/estimate/{planId}':
+  $ref: ./subscriptions/estimate_planId.yaml
+'/subscriptions/by-user/{userId}':
+  $ref: ./subscriptions/by-user_userId.yaml
+'/subscriptions/{subscriptionId}':
+  $ref: ./subscriptions/subscriptionId.yaml
+'/subscriptions/{subscriptionId}/cancel':
+  $ref: ./subscriptions/subscriptionId_cancel.yaml
+'/transaction/{transactionId}':
+  $ref: ./transactions/transactionId.yaml
+'/transaction/{transactionId}/refund':
+  $ref: ./transactions/transactionId_refund.yaml
