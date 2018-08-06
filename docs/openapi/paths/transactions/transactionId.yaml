@@ -9,8 +9,7 @@ get:
     description: The transaction id
     required: true
     schema:
-      type: integer
-      format: string
+      type: string
       example: 024df54z
   responses:
     200:
