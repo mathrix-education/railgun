@@ -1,0 +1,77 @@
+description: User
+type: object
+properties:
+  id:
+    description: The user id.
+    type: integer
+    example: 24
+  email:
+    description: The user email address.
+    type: string
+    format: email
+    example: john.doe@example.com
+  firstname:
+    description: The user first name.
+    type: string
+    example: John
+  lastname:
+    description: The user last name.
+    type: string
+    example: Doe
+  password:
+    decription: The user password.
+    type: string
+    format: password
+  type:
+    description: The user type.
+    type: string
+    enum:
+      - registered
+      - redactor
+      - moderator
+      - admin
+      - support
+  token:
+    description: The user hidden token, which is used for password reset.
+    type: string
+    format: uuid
+  points:
+    description: The user total point count.
+    type: integer
+    example: 850
+  level:
+    description: The user level based on its points amount.
+    type: integer
+    example: 17
+  daily:
+    description: The user daily points objective.
+    type: integer
+    example: 10
+  daily_achievements:
+    description: The number of times when the user achieve his daily objective.
+    type: integer
+    example: 14
+  settings:
+    description: The user settings.
+    type: object
+    properties:
+      sound:
+        description: If the sounds should be activated on the site for this user.
+        type: boolean
+  class_id:
+    description: The class id which belongs to the user.
+    type: integer
+  stripe_id:
+    description: The Stripe customer id which is linked to the user.
+    type: string
+  braintree_id:
+    description: The Braintree customer id whick is linked to the user.
+    type: string
+  created_at:
+    description: The date/time when the object was created.
+    type: string
+    format: date-time
+  updated_at:
+    description: The date/time when the object was updated.
+    type: string
+    format: date-time

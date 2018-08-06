@@ -1,0 +1,15 @@
+description: Quote
+type: object
+properties:
+  id:
+    description: The quote id.
+    type: integer
+    example: 14
+  content:
+    description: The quote content.
+    type: string
+    example: Module id 14 was not found.
+  author:
+    description: The quote author.
+    type: string
+    example: Julien Schneider Le Magnifique
