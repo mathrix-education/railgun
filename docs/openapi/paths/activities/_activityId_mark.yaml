@@ -1,8 +1,8 @@
 patch:
   tags:
   - activities
-  summary: Edit an activity
-  operationId: activitiesPatch
+  summary: Mark an activity
+  operationId: activitiesMark
   parameters:
   - name: activityId
     in: path

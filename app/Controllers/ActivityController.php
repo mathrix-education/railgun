@@ -25,20 +25,6 @@ use Illuminate\Http\Request;
 class ActivityController extends BaseController
 {
     /**
-     * @apiVersion 4.0.0
-     * @api {post} /activities/search Search
-     * @apiGroup Activities
-     * @apiName ActivitiesSearch
-     * @apiDescription Search in activities
-     * @apiPermission moderator
-     * @apiUse Bearer
-     * @apiUse ActivityArray
-     * @apiUse Http400InvalidRequest
-     * @apiUse Http401Unauthorized
-     */
-
-
-    /**
      * @param Request $request
      *
      * @return JsonResponse

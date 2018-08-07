@@ -7,7 +7,15 @@
   $ref: ./activities/_page_perPage.yaml
 /activities/{activityId}:
   $ref: ./activities/_activityId.yaml
-/activities/{search}:
+/activities/{activityId}/mark:
+  $ref: ./activities/_activityId_mark.yaml
+/activities/favorites:
+  $ref: ./activities/_favorites.yaml
+/activities/incomplete:
+  $ref: ./activities/_incomplete.yaml
+/activities/to-revise:
+  $ref: ./activities/_to-revise.yaml
+/activities/search:
   $ref: ./activities/_search.yaml
 
 # -------------
