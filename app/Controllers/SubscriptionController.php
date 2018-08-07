@@ -19,7 +19,7 @@ use Zend\Diactoros\Response\JsonResponse;
  */
 class SubscriptionController extends BraintreeController
 {
-    private const PRICE_PER_MONTH = [
+    public const PRICE_PER_MONTH = [
         "v4_monthly" => 17.90,
         "v4_annually" => 12.90,
         "v4_biannually" => 9.90

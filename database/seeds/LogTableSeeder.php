@@ -21,6 +21,7 @@ class LogTableSeeder extends BaseTableSeeder
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws Exception
      */
     public function run()
     {

@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Utils;
+namespace Tests\Unit;
 
 use App\Models\Setting;
 use Tests\BaseTestCase;
@@ -12,7 +12,7 @@ use Tests\BaseTestCase;
  * @version 4.0.3
  * @package Tests\Utils
  */
-class SettingsUtilsTest extends BaseTestCase
+class SettingsTest extends BaseTestCase
 {
     public function testRead()
     {

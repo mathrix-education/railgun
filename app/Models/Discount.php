@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Interfaces\Purchasable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -17,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $type
  * @property int $value
  * @property Carbon|null $expire_at
+ * @property array $link
  * @property-read Collection|Product[] $products
  * @method static Builder|Discount whereId($value)
  * @method static Builder|Discount whereCode($value)
@@ -31,7 +31,7 @@ class Discount extends BaseModel
     public const TYPES = ["absolute", "percentage"];
 
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "code", "type", "value", "counter"];
+    protected $fillable = ["id", "code", "type", "value", "counter", "expire_at", "link"];
     /** @var array The attributes that should be mutated to dates */
     protected $dates = ["expire_at"];
 
@@ -84,7 +84,7 @@ class Discount extends BaseModel
      *
      * @return bool
      */
-    public function isApplicableBleOnAtLeastOneOf(array $products)
+    public function isApplicableBleOnAtLeastOneOf($products)
     {
         /** @var Product $product */
         foreach ($products as $product) {

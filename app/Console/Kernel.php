@@ -1,11 +1,14 @@
 <?php
 namespace App\Console;
 
+use App\Console\Commands\Clean;
 use App\Console\Commands\Dry;
 use App\Console\Commands\Format\FormatCheckEnvironments;
 use App\Console\Commands\Format\FormatCopyrightChecker;
 use App\Console\Commands\Make\MakeApidoc;
 use App\Console\Commands\Make\MakeTest;
+use App\Console\Commands\Redoc\RedocBundle;
+use App\Console\Commands\Redoc\RedocServe;
 use App\Console\Commands\SetVersion;
 use App\Console\Commands\Sitemap\SitemapAll;
 use App\Console\Commands\Sitemap\SitemapContent;
@@ -28,6 +31,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+        Clean::class,
         Dry::class,
         SetVersion::class,
         // format:
@@ -36,6 +40,9 @@ class Kernel extends ConsoleKernel
         // make:
         MakeApidoc::class,
         MakeTest::class,
+        // redoc:
+        RedocServe::class,
+        RedocBundle::class,
         // sitemap:
         SitemapAll::class,
         SitemapContent::class,

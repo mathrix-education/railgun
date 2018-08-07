@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Utils;
+namespace Tests\Unit;
 
 
 use App\Models\Class_;
@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  * @version 4.0.3
  * @package Tests\Utils
  */
-class ClassUtilsTest extends BaseTestCase
+class ClassTest extends BaseTestCase
 {
     public function testClassCursus()
     {

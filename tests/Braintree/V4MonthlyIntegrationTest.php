@@ -111,7 +111,7 @@ class V4MonthlyIntegrationTest extends BraintreeTestCase
         $user = User::where("type", "=", "admin")->firstOrFail();
         Passport::actingAs($user, ["admin"]);
 
-        $this->json("get", "/subscriptions/{$subscriptionId}/transactions");
+        $this->json("get", "/transactions/by-subscription/{$subscriptionId}");
 
         $responseData = $this->getResponseData();
 

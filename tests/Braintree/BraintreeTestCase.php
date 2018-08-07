@@ -2,10 +2,13 @@
 
 namespace Tests\Braintree;
 
+use App\Exceptions\Http400InvalidRequestException;
+use App\Models\User;
 use Laravel\Lumen\Testing\TestCase;
 use Tests\Traits\DatabaseAssertions;
 use Tests\Traits\Debug;
 use Tests\Traits\HttpAssertionsTrait;
+use Tests\Traits\PassportTrait;
 use Tests\Traits\ResponseTrait;
 
 /**
@@ -19,7 +22,7 @@ use Tests\Traits\ResponseTrait;
  */
 class BraintreeTestCase extends TestCase
 {
-    use HttpAssertionsTrait, DatabaseAssertions, ResponseTrait, Debug;
+    use HttpAssertionsTrait, DatabaseAssertions, ResponseTrait, Debug, PassportTrait;
 
 
     /**
@@ -32,5 +35,23 @@ class BraintreeTestCase extends TestCase
     public function createApplication()
     {
         return require __DIR__ . "/../../bootstrap/app.php";
+    }
+
+
+    /**
+     * Get a Braintree customer
+     *
+     * @return User
+     * @throws Http400InvalidRequestException
+     */
+    public function getBraintreeCustomer(): User
+    {
+        $user = User::random(["type", "=", "registered"]);
+
+        if (!$user->isBraintreeCustomer()) {
+            $user->createBraintreeCustomer("fake-valid-visa-nonce");
+        }
+
+        return $user;
     }
 }

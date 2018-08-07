@@ -11,7 +11,7 @@ use Faker\Generator;
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->define(Product::class, function (Generator $faker) {
-    $name = substr($faker->sentence($faker->numberBetween(3, 5)), 0, -1);
+    $name = substr($faker->sentence($faker->numberBetween(1, 3)), 0, -1);
     $created = $faker->dateTimeBetween("-30 days", "now");
 
     return [

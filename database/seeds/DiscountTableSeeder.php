@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Discount;
+use App\Models\Product;
 
 /**
  * Class DiscountTableSeeder
@@ -20,5 +21,7 @@ class DiscountTableSeeder extends BaseTableSeeder
             "modelClass" => Discount::class,
             "count" => random_int(20, 40)
         ]);
+
+        $this->link(Discount::class, Product::class);
     }
 }

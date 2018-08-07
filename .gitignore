@@ -13,6 +13,7 @@
 
 # apidoc location, as we generate it directly on production
 /docs/apidoc/
+/docs/openapi/index.html
 
 /node_modules/
 /resources/views/emails/**/*.html

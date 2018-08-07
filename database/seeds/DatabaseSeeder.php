@@ -19,8 +19,8 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->call(CommentTableSeeder::class);
         $this->call(MetaTableSeeder::class);
         $this->call(LogTableSeeder::class);
-        $this->call(DiscountTableSeeder::class);
         $this->call(SettingTableSeeder::class);
         $this->call(ProductTableSeeder::class);
+        $this->call(DiscountTableSeeder::class);
     }
 }

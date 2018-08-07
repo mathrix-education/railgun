@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Utils;
+namespace Tests\Unit;
 
 use App\Exceptions\Http400InvalidRequestException;
 use App\Models\Log;
@@ -14,7 +14,7 @@ use Tests\BaseTestCase;
  * @version 4.0.3
  * @package Tests\Utils
  */
-class LogUtilsTest extends BaseTestCase
+class LogTest extends BaseTestCase
 {
     /**
      * @throws Http400InvalidRequestException

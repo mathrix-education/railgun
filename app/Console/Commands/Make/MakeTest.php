@@ -23,7 +23,7 @@ class MakeTest extends Command
         $force = $this->option("force");
 
         $testsPath = app()->basePath("tests/API/" . ucfirst($modelPlural));
-        $stubsPath = __DIR__ . "/stubs";
+        $stubsPath = __DIR__ . "/../stubs";
 
         $version = env("APP_VERSION", "{version}");
 

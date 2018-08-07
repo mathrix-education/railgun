@@ -53,6 +53,17 @@ class Cart
 
 
     /**
+     * Get the cart products
+     *
+     * @return Product[]|Collection
+     */
+    public function getProducts()
+    {
+        return $this->products;
+    }
+
+
+    /**
      * Set the cart products
      *
      * @param int[] $productIds
@@ -85,13 +96,13 @@ class Cart
 
 
     /**
-     * Get the cart products
+     * Get the discount
      *
-     * @return Product[]|Collection
+     * @return Discount|null
      */
-    public function getProducts()
+    public function getDiscount(): ?Discount
     {
-        return $this->products;
+        return $this->discount;
     }
 
 
@@ -102,9 +113,11 @@ class Cart
      *
      * @return Cart
      */
-    public function setDiscount(string $discountCode)
+    public function setDiscount(string $discountCode = null)
     {
-        $this->discount = Discount::where("code", "=", $discountCode)->firstOrFail();;
+        if ($discountCode !== null) {
+            $this->discount = Discount::where("code", "=", $discountCode)->firstOrFail();;
+        }
 
         return $this;
     }
