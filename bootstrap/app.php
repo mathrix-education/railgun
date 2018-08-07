@@ -79,12 +79,13 @@ $app->singleton(
 */
 
 $app->configure("auth");
-$app->configure("cors");
-$app->configure("mail");
-$app->configure("services");
-$app->configure("filesystems");
 $app->configure("backup");
+$app->configure("cors");
+$app->configure("filesystems");
+$app->configure("logging");
+$app->configure("mail");
 $app->configure("queue");
+$app->configure("services");
 
 if ($app->environment("dev")) {
     $app->configure("ide-helper");

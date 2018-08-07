@@ -39,6 +39,9 @@ class SetVersion extends Command
         $this->setVersionInFile("config/env/.env.local", 'APP_VERSION=%version%');
         $this->setVersionInFile("config/env/.env.master", 'APP_VERSION=%version%');
         $this->setVersionInFile("config/env/.env.pipelines", 'APP_VERSION=%version%');
+
+        // docs/openapi/index.yaml
+        $this->setVersionInFile("docs/openapi/index.yaml", "  version: %version%");
     }
 
 
