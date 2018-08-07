@@ -1,0 +1,31 @@
+get:
+  tags:
+  - activities
+  summary: Get all activities
+  operationId: activitiesIndex
+  responses:
+    200:
+      description: An array of activities.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../index.yaml#/components/schemas/Activity'
+post:
+  tags:
+  - activities
+  summary: Create a new activity
+  operationId: activitiesPost
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../index.yaml#/components/requestBodies/Activity'
+  responses:
+    200:
+      description: The newly created activity
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Activity'

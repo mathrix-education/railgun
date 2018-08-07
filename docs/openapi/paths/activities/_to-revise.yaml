@@ -1,0 +1,14 @@
+get:
+  tags:
+  - activities
+  summary: Get user to revise activities
+  operationId: activitiesToRevise
+  responses:
+    200:
+      description: Array of metas describing to revise activities
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../index.yaml#/components/schemas/Meta'

@@ -1,0 +1,4 @@
+Activity:
+  $ref: ./Activity.yaml
+Search:
+  $ref: ./Search.yaml

@@ -214,6 +214,7 @@ abstract class BaseController extends Controller
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
+     * @throws Http422ModelSaveException
      */
     public function delete(Request $request, int $id): JsonResponse
     {
@@ -226,7 +227,10 @@ abstract class BaseController extends Controller
 
         $model->delete();
 
-        return response()->json();
+        return response()->json([
+            "success" => true,
+            "message" => ucfirst(str_singular($this->modelClass::getTableName())) . " id $id was successfully deleted."
+        ]);
     }
 
 

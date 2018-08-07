@@ -4,56 +4,56 @@ properties:
   id:
     description: The meta id.
     type: integer
-    exemple: 33
+    example: 33
   favorite:
-    description: the meta favorite status.
+    description: The meta favorite status.
     type: boolean
-    exemple: false
+    example: false
   to_revise:
-    description: the meta favorite status.
+    description: The meta to_revise status.
     type: boolean
-    exemple: false
-  completed: the meta favorite status.
-    description: the meta completed status.
+    example: false
+  completed:
+    description: The meta completed status.
     type: boolean
-    exemple: false
+    example: false
   user_id:
-    description: the meta user id.
+    description: The user id which belongs to the meta.
     type: integer
-    exemple: 314
+    example: 10
   country_id:
-    description: the meta country id.
+    description: The country id which belongs to the meta.
     type: integer
-    exemple: 314
+    example: 1
   class_id:
-    description: the meta class id.
+    description: The class id which belongs to the meta.
     type: integer
-    exemple: 314
+    example: 12
   discpline_id:
-    description: the meta discipline id.
+    description: The discipline id which belongs to the meta.
     type: integer
-    exemple: 314
+    example: 3
   chapter_id:
-    description: the meta chapter id.
+    description: The chapter id which belongs to the meta.
     type: integer
-    exemple: 314
+    example: 314
   notion_id:
-    description: the meta notion id.
+    description: The notion id which belongs to the meta.
     type: integer
-    exemple: 314
+    example: 164
   activity_id:
-    description: the meta activity id.
+    description: The activty id which belongs to the meta.
     type: integer
-    exemple: 314
+    example: 1422
   module_id:
-    description: the meta module id.
+    description: The module id which belongs to the meta.
     type: integer
-    exemple: 314
+    example: 1745
   created_at:
-    description: The Date/timme when the meta was created.
+    description: The date/time when The meta was created.
     type: string
     format: date-time
   updated_at:
-    description: The Date/timme when the discount was created.
+    description: The date/time when The discount was created.
     type: string
     format: date-time

@@ -4,25 +4,29 @@ properties:
   id:
     description: The discount id.
     type: integer
-    exemple: 33
+    example: 33
   code:
     description: The discount code.
     type: string
-    exemple: lorem
+    example: MODEMACHINE2018
   type:
     description: The discount type.
     type: string
-    exemple: lorem
+    enum:
+      - percentage
+      - absolute
   value:
-    description: The discount value
+    description: The discount value is euro (€).
     type: integer
-    exemple: 93270
+    example: 20.50
   counter:
-    description: The discount counter
+    description: The discount counter (e.g. the number of time the discount can be used). `-1` means unlimited times.
     type: integer
-    exemple: 93
+    example: 93
   expire_at:
-    description: The Date/timme when the discount was created.
+    description: >-
+      The discount expiration date/time. After this date, the discount is considered as expired and cannot be used
+      anymore
     type: string
     format: date-time
 

@@ -10,7 +10,7 @@ properties:
     type: string
     example: Module id 14 was not found.
   module_id:
-    description: The module id which belongs to the report
+    description: The module id which belongs to the report.
     type: integer
     example: 2845
   created_at:

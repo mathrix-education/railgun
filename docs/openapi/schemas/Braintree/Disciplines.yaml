@@ -4,20 +4,20 @@ properties:
   id:
     description: The discipline id.
     type: integer
-    exemple: 33
+    example: 33
   name:
     description: The discipline name.
     type: string
-    exemple: France
+    example: France
   slug:
     description: The discipline slug.
     type: string
-    exemple: france
+    example: france
   beta:
     description: The discipline beta state.
     type: boolean
-    exemple: true
+    example: true
   visible:
     description: The discipline visibility.
     type: boolean
-    exemple: true
+    example: true

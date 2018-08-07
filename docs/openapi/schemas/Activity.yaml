@@ -4,27 +4,33 @@ properties:
   id:
     description: The activity id.
     type: integer
-    exemple: 22
+    example: 22
   name:
     description: The activity name.
     type: string
-    exemple: lorem ipsum
+    example: lorem ipsum
   slug:
     description: The activity slug.
     type: string
-    exemple: lorem_ipsum
+    example: lorem-ipsum
   name_seo:
-    description: The activity name_seo.
+    description: ___Deprecated___. The activity name_seo.
     type: string
-    exemple: lorem_ipsum
+    example: lorem_ipsum
   type:
     description: The activity type.
     type: string
-    enum: [video,course,test,exercise,summary,flashcard]
+    enum:
+      - video
+      - course
+      - test
+      - exercise
+      - summary
+      - flashcard
   visible:
     description: The activity visibility.
     type: boolean
-    exemple: true
+    example: true
 
 
 

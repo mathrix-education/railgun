@@ -12,7 +12,7 @@ properties:
     description: The user id who belongs to the vote.
     type: integer
   votable_id:
-    description: The model which belongs to the vote.
+    description: The model id which belongs to the vote.
     type: integer
   votable_type:
     description: The model type which belongs to the vote.

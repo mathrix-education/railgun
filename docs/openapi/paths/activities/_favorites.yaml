@@ -1,0 +1,14 @@
+get:
+  tags:
+    - activities
+  summary: Get user favorite activties
+  operationId: activitiesFavorite
+  responses:
+    200:
+      description: Array of metas describing favorite activities
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../index.yaml#/components/schemas/Meta'

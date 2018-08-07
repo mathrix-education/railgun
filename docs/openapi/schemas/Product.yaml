@@ -18,7 +18,7 @@ properties:
     type: string
     example: https://cdn.mathrix.fr/products/example.jpg
   type:
-    description: The product type (compatibility with the old traning system)
+    description: The product type (compatibility with the old traning system).
     type: string
     enum:
       - pack

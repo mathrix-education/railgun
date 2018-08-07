@@ -8,7 +8,7 @@ properties:
   content:
     description: The quote content.
     type: string
-    example: Module id 14 was not found.
+    example: T’inquiètes, l’Institut ça se fait en deux heures.
   author:
     description: The quote author.
     type: string

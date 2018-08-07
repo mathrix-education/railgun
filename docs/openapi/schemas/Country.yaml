@@ -4,16 +4,16 @@ properties:
   id:
     description: The contry id.
     type: integer
-    exemple: 33
+    example: 33
   name:
     description: The contry name.
     type: string
-    exemple: France
+    example: France
   slug:
     description: The contry slug.
     type: string
-    exemple: france
+    example: france
   visible:
     description: The chapter visibility.
     type: boolean
-    exemple: true
+    example: true

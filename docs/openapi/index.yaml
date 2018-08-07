@@ -10,17 +10,23 @@ servers:
 - url: 'https://api.mathrix.fr/'
 - url: 'https://dev.api.mathrix.fr/'
 tags:
+- name: activities
+  description: Activities API
 - name: subscriptions
   description: Braintree subscriptions API
+- name: transactions
+  description: Braintree transactions API
 security:
 - bearerAuth: []
 components:
-  schemas:
-    $ref: ./schemas/index.yaml
+  requestBodies:
+    $ref: ./requestBodies/index.yaml
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
+  schemas:
+    $ref: ./schemas/index.yaml
 paths:
   $ref: ./paths/index.yaml
