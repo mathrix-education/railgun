@@ -42,4 +42,17 @@ class DiscountObserver extends BaseObserver
 
         return true;
     }
+
+
+    /**
+     * @param Discount $discount
+     *
+     * @return bool
+     */
+    public function deleting($discount)
+    {
+        $discount->products()->detach();
+
+        return true;
+    }
 }

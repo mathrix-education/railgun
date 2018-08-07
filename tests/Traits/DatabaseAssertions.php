@@ -39,11 +39,9 @@ trait DatabaseAssertions
         foreach ($data as $field => $value) {
             if ($value === true) {
                 $data[$field] = 1;
-            }
-            if ($value === false) {
+            } else if ($value === false) {
                 $data[$field] = 0;
-            }
-            if ($value instanceof \DateTime) {
+            } else if ($value instanceof \DateTime) {
                 $data[$field] = $value->format("Y-m-d H:i:s");
             }
         }

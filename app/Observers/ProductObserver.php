@@ -53,6 +53,7 @@ class ProductObserver extends BaseObserver
      */
     public function deleting($product)
     {
+        $product->discounts()->detach();
         $product->parents()->detach();
         $product->children()->detach();
 

@@ -45,8 +45,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Product extends BaseModel
 {
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["name", "slug", "image", "type", "description", "price", "modeul_id", "created_at",
-        "updated_at"];
+    protected $fillable = ["name", "slug", "image", "type", "description", "price", "visible", "order", "module_id",
+        "created_at", "updated_at"];
     protected $rules = [
         "name" => "required|max:255",
         "slug" => "required|max:255",
@@ -99,6 +99,17 @@ class Product extends BaseModel
 
 
     /**
+     * BelongsToMany Discount
+     *
+     * @return BelongsToMany
+     */
+    public function discounts()
+    {
+        return $this->belongsToMany(Discount::class);
+    }
+
+
+    /**
      * Get the product price after the application of the given discount
      *
      * @param Discount $discount
@@ -109,7 +120,7 @@ class Product extends BaseModel
     {
         if ($discount === null) {
             return $this->price;
-        } else if(!$discount->isApplicableOn($this)) {
+        } else if (!$discount->isApplicableOn($this)) {
             return $this->price;
         } else if ($discount->type === "percentage") {
             return $this->price * (1 - $discount->value / 100);
