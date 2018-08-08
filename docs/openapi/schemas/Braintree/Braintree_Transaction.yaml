@@ -23,6 +23,7 @@ properties:
   customerDetails:
     $ref: '../../index.yaml#/components/schemas/Braintree_CustomerDetails'
   id:
+    description: The transaction id.
     type: string
     example: 024df54z
   descriptor:

@@ -124,7 +124,7 @@ class ProductController extends BaseController
      * @throws Http422ModelValidationException
      * @throws ValidationException
      */
-    public function sale(Request $request)
+    public function sale(Request $request): JsonResponse
     {
         $user = $request->user();
 

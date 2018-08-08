@@ -71,4 +71,4 @@ delete:
               message:
                 description: The deletetion message.
                 type: string
-                example: Activity id 14 was successfully deleted.
+                example: Activity id 45 was successfully deleted.

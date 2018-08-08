@@ -12,7 +12,7 @@ use Laravel\Lumen\Routing\Controller;
  * @since 4.1.0
  * @copyright Mathrix Education SA
  */
-abstract class BraintreeController extends Controller
+class BraintreeController extends Controller
 {
     /** @var array The Mathrix Education SA descriptor for payments */
     public const BRAINTREE_DESCRIPTOR = [

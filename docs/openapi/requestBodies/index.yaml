@@ -1,4 +1,8 @@
 Activity:
   $ref: ./Activity.yaml
+Cart:
+  $ref: ./Cart.yaml
+Product:
+  $ref: ./Product.yaml
 Search:
   $ref: ./Search.yaml

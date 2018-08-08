@@ -38,7 +38,7 @@ properties:
     description: The product visibility.
     type: boolean
   order:
-    description: The product order.
+    description: The product order (only used to sort non-child product).
     type: integer
     example: 2
   module_id:

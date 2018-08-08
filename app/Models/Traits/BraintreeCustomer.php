@@ -1,5 +1,5 @@
 <?php
-namespace App\Models\Braintree;
+namespace App\Models\Traits;
 
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Cache;
  * @since 4.1.0
  * @copyright Mathrix Education SA
  */
-trait Customer
+trait BraintreeCustomer
 {
     /**
      * Get the Brain customer cache used to get customer information from the cache
@@ -95,7 +95,6 @@ trait Customer
      */
     public function createBraintreeCustomer(string $paymentMethodNonce = null): \Braintree_Customer
     {
-        /** @var \Braintree_Gateway $braintree */
         if (!$this->isBraintreeCustomer(true)) {
             $braintreeId = "cus_" . str_replace("-", "", \Faker\Factory::create()->uuid);
 

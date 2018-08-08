@@ -31,18 +31,5 @@ class Dry extends Command
      */
     public function handle()
     {
-        $customer = User::random();
-        $customer->createBraintreeCustomer("fake-valid-visa-nonce");
-
-        $cart = new Cart();
-
-        $request = $cart->setCustomer($customer)
-            ->setProducts([3, 4, 5])
-            //->setDiscount("MODEMACHINE2018")
-            ->getBraintreeSaleRequest();
-
-        echo json_encode($request, JSON_PRETTY_PRINT) . "\n";
-
-        dd(json_encode(\Braintree_Transaction::sale($request)), JSON_PRETTY_PRINT);
     }
 }

@@ -18,6 +18,20 @@
 /activities/search:
   $ref: ./activities/_search.yaml
 
+
+# --------
+# Products
+# --------
+/products:
+  $ref: ./products/_.yaml
+/products/{productId}:
+  $ref: ./products/_productId.yaml
+/products/buy:
+  $ref: ./products/_buy.yaml
+/products/sale:
+  $ref: ./products/_sale.yaml
+
+
 # -------------
 # Subscriptions
 # -------------
@@ -31,6 +45,7 @@
   $ref: ./subscriptions/_subscriptionId.yaml
 /subscriptions/{subscriptionId}/cancel:
   $ref: ./subscriptions/_subscriptionId_cancel.yaml
+
 
 # ------------
 # Transactions

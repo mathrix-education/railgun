@@ -1,0 +1,20 @@
+description: Cart
+type: object
+properties:
+  cart:
+    description: An array of product ids.
+    type: array
+    items:
+      description: A product id
+      type: integer
+    example: [14, 15, 16]
+  discount:
+    description: A discount code.
+    type: string
+    example: MODEMACHINE2018
+  payment_method_nonce:
+    description: The payment nonce if the user is not already a Braintree customer.
+    type: string
+    example: 4qs54za5
+required:
+  - cart

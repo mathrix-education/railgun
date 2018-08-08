@@ -12,6 +12,8 @@ servers:
 tags:
 - name: activities
   description: Activities API
+- name: products
+  description: Products API
 - name: subscriptions
   description: Braintree subscriptions API
 - name: transactions

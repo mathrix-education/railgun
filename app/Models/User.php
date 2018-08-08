@@ -1,8 +1,10 @@
 <?php
 namespace App\Models;
 
+use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http401UnauthorizedException;
-use App\Models\Braintree\Customer;
+use App\Models\Traits\BraintreeCustomer;
+use App\Models\Traits\StripeCustomer;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -74,9 +76,12 @@ use Laravel\Passport\Token;
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
-    use Authenticatable, Authorizable, HasApiTokens, Customer {
+    use Authenticatable, Authorizable, HasApiTokens, BraintreeCustomer, StripeCustomer {
         HasApiTokens::tokenCan as passportTokenCan;
     }
+
+    private const STRIPE_PLANS = ["v3_monthly", "v3_annually", "v3_biannually"];
+    private const BRAINTREE_PLANS = ["v4_monthly", "v4_annually", "v4_biannually"];
 
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
@@ -331,14 +336,11 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * premium attribute
      *
      * @return bool
-     * @throws \App\Exceptions\Http400InvalidRequestException
+     * @throws Http400InvalidRequestException
      */
     public function getPremiumAttribute()
     {
-        return $this->hasBraintreeSubscription([
-            "v4_monthly",
-            "v4_annually",
-            "v4_biannually"
-        ]);
+        return $this->hasStripeSubscription(self::STRIPE_PLANS) ||
+            $this->hasBraintreeSubscription(self::BRAINTREE_PLANS);
     }
 }
