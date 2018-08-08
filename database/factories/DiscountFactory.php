@@ -15,7 +15,7 @@ $factory->define(Discount::class, function (Generator $faker) {
 
     switch ($type) {
         case "absolute":
-            $value = random_int(3, 10) * 100;
+            $value = random_int(3, 10);
             break;
         case "percentage":
             $value = random_int(1, 3) * 10;
