@@ -44,6 +44,7 @@ class SitemapContent extends Command
             ]
         ];
         $dashboardsSitemap = [];
+        $disciplinesSitemap = [];
         $chaptersSitemap = [];
         $notionsSitemap = [];
         $modulesSitemap = [];
@@ -60,6 +61,12 @@ class SitemapContent extends Command
 
                 /** @var Discipline $discipline */
                 foreach ($class->disciplines as $discipline) {
+                    $dashboardsSitemap[] = [
+                        "url" => $this->url("/{$country->slug}/{$class->slug}/{$discipline->slug}"),
+                        "lastmod" => $today,
+                        "priority" => 0.9
+                    ];
+
                     /** @var Chapter $chapter */
                     foreach ($discipline->chapters as $chapter) {
                         $chaptersSitemap[] = [
