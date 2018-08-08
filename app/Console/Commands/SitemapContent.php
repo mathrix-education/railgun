@@ -61,7 +61,7 @@ class SitemapContent extends Command
 
                 /** @var Discipline $discipline */
                 foreach ($class->disciplines as $discipline) {
-                    $dashboardsSitemap[] = [
+                    $disciplinesSitemap[] = [
                         "url" => $this->url("/{$country->slug}/{$class->slug}/{$discipline->slug}"),
                         "lastmod" => $today,
                         "priority" => 0.9
