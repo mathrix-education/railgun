@@ -123,6 +123,7 @@ class SitemapContent extends Command
 
                                         foreach ($videosIds as $videoId) {
                                             $videos[] = [
+                                                "title" => $activity->name,
                                                 "thumbnail_loc" => "http://img.youtube.com/vi/$videoId/sddefault.jpg",
                                                 "player_loc" => [
                                                     "player_loc" => "https://www.youtube.com/v/$videoId",
