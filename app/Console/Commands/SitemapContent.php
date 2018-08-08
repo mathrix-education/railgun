@@ -64,8 +64,9 @@ class SitemapContent extends Command
                     $disciplinesSitemap[] = [
                         "url" => $this->url("/{$country->slug}/{$class->slug}/{$discipline->slug}"),
                         "lastmod" => $today,
-                        "priority" => 0.9
+                        "priority" => 0.8
                     ];
+
 
                     /** @var Chapter $chapter */
                     foreach ($discipline->chapters as $chapter) {
@@ -77,7 +78,7 @@ class SitemapContent extends Command
                                     $chapter->slug,
                                 ])),
                             "lastmod" => $today,
-                            "priority" => 0.8
+                            "priority" => 0.7
                         ];
 
                         /** @var Notion $notion */
@@ -92,7 +93,7 @@ class SitemapContent extends Command
                                         $notion->slug
                                     ])),
                                 "lastmod" => $today,
-                                "priority" => 0.7
+                                "priority" => 0.6
                             ];
 
                             /** @var Activity $activity */
@@ -144,7 +145,7 @@ class SitemapContent extends Command
                                                 $module->id
                                             ])),
                                         "lastmod" => $today,
-                                        "priority" => 0.6,
+                                        "priority" => 0.5,
                                         "videos" => $videos
                                     ];
                                 }
