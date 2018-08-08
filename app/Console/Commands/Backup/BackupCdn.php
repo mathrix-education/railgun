@@ -1,5 +1,5 @@
 <?php
-namespace App\Console\Commands;
+namespace App\Console\Commands\Backup;
 
 use Carbon\Carbon;
 use Illuminate\Console\Command;

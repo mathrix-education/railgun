@@ -10,6 +10,7 @@
   "require": {
     "php": ">=7.1",
     "ext-json": "*",
+    "ext-zip": "*",
     "barryvdh/laravel-cors": "^0.11",
     "braintree/braintree_php": "^3.35",
     "drewm/mailchimp-api": "^2.5",
@@ -28,7 +29,6 @@
     "spatie/laravel-newsletter": "^4.1",
     "stripe/stripe-php": "^6.15",
     "tinify/tinify": "^1.5",
-    "ext-zip": "*"
     "vlucas/phpdotenv": "~2.2"
   },
   "require-dev": {

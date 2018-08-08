@@ -1,6 +1,7 @@
 <?php
 namespace App\Console;
 
+use App\Console\Commands\Backup\BackupCdn;
 use App\Console\Commands\Clean;
 use App\Console\Commands\Dry;
 use App\Console\Commands\Format\FormatCheckEnvironments;
@@ -12,7 +13,6 @@ use App\Console\Commands\Redoc\RedocServe;
 use App\Console\Commands\SetVersion;
 use App\Console\Commands\Sitemap\SitemapAll;
 use App\Console\Commands\Sitemap\SitemapContent;
-use App\Console\Commands\BackupCdn;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
@@ -35,6 +35,8 @@ class Kernel extends ConsoleKernel
         Clean::class,
         Dry::class,
         SetVersion::class,
+        // backup:
+        BackupCdn::class,
         // format:
         FormatCopyrightChecker::class,
         FormatCheckEnvironments::class,
@@ -46,8 +48,7 @@ class Kernel extends ConsoleKernel
         RedocBundle::class,
         // sitemap:
         SitemapAll::class,
-        SitemapContent::class,
-        BackupCdn::class
+        SitemapContent::class
     ];
 
 
