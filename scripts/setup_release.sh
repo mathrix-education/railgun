@@ -23,7 +23,7 @@ echo "Running gulp install"
 gulp install --silent
 
 echo "Building documentation"
-redoc-cli bundle redoc-cli bundle docs/openapi/index.yaml
+redoc-cli bundle bundle docs/openapi/index.yaml
 mv redoc-static.html docs/openapi/index.html
 
 echo "Linking storage directory"

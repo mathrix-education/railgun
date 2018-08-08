@@ -1,6 +1,7 @@
 <?php
 namespace App\Observers;
 
+use App\Exceptions\Http422ModelSaveException;
 use App\Models\Activity;
 use App\Models\Chapter;
 use App\Models\Meta;
@@ -67,6 +68,7 @@ class NotionObserver extends BaseObserver
      * @param Notion $notion
      *
      * @return bool
+     * @throws Http422ModelSaveException
      */
     public function deleting($notion)
     {
