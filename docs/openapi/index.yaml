@@ -12,12 +12,16 @@ servers:
 tags:
 - name: activities
   description: Activities API
+- name: categories
+  description: Categories API
 - name: products
   description: Products API
 - name: subscriptions
   description: Braintree subscriptions API
 - name: transactions
   description: Braintree transactions API
+- name: users
+  description: Users API
 security:
 - bearerAuth: []
 components:

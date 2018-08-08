@@ -6,12 +6,16 @@ Braintree_ApplePayCard:
   $ref: ./Braintree/Braintree_ApplePayCard.yaml
 Braintree_CreditCardDetails:
   $ref: ./Braintree/Braintree_CreditCardDetails.yaml
+Braintree_Customer:
+  $ref: ./Braintree/Braintree_Customer.yaml
 Braintree_CustomerDetails:
   $ref: ./Braintree/Braintree_CustomerDetails.yaml
 Braintree_Descriptor:
   $ref: ./Braintree/Braintree_Descriptor.yaml
 Braintree_LineItem:
   $ref: ./Braintree/Braintree_LineItem.yaml
+Braintree_PaymentMethod:
+  $ref: ./Braintree/Braintree_PaymentMethod.yaml
 Braintree_PayPalDetails:
   $ref: ./Braintree/Braintree_PayPalDetails.yaml
 Braintree_MasterpassCardDetails:

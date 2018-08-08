@@ -19,6 +19,17 @@
   $ref: ./activities/_search.yaml
 
 
+# ----------
+# Activities
+# ----------
+/categories:
+  $ref: ./categories/_.yaml
+/categories/{page}/{perPage}:
+  $ref: ./categories/_page_perPage.yaml
+/categories/{categoryId}:
+  $ref: ./categories/_categoryId.yaml
+
+
 # --------
 # Products
 # --------
@@ -54,3 +65,12 @@
   $ref: ./transactions/_transactionId.yaml
 /transaction/{transactionId}/refund:
   $ref: ./transactions/_transactionId_refund.yaml
+
+
+# ------------
+# Transactions
+# ------------
+/users:
+  $ref: ./users/_.yaml
+/users/{user_id}:
+  $ref: ./users/_userId.yaml

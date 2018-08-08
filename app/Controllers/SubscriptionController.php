@@ -7,6 +7,7 @@ use App\Exceptions\Http401UnauthorizedException;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Laravel\Lumen\Routing\Controller;
 use Zend\Diactoros\Response\JsonResponse;
 
 /**
@@ -17,7 +18,7 @@ use Zend\Diactoros\Response\JsonResponse;
  * @since 4.1.0
  * @copyright Mathrix Education SA
  */
-class SubscriptionController extends BraintreeController
+class SubscriptionController extends Controller
 {
     public const PRICE_PER_MONTH = [
         "v4_monthly" => 17.90,
@@ -30,11 +31,10 @@ class SubscriptionController extends BraintreeController
      * Generate an unique transaction id based on an uuid and the prefix sub_
      *
      * @return string
-     * @throws Http400InvalidRequestException
      */
-    private function generateTransactionId()
+    private function generateSubscriptionId(): string
     {
-        return $this->generateId("sub_");
+        return "sub" . str_replace("-", "", \Faker\Factory::create()->uuid);
     }
 
 
@@ -165,7 +165,7 @@ class SubscriptionController extends BraintreeController
         $plan = $request->input("plan");
 
         $data = [
-            "id" => $this->generateTransactionId(),
+            "id" => $this->generateSubscriptionId(),
             "planId" => $request->input("plan"),
             "neverExpires" => true,
             "paymentMethodToken" => $user->getBraintreeDefaultPaymentMethodToken()
@@ -183,7 +183,6 @@ class SubscriptionController extends BraintreeController
             $chargeResult = \Braintree_Transaction::sale([
                 "amount" => $this->getTrialPrice($plan),
                 "customerId" => $user->braintree_id,
-                //"descriptor" => self::BRAINTREE_DESCRIPTOR,
                 "options" => [
                     "submitForSettlement" => true,
                     "paypal" => [

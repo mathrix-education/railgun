@@ -26,11 +26,13 @@ class Dry extends Command
 
     public function handle()
     {
-        $user = User::random();
-        $user->braintree_id = "cus_lol";
-        $user->save();
+        $query = "cus_234602f88ab637328518db0597330348";
+        $results = \Braintree_Customer::search([
+            \Braintree_CustomerSearch::id()->contains($query)
+        ]);
 
-        $user = User::whereId($user->id)->first();
-        dd($user->toArray());
+        foreach ($results as $customer) {
+            dd($customer);
+        }
     }
 }

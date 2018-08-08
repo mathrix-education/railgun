@@ -7,6 +7,7 @@ use App\Models\User;
 use Braintree_TransactionSearch;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Laravel\Lumen\Routing\Controller;
 
 /**
  * Class TransactionController
@@ -16,7 +17,7 @@ use Illuminate\Http\Request;
  * @since
  * @copyright Mathrix Education SA
  */
-class TransactionController extends BraintreeController
+class TransactionController extends Controller
 {
     /**
      * Find a transaction by its id

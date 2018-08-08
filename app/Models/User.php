@@ -44,6 +44,7 @@ use Laravel\Passport\Token;
  * @property string|null $stripe_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property-read \Braintree_Customer|null $braintree
  * @property-read bool $premium
  * @property-read int $daily_points
  * @property-read Class_ $class_
@@ -108,8 +109,14 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     /** @var array The relations to include by default */
     protected $with = ["class_", "purchases"];
     /** @var array The virtual attributes */
-    protected $appends = ["premium", "daily_points"];
+    protected $appends = ["premium", "daily_points", "braintree"];
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Passport
+    |--------------------------------------------------------------------------
+    */
 
     /**
      * Determine if user can do something according to its token
@@ -179,36 +186,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Passport
-    |--------------------------------------------------------------------------
-    */
-    /**
-     * daily_points attribute
-     *
-     * @return int
-     */
-    public function getDailyPointsAttribute()
-    {
-        $logs = Log::where([
-            ["event", "user_gathered_points"],
-            ["user_id", $this->id],
-        ])
-            ->whereBetween("created_at", [Carbon::now()->setTime(0, 0, 0), Carbon::now()])
-            ->get();
-
-        $sum = 0;
-
-        /** @var Log $log */
-        foreach ($logs as $log) {
-            $sum += $log->value["points"];
-        }
-
-        return $sum;
-    }
-
-
     /**
      * Check if user is authorized to do something; if not throw an exception
      *
@@ -223,19 +200,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         if ($this->cant($ability, $arguments) && class_exists($exceptionClass)) {
             throw new $exceptionClass();
         }
-    }
-
-
-    /**
-     * @param Product $product
-     *
-     * @return bool
-     */
-    public function hasPurchased(Product $product): bool
-    {
-        return $this->products()
-            ->where("product_id", "=", $product->id)
-            ->exists();
     }
 
 
@@ -333,6 +297,31 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     |--------------------------------------------------------------------------
     */
     /**
+     * daily_points attribute
+     *
+     * @return int
+     */
+    public function getDailyPointsAttribute()
+    {
+        $logs = Log::where([
+            ["event", "user_gathered_points"],
+            ["user_id", $this->id],
+        ])
+            ->whereBetween("created_at", [Carbon::now()->setTime(0, 0, 0), Carbon::now()])
+            ->get();
+
+        $sum = 0;
+
+        /** @var Log $log */
+        foreach ($logs as $log) {
+            $sum += $log->value["points"];
+        }
+
+        return $sum;
+    }
+
+
+    /**
      * premium attribute
      *
      * @return bool
@@ -342,5 +331,34 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     {
         return $this->hasStripeSubscription(self::STRIPE_PLANS) ||
             $this->hasBraintreeSubscription(self::BRAINTREE_PLANS);
+    }
+
+
+    /**
+     * braintree attribute
+     *
+     * @return \Braintree_Customer|null
+     */
+    public function getBraintreeAttribute(): ?\Braintree_Customer
+    {
+        return $this->isBraintreeCustomer() ? $this->getBraintreeCustomer() : null;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Products-related
+    |--------------------------------------------------------------------------
+    */
+    /**
+     * @param Product $product
+     *
+     * @return bool
+     */
+    public function hasPurchased(Product $product): bool
+    {
+        return $this->products()
+            ->where("product_id", "=", $product->id)
+            ->exists();
     }
 }

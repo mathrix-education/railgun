@@ -69,6 +69,6 @@ delete:
                 type: boolean
                 default: true
               message:
-                description: The deletetion message.
+                description: The deletion message.
                 type: string
                 example: Activity id 45 was successfully deleted.
