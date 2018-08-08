@@ -50,6 +50,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/http" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/log" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/mail" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/notifications" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/pagination" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/pipeline" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/queue" />
