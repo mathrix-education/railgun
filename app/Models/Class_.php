@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @since 1.0.0
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- *
  * @property int $id
  * @property string $name
  * @property string $name_short
@@ -39,6 +38,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Class_ whereVisible($value)
  * @method static Builder|Class_ whereParentId($value)
  * @method static Builder|Class_ whereCountryId($value)
+ * @mixin \Eloquent
  */
 class Class_ extends BaseModel
 {

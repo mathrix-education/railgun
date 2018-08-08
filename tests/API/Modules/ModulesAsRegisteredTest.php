@@ -24,7 +24,7 @@ class ModulesAsRegisteredTest extends ModulesAsPublicTest
      */
     public function testGetPremiumAsNonPremium()
     {
-        $user = User::doesntHave("subscriptions")->whereType($this->user->type)->firstOrFail();
+        $user = User::whereNull("braintree_id")->whereType($this->user->type)->firstOrFail();
         Passport::actingAs($user, [$user->type]);
 
         /** @var Module $module */

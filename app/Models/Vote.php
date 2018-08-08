@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @since 1.0.0
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- *
  * @property int $id
  * @property int $value
  * @property int|null $user_id
@@ -31,6 +30,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @method static Builder|Vote whereVotableType($value)
  * @method static Builder|Vote whereUpdatedAt($value)
  * @method static Builder|Vote whereCreatedAt($value)
+ * @mixin \Eloquent
  */
 class Vote extends BaseModel
 {

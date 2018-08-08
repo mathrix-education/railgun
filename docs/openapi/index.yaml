@@ -1,0 +1,34 @@
+openapi: 3.0.1
+info:
+  title: Mathrix Education SA API
+  version: 4.1.0
+  description: This is the official documentation of Mathrix Education SA API.
+  contact:
+    name: Mathieu Bour
+    email: mathieu.tin.bour@gmail.com
+servers:
+- url: 'https://api.mathrix.fr/'
+- url: 'https://dev.api.mathrix.fr/'
+tags:
+- name: activities
+  description: Activities API
+- name: products
+  description: Products API
+- name: subscriptions
+  description: Braintree subscriptions API
+- name: transactions
+  description: Braintree transactions API
+security:
+- bearerAuth: []
+components:
+  requestBodies:
+    $ref: ./requestBodies/index.yaml
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    $ref: ./schemas/index.yaml
+paths:
+  $ref: ./paths/index.yaml

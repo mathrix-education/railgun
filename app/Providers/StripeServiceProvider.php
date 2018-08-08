@@ -18,7 +18,6 @@ class StripeServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        Stripe::setApiVersion(env("STRIPE_API_VERSION"));
         Stripe::setApiKey(env("STRIPE_SECRET"));
         Cashier::useCurrency("eur");
     }

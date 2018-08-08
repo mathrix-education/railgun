@@ -2,38 +2,51 @@
 # Define the GtLab Pipelines behaviour
 
 stages:
-  - test
-  - deploy
+- test
+- deploy
 
-
-#--------------------------------------------------------------------------
-# Run unit tests
-#--------------------------------------------------------------------------
 tests:
   image: edbizarro/gitlab-ci-pipeline-php:7.2
   stage: test
   services:
-    - mysql:5.7
+  - mysql:5.7
   variables:
     MYSQL_DATABASE: mathrix_fr_pipelines
     MYSQL_ROOT_PASSWORD: 3AEzrLrSh8j8xJfyHAdB
   script:
-    # Setup project files
-    - cp config/env/.env.pipelines .env
-    - composer install --prefer-dist -q --no-ansi --no-interaction --no-suggest
-    - php artisan migrate:refresh --seed
-    # PHPUnit (need to sudo to avoid permissions problems)
-    - sudo ./vendor/bin/paratest -p16 --runner=WrapperRunner --coverage-text --configuration=phpunit.xml
+  - cp config/env/.env.pipelines .env
+  - composer install --prefer-dist -q --no-ansi --no-interaction --no-suggest
+  - php artisan migrate:refresh --seed
+  - sudo ./vendor/bin/paratest -p16 --runner=WrapperRunner --configuration=phpunit.xml
   artifacts:
     paths:
-      - storage/logs/lumen.log
+    - storage/logs/lumen.log
     expire_in: 1 days
     when: always
+  except:
+  - master
 
+tests_cover:
+  image: edbizarro/gitlab-ci-pipeline-php:7.2
+  stage: test
+  services:
+  - mysql:5.7
+  variables:
+    MYSQL_DATABASE: mathrix_fr_pipelines
+    MYSQL_ROOT_PASSWORD: 3AEzrLrSh8j8xJfyHAdB
+  script:
+  - cp config/env/.env.pipelines .env
+  - composer install --prefer-dist -q --no-ansi --no-interaction --no-suggest
+  - php artisan migrate:refresh --seed
+  - sudo ./vendor/bin/paratest -p16 --runner=WrapperRunner --coverage-text --configuration=phpunit.xml
+  artifacts:
+    paths:
+    - storage/logs/lumen.log
+    expire_in: 1 days
+    when: always
+  only:
+  - master
 
-#--------------------------------------------------------------------------
-# Deploy dev to web00.mathrix.fr
-#--------------------------------------------------------------------------
 deploy_web00:
   image: toby1991/laravel-envoy
   stage: deploy
@@ -41,14 +54,10 @@ deploy_web00:
     name: dev
     url: https://dev.api.mathrix.fr
   script:
-    - scripts/deploy.sh dev
+  - scripts/deploy.sh dev
   only:
-    - dev
+  - dev
 
-
-#--------------------------------------------------------------------------
-# Deploy master to web01.mathrix.fr
-#--------------------------------------------------------------------------
 deploy_web01:
   image: toby1991/laravel-envoy
   stage: deploy
@@ -56,7 +65,7 @@ deploy_web01:
     name: master
     url: https://api.mathrix.fr
   script:
-    - scripts/deploy.sh master
+  - scripts/deploy.sh master
   when: manual
   only:
-    - master
+  - master

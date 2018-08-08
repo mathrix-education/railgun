@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @since 1.0.0
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- *
  * @property int $id
  * @property string $event
  * @property int|null $user_id
@@ -34,6 +33,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @method static Builder|Log whereLoggableType($value)
  * @method static Builder|Log whereUserId($value)
  * @method static Builder|Log whereValue($value)
+ * @mixin \Eloquent
  */
 class Log extends BaseModel
 {

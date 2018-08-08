@@ -13,7 +13,6 @@ use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use ReflectionClass;
-use Stripe\Error\Base as StripeException;
 use Symfony\Component\HttpKernel\Exception\HttpException as SymphonyHttpException;
 
 /**
@@ -46,7 +45,6 @@ class Handler extends ExceptionHandler
         Http422ModelValidationException::class,
         Http429TooManyRequestsException::class,
         Http501NotImplementedException::class,
-        StripeException::class
     ];
 
 
@@ -122,21 +120,6 @@ class Handler extends ExceptionHandler
         // Handle validation exceptions
         if ($e instanceof ValidationException) {
             $json["errors"] = $e->errors(); // @codeCoverageIgnore
-        }
-
-        // Handle stripe exceptions
-        if ($e instanceof StripeException) {
-            $jsonBody = $e->getJsonBody();
-
-            if (!empty($jsonBody["error"])) {
-                $jsonBody = $jsonBody["error"];
-                if (!empty($jsonBody["message"])) {
-                    unset($jsonBody["message"]);
-                    $json["data"] = $jsonBody;
-                }
-            }
-
-            $overriddenStatusCode = 400;
         }
 
         // Include trace in debug mode

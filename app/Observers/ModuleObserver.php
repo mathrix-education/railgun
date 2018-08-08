@@ -6,6 +6,7 @@ use App\Models\Lesson;
 use App\Models\Meta;
 use App\Models\Module;
 use App\Models\Post;
+use App\Models\Product;
 use App\Models\Report;
 
 /**
@@ -49,13 +50,14 @@ class ModuleObserver extends BaseObserver
      * @param Module $module
      *
      * @return bool
+     * @throws \App\Exceptions\Http422ModelSaveException
      */
     public function deleting($module)
     {
         $module->activities()->detach();
         Meta::whereModuleId($module->id)->delete();
         Post::whereModuleId($module->id)->delete();
-        Lesson::whereModuleId($module->id)->delete();
+        Product::whereModuleId($module->id)->delete();
         Report::whereModuleId($module->id)->delete();
 
         return true;

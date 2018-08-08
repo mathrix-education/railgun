@@ -32,10 +32,11 @@ class AuthServiceProvider extends ServiceProvider
 
         // Passport tokens definition
         Passport::tokensCan([
-            'admin' => 'Administrator',
-            'moderator' => 'Moderator',
-            'redactor' => 'Redactor',
-            'registered' => 'Registered'
+            "admin" => "Administrator",
+            "moderator" => "Moderator",
+            "redactor" => "Redactor",
+            "registered" => "Registered",
+            "support" => "Support"
         ]);
     }
 }

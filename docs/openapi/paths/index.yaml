@@ -1,0 +1,56 @@
+# ----------
+# Activities
+# ----------
+/activities:
+  $ref: ./activities/_.yaml
+/activities/{page}/{perPage}:
+  $ref: ./activities/_page_perPage.yaml
+/activities/{activityId}:
+  $ref: ./activities/_activityId.yaml
+/activities/{activityId}/mark:
+  $ref: ./activities/_activityId_mark.yaml
+/activities/favorites:
+  $ref: ./activities/_favorites.yaml
+/activities/incomplete:
+  $ref: ./activities/_incomplete.yaml
+/activities/to-revise:
+  $ref: ./activities/_to-revise.yaml
+/activities/search:
+  $ref: ./activities/_search.yaml
+
+
+# --------
+# Products
+# --------
+/products:
+  $ref: ./products/_.yaml
+/products/{productId}:
+  $ref: ./products/_productId.yaml
+/products/buy:
+  $ref: ./products/_buy.yaml
+/products/sale:
+  $ref: ./products/_sale.yaml
+
+
+# -------------
+# Subscriptions
+# -------------
+/subscriptions:
+  $ref: ./subscriptions/_.yaml
+/subscriptions/estimate/{planId}:
+  $ref: ./subscriptions/_estimate_planId.yaml
+/subscriptions/by-user/{userId}:
+  $ref: ./subscriptions/_by-user_userId.yaml
+/subscriptions/{subscriptionId}:
+  $ref: ./subscriptions/_subscriptionId.yaml
+/subscriptions/{subscriptionId}/cancel:
+  $ref: ./subscriptions/_subscriptionId_cancel.yaml
+
+
+# ------------
+# Transactions
+# ------------
+/transaction/{transactionId}:
+  $ref: ./transactions/_transactionId.yaml
+/transaction/{transactionId}/refund:
+  $ref: ./transactions/_transactionId_refund.yaml

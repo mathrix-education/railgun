@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @since 1.0.0
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- *
  * @property int $id
  * @property string $name
  * @property string $slug
@@ -33,6 +32,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Chapter whereSlug($value)
  * @method static Builder|Chapter whereOrder($value)
  * @method static Builder|Chapter whereVisible($value)
+ * @property-read bool $fully_visible
+ * @mixin \Eloquent
  */
 class Chapter extends BaseModel
 {

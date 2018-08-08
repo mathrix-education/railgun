@@ -234,7 +234,7 @@ class UserController extends BaseController
         /** @var User $user */
         $user = $request->user();
         $user = User::where("id", $user->id)
-            ->with(["class_", "purchases", "subscriptions"])
+            ->with(["class_", "purchases"])
             ->firstOrFail();
 
         return response()->json($user);
@@ -301,7 +301,10 @@ class UserController extends BaseController
                 ["loggable_type", $loggableType],
                 ["loggable_id", $loggable->id],
             ])
-                ->whereBetween("created_at", [Carbon::now()->setTime(0, 0, 0), Carbon::now()])
+                ->whereBetween("created_at", [
+                    Carbon::now()->setTime(0, 0, 0),
+                    Carbon::now()
+                ])
                 ->exists();
 
             // User already gathered point from this loggable today
@@ -345,40 +348,31 @@ class UserController extends BaseController
 
 
     /**
-     * @apiVersion 4.0.3
-     * @api {post} /users/sponsor Check sponsor
-     * @apiGroup Users
-     * @apiName UserSponsor
-     * @apiDescription Check if a user has bought the training
-     * @apiPermission registered for self update, admin otherwise
-     * @apiUse Bearer
-     * @apiParam (Data) {string} sponsor_email The sponsor email
-     * @apiParam (Data) {int} training_id The training id
-     * @apiSuccess {bool} sponsor If the user has bought the training
-     * @apiError (Error 400) invalid_request training_id cannot be null
-     * @apiError (Error 400) invalid_request points field has to be a positive integer
-     * @apiUse Http401Unauthorized
-     * @apiUse Http404ModelNotFound
-     *
      * @param Request $request
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
+     * @throws \Illuminate\Validation\ValidationException
      */
-    public function sponsor(Request $request)
+    public function updatePaymentMethod(Request $request)
     {
-        $sponsorEmail = $request->input("sponsor_email", false);
-        $trainingId = $request->input("training_id", false);
+        /** @var User $user */
+        $user = $request->user();
 
-        if (!$sponsorEmail || !$trainingId) {
-            throw new Http400InvalidRequestException("training_id cannot be null");
+        $this->validate($request, [
+            "payment_method_nonce" => "required"
+        ]);
+
+        if (!$user->isBraintreeCustomer()) {
+            $user->createBraintreeCustomer();
         }
 
-        $training = Training::where("id", "=", $trainingId)->firstOrFail();
-        $user = User::whereEmail($sponsorEmail)->firstOrFail();
+        $result = $user->addBraintreePaymentMethod($request->input("payment_method_nonce"));
 
-        return new JsonResponse([
-            "sponsor" => $user->hasPurchased($training)
-        ]);
+        if ($result->success) {
+            return new JsonResponse(User::find($user->id));
+        } else {
+            throw new Http400InvalidRequestException("Unable to update customer payment method");
+        }
     }
 }

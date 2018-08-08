@@ -1,0 +1,74 @@
+get:
+  tags:
+    - activities
+  summary: Get an activity
+  operationId: activtiesGet
+  parameters:
+  - name: activityId
+    in: path
+    description: The activity id
+    required: true
+    schema:
+      type: int
+      example: 34
+  responses:
+    200:
+      description: The activity
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Activity'
+patch:
+  tags:
+  - activities
+  summary: Edit an activity
+  operationId: activitiesPatch
+  parameters:
+  - name: activityId
+    in: path
+    description: The activity id
+    required: true
+    schema:
+      type: int
+      example: 45
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../index.yaml#/components/requestBodies/Activity'
+  responses:
+    200:
+      description: The activity
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Activity'
+delete:
+  tags:
+  - activities
+  summary: Delete an activity
+  operationId: activitiesDelete
+  parameters:
+  - name: activityId
+    in: path
+    description: The activity id
+    required: true
+    schema:
+      type: int
+      example: 45
+  responses:
+    200:
+      description: The deletion result
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                description: If the deletion was sucessful.
+                type: boolean
+                default: true
+              message:
+                description: The deletetion message.
+                type: string
+                example: Activity id 45 was successfully deleted.

@@ -1,14 +1,18 @@
 <?php
 namespace App\Console;
 
+use App\Console\Commands\Clean;
+use App\Console\Commands\Dry;
+use App\Console\Commands\Format\FormatCheckEnvironments;
+use App\Console\Commands\Format\FormatCopyrightChecker;
+use App\Console\Commands\Make\MakeApidoc;
+use App\Console\Commands\Make\MakeTest;
+use App\Console\Commands\Redoc\RedocBundle;
+use App\Console\Commands\Redoc\RedocServe;
+use App\Console\Commands\SetVersion;
+use App\Console\Commands\Sitemap\SitemapAll;
+use App\Console\Commands\Sitemap\SitemapContent;
 use App\Console\Commands\BackupCdn;
-use App\Console\Commands\MailchimpSyncFromStripe;
-use App\Console\Commands\MakeApidoc;
-use App\Console\Commands\MakeTest;
-use App\Console\Commands\SitemapAll;
-use App\Console\Commands\SitemapContent;
-use App\Console\Commands\StripeCancelPremiums;
-use App\Console\Commands\SyncStripeSubscriptions;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
@@ -28,13 +32,21 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+        Clean::class,
+        Dry::class,
+        SetVersion::class,
+        // format:
+        FormatCopyrightChecker::class,
+        FormatCheckEnvironments::class,
+        // make:
         MakeApidoc::class,
         MakeTest::class,
+        // redoc:
+        RedocServe::class,
+        RedocBundle::class,
+        // sitemap:
         SitemapAll::class,
         SitemapContent::class,
-        SyncStripeSubscriptions::class,
-        MailchimpSyncFromStripe::class,
-        StripeCancelPremiums::class,
         BackupCdn::class
     ];
 

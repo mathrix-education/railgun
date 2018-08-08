@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @since 1.0.0
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- *
  * @property int $id
  * @property bool $favorite
  * @property bool $to_revise
@@ -49,6 +48,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Meta whereUpdatedAt($value)
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @mixin \Eloquent
  */
 class Meta extends BaseModel
 {

@@ -1,19 +1,18 @@
 <?php
 namespace App\Models;
 
+use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http401UnauthorizedException;
-use App\Models\Interfaces\Purchasable;
+use App\Models\Traits\BraintreeCustomer;
+use App\Models\Traits\StripeCustomer;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Laravel\Cashier\Billable;
-use Laravel\Cashier\Subscription;
 use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\Client;
 use Laravel\Passport\HasApiTokens;
@@ -27,7 +26,6 @@ use Laravel\Passport\Token;
  * @since 1.0.0
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- *
  * @property int $id
  * @property string|null $username
  * @property string $email
@@ -42,10 +40,8 @@ use Laravel\Passport\Token;
  * @property int $daily_achievements
  * @property array $settings
  * @property int|null $class_id
+ * @property string|null $braintree_id
  * @property string|null $stripe_id
- * @property string|null $card_brand
- * @property string|null $card_last_four
- * @property string|null $trial_ends_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read bool $premium
@@ -56,36 +52,36 @@ use Laravel\Passport\Token;
  * @property-read Collection|Log[] $logs
  * @property-read Collection|Meta[] $meta
  * @property-read Collection|Purchase[] $purchases
- * @property-read Collection|Subscription[] $subscriptions
  * @property-read Collection|Token[] $tokens
  * @property-read Collection|Vote[] $votes
  * @method static Builder|User whereId($value)
- * @method static Builder|User whereClassId($value)
+ * @method static Builder|User whereUsername($value)
  * @method static Builder|User whereEmail($value)
- * @method static Builder|User whereFacebookToken($value)
  * @method static Builder|User whereFirstname($value)
  * @method static Builder|User whereLastname($value)
  * @method static Builder|User whereToken($value)
  * @method static Builder|User wherePassword($value)
+ * @method static Builder|User whereType($value)
  * @method static Builder|User wherePoints($value)
  * @method static Builder|User whereLevel($value)
  * @method static Builder|User whereDaily($value)
  * @method static Builder|User whereDailyAchievements($value)
  * @method static Builder|User whereSettings($value)
- * @method static Builder|User whereType($value)
- * @method static Builder|User whereUsername($value)
- * @method static Builder|User whereCardBrand($value)
- * @method static Builder|User whereCardLastFour($value)
+ * @method static Builder|User whereClassId($value)
+ * @method static Builder|User whereBraintreeId($value)
  * @method static Builder|User whereStripeId($value)
- * @method static Builder|User whereTrialEndsAt($value)
  * @method static Builder|User whereCreatedAt($value)
  * @method static Builder|User whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
-    use Authenticatable, Authorizable, HasApiTokens, Billable {
+    use Authenticatable, Authorizable, HasApiTokens, BraintreeCustomer, StripeCustomer {
         HasApiTokens::tokenCan as passportTokenCan;
     }
+
+    private const STRIPE_PLANS = ["v3_monthly", "v3_annually", "v3_biannually"];
+    private const BRAINTREE_PLANS = ["v4_monthly", "v4_annually", "v4_biannually"];
 
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
@@ -103,7 +99,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "firstname" => "nullable|max:60",
         "lastname" => "nullable|max:60",
         "password" => "required|min:3",
-        "type" => "required|in:registered,redactor,moderator,admin",
+        "type" => "required|in:registered,redactor,moderator,admin,support",
         "token" => "required|size:36",
         "points" => "required|integer",
         "daily" => "nullable|in:10,20,40",
@@ -113,17 +109,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     protected $with = ["class_", "purchases"];
     /** @var array The virtual attributes */
     protected $appends = ["premium", "daily_points"];
-
-
-    /**
-     * Check if user is at least moderator
-     *
-     * @return bool
-     */
-    public function isModerator()
-    {
-        return $this->tokenCan("moderator");
-    }
 
 
     /**
@@ -162,6 +147,17 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
 
     /**
+     * Check if user is at least moderator
+     *
+     * @return bool
+     */
+    public function isModerator()
+    {
+        return $this->tokenCan("moderator");
+    }
+
+
+    /**
      * Check if user is administrator
      *
      * @return bool
@@ -169,6 +165,17 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function isAdmin()
     {
         return $this->tokenCan("admin");
+    }
+
+
+    /**
+     * Check if user is administrator
+     *
+     * @return bool
+     */
+    public function isSupport()
+    {
+        return $this->tokenCan("admin") || $this->tokenCan("support");
     }
 
 
@@ -220,45 +227,15 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
 
     /**
-     * Update customer card or create the Stripe customer if the user is not already a Stripe customer
-     *
-     * @param string $stripeToken
-     */
-    public function updateCardOrCreateStripeCustomer(string $stripeToken)
-    {
-        if (!$this->hasStripeId()) {
-            $this->createAsStripeCustomer($stripeToken);
-        } else {
-            $this->updateCard($stripeToken);
-        }
-    }
-
-
-    /**
-     * @param Purchasable $purchasable
+     * @param Product $product
      *
      * @return bool
      */
-    public function hasPurchased(Purchasable $purchasable): bool
+    public function hasPurchased(Product $product): bool
     {
-        return $this->purchases()->where([
-            ["purchasable_id", "=", $purchasable->id],
-            ["purchasable_type", "=", $purchasable->getType()]
-        ])->exists();
-    }
-
-
-    /**
-     * @param Purchasable $purchasable
-     *
-     * @return Model|HasMany|object
-     */
-    public function getPurchase(Purchasable $purchasable)
-    {
-        return $this->purchases()->where([
-            ["purchasable_id", "=", $purchasable->id],
-            ["purchasable_type", "=", $purchasable->getType()]
-        ])->first();
+        return $this->products()
+            ->where("product_id", "=", $product->id)
+            ->exists();
     }
 
 
@@ -316,6 +293,17 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
 
     /**
+     * HasManyThrough Product
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, "purchases");
+    }
+
+
+    /**
      * HasMany Purchase
      *
      * @return HasMany
@@ -348,9 +336,11 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * premium attribute
      *
      * @return bool
+     * @throws Http400InvalidRequestException
      */
     public function getPremiumAttribute()
     {
-        return $this->subscribed("premium");
+        return $this->hasStripeSubscription(self::STRIPE_PLANS) ||
+            $this->hasBraintreeSubscription(self::BRAINTREE_PLANS);
     }
 }

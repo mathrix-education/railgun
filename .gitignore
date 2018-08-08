@@ -1,11 +1,11 @@
 /.env
 /_ide_helper.php
 /.phpstorm.meta.php
+**/.phpunit.result.cache
 
 # User-specific stuff:
 /.idea/**/workspace.xml
 /.idea/dataSources/
-/.idea/dataSources*
 /.idea/dictionaries
 /.idea/httpRequests/
 /.idea/deployment.xml
@@ -13,12 +13,10 @@
 
 # apidoc location, as we generate it directly on production
 /docs/apidoc/
+/docs/openapi/index.html
 
 /node_modules/
 /resources/views/emails/**/*.html
 /resources/views/emails/**/*.blade.php
-/storage/backups/
 /storage/code-coverage/
-/storage/sitemaps/
 /vendor/
-

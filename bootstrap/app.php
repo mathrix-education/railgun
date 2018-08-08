@@ -79,12 +79,13 @@ $app->singleton(
 */
 
 $app->configure("auth");
-$app->configure("cors");
-$app->configure("mail");
-$app->configure("services");
-$app->configure("filesystems");
 $app->configure("backup");
+$app->configure("cors");
+$app->configure("filesystems");
+$app->configure("logging");
+$app->configure("mail");
 $app->configure("queue");
+$app->configure("services");
 
 if ($app->environment("dev")) {
     $app->configure("ide-helper");
@@ -131,19 +132,6 @@ if ($app->environment("local", "dev")) {
 }
 
 $app->register(App\Providers\AppServiceProvider::class);
-$app->register(App\Providers\AuthServiceProvider::class);
-$app->register(Illuminate\Mail\MailServiceProvider::class);
-$app->register(App\Providers\NewsletterServiceProvider::class);
-$app->register(Laravel\Passport\PassportServiceProvider::class);
-$app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
-$app->register(Barryvdh\Cors\ServiceProvider::class);
-$app->register(Illuminate\Filesystem\FilesystemServiceProvider::class);
-$app->register(Roumen\Sitemap\SitemapServiceProvider::class);
-$app->register(App\Providers\GoogleDriveServiceProvider::class);
-$app->register(Backup\BackupServiceProvider::class);
-$app->register(App\Providers\EventServiceProvider::class);
-$app->register(App\Providers\PolicyServiceProvider::class);
-$app->register(App\Providers\TinifyServiceProvider::class);
 
 
 if ($app->environment("stage", "master")) {
