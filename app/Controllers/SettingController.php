@@ -140,6 +140,7 @@ class SettingController extends BaseController
      * @param string $key
      *
      * @return JsonResponse
+     * @throws Http422ModelSaveException
      */
     public function forgot(Request $request, string $key)
     {

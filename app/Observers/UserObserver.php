@@ -10,7 +10,6 @@ use App\Models\User;
 use Carbon\Carbon;
 use Faker\Factory;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Newsletter\NewsletterFacade as Newsletter;
 
 /**
  * Class UserObserver

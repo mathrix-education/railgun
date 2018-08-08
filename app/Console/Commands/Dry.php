@@ -2,9 +2,7 @@
 namespace App\Console\Commands;
 
 use App\Models\User;
-use App\Services\Braintree\Cart;
 use App\Services\Braintree\Formatter;
-use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 /**
@@ -26,10 +24,13 @@ class Dry extends Command
     }
 
 
-    /**
-     * @throws \App\Exceptions\Http400InvalidRequestException
-     */
     public function handle()
     {
+        $user = User::random();
+        $user->braintree_id = "cus_lol";
+        $user->save();
+
+        $user = User::whereId($user->id)->first();
+        dd($user->toArray());
     }
 }

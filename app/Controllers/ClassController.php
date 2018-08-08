@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Exceptions\Http401UnauthorizedException;
+use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http501NotImplementedException;
 use App\Models\Class_;
 use Illuminate\Http\JsonResponse;
@@ -92,6 +93,7 @@ class ClassController extends BaseController
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
+     * @throws Http422ModelSaveException
      * @throws Http501NotImplementedException
      */
     public function delete(Request $request, int $id): JsonResponse

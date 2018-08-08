@@ -1,12 +1,6 @@
 <?php
 namespace App\Controllers;
 
-use App\Exceptions\Http401UnauthorizedException;
-use App\Exceptions\Http501NotImplementedException;
-use App\Models\Activity;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-
 /**
  * Class CategoryController
  *

@@ -1,19 +1,9 @@
 <?php
 
-use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
-use App\Models\Activity;
-use App\Models\Chapter;
-use App\Models\Class_;
-use App\Models\Discipline;
-use App\Models\Log;
-use App\Models\Meta;
-use App\Models\Module;
-use App\Models\Notion;
 use App\Models\Report;
 use App\Models\User;
-use Carbon\Carbon;
 
 /**
  * Class UserTableSeeder

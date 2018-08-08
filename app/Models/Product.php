@@ -1,7 +1,6 @@
 <?php
 namespace App\Models;
 
-use App\Exceptions\Http400InvalidRequestException;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -126,6 +125,8 @@ class Product extends BaseModel
             return $this->price * (1 - $discount->value / 100);
         } else if ($discount->type === "absolute") {
             return $this->price - $discount->value;
+        } else {
+            return $this->price;
         }
     }
 }

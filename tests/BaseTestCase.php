@@ -1,14 +1,10 @@
 <?php
 namespace Tests;
 
-use App\Models\Log;
-use App\Models\User;
-use Carbon\Carbon;
 use Faker\Factory;
 use Faker\Generator;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Laravel\Lumen\Testing\TestCase;
-use Laravel\Passport\Passport;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Tests\Traits\DatabaseAssertions;
 use Tests\Traits\Debug;

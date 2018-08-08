@@ -1,9 +1,6 @@
 <?php
 namespace Tests\API\Modules;
 
-use App\Models\Activity;
-use App\Models\Module;
-
 /**
  * Class ModulesAsModeratorTest
  * Test modules as moderator

@@ -2,12 +2,8 @@
 
 namespace Tests\API\Users;
 
-use App\Mails\PasswordForgottenMail;
-use App\Mails\PasswordResetMail;
 use App\Models\Class_;
 use App\Models\User;
-use Illuminate\Support\Facades\Mail;
-use Laravel\Passport\Passport;
 use Tests\API\ScopeTestCase;
 
 /**

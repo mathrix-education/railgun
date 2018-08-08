@@ -58,6 +58,8 @@ class CommentsAsPublicTest extends ScopeTestCase
 
     /**
      * GET /comments/by-wtf/{wtf_id} -> HTTP 400 Invalid Request
+     *
+     * @throws \Exception
      */
     public function testByNotExist()
     {

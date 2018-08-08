@@ -1,7 +1,6 @@
 <?php
 namespace App\Controllers;
 
-use App\Exceptions\Http404ModelNotFoundException;
 use App\Models\Chapter;
 use App\Models\Class_;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -168,16 +167,11 @@ class ChapterController extends BaseController
      * @apiParam {int} id the chapter id
      * @apiUse ChapterArray
      *
-     * @param Request $request
      * @param int $id
-     * => function($q) {
-     * return  $q->where(["visible", 1]);
-     * }
      *
      * @return JsonResponse
-     * @throws Http404ModelNotFoundException
      */
-    public function recursive(Request $request, int $id)
+    public function recursive(int $id)
     {
         /** @var Chapter $data */
         $data = Chapter::with([

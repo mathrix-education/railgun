@@ -71,10 +71,16 @@ trait StripeCustomer
     /**
      * @return \Stripe\Customer
      */
-    public function getStripeCustomer(): \Stripe\Customer
+    public function getStripeCustomer(): ?\Stripe\Customer
     {
         return Cache::remember($this->getStripeCustomerCacheKey(), 5, function () {
-            return \Stripe\Customer::retrieve($this->stripe_id);
+            try {
+                return \Stripe\Customer::retrieve($this->stripe_id);
+            } catch (\Stripe\Error\InvalidRequest $e) {
+                $this->stripe_id = null;
+                $this->save();
+                return null;
+            }
         });
     }
 
@@ -107,7 +113,7 @@ trait StripeCustomer
             $plans = [$plans];
         }
 
-        if ($this->isStripeCustomer()) {
+        if ($this->isStripeCustomer(true)) {
             /** @var \Stripe\Subscription $subscription */
             foreach ($this->getStripeSubscriptions() as $subscription) {
                 if (

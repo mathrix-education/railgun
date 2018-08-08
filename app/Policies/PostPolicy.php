@@ -13,6 +13,8 @@ use App\Models\User;
 class PostPolicy extends BasePolicy
 {
     /**
+     * @param User $currentUser
+     *
      * @return bool
      */
     public function add(User $currentUser)

@@ -1,6 +1,5 @@
 <?php
 namespace Tests\API\Discounts;
-use App\Models\Discount;
 
 /**
  * Class DiscountsAsRegisteredTest

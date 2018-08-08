@@ -68,7 +68,9 @@ class ActivityObserver extends BaseObserver
     {
         $activity->notions()->detach();
         $activity->modules()->detach();
-        Meta::whereActivityId($activity->id)->delete();
+        Meta::whereActivityId($activity->id)->get()->each(function (Meta $meta) {
+            $meta->delete();
+        });
 
         return true;
     }

@@ -1,10 +1,11 @@
 <?php
 namespace App\Models;
 
+use App\Exceptions\Http422ModelSaveException;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Model Section
+ * Model Setting
  *
  * @package App\Models
  * @since 1.0.1
@@ -14,10 +15,10 @@ use Illuminate\Database\Eloquent\Builder;
  * @property string $key
  * @property string $value
  * @property bool $visible
- * @method static Builder|Section whereId($value)
- * @method static Builder|Section whereKey($value)
- * @method static Builder|Section whereValue($value)
- * @method static Builder|Section whereVisible($value)
+ * @method static Builder|Setting whereId($value)
+ * @method static Builder|Setting whereKey($value)
+ * @method static Builder|Setting whereValue($value)
+ * @method static Builder|Setting whereVisible($value)
  * @mixin \Eloquent
  */
 class Setting extends BaseModel
@@ -78,6 +79,7 @@ class Setting extends BaseModel
      * @param string $key the setting key
      *
      * @return bool|null
+     * @throws Http422ModelSaveException
      */
     public static function forgot(string $key)
     {

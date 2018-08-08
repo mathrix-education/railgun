@@ -3,7 +3,6 @@ namespace App\Providers;
 
 use App\Exceptions\Http400InvalidRequestException;
 use Braintree_Configuration;
-use Braintree_Gateway;
 use Illuminate\Support\ServiceProvider;
 
 /**

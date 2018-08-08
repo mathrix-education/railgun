@@ -77,10 +77,16 @@ trait BraintreeCustomer
     /**
      * @return \Braintree_Customer
      */
-    public function getBraintreeCustomer(): \Braintree_Customer
+    public function getBraintreeCustomer(): ?\Braintree_Customer
     {
         return Cache::remember(self::getBraintreeCustomerCacheKey(), 5, function () {
-            return \Braintree_Customer::find($this->braintree_id);
+            try {
+                return \Braintree_Customer::find($this->braintree_id);
+            } catch (\Braintree\Exception\NotFound $e) {
+                $this->braintree_id = null;
+                $this->save();
+                return null;
+            }
         });
     }
 
@@ -240,20 +246,22 @@ trait BraintreeCustomer
 
         $subscriptions = [];
 
-        /** @var \Braintree_CreditCard $creditCard */
-        foreach ($this->getBraintreeCustomer()->creditCards as $creditCard) {
-            /** @var \Braintree_Subscription $subscription */
-            foreach ($creditCard->subscriptions as $subscription) {
-                $subscriptions[] = $subscription;
+        if ($this->isBraintreeCustomer()) {
+            /** @var \Braintree_CreditCard $creditCard */
+            foreach ($this->getBraintreeCustomer()->creditCards as $creditCard) {
+                /** @var \Braintree_Subscription $subscription */
+                foreach ($creditCard->subscriptions as $subscription) {
+                    $subscriptions[] = $subscription;
+                }
             }
-        }
 
 
-        /** @var \Braintree_CreditCard $creditCard */
-        foreach ($this->getBraintreeCustomer()->paypalAccounts as $paypalAccount) {
-            /** @var \Braintree_Subscription $subscription */
-            foreach ($paypalAccount->subscriptions as $subscription) {
-                $subscriptions[] = $subscription;
+            /** @var \Braintree_CreditCard $creditCard */
+            foreach ($this->getBraintreeCustomer()->paypalAccounts as $paypalAccount) {
+                /** @var \Braintree_Subscription $subscription */
+                foreach ($paypalAccount->subscriptions as $subscription) {
+                    $subscriptions[] = $subscription;
+                }
             }
         }
 
@@ -275,7 +283,7 @@ trait BraintreeCustomer
             $plans = [$plans];
         }
 
-        if ($this->isBraintreeCustomer()) {
+        if ($this->isBraintreeCustomer(true)) {
             /** @var \Braintree_Subscription $subscription */
             foreach ($this->getBraintreeSubscriptions() as $subscription) {
                 if (in_array($subscription->planId, $plans)) {

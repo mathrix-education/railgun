@@ -58,7 +58,9 @@ class ChapterObserver extends BaseObserver
     public function deleting($chapter)
     {
         $chapter->notions()->detach();
-        Meta::whereChapterId($chapter->id)->delete();
+        Meta::whereChapterId($chapter->id)->get()->each(function (Meta $meta) {
+            $meta->delete();
+        });
 
         return true;
     }

@@ -57,7 +57,9 @@ class ModuleObserver extends BaseObserver
         $module->activities()->detach();
         Meta::whereModuleId($module->id)->delete();
         Post::whereModuleId($module->id)->delete();
-        Product::whereModuleId($module->id)->delete();
+        Product::whereModuleId($module->id)->get()->each(function (Product $product) {
+            $product->delete();
+        });
         Report::whereModuleId($module->id)->delete();
 
         return true;
