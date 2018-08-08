@@ -21,14 +21,14 @@ class ProductTableSeeder extends BaseTableSeeder
     {
         $this->seedFromFactory([
             "modelClass" => Product::class,
-            "count" => 50
+            "count" => 300
         ]);
 
         $faker = Faker\Factory::create();
 
-        $products1 = Product::where("id", "<", 6)->get();
-        $products2 = Product::where([["id", ">", 6], ["id", "<", 15]])->get();
-        $products3 = Product::where("id", ">", 16)->get();
+        $products1 = Product::where("id", "<", 50)->get();
+        $products2 = Product::where([["id", ">", 51], ["id", "<", 150]])->get();
+        $products3 = Product::where("id", ">", 151)->get();
 
         $this->println("<comment>Linking:</comment> products <=> products");
         $this->output->progressStart($products1->count() + $products2->count());

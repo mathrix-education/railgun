@@ -2,28 +2,21 @@
 <phpunit
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/7.3/phpunit.xsd"
-        backupGlobals="false"
-        backupStaticAttributes="false"
         bootstrap="bootstrap/app.php"
-        colors="true"
-        convertErrorsToExceptions="true"
-        convertNoticesToExceptions="true"
-        convertWarningsToExceptions="true"
-        processIsolation="false"
-        stopOnFailure="false">
+        colors="true">
     <testsuites>
         <testsuite name="REST API Test Suite">
-            <directory suffix="Test.php">./tests/API</directory>
+            <directory>./tests/API</directory>
         </testsuite>
         <testsuite name="Braintree Test Suite">
-            <directory suffix="Test.php">./tests/Braintree</directory>
+            <directory>./tests/Braintree</directory>
         </testsuite>
         <testsuite name="Utils Test Suite">
-            <directory suffix="Test.php">./tests/Utils</directory>
+            <directory>./tests/Unit</directory>
         </testsuite>
     </testsuites>
     <filter>
-        <whitelist processUncoveredFilesFromWhitelist="false">
+        <whitelist>
             <directory suffix=".php">./app</directory>
             <exclude>
                 <directory>./app/Console</directory>
