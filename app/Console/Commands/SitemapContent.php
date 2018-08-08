@@ -157,6 +157,7 @@ class SitemapContent extends Command
 
         // Finally, register all links
         $this->saveSitemap($dashboardsSitemap, "sitemap.dashboards");
+        $this->saveSitemap($disciplinesSitemap, "sitemap.disciplines");
         $this->saveSitemap($chaptersSitemap, "sitemap.chapters");
         $this->saveSitemap($notionsSitemap, "sitemap.notions");
         $this->saveSitemap($modulesSitemap, "sitemap.modules");
