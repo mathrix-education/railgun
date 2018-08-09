@@ -54,7 +54,8 @@ deploy_web00:
     name: dev
     url: https://dev.api.mathrix.fr
   script:
-  - scripts/deploy.sh dev
+    - scripts/deploy.sh dev
+  when: manual
   only:
   - dev
 
