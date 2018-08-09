@@ -39,7 +39,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Product whereModuleId($value)
  * @method static Builder|Product whereCreatedAt($value)
  * @method static Builder|Product whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 class Product extends BaseModel
 {

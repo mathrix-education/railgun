@@ -6,6 +6,7 @@ use App\Console\Commands\Clean;
 use App\Console\Commands\Dry;
 use App\Console\Commands\Format\FormatCheckEnvironments;
 use App\Console\Commands\Format\FormatCopyrightChecker;
+use App\Console\Commands\Format\FormatHarmonize;
 use App\Console\Commands\Make\MakeApidoc;
 use App\Console\Commands\Make\MakeTest;
 use App\Console\Commands\Redoc\RedocBundle;
@@ -40,6 +41,7 @@ class Kernel extends ConsoleKernel
         // format:
         FormatCopyrightChecker::class,
         FormatCheckEnvironments::class,
+        FormatHarmonize::class,
         // make:
         MakeApidoc::class,
         MakeTest::class,

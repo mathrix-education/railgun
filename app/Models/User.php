@@ -73,7 +73,6 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereStripeId($value)
  * @method static Builder|User whereCreatedAt($value)
  * @method static Builder|User whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {

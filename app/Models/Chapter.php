@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read Class_ $class_
  * @property-read Discipline $discipline
  * @property-read Collection|Notion[] $notions
+ * @property-read bool $fully_visible
  * @method static Builder|Chapter whereClassId($value)
  * @method static Builder|Chapter whereDisciplineId($value)
  * @method static Builder|Chapter whereId($value)
@@ -32,8 +33,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Chapter whereSlug($value)
  * @method static Builder|Chapter whereOrder($value)
  * @method static Builder|Chapter whereVisible($value)
- * @property-read bool $fully_visible
- * @mixin \Eloquent
  */
 class Chapter extends BaseModel
 {
@@ -90,22 +89,5 @@ class Chapter extends BaseModel
     public function notions(): BelongsToMany
     {
         return $this->belongsToMany(Notion::class)->withPivot(["order"]);
-    }
-
-
-    /**
-     * fully_visible
-     *
-     * @return bool
-     */
-    public function getFullyVisibleAttribute(): bool
-    {
-        foreach ($this->notions as $notion) {
-            if (!$notion->fully_visible) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }

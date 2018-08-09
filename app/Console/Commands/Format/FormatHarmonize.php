@@ -1,0 +1,67 @@
+<?php
+namespace App\Console\Commands\Format;
+
+use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Collection;
+
+/**
+ * Class FormatHarmonize
+ * Fix some format problems
+ *
+ * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @package App\Console\Commands\Format
+ * @since 4.1.0
+ * @copyright Mathrix Education SA
+ */
+class FormatHarmonize extends Command
+{
+    protected $signature = "format:harmonize {--g|go}";
+
+    /** @var boolean $isDryRun */
+    private $isDryRun;
+    /** @var string $basePath */
+    private $basePath;
+    /** @var Collection $processFiles */
+    private $processFiles;
+
+
+    public function handle()
+    {
+        $this->isDryRun = !$this->option("go");
+        $this->basePath = app()->basePath();
+        $this->processFiles = new Collection();
+
+        $this->removeEloquentMixinFromModels();
+        $this->process();
+    }
+
+
+    private function removeEloquentMixinFromModels()
+    {
+        $modelsFiles = glob("{$this->basePath}/app/Models/*.php");
+
+        foreach ($modelsFiles as $modelFile) {
+            $this->processFiles->add([
+                "file" => $modelFile,
+                "search" => "/\s+\*\s+\@mixin\s+\\\\Eloquent/",
+                "replace" => ""
+            ]);
+        }
+    }
+
+
+    private function process()
+    {
+        foreach ($this->processFiles as $todo) {
+
+            $fileContent = file_get_contents($todo["file"]);
+            $fileContent = preg_replace($todo["search"], $todo["replace"], $fileContent);
+
+            $this->line("[<info>\u{2713}</info>] {$todo["file"]}");
+
+            if (!$this->isDryRun) {
+                file_put_contents($todo["file"], $fileContent);
+            }
+        }
+    }
+}

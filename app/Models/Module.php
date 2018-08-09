@@ -30,6 +30,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read Collection|Activity[] $activities
  * @property-read Collection|Comment[] $comments
  * @property-read Collection|Log[] $logs
+ * @property-read mixed $favorite
+ * @property-read mixed $to_revise
+ * @property-read bool $completed
  * @method static Builder|Module whereId($value)
  * @method static Builder|Module wherePremium($value)
  * @method static Builder|Module whereVisible($value)
@@ -40,12 +43,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Module whereOptions($value)
  * @method static Builder|Module whereQuestions($value)
  * @method static Builder|Module whereSolutions($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Training[] $trainings
- * @property-read mixed $favorite
- * @property-read mixed $to_revise
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Lesson[] $lessons
- * @property-read bool $completed
- * @mixin \Eloquent
  */
 class Module extends BaseModel
 {

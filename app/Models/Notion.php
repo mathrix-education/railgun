@@ -31,7 +31,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Notion wherePremium($value)
  * @method static Builder|Notion whereVisible($value)
  * @method static Builder|Notion whereType($value)
- * @mixin \Eloquent
  */
 class Notion extends BaseModel
 {
@@ -83,22 +82,5 @@ class Notion extends BaseModel
     public function chapters(): BelongsToMany
     {
         return $this->belongsToMany(Chapter::class)->withPivot(["order"]);
-    }
-
-
-    /**
-     * fully_visible
-     *
-     * @return bool
-     */
-    public function getFullyVisibleAttribute(): bool
-    {
-        foreach ($this->activities as $activity) {
-            if (!$activity->fully_visible) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }

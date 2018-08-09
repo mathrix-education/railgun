@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 
+use App\Events\NewSubscriptionEvent;
 use App\Exceptions\Http400InvalidPlanException;
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http401UnauthorizedException;
@@ -200,11 +201,17 @@ class SubscriptionController extends Controller
         /** @var \Braintree\Result\Successful|\Braintree\Result\Error $subscriptionResult */
         $subscriptionResult = \Braintree_Subscription::create($data);
 
-        $user->forgetBraintreeCustomerCache(); // Forget cache about the user, as we updated his subscriptions
+        // Forget cache about the user, as we updated his subscriptions
+        $user->forgetBraintreeCustomerCache();
 
         if ($subscriptionResult->success) {
-            $user = User::whereId($user->id)->firstOrFail();
-            return new JsonResponse($user);
+            /** @var \Braintree_Subscription $subscription */
+            $subscription = $subscriptionResult->subscription;
+
+            // Raise event
+            event(new NewSubscriptionEvent($user, $subscription));
+
+            return new JsonResponse($subscription->jsonSerialize());
         } else {
             throw new Http400InvalidRequestException("Unable to create the subscription");
         }

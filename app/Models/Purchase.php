@@ -27,7 +27,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Purchase wherePurchasableType($value)
  * @method static Builder|Purchase whereCreatedAt($value)
  * @method static Builder|Purchase whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 class Purchase extends BaseModel
 {

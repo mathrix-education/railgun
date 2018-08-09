@@ -23,7 +23,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Category whereId($value)
  * @method static Builder|Category whereName($value)
  * @method static Builder|Category whereSlug($value)
- * @mixin \Eloquent
  */
 class Category extends BaseModel
 {

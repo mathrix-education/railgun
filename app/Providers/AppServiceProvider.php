@@ -44,6 +44,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(\Dusterio\LumenPassport\PassportServiceProvider::class);
         $this->app->register(\Illuminate\Filesystem\FilesystemServiceProvider::class);
         $this->app->register(\Illuminate\Mail\MailServiceProvider::class);
+        $this->app->register(\Illuminate\Notifications\NotificationServiceProvider::class);
         $this->app->register(\Illuminate\Redis\RedisServiceProvider::class);
         $this->app->register(\Laravel\Passport\PassportServiceProvider::class);
         $this->app->register(\Roumen\Sitemap\SitemapServiceProvider::class);

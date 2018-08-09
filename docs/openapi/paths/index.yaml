@@ -67,10 +67,8 @@
   $ref: ./transactions/_transactionId_refund.yaml
 
 
-# ------------
-# Transactions
-# ------------
-/users:
-  $ref: ./users/_.yaml
+# -----
+# Users
+# -----
 /users/{user_id}:
   $ref: ./users/_userId.yaml

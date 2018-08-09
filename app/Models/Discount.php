@@ -24,7 +24,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Discount whereValue($value)
  * @method static Builder|Discount whereCounter($value)
  * @method static Builder|Discount whereExpireAt($value)
- * @mixin \Eloquent
  */
 class Discount extends BaseModel
 {

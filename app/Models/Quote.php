@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\Builder;
  * @method static Builder|Quote whereId($value)
  * @method static Builder|Quote whereContent($value)
  * @method static Builder|Quote whereAuthor($value)
- * @mixin \Eloquent
  */
 class Quote extends BaseModel
 {

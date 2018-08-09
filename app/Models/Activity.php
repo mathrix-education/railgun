@@ -38,7 +38,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Activity whereNameSeo($value)
  * @method static Builder|Activity whereType($value)
  * @method static Builder|Activity whereVisible($value)
- * @mixin \Eloquent
  */
 class Activity extends BaseModel implements Commentable
 {
@@ -172,22 +171,5 @@ class Activity extends BaseModel implements Commentable
         ])->first();
 
         return $meta === null ? null : $meta->completed;
-    }
-
-
-    /**
-     * fully_visible
-     *
-     * @return bool
-     */
-    public function getFullyVisibleAttribute(): bool
-    {
-        foreach ($this->modules as $module) {
-            if (!$module->visible) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }
