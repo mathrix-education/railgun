@@ -37,6 +37,9 @@ class FormatHarmonize extends Command
     }
 
 
+    /**
+     * Remove the @mixin \\Eloquent in model classes
+     */
     private function removeEloquentMixinFromModels()
     {
         $modelsFiles = glob("{$this->basePath}/app/Models/*.php");
@@ -51,9 +54,15 @@ class FormatHarmonize extends Command
     }
 
 
+    /**
+     * Remove the lines between the <?php and the namespace
+     */
     private function removeBlankLinesBeforeNamespace()
     {
-        $phpFiles = glob_recursive("{$this->basePath}/app/**.php");
+        $phpFiles = array_merge(
+            glob_recursive("{$this->basePath}/app/**.php"),
+            glob_recursive("{$this->basePath}/database/**.php")
+        );
 
         foreach ($phpFiles as $phpFile) {
             $this->processFiles->add([
@@ -65,6 +74,9 @@ class FormatHarmonize extends Command
     }
 
 
+    /**
+     * Process all files formatting
+     */
     private function process()
     {
         foreach ($this->processFiles as $todo) {
