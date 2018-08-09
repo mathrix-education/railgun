@@ -32,6 +32,7 @@ class FormatHarmonize extends Command
         $this->processFiles = new Collection();
 
         $this->removeEloquentMixinFromModels();
+        $this->removeBlankLinesBeforeNamespace();
         $this->process();
     }
 
@@ -45,6 +46,20 @@ class FormatHarmonize extends Command
                 "file" => $modelFile,
                 "search" => "/\s+\*\s+\@mixin\s+\\\\Eloquent/",
                 "replace" => ""
+            ]);
+        }
+    }
+
+
+    private function removeBlankLinesBeforeNamespace()
+    {
+        $phpFiles = glob_recursive("{$this->basePath}/app/**.php");
+
+        foreach ($phpFiles as $phpFile) {
+            $this->processFiles->add([
+                "file" => $phpFile,
+                "search" => "/\<\?php\n+namespace/",
+                "replace" => "<?php\nnamespace"
             ]);
         }
     }
