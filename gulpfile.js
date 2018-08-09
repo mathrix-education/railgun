@@ -11,6 +11,7 @@ const apidoc = require("gulp-apidoc");
 const clean = require("gulp-clean");
 const replace = require("gulp-replace");
 const mjml = require("gulp-mjml");
+const imagemin = require("gulp-imagemin");
 
 // mjml-related constants
 const mjmlSelectors = {
@@ -87,6 +88,17 @@ gulp.task("remove-eloquent-mixin", function () {
     return gulp.src("app/Models/*.php")
         .pipe(replace(" * @mixin \\Eloquent\n", ""))
         .pipe(gulp.dest("app/Models/"));
+});
+
+/**
+ * Compress cdn images
+ */
+gulp.task("cdn", function() {
+    return gulp.src("storage/cdn/**")
+        .pipe(imagemin([], {
+            verbose: true
+        }))
+        .pipe(gulp.dest("storage/cdn/"));
 });
 
 

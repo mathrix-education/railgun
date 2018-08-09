@@ -27,6 +27,7 @@ class SitemapAll extends Command
         $sitemap = app()->make("sitemap");
 
         $sitemap->addSitemap($this->url("/sitemap.main.xml"));
+        $sitemap->addSitemap($this->url("/sitemap.disciplines.xml"));
         $sitemap->addSitemap($this->url("/sitemap.dashboards.xml"));
         $sitemap->addSitemap($this->url("/sitemap.chapters.xml"));
         $sitemap->addSitemap($this->url("/sitemap.notions.xml"));
