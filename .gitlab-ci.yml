@@ -15,10 +15,7 @@ tests:
     MYSQL_DATABASE: mathrix_fr_pipelines
     MYSQL_ROOT_PASSWORD: 3AEzrLrSh8j8xJfyHAdB
   script:
-  - cp config/env/.env.pipelines .env
-  - composer install --prefer-dist -q --no-ansi --no-interaction --no-suggest
-  - php artisan migrate:refresh --seed
-  - sudo ./vendor/bin/paratest -p16 --runner=WrapperRunner --coverage-text --configuration=phpunit.xml
+  - bash scripts/tasks/tests.sh $CI_COMMIT_REF_NAME
   artifacts:
     paths:
     - storage/logs/
