@@ -1,6 +1,8 @@
 #!/bin/bash
 branch=$1
 
+echo "$branch"
+
 cp config/env/.env.pipelines .env
 composer install --prefer-dist -q --no-ansi --no-interaction --no-suggest
 php artisan migrate:refresh --seed
