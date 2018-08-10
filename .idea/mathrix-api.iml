@@ -61,7 +61,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/translation" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/validation" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/view" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/envoy" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/lumen-framework" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/passport" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/lcobucci/jwt" />
@@ -76,7 +75,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/myclabs/deep-copy" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/nao-pon/flysystem-cached-extra" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/nao-pon/flysystem-google-drive" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/nategood/httpful" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/nesbot/carbon" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/nikic/fast-route" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/paragonie/random_compat" />
