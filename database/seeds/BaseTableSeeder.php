@@ -89,7 +89,7 @@ abstract class BaseTableSeeder extends Seeder
      * Seed database from a json file
      *
      * @param array $options The options
-     *  "table" => $this->>table, $this->modelClass::getTableName()
+     *  "table" => $this->table, $this->modelClass::getTableName()
      *  "directory" => "raws"
      *
      * @throws Exception
@@ -222,7 +222,6 @@ abstract class BaseTableSeeder extends Seeder
 
         // Erase the line
         $this->output->write("\x1B[2K");
-
 
         $this->output->write($message);
     }

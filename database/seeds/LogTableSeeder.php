@@ -32,7 +32,6 @@ class LogTableSeeder extends BaseTableSeeder
         $counter = 0;
 
         $this->println("<comment>Generating:</comment> logs");
-        $this->output->write("Logs generated: 0");
 
         foreach ($users as $user) {
             /** @var User $user */
@@ -62,7 +61,10 @@ class LogTableSeeder extends BaseTableSeeder
                             "created_at" => $dateIterator
                         ])->toArray();
                         $counter++;
-                        $this->overwrite("Logs generated: $counter"); // TODO Fix counter display
+
+                        if ($counter % 100 === 0) {
+                            $this->output->write(".");
+                        }
                     }
                 }
 
@@ -70,7 +72,7 @@ class LogTableSeeder extends BaseTableSeeder
             }
         }
         $this->println("");
-        $this->println("<info>Generated:</info> logs");
+        $this->println("<info>Generated:</info> {$counter} logs");
 
         $this->println("<comment>Seeding:</comment> logs");
         $this->seedFromArray($logs, Log::class);
