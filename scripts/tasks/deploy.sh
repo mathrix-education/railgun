@@ -1,8 +1,8 @@
 #!/bin/sh
 
 # Building variables
-environment=$1
-server=$2
+server=$1
+environment=$2
 release=`date '+%Y-%m-%d_%H-%M-%S'`
 releases_dir=/var/www/${environment}/api/releases
 new_release_dir=${releases_dir}/${release}
