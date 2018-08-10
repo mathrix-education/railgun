@@ -18,8 +18,8 @@ then
 fi
 
 # Setup SSH configuration
-apt-get update -y
-apt-get install openssh-client -y
+#apt-get update -y
+#apt-get install openssh-client -y
 eval $(ssh-agent -s)
 chmod 0600 storage/ssh/${server}_id_rsa
 ssh-add storage/ssh/${server}_id_rsa
@@ -29,4 +29,5 @@ echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
 # Transfer build and deploy
 ssh ${user}@${host} "mkdir -p $new_release_dir"
 scp build.tar.gz ${user}@${host}:${new_release_dir}/build.tar.gz
+ssh ${user}@${host} tar -xvcf ${new_release_dir}/build.tar.gz
 ssh ${user}@${host} sh ${new_release_dir}/scripts/setup_release.sh ${environment} ${release}

@@ -30,13 +30,15 @@ build:
   - sh scripts/tasks/build.sh
   artifacts:
     path:
-    - build.zip
+    - build.tar.gz
     expire_in: 1 days
     when: always
 
 deploy:
-  image: ubuntu:18.04
+  image: doomkin/ubuntu-ssh
   stage: deploy
+  dependencies:
+  - build
   script:
-  - sh scripts/tasks/deploy.sh web00 next
+  - bash scripts/tasks/deploy.sh web00 next
 
