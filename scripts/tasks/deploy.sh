@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Building variables
 server=$1
@@ -27,7 +27,8 @@ mkdir -p ~/.ssh
 echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
 
 # Transfer build and deploy
-ssh ${user}@${host} "mkdir -p $new_release_dir"
+ssh ${user}@${host} mkdir -p ${new_release_dir}
 scp build.tar.gz ${user}@${host}:${new_release_dir}/build.tar.gz
 ssh ${user}@${host} tar -xvf ${new_release_dir}/build.tar.gz
-ssh ${user}@${host} sh ${new_release_dir}/scripts/setup_release.sh ${environment} ${release}
+ssh ${user}@${host} bash ${new_release_dir}/scripts/tasks/setup_release.sh
+ssh ${user}@${host} rm -rf ${new_release_dir}/scripts

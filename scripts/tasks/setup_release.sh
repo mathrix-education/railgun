@@ -1,16 +1,16 @@
 #!/bin/bash
 # Bash file for release setup on distant server
-branch=$1
+environment=$1
 release=$2
 
-app_dir=/var/www/${branch}/api
+app_dir=/var/www/${environment}/api
 releases_dir=${app_dir}/releases
 shared_dir=${app_dir}/shared
 new_release_dir=${releases_dir}/${release}
 current=${app_dir}/current
 
 echo "Starting deployment of $release"
-cp ${new_release_dir}/config/env/.env.${branch} ${new_release_dir}/.env
+cp ${new_release_dir}/config/env/.env.${environment} ${new_release_dir}/.env
 cd ${new_release_dir}
 
 echo "Running composer install"

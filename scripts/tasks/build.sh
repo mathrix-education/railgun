@@ -9,6 +9,7 @@ tar -zcvf build.tar.gz \
     docs/openapi/ \
     public/ \
     resources/ \
+    scripts/tasks/setup_release.sh \
     apidoc.json \
     artisan \
     composer.json \
