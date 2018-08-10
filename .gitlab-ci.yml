@@ -26,6 +26,18 @@ tests:
     when: always
   except:
   - master
+deploy_web00:
+  image: toby1991/laravel-envoy
+  stage: deploy
+  environment:
+    name: dev
+    url: https://dev.api.mathrix.fr
+  script:
+  - scripts/deploy.sh dev
+  when: manual
+  only:
+  - dev
+
 
 tests_cover:
   image: edbizarro/gitlab-ci-pipeline-php:7.2
@@ -48,19 +60,6 @@ tests_cover:
     when: always
   only:
   - master
-
-deploy_web00:
-  image: toby1991/laravel-envoy
-  stage: deploy
-  environment:
-    name: dev
-    url: https://dev.api.mathrix.fr
-  script:
-    - scripts/deploy.sh dev
-  when: manual
-  only:
-  - dev
-
 deploy_web01:
   image: toby1991/laravel-envoy
   stage: deploy
