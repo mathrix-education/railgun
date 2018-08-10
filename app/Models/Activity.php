@@ -27,7 +27,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read bool $completed
  * @property-read bool $favorite
  * @property-read bool $to_revise
- * @property-read bool $fully_visible
  * @property-read Collection|Comment[] $comments
  * @property-read Collection|Log[] $logs
  * @property-read Collection|Module[] $modules
@@ -60,7 +59,7 @@ class Activity extends BaseModel implements Commentable
         "visible" => "boolean"
     ];
     /** @var array Appends attributes */
-    protected $appends = ["favorite", "to_revise", "completed", "fully_visible"];
+    protected $appends = ["favorite", "to_revise", "completed"];
 
 
     public function __construct(array $attributes = [])

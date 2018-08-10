@@ -144,6 +144,7 @@ class SubscriptionController extends Controller
     {
         /** @var User $user */
         $user = $request->user();
+        $user->append(["premium", "braintree"]);
 
         if ($user->premium) {
             throw new Http400InvalidRequestException("User is already premium");

@@ -14,7 +14,7 @@ use Illuminate\Notifications\Notification;
  * @since 4.1.0
  * @copyright Mathrix Education SA
  */
-class NewSubscriptionNotification extends Notification
+class NewSubscriptionNotification extends BaseNotification
 {
     /** @var User $user */
     public $user;
@@ -38,7 +38,7 @@ class NewSubscriptionNotification extends Notification
     /**
      * @return array
      */
-    public function via()
+    public function via(): array
     {
         return ["slack"];
     }

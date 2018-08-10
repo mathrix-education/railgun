@@ -14,7 +14,7 @@ use Illuminate\Queue\SerializesModels;
  * @since 1.0.1
  * @copyright Mathrix Education SA
  */
-abstract class BaseMail extends Mailable
+abstract class  BaseMail extends Mailable
 {
     use Queueable, SerializesModels;
 

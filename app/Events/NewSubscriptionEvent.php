@@ -5,6 +5,7 @@ use App\Models\User;
 
 /**
  * Class NewSubscriptionEvent
+ * Fired when a user successfully subscribed to Mathrix Premium.
  *
  * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
  * @package App\Events

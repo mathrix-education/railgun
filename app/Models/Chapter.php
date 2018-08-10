@@ -25,7 +25,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read Class_ $class_
  * @property-read Discipline $discipline
  * @property-read Collection|Notion[] $notions
- * @property-read bool $fully_visible
  * @method static Builder|Chapter whereClassId($value)
  * @method static Builder|Chapter whereDisciplineId($value)
  * @method static Builder|Chapter whereId($value)
@@ -46,8 +45,6 @@ class Chapter extends BaseModel
         "discipline_id" => "required|exists:disciplines,id",
         "visible" => "boolean"
     ];
-    /** @var array Appends attributes */
-    protected $appends = ["fully_visible"];
 
 
     /*

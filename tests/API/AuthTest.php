@@ -4,8 +4,12 @@ namespace Tests\API;
 use App\Mails\PasswordForgottenMail;
 use App\Mails\PasswordResetMail;
 use App\Models\User;
+use App\Notifications\PasswordForgottenNotification;
+use App\Notifications\PasswordResetNotification;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 use Laravel\Lumen\Testing\TestCase;
+use Tests\Traits\Debug;
 use Tests\Traits\HttpAssertionsTrait;
 use Tests\Traits\JsonAssertionsTrait;
 use Tests\Traits\ResponseTrait;
@@ -21,7 +25,8 @@ use Tests\Traits\ResponseTrait;
  */
 class AuthTest extends TestCase
 {
-    use ResponseTrait, JsonAssertionsTrait, HttpAssertionsTrait;
+    use ResponseTrait, JsonAssertionsTrait, HttpAssertionsTrait, Debug;
+
 
     /**
      * Creates the application.
@@ -129,14 +134,16 @@ class AuthTest extends TestCase
     public function testForgot()
     {
         $user = $this->getNonFacebookUser();
-        Mail::fake();
+        Notification::fake();
 
         $this->call("post", "/users/forgot", ["email" => $user->email]);
 
         $this->assertHttp200Success();
-        Mail::assertSent(PasswordForgottenMail::class, function (PasswordForgottenMail $mail) use ($user) {
-            return $mail->hasTo($user->email);
-        });
+        Notification::assertSentTo($user, PasswordForgottenNotification::class,
+            function (PasswordForgottenNotification $notification, array $channels) use ($user) {
+                return $channels[0] === "mail";
+            }
+        );
     }
 
 
@@ -158,14 +165,16 @@ class AuthTest extends TestCase
     public function testReset()
     {
         $user = $this->getNonFacebookUser();
-        Mail::fake();
+        Notification::fake();
 
         $this->call("post", "/users/reset/{$user->token}", ["password" => "test"]);
 
         $this->assertHttp200Success();
-        Mail::assertSent(PasswordResetMail::class, function (PasswordResetMail $mail) use ($user) {
-            return $mail->hasTo($user->email);
-        });
+        Notification::assertSentTo($user, PasswordResetNotification::class,
+            function (PasswordResetNotification $notification, array $channels) use ($user) {
+                return $channels[0] === "mail";
+            }
+        );
     }
 
 

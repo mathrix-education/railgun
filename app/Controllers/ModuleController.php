@@ -56,8 +56,12 @@ class ModuleController extends BaseController
     {
         /** @var User $user */
         $user = $request->user();
-
+        /** @var Module $module */
         $module = Module::where("id", $key)->firstOrFail();
+
+        if ($user !== null) {
+            $user->append(["premium", "braintree"]);
+        }
 
         // Hide module content if user is not premium nor moderator
         if ($module->premium && ($user === null || !$user->premium && !$user->isModerator())) {

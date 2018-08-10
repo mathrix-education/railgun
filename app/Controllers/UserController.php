@@ -233,9 +233,12 @@ class UserController extends BaseController
     {
         /** @var User $user */
         $user = $request->user();
+
         $user = User::where("id", $user->id)
             ->with(["class_", "purchases"])
             ->firstOrFail();
+
+        $user->append(["premium", "braintree"]);
 
         return response()->json($user);
     }

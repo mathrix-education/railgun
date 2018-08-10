@@ -1,4 +1,5 @@
 <?php
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -51,6 +52,7 @@ return [
     "aliases" => [
         "Hash" => \Illuminate\Support\Facades\Hash::class,
         "Mail" => \Illuminate\Support\Facades\Mail::class,
+        "MailFake" => \Illuminate\Support\Testing\Fakes\MailFake::class,
         "Gate" => \Illuminate\Support\Facades\Gate::class,
         "Validator" => \Illuminate\Support\Facades\Validator::class,
         "Builder" => \Illuminate\Database\Eloquent\Builder::class,

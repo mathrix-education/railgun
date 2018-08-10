@@ -69,6 +69,10 @@ $app->singleton(
     Illuminate\Contracts\Cache\Repository::class
 );
 
+$app->alias("mailer",\Illuminate\Contracts\Mail\Mailer::class);
+
+
+
 /*
 |--------------------------------------------------------------------------
 | External configurations

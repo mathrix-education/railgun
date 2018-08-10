@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Notifications\Notifiable;
 use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\Client;
 use Laravel\Passport\HasApiTokens;
@@ -76,7 +77,7 @@ use Laravel\Passport\Token;
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
-    use Authenticatable, Authorizable, HasApiTokens, BraintreeCustomer, StripeCustomer {
+    use Authenticatable, Authorizable, HasApiTokens, Notifiable, BraintreeCustomer, StripeCustomer {
         HasApiTokens::tokenCan as passportTokenCan;
     }
 
@@ -108,7 +109,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     /** @var array The relations to include by default */
     protected $with = ["class_", "purchases"];
     /** @var array The virtual attributes */
-    protected $appends = ["premium", "daily_points", "braintree"];
+    protected $appends = ["daily_points"];
 
 
     /*

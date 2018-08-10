@@ -20,7 +20,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property bool $visible
  * @property array $link
  * @property string $type
- * @property-read bool $fully_visible
  * @property-read Collection|Activity[] $activities
  * @property-read Collection|Chapter[] $chapters
  * @property-read Collection|Comment[] $comments
@@ -44,8 +43,6 @@ class Notion extends BaseModel
         "slug" => "required|max:255",
         "chapter_id" => "required|exists:chapters,id"
     ];
-    /** @var array Appends attributes */
-    protected $appends = ["fully_visible"];
 
 
     public function __construct(array $attributes = [])

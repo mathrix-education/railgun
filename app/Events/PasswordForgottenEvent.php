@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Mail;
 
 /**
  * Class PasswordForgottenEvent
+ * Fired when a user ask for password reset.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package App\Events
@@ -19,18 +20,13 @@ class PasswordForgottenEvent extends BaseEvent
     public $user;
 
 
+    /**
+     * PasswordForgottenEvent constructor.
+     *
+     * @param User $user
+     */
     public function __construct(User $user)
     {
         $this->user = $user;
-    }
-
-
-    /**
-     * @param PasswordForgottenEvent $event
-     */
-    public function handle(PasswordForgottenEvent $event)
-    {
-        Mail::to($event->user->email)
-            ->send(new PasswordForgottenMail($event->user));
     }
 }
