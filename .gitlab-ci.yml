@@ -22,6 +22,9 @@ tests:
     - storage/logs/
     expire_in: 1 days
     when: always
+  only:
+  - next
+  - master
 
 build:
   image: alpine
