@@ -16,7 +16,7 @@ tests:
     MYSQL_DATABASE: mathrix_fr_pipelines
     MYSQL_ROOT_PASSWORD: 3AEzrLrSh8j8xJfyHAdB
   script:
-  - bash scripts/tasks/tests.sh $CI_COMMIT_REF_NAME
+  - sh scripts/tasks/tests.sh $CI_COMMIT_REF_NAME
   artifacts:
     paths:
     - storage/logs/
@@ -27,7 +27,7 @@ build:
   image: alpine
   stage: build
   script:
-  - bash scripts/task/build.sh
+  - sh scripts/task/build.sh
   artifacts:
     path:
     - build.zip
