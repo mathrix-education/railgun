@@ -29,7 +29,7 @@ build:
   script:
   - sh scripts/tasks/build.sh
   artifacts:
-    path:
+    paths:
     - build.tar.gz
     expire_in: 1 days
     when: always
