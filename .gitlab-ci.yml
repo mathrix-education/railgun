@@ -27,7 +27,7 @@ build:
   image: alpine
   stage: build
   script:
-  - sh scripts/task/build.sh
+  - sh scripts/tasks/build.sh
   artifacts:
     path:
     - build.zip
@@ -35,8 +35,8 @@ build:
     when: always
 
 deploy:
-  image: alpine
+  image: ubuntu:18.04
   stage: deploy
   script:
-  - bash scripts/task/build.sh
+  - sh scripts/tasks/deploy.sh web00 next
 

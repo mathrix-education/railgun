@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 echo "Building build.tar.gz"
 tar -zcvf build.tar.gz \
     apidoc/ \
