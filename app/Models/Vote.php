@@ -57,7 +57,6 @@ class Vote extends BaseModel
      * BelongsTo User
      *
      * @return BelongsTo
-     * @codeCoverageIgnore
      */
     public function user(): BelongsTo
     {
@@ -67,7 +66,6 @@ class Vote extends BaseModel
 
     /**
      * MorphTo
-     * @codeCoverageIgnore
      */
     public function votable(): MorphTo
     {

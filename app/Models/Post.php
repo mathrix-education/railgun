@@ -76,7 +76,6 @@ class Post extends BaseModel implements Commentable
      * BelongsTo Category
      *
      * @return BelongsTo
-     * @codeCoverageIgnore
      */
     public function category(): BelongsTo
     {
@@ -88,7 +87,6 @@ class Post extends BaseModel implements Commentable
      * BelongsTo User
      *
      * @return BelongsTo
-     * @codeCoverageIgnore
      */
     public function user(): BelongsTo
     {

@@ -50,7 +50,6 @@ class Purchase extends BaseModel
      * BelongsTo User
      *
      * @return BelongsTo
-     * @codeCoverageIgnore
      */
     public function user()
     {

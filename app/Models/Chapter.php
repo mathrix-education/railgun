@@ -56,7 +56,6 @@ class Chapter extends BaseModel
      * BelongsTo Class_
      *
      * @return BelongsTo
-     * @codeCoverageIgnore
      */
     public function class_(): BelongsTo
     {
@@ -68,8 +67,6 @@ class Chapter extends BaseModel
      * BelongsTo Discipline
      *
      * @return BelongsTo
-
-     * @codeCoverageIgnore
      */
     public function discipline(): BelongsTo
     {
@@ -81,7 +78,6 @@ class Chapter extends BaseModel
      * HasMany Notion
      *
      * @return BelongsToMany
-     * @codeCoverageIgnore
      */
     public function notions(): BelongsToMany
     {

@@ -11,13 +11,15 @@
         <testsuite name="Braintree Test Suite">
             <directory>./tests/Braintree</directory>
         </testsuite>
-        <testsuite name="Utils Test Suite">
+        <testsuite name="Unit Test Suite">
             <directory>./tests/Unit</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist>
             <directory suffix=".php">./app</directory>
+            <directory suffix=".php">./bootstrap</directory>
+            <directory suffix=".php">./database/factories</directory>
             <exclude>
                 <directory>./app/Console</directory>
             </exclude>

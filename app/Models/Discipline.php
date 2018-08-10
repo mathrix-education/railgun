@@ -49,7 +49,6 @@ class Discipline extends BaseModel
      * HasMany Chapter
      *
      * @return HasMany
-     * @codeCoverageIgnore
      */
     public function chapters(): HasMany
     {
@@ -61,7 +60,6 @@ class Discipline extends BaseModel
      * BelongsToMany Class_
      *
      * @return BelongsToMany
-     * @codeCoverageIgnore
      */
     public function classes(): BelongsToMany
     {

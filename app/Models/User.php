@@ -12,6 +12,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Lumen\Auth\Authorizable;
@@ -212,7 +213,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * BelongsTo Class_
      *
      * @return BelongsTo
-     * @codeCoverageIgnore
      */
     public function class_(): BelongsTo
     {
@@ -224,7 +224,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * HasMany Comment
      *
      * @return HasMany
-     * @codeCoverageIgnore
      */
     public function comments(): HasMany
     {
@@ -236,7 +235,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * HasMany Log
      *
      * @return HasMany
-     * @codeCoverageIgnore
      */
     public function logs(): HasMany
     {
@@ -248,7 +246,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * HasMany Activity
      *
      * @return HasMany
-     * @codeCoverageIgnore
      */
     public function meta(): HasMany
     {
@@ -259,7 +256,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     /**
      * HasManyThrough Product
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function products()
     {
@@ -271,7 +268,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * HasMany Purchase
      *
      * @return HasMany
-     * @codeCoverageIgnore
      */
     public function purchases(): HasMany
     {
@@ -283,7 +279,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * HasMany Vote
      *
      * @return HasMany
-     * @codeCoverageIgnore
      */
     public function votes(): HasMany
     {

@@ -192,7 +192,6 @@ class Cart
                 return $lineItem["totalAmount"];
             }),
             "customerId" => $this->customer->braintree_id,
-            //"descriptor" => BraintreeController::BRAINTREE_DESCRIPTOR, // TODO: Check descriptors rules
             "discountAmount" => $lineItems->sum(function ($lineItem) {
                 return $lineItem["discountAmount"] ?? 0;
             }),
@@ -201,14 +200,6 @@ class Cart
                 "submitForSettlement" => true
             ]
         ];
-
-        // TODO: Custom fields?
-        /*if ($this->discount !== null) {
-            $saleData["customFields"] = [
-                "discountId" => $this->discount->id,
-                "discountCode" => $this->discount->code
-            ];
-        }*/
 
         return $saleData;
     }

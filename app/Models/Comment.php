@@ -139,7 +139,6 @@ class Comment extends BaseModel
      * BelongsTo Comment
      *
      * @return BelongsTo
-     * @codeCoverageIgnore
      */
     public function user(): BelongsTo
     {
@@ -148,8 +147,7 @@ class Comment extends BaseModel
 
 
     /**
-     * MorphTo
-     * @codeCoverageIgnore
+     * @return MorphTo
      */
     public function commentable(): MorphTo
     {

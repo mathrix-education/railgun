@@ -30,8 +30,7 @@ class Category extends BaseModel
     /** @var array Validation rules */
     protected $rules = [
         "name" => "required|max:255",
-        "slug" => "required|max:255",
-        //"image" => "required" // TODO: manage upload
+        "slug" => "required|max:255"
     ];
 
 
@@ -44,7 +43,6 @@ class Category extends BaseModel
      * HasMany Post
      *
      * @return HasMany
-     * @codeCoverageIgnore
      */
     public function posts(): HasMany
     {

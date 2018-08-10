@@ -192,7 +192,6 @@ class Module extends BaseModel
      * BelongsToMany Activity
      *
      * @return BelongsToMany
-     * @codeCoverageIgnore
      */
     public function activities(): BelongsToMany
     {
@@ -204,7 +203,6 @@ class Module extends BaseModel
      * HasMany Product
      *
      * @return HasMany
-     * @codeCoverageIgnore
      */
     public function products(): HasMany
     {

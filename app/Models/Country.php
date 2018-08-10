@@ -48,7 +48,6 @@ class Country extends BaseModel
      * HasMany Class_
      *
      * @return HasMany
-     * @codeCoverageIgnore
      */
     public function classes(): HasMany
     {

@@ -62,7 +62,6 @@ class Notion extends BaseModel
      * BelongsToMany Activity
      *
      * @return BelongsToMany
-     * @codeCoverageIgnore
      */
     public function activities(): BelongsToMany
     {
@@ -74,7 +73,6 @@ class Notion extends BaseModel
      * BelongsToMany Chapter
      *
      * @return BelongsToMany
-     * @codeCoverageIgnore
      */
     public function chapters(): BelongsToMany
     {

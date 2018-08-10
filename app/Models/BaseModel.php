@@ -82,7 +82,7 @@ abstract class BaseModel extends Model
 
 
     /**
-     * Don't use appends
+     * Don"t use appends
      */
     public static function withoutAppends()
     {
@@ -135,10 +135,10 @@ abstract class BaseModel extends Model
     {
         $query = $this->newQueryWithoutScopes();
 
-        // If the "saving" event returns false we'll bail out of the save and return
+        // If the "saving" event returns false we"ll bail out of the save and return
         // false, indicating that the save failed. This provides a chance for any
         // listeners to cancel save operations if validations fail or whatever.
-        if ($this->fireModelEvent('saving') === false) {
+        if ($this->fireModelEvent("saving") === false) {
             return false;
         }
 
@@ -148,14 +148,14 @@ abstract class BaseModel extends Model
 
         // If the model already exists in the database we can just update our record
         // that is already in this database using the current IDs in this "where"
-        // clause to only update this model. Otherwise, we'll just insert them.
+        // clause to only update this model. Otherwise, we"ll just insert them.
         if ($this->exists) {
             $saved = $this->isDirty() ?
                 $this->performUpdate($query) : true;
         }
 
-        // If the model is brand new, we'll insert it into our database and set the
-        // ID attribute on the model to the value of the newly inserted row's ID
+        // If the model is brand new, we"ll insert it into our database and set the
+        // ID attribute on the model to the value of the newly inserted row"s ID
         // which is typically an auto-increment value managed by the database.
         else {
             $saved = $this->performInsert($query);
@@ -294,11 +294,11 @@ abstract class BaseModel extends Model
         $table = $this->getConnection()->getTablePrefix() . $this->getTable();
         $schema = $this->getConnection()->getDoctrineSchemaManager();
         $databasePlatform = $schema->getDatabasePlatform();
-        $databasePlatform->registerDoctrineTypeMapping('enum', 'string');
+        $databasePlatform->registerDoctrineTypeMapping("enum", "string");
 
         $database = null;
-        if (strpos($table, '.')) {
-            list($database, $table) = explode('.', $table);
+        if (strpos($table, ".")) {
+            list($database, $table) = explode(".", $table);
         }
 
         $columns = $schema->listTableColumns($table, $database);
@@ -311,29 +311,29 @@ abstract class BaseModel extends Model
 
                 $type = $column->getType()->getName();
                 switch ($type) {
-                    case 'string':
-                    case 'text':
-                    case 'date':
-                    case 'time':
-                    case 'guid':
-                    case 'datetimetz':
-                    case 'datetime':
-                        $type = 'string';
+                    case "string":
+                    case "text":
+                    case "date":
+                    case "time":
+                    case "guid":
+                    case "datetimetz":
+                    case "datetime":
+                        $type = "string";
                         break;
-                    case 'integer':
-                    case 'bigint':
-                    case 'smallint':
-                        $type = 'int';
+                    case "integer":
+                    case "bigint":
+                    case "smallint":
+                        $type = "int";
                         break;
-                    case 'boolean':
-                        $type = 'bool';
+                    case "boolean":
+                        $type = "bool";
                         break;
-                    case 'decimal':
-                    case 'float':
-                        $type = 'float';
+                    case "decimal":
+                    case "float":
+                        $type = "float";
                         break;
                     default:
-                        $type = 'mixed';
+                        $type = "mixed";
                         break;
                 }
 

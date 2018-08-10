@@ -62,6 +62,11 @@ class Activity extends BaseModel implements Commentable
     protected $appends = ["favorite", "to_revise", "completed"];
 
 
+    /**
+     * Activity constructor.
+     *
+     * @param array $attributes
+     */
     public function __construct(array $attributes = [])
     {
         // Dynamic rules
@@ -80,7 +85,6 @@ class Activity extends BaseModel implements Commentable
      * BelongsToMany Module
      *
      * @return BelongsToMany
-     * @codeCoverageIgnore
      */
     public function modules(): BelongsToMany
     {
@@ -92,12 +96,12 @@ class Activity extends BaseModel implements Commentable
      * BelongsToMany Notion
      *
      * @return BelongsToMany
-     * @codeCoverageIgnore
      */
     public function notions(): BelongsToMany
     {
         return $this->belongsToMany(Notion::class)->withPivot(["order"]);
     }
+
 
     /*
     |--------------------------------------------------------------------------

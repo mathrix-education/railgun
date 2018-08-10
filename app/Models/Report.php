@@ -62,7 +62,6 @@ class Report extends BaseModel
      * BelongsTo Module
      *
      * @return BelongsTo
-     * @codeCoverageIgnore
      */
     public function module()
     {
