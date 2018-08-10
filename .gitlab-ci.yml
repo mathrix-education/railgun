@@ -20,7 +20,7 @@ tests:
   - sudo ./vendor/bin/paratest -p16 --runner=WrapperRunner --configuration=phpunit.xml
   artifacts:
     paths:
-    - storage/logs/lumen.log
+    - storage/logs/
     expire_in: 1 days
     when: always
   except:
@@ -41,7 +41,7 @@ tests_cover:
   - sudo ./vendor/bin/paratest -p16 --runner=WrapperRunner --coverage-text --configuration=phpunit.xml
   artifacts:
     paths:
-    - storage/logs/lumen.log
+    - storage/logs/
     expire_in: 1 days
     when: always
   only:
