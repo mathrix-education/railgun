@@ -18,14 +18,13 @@ tests:
   - cp config/env/.env.pipelines .env
   - composer install --prefer-dist -q --no-ansi --no-interaction --no-suggest
   - php artisan migrate:refresh --seed
-  - sudo ./vendor/bin/paratest -p16 --runner=WrapperRunner --configuration=phpunit.xml
+  - sudo ./vendor/bin/paratest -p16 --runner=WrapperRunner --coverage-text --configuration=phpunit.xml
   artifacts:
     paths:
     - storage/logs/
     expire_in: 1 days
     when: always
-  except:
-  - master
+
 deploy_web00:
   image: toby1991/laravel-envoy
   stage: deploy
@@ -38,28 +37,6 @@ deploy_web00:
   only:
   - dev
 
-
-tests_cover:
-  image: edbizarro/gitlab-ci-pipeline-php:7.2
-  stage: test
-  services:
-  - mysql:5.7
-  retry: 2
-  variables:
-    MYSQL_DATABASE: mathrix_fr_pipelines
-    MYSQL_ROOT_PASSWORD: 3AEzrLrSh8j8xJfyHAdB
-  script:
-  - cp config/env/.env.pipelines .env
-  - composer install --prefer-dist -q --no-ansi --no-interaction --no-suggest
-  - php artisan migrate:refresh --seed
-  - sudo ./vendor/bin/paratest -p16 --runner=WrapperRunner --coverage-text --configuration=phpunit.xml
-  artifacts:
-    paths:
-    - storage/logs/
-    expire_in: 1 days
-    when: always
-  only:
-  - master
 deploy_web01:
   image: toby1991/laravel-envoy
   stage: deploy
