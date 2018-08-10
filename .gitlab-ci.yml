@@ -3,6 +3,7 @@
 
 stages:
 - test
+- build
 - deploy
 
 tests:
@@ -22,26 +23,20 @@ tests:
     expire_in: 1 days
     when: always
 
-deploy_web00:
-  image: toby1991/laravel-envoy
-  stage: deploy
-  environment:
-    name: dev
-    url: https://dev.api.mathrix.fr
+build:
+  image: alpine
+  stage: build
   script:
-  - scripts/deploy.sh dev
-  when: manual
-  only:
-  - dev
+  - bash scripts/task/build.sh
+  artifacts:
+    path:
+    - build.zip
+    expire_in: 1 days
+    when: always
 
-deploy_web01:
-  image: toby1991/laravel-envoy
+deploy:
+  image: alpine
   stage: deploy
-  environment:
-    name: master
-    url: https://api.mathrix.fr
   script:
-  - scripts/deploy.sh master
-  when: manual
-  only:
-  - master
+  - bash scripts/task/build.sh
+
