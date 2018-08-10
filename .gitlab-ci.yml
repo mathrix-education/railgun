@@ -10,6 +10,7 @@ tests:
   stage: test
   services:
   - mysql:5.7
+  retry: 2
   variables:
     MYSQL_DATABASE: mathrix_fr_pipelines
     MYSQL_ROOT_PASSWORD: 3AEzrLrSh8j8xJfyHAdB
@@ -31,6 +32,7 @@ tests_cover:
   stage: test
   services:
   - mysql:5.7
+  retry: 2
   variables:
     MYSQL_DATABASE: mathrix_fr_pipelines
     MYSQL_ROOT_PASSWORD: 3AEzrLrSh8j8xJfyHAdB
