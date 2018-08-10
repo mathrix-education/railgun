@@ -23,15 +23,13 @@ echo "Running gulp install"
 gulp install --silent
 
 echo "Building documentation"
-redoc-cli bundle docs/openapi/index.yaml
-mv redoc-static.html docs/openapi/index.html
+redoc-cli bundle ${new_release_dir}/docs/openapi/index.yaml
+mv ${new_release_dir}/redoc-static.html ${new_release_dir}/docs/openapi/index.html
 
 echo "Linking storage directory"
 [ -d ${shared_dir} ] || mkdir ${shared_dir}
 [ -d ${shared_dir}/storage ] || cp -R ${new_release_dir}/storage ${shared_dir}/storage
 [ -d ${shared_dir}/storage/cdn ] || mkdir ${shared_dir}/storage/cdn
-[ -d ${new_release_dir}/storage/cdn ] && cp -R ${new_release_dir}/storage/cdn/* ${shared_dir}/storage/cdn
-rm -rf ${new_release_dir}/storage
 ln -nfs ${shared_dir}/storage ${new_release_dir}/storage
 
 echo "Running migrations"
@@ -44,5 +42,8 @@ ls -dt ${releases_dir}/*/ | tail -n +6 | xargs rm -rf
 echo "Linking current release"
 [ -f ${current} ] && rm ${current}
 ln -nfs ${new_release_dir} ${current}
+
+echo "Cleaning build"
+rm -rf ${new_release_dir}/scripts
 
 echo "$release successfully installed"
