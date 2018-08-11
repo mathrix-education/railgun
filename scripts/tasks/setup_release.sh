@@ -22,10 +22,6 @@ yarn install --silent
 echo "Running gulp install"
 gulp install --silent
 
-echo "Building documentation"
-redoc-cli bundle ${new_release_dir}/docs/openapi/index.yaml
-mv ${new_release_dir}/redoc-static.html ${new_release_dir}/docs/openapi/index.html
-
 echo "Linking storage directory"
 [ -d ${shared_dir} ] || mkdir ${shared_dir}
 [ -d ${shared_dir}/storage ] || mkdir ${shared_dir}/storage
