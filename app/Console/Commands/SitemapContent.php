@@ -100,12 +100,14 @@ class SitemapContent extends Command
                             foreach ($notion->activities()
                                          ->withPivot(["order"])
                                          ->orderBy("pivot_order", "asc")
-                                         ->limit(2)
                                          ->get()
                                      as $activity) {
                                 /** @var Module $module */
                                 foreach ($activity->modules()
+                                             ->withPivot(["order"])
+                                             ->orderBy("pivot_order", "asc")
                                              ->where("premium", 0)
+                                             ->limit(2)
                                              ->get()
                                          as $module) {
 
