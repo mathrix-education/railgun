@@ -10,6 +10,8 @@ tar -zcvf build.tar.gz \
     public/ \
     resources/ \
     scripts/tasks/setup_release.sh \
+    storage/oauth-private.key \
+    storage/oauth-public.key \
     apidoc.json \
     artisan \
     composer.json \
