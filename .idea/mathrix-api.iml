@@ -54,6 +54,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/pagination" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/pipeline" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/queue" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/redis" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/routing" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/session" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/support" />
@@ -96,6 +97,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpunit/php-timer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpunit/php-token-stream" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpunit/phpunit" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/predis/predis" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/cache" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/container" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/http-message" />

@@ -144,6 +144,8 @@ $app->register(Backup\BackupServiceProvider::class);
 $app->register(App\Providers\EventServiceProvider::class);
 $app->register(App\Providers\PolicyServiceProvider::class);
 $app->register(App\Providers\TinifyServiceProvider::class);
+$app->register(\Illuminate\Redis\RedisServiceProvider::class);
+
 
 
 if ($app->environment("stage", "master")) {
