@@ -27,6 +27,14 @@ echo "Building storage directory"
 [ -d ${shared_dir}/storage ] || mkdir ${shared_dir}/storage
 cp -R ${new_release_dir}/storage/* ${shared_dir}/storage
 rm -rf ${new_release_dir}/storage
+[ -d ${shared_dir}/storage/backups ] || mkdir ${shared_dir}/storage/backups
+[ -d ${shared_dir}/storage/backups/cdn ] || mkdir ${shared_dir}/storage/backups/cdn
+[ -d ${shared_dir}/storage/backups/database ] || mkdir ${shared_dir}/storage/backups/database
+[ -d ${shared_dir}/storage/framework ] || mkdir ${shared_dir}/storage/framework
+[ -d ${shared_dir}/storage/framework/cache ] || mkdir ${shared_dir}/storage/framework/cache
+[ -d ${shared_dir}/storage/framework/views ] || mkdir ${shared_dir}/storage/framework/views
+[ -d ${shared_dir}/storage/logs ] || mkdir ${shared_dir}/storage/logs
+[ -d ${shared_dir}/storage/sitemaps ] || mkdir ${shared_dir}/storage/sitemaps
 
 echo "Setup CDN"
 [ -d ${shared_dir}/storage/cdn ] || mkdir ${shared_dir}/storage/cdn
