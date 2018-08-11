@@ -28,6 +28,8 @@ echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
 
 # Transfer build and deploy
 ssh ${user}@${host} mkdir -p ${new_release_dir}
+echo "Uploading build.tar.gz"
 scp build.tar.gz ${user}@${host}:${new_release_dir}/build.tar.gz
+echo "Extracting build.tar.gz"
 ssh ${user}@${host} tar -xf ${new_release_dir}/build.tar.gz --directory ${new_release_dir}
 ssh ${user}@${host} bash ${new_release_dir}/scripts/tasks/setup_release.sh ${environment} ${release}

@@ -28,7 +28,7 @@ mv ${new_release_dir}/redoc-static.html ${new_release_dir}/docs/openapi/index.ht
 
 echo "Linking storage directory"
 [ -d ${shared_dir} ] || mkdir ${shared_dir}
-[ -d ${shared_dir}/storage ] || cp -R ${new_release_dir}/storage ${shared_dir}/storage
+[ -d ${shared_dir}/storage ] || mkdir ${shared_dir}/storage && cp -R ${new_release_dir}/storage ${shared_dir}/storage
 [ -d ${shared_dir}/storage/cdn ] || mkdir ${shared_dir}/storage/cdn
 ln -nfs ${shared_dir}/storage ${new_release_dir}/storage
 
@@ -45,5 +45,6 @@ ln -nfs ${new_release_dir} ${current}
 
 echo "Cleaning build"
 rm -rf ${new_release_dir}/scripts
+rm ${new_release_dir}/build.targ.gz
 
 echo "$release successfully installed"
