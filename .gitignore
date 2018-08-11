@@ -1,11 +1,11 @@
 /.env
 /_ide_helper.php
 /.phpstorm.meta.php
+/build.tar.gz
 
 # User-specific stuff:
 /.idea/**/workspace.xml
 /.idea/dataSources/
-/.idea/dataSources*
 /.idea/dictionaries
 /.idea/httpRequests/
 /.idea/deployment.xml
