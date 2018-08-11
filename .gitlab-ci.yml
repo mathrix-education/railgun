@@ -27,7 +27,7 @@ tests:
   - master
 
 build:
-  image: alpine
+  image: node:10-alpine
   stage: build
   script:
   - sh scripts/tasks/build.sh
@@ -37,11 +37,35 @@ build:
     expire_in: 1 days
     when: always
 
-deploy:
+deploy_web00_dev:
+  image: doomkin/ubuntu-ssh
+  stage: deploy
+  dependencies:
+  - build
+  script:
+  - bash scripts/tasks/deploy.sh web00 dev
+  only:
+  - dev
+
+deploy_web00_next:
   image: doomkin/ubuntu-ssh
   stage: deploy
   dependencies:
   - build
   script:
   - bash scripts/tasks/deploy.sh web00 next
+  only:
+  - next
+
+deploy_web01_master:
+  image: doomkin/ubuntu-ssh
+  stage: deploy
+  dependencies:
+  - build
+  script:
+  - bash scripts/tasks/deploy.sh web01 master
+  when: manual
+  only:
+  - master
+  - hotfix
 
