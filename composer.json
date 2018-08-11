@@ -30,7 +30,6 @@
     "barryvdh/laravel-ide-helper": "^2.4",
     "doctrine/dbal": "^2.5",
     "filp/whoops": "~2.0",
-    "laravel/envoy": "^1.4",
     "phpunit/phpunit": "^7.0",
     "brianium/paratest": "^2.0"
   },
