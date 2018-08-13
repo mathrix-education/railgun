@@ -19,13 +19,12 @@ then
     host=web00.mathrix.fr
 elif [ "$server" = "web01" ]
 then
-    user=mathrix_dev
+    user=mathrix
     host=web01.mathrix.fr
 else
     echo "Invalid server"
     exit 1
 fi
-
 
 # Setup SSH configuration
 eval $(ssh-agent -s)
