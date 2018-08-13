@@ -3,6 +3,8 @@ namespace App\Models\Traits;
 
 
 use App\Exceptions\Http400InvalidRequestException;
+use App\Services\Braintree\Formatter;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 
 /**
@@ -190,80 +192,39 @@ trait BraintreeCustomer
 
 
     /**
-     * Charge a user using its default payment method
-     *
-     * @param float $amount
-     *
-     * @throws Http400InvalidRequestException
-     * @return \Braintree_Result_Successful|\Braintree_Result_Error
-     */
-    public function chargeWithBraintree(float $amount)
-    {
-        $this->requireBraintreeCustomer();
-        $this->forgetBraintreeCustomerCache();
-
-        return \Braintree_Transaction::sale([
-            "amount" => $amount,
-            "customerId" => $this->braintree_id,
-            "transactionSource" => "merchant",
-            "options" => [
-                "submitForSettlement" => true
-            ]
-        ]);
-    }
-
-
-    /**
-     * Subscribe to a plan
-     *
-     * @param string $plan
-     *
-     * @throws Http400InvalidRequestException
-     */
-    public function addBraintreeSubscription(string $plan)
-    {
-        $this->requireBraintreeCustomer();
-        $this->forgetBraintreeCustomerCache();
-
-        \Braintree_Subscription::create([
-            "paymentMethodToken" => $this->getBraintreeCustomer()
-                ->defaultPaymentMethod()
-                ->token,
-            "planId" => $plan
-        ]);
-    }
-
-
-    /**
      * Get the user subscriptions
      *
-     * @return \Braintree_Subscription[]
+     * @return Collection|\Braintree_Subscription[]
      * @throws Http400InvalidRequestException
      */
-    public function getBraintreeSubscriptions(): array
+    public function getBraintreeSubscriptions(): Collection
     {
         $this->requireBraintreeCustomer();
 
-        $subscriptions = [];
+        $subscriptions = new Collection();
 
         if ($this->isBraintreeCustomer()) {
             /** @var \Braintree_CreditCard $creditCard */
             foreach ($this->getBraintreeCustomer()->creditCards as $creditCard) {
                 /** @var \Braintree_Subscription $subscription */
                 foreach ($creditCard->subscriptions as $subscription) {
-                    $subscriptions[] = $subscription;
+                    $subscriptions->add($subscription);
                 }
             }
 
 
-            /** @var \Braintree_CreditCard $creditCard */
+            /** @var \Braintree_PayPalAccount $paypalAccount */
             foreach ($this->getBraintreeCustomer()->paypalAccounts as $paypalAccount) {
                 /** @var \Braintree_Subscription $subscription */
                 foreach ($paypalAccount->subscriptions as $subscription) {
-                    $subscriptions[] = $subscription;
+                    $subscriptions->add($subscription);
                 }
             }
         }
+
+        $subscriptions->map(function ($subscription) {
+            return Formatter::cast($subscription);
+        });
 
         return $subscriptions;
     }

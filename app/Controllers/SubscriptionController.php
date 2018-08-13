@@ -6,6 +6,7 @@ use App\Exceptions\Http400InvalidPlanException;
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http401UnauthorizedException;
 use App\Models\User;
+use App\Services\Braintree\Formatter;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller;
@@ -127,7 +128,10 @@ class SubscriptionController extends Controller
         }
 
         $subscription = \Braintree_Subscription::find($subscriptionId);
-        return new JsonResponse($subscription->jsonSerialize());
+
+        return new JsonResponse(
+            Formatter::cast($subscription->jsonSerialize())
+        );
     }
 
 
@@ -212,7 +216,9 @@ class SubscriptionController extends Controller
             // Raise event
             event(new NewSubscriptionEvent($user, $subscription));
 
-            return new JsonResponse($subscription->jsonSerialize());
+            return new JsonResponse(
+                Formatter::cast($subscription->jsonSerialize())
+            );
         } else {
             throw new Http400InvalidRequestException("Unable to create the subscription");
         }
@@ -241,9 +247,11 @@ class SubscriptionController extends Controller
         $subscriptionResult = \Braintree_Subscription::cancel($subscriptionId);
 
         if ($subscriptionResult->success) {
-            return new JsonResponse([
-                "status" => "success"
-            ]);
+            $subscription = $subscriptionResult->subscription;
+
+            return new JsonResponse(
+                Formatter::cast($subscription->jsonSerialize())
+            );
         } else {
             throw new Http400InvalidRequestException([
                 "errors" => $subscriptionResult->errors

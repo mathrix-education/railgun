@@ -5,10 +5,8 @@ use App\Models\Activity;
 use App\Models\Comment;
 use App\Models\Module;
 use App\Models\Notion;
-use App\Models\Pack;
 use App\Models\Post;
-use App\Models\Section;
-use App\Models\Training;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,6 +21,12 @@ use Illuminate\Support\ServiceProvider;
  */
 class AppServiceProvider extends ServiceProvider
 {
+    public function boot()
+    {
+        Carbon::setToStringFormat("c");
+    }
+
+
     /**
      * Register any application services.
      */

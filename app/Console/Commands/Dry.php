@@ -26,7 +26,6 @@ class Dry extends Command
 
     public function handle()
     {
-        $user = User::random(["type", "=", "registered"]);
-        
+
     }
 }

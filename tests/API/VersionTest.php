@@ -20,6 +20,6 @@ class VersionTest extends BaseTestCase
     {
         $this->json("get", "/");
 
-        $this->assertJsonKeys(["message", "commit", "build"]);
+        $this->assertJsonKeys(["message", "build"]);
     }
 }

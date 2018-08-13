@@ -4,7 +4,9 @@ namespace App\Controllers;
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http401UnauthorizedException;
 use App\Models\User;
+use App\Services\Braintree\Formatter;
 use Braintree_TransactionSearch;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller;
@@ -37,8 +39,10 @@ class TransactionController extends Controller
             throw new Http401UnauthorizedException();
         }
 
+        $transaction = \Braintree_Transaction::find($transactionId);
+
         return new JsonResponse(
-            \Braintree_Transaction::find($transactionId)->jsonSerialize()
+            Formatter::cast($transaction->jsonSerialize())
         );
     }
 
@@ -73,10 +77,9 @@ class TransactionController extends Controller
             $result = \Braintree_Transaction::void($transactionId);
 
             if ($result->success) {
-                return new JsonResponse([
-                    "status" => "success",
-                    "message" => "Successfully voided transaction `id` $transactionId"
-                ]);
+                return new JsonResponse(
+                    Formatter::cast($result->transaction->jsonSerialize())
+                );
             } else {
                 throw new Http400InvalidRequestException("Unable to void transaction `id` $transactionId");
             }
@@ -108,10 +111,9 @@ class TransactionController extends Controller
         $result = \Braintree_Transaction::refund($transactionId);
 
         if ($result->success) {
-            return new JsonResponse([
-                "status" => "success",
-                "message" => "Successfully refunded transaction `id` $transactionId"
-            ]);
+            return new JsonResponse(
+                Formatter::cast($result->transaction->jsonSerialize())
+            );
         } else {
             throw new Http400InvalidRequestException("Unable to refund transaction `id` $transactionId");
         }
@@ -137,8 +139,9 @@ class TransactionController extends Controller
         }
 
         $subscription = \Braintree_Subscription::find($subscriptionId);
+        $transactions = $subscription->jsonSerialize()["transactions"];
 
-        return new JsonResponse($subscription->jsonSerialize()["transactions"]);
+        return new JsonResponse(Formatter::cast($transactions));
     }
 
 
@@ -164,9 +167,14 @@ class TransactionController extends Controller
         /** @var User $customer */
         $customer = User::findOrFail($userId);
         $customer->requireBraintreeCustomer();
-        $transactions = \Braintree_Transaction::search([
+        $transactionResults = \Braintree_Transaction::search([
             Braintree_TransactionSearch::customerId()->is($customer->braintree_id)
         ]);
+        $transactions = new Collection();
+
+        foreach ($transactionResults as $transaction) {
+            $transactions->add(Formatter::cast($transaction));
+        }
 
         return new JsonResponse($transactions);
     }
