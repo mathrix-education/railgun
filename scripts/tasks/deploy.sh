@@ -1,4 +1,10 @@
 #!/bin/bash
+# Check presence of build.tar.gz
+if [ ! -f build.tar.gz ]
+then
+    echo "No build.tar.gz file found. You may need to build project before with `./scripts/tasks/build.sh`"
+    exit 1
+fi
 
 # Building variables
 server=$1
@@ -15,16 +21,19 @@ elif [ "$server" = "web01" ]
 then
     user=mathrix_dev
     host=web01.mathrix.fr
+else
+    echo "Invalid server"
+    exit 1
 fi
 
+
 # Setup SSH configuration
-#apt-get update -y
-#apt-get install openssh-client -y
 eval $(ssh-agent -s)
 chmod 0600 storage/ssh/${server}_id_rsa
 ssh-add storage/ssh/${server}_id_rsa
 mkdir -p ~/.ssh
 echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+
 
 # Transfer build and deploy
 ssh ${user}@${host} mkdir -p ${new_release_dir}
@@ -33,3 +42,7 @@ scp build.tar.gz ${user}@${host}:${new_release_dir}/build.tar.gz
 echo "Extracting build.tar.gz"
 ssh ${user}@${host} tar -xf ${new_release_dir}/build.tar.gz --directory ${new_release_dir}
 ssh ${user}@${host} bash ${new_release_dir}/scripts/tasks/setup_release.sh ${environment} ${release}
+
+
+# Clean build.tar.gz
+rm build.tar.gz
