@@ -67,7 +67,9 @@ class SitemapContent extends Command
                         "priority" => 0.8
                     ];
 
-                    $chapters = $discipline->chapters()->where("chapters.class_id", "=", $class->id);
+                    $chapters = $discipline->chapters()
+                        ->where("chapters.class_id", "=", $class->id)
+                        ->get();
 
                     /** @var Chapter $chapter */
                     foreach ($chapters as $chapter) {
