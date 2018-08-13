@@ -39,3 +39,22 @@ if (!function_exists('glob_recursive')) {
         return $files;
     }
 }
+
+if (!function_exists('build_date')) {
+    /**
+     * Get the build date
+     *
+     * @return string
+     */
+    function build_date()
+    {
+        $build = basename(dirname(__DIR__, 1));
+
+        try {
+            $build = \Carbon\Carbon::createFromFormat("Y-m-d_H-i-s", $build)->toIso8601String();
+        } catch (InvalidArgumentException $e) {
+        }
+
+        return $build;
+    }
+}

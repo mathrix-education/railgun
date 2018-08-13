@@ -166,7 +166,6 @@ $app->router->group(["namespace" => "App\\Controllers"], function ($router) {
 
         return response()->json([
             "message" => "Welcome to Mathrix API version " . env("APP_VERSION") . " by Mathieu Bour",
-            "commit" => trim(exec("git log --pretty=\"%h\" -n1 HEAD")),
             "build" => $build
         ]);
     });

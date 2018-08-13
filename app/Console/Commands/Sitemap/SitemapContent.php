@@ -67,9 +67,12 @@ class SitemapContent extends Command
                         "priority" => 0.8
                     ];
 
+                    $chapters = $discipline->chapters()
+                        ->where("chapters.class_id", "=", $class->id)
+                        ->get();
 
                     /** @var Chapter $chapter */
-                    foreach ($discipline->chapters as $chapter) {
+                    foreach ($chapters as $chapter) {
                         $chaptersSitemap[] = [
                             "url" => $this->url("/" . implode("/", [
                                     $country->slug,
