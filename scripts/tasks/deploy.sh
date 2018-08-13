@@ -2,8 +2,8 @@
 # Check presence of build.tar.gz
 if [ ! -f build.tar.gz ]
 then
-    echo "No build.tar.gz file found. You may need to build project before with `./scripts/tasks/build.sh`"
-    exit 1
+    echo "No build.tar.gz file found. Let's do it!"
+    ./scripts/tasks/build.sh
 fi
 
 # Building variables
