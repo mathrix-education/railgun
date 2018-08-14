@@ -2,15 +2,17 @@ description: >-
   See the [Braintree Status Documentation](https://developers.braintreepayments.com/reference/general/statuses#transaction) for more details.
 type: string
 enum:
-  - AUTHORIZATION_EXPIRED
-  - AUTHORIZED
-  - AUTHORIZING
-  - SETTLEMENT_PENDING
-  - SETTLEMENT_DECLINED
-  - FAILED
-  - GATEWAY_REJECTED
-  - PROCESSOR_DECLINED
-  - SETTLED
-  - SETTLING
-  - SUBMITTED_FOR_SETTLEMENT
-  - VOIDED
+  - authorization_expired
+  - authorizing
+  - authorized
+  - gateway_rejected
+  - failed
+  - processor_declined
+  - settled
+  - settling
+  - submitted_for_settlement
+  - voided
+  - unrecognized
+  - settlement_declined
+  - settlement_pending
+  - settlement_confirmed;

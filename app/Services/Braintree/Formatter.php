@@ -19,7 +19,9 @@ class Formatter
     public static function cast($data)
     {
         foreach ($data as $key => $value) {
-            if ($value instanceof \DateTime) {
+            if ($value instanceof \Braintree\Base) {
+                $data[$key] = self::cast($value->jsonSerialize());
+            } else if ($value instanceof \DateTime) {
                 $data[$key] = $value->format("c");
             } else if (is_array($value)) {
                 $data[$key] = self::cast($value);
