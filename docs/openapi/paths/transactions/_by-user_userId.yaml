@@ -1,6 +1,6 @@
 get:
   tags:
-  - subscriptions
+  - transactions
   summary: Get transactions associated with an user
   operationId: transactionsByUser
   parameters:
