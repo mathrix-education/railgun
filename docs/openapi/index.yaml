@@ -16,12 +16,15 @@ tags:
   description: Categories API
 - name: products
   description: Products API
-- name: subscriptions
-  description: Braintree subscriptions API
-- name: transactions
-  description: Braintree transactions API
 - name: users
   description: Users API
+  # Braintree
+- name: Braintree global API
+  description: Braintree global API
+- name: Braintree Subscriptions
+  description: Braintree subscriptions API
+- name: Braintree Transactions
+  description: Braintree transactions API
 security:
 - bearerAuth: []
 components:

@@ -61,9 +61,9 @@
 # ------------
 # Transactions
 # ------------
-/transaction/by-user/{userId}:
+/transactions/by-user/{userId}:
   $ref: ./transactions/_by-user_userId.yaml
-/transaction/{transactionId}:
+/transactions/{transactionId}:
   $ref: ./transactions/_transactionId.yaml
-/transaction/{transactionId}/refund:
+/transactions/{transactionId}/refund:
   $ref: ./transactions/_transactionId_refund.yaml
