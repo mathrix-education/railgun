@@ -205,18 +205,15 @@ class UserController extends BaseController
      */
     public function exists(Request $request)
     {
-        $wheres = [];
+        $wheres = array_intersect_key($request->all(), ["username" => null, "email" => null]);
 
-        if ($request->input("email", false)) {
-            $wheres[] = ["email", "=", $request->input("email", false)];
-        }
-        if ($request->input("username", false)) {
-            $wheres[] = ["email", "=", $request->input("username", false)];
+        foreach ($wheres as $key => $value) {
+            if (User::where($key, $value)->exists()) {
+                return response()->json(["exists" => true]);
+            }
         }
 
-        return new JsonResponse([
-            "exists" => User::where($wheres)->exists()
-        ]);
+        return response()->json(["exists" => false]);
     }
 
 
