@@ -24,14 +24,9 @@ class PlansUtils
         return Cache::remember("braintree-plans", 0, function () {
             $plansData = Formatter::cast(\Braintree_Plan::all());
 
-            usort($plansData, function ($a, $b) {
-                return $a["billingFrequency"] <=> $b["billingFrequency"];
-            });
-
             $highestPricePerMonth = round($plansData[0]["price"] / $plansData[0]["billingFrequency"], 2);
 
             foreach ($plansData as $k => $plan) {
-                $planKey = $k + 1;
                 $plan["pricePerMonth"] = round($plan["price"] / $plan["billingFrequency"], 2);
                 $plan["discount"] = 100 - round($plan["pricePerMonth"] * 100 / $highestPricePerMonth, 0);
 
@@ -41,6 +36,8 @@ class PlansUtils
 
 
                 if ($hasTrial) {
+                    $trialPrice = self::toPrice(self::getTrialPrice($plan));
+                    $plan["trialPrice"] = $trialPrice;
                     $plan["trialPeriod"] = true;
                     $trialStartDate = Carbon::now();
                     $trialEndDate = self::getTrialEndDate($plan);
@@ -49,17 +46,16 @@ class PlansUtils
 
                     $pricePerYear = self::toPrice($plan["price"]);
                     $pricePerMonth = self::toPrice($plan["pricePerMonth"]);
-                    $trialPrice = self::toPrice(self::getTrialPrice($plan));
                     $trialStartDate = $trialStartDate->format("d/m/y");
                     $trialEndDate = $trialEndDate->format("d/m/y");
 
 
                     // Build description.
                     $plan["description"] = "Facturée en un paiment unique de $trialPrice pour la période du " .
-                        "$trialStartDate au $trialEndDate. <sup>$planKey</sup>";
+                        "$trialStartDate au $trialEndDate.";
 
                     // Build price details
-                    $plan["pricingDetails"] = "<sup>$planKey</sup>Pour la formule {$plan["name"]} du $trialStartDate " .
+                    $plan["pricingDetails"] = "Pour la formule {$plan["name"]} du $trialStartDate " .
                         "au $trialEndDate, le prix de $trialPrice est égal au prorata de l'année scolaire restante, " .
                         "calculé sur la base de $pricePerMonth par mois. L'année scolaire suivante sera facturée " .
                         "soit $pricePerYear multiplié par 12 mois";
@@ -68,10 +64,10 @@ class PlansUtils
                     $plan["trialEndDate"] = null;
 
                     // Build description
-                    $plan["description"] = "Formule renouvelée tous les mois. <sup>$planKey</sup>";
+                    $plan["description"] = "Formule renouvelée tous les mois.";
 
                     // Build pricing details
-                    $plan["pricingDetails"] = "<sup>$planKey</sup>L’abonnement est renouvelé automatiquement en fin " .
+                    $plan["pricingDetails"] = "L’abonnement est renouvelé automatiquement en fin " .
                         "de période. Vous pouvez résilier votre abonnement à tout moment depuis votre compte.";
                 }
 
@@ -79,6 +75,10 @@ class PlansUtils
 
                 $plansData[$k] = $plan;
             }
+
+            usort($plansData, function ($a, $b) {
+                return $b["pricePerMonth"] <=> $a["pricePerMonth"];
+            });
 
             return $plansData;
         });
