@@ -161,10 +161,10 @@ class SubscriptionController extends Controller
         // Create user as Braintree customer if necessary
         if (!$user->isBraintreeCustomer()) {
             $this->validate($request, [
-                "payment_method_nonce" => "required",
+                "paymentMethodNonce" => "required",
             ]);
 
-            $user->createBraintreeCustomer($request->input("payment_method_nonce"));
+            $user->createBraintreeCustomer($request->input("paymentMethodNonce"));
         }
 
         // Now we assume that the user is a Braintree customer
