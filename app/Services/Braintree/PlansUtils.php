@@ -36,8 +36,7 @@ class PlansUtils
 
 
                 if ($hasTrial) {
-                    $trialPrice = self::toPrice(self::getTrialPrice($plan));
-                    $plan["trialPrice"] = $trialPrice;
+                    $plan["trialPrice"] = self::getTrialPrice($plan);
                     $plan["trialPeriod"] = true;
                     $trialStartDate = Carbon::now();
                     $trialEndDate = self::getTrialEndDate($plan);
@@ -46,6 +45,7 @@ class PlansUtils
 
                     $pricePerYear = self::toPrice($plan["price"]);
                     $pricePerMonth = self::toPrice($plan["pricePerMonth"]);
+                    $trialPrice = self::toPrice($plan["trialPrice"]);
                     $trialStartDate = $trialStartDate->format("d/m/y");
                     $trialEndDate = $trialEndDate->format("d/m/y");
 
