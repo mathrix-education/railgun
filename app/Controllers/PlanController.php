@@ -1,9 +1,8 @@
 <?php
 namespace App\Controllers;
 
-use App\Services\Braintree\Formatter;
+use App\Services\Braintree\PlansUtils;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Cache;
 use Laravel\Lumen\Routing\Controller;
 
 /**
@@ -23,10 +22,6 @@ class PlanController extends Controller
      */
     public function all()
     {
-        return new JsonResponse(
-            Cache::remember("braintree-plans", 60, function () {
-                return Formatter::cast(\Braintree_Plan::all());
-            })
-        );
+        return new JsonResponse(PlansUtils::retrievePlans());
     }
 }

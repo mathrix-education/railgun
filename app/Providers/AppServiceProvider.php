@@ -21,12 +21,6 @@ use Illuminate\Support\ServiceProvider;
  */
 class AppServiceProvider extends ServiceProvider
 {
-    public function boot()
-    {
-        Carbon::setToStringFormat("c");
-    }
-
-
     /**
      * Register any application services.
      */

@@ -95,6 +95,7 @@ if ($app->environment("dev")) {
     $app->configure("ide-helper");
 }
 
+Carbon::setToStringFormat("c");
 
 /*
 |--------------------------------------------------------------------------
