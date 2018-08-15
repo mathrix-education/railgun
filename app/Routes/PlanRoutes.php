@@ -1,3 +1,6 @@
 <?php
 /** @var Laravel\Lumen\Routing\Router $router */
-$router->get("plans", "PlanController@all");
+$router->group(["prefix" => "plans"], function () use ($router) {
+    $router->get("", "PlanController@all");
+    $router->get("{planId}", "PlanController@find");
+});

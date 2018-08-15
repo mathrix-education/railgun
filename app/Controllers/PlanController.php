@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 
+use App\Exceptions\Http404ModelNotFoundException;
 use App\Services\Braintree\PlansUtils;
 use Illuminate\Http\JsonResponse;
 use Laravel\Lumen\Routing\Controller;
@@ -23,5 +24,27 @@ class PlanController extends Controller
     public function all()
     {
         return new JsonResponse(PlansUtils::retrievePlans());
+    }
+
+
+    /**
+     * Fin a pla by its id
+     *
+     * @param string $planId
+     *
+     * @return JsonResponse
+     * @throws Http404ModelNotFoundException
+     */
+    public function find($planId)
+    {
+        $plans = PlansUtils::retrievePlans();
+
+        foreach ($plans as $plan) {
+            if ($plan["id"] === $planId) {
+                return new JsonResponse($plan);
+            }
+        }
+
+        throw new Http404ModelNotFoundException();
     }
 }
