@@ -155,7 +155,7 @@ class SubscriptionController extends Controller
         }
 
         $this->validate($request, [
-            "plan" => "required|in:" . implode(",", array_keys(self::PRICE_PER_MONTH)),
+            "planId" => "required|in:" . implode(",", array_keys(self::PRICE_PER_MONTH)),
         ]);
 
         // Create user as Braintree customer if necessary
@@ -168,11 +168,11 @@ class SubscriptionController extends Controller
         }
 
         // Now we assume that the user is a Braintree customer
-        $plan = $request->input("plan");
+        $plan = $request->input("planId");
 
         $data = [
             "id" => $this->generateSubscriptionId(),
-            "planId" => $request->input("plan"),
+            "planId" => $request->input("planId"),
             "neverExpires" => true,
             "paymentMethodToken" => $user->getBraintreeDefaultPaymentMethodToken()
         ];
