@@ -26,7 +26,7 @@ class PlansUtils
             $plansData = Formatter::cast(\Braintree_Plan::all());
 
             foreach ($plansData as $k => $plan) {
-                $plan["pricePerMonth"] = round($plan["price"] / $plan["billingFrequency"], 2);
+                $plansData[$k]["pricePerMonth"] = round($plan["price"] / $plan["billingFrequency"], 2);
             }
 
             usort($plansData, function ($a, $b) {
