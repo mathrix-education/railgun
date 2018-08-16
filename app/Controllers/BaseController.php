@@ -249,6 +249,13 @@ abstract class BaseController extends Controller
         $request->user()->canOrFail("search", $this->modelClass);
 
         $inputs = $request->except(["order", "having"]);
+
+        foreach ($inputs as $key => $value) {
+            if (Str::contains($key, "/")) {
+                unset($inputs[$key]);
+            }
+        }
+
         $order = array_merge([
             "column" => "id",
             "dir" => "asc"
