@@ -251,6 +251,7 @@ abstract class BaseController extends Controller
         $inputs = $request->except(["order", "having"]);
 
         foreach ($inputs as $key => $value) {
+            // Remove the URL as input
             if (Str::contains($key, "/")) {
                 unset($inputs[$key]);
             }
