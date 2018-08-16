@@ -17,6 +17,7 @@ class PlansUtils
 {
     /**
      * Get the formatted plans with additional fields
+     *
      * @return mixed
      */
     public static function retrievePlans()
@@ -24,10 +25,16 @@ class PlansUtils
         return Cache::remember("braintree-plans", 0, function () {
             $plansData = Formatter::cast(\Braintree_Plan::all());
 
-            $highestPricePerMonth = round($plansData[0]["price"] / $plansData[0]["billingFrequency"], 2);
-
             foreach ($plansData as $k => $plan) {
                 $plan["pricePerMonth"] = round($plan["price"] / $plan["billingFrequency"], 2);
+            }
+
+            usort($plansData, function ($a, $b) {
+                return $b["pricePerMonth"] <=> $a["pricePerMonth"];
+            });
+
+            $highestPricePerMonth = round($plansData[0]["price"] / $plansData[0]["billingFrequency"], 2);
+            foreach ($plansData as $k => $plan) {
                 $plan["discount"] = 100 - round($plan["pricePerMonth"] * 100 / $highestPricePerMonth, 0);
 
                 $hasTrial = Str::contains($plan["id"], "annually");
@@ -75,10 +82,6 @@ class PlansUtils
 
                 $plansData[$k] = $plan;
             }
-
-            usort($plansData, function ($a, $b) {
-                return $b["pricePerMonth"] <=> $a["pricePerMonth"];
-            });
 
             return $plansData;
         });
