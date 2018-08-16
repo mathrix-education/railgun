@@ -283,6 +283,8 @@ class SubscriptionController extends Controller
         $customer = User::findOrFail($userId);
         $customer->requireBraintreeCustomer();
 
-        return new JsonResponse($customer->getBraintreeSubscriptions());
+        return new JsonResponse(
+            Formatter::cast($customer->getBraintreeSubscriptions())
+        );
     }
 }
