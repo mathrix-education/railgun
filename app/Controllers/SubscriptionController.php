@@ -247,13 +247,22 @@ class SubscriptionController extends Controller
         $subscriptionResult = \Braintree_Subscription::cancel($subscriptionId);
 
         if ($subscriptionResult->success) {
+            /** @var \Braintree_Subscription $subscription */
             $subscription = $subscriptionResult->subscription;
+
+            $customerResultSearch = \Braintree_Customer::search([
+                \Braintree_CustomerSearch::paymentMethodToken()->is($subscription->paymentMethodToken)
+            ]);
+
+            $customer = User::whereBraintreeId($customerResultSearch->firstItem()->id)
+                ->firstOrFail();
+            $customer->forgetBraintreeCustomerCache();
 
             return new JsonResponse(
                 Formatter::cast($subscription->jsonSerialize())
             );
         } else {
-            throw new Http400InvalidRequestException([
+            throw new Http400InvalidRequestException("Unable to cancel subscription.", 400, null, [
                 "errors" => $subscriptionResult->errors
             ]);
         }
