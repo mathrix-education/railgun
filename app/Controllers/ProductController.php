@@ -24,6 +24,21 @@ use Illuminate\Validation\ValidationException;
 class ProductController extends BaseController
 {
     /**
+     * Get salable products
+     *
+     * @return JsonResponse
+     */
+    public function salable()
+    {
+        $products = Product::with("children")
+            ->whereNotNull("price")
+            ->get();
+
+        return new JsonResponse($products);
+    }
+
+
+    /**
      * Base function for selling products
      *
      * @param Request $request

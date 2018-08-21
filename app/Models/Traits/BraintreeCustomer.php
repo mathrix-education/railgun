@@ -247,7 +247,7 @@ trait BraintreeCustomer
         if ($this->isBraintreeCustomer(true)) {
             /** @var \Braintree_Subscription $subscription */
             foreach ($this->getBraintreeSubscriptions() as $subscription) {
-                if (in_array($subscription->planId, $plans)) {
+                if (in_array($subscription->planId, $plans) && $subscription->status === "Active") {
                     return true;
                 }
             }
