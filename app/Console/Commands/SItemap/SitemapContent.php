@@ -132,7 +132,8 @@ class SitemapContent extends Command
                                                 "thumbnail_loc" => "http://img.youtube.com/vi/$videoId/sddefault.jpg",
                                                 "player_loc" => [
                                                     "player_loc" => "https://www.youtube.com/v/$videoId",
-                                                    "allow_embed" => "yes"
+                                                    "allow_embed" => "yes",
+                                                    "autoplay" => "false"
                                                 ]
                                             ];
                                         }
