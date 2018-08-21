@@ -133,7 +133,7 @@ class SitemapContent extends Command
                                                 "player_loc" => [
                                                     "player_loc" => "https://www.youtube.com/v/$videoId",
                                                     "allow_embed" => "yes",
-                                                    "autoplay" => "false"
+                                                    "autoplay" => "ap=1"
                                                 ]
                                             ];
                                         }
