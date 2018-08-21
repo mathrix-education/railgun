@@ -1,5 +1,5 @@
 <?php
-namespace App\Console\Commands;
+namespace App\Console\Commands\Sitemap;
 
 use Illuminate\Console\Command;
 use Roumen\Sitemap\Sitemap;
