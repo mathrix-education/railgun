@@ -1,5 +1,5 @@
 <?php
-namespace App\Console\Commands;
+namespace App\Console\Commands\Sitemap;
 
 use App\Models\Activity;
 use App\Models\Chapter;
@@ -132,8 +132,7 @@ class SitemapContent extends Command
                                                 "thumbnail_loc" => "http://img.youtube.com/vi/$videoId/sddefault.jpg",
                                                 "player_loc" => [
                                                     "player_loc" => "https://www.youtube.com/v/$videoId",
-                                                    "allow_embed" => "yes",
-                                                    "autoplay" => false
+                                                    "allow_embed" => "yes"
                                                 ]
                                             ];
                                         }
