@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 
+use App\Events\TransactionSuccessEvent;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -37,6 +38,35 @@ class BraintreeController extends Controller
 
         return new JsonResponse([
             "token" => $token
+        ]);
+    }
+
+
+    /**
+     * Handle Braintree webhooks
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function webhook(Request $request): JsonResponse
+    {
+        $this->validate($request, [
+            "bt_signature" => "required",
+            "bt_payload" => "required"
+        ]);
+
+        /** @var \Braintree_WebhookNotification $webhook */
+        $webhook = \Braintree_WebhookNotification::parse($request->input("signature"), $request->input("payload"));
+
+        if ($webhook->kind === \Braintree_WebhookNotification::SUBSCRIPTION_CHARGED_SUCCESSFULLY) {
+            event(new TransactionSuccessEvent($webhook->subscription->transactions[0]));
+        }
+
+        return new JsonResponse([
+            "status" => "success",
+            "message" => "Webhook handled"
         ]);
     }
 }

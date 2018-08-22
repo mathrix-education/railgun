@@ -8,6 +8,7 @@ use Laravel\Lumen\Testing\TestCase;
 use Tests\Traits\DatabaseAssertions;
 use Tests\Traits\Debug;
 use Tests\Traits\HttpAssertionsTrait;
+use Tests\Traits\NotificationsTrait;
 use Tests\Traits\PassportTrait;
 use Tests\Traits\ResponseTrait;
 
@@ -22,7 +23,7 @@ use Tests\Traits\ResponseTrait;
  */
 class BraintreeTestCase extends TestCase
 {
-    use HttpAssertionsTrait, DatabaseAssertions, ResponseTrait, Debug, PassportTrait;
+    use HttpAssertionsTrait, DatabaseAssertions, ResponseTrait, Debug, PassportTrait, NotificationsTrait;
 
 
     /**

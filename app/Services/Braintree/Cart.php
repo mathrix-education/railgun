@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Class Cart
- * Used to generate \Braintree_Transaction::sale() request data
+ * Used to generate \Braintree\Transaction::sale() request data
  *
- * @see \Braintree_Transaction::sale()
+ * @see \Braintree\Transaction::sale()
  * @see https://developers.braintreepayments.com/reference/request/transaction/sale/php
  *
  * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
@@ -154,9 +154,9 @@ class Cart
 
 
     /**
-     * Get the \Braintree_Transaction::sale() request data
+     * Get the \Braintree\Transaction::sale() request data
      *
-     * @see \Braintree_Transaction::sale()
+     * @see \Braintree\Transaction::sale()
      * @see https://developers.braintreepayments.com/reference/request/transaction/sale/php
      * @return array
      * @throws Http400InvalidRequestException

@@ -47,7 +47,14 @@ gulp.task("mjml-watch", ["mjml"], function () {
 
     // A single view changed: rebuild and reload only the view
     gulp.watch(mjmlSelectors.views, function (event) {
-        return mjmlPipeline(gulp.src(event.path));
+        const path = event.path;
+        const dir = path.substring(0, path.lastIndexOf("/") + 1);
+        return gulp.src(path)
+            .pipe(mjml())
+            .pipe(extReplace(".php"))
+            .pipe(replace("&#36;", "$")) // Unescape dollar signs, as MJML tends to escape blade syntax
+            .pipe(gulp.dest(dir))
+            .pipe(livereload());
     });
 });
 
@@ -77,7 +84,7 @@ gulp.task("apidoc", function (done) {
 /**
  * Compress cdn images
  */
-gulp.task("cdn", function() {
+gulp.task("cdn", function () {
     return gulp.src("storage/cdn/**")
         .pipe(imagemin([], {
             verbose: true

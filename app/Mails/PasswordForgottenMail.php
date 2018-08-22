@@ -1,6 +1,8 @@
 <?php
 namespace App\Mails;
 
+use App\Models\User;
+
 /**
  * Class PasswordForgottenMail
  *
@@ -8,10 +10,43 @@ namespace App\Mails;
  * @package App\Mails
  * @since 1.0.1
  * @copyright Mathrix Education SA
- * @codeCoverageIgnore
  */
-class PasswordForgottenMail extends UserMail
+class PasswordForgottenMail extends BaseMail
 {
+    /** @var User The mail user */
+    protected $user;
+
+
+    /**
+     * PasswordForgottenMail constructor.
+     *
+     * @param User $user the mail user
+     */
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+
+        parent::__construct();
+    }
+
+
+    /**
+     * Mock the Mail
+     *
+     * @return PasswordForgottenMail
+     */
+    public static function mock()
+    {
+        $user = User::random();
+        return new PasswordForgottenMail($user);
+    }
+
+
+    /**
+     * Build the Mail
+     *
+     * @return PasswordForgottenMail
+     */
     public function build()
     {
         $this->subject("Modification de mot de passe");

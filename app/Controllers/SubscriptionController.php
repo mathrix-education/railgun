@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Events\NewSubscriptionEvent;
+use App\Events\TransactionSuccessEvent;
 use App\Exceptions\Http400InvalidPlanException;
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http401UnauthorizedException;
@@ -186,7 +187,7 @@ class SubscriptionController extends Controller
             ]);
 
             // Charge for the trial
-            $chargeResult = \Braintree_Transaction::sale([
+            $chargeResult = \Braintree\Transaction::sale([
                 "amount" => $this->getTrialPrice($plan),
                 "customerId" => $user->braintree_id,
                 "options" => [
@@ -198,7 +199,9 @@ class SubscriptionController extends Controller
                 ]
             ]);
 
-            if (!$chargeResult->success) {
+            if ($chargeResult->success) {
+                event(new TransactionSuccessEvent($chargeResult->transaction));
+            } else {
                 throw new Http400InvalidRequestException("Unable to charge customer for trial period");
             }
         }
@@ -220,7 +223,16 @@ class SubscriptionController extends Controller
                 Formatter::cast($subscription->jsonSerialize())
             );
         } else {
-            throw new Http400InvalidRequestException("Unable to create the subscription");
+            $errors = [];
+
+            /** @var \Braintree_Error_Validation $error */
+            foreach ($subscriptionResult->errors->deepAll() as $error) {
+                $errors[$error->attribute] = $error->message;
+            }
+
+            throw new Http400InvalidRequestException($subscriptionResult->message, 400, null, [
+                "errors" => $errors
+            ]);
         }
     }
 

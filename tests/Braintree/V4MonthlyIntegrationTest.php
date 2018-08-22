@@ -3,6 +3,10 @@ namespace Tests\Braintree;
 
 use App\Exceptions\Http400InvalidRequestException;
 use App\Models\User;
+use App\Notifications\TransactionRefundSuccessNotification;
+use App\Notifications\TransactionSuccessNotification;
+use Braintree\Transaction;
+use Illuminate\Support\Facades\Notification;
 use Laravel\Passport\Passport;
 
 /**
@@ -30,6 +34,8 @@ class V4MonthlyIntegrationTest extends BraintreeTestCase
      */
     public function testCreateCustomer()
     {
+        Notification::fake();
+
         $customer = User::where("type", "=", "registered")
             ->whereNull("braintree_id")
             ->inRandomOrder()
@@ -38,7 +44,7 @@ class V4MonthlyIntegrationTest extends BraintreeTestCase
         Passport::actingAs($customer, ["registered"]);
 
         $this->json("patch", "/users/{$customer->id}/payment-method", [
-            "payment_method_nonce" => "fake-paypal-billing-agreement-nonce"
+            "paymentMethodNonce" => "fake-valid-mastercard-nonce"
         ]);
 
         $this->assertHttp200Success();
@@ -62,14 +68,16 @@ class V4MonthlyIntegrationTest extends BraintreeTestCase
      */
     public function testSubscribeMonthly(User $customer)
     {
+        Notification::fake();
         Passport::actingAs($customer, ["registered"]);
 
         $this->json("post", "/subscriptions", [
-            "plan" => "v4_monthly"
+            "planId" => "v4_monthly"
         ]);
 
         $this->assertHttp200Success();
         $this->assertTrue($customer->hasBraintreeSubscription("v4_monthly"));
+        $this->assertNotificationSentToVia(TransactionSuccessNotification::class, $customer, "mail");
 
         return $customer->getBraintreeSubscriptions()[0]->id;
     }
@@ -132,12 +140,21 @@ class V4MonthlyIntegrationTest extends BraintreeTestCase
      */
     public function testRefundLastTransaction(string $transactionId)
     {
+        Notification::fake();
+        /** @var Transaction $transaction */
+        $transaction = \Braintree_Test_Transaction::settle($transactionId);
+        $this->assertEquals($transaction->status, "settled");
+
         $user = User::where("type", "=", "support")->firstOrFail();
         Passport::actingAs($user, ["support"]);
 
         $this->json("post", "/transactions/{$transactionId}/refund");
 
+        $transaction = Transaction::find($transactionId);
+        $customer = User::whereBraintreeId($transaction->customerDetails->id)->firstOrFail();
+
         $this->assertHttp200Success();
+        $this->assertNotificationSentToVia(TransactionRefundSuccessNotification::class, $customer, "mail");
 
         return $transactionId;
     }

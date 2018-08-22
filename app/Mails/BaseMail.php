@@ -21,11 +21,14 @@ abstract class  BaseMail extends Mailable
 
     public function __construct()
     {
-        // Push to the email view the ap, cdn and webroot urls defined in the .env file
+        // Push to the email view the app, cdn and webroot urls defined in the .env file
         $this->with([
             "api" => env("APP_API"),
             "cdn" => env("APP_CDN"),
             "webroot" => env("APP_WEBROOT")
         ]);
     }
+
+
+    public abstract static function mock();
 }

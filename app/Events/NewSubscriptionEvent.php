@@ -18,6 +18,8 @@ class NewSubscriptionEvent extends BaseEvent
     public $user;
     /** @var \Braintree_Subscription $subscription */
     public $subscription;
+    /** @var \Braintree\Transaction $initialTransaction */
+    public $initialTransaction;
 
 
     /**
@@ -25,10 +27,12 @@ class NewSubscriptionEvent extends BaseEvent
      *
      * @param User $user
      * @param \Braintree_Subscription $subscription
+     * @param \Braintree\Transaction $initialTransaction
      */
-    public function __construct(User $user, \Braintree_Subscription $subscription)
+    public function __construct(User $user, \Braintree_Subscription $subscription, \Braintree\Transaction $initialTransaction = null)
     {
         $this->user = $user;
         $this->subscription = $subscription;
+        $this->initialTransaction = $initialTransaction;
     }
 }

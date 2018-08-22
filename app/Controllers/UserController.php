@@ -365,19 +365,19 @@ class UserController extends BaseController
         $user = $request->user();
 
         $this->validate($request, [
-            "payment_method_nonce" => "required"
+            "paymentMethodNonce" => "required"
         ]);
 
         if (!$user->isBraintreeCustomer()) {
             $user->createBraintreeCustomer();
         }
 
-        $result = $user->addBraintreePaymentMethod($request->input("payment_method_nonce"));
+        $result = $user->addBraintreePaymentMethod($request->input("paymentMethodNonce"));
 
         if ($result->success) {
             return new JsonResponse(User::find($user->id));
         } else {
-            throw new Http400InvalidRequestException("Unable to update customer payment method");
+            throw new Http400InvalidRequestException($result->message);
         }
     }
 }

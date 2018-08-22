@@ -5,6 +5,7 @@ use App\Exceptions\Http400InvalidRequestException;
 use App\Models\Discount;
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Support\Facades\Notification;
 
 /**
  * Class CartIntegrationTest
@@ -25,6 +26,8 @@ class CartTest extends BraintreeTestCase
      */
     public function testBuy()
     {
+        Notification::fake();
+
         /** @var Discount $discount */
         $discount = Discount::has("products")
             ->where("counter", ">", 0)
@@ -57,6 +60,8 @@ class CartTest extends BraintreeTestCase
      */
     public function testSale()
     {
+        Notification::fake();
+
         $customer = $this->getBraintreeCustomer();
         $support = User::where("type", "=", "support")->firstOrFail();
         $this->setUser($support);

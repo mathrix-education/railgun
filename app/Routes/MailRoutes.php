@@ -1,21 +1,40 @@
 <?php
 /** @var Laravel\Lumen\Routing\Router $router */
 
-use App\Mails\PasswordForgottenMail;
-use App\Mails\PasswordResetMail;
-use App\Models\User;
+use App\Mails\BaseMail;
+use Illuminate\Support\Str;
 
 // @codeCoverageIgnoreStart
-if (app()->environment("dev")) {
+if (app()->environment("dev", "local")) {
     $router->group(["prefix" => "mails"], function () use ($router) {
-        $router->get("password-forgotten", function () {
-            $user = User::inRandomOrder()->first();
-            return new PasswordForgottenMail($user);
+        $mailsDir = app()->basePath() . "/app/Mails";
+        $mails = glob("$mailsDir/*Mail.php");
+        $mails = array_filter($mails, function ($file) {
+            return !Str::contains($file, "BaseMail");
         });
-        $router->get("password-reset", function () {
-            $user = User::inRandomOrder()->first();
-            return new PasswordResetMail($user);
-        });
+
+        // Build Mail classes
+        $mailClasses = array_map(function ($file) use ($mailsDir) {
+            return "App\\Mails\\" . str_replace(["$mailsDir/", ".php"], "", $file);
+        }, $mails);
+
+        // Build Mail urls
+        $mailsUrl = array_map(function ($file) use ($mailClasses, $mailsDir) {
+            $mailClasses[] = "App\\Mails\\" . str_replace(["$mailsDir/", ".php"], "", $file);
+            return Str::snake(str_replace(["$mailsDir/", "Mail.php"], "", $file), "-");
+        }, $mails);
+
+        $mails = array_combine($mailsUrl, $mailClasses);
+
+        /**
+         * @var string $url
+         * @var BaseMail $class
+         */
+        foreach ($mails as $url => $class) {
+            $router->get($url, function () use ($class) {
+                return $class::mock();
+            });
+        }
     });
 }
 // @codeCoverageIgnoreEnd

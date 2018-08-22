@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 
+use App\Events\TransactionSuccessEvent;
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http401UnauthorizedException;
 use App\Exceptions\Http422ModelSaveException;
@@ -69,7 +70,7 @@ class ProductController extends BaseController
             ->setProducts($request->input("cart"))
             ->getBraintreeSaleRequest();
 
-        $saleResult = \Braintree_Transaction::sale($request);
+        $saleResult = \Braintree\Transaction::sale($request);
 
         if ($saleResult->success) {
             /** @var Product $product */
@@ -88,6 +89,8 @@ class ProductController extends BaseController
                     $discount->save();
                 }
             }
+
+            event(new TransactionSuccessEvent($saleResult->transaction));
         } else {
             $errors = [];
 

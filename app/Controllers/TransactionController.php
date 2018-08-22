@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 
+use App\Events\TransactionRefundSuccessEvent;
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http401UnauthorizedException;
 use App\Models\User;
@@ -39,7 +40,7 @@ class TransactionController extends Controller
             throw new Http401UnauthorizedException();
         }
 
-        $transaction = \Braintree_Transaction::find($transactionId);
+        $transaction = \Braintree\Transaction::find($transactionId);
 
         return new JsonResponse(
             Formatter::cast($transaction->jsonSerialize())
@@ -71,12 +72,14 @@ class TransactionController extends Controller
             "submitted_for_settlement",
             "settlement_pending"
         ];
-        $transaction = \Braintree_Transaction::find($transactionId);
+        $transaction = \Braintree\Transaction::find($transactionId);
 
         if (in_array($transaction->status, $voidableStatuses)) {
-            $result = \Braintree_Transaction::void($transactionId);
+            $result = \Braintree\Transaction::void($transactionId);
 
             if ($result->success) {
+                event(new TransactionRefundSuccessEvent($result->transaction));
+
                 return new JsonResponse(
                     Formatter::cast($result->transaction->jsonSerialize())
                 );
@@ -108,14 +111,28 @@ class TransactionController extends Controller
             throw new Http401UnauthorizedException();
         }
 
-        $result = \Braintree_Transaction::refund($transactionId);
+        // Check if the transaction can be voided
+        $voidableStatuses = [
+            "authorizing",
+            "authorized",
+            "submitted_for_settlement",
+            "settlement_pending"
+        ];
+        $transaction = \Braintree\Transaction::find($transactionId);
+        if (in_array($transaction->status, $voidableStatuses)) {
+            return $this->void($request, $transactionId);
+        }
+
+        $result = \Braintree\Transaction::refund($transactionId);
 
         if ($result->success) {
+            event(new TransactionRefundSuccessEvent($result->transaction));
+
             return new JsonResponse(
                 Formatter::cast($result->transaction->jsonSerialize())
             );
         } else {
-            throw new Http400InvalidRequestException("Unable to refund transaction `id` $transactionId");
+            throw new Http400InvalidRequestException($result->message);
         }
     }
 
@@ -167,7 +184,7 @@ class TransactionController extends Controller
         /** @var User $customer */
         $customer = User::findOrFail($userId);
         $customer->requireBraintreeCustomer();
-        $transactionResults = \Braintree_Transaction::search([
+        $transactionResults = \Braintree\Transaction::search([
             Braintree_TransactionSearch::customerId()->is($customer->braintree_id)
         ]);
         $transactions = new Collection();

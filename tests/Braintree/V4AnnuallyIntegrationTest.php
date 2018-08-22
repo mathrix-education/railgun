@@ -2,6 +2,8 @@
 namespace Tests\Braintree;
 
 use App\Models\User;
+use App\Notifications\TransactionSuccessNotification;
+use Illuminate\Support\Facades\Notification;
 use Laravel\Passport\Passport;
 
 /**
@@ -21,14 +23,16 @@ class V4AnnuallyIntegrationTest extends BraintreeTestCase
      */
     public function testSubscribeAnnuallyAsNonCustomer()
     {
+        Notification::fake();
+
         $customer = User::where("type", "=", "registered")
             ->whereNull("braintree_id")
             ->firstOrFail();
         Passport::actingAs($customer, ["registered"]);
 
         $this->json("post", "/subscriptions", [
-            "plan" => "v4_annually",
-            "payment_method_nonce" => "fake-valid-visa-nonce"
+            "planId" => "v4_annually",
+            "paymentMethodNonce" => "fake-valid-visa-nonce"
         ]);
 
         $this->assertHttp200Success();
@@ -37,5 +41,6 @@ class V4AnnuallyIntegrationTest extends BraintreeTestCase
             "braintree_id" => null
         ]);
         $this->assertTrue($customer->hasBraintreeSubscription("v4_annually"));
+        $this->assertNotificationSentToVia(TransactionSuccessNotification::class, $customer, "mail");
     }
 }
