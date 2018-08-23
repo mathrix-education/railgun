@@ -58,51 +58,6 @@ class SubscriptionController extends Controller
     }
 
     /**
-     * @param string $plan
-     *
-     * @return float|int
-     */
-    private function getTrialPrice(string $plan)
-    {
-        $now = Carbon::now();
-        $trialEndDate = $this->getStartDate($plan);
-
-        $diffInMonths = $trialEndDate->diffInMonths($now);
-        $diffInDays = $trialEndDate->diffInDays($now->addMonths($diffInMonths));
-
-        return round($diffInMonths * self::PRICE_PER_MONTH[$plan] + $diffInDays * (self::PRICE_PER_MONTH[$plan] / 30), 2);
-    }
-
-    /**
-     * Get the start date for a given plan.
-     *
-     * @param string $plan
-     *
-     * @return Carbon
-     */
-    private function getStartDate(string $plan)
-    {
-        $nextThirtyFirstJuly = new Carbon("31st July");
-
-        if ($nextThirtyFirstJuly->isPast()) {
-            $nextThirtyFirstJuly->addYear();
-        } elseif ((new Carbon("1st May"))->isPast()) {
-            $nextThirtyFirstJuly->addYear();
-        }
-
-        switch ($plan) {
-            case "v4_annually":
-                break;
-            case "v4_biannually":
-                $nextThirtyFirstJuly->addYear();
-                break;
-            default:
-        }
-
-        return $nextThirtyFirstJuly;
-    }
-
-    /**
      * Get a transaction by its id.
      *
      * @param Request $request        The request
@@ -302,16 +257,6 @@ class SubscriptionController extends Controller
     }
 
     /**
-     * Generate an unique transaction id based on an uuid and the prefix sub_.
-     *
-     * @return string
-     */
-    private function generateSubscriptionId(): string
-    {
-        return "sub_" . str_replace("-", "", \Faker\Factory::create()->uuid);
-    }
-
-    /**
      * Cancel a subscription for a user.
      *
      * @param Request $request        The request
@@ -382,5 +327,60 @@ class SubscriptionController extends Controller
         return new JsonResponse(
             Formatter::cast($customer->getBraintreeSubscriptions())
         );
+    }
+
+    /**
+     * @param string $plan
+     *
+     * @return float|int
+     */
+    private function getTrialPrice(string $plan)
+    {
+        $now = Carbon::now();
+        $trialEndDate = $this->getStartDate($plan);
+
+        $diffInMonths = $trialEndDate->diffInMonths($now);
+        $diffInDays = $trialEndDate->diffInDays($now->addMonths($diffInMonths));
+
+        return round($diffInMonths * self::PRICE_PER_MONTH[$plan] + $diffInDays * (self::PRICE_PER_MONTH[$plan] / 30), 2);
+    }
+
+    /**
+     * Get the start date for a given plan.
+     *
+     * @param string $plan
+     *
+     * @return Carbon
+     */
+    private function getStartDate(string $plan)
+    {
+        $nextThirtyFirstJuly = new Carbon("31st July");
+
+        if ($nextThirtyFirstJuly->isPast()) {
+            $nextThirtyFirstJuly->addYear();
+        } elseif ((new Carbon("1st May"))->isPast()) {
+            $nextThirtyFirstJuly->addYear();
+        }
+
+        switch ($plan) {
+            case "v4_annually":
+                break;
+            case "v4_biannually":
+                $nextThirtyFirstJuly->addYear();
+                break;
+            default:
+        }
+
+        return $nextThirtyFirstJuly;
+    }
+
+    /**
+     * Generate an unique transaction id based on an uuid and the prefix sub_.
+     *
+     * @return string
+     */
+    private function generateSubscriptionId(): string
+    {
+        return "sub_" . str_replace("-", "", \Faker\Factory::create()->uuid);
     }
 }

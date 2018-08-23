@@ -25,16 +25,6 @@ trait StripeCustomer
     }
 
     /**
-     * Get the Brain customer cache used to get customer information from the cache.
-     *
-     * @return string
-     */
-    private function getStripeCustomerCacheKey()
-    {
-        return "stripe-customer-" . $this->stripe_id;
-    }
-
-    /**
      * Check if the user has subscribed to the given plan.
      *
      * @param string|array $plans
@@ -125,5 +115,15 @@ trait StripeCustomer
         if (!$this->isStripeCustomer($strict)) {
             throw new Http400InvalidRequestException("User with id `{$this->id}` is not a Stripe customer");
         }
+    }
+
+    /**
+     * Get the Brain customer cache used to get customer information from the cache.
+     *
+     * @return string
+     */
+    private function getStripeCustomerCacheKey()
+    {
+        return "stripe-customer-" . $this->stripe_id;
     }
 }

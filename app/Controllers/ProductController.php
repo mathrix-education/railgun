@@ -63,6 +63,35 @@ class ProductController extends BaseController
     }
 
     /**
+     * Sale products to an user.
+     *
+     * @param Request $request The request
+     *
+     * @throws Http400InvalidRequestException
+     * @throws Http401UnauthorizedException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
+     * @throws ValidationException
+     *
+     * @return JsonResponse
+     */
+    public function sale(Request $request): JsonResponse
+    {
+        $user = $request->user();
+
+        if (!$user->isSupport()) {
+            throw new Http401UnauthorizedException();
+        }
+
+        /** @var User $customer */
+        $customer = User::findOrFail($request->input("user_id"));
+
+        $saleResult = $this->saleTo($request, $customer);
+
+        return new JsonResponse($saleResult->transaction->jsonSerialize());
+    }
+
+    /**
      * Base function for selling products.
      *
      * @param Request $request  The request
@@ -129,34 +158,5 @@ class ProductController extends BaseController
         }
 
         return $saleResult;
-    }
-
-    /**
-     * Sale products to an user.
-     *
-     * @param Request $request The request
-     *
-     * @throws Http400InvalidRequestException
-     * @throws Http401UnauthorizedException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
-     * @throws ValidationException
-     *
-     * @return JsonResponse
-     */
-    public function sale(Request $request): JsonResponse
-    {
-        $user = $request->user();
-
-        if (!$user->isSupport()) {
-            throw new Http401UnauthorizedException();
-        }
-
-        /** @var User $customer */
-        $customer = User::findOrFail($request->input("user_id"));
-
-        $saleResult = $this->saleTo($request, $customer);
-
-        return new JsonResponse($saleResult->transaction->jsonSerialize());
     }
 }

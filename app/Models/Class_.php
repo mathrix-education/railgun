@@ -47,8 +47,7 @@ class Class_ extends BaseModel
     /** @var string Custom table definition */
     protected $table = "classes";
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "name", "slug", "order", "visible", "parent_id",
-        "country_id", "link", ];
+    protected $fillable = ["id", "name", "slug", "order", "visible", "parent_id", "country_id", "link"];
     /** @var array Validation rules */
     protected $rules = [
         "name" => "required|max:255",

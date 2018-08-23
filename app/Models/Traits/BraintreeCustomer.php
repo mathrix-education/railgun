@@ -93,16 +93,6 @@ trait BraintreeCustomer
     }
 
     /**
-     * Get the Brain customer cache used to get customer information from the cache.
-     *
-     * @return string
-     */
-    private function getBraintreeCustomerCacheKey()
-    {
-        return "braintree-customer-" . $this->braintree_id;
-    }
-
-    /**
      * Get user's Braintree payment methods.
      *
      * @throws Http400InvalidRequestException
@@ -252,5 +242,15 @@ trait BraintreeCustomer
         });
 
         return $subscriptions;
+    }
+
+    /**
+     * Get the Brain customer cache used to get customer information from the cache.
+     *
+     * @return string
+     */
+    private function getBraintreeCustomerCacheKey()
+    {
+        return "braintree-customer-" . $this->braintree_id;
     }
 }

@@ -31,6 +31,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property Collection|Activity[] $activities
  * @property Collection|Comment[]  $comments
  * @property Collection|Log[]      $logs
+ * @property Collection|Product[]  $products
  * @property mixed                 $favorite
  * @property mixed                 $to_revise
  * @property bool                  $completed
@@ -46,7 +47,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Module whereQuestions($value)
  * @method static Builder|Module whereSolutions($value)
  *
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
  * @mixin \Eloquent
  */
 class Module extends BaseModel
@@ -55,7 +55,7 @@ class Module extends BaseModel
 
     /** @var array The attributes that are mass assignable */
     protected $fillable = ["premium", "type", "content", "questions", "choices", "solutions", "corrections", "options",
-        "visible", "link", ];
+        "visible", "link"];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
         "premium" => "boolean",

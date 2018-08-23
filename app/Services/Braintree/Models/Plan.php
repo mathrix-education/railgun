@@ -95,6 +95,49 @@ class Plan extends BraintreeModel
     }
 
     /**
+     * Find a plan by its id or execute a callback.
+     *
+     * @param string   $id
+     * @param callable $callback
+     *
+     * @return Plan
+     */
+    public static function findOr(string $id, callable $callback)
+    {
+        $plans = self::all();
+
+        /** @var Plan $plan */
+        foreach ($plans as $plan) {
+            if ($plan->id === $id) {
+                return $plan;
+            }
+        }
+
+        return $callback($id);
+    }
+
+    /**
+     * Get all plans.
+     *
+     * @return Collection
+     */
+    public static function all()
+    {
+        return Cache::remember("plans", 30, function () {
+            $plans = \Braintree\Plan::all();
+            $collection = new Collection();
+
+            foreach ($plans as $plan) {
+                $collection->push(new self($plan));
+            }
+
+            // Don't forget to sort the values
+            return $collection->sortByDesc("pricePerMonth")
+                ->values();
+        });
+    }
+
+    /**
      * Get the trial price in euros.
      *
      * @return float
@@ -152,48 +195,5 @@ class Plan extends BraintreeModel
         $priceStr = "$price";
 
         return mb_substr($priceStr, 0, -2) . "." . mb_substr($priceStr, -2) . " $currencySymbol";
-    }
-
-    /**
-     * Find a plan by its id or execute a callback.
-     *
-     * @param string   $id
-     * @param callable $callback
-     *
-     * @return Plan
-     */
-    public static function findOr(string $id, callable $callback)
-    {
-        $plans = self::all();
-
-        /** @var Plan $plan */
-        foreach ($plans as $plan) {
-            if ($plan->id === $id) {
-                return $plan;
-            }
-        }
-
-        return $callback($id);
-    }
-
-    /**
-     * Get all plans.
-     *
-     * @return Collection
-     */
-    public static function all()
-    {
-        return Cache::remember("plans", 30, function () {
-            $plans = \Braintree\Plan::all();
-            $collection = new Collection();
-
-            foreach ($plans as $plan) {
-                $collection->push(new self($plan));
-            }
-
-            // Don't forget to sort the values
-            return $collection->sortByDesc("pricePerMonth")
-                ->values();
-        });
     }
 }

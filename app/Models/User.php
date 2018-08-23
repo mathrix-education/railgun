@@ -95,8 +95,8 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
     /** @var array The guarded attributes */
-    protected $fillable = ["email", "username", "firstname", "lastname", "password", "points", "daily",
-        "settings", "class_id", ];
+    protected $fillable = ["email", "username", "firstname", "lastname", "password", "points", "daily", "settings",
+        "class_id"];
     /** @var array The hidden attributes from the model"s JSON */
     protected $hidden = ["password", "token"];
     /** @var array The attributes that should be cast to native types */
@@ -289,10 +289,12 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     {
         $logs = Log::where([
             ["event", "user_gathered_points"],
-            ["user_id", $this->id],
+            ["user_id", $this->id]
         ])
-            ->whereBetween("created_at", [Carbon::now()
-                ->setTime(0, 0, 0), Carbon::now(), ])
+            ->whereBetween("created_at", [
+                Carbon::now()->setTime(0, 0, 0),
+                Carbon::now()
+            ])
             ->get();
 
         $sum = 0;

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -33,6 +34,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Notion      $notion
  * @property Activity    $activity
  * @property Module      $module
+ * @property Carbon      $created_at
+ * @property Carbon      $updated_at
  *
  * @method static Builder|Meta whereId($value)
  * @method static Builder|Meta whereFavorite($value)
@@ -48,9 +51,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Meta whereModuleId($value)
  * @method static Builder|Meta whereCreatedAt($value)
  * @method static Builder|Meta whereUpdatedAt($value)
- *
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
  * @mixin \Eloquent
  */
 class Meta extends BaseModel
@@ -59,7 +59,7 @@ class Meta extends BaseModel
     public $timestamps = true;
     /** @var array The attributes that are mass assignable */
     public $fillable = ["id", "favorite", "to_revise", "completed", "user_id", "country_id", "class_id", "discipline_id",
-        "chapter_id", "notion_id", "activity_id", "module_id", "created_at", "updated_at", ];
+        "chapter_id", "notion_id", "activity_id", "module_id", "created_at", "updated_at"];
     /** @var array The validation rules on create */
     protected $rules = [
         "favorite" => "boolean",

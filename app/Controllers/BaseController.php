@@ -49,34 +49,6 @@ abstract class BaseController extends Controller
     }
 
     /**
-     * @param string $name the model name
-     * @param bool   $fail if true, raise and exception
-     *
-     * @throws Http400InvalidRequestException
-     *
-     * @return BaseModel|bool
-     */
-    protected function resolveModelClass($name, $fail = true)
-    {
-        $potentialModel = Str::studly(Str::singular($name));
-
-        if (\in_array($potentialModel, array_keys($this->modelMap), true)) {
-            $potentialModel = $this->modelMap[$potentialModel];
-        }
-
-        /** @var BaseModel $potentialModelClass */
-        $potentialModelClass = "App\\Models\\$potentialModel";
-
-        if (!class_exists($potentialModelClass) && $fail) {
-            throw new Http400InvalidRequestException("$potentialModelClass does not exist"); // @codeCoverageIgnore
-        } elseif (!class_exists($potentialModelClass) && !$fail) {
-            return false;
-        }
-
-        return $potentialModelClass;
-    }
-
-    /**
      * Generic paginated index method.
      *
      * @param Request $request The request
@@ -102,36 +74,6 @@ abstract class BaseController extends Controller
                     ->get()
             )
         );
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Generic actions
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Order a collection of models by their order key if it exists. If not, just return the collection.
-     *
-     * @param Collection $collection
-     *
-     * @return Collection
-     */
-    protected function orderCollection(Collection $collection): Collection
-    {
-        if (isset($collection->first()->order)) {
-            $collection = $collection->sortBy(function ($model) {
-                return $model->order;
-            })
-                ->values();
-        } elseif (isset($collection->first()->pivot->order)) {
-            $collection = $collection->sortBy(function ($model) {
-                return $model->pivot->order;
-            })
-                ->values();
-        }
-
-        return $collection;
     }
 
     /**
@@ -162,6 +104,12 @@ abstract class BaseController extends Controller
 
         return response()->json($model);
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Generic actions
+    |--------------------------------------------------------------------------
+    */
 
     /**
      * Generic add action.
@@ -347,6 +295,78 @@ abstract class BaseController extends Controller
     }
 
     /**
+     * Get the models ids which satisfy a given relation.
+     *
+     * @param Request $request The request
+     * @param string  $what    the linked model
+     * @param int     $id      the linked model id
+     * @param int     $page    the query page
+     * @param int     $perPage the query per page
+     *
+     * @throws Http400InvalidRequestException
+     * @throws Http401UnauthorizedException
+     *
+     * @return JsonResponse
+     */
+    public function ids(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
+    {
+        return response()->json($this->getByQuery($request, $what, $id, $page, $perPage)
+            ->pluck("id"));
+    }
+
+    /**
+     * @param string $name the model name
+     * @param bool   $fail if true, raise and exception
+     *
+     * @throws Http400InvalidRequestException
+     *
+     * @return BaseModel|bool
+     */
+    protected function resolveModelClass($name, $fail = true)
+    {
+        $potentialModel = Str::studly(Str::singular($name));
+
+        if (\in_array($potentialModel, array_keys($this->modelMap), true)) {
+            $potentialModel = $this->modelMap[$potentialModel];
+        }
+
+        /** @var BaseModel $potentialModelClass */
+        $potentialModelClass = "App\\Models\\$potentialModel";
+
+        if (!class_exists($potentialModelClass) && $fail) {
+            throw new Http400InvalidRequestException("$potentialModelClass does not exist"); // @codeCoverageIgnore
+        } elseif (!class_exists($potentialModelClass) && !$fail) {
+            return false;
+        }
+
+        return $potentialModelClass;
+    }
+
+    /**
+     * Order a collection of models by their order key if it exists. If not, just return the collection.
+     *
+     * @param Collection $collection
+     *
+     * @return Collection
+     */
+    protected function orderCollection(Collection $collection): Collection
+    {
+        if (isset($collection->first()->order)) {
+            $collection = $collection->sortBy(function ($model) {
+                return $model->order;
+            })
+                ->values();
+        } elseif (isset($collection->first()->pivot->order)) {
+            $collection = $collection->sortBy(function ($model) {
+                return $model->pivot->order;
+            })
+                ->values();
+        }
+
+        return $collection;
+    }
+
+    /**
      * Handle foreign models queries.
      *
      * @param Request $request The request
@@ -386,26 +406,6 @@ abstract class BaseController extends Controller
                 ->offset(($page - 1) * $perPage)
                 ->get()
         );
-    }
-
-    /**
-     * Get the models ids which satisfy a given relation.
-     *
-     * @param Request $request The request
-     * @param string  $what    the linked model
-     * @param int     $id      the linked model id
-     * @param int     $page    the query page
-     * @param int     $perPage the query per page
-     *
-     * @throws Http400InvalidRequestException
-     * @throws Http401UnauthorizedException
-     *
-     * @return JsonResponse
-     */
-    public function ids(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
-    {
-        return response()->json($this->getByQuery($request, $what, $id, $page, $perPage)
-            ->pluck("id"));
     }
 
     /**

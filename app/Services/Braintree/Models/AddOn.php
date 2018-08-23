@@ -56,6 +56,47 @@ class AddOn extends BraintreeModel
     }
 
     /**
+     * The findOr function, must be reimplemented.
+     *
+     * @param string   $id
+     * @param callable $callback
+     *
+     * @return mixed
+     */
+    public static function findOr(string $id, callable $callback)
+    {
+        $addOns = self::all();
+
+        /** @var AddOn $addOn */
+        foreach ($addOns as $addOn) {
+            if ($addOn->id === $id) {
+                return $addOn;
+            }
+        }
+
+        return $callback($id);
+    }
+
+    /**
+     * @return Collection
+     */
+    public static function all()
+    {
+        return Cache::remember("addons", 30, function () {
+            $addOns = \Braintree\AddOn::all();
+            $collection = new Collection();
+
+            foreach ($addOns as $addOn) {
+                $collection->push(new self($addOn));
+            }
+
+            // Don't forget to sort the values
+            return $collection->sortByDesc("id")
+                ->values();
+        });
+    }
+
+    /**
      * Get the trial price in euros.
      *
      * @return float
@@ -99,46 +140,5 @@ class AddOn extends BraintreeModel
         }
 
         return $nextThirtyFirstJuly;
-    }
-
-    /**
-     * The findOr function, must be reimplemented.
-     *
-     * @param string   $id
-     * @param callable $callback
-     *
-     * @return mixed
-     */
-    public static function findOr(string $id, callable $callback)
-    {
-        $addOns = self::all();
-
-        /** @var AddOn $addOn */
-        foreach ($addOns as $addOn) {
-            if ($addOn->id === $id) {
-                return $addOn;
-            }
-        }
-
-        return $callback($id);
-    }
-
-    /**
-     * @return Collection
-     */
-    public static function all()
-    {
-        return Cache::remember("addons", 30, function () {
-            $addOns = \Braintree\AddOn::all();
-            $collection = new Collection();
-
-            foreach ($addOns as $addOn) {
-                $collection->push(new self($addOn));
-            }
-
-            // Don't forget to sort the values
-            return $collection->sortByDesc("id")
-                ->values();
-        });
     }
 }

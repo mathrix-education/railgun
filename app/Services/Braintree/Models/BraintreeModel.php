@@ -47,23 +47,6 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
         }
     }
 
-    public function __get($key)
-    {
-        return $this->attributes[$key] ?? $this->model->{$key};
-    }
-
-    public function __set($key, $value)
-    {
-        $this->attributes[$key] = $value;
-    }
-
-    public function __call($name, $arguments)
-    {
-        if (method_exists($this->model, $name)) {
-            return \call_user_func_array([$this->model, $name], $arguments);
-        }
-    }
-
     /**
      * Find a plan by its id or return null.
      *
@@ -99,6 +82,42 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
         return static::findOr($id, function () {
             throw new Http404ModelNotFoundException();
         });
+    }
+
+    /**
+     * Check if key exists in attributes, else check in the Braintree model.
+     *
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public function __get($key)
+    {
+        return $this->attributes[$key] ?? $this->model->{$key};
+    }
+
+    /**
+     * Set the attribute.
+     *
+     * @param string $key
+     * @param mixed  $value
+     */
+    public function __set($key, $value)
+    {
+        $this->attributes[$key] = $value;
+    }
+
+    /**
+     * Magic call.
+     *
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @return mixed
+     */
+    public function __call($name, $arguments)
+    {
+        return \call_user_func_array([$this->model, $name], $arguments);
     }
 
     /**
