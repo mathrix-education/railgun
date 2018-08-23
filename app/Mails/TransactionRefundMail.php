@@ -25,12 +25,9 @@ class TransactionRefundMail extends BaseMail
     /** @var \Braintree\Transaction $transaction */
     private $refund;
 
-    public function __construct(
-        User $user,
-        \Braintree\Transaction $transaction,
-        array $lineItems,
-        \Braintree\Transaction $refund
-    ) {
+    public function __construct(User $user, \Braintree\Transaction $transaction, array $lineItems,
+                                \Braintree\Transaction $refund)
+    {
         $this->user = $user;
         $this->transaction = $transaction;
         $this->lineItems = $lineItems;

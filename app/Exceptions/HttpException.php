@@ -45,9 +45,7 @@ abstract class HttpException extends \Exception
         $matches = null;
 
         if (preg_match(self::PATTERN, $class, $matches) === 0) {
-            // @codeCoverageIgnoreStart
-            parent::__construct($class . " has to follow the pattern " . self::PATTERN, $code, $previous);
-        // @codeCoverageIgnoreEnd
+            parent::__construct($class . " has to follow the pattern " . self::PATTERN, $code, $previous); // @codeCoverageIgnore
         } else {
             // Define the HTTP code
             if (300 <= $code && $code < 600) {
