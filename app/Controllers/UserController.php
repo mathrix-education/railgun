@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -9,7 +10,6 @@ use App\Exceptions\Http429TooManyRequestsException;
 use App\Models\Activity;
 use App\Models\Log;
 use App\Models\Module;
-use App\Models\Training;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -18,65 +18,68 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 /**
- * Class UserController
+ * Class UserController.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Controllers
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class UserController extends BaseController
 {
     /**
-     * @apiVersion 4.0.0
-     * @api {get} /users/{?page}/{?perPage} Index
-     * @apiGroup Users
-     * @apiName UsersIndex
+     * @apiVersion     4.0.0
+     *
+     * @api            {get} /users/{?page}/{?perPage} Index
+     * @apiGroup       Users
+     * @apiName        UsersIndex
      * @apiDescription Get a user by id
-     * @apiPermission admin
-     * @apiUse Bearer
-     * @apiUse Pagination
-     * @apiUse UserArray
-     * @apiUse Http401Unauthorized
+     * @apiPermission  admin
+     * @apiUse         Bearer
+     * @apiUse         Pagination
+     * @apiUse         UserArray
+     * @apiUse         Http401Unauthorized
      */
 
-
     /**
-     * @apiVersion 4.0.0
-     * @api {get} /users/{id} Get
-     * @apiGroup Users
-     * @apiName UserGet
+     * @apiVersion     4.0.0
+     *
+     * @api            {get} /users/{id} Get
+     * @apiGroup       Users
+     * @apiName        UserGet
      * @apiDescription Get a user by id
-     * @apiPermission registered for self get, at least moderator for others registered
-     * @apiUse Bearer
+     * @apiPermission  registered for self get, at least moderator for others registered
+     * @apiUse         Bearer
      * @apiParam {int} [id] The user id
-     * @apiUse UserModel
-     * @apiUse Http401Unauthorized
-     * @apiUse Http404ModelNotFound
+     * @apiUse         UserModel
+     * @apiUse         Http401Unauthorized
+     * @apiUse         Http404ModelNotFound
      */
 
-
     /**
-     * @apiVersion 4.0.0
-     * @api {patch} /users/{id} Edit
-     * @apiGroup Users
-     * @apiName UserEdit
+     * @apiVersion     4.0.0
+     *
+     * @api            {patch} /users/{id} Edit
+     * @apiGroup       Users
+     * @apiName        UserEdit
      * @apiDescription Edit a user
-     * @apiPermission registered for self get, at least admin for strangers
-     * @apiUse Bearer
-     * @apiUse UserRequest
+     * @apiPermission  registered for self get, at least admin for strangers
+     * @apiUse         Bearer
+     * @apiUse         UserRequest
      * @apiParam (Data) {string} [current_password] The user current password. __Required for password change__.
-     * @apiUse UserModel
-     * @apiUse Http401Unauthorized
-     * @apiUse Http404ModelNotFound
+     * @apiUse         UserModel
+     * @apiUse         Http401Unauthorized
+     * @apiUse         Http404ModelNotFound
      *
-     * @param Request $request
-     * @param int|null $id The user id; if null set edit the current user
+     * @param Request  $request
+     * @param int|null $id      The user id; if null set edit the current user
      *
-     * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     *
+     * @return JsonResponse
      */
     public function edit(Request $request, int $id = null): JsonResponse
     {
@@ -103,7 +106,7 @@ class UserController extends BaseController
             $currentPassword = $request->input("current_password", false);
             if (!$currentPassword) {
                 throw new Http400InvalidRequestException("`current_password` is required to change the password");
-            } else if (!Hash::check($currentPassword, $user->password)) {
+            } elseif (!Hash::check($currentPassword, $user->password)) {
                 throw new Http400InvalidRequestException("Current password is incorrect");
             }
         }
@@ -115,45 +118,46 @@ class UserController extends BaseController
         return response()->json($user);
     }
 
-
     /**
-     * @apiVersion 4.0.0
-     * @api {post} /users/search Search
-     * @apiGroup Users
-     * @apiName UsersSearch
+     * @apiVersion     4.0.0
+     *
+     * @api            {post} /users/search Search
+     * @apiGroup       Users
+     * @apiName        UsersSearch
      * @apiDescription Search user matching criteria
-     * @apiPermission moderator
-     * @apiUse Bearer
-     * @apiUse Pagination
-     * @apiUse UserArray
-     * @apiUse Http400InvalidRequest
-     * @apiUse Http401Unauthorized
+     * @apiPermission  moderator
+     * @apiUse         Bearer
+     * @apiUse         Pagination
+     * @apiUse         UserArray
+     * @apiUse         Http400InvalidRequest
+     * @apiUse         Http401Unauthorized
      */
 
-
     /**
-     * @apiVersion 4.0.0
-     * @api {post} /users/register Register
-     * @apiGroup Users
-     * @apiName UserRegister
+     * @apiVersion     4.0.0
+     *
+     * @api            {post} /users/register Register
+     * @apiGroup       Users
+     * @apiName        UserRegister
      * @apiDescription Register a user
-     * @apiPermission public for registering regular user, admin otherwise
+     * @apiPermission  public for registering regular user, admin otherwise
      * @apiParam (Data) {string} email The user email
      * @apiParam (Data) {string} password The user password or the user facebook token
      * @apiParam (Data) {string=registered,moderator,admin} type The user type
      * @apiParam (Data) {int} [class_id=null] The class id; should be `null` for `moderator` and `admin`
      * @apiParam (Data) {int} [settings.facebook_id] The facebook id
-     * @apiUse UserModel
+     * @apiUse         UserModel
      * @apiError (Error 422) validation The given data failed to pass validation
      * @apiError (Error 422) save The validated user save failed
      * @apiError (Error 502) email_not_sent Unable to sent reset email
      *
      * @param Request $request
      *
-     * @return JsonResponse
      * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     *
+     * @return JsonResponse
      */
     public function register(Request $request): JsonResponse
     {
@@ -162,7 +166,7 @@ class UserController extends BaseController
 
         // Check if user is trying to create a non-registered user and if so, if he has enough privileges
         if (
-            !empty($request->input("type")) && $request->input("type") != "register" &&
+            !empty($request->input("type")) && $request->input("type") !== "register" &&
             (!$user || !$user->tokenCan("admin"))
         ) {
             throw new Http401UnauthorizedException();
@@ -175,8 +179,8 @@ class UserController extends BaseController
         $request->merge([
             "points" => 0,
             "settings" => [
-                "sound" => true
-            ]
+                "sound" => true,
+            ],
         ]);
 
         // Build and save the user
@@ -187,14 +191,14 @@ class UserController extends BaseController
         return response()->json($user);
     }
 
-
     /**
-     * @apiVersion 4.0.0
-     * @api {post} /users/exists Exists
-     * @apiGroup Users
-     * @apiName UserExists
+     * @apiVersion     4.0.0
+     *
+     * @api            {post} /users/exists Exists
+     * @apiGroup       Users
+     * @apiName        UserExists
      * @apiDescription Search for user matching given key-value
-     * @apiPermission public
+     * @apiPermission  public
      * @apiParam (Data) {string} email The email to check
      * @apiParam (Data) {string} username The username to check
      * @apiSuccess {bool} exists if an user matching criteria exists
@@ -216,16 +220,16 @@ class UserController extends BaseController
         return response()->json(["exists" => false]);
     }
 
-
     /**
-     * @apiVersion 4.0.0
-     * @api {get} /users/profile Profile
-     * @apiGroup Users
-     * @apiName UserProfile
+     * @apiVersion     4.0.0
+     *
+     * @api            {get} /users/profile Profile
+     * @apiGroup       Users
+     * @apiName        UserProfile
      * @apiDescription Get the current user
-     * @apiPermission registered
-     * @apiUse Bearer
-     * @apiUse UserModel
+     * @apiPermission  registered
+     * @apiUse         Bearer
+     * @apiUse         UserModel
      *
      * @param Request $request
      *
@@ -245,34 +249,35 @@ class UserController extends BaseController
         return response()->json($user);
     }
 
-
     /**
-     * @apiVersion 4.0.0
-     * @api {post} /users/points/{?id} Points
-     * @apiGroup Users
-     * @apiName UserPoints
+     * @apiVersion     4.0.0
+     *
+     * @api            {post} /users/points/{?id} Points
+     * @apiGroup       Users
+     * @apiName        UserPoints
      * @apiDescription Give points to a user
-     * @apiPermission registered for self update, admin otherwise
-     * @apiUse Bearer
+     * @apiPermission  registered for self update, admin otherwise
+     * @apiUse         Bearer
      * @apiParam (Data) {int} [id=null] The user id
      * @apiParam (Data) {int} points The points to add
      * @apiParam (Data) {string=activity,module} [loggable_type] The loggable type
      * @apiParam (Data) {int} [loggable_id] The loggable id
      * @apiError (Error 400) invalid_request points field is required
      * @apiError (Error 400) invalid_request points field has to be a positive integer
-     * @apiUse Http401Unauthorized
-     * @apiUse Http404ModelNotFound
-     * @apiUse Http422ModelSave
+     * @apiUse         Http401Unauthorized
+     * @apiUse         Http404ModelNotFound
+     * @apiUse         Http422ModelSave
      * @apiError (Error 429) too_many_requests Already gathered points today for this model
      *
-     * @param Request $request
-     * @param int|null $id the user id
+     * @param Request  $request
+     * @param int|null $id      the user id
      *
-     * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      * @throws Http429TooManyRequestsException
+     *
+     * @return JsonResponse
      */
     public function points(Request $request, $id = null)
     {
@@ -308,7 +313,7 @@ class UserController extends BaseController
             ])
                 ->whereBetween("created_at", [
                     Carbon::now()->setTime(0, 0, 0),
-                    Carbon::now()
+                    Carbon::now(),
                 ])
                 ->exists();
 
@@ -326,11 +331,11 @@ class UserController extends BaseController
         }
 
         // Check if field is a valid positive integer
-        if (!is_numeric($pointsToAdd) || (int)$pointsToAdd < 0) {
+        if (!is_numeric($pointsToAdd) || (int) $pointsToAdd < 0) {
             throw new Http400InvalidRequestException("points field has to be a positive integer");
         }
 
-        $pointsToAdd = (int)$pointsToAdd;
+        $pointsToAdd = (int) $pointsToAdd;
 
         // Update the user points count
         $user->update(["points" => $user->points + $pointsToAdd]);
@@ -341,7 +346,7 @@ class UserController extends BaseController
         if ($useLoggable) {
             $logData = array_merge($logData, [
                 "loggable_type" => $loggableType,
-                "loggable_id" => $loggableId
+                "loggable_id" => $loggableId,
             ]);
         }
 
@@ -351,13 +356,13 @@ class UserController extends BaseController
         return response()->json($user);
     }
 
-
     /**
      * @param Request $request
      *
-     * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws \Illuminate\Validation\ValidationException
+     *
+     * @return JsonResponse
      */
     public function updatePaymentMethod(Request $request)
     {
@@ -365,7 +370,7 @@ class UserController extends BaseController
         $user = $request->user();
 
         $this->validate($request, [
-            "paymentMethodNonce" => "required"
+            "paymentMethodNonce" => "required",
         ]);
 
         if (!$user->isBraintreeCustomer()) {
@@ -376,8 +381,7 @@ class UserController extends BaseController
 
         if ($result->success) {
             return new JsonResponse(User::find($user->id));
-        } else {
-            throw new Http400InvalidRequestException($result->message);
         }
+        throw new Http400InvalidRequestException($result->message);
     }
 }

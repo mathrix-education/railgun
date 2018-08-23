@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Quotes;
 
 use App\Models\Quote;
@@ -6,17 +7,17 @@ use Tests\API\ScopeTestCase;
 
 /**
  * Class QuotesAsPublicTest
- * Test quotes as public (non-logged user)
+ * Test quotes as public (non-logged user).
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @version 1.0.0
- * @package Tests\Quotes
  */
 class QuotesAsPublicTest extends ScopeTestCase
 {
     /**
-     * GET /quotes
+     * GET /quotes.
      *
      * @throws \Exception
      */
@@ -25,9 +26,8 @@ class QuotesAsPublicTest extends ScopeTestCase
         $this->genericIndexSuccess();
     }
 
-
     /**
-     * GET /quotes/{id}
+     * GET /quotes/{id}.
      *
      * @throws \Exception
      */
@@ -36,9 +36,8 @@ class QuotesAsPublicTest extends ScopeTestCase
         $this->genericGetSuccess();
     }
 
-
     /**
-     * POST /quotes -> HTTP 401 unauthorized
+     * POST /quotes -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -47,9 +46,8 @@ class QuotesAsPublicTest extends ScopeTestCase
         $this->genericAddUnauthorized();
     }
 
-
     /**
-     * PATCH /quotes/{id} -> HTTP 401 unauthorized
+     * PATCH /quotes/{id} -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -58,9 +56,8 @@ class QuotesAsPublicTest extends ScopeTestCase
         $this->genericEditUnauthorized();
     }
 
-
     /**
-     * DELETE /quotes/{id} -> HTTP 401 unauthorized
+     * DELETE /quotes/{id} -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -69,9 +66,8 @@ class QuotesAsPublicTest extends ScopeTestCase
         $this->genericDeleteUnauthorized();
     }
 
-
     /**
-     * GET /quotes/random
+     * GET /quotes/random.
      */
     public function testRandom()
     {
@@ -82,9 +78,8 @@ class QuotesAsPublicTest extends ScopeTestCase
         $this->assertJsonLength(1);
     }
 
-
     /**
-     * GET /quotes/random/{number}
+     * GET /quotes/random/{number}.
      */
     public function testRandomMultiple()
     {

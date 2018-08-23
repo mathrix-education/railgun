@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Middleware;
 
 use App\Exceptions\Http401UnauthorizedException;
@@ -8,11 +9,12 @@ use Illuminate\Http\Request;
 
 /**
  * Class Authenticate
- * Handle auth using oAuth via Passport
+ * Handle auth using oAuth via Passport.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Middleware
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class Authenticate
@@ -24,28 +26,27 @@ class Authenticate
      */
     protected $auth;
 
-
     /**
      * Create a new middleware instance.
      *
-     * @param  \Illuminate\Contracts\Auth\Factory $auth
+     * @param \Illuminate\Contracts\Auth\Factory $auth
      */
     public function __construct(Auth $auth)
     {
         $this->auth = $auth;
     }
 
-
     /**
      * Handle an incoming request.
      *
-     * @param  Request $request
-     * @param  Closure $next
-     * @param  string|null $guard
+     * @param Request     $request
+     * @param Closure     $next
+     * @param string|null $guard
      *
-     * @return mixed
      * @throws Http401UnauthorizedException
      * @throws \Exception
+     *
+     * @return mixed
      */
     public function handle($request, Closure $next, $guard = null)
     {

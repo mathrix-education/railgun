@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API;
 
 use App\Models\User;
@@ -14,18 +15,17 @@ use Tests\Utils\Traits\DebugTrait;
 use Tests\Utils\Traits\ResponseTrait;
 
 /**
- * Class AuthTest
+ * Class AuthTest.
  *
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @version 4.0.3
- * @package Tests\API
  */
 class AuthTest extends TestCase
 {
     use DatabaseAssertionsTrait, HttpAssertionsTrait, JsonAssertionsTrait, NotificationsAssertionsTrait, ResponseTrait, DebugTrait;
-
 
     /**
      * Creates the application.
@@ -39,9 +39,8 @@ class AuthTest extends TestCase
         return require __DIR__ . "/../../bootstrap/app.php";
     }
 
-
     /**
-     * Get a Facebook user
+     * Get a Facebook user.
      *
      * @return User
      */
@@ -52,9 +51,8 @@ class AuthTest extends TestCase
             ->firstOrFail();
     }
 
-
     /**
-     * Get regular (non Facebook) user
+     * Get regular (non Facebook) user.
      *
      * @return User
      */
@@ -65,9 +63,8 @@ class AuthTest extends TestCase
             ->firstOrFail();
     }
 
-
     /**
-     * POST /users/login
+     * POST /users/login.
      *
      * @throws \Exception
      */
@@ -80,7 +77,7 @@ class AuthTest extends TestCase
             "client_id" => env("OAUTH_CLIENT_ID"),
             "client_secret" => env("OAUTH_CLIENT_SECRET"),
             "username" => $user->email,
-            "password" => "test"
+            "password" => "test",
         ]);
 
         // Assertions
@@ -98,9 +95,8 @@ class AuthTest extends TestCase
         return $args;
     }
 
-
     /**
-     * POST /users/refresh
+     * POST /users/refresh.
      *
      * @depends testLogin
      *
@@ -115,7 +111,7 @@ class AuthTest extends TestCase
             "client_id" => env("OAUTH_CLIENT_ID"),
             "client_secret" => env("OAUTH_CLIENT_SECRET"),
             "username" => $args->email,
-            "refresh_token" => $args->refresh_token
+            "refresh_token" => $args->refresh_token,
         ]);
 
         $data = $this->getResponseData();
@@ -126,9 +122,8 @@ class AuthTest extends TestCase
         $this->assertNotEmpty($data->access_token);
     }
 
-
     /**
-     * POST /users/forgot
+     * POST /users/forgot.
      */
     public function testForgot()
     {
@@ -141,9 +136,8 @@ class AuthTest extends TestCase
         $this->assertNotificationSentToVia(PasswordForgottenNotification::class, $user, "mail");
     }
 
-
     /**
-     * POST /users/forgot
+     * POST /users/forgot.
      */
     public function testForgotAsFacebookUser()
     {
@@ -153,9 +147,8 @@ class AuthTest extends TestCase
         $this->assertHttp400InvalidRequest();
     }
 
-
     /**
-     * POST /users/reset
+     * POST /users/reset.
      */
     public function testReset()
     {
@@ -168,9 +161,8 @@ class AuthTest extends TestCase
         $this->assertNotificationSentToVia(PasswordResetNotification::class, $user, "mail");
     }
 
-
     /**
-     * POST /users/reset
+     * POST /users/reset.
      */
     public function testResetWithEmptyPassword()
     {
@@ -181,9 +173,8 @@ class AuthTest extends TestCase
         $this->assertHttp400InvalidRequest();
     }
 
-
     /**
-     * POST /users/reset
+     * POST /users/reset.
      */
     public function testResetAsFacebookUser()
     {

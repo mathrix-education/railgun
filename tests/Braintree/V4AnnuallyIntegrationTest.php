@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Braintree;
 
 use App\Models\User;
@@ -7,17 +8,18 @@ use Illuminate\Support\Facades\Notification;
 use Laravel\Passport\Passport;
 
 /**
- * Class V4AnnuallyIntegrationTest
+ * Class V4AnnuallyIntegrationTest.
  *
  * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package Tests\Braintree
+ *
  * @since 4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class V4AnnuallyIntegrationTest extends BraintreeTestCase
 {
     /**
-     * POST /braintree/subscriptions
+     * POST /braintree/subscriptions.
      *
      * Test subscription to `v4_annually` as non-customer with 3 children
      *
@@ -41,7 +43,7 @@ class V4AnnuallyIntegrationTest extends BraintreeTestCase
         $this->json("post", "/subscriptions", [
             "planId" => "v4_annually",
             "family" => $childEmails,
-            "paymentMethodNonce" => "fake-valid-visa-nonce"
+            "paymentMethodNonce" => "fake-valid-visa-nonce",
         ]);
 
         $children = User::whereIn("email", $childEmails)->get();
@@ -49,7 +51,7 @@ class V4AnnuallyIntegrationTest extends BraintreeTestCase
         $this->assertHttp200Success();
         $this->assertNotInDatabase("users", [
             "id" => $customer->id,
-            "braintree_id" => null
+            "braintree_id" => null,
         ]);
         $this->assertTrue($customer->hasBraintreeSubscription("v4_annually"));
         $this->assertNotificationSentToVia(TransactionSuccessNotification::class, $customer, "mail");

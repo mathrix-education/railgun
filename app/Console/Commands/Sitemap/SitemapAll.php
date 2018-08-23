@@ -1,15 +1,17 @@
 <?php
+
 namespace App\Console\Commands\Sitemap;
 
 use Illuminate\Console\Command;
 use Roumen\Sitemap\Sitemap;
 
 /**
- * Class SitemapAll
+ * Class SitemapAll.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Console\Commands
- * @since 1.0.1
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.1
+ *
  * @copyright Mathrix Education SA
  */
 class SitemapAll extends Command
@@ -17,7 +19,6 @@ class SitemapAll extends Command
     use SitemapUtils;
 
     protected $signature = "sitemap:all";
-
 
     public function handle()
     {
@@ -35,7 +36,7 @@ class SitemapAll extends Command
 
         $sitemap->store("sitemapindex", "sitemap", storage_path("sitemaps"));
 
-        if (env("APP_ENV") != "local") {
+        if (env("APP_ENV") !== "local") {
             $existing = "/var/www/" . env("APP_ENV") . "/api/current/storage/sitemaps/sitemap.xml";
             $symbolic = "/var/www/" . env("APP_ENV") . "/client/current/dist/browser/sitemap.xml";
 

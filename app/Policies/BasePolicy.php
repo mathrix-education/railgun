@@ -1,14 +1,16 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\User;
 
 /**
- * Class BasePolicy
+ * Class BasePolicy.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Policies
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  *
  * @method bool atLeastAdmin(User $currentUser)
@@ -17,23 +19,23 @@ use App\Models\User;
 abstract class BasePolicy
 {
     /**
-     * Dynamically check for permission based on method name
+     * Dynamically check for permission based on method name.
      *
      * @see BasePolicy::before()
      *
      * @param string $name
-     * @param array $args
+     * @param array  $args
      *
      * @return bool
      */
     public function __call($name, $args)
     {
-        $potentialScopeIndex = strpos($name, "atLeast");
+        $potentialScopeIndex = mb_strpos($name, "atLeast");
 
         if ($potentialScopeIndex !== false) {
-            $potentialScope = strtolower(substr($name, $potentialScopeIndex + 7));
+            $potentialScope = mb_strtolower(mb_substr($name, $potentialScopeIndex + 7));
 
-            if (in_array($potentialScope, ["admin", "moderator"]) && $args[0] instanceof User) {
+            if (\in_array($potentialScope, ["admin", "moderator"], true) && $args[0] instanceof User) {
                 /** @var User $user */
                 $user = $args[0];
 
@@ -44,9 +46,8 @@ abstract class BasePolicy
         return false; // @codeCoverageIgnore
     }
 
-
     /**
-     * Global search policy
+     * Global search policy.
      *
      * @param User $currentUser
      *

@@ -1,22 +1,22 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 /**
- * Class DropScoreOnCommentsTable
+ * Class DropScoreOnCommentsTable.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
  * @since 4.0.3
+ *
  * @copyright Mathrix Education SA
  */
 class DropScoreOnCommentsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -27,8 +27,6 @@ class DropScoreOnCommentsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

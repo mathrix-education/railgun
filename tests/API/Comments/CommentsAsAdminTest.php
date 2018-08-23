@@ -1,22 +1,22 @@
 <?php
+
 namespace Tests\API\Comments;
 
 use App\Models\Comment;
 
 /**
  * Class CommentsAsAdminTest
- * Test Comments as admin
+ * Test Comments as admin.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @version 1.0.0
- * @package Tests\Comments
  */
 class CommentsAsAdminTest extends CommentsAsModeratorTest
 {
-
     /**
-     * POST /comments
+     * POST /comments.
      */
     public function testAddForStranger()
     {

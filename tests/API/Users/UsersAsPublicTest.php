@@ -8,17 +8,17 @@ use Tests\API\ScopeTestCase;
 
 /**
  * Class UsersAsPublicTest
- * Test users as public user
+ * Test users as public user.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @version 1.0.0
- * @package Tests\Quotes
  */
 class UsersAsPublicTest extends ScopeTestCase
 {
     /**
-     * POST /users/register
+     * POST /users/register.
      */
     public function testRegister()
     {
@@ -41,13 +41,12 @@ class UsersAsPublicTest extends ScopeTestCase
         $this->assertInDatabase("users", $dataWithoutPassword);
         $this->assertInDatabase("logs", [
             "event" => "user_registered",
-            "user_id" => $user->id
+            "user_id" => $user->id,
         ]);
     }
 
-
     /**
-     * GET /users/profile
+     * GET /users/profile.
      */
     public function testProfile()
     {
@@ -56,9 +55,8 @@ class UsersAsPublicTest extends ScopeTestCase
         $this->assertHttp401Unauthorized();
     }
 
-
     /**
-     * GET /users/exists
+     * GET /users/exists.
      */
     public function testExistsTrue()
     {
@@ -70,9 +68,8 @@ class UsersAsPublicTest extends ScopeTestCase
         $this->assertTrue($response->exists);
     }
 
-
     /**
-     * GET /users/exists
+     * GET /users/exists.
      */
     public function testExistsFalse()
     {
@@ -83,9 +80,8 @@ class UsersAsPublicTest extends ScopeTestCase
         $this->assertFalse($response->exists);
     }
 
-
     /**
-     * POST /users/search
+     * POST /users/search.
      */
     public function testSearch()
     {

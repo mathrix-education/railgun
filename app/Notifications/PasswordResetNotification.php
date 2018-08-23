@@ -1,22 +1,23 @@
 <?php
+
 namespace App\Notifications;
 
 use App\Mails\PasswordResetMail;
 use App\Models\User;
 
 /**
- * Class PasswordResetNotification
+ * Class PasswordResetNotification.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Notifications
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class PasswordResetNotification extends BaseNotification
 {
     /** @var User $user */
     public $user;
-
 
     /**
      * PasswordResetNotification constructor.
@@ -28,7 +29,6 @@ class PasswordResetNotification extends BaseNotification
         $this->user = $user;
     }
 
-
     /**
      * @return array
      */
@@ -37,9 +37,8 @@ class PasswordResetNotification extends BaseNotification
         return ["mail"];
     }
 
-
     /**
-     * Get the mail representation of the notification
+     * Get the mail representation of the notification.
      *
      * @return PasswordResetMail
      */
@@ -48,5 +47,4 @@ class PasswordResetNotification extends BaseNotification
         return (new PasswordResetMail($this->user))
             ->to($this->user->email);
     }
-
 }

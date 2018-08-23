@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Observers;
 
 use App\Exceptions\Http422ModelSaveException;
@@ -8,10 +9,9 @@ use App\Models\Meta;
 use App\Models\Notion;
 
 /**
- * Class NotionObserver
+ * Class NotionObserver.
  *
  * @author Mathrix Team
- * @package App\Observers
  */
 class NotionObserver extends BaseObserver
 {
@@ -61,14 +61,14 @@ class NotionObserver extends BaseObserver
         return true;
     }
 
-
     /**
-     * Detach all activities link with the deleting notion
+     * Detach all activities link with the deleting notion.
      *
      * @param Notion $notion
      *
-     * @return bool
      * @throws Http422ModelSaveException
+     *
+     * @return bool
      */
     public function deleting($notion)
     {

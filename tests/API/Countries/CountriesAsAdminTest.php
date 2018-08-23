@@ -4,17 +4,17 @@ namespace Tests\API\Countries;
 
 /**
  * Class CountriesAsAdminTest
- * Test countries as admin
+ * Test countries as admin.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @version 1.0.0
- * @package Tests\Countries
  */
 class CountriesAsAdminTest extends CountriesAsModeratorTest
 {
     /**
-     * POST /countries
+     * POST /countries.
      *
      * @throws \Exception
      */
@@ -23,9 +23,8 @@ class CountriesAsAdminTest extends CountriesAsModeratorTest
         $this->genericAddSuccess();
     }
 
-
     /**
-     * PATCH /countries/{id}
+     * PATCH /countries/{id}.
      *
      * @throws \Exception
      */
@@ -34,9 +33,8 @@ class CountriesAsAdminTest extends CountriesAsModeratorTest
         $this->genericEditSuccess();
     }
 
-
     /**
-     * DELETE /countries/{id}
+     * DELETE /countries/{id}.
      *
      * @throws \Exception
      */

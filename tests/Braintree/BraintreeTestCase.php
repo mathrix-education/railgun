@@ -15,18 +15,18 @@ use Tests\Utils\Traits\ResponseTrait;
 
 /**
  * Class BraintreeTestCase
- * Base class for Braintree tests
+ * Base class for Braintree tests.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package Tests\Braintree
+ *
  * @since 4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class BraintreeTestCase extends TestCase
 {
     use DatabaseAssertionsTrait, HttpAssertionsTrait, JsonAssertionsTrait, NotificationsAssertionsTrait, ResponseTrait,
         DebugTrait, PassportTrait;
-
 
     /**
      * Creates the application.
@@ -40,12 +40,12 @@ class BraintreeTestCase extends TestCase
         return require __DIR__ . "/../../bootstrap/app.php";
     }
 
-
     /**
-     * Get a Braintree customer
+     * Get a Braintree customer.
+     *
+     * @throws Http400InvalidRequestException
      *
      * @return User
-     * @throws Http400InvalidRequestException
      */
     public function getBraintreeCustomer(): User
     {

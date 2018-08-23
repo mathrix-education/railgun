@@ -6,14 +6,14 @@ use App\Models\Post;
 use App\Models\User;
 use Faker\Generator;
 
-/**
+/*
  * PostFactory
  *
  * @author Mathrix Team
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->define(Post::class, function (Generator $faker) {
-    $title = substr($faker->sentence($faker->numberBetween(3, 5)), 0, -1);
+    $title = mb_substr($faker->sentence($faker->numberBetween(3, 5)), 0, -1);
     $created = $faker->dateTimeBetween("-30 days", "now");
 
     return [

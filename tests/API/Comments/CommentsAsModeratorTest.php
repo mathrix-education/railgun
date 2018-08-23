@@ -6,17 +6,17 @@ use App\Models\Comment;
 
 /**
  * Class CommentsAsModeratorTest
- * Test Comments as moderator
+ * Test Comments as moderator.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @version 1.0.0
- * @package Tests\Comments
  */
 class CommentsAsModeratorTest extends CommentsAsRegisteredTest
 {
     /**
-     * GET /comments
+     * GET /comments.
      *
      * @throws \Exception
      */
@@ -25,9 +25,8 @@ class CommentsAsModeratorTest extends CommentsAsRegisteredTest
         $this->genericIndexSuccess();
     }
 
-
     /**
-     * PATCH /comments/{id} without changing the user_id
+     * PATCH /comments/{id} without changing the user_id.
      */
     public function testEdit()
     {
@@ -42,9 +41,8 @@ class CommentsAsModeratorTest extends CommentsAsRegisteredTest
         $this->assertInDatabase("comments", $data);
     }
 
-
     /**
-     * DELETE /comments/{id}
+     * DELETE /comments/{id}.
      *
      * @throws \Exception
      */
@@ -53,9 +51,8 @@ class CommentsAsModeratorTest extends CommentsAsRegisteredTest
         $this->genericSoftDeleteSuccess();
     }
 
-
     /**
-     * DELETE /comments/{id}
+     * DELETE /comments/{id}.
      *
      * @throws \Exception
      */
@@ -66,20 +63,19 @@ class CommentsAsModeratorTest extends CommentsAsRegisteredTest
     }
 
     /**
-     * POST /comments/search
+     * POST /comments/search.
      */
     public function testSearch()
     {
         $this->call("POST", "/comments/search", [
-            "content" => "%lorem%"
+            "content" => "%lorem%",
         ]);
 
         $this->assertHttp200Success();
     }
 
-
     /**
-     * GET /comments/latest
+     * GET /comments/latest.
      *
      * @throws \Exception
      */

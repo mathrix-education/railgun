@@ -6,18 +6,18 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Class CreateProductsTable
+ * Class CreateProductsTable.
  *
  * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
  * @since 4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class CreateProductsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -75,11 +75,10 @@ class CreateProductsTable extends Migration
             $toMigrate = [
                 "training" => $trainings,
                 "section" => $sections,
-                "lesson" => $lessons
+                "lesson" => $lessons,
             ];
             $products = [];
             $productLinks = [];
-
 
             foreach ($toMigrate as $type => $family) {
                 foreach ($family as $item) {
@@ -98,7 +97,7 @@ class CreateProductsTable extends Migration
                             $productLinks[] = [
                                 "parent_id" => $item->training_id,
                                 "child_id" => $id,
-                                "order" => $item->order
+                                "order" => $item->order,
                             ];
                             break;
                         case "lesson":
@@ -106,7 +105,7 @@ class CreateProductsTable extends Migration
                             $productLinks[] = [
                                 "parent_id" => $item->section_id + $sectionDelta,
                                 "child_id" => $id,
-                                "order" => $item->order
+                                "order" => $item->order,
                             ];
                             break;
                     }
@@ -123,7 +122,7 @@ class CreateProductsTable extends Migration
                         "order" => $order,
                         "module_id" => $item->module_id ?? null,
                         "created_at" => $item->created_at ?? Carbon::now(),
-                        "updated_at" => $item->updated_at ?? Carbon::now()
+                        "updated_at" => $item->updated_at ?? Carbon::now(),
                     ];
                 }
             }
@@ -134,7 +133,6 @@ class CreateProductsTable extends Migration
             DB::statement("UPDATE purchases SET product_id = purchasable_id");
         }
 
-
         Schema::table("purchases", function (Blueprint $table) {
             $table->dropColumn("price");
             $table->dropColumn("refund");
@@ -142,14 +140,10 @@ class CreateProductsTable extends Migration
             $table->dropColumn("purchasable_id");
             $table->dropColumn("purchasable_type");
         });
-
     }
-
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

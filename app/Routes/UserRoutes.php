@@ -1,4 +1,5 @@
 <?php
+
 /** @var Laravel\Lumen\Routing\Router $router */
 $router->group(["middleware" => "auth:api"], function () use ($router) {
     $router->get("users[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "UserController@index");

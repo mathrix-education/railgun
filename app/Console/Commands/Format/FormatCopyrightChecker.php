@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands\Format;
 
 use Illuminate\Console\Command;
@@ -6,17 +7,16 @@ use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 /**
  * Class FormatCopyrightChecker
- * Allow to check file headers to check if they all match to the standard copyright head comment
+ * Allow to check file headers to check if they all match to the standard copyright head comment.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Console\Commands\Format
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class FormatCopyrightChecker extends Command
 {
-    protected $signature = "format:copyright:check";
-
     private const COPYRIGHT_PATTERN =
         " \* @author Mathieu Bour <mathieu\.tin\.bour@gmail\.com>\n" .
         " \* @package (.*)+\n" .
@@ -24,16 +24,16 @@ class FormatCopyrightChecker extends Command
         " \* @copyright Mathrix Education SA\n";
 
     /**
-     * Where to look
+     * Where to look.
      */
     private const SCOPE = [
         "app",
-        "tests"
+        "tests",
     ];
+    protected $signature = "format:copyright:check";
 
     /** @var int The number of files with invalid copyright */
     private $invalidFileCount = 0;
-
 
     public function handle()
     {
@@ -44,7 +44,6 @@ class FormatCopyrightChecker extends Command
             $this->output->getFormatter()->setStyle('alert', $style);
         }
 
-
         foreach (self::SCOPE as $dir) {
             $glob = app()->basePath() . "/$dir/*.php";
             $files = glob_recursive($glob);
@@ -54,16 +53,15 @@ class FormatCopyrightChecker extends Command
             }
         }
 
-        if ($this->invalidFileCount == 0) {
+        if ($this->invalidFileCount === 0) {
             $this->output->success("All file copyrights are valid!");
         } else {
             $this->comment("{$this->invalidFileCount} file copyrights are invalid");
         }
     }
 
-
     /**
-     * Assert copyright is present in the given file
+     * Assert copyright is present in the given file.
      *
      * @param string $file
      */
@@ -75,7 +73,7 @@ class FormatCopyrightChecker extends Command
         if ($preg === 0) {
             $relativeFilePath = str_replace(app()->basePath(), "", $file);
             $this->output->writeln("[<alert>\u{2718}</alert>] <alert>$relativeFilePath</alert>");
-            $this->invalidFileCount++;
+            ++$this->invalidFileCount;
         }
     }
 }

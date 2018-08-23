@@ -1,15 +1,16 @@
 <?php
+
 namespace App\Exceptions;
 
 /**
- * Class Http404ModelNotFoundException
+ * Class Http404ModelNotFoundException.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Exceptions
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class Http404ModelNotFoundException extends HttpException
 {
-
 }

@@ -1,16 +1,17 @@
 <?php
+
 namespace Tests\API\Products;
 
 use Tests\API\ScopeTestCase;
 
 /**
  * Class ProductsAsPublicTest
- * Test products as public (non-logged user)
+ * Test products as public (non-logged user).
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @version 4.1.0
- * @package Tests\API\Products
  */
 class ProductsAsPublicTest extends ScopeTestCase
 {
@@ -22,7 +23,6 @@ class ProductsAsPublicTest extends ScopeTestCase
         $this->genericIndexSuccess();
     }
 
-
     /**
      * @throws \Exception
      */
@@ -30,7 +30,6 @@ class ProductsAsPublicTest extends ScopeTestCase
     {
         $this->genericGetSuccess();
     }
-
 
     /**
      * @throws \Exception
@@ -40,7 +39,6 @@ class ProductsAsPublicTest extends ScopeTestCase
         $this->genericAddUnauthorized();
     }
 
-
     /**
      * @throws \Exception
      */
@@ -48,7 +46,6 @@ class ProductsAsPublicTest extends ScopeTestCase
     {
         $this->genericEditUnauthorized();
     }
-
 
     /**
      * @throws \Exception

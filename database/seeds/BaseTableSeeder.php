@@ -9,10 +9,12 @@ use Illuminate\Database\Seeder;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 /**
- * Class BaseTableSeeder
+ * Class BaseTableSeeder.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
  * @since 1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 abstract class BaseTableSeeder extends Seeder
@@ -24,7 +26,6 @@ abstract class BaseTableSeeder extends Seeder
     /** @var Illuminate\Console\OutputStyle */
     protected $output;
 
-
     /**
      * BaseTableSeeder constructor.
      */
@@ -33,7 +34,7 @@ abstract class BaseTableSeeder extends Seeder
         $tableSeederClass = get_class($this);
 
         // We are in a specific table seeder
-        if (strstr($tableSeederClass, "TableSeeder")) {
+        if (mb_strstr($tableSeederClass, "TableSeeder")) {
             // Guess model if not defined
             if (empty($this->modelClass)) {
                 // Try to guess the model class
@@ -56,23 +57,21 @@ abstract class BaseTableSeeder extends Seeder
         }
     }
 
-
     /**
-     * Override default call
+     * Override default call.
      *
      * @param string $class
-     * @param bool $silent
+     * @param bool   $silent
      */
     public function call($class, $silent = false)
     {
         $this->resolve($class)->__invoke();
     }
 
-
     /**
      * Set the console command instance.
      *
-     * @param  \Illuminate\Console\Command $command
+     * @param \Illuminate\Console\Command $command
      *
      * @return $this
      */
@@ -84,13 +83,12 @@ abstract class BaseTableSeeder extends Seeder
         return $this;
     }
 
-
     /**
-     * Seed database from a json file
+     * Seed database from a json file.
      *
      * @param array $options The options
-     *  "table" => $this->table, $this->modelClass::getTableName()
-     *  "directory" => "raws"
+     *                       "table" => $this->table, $this->modelClass::getTableName()
+     *                       "directory" => "raws"
      *
      * @throws Exception
      * @throws Http422ModelSaveException
@@ -99,7 +97,7 @@ abstract class BaseTableSeeder extends Seeder
     public function seedFromJson(array $options)
     {
         $default = [
-            "directory" => "raws"
+            "directory" => "raws",
         ];
         $options = $this->parseOptions($options, $default);
 
@@ -109,9 +107,8 @@ abstract class BaseTableSeeder extends Seeder
         $this->println("<info>Seeded:</info>  {$options["table"]} from json");
     }
 
-
     /**
-     * Parse options to optimally discover options
+     * Parse options to optimally discover options.
      *
      * @param array $options given options
      * @param array $default default options
@@ -122,7 +119,7 @@ abstract class BaseTableSeeder extends Seeder
     {
         if (!empty($options["modelClass"])) {
             $modelClass = $options["modelClass"];
-        } else if (!empty($this->modelClass)) {
+        } elseif (!empty($this->modelClass)) {
             $modelClass = $this->modelClass;
         } else {
             $modelClass = null;
@@ -130,11 +127,11 @@ abstract class BaseTableSeeder extends Seeder
 
         if (!empty($options["table"])) {
             $table = $options["table"];
-        } else if (!empty($this->table)) {
+        } elseif (!empty($this->table)) {
             $table = $this->table;
-        } else if (!empty($options["modelClass"])) {
+        } elseif (!empty($options["modelClass"])) {
             $table = $options["modelClass"]::getTableName();
-        } else if (!empty($this->modelClass)) {
+        } elseif (!empty($this->modelClass)) {
             $table = $this->modelClass::getTableName();
         } else {
             $table = null;
@@ -143,9 +140,8 @@ abstract class BaseTableSeeder extends Seeder
         return array_merge($default, $options, ["modelClass" => $modelClass, "table" => $table]);
     }
 
-
     /**
-     * Write output to console
+     * Write output to console.
      *
      * @param $message
      */
@@ -156,9 +152,8 @@ abstract class BaseTableSeeder extends Seeder
         }
     }
 
-
     /**
-     * Load data from a json file
+     * Load data from a json file.
      *
      * @param string $filename
      * @param string $directory
@@ -171,18 +166,17 @@ abstract class BaseTableSeeder extends Seeder
 
         if (!file_exists($path)) {
             throw new FileNotFoundException($path);
-        } else {
-            return json_decode(file_get_contents($path), true);
         }
+
+        return json_decode(file_get_contents($path), true);
     }
 
-
     /**
-     * Save data using Eloquent models
+     * Save data using Eloquent models.
      *
-     * @param array $data
+     * @param array                       $data
      * @param BaseModel|Model|string|null $modelClass
-     * @param bool $display
+     * @param bool                        $display
      *
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
@@ -214,7 +208,6 @@ abstract class BaseTableSeeder extends Seeder
         }
     }
 
-
     public function overwrite($message)
     {
         // Move the cursor to the beginning of the line
@@ -226,15 +219,14 @@ abstract class BaseTableSeeder extends Seeder
         $this->output->write($message);
     }
 
-
     /**
-     * Seed from a factory
+     * Seed from a factory.
      *
      * @param array $options
-     *  "subFactory" => null
-     *  "count" => 1
-     *  "override" => []
-     *  "callback" => null
+     *                       "subFactory" => null
+     *                       "count" => 1
+     *                       "override" => []
+     *                       "callback" => null
      *
      * @throws Exception
      * @throws Http422ModelSaveException
@@ -245,7 +237,7 @@ abstract class BaseTableSeeder extends Seeder
         $default = [
             "subFactory" => null,
             "count" => 100,
-            "override" => []
+            "override" => [],
         ];
         $options = $this->parseOptions($options, $default);
 
@@ -271,13 +263,12 @@ abstract class BaseTableSeeder extends Seeder
         $this->println("<info>Seeded:</info>  $factoryName from factory");
     }
 
-
     /**
-     * Register attachment between two models from a raw json file
+     * Register attachment between two models from a raw json file.
      *
      * @param BaseModel|string $modelClass1
      * @param BaseModel|string $modelClass2
-     * @param string $dir
+     * @param string           $dir
      */
     public function seedAttachmentsFromJson($modelClass1, $modelClass2, string $dir = "raws")
     {
@@ -299,7 +290,7 @@ abstract class BaseTableSeeder extends Seeder
 
             $joinData = array_diff_assoc($row, [$model1Key => $row[$model1Key], $model2Key => $row[$model2Key]]);
 
-            $links[(int)$model1Id][(int)$row[$model2Key]] = $joinData;
+            $links[(int) $model1Id][(int) $row[$model2Key]] = $joinData;
         }
 
         $this->output->progressStart(count($links));
@@ -315,14 +306,13 @@ abstract class BaseTableSeeder extends Seeder
         $this->println("<info>Seeded:</info>  $joinTableName from json");
     }
 
-
     /**
-     * Link two tables using $model::link property in both directions
+     * Link two tables using $model::link property in both directions.
      *
      * @param BaseModel|string $modelClass1 the model class to use and link
      * @param BaseModel|string $modelClass2 the model class to use and link
-     * @param int $min the minimum relations
-     * @param int $max the maximum relations
+     * @param int              $min         the minimum relations
+     * @param int              $max         the maximum relations
      *
      * @throws Exception
      */
@@ -332,14 +322,13 @@ abstract class BaseTableSeeder extends Seeder
         $this->link($modelClass2, $modelClass1, $min, $max);
     }
 
-
     /**
-     * Link two tables using $model::link property
+     * Link two tables using $model::link property.
      *
      * @param BaseModel|string $modelClass1 the model class to use
      * @param BaseModel|string $modelClass2 the model class to link
-     * @param int $min the minimum relations
-     * @param int $max the maximum relations
+     * @param int              $min         the minimum relations
+     * @param int              $max         the maximum relations
      *
      * @throws Exception
      */
@@ -356,7 +345,7 @@ abstract class BaseTableSeeder extends Seeder
         $this->output->progressStart($models1->count());
         foreach ($models1 as $model1) {
             $model1->link = [
-                $model2Table => $faker->randomElements($model2Ids, $faker->numberBetween($min, $max))
+                $model2Table => $faker->randomElements($model2Ids, $faker->numberBetween($min, $max)),
             ];
             $model1->save();
             $this->output->progressAdvance();

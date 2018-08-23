@@ -5,18 +5,18 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Class CreateUserPurchaseTable
+ * Class CreateUserPurchaseTable.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
  * @since 4.0.2
+ *
  * @copyright Mathrix Education SA
  */
 class CreateUserPurchaseTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -38,11 +38,8 @@ class CreateUserPurchaseTable extends Migration
         DB::table("purchases")->update(["purchasable_type" => "training"]);
     }
 
-
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
@@ -62,6 +59,5 @@ class CreateUserPurchaseTable extends Migration
         Schema::table("training_user", function (Blueprint $table) {
             $table->foreign("training_id")->references("id")->on("trainings");
         });
-
     }
 }

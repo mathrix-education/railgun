@@ -5,18 +5,18 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Class CreateTrainingUserTable
+ * Class CreateTrainingUserTable.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
  * @since 4.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class CreateTrainingUserTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -31,11 +31,8 @@ class CreateTrainingUserTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

@@ -1,19 +1,20 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\User;
 
 /**
- * Class UserPolicy
+ * Class UserPolicy.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Policies
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class UserPolicy extends BasePolicy
 {
-
     /**
      * @param User $currentUser
      * @param User $user
@@ -23,9 +24,8 @@ class UserPolicy extends BasePolicy
     public function get(User $currentUser, User $user)
     {
         return $currentUser->isAdmin() || $currentUser->id === $user->id || ($this->atLeastModerator($currentUser) &&
-                $user->type == "registered");
+                $user->type === "registered");
     }
-
 
     /**
      * @param User $currentUser
@@ -36,7 +36,6 @@ class UserPolicy extends BasePolicy
     {
         return $currentUser->isModerator();
     }
-
 
     /**
      * @param User $currentUser
@@ -49,7 +48,6 @@ class UserPolicy extends BasePolicy
         return $currentUser->isAdmin() || $currentUser->id === $user->id;
     }
 
-
     /**
      * @param User $currentUser
      * @param User $user
@@ -60,7 +58,6 @@ class UserPolicy extends BasePolicy
     {
         return $currentUser->isAdmin() || $currentUser->id === $user->id;
     }
-
 
     /**
      * @param User $currentUser

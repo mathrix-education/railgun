@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -10,22 +11,24 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 /**
- * Class StatsController
+ * Class StatsController.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Controllers
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class StatsController extends BaseController
 {
     /**
-     * @apiVersion 4.0.0
-     * @api {post} /stats/activities Activities
-     * @apiGroup Stats
-     * @apiName StatsActivities
+     * @apiVersion     4.0.0
+     *
+     * @api            {post} /stats/activities Activities
+     * @apiGroup       Stats
+     * @apiName        StatsActivities
      * @apiDescription Get statistics of activities completed by user
-     * @apiPermission registered for self get, at least admin for strangers
+     * @apiPermission  registered for self get, at least admin for strangers
      * @apiParam (Data) {int} [user_id] The user id (only use to get another user stats)
      * @apiParam (Data) {string=day,week,month,year} [interval=day] The interval unit
      * @apiParam (Data) {string} [start] The interval start (format Y-m-d)
@@ -47,15 +50,16 @@ class StatsController extends BaseController
      * @apiSuccess {int} stats.counts.details.flashcard The detailed flashcard completed activities count
      * @apiSuccess {int} stats.counts.details.summary The detailed summary completed activities count
      * @apiSuccess {int} stats.counts.details.test The detailed test completed activities count
-     * @apiUse Http401Unauthorized
-     * @apiUse Http422ModelSave
+     * @apiUse         Http401Unauthorized
+     * @apiUse         Http422ModelSave
      *
      * @param Request $request
      *
-     * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
      * @throws ValidationException
+     *
+     * @return JsonResponse
      */
     public function activities(Request $request)
     {
@@ -91,70 +95,68 @@ class StatsController extends BaseController
 
         $stats = [];
 
-
         if ($statsRaw->isEmpty()) {
             return response()->json($stats);
-        } else {
-            /** @var Carbon $dateIterator */
-            $dateIterator = $statsRaw->first()->created_at;
+        }
+        /** @var Carbon $dateIterator */
+        $dateIterator = $statsRaw->first()->created_at;
 
-            foreach ($statsRaw as $statRaw) {
-                /** @var Log $statRaw */
-                $created = $statRaw->created_at;
+        foreach ($statsRaw as $statRaw) {
+            /** @var Log $statRaw */
+            $created = $statRaw->created_at;
 
-                switch ($interval) {
-                    case "day":
-                        $dateIterator = $created;
-                        break;
-                    case "week":
-                        $potentialIterator = $dateIterator->copy()->addWeek();
-                        $dateIterator = $created->lessThan($potentialIterator) ? $dateIterator : $potentialIterator;
-                        break;
-                    case "month":
-                        $potentialIterator = $dateIterator->copy()->addMonth();
-                        $dateIterator = $created->lessThan($potentialIterator) ? $dateIterator : $potentialIterator;
-                        break;
-                    case "year":
-                        $potentialIterator = $dateIterator->copy()->addYear();
-                        $dateIterator = $created->lessThan($potentialIterator) ? $dateIterator : $potentialIterator;
-                        break;
-                }
-
-                $key = $dateIterator->toDateString();
-                $points = $statRaw->value["points"];
-                $type = $statRaw->loggable->activities->first()->type;
-
-                if (empty($stats[$key])) {
-                    $stats[$key] = [
-                        "points" => [
-                            "total" => $points,
-                            "details" => [
-                                $type => $points
-                            ]
-                        ],
-                        "counts" => [
-                            "total" => 1,
-                            "details" => [
-                                $type => 1
-                            ]
-                        ]
-                    ];
-                } else if (empty($stats[$key]["points"]["details"][$type])) {
-                    $stats[$key]["points"]["total"] += $points;
-                    $stats[$key]["points"]["details"][$type] = $points;
-
-                    $stats[$key]["counts"]["total"]++;
-                    $stats[$key]["counts"]["details"][$type] = 1;
-                } else {
-                    $stats[$key]["points"]["total"] += $points;
-                    $stats[$key]["points"]["details"][$type] += $points;
-
-                    $stats[$key]["counts"]["total"]++;
-                    $stats[$key]["counts"]["details"][$type]++;
-                }
+            switch ($interval) {
+                case "day":
+                    $dateIterator = $created;
+                    break;
+                case "week":
+                    $potentialIterator = $dateIterator->copy()->addWeek();
+                    $dateIterator = $created->lessThan($potentialIterator) ? $dateIterator : $potentialIterator;
+                    break;
+                case "month":
+                    $potentialIterator = $dateIterator->copy()->addMonth();
+                    $dateIterator = $created->lessThan($potentialIterator) ? $dateIterator : $potentialIterator;
+                    break;
+                case "year":
+                    $potentialIterator = $dateIterator->copy()->addYear();
+                    $dateIterator = $created->lessThan($potentialIterator) ? $dateIterator : $potentialIterator;
+                    break;
             }
 
-            return response()->json($stats);
+            $key = $dateIterator->toDateString();
+            $points = $statRaw->value["points"];
+            $type = $statRaw->loggable->activities->first()->type;
+
+            if (empty($stats[$key])) {
+                $stats[$key] = [
+                    "points" => [
+                        "total" => $points,
+                        "details" => [
+                            $type => $points,
+                        ],
+                    ],
+                    "counts" => [
+                        "total" => 1,
+                        "details" => [
+                            $type => 1,
+                        ],
+                    ],
+                ];
+            } elseif (empty($stats[$key]["points"]["details"][$type])) {
+                $stats[$key]["points"]["total"] += $points;
+                $stats[$key]["points"]["details"][$type] = $points;
+
+                ++$stats[$key]["counts"]["total"];
+                $stats[$key]["counts"]["details"][$type] = 1;
+            } else {
+                $stats[$key]["points"]["total"] += $points;
+                $stats[$key]["points"]["details"][$type] += $points;
+
+                ++$stats[$key]["counts"]["total"];
+                ++$stats[$key]["counts"]["details"][$type];
+            }
         }
+
+        return response()->json($stats);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Utils;
 
 use App\Models\Activity;
@@ -10,11 +11,12 @@ use App\Models\Module;
 use App\Models\Notion;
 
 /**
- * Class Tree
+ * Class Tree.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package Tests
+ *
  * @since 4.0.1
+ *
  * @copyright Mathrix Education SA
  */
 class Tree
@@ -34,7 +36,6 @@ class Tree
     /** @var Module */
     private $module;
 
-
     public function __construct()
     {
         // Build the tree
@@ -47,7 +48,6 @@ class Tree
         $this->module = $this->activity->modules()->inRandomOrder()->firstOrFail();
     }
 
-
     /**
      * @return Country
      */
@@ -55,7 +55,6 @@ class Tree
     {
         return $this->country;
     }
-
 
     /**
      * @return Class_
@@ -65,7 +64,6 @@ class Tree
         return $this->class;
     }
 
-
     /**
      * @return Discipline
      */
@@ -73,7 +71,6 @@ class Tree
     {
         return $this->discipline;
     }
-
 
     /**
      * @return Chapter
@@ -83,7 +80,6 @@ class Tree
         return $this->chapter;
     }
 
-
     /**
      * @return Notion
      */
@@ -91,7 +87,6 @@ class Tree
     {
         return $this->notion;
     }
-
 
     /**
      * @return Activity
@@ -101,7 +96,6 @@ class Tree
         return $this->activity;
     }
 
-
     /**
      * @return Module
      */
@@ -110,14 +104,14 @@ class Tree
         return $this->module;
     }
 
-
     /**
-     * Get a flat tree as array with the model ids
+     * Get a flat tree as array with the model ids.
      *
      * @param null $stripAfter Strip after a given model (for example to strip after the activity, pass "activity")
      *
-     * @return array
      * @throws \Exception
+     *
+     * @return array
      */
     public function flatIds($stripAfter = null)
     {
@@ -128,7 +122,7 @@ class Tree
             "chapter_id" => $this->chapter->id,
             "notion_id" => $this->notion->id,
             "activity_id" => $this->activity->id,
-            "module_id" => $this->module->id
+            "module_id" => $this->module->id,
         ];
 
         // Strip process if needed

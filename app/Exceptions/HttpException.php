@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Exceptions;
 
 use Illuminate\Http\JsonResponse;
@@ -6,13 +7,14 @@ use Throwable;
 
 /**
  * Class HttpException
- * Define the HTTP Exceptions basics
+ * Define the HTTP Exceptions basics.
  *
- * @see https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
+ * @see       https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Exceptions
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 abstract class HttpException extends \Exception
@@ -29,30 +31,29 @@ abstract class HttpException extends \Exception
     /** @var array Exception data; has to be manually defined */
     protected $data;
 
-
     /**
      * HttpException constructor.
      *
-     * @param string $message
-     * @param int $code
+     * @param string         $message
+     * @param int            $code
      * @param Throwable|null $previous
-     * @param array $data
+     * @param array          $data
      */
     public function __construct($message = "", $code = 0, Throwable $previous = null, $data = [])
     {
-        $class = get_class($this);
+        $class = \get_class($this);
         $matches = null;
 
         if (preg_match(self::PATTERN, $class, $matches) === 0) {
             // @codeCoverageIgnoreStart
             parent::__construct($class . " has to follow the pattern " . self::PATTERN, $code, $previous);
-            // @codeCoverageIgnoreEnd
+        // @codeCoverageIgnoreEnd
         } else {
             // Define the HTTP code
             if (300 <= $code && $code < 600) {
                 $this->code = $code; // @codeCoverageIgnore
             } else {
-                $this->code = (int)$matches[1];
+                $this->code = (int) $matches[1];
             }
 
             // Define the error name
@@ -70,9 +71,8 @@ abstract class HttpException extends \Exception
         parent::__construct($this->message, $this->code, $previous);
     }
 
-
     /**
-     * Build Response object
+     * Build Response object.
      *
      * @return JsonResponse
      */

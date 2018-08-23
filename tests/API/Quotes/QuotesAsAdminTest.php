@@ -1,19 +1,20 @@
 <?php
+
 namespace Tests\API\Quotes;
 
 /**
  * Class QuotesAsAdminTest
- * Test quotes as admin
+ * Test quotes as admin.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @version 1.0.0
- * @package Tests\Quotes
  */
 class QuotesAsAdminTest extends QuotesAsModeratorTest
 {
     /**
-     * POST /quotes
+     * POST /quotes.
      *
      * @throws \Exception
      */
@@ -22,9 +23,8 @@ class QuotesAsAdminTest extends QuotesAsModeratorTest
         $this->genericAddSuccess();
     }
 
-
     /**
-     * PATCH /quotes/{id}
+     * PATCH /quotes/{id}.
      *
      * @throws \Exception
      */
@@ -33,9 +33,8 @@ class QuotesAsAdminTest extends QuotesAsModeratorTest
         $this->genericEditSuccess();
     }
 
-
     /**
-     * DELETE /quotes/{id}
+     * DELETE /quotes/{id}.
      *
      * @throws \Exception
      */

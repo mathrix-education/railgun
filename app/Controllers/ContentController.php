@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http401UnauthorizedException;
@@ -19,22 +20,24 @@ use Tinify\Source;
 use Tinify\Tinify;
 
 /**
- * Class ContentController
+ * Class ContentController.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Controllers
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class ContentController extends BaseController
 {
     /**
-     * @apiVersion 4.0.0
-     * @api {get} /content/search/{query}/{?page}/{?perPage} Search
-     * @apiGroup Content
-     * @apiName ContentSearch
+     * @apiVersion     4.0.0
+     *
+     * @api            {get} /content/search/{query}/{?page}/{?perPage} Search
+     * @apiGroup       Content
+     * @apiName        ContentSearch
      * @apiDescription Search for chapters and notions
-     * @apiPermission public
+     * @apiPermission  public
      * @apiParam {int} [page=1] The page number
      * @apiParam {int} [perPage=10] The search count per page
      * @apiSuccess {Chapter[]} chapters Array of chapters
@@ -84,9 +87,9 @@ class ContentController extends BaseController
      * @apiSuccess {string} notions.chapters.class_.country.slug The country slug
      *
      * @param Request $request
-     * @param string $query
-     * @param int $page
-     * @param int $perPage
+     * @param string  $query
+     * @param int     $page
+     * @param int     $perPage
      *
      * @return JsonResponse
      */
@@ -113,7 +116,7 @@ class ContentController extends BaseController
                 "notions.chapters.class_.country", "modules" => function (BelongsToMany $q) use ($query) {
                     return $q->where("type", "course")
                         ->where("content", "LIKE", "%[video]%");
-                }])
+                }, ])
             ->limit($perPage)
             ->offset(($page - 1) * $perPage)
             ->get();
@@ -169,14 +172,12 @@ class ContentController extends BaseController
             $notionsToAdd = Notion::where("name", "LIKE", "%$query%");
 
             if (!empty($classIds)) {
-                $notionsToAdd = $notionsToAdd->whereHas("chapters.class_", function (Builder $query)
-                use ($classIds) {
+                $notionsToAdd = $notionsToAdd->whereHas("chapters.class_", function (Builder $query) use ($classIds) {
                     return $query->whereNotIn("id", $classIds);
                 });
             }
 
-            $notionsToAdd = $notionsToAdd->with(["chapters.discipline", "chapters.class_" => function (BelongsTo $query)
-            use ($classIds) {
+            $notionsToAdd = $notionsToAdd->with(["chapters.discipline", "chapters.class_" => function (BelongsTo $query) use ($classIds) {
                 return $query->orderByDesc("id");
             }, "chapters.class_.country"])
                 ->orWhere("slug", "LIKE", "%$query%")
@@ -193,19 +194,19 @@ class ContentController extends BaseController
             "data" => [
                 "videos" => $videos,
                 "chapters" => $chapters,
-                "notions" => $notions
-            ]
+                "notions" => $notions,
+            ],
         ]);
     }
 
-
     /**
-     * @apiVersion 4.0.0
-     * @api {get} /content/tree Tree
-     * @apiGroup Content
-     * @apiName ContentTree
+     * @apiVersion     4.0.0
+     *
+     * @api            {get} /content/tree Tree
+     * @apiGroup       Content
+     * @apiName        ContentTree
      * @apiDescription Retrieve all cdn files
-     * @apiPermission public
+     * @apiPermission  public
      * @apiSuccess {string[]} - The cdn files
      *
      * @param Request $request
@@ -231,24 +232,25 @@ class ContentController extends BaseController
         return response()->json(array_merge($directories, $files));
     }
 
-
     /**
-     * @apiVersion 4.0.0
-     * @api {post} /content/upload Upload
-     * @apiGroup Content
-     * @apiName ContentUpload
+     * @apiVersion     4.0.0
+     *
+     * @api            {post} /content/upload Upload
+     * @apiGroup       Content
+     * @apiName        ContentUpload
      * @apiDescription Upload a file to the cdn
-     * @apiPermission public
+     * @apiPermission  public
      * @apiParam (Data) {file} file The file to upload (must be jpeg,jpg,png,gif,pdf,mp3,mp4)
      * @apiParam (Data) {string} destination The file destination on the cdn
      * @apiParam (Data) {string} name The file destination on the cdn
-     * @apiSuccess url The file url on the cdn
+     * @apiSuccess     url The file url on the cdn
      *
      * @param Request $request
      *
-     * @return JsonResponse
      * @throws Http401UnauthorizedException
      * @throws ValidationException
+     *
+     * @return JsonResponse
      */
     public function upload(Request $request)
     {
@@ -259,7 +261,7 @@ class ContentController extends BaseController
         $this->validate($request, [
             "file" => "required|file|max:15360|mimes:jpeg,jpg,png,gif,pdf,mp3,mp4",
             "destination" => "required",
-            "name" => "required"
+            "name" => "required",
         ]);
 
         /** @var UploadedFile $file */
@@ -275,13 +277,13 @@ class ContentController extends BaseController
         );
 
         // File is an image, try to optimize it
-        if (in_array($file->getMimeType(), ["image/png", "image/jpeg"]) && Tinify::getCompressionCount() < 500) {
+        if (\in_array($file->getMimeType(), ["image/png", "image/jpeg"], true) && Tinify::getCompressionCount() < 500) {
             $source = Source::fromFile($file->getRealPath());
             $source->toFile($file->getRealPath());
         }
 
         return response()->json([
-            "url" => env("APP_CDN") . "/$destination/$name"
+            "url" => env("APP_CDN") . "/$destination/$name",
         ]);
     }
 }

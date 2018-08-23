@@ -1,15 +1,16 @@
 <?php
+
 namespace Tests\Utils\Traits\Generics;
 
 use Closure;
 
 /**
- * Trait Edit
+ * Trait Edit.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @since 1.0.0
- * @package Tests\GenericTests
  */
 trait Edit
 {
@@ -18,11 +19,10 @@ trait Edit
     /** @var array factorized model data */
     protected $editModelData;
 
-
     /**
-     * Generic edit; expect HTTP 200 and data present in database
+     * Generic edit; expect HTTP 200 and data present in database.
      *
-     * @param array $override overridden attributes
+     * @param array         $override overridden attributes
      * @param \Closure|null $callback the callback on generated data
      *
      * @throws \Exception
@@ -36,11 +36,10 @@ trait Edit
         $this->assertInDatabase($this->modelPlural, $this->editModelData);
     }
 
-
     /**
-     * Generic edit call
+     * Generic edit call.
      *
-     * @param array $override overridden attributes
+     * @param array         $override overridden attributes
      * @param \Closure|null $callback the callback on generated data
      *
      * @throws \Exception
@@ -50,7 +49,7 @@ trait Edit
         $this->genericUsableOrFail();
 
         $this->editModelId = ($this->modelClass)::inRandomOrder()->firstOrFail()->id;
-        $this->editModelData = is_null($this->subFactory) ?
+        $this->editModelData = null === $this->subFactory ?
             factory($this->modelClass)->raw($override) :
             factory($this->modelClass, $this->subFactory)->raw($override);
 
@@ -70,11 +69,10 @@ trait Edit
         }
     }
 
-
     /**
-     * Generic edit; expect HTTP 200 and data present in database
+     * Generic edit; expect HTTP 200 and data present in database.
      *
-     * @param array $override overridden attributes
+     * @param array         $override overridden attributes
      * @param \Closure|null $callback the callback on generated data
      *
      * @throws \Exception

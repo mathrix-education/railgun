@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use App\Exceptions\Http422ModelSaveException;
@@ -11,11 +12,12 @@ use Validator as ValidatorFacade;
 
 /**
  * Class BaseModel
- * Base for all models, implement validation on save useless manual disable
+ * Base for all models, implement validation on save useless manual disable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Models
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  *
  * @mixin Builder
@@ -35,20 +37,18 @@ abstract class BaseModel extends Model
     /** @var bool|array Validation errors */
     protected $errors = false;
 
-
     /**
-     * Get the table name
+     * Get the table name.
      *
      * @return string the table name
      */
     public static function getTableName(): string
     {
-        return with(new static)->getTable();
+        return with(new static())->getTable();
     }
 
-
     /**
-     * Get a random model from the database
+     * Get a random model from the database.
      *
      * @param array $conditions The conditions
      *
@@ -59,7 +59,7 @@ abstract class BaseModel extends Model
         $query = self::inRandomOrder();
 
         if (!empty($conditions)) {
-            if (!is_array($conditions[0])) {
+            if (!\is_array($conditions[0])) {
                 $conditions = [$conditions];
             }
 
@@ -69,31 +69,28 @@ abstract class BaseModel extends Model
         return $query->firstOrFail();
     }
 
-
     /**
-     * Use appends
+     * Use appends.
      */
     public static function withAppends()
     {
         self::$withAppends = true;
 
-        return (new static);
+        return new static();
     }
 
-
     /**
-     * Don"t use appends
+     * Don"t use appends.
      */
     public static function withoutAppends()
     {
         self::$withAppends = false;
 
-        return (new static);
+        return new static();
     }
 
-
     /**
-     * Unguard some attributes
+     * Unguard some attributes.
      *
      * @param string|array $attributes
      *
@@ -101,7 +98,7 @@ abstract class BaseModel extends Model
      */
     public function unguardAttributes($attributes)
     {
-        if (is_string($attributes)) {
+        if (\is_string($attributes)) {
             $attributes = [$attributes];
         }
 
@@ -120,16 +117,16 @@ abstract class BaseModel extends Model
     |--------------------------------------------------------------------------
     */
 
-
     /**
-     * Override to inject systematic validation and exception
+     * Override to inject systematic validation and exception.
      *
      * @param array $options
      *
-     * @return bool
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      * @throws \Exception
+     *
+     * @return bool
      */
     public function save(array $options = [])
     {
@@ -180,13 +177,11 @@ abstract class BaseModel extends Model
         return $saved;
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | Validation
     |--------------------------------------------------------------------------
     */
-
 
     /**
      * @return bool If model need to be validated before save
@@ -196,9 +191,8 @@ abstract class BaseModel extends Model
         return $this->validate;
     }
 
-
     /**
-     * Validate model data
+     * Validate model data.
      *
      * @param string $rules
      *
@@ -206,7 +200,7 @@ abstract class BaseModel extends Model
      */
     public function validate($rules = "rules")
     {
-        if (is_string($rules)) {
+        if (\is_string($rules)) {
             $this->useRules = $rules;
         }
         $rules = array_intersect_key($this->{$this->useRules}, $this->getDirty());
@@ -217,15 +211,15 @@ abstract class BaseModel extends Model
 
         if ($validator->fails()) {
             $this->errors = $validator->errors()->getMessages();
+
             return false;
         }
 
         return true;
     }
 
-
     /**
-     * Inject custom rules in the validator before save
+     * Inject custom rules in the validator before save.
      *
      * @param Validator $validator
      *
@@ -236,13 +230,13 @@ abstract class BaseModel extends Model
         return $validator;
     }
 
-
     /**
-     * Override to inject exception
+     * Override to inject exception.
      *
-     * @return bool|null
      * @throws Http422ModelSaveException
      * @throws \Exception
+     *
+     * @return bool|null
      */
     public function delete()
     {
@@ -255,27 +249,24 @@ abstract class BaseModel extends Model
         return $deleted;
     }
 
-
     /**
-     * Enable the model validation
+     * Enable the model validation.
      */
     public function enableValidation()
     {
         $this->validate = true;
     }
 
-
     /**
-     * Disable the model validation
+     * Disable the model validation.
      */
     public function disableValidation()
     {
         $this->validate = false;
     }
 
-
     /**
-     * Returns the validation errors
+     * Returns the validation errors.
      *
      * @return bool|array
      */
@@ -284,9 +275,9 @@ abstract class BaseModel extends Model
         return $this->errors;
     }
 
-
     /**
      * @codeCoverageIgnore
+     *
      * @throws \Doctrine\DBAL\DBALException
      */
     public function getTableStructure()
@@ -297,7 +288,7 @@ abstract class BaseModel extends Model
         $databasePlatform->registerDoctrineTypeMapping("enum", "string");
 
         $database = null;
-        if (strpos($table, ".")) {
+        if (mb_strpos($table, ".")) {
             list($database, $table) = explode(".", $table);
         }
 
@@ -341,7 +332,7 @@ abstract class BaseModel extends Model
                     "name" => $name,
                     "type" => $type,
                     "nullable" => !$column->getNotnull(),
-                    "default" => $column->getDefault() === null && $column->getNotnull() ? "required" : $column->getDefault()
+                    "default" => $column->getDefault() === null && $column->getNotnull() ? "required" : $column->getDefault(),
                 ];
             }
         }
@@ -349,9 +340,8 @@ abstract class BaseModel extends Model
         return $structure;
     }
 
-
     /**
-     * Override to support appends togglers
+     * Override to support appends togglers.
      *
      * @return array
      * @codeCoverageIgnore // TODO: Unused?

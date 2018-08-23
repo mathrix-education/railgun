@@ -1,20 +1,21 @@
 <?php
+
 namespace App\Events;
 
 use Braintree\Transaction;
 
 /**
- * Class TransactionSuccessEvent
+ * Class TransactionSuccessEvent.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Events
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
  * @since
+ *
  * @copyright Mathrix Education SA
  */
 class TransactionSuccessEvent extends BaseEvent
 {
     public $transaction;
-
 
     /**
      * TransactionSuccessEvent constructor.

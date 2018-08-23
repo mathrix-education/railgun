@@ -8,10 +8,12 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
 /**
- * Class UpdatePostsTable
+ * Class UpdatePostsTable.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
  * @since 1.0.1
+ *
  * @copyright Mathrix Education SA
  */
 class UpdatePostsTable extends Migration
@@ -19,7 +21,6 @@ class UpdatePostsTable extends Migration
     /**
      * Run the migrations.
      *
-     * @return void
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      * @throws Exception
@@ -45,7 +46,7 @@ class UpdatePostsTable extends Migration
                 "solutions" => null,
                 "corrections" => null,
                 "options" => null,
-                "visible" => true
+                "visible" => true,
             ]);
             $module->save();
 
@@ -57,11 +58,9 @@ class UpdatePostsTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
-     * @return void
      * @throws Exception
      */
     public function down()

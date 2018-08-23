@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Observers;
 
 use App\Models\Activity;
@@ -7,10 +8,9 @@ use App\Models\Module;
 use App\Models\Notion;
 
 /**
- * Class ActivityObserver
+ * Class ActivityObserver.
  *
  * @author Mathrix Team
- * @package App\Observers
  */
 class ActivityObserver extends BaseObserver
 {
@@ -56,9 +56,8 @@ class ActivityObserver extends BaseObserver
         return true;
     }
 
-
     /**
-     * Detach all modules and notions linked with the deleting notion
+     * Detach all modules and notions linked with the deleting notion.
      *
      * @param Activity $activity
      *

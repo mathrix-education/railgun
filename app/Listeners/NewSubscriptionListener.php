@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Listeners;
 
 use App\Events\NewSubscriptionEvent;
@@ -7,11 +8,12 @@ use App\Notifications\TransactionSuccessNotification;
 use Illuminate\Support\Facades\Notification;
 
 /**
- * Class NewSubscriptionListener
+ * Class NewSubscriptionListener.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Listeners
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class NewSubscriptionListener extends BaseListener
@@ -30,7 +32,7 @@ class NewSubscriptionListener extends BaseListener
                 $event->user,
                 $event->subscription->transactions[0]
             ));
-        } else if ($event->initialTransaction !== null) {
+        } elseif ($event->initialTransaction !== null) {
             $event->user->notify(new TransactionSuccessNotification($event->user, $event->initialTransaction));
         }
     }

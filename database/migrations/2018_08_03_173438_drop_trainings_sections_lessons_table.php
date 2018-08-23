@@ -1,22 +1,22 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 /**
- * Class DropTrainingsSectionsLessonsTable
+ * Class DropTrainingsSectionsLessonsTable.
  *
  * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
  * @since 4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class DropTrainingsSectionsLessonsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -34,11 +34,8 @@ class DropTrainingsSectionsLessonsTable extends Migration
         Schema::dropIfExists("trainings");
     }
 
-
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

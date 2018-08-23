@@ -6,7 +6,7 @@ use App\Models\User;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
-/**
+/*
  * CommentFactory
  *
  * @author Mathrix Team
@@ -27,12 +27,11 @@ $factory->define(Comment::class, function (Generator $faker) {
         "created_at" => $created,
         "updated_at" => $faker->boolean(90) ? $created : $faker->dateTimeBetween($created, "now"),
         "commentable_id" => $faker->randomElement($commentable_class::all()->pluck("id")->toArray()),
-        "commentable_type" => $commentable_type
+        "commentable_type" => $commentable_type,
     ];
 });
 
-
-/**
+/*
  * CommentChildFactory
  *
  * @author Mathrix Team

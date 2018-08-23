@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Discounts;
 
 use App\Models\Discount;
@@ -6,17 +7,17 @@ use Tests\API\ScopeTestCase;
 
 /**
  * Class DiscountsAsPublicTest
- * Test discounts as public (non-logged user)
+ * Test discounts as public (non-logged user).
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @version 4.0.3
- * @package Tests\Discounts
  */
 class DiscountsAsPublicTest extends ScopeTestCase
 {
     /**
-     * GET /discounts
+     * GET /discounts.
      *
      * @throws \Exception
      */
@@ -25,9 +26,8 @@ class DiscountsAsPublicTest extends ScopeTestCase
         $this->genericIndexUnauthorized();
     }
 
-
     /**
-     * GET /discounts/{id} -> HTTP 401 unauthorized
+     * GET /discounts/{id} -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -36,9 +36,8 @@ class DiscountsAsPublicTest extends ScopeTestCase
         $this->genericGetUnauthorized();
     }
 
-
     /**
-     * POST /discounts -> HTTP 401 unauthorized
+     * POST /discounts -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -47,9 +46,8 @@ class DiscountsAsPublicTest extends ScopeTestCase
         $this->genericAddUnauthorized();
     }
 
-
     /**
-     * PATCH /discounts/{id} -> HTTP 401 unauthorized
+     * PATCH /discounts/{id} -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -58,9 +56,8 @@ class DiscountsAsPublicTest extends ScopeTestCase
         $this->genericEditUnauthorized();
     }
 
-
     /**
-     * DELETE /discounts/{id} -> HTTP 401 unauthorized
+     * DELETE /discounts/{id} -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -69,9 +66,8 @@ class DiscountsAsPublicTest extends ScopeTestCase
         $this->genericDeleteUnauthorized();
     }
 
-
     /**
-     * POST /discounts/check
+     * POST /discounts/check.
      */
     public function testCheck()
     {

@@ -8,10 +8,12 @@ use App\Models\Post;
 use App\Models\Quote;
 
 /**
- * Class BlogTableSeeder
+ * Class BlogTableSeeder.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
  * @since 1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class BlogTableSeeder extends BaseTableSeeder
@@ -25,25 +27,25 @@ class BlogTableSeeder extends BaseTableSeeder
     {
         $this->seedFromFactory([
             "modelClass" => Category::class,
-            "count" => random_int(5, 8)
+            "count" => random_int(5, 8),
         ]);
         $this->seedFromFactory([
             "modelClass" => Module::class,
             "subFactory" => "course",
-            "count" => 40
+            "count" => 40,
         ]);
         $this->seedFromFactory([
             "modelClass" => Post::class,
-            "count" => random_int(10, 20)
+            "count" => random_int(10, 20),
         ]);
         // Seed categories without posts
         $this->seedFromFactory([
             "modelClass" => Category::class,
-            "count" => random_int(5, 8)
+            "count" => random_int(5, 8),
         ]);
         $this->seedFromFactory([
             "modelClass" => Quote::class,
-            "count" => random_int(10, 20)
+            "count" => random_int(10, 20),
         ]);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Unit;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -7,12 +8,12 @@ use Carbon\Carbon;
 use Tests\BaseTestCase;
 
 /**
- * Class LogUtils
+ * Class LogUtils.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @version 4.0.3
- * @package Tests\Utils
  */
 class LogTest extends BaseTestCase
 {
@@ -26,7 +27,6 @@ class LogTest extends BaseTestCase
         Log::build("wrong_event");
     }
 
-
     /**
      * @throws Http400InvalidRequestException
      */
@@ -34,7 +34,7 @@ class LogTest extends BaseTestCase
     {
         $logDate = new Carbon($this->faker->dateTime()->format("Y-m-d H:i:s"));
         $log = Log::build($this->faker->randomElement(Log::EVENTS), null, [
-            "created_at" => $logDate
+            "created_at" => $logDate,
         ]);
 
         $this->assertEquals($logDate, $log->created_at);

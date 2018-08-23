@@ -1,18 +1,18 @@
 <?php
+
 namespace Tests\API\Settings;
 
 use App\Models\Setting;
 use Tests\API\ScopeTestCase;
 
-
 /**
  * Class SettingsAsPublicTest
- * Test settings as public (non-logged user)
+ * Test settings as public (non-logged user).
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @version 4.0.3
- * @package Tests\Settings
  */
 class SettingsAsPublicTest extends ScopeTestCase
 {
@@ -25,9 +25,8 @@ class SettingsAsPublicTest extends ScopeTestCase
         return parent::castData($data);
     }
 
-
     /**
-     * GET /settings
+     * GET /settings.
      *
      * @throws \Exception
      */
@@ -47,9 +46,8 @@ class SettingsAsPublicTest extends ScopeTestCase
             ->first());
     }
 
-
     /**
-     * GET /settings/{key} with visible setting
+     * GET /settings/{key} with visible setting.
      */
     public function testReadVisible()
     {
@@ -60,9 +58,8 @@ class SettingsAsPublicTest extends ScopeTestCase
         $this->assertHttp200Success();
     }
 
-
     /**
-     * GET /settings/{key} with not visible setting
+     * GET /settings/{key} with not visible setting.
      */
     public function testReadNotVisible()
     {
@@ -74,9 +71,8 @@ class SettingsAsPublicTest extends ScopeTestCase
         $this->assertHttp404ModelNotFound();
     }
 
-
     /**
-     * POST /settings
+     * POST /settings.
      *
      * @throws \Exception
      */
@@ -85,9 +81,8 @@ class SettingsAsPublicTest extends ScopeTestCase
         $this->genericAddUnauthorized();
     }
 
-
     /**
-     * DELETE /settings/{key}
+     * DELETE /settings/{key}.
      *
      * @throws \Exception
      */

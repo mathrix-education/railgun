@@ -1,13 +1,15 @@
 <?php
+
 namespace Tests\Utils\Traits\Assertions;
 
 /**
  * Trait HttpAssertionsTrait
- * Some shortcuts for HTTP codes & errors
+ * Some shortcuts for HTTP codes & errors.
  *
  * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package Tests\Utils\Traits\Assertions
+ *
  * @since 4.0.3
+ *
  * @copyright Mathrix Education SA
  *
  * @method assertHttp400InvalidRequest(): $this
@@ -19,23 +21,24 @@ namespace Tests\Utils\Traits\Assertions;
  */
 trait HttpAssertionsTrait
 {
+    public function __call($name, $arguments)
+    {
+        $strCleaned = str_replace("assertHttp", "", $name);
+        $errorCode = mb_substr($strCleaned, 0, 3);
+        $errorName = str_replace($errorCode, "", $strCleaned);
+        $errorName = snake_case($errorName);
+        $this->assertJsonError($errorName, $errorCode);
+
+        return $this;
+    }
+
     /**
-     * Shortcut to assertResponseStatus(200)
+     * Shortcut to assertResponseStatus(200).
      */
     public function assertHttp200Success()
     {
         $this->assertResponseStatus(200);
-        return $this;
-    }
 
-
-    public function __call($name, $arguments)
-    {
-        $strCleaned = str_replace("assertHttp", "", $name);
-        $errorCode = substr($strCleaned, 0, 3);
-        $errorName = str_replace($errorCode, "", $strCleaned);
-        $errorName = snake_case($errorName);
-        $this->assertJsonError($errorName, $errorCode);
         return $this;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Providers;
 
 use App\Models\Activity;
@@ -6,17 +7,17 @@ use App\Models\Comment;
 use App\Models\Module;
 use App\Models\Notion;
 use App\Models\Post;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
 /**
  * Class AppServiceProvider
- * Register all application service providers
+ * Register all application service providers.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Providers
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class AppServiceProvider extends ServiceProvider
@@ -49,14 +50,13 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->register(GoogleDriveServiceProvider::class);
 
-
         // MorphMap
         Relation::morphMap([
             "activity" => Activity::class,
             "notion" => Notion::class,
             "module" => Module::class,
             "post" => Post::class,
-            "comment" => Comment::class
+            "comment" => Comment::class,
         ]);
     }
 }

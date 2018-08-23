@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Observers;
 
 use App\Exceptions\Http422ModelSaveException;
@@ -6,19 +7,19 @@ use App\Models\Comment;
 use Exception;
 
 /**
- * Class CommentObserver
+ * Class CommentObserver.
  *
  * @author Mathrix Team
- * @package App\Observers
  */
 class CommentObserver extends BaseObserver
 {
     /**
      * @param Comment $comment
      *
-     * @return bool
      * @throws Http422ModelSaveException
      * @throws Exception
+     *
+     * @return bool
      */
     public function saving($comment)
     {
@@ -32,12 +33,12 @@ class CommentObserver extends BaseObserver
         return true;
     }
 
-
     /**
      * @param Comment $comment
      *
-     * @return bool
      * @throws Http422ModelSaveException
+     *
+     * @return bool
      */
     public function deleting($comment)
     {

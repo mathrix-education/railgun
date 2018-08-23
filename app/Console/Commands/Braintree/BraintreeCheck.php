@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands\Braintree;
 
 use App\Services\Braintree\Models\AddOn;
@@ -11,16 +12,16 @@ use Symfony\Component\Console\Formatter\OutputFormatterStyle;
  * Class CheckModels
  * Check that all Braintree plans and add-ons are present in order to run the application.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Console\Commands\Braintree
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class BraintreeCheck extends Command
 {
-    protected $signature = "braintree:check";
     private const PLANS = ["v4_monthly", "v4_annually", "v4_biannually"];
-
+    protected $signature = "braintree:check";
 
     public function handle()
     {
@@ -43,7 +44,6 @@ class BraintreeCheck extends Command
         }
         $this->line("");
 
-
         $this->line("Checking for add-ons");
         foreach (self::PLANS as $planId) {
             foreach (["30", "50"] as $percentage) {
@@ -58,7 +58,6 @@ class BraintreeCheck extends Command
             }
         }
         $this->line("");
-
 
         $this->line("Please check that the following information are correct.");
         $plans = Plan::all();

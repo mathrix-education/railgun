@@ -6,17 +6,17 @@ use App\Models\Notion;
 
 /**
  * Class ChaptersAsModeratorTest
- * Test chapters as moderator
+ * Test chapters as moderator.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @version 1.0.0
- * @package Tests\Chapters
  */
 class ChaptersAsModeratorTest extends ChaptersAsRegisteredTest
 {
     /**
-     * GET /chapters
+     * GET /chapters.
      *
      * @throws \Exception
      */
@@ -25,9 +25,8 @@ class ChaptersAsModeratorTest extends ChaptersAsRegisteredTest
         $this->genericIndexSuccess();
     }
 
-
     /**
-     * POST /chapters
+     * POST /chapters.
      *
      * @throws \Exception
      */
@@ -36,9 +35,8 @@ class ChaptersAsModeratorTest extends ChaptersAsRegisteredTest
         $this->genericAddSuccess();
     }
 
-
     /**
-     * PATCH /chapters/{id}
+     * PATCH /chapters/{id}.
      *
      * @throws \Exception
      */
@@ -47,9 +45,8 @@ class ChaptersAsModeratorTest extends ChaptersAsRegisteredTest
         $this->genericEditSuccess();
     }
 
-
     /**
-     * PATCH /chapters/{id} with linkable models
+     * PATCH /chapters/{id} with linkable models.
      *
      * @throws \Exception
      */
@@ -59,7 +56,7 @@ class ChaptersAsModeratorTest extends ChaptersAsRegisteredTest
             "notions" => $this->faker->randomElements(
                 Notion::inRandomOrder()->pluck("id")->toArray(),
                 $this->faker->numberBetween(3, 5)
-            )
+            ),
         ];
 
         $this->genericEditSuccess(["link" => $link]);
@@ -68,14 +65,13 @@ class ChaptersAsModeratorTest extends ChaptersAsRegisteredTest
             $this->assertInDatabase("chapter_notion", [
                 "chapter_id" => $this->editModelId,
                 "notion_id" => $id,
-                "order" => $order
+                "order" => $order,
             ]);
         }
     }
 
-
     /**
-     * DELETE /chapters/{id}
+     * DELETE /chapters/{id}.
      *
      * @throws \Exception
      */

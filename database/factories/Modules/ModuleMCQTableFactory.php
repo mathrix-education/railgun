@@ -3,7 +3,7 @@
 use App\Models\Module;
 use Faker\Generator;
 
-/**
+/*
  * ModuleMCQTableFactory
  *
  * @author Mathrix Team

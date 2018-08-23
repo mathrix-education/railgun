@@ -1,19 +1,20 @@
 <?php
+
 namespace Tests\Utils\Traits\Generics;
 
 /**
  * Trait Index
- * Generic index tests
+ * Generic index tests.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @since 1.0.0
- * @package Tests\GenericTests
  */
 trait Index
 {
     /**
-     * Generic index with pagination; expect HTTP 200
+     * Generic index with pagination; expect HTTP 200.
      *
      * @param int $perPage model count per page
      *
@@ -25,9 +26,8 @@ trait Index
         $this->assertJsonLength($perPage);
     }
 
-
     /**
-     * Generic index; expect HTTP 200
+     * Generic index; expect HTTP 200.
      *
      * @throws \Exception
      */
@@ -39,9 +39,8 @@ trait Index
         $this->assertHttp200Success();
     }
 
-
     /**
-     * Generic index call
+     * Generic index call.
      *
      * @throws \Exception
      */
@@ -52,9 +51,8 @@ trait Index
         $this->call("get", "/" . $this->modelPlural . "/");
     }
 
-
     /**
-     * Generic index without pagination; expect HTTP 200
+     * Generic index without pagination; expect HTTP 200.
      *
      * @throws \Exception
      */
@@ -65,9 +63,8 @@ trait Index
         $this->assertJsonLength($modelCount);
     }
 
-
     /**
-     * Generic index; expect HTTP 422 Unauthorized
+     * Generic index; expect HTTP 422 Unauthorized.
      *
      * @throws \Exception
      */

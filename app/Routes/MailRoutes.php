@@ -1,6 +1,6 @@
 <?php
-/** @var Laravel\Lumen\Routing\Router $router */
 
+/** @var Laravel\Lumen\Routing\Router $router */
 use App\Mails\BaseMail;
 use Illuminate\Support\Str;
 
@@ -21,13 +21,14 @@ if (app()->environment("dev", "local")) {
         // Build Mail urls
         $mailsUrl = array_map(function ($file) use ($mailClasses, $mailsDir) {
             $mailClasses[] = "App\\Mails\\" . str_replace(["$mailsDir/", ".php"], "", $file);
+
             return Str::snake(str_replace(["$mailsDir/", "Mail.php"], "", $file), "-");
         }, $mails);
 
         $mails = array_combine($mailsUrl, $mailClasses);
 
         /**
-         * @var string $url
+         * @var string
          * @var BaseMail $class
          */
         foreach ($mails as $url => $class) {

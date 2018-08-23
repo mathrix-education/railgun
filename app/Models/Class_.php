@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -7,29 +8,30 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-
 /**
- * Model Class_
+ * Model Class_.
  *
- * @package App\Models
- * @since 1.0.0
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @since     1.0.0
+ *
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
  * ----
- * @property int $id
- * @property string $name
- * @property string $name_short
- * @property string $slug
- * @property string $slug_short
- * @property int $order
- * @property bool $visible
- * @property array $link
- * @property int|null $parent_id
- * @property int $country_id
- * @property-read Country $country
- * @property-read Collection|Discipline[] $disciplines
- * @property-read Class_|null $parent
- * @property-read Collection|User[] $users
+ *
+ * @property int                     $id
+ * @property string                  $name
+ * @property string                  $name_short
+ * @property string                  $slug
+ * @property string                  $slug_short
+ * @property int                     $order
+ * @property bool                    $visible
+ * @property array                   $link
+ * @property int|null                $parent_id
+ * @property int                     $country_id
+ * @property Country                 $country
+ * @property Collection|Discipline[] $disciplines
+ * @property Class_|null             $parent
+ * @property Collection|User[]       $users
+ *
  * @method static Builder|Class_ whereId($value)
  * @method static Builder|Class_ whereName($value)
  * @method static Builder|Class_ whereNameShort($value)
@@ -47,19 +49,18 @@ class Class_ extends BaseModel
     protected $table = "classes";
     /** @var array The attributes that are mass assignable */
     protected $fillable = ["id", "name", "slug", "order", "visible", "parent_id",
-        "country_id", "link"];
+        "country_id", "link", ];
     /** @var array Validation rules */
     protected $rules = [
         "name" => "required|max:255",
         "slug" => "required|max:255",
         "order" => "required|integer",
         "visible" => "boolean",
-        "country_id" => "required|exists:countries,id"
+        "country_id" => "required|exists:countries,id",
     ];
 
-
     /**
-     * Get the cursus (ie. the class it self and all its previous)
+     * Get the cursus (ie. the class it self and all its previous).
      *
      * @return Collection
      */
@@ -71,33 +72,32 @@ class Class_ extends BaseModel
         /** @var Class_ $end */
         $end = $classes->last();
 
-        while (!is_null($end->parent_id)) {
-            $classes[] = Class_::find($end->parent_id);
+        while (null !== $end->parent_id) {
+            $classes[] = self::find($end->parent_id);
             $end = $classes->last();
         }
 
         return $classes;
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | Relations
     |--------------------------------------------------------------------------
     */
+
     /**
-     * BelongsTo Class_
+     * BelongsTo Class_.
      *
      * @return BelongsTo
      */
     public function parent(): BelongsTo
     {
-        return $this->belongsTo(Class_::class, "parent_id");
+        return $this->belongsTo(self::class, "parent_id");
     }
 
-
     /**
-     * BelongsTo Country
+     * BelongsTo Country.
      *
      * @return BelongsTo
      */
@@ -106,9 +106,8 @@ class Class_ extends BaseModel
         return $this->belongsTo(Country::class);
     }
 
-
     /**
-     * BelongsToMany Discipline
+     * BelongsToMany Discipline.
      *
      * @return BelongsToMany
      */
@@ -118,9 +117,8 @@ class Class_ extends BaseModel
             "discipline_id");
     }
 
-
     /**
-     * HasMany User
+     * HasMany User.
      *
      * @return HasMany
      */

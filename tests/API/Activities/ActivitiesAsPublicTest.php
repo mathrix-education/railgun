@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Activities;
 
 use App\Models\Meta;
@@ -9,12 +10,12 @@ use Tests\Utils\Tree;
 
 /**
  * Class ActivitiesAsPublicTest
- * Test activities as public (non-logged user)
+ * Test activities as public (non-logged user).
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @version 1.0.0
- * @package Tests\Activities
  */
 class ActivitiesAsPublicTest extends ScopeTestCase
 {
@@ -29,9 +30,8 @@ class ActivitiesAsPublicTest extends ScopeTestCase
         $this->genericIndexUnauthorized();
     }
 
-
     /**
-     * GET /activities/{id}
+     * GET /activities/{id}.
      *
      * @throws \Exception
      */
@@ -40,9 +40,8 @@ class ActivitiesAsPublicTest extends ScopeTestCase
         $this->genericGetSuccess();
     }
 
-
     /**
-     * GET /activities/by-notion/{id}
+     * GET /activities/by-notion/{id}.
      */
     public function testByNotion()
     {
@@ -56,13 +55,13 @@ class ActivitiesAsPublicTest extends ScopeTestCase
         foreach ($activities as $activity) {
             $this->assertInDatabase("activity_notion", [
                 "activity_id" => $activity->id,
-                "notion_id" => $notion->id
+                "notion_id" => $notion->id,
             ]);
         }
     }
 
     /**
-     * GET /activities/by-notion/{id}
+     * GET /activities/by-notion/{id}.
      */
     public function testByWtf()
     {
@@ -71,9 +70,8 @@ class ActivitiesAsPublicTest extends ScopeTestCase
         $this->assertHttp400InvalidRequest();
     }
 
-
     /**
-     * GET /activities/by-notion/{id}
+     * GET /activities/by-notion/{id}.
      */
     public function testIds()
     {
@@ -86,10 +84,8 @@ class ActivitiesAsPublicTest extends ScopeTestCase
         $this->assertHttp200Success();
     }
 
-
-
     /**
-     * POST /activities -> HTTP 401 unauthorized
+     * POST /activities -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -97,7 +93,6 @@ class ActivitiesAsPublicTest extends ScopeTestCase
     {
         $this->genericAddUnauthorized();
     }
-
 
     /**
      * @covers \App\Controllers\ActivityController::edit()
@@ -110,7 +105,6 @@ class ActivitiesAsPublicTest extends ScopeTestCase
         $this->genericEditUnauthorized();
     }
 
-
     /**
      * @covers \App\Controllers\ActivityController::delete()
      * DELETE /activities/{id} -> HTTP 401 unauthorized
@@ -122,9 +116,8 @@ class ActivitiesAsPublicTest extends ScopeTestCase
         $this->genericDeleteUnauthorized();
     }
 
-
     /**
-     * Generic mark test
+     * Generic mark test.
      *
      * @param bool|null $favorite
      * @param bool|null $to_revise
@@ -153,9 +146,8 @@ class ActivitiesAsPublicTest extends ScopeTestCase
         $this->assertHttp401Unauthorized();
     }
 
-
     /**
-     * PATCH /activities/{id}/mark with {favorite: true}
+     * PATCH /activities/{id}/mark with {favorite: true}.
      *
      * @throws \Exception
      */
@@ -164,9 +156,8 @@ class ActivitiesAsPublicTest extends ScopeTestCase
         $this->mark(null, null, false);
     }
 
-
     /**
-     * PATCH /activities/{id}/mark with {to_revise: true}
+     * PATCH /activities/{id}/mark with {to_revise: true}.
      *
      * @throws \Exception
      */
@@ -175,9 +166,8 @@ class ActivitiesAsPublicTest extends ScopeTestCase
         $this->mark(null, true, null);
     }
 
-
     /**
-     * PATCH /activities/{id}/mark with {completed: true}
+     * PATCH /activities/{id}/mark with {completed: true}.
      *
      * @throws \Exception
      */
@@ -186,10 +176,9 @@ class ActivitiesAsPublicTest extends ScopeTestCase
         $this->mark(null, null, true);
     }
 
-
     /**
      * PATCH /activities/{id}/mark
-     * Assert meta updated_at field changes even if the meta content is the same
+     * Assert meta updated_at field changes even if the meta content is the same.
      */
     public function testMarkForceUpdatedAt()
     {

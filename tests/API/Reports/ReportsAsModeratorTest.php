@@ -1,19 +1,20 @@
 <?php
+
 namespace Tests\API\Reports;
 
 /**
  * Class ReportsAsModeratorTest
- * Test reports as moderator
+ * Test reports as moderator.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @version 1.0.0
- * @package Tests\Reports
  */
 class ReportsAsModeratorTest extends ReportsAsRegisteredTest
 {
     /**
-     * GET /reports
+     * GET /reports.
      *
      * @throws \Exception
      */
@@ -22,9 +23,8 @@ class ReportsAsModeratorTest extends ReportsAsRegisteredTest
         $this->genericIndexSuccess();
     }
 
-
     /**
-     * GET /reports/{id}
+     * GET /reports/{id}.
      *
      * @throws \Exception
      */
@@ -33,9 +33,8 @@ class ReportsAsModeratorTest extends ReportsAsRegisteredTest
         $this->genericGetSuccess();
     }
 
-
     /**
-     * PATCH /reports/{id}
+     * PATCH /reports/{id}.
      *
      * @throws \Exception
      */
@@ -44,9 +43,8 @@ class ReportsAsModeratorTest extends ReportsAsRegisteredTest
         $this->genericEditSuccess();
     }
 
-
     /**
-     * DELETE /reports/{id}
+     * DELETE /reports/{id}.
      *
      * @throws \Exception
      */

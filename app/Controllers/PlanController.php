@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Services\Braintree\Models\Plan;
@@ -6,17 +7,18 @@ use Illuminate\Http\JsonResponse;
 use Laravel\Lumen\Routing\Controller;
 
 /**
- * Class PlaController
+ * Class PlaController.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Controllers
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class PlanController extends Controller
 {
     /**
-     * Get all Braintree plans
+     * Get all Braintree plans.
      *
      * @return JsonResponse
      */
@@ -25,9 +27,8 @@ class PlanController extends Controller
         return new JsonResponse(Plan::all());
     }
 
-
     /**
-     * Fin a pla by its id
+     * Fin a pla by its id.
      *
      * @param string $planId
      *

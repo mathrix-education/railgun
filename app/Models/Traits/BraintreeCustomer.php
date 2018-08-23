@@ -1,6 +1,6 @@
 <?php
-namespace App\Models\Traits;
 
+namespace App\Models\Traits;
 
 use App\Exceptions\Http400InvalidRequestException;
 use App\Services\Braintree\Formatter;
@@ -8,17 +8,18 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 
 /**
- * Trait Customer
+ * Trait Customer.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Models\Braintree
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 trait BraintreeCustomer
 {
     /**
-     * Get the Brain customer cache used to get customer information from the cache
+     * Get the Brain customer cache used to get customer information from the cache.
      *
      * @return string
      */
@@ -27,18 +28,16 @@ trait BraintreeCustomer
         return "braintree-customer-" . $this->braintree_id;
     }
 
-
     /**
-     * Delete the Braintree customer from the cache
+     * Delete the Braintree customer from the cache.
      */
     public function forgetBraintreeCustomerCache()
     {
         Cache::forget($this->getBraintreeCustomerCacheKey());
     }
 
-
     /**
-     * Check if the user is already a Braintree customer
+     * Check if the user is already a Braintree customer.
      *
      * @param bool $strict also check on the API
      *
@@ -48,11 +47,12 @@ trait BraintreeCustomer
     {
         if ($this->braintree_id === null) {
             return false;
-        } else if (!$strict) {
+        } elseif (!$strict) {
             return true;
         } else {
             try {
                 \Braintree_Customer::find($this->braintree_id);
+
                 return true;
             } catch (\Braintree_Exception_NotFound $e) {
                 return false;
@@ -60,9 +60,8 @@ trait BraintreeCustomer
         }
     }
 
-
     /**
-     * Throw an Http400InvalidRequestException if the user is not a Braintree cusstomer
+     * Throw an Http400InvalidRequestException if the user is not a Braintree cusstomer.
      *
      * @param bool $strict
      *
@@ -75,7 +74,6 @@ trait BraintreeCustomer
         }
     }
 
-
     /**
      * @return \Braintree_Customer
      */
@@ -87,19 +85,20 @@ trait BraintreeCustomer
             } catch (\Braintree\Exception\NotFound $e) {
                 $this->braintree_id = null;
                 $this->save();
-                return null;
+
+                return;
             }
         });
     }
 
-
     /**
-     * Create a Braintree customer associated with this user account
+     * Create a Braintree customer associated with this user account.
      *
      * @param string|null $paymentMethodNonce a payment nonce to attach
      *
-     * @return \Braintree_Customer
      * @throws Http400InvalidRequestException
+     *
+     * @return \Braintree_Customer
      */
     public function createBraintreeCustomer(string $paymentMethodNonce = null): \Braintree_Customer
     {
@@ -112,7 +111,7 @@ trait BraintreeCustomer
                 "email" => $this->email,
                 "firstName" => $this->firstname,
                 "lastName" => $this->lastname,
-                "paymentMethodNonce" => $paymentMethodNonce ?? null
+                "paymentMethodNonce" => $paymentMethodNonce ?? null,
             ]);
 
             if ($result->success) {
@@ -126,12 +125,12 @@ trait BraintreeCustomer
         return $this->getBraintreeCustomer();
     }
 
-
     /**
-     * Get user's Braintree payment methods
+     * Get user's Braintree payment methods.
+     *
+     * @throws Http400InvalidRequestException
      *
      * @return array
-     * @throws Http400InvalidRequestException
      */
     public function getBraintreePaymentMethods()
     {
@@ -140,12 +139,12 @@ trait BraintreeCustomer
         return $this->getBraintreeCustomer()->paymentMethods;
     }
 
-
     /**
-     * Get the user's default payment method token
+     * Get the user's default payment method token.
+     *
+     * @throws Http400InvalidRequestException
      *
      * @return string
-     * @throws Http400InvalidRequestException
      */
     public function getBraintreeDefaultPaymentMethodToken()
     {
@@ -154,14 +153,14 @@ trait BraintreeCustomer
         return $this->getBraintreeCustomer()->defaultPaymentMethod()->token;
     }
 
-
     /**
-     * Attach a new payment method to the current user
+     * Attach a new payment method to the current user.
      *
      * @param string $paymentMethodNonce
      *
-     * @return \Braintree_Result_Successful|\Braintree_Result_Error
      * @throws Http400InvalidRequestException
+     *
+     * @return \Braintree_Result_Successful|\Braintree_Result_Error
      */
     public function addBraintreePaymentMethod(string $paymentMethodNonce)
     {
@@ -170,18 +169,18 @@ trait BraintreeCustomer
 
         return \Braintree_PaymentMethod::create([
             "customerId" => $this->braintree_id,
-            "paymentMethodNonce" => $paymentMethodNonce
+            "paymentMethodNonce" => $paymentMethodNonce,
         ]);
     }
 
-
     /**
-     * Delete a payment method with a token from the vault
+     * Delete a payment method with a token from the vault.
      *
      * @param string $paymentMethodToken
      *
-     * @return \Braintree_Result_Successful|\Braintree_Result_Error
      * @throws Http400InvalidRequestException
+     *
+     * @return \Braintree_Result_Successful|\Braintree_Result_Error
      */
     public function deleteBraintreePaymentMethod(string $paymentMethodToken)
     {
@@ -190,12 +189,12 @@ trait BraintreeCustomer
         return \Braintree_PaymentMethod::delete($paymentMethodToken);
     }
 
-
     /**
-     * Get the user subscriptions
+     * Get the user subscriptions.
+     *
+     * @throws Http400InvalidRequestException
      *
      * @return Collection|\Braintree_Subscription[]
-     * @throws Http400InvalidRequestException
      */
     public function getBraintreeSubscriptions(): Collection
     {
@@ -211,7 +210,6 @@ trait BraintreeCustomer
                     $subscriptions->add($subscription);
                 }
             }
-
 
             /** @var \Braintree_PayPalAccount $paypalAccount */
             foreach ($this->getBraintreeCustomer()->paypalAccounts as $paypalAccount) {
@@ -229,25 +227,25 @@ trait BraintreeCustomer
         return $subscriptions;
     }
 
-
     /**
-     * Check if the user has subscribed to the given plan
+     * Check if the user has subscribed to the given plan.
      *
      * @param string|array $plans
      *
-     * @return bool
      * @throws Http400InvalidRequestException
+     *
+     * @return bool
      */
     public function hasBraintreeSubscription($plans)
     {
-        if (is_string($plans)) {
+        if (\is_string($plans)) {
             $plans = [$plans];
         }
 
         if ($this->isBraintreeCustomer(true)) {
             /** @var \Braintree_Subscription $subscription */
             foreach ($this->getBraintreeSubscriptions() as $subscription) {
-                if (in_array($subscription->planId, $plans) && $subscription->status === "Active") {
+                if (\in_array($subscription->planId, $plans, true) && $subscription->status === "Active") {
                     return true;
                 }
             }

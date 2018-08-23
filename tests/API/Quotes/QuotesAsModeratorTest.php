@@ -1,14 +1,15 @@
 <?php
+
 namespace Tests\API\Quotes;
 
 /**
  * Class QuotesAsModeratorTest
- * Test quotes as moderator
+ * Test quotes as moderator.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @version 1.0.0
- * @package Tests\Quotes
  */
 class QuotesAsModeratorTest extends QuotesAsRegisteredTest
 {

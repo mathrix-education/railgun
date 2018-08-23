@@ -3,7 +3,7 @@
 use App\Models\Module;
 use Faker\Generator;
 
-/**
+/*
  * ModuleTestFactory
  *
  * @author Mathrix Team
@@ -17,7 +17,7 @@ $factory->defineAs(Module::class, 'test', function (Generator $faker) use ($fact
 
     $data['type'] = 'test';
     $data['options'] = [
-        'duration' => ($faker->randomElement([10, 15, 20, 25, 30])) * 60
+        'duration' => ($faker->randomElement([10, 15, 20, 25, 30])) * 60,
     ];
 
     return $data;

@@ -1,19 +1,20 @@
 <?php
+
 namespace Tests\Utils\Traits\Generics;
 
 /**
  * Trait Search
- * Generic index tests
+ * Generic index tests.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @since 4.0.3
- * @package Tests\GenericTests
  */
 trait Search
 {
     /**
-     * Generic search; expect HTTP 200
+     * Generic search; expect HTTP 200.
      *
      * @param array $data
      */
@@ -25,9 +26,8 @@ trait Search
         $this->assertHttp200Success();
     }
 
-
     /**
-     * Generic search call
+     * Generic search call.
      *
      * @param array $data
      */
@@ -38,9 +38,8 @@ trait Search
         $this->call("post", "/" . $this->modelPlural . "/search", $data);
     }
 
-
     /**
-     * Generic search; expect HTTP 422 Unauthorized
+     * Generic search; expect HTTP 422 Unauthorized.
      *
      * @param array $data
      */

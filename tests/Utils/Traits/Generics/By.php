@@ -1,20 +1,21 @@
 <?php
+
 namespace Tests\Utils\Traits\Generics;
 
 use App\Models\BaseModel;
 
 /**
- * Trait By
+ * Trait By.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @since 1.0.0
- * @package Tests\GenericTests
  */
 trait By
 {
     /**
-     * Generic by; expect HTTP 200
+     * Generic by; expect HTTP 200.
      *
      * @param BaseModel|string $foreignModelClass
      */
@@ -26,9 +27,8 @@ trait By
         $this->assertHttp200Success();
     }
 
-
     /**
-     * Generic by call
+     * Generic by call.
      *
      * @param BaseModel|string $foreignModelClass
      */
@@ -42,9 +42,8 @@ trait By
         $this->call("get", "/{$this->modelPlural}/by-$foreignSingular/$foreignId");
     }
 
-
     /**
-     * Generic by; expect HTTP 422 Unauthorized
+     * Generic by; expect HTTP 422 Unauthorized.
      *
      * @param BaseModel|string $foreignModelClass
      */

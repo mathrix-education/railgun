@@ -1,14 +1,15 @@
 <?php
+
 namespace Tests\Utils\Traits\Generics;
 
 /**
  * Trait Generics
- * Generic tests
+ * Generic tests.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @since 1.0.0
- * @package Tests\GenericTests
  */
 trait Generics
 {
@@ -17,9 +18,8 @@ trait Generics
     /** @var string|null the subfactory to use; null for default factory */
     protected $subFactory = null;
 
-
     /**
-     * Check if generic tests are usable; otherwise throw exception
+     * Check if generic tests are usable; otherwise throw exception.
      *
      * @throws \Exception
      */
@@ -30,14 +30,13 @@ trait Generics
         }
     }
 
-
     /**
-     * Check if generic tests are usable
+     * Check if generic tests are usable.
      *
      * @return bool
      */
     protected function genericUsable(): bool
     {
-        return !is_null($this->modelClass) && !is_null($this->modelSingular) && !is_null($this->modelPlural);
+        return null !== $this->modelClass && null !== $this->modelSingular && null !== $this->modelPlural;
     }
 }

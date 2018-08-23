@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -11,66 +12,69 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 /**
- * Class VoteController
+ * Class VoteController.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Controllers
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class VoteController extends BaseController
 {
     /**
-     * @apiVersion 4.0.0
-     * @api {post} /votes/{votable_type}/{votable_id}/up Up
-     * @apiGroup Votes
-     * @apiName VoteUp
+     * @apiVersion     4.0.0
+     *
+     * @api            {post} /votes/{votable_type}/{votable_id}/up Up
+     * @apiGroup       Votes
+     * @apiName        VoteUp
      * @apiDescription Up vote something
-     * @apiPermission registered
-     * @apiUse Bearer
-     * @apiUse Http401Unauthorized
-     * @apiUse Http422ModelSave
+     * @apiPermission  registered
+     * @apiUse         Bearer
+     * @apiUse         Http401Unauthorized
+     * @apiUse         Http422ModelSave
      *
      * @param Request $request
-     * @param string $votable_type
-     * @param int $votable_id
+     * @param string  $votable_type
+     * @param int     $votable_id
      *
-     * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     *
+     * @return JsonResponse
      */
     public function up(Request $request, string $votable_type, int $votable_id)
     {
         return $this->vote($request, $votable_type, $votable_id, 1);
     }
 
-
     /**
-     * Handle vote action
+     * Handle vote action.
      *
      * @param Request $request
-     * @param string $votable_type
-     * @param int $votable_id
-     * @param int $value
+     * @param string  $votable_type
+     * @param int     $votable_id
+     * @param int     $value
      *
-     * @return JsonResponse|null
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     *
+     * @return JsonResponse|null
      */
     private function vote(Request $request, string $votable_type, int $votable_id, int $value)
     {
         // Ensure that the type is morphed in the morphMap
         /** @var BaseModel $class */
-        if ($class = Relation::getMorphedModel($votable_type) == null) {
+        if ($class = Relation::getMorphedModel($votable_type) === null) {
             throw new Http400InvalidRequestException();
         }
 
         $voteData = [
             "user_id" => $request->user()->id,
             "votable_id" => $votable_id,
-            "votable_type" => $votable_type
+            "votable_type" => $votable_type,
         ];
 
         $voteConditions = [];
@@ -87,7 +91,7 @@ class VoteController extends BaseController
             /** @var Vote $vote */
             $vote = Vote::where($voteConditions)->first();
 
-            if ($vote->value == $value) {
+            if ($vote->value === $value) {
                 $vote->delete();
             } else {
                 $vote->update(["value" => $value]);
@@ -97,26 +101,27 @@ class VoteController extends BaseController
         return response()->json($vote->exists());
     }
 
-
     /**
-     * @apiVersion 4.0.0
-     * @api {post} /votes/{votable_type}/{votable_id}/down Down
-     * @apiGroup Votes
-     * @apiName VoteDown
+     * @apiVersion     4.0.0
+     *
+     * @api            {post} /votes/{votable_type}/{votable_id}/down Down
+     * @apiGroup       Votes
+     * @apiName        VoteDown
      * @apiDescription Down vote something
-     * @apiPermission registered
-     * @apiUse Bearer
-     * @apiUse Http401Unauthorized
-     * @apiUse Http422ModelSave
+     * @apiPermission  registered
+     * @apiUse         Bearer
+     * @apiUse         Http401Unauthorized
+     * @apiUse         Http422ModelSave
      *
      * @param Request $request
-     * @param string $votable_type
-     * @param int $votable_id
+     * @param string  $votable_type
+     * @param int     $votable_id
      *
-     * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     *
+     * @return JsonResponse
      */
     public function down(Request $request, string $votable_type, int $votable_id)
     {

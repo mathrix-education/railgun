@@ -1,22 +1,23 @@
 <?php
+
 namespace App\Notifications;
 
 use App\Mails\PasswordForgottenMail;
 use App\Models\User;
 
 /**
- * Class PasswordForgottenNotification
+ * Class PasswordForgottenNotification.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Notifications
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
  * @since
+ *
  * @copyright Mathrix Education SA
  */
 class PasswordForgottenNotification extends BaseNotification
 {
     /** @var User $user */
     public $user;
-
 
     /**
      * PasswordForgottenNotification constructor.
@@ -28,7 +29,6 @@ class PasswordForgottenNotification extends BaseNotification
         $this->user = $user;
     }
 
-
     /**
      * @return array
      */
@@ -37,9 +37,8 @@ class PasswordForgottenNotification extends BaseNotification
         return ["mail"];
     }
 
-
     /**
-     * Get the mail representation of the notification
+     * Get the mail representation of the notification.
      *
      * @return PasswordForgottenMail
      */

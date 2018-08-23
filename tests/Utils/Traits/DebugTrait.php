@@ -1,18 +1,20 @@
 <?php
+
 namespace Tests\Utils\Traits;
 
 /**
- * Class Debug
+ * Class Debug.
  *
  * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package Tests\Utils\Traits
+ *
  * @since 4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 trait DebugTrait
 {
     /**
-     * Handle response printing
+     * Handle response printing.
      *
      * @param \Exception|\Throwable $e
      *
@@ -24,9 +26,8 @@ trait DebugTrait
         parent::onNotSuccessfulTest($e);
     }
 
-
     /**
-     * Debug the response
+     * Debug the response.
      *
      * @throws \Exception
      */

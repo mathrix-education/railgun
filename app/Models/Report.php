@@ -1,24 +1,27 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * Model Report
+ * Model Report.
  *
- * @package App\Models
- * @since 1.0.0
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @since     1.0.0
+ *
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
  * ----
- * @property int $id
+ *
+ * @property int    $id
  * @property string $content
  * @property string $status
- * @property int $module_id
+ * @property int    $module_id
  * @property string $created_at
  * @property string $updated_at
- * @property-read Module $module
+ * @property Module $module
+ *
  * @method static Builder|Report whereId($value)
  * @method static Builder|Report whereContent($value)
  * @method static Builder|Report whereStatus($value)
@@ -31,7 +34,6 @@ class Report extends BaseModel
 {
     public const STATUSES = ["todo", "done", "validated"];
 
-
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
     /** @var array The attributes that are mass assignable */
@@ -40,12 +42,11 @@ class Report extends BaseModel
     protected $rules = [
         "name" => "required|max:255",
         "slug" => "required|max:255",
-        "visible" => "boolean"
+        "visible" => "boolean",
     ];
 
     /** @var array Relation included by default */
     protected $with = ["module"];
-
 
     public function __construct(array $attributes = [])
     {
@@ -60,8 +61,9 @@ class Report extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
+
     /**
-     * BelongsTo Module
+     * BelongsTo Module.
      *
      * @return BelongsTo
      */

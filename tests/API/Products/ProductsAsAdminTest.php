@@ -1,14 +1,15 @@
 <?php
+
 namespace Tests\API\Products;
 
 /**
  * Class ProductsAsAdminTest
- * Test products as admin
+ * Test products as admin.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @version 4.1.0
- * @package Tests\API\Products
  */
 class ProductsAsAdminTest extends ProductsAsModeratorTest
 {
@@ -17,18 +18,15 @@ class ProductsAsAdminTest extends ProductsAsModeratorTest
         $this->genericIndexSuccess();
     }
 
-
     public function testAdd()
     {
         $this->genericAddSuccess();
     }
 
-
     public function testEdit()
     {
         $this->genericEditSuccess();
     }
-
 
     public function testDelete()
     {

@@ -1,4 +1,5 @@
 <?php
+
 /** @var Laravel\Lumen\Routing\Router $router */
 $router->get("classes[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "ClassController@index");
 $router->group(["prefix" => "classes"], function () use ($router) {
@@ -12,4 +13,3 @@ $router->group(["prefix" => "classes"], function () use ($router) {
     $router->get("{key:[1-9]\d*}", "ClassController@get");
     $router->get("{key:[a-z\-]+}/{value:[a-z0-9\-]+}", "ClassController@get");
 });
-

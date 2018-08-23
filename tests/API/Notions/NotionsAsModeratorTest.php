@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Notions;
 
 use App\Models\Activity;
@@ -6,17 +7,17 @@ use App\Models\Chapter;
 
 /**
  * Class NotionsAsModeratorTest
- * Test notions as moderator
+ * Test notions as moderator.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @version 1.0.0
- * @package Tests\Notions
  */
 class NotionsAsModeratorTest extends NotionsAsRegisteredTest
 {
     /**
-     * POST /notions
+     * POST /notions.
      *
      * @throws \Exception
      */
@@ -25,9 +26,8 @@ class NotionsAsModeratorTest extends NotionsAsRegisteredTest
         $this->genericAddSuccess();
     }
 
-
     /**
-     * PATCH /notions/{id}
+     * PATCH /notions/{id}.
      *
      * @throws \Exception
      */
@@ -36,9 +36,8 @@ class NotionsAsModeratorTest extends NotionsAsRegisteredTest
         $this->genericEditSuccess();
     }
 
-
     /**
-     * PATCH /notions/{id}
+     * PATCH /notions/{id}.
      *
      * @throws \Exception
      */
@@ -50,27 +49,26 @@ class NotionsAsModeratorTest extends NotionsAsRegisteredTest
         $this->genericEditSuccess([
             "link" => [
                 "chapters" => $chapterIds,
-                "activities" => $activityIds
-            ]
+                "activities" => $activityIds,
+            ],
         ]);
 
         foreach ($activityIds as $chapterId) {
             $this->assertInDatabase("activity_notion", [
                 "activity_id" => $chapterId,
-                "notion_id" => $this->editModelId
+                "notion_id" => $this->editModelId,
             ]);
         }
         foreach ($chapterIds as $chapterId) {
             $this->assertInDatabase("chapter_notion", [
                 "chapter_id" => $chapterId,
-                "notion_id" => $this->editModelId
+                "notion_id" => $this->editModelId,
             ]);
         }
     }
 
-
     /**
-     * DELETE /notions/{id}
+     * DELETE /notions/{id}.
      *
      * @throws \Exception
      */

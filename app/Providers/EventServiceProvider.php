@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Providers;
 
 use App\Events\NewSubscriptionEvent;
@@ -14,11 +15,12 @@ use App\Listeners\TransactionSuccessListener;
 use Laravel\Lumen\Providers\EventServiceProvider as ServiceProvider;
 
 /**
- * Class EventServiceProvider
+ * Class EventServiceProvider.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Providers
- * @since 1.0.1
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.1
+ *
  * @copyright Mathrix Education SA
  */
 class EventServiceProvider extends ServiceProvider
@@ -28,6 +30,6 @@ class EventServiceProvider extends ServiceProvider
         PasswordForgottenEvent::class => [PasswordForgottenListener::class],
         PasswordResetEvent::class => [PasswordResetListener::class],
         TransactionSuccessEvent::class => [TransactionSuccessListener::class],
-        TransactionRefundSuccessEvent::class => [TransactionRefundSuccessListener::class]
+        TransactionRefundSuccessEvent::class => [TransactionRefundSuccessListener::class],
     ];
 }

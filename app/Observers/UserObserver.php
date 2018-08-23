@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Observers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -12,21 +13,21 @@ use Faker\Factory;
 use Illuminate\Support\Facades\Hash;
 
 /**
- * Class UserObserver
+ * Class UserObserver.
  *
  * @author Mathrix Team
- * @package App\Observers
  */
 class UserObserver extends BaseObserver
 {
     /**
      * @param User $user
      *
-     * @return bool
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      * @throws \Exception
+     *
+     * @return bool
      */
     public function saving($user)
     {
@@ -39,7 +40,7 @@ class UserObserver extends BaseObserver
              * - password does not contain the CRYPT_BLOWFISH identifier $2y$
              * Not 100% sure but practically null
              */
-            if (isset($user->password) && strlen($user->password) != 60 && !strpos($user->password, "$2y$")) {
+            if (isset($user->password) && \mb_strlen($user->password) !== 60 && !mb_strpos($user->password, "$2y$")) {
                 $user->password = Hash::make($user->password);
             }
         }
@@ -55,15 +56,15 @@ class UserObserver extends BaseObserver
             */
             $alreadyAchievedDaily = Log::where([
                 "user_id" => $user->id,
-                "event" => "user_achieved_daily"
+                "event" => "user_achieved_daily",
             ])
                 ->whereBetween("created_at", [
                     Carbon::now()->setTime(0, 0, 0),
-                    Carbon::now()
+                    Carbon::now(),
                 ])->exists();
 
             if (!$alreadyAchievedDaily && $user->daily_points + $pointsAdded >= $user->daily) {
-                $user->daily_achievements++;
+                ++$user->daily_achievements;
                 Log::log("user_achieved_daily", $user);
             }
 
@@ -76,14 +77,13 @@ class UserObserver extends BaseObserver
             $nextLevel = Level::where("level", $user->level + 1)->first();
 
             while ($nextLevel !== null && $user->points >= $nextLevel->objective) {
-                $user->level++;
+                ++$user->level;
                 $nextLevel = Level::where("level", $user->level + 1)->first();
             }
         }
 
         return true;
     }
-
 
     /**
      * @param User $user
@@ -92,7 +92,6 @@ class UserObserver extends BaseObserver
     {
         $user->token = Factory::create()->uuid;
     }
-
 
     /**
      * @param User $user
@@ -107,7 +106,6 @@ class UserObserver extends BaseObserver
         Log::log("user_registered", $user);
     }
 
-
     /**
      * @param User $user
      *
@@ -120,18 +118,17 @@ class UserObserver extends BaseObserver
     {
         $changes = array_keys($user->getDirty());
 
-        if (in_array("password", $changes)) {
+        if (\in_array("password", $changes, true)) {
             Log::log("user_changed_password", $user);
         }
-        if (in_array("daily", $changes)) {
+        if (\in_array("daily", $changes, true)) {
             Log::log("user_set_daily", $user);
         }
-        if (in_array("level", $changes)) {
+        if (\in_array("level", $changes, true)) {
             Log::log("user_passed_level", $user, [
                 "from" => $user->level - 1,
-                "to" => $user->level
+                "to" => $user->level,
             ]);
         }
     }
 }
-

@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Classes;
 
 use App\Models\Country;
@@ -6,17 +7,17 @@ use Tests\API\ScopeTestCase;
 
 /**
  * Class ClassesAsPublicTest
- * Test classes as public (non-logged user)
+ * Test classes as public (non-logged user).
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @version 1.0.0
- * @package Tests\Classes
  */
 class ClassesAsPublicTest extends ScopeTestCase
 {
     /**
-     * GET /classes/index
+     * GET /classes/index.
      *
      * @throws \Exception
      */
@@ -25,9 +26,8 @@ class ClassesAsPublicTest extends ScopeTestCase
         $this->genericIndexSuccess();
     }
 
-
     /**
-     * GET /classes/{id}
+     * GET /classes/{id}.
      *
      * @throws \Exception
      */
@@ -36,9 +36,8 @@ class ClassesAsPublicTest extends ScopeTestCase
         $this->genericGetSuccess();
     }
 
-
     /**
-     * POST /classes -> HTTP 401 unauthorized
+     * POST /classes -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -47,9 +46,8 @@ class ClassesAsPublicTest extends ScopeTestCase
         $this->genericAddUnauthorized();
     }
 
-
     /**
-     * PATCH /classes/{id} -> HTTP 401 unauthorized
+     * PATCH /classes/{id} -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -58,9 +56,8 @@ class ClassesAsPublicTest extends ScopeTestCase
         $this->genericEditUnauthorized();
     }
 
-
     /**
-     * DELETE /classes/{id} -> HTTP 401 unauthorized
+     * DELETE /classes/{id} -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -69,9 +66,8 @@ class ClassesAsPublicTest extends ScopeTestCase
         $this->genericDeleteUnauthorized();
     }
 
-
     /**
-     * GET /classes/by-country/{country_id}
+     * GET /classes/by-country/{country_id}.
      */
     public function testByCountry()
     {

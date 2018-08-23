@@ -4,7 +4,7 @@ if (!function_exists("config_path")) {
     /**
      * Get the configuration path.
      *
-     * @param  string $path
+     * @param string $path
      *
      * @return string
      */
@@ -18,7 +18,7 @@ if (!function_exists("public_path")) {
     /**
      * Get the public path.
      *
-     * @param  string $path
+     * @param string $path
      *
      * @return string
      */
@@ -36,13 +36,14 @@ if (!function_exists('glob_recursive')) {
         foreach (glob(dirname($pattern) . '/*', GLOB_ONLYDIR | GLOB_NOSORT) as $dir) {
             $files = array_merge($files, glob_recursive($dir . '/' . basename($pattern), $flags));
         }
+
         return $files;
     }
 }
 
 if (!function_exists('build_date')) {
     /**
-     * Get the build date
+     * Get the build date.
      *
      * @return string
      */

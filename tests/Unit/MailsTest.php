@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Unit;
 
 use App\Mails\PasswordForgottenMail;
@@ -8,11 +9,12 @@ use App\Mails\TransactionSuccessMail;
 use Tests\BaseTestCase;
 
 /**
- * Class MailsTest
+ * Class MailsTest.
  *
  * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package Tests\Unit
+ *
  * @since
+ *
  * @copyright Mathrix Education SA
  */
 class MailsTest extends BaseTestCase
@@ -23,20 +25,17 @@ class MailsTest extends BaseTestCase
         $this->assertInstanceOf(PasswordForgottenMail::class, $mail);
     }
 
-
     public function testPasswordReset()
     {
         $mail = PasswordResetMail::mock()->build();
         $this->assertInstanceOf(PasswordResetMail::class, $mail);
     }
 
-
     public function testTransactionRefundSuccess()
     {
         $mail = TransactionRefundMail::mock()->build();
         $this->assertInstanceOf(TransactionRefundMail::class, $mail);
     }
-
 
     public function testTransactionSuccess()
     {

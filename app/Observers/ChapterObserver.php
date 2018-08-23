@@ -1,16 +1,15 @@
 <?php
-namespace App\Observers;
 
+namespace App\Observers;
 
 use App\Models\Chapter;
 use App\Models\Meta;
 use App\Models\Notion;
 
 /**
- * Class ChapterObserver
+ * Class ChapterObserver.
  *
  * @author Mathrix Team
- * @package App\Observers
  */
 class ChapterObserver extends BaseObserver
 {
@@ -47,9 +46,8 @@ class ChapterObserver extends BaseObserver
         return true;
     }
 
-
     /**
-     * Delete all notions linked with the deleting chapter
+     * Delete all notions linked with the deleting chapter.
      *
      * @param Chapter $chapter
      *

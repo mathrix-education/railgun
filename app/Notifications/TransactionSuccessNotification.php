@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Notifications;
 
 use App\Mails\TransactionSuccessMail;
@@ -7,11 +8,12 @@ use Braintree\Transaction;
 use Braintree\Transaction\LineItem;
 
 /**
- * Class TransactionSuccessNotification
+ * Class TransactionSuccessNotification.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Notifications
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class TransactionSuccessNotification extends BaseNotification
@@ -23,11 +25,10 @@ class TransactionSuccessNotification extends BaseNotification
     /** @var LineItem[] $lineItems */
     private $lineItems;
 
-
     /**
      * TransactionSuccessNotification constructor.
      *
-     * @param User $user
+     * @param User        $user
      * @param Transaction $transaction
      */
     public function __construct(User $user, Transaction $transaction)
@@ -37,7 +38,6 @@ class TransactionSuccessNotification extends BaseNotification
         $this->lineItems = LineItem::findAll($transaction->id);
     }
 
-
     /**
      * @return array
      */
@@ -46,9 +46,8 @@ class TransactionSuccessNotification extends BaseNotification
         return ["mail"];
     }
 
-
     /**
-     * Get the mail representation of the notification
+     * Get the mail representation of the notification.
      *
      * @return TransactionSuccessMail
      */

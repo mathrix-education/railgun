@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use App\Models\Interfaces\Commentable;
@@ -8,27 +9,28 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-
 /**
- * Model Post
+ * Model Post.
  *
- * @package App\Models
- * @since 1.0.0
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @since     1.0.0
+ *
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
  * ----
- * @property int $id
- * @property string $title
- * @property string $slug
- * @property int $module_id
- * @property int $user_id
- * @property int $category_id
- * @property Carbon $created_at
- * @property Carbon $updated_at
- * @property-read Module $module
- * @property-read Category $category
- * @property-read User $user
- * @property-read Collection|Comment[] $comments
+ *
+ * @property int                  $id
+ * @property string               $title
+ * @property string               $slug
+ * @property int                  $module_id
+ * @property int                  $user_id
+ * @property int                  $category_id
+ * @property Carbon               $created_at
+ * @property Carbon               $updated_at
+ * @property Module               $module
+ * @property Category             $category
+ * @property User                 $user
+ * @property Collection|Comment[] $comments
+ *
  * @method static Builder|Post whereId($value)
  * @method static Builder|Post whereSlug($value)
  * @method static Builder|Post whereTitle($value)
@@ -52,19 +54,19 @@ class Post extends BaseModel implements Commentable
         "title" => "required|max:255",
         "slug" => "required|max:255",
         "content" => "required",
-        "category_id" => "required|exists:categories,id"
+        "category_id" => "required|exists:categories,id",
     ];
     /** @var array The default included relations */
     protected $with = ["module"];
-
 
     /*
     |--------------------------------------------------------------------------
     | Relations
     |--------------------------------------------------------------------------
     */
+
     /**
-     * BelongsTo Module
+     * BelongsTo Module.
      *
      * @return BelongsTo
      */
@@ -73,9 +75,8 @@ class Post extends BaseModel implements Commentable
         return $this->belongsTo(Module::class);
     }
 
-
     /**
-     * BelongsTo Category
+     * BelongsTo Category.
      *
      * @return BelongsTo
      */
@@ -84,9 +85,8 @@ class Post extends BaseModel implements Commentable
         return $this->belongsTo(Category::class);
     }
 
-
     /**
-     * BelongsTo User
+     * BelongsTo User.
      *
      * @return BelongsTo
      */

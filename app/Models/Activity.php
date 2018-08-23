@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use App\Models\Interfaces\Commentable;
@@ -9,29 +10,30 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-
 /**
- * Model Activity
+ * Model Activity.
  *
- * @package App\Models
- * @since 1.0.0
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @since     1.0.0
+ *
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
  * ----
- * @property int $id
- * @property string $name
- * @property string $slug
- * @property string|null $name_seo
- * @property string $type
- * @property bool $visible
- * @property array $link
- * @property-read bool $completed
- * @property-read bool $favorite
- * @property-read bool $to_revise
- * @property-read Collection|Comment[] $comments
- * @property-read Collection|Log[] $logs
- * @property-read Collection|Module[] $modules
- * @property-read Collection|Notion[] $notions
+ *
+ * @property int                  $id
+ * @property string               $name
+ * @property string               $slug
+ * @property string|null          $name_seo
+ * @property string               $type
+ * @property bool                 $visible
+ * @property array                $link
+ * @property bool                 $completed
+ * @property bool                 $favorite
+ * @property bool                 $to_revise
+ * @property Collection|Comment[] $comments
+ * @property Collection|Log[]     $logs
+ * @property Collection|Module[]  $modules
+ * @property Collection|Notion[]  $notions
+ *
  * @method static Builder|Activity whereId($value)
  * @method static Builder|Activity whereName($value)
  * @method static Builder|Activity whereSlug($value)
@@ -46,23 +48,21 @@ class Activity extends BaseModel implements Commentable
 
     public const TYPES = ["video", "course", "test", "exercise", "summary", "flashcard"];
 
-
     /** @var array The attributes that are mass assignable */
     protected $fillable = ["id", "name", "slug", "name_seo", "type", "visible", "link"];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
         "visible" => "boolean",
-        "options" => "array"
+        "options" => "array",
     ];
     /** @var array The validation rules */
     protected $rules = [
         "name" => "required|max:255",
         "slug" => "required|max:255",
-        "visible" => "boolean"
+        "visible" => "boolean",
     ];
     /** @var array Appends attributes */
     protected $appends = ["favorite", "to_revise", "completed"];
-
 
     /**
      * Activity constructor.
@@ -77,14 +77,14 @@ class Activity extends BaseModel implements Commentable
         parent::__construct($attributes);
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | Relations
     |--------------------------------------------------------------------------
     */
+
     /**
-     * BelongsToMany Module
+     * BelongsToMany Module.
      *
      * @return BelongsToMany
      */
@@ -93,9 +93,8 @@ class Activity extends BaseModel implements Commentable
         return $this->belongsToMany(Module::class)->withPivot(["order"]);
     }
 
-
     /**
-     * BelongsToMany Notion
+     * BelongsToMany Notion.
      *
      * @return BelongsToMany
      */
@@ -104,14 +103,14 @@ class Activity extends BaseModel implements Commentable
         return $this->belongsToMany(Notion::class)->withPivot(["order"]);
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | Appends fields
     |--------------------------------------------------------------------------
     */
+
     /**
-     * favorite
+     * favorite.
      *
      * @return bool
      */
@@ -126,15 +125,14 @@ class Activity extends BaseModel implements Commentable
 
         $meta = Meta::where([
             ["activity_id", $this->id],
-            ["user_id", $user->id]
+            ["user_id", $user->id],
         ])->first();
 
-        return $meta === null ? false : (bool)$meta->favorite;
+        return $meta === null ? false : (bool) $meta->favorite;
     }
 
-
     /**
-     * to_revise
+     * to_revise.
      *
      * @return bool
      */
@@ -144,20 +142,19 @@ class Activity extends BaseModel implements Commentable
         $user = Auth::user();
 
         if ($user === null) {
-            return null;
+            return;
         }
 
         $meta = Meta::where([
             ["activity_id", $this->id],
-            ["user_id", $user->id]
+            ["user_id", $user->id],
         ])->first();
 
         return $meta === null ? null : $meta->to_revise;
     }
 
-
     /**
-     * completed
+     * completed.
      *
      * @return bool
      */
@@ -167,12 +164,12 @@ class Activity extends BaseModel implements Commentable
         $user = Auth::user();
 
         if ($user === null) {
-            return null;
+            return;
         }
 
         $meta = Meta::where([
             ["activity_id", $this->id],
-            ["user_id", $user->id]
+            ["user_id", $user->id],
         ])->first();
 
         return $meta === null ? null : $meta->completed;

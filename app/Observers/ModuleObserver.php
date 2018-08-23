@@ -1,8 +1,8 @@
 <?php
+
 namespace App\Observers;
 
 use App\Models\Activity;
-use App\Models\Lesson;
 use App\Models\Meta;
 use App\Models\Module;
 use App\Models\Post;
@@ -10,10 +10,9 @@ use App\Models\Product;
 use App\Models\Report;
 
 /**
- * Class ModuleObserver
+ * Class ModuleObserver.
  *
  * @author Mathrix Team
- * @package App\Observers
  */
 class ModuleObserver extends BaseObserver
 {
@@ -43,14 +42,14 @@ class ModuleObserver extends BaseObserver
         return true;
     }
 
-
     /**
-     * Detach all activities linked with the deleting module
+     * Detach all activities linked with the deleting module.
      *
      * @param Module $module
      *
-     * @return bool
      * @throws \App\Exceptions\Http422ModelSaveException
+     *
+     * @return bool
      */
     public function deleting($module)
     {

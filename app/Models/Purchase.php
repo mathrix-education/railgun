@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Carbon\Carbon;
@@ -6,21 +7,23 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * Class Purchase
+ * Class Purchase.
  *
- * @package App\Models
- * @since 4.0.1
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @since     4.0.1
+ *
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
  * ----
- * @property int $id
- * @property int $price
- * @property int $refund
- * @property int $user_id
- * @property int $product_id
+ *
+ * @property int         $id
+ * @property int         $price
+ * @property int         $refund
+ * @property int         $user_id
+ * @property int         $product_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read User $user
+ * @property User        $user
+ *
  * @method static Builder|Purchase whereId($value)
  * @method static Builder|Purchase wherePrice($value)
  * @method static Builder|Purchase whereRefund($value)
@@ -42,14 +45,14 @@ class Purchase extends BaseModel
         "user_id" => "exists:users,id",
     ];
 
-
     /*
     |--------------------------------------------------------------------------
     | Relations
     |--------------------------------------------------------------------------
     */
+
     /**
-     * BelongsTo User
+     * BelongsTo User.
      *
      * @return BelongsTo
      */

@@ -5,18 +5,18 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
 /**
- * Class CreateLogsTable
+ * Class CreateLogsTable.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
  * @since 1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class CreateLogsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -30,7 +30,7 @@ class CreateLogsTable extends Migration
             // Polymorphic
             $table->enum("loggable_type", [
                 "activity",
-                "module"
+                "module",
             ])->nullable();
             $table->integer("loggable_id")->unsigned()->nullable();
 
@@ -39,11 +39,8 @@ class CreateLogsTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

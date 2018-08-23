@@ -11,10 +11,12 @@ use App\Models\Module;
 use App\Models\Notion;
 
 /**
- * Class ContentTableSeeder
+ * Class ContentTableSeeder.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
  * @since 1.0.1
+ *
  * @copyright Mathrix Education SA
  */
 class ContentTableSeeder extends BaseTableSeeder
@@ -28,31 +30,31 @@ class ContentTableSeeder extends BaseTableSeeder
     {
         // Content
         $this->seedFromJson([
-            "modelClass" => Country::class
+            "modelClass" => Country::class,
         ]);
         $this->seedFromJson([
             "modelClass" => Class_::class,
-            "table" => "classes"
+            "table" => "classes",
         ]);
         $this->seedFromJson([
-            "modelClass" => Discipline::class
+            "modelClass" => Discipline::class,
         ]);
         $this->seedFromFactory([
             "modelClass" => Chapter::class,
-            "count" => random_int(50, 70)
+            "count" => random_int(50, 70),
         ]);
         $this->seedFromFactory([
             "modelClass" => Notion::class,
-            "count" => random_int(100, 200)
+            "count" => random_int(100, 200),
         ]);
         $this->seedFromFactory([
             "modelClass" => Activity::class,
-            "count" => random_int(150, 300)
+            "count" => random_int(150, 300),
         ]);
         $this->seedFromFactory([
             "modelClass" => Module::class,
             "subFactory" => "random",
-            "count" => random_int(200, 350)
+            "count" => random_int(200, 350),
         ]);
 
         $this->link(Class_::class, Discipline::class);

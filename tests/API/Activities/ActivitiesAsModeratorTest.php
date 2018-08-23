@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Activities;
 
 use App\Models\Activity;
@@ -7,17 +8,17 @@ use App\Models\Notion;
 
 /**
  * Class ActivitiesAsModeratorTest
- * Test activities as moderator
+ * Test activities as moderator.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @version 1.0.0
- * @package Tests\Activities
  */
 class ActivitiesAsModeratorTest extends ActivitiesAsRegisteredTest
 {
     /**
-     * GET /activities
+     * GET /activities.
      *
      * @throws \Exception
      */
@@ -26,9 +27,8 @@ class ActivitiesAsModeratorTest extends ActivitiesAsRegisteredTest
         $this->genericIndexSuccess();
     }
 
-
     /**
-     * POST /activities
+     * POST /activities.
      *
      * @throws \Exception
      */
@@ -37,9 +37,8 @@ class ActivitiesAsModeratorTest extends ActivitiesAsRegisteredTest
         $this->genericAddSuccess();
     }
 
-
     /**
-     * PATCH /activities/{id}
+     * PATCH /activities/{id}.
      *
      * @throws \Exception
      */
@@ -48,9 +47,8 @@ class ActivitiesAsModeratorTest extends ActivitiesAsRegisteredTest
         $this->genericEditSuccess();
     }
 
-
     /**
-     * PATCH /activities/{id} with linkable models
+     * PATCH /activities/{id} with linkable models.
      *
      * @throws \Exception
      */
@@ -64,7 +62,7 @@ class ActivitiesAsModeratorTest extends ActivitiesAsRegisteredTest
             "modules" => $this->faker->randomElements(
                 Module::inRandomOrder()->pluck("id")->toArray(),
                 $this->faker->numberBetween(3, 5)
-            )
+            ),
         ];
 
         $this->genericEditSuccess(["link" => $link]);
@@ -73,7 +71,7 @@ class ActivitiesAsModeratorTest extends ActivitiesAsRegisteredTest
             $this->assertInDatabase("activity_notion", [
                 "activity_id" => $this->editModelId,
                 "notion_id" => $id,
-                "order" => $order
+                "order" => $order,
             ]);
         }
 
@@ -81,14 +79,13 @@ class ActivitiesAsModeratorTest extends ActivitiesAsRegisteredTest
             $this->assertInDatabase("activity_module", [
                 "activity_id" => $this->editModelId,
                 "module_id" => $id,
-                "order" => $order
+                "order" => $order,
             ]);
         }
     }
 
-
     /**
-     * PATCH /activities/{id} while re-ordering module ids
+     * PATCH /activities/{id} while re-ordering module ids.
      */
     public function testEditReorder()
     {
@@ -101,22 +98,21 @@ class ActivitiesAsModeratorTest extends ActivitiesAsRegisteredTest
 
         $this->json("patch", "/activities/{$activity->id}", [
             "link" => [
-                "modules" => $moduleIds
-            ]
+                "modules" => $moduleIds,
+            ],
         ]);
 
         foreach ($moduleIds as $order => $moduleId) {
             $this->assertInDatabase("activity_module", [
                 "activity_id" => $activity->id,
                 "module_id" => $moduleId,
-                "order" => $order
+                "order" => $order,
             ]);
         }
     }
 
-
     /**
-     * DELETE /activities/{id}
+     * DELETE /activities/{id}.
      *
      * @throws \Exception
      */

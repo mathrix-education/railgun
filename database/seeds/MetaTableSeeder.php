@@ -11,10 +11,12 @@ use App\Models\Notion;
 use App\Models\User;
 
 /**
- * Class MetaTableSeeder
+ * Class MetaTableSeeder.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
  * @since 4.0.3
+ *
  * @copyright Mathrix Education SA
  */
 class MetaTableSeeder extends BaseTableSeeder
@@ -33,7 +35,7 @@ class MetaTableSeeder extends BaseTableSeeder
         foreach ($registered as $user) {
             $metaCount = random_int(0, 10);
 
-            for ($i = 0; $i < $metaCount; $i++) {
+            for ($i = 0; $i < $metaCount; ++$i) {
                 /** @var Class_ $class_ */
                 $class_ = $user->class_;
                 /** @var Discipline $discipline */
@@ -55,9 +57,9 @@ class MetaTableSeeder extends BaseTableSeeder
                     "chapter_id" => $chapter->id,
                     "notion_id" => $notion->id,
                     "activity_id" => $activity->id,
-                    "favorite" => (bool)random_int(0, 1),
-                    "completed" => $statusId == 0,
-                    "to_revise" => $statusId == 1
+                    "favorite" => (bool) random_int(0, 1),
+                    "completed" => $statusId === 0,
+                    "to_revise" => $statusId === 1,
                 ];
             }
         }

@@ -3,16 +3,18 @@
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
-use App\Models\Module;
 use App\Models\Log;
+use App\Models\Module;
 use App\Models\User;
 use Carbon\Carbon;
 
 /**
- * Class LogTableSeeder
+ * Class LogTableSeeder.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
  * @since 4.0.3
+ *
  * @copyright Mathrix Education SA
  */
 class LogTableSeeder extends BaseTableSeeder
@@ -25,7 +27,6 @@ class LogTableSeeder extends BaseTableSeeder
      */
     public function run()
     {
-
         $users = User::whereNotNull("class_id")->get();
         $today = Carbon::now();
         $logs = [];
@@ -58,9 +59,9 @@ class LogTableSeeder extends BaseTableSeeder
                             "points" => $points,
                             "loggable_type" => "module",
                             "loggable_id" => $module->id,
-                            "created_at" => $dateIterator
+                            "created_at" => $dateIterator,
                         ])->toArray();
-                        $counter++;
+                        ++$counter;
 
                         if ($counter % 100 === 0) {
                             $this->output->write(".");

@@ -3,7 +3,7 @@
 use App\Models\Discount;
 use Faker\Generator;
 
-/**
+/*
  * DisciplineFactory
  *
  * @author Mathrix Team
@@ -23,7 +23,7 @@ $factory->define(Discount::class, function (Generator $faker) {
     }
 
     return [
-        "code" => substr($faker->md5, 0, 20),
+        "code" => mb_substr($faker->md5, 0, 20),
         "type" => $type,
         "value" => $value,
         "counter" => $faker->boolean ? ($faker->boolean ? 0 : random_int(10, 20)) : -1,

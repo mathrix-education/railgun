@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Chapters;
 
 use App\Models\Chapter;
@@ -6,17 +7,17 @@ use Tests\API\ScopeTestCase;
 
 /**
  * Class ChaptersAsPublicTest
- * Test chapters as public (non-logged user)
+ * Test chapters as public (non-logged user).
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @version 1.0.0
- * @package Tests\Chapters
  */
 class ChaptersAsPublicTest extends ScopeTestCase
 {
     /**
-     * GET /chapters -> HTTP 401 unauthorized
+     * GET /chapters -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -25,9 +26,8 @@ class ChaptersAsPublicTest extends ScopeTestCase
         $this->genericIndexUnauthorized();
     }
 
-
     /**
-     * GET /chapters/{id}
+     * GET /chapters/{id}.
      *
      * @throws \Exception
      */
@@ -36,9 +36,8 @@ class ChaptersAsPublicTest extends ScopeTestCase
         $this->genericGetSuccess();
     }
 
-
     /**
-     * GET /chapters/slug/{chapterSlug}/by-class-slug/{classSlug}
+     * GET /chapters/slug/{chapterSlug}/by-class-slug/{classSlug}.
      *
      * @throws \Exception
      */
@@ -53,9 +52,8 @@ class ChaptersAsPublicTest extends ScopeTestCase
         $this->assertJsonKeys(["id", "name", "slug"]);
     }
 
-
     /**
-     * POST /chapters -> HTTP 401 unauthorized
+     * POST /chapters -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -64,9 +62,8 @@ class ChaptersAsPublicTest extends ScopeTestCase
         $this->genericAddUnauthorized();
     }
 
-
     /**
-     * PATCH /chapters/{id} -> HTTP 401 unauthorized
+     * PATCH /chapters/{id} -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -75,9 +72,8 @@ class ChaptersAsPublicTest extends ScopeTestCase
         $this->genericEditUnauthorized();
     }
 
-
     /**
-     * DELETE /chapters/{id} -> HTTP 401 unauthorized
+     * DELETE /chapters/{id} -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -86,9 +82,8 @@ class ChaptersAsPublicTest extends ScopeTestCase
         $this->genericDeleteUnauthorized();
     }
 
-
     /**
-     * GET /chapters/by-class-discipline/{class_id}/{discipline_id}
+     * GET /chapters/by-class-discipline/{class_id}/{discipline_id}.
      */
     public function testByClassAndDiscipline()
     {
@@ -104,9 +99,8 @@ class ChaptersAsPublicTest extends ScopeTestCase
         $this->assertJsonLengthMin(1);
     }
 
-
     /**
-     * GET /chapters/recursive/{id}
+     * GET /chapters/recursive/{id}.
      *
      * @throws \Exception
      */

@@ -1,14 +1,14 @@
 <?php
+
 namespace App\Observers;
 
 use App\Models\Comment;
 use App\Models\Post;
 
 /**
- * Class PostObserver
+ * Class PostObserver.
  *
  * @author Mathrix Team
- * @package App\Observers
  */
 class PostObserver extends BaseObserver
 {
@@ -27,7 +27,6 @@ class PostObserver extends BaseObserver
 
         return true;
     }
-
 
     /**
      * @param Post $post

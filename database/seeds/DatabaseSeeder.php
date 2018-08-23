@@ -1,11 +1,12 @@
 <?php
 
-
 /**
- * Class DatabaseSeeder
+ * Class DatabaseSeeder.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
  * @since 1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class DatabaseSeeder extends BaseTableSeeder

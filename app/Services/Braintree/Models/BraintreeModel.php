@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services\Braintree\Models;
 
 use App\Exceptions\Http404ModelNotFoundException;
@@ -10,11 +11,12 @@ use Illuminate\Contracts\Support\Jsonable;
 use JsonSerializable;
 
 /**
- * Class BraintreeModel
+ * Class BraintreeModel.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Services\Braintree\Models
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
@@ -23,7 +25,6 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
     protected $model;
     /** @var array $attributes The custom model attributes */
     protected $attributes;
-
 
     public function __construct(Base $model)
     {
@@ -44,42 +45,35 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
         }
     }
 
-
     public function __get($key)
     {
         return $this->attributes[$key] ?? $this->model->{$key};
     }
-
 
     public function __set($key, $value)
     {
         $this->attributes[$key] = $value;
     }
 
-
     public function __call($name, $arguments)
     {
         if (method_exists($this->model, $name)) {
-            return call_user_func_array([$this->model, $name], $arguments);
-        } else {
-            return null;
+            return \call_user_func_array([$this->model, $name], $arguments);
         }
     }
 
-
     /**
-     * The findOr function, must be reimplemented
+     * The findOr function, must be reimplemented.
      *
-     * @param string $id
+     * @param string   $id
      * @param callable $callback
      *
      * @return mixed
      */
     abstract public static function findOr(string $id, callable $callback);
 
-
     /**
-     * Find a plan by its id or return null
+     * Find a plan by its id or return null.
      *
      * @param string $id
      *
@@ -88,13 +82,11 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
     public static function find(string $id)
     {
         return static::findOr($id, function () {
-            return null;
         });
     }
 
-
     /**
-     * Find a plan by its id
+     * Find a plan by its id.
      *
      * @param string $id
      *
@@ -107,9 +99,8 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
         });
     }
 
-
     /**
-     * Get the array representation of the Plan
+     * Get the array representation of the Plan.
      *
      * @return array
      */
@@ -128,66 +119,58 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
         return $planData;
     }
 
-
     /**
-     * Whether a offset exists
+     * Whether a offset exists.
      *
-     * @link http://php.net/manual/en/arrayaccess.offsetexists.php
+     * @see http://php.net/manual/en/arrayaccess.offsetexists.php
      *
-     * @param mixed $offset An offset to check for.
+     * @param mixed $offset an offset to check for
      *
-     * @return boolean true on success or false on failure. The return value will be casted to boolean if non-boolean
-     * was returned.
+     * @return bool true on success or false on failure. The return value will be casted to boolean if non-boolean
+     *              was returned.
      */
     public function offsetExists($offset)
     {
         return isset($this->attributes[$offset]);
     }
 
-
     /**
-     * Offset to retrieve
+     * Offset to retrieve.
      *
-     * @link http://php.net/manual/en/arrayaccess.offsetget.php
+     * @see http://php.net/manual/en/arrayaccess.offsetget.php
      *
-     * @param mixed $offset The offset to retrieve.
+     * @param mixed $offset the offset to retrieve
      *
-     * @return mixed Can return all value types.
+     * @return mixed can return all value types
      */
     public function offsetGet($offset)
     {
         return $this->attributes[$offset] ?? null;
     }
 
-
     /**
-     * Offset to set
+     * Offset to set.
      *
-     * @link http://php.net/manual/en/arrayaccess.offsetset.php
+     * @see http://php.net/manual/en/arrayaccess.offsetset.php
      *
-     * @param mixed $offset The offset to assign the value to.
-     * @param mixed $value The value to set.
-     *
-     * @return void
+     * @param mixed $offset the offset to assign the value to
+     * @param mixed $value  the value to set
      */
     public function offsetSet($offset, $value): void
     {
-        if (is_null($offset)) {
+        if (null === $offset) {
             $this->attributes[] = $value;
         } else {
             $this->attributes[$offset] = $value;
         }
     }
 
-
     /**
-     * Offset to unset
+     * Offset to unset.
      *
-     * @link http://php.net/manual/en/arrayaccess.offsetunset.php
+     * @see http://php.net/manual/en/arrayaccess.offsetunset.php
      *
-     * @param mixed $offset The offset to unset.
-     *
-     * @return void
+     * @param mixed $offset the offset to unset
      */
     public function offsetUnset($offset): void
     {
@@ -195,7 +178,6 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
             unset($this->attributes[$offset]);
         }
     }
-
 
     /**
      * Convert the object to its JSON representation.
@@ -209,13 +191,12 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
         return json_encode($this->toArray(), $options);
     }
 
-
     /**
      * Specify data which should be serialized to JSON.
      *
-     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @see   http://php.net/manual/en/jsonserializable.jsonserialize.php
      *
-     * @return mixed Data which can be serialized by json_encode, which is a value of any type other than a resource.
+     * @return mixed data which can be serialized by json_encode, which is a value of any type other than a resource
      *
      * @since 5.4.0
      */

@@ -1,14 +1,16 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\User;
 
 /**
- * Class ProductPolicy
+ * Class ProductPolicy.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Policies
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
  * @since
+ *
  * @copyright Mathrix Education SA
  */
 class ProductPolicy extends BasePolicy
@@ -21,7 +23,6 @@ class ProductPolicy extends BasePolicy
         return true;
     }
 
-
     /**
      * @return bool
      */
@@ -29,7 +30,6 @@ class ProductPolicy extends BasePolicy
     {
         return true;
     }
-
 
     /**
      * @param User $currentUser
@@ -41,7 +41,6 @@ class ProductPolicy extends BasePolicy
         return $currentUser->isAdmin();
     }
 
-
     /**
      * @param User $currentUser
      *
@@ -51,7 +50,6 @@ class ProductPolicy extends BasePolicy
     {
         return $currentUser->isAdmin();
     }
-
 
     /**
      * @param User $currentUser

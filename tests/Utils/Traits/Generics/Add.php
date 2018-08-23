@@ -1,27 +1,27 @@
 <?php
+
 namespace Tests\Utils\Traits\Generics;
 
 use Closure;
 use Illuminate\Http\Response;
 
 /**
- * Trait Add
+ * Trait Add.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @since 1.0.0
- * @package Tests\GenericTests
  */
 trait Add
 {
     /** @var array factorized model data */
     protected $addModelData;
 
-
     /**
-     * Generic add; expect HTTP 200 and data present in database
+     * Generic add; expect HTTP 200 and data present in database.
      *
-     * @param array $override the overridden properties
+     * @param array         $override the overridden properties
      * @param \Closure|null $callback the callback on generated data
      *
      * @throws \Exception
@@ -35,11 +35,10 @@ trait Add
         $this->assertInDatabase($this->modelPlural, $this->addModelData);
     }
 
-
     /**
-     * Generic add call
+     * Generic add call.
      *
-     * @param array $override the overridden properties
+     * @param array         $override the overridden properties
      * @param \Closure|null $callback the callback on generated data
      *
      * @throws \Exception
@@ -48,7 +47,7 @@ trait Add
     {
         $this->genericUsableOrFail();
 
-        $this->addModelData = is_null($this->subFactory) ?
+        $this->addModelData = null === $this->subFactory ?
             factory($this->modelClass)->raw($override) :
             factory($this->modelClass, $this->subFactory)->raw($override);
 
@@ -69,7 +68,7 @@ trait Add
             $json = json_decode($response);
 
             if (json_last_error() === JSON_ERROR_NONE && !empty($json["id"]) && is_numeric($json["id"])) {
-                $this->addModelData["id"] = (int)$json["id"];
+                $this->addModelData["id"] = (int) $json["id"];
             }
         }
 
@@ -78,11 +77,10 @@ trait Add
         }
     }
 
-
     /**
-     * Generic add; expect HTTP 200 and data present in database
+     * Generic add; expect HTTP 200 and data present in database.
      *
-     * @param array $override the overridden properties
+     * @param array         $override the overridden properties
      * @param \Closure|null $callback the callback on generated data
      *
      * @throws \Exception

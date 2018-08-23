@@ -1,18 +1,20 @@
 <?php
+
 namespace Tests\API;
 
 /**
- * Class VersionTest
+ * Class VersionTest.
  *
  * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package Tests\API
+ *
  * @since
+ *
  * @copyright Mathrix Education SA
  */
 class VersionTest extends APITestCase
 {
     /**
-     * GET /
+     * GET /.
      */
     public function testVersion()
     {

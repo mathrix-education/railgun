@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Mails;
 
 use App\Models\User;
@@ -7,11 +8,12 @@ use Braintree\Transaction\LineItem;
 use Cache;
 
 /**
- * Class TransactionSuccessMail
+ * Class TransactionSuccessMail.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Mails
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class TransactionSuccessMail extends BaseMail
@@ -23,7 +25,6 @@ class TransactionSuccessMail extends BaseMail
     /** @var LineItem[] $lineItems */
     protected $lineItems;
 
-
     public function __construct(User $user, Transaction $transaction, array $lineItems)
     {
         $this->user = $user;
@@ -33,15 +34,14 @@ class TransactionSuccessMail extends BaseMail
         parent::__construct();
     }
 
-
     /**
-     * Mock the Mail
+     * Mock the Mail.
      *
      * @param string|null $transactionId
      *
      * @return TransactionSuccessMail
      */
-    public static function mock(string $transactionId = null): TransactionSuccessMail
+    public static function mock(string $transactionId = null): self
     {
         $user = User::inRandomOrder()->first();
 
@@ -58,12 +58,11 @@ class TransactionSuccessMail extends BaseMail
         /** @var LineItem[] $transactionLineItems */
         $transactionLineItems = LineItem::findAll($transaction->id);
 
-        return new TransactionSuccessMail($user, $transaction, $transactionLineItems);
+        return new self($user, $transaction, $transactionLineItems);
     }
 
-
     /**
-     * Build the mail
+     * Build the mail.
      *
      * @return TransactionSuccessMail
      */
@@ -75,7 +74,7 @@ class TransactionSuccessMail extends BaseMail
             "title" => "Reçu de Mathrix",
             "user" => $this->user,
             "transaction" => $this->transaction,
-            "lineItems" => $this->lineItems
+            "lineItems" => $this->lineItems,
         ]);
     }
 }

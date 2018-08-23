@@ -7,18 +7,18 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
 /**
- * Class CreateChapterNotionTable
+ * Class CreateChapterNotionTable.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
  * @since 1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class CreateChapterNotionTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -47,11 +47,9 @@ class CreateChapterNotionTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
-     * @return void
      * @throws Exception
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
@@ -70,7 +68,7 @@ class CreateChapterNotionTable extends Migration
         foreach ($notions as $notion) {
             $chapter = $notion->chapters()->first();
 
-            if ($chapter != null) {
+            if ($chapter !== null) {
                 $notion->chapter_id = $chapter->id;
                 $notion->order = $chapter->pivot->order;
                 $notion->save();

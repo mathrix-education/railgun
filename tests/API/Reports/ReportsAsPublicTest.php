@@ -1,21 +1,22 @@
 <?php
+
 namespace Tests\API\Reports;
 
 use Tests\API\ScopeTestCase;
 
 /**
  * Class ReportsAsPublicTest
- * Test reports as public (non-logged user)
+ * Test reports as public (non-logged user).
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @version 1.0.0
- * @package Tests\Reports
  */
 class ReportsAsPublicTest extends ScopeTestCase
 {
     /**
-     * GET /reports
+     * GET /reports.
      *
      * @throws \Exception
      */
@@ -24,9 +25,8 @@ class ReportsAsPublicTest extends ScopeTestCase
         $this->genericIndexUnauthorized();
     }
 
-
     /**
-     * GET /reports/{id}
+     * GET /reports/{id}.
      *
      * @throws \Exception
      */
@@ -35,9 +35,8 @@ class ReportsAsPublicTest extends ScopeTestCase
         $this->genericGetUnauthorized();
     }
 
-
     /**
-     * POST /reports
+     * POST /reports.
      *
      * @throws \Exception
      */
@@ -46,9 +45,8 @@ class ReportsAsPublicTest extends ScopeTestCase
         $this->genericAddSuccess();
     }
 
-
     /**
-     * PATCH /reports/{id}
+     * PATCH /reports/{id}.
      *
      * @throws \Exception
      */
@@ -57,9 +55,8 @@ class ReportsAsPublicTest extends ScopeTestCase
         $this->genericEditUnauthorized();
     }
 
-
     /**
-     * DELETE /reports/{id}
+     * DELETE /reports/{id}.
      *
      * @throws \Exception
      */

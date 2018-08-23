@@ -1,4 +1,5 @@
 <?php
+
 /** @var Laravel\Lumen\Routing\Router $router */
 $router->group(["prefix" => "settings"], function () use ($router) {
     $router->get("", "SettingController@all");

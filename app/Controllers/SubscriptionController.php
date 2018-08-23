@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Events\NewSubscriptionEvent;
@@ -19,11 +20,12 @@ use Laravel\Lumen\Routing\Controller;
 use Zend\Diactoros\Response\JsonResponse;
 
 /**
- * Class SubscriptionController
+ * Class SubscriptionController.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Controllers\Braintree
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class SubscriptionController extends Controller
@@ -31,12 +33,11 @@ class SubscriptionController extends Controller
     public const PRICE_PER_MONTH = [
         "v4_monthly" => 17.90,
         "v4_annually" => 12.90,
-        "v4_biannually" => 9.90
+        "v4_biannually" => 9.90,
     ];
 
-
     /**
-     * Generate an unique transaction id based on an uuid and the prefix sub_
+     * Generate an unique transaction id based on an uuid and the prefix sub_.
      *
      * @return string
      */
@@ -45,9 +46,8 @@ class SubscriptionController extends Controller
         return "sub_" . str_replace("-", "", \Faker\Factory::create()->uuid);
     }
 
-
     /**
-     * Get the start date for a given plan
+     * Get the start date for a given plan.
      *
      * @param string $plan
      *
@@ -59,7 +59,7 @@ class SubscriptionController extends Controller
 
         if ($nextThirtyFirstJuly->isPast()) {
             $nextThirtyFirstJuly->addYear();
-        } else if ((new Carbon("1st May"))->isPast()) {
+        } elseif ((new Carbon("1st May"))->isPast()) {
             $nextThirtyFirstJuly->addYear();
         }
 
@@ -70,12 +70,10 @@ class SubscriptionController extends Controller
                 $nextThirtyFirstJuly->addYear();
                 break;
             default:
-
         }
 
         return $nextThirtyFirstJuly;
     }
-
 
     /**
      * @param string $plan
@@ -90,39 +88,39 @@ class SubscriptionController extends Controller
         $diffInMonths = $trialEndDate->diffInMonths($now);
         $diffInDays = $trialEndDate->diffInDays($now->addMonths($diffInMonths));
 
-        return round($diffInMonths * self::PRICE_PER_MONTH[$plan] + $diffInDays * (self::PRICE_PER_MONTH[$plan] / 30)
-            , 2);
+        return round($diffInMonths * self::PRICE_PER_MONTH[$plan] + $diffInDays * (self::PRICE_PER_MONTH[$plan] / 30), 2);
     }
 
-
     /**
-     * Estimate the price of the trial before the regular subscription billing cycles
+     * Estimate the price of the trial before the regular subscription billing cycles.
      *
      * @param string $plan
      *
-     * @return JsonResponse
      * @throws Http400InvalidPlanException
+     *
+     * @return JsonResponse
      */
     public function estimate(string $plan)
     {
-        if (!in_array($plan, array_keys(self::PRICE_PER_MONTH))) {
+        if (!\in_array($plan, array_keys(self::PRICE_PER_MONTH), true)) {
             throw new Http400InvalidPlanException($plan);
         }
+
         return new JsonResponse([
             "price" => $this->getTrialPrice($plan),
-            "end_date" => $this->getStartDate($plan)
+            "end_date" => $this->getStartDate($plan),
         ]);
     }
 
-
     /**
-     * Get a transaction by its id
+     * Get a transaction by its id.
      *
      * @param Request $request
-     * @param string $subscriptionId
+     * @param string  $subscriptionId
+     *
+     * @throws Http401UnauthorizedException
      *
      * @return JsonResponse
-     * @throws Http401UnauthorizedException
      */
     public function find(Request $request, string $subscriptionId)
     {
@@ -140,24 +138,24 @@ class SubscriptionController extends Controller
         );
     }
 
-
     /**
-     * Create a new subscriptions for a user
+     * Create a new subscriptions for a user.
      *
      * @param Request $request
      *
-     * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      * @throws ValidationException
+     *
+     * @return JsonResponse
      */
     public function create(Request $request)
     {
         // Validate the request
         $this->validate($request, [
             "planId" => "required|in:" . implode(",", array_keys(self::PRICE_PER_MONTH)),
-            "family.*" => "exists:users,email"
+            "family.*" => "exists:users,email",
         ]);
 
         // Prepare the working variables
@@ -186,7 +184,7 @@ class SubscriptionController extends Controller
             "id" => $this->generateSubscriptionId(),
             "planId" => $request->input("planId"),
             "neverExpires" => true,
-            "paymentMethodToken" => $user->getBraintreeDefaultPaymentMethodToken()
+            "paymentMethodToken" => $user->getBraintreeDefaultPaymentMethodToken(),
         ];
 
         // Initial checks for family-pack requests
@@ -207,7 +205,7 @@ class SubscriptionController extends Controller
 
             // We assume that everything is ok for family-pack
             $data["addOns"] = [
-                "add" => FamilyPackUtils::getAddOns($plan, count($familyEmails))
+                "add" => FamilyPackUtils::getAddOns($plan, \count($familyEmails)),
             ];
         }
 
@@ -216,7 +214,7 @@ class SubscriptionController extends Controller
             $data = array_merge($data, [
                 "trialPeriod" => true,
                 "trialDurationUnit" => "day",
-                "trialDuration" => $this->getStartDate($plan)->diffInDays(Carbon::now()) + 1
+                "trialDuration" => $this->getStartDate($plan)->diffInDays(Carbon::now()) + 1,
             ]);
 
             $description = "Abonnement premium du " . Carbon::now()->format("d/m/Y") . " au " .
@@ -233,22 +231,22 @@ class SubscriptionController extends Controller
                         "name" => "Abonnement premium",
                         "quantity" => 1,
                         "unitAmount" => $trialPrice,
-                        "totalAmount" => $trialPrice
-                    ]
+                        "totalAmount" => $trialPrice,
+                    ],
                 ],
                 "options" => [
                     "submitForSettlement" => true,
                     "paypal" => [
-                        "description" => $description
-                    ]
-                ]
+                        "description" => $description,
+                    ],
+                ],
             ];
 
             // Handle family pack additional price
             if ($isFamilyPack) {
                 $initialSaleData["lineItems"] = array_merge(
                     $initialSaleData["lineItems"],
-                    FamilyPackUtils::getAddOnsAsLineItemsForTrial($plan, count($familyEmails))
+                    FamilyPackUtils::getAddOnsAsLineItemsForTrial($plan, \count($familyEmails))
                 );
 
                 $totalPrice = $trialPrice;
@@ -269,7 +267,7 @@ class SubscriptionController extends Controller
                     foreach ($family as $child) {
                         $familyPack = new FamilyPack([
                             "parent_id" => $user->id,
-                            "child_id" => $child->id
+                            "child_id" => $child->id,
                         ]);
                         $familyPack->save();
                     }
@@ -297,30 +295,29 @@ class SubscriptionController extends Controller
             return new JsonResponse(
                 Formatter::cast($subscription->jsonSerialize())
             );
-        } else {
-            $errors = [];
-
-            /** @var \Braintree_Error_Validation $error */
-            foreach ($subscriptionResult->errors->deepAll() as $error) {
-                $errors[$error->attribute] = $error->message;
-            }
-
-            throw new Http400InvalidRequestException($subscriptionResult->message, 400, null, [
-                "errors" => $errors
-            ]);
         }
+        $errors = [];
+
+        /** @var \Braintree_Error_Validation $error */
+        foreach ($subscriptionResult->errors->deepAll() as $error) {
+            $errors[$error->attribute] = $error->message;
+        }
+
+        throw new Http400InvalidRequestException($subscriptionResult->message, 400, null, [
+            "errors" => $errors,
+        ]);
     }
 
-
     /**
-     * Cancel a subscription for a user
+     * Cancel a subscription for a user.
      *
      * @param Request $request
-     * @param string $subscriptionId
+     * @param string  $subscriptionId
      *
-     * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
+     *
+     * @return JsonResponse
      */
     public function cancel(Request $request, string $subscriptionId)
     {
@@ -338,7 +335,7 @@ class SubscriptionController extends Controller
             $subscription = $subscriptionResult->subscription;
 
             $customerResultSearch = \Braintree_Customer::search([
-                \Braintree_CustomerSearch::paymentMethodToken()->is($subscription->paymentMethodToken)
+                \Braintree_CustomerSearch::paymentMethodToken()->is($subscription->paymentMethodToken),
             ]);
 
             $customer = User::whereBraintreeId($customerResultSearch->firstItem()->id)
@@ -348,23 +345,22 @@ class SubscriptionController extends Controller
             return new JsonResponse(
                 Formatter::cast($subscription->jsonSerialize())
             );
-        } else {
-            throw new Http400InvalidRequestException("Unable to cancel subscription.", 400, null, [
-                "errors" => $subscriptionResult->errors
-            ]);
         }
+        throw new Http400InvalidRequestException("Unable to cancel subscription.", 400, null, [
+            "errors" => $subscriptionResult->errors,
+        ]);
     }
 
-
     /**
-     * Get the user subscriptions
+     * Get the user subscriptions.
      *
      * @param Request $request
-     * @param int $userId
+     * @param int     $userId
      *
-     * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
+     *
+     * @return JsonResponse
      */
     public function byUser(Request $request, int $userId)
     {

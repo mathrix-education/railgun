@@ -1,15 +1,17 @@
 <?php
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
 /**
  * Class SetVersion
- * Set app version from the local .env
+ * Set app version from the local .env.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Console\Commands
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class SetVersion extends Command
@@ -20,7 +22,6 @@ class SetVersion extends Command
 
     private $base;
     private $version;
-
 
     public function handle()
     {
@@ -43,7 +44,6 @@ class SetVersion extends Command
         // docs/openapi/index.yaml
         $this->setVersionInFile("docs/openapi/index.yaml", "  version: %version%");
     }
-
 
     private function setVersionInFile($file, $search)
     {

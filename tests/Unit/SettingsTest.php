@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Unit;
 
 use App\Models\Setting;
@@ -9,17 +10,16 @@ use Tests\Utils\Traits\Assertions\JsonAssertionsTrait;
 use Tests\Utils\Traits\Assertions\NotificationsAssertionsTrait;
 
 /**
- * Class SettingsUtilsTest
+ * Class SettingsUtilsTest.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @version 4.0.3
- * @package Tests\Utils
  */
 class SettingsTest extends BaseTestCase
 {
     use DatabaseAssertionsTrait, HttpAssertionsTrait, JsonAssertionsTrait, NotificationsAssertionsTrait;
-
 
     public function testRead()
     {
@@ -28,10 +28,9 @@ class SettingsTest extends BaseTestCase
 
         $this->assertInDatabase("settings", [
             "key" => $settingKey,
-            "value" => serialize($value)
+            "value" => serialize($value),
         ]);
     }
-
 
     public function testWrite()
     {

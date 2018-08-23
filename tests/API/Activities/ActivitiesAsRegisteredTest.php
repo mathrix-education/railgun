@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Activities;
 
 use App\Models\Meta;
@@ -7,17 +8,17 @@ use Tests\Utils\Tree;
 
 /**
  * Class ActivitiesAsPublicTest
- * Test activities as registered user
+ * Test activities as registered user.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @version 1.0.0
- * @package Tests\Activities
  */
 class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
 {
     /**
-     * GET /activities/favorites
+     * GET /activities/favorites.
      *
      * @throws \Exception
      */
@@ -36,9 +37,8 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
         }
     }
 
-
     /**
-     * GET /activities/to-revise
+     * GET /activities/to-revise.
      *
      * @throws \Exception
      */
@@ -57,9 +57,8 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
         }
     }
 
-
     /**
-     * GET /activities/incomplete
+     * GET /activities/incomplete.
      *
      * @throws \Exception
      */
@@ -77,14 +76,13 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
         foreach ($metas as $meta) {
             $this->assertEquals($this->user->id, $meta->user_id);
             $this->assertNotTrue($meta->completed);
-            $this->assertNotTrue(in_array($meta->discipline_id, $disciplinesIncluded));
+            $this->assertNotTrue(\in_array($meta->discipline_id, $disciplinesIncluded, true));
             $disciplinesIncluded[] = $meta->discipline_id;
         }
     }
 
-
     /**
-     * Generic mark test
+     * Generic mark test.
      *
      * @param bool|null $favorite
      * @param bool|null $to_revise
@@ -116,9 +114,8 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
         $this->assertInDatabase("metas", $expectedData);
     }
 
-
     /**
-     * PATCH /activities/{id}/mark with {favorite: true}
+     * PATCH /activities/{id}/mark with {favorite: true}.
      *
      * @throws \Exception
      */
@@ -127,9 +124,8 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
         $this->mark(null, null, false);
     }
 
-
     /**
-     * PATCH /activities/{id}/mark with {to_revise: true}
+     * PATCH /activities/{id}/mark with {to_revise: true}.
      *
      * @throws \Exception
      */
@@ -138,9 +134,8 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
         $this->mark(null, true, null);
     }
 
-
     /**
-     * PATCH /activities/{id}/mark with {completed: true}
+     * PATCH /activities/{id}/mark with {completed: true}.
      *
      * @throws \Exception
      */
@@ -149,10 +144,9 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
         $this->mark(null, null, true);
     }
 
-
     /**
      * PATCH /activities/{id}/mark
-     * Assert meta updated_at field changes even if the meta content is the same
+     * Assert meta updated_at field changes even if the meta content is the same.
      */
     public function testMarkForceUpdatedAt()
     {
@@ -168,10 +162,9 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
         $this->assertTrue($oldDate < $meta->updated_at);
     }
 
-
     /**
      * PATCH /activities/{id}/mark
-     * Try to mark an activity which does not exist, assert HTTP 404 model_not_found
+     * Try to mark an activity which does not exist, assert HTTP 404 model_not_found.
      */
     public function testMarkNotExists()
     {

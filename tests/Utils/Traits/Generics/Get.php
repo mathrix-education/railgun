@@ -1,18 +1,20 @@
 <?php
+
 namespace Tests\Utils\Traits\Generics;
 
 /**
- * Trait Get
+ * Trait Get.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package Tests\Generics
+ *
  * @since 1.0.1
+ *
  * @copyright Mathrix Education SA
  */
 trait Get
 {
     /**
-     * Generic get; expect HTTP 200
+     * Generic get; expect HTTP 200.
      *
      * @throws \Exception
      */
@@ -24,9 +26,8 @@ trait Get
         $this->assertHttp200Success();
     }
 
-
     /**
-     * Generic get call
+     * Generic get call.
      *
      * @throws \Exception
      */
@@ -39,9 +40,8 @@ trait Get
         $this->call("get", "/" . $this->modelPlural . "/$id");
     }
 
-
     /**
-     * Generic get; expect HTTP 422 Unauthorized
+     * Generic get; expect HTTP 422 Unauthorized.
      *
      * @throws \Exception
      */

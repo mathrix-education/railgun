@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console;
 
 use App\Console\Commands\Backup\BackupCdn;
@@ -19,11 +20,12 @@ use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
 /**
- * Class Kernel
+ * Class Kernel.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Console
- * @since 1.0.1
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.1
+ *
  * @copyright Mathrix Education SA
  */
 class Kernel extends ConsoleKernel
@@ -53,16 +55,13 @@ class Kernel extends ConsoleKernel
         RedocBundle::class,
         // sitemap:
         SitemapAll::class,
-        SitemapContent::class
+        SitemapContent::class,
     ];
-
 
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule $schedule
-     *
-     * @return void
+     * @param \Illuminate\Console\Scheduling\Schedule $schedule
      */
     protected function schedule(Schedule $schedule)
     {

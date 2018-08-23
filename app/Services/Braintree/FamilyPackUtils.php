@@ -1,24 +1,26 @@
 <?php
+
 namespace App\Services\Braintree;
 
 use App\Services\Braintree\Models\AddOn;
 use App\Services\Braintree\Models\Plan;
 
 /**
- * Class FamilyPack
+ * Class FamilyPack.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Services\Braintree
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class FamilyPackUtils
 {
     /**
-     * Get add-ons for family pack
+     * Get add-ons for family pack.
      *
      * @param string $plan
-     * @param int $numberOfAdditionalChildren
+     * @param int    $numberOfAdditionalChildren
      *
      * @return array
      */
@@ -31,26 +33,25 @@ class FamilyPackUtils
         $addOns = [
             [
                 "inheritedFromId" => $plan . "_child_30",
-                "quantity" => 1
-            ]
+                "quantity" => 1,
+            ],
         ];
 
         if ($numberOfAdditionalChildren > 1) {
             $addOns[] = [
                 "inheritedFromId" => $plan . "_child_50",
-                "quantity" => $numberOfAdditionalChildren - 1
+                "quantity" => $numberOfAdditionalChildren - 1,
             ];
         }
 
         return $addOns;
     }
 
-
     /**
-     * Get add-ons for family pack as line-items for initial transaction on plans with trial
+     * Get add-ons for family pack as line-items for initial transaction on plans with trial.
      *
      * @param string $planId
-     * @param int $numberOfAdditionalChildren
+     * @param int    $numberOfAdditionalChildren
      *
      * @return array
      */
@@ -70,8 +71,8 @@ class FamilyPackUtils
                 "name" => $addOnChild30->name,
                 "quantity" => 1,
                 "unitAmount" => $addOnChild30->getTrialPrice(),
-                "totalAmount" => $addOnChild30->getTrialPrice()
-            ]
+                "totalAmount" => $addOnChild30->getTrialPrice(),
+            ],
         ];
 
         if ($numberOfAdditionalChildren > 1) {
@@ -82,7 +83,7 @@ class FamilyPackUtils
                 "name" => $addOnChild50->name,
                 "quantity" => $quantity,
                 "unitAmount" => $addOnChild50->getTrialPrice(),
-                "totalAmount" => $quantity * $addOnChild50->getTrialPrice()
+                "totalAmount" => $quantity * $addOnChild50->getTrialPrice(),
             ];
         }
 

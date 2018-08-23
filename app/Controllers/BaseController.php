@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -16,11 +17,12 @@ use Laravel\Lumen\Routing\Controller;
 
 /**
  * Class BaseController
- * Add a few methods to all controllers
+ * Add a few methods to all controllers.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Controllers
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 abstract class BaseController extends Controller
@@ -30,16 +32,15 @@ abstract class BaseController extends Controller
     /** @var array The model map to handle cancerous models name */
     public $modelMap = ["Class" => "Class_"];
 
-
     /**
      * BaseController constructor
-     * Build model class
+     * Build model class.
      *
      * @throws Http400InvalidRequestException
      */
     public function __construct()
     {
-        $modelName = str_replace(["App\\Controllers\\", "Controller"], "", get_class($this));
+        $modelName = str_replace(["App\\Controllers\\", "Controller"], "", \get_class($this));
         $modelClass = $this->resolveModelClass($modelName, false);
 
         if ($modelClass !== false) {
@@ -47,19 +48,19 @@ abstract class BaseController extends Controller
         }
     }
 
-
     /**
      * @param string $name the model name
-     * @param bool $fail if true, raise and exception
+     * @param bool   $fail if true, raise and exception
+     *
+     * @throws Http400InvalidRequestException
      *
      * @return BaseModel|bool
-     * @throws Http400InvalidRequestException
      */
     protected function resolveModelClass($name, $fail = true)
     {
         $potentialModel = Str::studly(Str::singular($name));
 
-        if (in_array($potentialModel, array_keys($this->modelMap))) {
+        if (\in_array($potentialModel, array_keys($this->modelMap), true)) {
             $potentialModel = $this->modelMap[$potentialModel];
         }
 
@@ -68,13 +69,12 @@ abstract class BaseController extends Controller
 
         if (!class_exists($potentialModelClass) && $fail) {
             throw new Http400InvalidRequestException("$potentialModelClass does not exist"); // @codeCoverageIgnore
-        } else if (!class_exists($potentialModelClass) && !$fail) {
+        } elseif (!class_exists($potentialModelClass) && !$fail) {
             return false;
         } else {
             return $potentialModelClass;
         }
     }
-
 
     /**
      * Order a collection of models by their order key if it exists. If not, just return the collection.
@@ -89,7 +89,7 @@ abstract class BaseController extends Controller
             $collection = $collection->sortBy(function ($model) {
                 return $model->order;
             })->values();
-        } else if (isset($collection->first()->pivot->order)) {
+        } elseif (isset($collection->first()->pivot->order)) {
             $collection = $collection->sortBy(function ($model) {
                 return $model->pivot->order;
             })->values();
@@ -98,21 +98,22 @@ abstract class BaseController extends Controller
         return $collection;
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | Generic actions
     |--------------------------------------------------------------------------
     */
+
     /**
-     * Generic paginated index method
+     * Generic paginated index method.
      *
      * @param Request $request
-     * @param int $page
-     * @param int $perPage
+     * @param int     $page
+     * @param int     $perPage
+     *
+     * @throws Http401UnauthorizedException
      *
      * @return JsonResponse
-     * @throws Http401UnauthorizedException
      */
     public function index(Request $request, int $page = 1, int $perPage = 100): JsonResponse
     {
@@ -130,16 +131,16 @@ abstract class BaseController extends Controller
         );
     }
 
-
     /**
-     * Generic get action
+     * Generic get action.
      *
-     * @param Request $request
-     * @param string|int $key the field or the id
-     * @param null $value if set, the field value to search
+     * @param Request    $request
+     * @param string|int $key     the field or the id
+     * @param null       $value   if set, the field value to search
+     *
+     * @throws Http401UnauthorizedException
      *
      * @return JsonResponse
-     * @throws Http401UnauthorizedException
      */
     public function get(Request $request, $key, $value = null): JsonResponse
     {
@@ -157,16 +158,16 @@ abstract class BaseController extends Controller
         return response()->json($model);
     }
 
-
     /**
-     * Generic add action
+     * Generic add action.
      *
      * @param Request $request
      *
-     * @return JsonResponse
      * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     *
+     * @return JsonResponse
      */
     public function add(Request $request): JsonResponse
     {
@@ -181,15 +182,15 @@ abstract class BaseController extends Controller
         return response()->json($model);
     }
 
-
     /**
-     * Generic edit action
+     * Generic edit action.
      *
      * @param Request $request
-     * @param int $id
+     * @param int     $id
+     *
+     * @throws Http401UnauthorizedException
      *
      * @return JsonResponse
-     * @throws Http401UnauthorizedException
      */
     public function edit(Request $request, int $id): JsonResponse
     {
@@ -205,16 +206,16 @@ abstract class BaseController extends Controller
         return response()->json($model);
     }
 
-
     /**
-     * Generic delete action
+     * Generic delete action.
      *
      * @param Request $request
-     * @param int $id
+     * @param int     $id
      *
-     * @return JsonResponse
      * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException
+     *
+     * @return JsonResponse
      */
     public function delete(Request $request, int $id): JsonResponse
     {
@@ -229,20 +230,20 @@ abstract class BaseController extends Controller
 
         return response()->json([
             "success" => true,
-            "message" => ucfirst(str_singular($this->modelClass::getTableName())) . " id $id was successfully deleted."
+            "message" => ucfirst(str_singular($this->modelClass::getTableName())) . " id $id was successfully deleted.",
         ]);
     }
 
-
     /**
-     * Generic search action
+     * Generic search action.
      *
      * @param Request $request
-     * @param int $page
-     * @param int $perPage
+     * @param int     $page
+     * @param int     $perPage
+     *
+     * @throws Http400InvalidRequestException
      *
      * @return JsonResponse
-     * @throws Http400InvalidRequestException
      */
     public function search(Request $request, $page = 1, $perPage = 100): JsonResponse
     {
@@ -259,21 +260,21 @@ abstract class BaseController extends Controller
 
         $order = array_merge([
             "column" => "id",
-            "dir" => "asc"
+            "dir" => "asc",
         ], $request->input("order", []));
 
         $conditions = [];
         $having = [];
 
         // Check if order dir is valid
-        if (!in_array($order["dir"], ["asc", "desc"])) {
+        if (!\in_array($order["dir"], ["asc", "desc"], true)) {
             throw new Http400InvalidRequestException("order allowed values: ['asc', 'desc']");
         }
 
         // Convert request form data to valid eloquent conditions
         foreach ($inputs as $column => $value) {
             $operator = "=";
-            if (strstr($value, "%") !== false) {
+            if (mb_strstr($value, "%") !== false) {
                 $operator = "LIKE";
             }
             $conditions[] = [$column, $operator, $value];
@@ -282,7 +283,7 @@ abstract class BaseController extends Controller
         foreach ($request->input("having", []) as $relation => $relationConditions) {
             foreach ($relationConditions as $column => $value) {
                 $operator = "=";
-                if (strstr($value, "%") !== false) {
+                if (mb_strstr($value, "%") !== false) {
                     $operator = "LIKE";
                 }
                 $having[$relation][] = [$column, $operator, $value];
@@ -311,48 +312,47 @@ abstract class BaseController extends Controller
             "perPage" => $perPage,
             "page" => $page,
             "count" => $count,
-            "data" => $data
+            "data" => $data,
         ]);
     }
 
-
     /**
-     * Get the models which satisfy a given relation
+     * Get the models which satisfy a given relation.
      *
      * @param Request $request
-     * @param string $what the linked model
-     * @param int $id the linked model id
-     * @param int $page the query page
-     * @param int $perPage the query per page
+     * @param string  $what    the linked model
+     * @param int     $id      the linked model id
+     * @param int     $page    the query page
+     * @param int     $perPage the query per page
      *
-     * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
+     *
+     * @return JsonResponse
      */
     public function by(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
     {
         return response()->json($this->getByQuery($request, $what, $id, $page, $perPage));
     }
 
-
     /**
-     * Handle foreign models queries
+     * Handle foreign models queries.
      *
      * @param Request $request
-     * @param string $what
-     * @param int $id
-     * @param int $page
-     * @param int $perPage
+     * @param string  $what
+     * @param int     $id
+     * @param int     $page
+     * @param int     $perPage
      *
-     * @return Collection
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
+     *
+     * @return Collection
      */
     protected function getByQuery(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
     {
         $modelClass = $this->resolveModelClass($what);
         $ucName = ucfirst($what);
-
 
         /** @var BaseModel $model */
         $model = $modelClass::where("id", $id)->firstOrFail();
@@ -375,36 +375,36 @@ abstract class BaseController extends Controller
         );
     }
 
-
     /**
-     * Get the models ids which satisfy a given relation
+     * Get the models ids which satisfy a given relation.
      *
      * @param Request $request
-     * @param string $what the linked model
-     * @param int $id the linked model id
-     * @param int $page the query page
-     * @param int $perPage the query per page
+     * @param string  $what    the linked model
+     * @param int     $id      the linked model id
+     * @param int     $page    the query page
+     * @param int     $perPage the query per page
      *
-     * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
+     *
+     * @return JsonResponse
      */
     public function ids(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
     {
         return response()->json($this->getByQuery($request, $what, $id, $page, $perPage)->pluck("id"));
     }
 
-
     /**
-     * Get the user according to a optional request key and its permission
+     * Get the user according to a optional request key and its permission.
      *
-     * @param Request $request the request
-     * @param string $minimumScope the minimum permission accepted
-     * @param string $key the key in request corresponding the user id
+     * @param Request $request      the request
+     * @param string  $minimumScope the minimum permission accepted
+     * @param string  $key          the key in request corresponding the user id
      *
-     * @return User
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
+     *
+     * @return User
      */
     protected function getUserByRequestOrUnauthorized(Request $request, $minimumScope = "admin", $key = "user_id")
     {
@@ -413,12 +413,12 @@ abstract class BaseController extends Controller
         $userId = $request->input($key);
 
         // Check the the user key content is an integer
-        if ($userId !== null && !is_int($userId)) {
+        if ($userId !== null && !\is_int($userId)) {
             throw new Http400InvalidRequestException("`$key` has to be a positive integer");
         }
 
         // Check authorization
-        if ($user === null || ($userId !== null && $user->id != $userId && !$user->tokenCan($minimumScope))) {
+        if ($user === null || ($userId !== null && $user->id !== $userId && !$user->tokenCan($minimumScope))) {
             throw new Http401UnauthorizedException();
         }
 

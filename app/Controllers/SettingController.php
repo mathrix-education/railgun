@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http404ModelNotFoundException;
@@ -10,23 +11,25 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 /**
- * Class SettingController
+ * Class SettingController.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Controllers
- * @since 4.0.3
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     4.0.3
+ *
  * @copyright Mathrix Education SA
  */
 class SettingController extends BaseController
 {
     /**
-     * @apiVersion 4.0.3
-     * @api {get} /sections/all
-     * @apiGroup Settings
-     * @apiName SettingsAll
+     * @apiVersion     4.0.3
+     *
+     * @api            {get} /sections/all
+     * @apiGroup       Settings
+     * @apiName        SettingsAll
      * @apiDescription Get all settings (hide secret settings for non-admin users)
-     * @apiPermission public for visible settings
-     * @apiUse SettingArray
+     * @apiPermission  public for visible settings
+     * @apiUse         SettingArray
      *
      * @param Request $request
      *
@@ -46,23 +49,24 @@ class SettingController extends BaseController
         return new JsonResponse($settings);
     }
 
-
     /**
-     * @apiVersion 4.0.3
-     * @api {get} /settings/{key} Read
-     * @apiGroup Settings
-     * @apiName SettingRead
+     * @apiVersion     4.0.3
+     *
+     * @api            {get} /settings/{key} Read
+     * @apiGroup       Settings
+     * @apiName        SettingRead
      * @apiDescription Read an setting by key
-     * @apiPermission public for visible settings
+     * @apiPermission  public for visible settings
      * @apiParam {string} key The setting key
-     * @apiUse SettingModel
-     * @apiUse Http404ModelNotFound
+     * @apiUse         SettingModel
+     * @apiUse         Http404ModelNotFound
      *
      * @param Request $request
-     * @param string $key
+     * @param string  $key
+     *
+     * @throws Http404ModelNotFoundException
      *
      * @return JsonResponse
-     * @throws Http404ModelNotFoundException
      */
     public function read(Request $request, string $key): JsonResponse
     {
@@ -81,26 +85,27 @@ class SettingController extends BaseController
         return new JsonResponse($setting);
     }
 
-
     /**
-     * @apiVersion 4.0.3
-     * @api {post} /settings Write
-     * @apiGroup Settings
-     * @apiName SettingWrite
+     * @apiVersion     4.0.3
+     *
+     * @api            {post} /settings Write
+     * @apiGroup       Settings
+     * @apiName        SettingWrite
      * @apiDescription Write a setting
-     * @apiPermission admin
-     * @apiUse Bearer
-     * @apiUse SettingRequest
-     * @apiUse SettingModel
-     * @apiUse Http401Unauthorized
-     * @apiUse Http422ModelValidation
-     * @apiUse Http422ModelSave
+     * @apiPermission  admin
+     * @apiUse         Bearer
+     * @apiUse         SettingRequest
+     * @apiUse         SettingModel
+     * @apiUse         Http401Unauthorized
+     * @apiUse         Http422ModelValidation
+     * @apiUse         Http422ModelSave
      *
      * @param Request $request
      *
-     * @return JsonResponse
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     *
+     * @return JsonResponse
      */
     public function write(Request $request)
     {
@@ -123,24 +128,25 @@ class SettingController extends BaseController
         return new JsonResponse($setting);
     }
 
-
     /**
-     * @apiVersion 4.0.3
-     * @api {delete} /settings/{id} Forgot
-     * @apiGroup Settings
-     * @apiName SettingForgot
+     * @apiVersion     4.0.3
+     *
+     * @api            {delete} /settings/{id} Forgot
+     * @apiGroup       Settings
+     * @apiName        SettingForgot
      * @apiDescription Forgot a setting
-     * @apiUse Bearer
-     * @apiPermission moderator
+     * @apiUse         Bearer
+     * @apiPermission  moderator
      * @apiParam {int} id The setting id
-     * @apiUse Http401Unauthorized
-     * @apiUse Http404ModelNotFound
+     * @apiUse         Http401Unauthorized
+     * @apiUse         Http404ModelNotFound
      *
      * @param Request $request
-     * @param string $key
+     * @param string  $key
+     *
+     * @throws Http422ModelSaveException
      *
      * @return JsonResponse
-     * @throws Http422ModelSaveException
      */
     public function forgot(Request $request, string $key)
     {
@@ -153,7 +159,7 @@ class SettingController extends BaseController
         $deleted = Setting::forgot($key);
 
         return new JsonResponse([
-            "status" => $deleted ? "success" : "error"
+            "status" => $deleted ? "success" : "error",
         ]);
     }
 }

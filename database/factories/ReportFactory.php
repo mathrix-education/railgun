@@ -4,7 +4,7 @@ use App\Models\Module;
 use App\Models\Report;
 use Faker\Generator;
 
-/**
+/*
  * QuoteFactory
  *
  * @author Mathrix Team
@@ -17,6 +17,6 @@ $factory->define(Report::class, function (Generator $faker) {
     return [
         "content" => $faker->sentence(10),
         "status" => $faker->randomElement(Report::STATUSES),
-        "module_id" => $module->id
+        "module_id" => $module->id,
     ];
 });

@@ -1,14 +1,16 @@
 <?php
+
 namespace App\Observers;
 
 use App\Models\Product;
 
 /**
- * Class ProductObserver
+ * Class ProductObserver.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Observers
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
  * @since
+ *
  * @copyright Mathrix Education SA
  */
 class ProductObserver extends BaseObserver
@@ -37,14 +39,12 @@ class ProductObserver extends BaseObserver
             $product->children()->sync($toSync);
         }
 
-
         if (isset($product->link)) {
             unset($product->link);
         }
 
         return true;
     }
-
 
     /**
      * @param Product $product
@@ -59,5 +59,4 @@ class ProductObserver extends BaseObserver
 
         return true;
     }
-
 }

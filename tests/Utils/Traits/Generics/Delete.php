@@ -1,22 +1,22 @@
 <?php
+
 namespace Tests\Utils\Traits\Generics;
 
 /**
- * Trait Delete
+ * Trait Delete.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @since 1.0.0
- * @package Tests\GenericTests
  */
 trait Delete
 {
     /** @var int model id */
     protected $deleteModelId;
 
-
     /**
-     * Generic delete; expect HTTP 200 and data present in database
+     * Generic delete; expect HTTP 200 and data present in database.
      *
      * @throws \Exception
      */
@@ -29,9 +29,8 @@ trait Delete
         $this->assertNotInDatabase($this->modelPlural, ["id" => $this->deleteModelId]);
     }
 
-
     /**
-     * Generic delete call
+     * Generic delete call.
      *
      * @throws \Exception
      */
@@ -46,9 +45,8 @@ trait Delete
         $this->call("delete", "/" . $this->modelPlural . "/" . $this->deleteModelId);
     }
 
-
     /**
-     * Generic delete; expect HTTP 200 and data present in database
+     * Generic delete; expect HTTP 200 and data present in database.
      *
      * @throws \Exception
      */
@@ -63,9 +61,8 @@ trait Delete
         $this->assertInDatabase($this->modelPlural, ["id" => $this->deleteModelId, "deleted_at" => $deletedAt]);
     }
 
-
     /**
-     * Generic delete; expect HTTP 200 and data present in database
+     * Generic delete; expect HTTP 200 and data present in database.
      *
      * @throws \Exception
      */

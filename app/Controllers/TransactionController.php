@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Events\TransactionRefundSuccessEvent;
@@ -13,24 +14,25 @@ use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller;
 
 /**
- * Class TransactionController
+ * Class TransactionController.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Controllers\Braintree
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
  * @since
+ *
  * @copyright Mathrix Education SA
  */
 class TransactionController extends Controller
 {
     /**
-     * Find a transaction by its id
+     * Find a transaction by its id.
      *
      * @param Request $request
+     * @param         $transactionId
      *
-     * @param $transactionId
+     * @throws Http401UnauthorizedException
      *
      * @return JsonResponse
-     * @throws Http401UnauthorizedException
      */
     public function find(Request $request, string $transactionId)
     {
@@ -47,16 +49,16 @@ class TransactionController extends Controller
         );
     }
 
-
     /**
-     * Attempt to void a transaction by its id
+     * Attempt to void a transaction by its id.
      *
      * @param Request $request
-     * @param string $transactionId
+     * @param string  $transactionId
      *
-     * @return JsonResponse
      * @throws Http401UnauthorizedException
      * @throws Http400InvalidRequestException
+     *
+     * @return JsonResponse
      */
     public function void(Request $request, string $transactionId)
     {
@@ -70,11 +72,11 @@ class TransactionController extends Controller
             "authorizing",
             "authorized",
             "submitted_for_settlement",
-            "settlement_pending"
+            "settlement_pending",
         ];
         $transaction = \Braintree\Transaction::find($transactionId);
 
-        if (in_array($transaction->status, $voidableStatuses)) {
+        if (\in_array($transaction->status, $voidableStatuses, true)) {
             $result = \Braintree\Transaction::void($transactionId);
 
             if ($result->success) {
@@ -83,25 +85,23 @@ class TransactionController extends Controller
                 return new JsonResponse(
                     Formatter::cast($result->transaction->jsonSerialize())
                 );
-            } else {
-                throw new Http400InvalidRequestException("Unable to void transaction `id` $transactionId");
             }
-        } else {
-            throw new Http400InvalidRequestException("Too late to void transaction `id` $transactionId;"
-                . " refund instead");
+            throw new Http400InvalidRequestException("Unable to void transaction `id` $transactionId");
         }
+        throw new Http400InvalidRequestException("Too late to void transaction `id` $transactionId;"
+            . " refund instead");
     }
 
-
     /**
-     * Refund a transaction by its id
+     * Refund a transaction by its id.
      *
      * @param Request $request
-     * @param string $transactionId
+     * @param string  $transactionId
      *
-     * @return JsonResponse
      * @throws Http401UnauthorizedException
      * @throws Http400InvalidRequestException
+     *
+     * @return JsonResponse
      */
     public function refund(Request $request, string $transactionId)
     {
@@ -116,10 +116,10 @@ class TransactionController extends Controller
             "authorizing",
             "authorized",
             "submitted_for_settlement",
-            "settlement_pending"
+            "settlement_pending",
         ];
         $transaction = \Braintree\Transaction::find($transactionId);
-        if (in_array($transaction->status, $voidableStatuses)) {
+        if (\in_array($transaction->status, $voidableStatuses, true)) {
             return $this->void($request, $transactionId);
         }
 
@@ -131,20 +131,19 @@ class TransactionController extends Controller
             return new JsonResponse(
                 Formatter::cast($result->transaction->jsonSerialize())
             );
-        } else {
-            throw new Http400InvalidRequestException($result->message);
         }
+        throw new Http400InvalidRequestException($result->message);
     }
 
-
     /**
-     * Get transactions linked with a subscription
+     * Get transactions linked with a subscription.
      *
      * @param Request $request
-     * @param string $subscriptionId
+     * @param string  $subscriptionId
+     *
+     * @throws Http401UnauthorizedException
      *
      * @return JsonResponse
-     * @throws Http401UnauthorizedException
      */
     public function bySubscription(Request $request, string $subscriptionId)
     {
@@ -161,16 +160,16 @@ class TransactionController extends Controller
         return new JsonResponse(Formatter::cast($transactions));
     }
 
-
     /**
-     * Get transactions linked with an user
+     * Get transactions linked with an user.
      *
      * @param Request $request
-     * @param string $userId
+     * @param string  $userId
      *
-     * @return JsonResponse
      * @throws Http401UnauthorizedException
      * @throws Http400InvalidRequestException
+     *
+     * @return JsonResponse
      */
     public function byUser(Request $request, string $userId)
     {
@@ -185,7 +184,7 @@ class TransactionController extends Controller
         $customer = User::findOrFail($userId);
         $customer->requireBraintreeCustomer();
         $transactionResults = \Braintree\Transaction::search([
-            Braintree_TransactionSearch::customerId()->is($customer->braintree_id)
+            Braintree_TransactionSearch::customerId()->is($customer->braintree_id),
         ]);
         $transactions = new Collection();
 

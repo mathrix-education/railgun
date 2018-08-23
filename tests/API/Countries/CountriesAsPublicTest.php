@@ -1,21 +1,22 @@
 <?php
+
 namespace Tests\API\Countries;
 
 use Tests\API\ScopeTestCase;
 
 /**
  * Class CountriesAsPublicTest
- * Test countries as public (non-logged user)
+ * Test countries as public (non-logged user).
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ *
  * @version 1.0.0
- * @package Tests\Countries
  */
 class CountriesAsPublicTest extends ScopeTestCase
 {
     /**
-     * GET /countries
+     * GET /countries.
      *
      * @throws \Exception
      */
@@ -24,9 +25,8 @@ class CountriesAsPublicTest extends ScopeTestCase
         $this->genericIndexSuccess();
     }
 
-
     /**
-     * GET /countries/{id}
+     * GET /countries/{id}.
      *
      * @throws \Exception
      */
@@ -35,9 +35,8 @@ class CountriesAsPublicTest extends ScopeTestCase
         $this->genericGetSuccess();
     }
 
-
     /**
-     * POST /countries -> HTTP 401 unauthorized
+     * POST /countries -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -46,9 +45,8 @@ class CountriesAsPublicTest extends ScopeTestCase
         $this->genericAddUnauthorized();
     }
 
-
     /**
-     * PATCH /countries/{id} -> HTTP 401 unauthorized
+     * PATCH /countries/{id} -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -57,9 +55,8 @@ class CountriesAsPublicTest extends ScopeTestCase
         $this->genericEditUnauthorized();
     }
 
-
     /**
-     * DELETE /countries/{id} -> HTTP 401 unauthorized
+     * DELETE /countries/{id} -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */

@@ -5,18 +5,18 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
 /**
- * Class UpdateMetasTable
+ * Class UpdateMetasTable.
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
  * @since 1.0.1
+ *
  * @copyright Mathrix Education SA
  */
 class UpdateMetasTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -30,8 +30,8 @@ class UpdateMetasTable extends Migration
         $metas = Meta::all();
 
         foreach ($metas as $meta) {
-            $meta->to_revise = $meta->status == "to_revise";
-            $meta->completed = $meta->status == "completed";
+            $meta->to_revise = $meta->status === "to_revise";
+            $meta->completed = $meta->status === "completed";
         }
 
         Schema::table("metas", function (Blueprint $table) {
@@ -39,11 +39,8 @@ class UpdateMetasTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
@@ -56,9 +53,9 @@ class UpdateMetasTable extends Migration
         foreach ($metas as $meta) {
             if ($meta->to_revise) {
                 $meta->status = "to_revise";
-            } else if ($meta->completed) {
+            } elseif ($meta->completed) {
                 $meta->status = "completed";
-            };
+            }
         }
 
         Schema::table("metas", function (Blueprint $table) {

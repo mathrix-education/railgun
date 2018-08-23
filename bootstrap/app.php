@@ -7,7 +7,6 @@ require_once __DIR__ . "/../vendor/autoload.php";
 try {
     (new Dotenv\Dotenv(__DIR__ . "/../"))->load();
 } catch (Dotenv\Exception\InvalidPathException $e) {
-    //
 }
 
 /*
@@ -24,7 +23,6 @@ try {
 $app = new Laravel\Lumen\Application(realpath(__DIR__ . "/../"));
 $app->withFacades();
 $app->withEloquent();
-
 
 /*
 |--------------------------------------------------------------------------
@@ -59,7 +57,7 @@ $app->singleton(
     Illuminate\Routing\ResponseFactory::class
 );
 
-/**
+/*
  * Fix the sitemap issue
  *
  * @see https://stackoverflow.com/questions/37945911/lumen-cache-store-is-not-instantiable
@@ -69,9 +67,7 @@ $app->singleton(
     Illuminate\Contracts\Cache\Repository::class
 );
 
-$app->alias("mailer",\Illuminate\Contracts\Mail\Mailer::class);
-
-
+$app->alias("mailer", \Illuminate\Contracts\Mail\Mailer::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -116,7 +112,6 @@ $app->routeMiddleware([
     "auth" => App\Middleware\Authenticate::class,
 ]);
 
-
 /*
 |--------------------------------------------------------------------------
 | Register Service Providers
@@ -138,7 +133,6 @@ if ($app->environment("local", "dev")) {
 
 $app->register(App\Providers\AppServiceProvider::class);
 
-
 if ($app->environment("stage", "master")) {
     $app->register(Sentry\SentryLaravel\SentryLumenServiceProvider::class);
 }
@@ -156,7 +150,7 @@ if ($app->environment("stage", "master")) {
 Dusterio\LumenPassport\LumenPassport::routes($app->router);
 
 $app->router->group(["namespace" => "App\\Controllers"], function ($router) {
-    /** @var Laravel\Lumen\Routing\Router $router */
+    /* @var Laravel\Lumen\Routing\Router $router */
     $router->get("/", function () {
         $build = basename(dirname(__DIR__, 1));
 
@@ -167,7 +161,7 @@ $app->router->group(["namespace" => "App\\Controllers"], function ($router) {
 
         return response()->json([
             "message" => "Welcome to Mathrix API version " . env("APP_VERSION") . " by Mathieu Bour",
-            "build" => $build
+            "build" => $build,
         ]);
     });
 

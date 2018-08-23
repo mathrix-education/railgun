@@ -1,37 +1,38 @@
 <?php
+
 namespace App\Services\Braintree\Models;
 
-use Braintree\Base;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 /**
- * Class AddOn
+ * Class AddOn.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Services\Braintree\Models
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  * @mixin \Braintree\AddOn
  *
- * @property-read float $amount
- * @property-read int|null $currentBillingCycle
- * @property-read string $description
- * @property-read string $id
- * @property-read string $kind
- * @property-read string $name
- * @property-read bool $neverExpires
- * @property-read int|null $numberOfBillingCycles
- * @property-read int|null $quantity
- * @property-read Carbon $createdAt
- * @property-read Carbon $updatedAt
- * ----
- * @property-read bool $hasTrial
- * @property-read int $billingFrequency
- * @property-read float $pricePerMonth
- * @property-read float $trialPrice
+ * @property float    $amount
+ * @property int|null $currentBillingCycle
+ * @property string   $description
+ * @property string   $id
+ * @property string   $kind
+ * @property string   $name
+ * @property bool     $neverExpires
+ * @property int|null $numberOfBillingCycles
+ * @property int|null $quantity
+ * @property Carbon   $createdAt
+ * @property Carbon   $updatedAt
+ *                                           ----
+ * @property bool     $hasTrial
+ * @property int      $billingFrequency
+ * @property float    $pricePerMonth
+ * @property float    $trialPrice
  */
 class AddOn extends BraintreeModel
 {
@@ -39,12 +40,12 @@ class AddOn extends BraintreeModel
     {
         parent::__construct($addOn);
 
-        $this->amount = floatval($addOn->amount);
+        $this->amount = (float) ($addOn->amount);
         $this->hasTrial = Str::contains($this->id, ["v4_biannually", "v4_annually"]);
 
         if (Str::contains($this->id, ["v4_biannually", "v4_annually"])) {
             $this->billingFrequency = 12;
-        } else if (Str::contains($this->id, "v4_monthly")) {
+        } elseif (Str::contains($this->id, "v4_monthly")) {
             $this->billingFrequency = 1;
         }
 
@@ -55,9 +56,8 @@ class AddOn extends BraintreeModel
         $this->trialPrice = $this->getTrialPrice();
     }
 
-
     /**
-     * Get the plan trial end date
+     * Get the plan trial end date.
      *
      * @return Carbon|null The plan trial en date, null if the plan has no trial
      */
@@ -71,7 +71,7 @@ class AddOn extends BraintreeModel
 
         if ($nextThirtyFirstJuly->isPast()) {
             $nextThirtyFirstJuly->addYear();
-        } else if ((new Carbon("1st May"))->isPast()) {
+        } elseif ((new Carbon("1st May"))->isPast()) {
             $nextThirtyFirstJuly->addYear();
         }
 
@@ -82,16 +82,15 @@ class AddOn extends BraintreeModel
         return $nextThirtyFirstJuly;
     }
 
-
     /**
-     * Get the trial price in euros
+     * Get the trial price in euros.
      *
      * @return float
      */
     public function getTrialPrice()
     {
         if (!$this->hasTrial) {
-            return null;
+            return;
         }
 
         $now = Carbon::now();
@@ -103,7 +102,6 @@ class AddOn extends BraintreeModel
         return round($diffInMonths * $this->pricePerMonth + $diffInDays * ($this->pricePerMonth / 30), 2);
     }
 
-
     /**
      * @return Collection
      */
@@ -114,7 +112,7 @@ class AddOn extends BraintreeModel
             $collection = new Collection();
 
             foreach ($addOns as $addOn) {
-                $collection->push(new AddOn($addOn));
+                $collection->push(new self($addOn));
             }
 
             // Don't forget to sort the values
@@ -122,11 +120,10 @@ class AddOn extends BraintreeModel
         });
     }
 
-
     /**
-     * The findOr function, must be reimplemented
+     * The findOr function, must be reimplemented.
      *
-     * @param string $id
+     * @param string   $id
      * @param callable $callback
      *
      * @return mixed

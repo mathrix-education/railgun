@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services\Braintree\Models;
 
 use Carbon\Carbon;
@@ -10,35 +11,36 @@ use Illuminate\Support\Str;
  * Class Plan
  * Implements the Braintree Plan object and add a few more details.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Services\Braintree
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  * @mixin \Braintree\Plan
  *
- * @property-read int $billingDayOfMonth
- * @property-read int $billingFrequency
- * @property-read string $currencyIsoCode
- * @property-read string $description
- * @property-read string $id
- * @property-read string $name
- * @property-read float $price
- * @property-read string $trialDuration
- * @property-read string $trialDurationUnit
- * @property-read bool $trialPeriod
- * @property-read Carbon createdAt
- * @property-read Carbon updatedAt
+ * @property int    $billingDayOfMonth
+ * @property int    $billingFrequency
+ * @property string $currencyIsoCode
+ * @property string $description
+ * @property string $id
+ * @property string $name
+ * @property float  $price
+ * @property string $trialDuration
+ * @property string $trialDurationUnit
+ * @property bool   $trialPeriod
+ * @property Carbon                createdAt
+ * @property Carbon                updatedAt
  * ----
- * @property-read string $pricingDetails
- * @property-read int $pricePerMonth
- * @property-read int $discount
- * @property-read bool $freeHolidays
- * @property-read float|null $trialPrice
- * @property-read Carbon|null $trialStartDate
- * @property-read Carbon|null $trialEndDate
- * ----
- * @property-read AddOn[] $addOns
- * @property-read \Braintree\Discount[] $discounts
+ * @property string                $pricingDetails
+ * @property int                   $pricePerMonth
+ * @property int                   $discount
+ * @property bool                  $freeHolidays
+ * @property float|null            $trialPrice
+ * @property Carbon|null           $trialStartDate
+ * @property Carbon|null           $trialEndDate
+ *                                                 ----
+ * @property AddOn[]               $addOns
+ * @property \Braintree\Discount[] $discounts
  */
 class Plan extends BraintreeModel
 {
@@ -46,7 +48,7 @@ class Plan extends BraintreeModel
     {
         parent::__construct($plan);
 
-        $this->price = floatval($this->price);
+        $this->price = (float) ($this->price);
         $this->trialPeriod = Str::contains($this->id, "annually");
 
         $this->freeHolidays = $this->trialPeriod;
@@ -93,9 +95,8 @@ class Plan extends BraintreeModel
         $this->addOns = $addOns;
     }
 
-
     /**
-     * Get the plan trial end date
+     * Get the plan trial end date.
      *
      * @return Carbon|null The plan trial en date, null if the plan has no trial
      */
@@ -105,7 +106,7 @@ class Plan extends BraintreeModel
 
         if ($nextThirtyFirstJuly->isPast()) {
             $nextThirtyFirstJuly->addYear();
-        } else if ((new Carbon("1st May"))->isPast()) {
+        } elseif ((new Carbon("1st May"))->isPast()) {
             $nextThirtyFirstJuly->addYear();
         }
 
@@ -122,9 +123,8 @@ class Plan extends BraintreeModel
         return $nextThirtyFirstJuly;
     }
 
-
     /**
-     * Get the trial price in euros
+     * Get the trial price in euros.
      *
      * @return float
      */
@@ -139,11 +139,10 @@ class Plan extends BraintreeModel
         return round($diffInMonths * $this->pricePerMonth + $diffInDays * ($this->pricePerMonth / 30), 2);
     }
 
-
     /**
-     * Convert a float to a well-formatted price
+     * Convert a float to a well-formatted price.
      *
-     * @param float $price
+     * @param float  $price
      * @param string $currencySymbol
      *
      * @return string
@@ -152,12 +151,12 @@ class Plan extends BraintreeModel
     {
         $price *= 100;
         $priceStr = "$price";
-        return substr($priceStr, 0, -2) . "." . substr($priceStr, -2) . " $currencySymbol";
+
+        return mb_substr($priceStr, 0, -2) . "." . mb_substr($priceStr, -2) . " $currencySymbol";
     }
 
-
     /**
-     * Get all plans
+     * Get all plans.
      *
      * @return Collection
      */
@@ -168,7 +167,7 @@ class Plan extends BraintreeModel
             $collection = new Collection();
 
             foreach ($plans as $plan) {
-                $collection->push(new Plan($plan));
+                $collection->push(new self($plan));
             }
 
             // Don't forget to sort the values
@@ -176,12 +175,10 @@ class Plan extends BraintreeModel
         });
     }
 
-
     /**
-     * Find a plan by its id or execute a callback
+     * Find a plan by its id or execute a callback.
      *
-     * @param string $id
-     *
+     * @param string   $id
      * @param callable $callback
      *
      * @return Plan

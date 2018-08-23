@@ -1,22 +1,22 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 /**
- * Class CreateDiscountProductTable
+ * Class CreateDiscountProductTable.
  *
  * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
  * @since 4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class CreateDiscountProductTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -32,11 +32,8 @@ class CreateDiscountProductTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
