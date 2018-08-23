@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @since 1.0.0
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ * ----
  * @property int $id
  * @property bool $premium
  * @property bool $visible
@@ -43,6 +44,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Module whereOptions($value)
  * @method static Builder|Module whereQuestions($value)
  * @method static Builder|Module whereSolutions($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
+ * @mixin \Eloquent
  */
 class Module extends BaseModel
 {

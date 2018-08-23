@@ -6,11 +6,15 @@ use App\Events\TransactionSuccessEvent;
 use App\Exceptions\Http400InvalidPlanException;
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http401UnauthorizedException;
+use App\Exceptions\Http422ModelSaveException;
+use App\Exceptions\Http422ModelValidationException;
+use App\Models\FamilyPack;
 use App\Models\User;
-use App\Services\Braintree\FamilyPack;
+use App\Services\Braintree\FamilyPackUtils;
 use App\Services\Braintree\Formatter;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Routing\Controller;
 use Zend\Diactoros\Response\JsonResponse;
 
@@ -143,8 +147,10 @@ class SubscriptionController extends Controller
      * @param Request $request
      *
      * @return JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
      * @throws Http400InvalidRequestException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
+     * @throws ValidationException
      */
     public function create(Request $request)
     {
@@ -201,7 +207,7 @@ class SubscriptionController extends Controller
 
             // We assume that everything is ok for family-pack
             $data["addOns"] = [
-                "add" => FamilyPack::getAddOns($plan, count($familyEmails))
+                "add" => FamilyPackUtils::getAddOns($plan, count($familyEmails))
             ];
         }
 
@@ -242,7 +248,7 @@ class SubscriptionController extends Controller
             if ($isFamilyPack) {
                 $initialSaleData["lineItems"] = array_merge(
                     $initialSaleData["lineItems"],
-                    FamilyPack::getAddOnsAsLineItemsForTrial($plan, count($familyEmails))
+                    FamilyPackUtils::getAddOnsAsLineItemsForTrial($plan, count($familyEmails))
                 );
 
                 $totalPrice = $trialPrice;
@@ -257,6 +263,18 @@ class SubscriptionController extends Controller
             $chargeResult = \Braintree\Transaction::sale($initialSaleData);
 
             if ($chargeResult->success) {
+                // Handle family pack membership grant
+                if ($isFamilyPack) {
+                    /** @var User $child */
+                    foreach ($family as $child) {
+                        $familyPack = new FamilyPack([
+                            "parent_id" => $user->id,
+                            "child_id" => $child->id
+                        ]);
+                        $familyPack->save();
+                    }
+                }
+
                 event(new TransactionSuccessEvent($chargeResult->transaction));
             } else {
                 throw new Http400InvalidRequestException($chargeResult->message);

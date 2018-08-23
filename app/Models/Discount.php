@@ -7,8 +7,13 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * App\Models\Discount
+ * Model Discount
  *
+ * @package App\Models
+ * @since 4.1.0
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
+ * ----
  * @property string $code
  * @property int $counter
  * @property int $id
@@ -23,6 +28,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Discount whereValue($value)
  * @method static Builder|Discount whereCounter($value)
  * @method static Builder|Discount whereExpireAt($value)
+ * @mixin \Eloquent
  */
 class Discount extends BaseModel
 {

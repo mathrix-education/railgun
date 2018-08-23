@@ -12,10 +12,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @since 4.0.1
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ * ----
  * @property int $id
  * @property int $price
  * @property int $refund
  * @property int $user_id
+ * @property int $product_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read User $user
@@ -23,10 +25,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Purchase wherePrice($value)
  * @method static Builder|Purchase whereRefund($value)
  * @method static Builder|Purchase whereUserId($value)
- * @method static Builder|Purchase wherePurchasableId($value)
- * @method static Builder|Purchase wherePurchasableType($value)
+ * @method static Builder|Purchase whereProductId($value)
  * @method static Builder|Purchase whereCreatedAt($value)
  * @method static Builder|Purchase whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class Purchase extends BaseModel
 {

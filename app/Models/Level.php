@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @since 1.0.0
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ * ----
  * @property int $id
  * @property int $level
  * @property int $objective
@@ -19,6 +20,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @method static Builder|Level whereLevel($value)
  * @method static Builder|Level whereObjective($value)
  * @method static Builder|Level whereYoutubeId($value)
+ * @mixin \Eloquent
  */
 class Level extends BaseModel
 {

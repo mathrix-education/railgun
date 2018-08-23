@@ -3,6 +3,7 @@ namespace App\Models;
 
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http401UnauthorizedException;
+use App\Models\Product;
 use App\Models\Traits\BraintreeCustomer;
 use App\Models\Traits\StripeCustomer;
 use Carbon\Carbon;
@@ -14,6 +15,8 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\Client;
@@ -52,8 +55,10 @@ use Laravel\Passport\Token;
  * @property-read Class_ $class_
  * @property-read Collection|Client[] $clients
  * @property-read Collection|Comment[] $comments
+ * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
  * @property-read Collection|Log[] $logs
  * @property-read Collection|Meta[] $meta
+ * @property-read Collection|Product[] $products
  * @property-read Collection|Purchase[] $purchases
  * @property-read Collection|Token[] $tokens
  * @property-read Collection|Vote[] $votes
@@ -75,6 +80,7 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereStripeId($value)
  * @method static Builder|User whereCreatedAt($value)
  * @method static Builder|User whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
@@ -286,6 +292,27 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
 
+    /**
+     * HasMany FamilyPack (as parent)
+     *
+     * @return HasMany
+     */
+    public function familyPacksParent()
+    {
+        return $this->hasMany(FamilyPack::class, "parent_id");
+    }
+
+
+    /**
+     * HasMany FamilyPack (as child)
+     *
+     * @return HasMany
+     */
+    public function familyPackChild()
+    {
+        return $this->hasMany(FamilyPack::class, "child_id");
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Attributes
@@ -324,8 +351,9 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function getPremiumAttribute()
     {
-        return $this->hasStripeSubscription(self::STRIPE_PLANS) ||
-            $this->hasBraintreeSubscription(self::BRAINTREE_PLANS);
+        return $this->hasStripeSubscription(self::STRIPE_PLANS)
+            || $this->hasBraintreeSubscription(self::BRAINTREE_PLANS)
+            || $this->isChildOfAFamilyPack();
     }
 
 
@@ -355,5 +383,28 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         return $this->products()
             ->where("product_id", "=", $product->id)
             ->exists();
+    }
+
+
+    /**
+     * Check if the user is a child of a family pack (allow to grant premium membership)
+     *
+     * @return bool
+     */
+    public function isChildOfAFamilyPack(): bool
+    {
+        $familyPacks = $this->familyPackChild()->get();
+
+        if ($familyPacks->isEmpty()) {
+            return false;
+        } else {
+            /** @var FamilyPack $familyPack */
+            $familyPack = $familyPacks->first(); // User should have only one family pack linked
+            /** @var User $parent */
+            $parent = User::where("id", "=", $familyPack->parent_id)->firstOrFail();
+            $parent->append(["premium", "braintree"]);
+
+            return $parent->premium;
+        }
     }
 }

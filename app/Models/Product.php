@@ -12,8 +12,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  *
  * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
  * @package App\Models
- * @since
+ * @since 
  * @copyright Mathrix Education SA
+ * ----
  * @property int $id
  * @property string $name
  * @property string $slug
@@ -39,6 +40,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Product whereModuleId($value)
  * @method static Builder|Product whereCreatedAt($value)
  * @method static Builder|Product whereUpdatedAt($value)
+ * @property int|null $order
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Discount[] $discounts
+ * @property-read \App\Models\Module|null $module
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Product whereOrder($value)
+ * @mixin \Eloquent
  */
 class Product extends BaseModel
 {

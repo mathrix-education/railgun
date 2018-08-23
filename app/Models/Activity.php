@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @since 1.0.0
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ * ----
  * @property int $id
  * @property string $name
  * @property string $slug
@@ -37,6 +38,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Activity whereNameSeo($value)
  * @method static Builder|Activity whereType($value)
  * @method static Builder|Activity whereVisible($value)
+ * @mixin \Eloquent
  */
 class Activity extends BaseModel implements Commentable
 {

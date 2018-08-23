@@ -12,7 +12,7 @@ use App\Services\Braintree\Models\Plan;
  * @since 4.1.0
  * @copyright Mathrix Education SA
  */
-class FamilyPack
+class FamilyPackUtils
 {
     /**
      * Get add-ons for family pack

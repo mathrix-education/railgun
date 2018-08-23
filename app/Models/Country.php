@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @since 1.0.0
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
+ * ----
  * @property int $id
  * @property string $name
  * @property string $name_short
@@ -26,6 +27,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Country whereSlug($value)
  * @method static Builder|Country whereSlugShort($value)
  * @method static Builder|Country whereVisible($value)
+ * @mixin \Eloquent
  */
 class Country extends BaseModel
 {
