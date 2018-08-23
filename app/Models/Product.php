@@ -18,20 +18,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @copyright Mathrix Education SA
  * ----
  *
- * @property int                  $id
- * @property string               $name
- * @property string               $slug
- * @property string|null          $image
- * @property string|null          $type
- * @property string|null          $description
- * @property float|null           $price
- * @property bool                 $visible
- * @property int|null             $module_id
- * @property Carbon|null          $created_at
- * @property Carbon|null          $updated_at
- * @property array                $link
- * @property Collection|Product[] $children
- * @property Collection|Product[] $parents
+ * @property int                                                             $id
+ * @property string                                                          $name
+ * @property string                                                          $slug
+ * @property string|null                                                     $image
+ * @property string|null                                                     $type
+ * @property string|null                                                     $description
+ * @property float|null                                                      $price
+ * @property bool                                                            $visible
+ * @property int|null                                                        $module_id
+ * @property Carbon|null                                                     $created_at
+ * @property Carbon|null                                                     $updated_at
+ * @property array                                                           $link
+ * @property Collection|Product[]                                            $children
+ * @property Collection|Product[]                                            $parents
  *
  * @method static Builder|Product whereId($value)
  * @method static Builder|Product whereName($value)
@@ -56,7 +56,7 @@ class Product extends BaseModel
 {
     /** @var array The attributes that are mass assignable */
     protected $fillable = ["name", "slug", "image", "type", "description", "price", "visible", "order", "module_id",
-        "created_at", "updated_at", ];
+        "created_at", "updated_at",];
     protected $rules = [
         "name" => "required|max:255",
         "slug" => "required|max:255",

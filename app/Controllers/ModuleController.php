@@ -54,8 +54,8 @@ class ModuleController extends BaseController
      * @apiUse         Http404ModelNotFound
      *
      * @param Request $request
-     * @param int     $key     the module id
-     * @param null    $value   not used here
+     * @param int     $key   the module id
+     * @param null    $value not used here
      *
      * @return JsonResponse
      */

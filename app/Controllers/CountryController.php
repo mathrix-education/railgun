@@ -107,7 +107,6 @@ class CountryController extends BaseController
         $request->user()->canOrFail("delete", $country);
 
         throw new Http501NotImplementedException();
-
         return parent::delete($request, $id);
     }
 }

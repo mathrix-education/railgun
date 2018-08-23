@@ -107,7 +107,6 @@ class DisciplineController extends BaseController
         $request->user()->canOrFail("delete", $discipline);
 
         throw new Http501NotImplementedException();
-
         return parent::delete($request, $id);
     }
 }

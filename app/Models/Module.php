@@ -17,24 +17,24 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @copyright Mathrix Education SA
  * ----
  *
- * @property int                   $id
- * @property bool                  $premium
- * @property bool                  $visible
- * @property string                $type
- * @property string                $content
- * @property array                 $questions
- * @property array                 $choices
- * @property array                 $solutions
- * @property array                 $corrections
- * @property string                $options
- * @property array                 $link
- * @property mixed                 $status
- * @property Collection|Activity[] $activities
- * @property Collection|Comment[]  $comments
- * @property Collection|Log[]      $logs
- * @property mixed                 $favorite
- * @property mixed                 $to_revise
- * @property bool                  $completed
+ * @property int                                                            $id
+ * @property bool                                                           $premium
+ * @property bool                                                           $visible
+ * @property string                                                         $type
+ * @property string                                                         $content
+ * @property array                                                          $questions
+ * @property array                                                          $choices
+ * @property array                                                          $solutions
+ * @property array                                                          $corrections
+ * @property string                                                         $options
+ * @property array                                                          $link
+ * @property mixed                                                          $status
+ * @property Collection|Activity[]                                          $activities
+ * @property Collection|Comment[]                                           $comments
+ * @property Collection|Log[]                                               $logs
+ * @property mixed                                                          $favorite
+ * @property mixed                                                          $to_revise
+ * @property bool                                                           $completed
  *
  * @method static Builder|Module whereId($value)
  * @method static Builder|Module wherePremium($value)
@@ -56,7 +56,7 @@ class Module extends BaseModel
 
     /** @var array The attributes that are mass assignable */
     protected $fillable = ["premium", "type", "content", "questions", "choices", "solutions", "corrections", "options",
-        "visible", "link", ];
+        "visible", "link",];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
         "premium" => "boolean",

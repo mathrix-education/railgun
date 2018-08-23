@@ -135,8 +135,8 @@ abstract class BaseController extends Controller
      * Generic get action.
      *
      * @param Request    $request
-     * @param string|int $key     the field or the id
-     * @param null       $value   if set, the field value to search
+     * @param string|int $key   the field or the id
+     * @param null       $value if set, the field value to search
      *
      * @throws Http401UnauthorizedException
      *

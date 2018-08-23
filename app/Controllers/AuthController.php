@@ -157,7 +157,7 @@ class AuthController extends BaseController
      * @apiError (Error 422) save The validated password save failed
      *
      * @param Request $request
-     * @param string  $token   The reset token
+     * @param string  $token The reset token
      *
      * @throws Http400InvalidRequestException
      *

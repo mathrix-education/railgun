@@ -28,7 +28,7 @@ class Formatter
             } elseif (\is_array($value)) {
                 $data[$key] = self::cast($value);
             } elseif (\is_string($value) && preg_match("/^-?(?:\d+|\d*\.\d+)$/", $value)) {
-                $data[$key] = (float) $value;
+                $data[$key] = (float)$value;
             }
         }
 

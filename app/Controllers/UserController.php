@@ -73,7 +73,7 @@ class UserController extends BaseController
      * @apiUse         Http404ModelNotFound
      *
      * @param Request  $request
-     * @param int|null $id      The user id; if null set edit the current user
+     * @param int|null $id The user id; if null set edit the current user
      *
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
@@ -270,7 +270,7 @@ class UserController extends BaseController
      * @apiError (Error 429) too_many_requests Already gathered points today for this model
      *
      * @param Request  $request
-     * @param int|null $id      the user id
+     * @param int|null $id the user id
      *
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
@@ -331,11 +331,11 @@ class UserController extends BaseController
         }
 
         // Check if field is a valid positive integer
-        if (!is_numeric($pointsToAdd) || (int) $pointsToAdd < 0) {
+        if (!is_numeric($pointsToAdd) || (int)$pointsToAdd < 0) {
             throw new Http400InvalidRequestException("points field has to be a positive integer");
         }
 
-        $pointsToAdd = (int) $pointsToAdd;
+        $pointsToAdd = (int)$pointsToAdd;
 
         // Update the user points count
         $user->update(["points" => $user->points + $pointsToAdd]);

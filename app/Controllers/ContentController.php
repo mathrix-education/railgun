@@ -116,7 +116,7 @@ class ContentController extends BaseController
                 "notions.chapters.class_.country", "modules" => function (BelongsToMany $q) use ($query) {
                     return $q->where("type", "course")
                         ->where("content", "LIKE", "%[video]%");
-                }, ])
+                },])
             ->limit($perPage)
             ->offset(($page - 1) * $perPage)
             ->get();

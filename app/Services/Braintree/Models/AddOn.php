@@ -40,7 +40,7 @@ class AddOn extends BraintreeModel
     {
         parent::__construct($addOn);
 
-        $this->amount = (float) ($addOn->amount);
+        $this->amount = (float)($addOn->amount);
         $this->hasTrial = Str::contains($this->id, ["v4_biannually", "v4_annually"]);
 
         if (Str::contains($this->id, ["v4_biannually", "v4_annually"])) {

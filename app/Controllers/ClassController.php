@@ -107,7 +107,6 @@ class ClassController extends BaseController
         $request->user()->canOrFail("delete", $class);
 
         throw new Http501NotImplementedException();
-
         return parent::delete($request, $id);
     }
 }

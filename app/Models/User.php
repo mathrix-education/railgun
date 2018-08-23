@@ -96,7 +96,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public $timestamps = true;
     /** @var array The guarded attributes */
     protected $fillable = ["email", "username", "firstname", "lastname", "password", "points", "daily",
-        "settings", "class_id", ];
+        "settings", "class_id",];
     /** @var array The hidden attributes from the model"s JSON */
     protected $hidden = ["password", "token"];
     /** @var array The attributes that should be cast to native types */

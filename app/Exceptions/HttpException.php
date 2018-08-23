@@ -53,7 +53,7 @@ abstract class HttpException extends \Exception
             if (300 <= $code && $code < 600) {
                 $this->code = $code; // @codeCoverageIgnore
             } else {
-                $this->code = (int) $matches[1];
+                $this->code = (int)$matches[1];
             }
 
             // Define the error name

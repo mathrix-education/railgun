@@ -18,16 +18,16 @@ use Illuminate\Support\Str;
  * @copyright Mathrix Education SA
  * @mixin \Braintree\Plan
  *
- * @property int    $billingDayOfMonth
- * @property int    $billingFrequency
- * @property string $currencyIsoCode
- * @property string $description
- * @property string $id
- * @property string $name
- * @property float  $price
- * @property string $trialDuration
- * @property string $trialDurationUnit
- * @property bool   $trialPeriod
+ * @property int                   $billingDayOfMonth
+ * @property int                   $billingFrequency
+ * @property string                $currencyIsoCode
+ * @property string                $description
+ * @property string                $id
+ * @property string                $name
+ * @property float                 $price
+ * @property string                $trialDuration
+ * @property string                $trialDurationUnit
+ * @property bool                  $trialPeriod
  * @property Carbon                createdAt
  * @property Carbon                updatedAt
  * ----
@@ -48,7 +48,7 @@ class Plan extends BraintreeModel
     {
         parent::__construct($plan);
 
-        $this->price = (float) ($this->price);
+        $this->price = (float)($this->price);
         $this->trialPeriod = Str::contains($this->id, "annually");
 
         $this->freeHolidays = $this->trialPeriod;

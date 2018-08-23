@@ -256,7 +256,6 @@ class SubscriptionController extends Controller
 
                 $initialSaleData["amount"] = $totalPrice;
             }
-
             // Charge for the trial
             $chargeResult = \Braintree\Transaction::sale($initialSaleData);
 

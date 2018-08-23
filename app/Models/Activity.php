@@ -128,7 +128,7 @@ class Activity extends BaseModel implements Commentable
             ["user_id", $user->id],
         ])->first();
 
-        return $meta === null ? false : (bool) $meta->favorite;
+        return $meta === null ? false : (bool)$meta->favorite;
     }
 
     /**
