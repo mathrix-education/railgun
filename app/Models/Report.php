@@ -38,8 +38,10 @@ class Report extends BaseModel
     /** @var array The validation rules */
     protected $rules = [
         "name" => "required|max:255",
-        "slug" => "required|max:255",
-        "visible" => "boolean"
+        "context" => "max:255",
+        "type" => "required",
+        "content" => "required",
+        "module_id" => "exists:modules,id"
     ];
 
     /** @var array Relation included by default */
