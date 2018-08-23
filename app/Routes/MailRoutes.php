@@ -36,5 +36,9 @@ if (app()->environment("dev", "local")) {
             });
         }
     });
+
+    $router->get("mails/transaction-success/{transactionId}", function ($transactionId) {
+        return \App\Mails\TransactionSuccessMail::mock($transactionId);
+    });
 }
 // @codeCoverageIgnoreEnd

@@ -27,8 +27,8 @@
         </mj-text>
         <mj-text>{{ $transaction->creditCardDetails->maskedNumber }}</mj-text>
         <mj-raw>
-                    @break
-                @case("paypal_account")
+            @break
+            @case("paypal_account")
         </mj-raw>
         <mj-text height="16"
                  padding="0 25px"
@@ -37,7 +37,7 @@
         </mj-text>
         <mj-text>{{ $transaction->paypalDetails->payerEmail }}</mj-text>
         <mj-raw>
-                    @break
+            @break
             @endswitch
         </mj-raw>
     </mj-column>
@@ -51,40 +51,36 @@
             Bénéficiaire : {{ $user->email }}
         </mj-text>
 
+        <mj-raw>@if(!empty($lineItems))</mj-raw>
         <mj-divider border-width="1px" border-style="dashed" border-color="lightgrey"></mj-divider>
 
         <mj-text>Détails</mj-text>
 
-        <mj-raw>@if(empty($lineItems))</mj-raw>
+        <mj-raw>@foreach($lineItems as $lineItem)</mj-raw>
         <mj-table padding="0 25px">
-            <tr style="background-color: #e5e5e5">
-                <td style="padding: 5px 15px">Abonnement premium</td>
-                <td style="padding: 5px 15px; text-align: right">{{ $transaction->amount }} €</td>
+            <tr style="padding: 0;background-color: #e5e5e5">
+                <td style="padding: 5px 15px; width: 60%">
+                    {{ $lineItem->name }}
+                </td>
+                <td style="padding: 5px 15px;">
+                    {{ $lineItem->quantity }} &times;
+                    {{ $lineItem->unitAmount }} €
+                </td>
+                <td style="padding: 5px 15px; text-align: right">
+                    {{ $lineItem->totalAmount }} €
+                </td>
             </tr>
         </mj-table>
-
-        <mj-raw>
-            @else
-                @foreach($lineItems as $lineItem)
-                    </mj-raw>
-                        <mj-table padding="0 25px">
-                            <tr style="padding: 0;background-color: #e5e5e5">
-                                <td style="padding: 5px 15px">{{ $lineItem->name }}</td>
-                                <td style="padding: 5px 15px; text-align: right">{{
-                                $lineItem->totalAmount }} €</td>
-                            </tr>
-                        </mj-table>
-                    <mj-raw>
-                @endforeach
-            @endif
-        </mj-raw>
+        <mj-raw>@endforeach</mj-raw>
 
         <mj-table padding="1px 25px">
             <tr style="background-color: #e5e5e5">
                 <td style="padding: 10px 15px; font-weight: 700">Total</td>
                 <td style="padding: 10px 15px; font-weight: 700; text-align: right">{{
-                $transaction->amount }} €</td>
+                $transaction->amount }} €
+                </td>
             </tr>
         </mj-table>
+        <mj-raw>@endif</mj-raw>
     </mj-column>
 </mj-section>

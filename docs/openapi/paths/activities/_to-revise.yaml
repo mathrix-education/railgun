@@ -1,6 +1,6 @@
 get:
   tags:
-  - activities
+  - Activities
   summary: Get user to revise activities
   operationId: activitiesToRevise
   responses:

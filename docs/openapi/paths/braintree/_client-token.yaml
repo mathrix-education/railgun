@@ -1,6 +1,6 @@
 get:
   tags:
-  - braintree
+  - Braintree global
   summary: Get the generated Client Token for Braintree
   operationId: braintree
   responses:

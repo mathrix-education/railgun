@@ -1,6 +1,6 @@
 post:
   tags:
-    - activities
+  - Activities
   summary: Search activities
   operationId: activitiesSearch
   requestBody:

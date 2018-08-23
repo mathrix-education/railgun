@@ -30,8 +30,15 @@ class V4AnnuallyIntegrationTest extends BraintreeTestCase
             ->firstOrFail();
         Passport::actingAs($customer, ["registered"]);
 
+        $childEmails = User::inRandomOrder()
+            ->whereNull("braintree_id")
+            ->limit(3)
+            ->get()
+            ->pluck("email");
+
         $this->json("post", "/subscriptions", [
             "planId" => "v4_annually",
+            "family" => $childEmails,
             "paymentMethodNonce" => "fake-valid-visa-nonce"
         ]);
 

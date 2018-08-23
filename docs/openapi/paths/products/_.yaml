@@ -1,6 +1,6 @@
 get:
   tags:
-  - products
+  - Products
   summary: Get all products
   operationId: productsIndex
   responses:
@@ -14,7 +14,7 @@ get:
               $ref: '../../index.yaml#/components/schemas/Product'
 post:
   tags:
-  - products
+  - Products
   summary: Create a new product
   operationId: productsPost
   requestBody:

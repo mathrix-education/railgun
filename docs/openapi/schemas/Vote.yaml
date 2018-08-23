@@ -18,8 +18,8 @@ properties:
     description: The model type which belongs to the vote.
     type: string
     enum:
-      - comment
-      - post
+    - comment
+    - post
   created_at:
     description: The date/time when the object was created.
     type: string

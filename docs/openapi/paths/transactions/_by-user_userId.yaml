@@ -1,6 +1,6 @@
 get:
   tags:
-  - transactions
+  - Braintree Transactions
   summary: Get transactions associated with an user
   operationId: transactionsByUser
   parameters:

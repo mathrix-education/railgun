@@ -15,10 +15,10 @@ properties:
     description: The type of the credit card.
     type: string
     enum:
-      - American Express
-      - Discover
-      - MasterCard
-      - Visa
+    - American Express
+    - Discover
+    - MasterCard
+    - Visa
   cardholderName:
     description: The cardholder name associated with the credit card.
     type: string

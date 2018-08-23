@@ -1,0 +1,49 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+/**
+ * Class CreateFamilyPacksTable
+ *
+ * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @since 4.1.0
+ * @copyright Mathrix Education SA
+ */
+class CreateFamilyPacksTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create("family_packs", function (Blueprint $table) {
+            $table->increments("id");
+            $table->integer("parent_id")->unsigned();
+            $table->integer("child_id")->unsigned();
+            $table->timestamps();
+
+            $table->foreign("parent_id")->references("id")->on("users");
+            $table->foreign("child_id")->references("id")->on("users");
+        });
+    }
+
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table("family_packs", function (Blueprint $table) {
+            $table->dropForeign("family_packs_parent_id_parent");
+            $table->dropForeign("child_id_packs_parent_id_parent");
+        });
+
+        Schema::dropIfExists("family_packs");
+    }
+}

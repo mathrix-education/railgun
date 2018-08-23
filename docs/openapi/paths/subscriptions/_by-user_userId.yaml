@@ -1,6 +1,6 @@
 get:
   tags:
-  - subscriptions
+  - Braintree Subscriptions
   summary: Get subcriptions associated with an user
   operationId: subscriptionsByUser
   parameters:

@@ -1,6 +1,6 @@
 get:
   tags:
-    - activities
+  - Activities
   summary: Get all activities (pagination)
   operationId: activitiesIndexPagination
   parameters:

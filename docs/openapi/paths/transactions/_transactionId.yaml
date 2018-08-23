@@ -1,6 +1,6 @@
 get:
   tags:
-  - transactions
+  - Braintree Transactions
   summary: Get a transaction
   operationId: transactionGet
   parameters:

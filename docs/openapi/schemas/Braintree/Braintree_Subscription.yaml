@@ -3,6 +3,10 @@ description: >-
   .com/reference/response/subscription/php)
 type: object
 properties:
+  addOns:
+    type: array
+    items:
+      $ref: '../../index.yaml#/components/schemas/Braintree_AddOn'
   balance:
     description: The amount of outstanding charges associated with a subscription.
     type: number

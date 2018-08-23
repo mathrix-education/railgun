@@ -17,4 +17,4 @@ properties:
     type: string
     example: 4qs54za5
 required:
-  - cart
+- cart

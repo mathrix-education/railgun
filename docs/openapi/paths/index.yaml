@@ -20,7 +20,7 @@
 
 
 # ----------
-# Activities
+# Categories
 # ----------
 /categories:
   $ref: ./categories/_.yaml
@@ -43,9 +43,23 @@
   $ref: ./products/_sale.yaml
 
 
-# -------------
-# Subscriptions
-# -------------
+# --------------------
+# Braintree global API
+# --------------------
+/braintree/client-token:
+  $ref: ./braintree/_client-token.yaml
+
+
+# -----------------------
+# Braintree Subscriptions
+# -----------------------
+/plans:
+  $ref: ./plans/_.yaml
+
+
+# -----------------------
+# Braintree Subscriptions
+# -----------------------
 /subscriptions:
   $ref: ./subscriptions/_.yaml
 /subscriptions/estimate/{planId}:
@@ -58,9 +72,9 @@
   $ref: ./subscriptions/_subscriptionId_cancel.yaml
 
 
-# ------------
-# Transactions
-# ------------
+# ----------------------
+# Braintree Transactions
+# ----------------------
 /transactions/by-user/{userId}:
   $ref: ./transactions/_by-user_userId.yaml
 /transactions/{transactionId}:

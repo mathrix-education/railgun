@@ -13,8 +13,8 @@ properties:
     description: The discount type.
     type: string
     enum:
-      - percentage
-      - absolute
+    - percentage
+    - absolute
   value:
     description: The discount value is euro (€).
     type: integer

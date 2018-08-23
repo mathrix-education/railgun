@@ -1,0 +1,79 @@
+description: >-
+  The Braintree plan.
+  [Full Braintree Documentation](https://developers.braintreepayments.com/reference/response/plan/php)
+type: object
+properties:
+  addOns:
+    type: array
+    items:
+      $ref: '../../index.yaml#/components/schemas/Braintree_AddOn'
+  billingDayOfMonth:
+    description: >-
+      The The value that specifies the day of the month that the gateway will charge the subscription
+      on every billing cycle.
+    type: integer
+    example: 12
+  billingFrequency:
+    description: Specifies the billing interval of the plan in months.
+    type: integer
+    example: 12
+  createdAt:
+    description: The date/time the plan was created.
+    type: string
+    format: date-time
+  currencyIsoCode:
+    description: >-
+      The currency for the transaction (e.g. "USD" for US dollars). See the
+      [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) codes.
+    type: string
+    example: EUR
+  description:
+    description: A description of the plan.
+    type: string
+    example: Description of the plan.
+      #discounts:
+      #description: A collection of discounts associated with this subscription.
+      #type: array
+      #items:
+    #$ref: '../../index.yaml#/components/schemas/Braintree_Discount'
+  id:
+    description: The plan identifier.
+    type: string
+    example: v4_annually
+  name:
+    description: The name of the plan.
+    type: string
+    example: Plan annuel
+  numberOfBillingCycles:
+    description: Specifies the number of billing cycles of the plan. `null` if the plan has no defined lifetime.
+    nullable: true
+    type: integer
+    example: 5
+  price:
+    description: The base price specified for a plan.
+    type: float
+    example: 154.80
+  trialDuration:
+    description: The trial timeframe specified in a plan. `null` if the plan has no trial duration.
+    nullable: true
+    type: integer
+    example: 15
+  trialDurationUnit:
+    description: >-
+      The trial unit specified in a plan. Specify `day` or `month`. Specifying a trial duration unit via
+      the API will override the subscription's plan details.
+    nullable: true
+    type: string
+    enum:
+    - day
+    - month
+  trialPeriod:
+    description: >-
+      A value indicating whether a subscription should begin with a trial period. Specifying a trial period via the
+      API will override the subscription's plan details.
+    type: boolean
+    example: false
+  updatedAt:
+    description: The date/time the plan was last updated.
+    type: string
+    format: date-time

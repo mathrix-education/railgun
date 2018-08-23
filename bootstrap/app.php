@@ -91,7 +91,7 @@ $app->configure("mail");
 $app->configure("queue");
 $app->configure("services");
 
-if ($app->environment("dev")) {
+if ($app->environment("dev", "local")) {
     $app->configure("ide-helper");
 }
 

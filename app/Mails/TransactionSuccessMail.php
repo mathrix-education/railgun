@@ -37,14 +37,24 @@ class TransactionSuccessMail extends BaseMail
     /**
      * Mock the Mail
      *
+     * @param string|null $transactionId
+     *
      * @return TransactionSuccessMail
      */
-    public static function mock(): TransactionSuccessMail
+    public static function mock(string $transactionId = null): TransactionSuccessMail
     {
         $user = User::inRandomOrder()->first();
-        $transaction = Cache::remember("TransactionSuccessMail_transaction", 1, function () {
-            return Transaction::search([])->firstItem();
-        });
+
+        if ($transactionId === null) {
+            $transaction = Cache::remember("TransactionSuccessMail_transaction", 1, function () {
+                return Transaction::search([])->firstItem();
+            });
+        } else {
+            $transaction = Cache::remember("TransactionSuccessMail_transaction_$transactionId", 1, function () use ($transactionId) {
+                return Transaction::find($transactionId);
+            });
+        }
+
         /** @var LineItem[] $transactionLineItems */
         $transactionLineItems = LineItem::findAll($transaction->id);
 

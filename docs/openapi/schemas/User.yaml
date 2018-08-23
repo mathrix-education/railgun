@@ -26,11 +26,11 @@ properties:
     description: The user type.
     type: string
     enum:
-      - registered
-      - redactor
-      - moderator
-      - admin
-      - support
+    - registered
+    - redactor
+    - moderator
+    - admin
+    - support
   token:
     description: The user hidden token, which is used for password reset.
     type: string
@@ -69,7 +69,7 @@ properties:
     type: string
   braintree:
     description: The Braintree customer object associated with the user, if `braintree_id` is not `null`.
-    
+
   created_at:
     description: The date/time when the object was created.
     type: string

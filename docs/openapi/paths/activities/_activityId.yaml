@@ -1,6 +1,6 @@
 get:
   tags:
-    - activities
+  - Activities
   summary: Get an activity
   operationId: activtiesGet
   parameters:
@@ -20,7 +20,7 @@ get:
             $ref: '../../index.yaml#/components/schemas/Activity'
 patch:
   tags:
-  - activities
+  - Activities
   summary: Edit an activity
   operationId: activitiesPatch
   parameters:
@@ -45,7 +45,7 @@ patch:
             $ref: '../../index.yaml#/components/schemas/Activity'
 delete:
   tags:
-  - activities
+  - Activities
   summary: Delete an activity
   operationId: activitiesDelete
   parameters:

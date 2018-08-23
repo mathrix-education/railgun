@@ -1,6 +1,6 @@
 post:
   tags:
-  - subscriptions
+  - Braintree Subscriptions
   summary: Subscribe user to plan
   operationId: subscriptionsAdd
   responses:
@@ -26,17 +26,8 @@ post:
               type: string
               description: The payment method method nonce from the Braintree Client SDK
               example: 7acb98s
-get:
-  tags:
-  - subscriptions
-  summary: Get the subscriptions
-  operationId: subscriptions
-  responses:
-    200:
-      description: The Braintree subscription
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              $ref: '../../index.yaml#/components/schemas/Braintree_Subscription'
+            family:
+              description: The user family emails
+              type: array
+              items:
+                type: string

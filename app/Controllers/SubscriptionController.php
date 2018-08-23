@@ -7,6 +7,7 @@ use App\Exceptions\Http400InvalidPlanException;
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http401UnauthorizedException;
 use App\Models\User;
+use App\Services\Braintree\FamilyPack;
 use App\Services\Braintree\Formatter;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -37,7 +38,7 @@ class SubscriptionController extends Controller
      */
     private function generateSubscriptionId(): string
     {
-        return "sub" . str_replace("-", "", \Faker\Factory::create()->uuid);
+        return "sub_" . str_replace("-", "", \Faker\Factory::create()->uuid);
     }
 
 
@@ -147,36 +148,62 @@ class SubscriptionController extends Controller
      */
     public function create(Request $request)
     {
+        // Validate the request
+        $this->validate($request, [
+            "planId" => "required|in:" . implode(",", array_keys(self::PRICE_PER_MONTH)),
+            "family.*" => "exists:users,email"
+        ]);
+
+        // Prepare the working variables
         /** @var User $user */
         $user = $request->user();
         $user->append(["premium", "braintree"]);
 
+        // Check if user is already premium
         if ($user->premium) {
             throw new Http400InvalidRequestException("User is already premium");
         }
 
-        $this->validate($request, [
-            "planId" => "required|in:" . implode(",", array_keys(self::PRICE_PER_MONTH)),
-        ]);
-
         // Create user as Braintree customer if necessary
         if (!$user->isBraintreeCustomer()) {
             $this->validate($request, [
-                "paymentMethodNonce" => "required",
+                "paymentMethodNonce" => "required", // Now paymentMethodNonce is required
             ]);
 
             $user->createBraintreeCustomer($request->input("paymentMethodNonce"));
         }
 
         // Now we assume that the user is a Braintree customer
-        $plan = $request->input("planId");
 
+        $plan = $request->input("planId");
         $data = [
             "id" => $this->generateSubscriptionId(),
             "planId" => $request->input("planId"),
             "neverExpires" => true,
             "paymentMethodToken" => $user->getBraintreeDefaultPaymentMethodToken()
         ];
+
+        // Initial checks for family-pack requests
+        $familyEmails = $request->input("family", []);
+        $isFamilyPack = !empty($familyEmails);
+
+        if ($isFamilyPack) {
+            $family = User::whereIn("email", $familyEmails)->get(); // Retrieve the other users
+
+            /** @var User $member */
+            foreach ($family as $member) {
+                $member->append(["premium", "braintree"]);
+
+                if ($member->premium) {
+                    throw new Http400InvalidRequestException("User with email `{$member->email}` is already premium");
+                }
+            }
+
+            // We assume that everything is ok for family-pack
+            $data["addOns"] = [
+                "add" => FamilyPack::getAddOns($plan, count($familyEmails))
+            ];
+        }
 
         if ($plan === "v4_annually" || $plan === "v4_biannually") {
             // Add trial
@@ -186,23 +213,53 @@ class SubscriptionController extends Controller
                 "trialDuration" => $this->getStartDate($plan)->diffInDays(Carbon::now()) + 1
             ]);
 
-            // Charge for the trial
-            $chargeResult = \Braintree\Transaction::sale([
-                "amount" => $this->getTrialPrice($plan),
+            $description = "Abonnement premium du " . Carbon::now()->format("d/m/Y") . " au " .
+                $this->getStartDate($plan)->format("d/m/Y");
+            $trialPrice = $this->getTrialPrice($plan);
+
+            $initialSaleData = [
+                "amount" => $trialPrice,
                 "customerId" => $user->braintree_id,
+                "lineItems" => [
+                    [
+                        "description" => $description,
+                        "kind" => "debit",
+                        "name" => "Abonnement premium",
+                        "quantity" => 1,
+                        "unitAmount" => $trialPrice,
+                        "totalAmount" => $trialPrice
+                    ]
+                ],
                 "options" => [
                     "submitForSettlement" => true,
                     "paypal" => [
-                        "description" => "Abonnement premium du " . Carbon::now()->format("d/m/Y") . " au " .
-                            $this->getStartDate($plan)->format("d/m/Y")
+                        "description" => $description
                     ]
                 ]
-            ]);
+            ];
+
+            // Handle family pack additional price
+            if ($isFamilyPack) {
+                $initialSaleData["lineItems"] = array_merge(
+                    $initialSaleData["lineItems"],
+                    FamilyPack::getAddOnsAsLineItemsForTrial($plan, count($familyEmails))
+                );
+
+                $totalPrice = $trialPrice;
+                foreach ($initialSaleData["lineItems"] as $lineItem) {
+                    $totalPrice += $lineItem["totalAmount"];
+                }
+
+                $initialSaleData["amount"] = $totalPrice;
+            }
+
+            // Charge for the trial
+            $chargeResult = \Braintree\Transaction::sale($initialSaleData);
 
             if ($chargeResult->success) {
                 event(new TransactionSuccessEvent($chargeResult->transaction));
             } else {
-                throw new Http400InvalidRequestException("Unable to charge customer for trial period");
+                throw new Http400InvalidRequestException($chargeResult->message);
             }
         }
 

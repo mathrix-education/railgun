@@ -1,6 +1,6 @@
 post:
   tags:
-  - products
+  - Products
   summary: Buy products
   operationId: productsBuy
   requestBody:

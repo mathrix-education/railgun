@@ -1,6 +1,6 @@
 get:
   tags:
-  - activities
+  - Activities
   summary: Get all activities
   operationId: activitiesIndex
   responses:
@@ -14,7 +14,7 @@ get:
               $ref: '../../index.yaml#/components/schemas/Activity'
 post:
   tags:
-  - activities
+  - Activities
   summary: Create a new activity
   operationId: activitiesPost
   requestBody:

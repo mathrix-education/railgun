@@ -1,6 +1,6 @@
 get:
   tags:
-  - subscriptions
+  - Braintree Subscriptions
   summary: Estimate a subscription trial period
   operationId: subscriptionEstimate
   parameters:
@@ -11,9 +11,9 @@ get:
     schema:
       type: string
       enum:
-        - v4_monthly
-        - v4_annually
-        - v4_biannually
+      - v4_monthly
+      - v4_annually
+      - v4_biannually
   responses:
     200:
       description: The plan estimations (price and date)

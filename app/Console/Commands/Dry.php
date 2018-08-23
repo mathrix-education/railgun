@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 use App\Models\User;
 use App\Services\Braintree\Formatter;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * Class Dry
@@ -26,6 +27,6 @@ class Dry extends Command
 
     public function handle()
     {
-
+        Cache::clear();
     }
 }
