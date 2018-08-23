@@ -6,9 +6,9 @@ use Illuminate\Database\Schema\Blueprint;
 /**
  * Class CreateVotesTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
- * @since 1.0.0
+ * @since     1.0.0
  *
  * @copyright Mathrix Education SA
  */
@@ -22,16 +22,21 @@ class CreateVotesTable extends Migration
         Schema::create("votes", function (Blueprint $table) {
             $table->increments("id");
             $table->integer("value");
-            $table->integer("user_id")->unsigned()->nullable();
+            $table->integer("user_id")
+                ->unsigned()
+                ->nullable();
             $table->dateTime("created_at");
             $table->dateTime("updated_at");
 
             // Polymorphic
-            $table->integer("votable_id")->unsigned();
+            $table->integer("votable_id")
+                ->unsigned();
             $table->enum("votable_type", ["comment"]);
 
             // Foreign keys
-            $table->foreign("user_id")->references("id")->on("users");
+            $table->foreign("user_id")
+                ->references("id")
+                ->on("users");
         });
     }
 

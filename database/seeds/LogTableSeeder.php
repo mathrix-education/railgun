@@ -11,9 +11,9 @@ use Carbon\Carbon;
 /**
  * Class LogTableSeeder.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
- * @since 4.0.3
+ * @since     4.0.3
  *
  * @copyright Mathrix Education SA
  */
@@ -27,7 +27,8 @@ class LogTableSeeder extends BaseTableSeeder
      */
     public function run()
     {
-        $users = User::whereNotNull("class_id")->get();
+        $users = User::whereNotNull("class_id")
+            ->get();
         $today = Carbon::now();
         $logs = [];
         $counter = 0;
@@ -37,7 +38,9 @@ class LogTableSeeder extends BaseTableSeeder
         foreach ($users as $user) {
             /** @var User $user */
             /** @var Carbon $dateIterator */
-            $dateIterator = $user->created_at->lessThan(Carbon::now()->subMonth()) ? Carbon::now()->subMonth() :
+            $dateIterator = $user->created_at->lessThan(Carbon::now()
+                ->subMonth()) ? Carbon::now()
+                ->subMonth() :
                 $user->created_at;
 
             while ($dateIterator->lessThan($today)) {
@@ -53,14 +56,17 @@ class LogTableSeeder extends BaseTableSeeder
 
                         do {
                             $module = Module::random();
-                        } while ($module->activities()->get()->isEmpty());
+                        } while ($module->activities()
+                            ->get()
+                            ->isEmpty());
 
                         $logs[] = Log::build("user_gathered_points", $user, [
                             "points" => $points,
                             "loggable_type" => "module",
                             "loggable_id" => $module->id,
                             "created_at" => $dateIterator,
-                        ])->toArray();
+                        ])
+                            ->toArray();
                         ++$counter;
 
                         if ($counter % 100 === 0) {

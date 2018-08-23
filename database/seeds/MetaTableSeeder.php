@@ -13,9 +13,9 @@ use App\Models\User;
 /**
  * Class MetaTableSeeder.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
- * @since 4.0.3
+ * @since     4.0.3
  *
  * @copyright Mathrix Education SA
  */
@@ -28,7 +28,8 @@ class MetaTableSeeder extends BaseTableSeeder
      */
     public function run()
     {
-        $registered = User::where(["type" => "registered"])->get();
+        $registered = User::where(["type" => "registered"])
+            ->get();
         $metas = [];
 
         /** @var User $user */
@@ -39,13 +40,21 @@ class MetaTableSeeder extends BaseTableSeeder
                 /** @var Class_ $class_ */
                 $class_ = $user->class_;
                 /** @var Discipline $discipline */
-                $discipline = $user->class_->disciplines()->inRandomOrder()->first();
+                $discipline = $user->class_->disciplines()
+                    ->inRandomOrder()
+                    ->first();
                 /** @var Chapter $chapter */
-                $chapter = $discipline->chapters()->inRandomOrder()->first();
+                $chapter = $discipline->chapters()
+                    ->inRandomOrder()
+                    ->first();
                 /** @var Notion $notion */
-                $notion = $chapter->notions()->inRandomOrder()->first();
+                $notion = $chapter->notions()
+                    ->inRandomOrder()
+                    ->first();
                 /** @var Activity $activity */
-                $activity = $notion->activities()->inRandomOrder()->first();
+                $activity = $notion->activities()
+                    ->inRandomOrder()
+                    ->first();
 
                 $statusId = random_int(0, 2);
 

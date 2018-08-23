@@ -44,7 +44,8 @@ class BackupCdn extends Command
             return !is_dir($path);
         });
 
-        $zipFileName = "cdn_" . Carbon::now()->format("Y-m-d_H-i-s") . ".zip";
+        $zipFileName = "cdn_" . Carbon::now()
+                ->format("Y-m-d_H-i-s") . ".zip";
         $zipDir = storage_path("backups/cdn");
         $zipPath = "$zipDir/$zipFileName";
 
@@ -80,6 +81,7 @@ class BackupCdn extends Command
         $localFilePath = storage_path("backups/cdn") . "/$zipFileName";
         $file = new File($localFilePath);
 
-        Storage::disk("drive")->putFileAs(self::DRIVE_CDN_FOLDER, $file, $zipFileName);
+        Storage::disk("drive")
+            ->putFileAs(self::DRIVE_CDN_FOLDER, $file, $zipFileName);
     }
 }

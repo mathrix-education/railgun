@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Builder;
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * ----
  *
  * @property int    $id
  * @property string $key
@@ -50,7 +49,8 @@ class Setting extends BaseModel
     public static function read(string $key)
     {
         /** @var Setting $setting */
-        $setting = self::where("key", "=", $key)->firstOrFail();
+        $setting = self::where("key", "=", $key)
+            ->firstOrFail();
 
         return $setting->value;
     }
@@ -66,11 +66,12 @@ class Setting extends BaseModel
      */
     public static function write(string $key, $value, bool $visible = true)
     {
-        $setting = self::where("key", "=", $key)->firstOrCreate([
-            "key" => $key,
-            "value" => $value,
-            "visible" => $visible,
-        ]);
+        $setting = self::where("key", "=", $key)
+            ->firstOrCreate([
+                "key" => $key,
+                "value" => $value,
+                "visible" => $visible,
+            ]);
 
         return $setting instanceof self;
     }
@@ -86,7 +87,9 @@ class Setting extends BaseModel
      */
     public static function forgot(string $key)
     {
-        return self::where("key", "=", $key)->firstOrFail()->delete();
+        return self::where("key", "=", $key)
+            ->firstOrFail()
+            ->delete();
     }
 
     /**

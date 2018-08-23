@@ -11,7 +11,7 @@ use Tests\BaseTestCase;
 /**
  * Class MailsTest.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
  *
  * @since
  *
@@ -21,25 +21,29 @@ class MailsTest extends BaseTestCase
 {
     public function testPasswordForgotten()
     {
-        $mail = PasswordForgottenMail::mock()->build();
+        $mail = PasswordForgottenMail::mock()
+            ->build();
         $this->assertInstanceOf(PasswordForgottenMail::class, $mail);
     }
 
     public function testPasswordReset()
     {
-        $mail = PasswordResetMail::mock()->build();
+        $mail = PasswordResetMail::mock()
+            ->build();
         $this->assertInstanceOf(PasswordResetMail::class, $mail);
     }
 
     public function testTransactionRefundSuccess()
     {
-        $mail = TransactionRefundMail::mock()->build();
+        $mail = TransactionRefundMail::mock()
+            ->build();
         $this->assertInstanceOf(TransactionRefundMail::class, $mail);
     }
 
     public function testTransactionSuccess()
     {
-        $mail = TransactionSuccessMail::mock()->build();
+        $mail = TransactionSuccessMail::mock()
+            ->build();
         $this->assertInstanceOf(TransactionSuccessMail::class, $mail);
     }
 }

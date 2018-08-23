@@ -92,7 +92,7 @@ class DisciplineController extends BaseController
      * @apiUse         Http401Unauthorized
      * @apiUse         Http404ModelNotFound
      *
-     * @param Request $request
+     * @param Request $request The request
      * @param int     $id
      *
      * @throws Http401UnauthorizedException
@@ -104,9 +104,11 @@ class DisciplineController extends BaseController
     public function delete(Request $request, int $id): JsonResponse
     {
         $discipline = Discipline::find($id);
-        $request->user()->canOrFail("delete", $discipline);
+        $request->user()
+            ->canOrFail("delete", $discipline);
 
         throw new Http501NotImplementedException();
+
         return parent::delete($request, $id);
     }
 }

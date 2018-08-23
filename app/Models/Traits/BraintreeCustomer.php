@@ -19,79 +19,6 @@ use Illuminate\Support\Facades\Cache;
 trait BraintreeCustomer
 {
     /**
-     * Get the Brain customer cache used to get customer information from the cache.
-     *
-     * @return string
-     */
-    private function getBraintreeCustomerCacheKey()
-    {
-        return "braintree-customer-" . $this->braintree_id;
-    }
-
-    /**
-     * Delete the Braintree customer from the cache.
-     */
-    public function forgetBraintreeCustomerCache()
-    {
-        Cache::forget($this->getBraintreeCustomerCacheKey());
-    }
-
-    /**
-     * Check if the user is already a Braintree customer.
-     *
-     * @param bool $strict also check on the API
-     *
-     * @return bool
-     */
-    public function isBraintreeCustomer($strict = false): bool
-    {
-        if ($this->braintree_id === null) {
-            return false;
-        } elseif (!$strict) {
-            return true;
-        } else {
-            try {
-                \Braintree_Customer::find($this->braintree_id);
-
-                return true;
-            } catch (\Braintree_Exception_NotFound $e) {
-                return false;
-            }
-        }
-    }
-
-    /**
-     * Throw an Http400InvalidRequestException if the user is not a Braintree cusstomer.
-     *
-     * @param bool $strict
-     *
-     * @throws Http400InvalidRequestException
-     */
-    public function requireBraintreeCustomer(bool $strict = false)
-    {
-        if (!$this->isBraintreeCustomer($strict)) {
-            throw new Http400InvalidRequestException("User with id `{$this->id}` is not a Braintree customer");
-        }
-    }
-
-    /**
-     * @return \Braintree_Customer
-     */
-    public function getBraintreeCustomer(): ?\Braintree_Customer
-    {
-        return Cache::remember(self::getBraintreeCustomerCacheKey(), 5, function () {
-            try {
-                return \Braintree_Customer::find($this->braintree_id);
-            } catch (\Braintree\Exception\NotFound $e) {
-                $this->braintree_id = null;
-                $this->save();
-
-                return;
-            }
-        });
-    }
-
-    /**
      * Create a Braintree customer associated with this user account.
      *
      * @param string|null $paymentMethodNonce a payment nonce to attach
@@ -126,6 +53,56 @@ trait BraintreeCustomer
     }
 
     /**
+     * Check if the user is already a Braintree customer.
+     *
+     * @param bool $strict also check on the API
+     *
+     * @return bool
+     */
+    public function isBraintreeCustomer($strict = false): bool
+    {
+        if ($this->braintree_id === null) {
+            return false;
+        } elseif (!$strict) {
+            return true;
+        }
+        try {
+            \Braintree_Customer::find($this->braintree_id);
+
+            return true;
+        } catch (\Braintree_Exception_NotFound $e) {
+            return false;
+        }
+    }
+
+    /**
+     * @return \Braintree_Customer
+     */
+    public function getBraintreeCustomer(): ?\Braintree_Customer
+    {
+        return Cache::remember(self::getBraintreeCustomerCacheKey(), 5, function () {
+            try {
+                return \Braintree_Customer::find($this->braintree_id);
+            } catch (\Braintree\Exception\NotFound $e) {
+                $this->braintree_id = null;
+                $this->save();
+
+                return;
+            }
+        });
+    }
+
+    /**
+     * Get the Brain customer cache used to get customer information from the cache.
+     *
+     * @return string
+     */
+    private function getBraintreeCustomerCacheKey()
+    {
+        return "braintree-customer-" . $this->braintree_id;
+    }
+
+    /**
      * Get user's Braintree payment methods.
      *
      * @throws Http400InvalidRequestException
@@ -140,6 +117,20 @@ trait BraintreeCustomer
     }
 
     /**
+     * Throw an Http400InvalidRequestException if the user is not a Braintree cusstomer.
+     *
+     * @param bool $strict
+     *
+     * @throws Http400InvalidRequestException
+     */
+    public function requireBraintreeCustomer(bool $strict = false)
+    {
+        if (!$this->isBraintreeCustomer($strict)) {
+            throw new Http400InvalidRequestException("User with id `{$this->id}` is not a Braintree customer");
+        }
+    }
+
+    /**
      * Get the user's default payment method token.
      *
      * @throws Http400InvalidRequestException
@@ -150,7 +141,8 @@ trait BraintreeCustomer
     {
         $this->requireBraintreeCustomer();
 
-        return $this->getBraintreeCustomer()->defaultPaymentMethod()->token;
+        return $this->getBraintreeCustomer()
+            ->defaultPaymentMethod()->token;
     }
 
     /**
@@ -174,6 +166,14 @@ trait BraintreeCustomer
     }
 
     /**
+     * Delete the Braintree customer from the cache.
+     */
+    public function forgetBraintreeCustomerCache()
+    {
+        Cache::forget($this->getBraintreeCustomerCacheKey());
+    }
+
+    /**
      * Delete a payment method with a token from the vault.
      *
      * @param string $paymentMethodToken
@@ -187,6 +187,33 @@ trait BraintreeCustomer
         $this->requireBraintreeCustomer();
 
         return \Braintree_PaymentMethod::delete($paymentMethodToken);
+    }
+
+    /**
+     * Check if the user has subscribed to the given plan.
+     *
+     * @param string|array $plans
+     *
+     * @throws Http400InvalidRequestException
+     *
+     * @return bool
+     */
+    public function hasBraintreeSubscription($plans)
+    {
+        if (\is_string($plans)) {
+            $plans = [$plans];
+        }
+
+        if ($this->isBraintreeCustomer(true)) {
+            /** @var \Braintree_Subscription $subscription */
+            foreach ($this->getBraintreeSubscriptions() as $subscription) {
+                if (\in_array($subscription->planId, $plans, true) && $subscription->status === "Active") {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -225,32 +252,5 @@ trait BraintreeCustomer
         });
 
         return $subscriptions;
-    }
-
-    /**
-     * Check if the user has subscribed to the given plan.
-     *
-     * @param string|array $plans
-     *
-     * @throws Http400InvalidRequestException
-     *
-     * @return bool
-     */
-    public function hasBraintreeSubscription($plans)
-    {
-        if (\is_string($plans)) {
-            $plans = [$plans];
-        }
-
-        if ($this->isBraintreeCustomer(true)) {
-            /** @var \Braintree_Subscription $subscription */
-            foreach ($this->getBraintreeSubscriptions() as $subscription) {
-                if (\in_array($subscription->planId, $plans, true) && $subscription->status === "Active") {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 }

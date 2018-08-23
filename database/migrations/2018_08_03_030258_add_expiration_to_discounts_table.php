@@ -12,7 +12,8 @@ class AddExpirationToDiscountsTable extends Migration
     public function up()
     {
         Schema::table("discounts", function (Blueprint $table) {
-            $table->timestamp("expire_at")->nullable();
+            $table->timestamp("expire_at")
+                ->nullable();
         });
     }
 

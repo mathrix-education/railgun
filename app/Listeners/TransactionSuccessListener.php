@@ -27,7 +27,8 @@ class TransactionSuccessListener extends BaseListener
         /** @var \Braintree\Transaction\CustomerDetails $customerDetails */
         $customerDetails = $transaction->customerDetails;
         /** @var User $user */
-        $user = User::where("braintree_id", "=", $customerDetails->id)->firstOrFail();
+        $user = User::where("braintree_id", "=", $customerDetails->id)
+            ->firstOrFail();
 
         $user->notify(new TransactionSuccessNotification($user, $transaction));
     }

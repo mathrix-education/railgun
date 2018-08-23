@@ -52,7 +52,8 @@ if (!function_exists('build_date')) {
         $build = basename(dirname(__DIR__, 1));
 
         try {
-            $build = \Carbon\Carbon::createFromFormat("Y-m-d_H-i-s", $build)->toIso8601String();
+            $build = \Carbon\Carbon::createFromFormat("Y-m-d_H-i-s", $build)
+                ->toIso8601String();
         } catch (InvalidArgumentException $e) {
         }
 

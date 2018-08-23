@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Schema;
 /**
  * Class AddStripeIdToPurchasesTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
- * @since 4.0.3
+ * @since     4.0.3
  *
  * @copyright Mathrix Education SA
  */
@@ -22,7 +22,8 @@ class AddStripeIdToPurchasesTable extends Migration
     {
         Schema::table('purchases', function (Blueprint $table) {
             $table->renameColumn("uuid", "stripe_id");
-            $table->integer("refund")->after("price");
+            $table->integer("refund")
+                ->after("price");
         });
     }
 

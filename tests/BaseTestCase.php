@@ -34,7 +34,9 @@ abstract class BaseTestCase extends TestCase
     public function tearDown()
     {
         $this->beforeApplicationDestroyed(function () {
-            app()->make("db")->disconnect();
+            app()
+                ->make("db")
+                ->disconnect();
         });
 
         parent::tearDown();

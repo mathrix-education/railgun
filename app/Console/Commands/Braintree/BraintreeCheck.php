@@ -25,9 +25,11 @@ class BraintreeCheck extends Command
 
     public function handle()
     {
-        if (!$this->output->getFormatter()->hasStyle('alert')) {
+        if (!$this->output->getFormatter()
+            ->hasStyle('alert')) {
             $style = new OutputFormatterStyle('red');
-            $this->output->getFormatter()->setStyle('alert', $style);
+            $this->output->getFormatter()
+                ->setStyle('alert', $style);
         }
 
         Cache::clear();

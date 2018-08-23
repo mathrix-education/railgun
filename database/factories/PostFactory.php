@@ -19,9 +19,14 @@ $factory->define(Post::class, function (Generator $faker) {
     return [
         "title" => $title,
         "slug" => str_slug($title),
-        "module_id" => Module::where("type", "course")->inRandomOrder()->first()->id,
-        "category_id" => Category::inRandomOrder()->first()->id,
-        "user_id" => User::where("type", "admin")->inRandomOrder()->first()->id,
+        "module_id" => Module::where("type", "course")
+            ->inRandomOrder()
+            ->first()->id,
+        "category_id" => Category::inRandomOrder()
+            ->first()->id,
+        "user_id" => User::where("type", "admin")
+            ->inRandomOrder()
+            ->first()->id,
         "created_at" => $created,
         "updated_at" => $faker->boolean(10) ? $faker->dateTimeBetween($created, "now") : $created,
     ];

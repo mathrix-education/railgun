@@ -2,6 +2,7 @@
 
 namespace App\Services\Braintree\Models;
 
+use Braintree\Discount;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -18,29 +19,27 @@ use Illuminate\Support\Str;
  * @copyright Mathrix Education SA
  * @mixin \Braintree\Plan
  *
- * @property int                   $billingDayOfMonth
- * @property int                   $billingFrequency
- * @property string                $currencyIsoCode
- * @property string                $description
- * @property string                $id
- * @property string                $name
- * @property float                 $price
- * @property string                $trialDuration
- * @property string                $trialDurationUnit
- * @property bool                  $trialPeriod
- * @property Carbon                createdAt
- * @property Carbon                updatedAt
- * ----
- * @property string                $pricingDetails
- * @property int                   $pricePerMonth
- * @property int                   $discount
- * @property bool                  $freeHolidays
- * @property float|null            $trialPrice
- * @property Carbon|null           $trialStartDate
- * @property Carbon|null           $trialEndDate
- *                                                 ----
- * @property AddOn[]               $addOns
- * @property \Braintree\Discount[] $discounts
+ * @property int         $billingDayOfMonth
+ * @property int         $billingFrequency
+ * @property string      $currencyIsoCode
+ * @property string      $description
+ * @property string      $id
+ * @property string      $name
+ * @property float       $price
+ * @property string      $trialDuration
+ * @property string      $trialDurationUnit
+ * @property bool        $trialPeriod
+ * @property Carbon      $createdAt
+ * @property Carbon      $updatedAt
+ * @property string      $pricingDetails
+ * @property int         $pricePerMonth
+ * @property int         $discount
+ * @property bool        $freeHolidays
+ * @property float|null  $trialPrice
+ * @property Carbon|null $trialStartDate
+ * @property Carbon|null $trialEndDate
+ * @property AddOn[]     $addOns
+ * @property Discount[]  $discounts
  */
 class Plan extends BraintreeModel
 {
@@ -48,7 +47,7 @@ class Plan extends BraintreeModel
     {
         parent::__construct($plan);
 
-        $this->price = (float)($this->price);
+        $this->price = (float) ($this->price);
         $this->trialPeriod = Str::contains($this->id, "annually");
 
         $this->freeHolidays = $this->trialPeriod;
@@ -96,6 +95,22 @@ class Plan extends BraintreeModel
     }
 
     /**
+     * Get the trial price in euros.
+     *
+     * @return float
+     */
+    public function getTrialPrice()
+    {
+        $now = Carbon::now();
+        $trialEndDate = $this->getTrialEndDate();
+
+        $diffInMonths = $trialEndDate->diffInMonths($now);
+        $diffInDays = $trialEndDate->diffInDays($now->addMonths($diffInMonths));
+
+        return round($diffInMonths * $this->pricePerMonth + $diffInDays * ($this->pricePerMonth / 30), 2);
+    }
+
+    /**
      * Get the plan trial end date.
      *
      * @return Carbon|null The plan trial en date, null if the plan has no trial
@@ -124,22 +139,6 @@ class Plan extends BraintreeModel
     }
 
     /**
-     * Get the trial price in euros.
-     *
-     * @return float
-     */
-    public function getTrialPrice()
-    {
-        $now = Carbon::now();
-        $trialEndDate = $this->getTrialEndDate();
-
-        $diffInMonths = $trialEndDate->diffInMonths($now);
-        $diffInDays = $trialEndDate->diffInDays($now->addMonths($diffInMonths));
-
-        return round($diffInMonths * $this->pricePerMonth + $diffInDays * ($this->pricePerMonth / 30), 2);
-    }
-
-    /**
      * Convert a float to a well-formatted price.
      *
      * @param float  $price
@@ -153,26 +152,6 @@ class Plan extends BraintreeModel
         $priceStr = "$price";
 
         return mb_substr($priceStr, 0, -2) . "." . mb_substr($priceStr, -2) . " $currencySymbol";
-    }
-
-    /**
-     * Get all plans.
-     *
-     * @return Collection
-     */
-    public static function all()
-    {
-        return Cache::remember("plans", 30, function () {
-            $plans = \Braintree\Plan::all();
-            $collection = new Collection();
-
-            foreach ($plans as $plan) {
-                $collection->push(new self($plan));
-            }
-
-            // Don't forget to sort the values
-            return $collection->sortByDesc("pricePerMonth")->values();
-        });
     }
 
     /**
@@ -195,5 +174,26 @@ class Plan extends BraintreeModel
         }
 
         return $callback($id);
+    }
+
+    /**
+     * Get all plans.
+     *
+     * @return Collection
+     */
+    public static function all()
+    {
+        return Cache::remember("plans", 30, function () {
+            $plans = \Braintree\Plan::all();
+            $collection = new Collection();
+
+            foreach ($plans as $plan) {
+                $collection->push(new self($plan));
+            }
+
+            // Don't forget to sort the values
+            return $collection->sortByDesc("pricePerMonth")
+                ->values();
+        });
     }
 }

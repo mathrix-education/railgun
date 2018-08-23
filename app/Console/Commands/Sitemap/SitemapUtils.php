@@ -60,8 +60,10 @@ trait SitemapUtils
             );
         }
 
-        if (!\in_array("sitemaps", Storage::disk("storage")->directories(), true)) {
-            Storage::disk("storage")->makeDirectory("sitemaps");
+        if (!\in_array("sitemaps", Storage::disk("storage")
+            ->directories(), true)) {
+            Storage::disk("storage")
+                ->makeDirectory("sitemaps");
         }
 
         if ($callback !== null) {

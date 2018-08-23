@@ -53,9 +53,9 @@ class ModuleController extends BaseController
      * @apiUse         CommentArray
      * @apiUse         Http404ModelNotFound
      *
-     * @param Request $request
-     * @param int     $key   the module id
-     * @param null    $value not used here
+     * @param Request $request The request
+     * @param int     $key     the module id
+     * @param null    $value   not used here
      *
      * @return JsonResponse
      */
@@ -64,7 +64,8 @@ class ModuleController extends BaseController
         /** @var User $user */
         $user = $request->user();
         /** @var Module $module */
-        $module = Module::where("id", $key)->firstOrFail();
+        $module = Module::where("id", $key)
+            ->firstOrFail();
 
         if ($user !== null) {
             $user->append(["premium", "braintree"]);
@@ -167,7 +168,7 @@ class ModuleController extends BaseController
      * @apiUse         Http422ModelSave
      * @apiUse         Http422ModelValidation
      *
-     * @param Request $request
+     * @param Request $request The request
      * @param int     $id
      *
      * @throws Http400InvalidRequestException

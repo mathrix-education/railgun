@@ -25,8 +25,10 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         // Passport configuration
-        Passport::tokensExpireIn(Carbon::now()->addMonth());
-        Passport::refreshTokensExpireIn(Carbon::now()->addMonths(2));
+        Passport::tokensExpireIn(Carbon::now()
+            ->addMonth());
+        Passport::refreshTokensExpireIn(Carbon::now()
+            ->addMonths(2));
 
         LumenPassport::allowMultipleTokens();
 

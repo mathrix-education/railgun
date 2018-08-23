@@ -210,7 +210,8 @@ abstract class BaseModel extends Model
         $validator = $this->injectInValidator($validator);
 
         if ($validator->fails()) {
-            $this->errors = $validator->errors()->getMessages();
+            $this->errors = $validator->errors()
+                ->getMessages();
 
             return false;
         }
@@ -282,8 +283,10 @@ abstract class BaseModel extends Model
      */
     public function getTableStructure()
     {
-        $table = $this->getConnection()->getTablePrefix() . $this->getTable();
-        $schema = $this->getConnection()->getDoctrineSchemaManager();
+        $table = $this->getConnection()
+                ->getTablePrefix() . $this->getTable();
+        $schema = $this->getConnection()
+            ->getDoctrineSchemaManager();
         $databasePlatform = $schema->getDatabasePlatform();
         $databasePlatform->registerDoctrineTypeMapping("enum", "string");
 
@@ -300,7 +303,8 @@ abstract class BaseModel extends Model
             foreach ($columns as $column) {
                 $name = $column->getName();
 
-                $type = $column->getType()->getName();
+                $type = $column->getType()
+                    ->getName();
                 switch ($type) {
                     case "string":
                     case "text":

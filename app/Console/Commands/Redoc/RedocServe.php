@@ -23,7 +23,8 @@ class RedocServe extends Command
 
     public function handle()
     {
-        $this->getOutput()->write("Starting Redoc embedded web server");
+        $this->getOutput()
+            ->write("Starting Redoc embedded web server");
 
         $process = new Process(self::REDOC_COMMAND);
         $process->start();

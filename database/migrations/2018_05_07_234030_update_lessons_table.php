@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Schema;
 /**
  * Class UpdateLessonsTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
- * @since 4.0.0
+ * @since     4.0.0
  *
  * @copyright Mathrix Education SA
  */
@@ -21,7 +21,9 @@ class UpdateLessonsTable extends Migration
     public function up()
     {
         Schema::table("lessons", function (Blueprint $table) {
-            $table->integer("order")->after("image")->default(0);
+            $table->integer("order")
+                ->after("image")
+                ->default(0);
         });
     }
 

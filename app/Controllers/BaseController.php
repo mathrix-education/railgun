@@ -71,10 +71,44 @@ abstract class BaseController extends Controller
             throw new Http400InvalidRequestException("$potentialModelClass does not exist"); // @codeCoverageIgnore
         } elseif (!class_exists($potentialModelClass) && !$fail) {
             return false;
-        } else {
-            return $potentialModelClass;
         }
+
+        return $potentialModelClass;
     }
+
+    /**
+     * Generic paginated index method.
+     *
+     * @param Request $request The request
+     * @param int     $page
+     * @param int     $perPage
+     *
+     * @throws Http401UnauthorizedException
+     *
+     * @return JsonResponse
+     */
+    public function index(Request $request, int $page = 1, int $perPage = 100): JsonResponse
+    {
+        // Check permission
+        if ($request->user() !== null && $request->user()
+                ->cant("index", $this->modelClass)) {
+            throw new Http401UnauthorizedException();
+        }
+
+        return response()->json(
+            $this->orderCollection(
+                $this->modelClass::limit($perPage)
+                    ->offset(($page - 1) * $perPage)
+                    ->get()
+            )
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Generic actions
+    |--------------------------------------------------------------------------
+    */
 
     /**
      * Order a collection of models by their order key if it exists. If not, just return the collection.
@@ -88,55 +122,24 @@ abstract class BaseController extends Controller
         if (isset($collection->first()->order)) {
             $collection = $collection->sortBy(function ($model) {
                 return $model->order;
-            })->values();
+            })
+                ->values();
         } elseif (isset($collection->first()->pivot->order)) {
             $collection = $collection->sortBy(function ($model) {
                 return $model->pivot->order;
-            })->values();
+            })
+                ->values();
         }
 
         return $collection;
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Generic actions
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Generic paginated index method.
-     *
-     * @param Request $request
-     * @param int     $page
-     * @param int     $perPage
-     *
-     * @throws Http401UnauthorizedException
-     *
-     * @return JsonResponse
-     */
-    public function index(Request $request, int $page = 1, int $perPage = 100): JsonResponse
-    {
-        // Check permission
-        if ($request->user() !== null && $request->user()->cant("index", $this->modelClass)) {
-            throw new Http401UnauthorizedException();
-        }
-
-        return response()->json(
-            $this->orderCollection(
-                $this->modelClass::limit($perPage)
-                    ->offset(($page - 1) * $perPage)
-                    ->get()
-            )
-        );
-    }
-
     /**
      * Generic get action.
      *
-     * @param Request    $request
-     * @param string|int $key   the field or the id
-     * @param null       $value if set, the field value to search
+     * @param Request    $request The request
+     * @param string|int $key     The field or the id
+     * @param null       $value   If set, the field value to search
      *
      * @throws Http401UnauthorizedException
      *
@@ -149,9 +152,11 @@ abstract class BaseController extends Controller
             $key = "id";
         }
 
-        $model = $this->modelClass::where($key, $value)->firstOrFail();
+        $model = $this->modelClass::where($key, $value)
+            ->firstOrFail();
 
-        if ($request->user() !== null && $request->user()->cant("get", $model)) {
+        if ($request->user() !== null && $request->user()
+                ->cant("get", $model)) {
             throw new Http401UnauthorizedException();
         }
 
@@ -161,7 +166,7 @@ abstract class BaseController extends Controller
     /**
      * Generic add action.
      *
-     * @param Request $request
+     * @param Request $request The request
      *
      * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException
@@ -171,7 +176,8 @@ abstract class BaseController extends Controller
      */
     public function add(Request $request): JsonResponse
     {
-        if ($request->user() !== null && $request->user()->cant("add", $this->modelClass)) {
+        if ($request->user() !== null && $request->user()
+                ->cant("add", $this->modelClass)) {
             throw new Http401UnauthorizedException();
         }
 
@@ -185,7 +191,7 @@ abstract class BaseController extends Controller
     /**
      * Generic edit action.
      *
-     * @param Request $request
+     * @param Request $request The request
      * @param int     $id
      *
      * @throws Http401UnauthorizedException
@@ -195,9 +201,11 @@ abstract class BaseController extends Controller
     public function edit(Request $request, int $id): JsonResponse
     {
         /** @var BaseModel $model */
-        $model = $this->modelClass::where("id", $id)->firstOrFail();
+        $model = $this->modelClass::where("id", $id)
+            ->firstOrFail();
 
-        if ($request->user() !== null && $request->user()->cant("edit", $model)) {
+        if ($request->user() !== null && $request->user()
+                ->cant("edit", $model)) {
             throw new Http401UnauthorizedException();
         }
 
@@ -209,7 +217,7 @@ abstract class BaseController extends Controller
     /**
      * Generic delete action.
      *
-     * @param Request $request
+     * @param Request $request The request
      * @param int     $id
      *
      * @throws Http401UnauthorizedException
@@ -220,9 +228,11 @@ abstract class BaseController extends Controller
     public function delete(Request $request, int $id): JsonResponse
     {
         /** @var BaseModel $activity */
-        $model = $this->modelClass::where("id", $id)->firstOrFail();
+        $model = $this->modelClass::where("id", $id)
+            ->firstOrFail();
 
-        if ($request->user() !== null && $request->user()->cant("delete", $model)) {
+        if ($request->user() !== null && $request->user()
+                ->cant("delete", $model)) {
             throw new Http401UnauthorizedException();
         }
 
@@ -237,7 +247,7 @@ abstract class BaseController extends Controller
     /**
      * Generic search action.
      *
-     * @param Request $request
+     * @param Request $request The request
      * @param int     $page
      * @param int     $perPage
      *
@@ -247,7 +257,8 @@ abstract class BaseController extends Controller
      */
     public function search(Request $request, $page = 1, $perPage = 100): JsonResponse
     {
-        $request->user()->canOrFail("search", $this->modelClass);
+        $request->user()
+            ->canOrFail("search", $this->modelClass);
 
         $inputs = $request->except(["order", "having"]);
 
@@ -319,7 +330,7 @@ abstract class BaseController extends Controller
     /**
      * Get the models which satisfy a given relation.
      *
-     * @param Request $request
+     * @param Request $request The request
      * @param string  $what    the linked model
      * @param int     $id      the linked model id
      * @param int     $page    the query page
@@ -338,7 +349,7 @@ abstract class BaseController extends Controller
     /**
      * Handle foreign models queries.
      *
-     * @param Request $request
+     * @param Request $request The request
      * @param string  $what
      * @param int     $id
      * @param int     $page
@@ -355,7 +366,8 @@ abstract class BaseController extends Controller
         $ucName = ucfirst($what);
 
         /** @var BaseModel $model */
-        $model = $modelClass::where("id", $id)->firstOrFail();
+        $model = $modelClass::where("id", $id)
+            ->firstOrFail();
 
         $potentialRelation = Str::lower($this->modelClass::getTableName());
 
@@ -363,7 +375,8 @@ abstract class BaseController extends Controller
             throw new Http400InvalidRequestException("$modelClass::$potentialRelation() does not exist");
         }
 
-        if ($request->user() !== null && $request->user()->cant("by$ucName", $this->modelClass)) {
+        if ($request->user() !== null && $request->user()
+                ->cant("by$ucName", $this->modelClass)) {
             throw new Http401UnauthorizedException();
         }
 
@@ -378,7 +391,7 @@ abstract class BaseController extends Controller
     /**
      * Get the models ids which satisfy a given relation.
      *
-     * @param Request $request
+     * @param Request $request The request
      * @param string  $what    the linked model
      * @param int     $id      the linked model id
      * @param int     $page    the query page
@@ -391,7 +404,8 @@ abstract class BaseController extends Controller
      */
     public function ids(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
     {
-        return response()->json($this->getByQuery($request, $what, $id, $page, $perPage)->pluck("id"));
+        return response()->json($this->getByQuery($request, $what, $id, $page, $perPage)
+            ->pluck("id"));
     }
 
     /**
@@ -422,6 +436,7 @@ abstract class BaseController extends Controller
             throw new Http401UnauthorizedException();
         }
 
-        return $userId === null ? $request->user() : User::where("id", $userId)->firstOrFail();
+        return $userId === null ? $request->user() : User::where("id", $userId)
+            ->firstOrFail();
     }
 }

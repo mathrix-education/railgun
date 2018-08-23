@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * ----
  *
  * @property string               $code
  * @property int                  $counter
@@ -43,23 +42,22 @@ class Discount extends BaseModel
     protected $dates = ["expire_at"];
 
     /**
-     * BelongsToMany Product.
+     * Check if the discount is applicable on at least one of the given products.
      *
-     * @return BelongsToMany
-     */
-    public function products()
-    {
-        return $this->belongsToMany(Product::class);
-    }
-
-    /**
-     * Check if the code is expired by its properties (counter and/or expiration date).
+     * @param Product[] $products
      *
      * @return bool
      */
-    public function isExpired()
+    public function isApplicableBleOnAtLeastOneOf($products)
     {
-        return $this->counter === 0 || ($this->expire_at !== null && $this->expire_at->isPast());
+        /** @var Product $product */
+        foreach ($products as $product) {
+            if ($this->isApplicableOn($product)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -81,21 +79,22 @@ class Discount extends BaseModel
     }
 
     /**
-     * Check if the discount is applicable on at least one of the given products.
-     *
-     * @param Product[] $products
+     * Check if the code is expired by its properties (counter and/or expiration date).
      *
      * @return bool
      */
-    public function isApplicableBleOnAtLeastOneOf($products)
+    public function isExpired()
     {
-        /** @var Product $product */
-        foreach ($products as $product) {
-            if ($this->isApplicableOn($product)) {
-                return true;
-            }
-        }
+        return $this->counter === 0 || ($this->expire_at !== null && $this->expire_at->isPast());
+    }
 
-        return false;
+    /**
+     * BelongsToMany Product.
+     *
+     * @return BelongsToMany
+     */
+    public function products()
+    {
+        return $this->belongsToMany(Product::class);
     }
 }

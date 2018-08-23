@@ -37,13 +37,40 @@ class SubscriptionController extends Controller
     ];
 
     /**
-     * Generate an unique transaction id based on an uuid and the prefix sub_.
+     * Estimate the price of the trial before the regular subscription billing cycles.
      *
-     * @return string
+     * @param string $plan
+     *
+     * @throws Http400InvalidPlanException
+     *
+     * @return JsonResponse
      */
-    private function generateSubscriptionId(): string
+    public function estimate(string $plan)
     {
-        return "sub_" . str_replace("-", "", \Faker\Factory::create()->uuid);
+        if (!\in_array($plan, array_keys(self::PRICE_PER_MONTH), true)) {
+            throw new Http400InvalidPlanException($plan);
+        }
+
+        return new JsonResponse([
+            "price" => $this->getTrialPrice($plan),
+            "end_date" => $this->getStartDate($plan),
+        ]);
+    }
+
+    /**
+     * @param string $plan
+     *
+     * @return float|int
+     */
+    private function getTrialPrice(string $plan)
+    {
+        $now = Carbon::now();
+        $trialEndDate = $this->getStartDate($plan);
+
+        $diffInMonths = $trialEndDate->diffInMonths($now);
+        $diffInDays = $trialEndDate->diffInDays($now->addMonths($diffInMonths));
+
+        return round($diffInMonths * self::PRICE_PER_MONTH[$plan] + $diffInDays * (self::PRICE_PER_MONTH[$plan] / 30), 2);
     }
 
     /**
@@ -76,47 +103,10 @@ class SubscriptionController extends Controller
     }
 
     /**
-     * @param string $plan
-     *
-     * @return float|int
-     */
-    private function getTrialPrice(string $plan)
-    {
-        $now = Carbon::now();
-        $trialEndDate = $this->getStartDate($plan);
-
-        $diffInMonths = $trialEndDate->diffInMonths($now);
-        $diffInDays = $trialEndDate->diffInDays($now->addMonths($diffInMonths));
-
-        return round($diffInMonths * self::PRICE_PER_MONTH[$plan] + $diffInDays * (self::PRICE_PER_MONTH[$plan] / 30), 2);
-    }
-
-    /**
-     * Estimate the price of the trial before the regular subscription billing cycles.
-     *
-     * @param string $plan
-     *
-     * @throws Http400InvalidPlanException
-     *
-     * @return JsonResponse
-     */
-    public function estimate(string $plan)
-    {
-        if (!\in_array($plan, array_keys(self::PRICE_PER_MONTH), true)) {
-            throw new Http400InvalidPlanException($plan);
-        }
-
-        return new JsonResponse([
-            "price" => $this->getTrialPrice($plan),
-            "end_date" => $this->getStartDate($plan),
-        ]);
-    }
-
-    /**
      * Get a transaction by its id.
      *
-     * @param Request $request
-     * @param string  $subscriptionId
+     * @param Request $request        The request
+     * @param string  $subscriptionId The Braintree subscription id
      *
      * @throws Http401UnauthorizedException
      *
@@ -141,7 +131,7 @@ class SubscriptionController extends Controller
     /**
      * Create a new subscriptions for a user.
      *
-     * @param Request $request
+     * @param Request $request The request
      *
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
@@ -192,7 +182,8 @@ class SubscriptionController extends Controller
         $isFamilyPack = !empty($familyEmails);
 
         if ($isFamilyPack) {
-            $family = User::whereIn("email", $familyEmails)->get(); // Retrieve the other users
+            $family = User::whereIn("email", $familyEmails)
+                ->get(); // Retrieve the other users
 
             /** @var User $member */
             foreach ($family as $member) {
@@ -214,11 +205,14 @@ class SubscriptionController extends Controller
             $data = array_merge($data, [
                 "trialPeriod" => true,
                 "trialDurationUnit" => "day",
-                "trialDuration" => $this->getStartDate($plan)->diffInDays(Carbon::now()) + 1,
+                "trialDuration" => $this->getStartDate($plan)
+                        ->diffInDays(Carbon::now()) + 1,
             ]);
 
-            $description = "Abonnement premium du " . Carbon::now()->format("d/m/Y") . " au " .
-                $this->getStartDate($plan)->format("d/m/Y");
+            $description = "Abonnement premium du " . Carbon::now()
+                    ->format("d/m/Y") . " au " .
+                $this->getStartDate($plan)
+                    ->format("d/m/Y");
             $trialPrice = $this->getTrialPrice($plan);
 
             $initialSaleData = [
@@ -308,10 +302,20 @@ class SubscriptionController extends Controller
     }
 
     /**
+     * Generate an unique transaction id based on an uuid and the prefix sub_.
+     *
+     * @return string
+     */
+    private function generateSubscriptionId(): string
+    {
+        return "sub_" . str_replace("-", "", \Faker\Factory::create()->uuid);
+    }
+
+    /**
      * Cancel a subscription for a user.
      *
-     * @param Request $request
-     * @param string  $subscriptionId
+     * @param Request $request        The request
+     * @param string  $subscriptionId The Braintree subscription id
      *
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
@@ -334,7 +338,8 @@ class SubscriptionController extends Controller
             $subscription = $subscriptionResult->subscription;
 
             $customerResultSearch = \Braintree_Customer::search([
-                \Braintree_CustomerSearch::paymentMethodToken()->is($subscription->paymentMethodToken),
+                \Braintree_CustomerSearch::paymentMethodToken()
+                    ->is($subscription->paymentMethodToken),
             ]);
 
             $customer = User::whereBraintreeId($customerResultSearch->firstItem()->id)
@@ -353,8 +358,8 @@ class SubscriptionController extends Controller
     /**
      * Get the user subscriptions.
      *
-     * @param Request $request
-     * @param int     $userId
+     * @param Request $request The request
+     * @param int     $userId  The user id
      *
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException

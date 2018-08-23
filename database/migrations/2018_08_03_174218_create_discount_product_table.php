@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Schema;
 /**
  * Class CreateDiscountProductTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
  *
- * @since 4.1.0
+ * @since     4.1.0
  *
  * @copyright Mathrix Education SA
  */
@@ -22,13 +22,19 @@ class CreateDiscountProductTable extends Migration
     {
         Schema::create("discount_product", function (Blueprint $table) {
             $table->increments("id");
-            $table->integer("discount_id")->unsigned();
-            $table->integer("product_id")->unsigned();
+            $table->integer("discount_id")
+                ->unsigned();
+            $table->integer("product_id")
+                ->unsigned();
             $table->timestamps();
 
             // Foreign keys
-            $table->foreign("discount_id")->references("id")->on("discounts");
-            $table->foreign("product_id")->references("id")->on("products");
+            $table->foreign("discount_id")
+                ->references("id")
+                ->on("discounts");
+            $table->foreign("product_id")
+                ->references("id")
+                ->on("products");
         });
     }
 

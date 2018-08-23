@@ -42,7 +42,7 @@ class AuthController extends BaseController
      * @apiError (Error 404) model_not_found The user with given `email` was not found
      * @apiError (Error 422) validation At least one field is missing
      *
-     * @param Request $request
+     * @param Request $request The request
      *
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
@@ -54,7 +54,8 @@ class AuthController extends BaseController
     {
         // Try to find the user by email to get scope
         /** @var User $user */
-        $user = User::where("email", $request->input("username"))->first();
+        $user = User::where("email", $request->input("username"))
+            ->first();
 
         if ($user !== null) {
             $request->merge(["scope" => $user->type]);
@@ -91,7 +92,7 @@ class AuthController extends BaseController
      * @apiError (Error 401) invalid_client Invalid client id or secret
      * @apiError (Error 401) invalid_request Invalid refresh token
      *
-     * @param Request $request
+     * @param Request $request The request
      *
      * @return JsonResponse
      */
@@ -117,7 +118,7 @@ class AuthController extends BaseController
      * @apiError (Error 422) save Unable to save the user
      * @apiError (Error 502) email_not_sent Unable to send reset email
      *
-     * @param Request $request
+     * @param Request $request The request
      *
      * @throws Http400InvalidRequestException
      *
@@ -127,7 +128,8 @@ class AuthController extends BaseController
     {
         // Try to find the user with the given email
         /** @var User $user */
-        $user = User::where("email", $request->input("email"))->firstOrFail();
+        $user = User::where("email", $request->input("email"))
+            ->firstOrFail();
 
         if (!empty($user->settings["facebook_id"])) {
             throw new Http400InvalidRequestException("Cannot reset password of a facebook account");
@@ -156,8 +158,8 @@ class AuthController extends BaseController
      * @apiError (Error 422) validation The password field is missing
      * @apiError (Error 422) save The validated password save failed
      *
-     * @param Request $request
-     * @param string  $token The reset token
+     * @param Request $request The request
+     * @param string  $token   The reset token
      *
      * @throws Http400InvalidRequestException
      *
@@ -171,7 +173,8 @@ class AuthController extends BaseController
 
         // Try to find with the given token
         /** @var User $user */
-        $user = User::where("token", $token)->firstOrFail();
+        $user = User::where("token", $token)
+            ->firstOrFail();
 
         // Update password
         $user->unguardAttributes(["token"]);

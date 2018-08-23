@@ -34,13 +34,15 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
         if (isset($model->createdAt)) {
             $this->createdAt = new Carbon(
                 $model->createdAt->format("Y-m-d H:i:s"),
-                $model->createdAt->getTimezone()->getName()
+                $model->createdAt->getTimezone()
+                    ->getName()
             );
         }
         if (isset($model->updatedAt)) {
             $this->updatedAt = new Carbon(
                 $model->updatedAt->format("Y-m-d H:i:s"),
-                $model->updatedAt->getTimezone()->getName()
+                $model->updatedAt->getTimezone()
+                    ->getName()
             );
         }
     }
@@ -63,16 +65,6 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
     }
 
     /**
-     * The findOr function, must be reimplemented.
-     *
-     * @param string   $id
-     * @param callable $callback
-     *
-     * @return mixed
-     */
-    abstract public static function findOr(string $id, callable $callback);
-
-    /**
      * Find a plan by its id or return null.
      *
      * @param string $id
@@ -86,6 +78,16 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
     }
 
     /**
+     * The findOr function, must be reimplemented.
+     *
+     * @param string   $id
+     * @param callable $callback
+     *
+     * @return mixed
+     */
+    abstract public static function findOr(string $id, callable $callback);
+
+    /**
      * Find a plan by its id.
      *
      * @param string $id
@@ -97,26 +99,6 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
         return static::findOr($id, function () {
             throw new Http404ModelNotFoundException();
         });
-    }
-
-    /**
-     * Get the array representation of the Plan.
-     *
-     * @return array
-     */
-    public function toArray()
-    {
-        $planData = $this->model->jsonSerialize();
-
-        foreach ($this->attributes as $key => $value) {
-            if ($value instanceof Carbon) {
-                $value = $value->__toString();
-            }
-
-            $planData[$key] = $value;
-        }
-
-        return $planData;
     }
 
     /**
@@ -189,6 +171,26 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
     public function toJson($options = 0): string
     {
         return json_encode($this->toArray(), $options);
+    }
+
+    /**
+     * Get the array representation of the Plan.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $planData = $this->model->jsonSerialize();
+
+        foreach ($this->attributes as $key => $value) {
+            if ($value instanceof Carbon) {
+                $value = $value->__toString();
+            }
+
+            $planData[$key] = $value;
+        }
+
+        return $planData;
     }
 
     /**

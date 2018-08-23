@@ -29,7 +29,7 @@ class MailchimpController extends BaseController
      * @apiParam {string=subscribers,parents,profs} list
      * @apiUse         Http400InvalidRequest
      *
-     * @param Request $request
+     * @param Request $request The request
      * @param string  $list
      *
      * @throws Http400InvalidRequestException

@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @since     1.0.0
  *
  * @copyright Mathrix Education SA
- * ----
  *
  * @property int               $id
  * @property string            $name

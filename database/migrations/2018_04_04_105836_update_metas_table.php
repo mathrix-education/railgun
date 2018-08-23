@@ -7,9 +7,9 @@ use Illuminate\Database\Schema\Blueprint;
 /**
  * Class UpdateMetasTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
- * @since 1.0.1
+ * @since     1.0.1
  *
  * @copyright Mathrix Education SA
  */
@@ -21,8 +21,12 @@ class UpdateMetasTable extends Migration
     public function up()
     {
         Schema::table("metas", function (Blueprint $table) {
-            $table->boolean("to_revise")->after("favorite")->default(false);
-            $table->boolean("completed")->after("to_revise")->default(false);
+            $table->boolean("to_revise")
+                ->after("favorite")
+                ->default(false);
+            $table->boolean("completed")
+                ->after("to_revise")
+                ->default(false);
             $table->dateTime("created_at");
             $table->dateTime("updated_at");
         });
@@ -45,7 +49,9 @@ class UpdateMetasTable extends Migration
     public function down()
     {
         Schema::table("metas", function (Blueprint $table) {
-            $table->enum("status", ["to_revise", "completed"])->after("favorite")->default(null);
+            $table->enum("status", ["to_revise", "completed"])
+                ->after("favorite")
+                ->default(null);
         });
 
         $metas = Meta::all();

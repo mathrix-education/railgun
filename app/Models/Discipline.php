@@ -14,12 +14,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * ----
  *
  * @property int                  $id
  * @property string               $name
  * @property string               $slug
  * @property bool                 $beta
+ * @property bool                 $visible
  * @property array                $link
  * @property Collection|Chapter[] $chapters
  * @property Collection|Class_[]  $classes
@@ -30,7 +30,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Discipline whereBeta($value)
  * @method static Builder|Discipline whereVisible($value)
  *
- * @property bool                 $visible
  * @mixin \Eloquent
  */
 class Discipline extends BaseModel

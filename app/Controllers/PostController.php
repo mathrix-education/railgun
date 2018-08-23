@@ -32,7 +32,7 @@ class PostController extends BaseController
      * @apiUse         Pagination
      * @apiUse         PostArray
      *
-     * @param Request $request
+     * @param Request $request The request
      * @param int     $page
      * @param int     $perPage
      * @param array   $options
@@ -78,7 +78,7 @@ class PostController extends BaseController
      * @apiUse         Http422ModelValidation
      * @apiUse         Http422ModelSave
      *
-     * @param Request $request
+     * @param Request $request The request
      *
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
@@ -89,7 +89,8 @@ class PostController extends BaseController
      */
     public function add(Request $request): JsonResponse
     {
-        if ($request->user() !== null && $request->user()->cant("add", Post::class)) {
+        if ($request->user() !== null && $request->user()
+                ->cant("add", Post::class)) {
             throw new Http401UnauthorizedException();
         }
 

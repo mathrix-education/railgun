@@ -5,7 +5,7 @@ namespace Tests\API;
 /**
  * Class VersionTest.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
  *
  * @since
  *

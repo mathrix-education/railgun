@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Notification;
 /**
  * Class CartIntegrationTest.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
  *
- * @since 4.1.0
+ * @since     4.1.0
  *
  * @copyright Mathrix Education SA
  */
@@ -35,7 +35,9 @@ class CartTest extends BraintreeTestCase
             ->where("counter", ">", 0)
             ->firstOrFail();
         $counterBefore = $discount->counter;
-        $productIds = $discount->products()->get()->pluck("id");
+        $productIds = $discount->products()
+            ->get()
+            ->pluck("id");
         $user = $this->getBraintreeCustomer();
         $this->setUser($user);
 
@@ -64,7 +66,8 @@ class CartTest extends BraintreeTestCase
         Notification::fake();
 
         $customer = $this->getBraintreeCustomer();
-        $support = User::where("type", "=", "support")->firstOrFail();
+        $support = User::where("type", "=", "support")
+            ->firstOrFail();
         $this->setUser($support);
 
         $productIds = Product::inRandomOrder()

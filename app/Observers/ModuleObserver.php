@@ -27,12 +27,14 @@ class ModuleObserver extends BaseObserver
         if (isset($module->link["activities"])) {
             $toSync = [];
             foreach ($module->link["activities"] as $order => $notionId) {
-                if (Activity::whereId($notionId)->exists()) {
+                if (Activity::whereId($notionId)
+                    ->exists()) {
                     $toSync[$notionId] = ["order" => $order];
                 }
             }
 
-            $module->activities()->sync($toSync);
+            $module->activities()
+                ->sync($toSync);
         }
 
         if (isset($module->link)) {
@@ -53,13 +55,19 @@ class ModuleObserver extends BaseObserver
      */
     public function deleting($module)
     {
-        $module->activities()->detach();
-        Meta::whereModuleId($module->id)->delete();
-        Post::whereModuleId($module->id)->delete();
-        Product::whereModuleId($module->id)->get()->each(function (Product $product) {
-            $product->delete();
-        });
-        Report::whereModuleId($module->id)->delete();
+        $module->activities()
+            ->detach();
+        Meta::whereModuleId($module->id)
+            ->delete();
+        Post::whereModuleId($module->id)
+            ->delete();
+        Product::whereModuleId($module->id)
+            ->get()
+            ->each(function (Product $product) {
+                $product->delete();
+            });
+        Report::whereModuleId($module->id)
+            ->delete();
 
         return true;
     }

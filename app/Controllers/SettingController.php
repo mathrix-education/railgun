@@ -31,7 +31,7 @@ class SettingController extends BaseController
      * @apiPermission  public for visible settings
      * @apiUse         SettingArray
      *
-     * @param Request $request
+     * @param Request $request The request
      *
      * @return JsonResponse
      */
@@ -41,7 +41,8 @@ class SettingController extends BaseController
         $canSeeHiddenSettings = $user !== null && $user->isAdmin();
 
         if (!$canSeeHiddenSettings) {
-            $settings = Setting::whereVisible(true)->get();
+            $settings = Setting::whereVisible(true)
+                ->get();
         } else {
             $settings = Setting::all();
         }
@@ -61,7 +62,7 @@ class SettingController extends BaseController
      * @apiUse         SettingModel
      * @apiUse         Http404ModelNotFound
      *
-     * @param Request $request
+     * @param Request $request The request
      * @param string  $key
      *
      * @throws Http404ModelNotFoundException
@@ -71,7 +72,8 @@ class SettingController extends BaseController
     public function read(Request $request, string $key): JsonResponse
     {
         /** @var Setting $setting */
-        $setting = Setting::where("key", "=", $key)->first();
+        $setting = Setting::where("key", "=", $key)
+            ->first();
         /** @var User $user */
         $user = $request->user();
 
@@ -100,7 +102,7 @@ class SettingController extends BaseController
      * @apiUse         Http422ModelValidation
      * @apiUse         Http422ModelSave
      *
-     * @param Request $request
+     * @param Request $request The request
      *
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
@@ -114,7 +116,8 @@ class SettingController extends BaseController
         $user->canOrFail("write", Setting::class);
 
         /** @var Setting $setting */
-        $setting = Setting::where("key", "=", $request->input("key"))->first();
+        $setting = Setting::where("key", "=", $request->input("key"))
+            ->first();
 
         if ($setting === null) {
             $setting = new Setting();
@@ -141,7 +144,7 @@ class SettingController extends BaseController
      * @apiUse         Http401Unauthorized
      * @apiUse         Http404ModelNotFound
      *
-     * @param Request $request
+     * @param Request $request The request
      * @param string  $key
      *
      * @throws Http422ModelSaveException

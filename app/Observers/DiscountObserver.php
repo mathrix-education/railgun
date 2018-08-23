@@ -27,7 +27,8 @@ class DiscountObserver extends BaseObserver
         if (isset($discount->link["products"])) {
             $toSync = [];
             foreach ($discount->link["products"] as $productId) {
-                if (Product::whereId($productId)->exists()) {
+                if (Product::whereId($productId)
+                    ->exists()) {
                     /** @var Product $product */
                     $product = Product::find($productId);
                     if ($product->price !== null) {
@@ -35,7 +36,8 @@ class DiscountObserver extends BaseObserver
                     }
                 }
             }
-            $discount->products()->sync($toSync);
+            $discount->products()
+                ->sync($toSync);
         }
 
         if (isset($discount->link)) {
@@ -52,7 +54,8 @@ class DiscountObserver extends BaseObserver
      */
     public function deleting($discount)
     {
-        $discount->products()->detach();
+        $discount->products()
+            ->detach();
 
         return true;
     }

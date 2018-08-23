@@ -6,9 +6,9 @@ use App\Models\Product;
 /**
  * Class DiscountTableSeeder.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
- * @since 4.0.3
+ * @since     4.0.3
  *
  * @copyright Mathrix Education SA
  */

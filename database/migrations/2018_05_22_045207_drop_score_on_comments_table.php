@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Schema;
 /**
  * Class DropScoreOnCommentsTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
- * @since 4.0.3
+ * @since     4.0.3
  *
  * @copyright Mathrix Education SA
  */
@@ -31,7 +31,8 @@ class DropScoreOnCommentsTable extends Migration
     public function down()
     {
         Schema::table("comments", function (Blueprint $table) {
-            $table->integer("score")->after("content");
+            $table->integer("score")
+                ->after("content");
         });
     }
 }

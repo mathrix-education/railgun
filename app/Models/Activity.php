@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * ----
  *
  * @property int                  $id
  * @property string               $name
@@ -90,7 +89,8 @@ class Activity extends BaseModel implements Commentable
      */
     public function modules(): BelongsToMany
     {
-        return $this->belongsToMany(Module::class)->withPivot(["order"]);
+        return $this->belongsToMany(Module::class)
+            ->withPivot(["order"]);
     }
 
     /**
@@ -100,7 +100,8 @@ class Activity extends BaseModel implements Commentable
      */
     public function notions(): BelongsToMany
     {
-        return $this->belongsToMany(Notion::class)->withPivot(["order"]);
+        return $this->belongsToMany(Notion::class)
+            ->withPivot(["order"]);
     }
 
     /*
@@ -126,9 +127,10 @@ class Activity extends BaseModel implements Commentable
         $meta = Meta::where([
             ["activity_id", $this->id],
             ["user_id", $user->id],
-        ])->first();
+        ])
+            ->first();
 
-        return $meta === null ? false : (bool)$meta->favorite;
+        return $meta === null ? false : (bool) $meta->favorite;
     }
 
     /**
@@ -148,7 +150,8 @@ class Activity extends BaseModel implements Commentable
         $meta = Meta::where([
             ["activity_id", $this->id],
             ["user_id", $user->id],
-        ])->first();
+        ])
+            ->first();
 
         return $meta === null ? null : $meta->to_revise;
     }
@@ -170,7 +173,8 @@ class Activity extends BaseModel implements Commentable
         $meta = Meta::where([
             ["activity_id", $this->id],
             ["user_id", $user->id],
-        ])->first();
+        ])
+            ->first();
 
         return $meta === null ? null : $meta->completed;
     }

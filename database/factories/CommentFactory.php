@@ -21,12 +21,18 @@ $factory->define(Comment::class, function (Generator $faker) {
     return [
         "content" => $faker->text(),
         "parent_id" => $faker->boolean(60) ? null : $faker->randomElement(
-            Comment::whereNull("parent_id")->pluck("id")->toArray()
+            Comment::whereNull("parent_id")
+                ->pluck("id")
+                ->toArray()
         ),
-        "user_id" => $faker->randomElement(User::all()->pluck("id")->toArray()),
+        "user_id" => $faker->randomElement(User::all()
+            ->pluck("id")
+            ->toArray()),
         "created_at" => $created,
         "updated_at" => $faker->boolean(90) ? $created : $faker->dateTimeBetween($created, "now"),
-        "commentable_id" => $faker->randomElement($commentable_class::all()->pluck("id")->toArray()),
+        "commentable_id" => $faker->randomElement($commentable_class::all()
+            ->pluck("id")
+            ->toArray()),
         "commentable_type" => $commentable_type,
     ];
 });
@@ -38,7 +44,8 @@ $factory->define(Comment::class, function (Generator $faker) {
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->defineAs(Comment::class, "child", function () use ($factory) {
-    $parent = Comment::whereNull("parent_id")->firstOrFail();
+    $parent = Comment::whereNull("parent_id")
+        ->firstOrFail();
 
     return array_merge($factory->raw(Comment::class), ["parent_id" => $parent->id]);
 });

@@ -6,9 +6,9 @@ use Illuminate\Database\Schema\Blueprint;
 /**
  * Class RemoveShortSlugs.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
- * @since 1.0.1
+ * @since     1.0.1
  *
  * @copyright Mathrix Education SA
  */
@@ -38,19 +38,23 @@ class RemoveShortSlugs extends Migration
     public function down()
     {
         Schema::table("countries", function (Blueprint $table) {
-            $table->string("name_short")->after("name");
+            $table->string("name_short")
+                ->after("name");
             $table->renameColumn("slug", "slug_short");
         });
         Schema::table("countries", function (Blueprint $table) {
-            $table->string("slug")->after("name_short");
+            $table->string("slug")
+                ->after("name_short");
         });
 
         Schema::table("classes", function (Blueprint $table) {
-            $table->string("name_short")->after("name");
+            $table->string("name_short")
+                ->after("name");
             $table->renameColumn("slug", "slug_short");
         });
         Schema::table("classes", function (Blueprint $table) {
-            $table->string("slug")->after("name_short");
+            $table->string("slug")
+                ->after("name_short");
         });
     }
 }

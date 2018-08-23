@@ -32,11 +32,13 @@ class ChapterObserver extends BaseObserver
         if (isset($chapter->link["notions"])) {
             $toSync = [];
             foreach ($chapter->link["notions"] as $order => $notionId) {
-                if (Notion::whereId($notionId)->exists()) {
+                if (Notion::whereId($notionId)
+                    ->exists()) {
                     $toSync[$notionId] = ["order" => $order];
                 }
             }
-            $chapter->notions()->sync($toSync);
+            $chapter->notions()
+                ->sync($toSync);
         }
 
         if (isset($chapter->link)) {
@@ -55,10 +57,13 @@ class ChapterObserver extends BaseObserver
      */
     public function deleting($chapter)
     {
-        $chapter->notions()->detach();
-        Meta::whereChapterId($chapter->id)->get()->each(function (Meta $meta) {
-            $meta->delete();
-        });
+        $chapter->notions()
+            ->detach();
+        Meta::whereChapterId($chapter->id)
+            ->get()
+            ->each(function (Meta $meta) {
+                $meta->delete();
+            });
 
         return true;
     }

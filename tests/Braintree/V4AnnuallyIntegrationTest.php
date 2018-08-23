@@ -10,9 +10,9 @@ use Laravel\Passport\Passport;
 /**
  * Class V4AnnuallyIntegrationTest.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
  *
- * @since 4.1.0
+ * @since     4.1.0
  *
  * @copyright Mathrix Education SA
  */
@@ -46,7 +46,8 @@ class V4AnnuallyIntegrationTest extends BraintreeTestCase
             "paymentMethodNonce" => "fake-valid-visa-nonce",
         ]);
 
-        $children = User::whereIn("email", $childEmails)->get();
+        $children = User::whereIn("email", $childEmails)
+            ->get();
 
         $this->assertHttp200Success();
         $this->assertNotInDatabase("users", [

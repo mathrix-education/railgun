@@ -6,9 +6,9 @@ use Illuminate\Database\Schema\Blueprint;
 /**
  * Class CreateSettingsTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
- * @since 4.0.3
+ * @since     4.0.3
  *
  * @copyright Mathrix Education SA
  */
@@ -21,9 +21,11 @@ class CreateSettingsTable extends Migration
     {
         Schema::create("settings", function (Blueprint $table) {
             $table->increments("id");
-            $table->string("key")->index();
+            $table->string("key")
+                ->index();
             $table->text("value");
-            $table->boolean("visible")->default(1);
+            $table->boolean("visible")
+                ->default(1);
         });
     }
 

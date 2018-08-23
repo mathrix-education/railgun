@@ -76,7 +76,8 @@ class Cart
         $productIds = array_unique($productIds); // Remove double ids
 
         foreach ($productIds as $productId) {
-            $product = Product::where("id", "=", $productId)->firstOrFail();
+            $product = Product::where("id", "=", $productId)
+                ->firstOrFail();
 
             if ($product->price === null) {
                 throw new Http400InvalidRequestException("Product `id` {$this->customer->id} cannot be "
@@ -114,39 +115,11 @@ class Cart
     public function setDiscount(string $discountCode = null)
     {
         if ($discountCode !== null) {
-            $this->discount = Discount::where("code", "=", $discountCode)->firstOrFail();
+            $this->discount = Discount::where("code", "=", $discountCode)
+                ->firstOrFail();
         }
 
         return $this;
-    }
-
-    /**
-     * Validate all properties before engaging the Braintree request data.
-     *
-     * @throws Http400InvalidRequestException
-     */
-    private function validate()
-    {
-        // Check customer existence
-        if ($this->customer === null) {
-            throw new Http400InvalidRequestException("Not customer set in the cart");
-        }
-
-        // Check customer validity
-        $this->customer->requireBraintreeCustomer();
-
-        if ($this->discount !== null) {
-            // Check for discount expiration
-            if ($this->discount->isExpired()) {
-                throw new Http400InvalidRequestException("Discount with code `{$this->discount->code}` has expired");
-            }
-
-            // Check discount application
-            if (!$this->discount->isApplicableBleOnAtLeastOneOf($this->products)) {
-                throw new Http400InvalidRequestException("Discount with code `{$this->discount->code}` is not"
-                    . " applicable on current cart");
-            }
-        }
     }
 
     /**
@@ -200,5 +173,34 @@ class Cart
         ];
 
         return $saleData;
+    }
+
+    /**
+     * Validate all properties before engaging the Braintree request data.
+     *
+     * @throws Http400InvalidRequestException
+     */
+    private function validate()
+    {
+        // Check customer existence
+        if ($this->customer === null) {
+            throw new Http400InvalidRequestException("Not customer set in the cart");
+        }
+
+        // Check customer validity
+        $this->customer->requireBraintreeCustomer();
+
+        if ($this->discount !== null) {
+            // Check for discount expiration
+            if ($this->discount->isExpired()) {
+                throw new Http400InvalidRequestException("Discount with code `{$this->discount->code}` has expired");
+            }
+
+            // Check discount application
+            if (!$this->discount->isApplicableBleOnAtLeastOneOf($this->products)) {
+                throw new Http400InvalidRequestException("Discount with code `{$this->discount->code}` is not"
+                    . " applicable on current cart");
+            }
+        }
     }
 }

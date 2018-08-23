@@ -10,9 +10,9 @@ use Illuminate\Database\Schema\Blueprint;
 /**
  * Class UpdatePostsTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
- * @since 1.0.1
+ * @since     1.0.1
  *
  * @copyright Mathrix Education SA
  */
@@ -28,10 +28,15 @@ class UpdatePostsTable extends Migration
     public function up()
     {
         Schema::table("posts", function (Blueprint $table) {
-            $table->integer("module_id")->unsigned()->after("slug")->nullable();
+            $table->integer("module_id")
+                ->unsigned()
+                ->after("slug")
+                ->nullable();
 
             // Foreign
-            $table->foreign("module_id")->references("id")->on("modules");
+            $table->foreign("module_id")
+                ->references("id")
+                ->on("modules");
         });
 
         $posts = Post::all();
@@ -66,7 +71,8 @@ class UpdatePostsTable extends Migration
     public function down()
     {
         Schema::table("posts", function (Blueprint $table) {
-            $table->text("content")->after("slug");
+            $table->text("content")
+                ->after("slug");
             $table->dropForeign("posts_module_id_foreign");
         });
 

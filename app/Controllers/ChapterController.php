@@ -107,9 +107,9 @@ class ChapterController extends BaseController
      * @apiUse         Http401Unauthorized
      * @apiUse         Http404ModelNotFound
      *
-     * @param Request $request
-     * @param int     $class_id
-     * @param int     $discipline_id
+     * @param Request $request       The request
+     * @param int     $class_id      The class id
+     * @param int     $discipline_id The discipline id
      *
      * @return JsonResponse
      */
@@ -143,18 +143,20 @@ class ChapterController extends BaseController
      * @apiUse         ChapterModel
      * @apiUse         Http404ModelNotFound
      *
-     * @param string $chapterSlug
-     * @param string $classSlug
+     * @param string $chapterSlug The chapter slug
+     * @param string $classSlug   The class slug
      *
      * @return JsonResponse
      */
     public function getBySlugAndClassSlug(string $chapterSlug, string $classSlug): JsonResponse
     {
-        $class = Class_::where("slug", "=", $classSlug)->firstOrFail();
+        $class = Class_::where("slug", "=", $classSlug)
+            ->firstOrFail();
         $chapter = Chapter::where([
             ["class_id", "=", $class->id],
             ["slug", "=", $chapterSlug],
-        ])->firstOrFail();
+        ])
+            ->firstOrFail();
 
         return new JsonResponse($chapter);
     }
@@ -170,7 +172,7 @@ class ChapterController extends BaseController
      * @apiParam {int} id the chapter id
      * @apiUse         ChapterArray
      *
-     * @param int $id
+     * @param int $id The chapter id
      *
      * @return JsonResponse
      */
@@ -179,13 +181,16 @@ class ChapterController extends BaseController
         /** @var Chapter $data */
         $data = Chapter::with([
             "notions" => function (BelongsToMany $q) {
-                return $q->where("visible", 1)->orderBy("chapter_notion.order");
+                return $q->where("visible", 1)
+                    ->orderBy("chapter_notion.order");
             },
             "notions.activities" => function (BelongsToMany $q) {
-                return $q->where("visible", 1)->orderBy("activity_notion.order");
+                return $q->where("visible", 1)
+                    ->orderBy("activity_notion.order");
             },
             "notions.activities.modules" => function (BelongsToMany $q) {
-                return $q->where("visible", 1)->orderBy("activity_module.order");
+                return $q->where("visible", 1)
+                    ->orderBy("activity_module.order");
             },
         ])
             ->where("id", $id)

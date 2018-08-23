@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Schema;
 /**
  * Class AddVisibleTrainingsTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
- * @since 4.0.0
+ * @since     4.0.0
  *
  * @copyright Mathrix Education SA
  */
@@ -21,7 +21,8 @@ class AddVisibleTrainingsTable extends Migration
     public function up()
     {
         Schema::table("trainings", function (Blueprint $table) {
-            $table->boolean("visible")->after("price");
+            $table->boolean("visible")
+                ->after("price");
         });
     }
 

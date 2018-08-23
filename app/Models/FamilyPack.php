@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @since     4.1.0
  *
  * @copyright Mathrix Education SA
- * ----
  *
  * @property int         $id
  * @property int         $child_id

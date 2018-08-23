@@ -65,7 +65,7 @@ class CommentController extends BaseController
      * @apiUse         Http422ModelValidation
      * @apiUse         Http422ModelSave
      *
-     * @param Request $request
+     * @param Request $request The request
      *
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
@@ -76,7 +76,8 @@ class CommentController extends BaseController
      */
     public function add(Request $request): JsonResponse
     {
-        $request->user()->canOrFail("add", Comment::class);
+        $request->user()
+            ->canOrFail("add", Comment::class);
 
         /** @var BaseModel $model */
         $comment = new Comment($request->all());
@@ -132,7 +133,7 @@ class CommentController extends BaseController
      * @apiParam {int} [perPage=10] the comments per page to fetch (excluding children)
      * @apiUse         CommentArray
      *
-     * @param Request $request
+     * @param Request $request The request
      * @param string  $what
      * @param int     $id
      * @param int     $page
@@ -147,7 +148,8 @@ class CommentController extends BaseController
         $modelClass = $this->resolveModelClass($what);
 
         /** @var Commentable $model */
-        $model = $modelClass::where("id", $id)->firstOrFail();
+        $model = $modelClass::where("id", $id)
+            ->firstOrFail();
 
         $comments = $this->orderCollection(
             $model->comments()
@@ -191,7 +193,7 @@ class CommentController extends BaseController
      * @apiUse         Bearer
      * @apiUse         CommentArray
      *
-     * @param Request $request
+     * @param Request $request The request
      * @param int     $page
      * @param int     $perPage
      *

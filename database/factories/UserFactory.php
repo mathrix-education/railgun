@@ -28,7 +28,8 @@ $factory->define(User::class, function (Generator $faker) {
         "settings" => [
             "sound" => $faker->boolean(70),
         ],
-        "class_id" => Class_::inRandomOrder()->firstOrFail()->id,
+        "class_id" => Class_::inRandomOrder()
+            ->firstOrFail()->id,
         "created_at" => $faker->dateTimeBetween("-1 years"),
     ];
 

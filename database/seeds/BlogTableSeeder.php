@@ -10,9 +10,9 @@ use App\Models\Quote;
 /**
  * Class BlogTableSeeder.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
- * @since 1.0.0
+ * @since     1.0.0
  *
  * @copyright Mathrix Education SA
  */

@@ -12,10 +12,10 @@ use Tests\Utils\Traits\Generics\Generics;
  * Class ScopeTestCase
  * Base test case for actions which rely on permissions.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
  *
- * @version 1.0.0
+ * @version   1.0.0
  */
 abstract class ScopeTestCase extends APITestCase
 {
@@ -123,7 +123,9 @@ abstract class ScopeTestCase extends APITestCase
 
             // User has NOT be manually defined from a sameAs() method
             if ($this->user === null) {
-                $this->user = User::inRandomOrder()->where("type", $this->scope)->first();
+                $this->user = User::inRandomOrder()
+                    ->where("type", $this->scope)
+                    ->first();
             }
 
             // No user could be found, the database is probably not seeded

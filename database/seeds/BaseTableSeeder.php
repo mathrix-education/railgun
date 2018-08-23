@@ -11,9 +11,9 @@ use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 /**
  * Class BaseTableSeeder.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
- * @since 1.0.0
+ * @since     1.0.0
  *
  * @copyright Mathrix Education SA
  */
@@ -65,7 +65,8 @@ abstract class BaseTableSeeder extends Seeder
      */
     public function call($class, $silent = false)
     {
-        $this->resolve($class)->__invoke();
+        $this->resolve($class)
+            ->__invoke();
     }
 
     /**
@@ -296,8 +297,10 @@ abstract class BaseTableSeeder extends Seeder
         $this->output->progressStart(count($links));
 
         foreach ($links as $model1Id => $model2IdsWithData) {
-            $model1 = $modelClass1::where("id", $model1Id)->firstOrFail();
-            $model1->$model2Table()->attach($model2IdsWithData);
+            $model1 = $modelClass1::where("id", $model1Id)
+                ->firstOrFail();
+            $model1->$model2Table()
+                ->attach($model2IdsWithData);
             $this->output->progressAdvance();
         }
 
@@ -337,7 +340,9 @@ abstract class BaseTableSeeder extends Seeder
         $faker = Faker\Factory::create();
         $models1 = $modelClass1::all();
         $model1Table = $modelClass1::getTableName();
-        $model2Ids = $modelClass2::get(["id"])->pluck("id")->toArray();
+        $model2Ids = $modelClass2::get(["id"])
+            ->pluck("id")
+            ->toArray();
         $model2Table = $modelClass2::getTableName();
 
         $this->println("<comment>Linking:</comment> $model1Table <=> $model2Table");

@@ -17,6 +17,14 @@ use Illuminate\Support\Facades\Cache;
 trait StripeCustomer
 {
     /**
+     * Delete the Stripe customer from the cache.
+     */
+    public function forgetStripeCustomerCache()
+    {
+        Cache::forget($this->getStripeCustomerCacheKey());
+    }
+
+    /**
      * Get the Brain customer cache used to get customer information from the cache.
      *
      * @return string
@@ -27,11 +35,33 @@ trait StripeCustomer
     }
 
     /**
-     * Delete the Stripe customer from the cache.
+     * Check if the user has subscribed to the given plan.
+     *
+     * @param string|array $plans
+     *
+     * @throws Http400InvalidRequestException
+     *
+     * @return bool
      */
-    public function forgetStripeCustomerCache()
+    public function hasStripeSubscription($plans)
     {
-        Cache::forget($this->getStripeCustomerCacheKey());
+        if (\is_string($plans)) {
+            $plans = [$plans];
+        }
+
+        if ($this->isStripeCustomer(true)) {
+            /** @var \Stripe\Subscription $subscription */
+            foreach ($this->getStripeSubscriptions() as $subscription) {
+                if (
+                    \in_array($subscription->plan->id, $plans, true) &&
+                    \in_array($subscription->status, ["trialing", "active"], true)
+                ) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -47,23 +77,9 @@ trait StripeCustomer
             return false;
         } elseif (!$strict) {
             return true;
-        } else {
-            return $this->getStripeCustomer() !== null;
         }
-    }
 
-    /**
-     * Throw an Http400InvalidRequestException if the user is not a Stripe cusstomer.
-     *
-     * @param bool $strict
-     *
-     * @throws Http400InvalidRequestException
-     */
-    public function requireStripeCustomer(bool $strict = false)
-    {
-        if (!$this->isStripeCustomer($strict)) {
-            throw new Http400InvalidRequestException("User with id `{$this->id}` is not a Stripe customer");
-        }
+        return $this->getStripeCustomer() !== null;
     }
 
     /**
@@ -98,32 +114,16 @@ trait StripeCustomer
     }
 
     /**
-     * Check if the user has subscribed to the given plan.
+     * Throw an Http400InvalidRequestException if the user is not a Stripe cusstomer.
      *
-     * @param string|array $plans
+     * @param bool $strict
      *
      * @throws Http400InvalidRequestException
-     *
-     * @return bool
      */
-    public function hasStripeSubscription($plans)
+    public function requireStripeCustomer(bool $strict = false)
     {
-        if (\is_string($plans)) {
-            $plans = [$plans];
+        if (!$this->isStripeCustomer($strict)) {
+            throw new Http400InvalidRequestException("User with id `{$this->id}` is not a Stripe customer");
         }
-
-        if ($this->isStripeCustomer(true)) {
-            /** @var \Stripe\Subscription $subscription */
-            foreach ($this->getStripeSubscriptions() as $subscription) {
-                if (
-                    \in_array($subscription->plan->id, $plans, true) &&
-                    \in_array($subscription->status, ["trialing", "active"], true)
-                ) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 }

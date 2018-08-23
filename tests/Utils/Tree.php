@@ -13,9 +13,9 @@ use App\Models\Notion;
 /**
  * Class Tree.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
- * @since 4.0.1
+ * @since     4.0.1
  *
  * @copyright Mathrix Education SA
  */
@@ -43,9 +43,15 @@ class Tree
         $this->class = $this->chapter->class_;
         $this->discipline = $this->chapter->discipline;
         $this->country = $this->class->country;
-        $this->notion = $this->chapter->notions()->inRandomOrder()->firstOrFail();
-        $this->activity = $this->notion->activities()->inRandomOrder()->firstOrFail();
-        $this->module = $this->activity->modules()->inRandomOrder()->firstOrFail();
+        $this->notion = $this->chapter->notions()
+            ->inRandomOrder()
+            ->firstOrFail();
+        $this->activity = $this->notion->activities()
+            ->inRandomOrder()
+            ->firstOrFail();
+        $this->module = $this->activity->modules()
+            ->inRandomOrder()
+            ->firstOrFail();
     }
 
     /**

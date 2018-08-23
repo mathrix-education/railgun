@@ -6,9 +6,9 @@ use Illuminate\Database\Schema\Blueprint;
 /**
  * Class CreateMetasTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
- * @since 1.0.0
+ * @since     1.0.0
  *
  * @copyright Mathrix Education SA
  */
@@ -21,26 +21,60 @@ class CreateMetasTable extends Migration
     {
         Schema::create("metas", function (Blueprint $table) {
             $table->increments("id");
-            $table->boolean("favorite")->default(false);
-            $table->enum("status", ["completed", "to_revise"])->nullable()->default(null);
-            $table->integer("user_id")->unsigned();
-            $table->integer("country_id")->unsigned()->nullable();
-            $table->integer("class_id")->unsigned()->nullable();
-            $table->integer("discipline_id")->unsigned()->nullable();
-            $table->integer("chapter_id")->unsigned()->nullable();
-            $table->integer("notion_id")->unsigned()->nullable();
-            $table->integer("activity_id")->unsigned()->nullable();
-            $table->integer("module_id")->unsigned()->nullable();
+            $table->boolean("favorite")
+                ->default(false);
+            $table->enum("status", ["completed", "to_revise"])
+                ->nullable()
+                ->default(null);
+            $table->integer("user_id")
+                ->unsigned();
+            $table->integer("country_id")
+                ->unsigned()
+                ->nullable();
+            $table->integer("class_id")
+                ->unsigned()
+                ->nullable();
+            $table->integer("discipline_id")
+                ->unsigned()
+                ->nullable();
+            $table->integer("chapter_id")
+                ->unsigned()
+                ->nullable();
+            $table->integer("notion_id")
+                ->unsigned()
+                ->nullable();
+            $table->integer("activity_id")
+                ->unsigned()
+                ->nullable();
+            $table->integer("module_id")
+                ->unsigned()
+                ->nullable();
 
             // Foreign keys
-            $table->foreign("user_id")->references("id")->on("users");
-            $table->foreign("country_id")->references("id")->on("countries");
-            $table->foreign("class_id")->references("id")->on("classes");
-            $table->foreign("discipline_id")->references("id")->on("disciplines");
-            $table->foreign("chapter_id")->references("id")->on("chapters");
-            $table->foreign("notion_id")->references("id")->on("notions");
-            $table->foreign("activity_id")->references("id")->on("activities");
-            $table->foreign("module_id")->references("id")->on("modules");
+            $table->foreign("user_id")
+                ->references("id")
+                ->on("users");
+            $table->foreign("country_id")
+                ->references("id")
+                ->on("countries");
+            $table->foreign("class_id")
+                ->references("id")
+                ->on("classes");
+            $table->foreign("discipline_id")
+                ->references("id")
+                ->on("disciplines");
+            $table->foreign("chapter_id")
+                ->references("id")
+                ->on("chapters");
+            $table->foreign("notion_id")
+                ->references("id")
+                ->on("notions");
+            $table->foreign("activity_id")
+                ->references("id")
+                ->on("activities");
+            $table->foreign("module_id")
+                ->references("id")
+                ->on("modules");
         });
     }
 

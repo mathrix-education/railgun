@@ -5,7 +5,6 @@ namespace App\Notifications;
 use App\Models\User;
 use Illuminate\Notifications\Messages\SlackAttachment;
 use Illuminate\Notifications\Messages\SlackMessage;
-use Illuminate\Notifications\Notification;
 
 /**
  * Class NewSubscriptionNotification.

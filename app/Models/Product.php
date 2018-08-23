@@ -13,25 +13,27 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  *
  * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
  *
- * @since
+ * @since     4.1.0
  *
  * @copyright Mathrix Education SA
- * ----
  *
- * @property int                                                             $id
- * @property string                                                          $name
- * @property string                                                          $slug
- * @property string|null                                                     $image
- * @property string|null                                                     $type
- * @property string|null                                                     $description
- * @property float|null                                                      $price
- * @property bool                                                            $visible
- * @property int|null                                                        $module_id
- * @property Carbon|null                                                     $created_at
- * @property Carbon|null                                                     $updated_at
- * @property array                                                           $link
- * @property Collection|Product[]                                            $children
- * @property Collection|Product[]                                            $parents
+ * @property int                   $id
+ * @property string                $name
+ * @property string                $slug
+ * @property string|null           $image
+ * @property string|null           $type
+ * @property string|null           $description
+ * @property float|null            $price
+ * @property bool                  $visible
+ * @property int|null              $order
+ * @property int|null              $module_id
+ * @property Carbon|null           $created_at
+ * @property Carbon|null           $updated_at
+ * @property array                 $link
+ * @property Module|null           $module
+ * @property Collection|Product[]  $children
+ * @property Collection|Product[]  $parents
+ * @property Collection|Discount[] $discounts
  *
  * @method static Builder|Product whereId($value)
  * @method static Builder|Product whereName($value)
@@ -41,22 +43,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Product whereDescription($value)
  * @method static Builder|Product wherePrice($value)
  * @method static Builder|Product whereVisible($value)
+ * @method static Builder|Product whereOrder($value)
  * @method static Builder|Product whereModuleId($value)
  * @method static Builder|Product whereCreatedAt($value)
  * @method static Builder|Product whereUpdatedAt($value)
  *
- * @property int|null                                                        $order
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Discount[] $discounts
- * @property \App\Models\Module|null                                         $module
- *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Product whereOrder($value)
  * @mixin \Eloquent
  */
 class Product extends BaseModel
 {
+    /** @var bool Indicates if the model should be timestamped */
+    public $timestamps = true;
     /** @var array The attributes that are mass assignable */
     protected $fillable = ["name", "slug", "image", "type", "description", "price", "visible", "order", "module_id",
-        "created_at", "updated_at",];
+        "created_at", "updated_at", ];
     protected $rules = [
         "name" => "required|max:255",
         "slug" => "required|max:255",
@@ -71,8 +71,6 @@ class Product extends BaseModel
     protected $casts = [
         "visible" => "boolean",
     ];
-    /** @var bool Indicates if the model should be timestamped */
-    public $timestamps = true;
 
     /**
      * BelongsTo Module.
@@ -131,8 +129,8 @@ class Product extends BaseModel
             return $this->price * (1 - $discount->value / 100);
         } elseif ($discount->type === "absolute") {
             return $this->price - $discount->value;
-        } else {
-            return $this->price;
         }
+
+        return $this->price;
     }
 }

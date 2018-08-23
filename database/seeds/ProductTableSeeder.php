@@ -7,9 +7,9 @@ use App\Models\Product;
 /**
  * Class ProductTableSeeder.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
  *
- * @since 4.1.0
+ * @since     4.1.0
  *
  * @copyright Mathrix Education SA
  */
@@ -28,22 +28,27 @@ class ProductTableSeeder extends BaseTableSeeder
 
         $faker = Faker\Factory::create();
 
-        $products1 = Product::where("id", "<", 50)->get();
-        $products2 = Product::where([["id", ">", 51], ["id", "<", 150]])->get();
-        $products3 = Product::where("id", ">", 151)->get();
+        $products1 = Product::where("id", "<", 50)
+            ->get();
+        $products2 = Product::where([["id", ">", 51], ["id", "<", 150]])
+            ->get();
+        $products3 = Product::where("id", ">", 151)
+            ->get();
 
         $this->println("<comment>Linking:</comment> products <=> products");
         $this->output->progressStart($products1->count() + $products2->count());
         foreach ($products1 as $product1) {
             $product1->link = [
-                "children" => $faker->randomElements($products2->pluck("id")->toArray(), $faker->numberBetween(2, 3)),
+                "children" => $faker->randomElements($products2->pluck("id")
+                    ->toArray(), $faker->numberBetween(2, 3)),
             ];
             $product1->save();
             $this->output->progressAdvance();
         }
         foreach ($products2 as $product2) {
             $product2->link = [
-                "children" => $faker->randomElements($products3->pluck("id")->toArray(), $faker->numberBetween(2, 3)),
+                "children" => $faker->randomElements($products3->pluck("id")
+                    ->toArray(), $faker->numberBetween(2, 3)),
             ];
             $product2->save();
             $this->output->progressAdvance();

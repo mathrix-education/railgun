@@ -51,7 +51,8 @@ class Authenticate
     public function handle($request, Closure $next, $guard = null)
     {
         // Define unauthorized response
-        if ($this->auth->guard($guard)->guest()) {
+        if ($this->auth->guard($guard)
+            ->guest()) {
             throw new Http401UnauthorizedException();
         }
 

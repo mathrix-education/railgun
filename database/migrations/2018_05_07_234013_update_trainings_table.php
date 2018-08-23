@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Schema;
 /**
  * Class UpdateTrainingsTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
- * @since 4.0.0
+ * @since     4.0.0
  *
  * @copyright Mathrix Education SA
  */
@@ -21,8 +21,11 @@ class UpdateTrainingsTable extends Migration
     public function up()
     {
         Schema::table("trainings", function (Blueprint $table) {
-            $table->integer("price")->after("description");
-            $table->integer("order")->after("description")->default(0);
+            $table->integer("price")
+                ->after("description");
+            $table->integer("order")
+                ->after("description")
+                ->default(0);
         });
     }
 

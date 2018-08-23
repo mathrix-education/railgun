@@ -8,9 +8,9 @@ use App\Models\Vote;
 /**
  * Class CommentTableSeeder.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
- * @since 1.0.1
+ * @since     1.0.1
  *
  * @copyright Mathrix Education SA
  */

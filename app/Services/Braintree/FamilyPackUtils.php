@@ -3,7 +3,6 @@
 namespace App\Services\Braintree;
 
 use App\Services\Braintree\Models\AddOn;
-use App\Services\Braintree\Models\Plan;
 
 /**
  * Class FamilyPack.

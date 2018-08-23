@@ -6,9 +6,9 @@ use Illuminate\Database\Schema\Blueprint;
 /**
  * Class CreateSectionsTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
- * @since 1.0.1
+ * @since     1.0.1
  *
  * @copyright Mathrix Education SA
  */
@@ -24,11 +24,14 @@ class CreateSectionsTable extends Migration
             $table->string("name");
             $table->string("slug");
             $table->integer("order");
-            $table->integer("training_id")->unsigned();
+            $table->integer("training_id")
+                ->unsigned();
             $table->timestamps();
 
             // Foreign keys
-            $table->foreign("training_id")->references("id")->on("trainings");
+            $table->foreign("training_id")
+                ->references("id")
+                ->on("trainings");
         });
     }
 

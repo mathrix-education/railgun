@@ -47,7 +47,8 @@ class CommentPolicy extends BasePolicy
             return true;
         }
 
-        if ($currentUser->id === $comment->user_id && $comment->updated_at > Carbon::now()->subDays(3)) {
+        if ($currentUser->id === $comment->user_id && $comment->updated_at > Carbon::now()
+                ->subDays(3)) {
             return true;
         }
 

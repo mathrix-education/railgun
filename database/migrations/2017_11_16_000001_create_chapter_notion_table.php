@@ -9,9 +9,9 @@ use Illuminate\Database\Schema\Blueprint;
 /**
  * Class CreateChapterNotionTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
- * @since 1.0.0
+ * @since     1.0.0
  *
  * @copyright Mathrix Education SA
  */
@@ -24,19 +24,27 @@ class CreateChapterNotionTable extends Migration
     {
         Schema::create("chapter_notion", function (Blueprint $table) {
             $table->increments("id");
-            $table->integer("chapter_id")->unsigned();
-            $table->integer("notion_id")->unsigned();
-            $table->integer("order")->default(0);
+            $table->integer("chapter_id")
+                ->unsigned();
+            $table->integer("notion_id")
+                ->unsigned();
+            $table->integer("order")
+                ->default(0);
 
             // Foreign keys
-            $table->foreign("chapter_id")->references("id")->on("chapters");
-            $table->foreign("notion_id")->references("id")->on("notions");
+            $table->foreign("chapter_id")
+                ->references("id")
+                ->on("chapters");
+            $table->foreign("notion_id")
+                ->references("id")
+                ->on("notions");
         });
 
         $notions = Notion::all();
         /** @var Notion $notion */
         foreach ($notions as $notion) {
-            $notion->chapters()->attach([$notion->chapter_id => ["order" => $notion->order]]);
+            $notion->chapters()
+                ->attach([$notion->chapter_id => ["order" => $notion->order]]);
         }
 
         Schema::table("notions", function (Blueprint $table) {
@@ -57,16 +65,22 @@ class CreateChapterNotionTable extends Migration
     public function down()
     {
         Schema::table("notions", function (Blueprint $table) {
-            $table->integer("chapter_id")->unsigned()->nullable();
-            $table->integer("order")->default(0);
+            $table->integer("chapter_id")
+                ->unsigned()
+                ->nullable();
+            $table->integer("order")
+                ->default(0);
 
-            $table->foreign("chapter_id")->references("id")->on("chapters");
+            $table->foreign("chapter_id")
+                ->references("id")
+                ->on("chapters");
         });
 
         $notions = Notion::all();
         /** @var Notion $notion */
         foreach ($notions as $notion) {
-            $chapter = $notion->chapters()->first();
+            $chapter = $notion->chapters()
+                ->first();
 
             if ($chapter !== null) {
                 $notion->chapter_id = $chapter->id;

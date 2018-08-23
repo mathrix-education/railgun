@@ -6,9 +6,9 @@ use Illuminate\Database\Schema\Blueprint;
 /**
  * Class CreateDisciplinesTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
- * @since 1.0.0
+ * @since     1.0.0
  *
  * @copyright Mathrix Education SA
  */
@@ -23,8 +23,10 @@ class CreateDisciplinesTable extends Migration
             $table->increments("id");
             $table->string("name");
             $table->string("slug");
-            $table->boolean("beta")->default(0);
-            $table->boolean("visible")->default(true);
+            $table->boolean("beta")
+                ->default(0);
+            $table->boolean("visible")
+                ->default(true);
         });
     }
 

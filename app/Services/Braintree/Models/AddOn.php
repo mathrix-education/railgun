@@ -28,7 +28,6 @@ use Illuminate\Support\Str;
  * @property int|null $quantity
  * @property Carbon   $createdAt
  * @property Carbon   $updatedAt
- *                                           ----
  * @property bool     $hasTrial
  * @property int      $billingFrequency
  * @property float    $pricePerMonth
@@ -40,7 +39,7 @@ class AddOn extends BraintreeModel
     {
         parent::__construct($addOn);
 
-        $this->amount = (float)($addOn->amount);
+        $this->amount = (float) ($addOn->amount);
         $this->hasTrial = Str::contains($this->id, ["v4_biannually", "v4_annually"]);
 
         if (Str::contains($this->id, ["v4_biannually", "v4_annually"])) {
@@ -54,6 +53,26 @@ class AddOn extends BraintreeModel
         }
 
         $this->trialPrice = $this->getTrialPrice();
+    }
+
+    /**
+     * Get the trial price in euros.
+     *
+     * @return float
+     */
+    public function getTrialPrice()
+    {
+        if (!$this->hasTrial) {
+            return;
+        }
+
+        $now = Carbon::now();
+        $trialEndDate = $this->getTrialEndDate();
+
+        $diffInMonths = $trialEndDate->diffInMonths($now);
+        $diffInDays = $trialEndDate->diffInDays($now->addMonths($diffInMonths));
+
+        return round($diffInMonths * $this->pricePerMonth + $diffInDays * ($this->pricePerMonth / 30), 2);
     }
 
     /**
@@ -83,44 +102,6 @@ class AddOn extends BraintreeModel
     }
 
     /**
-     * Get the trial price in euros.
-     *
-     * @return float
-     */
-    public function getTrialPrice()
-    {
-        if (!$this->hasTrial) {
-            return;
-        }
-
-        $now = Carbon::now();
-        $trialEndDate = $this->getTrialEndDate();
-
-        $diffInMonths = $trialEndDate->diffInMonths($now);
-        $diffInDays = $trialEndDate->diffInDays($now->addMonths($diffInMonths));
-
-        return round($diffInMonths * $this->pricePerMonth + $diffInDays * ($this->pricePerMonth / 30), 2);
-    }
-
-    /**
-     * @return Collection
-     */
-    public static function all()
-    {
-        return Cache::remember("addons", 30, function () {
-            $addOns = \Braintree\AddOn::all();
-            $collection = new Collection();
-
-            foreach ($addOns as $addOn) {
-                $collection->push(new self($addOn));
-            }
-
-            // Don't forget to sort the values
-            return $collection->sortByDesc("id")->values();
-        });
-    }
-
-    /**
      * The findOr function, must be reimplemented.
      *
      * @param string   $id
@@ -140,5 +121,24 @@ class AddOn extends BraintreeModel
         }
 
         return $callback($id);
+    }
+
+    /**
+     * @return Collection
+     */
+    public static function all()
+    {
+        return Cache::remember("addons", 30, function () {
+            $addOns = \Braintree\AddOn::all();
+            $collection = new Collection();
+
+            foreach ($addOns as $addOn) {
+                $collection->push(new self($addOn));
+            }
+
+            // Don't forget to sort the values
+            return $collection->sortByDesc("id")
+                ->values();
+        });
     }
 }

@@ -12,28 +12,27 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * ----
  *
- * @property int            $id
- * @property bool           $favorite
- * @property bool           $to_revise
- * @property bool           $completed
- * @property int            $user_id
- * @property int|null       $country_id
- * @property int|null       $class_id
- * @property int|null       $discipline_id
- * @property int|null       $chapter_id
- * @property int|null       $notion_id
- * @property int|null       $activity_id
- * @property int|null       $module_id
- * @property User           $user
- * @property Country        $country
- * @property Discipline     $discipline
- * @property Class_|null    $class_
- * @property Chapter        $chapter
- * @property Notion         $notion
- * @property Activity       $activity
- * @property Module         $module
+ * @property int         $id
+ * @property bool        $favorite
+ * @property bool        $to_revise
+ * @property bool        $completed
+ * @property int         $user_id
+ * @property int|null    $country_id
+ * @property int|null    $class_id
+ * @property int|null    $discipline_id
+ * @property int|null    $chapter_id
+ * @property int|null    $notion_id
+ * @property int|null    $activity_id
+ * @property int|null    $module_id
+ * @property User        $user
+ * @property Country     $country
+ * @property Discipline  $discipline
+ * @property Class_|null $class_
+ * @property Chapter     $chapter
+ * @property Notion      $notion
+ * @property Activity    $activity
+ * @property Module      $module
  *
  * @method static Builder|Meta whereId($value)
  * @method static Builder|Meta whereFavorite($value)
@@ -60,7 +59,7 @@ class Meta extends BaseModel
     public $timestamps = true;
     /** @var array The attributes that are mass assignable */
     public $fillable = ["id", "favorite", "to_revise", "completed", "user_id", "country_id", "class_id", "discipline_id",
-        "chapter_id", "notion_id", "activity_id", "module_id", "created_at", "updated_at",];
+        "chapter_id", "notion_id", "activity_id", "module_id", "created_at", "updated_at", ];
     /** @var array The validation rules on create */
     protected $rules = [
         "favorite" => "boolean",

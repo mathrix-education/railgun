@@ -27,7 +27,7 @@ use Illuminate\Http\Request;
 class ActivityController extends BaseController
 {
     /**
-     * @param Request $request
+     * @param Request $request The request
      *
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
@@ -48,7 +48,7 @@ class ActivityController extends BaseController
     }
 
     /**
-     * @param Request $request
+     * @param Request $request The request
      *
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
@@ -69,7 +69,7 @@ class ActivityController extends BaseController
     }
 
     /**
-     * @param Request $request
+     * @param Request $request The request
      *
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
@@ -79,7 +79,9 @@ class ActivityController extends BaseController
     public function incomplete(Request $request): JsonResponse
     {
         $user = $this->getUserByRequestOrUnauthorized($request);
-        $disciplinesIds = Discipline::all(["id"])->pluck("id")->toArray();
+        $disciplinesIds = Discipline::all(["id"])
+            ->pluck("id")
+            ->toArray();
 
         /**
          * @var Builder|null
@@ -110,7 +112,7 @@ class ActivityController extends BaseController
     }
 
     /**
-     * @param Request $request
+     * @param Request $request The request
      * @param int     $id
      *
      * @throws Http400InvalidRequestException

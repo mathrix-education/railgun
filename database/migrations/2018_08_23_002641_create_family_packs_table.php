@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Schema;
 /**
  * Class CreateFamilyPacksTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
  *
- * @since 4.1.0
+ * @since     4.1.0
  *
  * @copyright Mathrix Education SA
  */
@@ -22,12 +22,18 @@ class CreateFamilyPacksTable extends Migration
     {
         Schema::create("family_packs", function (Blueprint $table) {
             $table->increments("id");
-            $table->integer("parent_id")->unsigned();
-            $table->integer("child_id")->unsigned();
+            $table->integer("parent_id")
+                ->unsigned();
+            $table->integer("child_id")
+                ->unsigned();
             $table->timestamps();
 
-            $table->foreign("parent_id")->references("id")->on("users");
-            $table->foreign("child_id")->references("id")->on("users");
+            $table->foreign("parent_id")
+                ->references("id")
+                ->on("users");
+            $table->foreign("child_id")
+                ->references("id")
+                ->on("users");
         });
     }
 

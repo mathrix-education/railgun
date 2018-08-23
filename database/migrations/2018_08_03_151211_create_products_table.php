@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Schema;
 /**
  * Class CreateProductsTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
  *
- * @since 4.1.0
+ * @since     4.1.0
  *
  * @copyright Mathrix Education SA
  */
@@ -25,28 +25,44 @@ class CreateProductsTable extends Migration
             $table->increments("id");
             $table->string("name");
             $table->string("slug");
-            $table->string("image")->nullable();
-            $table->string("type")->nullable();
-            $table->text("description")->nullable();
-            $table->float("price")->nullable();
-            $table->boolean("visible")->default(true);
-            $table->integer("order")->nullable();
-            $table->integer("module_id")->unsigned()->nullable();
+            $table->string("image")
+                ->nullable();
+            $table->string("type")
+                ->nullable();
+            $table->text("description")
+                ->nullable();
+            $table->float("price")
+                ->nullable();
+            $table->boolean("visible")
+                ->default(true);
+            $table->integer("order")
+                ->nullable();
+            $table->integer("module_id")
+                ->unsigned()
+                ->nullable();
             $table->timestamps();
 
             // Foreign keys
-            $table->foreign("module_id")->references("id")->on("modules");
+            $table->foreign("module_id")
+                ->references("id")
+                ->on("modules");
         });
 
         Schema::create("product_product", function (Blueprint $table) {
             $table->increments("id");
-            $table->integer("parent_id")->unsigned();
-            $table->integer("child_id")->unsigned();
+            $table->integer("parent_id")
+                ->unsigned();
+            $table->integer("child_id")
+                ->unsigned();
             $table->integer("order");
 
             // Foreign keys
-            $table->foreign("parent_id")->references("id")->on("products");
-            $table->foreign("child_id")->references("id")->on("products");
+            $table->foreign("parent_id")
+                ->references("id")
+                ->on("products");
+            $table->foreign("child_id")
+                ->references("id")
+                ->on("products");
         });
 
         Schema::table("purchases", function (Blueprint $table) {
@@ -57,12 +73,17 @@ class CreateProductsTable extends Migration
                 // Do nothing
             }*/
 
-            $table->integer("product_id")->unsigned()->after("user_id");
+            $table->integer("product_id")
+                ->unsigned()
+                ->after("user_id");
         });
 
-        $trainings = DB::table("trainings")->get();
-        $sections = DB::table("sections")->get();
-        $lessons = DB::table("lessons")->get();
+        $trainings = DB::table("trainings")
+            ->get();
+        $sections = DB::table("sections")
+            ->get();
+        $lessons = DB::table("lessons")
+            ->get();
 
         if (!$trainings->isEmpty() && !$sections->isEmpty() && !$lessons->isEmpty()) {
             $sectionDelta = $trainings->last()->id;
@@ -127,8 +148,10 @@ class CreateProductsTable extends Migration
                 }
             }
 
-            DB::table("products")->insert($products);
-            DB::table("product_product")->insert($productLinks);
+            DB::table("products")
+                ->insert($products);
+            DB::table("product_product")
+                ->insert($productLinks);
 
             DB::statement("UPDATE purchases SET product_id = purchasable_id");
         }
@@ -152,11 +175,17 @@ class CreateProductsTable extends Migration
         });
         Schema::table("purchases", function (Blueprint $table) {
             $table->dropColumn("product_id");
-            $table->integer("price")->after("id");
-            $table->integer("refund")->after("id");
-            $table->string("stripe_id")->after("id");
-            $table->integer("purchasable_id")->unsigned()->after("user_id");
-            $table->string("purchasable_type")->after("user_id");
+            $table->integer("price")
+                ->after("id");
+            $table->integer("refund")
+                ->after("id");
+            $table->string("stripe_id")
+                ->after("id");
+            $table->integer("purchasable_id")
+                ->unsigned()
+                ->after("user_id");
+            $table->string("purchasable_type")
+                ->after("user_id");
         });
 
         Schema::table("product_product", function (Blueprint $table) {

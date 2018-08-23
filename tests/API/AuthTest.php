@@ -18,10 +18,10 @@ use Tests\Utils\Traits\ResponseTrait;
  * Class AuthTest.
  *
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
  *
- * @version 4.0.3
+ * @version   4.0.3
  */
 class AuthTest extends TestCase
 {
@@ -37,30 +37,6 @@ class AuthTest extends TestCase
     public function createApplication()
     {
         return require __DIR__ . "/../../bootstrap/app.php";
-    }
-
-    /**
-     * Get a Facebook user.
-     *
-     * @return User
-     */
-    private function getFacebookUser(): User
-    {
-        return User::inRandomOrder()
-            ->where("settings", "LIKE", "%facebook_id%")
-            ->firstOrFail();
-    }
-
-    /**
-     * Get regular (non Facebook) user.
-     *
-     * @return User
-     */
-    private function getNonFacebookUser(): User
-    {
-        return User::inRandomOrder()
-            ->where("settings", "NOT LIKE", "%facebook_id%")
-            ->firstOrFail();
     }
 
     /**
@@ -93,6 +69,18 @@ class AuthTest extends TestCase
         $args->refresh_token = $data->refresh_token;
 
         return $args;
+    }
+
+    /**
+     * Get regular (non Facebook) user.
+     *
+     * @return User
+     */
+    private function getNonFacebookUser(): User
+    {
+        return User::inRandomOrder()
+            ->where("settings", "NOT LIKE", "%facebook_id%")
+            ->firstOrFail();
     }
 
     /**
@@ -145,6 +133,18 @@ class AuthTest extends TestCase
         $this->call("post", "/users/forgot", ["email" => $user->email]);
 
         $this->assertHttp400InvalidRequest();
+    }
+
+    /**
+     * Get a Facebook user.
+     *
+     * @return User
+     */
+    private function getFacebookUser(): User
+    {
+        return User::inRandomOrder()
+            ->where("settings", "LIKE", "%facebook_id%")
+            ->firstOrFail();
     }
 
     /**

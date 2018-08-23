@@ -72,8 +72,8 @@ class UserController extends BaseController
      * @apiUse         Http401Unauthorized
      * @apiUse         Http404ModelNotFound
      *
-     * @param Request  $request
-     * @param int|null $id The user id; if null set edit the current user
+     * @param Request  $request The request
+     * @param int|null $id      The user id; if null set edit the current user
      *
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
@@ -84,7 +84,8 @@ class UserController extends BaseController
     public function edit(Request $request, int $id = null): JsonResponse
     {
         /** @var User $user */
-        $user = $id === null ? $request->user() : User::where("id", $id)->firstOrFail();
+        $user = $id === null ? $request->user() : User::where("id", $id)
+            ->firstOrFail();
         /** @var User $requestUser */
         $requestUser = $request->user();
         $requestData = $request->except("current_password");
@@ -151,7 +152,7 @@ class UserController extends BaseController
      * @apiError (Error 422) save The validated user save failed
      * @apiError (Error 502) email_not_sent Unable to sent reset email
      *
-     * @param Request $request
+     * @param Request $request The request
      *
      * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException
@@ -203,7 +204,7 @@ class UserController extends BaseController
      * @apiParam (Data) {string} username The username to check
      * @apiSuccess {bool} exists if an user matching criteria exists
      *
-     * @param Request $request
+     * @param Request $request The request
      *
      * @return JsonResponse
      */
@@ -212,7 +213,8 @@ class UserController extends BaseController
         $wheres = array_intersect_key($request->all(), ["username" => null, "email" => null]);
 
         foreach ($wheres as $key => $value) {
-            if (User::where($key, $value)->exists()) {
+            if (User::where($key, $value)
+                ->exists()) {
                 return response()->json(["exists" => true]);
             }
         }
@@ -231,7 +233,7 @@ class UserController extends BaseController
      * @apiUse         Bearer
      * @apiUse         UserModel
      *
-     * @param Request $request
+     * @param Request $request The request
      *
      * @return JsonResponse
      */
@@ -269,8 +271,8 @@ class UserController extends BaseController
      * @apiUse         Http422ModelSave
      * @apiError (Error 429) too_many_requests Already gathered points today for this model
      *
-     * @param Request  $request
-     * @param int|null $id the user id
+     * @param Request  $request The request
+     * @param int|null $id      The user id
      *
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
@@ -282,10 +284,12 @@ class UserController extends BaseController
     public function points(Request $request, $id = null)
     {
         /** @var User $user */
-        $user = $id === null ? $request->user() : User::where("id", $id)->firstOrFail();
+        $user = $id === null ? $request->user() : User::where("id", $id)
+            ->firstOrFail();
 
         // Check permission
-        $request->user()->canOrFail("points", $user);
+        $request->user()
+            ->canOrFail("points", $user);
 
         $loggableType = $request->input("loggable_type");
         $loggableId = $request->input("loggable_id");
@@ -303,7 +307,8 @@ class UserController extends BaseController
 
             // Else, try to find the loggable model
             /** @var Activity|Module $loggable */
-            $loggable = $loggableModelClass::where("id", $loggableId)->firstOrFail();
+            $loggable = $loggableModelClass::where("id", $loggableId)
+                ->firstOrFail();
 
             $userHasAlreadyGatheredPointsWithThisModule = Log::where([
                 ["event", "user_gathered_points"],
@@ -312,7 +317,8 @@ class UserController extends BaseController
                 ["loggable_id", $loggable->id],
             ])
                 ->whereBetween("created_at", [
-                    Carbon::now()->setTime(0, 0, 0),
+                    Carbon::now()
+                        ->setTime(0, 0, 0),
                     Carbon::now(),
                 ])
                 ->exists();
@@ -331,11 +337,11 @@ class UserController extends BaseController
         }
 
         // Check if field is a valid positive integer
-        if (!is_numeric($pointsToAdd) || (int)$pointsToAdd < 0) {
+        if (!is_numeric($pointsToAdd) || (int) $pointsToAdd < 0) {
             throw new Http400InvalidRequestException("points field has to be a positive integer");
         }
 
-        $pointsToAdd = (int)$pointsToAdd;
+        $pointsToAdd = (int) $pointsToAdd;
 
         // Update the user points count
         $user->update(["points" => $user->points + $pointsToAdd]);
@@ -357,7 +363,7 @@ class UserController extends BaseController
     }
 
     /**
-     * @param Request $request
+     * @param Request $request The request
      *
      * @throws Http400InvalidRequestException
      * @throws \Illuminate\Validation\ValidationException

@@ -103,13 +103,14 @@ class DiscountController extends BaseController
      * @apiUse         DiscountModel
      * @apiUse         Http404ModelNotFound
      *
-     * @param Request $request
+     * @param Request $request The request
      *
      * @return JsonResponse
      */
     public function check(Request $request)
     {
-        $discount = Discount::whereCode($request->input("code", "default"))->firstOrFail();
+        $discount = Discount::whereCode($request->input("code", "default"))
+            ->firstOrFail();
 
         return new JsonResponse($discount);
     }

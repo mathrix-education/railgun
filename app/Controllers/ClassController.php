@@ -92,7 +92,7 @@ class ClassController extends BaseController
      * @apiUse         Http401Unauthorized
      * @apiUse         Http404ModelNotFound
      *
-     * @param Request $request
+     * @param Request $request The request
      * @param int     $id
      *
      * @throws Http401UnauthorizedException
@@ -104,9 +104,11 @@ class ClassController extends BaseController
     public function delete(Request $request, int $id): JsonResponse
     {
         $class = Class_::find($id);
-        $request->user()->canOrFail("delete", $class);
+        $request->user()
+            ->canOrFail("delete", $class);
 
         throw new Http501NotImplementedException();
+
         return parent::delete($request, $id);
     }
 }

@@ -13,7 +13,7 @@ use Tests\Utils\Traits\ResponseTrait;
 /**
  * Class APITestCase.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
  *
  * @since
  *

@@ -34,9 +34,9 @@ class VoteController extends BaseController
      * @apiUse         Http401Unauthorized
      * @apiUse         Http422ModelSave
      *
-     * @param Request $request
-     * @param string  $votable_type
-     * @param int     $votable_id
+     * @param Request $request      The request
+     * @param string  $votable_type The votable type
+     * @param int     $votable_id   The votable id
      *
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
@@ -52,10 +52,10 @@ class VoteController extends BaseController
     /**
      * Handle vote action.
      *
-     * @param Request $request
-     * @param string  $votable_type
-     * @param int     $votable_id
-     * @param int     $value
+     * @param Request $request      The request
+     * @param string  $votable_type The votable type
+     * @param int     $votable_id   The votable id
+     * @param int     $value        The vote value +1/-1
      *
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
@@ -82,14 +82,16 @@ class VoteController extends BaseController
             $voteConditions[] = [$key, $v];
         }
 
-        if (!Vote::where($voteConditions)->exists()) {
+        if (!Vote::where($voteConditions)
+            ->exists()) {
             $vote = new Vote($voteData);
             $vote->value = $value;
 
             $vote->save();
         } else {
             /** @var Vote $vote */
-            $vote = Vote::where($voteConditions)->first();
+            $vote = Vote::where($voteConditions)
+                ->first();
 
             if ($vote->value === $value) {
                 $vote->delete();
@@ -113,9 +115,9 @@ class VoteController extends BaseController
      * @apiUse         Http401Unauthorized
      * @apiUse         Http422ModelSave
      *
-     * @param Request $request
-     * @param string  $votable_type
-     * @param int     $votable_id
+     * @param Request $request      The request
+     * @param string  $votable_type The votable type
+     * @param int     $votable_id   The votable id
      *
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException

@@ -6,9 +6,9 @@ use Illuminate\Database\Schema\Blueprint;
 /**
  * Class CreatePostsTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
- * @since 1.0.0
+ * @since     1.0.0
  *
  * @copyright Mathrix Education SA
  */
@@ -24,13 +24,17 @@ class CreatePostsTable extends Migration
             $table->string("title");
             $table->string("slug");
             $table->text("content");
-            $table->integer("category_id")->unsigned();
-            $table->integer("user_id")->unsigned();
+            $table->integer("category_id")
+                ->unsigned();
+            $table->integer("user_id")
+                ->unsigned();
             $table->dateTime("created_at");
             $table->dateTime("updated_at");
 
             // Foreign keys
-            $table->foreign("category_id")->references("id")->on("categories");
+            $table->foreign("category_id")
+                ->references("id")
+                ->on("categories");
         });
     }
 

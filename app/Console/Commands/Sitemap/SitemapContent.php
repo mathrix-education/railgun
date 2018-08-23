@@ -31,7 +31,8 @@ class SitemapContent extends Command
      */
     public function handle()
     {
-        $today = Carbon::today()->format("Y-m-d");
+        $today = Carbon::today()
+            ->format("Y-m-d");
         $sitemapArray = [
             [
                 "url" => $this->url("/"),
@@ -86,7 +87,9 @@ class SitemapContent extends Command
                         ];
 
                         /** @var Notion $notion */
-                        foreach ($chapter->notions()->where("type", "!=", "premium")->get()
+                        foreach ($chapter->notions()
+                                     ->where("type", "!=", "premium")
+                                     ->get()
                                  as $notion) {
                             $notionsSitemap[] = [
                                 "url" => $this->url("/" . implode("/", [

@@ -10,10 +10,10 @@ use Tests\BaseTestCase;
 /**
  * Class LogUtils.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
  *
- * @version 4.0.3
+ * @version   4.0.3
  */
 class LogTest extends BaseTestCase
 {
@@ -32,7 +32,8 @@ class LogTest extends BaseTestCase
      */
     public function testLogWithCreatedAt()
     {
-        $logDate = new Carbon($this->faker->dateTime()->format("Y-m-d H:i:s"));
+        $logDate = new Carbon($this->faker->dateTime()
+            ->format("Y-m-d H:i:s"));
         $log = Log::build($this->faker->randomElement(Log::EVENTS), null, [
             "created_at" => $logDate,
         ]);

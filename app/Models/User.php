@@ -96,7 +96,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public $timestamps = true;
     /** @var array The guarded attributes */
     protected $fillable = ["email", "username", "firstname", "lastname", "password", "points", "daily",
-        "settings", "class_id",];
+        "settings", "class_id", ];
     /** @var array The hidden attributes from the model"s JSON */
     protected $hidden = ["password", "token"];
     /** @var array The attributes that should be cast to native types */
@@ -126,6 +126,16 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     */
 
     /**
+     * Chec if user is redactor.
+     *
+     * @return bool
+     */
+    public function isRedactor()
+    {
+        return $this->tokenCan("redactor");
+    }
+
+    /**
      * Determine if user can do something according to its token.
      *
      * @param string $scope the minimum scope
@@ -146,16 +156,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         }
 
         return $this->passportTokenCan($scope);
-    }
-
-    /**
-     * Chec if user is redactor.
-     *
-     * @return bool
-     */
-    public function isRedactor()
-    {
-        return $this->tokenCan("redactor");
     }
 
     /**
@@ -251,16 +251,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
     /**
-     * HasManyThrough Product.
-     *
-     * @return BelongsToMany
-     */
-    public function products()
-    {
-        return $this->belongsToMany(Product::class, "purchases");
-    }
-
-    /**
      * HasMany Purchase.
      *
      * @return HasMany
@@ -291,22 +281,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
     /**
-     * HasMany FamilyPack (as child).
-     *
-     * @return HasMany
-     */
-    public function familyPackChild()
-    {
-        return $this->hasMany(FamilyPack::class, "child_id");
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Attributes
-    |--------------------------------------------------------------------------
-    */
-
-    /**
      * daily_points attribute.
      *
      * @return int
@@ -317,7 +291,8 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
             ["event", "user_gathered_points"],
             ["user_id", $this->id],
         ])
-            ->whereBetween("created_at", [Carbon::now()->setTime(0, 0, 0), Carbon::now()])
+            ->whereBetween("created_at", [Carbon::now()
+                ->setTime(0, 0, 0), Carbon::now(), ])
             ->get();
 
         $sum = 0;
@@ -342,6 +317,45 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         return $this->hasStripeSubscription(self::STRIPE_PLANS)
             || $this->hasBraintreeSubscription(self::BRAINTREE_PLANS)
             || $this->isChildOfAFamilyPack();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Attributes
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Check if the user is a child of a family pack (allow to grant premium membership).
+     *
+     * @return bool
+     */
+    public function isChildOfAFamilyPack(): bool
+    {
+        $familyPacks = $this->familyPackChild()
+            ->get();
+
+        if ($familyPacks->isEmpty()) {
+            return false;
+        }
+        /** @var FamilyPack $familyPack */
+        $familyPack = $familyPacks->first(); // User should have only one family pack linked
+        /** @var User $parent */
+        $parent = self::where("id", "=", $familyPack->parent_id)
+            ->firstOrFail();
+        $parent->append(["premium", "braintree"]);
+
+        return $parent->premium;
+    }
+
+    /**
+     * HasMany FamilyPack (as child).
+     *
+     * @return HasMany
+     */
+    public function familyPackChild()
+    {
+        return $this->hasMany(FamilyPack::class, "child_id");
     }
 
     /**
@@ -373,23 +387,12 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
     /**
-     * Check if the user is a child of a family pack (allow to grant premium membership).
+     * HasManyThrough Product.
      *
-     * @return bool
+     * @return BelongsToMany
      */
-    public function isChildOfAFamilyPack(): bool
+    public function products()
     {
-        $familyPacks = $this->familyPackChild()->get();
-
-        if ($familyPacks->isEmpty()) {
-            return false;
-        }
-        /** @var FamilyPack $familyPack */
-        $familyPack = $familyPacks->first(); // User should have only one family pack linked
-        /** @var User $parent */
-        $parent = self::where("id", "=", $familyPack->parent_id)->firstOrFail();
-        $parent->append(["premium", "braintree"]);
-
-        return $parent->premium;
+        return $this->belongsToMany(Product::class, "purchases");
     }
 }

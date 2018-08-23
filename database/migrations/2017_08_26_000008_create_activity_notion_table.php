@@ -6,9 +6,9 @@ use Illuminate\Database\Schema\Blueprint;
 /**
  * Class CreateActivityNotionTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
- * @since 1.0.0
+ * @since     1.0.0
  *
  * @copyright Mathrix Education SA
  */
@@ -21,13 +21,20 @@ class CreateActivityNotionTable extends Migration
     {
         Schema::create("activity_notion", function (Blueprint $table) {
             $table->increments("id");
-            $table->integer("activity_id")->unsigned();
-            $table->integer("notion_id")->unsigned();
-            $table->integer("order")->default(0);
+            $table->integer("activity_id")
+                ->unsigned();
+            $table->integer("notion_id")
+                ->unsigned();
+            $table->integer("order")
+                ->default(0);
 
             // Foreign keys
-            $table->foreign("activity_id")->references("id")->on("activities");
-            $table->foreign("notion_id")->references("id")->on("notions");
+            $table->foreign("activity_id")
+                ->references("id")
+                ->on("activities");
+            $table->foreign("notion_id")
+                ->references("id")
+                ->on("notions");
         });
     }
 

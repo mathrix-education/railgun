@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Schema;
 /**
  * Class AddBraintreeIdOnUsersTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
  *
- * @since 4.1.0
+ * @since     4.1.0
  *
  * @copyright Mathrix Education SA
  */
@@ -21,7 +21,9 @@ class AddBraintreeIdOnUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->uuid("braintree_id")->after("stripe_id")->nullable();
+            $table->uuid("braintree_id")
+                ->after("stripe_id")
+                ->nullable();
             $table->dropColumn([
                 "card_brand", "card_last_four", "trial_ends_at",
             ]);
@@ -34,10 +36,16 @@ class AddBraintreeIdOnUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn("braintree_id")->after("stripe_id")->nullable();
-            $table->string("card_brand")->after("stripe_id")->nullable();
-            $table->string("card_last_four")->nullable();
-            $table->timestamp("trial_ends_at")->nullable();
+            $table->dropColumn("braintree_id")
+                ->after("stripe_id")
+                ->nullable();
+            $table->string("card_brand")
+                ->after("stripe_id")
+                ->nullable();
+            $table->string("card_last_four")
+                ->nullable();
+            $table->timestamp("trial_ends_at")
+                ->nullable();
         });
     }
 }

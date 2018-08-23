@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * ----
  *
  * @property int             $id
  * @property string          $event
@@ -94,7 +93,8 @@ class Log extends BaseModel
      */
     public static function log(string $event, $user = null, $data = [])
     {
-        return self::build($event, $user, $data)->save();
+        return self::build($event, $user, $data)
+            ->save();
     }
 
     /**

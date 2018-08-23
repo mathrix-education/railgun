@@ -32,11 +32,13 @@ class ProductObserver extends BaseObserver
         if (isset($product->link["children"])) {
             $toSync = [];
             foreach ($product->link["children"] as $order => $childId) {
-                if (Product::whereId($childId)->exists()) {
+                if (Product::whereId($childId)
+                    ->exists()) {
                     $toSync[$childId] = ["order" => $order];
                 }
             }
-            $product->children()->sync($toSync);
+            $product->children()
+                ->sync($toSync);
         }
 
         if (isset($product->link)) {
@@ -53,9 +55,12 @@ class ProductObserver extends BaseObserver
      */
     public function deleting($product)
     {
-        $product->discounts()->detach();
-        $product->parents()->detach();
-        $product->children()->detach();
+        $product->discounts()
+            ->detach();
+        $product->parents()
+            ->detach();
+        $product->children()
+            ->detach();
 
         return true;
     }

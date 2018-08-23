@@ -86,7 +86,7 @@ class ContentController extends BaseController
      * @apiSuccess {string} notions.chapters.class_.country.name The country name
      * @apiSuccess {string} notions.chapters.class_.country.slug The country slug
      *
-     * @param Request $request
+     * @param Request $request The request
      * @param string  $query
      * @param int     $page
      * @param int     $perPage
@@ -112,11 +112,15 @@ class ContentController extends BaseController
                 return $q->where("type", "course")
                     ->where("content", "LIKE", "%[video]%");
             })
-            ->with(["notions", "notions.chapters", "notions.chapters.discipline", "notions.chapters.class_",
+            ->with([
+                "notions", "notions.chapters",
+                "notions.chapters.discipline",
+                "notions.chapters.class_",
                 "notions.chapters.class_.country", "modules" => function (BelongsToMany $q) use ($query) {
                     return $q->where("type", "course")
                         ->where("content", "LIKE", "%[video]%");
-                },])
+                }
+            ])
             ->limit($perPage)
             ->offset(($page - 1) * $perPage)
             ->get();
@@ -126,7 +130,8 @@ class ContentController extends BaseController
             /** @var Class_ $userClass */
             $userClass = Class_::find($user->class_id);
             $cursus = $userClass->cursus();
-            $classIds = $cursus->isNotEmpty() ? $cursus->pluck("id")->toArray() : [];
+            $classIds = $cursus->isNotEmpty() ? $cursus->pluck("id")
+                ->toArray() : [];
 
             $chapters = Chapter::whereIn("class_id", $classIds)
                 ->with(["discipline", "class_", "class_.country"])
@@ -209,7 +214,7 @@ class ContentController extends BaseController
      * @apiPermission  public
      * @apiSuccess {string[]} - The cdn files
      *
-     * @param Request $request
+     * @param Request $request The request
      *
      * @return JsonResponse
      */
@@ -245,7 +250,7 @@ class ContentController extends BaseController
      * @apiParam (Data) {string} name The file destination on the cdn
      * @apiSuccess     url The file url on the cdn
      *
-     * @param Request $request
+     * @param Request $request The request
      *
      * @throws Http401UnauthorizedException
      * @throws ValidationException
@@ -254,7 +259,8 @@ class ContentController extends BaseController
      */
     public function upload(Request $request)
     {
-        if (!$request->user()->isModerator()) {
+        if (!$request->user()
+            ->isModerator()) {
             throw new Http401UnauthorizedException();
         }
 

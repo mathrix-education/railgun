@@ -22,7 +22,7 @@ class BraintreeController extends Controller
     /**
      * Generate the Braintree Client Token.
      *
-     * @param Request $request
+     * @param Request $request The request
      *
      * @return string
      */
@@ -46,7 +46,7 @@ class BraintreeController extends Controller
     /**
      * Handle Braintree webhooks.
      *
-     * @param Request $request
+     * @param Request $request The request
      *
      * @throws \Illuminate\Validation\ValidationException
      *

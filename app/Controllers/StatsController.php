@@ -53,7 +53,7 @@ class StatsController extends BaseController
      * @apiUse         Http401Unauthorized
      * @apiUse         Http422ModelSave
      *
-     * @param Request $request
+     * @param Request $request The request
      *
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
@@ -77,7 +77,8 @@ class StatsController extends BaseController
         $start = $request->input("start");
         $end = $request->input("end");
 
-        $statsRequest = Log::whereUserId($user->id)->whereEvent("user_gathered_points");
+        $statsRequest = Log::whereUserId($user->id)
+            ->whereEvent("user_gathered_points");
 
         if (!empty($start)) {
             $start = Carbon::createFromFormat("Y-m-d", $start);
@@ -110,15 +111,18 @@ class StatsController extends BaseController
                     $dateIterator = $created;
                     break;
                 case "week":
-                    $potentialIterator = $dateIterator->copy()->addWeek();
+                    $potentialIterator = $dateIterator->copy()
+                        ->addWeek();
                     $dateIterator = $created->lessThan($potentialIterator) ? $dateIterator : $potentialIterator;
                     break;
                 case "month":
-                    $potentialIterator = $dateIterator->copy()->addMonth();
+                    $potentialIterator = $dateIterator->copy()
+                        ->addMonth();
                     $dateIterator = $created->lessThan($potentialIterator) ? $dateIterator : $potentialIterator;
                     break;
                 case "year":
-                    $potentialIterator = $dateIterator->copy()->addYear();
+                    $potentialIterator = $dateIterator->copy()
+                        ->addYear();
                     $dateIterator = $created->lessThan($potentialIterator) ? $dateIterator : $potentialIterator;
                     break;
             }

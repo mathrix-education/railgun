@@ -17,6 +17,15 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 trait Votable
 {
     /**
+     * Score attribute.
+     */
+    public function getScoreAttribute()
+    {
+        return $this->votes()
+            ->sum("value");
+    }
+
+    /**
      * Get the votes.
      *
      * @codeCoverageIgnore
@@ -24,13 +33,5 @@ trait Votable
     public function votes(): MorphMany
     {
         return $this->morphMany(Vote::class, "votable");
-    }
-
-    /**
-     * Score attribute.
-     */
-    public function getScoreAttribute()
-    {
-        return $this->votes()->sum("value");
     }
 }

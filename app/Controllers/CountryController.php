@@ -92,7 +92,7 @@ class CountryController extends BaseController
      * @apiUse         Http401Unauthorized
      * @apiUse         Http404ModelNotFound
      *
-     * @param Request $request
+     * @param Request $request The request
      * @param int     $id
      *
      * @throws Http401UnauthorizedException
@@ -104,9 +104,11 @@ class CountryController extends BaseController
     public function delete(Request $request, int $id): JsonResponse
     {
         $country = Country::find($id);
-        $request->user()->canOrFail("delete", $country);
+        $request->user()
+            ->canOrFail("delete", $country);
 
         throw new Http501NotImplementedException();
+
         return parent::delete($request, $id);
     }
 }

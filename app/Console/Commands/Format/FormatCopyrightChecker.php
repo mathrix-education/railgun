@@ -39,9 +39,11 @@ class FormatCopyrightChecker extends Command
     {
         $this->comment("Searching for invalid copyrights...");
 
-        if (!$this->output->getFormatter()->hasStyle('alert')) {
+        if (!$this->output->getFormatter()
+            ->hasStyle('alert')) {
             $style = new OutputFormatterStyle('red');
-            $this->output->getFormatter()->setStyle('alert', $style);
+            $this->output->getFormatter()
+                ->setStyle('alert', $style);
         }
 
         foreach (self::SCOPE as $dir) {

@@ -17,7 +17,8 @@ $factory->define(Class_::class, function (Generator $faker) {
     return [
         "name" => $name,
         "slug" => $slug,
-        "country_id" => Country::inRandomOrder()->firstOrFail()->id,
+        "country_id" => Country::inRandomOrder()
+            ->firstOrFail()->id,
         "visible" => $faker->boolean(95),
     ];
 });

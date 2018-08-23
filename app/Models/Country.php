@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * ----
  *
  * @property int                 $id
  * @property string              $name

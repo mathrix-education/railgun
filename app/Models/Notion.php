@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * ----
  *
  * @property int                   $id
  * @property string                $name
@@ -69,7 +68,8 @@ class Notion extends BaseModel
      */
     public function activities(): BelongsToMany
     {
-        return $this->belongsToMany(Activity::class)->withPivot(["order"]);
+        return $this->belongsToMany(Activity::class)
+            ->withPivot(["order"]);
     }
 
     /**
@@ -79,6 +79,7 @@ class Notion extends BaseModel
      */
     public function chapters(): BelongsToMany
     {
-        return $this->belongsToMany(Chapter::class)->withPivot(["order"]);
+        return $this->belongsToMany(Chapter::class)
+            ->withPivot(["order"]);
     }
 }

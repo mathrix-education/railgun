@@ -18,12 +18,12 @@ use Cache;
  */
 class TransactionSuccessMail extends BaseMail
 {
-    /** @var User $user */
-    private $user;
     /** @var Transaction $transaction */
     protected $transaction;
     /** @var LineItem[] $lineItems */
     protected $lineItems;
+    /** @var User $user */
+    private $user;
 
     public function __construct(User $user, Transaction $transaction, array $lineItems)
     {
@@ -43,11 +43,13 @@ class TransactionSuccessMail extends BaseMail
      */
     public static function mock(string $transactionId = null): self
     {
-        $user = User::inRandomOrder()->first();
+        $user = User::inRandomOrder()
+            ->first();
 
         if ($transactionId === null) {
             $transaction = Cache::remember("TransactionSuccessMail_transaction", 1, function () {
-                return Transaction::search([])->firstItem();
+                return Transaction::search([])
+                    ->firstItem();
             });
         } else {
             $transaction = Cache::remember("TransactionSuccessMail_transaction_$transactionId", 1, function () use ($transactionId) {

@@ -45,6 +45,7 @@
       <option name="KEEP_BLANK_LINES_IN_CODE" value="1" />
       <option name="KEEP_BLANK_LINES_BEFORE_RBRACE" value="1" />
       <option name="BLANK_LINES_BEFORE_PACKAGE" value="0" />
+      <option name="SPACE_AFTER_TYPE_CAST" value="true" />
       <option name="METHOD_CALL_CHAIN_WRAP" value="2" />
       <option name="WRAP_ON_TYPING" value="0" />
     </codeStyleSettings>

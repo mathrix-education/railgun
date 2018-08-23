@@ -20,7 +20,6 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * ----
  *
  * @property int                  $id
  * @property string|null          $content
@@ -70,7 +69,7 @@ class Comment extends BaseModel
     ];
     /** @var array The attributes that are mass assignable */
     protected $fillable = ["id", "content", "score", "parent_id", "user_id", "commentable_id", "commentable_type",
-        "created_at", "updated_at", "deleted_at",];
+        "created_at", "updated_at", "deleted_at", ];
     /** @var array Validation rules */
     protected $rules = [
         "content" => "required",
@@ -100,7 +99,8 @@ class Comment extends BaseModel
             ["user_id", $user->id],
             ["votable_type", "comment"],
             ["votable_id", $this->id],
-        ])->first();
+        ])
+            ->first();
 
         if ($potentialVote === null) {
             return;

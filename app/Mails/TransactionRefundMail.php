@@ -46,8 +46,10 @@ class TransactionRefundMail extends BaseMail
         $user = User::random();
         $refund = Cache::remember("mail-transaction-refund_refund", 5, function () {
             return \Braintree\Transaction::search([
-                \Braintree\TransactionSearch::type()->is("credit"),
-            ])->firstItem();
+                \Braintree\TransactionSearch::type()
+                    ->is("credit"),
+            ])
+                ->firstItem();
         });
         $transaction = Cache::remember("mail-transaction-refund_refund", 5, function () use ($refund) {
             return \Braintree\Transaction::find($refund->refundedTransactionId);

@@ -59,9 +59,11 @@ class UserObserver extends BaseObserver
                 "event" => "user_achieved_daily",
             ])
                 ->whereBetween("created_at", [
-                    Carbon::now()->setTime(0, 0, 0),
+                    Carbon::now()
+                        ->setTime(0, 0, 0),
                     Carbon::now(),
-                ])->exists();
+                ])
+                ->exists();
 
             if (!$alreadyAchievedDaily && $user->daily_points + $pointsAdded >= $user->daily) {
                 ++$user->daily_achievements;
@@ -74,11 +76,13 @@ class UserObserver extends BaseObserver
             |--------------------------------------------------------------------------
             */
             /** @var Level $nextLevel */
-            $nextLevel = Level::where("level", $user->level + 1)->first();
+            $nextLevel = Level::where("level", $user->level + 1)
+                ->first();
 
             while ($nextLevel !== null && $user->points >= $nextLevel->objective) {
                 ++$user->level;
-                $nextLevel = Level::where("level", $user->level + 1)->first();
+                $nextLevel = Level::where("level", $user->level + 1)
+                    ->first();
             }
         }
 

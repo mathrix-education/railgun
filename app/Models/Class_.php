@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * ----
  *
  * @property int                     $id
  * @property string                  $name
@@ -49,7 +48,7 @@ class Class_ extends BaseModel
     protected $table = "classes";
     /** @var array The attributes that are mass assignable */
     protected $fillable = ["id", "name", "slug", "order", "visible", "parent_id",
-        "country_id", "link",];
+        "country_id", "link", ];
     /** @var array Validation rules */
     protected $rules = [
         "name" => "required|max:255",

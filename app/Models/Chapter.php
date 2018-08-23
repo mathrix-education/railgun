@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * ----
  *
  * @property int                 $id
  * @property string              $name
@@ -83,6 +82,7 @@ class Chapter extends BaseModel
      */
     public function notions(): BelongsToMany
     {
-        return $this->belongsToMany(Notion::class)->withPivot(["order"]);
+        return $this->belongsToMany(Notion::class)
+            ->withPivot(["order"]);
     }
 }
