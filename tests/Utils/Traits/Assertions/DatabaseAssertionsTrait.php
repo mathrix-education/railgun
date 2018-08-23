@@ -1,18 +1,19 @@
 <?php
-namespace Tests\Traits;
+namespace Tests\Utils\Traits\Assertions;
 
 use App\Models\Log;
+use App\Models\User;
 use Carbon\Carbon;
 
 /**
  * Trait DatabaseAssertions
  *
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package Tests\Traits
+ * @package Tests\Utils\Traits\Assertions
  * @since 4.1.0
  * @copyright Mathrix Education SA
  */
-trait DatabaseAssertions
+trait DatabaseAssertionsTrait
 {
     /**
      * Assert that a given where condition exists in the database.

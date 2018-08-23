@@ -5,8 +5,7 @@ use App\Models\BaseModel;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Laravel\Passport\Passport;
-use Tests\BaseTestCase;
-use Tests\Traits\Generics;
+use Tests\Utils\Traits\Generics\Generics;
 
 /**
  * Class ScopeTestCase
@@ -17,7 +16,7 @@ use Tests\Traits\Generics;
  * @version 1.0.0
  * @package Tests\API
  */
-abstract class ScopeTestCase extends BaseTestCase
+abstract class ScopeTestCase extends APITestCase
 {
     use Generics;
 

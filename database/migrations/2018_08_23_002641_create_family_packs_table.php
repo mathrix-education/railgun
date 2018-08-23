@@ -40,8 +40,8 @@ class CreateFamilyPacksTable extends Migration
     public function down()
     {
         Schema::table("family_packs", function (Blueprint $table) {
-            $table->dropForeign("family_packs_parent_id_parent");
-            $table->dropForeign("child_id_packs_parent_id_parent");
+            $table->dropForeign("family_packs_parent_id_foreign");
+            $table->dropForeign("family_packs_child_id_foreign");
         });
 
         Schema::dropIfExists("family_packs");

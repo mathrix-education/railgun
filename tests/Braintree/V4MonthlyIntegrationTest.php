@@ -151,7 +151,9 @@ class V4MonthlyIntegrationTest extends BraintreeTestCase
         $this->json("post", "/transactions/{$transactionId}/refund");
 
         $transaction = Transaction::find($transactionId);
-        $customer = User::whereBraintreeId($transaction->customerDetails->id)->firstOrFail();
+        /** @var Transaction\CustomerDetails $customerDetails */
+        $customerDetails = $transaction->customerDetails;
+        $customer = User::whereBraintreeId($customerDetails->id)->firstOrFail();
 
         $this->assertHttp200Success();
         $this->assertNotificationSentToVia(TransactionRefundSuccessNotification::class, $customer, "mail");

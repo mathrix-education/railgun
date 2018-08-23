@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Traits;
+namespace Tests\Utils\Traits;
 
 use Symfony\Component\HttpFoundation\Response;
 
@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
  * @version 4.0.3
- * @package Tests\Traits
+ * @package Tests\Utils\Traits
  */
 trait ResponseTrait
 {

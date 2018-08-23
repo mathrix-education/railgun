@@ -3,7 +3,7 @@ namespace Tests\API\Activities;
 
 use App\Models\Meta;
 use Laravel\Passport\Passport;
-use Tests\API\Tree;
+use Tests\Utils\Tree;
 
 /**
  * Class ActivitiesAsPublicTest

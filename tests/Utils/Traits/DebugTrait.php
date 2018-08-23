@@ -1,15 +1,15 @@
 <?php
-namespace Tests\Traits;
+namespace Tests\Utils\Traits;
 
 /**
  * Class Debug
  *
  * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package Tests\Traits
+ * @package Tests\Utils\Traits
  * @since 4.1.0
  * @copyright Mathrix Education SA
  */
-trait Debug
+trait DebugTrait
 {
     /**
      * Handle response printing

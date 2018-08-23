@@ -1,16 +1,14 @@
 <?php
-namespace Tests\Traits;
+namespace Tests\Utils\Traits\Assertions;
 
 /**
  * Trait HttpAssertionsTrait
  * Some shortcuts for HTTP codes & errors
  *
- * @package Tests
- *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @package Tests\Utils\Traits\Assertions
+ * @since 4.0.3
  * @copyright Mathrix Education SA
- * @version 4.0.3
- * @package Tests\Votes
  *
  * @method assertHttp400InvalidRequest(): $this
  * @method assertHttp401Unauthorized(): $this

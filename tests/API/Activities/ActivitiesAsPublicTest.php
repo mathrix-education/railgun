@@ -5,7 +5,7 @@ use App\Models\Meta;
 use App\Models\Module;
 use App\Models\Notion;
 use Tests\API\ScopeTestCase;
-use Tests\API\Tree;
+use Tests\Utils\Tree;
 
 /**
  * Class ActivitiesAsPublicTest

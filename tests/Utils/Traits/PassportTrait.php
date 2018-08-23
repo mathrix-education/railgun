@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Traits;
+namespace Tests\Utils\Traits;
 
 use App\Models\User;
 use Laravel\Passport\Passport;
@@ -8,7 +8,7 @@ use Laravel\Passport\Passport;
  * Trait PassportTrait
  *
  * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package Tests\Traits
+ * @package Tests\Utils\Traits
  * @since 4.1.0
  * @copyright Mathrix Education SA
  */

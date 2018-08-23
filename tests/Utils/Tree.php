@@ -1,5 +1,5 @@
 <?php
-namespace Tests\API;
+namespace Tests\Utils;
 
 use App\Models\Activity;
 use App\Models\Chapter;

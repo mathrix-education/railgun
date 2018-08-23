@@ -3,14 +3,8 @@ namespace Tests;
 
 use Faker\Factory;
 use Faker\Generator;
-use Laravel\Lumen\Testing\DatabaseTransactions;
 use Laravel\Lumen\Testing\TestCase;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Tests\Traits\DatabaseAssertions;
-use Tests\Traits\Debug;
-use Tests\Traits\HttpAssertionsTrait;
-use Tests\Traits\JsonAssertionsTrait;
-use Tests\Traits\ResponseTrait;
 
 /**
  * Class BaseTest
@@ -21,8 +15,6 @@ use Tests\Traits\ResponseTrait;
  */
 abstract class BaseTestCase extends TestCase
 {
-    use ResponseTrait, JsonAssertionsTrait, HttpAssertionsTrait, DatabaseTransactions, DatabaseAssertions, Debug;
-
     /** @var Generator */
     public $faker;
 

@@ -3,6 +3,10 @@ namespace Tests\Unit;
 
 use App\Models\Setting;
 use Tests\BaseTestCase;
+use Tests\Utils\Traits\Assertions\DatabaseAssertionsTrait;
+use Tests\Utils\Traits\Assertions\HttpAssertionsTrait;
+use Tests\Utils\Traits\Assertions\JsonAssertionsTrait;
+use Tests\Utils\Traits\Assertions\NotificationsAssertionsTrait;
 
 /**
  * Class SettingsUtilsTest
@@ -14,6 +18,9 @@ use Tests\BaseTestCase;
  */
 class SettingsTest extends BaseTestCase
 {
+    use DatabaseAssertionsTrait, HttpAssertionsTrait, JsonAssertionsTrait, NotificationsAssertionsTrait;
+
+
     public function testRead()
     {
         $settingKey = Setting::random()->key;

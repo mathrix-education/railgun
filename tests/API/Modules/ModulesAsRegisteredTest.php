@@ -4,7 +4,7 @@ namespace Tests\API\Modules;
 use App\Models\Module;
 use App\Models\User;
 use Laravel\Passport\Passport;
-use Tests\API\Tree;
+use Tests\Utils\Tree;
 
 /**
  * Class ModulesAsPublicTest

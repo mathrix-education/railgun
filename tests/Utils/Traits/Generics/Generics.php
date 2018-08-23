@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Traits;
+namespace Tests\Utils\Traits\Generics;
 
 /**
  * Trait Generics

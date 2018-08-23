@@ -5,12 +5,13 @@ namespace Tests\Braintree;
 use App\Exceptions\Http400InvalidRequestException;
 use App\Models\User;
 use Laravel\Lumen\Testing\TestCase;
-use Tests\Traits\DatabaseAssertions;
-use Tests\Traits\Debug;
-use Tests\Traits\HttpAssertionsTrait;
-use Tests\Traits\NotificationsTrait;
-use Tests\Traits\PassportTrait;
-use Tests\Traits\ResponseTrait;
+use Tests\Utils\Traits\Assertions\DatabaseAssertionsTrait;
+use Tests\Utils\Traits\Assertions\HttpAssertionsTrait;
+use Tests\Utils\Traits\Assertions\JsonAssertionsTrait;
+use Tests\Utils\Traits\Assertions\NotificationsAssertionsTrait;
+use Tests\Utils\Traits\DebugTrait;
+use Tests\Utils\Traits\PassportTrait;
+use Tests\Utils\Traits\ResponseTrait;
 
 /**
  * Class BraintreeTestCase
@@ -23,7 +24,8 @@ use Tests\Traits\ResponseTrait;
  */
 class BraintreeTestCase extends TestCase
 {
-    use HttpAssertionsTrait, DatabaseAssertions, ResponseTrait, Debug, PassportTrait, NotificationsTrait;
+    use DatabaseAssertionsTrait, HttpAssertionsTrait, JsonAssertionsTrait, NotificationsAssertionsTrait, ResponseTrait,
+        DebugTrait, PassportTrait;
 
 
     /**

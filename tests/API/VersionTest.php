@@ -1,8 +1,6 @@
 <?php
 namespace Tests\API;
 
-use Tests\BaseTestCase;
-
 /**
  * Class VersionTest
  *
@@ -11,7 +9,7 @@ use Tests\BaseTestCase;
  * @since
  * @copyright Mathrix Education SA
  */
-class VersionTest extends BaseTestCase
+class VersionTest extends APITestCase
 {
     /**
      * GET /

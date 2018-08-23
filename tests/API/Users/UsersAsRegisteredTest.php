@@ -8,7 +8,6 @@ use App\Models\Class_;
 use App\Models\Level;
 use App\Models\Log;
 use App\Models\Module;
-use App\Models\Training;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;

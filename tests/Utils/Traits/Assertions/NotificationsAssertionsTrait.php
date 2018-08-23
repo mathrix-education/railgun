@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Traits;
+namespace Tests\Utils\Traits\Assertions;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Notification;
@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Notification;
  * Trait NotificationsTrait
  *
  * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package Tests\Traits
+ * @package Tests\Utils\Traits
  * @since 4.1.0
  * @copyright Mathrix Education SA
  */
-trait NotificationsTrait
+trait NotificationsAssertionsTrait
 {
     /**
      * Assert notification was sent to user
