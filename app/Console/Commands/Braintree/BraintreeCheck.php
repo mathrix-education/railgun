@@ -4,6 +4,7 @@ namespace App\Console\Commands\Braintree;
 use App\Services\Braintree\Models\AddOn;
 use App\Services\Braintree\Models\Plan;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Cache;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 /**
@@ -28,6 +29,7 @@ class BraintreeCheck extends Command
             $this->output->getFormatter()->setStyle('alert', $style);
         }
 
+        Cache::clear();
 
         $this->line("Checking for plans");
         foreach (self::PLANS as $planId) {
@@ -60,9 +62,15 @@ class BraintreeCheck extends Command
 
         $this->line("Please check that the following information are correct.");
         $plans = Plan::all();
-        $planData = $plans->map(function (Plan $plan) {
-            return [$plan->id, $plan->pricePerMonth . "€"];
+        $plansData = $plans->map(function (Plan $plan) {
+            return [$plan->id, $plan->price . "€", $plan->pricePerMonth . "€"];
         });
-        $this->table(["id", "pricePerMonth"], $planData);
+        $this->table(["Plan id", "price", "pricePerMonth"], $plansData);
+
+        $addOns = AddOn::all();
+        $addOnsData = $addOns->map(function (AddOn $addOn) {
+            return [$addOn->id, $addOn->amount . "€", $addOn->pricePerMonth . "€"];
+        });
+        $this->table(["Add-on id", "price", "pricePerMonth"], $addOnsData);
     }
 }
