@@ -6,10 +6,10 @@ namespace Tests\Utils\Traits\Generics;
  * Trait Search
  * Generic index tests.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
  *
- * @since 4.0.3
+ * @since     4.0.3
  */
 trait Search
 {

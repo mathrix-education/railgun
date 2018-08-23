@@ -72,18 +72,6 @@ class AuthTest extends TestCase
     }
 
     /**
-     * Get regular (non Facebook) user.
-     *
-     * @return User
-     */
-    private function getNonFacebookUser(): User
-    {
-        return User::inRandomOrder()
-            ->where("settings", "NOT LIKE", "%facebook_id%")
-            ->firstOrFail();
-    }
-
-    /**
      * POST /users/refresh.
      *
      * @depends testLogin
@@ -136,18 +124,6 @@ class AuthTest extends TestCase
     }
 
     /**
-     * Get a Facebook user.
-     *
-     * @return User
-     */
-    private function getFacebookUser(): User
-    {
-        return User::inRandomOrder()
-            ->where("settings", "LIKE", "%facebook_id%")
-            ->firstOrFail();
-    }
-
-    /**
      * POST /users/reset.
      */
     public function testReset()
@@ -183,5 +159,29 @@ class AuthTest extends TestCase
         $this->call("post", "/users/reset/{$user->token}", ["password" => null]);
 
         $this->assertHttp400InvalidRequest();
+    }
+
+    /**
+     * Get regular (non Facebook) user.
+     *
+     * @return User
+     */
+    private function getNonFacebookUser(): User
+    {
+        return User::inRandomOrder()
+            ->where("settings", "NOT LIKE", "%facebook_id%")
+            ->firstOrFail();
+    }
+
+    /**
+     * Get a Facebook user.
+     *
+     * @return User
+     */
+    private function getFacebookUser(): User
+    {
+        return User::inRandomOrder()
+            ->where("settings", "LIKE", "%facebook_id%")
+            ->firstOrFail();
     }
 }

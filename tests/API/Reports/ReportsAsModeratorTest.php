@@ -6,10 +6,10 @@ namespace Tests\API\Reports;
  * Class ReportsAsModeratorTest
  * Test reports as moderator.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
  *
- * @version 1.0.0
+ * @version   1.0.0
  */
 class ReportsAsModeratorTest extends ReportsAsRegisteredTest
 {

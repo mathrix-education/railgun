@@ -5,9 +5,9 @@ namespace Tests\Utils\Traits\Assertions;
 /**
  * Trait JsonAssertionsTrait.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
  *
- * @since 4.0.3
+ * @since     4.0.3
  *
  * @copyright Mathrix Education SA
  */
@@ -75,6 +75,6 @@ trait JsonAssertionsTrait
         }
 
         $this->assertTrue($testPassed, "Failed asserting that\n" . json_encode($content, JSON_PRETTY_PRINT) .
-        "\nhas keys " . json_encode($keys));
+            "\nhas keys " . json_encode($keys));
     }
 }

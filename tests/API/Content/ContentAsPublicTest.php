@@ -8,7 +8,7 @@ use Tests\API\ScopeTestCase;
  * Class ContentAsPublicTest
  * Test content as public (non-logged user).
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
  * @since
  *

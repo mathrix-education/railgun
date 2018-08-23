@@ -9,10 +9,10 @@ use Tests\API\ScopeTestCase;
  * Class SubscriptionsAsPublicTest
  * Test subscriptions as public (non-logged user).
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
  *
- * @version 4.1.0
+ * @version   4.1.0
  */
 class SubscriptionsAsPublicTest extends ScopeTestCase
 {

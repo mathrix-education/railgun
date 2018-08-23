@@ -6,10 +6,10 @@ namespace Tests\API\Posts;
  * Class PostsAsAdminTest
  * Test Posts as admin.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
  *
- * @version 1.0.0
+ * @version   1.0.0
  */
 class PostsAsAdminTest extends PostsAsModeratorTest
 {

@@ -8,10 +8,10 @@ use App\Models\Setting;
  * Class SettingsAsAdminTest
  * Test settings as admin.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
  *
- * @version 4.0.3
+ * @version   4.0.3
  */
 class SettingsAsAdminTest extends SettingsAsModeratorTest
 {

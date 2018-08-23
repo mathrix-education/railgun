@@ -8,10 +8,10 @@ use Carbon\Carbon;
  * Class StatsAsRegisteredTest
  * Test stats as registered user.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
  *
- * @version 1.0.0
+ * @version   1.0.0
  */
 class StatsAsRegisteredTest extends StatsAsPublicTest
 {
@@ -116,7 +116,8 @@ class StatsAsRegisteredTest extends StatsAsPublicTest
             $this->assertEquals($totalCount, $stat->counts->total);
 
             if ($previousCarbonDate !== null) {
-                $this->assertEquals($previousCarbonDate->copy()->addWeek()->toDateString(), $carbonDate->toDateString());
+                $this->assertEquals($previousCarbonDate->copy()->addWeek()
+                    ->toDateString(), $carbonDate->toDateString());
             }
             $previousCarbonDate = $carbonDate;
         }

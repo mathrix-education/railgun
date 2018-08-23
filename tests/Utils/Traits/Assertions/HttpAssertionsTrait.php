@@ -6,9 +6,9 @@ namespace Tests\Utils\Traits\Assertions;
  * Trait HttpAssertionsTrait
  * Some shortcuts for HTTP codes & errors.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
  *
- * @since 4.0.3
+ * @since     4.0.3
  *
  * @copyright Mathrix Education SA
  *

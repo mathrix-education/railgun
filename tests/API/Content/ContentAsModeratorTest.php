@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
  * Class ContentAsModeratorTest
  * Test content as moderator.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
  * @since
  *

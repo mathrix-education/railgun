@@ -43,7 +43,9 @@ use Illuminate\Support\Str;
  */
 class Plan extends BraintreeModel
 {
-    public function __construct(\Braintree\Plan $plan, float $highestPricePerMonth = null)
+    public static $highestPricePerMonth = null;
+
+    public function __construct(\Braintree\Plan $plan)
     {
         parent::__construct($plan);
 
@@ -81,15 +83,19 @@ class Plan extends BraintreeModel
                 . "par mois. L'année scolaire suivante sera facturée soit $pricePerYear multiplié par 12 mois";
         }
 
-        if ($highestPricePerMonth !== null) {
-            $this->discount = 100 - round($this->pricePerMonth * 100 / $highestPricePerMonth, 0);
+        if (self::$highestPricePerMonth !== null) {
+            $this->discount = 100 - round($this->pricePerMonth * 100 / self::$highestPricePerMonth, 0);
         } else {
             $this->discount = null;
         }
 
         $addOns = [];
-        foreach ($this->addOns as $addOn) {
-            $addOns[] = new AddOn($addOn);
+        foreach (["_child_30", "_child_50"] as $addOnSuffix) {
+            $addOn = AddOn::find($this->id . $addOnSuffix);
+
+            if ($addOn !== null) {
+                $addOns[] = $addOn;
+            }
         }
         $this->addOns = $addOns;
     }
@@ -126,6 +132,14 @@ class Plan extends BraintreeModel
         return Cache::remember("plans", 30, function () {
             $plans = \Braintree\Plan::all();
             $collection = new Collection();
+
+            foreach ($plans as $plan) {
+                $pricePerMonth = round($plan->price / $plan->billingFrequency, 2);
+
+                if (self::$highestPricePerMonth === null || $pricePerMonth > self::$highestPricePerMonth) {
+                    self::$highestPricePerMonth = $pricePerMonth;
+                }
+            }
 
             foreach ($plans as $plan) {
                 $collection->push(new self($plan));

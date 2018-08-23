@@ -13,6 +13,7 @@ use App\Models\FamilyPack;
 use App\Models\User;
 use App\Services\Braintree\FamilyPackUtils;
 use App\Services\Braintree\Formatter;
+use App\Services\Braintree\Models\Plan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -39,22 +40,32 @@ class SubscriptionController extends Controller
     /**
      * Estimate the price of the trial before the regular subscription billing cycles.
      *
-     * @param string $plan
-     *
-     * @throws Http400InvalidPlanException
+     * @param string $planId
+     * @param int    $additionalChildren
      *
      * @return JsonResponse
+     * @throws Http400InvalidPlanException
      */
-    public function estimate(string $plan)
+    public function estimate(string $planId, int $additionalChildren = 0)
     {
-        if (!\in_array($plan, array_keys(self::PRICE_PER_MONTH), true)) {
-            throw new Http400InvalidPlanException($plan);
+        if (!\in_array($planId, array_keys(self::PRICE_PER_MONTH), true)) {
+            throw new Http400InvalidPlanException($planId);
         }
 
-        return new JsonResponse([
-            "price" => $this->getTrialPrice($plan),
-            "end_date" => $this->getStartDate($plan),
-        ]);
+        $plan = Plan::findOrFail($planId);
+        $data = [
+            "planId" => $plan->id,
+            "trialPrice" => $plan->trialPrice,
+            "trialEndDate" => $plan->trialEndDate
+        ];
+
+        if ($additionalChildren > 0) {
+            $data["addOns"] = FamilyPackUtils::getAddOnsAsLineItemsForTrial($plan->id, $additionalChildren);
+        }
+
+        $response = new JsonResponse($data);
+
+        return $response;
     }
 
     /**

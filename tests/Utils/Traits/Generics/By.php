@@ -7,10 +7,10 @@ use App\Models\BaseModel;
 /**
  * Trait By.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
  *
- * @since 1.0.0
+ * @since     1.0.0
  */
 trait By
 {

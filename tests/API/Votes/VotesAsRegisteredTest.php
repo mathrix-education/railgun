@@ -14,10 +14,10 @@ use Laravel\Passport\Passport;
  * Class VotesAsPublicTest
  * Test Votes as registered user.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
  *
- * @version 4.0.3
+ * @version   4.0.3
  */
 class VotesAsRegisteredTest extends VotesAsPublicTest
 {

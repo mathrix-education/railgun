@@ -5,14 +5,25 @@ namespace Tests\Utils\Traits;
 /**
  * Class Debug.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
  *
- * @since 4.1.0
+ * @since     4.1.0
  *
  * @copyright Mathrix Education SA
  */
 trait DebugTrait
 {
+    /**
+     * Debug the response.
+     *
+     * @throws \Exception
+     */
+    public function debug()
+    {
+        echo $this->currentUri . "\n";
+        echo json_encode($this->getResponseData(), JSON_PRETTY_PRINT);
+    }
+
     /**
      * Handle response printing.
      *
@@ -24,16 +35,5 @@ trait DebugTrait
     {
         $this->debug();
         parent::onNotSuccessfulTest($e);
-    }
-
-    /**
-     * Debug the response.
-     *
-     * @throws \Exception
-     */
-    public function debug()
-    {
-        echo $this->currentUri . "\n";
-        echo json_encode($this->getResponseData(), JSON_PRETTY_PRINT);
     }
 }

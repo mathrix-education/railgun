@@ -8,10 +8,10 @@ use Tests\API\ScopeTestCase;
  * Class LevelsAsPublicTest
  * Test levels as public (non-logged user).
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
  *
- * @version 4.0.3
+ * @version   4.0.3
  */
 class LevelsAsPublicTest extends ScopeTestCase
 {

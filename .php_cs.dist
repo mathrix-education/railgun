@@ -50,7 +50,7 @@ return PhpCsFixer\Config::create()
         "single_quote" => false,
         "strict_comparison" => true,
         "strict_param" => true,
-        "trailing_comma_in_multiline_array"=> false,
+        "trailing_comma_in_multiline_array" => false,
         "yoda_style" => false,
     ])
     ->setFinder(
