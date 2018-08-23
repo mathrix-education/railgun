@@ -45,6 +45,10 @@ properties:
     type: integer
     nullable: true
     example: 2
+  pricePerMonth:
+    description: The add-on price per month.
+    type: float
+    example: 6.45
   quantity:
     description: >-
       The number of times this particular add-on is applied to the subscription. Its value will always be `null` for
@@ -52,3 +56,8 @@ properties:
     type: integer
     nullable: true
     example: 2
+  trialPrice:
+    description: The add-on price for the trial period
+    type: float
+    nullable: true
+    example: 72.46
