@@ -58,7 +58,7 @@ class ProductController extends BaseController
             "cart.*" => "exists:products,id"
         ]);
 
-        $paymentMethodNonce = $request->input("payment_method_nonce", false);
+        $paymentMethodNonce = $request->input("paymentMethodNonce", false);
 
         if ($customer->isBraintreeCustomer()) {
             $customer->createBraintreeCustomer($paymentMethodNonce);

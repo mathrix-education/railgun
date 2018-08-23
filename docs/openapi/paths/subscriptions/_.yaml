@@ -16,13 +16,13 @@ post:
         schema:
           type: object
           properties:
-            plan:
+            planId:
               type: string
               enum:
               - v4_monthly
               - v4_annually
               - v4_biannually
-            payment_method_nonce:
+            paymentMethodNonce:
               type: string
               description: The payment method method nonce from the Braintree Client SDK
               example: 7acb98s
@@ -31,3 +31,9 @@ post:
               type: array
               items:
                 type: string
+              example:
+                - child1@example.com
+                - child2@example.com
+                - child3@example.com
+          required:
+          - planId

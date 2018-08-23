@@ -12,7 +12,7 @@ properties:
     description: A discount code.
     type: string
     example: MODEMACHINE2018
-  payment_method_nonce:
+  paymentMethodNonce:
     description: The payment nonce if the user is not already a Braintree customer.
     type: string
     example: 4qs54za5
