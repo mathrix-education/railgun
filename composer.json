@@ -10,6 +10,7 @@
   "require": {
     "php": ">=7.1",
     "ext-zip": "*",
+    "ext-json": "*",
     "barryvdh/laravel-cors": "^0.11",
     "drewm/mailchimp-api": "^2.5",
     "dusterio/lumen-passport": "^0.2.0",

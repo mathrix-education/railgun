@@ -46,8 +46,6 @@ class Chapter extends BaseModel
         "discipline_id" => "required|exists:disciplines,id",
         "visible" => "boolean"
     ];
-    /** @var array Appends attributes */
-    protected $appends = ["fully_visible"];
 
 
     /*
@@ -89,22 +87,5 @@ class Chapter extends BaseModel
     public function notions(): BelongsToMany
     {
         return $this->belongsToMany(Notion::class)->withPivot(["order"]);
-    }
-
-
-    /**
-     * fully_visible
-     *
-     * @return bool
-     */
-    public function getFullyVisibleAttribute(): bool
-    {
-        foreach ($this->notions as $notion) {
-            if (!$notion->fully_visible) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }

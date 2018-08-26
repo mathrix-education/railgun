@@ -45,8 +45,6 @@ class Notion extends BaseModel
         "slug" => "required|max:255",
         "chapter_id" => "required|exists:chapters,id"
     ];
-    /** @var array Appends attributes */
-    protected $appends = ["fully_visible"];
 
 
     public function __construct(array $attributes = [])
@@ -83,22 +81,5 @@ class Notion extends BaseModel
     public function chapters(): BelongsToMany
     {
         return $this->belongsToMany(Chapter::class)->withPivot(["order"]);
-    }
-
-
-    /**
-     * fully_visible
-     *
-     * @return bool
-     */
-    public function getFullyVisibleAttribute(): bool
-    {
-        foreach ($this->activities as $activity) {
-            if (!$activity->fully_visible) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }

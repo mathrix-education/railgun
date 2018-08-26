@@ -61,7 +61,7 @@ class Activity extends BaseModel implements Commentable
         "visible" => "boolean"
     ];
     /** @var array Appends attributes */
-    protected $appends = ["favorite", "to_revise", "completed", "fully_visible"];
+    protected $appends = ["favorite", "to_revise", "completed"];
 
 
     public function __construct(array $attributes = [])
@@ -172,22 +172,5 @@ class Activity extends BaseModel implements Commentable
         ])->first();
 
         return $meta === null ? null : $meta->completed;
-    }
-
-
-    /**
-     * fully_visible
-     *
-     * @return bool
-     */
-    public function getFullyVisibleAttribute(): bool
-    {
-        foreach ($this->modules as $module) {
-            if (!$module->visible) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }
