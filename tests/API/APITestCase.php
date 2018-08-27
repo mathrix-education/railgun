@@ -8,6 +8,7 @@ use Tests\Utils\Traits\Assertions\DatabaseAssertionsTrait;
 use Tests\Utils\Traits\Assertions\HttpAssertionsTrait;
 use Tests\Utils\Traits\Assertions\JsonAssertionsTrait;
 use Tests\Utils\Traits\Assertions\NotificationsAssertionsTrait;
+use Tests\Utils\Traits\DebugTrait;
 use Tests\Utils\Traits\ResponseTrait;
 
 /**
@@ -22,5 +23,5 @@ use Tests\Utils\Traits\ResponseTrait;
 class APITestCase extends BaseTestCase
 {
     use DatabaseAssertionsTrait, HttpAssertionsTrait, JsonAssertionsTrait, NotificationsAssertionsTrait, ResponseTrait,
-        DatabaseTransactions;
+        DatabaseTransactions, DebugTrait;
 }

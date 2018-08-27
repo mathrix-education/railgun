@@ -64,7 +64,9 @@ Quote:
 Report:
   $ref: ./Report.yaml
 Setting:
-  $ref: ./Purchase.yaml
+  $ref: ./Setting.yaml
+Score:
+  $ref: ./Score.yaml
 User:
   $ref: ./User.yaml
 Vote:

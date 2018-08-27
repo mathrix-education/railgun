@@ -43,6 +43,13 @@
   $ref: ./products/_sale.yaml
 
 
+# ------
+# Scores
+# ------
+/scores/{game}/top/{?interval}/{?count}:
+  $ref: ./scores/_game_top.yaml
+
+
 # --------------------
 # Braintree global API
 # --------------------

@@ -5,18 +5,18 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Class CreateScoresTable
+ * Class CreateScoresTable.
  *
  * @author Mathrix Back-End Team
+ *
  * @since 4.1.0
+ *
  * @copyright Mathrix SA
  */
 class CreateScoresTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -26,7 +26,7 @@ class CreateScoresTable extends Migration
             $table->integer("score")->unsigned()->nullable();
             $table->integer("time")->unsigned()->nullable();
             $table->integer("user_id")->unsigned();
-            $table->text("data");
+            $table->text("data")->nullable();
             $table->timestamps();
 
             // Foreign keys
@@ -34,11 +34,8 @@ class CreateScoresTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

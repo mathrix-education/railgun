@@ -16,6 +16,8 @@ tags:
   description: Categories API
 - name: Products
   description: Products API
+- name: Scores
+  description: Scores API
 - name: Users
   description: Users API
   # Braintree

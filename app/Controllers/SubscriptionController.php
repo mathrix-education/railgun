@@ -43,8 +43,9 @@ class SubscriptionController extends Controller
      * @param string $planId
      * @param int    $additionalChildren
      *
-     * @return JsonResponse
      * @throws Http400InvalidPlanException
+     *
+     * @return JsonResponse
      */
     public function estimate(string $planId, int $additionalChildren = 0)
     {
