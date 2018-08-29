@@ -3,13 +3,6 @@ post:
   - Braintree Subscriptions
   summary: Subscribe user to plan
   operationId: subscriptionsAdd
-  responses:
-    200:
-      description: The new Braintree subscription
-      content:
-        application/json:
-          schema:
-            $ref: '../../index.yaml#/components/schemas/Braintree_Subscription'
   requestBody:
     content:
       application/json:
@@ -37,3 +30,10 @@ post:
                 - child3@example.com
           required:
           - planId
+  responses:
+    200:
+      description: The new Braintree subscription
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Braintree_Subscription'

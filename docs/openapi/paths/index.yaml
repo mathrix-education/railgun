@@ -46,6 +46,10 @@
 # ------
 # Scores
 # ------
+/scores/{game}:
+  $ref: ./scores/_game.yaml
+/scores/{game}/token:
+  $ref: ./scores/_game_token.yaml
 /scores/{game}/top/{?interval}/{?count}:
   $ref: ./scores/_game_top.yaml
 

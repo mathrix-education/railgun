@@ -13,7 +13,7 @@ properties:
   time:
     description: The score time. May be `null`.
     type: integer
-    nullable: null
+    nullable: true
     example: 17
   user_id:
     description: The score user id.
