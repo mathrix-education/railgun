@@ -1,6 +1,6 @@
 get:
   tags:
-  - categories
+  - Categories
   summary: Get a category
   operationId: categoriesGet
   parameters:
@@ -20,7 +20,7 @@ get:
             $ref: '../../index.yaml#/components/schemas/Category'
 patch:
   tags:
-  - categories
+  - Categories
   summary: Edit a category
   operationId: categoriesPatch
   parameters:
@@ -45,7 +45,7 @@ patch:
             $ref: '../../index.yaml#/components/schemas/Category'
 delete:
   tags:
-  - categories
+  - Categories
   summary: Delete a category (not implemented)
   operationId: categoriesDelete
   parameters:

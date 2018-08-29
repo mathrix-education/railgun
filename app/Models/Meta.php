@@ -1,37 +1,42 @@
 <?php
+
 namespace App\Models;
 
-
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * Model Meta
+ * Model Meta.
  *
- * @package App\Models
- * @since 1.0.0
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @since     1.0.0
+ *
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * @property int $id
- * @property bool $favorite
- * @property bool $to_revise
- * @property bool $completed
- * @property int $user_id
- * @property int|null $country_id
- * @property int|null $class_id
- * @property int|null $discipline_id
- * @property int|null $chapter_id
- * @property int|null $notion_id
- * @property int|null $activity_id
- * @property int|null $module_id
- * @property-read User $user
- * @property-read Country $country
- * @property-read Discipline $discipline
- * @property-read Class_|null $class_
- * @property-read Chapter $chapter
- * @property-read Notion $notion
- * @property-read Activity $activity
- * @property-read Module $module
+ *
+ * @property int         $id
+ * @property bool        $favorite
+ * @property bool        $to_revise
+ * @property bool        $completed
+ * @property int         $user_id
+ * @property int|null    $country_id
+ * @property int|null    $class_id
+ * @property int|null    $discipline_id
+ * @property int|null    $chapter_id
+ * @property int|null    $notion_id
+ * @property int|null    $activity_id
+ * @property int|null    $module_id
+ * @property User        $user
+ * @property Country     $country
+ * @property Discipline  $discipline
+ * @property Class_|null $class_
+ * @property Chapter     $chapter
+ * @property Notion      $notion
+ * @property Activity    $activity
+ * @property Module      $module
+ * @property Carbon      $created_at
+ * @property Carbon      $updated_at
+ *
  * @method static Builder|Meta whereId($value)
  * @method static Builder|Meta whereFavorite($value)
  * @method static Builder|Meta whereToRevise($value)
@@ -46,8 +51,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Meta whereModuleId($value)
  * @method static Builder|Meta whereCreatedAt($value)
  * @method static Builder|Meta whereUpdatedAt($value)
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
+ * @mixin \Eloquent
  */
 class Meta extends BaseModel
 {
@@ -68,13 +72,13 @@ class Meta extends BaseModel
         "chapters_id" => "required|exists:chapters,id",
         "notion_id" => "required|exists:notions,id",
         "activity_id" => "required|exists:activities,id",
-        "module_id" => "nullable|exists:modules,id"
+        "module_id" => "nullable|exists:modules,id",
     ];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
         "favorite" => "boolean",
         "to_revise" => "boolean",
-        "completed" => "boolean"
+        "completed" => "boolean",
     ];
 
     /*
@@ -82,8 +86,9 @@ class Meta extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
+
     /**
-     * BelongsTo User
+     * BelongsTo User.
      *
      * @return BelongsTo
      */
@@ -92,9 +97,8 @@ class Meta extends BaseModel
         return $this->belongsTo(User::class);
     }
 
-
     /**
-     * BelongsTo Country
+     * BelongsTo Country.
      *
      * @return BelongsTo
      */
@@ -103,9 +107,8 @@ class Meta extends BaseModel
         return $this->belongsTo(Country::class);
     }
 
-
     /**
-     * BelongsTo Class_
+     * BelongsTo Class_.
      *
      * @return BelongsTo
      */
@@ -114,9 +117,8 @@ class Meta extends BaseModel
         return $this->belongsTo(Class_::class, "class_id");
     }
 
-
     /**
-     * BelongsTo Discipline
+     * BelongsTo Discipline.
      *
      * @return BelongsTo
      */
@@ -125,9 +127,8 @@ class Meta extends BaseModel
         return $this->belongsTo(Discipline::class);
     }
 
-
     /**
-     * BelongsTo Chapter
+     * BelongsTo Chapter.
      *
      * @return BelongsTo
      */
@@ -136,9 +137,8 @@ class Meta extends BaseModel
         return $this->belongsTo(Chapter::class);
     }
 
-
     /**
-     * BelongsTo Notion
+     * BelongsTo Notion.
      *
      * @return BelongsTo
      */
@@ -147,9 +147,8 @@ class Meta extends BaseModel
         return $this->belongsTo(Notion::class);
     }
 
-
     /**
-     * BelongsTo Activity
+     * BelongsTo Activity.
      *
      * @return BelongsTo
      */
@@ -158,9 +157,8 @@ class Meta extends BaseModel
         return $this->belongsTo(Activity::class);
     }
 
-
     /**
-     * BelongsTo Module
+     * BelongsTo Module.
      *
      * @return BelongsTo
      */

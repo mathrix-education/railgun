@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands\Redoc;
 
 use Illuminate\Console\Command;
@@ -6,20 +7,20 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
 /**
- * Class RedocBundle
+ * Class RedocBundle.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Console\Commands\Redoc
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class RedocBundle extends Command
 {
-    protected $signature = "redoc:bundle";
     private const REDOC_COMMAND = "redoc-cli bundle docs/openapi/index.yaml";
     private const REDOC_OUTPUT_FILE = "redoc-static.html";
     private const REDOC_DESTINATION_FILE = "docs/openapi/index.html";
-
+    protected $signature = "redoc:bundle";
 
     public function handle()
     {

@@ -1,13 +1,12 @@
 <?php
+
 namespace App\Console\Commands\Sitemap;
 
 use Illuminate\Support\Facades\Storage;
 use Roumen\Sitemap\Sitemap;
 
 /**
- * Trait SitemapUtils
- *
- * @package App\Console\Commands
+ * Trait SitemapUtils.
  */
 trait SitemapUtils
 {
@@ -19,12 +18,11 @@ trait SitemapUtils
         "images" => null,
         "title" => null,
         "translations" => null,
-        "videos" => null
+        "videos" => null,
     ];
 
-
     /**
-     * Get the webrooted url
+     * Get the webrooted url.
      *
      * @param string $url
      *
@@ -35,12 +33,11 @@ trait SitemapUtils
         return env("APP_WEBROOT") . "$url";
     }
 
-
     /**
-     * Save the sitemap
+     * Save the sitemap.
      *
-     * @param array $sitemapArray
-     * @param string $sitemapName
+     * @param array    $sitemapArray
+     * @param string   $sitemapName
      * @param \Closure $callback
      */
     public function saveSitemap(array $sitemapArray, string $sitemapName = "sitemap", \Closure $callback = null)
@@ -63,8 +60,10 @@ trait SitemapUtils
             );
         }
 
-        if (!in_array("sitemaps", Storage::disk("storage")->directories())) {
-            Storage::disk("storage")->makeDirectory("sitemaps");
+        if (!\in_array("sitemaps", Storage::disk("storage")
+            ->directories(), true)) {
+            Storage::disk("storage")
+                ->makeDirectory("sitemaps");
         }
 
         if ($callback !== null) {
@@ -74,7 +73,7 @@ trait SitemapUtils
         $sitemap->store("xml", $sitemapName, storage_path("sitemaps"));
 
         // Generate symlink if not in local environment
-        if (env("APP_ENV") != "local") {
+        if (env("APP_ENV") !== "local") {
             $existing = "/var/www/" . env("APP_ENV") . "/api/current/storage/sitemaps/$sitemapName.xml";
             $symbolic = "/var/www/" . env("APP_ENV") . "/client/current/dist/browser/$sitemapName.xml";
 

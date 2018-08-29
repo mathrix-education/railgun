@@ -6,18 +6,18 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Class CreateProductsTable
+ * Class CreateProductsTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class CreateProductsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -25,28 +25,44 @@ class CreateProductsTable extends Migration
             $table->increments("id");
             $table->string("name");
             $table->string("slug");
-            $table->string("image")->nullable();
-            $table->string("type")->nullable();
-            $table->text("description")->nullable();
-            $table->float("price")->nullable();
-            $table->boolean("visible")->default(true);
-            $table->integer("order")->nullable();
-            $table->integer("module_id")->unsigned()->nullable();
+            $table->string("image")
+                ->nullable();
+            $table->string("type")
+                ->nullable();
+            $table->text("description")
+                ->nullable();
+            $table->float("price")
+                ->nullable();
+            $table->boolean("visible")
+                ->default(true);
+            $table->integer("order")
+                ->nullable();
+            $table->integer("module_id")
+                ->unsigned()
+                ->nullable();
             $table->timestamps();
 
             // Foreign keys
-            $table->foreign("module_id")->references("id")->on("modules");
+            $table->foreign("module_id")
+                ->references("id")
+                ->on("modules");
         });
 
         Schema::create("product_product", function (Blueprint $table) {
             $table->increments("id");
-            $table->integer("parent_id")->unsigned();
-            $table->integer("child_id")->unsigned();
+            $table->integer("parent_id")
+                ->unsigned();
+            $table->integer("child_id")
+                ->unsigned();
             $table->integer("order");
 
             // Foreign keys
-            $table->foreign("parent_id")->references("id")->on("products");
-            $table->foreign("child_id")->references("id")->on("products");
+            $table->foreign("parent_id")
+                ->references("id")
+                ->on("products");
+            $table->foreign("child_id")
+                ->references("id")
+                ->on("products");
         });
 
         Schema::table("purchases", function (Blueprint $table) {
@@ -57,12 +73,17 @@ class CreateProductsTable extends Migration
                 // Do nothing
             }*/
 
-            $table->integer("product_id")->unsigned()->after("user_id");
+            $table->integer("product_id")
+                ->unsigned()
+                ->after("user_id");
         });
 
-        $trainings = DB::table("trainings")->get();
-        $sections = DB::table("sections")->get();
-        $lessons = DB::table("lessons")->get();
+        $trainings = DB::table("trainings")
+            ->get();
+        $sections = DB::table("sections")
+            ->get();
+        $lessons = DB::table("lessons")
+            ->get();
 
         if (!$trainings->isEmpty() && !$sections->isEmpty() && !$lessons->isEmpty()) {
             $sectionDelta = $trainings->last()->id;
@@ -75,11 +96,10 @@ class CreateProductsTable extends Migration
             $toMigrate = [
                 "training" => $trainings,
                 "section" => $sections,
-                "lesson" => $lessons
+                "lesson" => $lessons,
             ];
             $products = [];
             $productLinks = [];
-
 
             foreach ($toMigrate as $type => $family) {
                 foreach ($family as $item) {
@@ -98,7 +118,7 @@ class CreateProductsTable extends Migration
                             $productLinks[] = [
                                 "parent_id" => $item->training_id,
                                 "child_id" => $id,
-                                "order" => $item->order
+                                "order" => $item->order,
                             ];
                             break;
                         case "lesson":
@@ -106,7 +126,7 @@ class CreateProductsTable extends Migration
                             $productLinks[] = [
                                 "parent_id" => $item->section_id + $sectionDelta,
                                 "child_id" => $id,
-                                "order" => $item->order
+                                "order" => $item->order,
                             ];
                             break;
                     }
@@ -123,17 +143,18 @@ class CreateProductsTable extends Migration
                         "order" => $order,
                         "module_id" => $item->module_id ?? null,
                         "created_at" => $item->created_at ?? Carbon::now(),
-                        "updated_at" => $item->updated_at ?? Carbon::now()
+                        "updated_at" => $item->updated_at ?? Carbon::now(),
                     ];
                 }
             }
 
-            DB::table("products")->insert($products);
-            DB::table("product_product")->insert($productLinks);
+            DB::table("products")
+                ->insert($products);
+            DB::table("product_product")
+                ->insert($productLinks);
 
             DB::statement("UPDATE purchases SET product_id = purchasable_id");
         }
-
 
         Schema::table("purchases", function (Blueprint $table) {
             $table->dropColumn("price");
@@ -142,14 +163,10 @@ class CreateProductsTable extends Migration
             $table->dropColumn("purchasable_id");
             $table->dropColumn("purchasable_type");
         });
-
     }
-
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
@@ -158,11 +175,17 @@ class CreateProductsTable extends Migration
         });
         Schema::table("purchases", function (Blueprint $table) {
             $table->dropColumn("product_id");
-            $table->integer("price")->after("id");
-            $table->integer("refund")->after("id");
-            $table->string("stripe_id")->after("id");
-            $table->integer("purchasable_id")->unsigned()->after("user_id");
-            $table->string("purchasable_type")->after("user_id");
+            $table->integer("price")
+                ->after("id");
+            $table->integer("refund")
+                ->after("id");
+            $table->string("stripe_id")
+                ->after("id");
+            $table->integer("purchasable_id")
+                ->unsigned()
+                ->after("user_id");
+            $table->string("purchasable_type")
+                ->after("user_id");
         });
 
         Schema::table("product_product", function (Blueprint $table) {

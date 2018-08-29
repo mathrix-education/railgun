@@ -5,26 +5,28 @@ namespace Tests\Braintree;
 use App\Exceptions\Http400InvalidRequestException;
 use App\Models\User;
 use Laravel\Lumen\Testing\TestCase;
-use Tests\Traits\DatabaseAssertions;
-use Tests\Traits\Debug;
-use Tests\Traits\HttpAssertionsTrait;
-use Tests\Traits\NotificationsTrait;
-use Tests\Traits\PassportTrait;
-use Tests\Traits\ResponseTrait;
+use Tests\Utils\Traits\Assertions\DatabaseAssertionsTrait;
+use Tests\Utils\Traits\Assertions\HttpAssertionsTrait;
+use Tests\Utils\Traits\Assertions\JsonAssertionsTrait;
+use Tests\Utils\Traits\Assertions\NotificationsAssertionsTrait;
+use Tests\Utils\Traits\DebugTrait;
+use Tests\Utils\Traits\PassportTrait;
+use Tests\Utils\Traits\ResponseTrait;
 
 /**
  * Class BraintreeTestCase
- * Base class for Braintree tests
+ * Base class for Braintree tests.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package Tests\Braintree
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class BraintreeTestCase extends TestCase
 {
-    use HttpAssertionsTrait, DatabaseAssertions, ResponseTrait, Debug, PassportTrait, NotificationsTrait;
-
+    use DatabaseAssertionsTrait, HttpAssertionsTrait, JsonAssertionsTrait, NotificationsAssertionsTrait, ResponseTrait,
+        DebugTrait, PassportTrait;
 
     /**
      * Creates the application.
@@ -38,12 +40,12 @@ class BraintreeTestCase extends TestCase
         return require __DIR__ . "/../../bootstrap/app.php";
     }
 
-
     /**
-     * Get a Braintree customer
+     * Get a Braintree customer.
+     *
+     * @throws Http400InvalidRequestException
      *
      * @return User
-     * @throws Http400InvalidRequestException
      */
     public function getBraintreeCustomer(): User
     {

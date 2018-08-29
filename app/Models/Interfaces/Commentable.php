@@ -1,15 +1,18 @@
 <?php
+
 namespace App\Models\Interfaces;
+
 use App\Models\Activity;
 use App\Models\Post;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
- * Interface Commentable
+ * Interface Commentable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Models\Interfaces
- * @since 4.0.2
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     4.0.2
+ *
  * @copyright Mathrix Education SA
  *
  * @mixin Post

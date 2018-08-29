@@ -1,21 +1,22 @@
 <?php
+
 namespace App\Mails;
 
 use App\Models\User;
 
 /**
- * Class PasswordForgottenMail
+ * Class PasswordForgottenMail.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Mails
- * @since 1.0.1
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.1
+ *
  * @copyright Mathrix Education SA
  */
 class PasswordForgottenMail extends BaseMail
 {
     /** @var User The mail user */
     protected $user;
-
 
     /**
      * PasswordForgottenMail constructor.
@@ -29,21 +30,20 @@ class PasswordForgottenMail extends BaseMail
         parent::__construct();
     }
 
-
     /**
-     * Mock the Mail
+     * Mock the Mail.
      *
      * @return PasswordForgottenMail
      */
     public static function mock()
     {
         $user = User::random();
-        return new PasswordForgottenMail($user);
+
+        return new self($user);
     }
 
-
     /**
-     * Build the Mail
+     * Build the Mail.
      *
      * @return PasswordForgottenMail
      */
@@ -54,7 +54,7 @@ class PasswordForgottenMail extends BaseMail
         return $this->view("emails.users.passwordForgotten", [
             "title" => "Modification de mot de passe",
             "firstname" => $this->user->firstname ?? $this->user->username,
-            "token" => $this->user->token
+            "token" => $this->user->token,
         ]);
     }
 }

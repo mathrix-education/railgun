@@ -1,4 +1,5 @@
 <?php
+
 /** @var Laravel\Lumen\Routing\Router $router */
 $router->group(["prefix" => "transactions", "middleware" => "auth:api"], function () use ($router) {
     $router->get("by-subscription/{subscriptionId:[a-z0-9\_]+}", "TransactionController@bySubscription");

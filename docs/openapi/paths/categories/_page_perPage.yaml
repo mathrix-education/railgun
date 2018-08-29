@@ -1,6 +1,6 @@
 get:
   tags:
-    - categories
+  - Categories
   summary: Get all categories (pagination)
   operationId: categoriesIndexPagination
   parameters:

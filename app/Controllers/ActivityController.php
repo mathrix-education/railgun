@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -15,21 +16,23 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 /**
- * Class ActivityController
+ * Class ActivityController.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Controllers
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class ActivityController extends BaseController
 {
     /**
-     * @param Request $request
+     * @param Request $request The request
      *
-     * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
+     *
+     * @return JsonResponse
      */
     public function favorites(Request $request): JsonResponse
     {
@@ -37,20 +40,20 @@ class ActivityController extends BaseController
         $metas = Meta::with(["country", "class_", "discipline", "chapter", "notion", "activity", "activity.modules"])
             ->where([
                 ["user_id", $user->id],
-                ["favorite", true]
+                ["favorite", true],
             ])
             ->get();
 
         return response()->json($metas);
     }
 
-
     /**
-     * @param Request $request
+     * @param Request $request The request
      *
-     * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
+     *
+     * @return JsonResponse
      */
     public function to_revise(Request $request): JsonResponse
     {
@@ -58,25 +61,27 @@ class ActivityController extends BaseController
         $metas = Meta::with(["country", "class_", "discipline", "chapter", "notion", "activity", "activity.modules"])
             ->where([
                 ["user_id", $user->id],
-                ["to_revise", true]
+                ["to_revise", true],
             ])
             ->get();
 
         return response()->json($metas);
     }
 
-
     /**
-     * @param Request $request
+     * @param Request $request The request
      *
-     * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
+     *
+     * @return JsonResponse
      */
     public function incomplete(Request $request): JsonResponse
     {
         $user = $this->getUserByRequestOrUnauthorized($request);
-        $disciplinesIds = Discipline::all(["id"])->pluck("id")->toArray();
+        $disciplinesIds = Discipline::all(["id"])
+            ->pluck("id")
+            ->toArray();
 
         /**
          * @var Builder|null
@@ -88,7 +93,7 @@ class ActivityController extends BaseController
                 ->where([
                     ["user_id", $user->id],
                     ["completed", false],
-                    ["discipline_id", $disciplineId]
+                    ["discipline_id", $disciplineId],
                 ])
                 ->orderBy("updated_at", "desc")
                 ->limit(1);
@@ -96,7 +101,7 @@ class ActivityController extends BaseController
             if ($query === null) {
                 $query = $subQuery;
             } else {
-                /** @var Builder $query */
+                /* @var Builder $query */
                 $query->union($subQuery);
             }
         }
@@ -106,17 +111,17 @@ class ActivityController extends BaseController
         return response()->json($metas);
     }
 
-
     /**
-     * @param Request $request
-     * @param int $id
+     * @param Request $request The request
+     * @param int     $id
      *
-     * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
      * @throws Http404ModelNotFoundException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     *
+     * @return JsonResponse
      */
     public function mark(Request $request, int $id): JsonResponse
     {

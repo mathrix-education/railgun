@@ -3,7 +3,7 @@
 use App\Models\Module;
 use Faker\Generator;
 
-/**
+/*
  * ModuleFactory & ModuleRandomFactory
  *
  * @author Mathrix Team
@@ -12,7 +12,7 @@ use Faker\Generator;
 $factory->define(Module::class, function (Generator $faker) {
     return [
         "premium" => $faker->boolean(70),
-        "visible" => $faker->boolean(95)
+        "visible" => $faker->boolean(95),
     ];
 });
 
@@ -23,6 +23,6 @@ $factory->defineAs(Module::class, "random", function (Generator $faker) use ($fa
         "mcq",
         "mcq-table",
         "test",
-        "flashcard"
+        "flashcard",
     ]));
 });

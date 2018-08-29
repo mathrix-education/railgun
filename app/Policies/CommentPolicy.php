@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\Comment;
@@ -6,11 +7,12 @@ use App\Models\User;
 use Carbon\Carbon;
 
 /**
- * Class CommentPolicy
+ * Class CommentPolicy.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Policies
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class CommentPolicy extends BasePolicy
@@ -25,7 +27,6 @@ class CommentPolicy extends BasePolicy
         return $currentUser->isModerator();
     }
 
-
     /**
      * @return bool
      */
@@ -34,9 +35,8 @@ class CommentPolicy extends BasePolicy
         return true;
     }
 
-
     /**
-     * @param User $currentUser
+     * @param User    $currentUser
      * @param Comment $comment
      *
      * @return bool
@@ -47,13 +47,13 @@ class CommentPolicy extends BasePolicy
             return true;
         }
 
-        if ($currentUser->id == $comment->user_id && $comment->updated_at > Carbon::now()->subDays(3)) {
+        if ($currentUser->id === $comment->user_id && $comment->updated_at > Carbon::now()
+                ->subDays(3)) {
             return true;
         }
 
         return false;
     }
-
 
     /**
      * @param User $currentUser
@@ -65,7 +65,6 @@ class CommentPolicy extends BasePolicy
         return $currentUser->isModerator();
     }
 
-
     /**
      * @param User $currentUser
      *
@@ -75,7 +74,6 @@ class CommentPolicy extends BasePolicy
     {
         return $currentUser->isModerator();
     }
-
 
     /**
      * @param User $currentUser

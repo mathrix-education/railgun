@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Carbon\Carbon;
@@ -7,22 +8,29 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * App\Models\Discount
+ * Model Discount.
  *
- * @property string $code
- * @property int $counter
- * @property int $id
- * @property string $type
- * @property int $value
- * @property Carbon|null $expire_at
- * @property array $link
- * @property-read Collection|Product[] $products
+ * @since     4.1.0
+ *
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
+ *
+ * @property string               $code
+ * @property int                  $counter
+ * @property int                  $id
+ * @property string               $type
+ * @property int                  $value
+ * @property Carbon|null          $expire_at
+ * @property array                $link
+ * @property Collection|Product[] $products
+ *
  * @method static Builder|Discount whereId($value)
  * @method static Builder|Discount whereCode($value)
  * @method static Builder|Discount whereType($value)
  * @method static Builder|Discount whereValue($value)
  * @method static Builder|Discount whereCounter($value)
  * @method static Builder|Discount whereExpireAt($value)
+ * @mixin \Eloquent
  */
 class Discount extends BaseModel
 {
@@ -33,31 +41,27 @@ class Discount extends BaseModel
     /** @var array The attributes that should be mutated to dates */
     protected $dates = ["expire_at"];
 
-
     /**
-     * BelongsToMany Product
+     * Check if the discount is applicable on at least one of the given products.
      *
-     * @return BelongsToMany
-     */
-    public function products()
-    {
-        return $this->belongsToMany(Product::class);
-    }
-
-
-    /**
-     * Check if the code is expired by its properties (counter and/or expiration date)
+     * @param Product[] $products
      *
      * @return bool
      */
-    public function isExpired()
+    public function isApplicableBleOnAtLeastOneOf($products)
     {
-        return $this->counter === 0 || ($this->expire_at !== null && $this->expire_at->isPast());
+        /** @var Product $product */
+        foreach ($products as $product) {
+            if ($this->isApplicableOn($product)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
-
     /**
-     * Check if the discount is applicable on the given product
+     * Check if the discount is applicable on the given product.
      *
      * @param Product $product
      *
@@ -74,23 +78,23 @@ class Discount extends BaseModel
             ->exists();
     }
 
-
     /**
-     * Check if the discount is applicable on at least one of the given products
-     *
-     * @param Product[] $products
+     * Check if the code is expired by its properties (counter and/or expiration date).
      *
      * @return bool
      */
-    public function isApplicableBleOnAtLeastOneOf($products)
+    public function isExpired()
     {
-        /** @var Product $product */
-        foreach ($products as $product) {
-            if ($this->isApplicableOn($product)) {
-                return true;
-            }
-        }
+        return $this->counter === 0 || ($this->expire_at !== null && $this->expire_at->isPast());
+    }
 
-        return false;
+    /**
+     * BelongsToMany Product.
+     *
+     * @return BelongsToMany
+     */
+    public function products()
+    {
+        return $this->belongsToMany(Product::class);
     }
 }

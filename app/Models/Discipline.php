@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -6,27 +7,30 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-
 /**
- * Model Discipline
+ * Model Discipline.
  *
- * @package App\Models
- * @since 1.0.0
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @since     1.0.0
+ *
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * @property int $id
- * @property string $name
- * @property string $slug
- * @property bool $beta
- * @property array $link
- * @property-read Collection|Chapter[] $chapters
- * @property-read Collection|Class_[] $classes
+ *
+ * @property int                  $id
+ * @property string               $name
+ * @property string               $slug
+ * @property bool                 $beta
+ * @property bool                 $visible
+ * @property array                $link
+ * @property Collection|Chapter[] $chapters
+ * @property Collection|Class_[]  $classes
+ *
  * @method static Builder|Discipline whereId($value)
  * @method static Builder|Discipline whereName($value)
  * @method static Builder|Discipline whereSlug($value)
  * @method static Builder|Discipline whereBeta($value)
  * @method static Builder|Discipline whereVisible($value)
- * @property bool $visible
+ *
+ * @mixin \Eloquent
  */
 class Discipline extends BaseModel
 {
@@ -37,7 +41,7 @@ class Discipline extends BaseModel
         "name" => "required|max:255",
         "slug" => "required|max:255",
         "beta" => "boolean",
-        "visible" => "boolean"
+        "visible" => "boolean",
     ];
 
     /*
@@ -45,8 +49,9 @@ class Discipline extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
+
     /**
-     * HasMany Chapter
+     * HasMany Chapter.
      *
      * @return HasMany
      */
@@ -55,9 +60,8 @@ class Discipline extends BaseModel
         return $this->hasMany(Chapter::class);
     }
 
-
     /**
-     * BelongsToMany Class_
+     * BelongsToMany Class_.
      *
      * @return BelongsToMany
      */

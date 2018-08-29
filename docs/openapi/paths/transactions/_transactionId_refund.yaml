@@ -1,6 +1,6 @@
 post:
   tags:
-  - transactions
+  - Braintree Transactions
   summary: Refund a transaction
   operationId: transactionRefund
   parameters:

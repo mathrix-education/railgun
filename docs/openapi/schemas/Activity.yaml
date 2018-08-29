@@ -21,12 +21,12 @@ properties:
     description: The activity type.
     type: string
     enum:
-      - video
-      - course
-      - test
-      - exercise
-      - summary
-      - flashcard
+    - video
+    - course
+    - test
+    - exercise
+    - summary
+    - flashcard
   visible:
     description: The activity visibility.
     type: boolean

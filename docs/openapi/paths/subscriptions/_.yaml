@@ -1,8 +1,35 @@
 post:
   tags:
-  - subscriptions
+  - Braintree Subscriptions
   summary: Subscribe user to plan
   operationId: subscriptionsAdd
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            planId:
+              type: string
+              enum:
+              - v4_monthly
+              - v4_annually
+              - v4_biannually
+            paymentMethodNonce:
+              type: string
+              description: The payment method method nonce from the Braintree Client SDK
+              example: 7acb98s
+            family:
+              description: The user family emails
+              type: array
+              items:
+                type: string
+              example:
+                - child1@example.com
+                - child2@example.com
+                - child3@example.com
+          required:
+          - planId
   responses:
     200:
       description: The new Braintree subscription
@@ -10,33 +37,3 @@ post:
         application/json:
           schema:
             $ref: '../../index.yaml#/components/schemas/Braintree_Subscription'
-  requestBody:
-    content:
-      application/json:
-        schema:
-          type: object
-          properties:
-            plan:
-              type: string
-              enum:
-              - v4_monthly
-              - v4_annually
-              - v4_biannually
-            payment_method_nonce:
-              type: string
-              description: The payment method method nonce from the Braintree Client SDK
-              example: 7acb98s
-get:
-  tags:
-  - subscriptions
-  summary: Get the subscriptions
-  operationId: subscriptions
-  responses:
-    200:
-      description: The Braintree subscription
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              $ref: '../../index.yaml#/components/schemas/Braintree_Subscription'

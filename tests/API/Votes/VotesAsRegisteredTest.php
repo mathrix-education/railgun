@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Votes;
 
 use App\Models\Comment;
@@ -11,17 +12,17 @@ use Laravel\Passport\Passport;
 
 /**
  * Class VotesAsPublicTest
- * Test Votes as registered user
+ * Test Votes as registered user.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * @version 4.0.3
- * @package Tests\Votes
+ *
+ * @version   4.0.3
  */
 class VotesAsRegisteredTest extends VotesAsPublicTest
 {
     /**
-     * POST /votes/{votable_type}/{votable_id}/up
+     * POST /votes/{votable_type}/{votable_id}/up.
      */
     public function testUp()
     {
@@ -40,9 +41,8 @@ class VotesAsRegisteredTest extends VotesAsPublicTest
         $this->assertEquals($scoreBefore + 1, $votable->score);
     }
 
-
     /**
-     * POST /votes/{votable_type}/{votable_id}/down
+     * POST /votes/{votable_type}/{votable_id}/down.
      */
     public function testDown()
     {
@@ -60,9 +60,8 @@ class VotesAsRegisteredTest extends VotesAsPublicTest
         $this->assertEquals($scoreBefore - 1, $votable->score);
     }
 
-
     /**
-     * POST /votes/{votable_type}/{votable_id}/up
+     * POST /votes/{votable_type}/{votable_id}/up.
      */
     public function testUpCancel()
     {
@@ -83,9 +82,8 @@ class VotesAsRegisteredTest extends VotesAsPublicTest
         $this->assertEquals($scoreBefore - 1, $vote->votable->score);
     }
 
-
     /**
-     * POST /votes/{votable_type}/{votable_id}/down
+     * POST /votes/{votable_type}/{votable_id}/down.
      */
     public function testDownCancel()
     {
@@ -106,9 +104,8 @@ class VotesAsRegisteredTest extends VotesAsPublicTest
         $this->assertEquals($scoreBefore + 1, $vote->votable->score);
     }
 
-
     /**
-     * POST /votes/{votable_type}/{votable_id}/up
+     * POST /votes/{votable_type}/{votable_id}/up.
      */
     public function testUpReverse()
     {
@@ -129,9 +126,8 @@ class VotesAsRegisteredTest extends VotesAsPublicTest
         $this->assertEquals($scoreBefore + 2, $vote->votable->score);
     }
 
-
     /**
-     * POST /votes/{votable_type}/{votable_id}/down
+     * POST /votes/{votable_type}/{votable_id}/down.
      */
     public function testDownReverse()
     {
@@ -152,12 +148,12 @@ class VotesAsRegisteredTest extends VotesAsPublicTest
         $this->assertEquals($scoreBefore - 2, $vote->votable->score);
     }
 
-
     /**
      * POST /tests/wtf/4242666/up
-     * Test with a not votable model
+     * Test with a not votable model.
      */
-    public function testNotVotable() {
+    public function testNotVotable()
+    {
         $this->call("post", "/votes/wtf/4242666/up");
 
         $this->assertHttp400InvalidRequest();

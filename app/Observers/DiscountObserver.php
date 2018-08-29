@@ -1,15 +1,17 @@
 <?php
+
 namespace App\Observers;
 
 use App\Models\Discount;
 use App\Models\Product;
 
 /**
- * Class DiscountObserver
+ * Class DiscountObserver.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Observers
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
  * @since
+ *
  * @copyright Mathrix Education SA
  */
 class DiscountObserver extends BaseObserver
@@ -25,7 +27,8 @@ class DiscountObserver extends BaseObserver
         if (isset($discount->link["products"])) {
             $toSync = [];
             foreach ($discount->link["products"] as $productId) {
-                if (Product::whereId($productId)->exists()) {
+                if (Product::whereId($productId)
+                    ->exists()) {
                     /** @var Product $product */
                     $product = Product::find($productId);
                     if ($product->price !== null) {
@@ -33,7 +36,8 @@ class DiscountObserver extends BaseObserver
                     }
                 }
             }
-            $discount->products()->sync($toSync);
+            $discount->products()
+                ->sync($toSync);
         }
 
         if (isset($discount->link)) {
@@ -43,7 +47,6 @@ class DiscountObserver extends BaseObserver
         return true;
     }
 
-
     /**
      * @param Discount $discount
      *
@@ -51,7 +54,8 @@ class DiscountObserver extends BaseObserver
      */
     public function deleting($discount)
     {
-        $discount->products()->detach();
+        $discount->products()
+            ->detach();
 
         return true;
     }

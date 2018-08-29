@@ -1,28 +1,30 @@
 <?php
+
 namespace Tests\API\Users;
 
 use App\Models\Class_;
 use App\Models\User;
 
 /**
- * Class UsersAsAdminTest
+ * Class UsersAsAdminTest.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package Tests\Users
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class UsersAsAdminTest extends UsersAsModeratorTest
 {
     /**
-     * POST /users/register
+     * POST /users/register.
      */
     public function testRegisterAdmin()
     {
         $dataWithoutPassword = [
             "email" => $this->faker->email,
             "class_id" => Class_::inRandomOrder()->firstOrFail()->id,
-            "type" => "admin"
+            "type" => "admin",
         ];
         $data = array_merge($dataWithoutPassword, ["password" => "test"]);
 
@@ -35,13 +37,12 @@ class UsersAsAdminTest extends UsersAsModeratorTest
         $this->assertInDatabase("users", $dataWithoutPassword);
         $this->assertInDatabase("logs", [
             "event" => "user_registered",
-            "user_id" => $user->id
+            "user_id" => $user->id,
         ]);
     }
 
-
     /**
-     * GET /users/{id}
+     * GET /users/{id}.
      */
     public function testGetStranger()
     {
@@ -52,7 +53,6 @@ class UsersAsAdminTest extends UsersAsModeratorTest
         $this->assertHttp200Success();
     }
 
-
     public function testChangeType()
     {
         $user = User::whereType("registered")
@@ -60,13 +60,13 @@ class UsersAsAdminTest extends UsersAsModeratorTest
             ->firstOrFail();
 
         $this->json("patch", "/users/{$user->id}", [
-            "type" => "moderator"
+            "type" => "moderator",
         ]);
 
         $this->assertHttp200Success();
         $this->assertInDatabase("users", [
             "email" => $user->email,
-            "type" => "moderator"
+            "type" => "moderator",
         ]);
     }
 }

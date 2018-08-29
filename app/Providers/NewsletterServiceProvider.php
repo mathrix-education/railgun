@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Providers;
 
 use DrewM\MailChimp\MailChimp;
@@ -9,15 +10,17 @@ use Spatie\Newsletter\NewsletterListCollection;
 
 /**
  * Class NewsletterServiceProvider
- * Adapted for Lumen
+ * Adapted for Lumen.
  *
- * @see \Spatie\Newsletter\NewsletterServiceProvider
+ * @see       \Spatie\Newsletter\NewsletterServiceProvider
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Providers
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
- * @property-read Application $app
+ *
+ * @property Application $app
  * @codeCoverageIgnore
  */
 class NewsletterServiceProvider extends ServiceProvider
@@ -26,7 +29,6 @@ class NewsletterServiceProvider extends ServiceProvider
     {
         $this->app->configure('newsletter');
     }
-
 
     public function register()
     {

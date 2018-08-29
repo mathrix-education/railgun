@@ -1,13 +1,16 @@
 <?php
+
 namespace App\Policies;
+
 use App\Models\User;
 
 /**
- * Class QuotePolicy
+ * Class QuotePolicy.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Policies
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class QuotePolicy extends BasePolicy
@@ -20,7 +23,6 @@ class QuotePolicy extends BasePolicy
         return true;
     }
 
-
     /**
      * @return bool
      */
@@ -28,7 +30,6 @@ class QuotePolicy extends BasePolicy
     {
         return true;
     }
-
 
     /**
      * @param User $currentUser
@@ -40,7 +41,6 @@ class QuotePolicy extends BasePolicy
         return $currentUser->isAdmin();
     }
 
-
     /**
      * @param User $currentUser
      *
@@ -50,7 +50,6 @@ class QuotePolicy extends BasePolicy
     {
         return $currentUser->isAdmin();
     }
-
 
     /**
      * @param User $currentUser

@@ -1,22 +1,22 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 /**
- * Class DropTrainingsSectionsLessonsTable
+ * Class DropTrainingsSectionsLessonsTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class DropTrainingsSectionsLessonsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -34,11 +34,8 @@ class DropTrainingsSectionsLessonsTable extends Migration
         Schema::dropIfExists("trainings");
     }
 
-
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
@@ -49,7 +46,8 @@ class DropTrainingsSectionsLessonsTable extends Migration
             $table->text("description");
             $table->integer("price");
             $table->boolean("visible");
-            $table->integer("order")->default(0);
+            $table->integer("order")
+                ->default(0);
             $table->timestamps();
         });
         Schema::create("sections", function (Blueprint $table) {
@@ -58,25 +56,35 @@ class DropTrainingsSectionsLessonsTable extends Migration
             $table->string("slug");
             $table->boolean("visible");
             $table->integer("order");
-            $table->integer("training_id")->unsigned();
+            $table->integer("training_id")
+                ->unsigned();
             $table->timestamps();
 
             // Foreign keys
-            $table->foreign("training_id")->references("id")->on("trainings");
+            $table->foreign("training_id")
+                ->references("id")
+                ->on("trainings");
         });
         Schema::create("lessons", function (Blueprint $table) {
             $table->increments("id");
             $table->string("title");
             $table->string("slug");
             $table->boolean("visible");
-            $table->string("image")->nullable();
+            $table->string("image")
+                ->nullable();
             $table->integer("order");
-            $table->integer("section_id")->unsigned();
-            $table->integer("module_id")->unsigned();
+            $table->integer("section_id")
+                ->unsigned();
+            $table->integer("module_id")
+                ->unsigned();
 
             // Foreign keys
-            $table->foreign("section_id")->references("id")->on("sections");
-            $table->foreign("module_id")->references("id")->on("modules");
+            $table->foreign("section_id")
+                ->references("id")
+                ->on("sections");
+            $table->foreign("module_id")
+                ->references("id")
+                ->on("modules");
 
             $table->timestamps();
         });

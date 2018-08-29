@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -10,29 +11,31 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 /**
- * Class PostController
+ * Class PostController.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Controllers
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class PostController extends BaseController
 {
     /**
-     * @apiVersion 4.0.0
-     * @api {get} /posts/{?page}/{?perPage} Index
-     * @apiGroup Posts
-     * @apiName PostsIndex
-     * @apiDescription Retrieve posts
-     * @apiPermission public
-     * @apiUse Pagination
-     * @apiUse PostArray
+     * @apiVersion     4.0.0
      *
-     * @param Request $request
-     * @param int $page
-     * @param int $perPage
-     * @param array $options
+     * @api            {get} /posts/{?page}/{?perPage} Index
+     * @apiGroup       Posts
+     * @apiName        PostsIndex
+     * @apiDescription Retrieve posts
+     * @apiPermission  public
+     * @apiUse         Pagination
+     * @apiUse         PostArray
+     *
+     * @param Request $request The request
+     * @param int     $page
+     * @param int     $perPage
+     * @param array   $options
      *
      * @return JsonResponse
      */
@@ -47,45 +50,47 @@ class PostController extends BaseController
         );
     }
 
-
     /**
-     * @apiVersion 4.0.0
-     * @api {get} /posts/{id} Get
-     * @apiGroup Posts
-     * @apiName PostGet
+     * @apiVersion     4.0.0
+     *
+     * @api            {get} /posts/{id} Get
+     * @apiGroup       Posts
+     * @apiName        PostGet
      * @apiDescription Get a post by id
-     * @apiPermission public
+     * @apiPermission  public
      * @apiParam {int} id The post id
-     * @apiUse PostModel
-     * @apiUse Http404ModelNotFound
+     * @apiUse         PostModel
+     * @apiUse         Http404ModelNotFound
      */
 
-
     /**
-     * @apiVersion 4.0.0
-     * @api {post} /posts Add
-     * @apiGroup Posts
-     * @apiName PostAdd
+     * @apiVersion     4.0.0
+     *
+     * @api            {post} /posts Add
+     * @apiGroup       Posts
+     * @apiName        PostAdd
      * @apiDescription Add a post
-     * @apiPermission admin
-     * @apiUse Bearer
-     * @apiUse PostRequest
-     * @apiUse PostModel
-     * @apiUse Http401Unauthorized
-     * @apiUse Http422ModelValidation
-     * @apiUse Http422ModelSave
+     * @apiPermission  admin
+     * @apiUse         Bearer
+     * @apiUse         PostRequest
+     * @apiUse         PostModel
+     * @apiUse         Http401Unauthorized
+     * @apiUse         Http422ModelValidation
+     * @apiUse         Http422ModelSave
      *
-     * @param Request $request
+     * @param Request $request The request
      *
-     * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     *
+     * @return JsonResponse
      */
     public function add(Request $request): JsonResponse
     {
-        if ($request->user() !== null && $request->user()->cant("add", Post::class)) {
+        if ($request->user() !== null && $request->user()
+                ->cant("add", Post::class)) {
             throw new Http401UnauthorizedException();
         }
 
@@ -97,8 +102,7 @@ class PostController extends BaseController
         return response()->json($post);
     }
 
-
-    /**
+    /*
      * @apiVersion 4.0.0
      * @api {patch} /posts/{id} Edit
      * @apiGroup Posts
@@ -115,8 +119,7 @@ class PostController extends BaseController
      * @apiUse Http422ModelValidation
      */
 
-
-    /**
+    /*
      * @apiVersion 4.0.0
      * @api {delete} /posts/{id} Delete
      * @apiGroup Posts

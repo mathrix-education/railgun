@@ -1,17 +1,19 @@
 <?php
+
 namespace App\Controllers;
 
 /**
- * Class CategoryController
+ * Class CategoryController.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Controllers
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class CategoryController extends BaseController
 {
-    /**
+    /*
      * @apiVersion 4.0.0
      * @api {get} /categories/{?page}/{?perPage} Index
      * @apiGroup Categories
@@ -22,8 +24,7 @@ class CategoryController extends BaseController
      * @apiUse CategoryArray
      */
 
-
-    /**
+    /*
      * @apiVersion 4.0.0
      * @api {get} /categories/{id} Get
      * @apiGroup Categories
@@ -35,8 +36,7 @@ class CategoryController extends BaseController
      * @apiUse Http404ModelNotFound
      */
 
-
-    /**
+    /*
      * @apiVersion 4.0.0
      * @api {post} /categories Add
      * @apiGroup Categories
@@ -51,8 +51,7 @@ class CategoryController extends BaseController
      * @apiUse Http422ModelSave
      */
 
-
-    /**
+    /*
      * @apiVersion 4.0.0
      * @api {patch} /categories/{id} Edit
      * @apiGroup Categories
@@ -69,8 +68,7 @@ class CategoryController extends BaseController
      * @apiUse Http422ModelValidation
      */
 
-
-    /**
+    /*
      * @apiVersion 4.0.0
      * @api {delete} /categories/{id} Delete (Not implemented)
      * @apiGroup Categories

@@ -1,4 +1,5 @@
 <?php
+
 /** @var Laravel\Lumen\Routing\Router $router */
 $router->group(["prefix" => "subscriptions"], function () use ($router) {
     $router->get("estimate/{plan}", "SubscriptionController@estimate");

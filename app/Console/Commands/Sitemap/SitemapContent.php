@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands\Sitemap;
 
 use App\Models\Activity;
@@ -12,11 +13,12 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 /**
- * Class SitemapContent
+ * Class SitemapContent.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Console\Commands
- * @since 1.0.1
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.1
+ *
  * @copyright Mathrix Education SA
  */
 class SitemapContent extends Command
@@ -24,24 +26,24 @@ class SitemapContent extends Command
     use SitemapUtils;
     protected $signature = "sitemap:content";
 
-
     /**
      * @throws \Exception
      */
     public function handle()
     {
-        $today = Carbon::today()->format("Y-m-d");
+        $today = Carbon::today()
+            ->format("Y-m-d");
         $sitemapArray = [
             [
                 "url" => $this->url("/"),
                 "lastmod" => $today,
-                "priority" => 1
+                "priority" => 1,
             ],
             [
                 "url" => $this->url("/pack-mode-machine"),
                 "lastmod" => $today,
-                "priority" => 1
-            ]
+                "priority" => 1,
+            ],
         ];
         $dashboardsSitemap = [];
         $disciplinesSitemap = [];
@@ -56,7 +58,7 @@ class SitemapContent extends Command
                 $dashboardsSitemap[] = [
                     "url" => $this->url("/{$country->slug}/{$class->slug}"),
                     "lastmod" => $today,
-                    "priority" => 0.9
+                    "priority" => 0.9,
                 ];
 
                 /** @var Discipline $discipline */
@@ -64,7 +66,7 @@ class SitemapContent extends Command
                     $disciplinesSitemap[] = [
                         "url" => $this->url("/{$country->slug}/{$class->slug}/{$discipline->slug}"),
                         "lastmod" => $today,
-                        "priority" => 0.8
+                        "priority" => 0.8,
                     ];
 
                     $chapters = $discipline->chapters()
@@ -81,11 +83,13 @@ class SitemapContent extends Command
                                     $chapter->slug,
                                 ])),
                             "lastmod" => $today,
-                            "priority" => 0.7
+                            "priority" => 0.7,
                         ];
 
                         /** @var Notion $notion */
-                        foreach ($chapter->notions()->where("type", "!=", "premium")->get()
+                        foreach ($chapter->notions()
+                                     ->where("type", "!=", "premium")
+                                     ->get()
                                  as $notion) {
                             $notionsSitemap[] = [
                                 "url" => $this->url("/" . implode("/", [
@@ -93,10 +97,10 @@ class SitemapContent extends Command
                                         $class->slug,
                                         $discipline->slug,
                                         $chapter->slug,
-                                        $notion->slug
+                                        $notion->slug,
                                     ])),
                                 "lastmod" => $today,
-                                "priority" => 0.6
+                                "priority" => 0.6,
                             ];
 
                             /** @var Activity $activity */
@@ -111,7 +115,6 @@ class SitemapContent extends Command
                                              ->where("premium", 0)
                                              ->get()
                                          as $module) {
-
                                     $type = $this->getModuleType($module);
 
                                     if ($type === false) {
@@ -131,8 +134,8 @@ class SitemapContent extends Command
                                                 "player_loc" => [
                                                     "player_loc" => "https://www.youtube.com/v/$videoId",
                                                     "allow_embed" => "yes",
-                                                    "autoplay" => false
-                                                ]
+                                                    "autoplay" => false,
+                                                ],
                                             ];
                                         }
                                     }
@@ -146,11 +149,11 @@ class SitemapContent extends Command
                                                 $notion->slug,
                                                 $activity->slug,
                                                 $this->getModuleType($module),
-                                                $module->id
+                                                $module->id,
                                             ])),
                                         "lastmod" => $today,
                                         "priority" => 0.5,
-                                        "videos" => $videos
+                                        "videos" => $videos,
                                     ];
                                 }
                             }
@@ -169,14 +172,14 @@ class SitemapContent extends Command
         $this->saveSitemap($sitemapArray, "sitemap.main");
     }
 
-
     /**
-     * Get the url-friendly module type
+     * Get the url-friendly module type.
      *
      * @param Module $module
      *
-     * @return string
      * @throws \Exception
+     *
+     * @return string
      */
     public function getModuleType(Module $module)
     {
@@ -197,7 +200,6 @@ class SitemapContent extends Command
                 return preg_match("/\[video\]([0-9A-Za-z]+)\[\/video\]/", $module->content) === 1 ? "video" : "cours";
             default:
                 throw new \Exception("Module type {$module->type} is not handled");
-
         }
     }
 }

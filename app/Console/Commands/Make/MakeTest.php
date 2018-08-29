@@ -1,20 +1,21 @@
 <?php
+
 namespace App\Console\Commands\Make;
 
 use Illuminate\Console\Command;
 
 /**
- * Class MakeApidoc
+ * Class MakeApidoc.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Console\Commands
- * @since 4.0.3
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     4.0.3
+ *
  * @copyright Mathrix Education SA
  */
 class MakeTest extends Command
 {
     protected $signature = "make:tests {model} {--f|force}";
-
 
     public function handle()
     {

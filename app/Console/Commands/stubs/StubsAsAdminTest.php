@@ -1,14 +1,15 @@
 <?php
+
 namespace Tests\API\Stubs;
 
 /**
  * Class StubsAsAdminTest
- * Test stubs as admin
+ * Test stubs as admin.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * @version {version}
- * @package Tests\API\Stubs
+ *
+ * @version   {version}
  */
 class StubsAsAdminTest extends StubsAsModeratorTest
 {

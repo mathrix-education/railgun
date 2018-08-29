@@ -1,5 +1,5 @@
-Braintree_Add_on:
-  $ref: ./Braintree/Braintree_Add_on.yaml
+Braintree_AddOn:
+  $ref: ./Braintree/Braintree_AddOn.yaml
 Braintree_AndroidPayCard:
   $ref: ./Braintree/Braintree_AndroidPayCard.yaml
 Braintree_ApplePayCard:
@@ -18,6 +18,8 @@ Braintree_PaymentMethod:
   $ref: ./Braintree/Braintree_PaymentMethod.yaml
 Braintree_PayPalDetails:
   $ref: ./Braintree/Braintree_PayPalDetails.yaml
+Braintree_Plan:
+  $ref: ./Braintree/Braintree_Plan.yaml
 Braintree_MasterpassCardDetails:
   $ref: ./Braintree/Braintree_MasterpassCardDetails.yaml
 Braintree_Status:
@@ -62,7 +64,9 @@ Quote:
 Report:
   $ref: ./Report.yaml
 Setting:
-  $ref: ./Purchase.yaml
+  $ref: ./Setting.yaml
+Score:
+  $ref: ./Score.yaml
 User:
   $ref: ./User.yaml
 Vote:

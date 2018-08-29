@@ -1,15 +1,16 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\User;
 
-
 /**
- * Class NotionPolicy
+ * Class NotionPolicy.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Policies
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class NotionPolicy extends BasePolicy
@@ -22,7 +23,6 @@ class NotionPolicy extends BasePolicy
         return true;
     }
 
-
     /**
      * @return bool
      */
@@ -30,7 +30,6 @@ class NotionPolicy extends BasePolicy
     {
         return true;
     }
-
 
     /**
      * @param User $currentUser
@@ -42,7 +41,6 @@ class NotionPolicy extends BasePolicy
         return $currentUser->isModerator();
     }
 
-
     /**
      * @param User $currentUser
      *
@@ -53,7 +51,6 @@ class NotionPolicy extends BasePolicy
         return $currentUser->isModerator();
     }
 
-
     /**
      * @param User $currentUser
      *
@@ -63,7 +60,6 @@ class NotionPolicy extends BasePolicy
     {
         return $currentUser->isModerator();
     }
-
 
     /**
      * @return bool

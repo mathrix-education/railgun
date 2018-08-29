@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Listeners;
 
 use App\Events\TransactionSuccessEvent;
@@ -6,11 +7,12 @@ use App\Models\User;
 use App\Notifications\TransactionSuccessNotification;
 
 /**
- * Class TransactionSuccessListener
+ * Class TransactionSuccessListener.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Listeners
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
  * @since
+ *
  * @copyright Mathrix Education SA
  */
 class TransactionSuccessListener extends BaseListener
@@ -25,7 +27,8 @@ class TransactionSuccessListener extends BaseListener
         /** @var \Braintree\Transaction\CustomerDetails $customerDetails */
         $customerDetails = $transaction->customerDetails;
         /** @var User $user */
-        $user = User::where("braintree_id", "=", $customerDetails->id)->firstOrFail();
+        $user = User::where("braintree_id", "=", $customerDetails->id)
+            ->firstOrFail();
 
         $user->notify(new TransactionSuccessNotification($user, $transaction));
     }

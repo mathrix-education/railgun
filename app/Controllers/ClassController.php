@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http401UnauthorizedException;
@@ -9,97 +10,102 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 /**
- * Class ClassController
+ * Class ClassController.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Controllers
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class ClassController extends BaseController
 {
     /**
-     * @apiVersion 4.0.0
-     * @api {get} /classes/{?page}/{?perPage} Index
-     * @apiGroup Classes
-     * @apiName ClassesIndex
+     * @apiVersion     4.0.0
+     *
+     * @api            {get} /classes/{?page}/{?perPage} Index
+     * @apiGroup       Classes
+     * @apiName        ClassesIndex
      * @apiDescription Retrieve classes
-     * @apiPermission public
-     * @apiUse Pagination
-     * @apiUse ClassArray
+     * @apiPermission  public
+     * @apiUse         Pagination
+     * @apiUse         ClassArray
      */
 
     /**
-     * @apiVersion 4.0.0
-     * @api {get} /classes/{id} Get
-     * @apiGroup Classes
-     * @apiName ClassGet
+     * @apiVersion     4.0.0
+     *
+     * @api            {get} /classes/{id} Get
+     * @apiGroup       Classes
+     * @apiName        ClassGet
      * @apiDescription Get a class by id
-     * @apiPermission public
+     * @apiPermission  public
      * @apiParam {int} id The class id
-     * @apiUse ClassModel
-     * @apiUse Http404ModelNotFound
+     * @apiUse         ClassModel
+     * @apiUse         Http404ModelNotFound
      */
 
-
     /**
-     * @apiVersion 4.0.0
-     * @api {post} /classes Add
-     * @apiGroup Classes
-     * @apiName ClassAdd
+     * @apiVersion     4.0.0
+     *
+     * @api            {post} /classes Add
+     * @apiGroup       Classes
+     * @apiName        ClassAdd
      * @apiDescription Add class
-     * @apiPermission admin
-     * @apiUse Bearer
-     * @apiUse ClassRequest
-     * @apiUse ClassModel
-     * @apiUse Http401Unauthorized
-     * @apiUse Http422ModelValidation
-     * @apiUse Http422ModelSave
+     * @apiPermission  admin
+     * @apiUse         Bearer
+     * @apiUse         ClassRequest
+     * @apiUse         ClassModel
+     * @apiUse         Http401Unauthorized
+     * @apiUse         Http422ModelValidation
+     * @apiUse         Http422ModelSave
      */
 
-
     /**
-     * @apiVersion 4.0.0
-     * @api {patch} /classes/{id} Edit
-     * @apiGroup Classes
-     * @apiName ClassEdit
+     * @apiVersion     4.0.0
+     *
+     * @api            {patch} /classes/{id} Edit
+     * @apiGroup       Classes
+     * @apiName        ClassEdit
      * @apiDescription Edit a class
-     * @apiPermission admin
-     * @apiUse Bearer
+     * @apiPermission  admin
+     * @apiUse         Bearer
      * @apiParam {int} id The class id
-     * @apiUse ClassRequest
-     * @apiUse ClassModel
-     * @apiUse Http401Unauthorized
-     * @apiUse Http404ModelNotFound
-     * @apiUse Http422ModelSave
-     * @apiUse Http422ModelValidation
+     * @apiUse         ClassRequest
+     * @apiUse         ClassModel
+     * @apiUse         Http401Unauthorized
+     * @apiUse         Http404ModelNotFound
+     * @apiUse         Http422ModelSave
+     * @apiUse         Http422ModelValidation
      */
 
-
     /**
-     * @apiVersion 4.0.0
-     * @api {delete} /classes/{id} Delete (Not implemented)
-     * @apiGroup Classes
-     * @apiName ClassDelete
+     * @apiVersion     4.0.0
+     *
+     * @api            {delete} /classes/{id} Delete (Not implemented)
+     * @apiGroup       Classes
+     * @apiName        ClassDelete
      * @apiDescription Delete a class
-     * @apiPermission admin
-     * @apiUse Bearer
+     * @apiPermission  admin
+     * @apiUse         Bearer
      * @apiParam {int} id The class id
-     * @apiUse Http401Unauthorized
-     * @apiUse Http404ModelNotFound
+     * @apiUse         Http401Unauthorized
+     * @apiUse         Http404ModelNotFound
      *
-     * @param Request $request
-     * @param int $id
+     * @param Request $request The request
+     * @param int     $id
      *
-     * @return JsonResponse
      * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException
      * @throws Http501NotImplementedException
+     *
+     * @return JsonResponse
      */
     public function delete(Request $request, int $id): JsonResponse
     {
         $class = Class_::find($id);
-        $request->user()->canOrFail("delete", $class);
+        $request->user()
+            ->canOrFail("delete", $class);
 
         throw new Http501NotImplementedException();
 

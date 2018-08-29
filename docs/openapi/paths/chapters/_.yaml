@@ -1,6 +1,6 @@
 post:
   tags:
-  - chapters
+  - Chapters
   summary: Add a chapter
   operationId: chaptersPost
   requestBody:

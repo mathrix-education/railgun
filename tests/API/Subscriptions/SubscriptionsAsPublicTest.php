@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Subscriptions;
 
 use App\Controllers\SubscriptionController;
@@ -6,17 +7,17 @@ use Tests\API\ScopeTestCase;
 
 /**
  * Class SubscriptionsAsPublicTest
- * Test subscriptions as public (non-logged user)
+ * Test subscriptions as public (non-logged user).
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * @version 4.1.0
- * @package Tests\API\Subscriptions
+ *
+ * @version   4.1.0
  */
 class SubscriptionsAsPublicTest extends ScopeTestCase
 {
     /**
-     * GET /subscriptions/estimate/{planId}
+     * GET /subscriptions/estimate/{planId}.
      */
     public function testEstimate()
     {

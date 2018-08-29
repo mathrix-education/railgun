@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Carbon\Carbon;
@@ -8,26 +9,32 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * Class Product
+ * Class Product.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Models
- * @since
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
- * @property int $id
- * @property string $name
- * @property string $slug
- * @property string|null $image
- * @property string|null $type
- * @property string|null $description
- * @property float|null $price
- * @property bool $visible
- * @property int|null $module_id
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property array $link
- * @property-read Collection|Product[] $children
- * @property-read Collection|Product[] $parents
+ *
+ * @property int                   $id
+ * @property string                $name
+ * @property string                $slug
+ * @property string|null           $image
+ * @property string|null           $type
+ * @property string|null           $description
+ * @property float|null            $price
+ * @property bool                  $visible
+ * @property int|null              $order
+ * @property int|null              $module_id
+ * @property Carbon|null           $created_at
+ * @property Carbon|null           $updated_at
+ * @property array                 $link
+ * @property Module|null           $module
+ * @property Collection|Product[]  $children
+ * @property Collection|Product[]  $parents
+ * @property Collection|Discount[] $discounts
+ *
  * @method static Builder|Product whereId($value)
  * @method static Builder|Product whereName($value)
  * @method static Builder|Product whereSlug($value)
@@ -36,12 +43,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Product whereDescription($value)
  * @method static Builder|Product wherePrice($value)
  * @method static Builder|Product whereVisible($value)
+ * @method static Builder|Product whereOrder($value)
  * @method static Builder|Product whereModuleId($value)
  * @method static Builder|Product whereCreatedAt($value)
  * @method static Builder|Product whereUpdatedAt($value)
+ *
+ * @mixin \Eloquent
  */
 class Product extends BaseModel
 {
+    /** @var bool Indicates if the model should be timestamped */
+    public $timestamps = true;
     /** @var array The attributes that are mass assignable */
     protected $fillable = ["name", "slug", "image", "type", "description", "price", "visible", "order", "module_id",
         "created_at", "updated_at"];
@@ -53,18 +65,15 @@ class Product extends BaseModel
         "description" => "required|min:10",
         "price" => "nullable|numeric",
         "visible" => "required|boolean",
-        "module_id" => "nullable|exists:modules,id"
+        "module_id" => "nullable|exists:modules,id",
     ];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
-        "visible" => "boolean"
+        "visible" => "boolean",
     ];
-    /** @var bool Indicates if the model should be timestamped */
-    public $timestamps = true;
-
 
     /**
-     * BelongsTo Module
+     * BelongsTo Module.
      *
      * @return BelongsTo
      */
@@ -73,31 +82,28 @@ class Product extends BaseModel
         return $this->belongsTo(Module::class);
     }
 
-
     /**
-     * BelongsToMany Products
+     * BelongsToMany Products.
      *
      * @return BelongsToMany
      */
     public function parents()
     {
-        return $this->belongsToMany(Product::class, "product_product", "child_id", "parent_id");
+        return $this->belongsToMany(self::class, "product_product", "child_id", "parent_id");
     }
 
-
     /**
-     * BelongsToMany Products
+     * BelongsToMany Products.
      *
      * @return BelongsToMany
      */
     public function children()
     {
-        return $this->belongsToMany(Product::class, "product_product", "parent_id", "child_id");
+        return $this->belongsToMany(self::class, "product_product", "parent_id", "child_id");
     }
 
-
     /**
-     * BelongsToMany Discount
+     * BelongsToMany Discount.
      *
      * @return BelongsToMany
      */
@@ -106,9 +112,8 @@ class Product extends BaseModel
         return $this->belongsToMany(Discount::class);
     }
 
-
     /**
-     * Get the product price after the application of the given discount
+     * Get the product price after the application of the given discount.
      *
      * @param Discount $discount
      *
@@ -118,14 +123,14 @@ class Product extends BaseModel
     {
         if ($discount === null) {
             return $this->price;
-        } else if (!$discount->isApplicableOn($this)) {
+        } elseif (!$discount->isApplicableOn($this)) {
             return $this->price;
-        } else if ($discount->type === "percentage") {
+        } elseif ($discount->type === "percentage") {
             return $this->price * (1 - $discount->value / 100);
-        } else if ($discount->type === "absolute") {
+        } elseif ($discount->type === "absolute") {
             return $this->price - $discount->value;
-        } else {
-            return $this->price;
         }
+
+        return $this->price;
     }
 }

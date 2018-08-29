@@ -6,7 +6,7 @@ use App\Models\User;
 use Faker\Generator;
 use Illuminate\Support\Facades\Hash;
 
-/**
+/*
  * UserFactory
  *
  * @author Mathrix Team
@@ -26,9 +26,10 @@ $factory->define(User::class, function (Generator $faker) {
         "level" => Level::getLevelByPoints($points),
         "daily" => $faker->randomElement([10, 20, 40]),
         "settings" => [
-            "sound" => $faker->boolean(70)
+            "sound" => $faker->boolean(70),
         ],
-        "class_id" => Class_::inRandomOrder()->firstOrFail()->id,
+        "class_id" => Class_::inRandomOrder()
+            ->firstOrFail()->id,
         "created_at" => $faker->dateTimeBetween("-1 years"),
     ];
 
@@ -39,8 +40,7 @@ $factory->define(User::class, function (Generator $faker) {
     return $data;
 });
 
-
-/**
+/*
  * UserRegisteredFactory
  *
  * @author Mathrix Team
@@ -50,7 +50,7 @@ $factory->defineAs(User::class, "registered", function () use ($factory) {
     return array_merge($factory->raw(User::class), ["type" => "registered"]);
 });
 
-/**
+/*
  * UserRedactorFactory
  *
  * @author Mathrix Team
@@ -63,14 +63,13 @@ $factory->defineAs(User::class, "redactor", function (Generator $faker) use ($fa
         "lastname" => $faker->lastName,
         "type" => "redactor",
         "class_id" => null,
-        "stripe_id" => null
+        "stripe_id" => null,
     ];
 
     return array_merge($factory->raw(User::class), $data);
 });
 
-
-/**
+/*
  * UserModeratorFactory
  *
  * @author Mathrix Team
@@ -80,8 +79,7 @@ $factory->defineAs(User::class, "moderator", function () use ($factory) {
     return array_merge($factory->rawOf(User::class, "redactor"), ["type" => "moderator"]);
 });
 
-
-/**
+/*
  * UserAdminFactory
  *
  * @author Mathrix Team
@@ -91,8 +89,7 @@ $factory->defineAs(User::class, "admin", function () use ($factory) {
     return array_merge($factory->rawOf(User::class, "redactor"), ["type" => "admin"]);
 });
 
-
-/**
+/*
  * UserSupportFactory
  *
  * @author Mathrix Team

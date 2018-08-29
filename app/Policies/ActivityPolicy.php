@@ -1,14 +1,16 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\User;
 
 /**
- * Class ActivityPolicy
+ * Class ActivityPolicy.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Policies
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class ActivityPolicy extends BasePolicy
@@ -23,7 +25,6 @@ class ActivityPolicy extends BasePolicy
         return $currentUser->isModerator();
     }
 
-
     /**
      * @return bool
      */
@@ -31,7 +32,6 @@ class ActivityPolicy extends BasePolicy
     {
         return true;
     }
-
 
     /**
      * @return bool
@@ -41,7 +41,6 @@ class ActivityPolicy extends BasePolicy
         return true;
     }
 
-
     /**
      * @return bool
      */
@@ -49,7 +48,6 @@ class ActivityPolicy extends BasePolicy
     {
         return true;
     }
-
 
     /**
      * @param User $currentUser
@@ -61,7 +59,6 @@ class ActivityPolicy extends BasePolicy
         return $currentUser->isModerator();
     }
 
-
     /**
      * @param User $currentUser
      *
@@ -71,7 +68,6 @@ class ActivityPolicy extends BasePolicy
     {
         return $currentUser->isModerator();
     }
-
 
     /**
      * @param User $currentUser

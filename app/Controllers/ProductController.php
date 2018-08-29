@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Events\TransactionSuccessEvent;
@@ -15,17 +16,18 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 /**
- * Class ProductsController
+ * Class ProductsController.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Controllers
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class ProductController extends BaseController
 {
     /**
-     * Get salable products
+     * Get salable products.
      *
      * @return JsonResponse
      */
@@ -38,27 +40,78 @@ class ProductController extends BaseController
         return new JsonResponse($products);
     }
 
-
     /**
-     * Base function for selling products
+     * Buy products with Braintree.
      *
-     * @param Request $request
-     * @param User $customer
+     * @param Request $request The request
      *
-     * @return \Braintree\Result\Error|\Braintree\Result\Successful
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      * @throws ValidationException
+     *
+     * @return JsonResponse
+     */
+    public function buy(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $customer = $request->user();
+
+        $saleResult = $this->saleTo($request, $customer);
+
+        return new JsonResponse($saleResult->transaction->jsonSerialize());
+    }
+
+    /**
+     * Sale products to an user.
+     *
+     * @param Request $request The request
+     *
+     * @throws Http400InvalidRequestException
+     * @throws Http401UnauthorizedException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
+     * @throws ValidationException
+     *
+     * @return JsonResponse
+     */
+    public function sale(Request $request): JsonResponse
+    {
+        $user = $request->user();
+
+        if (!$user->isSupport()) {
+            throw new Http401UnauthorizedException();
+        }
+
+        /** @var User $customer */
+        $customer = User::findOrFail($request->input("user_id"));
+
+        $saleResult = $this->saleTo($request, $customer);
+
+        return new JsonResponse($saleResult->transaction->jsonSerialize());
+    }
+
+    /**
+     * Base function for selling products.
+     *
+     * @param Request $request  The request
+     * @param User    $customer The customer
+     *
+     * @throws Http400InvalidRequestException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
+     * @throws ValidationException
+     *
+     * @return \Braintree\Result\Error|\Braintree\Result\Successful
      */
     private function saleTo(Request $request, User $customer)
     {
         $this->validate($request, [
             "cart" => "required",
-            "cart.*" => "exists:products,id"
+            "cart.*" => "exists:products,id",
         ]);
 
-        $paymentMethodNonce = $request->input("payment_method_nonce", false);
+        $paymentMethodNonce = $request->input("paymentMethodNonce", false);
 
         if ($customer->isBraintreeCustomer()) {
             $customer->createBraintreeCustomer($paymentMethodNonce);
@@ -77,7 +130,7 @@ class ProductController extends BaseController
             foreach ($cart->getProducts() as $product) {
                 $purchase = new Purchase([
                     "user_id" => $customer->id,
-                    "product_id" => $product->id
+                    "product_id" => $product->id,
                 ]);
                 $purchase->save();
             }
@@ -85,7 +138,7 @@ class ProductController extends BaseController
             if ($cart->getDiscount() !== null) {
                 $discount = $cart->getDiscount();
                 if ($discount->counter !== null && $discount->counter !== -1) {
-                    $discount->counter--;
+                    --$discount->counter;
                     $discount->save();
                 }
             }
@@ -100,61 +153,10 @@ class ProductController extends BaseController
             }
 
             throw new Http400InvalidRequestException("Sale failed", 400, null, [
-                "errors" => $errors
+                "errors" => $errors,
             ]);
         }
 
         return $saleResult;
-    }
-
-
-    /**
-     * Buy products with Braintree
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
-     * @throws Http400InvalidRequestException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
-     * @throws ValidationException
-     */
-    public function buy(Request $request): JsonResponse
-    {
-        /** @var User $user */
-        $customer = $request->user();
-
-        $saleResult = $this->saleTo($request, $customer);
-
-        return new JsonResponse($saleResult->transaction->jsonSerialize());
-    }
-
-
-    /**
-     * Sale products to an user
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
-     * @throws Http400InvalidRequestException
-     * @throws Http401UnauthorizedException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
-     * @throws ValidationException
-     */
-    public function sale(Request $request): JsonResponse
-    {
-        $user = $request->user();
-
-        if (!$user->isSupport()) {
-            throw new Http401UnauthorizedException();
-        }
-
-        /** @var User $customer */
-        $customer = User::findOrFail($request->input("user_id"));
-
-        $saleResult = $this->saleTo($request, $customer);
-
-        return new JsonResponse($saleResult->transaction->jsonSerialize());
     }
 }

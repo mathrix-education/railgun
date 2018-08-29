@@ -1,6 +1,6 @@
 get:
   tags:
-  - products
+  - Products
   summary: Get a product
   operationId: productsGet
   parameters:
@@ -20,7 +20,7 @@ get:
             $ref: '../../index.yaml#/components/schemas/Product'
 patch:
   tags:
-  - products
+  - Products
   summary: Edit a product
   operationId: productsPatch
   parameters:
@@ -45,7 +45,7 @@ patch:
             $ref: '../../index.yaml#/components/schemas/Product'
 delete:
   tags:
-  - products
+  - Products
   summary: Delete a product
   operationId: productsDelete
   parameters:

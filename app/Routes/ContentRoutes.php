@@ -1,4 +1,5 @@
 <?php
+
 /** @var Laravel\Lumen\Routing\Router $router */
 $router->group(["prefix" => "content"], function () use ($router) {
     $router->group(["middleware" => "auth:api"], function () use ($router) {

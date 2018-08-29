@@ -1,15 +1,17 @@
 <?php
+
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Tinify\Tinify;
 
 /**
- * Class TinifyServiceProvider
+ * Class TinifyServiceProvider.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Providers
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class TinifyServiceProvider extends ServiceProvider

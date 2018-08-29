@@ -1,21 +1,22 @@
 <?php
+
 namespace Tests\API\Notions;
 
 use Tests\API\ScopeTestCase;
 
 /**
  * Class NotionsAsPublicTest
- * Test notions as public (non-logged user)
+ * Test notions as public (non-logged user).
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * @version 1.0.0
- * @package Tests\Notions
+ *
+ * @version   1.0.0
  */
 class NotionsAsPublicTest extends ScopeTestCase
 {
     /**
-     * GET /notions
+     * GET /notions.
      *
      * @throws \Exception
      */
@@ -24,9 +25,8 @@ class NotionsAsPublicTest extends ScopeTestCase
         $this->genericIndexSuccess();
     }
 
-
     /**
-     * GET /notions/{id}
+     * GET /notions/{id}.
      *
      * @throws \Exception
      */
@@ -35,9 +35,8 @@ class NotionsAsPublicTest extends ScopeTestCase
         $this->genericGetSuccess();
     }
 
-
     /**
-     * POST /notions -> HTTP 401 unauthorized
+     * POST /notions -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -46,9 +45,8 @@ class NotionsAsPublicTest extends ScopeTestCase
         $this->genericAddUnauthorized();
     }
 
-
     /**
-     * PATCH /notions/{id} -> HTTP 401 unauthorized
+     * PATCH /notions/{id} -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -57,9 +55,8 @@ class NotionsAsPublicTest extends ScopeTestCase
         $this->genericEditUnauthorized();
     }
 
-
     /**
-     * DELETE /notions/{id} -> HTTP 401 unauthorized
+     * DELETE /notions/{id} -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */

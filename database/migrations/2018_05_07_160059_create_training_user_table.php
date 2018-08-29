@@ -5,37 +5,40 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Class CreateTrainingUserTable
+ * Class CreateTrainingUserTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @since 4.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     4.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class CreateTrainingUserTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
         Schema::create("training_user", function (Blueprint $table) {
             $table->increments("id");
-            $table->integer("training_id")->unsigned();
-            $table->integer("user_id")->unsigned();
+            $table->integer("training_id")
+                ->unsigned();
+            $table->integer("user_id")
+                ->unsigned();
 
             // Foreign keys
-            $table->foreign("training_id")->references("id")->on("trainings");
-            $table->foreign("user_id")->references("id")->on("users");
+            $table->foreign("training_id")
+                ->references("id")
+                ->on("trainings");
+            $table->foreign("user_id")
+                ->references("id")
+                ->on("users");
         });
     }
 
-
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

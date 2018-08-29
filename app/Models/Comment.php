@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use App\Models\Traits\Votable;
@@ -12,30 +13,31 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
-
 /**
- * Model Comment
+ * Model Comment.
  *
- * @package App\Models
- * @since 1.0.0
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @since     1.0.0
+ *
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * @property int $id
- * @property string|null $content
- * @property int|null $parent_id
- * @property int|null $user_id
- * @property Carbon $created_at
- * @property Carbon $updated_at
- * @property Carbon|null $deleted_at
- * @property int $commentable_id
- * @property string $commentable_type
- * @property-read int $score
- * @property-read int|null $user_vote
- * @property-read User|null $user
- * @property-read BaseModel $commentable
- * @property-read Comment|null $parent
- * @property-read Collection|Comment[] $children
- * @property-read Collection|Vote[] $votes
+ *
+ * @property int                  $id
+ * @property string|null          $content
+ * @property int|null             $parent_id
+ * @property int|null             $user_id
+ * @property Carbon               $created_at
+ * @property Carbon               $updated_at
+ * @property Carbon|null          $deleted_at
+ * @property int                  $commentable_id
+ * @property string               $commentable_type
+ * @property int                  $score
+ * @property int|null             $user_vote
+ * @property User|null            $user
+ * @property BaseModel            $commentable
+ * @property Comment|null         $parent
+ * @property Collection|Comment[] $children
+ * @property Collection|Vote[]    $votes
+ *
  * @method static Builder|Comment whereId($value)
  * @method static Builder|Comment whereContent($value)
  * @method static Builder|Comment whereScore($value)
@@ -51,6 +53,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @method static QueryBuilder|Comment withoutTrashed()
  * @method static bool|null forceDelete()
  * @method static bool|null restore()
+ * @mixin \Eloquent
  */
 class Comment extends BaseModel
 {
@@ -62,7 +65,7 @@ class Comment extends BaseModel
     public $with = [
         "user:id,type,username,firstname,level,class_id",
         "children",
-        "children.user:id,type,username,firstname,level,class_id"
+        "children.user:id,type,username,firstname,level,class_id",
     ];
     /** @var array The attributes that are mass assignable */
     protected $fillable = ["id", "content", "score", "parent_id", "user_id", "commentable_id", "commentable_type",
@@ -71,16 +74,15 @@ class Comment extends BaseModel
     protected $rules = [
         "content" => "required",
         "parent_id" => "nullable|exists:comments,id",
-        "user_id" => "required|exists:users,id"
+        "user_id" => "required|exists:users,id",
     ];
     /** @var array The attributes that should be mutated to dates */
     protected $dates = ["deleted_at"];
     /** @var array Virtual fields */
     protected $appends = ["score", "user_vote"];
 
-
     /**
-     * Get the user vote value (null|1|-1)
+     * Get the user vote value (null|1|-1).
      *
      * @return int|null
      */
@@ -89,21 +91,22 @@ class Comment extends BaseModel
         $user = Auth::user();
 
         if ($user === null) {
-            return null;
+            return;
         }
 
         /** @var Vote $potentialVote */
         $potentialVote = Vote::where([
             ["user_id", $user->id],
             ["votable_type", "comment"],
-            ["votable_id", $this->id]
-        ])->first();
+            ["votable_id", $this->id],
+        ])
+            ->first();
 
         if ($potentialVote === null) {
-            return null;
-        } else {
-            return $potentialVote->value;
+            return;
         }
+
+        return $potentialVote->value;
     }
 
     /*
@@ -111,32 +114,31 @@ class Comment extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
+
     /**
-     * BelongsTo Comment
+     * BelongsTo Comment.
      *
      * @return BelongsTo
      * @codeCoverageIgnore
      */
     public function parent(): BelongsTo
     {
-        return $this->belongsTo(Comment::class, "parent_id");
+        return $this->belongsTo(self::class, "parent_id");
     }
 
-
     /**
-     * HasMany Comment
+     * HasMany Comment.
      *
      * @return HasMany
      * @codeCoverageIgnore
      */
     public function children(): HasMany
     {
-        return $this->hasMany(Comment::class, "parent_id");
+        return $this->hasMany(self::class, "parent_id");
     }
 
-
     /**
-     * BelongsTo Comment
+     * BelongsTo Comment.
      *
      * @return BelongsTo
      */
@@ -144,7 +146,6 @@ class Comment extends BaseModel
     {
         return $this->belongsTo(User::class);
     }
-
 
     /**
      * @return MorphTo

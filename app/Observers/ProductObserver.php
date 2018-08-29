@@ -1,14 +1,16 @@
 <?php
+
 namespace App\Observers;
 
 use App\Models\Product;
 
 /**
- * Class ProductObserver
+ * Class ProductObserver.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Observers
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
  * @since
+ *
  * @copyright Mathrix Education SA
  */
 class ProductObserver extends BaseObserver
@@ -30,13 +32,14 @@ class ProductObserver extends BaseObserver
         if (isset($product->link["children"])) {
             $toSync = [];
             foreach ($product->link["children"] as $order => $childId) {
-                if (Product::whereId($childId)->exists()) {
+                if (Product::whereId($childId)
+                    ->exists()) {
                     $toSync[$childId] = ["order" => $order];
                 }
             }
-            $product->children()->sync($toSync);
+            $product->children()
+                ->sync($toSync);
         }
-
 
         if (isset($product->link)) {
             unset($product->link);
@@ -45,7 +48,6 @@ class ProductObserver extends BaseObserver
         return true;
     }
 
-
     /**
      * @param Product $product
      *
@@ -53,11 +55,13 @@ class ProductObserver extends BaseObserver
      */
     public function deleting($product)
     {
-        $product->discounts()->detach();
-        $product->parents()->detach();
-        $product->children()->detach();
+        $product->discounts()
+            ->detach();
+        $product->parents()
+            ->detach();
+        $product->children()
+            ->detach();
 
         return true;
     }
-
 }

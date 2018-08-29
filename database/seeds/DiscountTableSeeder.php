@@ -4,10 +4,12 @@ use App\Models\Discount;
 use App\Models\Product;
 
 /**
- * Class DiscountTableSeeder
+ * Class DiscountTableSeeder.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @since 4.0.3
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     4.0.3
+ *
  * @copyright Mathrix Education SA
  */
 class DiscountTableSeeder extends BaseTableSeeder
@@ -19,7 +21,7 @@ class DiscountTableSeeder extends BaseTableSeeder
     {
         $this->seedFromFactory([
             "modelClass" => Discount::class,
-            "count" => random_int(20, 40)
+            "count" => random_int(20, 40),
         ]);
 
         $this->link(Discount::class, Product::class);

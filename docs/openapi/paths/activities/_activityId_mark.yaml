@@ -1,6 +1,6 @@
 patch:
   tags:
-  - activities
+  - Activities
   summary: Mark an activity
   operationId: activitiesMark
   parameters:

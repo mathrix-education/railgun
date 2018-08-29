@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands\Format;
 
 use Illuminate\Console\Command;
@@ -7,17 +8,17 @@ use Illuminate\Support\Str;
 
 /**
  * Class FormatCheckEnvironments
- * Check if environments files own the same keys as the local .env file
+ * Check if environments files own the same keys as the local .env file.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Console\Commands\Format
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class FormatCheckEnvironments extends Command
 {
     protected $signature = "format:check:environments";
-
 
     public function handle()
     {
@@ -46,9 +47,8 @@ class FormatCheckEnvironments extends Command
         }
     }
 
-
     /**
-     * Parse a .env file and return its keys
+     * Parse a .env file and return its keys.
      *
      * @param string $envFile
      *
@@ -63,10 +63,9 @@ class FormatCheckEnvironments extends Command
         foreach ($envFileLines as $line) {
             if (Str::startsWith($line, "#") || empty($line) || !Str::contains($line, "=")) {
                 continue;
-            } else {
-                $parts = explode("=", $line);
-                $envFileKeys->add($parts[0]);
             }
+            $parts = explode("=", $line);
+            $envFileKeys->add($parts[0]);
         }
 
         return $envFileKeys;

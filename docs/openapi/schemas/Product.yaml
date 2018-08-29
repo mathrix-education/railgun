@@ -21,10 +21,10 @@ properties:
     description: The product type (compatibility with the old traning system).
     type: string
     enum:
-      - pack
-      - training
-      - section
-      - lesson
+    - pack
+    - training
+    - section
+    - lesson
   description:
     description: The product description.
     type: string

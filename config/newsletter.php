@@ -16,11 +16,11 @@ return [
             "id" => env("MAILCHIMP_LIST_PARENTS"),
         ],
         "profs" => [
-            "id" => env("MAILCHIMP_LIST_PROFS")
+            "id" => env("MAILCHIMP_LIST_PROFS"),
         ],
         "premium" => [
-            "id" => "7078e5e448"
-        ]
+            "id" => "7078e5e448",
+        ],
     ],
-    "ssl" => true
+    "ssl" => true,
 ];

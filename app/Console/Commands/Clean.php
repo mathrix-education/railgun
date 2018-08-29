@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -7,15 +8,15 @@ use Illuminate\Console\Command;
  * Class Clean
  * Clean files from cache, logs, builds...
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Console\Commands
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class Clean extends Command
 {
     protected $signature = "clean {--g|go}";
-
 
     public function handle()
     {
@@ -40,7 +41,6 @@ class Clean extends Command
         if (empty($toDelete)) {
             $this->info("No files to delete found.");
         } else {
-
             if (!$go) {
                 $this->info("This is a dry run. The following files would have deleted:");
             } else {

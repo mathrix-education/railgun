@@ -4,37 +4,40 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
 /**
- * Class CreateClassDisciplineTable
+ * Class CreateClassDisciplineTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class CreateClassDisciplineTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
         Schema::create("class_discipline", function (Blueprint $table) {
             $table->increments("id");
-            $table->integer("class_id")->unsigned();
-            $table->integer("discipline_id")->unsigned();
+            $table->integer("class_id")
+                ->unsigned();
+            $table->integer("discipline_id")
+                ->unsigned();
 
             // Foreign keys
-            $table->foreign("class_id")->references("id")->on("classes");
-            $table->foreign("discipline_id")->references("id")->on("disciplines");
+            $table->foreign("class_id")
+                ->references("id")
+                ->on("classes");
+            $table->foreign("discipline_id")
+                ->references("id")
+                ->on("disciplines");
         });
     }
 
-
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

@@ -1,6 +1,6 @@
 <?php
-namespace Tests\API\Comments;
 
+namespace Tests\API\Comments;
 
 use App\Models\Activity;
 use App\Models\Post;
@@ -8,17 +8,17 @@ use Tests\API\ScopeTestCase;
 
 /**
  * Class CommentsAsPublicTest
- * Test Comments as public (non-logged user)
+ * Test Comments as public (non-logged user).
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * @version 1.0.0
- * @package Tests\Comments
+ *
+ * @version   1.0.0
  */
 class CommentsAsPublicTest extends ScopeTestCase
 {
     /**
-     * GET /comments
+     * GET /comments.
      *
      * @throws \Exception
      */
@@ -27,9 +27,8 @@ class CommentsAsPublicTest extends ScopeTestCase
         $this->genericIndexUnauthorized();
     }
 
-
     /**
-     * GET /comments/by-activity/{activity_id}
+     * GET /comments/by-activity/{activity_id}.
      */
     public function testByActivity()
     {
@@ -41,9 +40,8 @@ class CommentsAsPublicTest extends ScopeTestCase
         }
     }
 
-
     /**
-     * GET /comments/by-post/{post_id}
+     * GET /comments/by-post/{post_id}.
      */
     public function testByPost()
     {
@@ -55,9 +53,8 @@ class CommentsAsPublicTest extends ScopeTestCase
         }
     }
 
-
     /**
-     * GET /comments/by-wtf/{wtf_id} -> HTTP 400 Invalid Request
+     * GET /comments/by-wtf/{wtf_id} -> HTTP 400 Invalid Request.
      *
      * @throws \Exception
      */
@@ -69,9 +66,8 @@ class CommentsAsPublicTest extends ScopeTestCase
         $this->assertHttp400InvalidRequest();
     }
 
-
     /**
-     * POST /comments -> HTTP 401 unauthorized
+     * POST /comments -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -80,9 +76,8 @@ class CommentsAsPublicTest extends ScopeTestCase
         $this->genericAddUnauthorized();
     }
 
-
     /**
-     * PATCH /comments/{id} -> HTTP 401 unauthorized
+     * PATCH /comments/{id} -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -91,9 +86,8 @@ class CommentsAsPublicTest extends ScopeTestCase
         $this->genericEditUnauthorized();
     }
 
-
     /**
-     * DELETE /comments/{id} -> HTTP 401 unauthorized
+     * DELETE /comments/{id} -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -102,9 +96,8 @@ class CommentsAsPublicTest extends ScopeTestCase
         $this->genericDeleteUnauthorized();
     }
 
-
     /**
-     * GET /comments/latest
+     * GET /comments/latest.
      *
      * @throws \Exception
      */

@@ -1,12 +1,14 @@
 <?php
+
 namespace App\Services\Braintree;
 
 /**
- * Class Formatter
+ * Class Formatter.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Services\Braintree
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
  * @since
+ *
  * @copyright Mathrix Education SA
  */
 class Formatter
@@ -21,12 +23,12 @@ class Formatter
         foreach ($data as $key => $value) {
             if ($value instanceof \Braintree\Base) {
                 $data[$key] = self::cast($value->jsonSerialize());
-            } else if ($value instanceof \DateTime) {
+            } elseif ($value instanceof \DateTime) {
                 $data[$key] = $value->format("c");
-            } else if (is_array($value)) {
+            } elseif (\is_array($value)) {
                 $data[$key] = self::cast($value);
-            } else if (is_string($value) && preg_match("/^-?(?:\d+|\d*\.\d+)$/", $value)) {
-                $data[$key] = floatval($value);
+            } elseif (\is_string($value) && preg_match("/^-?(?:\d+|\d*\.\d+)$/", $value)) {
+                $data[$key] = (float) $value;
             }
         }
 

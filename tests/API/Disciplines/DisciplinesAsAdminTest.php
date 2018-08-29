@@ -1,21 +1,22 @@
 <?php
+
 namespace Tests\API\Disciplines;
 
 use App\Models\Class_;
 
 /**
  * Class DisciplinesAsAdminTest
- * Test disciplines as admin
+ * Test disciplines as admin.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * @version 1.0.0
- * @package Tests\Disciplines
+ *
+ * @version   1.0.0
  */
 class DisciplinesAsAdminTest extends DisciplinesAsModeratorTest
 {
     /**
-     * POST /disciplines
+     * POST /disciplines.
      *
      * @throws \Exception
      */
@@ -24,9 +25,8 @@ class DisciplinesAsAdminTest extends DisciplinesAsModeratorTest
         $this->genericAddSuccess();
     }
 
-
     /**
-     * PATCH /disciplines/{id}
+     * PATCH /disciplines/{id}.
      *
      * @throws \Exception
      */
@@ -35,9 +35,8 @@ class DisciplinesAsAdminTest extends DisciplinesAsModeratorTest
         $this->genericEditSuccess();
     }
 
-
     /**
-     * PATCH /disciplines/{id}
+     * PATCH /disciplines/{id}.
      *
      * @throws \Exception
      */
@@ -47,21 +46,20 @@ class DisciplinesAsAdminTest extends DisciplinesAsModeratorTest
 
         $this->genericEditSuccess([
             "link" => [
-                "classes" => $classIds
-            ]
+                "classes" => $classIds,
+            ],
         ]);
 
         foreach ($classIds as $classId) {
             $this->assertInDatabase("class_discipline", [
                 "class_id" => $classId,
-                "discipline_id" => $this->editModelId
+                "discipline_id" => $this->editModelId,
             ]);
         }
     }
 
-
     /**
-     * DELETE /disciplines/{id} -> HTTP 501 not_implemented
+     * DELETE /disciplines/{id} -> HTTP 501 not_implemented.
      *
      * @throws \Exception
      */

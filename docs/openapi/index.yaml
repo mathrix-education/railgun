@@ -10,17 +10,21 @@ servers:
 - url: 'https://api.mathrix.fr/'
 - url: 'https://dev.api.mathrix.fr/'
 tags:
-- name: activities
+- name: Activities
   description: Activities API
-- name: categories
+- name: Categories
   description: Categories API
-- name: products
+- name: Products
   description: Products API
-- name: users
+- name: Scores
+  description: Scores API
+- name: Users
   description: Users API
   # Braintree
-- name: Braintree global API
+- name: Braintree global
   description: Braintree global API
+- name: Braintree Plans
+  description: Braintree plans API
 - name: Braintree Subscriptions
   description: Braintree subscriptions API
 - name: Braintree Transactions

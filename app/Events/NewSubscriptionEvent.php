@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Events;
 
 use App\Models\User;
@@ -7,9 +8,10 @@ use App\Models\User;
  * Class NewSubscriptionEvent
  * Fired when a user successfully subscribed to Mathrix Premium.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Events
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
  * @since
+ *
  * @copyright Mathrix Education SA
  */
 class NewSubscriptionEvent extends BaseEvent
@@ -21,13 +23,12 @@ class NewSubscriptionEvent extends BaseEvent
     /** @var \Braintree\Transaction $initialTransaction */
     public $initialTransaction;
 
-
     /**
      * NewSubscriptionEvent constructor.
      *
-     * @param User $user
+     * @param User                    $user
      * @param \Braintree_Subscription $subscription
-     * @param \Braintree\Transaction $initialTransaction
+     * @param \Braintree\Transaction  $initialTransaction
      */
     public function __construct(User $user, \Braintree_Subscription $subscription, \Braintree\Transaction $initialTransaction = null)
     {

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
@@ -6,11 +7,12 @@ use Stripe\Stripe;
 
 /**
  * Class StripeServiceProvider
- * Setup Stripe PHP SDK
+ * Setup Stripe PHP SDK.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Providers
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class StripeServiceProvider extends ServiceProvider

@@ -1,15 +1,17 @@
 <?php
+
 namespace App\Listeners;
 
 use App\Events\PasswordResetEvent;
 use App\Notifications\PasswordResetNotification;
 
 /**
- * Class PasswordResetListener
+ * Class PasswordResetListener.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Listeners
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class PasswordResetListener extends BaseListener

@@ -3,16 +3,18 @@
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
-use App\Models\Module;
 use App\Models\Log;
+use App\Models\Module;
 use App\Models\User;
 use Carbon\Carbon;
 
 /**
- * Class LogTableSeeder
+ * Class LogTableSeeder.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @since 4.0.3
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     4.0.3
+ *
  * @copyright Mathrix Education SA
  */
 class LogTableSeeder extends BaseTableSeeder
@@ -25,8 +27,8 @@ class LogTableSeeder extends BaseTableSeeder
      */
     public function run()
     {
-
-        $users = User::whereNotNull("class_id")->get();
+        $users = User::whereNotNull("class_id")
+            ->get();
         $today = Carbon::now();
         $logs = [];
         $counter = 0;
@@ -36,7 +38,9 @@ class LogTableSeeder extends BaseTableSeeder
         foreach ($users as $user) {
             /** @var User $user */
             /** @var Carbon $dateIterator */
-            $dateIterator = $user->created_at->lessThan(Carbon::now()->subMonth()) ? Carbon::now()->subMonth() :
+            $dateIterator = $user->created_at->lessThan(Carbon::now()
+                ->subMonth()) ? Carbon::now()
+                ->subMonth() :
                 $user->created_at;
 
             while ($dateIterator->lessThan($today)) {
@@ -52,15 +56,18 @@ class LogTableSeeder extends BaseTableSeeder
 
                         do {
                             $module = Module::random();
-                        } while ($module->activities()->get()->isEmpty());
+                        } while ($module->activities()
+                            ->get()
+                            ->isEmpty());
 
                         $logs[] = Log::build("user_gathered_points", $user, [
                             "points" => $points,
                             "loggable_type" => "module",
                             "loggable_id" => $module->id,
-                            "created_at" => $dateIterator
-                        ])->toArray();
-                        $counter++;
+                            "created_at" => $dateIterator,
+                        ])
+                            ->toArray();
+                        ++$counter;
 
                         if ($counter % 100 === 0) {
                             $this->output->write(".");

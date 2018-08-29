@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Braintree;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -8,17 +9,18 @@ use App\Models\User;
 use Illuminate\Support\Facades\Notification;
 
 /**
- * Class CartIntegrationTest
+ * Class CartIntegrationTest.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package Tests\Braintree
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class CartTest extends BraintreeTestCase
 {
     /**
-     * Test buy with a discount code applicable on at least one product of the cart
+     * Test buy with a discount code applicable on at least one product of the cart.
      *
      * POST /transactions/buy
      *
@@ -33,13 +35,15 @@ class CartTest extends BraintreeTestCase
             ->where("counter", ">", 0)
             ->firstOrFail();
         $counterBefore = $discount->counter;
-        $productIds = $discount->products()->get()->pluck("id");
+        $productIds = $discount->products()
+            ->get()
+            ->pluck("id");
         $user = $this->getBraintreeCustomer();
         $this->setUser($user);
 
         $this->json("post", "/products/buy", [
             "cart" => $productIds,
-            "discount" => $discount->code
+            "discount" => $discount->code,
         ]);
 
         /** @var Discount $discount */
@@ -49,9 +53,8 @@ class CartTest extends BraintreeTestCase
         $this->assertEquals($discount->counter, $counterBefore - 1);
     }
 
-
     /**
-     * Test sale products to an user
+     * Test sale products to an user.
      *
      * POST /transactions/sale
      *
@@ -63,7 +66,8 @@ class CartTest extends BraintreeTestCase
         Notification::fake();
 
         $customer = $this->getBraintreeCustomer();
-        $support = User::where("type", "=", "support")->firstOrFail();
+        $support = User::where("type", "=", "support")
+            ->firstOrFail();
         $this->setUser($support);
 
         $productIds = Product::inRandomOrder()
@@ -75,7 +79,7 @@ class CartTest extends BraintreeTestCase
 
         $this->json("post", "/products/sale", [
             "cart" => $productIds,
-            "user_id" => $customer->id
+            "user_id" => $customer->id,
         ]);
         $this->assertHttp200Success();
         $this->assertInDatabase("purchases", ["user_id" => $customer->id, "product_id" => $productIds[0]]);

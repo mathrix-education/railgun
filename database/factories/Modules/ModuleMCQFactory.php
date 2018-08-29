@@ -3,7 +3,7 @@
 use App\Models\Module;
 use Faker\Generator;
 
-/**
+/*
  * ModuleMCQFactory
  *
  * @author Mathrix Team
@@ -16,7 +16,7 @@ $factory->defineAs(Module::class, 'mcq', function (Generator $faker) use ($facto
     $solutions = [];
     $corrections = [];
 
-    for ($q = 0; $q < $questionCount; $q++) {
+    for ($q = 0; $q < $questionCount; ++$q) {
         $questions[] = str_replace('.', '?', $faker->sentence());
 
         $choiceCount = $faker->numberBetween(2, 4);
@@ -32,7 +32,7 @@ $factory->defineAs(Module::class, 'mcq', function (Generator $faker) use ($facto
         'questions' => $questions,
         'choices' => $choices,
         'solutions' => $solutions,
-        'corrections' => $corrections
+        'corrections' => $corrections,
     ];
 
     return array_merge($factory->raw(Module::class), $data);

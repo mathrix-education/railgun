@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Braintree;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\Notification;
 use Laravel\Passport\Passport;
 
 /**
- * Class SubscriptionsTest
+ * Class SubscriptionsTest.
  *
  * Scenario
  * - Non-Braintree Customer create is Braintree account by adding its payment method
@@ -20,15 +21,16 @@ use Laravel\Passport\Passport;
  * - Support refunds the last transaction
  * - Support get the last transaction
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package Tests\Braintree
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class V4MonthlyIntegrationTest extends BraintreeTestCase
 {
     /**
-     * PATCH /users/{id}/card
+     * PATCH /users/{id}/card.
      *
      * @return User
      */
@@ -44,18 +46,17 @@ class V4MonthlyIntegrationTest extends BraintreeTestCase
         Passport::actingAs($customer, ["registered"]);
 
         $this->json("patch", "/users/{$customer->id}/payment-method", [
-            "paymentMethodNonce" => "fake-valid-mastercard-nonce"
+            "paymentMethodNonce" => "fake-valid-mastercard-nonce",
         ]);
 
         $this->assertHttp200Success();
         $this->assertNotInDatabase("users", [
             "id" => $customer->id,
-            "braintree_id" => null
+            "braintree_id" => null,
         ]);
 
         return $customer;
     }
-
 
     /**
      * @depends testCreateCustomer
@@ -63,8 +64,9 @@ class V4MonthlyIntegrationTest extends BraintreeTestCase
      *
      * @param User $customer
      *
-     * @return string
      * @throws Http400InvalidRequestException
+     *
+     * @return string
      */
     public function testSubscribeMonthly(User $customer)
     {
@@ -72,7 +74,7 @@ class V4MonthlyIntegrationTest extends BraintreeTestCase
         Passport::actingAs($customer, ["registered"]);
 
         $this->json("post", "/subscriptions", [
-            "planId" => "v4_monthly"
+            "planId" => "v4_monthly",
         ]);
 
         $this->assertHttp200Success();
@@ -81,7 +83,6 @@ class V4MonthlyIntegrationTest extends BraintreeTestCase
 
         return $customer->getBraintreeSubscriptions()[0]->id;
     }
-
 
     /**
      * @depends testSubscribeMonthly
@@ -94,7 +95,8 @@ class V4MonthlyIntegrationTest extends BraintreeTestCase
      */
     public function testCancel(string $subscriptionId)
     {
-        $user = User::where("type", "=", "support")->firstOrFail();
+        $user = User::where("type", "=", "support")
+            ->firstOrFail();
         Passport::actingAs($user, ["support"]);
 
         $this->json("post", "/subscriptions/{$subscriptionId}/cancel");
@@ -103,7 +105,6 @@ class V4MonthlyIntegrationTest extends BraintreeTestCase
 
         return $subscriptionId;
     }
-
 
     /**
      * @depends testCancel
@@ -116,7 +117,8 @@ class V4MonthlyIntegrationTest extends BraintreeTestCase
      */
     public function testGetSubscriptionTransactions(string $subscriptionId)
     {
-        $user = User::where("type", "=", "admin")->firstOrFail();
+        $user = User::where("type", "=", "admin")
+            ->firstOrFail();
         Passport::actingAs($user, ["admin"]);
 
         $this->json("get", "/transactions/by-subscription/{$subscriptionId}");
@@ -127,7 +129,6 @@ class V4MonthlyIntegrationTest extends BraintreeTestCase
 
         return $responseData[0]->id;
     }
-
 
     /**
      * @depends testGetSubscriptionTransactions
@@ -145,20 +146,23 @@ class V4MonthlyIntegrationTest extends BraintreeTestCase
         $transaction = \Braintree_Test_Transaction::settle($transactionId);
         $this->assertEquals($transaction->status, "settled");
 
-        $user = User::where("type", "=", "support")->firstOrFail();
+        $user = User::where("type", "=", "support")
+            ->firstOrFail();
         Passport::actingAs($user, ["support"]);
 
         $this->json("post", "/transactions/{$transactionId}/refund");
 
         $transaction = Transaction::find($transactionId);
-        $customer = User::whereBraintreeId($transaction->customerDetails->id)->firstOrFail();
+        /** @var Transaction\CustomerDetails $customerDetails */
+        $customerDetails = $transaction->customerDetails;
+        $customer = User::whereBraintreeId($customerDetails->id)
+            ->firstOrFail();
 
         $this->assertHttp200Success();
         $this->assertNotificationSentToVia(TransactionRefundSuccessNotification::class, $customer, "mail");
 
         return $transactionId;
     }
-
 
     /**
      * @depends testRefundLastTransaction
@@ -169,7 +173,8 @@ class V4MonthlyIntegrationTest extends BraintreeTestCase
      */
     public function testGetLastTransaction(string $transactionId)
     {
-        $user = User::where("type", "=", "support")->firstOrFail();
+        $user = User::where("type", "=", "support")
+            ->firstOrFail();
         Passport::actingAs($user, ["support"]);
 
         $this->json("get", "/transactions/{$transactionId}");

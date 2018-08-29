@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Users;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -8,30 +9,30 @@ use App\Models\Class_;
 use App\Models\Level;
 use App\Models\Log;
 use App\Models\Module;
-use App\Models\Training;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 
 /**
- * Class UsersAsRegisteredTest
+ * Class UsersAsRegisteredTest.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package Tests\Users
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class UsersAsRegisteredTest extends UsersAsPublicTest
 {
     /**
-     * POST /users/register
+     * POST /users/register.
      */
     public function testRegisterAdmin()
     {
         $dataWithoutPassword = [
             "email" => $this->faker->email,
             "class_id" => Class_::inRandomOrder()->firstOrFail()->id,
-            "type" => "admin"
+            "type" => "admin",
         ];
         $data = array_merge($dataWithoutPassword, ["password" => "test"]);
 
@@ -41,9 +42,8 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $this->assertNotInDatabase("users", $dataWithoutPassword);
     }
 
-
     /**
-     * GET /users/{id}
+     * GET /users/{id}.
      */
     public function testGet()
     {
@@ -52,9 +52,8 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $this->assertHttp200Success();
     }
 
-
     /**
-     * GET /users/{id}
+     * GET /users/{id}.
      */
     public function testGetStranger()
     {
@@ -65,9 +64,8 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $this->assertHttp401Unauthorized();
     }
 
-
     /**
-     * GET /users/profile
+     * GET /users/profile.
      */
     public function testProfile()
     {
@@ -76,9 +74,8 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $this->assertHttp200Success();
     }
 
-
     /**
-     * PATCH /users/{id}
+     * PATCH /users/{id}.
      */
     public function testEdit()
     {
@@ -92,9 +89,8 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $this->assertInDatabase("users", $newUser);
     }
 
-
     /**
-     * PATCH /users/{id} with the current_password field
+     * PATCH /users/{id} with the current_password field.
      *
      * @throws \Exception
      */
@@ -121,9 +117,8 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
             "with the one in the database");
     }
 
-
     /**
-     * PATCH /users/{id} with the incorrect current_password field
+     * PATCH /users/{id} with the incorrect current_password field.
      *
      * @throws \Exception
      */
@@ -145,9 +140,8 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $this->assertNotInDatabase("users", $newUser);
     }
 
-
     /**
-     * PATCH /users/{id} without the current_password field
+     * PATCH /users/{id} without the current_password field.
      *
      * @throws \Exception
      */
@@ -164,9 +158,8 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $this->assertHttp400InvalidRequest();
     }
 
-
     /**
-     * POST /users/points without loggable
+     * POST /users/points without loggable.
      */
     public function testPointsWithoutLoggable()
     {
@@ -179,14 +172,13 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $this->assertHttp200Success();
         $this->assertInDatabase("users", [
             "id" => $this->user->id,
-            "points" => $pointsBefore + $pointsToAdd
+            "points" => $pointsBefore + $pointsToAdd,
         ]);
         $this->assertLogged("user_gathered_points", $this->user);
     }
 
-
     /**
-     * POST /users/points with loggable
+     * POST /users/points with loggable.
      */
     public function testPointsWithLoggable()
     {
@@ -197,7 +189,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
             ["event", "user_gathered_points"],
             ["user_id", $this->user->id],
             ["loggable_type", "module"],
-            ["created_at", ">=", Carbon::now()->setTime(0, 0, 0)]
+            ["created_at", ">=", Carbon::now()->setTime(0, 0, 0)],
         ])->pluck("loggable_id");
 
         /** @var Module $loggable */
@@ -208,38 +200,35 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $this->call("post", "/users/points", [
             "points" => $pointsToAdd,
             "loggable_type" => "module",
-            "loggable_id" => $loggable->id
+            "loggable_id" => $loggable->id,
         ]);
-
 
         // Assertions
         $this->assertHttp200Success();
         $this->assertInDatabase("users", [
             "id" => $this->user->id,
-            "points" => $pointsBefore + $pointsToAdd
+            "points" => $pointsBefore + $pointsToAdd,
         ]);
         $this->assertLogged("user_gathered_points", $this->user);
     }
 
-
     /**
-     * POST /users/points wrong loggable
+     * POST /users/points wrong loggable.
      */
     public function testPointsWithWrongLoggable()
     {
         $this->call("post", "/users/points", [
             "points" => $this->faker->numberBetween(1, 10),
             "loggable_type" => "wrongloggable",
-            "loggable_id" => 6664242
+            "loggable_id" => 6664242,
         ]);
 
         // Assertions
         $this->assertHttp400InvalidRequest();
     }
 
-
     /**
-     * POST /users/points without points field
+     * POST /users/points without points field.
      */
     public function testPointsWithoutPointsField()
     {
@@ -249,9 +238,8 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $this->assertHttp400InvalidRequest();
     }
 
-
     /**
-     * POST /users/points without points field
+     * POST /users/points without points field.
      */
     public function testPointsWithInvalidPointsField()
     {
@@ -261,9 +249,9 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $this->assertHttp400InvalidRequest();
     }
 
-
     /**
-     * POST /users/points with loggable
+     * POST /users/points with loggable.
+     *
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
@@ -276,7 +264,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
             ["event", "user_gathered_points"],
             ["user_id", $this->user->id],
             ["loggable_type", "module"],
-            ["created_at", ">=", Carbon::now()->setTime(0, 0, 0)]
+            ["created_at", ">=", Carbon::now()->setTime(0, 0, 0)],
         ])->pluck("loggable_id");
 
         /** @var Module $loggable */
@@ -286,23 +274,21 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
 
         Log::log("user_gathered_points", $this->user, [
             "loggable_type" => "module",
-            "loggable_id" => $loggable->id
+            "loggable_id" => $loggable->id,
         ]);
 
         $this->call("post", "/users/points", [
             "points" => $pointsToAdd,
             "loggable_type" => "module",
-            "loggable_id" => $loggable->id
+            "loggable_id" => $loggable->id,
         ]);
-
 
         // Assertions
         $this->assertHttp429TooManyRequests();
     }
 
-
     /**
-     * POST /users/points with daily achievement trigger
+     * POST /users/points with daily achievement trigger.
      *
      * @throws \Exception
      */
@@ -311,11 +297,11 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $dailyAchievementsBefore = $this->user->daily_achievements;
         $potentialLog = Log::where([
             "event" => "user_achieved_daily",
-            "user_id" => $this->user->id
+            "user_id" => $this->user->id,
         ])
             ->whereBetween("created_at", [
                 Carbon::now()->setTime(0, 0, 0),
-                Carbon::now()
+                Carbon::now(),
             ]);
 
         // Delete daily achievement log if exists
@@ -329,13 +315,12 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $this->assertHttp200Success();
         $this->assertInDatabase("users", [
             "id" => $this->user->id,
-            "daily_achievements" => $dailyAchievementsBefore + 1
+            "daily_achievements" => $dailyAchievementsBefore + 1,
         ]);
     }
 
-
     /**
-     * POST /users/points with level pass trigger
+     * POST /users/points with level pass trigger.
      */
     public function testPointsWithLevelPass()
     {
@@ -350,8 +335,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $this->assertHttp200Success();
         $this->assertInDatabase("users", [
             "id" => $this->user->id,
-            "level" => $levelBefore + 1
+            "level" => $levelBefore + 1,
         ]);
     }
 }
-

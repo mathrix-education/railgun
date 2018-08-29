@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Auth;
@@ -7,32 +8,34 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-
 /**
- * Model Module
+ * Model Module.
  *
- * @package App\Models
- * @since 1.0.0
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @since     1.0.0
+ *
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * @property int $id
- * @property bool $premium
- * @property bool $visible
- * @property string $type
- * @property string $content
- * @property array $questions
- * @property array $choices
- * @property array $solutions
- * @property array $corrections
- * @property string $options
- * @property array $link
- * @property-read mixed $status
- * @property-read Collection|Activity[] $activities
- * @property-read Collection|Comment[] $comments
- * @property-read Collection|Log[] $logs
- * @property-read mixed $favorite
- * @property-read mixed $to_revise
- * @property-read bool $completed
+ *
+ * @property int                   $id
+ * @property bool                  $premium
+ * @property bool                  $visible
+ * @property string                $type
+ * @property string                $content
+ * @property array                 $questions
+ * @property array                 $choices
+ * @property array                 $solutions
+ * @property array                 $corrections
+ * @property string                $options
+ * @property array                 $link
+ * @property mixed                 $status
+ * @property Collection|Activity[] $activities
+ * @property Collection|Comment[]  $comments
+ * @property Collection|Log[]      $logs
+ * @property Collection|Product[]  $products
+ * @property mixed                 $favorite
+ * @property mixed                 $to_revise
+ * @property bool                  $completed
+ *
  * @method static Builder|Module whereId($value)
  * @method static Builder|Module wherePremium($value)
  * @method static Builder|Module whereVisible($value)
@@ -43,11 +46,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|Module whereOptions($value)
  * @method static Builder|Module whereQuestions($value)
  * @method static Builder|Module whereSolutions($value)
+ *
+ * @mixin \Eloquent
  */
 class Module extends BaseModel
 {
     public const TYPES = ["id", "course", "test", "mcq", "mcq-table", "match", "fill", "flashcard"];
-
 
     /** @var array The attributes that are mass assignable */
     protected $fillable = ["premium", "type", "content", "questions", "choices", "solutions", "corrections", "options",
@@ -60,15 +64,14 @@ class Module extends BaseModel
         "choices" => "array",
         "solutions" => "array",
         "corrections" => "array",
-        "options" => "array"
+        "options" => "array",
     ];
     /** @var array The validation rules */
     protected $rules = [
-        "visible" => "boolean"
+        "visible" => "boolean",
     ];
     /** @var array The accessors to append to the model's array form */
     protected $appends = ["favorite", "to_revise", "completed"];
-
 
     public function __construct(array $attributes = [])
     {
@@ -78,16 +81,14 @@ class Module extends BaseModel
         parent::__construct($attributes);
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | Appends
     |--------------------------------------------------------------------------
     */
 
-
     /**
-     * Handle too array strips if user is not premium
+     * Handle too array strips if user is not premium.
      *
      * @return array
      */
@@ -102,7 +103,7 @@ class Module extends BaseModel
 
         if ($strip) {
             foreach (array_merge($this->with, $this->appends, $this->fillable, ["comments"]) as $field) {
-                if (array_key_exists($field, $array) && !in_array($field, $keep)) {
+                if (array_key_exists($field, $array) && !\in_array($field, $keep, true)) {
                     unset($array[$field]);
                 }
             }
@@ -112,9 +113,8 @@ class Module extends BaseModel
         return $array;
     }
 
-
     /**
-     * favorite
+     * favorite.
      *
      * @return bool|mixed|null
      */
@@ -124,20 +124,20 @@ class Module extends BaseModel
         $user = Auth::user();
 
         if ($user === null) {
-            return null;
+            return;
         }
 
         $meta = Meta::where([
             ["module_id", $this->id],
-            ["user_id", $user->id]
-        ])->first();
+            ["user_id", $user->id],
+        ])
+            ->first();
 
         return $meta === null ? false : $meta->favorite;
     }
 
-
     /**
-     * to_revise
+     * to_revise.
      *
      * @return bool
      */
@@ -147,20 +147,20 @@ class Module extends BaseModel
         $user = Auth::user();
 
         if ($user === null) {
-            return null;
+            return;
         }
 
         $meta = Meta::where([
             ["module_id", $this->id],
-            ["user_id", $user->id]
-        ])->first();
+            ["user_id", $user->id],
+        ])
+            ->first();
 
         return $meta === null ? false : $meta->to_revise;
     }
 
-
     /**
-     * completed
+     * completed.
      *
      * @return bool
      */
@@ -170,37 +170,37 @@ class Module extends BaseModel
         $user = Auth::user();
 
         if ($user === null) {
-            return null;
+            return;
         }
 
         $meta = Meta::where([
             ["module_id", $this->id],
-            ["user_id", $user->id]
-        ])->first();
+            ["user_id", $user->id],
+        ])
+            ->first();
 
         return $meta === null ? null : $meta->completed;
     }
-
-
 
     /*
     |--------------------------------------------------------------------------
     | Relations
     |--------------------------------------------------------------------------
     */
+
     /**
-     * BelongsToMany Activity
+     * BelongsToMany Activity.
      *
      * @return BelongsToMany
      */
     public function activities(): BelongsToMany
     {
-        return $this->belongsToMany(Activity::class)->withPivot(["order"]);
+        return $this->belongsToMany(Activity::class)
+            ->withPivot(["order"]);
     }
 
-
     /**
-     * HasMany Product
+     * HasMany Product.
      *
      * @return HasMany
      */

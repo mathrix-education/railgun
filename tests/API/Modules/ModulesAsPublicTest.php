@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Modules;
 
 use App\Models\Activity;
@@ -7,12 +8,12 @@ use Tests\API\ScopeTestCase;
 
 /**
  * Class ModulesAsPublicTest
- * Test modules as public (non-logged user)
+ * Test modules as public (non-logged user).
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * @version 1.0.0
- * @package Tests\Modules
+ *
+ * @version   1.0.0
  */
 class ModulesAsPublicTest extends ScopeTestCase
 {
@@ -21,9 +22,8 @@ class ModulesAsPublicTest extends ScopeTestCase
      */
     protected $subFactory = "random";
 
-
     /**
-     * GET /modules
+     * GET /modules.
      *
      * @throws \Exception
      */
@@ -32,9 +32,8 @@ class ModulesAsPublicTest extends ScopeTestCase
         $this->genericIndexSuccess();
     }
 
-
     /**
-     * GET /modules/by-activity/{activity_id}
+     * GET /modules/by-activity/{activity_id}.
      */
     public function testByActivity()
     {
@@ -47,9 +46,8 @@ class ModulesAsPublicTest extends ScopeTestCase
         }
     }
 
-
     /**
-     * GET /modules/{id}
+     * GET /modules/{id}.
      */
     public function testGet()
     {
@@ -60,9 +58,8 @@ class ModulesAsPublicTest extends ScopeTestCase
         $this->assertHttp200Success();
     }
 
-
     /**
-     * GET /modules/{id} with a premium module as non premium user
+     * GET /modules/{id} with a premium module as non premium user.
      *
      * @throws \Exception
      */
@@ -73,15 +70,14 @@ class ModulesAsPublicTest extends ScopeTestCase
         $this->get("/modules/{$module->id}");
 
         $response = $this->getResponseData();
-        $responseKeys = array_keys((array)$response);
+        $responseKeys = array_keys((array) $response);
         $expectedKeys = ["id", "premium"];
         $this->assertTrue($response->premium);
         $this->assertEquals($expectedKeys, $responseKeys);
     }
 
-
     /**
-     * POST /modules -> HTTP 401 unauthorized
+     * POST /modules -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -90,9 +86,8 @@ class ModulesAsPublicTest extends ScopeTestCase
         $this->genericAddUnauthorized();
     }
 
-
     /**
-     * PATCH /modules/{id} -> HTTP 401 unauthorized
+     * PATCH /modules/{id} -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -101,9 +96,8 @@ class ModulesAsPublicTest extends ScopeTestCase
         $this->genericEditUnauthorized();
     }
 
-
     /**
-     * DELETE /modules/{id} -> HTTP 401 unauthorized
+     * DELETE /modules/{id} -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */

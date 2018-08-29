@@ -1,6 +1,6 @@
 get:
   tags:
-    - activities
+  - Activities
   summary: Get user favorite activties
   operationId: activitiesFavorite
   responses:

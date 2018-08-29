@@ -4,14 +4,14 @@ use App\Models\Module;
 use App\Models\Product;
 use Faker\Generator;
 
-/**
+/*
  * PostFactory
  *
  * @author Mathrix Team
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->define(Product::class, function (Generator $faker) {
-    $name = substr($faker->sentence($faker->numberBetween(1, 3)), 0, -1);
+    $name = mb_substr($faker->sentence($faker->numberBetween(1, 3)), 0, -1);
     $created = $faker->dateTimeBetween("-30 days", "now");
 
     return [

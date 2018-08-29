@@ -1,6 +1,6 @@
 post:
   tags:
-  - subscriptions
+  - Braintree Subscriptions
   summary: Cancel a subscription
   operationId: subscriptionCancel
   parameters:

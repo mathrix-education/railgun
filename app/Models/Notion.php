@@ -1,28 +1,30 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-
 /**
- * Model Notion
+ * Model Notion.
  *
- * @package App\Models
- * @since 1.0.0
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @since     1.0.0
+ *
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * @property int $id
- * @property string $name
- * @property string $slug
- * @property bool $premium
- * @property bool $visible
- * @property array $link
- * @property string $type
- * @property-read Collection|Activity[] $activities
- * @property-read Collection|Chapter[] $chapters
- * @property-read Collection|Comment[] $comments
+ *
+ * @property int                   $id
+ * @property string                $name
+ * @property string                $slug
+ * @property bool                  $premium
+ * @property bool                  $visible
+ * @property array                 $link
+ * @property string                $type
+ * @property Collection|Activity[] $activities
+ * @property Collection|Chapter[]  $chapters
+ * @property Collection|Comment[]  $comments
+ *
  * @method static Builder|Notion whereId($value)
  * @method static Builder|Notion whereName($value)
  * @method static Builder|Notion whereSlug($value)
@@ -30,6 +32,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Notion wherePremium($value)
  * @method static Builder|Notion whereVisible($value)
  * @method static Builder|Notion whereType($value)
+ * @mixin \Eloquent
  */
 class Notion extends BaseModel
 {
@@ -41,9 +44,8 @@ class Notion extends BaseModel
     protected $rules = [
         "name" => "required|max:255",
         "slug" => "required|max:255",
-        "chapter_id" => "required|exists:chapters,id"
+        "chapter_id" => "required|exists:chapters,id",
     ];
-
 
     public function __construct(array $attributes = [])
     {
@@ -58,24 +60,26 @@ class Notion extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
+
     /**
-     * BelongsToMany Activity
+     * BelongsToMany Activity.
      *
      * @return BelongsToMany
      */
     public function activities(): BelongsToMany
     {
-        return $this->belongsToMany(Activity::class)->withPivot(["order"]);
+        return $this->belongsToMany(Activity::class)
+            ->withPivot(["order"]);
     }
 
-
     /**
-     * BelongsToMany Chapter
+     * BelongsToMany Chapter.
      *
      * @return BelongsToMany
      */
     public function chapters(): BelongsToMany
     {
-        return $this->belongsToMany(Chapter::class)->withPivot(["order"]);
+        return $this->belongsToMany(Chapter::class)
+            ->withPivot(["order"]);
     }
 }

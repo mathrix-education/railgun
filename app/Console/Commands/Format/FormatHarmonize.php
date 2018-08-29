@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands\Format;
 
 use Illuminate\Console\Command;
@@ -6,24 +7,24 @@ use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Class FormatHarmonize
- * Fix some format problems
+ * Fix some format problems.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Console\Commands\Format
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class FormatHarmonize extends Command
 {
     protected $signature = "format:harmonize {--g|go}";
 
-    /** @var boolean $isDryRun */
+    /** @var bool $isDryRun */
     private $isDryRun;
     /** @var string $basePath */
     private $basePath;
     /** @var Collection $processFiles */
     private $processFiles;
-
 
     public function handle()
     {
@@ -36,9 +37,8 @@ class FormatHarmonize extends Command
         $this->process();
     }
 
-
     /**
-     * Remove the @mixin \\Eloquent in model classes
+     * Remove the @mixin \\Eloquent in model classes.
      */
     private function removeEloquentMixinFromModels()
     {
@@ -48,14 +48,13 @@ class FormatHarmonize extends Command
             $this->processFiles->add([
                 "file" => $modelFile,
                 "search" => "/\s+\*\s+\@mixin\s+\\\\Eloquent/",
-                "replace" => ""
+                "replace" => "",
             ]);
         }
     }
 
-
     /**
-     * Remove the lines between the <?php and the namespace
+     * Remove the lines between the <?php and the namespace.
      */
     private function removeBlankLinesBeforeNamespace()
     {
@@ -68,19 +67,17 @@ class FormatHarmonize extends Command
             $this->processFiles->add([
                 "file" => $phpFile,
                 "search" => "/\<\?php\n+namespace/",
-                "replace" => "<?php\nnamespace"
+                "replace" => "<?php\nnamespace",
             ]);
         }
     }
 
-
     /**
-     * Process all files formatting
+     * Process all files formatting.
      */
     private function process()
     {
         foreach ($this->processFiles as $todo) {
-
             $fileContent = file_get_contents($todo["file"]);
             $fileContent = preg_replace($todo["search"], $todo["replace"], $fileContent);
 

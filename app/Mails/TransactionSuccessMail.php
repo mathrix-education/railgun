@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Mails;
 
 use App\Models\User;
@@ -7,22 +8,22 @@ use Braintree\Transaction\LineItem;
 use Cache;
 
 /**
- * Class TransactionSuccessMail
+ * Class TransactionSuccessMail.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Mails
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class TransactionSuccessMail extends BaseMail
 {
-    /** @var User $user */
-    private $user;
     /** @var Transaction $transaction */
     protected $transaction;
     /** @var LineItem[] $lineItems */
     protected $lineItems;
-
+    /** @var User $user */
+    private $user;
 
     public function __construct(User $user, Transaction $transaction, array $lineItems)
     {
@@ -33,27 +34,37 @@ class TransactionSuccessMail extends BaseMail
         parent::__construct();
     }
 
-
     /**
-     * Mock the Mail
+     * Mock the Mail.
+     *
+     * @param string|null $transactionId
      *
      * @return TransactionSuccessMail
      */
-    public static function mock(): TransactionSuccessMail
+    public static function mock(string $transactionId = null): self
     {
-        $user = User::inRandomOrder()->first();
-        $transaction = Cache::remember("TransactionSuccessMail_transaction", 1, function () {
-            return Transaction::search([])->firstItem();
-        });
+        $user = User::inRandomOrder()
+            ->first();
+
+        if ($transactionId === null) {
+            $transaction = Cache::remember("TransactionSuccessMail_transaction", 1, function () {
+                return Transaction::search([])
+                    ->firstItem();
+            });
+        } else {
+            $transaction = Cache::remember("TransactionSuccessMail_transaction_$transactionId", 1, function () use ($transactionId) {
+                return Transaction::find($transactionId);
+            });
+        }
+
         /** @var LineItem[] $transactionLineItems */
         $transactionLineItems = LineItem::findAll($transaction->id);
 
-        return new TransactionSuccessMail($user, $transaction, $transactionLineItems);
+        return new self($user, $transaction, $transactionLineItems);
     }
 
-
     /**
-     * Build the mail
+     * Build the mail.
      *
      * @return TransactionSuccessMail
      */
@@ -65,7 +76,7 @@ class TransactionSuccessMail extends BaseMail
             "title" => "Reçu de Mathrix",
             "user" => $this->user,
             "transaction" => $this->transaction,
-            "lineItems" => $this->lineItems
+            "lineItems" => $this->lineItems,
         ]);
     }
 }

@@ -5,24 +5,28 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
 /**
- * Class UpdateMetasTable
+ * Class UpdateMetasTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @since 1.0.1
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.1
+ *
  * @copyright Mathrix Education SA
  */
 class UpdateMetasTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
         Schema::table("metas", function (Blueprint $table) {
-            $table->boolean("to_revise")->after("favorite")->default(false);
-            $table->boolean("completed")->after("to_revise")->default(false);
+            $table->boolean("to_revise")
+                ->after("favorite")
+                ->default(false);
+            $table->boolean("completed")
+                ->after("to_revise")
+                ->default(false);
             $table->dateTime("created_at");
             $table->dateTime("updated_at");
         });
@@ -30,8 +34,8 @@ class UpdateMetasTable extends Migration
         $metas = Meta::all();
 
         foreach ($metas as $meta) {
-            $meta->to_revise = $meta->status == "to_revise";
-            $meta->completed = $meta->status == "completed";
+            $meta->to_revise = $meta->status === "to_revise";
+            $meta->completed = $meta->status === "completed";
         }
 
         Schema::table("metas", function (Blueprint $table) {
@@ -39,16 +43,15 @@ class UpdateMetasTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
         Schema::table("metas", function (Blueprint $table) {
-            $table->enum("status", ["to_revise", "completed"])->after("favorite")->default(null);
+            $table->enum("status", ["to_revise", "completed"])
+                ->after("favorite")
+                ->default(null);
         });
 
         $metas = Meta::all();
@@ -56,9 +59,9 @@ class UpdateMetasTable extends Migration
         foreach ($metas as $meta) {
             if ($meta->to_revise) {
                 $meta->status = "to_revise";
-            } else if ($meta->completed) {
+            } elseif ($meta->completed) {
                 $meta->status = "completed";
-            };
+            }
         }
 
         Schema::table("metas", function (Blueprint $table) {

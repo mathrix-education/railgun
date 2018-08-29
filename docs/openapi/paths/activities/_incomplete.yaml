@@ -1,6 +1,6 @@
 get:
   tags:
-  - activities
+  - Activities
   summary: Get user incomplete activities
   operationId: activitiesToRevise
   responses:

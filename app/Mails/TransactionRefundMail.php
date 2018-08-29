@@ -1,15 +1,17 @@
 <?php
+
 namespace App\Mails;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 
 /**
- * Class TransactionRefundMail
+ * Class TransactionRefundMail.
  *
- * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package App\Mails
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ *
  * @since
+ *
  * @copyright Mathrix Education SA
  */
 class TransactionRefundMail extends BaseMail
@@ -23,13 +25,8 @@ class TransactionRefundMail extends BaseMail
     /** @var \Braintree\Transaction $transaction */
     private $refund;
 
-
-    public function __construct(
-        User $user,
-        \Braintree\Transaction $transaction,
-        array $lineItems,
-        \Braintree\Transaction $refund
-    )
+    public function __construct(User $user, \Braintree\Transaction $transaction, array $lineItems,
+                                \Braintree\Transaction $refund)
     {
         $this->user = $user;
         $this->transaction = $transaction;
@@ -39,9 +36,8 @@ class TransactionRefundMail extends BaseMail
         parent::__construct();
     }
 
-
     /**
-     * Mock the Mail
+     * Mock the Mail.
      *
      * @return TransactionRefundMail
      */
@@ -50,19 +46,20 @@ class TransactionRefundMail extends BaseMail
         $user = User::random();
         $refund = Cache::remember("mail-transaction-refund_refund", 5, function () {
             return \Braintree\Transaction::search([
-                \Braintree\TransactionSearch::type()->is("credit")
-            ])->firstItem();
+                \Braintree\TransactionSearch::type()
+                    ->is("credit"),
+            ])
+                ->firstItem();
         });
         $transaction = Cache::remember("mail-transaction-refund_refund", 5, function () use ($refund) {
             return \Braintree\Transaction::find($refund->refundedTransactionId);
         });
 
-        return new TransactionRefundMail($user, $transaction, [], $refund);
+        return new self($user, $transaction, [], $refund);
     }
 
-
     /**
-     * Build the mail
+     * Build the mail.
      *
      * @return TransactionRefundMail
      */
@@ -75,7 +72,7 @@ class TransactionRefundMail extends BaseMail
             "user" => $this->user,
             "transaction" => $this->transaction,
             "lineItems" => $this->lineItems,
-            "refund" => $this->refund
+            "refund" => $this->refund,
         ]);
     }
 }

@@ -1,32 +1,31 @@
 <?php
+
 namespace Tests\API;
 
-use App\Mails\PasswordForgottenMail;
-use App\Mails\PasswordResetMail;
 use App\Models\User;
 use App\Notifications\PasswordForgottenNotification;
 use App\Notifications\PasswordResetNotification;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Laravel\Lumen\Testing\TestCase;
-use Tests\Traits\Debug;
-use Tests\Traits\HttpAssertionsTrait;
-use Tests\Traits\JsonAssertionsTrait;
-use Tests\Traits\ResponseTrait;
+use Tests\Utils\Traits\Assertions\DatabaseAssertionsTrait;
+use Tests\Utils\Traits\Assertions\HttpAssertionsTrait;
+use Tests\Utils\Traits\Assertions\JsonAssertionsTrait;
+use Tests\Utils\Traits\Assertions\NotificationsAssertionsTrait;
+use Tests\Utils\Traits\DebugTrait;
+use Tests\Utils\Traits\ResponseTrait;
 
 /**
- * Class AuthTest
+ * Class AuthTest.
  *
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * @version 4.0.3
- * @package Tests\API
+ *
+ * @version   4.0.3
  */
 class AuthTest extends TestCase
 {
-    use ResponseTrait, JsonAssertionsTrait, HttpAssertionsTrait, Debug;
-
+    use DatabaseAssertionsTrait, HttpAssertionsTrait, JsonAssertionsTrait, NotificationsAssertionsTrait, ResponseTrait, DebugTrait;
 
     /**
      * Creates the application.
@@ -40,35 +39,8 @@ class AuthTest extends TestCase
         return require __DIR__ . "/../../bootstrap/app.php";
     }
 
-
     /**
-     * Get a Facebook user
-     *
-     * @return User
-     */
-    private function getFacebookUser(): User
-    {
-        return User::inRandomOrder()
-            ->where("settings", "LIKE", "%facebook_id%")
-            ->firstOrFail();
-    }
-
-
-    /**
-     * Get regular (non Facebook) user
-     *
-     * @return User
-     */
-    private function getNonFacebookUser(): User
-    {
-        return User::inRandomOrder()
-            ->where("settings", "NOT LIKE", "%facebook_id%")
-            ->firstOrFail();
-    }
-
-
-    /**
-     * POST /users/login
+     * POST /users/login.
      *
      * @throws \Exception
      */
@@ -81,7 +53,7 @@ class AuthTest extends TestCase
             "client_id" => env("OAUTH_CLIENT_ID"),
             "client_secret" => env("OAUTH_CLIENT_SECRET"),
             "username" => $user->email,
-            "password" => "test"
+            "password" => "test",
         ]);
 
         // Assertions
@@ -99,9 +71,8 @@ class AuthTest extends TestCase
         return $args;
     }
 
-
     /**
-     * POST /users/refresh
+     * POST /users/refresh.
      *
      * @depends testLogin
      *
@@ -116,7 +87,7 @@ class AuthTest extends TestCase
             "client_id" => env("OAUTH_CLIENT_ID"),
             "client_secret" => env("OAUTH_CLIENT_SECRET"),
             "username" => $args->email,
-            "refresh_token" => $args->refresh_token
+            "refresh_token" => $args->refresh_token,
         ]);
 
         $data = $this->getResponseData();
@@ -127,9 +98,8 @@ class AuthTest extends TestCase
         $this->assertNotEmpty($data->access_token);
     }
 
-
     /**
-     * POST /users/forgot
+     * POST /users/forgot.
      */
     public function testForgot()
     {
@@ -139,16 +109,11 @@ class AuthTest extends TestCase
         $this->call("post", "/users/forgot", ["email" => $user->email]);
 
         $this->assertHttp200Success();
-        Notification::assertSentTo($user, PasswordForgottenNotification::class,
-            function (PasswordForgottenNotification $notification, array $channels) use ($user) {
-                return $channels[0] === "mail";
-            }
-        );
+        $this->assertNotificationSentToVia(PasswordForgottenNotification::class, $user, "mail");
     }
 
-
     /**
-     * POST /users/forgot
+     * POST /users/forgot.
      */
     public function testForgotAsFacebookUser()
     {
@@ -158,9 +123,8 @@ class AuthTest extends TestCase
         $this->assertHttp400InvalidRequest();
     }
 
-
     /**
-     * POST /users/reset
+     * POST /users/reset.
      */
     public function testReset()
     {
@@ -170,16 +134,11 @@ class AuthTest extends TestCase
         $this->call("post", "/users/reset/{$user->token}", ["password" => "test"]);
 
         $this->assertHttp200Success();
-        Notification::assertSentTo($user, PasswordResetNotification::class,
-            function (PasswordResetNotification $notification, array $channels) use ($user) {
-                return $channels[0] === "mail";
-            }
-        );
+        $this->assertNotificationSentToVia(PasswordResetNotification::class, $user, "mail");
     }
 
-
     /**
-     * POST /users/reset
+     * POST /users/reset.
      */
     public function testResetWithEmptyPassword()
     {
@@ -190,9 +149,8 @@ class AuthTest extends TestCase
         $this->assertHttp400InvalidRequest();
     }
 
-
     /**
-     * POST /users/reset
+     * POST /users/reset.
      */
     public function testResetAsFacebookUser()
     {
@@ -201,5 +159,29 @@ class AuthTest extends TestCase
         $this->call("post", "/users/reset/{$user->token}", ["password" => null]);
 
         $this->assertHttp400InvalidRequest();
+    }
+
+    /**
+     * Get regular (non Facebook) user.
+     *
+     * @return User
+     */
+    private function getNonFacebookUser(): User
+    {
+        return User::inRandomOrder()
+            ->where("settings", "NOT LIKE", "%facebook_id%")
+            ->firstOrFail();
+    }
+
+    /**
+     * Get a Facebook user.
+     *
+     * @return User
+     */
+    private function getFacebookUser(): User
+    {
+        return User::inRandomOrder()
+            ->where("settings", "LIKE", "%facebook_id%")
+            ->firstOrFail();
     }
 }

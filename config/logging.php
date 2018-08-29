@@ -1,4 +1,5 @@
 <?php
+
 return [
     "default" => env("LOG_CHANNEL", "stack"),
 
@@ -13,6 +14,6 @@ return [
             "path" => storage_path("logs/daily.log"),
             "level" => "debug",
             "days" => 7,
-        ]
+        ],
     ],
 ];

@@ -1,4 +1,5 @@
 <?php
+
 /** @var Laravel\Lumen\Routing\Router $router */
 $router->post("braintree/webhook", "BraintreeController@webhook");
 

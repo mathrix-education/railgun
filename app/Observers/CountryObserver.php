@@ -1,13 +1,13 @@
 <?php
+
 namespace App\Observers;
 
 use App\Models\Country;
 
 /**
- * Class UserObserver
+ * Class UserObserver.
  *
  * @author Mathrix Team
- * @package App\Observers
  */
 class CountryObserver extends BaseObserver
 {

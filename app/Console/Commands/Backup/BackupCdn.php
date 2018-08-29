@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands\Backup;
 
 use Carbon\Carbon;
@@ -8,18 +9,18 @@ use Illuminate\Support\Facades\Storage;
 use ZipArchive;
 
 /**
- * Class BackupCdn
+ * Class BackupCdn.
  *
- * @author Mathrix Back-End Team
- * @package App\Console\Commands
+ * @author    Mathrix Back-End Team
+ *
  * @since
+ *
  * @copyright Mathrix SA
  */
 class BackupCdn extends Command
 {
-    protected $signature = "backup:cdn";
     private const DRIVE_CDN_FOLDER = "1E4XQBZThR9OcngnoveG_1YYvaoop1o6p";
-
+    protected $signature = "backup:cdn";
 
     /**
      * @throws \Exception
@@ -30,10 +31,10 @@ class BackupCdn extends Command
         $this->pushZip($zipPath);
     }
 
-
     /**
-     * @return string
      * @throws \Exception
+     *
+     * @return string
      */
     public function zipCdn()
     {
@@ -43,7 +44,8 @@ class BackupCdn extends Command
             return !is_dir($path);
         });
 
-        $zipFileName = "cdn_" . Carbon::now()->format("Y-m-d_H-i-s") . ".zip";
+        $zipFileName = "cdn_" . Carbon::now()
+                ->format("Y-m-d_H-i-s") . ".zip";
         $zipDir = storage_path("backups/cdn");
         $zipPath = "$zipDir/$zipFileName";
 
@@ -69,9 +71,8 @@ class BackupCdn extends Command
         return $zipFileName;
     }
 
-
     /**
-     * Push the zip file to Google Drive Cloud
+     * Push the zip file to Google Drive Cloud.
      *
      * @param $zipFileName
      */
@@ -80,6 +81,7 @@ class BackupCdn extends Command
         $localFilePath = storage_path("backups/cdn") . "/$zipFileName";
         $file = new File($localFilePath);
 
-        Storage::disk("drive")->putFileAs(self::DRIVE_CDN_FOLDER, $file, $zipFileName);
+        Storage::disk("drive")
+            ->putFileAs(self::DRIVE_CDN_FOLDER, $file, $zipFileName);
     }
 }

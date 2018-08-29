@@ -4,38 +4,42 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
 /**
- * Class CreateActivityModuleTable
+ * Class CreateActivityModuleTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class CreateActivityModuleTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
         Schema::create("activity_module", function (Blueprint $table) {
             $table->increments("id");
-            $table->integer("activity_id")->unsigned();
-            $table->integer("module_id")->unsigned();
-            $table->integer("order")->default(0);
+            $table->integer("activity_id")
+                ->unsigned();
+            $table->integer("module_id")
+                ->unsigned();
+            $table->integer("order")
+                ->default(0);
 
             // Foreign keys
-            $table->foreign("activity_id")->references("id")->on("activities");
-            $table->foreign("module_id")->references("id")->on("modules");
+            $table->foreign("activity_id")
+                ->references("id")
+                ->on("activities");
+            $table->foreign("module_id")
+                ->references("id")
+                ->on("modules");
         });
     }
 
-
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

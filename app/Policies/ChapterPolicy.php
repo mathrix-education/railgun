@@ -1,14 +1,16 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\User;
 
 /**
- * Class ChapterPolicy
+ * Class ChapterPolicy.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Policies
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class ChapterPolicy extends BasePolicy
@@ -23,7 +25,6 @@ class ChapterPolicy extends BasePolicy
         return $currentUser->isModerator();
     }
 
-
     /**
      * @return bool
      */
@@ -31,7 +32,6 @@ class ChapterPolicy extends BasePolicy
     {
         return true;
     }
-
 
     /**
      * @param User $currentUser
@@ -43,7 +43,6 @@ class ChapterPolicy extends BasePolicy
         return $currentUser->isModerator();
     }
 
-
     /**
      * @param User $currentUser
      *
@@ -53,7 +52,6 @@ class ChapterPolicy extends BasePolicy
     {
         return $currentUser->isModerator();
     }
-
 
     /**
      * @param User $currentUser
