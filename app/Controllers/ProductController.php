@@ -27,15 +27,20 @@ use Illuminate\Validation\ValidationException;
 class ProductController extends BaseController
 {
     /**
-     * Get salable products.
+     * Get buyable products.
      *
      * @return JsonResponse
      */
-    public function salable()
+    public function buyable($type = null)
     {
-        $products = Product::with("children")
-            ->whereNotNull("price")
-            ->get();
+        $query = Product::with("children")
+            ->whereNotNull("price");
+
+        if ($type !== null) {
+            $query = $query->where("type", "=", $type);
+        }
+
+        $products = $query->get();
 
         return new JsonResponse($products);
     }
