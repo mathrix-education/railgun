@@ -1,22 +1,10 @@
-get:
-  tags:
-  - Activities
-  summary: Get all activities
-  operationId: activitiesIndex
-  responses:
-    200:
-      description: An array of activities.
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              $ref: '../../index.yaml#/components/schemas/Activity'
 post:
   tags:
   - Activities
-  summary: Create a new activity
+  summary: Create an activity
   operationId: activitiesPost
+  security:
+  - moderator: []
   requestBody:
     content:
       application/json:
@@ -24,8 +12,10 @@ post:
           $ref: '../../index.yaml#/components/requestBodies/Activity'
   responses:
     200:
-      description: The newly created activity
+      description: The newly created activity.
       content:
         application/json:
           schema:
             $ref: '../../index.yaml#/components/schemas/Activity'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'

@@ -25,9 +25,9 @@ post:
               items:
                 type: string
               example:
-                - child1@example.com
-                - child2@example.com
-                - child3@example.com
+              - child1@example.com
+              - child2@example.com
+              - child3@example.com
           required:
           - planId
   responses:

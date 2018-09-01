@@ -6,6 +6,8 @@ info:
   contact:
     name: Mathieu Bour
     email: mathieu.tin.bour@gmail.com
+  x-logo:
+    url: https://cdn.mathrix.fr/img/logo-white-mode-machine.png
 servers:
 - url: 'https://api.mathrix.fr/'
 - url: 'https://dev.api.mathrix.fr/'
@@ -32,13 +34,31 @@ tags:
 security:
 - bearerAuth: []
 components:
-  requestBodies:
-    $ref: ./requestBodies/index.yaml
   securitySchemes:
-    bearerAuth:
+    registered:
+      description: The standard user authorizations.
       type: http
       scheme: bearer
       bearerFormat: JWT
+    redactor:
+      description: The redactor authorizations.
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    moderator:
+      description: The moderator authorizations.
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    admin:
+      description: The administrator authorizations.
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  requestBodies:
+    $ref: ./requestBodies/index.yaml
+  responses:
+    $ref: ./responses/index.yaml
   schemas:
     $ref: ./schemas/index.yaml
 paths:

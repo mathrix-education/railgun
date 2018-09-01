@@ -1,20 +1,19 @@
 get:
   tags:
   - Activities
-  summary: Get all activities (pagination)
+  summary: Index activities
+  description: Retrive all activities by ascending ids, paginated.
   operationId: activitiesIndexPagination
   parameters:
   - name: page
     in: path
-    description: The page of activities
-    required: true
+    description: The page of activities.
     schema:
       type: int
       default: 1
   - name: perPage
     in: path
-    description: The number of activities per page
-    required: true
+    description: The number of activities per page.
     schema:
       type: int
       default: 100

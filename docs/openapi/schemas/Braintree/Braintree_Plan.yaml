@@ -34,7 +34,7 @@ properties:
       #discounts:
       #description: A collection of discounts associated with this subscription.
       #type: array
-      #items:
+    #items:
     #$ref: '../../index.yaml#/components/schemas/Braintree_Discount'
   discount:
     description: The plan discount based on the highest price per month.

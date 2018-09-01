@@ -1,8 +1,9 @@
 get:
   tags:
   - Activities
-  summary: Get an activity
-  operationId: activtiesGet
+  summary: Get an activity by id
+  operationId: activitiesGet
+  security: []
   parameters:
   - name: activityId
     in: path
@@ -18,11 +19,15 @@ get:
         application/json:
           schema:
             $ref: '../../index.yaml#/components/schemas/Activity'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
 patch:
   tags:
   - Activities
   summary: Edit an activity
   operationId: activitiesPatch
+  security:
+  - moderator: []
   parameters:
   - name: activityId
     in: path
@@ -48,6 +53,8 @@ delete:
   - Activities
   summary: Delete an activity
   operationId: activitiesDelete
+  security:
+  - moderator: []
   parameters:
   - name: activityId
     in: path

@@ -1,0 +1,4 @@
+404_ModelNotFound:
+  $ref: ./404_ModelNotFound.yaml
+422_ModelValidation:
+  $ref: ./422_ModelValidation.yaml
