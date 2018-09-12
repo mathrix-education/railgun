@@ -4,7 +4,7 @@
 $router->get("products[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "ProductController@index");
 
 $router->group(["prefix" => "products"], function () use ($router) {
-    $router->get("salable", "ProductController@salable");
+    $router->get("buyable[/{type}]", "ProductController@buyable");
 
     $router->get("{key:[1-9]\d*}", "ProductController@get");
     $router->get("{key:[a-z\-]+}/{value:[a-z0-9\-]+}", "ProductController@get");
