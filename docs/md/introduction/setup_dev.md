@@ -1,8 +1,11 @@
 # Setup for development
 This project is designed for UNIX-based systems development.
 
+## Requirements
+
 Make sure you got the following technologies installed on your workstation:
 
+- Composer
 - PHP >= 7.1
 - MySQL >= 5.5
 - Node.js >= v8 with
@@ -26,3 +29,4 @@ php artisan migrate --seed
 ```
 
 Make sure you are working on the dev branch and you are now ready to work with Mathrix API!
+
