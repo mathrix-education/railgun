@@ -1,11 +1,11 @@
 get:
   tags:
   - Activities
-  summary: Get user favorite activties
+  summary: Get user's favorite activties
   operationId: activitiesFavorite
   responses:
     200:
-      description: Array of metas describing favorite activities
+      description: Array of metas describing user's favorite activities.
       content:
         application/json:
           schema:

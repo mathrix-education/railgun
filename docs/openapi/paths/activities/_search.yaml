@@ -2,6 +2,7 @@ post:
   tags:
   - Activities
   summary: Search activities
+  description: Search activities by query and relations.
   operationId: activitiesSearch
   requestBody:
     content:
@@ -10,22 +11,22 @@ post:
           $ref: '../../index.yaml#/components/requestBodies/Search'
   responses:
     200:
-      description: Search results
+      description: The activities search results.
       content:
         application/json:
           schema:
             type: object
             properties:
               perPage:
-                description: The total activities per page
+                description: The total activities per page.
                 type: integer
                 example: 100
               page:
-                description: The page number
+                description: The page number.
                 type: integer
                 example: 1
               count:
-                description: The total activities found
+                description: The total activities found.
                 type: integer
                 example: 53
               data:

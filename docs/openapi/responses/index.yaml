@@ -1,3 +1,5 @@
+Bearer:
+  $ref: ./Bearer.yaml
 404_ModelNotFound:
   $ref: ./404_ModelNotFound.yaml
 422_ModelValidation:

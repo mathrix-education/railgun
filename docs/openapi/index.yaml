@@ -7,7 +7,7 @@ info:
     name: Mathieu Bour
     email: mathieu.tin.bour@gmail.com
   x-logo:
-    url: https://cdn.mathrix.fr/img/logo-white-mode-machine.png
+    url: https://cdn.mathrix.fr/img/logo-redoc.png
 servers:
 - url: 'https://api.mathrix.fr/'
 - url: 'https://dev.api.mathrix.fr/'

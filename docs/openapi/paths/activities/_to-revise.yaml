@@ -1,11 +1,11 @@
 get:
   tags:
   - Activities
-  summary: Get user to revise activities
+  summary: Get user _to revise_ activities.
   operationId: activitiesToRevise
   responses:
     200:
-      description: Array of metas describing to revise activities
+      description: Array of metas describing user's _to revise_ activities.
       content:
         application/json:
           schema:

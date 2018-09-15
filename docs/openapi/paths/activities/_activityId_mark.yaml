@@ -6,7 +6,7 @@ patch:
   parameters:
   - name: activityId
     in: path
-    description: The activity id
+    description: The activity id.
     required: true
     schema:
       type: int
@@ -27,8 +27,10 @@ patch:
             type: boolean
   responses:
     200:
-      description: The activity
+      description: The marked activity.
       content:
         application/json:
           schema:
             $ref: '../../index.yaml#/components/schemas/Activity'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

@@ -54,6 +54,13 @@
   $ref: ./scores/_game_top.yaml
 
 
+# -----
+# Users
+# -----
+/users/login:
+  $ref: ./users/_login.yaml
+
+
 # --------------------
 # Braintree global API
 # --------------------
