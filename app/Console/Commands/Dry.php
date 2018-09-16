@@ -25,6 +25,16 @@ class Dry extends Command
 
     public function handle()
     {
-        Cache::clear();
+        $test = [
+            102, 132 => [
+                "visible" => false
+            ], 124, 142 => [
+                "visible" => true
+            ]
+        ];
+
+        foreach ($test as $key => $value) {
+            $this->line($key . ":" . json_encode($value));
+        }
     }
 }

@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Exceptions\Http401UnauthorizedException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http501NotImplementedException;
+use App\Models\Class_;
 use App\Models\Discipline;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -20,6 +21,28 @@ use Illuminate\Http\Request;
  */
 class DisciplineController extends BaseController
 {
+    /**
+     * Get visible disciplines by class id
+     *
+     * @param Request $request
+     * @param int     $classId
+     *
+     * @return JsonResponse
+     * @throws Http401UnauthorizedException
+     */
+    public function byClass(Request $request, int $classId)
+    {
+        $class = Class_::findOrFail($classId);
+
+        if ($request->user() !== null && $request->user()
+                ->cant("byClass", $this->modelClass)) {
+            throw new Http401UnauthorizedException();
+        }
+
+        $response = new JsonResponse($class->disciplines);
+
+        return $response;
+    }
     /**
      * @apiVersion     4.0.0
      *

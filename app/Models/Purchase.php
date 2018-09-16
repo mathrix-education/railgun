@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property User        $user
+ * @property Product     $product
  *
  * @method static Builder|Purchase whereId($value)
  * @method static Builder|Purchase wherePrice($value)
@@ -58,5 +59,15 @@ class Purchase extends BaseModel
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * BelongsTo Product.
+     *
+     * @return BelongsTo
+     */
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
     }
 }

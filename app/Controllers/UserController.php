@@ -243,7 +243,7 @@ class UserController extends BaseController
         $user = $request->user();
 
         $user = User::where("id", $user->id)
-            ->with(["class_", "purchases"])
+            ->with(["class_", "purchases", "purchases.product"])
             ->firstOrFail();
 
         $user->append(["premium", "braintree"]);

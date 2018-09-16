@@ -112,7 +112,8 @@ class Class_ extends BaseModel
     public function disciplines(): BelongsToMany
     {
         return $this->belongsToMany(Discipline::class, "class_discipline", "class_id",
-            "discipline_id");
+            "discipline_id")
+            ->orderBy("class_discipline.order");
     }
 
     /**
