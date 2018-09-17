@@ -13,7 +13,7 @@ class AddVisibleToClassDisciplineTable extends Migration
      */
     public function up()
     {
-        Schema::table('class_discipline', function (Blueprint $table) {
+        Schema::table("class_discipline", function (Blueprint $table) {
             $table->boolean("visible")->default(true);
             $table->integer("order");
         });
@@ -26,7 +26,7 @@ class AddVisibleToClassDisciplineTable extends Migration
      */
     public function down()
     {
-        Schema::table('class_discipline', function (Blueprint $table) {
+        Schema::table("class_discipline", function (Blueprint $table) {
             $table->dropColumn("visible");
             $table->dropColumn("order");
         });

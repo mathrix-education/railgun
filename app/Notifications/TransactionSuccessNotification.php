@@ -16,7 +16,7 @@ use Braintree\Transaction\LineItem;
  *
  * @copyright Mathrix Education SA
  */
-class TransactionSuccessNotification extends BaseNotification
+class TransactionSuccessNotification extends MailNotification
 {
     /** @var User $user */
     private $user;
@@ -36,14 +36,6 @@ class TransactionSuccessNotification extends BaseNotification
         $this->user = $user;
         $this->transaction = $transaction;
         $this->lineItems = LineItem::findAll($transaction->id);
-    }
-
-    /**
-     * @return array
-     */
-    public function via(): array
-    {
-        return ["mail"];
     }
 
     /**

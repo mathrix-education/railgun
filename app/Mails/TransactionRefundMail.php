@@ -20,7 +20,7 @@ class TransactionRefundMail extends BaseMail
     private $user;
     /** @var \Braintree\Transaction $transaction */
     private $transaction;
-    /** @var \Braintree\Transaction_LineItem[] $lineItems */
+    /** @var \Braintree\Transaction\LineItem[] $lineItems */
     private $lineItems;
     /** @var \Braintree\Transaction $transaction */
     private $refund;

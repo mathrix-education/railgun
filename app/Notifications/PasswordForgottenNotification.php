@@ -14,7 +14,7 @@ use App\Models\User;
  *
  * @copyright Mathrix Education SA
  */
-class PasswordForgottenNotification extends BaseNotification
+class PasswordForgottenNotification extends MailNotification
 {
     /** @var User $user */
     public $user;
@@ -27,14 +27,6 @@ class PasswordForgottenNotification extends BaseNotification
     public function __construct(User $user)
     {
         $this->user = $user;
-    }
-
-    /**
-     * @return array
-     */
-    public function via(): array
-    {
-        return ["mail"];
     }
 
     /**

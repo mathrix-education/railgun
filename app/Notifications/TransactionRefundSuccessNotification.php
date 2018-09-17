@@ -16,7 +16,7 @@ use Braintree\Transaction\LineItem;
  *
  * @copyright Mathrix Education SA
  */
-class TransactionRefundSuccessNotification extends BaseNotification
+class TransactionRefundSuccessNotification extends MailNotification
 {
     /** @var User $user */
     private $user;
@@ -39,14 +39,6 @@ class TransactionRefundSuccessNotification extends BaseNotification
         $this->refund = $transaction;
         $this->transaction = Transaction::find($transaction->refundedTransactionId);
         $this->lineItems = LineItem::findAll($transaction->id);
-    }
-
-    /**
-     * @return array
-     */
-    public function via(): array
-    {
-        return ["mail"];
     }
 
     /**
