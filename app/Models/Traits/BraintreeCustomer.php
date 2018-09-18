@@ -61,6 +61,10 @@ trait BraintreeCustomer
      */
     public function isBraintreeCustomer($strict = false): bool
     {
+        if (app()->environment() === "offline") {
+            return $this->braintree_id === null;
+        }
+
         if ($this->braintree_id === null) {
             return false;
         } elseif (!$strict) {
@@ -80,6 +84,10 @@ trait BraintreeCustomer
      */
     public function getBraintreeCustomer(): ?\Braintree_Customer
     {
+        if (app()->environment() === "offline") {
+            return \Braintree\Customer::factory([]);
+        }
+
         return Cache::remember(self::getBraintreeCustomerCacheKey(), 5, function () {
             try {
                 return \Braintree_Customer::find($this->braintree_id);
@@ -190,6 +198,11 @@ trait BraintreeCustomer
      */
     public function hasBraintreeSubscription($plans)
     {
+        // Emulate that the user has all plans if environment is offline
+        if (app()->environment() === "offline") {
+            return $this->braintree_id === null;
+        }
+
         if (\is_string($plans)) {
             $plans = [$plans];
         }

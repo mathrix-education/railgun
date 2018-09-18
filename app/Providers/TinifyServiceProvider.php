@@ -16,12 +16,8 @@ use Tinify\Tinify;
  */
 class TinifyServiceProvider extends ServiceProvider
 {
-    /**
-     * @throws \Tinify\AccountException
-     */
     public function boot()
     {
         Tinify::setKey(env("TINIFY_API_KEY"));
-        \Tinify\validate();
     }
 }

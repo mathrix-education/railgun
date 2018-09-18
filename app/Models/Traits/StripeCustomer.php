@@ -35,6 +35,11 @@ trait StripeCustomer
      */
     public function hasStripeSubscription($plans)
     {
+        // Emulate that the user has all plans if environment is offline
+        if (app()->environment() === "offline") {
+            return $this->stripe_id === null;
+        }
+
         if (\is_string($plans)) {
             $plans = [$plans];
         }
@@ -63,6 +68,10 @@ trait StripeCustomer
      */
     public function isStripeCustomer($strict = false): bool
     {
+        if (app()->environment() === "offline") {
+            return $this->stripe_id === null;
+        }
+
         if ($this->stripe_id === null) {
             return false;
         } elseif (!$strict) {
@@ -77,6 +86,10 @@ trait StripeCustomer
      */
     public function getStripeCustomer(): ?\Stripe\Customer
     {
+        if (app()->environment() === "offline") {
+            return new \Stripe\Customer();
+        }
+
         return Cache::remember($this->getStripeCustomerCacheKey(), 5, function () {
             try {
                 return \Stripe\Customer::retrieve($this->stripe_id);
