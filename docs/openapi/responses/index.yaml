@@ -4,3 +4,5 @@ Bearer:
   $ref: ./404_ModelNotFound.yaml
 422_ModelValidation:
   $ref: ./422_ModelValidation.yaml
+422_Validation:
+  $ref: ./422_Validation.yaml
