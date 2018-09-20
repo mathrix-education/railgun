@@ -13,6 +13,7 @@ use App\Console\Commands\Make\MakeApidoc;
 use App\Console\Commands\Make\MakeTest;
 use App\Console\Commands\Redoc\RedocBundle;
 use App\Console\Commands\Redoc\RedocServe;
+use App\Console\Commands\Road;
 use App\Console\Commands\SetVersion;
 use App\Console\Commands\Sitemap\SitemapAll;
 use App\Console\Commands\Sitemap\SitemapContent;
@@ -39,6 +40,7 @@ class Kernel extends ConsoleKernel
         Clean::class,
         Dry::class,
         SetVersion::class,
+        Road::class,
         // backup:
         BackupCdn::class,
         // braintree
