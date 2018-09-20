@@ -39,6 +39,8 @@ class ContentTableSeeder extends BaseTableSeeder
         $this->seedFromJson([
             "modelClass" => Discipline::class,
         ]);
+        $this->link(Class_::class, Discipline::class);
+
         $this->seedFromFactory([
             "modelClass" => Chapter::class,
             "count" => random_int(50, 70),
@@ -57,7 +59,6 @@ class ContentTableSeeder extends BaseTableSeeder
             "count" => random_int(200, 350),
         ]);
 
-        $this->link(Class_::class, Discipline::class);
         $this->link(Chapter::class, Notion::class);
         $this->link(Notion::class, Activity::class);
         $this->link(Activity::class, Module::class);
