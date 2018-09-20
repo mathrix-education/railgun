@@ -20,7 +20,7 @@ $factory->define(User::class, function (Generator $faker) {
         "email" => $faker->email,
         "firstname" => $names ? $faker->firstName : null,
         "lastname" => $names ? $faker->lastName : null,
-        "password" => Hash::make("test"),
+        "password" => Hash::make("test123"),
         "token" => $faker->uuid,
         "points" => $points,
         "level" => Level::getLevelByPoints($points),
@@ -46,9 +46,11 @@ $factory->define(User::class, function (Generator $faker) {
  * @author Mathrix Team
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
-$factory->defineAs(User::class, "registered", function () use ($factory) {
+$registeredFactory = function () use ($factory) {
     return array_merge($factory->raw(User::class), ["type" => "registered"]);
-});
+};
+
+$factory->defineAs(User::class, "registered", $registeredFactory);
 
 /*
  * UserRedactorFactory

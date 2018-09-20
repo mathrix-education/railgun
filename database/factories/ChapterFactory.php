@@ -13,14 +13,17 @@ use Faker\Generator;
  */
 $factory->define(Chapter::class, function (Generator $faker) {
     $name = mb_substr($faker->sentence($faker->numberBetween(1, 3)), 0, -1);
+    /** @var Class_ $class */
+    $class = Class_::inRandomOrder()
+        ->firstOrFail();
+    /** @var Discipline $discipline */
+    $discipline = $class->disciplines()->firstOrFail();
 
     return [
         "name" => $name,
         "slug" => str_slug($name),
-        "class_id" => Class_::inRandomOrder()
-            ->firstOrFail()->id,
-        "discipline_id" => Discipline::inRandomOrder()
-            ->firstOrFail()->id,
+        "class_id" => $class->id,
+        "discipline_id" => $discipline->id,
         "visible" => $faker->boolean(95),
     ];
 });
