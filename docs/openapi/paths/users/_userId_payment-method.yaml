@@ -29,3 +29,26 @@ patch:
         application/json:
           schema:
             $ref: '../../index.yaml#/components/schemas/User'
+    400:
+      description: Invalid request (Braintree Error).
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: invalid_request
+              message:
+                description: >-
+                  The error message. For all Braintree Validation Errors, see the [official documentation](https://developers.braintreepayments.com/reference/general/validation-errors/all/php).
+                type: string
+                example: Braintree Error
+              errors:
+                description: The validation errors
+                type: object
+                properties:
+                  field:
+                    type: string
+                    example: value is not...
+
