@@ -59,6 +59,8 @@
 # -----
 /users/login:
   $ref: ./users/_login.yaml
+/users/{userId}/payment-method:
+  $ref: ./users/_userId_payment-method.yaml
 
 
 # --------------------

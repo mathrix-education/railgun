@@ -1,0 +1,31 @@
+patch:
+  tags:
+  - Users
+  summary: Update payment method
+  description: Update user's Braintree payment method using a payment method nonce.
+  operationId: usersUpdatePaymentMethod
+  parameters:
+  - name: userId
+    in: path
+    description: The user id
+    required: true
+    schema:
+      type: integer
+      example: 94
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            paymentMethodNonce:
+              description: The new Braintree payment method nonce.
+              type: string
+              example: ds52zaq
+  responses:
+    200:
+      description: The updated user.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/User'
