@@ -116,6 +116,7 @@ class UserController extends BaseController
         $user->fill($requestData);
         $user->save();
         $user = User::find($user->id);
+        $user->append(["premium", "braintree", "stripe"]);
 
         return response()->json($user);
     }
@@ -247,7 +248,7 @@ class UserController extends BaseController
             ->with(["class_", "purchases", "purchases.product"])
             ->firstOrFail();
 
-        $user->append(["premium", "braintree"]);
+        $user->append(["premium", "braintree", "stripe"]);
 
         return response()->json($user);
     }
@@ -453,7 +454,7 @@ class UserController extends BaseController
             }
 
             $user = User::find($user->id);
-            $user->append(["premium", "braintree"]);
+            $user->append(["premium", "braintree", "stripe"]);
 
             return new JsonResponse($user);
         } else {

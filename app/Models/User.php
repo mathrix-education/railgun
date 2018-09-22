@@ -363,11 +363,21 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     /**
      * braintree attribute.
      *
-     * @return \Braintree_Customer|null
+     * @return \Braintree\Customer|null
      */
     public function getBraintreeAttribute(): ?\Braintree_Customer
     {
         return $this->isBraintreeCustomer() ? $this->getBraintreeCustomer() : null;
+    }
+
+    /**
+     * stripe attribute.
+     *
+     * @return \Stripe\Customer|null
+     */
+    public function getStripeAttribute(): ?\Stripe\Customer
+    {
+        return $this->isStripeCustomer() ? $this->getStripeCustomer() : null;
     }
 
     /*
