@@ -386,8 +386,12 @@ class UserController extends BaseController
         $result = $user->addBraintreePaymentMethod($request->input("paymentMethodNonce"));
 
         if ($result->success) {
-            return new JsonResponse(User::find($user->id));
+            $user = User::find($user->id);
+            $user->append(["premium", "braintree"]);
+
+            return new JsonResponse($user);
+        } else {
+            throw new Http400InvalidRequestException($result->message);
         }
-        throw new Http400InvalidRequestException($result->message);
     }
 }
