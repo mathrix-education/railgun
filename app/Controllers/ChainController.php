@@ -1,11 +1,11 @@
 <?php
 /**
  * @author Mathrix Back-End Team
- * @package App\Controllers
+ *
  * @since ${CARET}
+ *
  * @copyright Mathrix SA
  */
-
 
 namespace App\Controllers;
 
@@ -15,11 +15,12 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 /**
- * Class ChainController
+ * Class ChainController.
  *
  * @author Mathrix Back-End Team
- * @package App\Controllers
+ *
  * @since 4.1.0
+ *
  * @copyright Mathrix SA
  */
 class ChainController extends BaseController
@@ -27,8 +28,9 @@ class ChainController extends BaseController
     /**
      * @param Request $request
      *
-     * @return JsonResponse
      * @throws Http400InvalidRequestException
+     *
+     * @return JsonResponse
      */
     public function chain(Request $request)
     {

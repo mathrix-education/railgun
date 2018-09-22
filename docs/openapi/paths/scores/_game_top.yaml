@@ -1,0 +1,42 @@
+get:
+  tags:
+  - Scores
+  summary: Get a game top scores
+  operationId: scoresTop
+  parameters:
+  - name: game
+    in: path
+    description: The score game slug
+    required: true
+    schema:
+      type: string
+      example: meteor
+  - name: game
+    in: path
+    description: The score interval
+    required: false
+    default: month
+    schema:
+      type: string
+      enum:
+      - year
+      - month
+      - day
+      example: month
+  - name: count
+    in: path
+    description: The score entries count
+    required: false
+    default: 20
+    schema:
+      type: int
+      example: 100
+  responses:
+    200:
+      description: The scores
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../index.yaml#/components/schemas/Score'

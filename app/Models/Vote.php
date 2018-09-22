@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Carbon\Carbon;
@@ -6,24 +7,24 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-
 /**
- * Model Vote
+ * Model Vote.
  *
- * @package App\Models
- * @since 1.0.0
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @since     1.0.0
+ *
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
  *
- * @property int $id
- * @property int $value
- * @property int|null $user_id
- * @property int $votable_id
- * @property string $votable_type
- * @property Carbon $created_at
- * @property Carbon $updated_at
- * @property-read User|null $user
- * @property-read Post|Comment $votable
+ * @property int          $id
+ * @property int          $value
+ * @property int|null     $user_id
+ * @property int          $votable_id
+ * @property string       $votable_type
+ * @property Carbon       $created_at
+ * @property Carbon       $updated_at
+ * @property User|null    $user
+ * @property Post|Comment $votable
+ *
  * @method static Builder|Vote whereId($value)
  * @method static Builder|Vote whereValue($value)
  * @method static Builder|Vote whereUserId($value)
@@ -31,11 +32,11 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @method static Builder|Vote whereVotableType($value)
  * @method static Builder|Vote whereUpdatedAt($value)
  * @method static Builder|Vote whereCreatedAt($value)
+ * @mixin \Eloquent
  */
 class Vote extends BaseModel
 {
     public const VOTABLE_TYPES = ["comment"];
-
 
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
@@ -45,34 +46,30 @@ class Vote extends BaseModel
     protected $rules = [
         "user_id" => "required|exists:users,id",
         "votable_id" => "required|integer",
-        "votable_type" => "required|in:comment"
+        "votable_type" => "required|in:comment",
     ];
-
 
     /*
     |--------------------------------------------------------------------------
     | Relations
     |--------------------------------------------------------------------------
     */
+
     /**
-     * BelongsTo User
+     * BelongsTo User.
      *
      * @return BelongsTo
-     * @codeCoverageIgnore
      */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-
     /**
-     * MorphTo
-     * @codeCoverageIgnore
+     * MorphTo.
      */
     public function votable(): MorphTo
     {
         return $this->morphTo();
     }
-
 }

@@ -1,9 +1,9 @@
 /**
  * Trait ${NAME}
  *
- * @author Mathrix Back-End Team
+ * @author Mathieu Bour <mathieu.tin.bour@ŋmail.com>
 #if (${NAMESPACE}) * @package ${NAMESPACE}
 #end
  * @since ${CARET}
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
  */

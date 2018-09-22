@@ -1,14 +1,16 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\User;
 
 /**
- * Class DiscountPolicy
+ * Class DiscountPolicy.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Policies
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class DiscountPolicy extends BasePolicy
@@ -23,7 +25,6 @@ class DiscountPolicy extends BasePolicy
         return $currentUser->isAdmin();
     }
 
-
     /**
      * @param User $currentUser
      *
@@ -33,7 +34,6 @@ class DiscountPolicy extends BasePolicy
     {
         return $currentUser->isAdmin();
     }
-
 
     /**
      * @param User $currentUser
@@ -45,7 +45,6 @@ class DiscountPolicy extends BasePolicy
         return $currentUser->isAdmin();
     }
 
-
     /**
      * @param User $currentUser
      *
@@ -55,7 +54,6 @@ class DiscountPolicy extends BasePolicy
     {
         return $currentUser->isAdmin();
     }
-
 
     /**
      * @param User $currentUser

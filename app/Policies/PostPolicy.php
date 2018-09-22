@@ -1,25 +1,29 @@
 <?php
+
 namespace App\Policies;
+
 use App\Models\User;
 
 /**
- * Class PostPolicy
+ * Class PostPolicy.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Policies
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class PostPolicy extends BasePolicy
 {
     /**
+     * @param User $currentUser
+     *
      * @return bool
      */
     public function add(User $currentUser)
     {
         return $currentUser->isAdmin();
     }
-
 
     /**
      * @param User $currentUser
@@ -30,7 +34,6 @@ class PostPolicy extends BasePolicy
     {
         return $currentUser->isAdmin();
     }
-
 
     /**
      * @param User $currentUser

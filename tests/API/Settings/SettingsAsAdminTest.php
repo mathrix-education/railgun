@@ -1,21 +1,22 @@
 <?php
+
 namespace Tests\API\Settings;
 
 use App\Models\Setting;
 
 /**
  * Class SettingsAsAdminTest
- * Test settings as admin
+ * Test settings as admin.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * @version 4.0.3
- * @package Tests\Settings
+ *
+ * @version   4.0.3
  */
 class SettingsAsAdminTest extends SettingsAsModeratorTest
 {
     /**
-     * GET /settings
+     * GET /settings.
      *
      * @throws \Exception
      */
@@ -26,9 +27,8 @@ class SettingsAsAdminTest extends SettingsAsModeratorTest
         $this->assertHttp200Success();
     }
 
-
     /**
-     * GET /settings/{key} with visible setting
+     * GET /settings/{key} with visible setting.
      */
     public function testReadVisible()
     {
@@ -39,9 +39,8 @@ class SettingsAsAdminTest extends SettingsAsModeratorTest
         $this->assertHttp200Success();
     }
 
-
     /**
-     * GET /settings/{key} with not visible setting
+     * GET /settings/{key} with not visible setting.
      */
     public function testReadNotVisible()
     {
@@ -53,9 +52,8 @@ class SettingsAsAdminTest extends SettingsAsModeratorTest
         $this->assertHttp200Success();
     }
 
-
     /**
-     * POST /settings
+     * POST /settings.
      *
      * @throws \Exception
      */
@@ -64,9 +62,8 @@ class SettingsAsAdminTest extends SettingsAsModeratorTest
         $this->genericAddSuccess();
     }
 
-
     /**
-     * POST /settings
+     * POST /settings.
      *
      * @throws \Exception
      */
@@ -76,9 +73,8 @@ class SettingsAsAdminTest extends SettingsAsModeratorTest
         $this->genericAddSuccess(["key" => $key]);
     }
 
-
     /**
-     * DELETE /settings/{key}
+     * DELETE /settings/{key}.
      *
      * @throws \Exception
      */

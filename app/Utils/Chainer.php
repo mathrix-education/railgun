@@ -1,17 +1,18 @@
 <?php
-namespace App\Utils;
 
+namespace App\Utils;
 
 use App\Exceptions\Http400InvalidRequestException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 /**
- * Class Chainer
+ * Class Chainer.
  *
  * @author Mathrix Back-End Team
- * @package App\Utils
+ *
  * @since 4.1.0
+ *
  * @copyright Mathrix SA
  */
 class Chainer
@@ -19,7 +20,6 @@ class Chainer
     private $request;
     private $subRequests;
     private $responseData = [];
-
 
     /**
      * Chainer constructor.
@@ -31,10 +31,10 @@ class Chainer
         $this->request = $request;
     }
 
-
     /**
-     * @return JsonResponse
      * @throws Http400InvalidRequestException
+     *
+     * @return JsonResponse
      */
     public function process()
     {
@@ -47,10 +47,9 @@ class Chainer
         return new JsonResponse($this->responseData);
     }
 
-
     /**
      * @param string $key
-     * @param array $subRequest
+     * @param array  $subRequest
      *
      * @throws Http400InvalidRequestException
      */
@@ -67,12 +66,12 @@ class Chainer
         $this->responseData[$key] = json_decode($response->getContent());
     }
 
-
     /**
      * @param string $toParse
      *
-     * @return mixed|string
      * @throws Http400InvalidRequestException
+     *
+     * @return mixed|string
      */
     private function resolve(string $toParse)
     {

@@ -1,14 +1,13 @@
 <?php
-namespace App\Observers;
 
+namespace App\Observers;
 
 use App\Models\Discipline;
 
 /**
- * Class DisciplineObserver
+ * Class DisciplineObserver.
  *
  * @author Mathrix Team
- * @package App\Observers
  */
 class DisciplineObserver extends BaseObserver
 {
@@ -27,7 +26,8 @@ class DisciplineObserver extends BaseObserver
 
         // Sync classes
         if (!empty($discipline->link["classes"])) {
-            $discipline->classes()->sync($discipline->link["classes"]);
+            $discipline->classes()
+                ->sync($discipline->link["classes"]);
         }
 
         if (isset($discipline->link) || !empty($discipline->link)) {

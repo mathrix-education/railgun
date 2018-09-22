@@ -1,7 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Paratest Text" type="PhpLocalRunConfigurationType" factoryName="PHP Console" singleton="true" path="$PROJECT_DIR$/vendor/bin/paratest" scriptParameters="-p16 --runner=WrapperRunner --coverage-text --configuration=phpunit.xml">
-    <CommandLine workingDirectory="$PROJECT_DIR$" />
-    <option name="workingDirectory" value="$PROJECT_DIR$" />
-    <method />
-  </configuration>
-</component>

@@ -1,24 +1,28 @@
 <?php
+
 namespace App\Models;
 
+use App\Exceptions\Http422ModelSaveException;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Model Section
+ * Model Setting.
  *
- * @package App\Models
- * @since 1.0.1
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @since     1.0.1
+ *
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
  *
- * @property int $id
+ * @property int    $id
  * @property string $key
  * @property string $value
- * @property bool $visible
- * @method static Builder|Section whereId($value)
- * @method static Builder|Section whereKey($value)
- * @method static Builder|Section whereValue($value)
- * @method static Builder|Section whereVisible($value)
+ * @property bool   $visible
+ *
+ * @method static Builder|Setting whereId($value)
+ * @method static Builder|Setting whereKey($value)
+ * @method static Builder|Setting whereValue($value)
+ * @method static Builder|Setting whereVisible($value)
+ * @mixin \Eloquent
  */
 class Setting extends BaseModel
 {
@@ -32,12 +36,11 @@ class Setting extends BaseModel
     ];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
-        "visible" => "boolean"
+        "visible" => "boolean",
     ];
 
-
     /**
-     * Read a setting
+     * Read a setting.
      *
      * @param string $key the setting key
      *
@@ -46,47 +49,51 @@ class Setting extends BaseModel
     public static function read(string $key)
     {
         /** @var Setting $setting */
-        $setting = Setting::where("key", "=", $key)->firstOrFail();
+        $setting = self::where("key", "=", $key)
+            ->firstOrFail();
+
         return $setting->value;
     }
 
-
     /**
-     * Write a setting
+     * Write a setting.
      *
-     * @param string $key the setting key
-     * @param mixed $value the setting value
-     * @param bool $visible the setting visibility (true for public visibility, 0 for admin-only)
+     * @param string $key     the setting key
+     * @param mixed  $value   the setting value
+     * @param bool   $visible the setting visibility (true for public visibility, 0 for admin-only)
      *
      * @return bool
      */
     public static function write(string $key, $value, bool $visible = true)
     {
-        $setting = Setting::where("key", "=", $key)->firstOrCreate([
-            "key" => $key,
-            "value" => $value,
-            "visible" => $visible
-        ]);
+        $setting = self::where("key", "=", $key)
+            ->firstOrCreate([
+                "key" => $key,
+                "value" => $value,
+                "visible" => $visible,
+            ]);
 
-        return $setting instanceof Setting;
+        return $setting instanceof self;
     }
 
-
     /**
-     * Delete a setting
+     * Delete a setting.
      *
      * @param string $key the setting key
+     *
+     * @throws Http422ModelSaveException
      *
      * @return bool|null
      */
     public static function forgot(string $key)
     {
-        return Setting::where("key", "=", $key)->firstOrFail()->delete();
+        return self::where("key", "=", $key)
+            ->firstOrFail()
+            ->delete();
     }
 
-
     /**
-     * Un-serialize value attribute
+     * Un-serialize value attribute.
      *
      * @param $value
      *
@@ -97,9 +104,8 @@ class Setting extends BaseModel
         return unserialize($value);
     }
 
-
     /**
-     * Serialize value attribute
+     * Serialize value attribute.
      *
      * @param $value
      */

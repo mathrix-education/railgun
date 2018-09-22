@@ -4,18 +4,18 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
 /**
- * Class CreateCategoriesTable
+ * Class CreateCategoriesTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class CreateCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -23,15 +23,14 @@ class CreateCategoriesTable extends Migration
             $table->increments("id");
             $table->string("name");
             $table->string("slug");
-            $table->string("image")->nullable()->default(null);
+            $table->string("image")
+                ->nullable()
+                ->default(null);
         });
     }
 
-
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

@@ -1,4 +1,5 @@
 <?php
+
 /** @var Laravel\Lumen\Routing\Router $router */
 $router->get("posts[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "PostController@index");
 

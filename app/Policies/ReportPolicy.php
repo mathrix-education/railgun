@@ -1,14 +1,16 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\User;
 
 /**
- * Class ReportPolicy
+ * Class ReportPolicy.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Policies
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class ReportPolicy extends BasePolicy
@@ -23,7 +25,6 @@ class ReportPolicy extends BasePolicy
         return $currentUser->isModerator();
     }
 
-
     /**
      * @param User $currentUser
      *
@@ -34,7 +35,6 @@ class ReportPolicy extends BasePolicy
         return $currentUser->isModerator();
     }
 
-
     /**
      * @return bool
      */
@@ -42,7 +42,6 @@ class ReportPolicy extends BasePolicy
     {
         return true;
     }
-
 
     /**
      * @param User $currentUser
@@ -53,7 +52,6 @@ class ReportPolicy extends BasePolicy
     {
         return $currentUser->isModerator();
     }
-
 
     /**
      * @param User $currentUser

@@ -5,18 +5,18 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
 /**
- * Class CreateActivitiesTable
+ * Class CreateActivitiesTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class CreateActivitiesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -24,17 +24,16 @@ class CreateActivitiesTable extends Migration
             $table->increments("id");
             $table->string("name");
             $table->string("slug");
-            $table->string("name_seo")->nullable();
+            $table->string("name_seo")
+                ->nullable();
             $table->enum("type", Activity::TYPES);
-            $table->boolean("visible")->default(true);
+            $table->boolean("visible")
+                ->default(true);
         });
     }
 
-
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

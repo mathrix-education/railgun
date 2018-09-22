@@ -1,6 +1,6 @@
 <?php
-/** @var Laravel\Lumen\Routing\Router $router */
 
+/** @var Laravel\Lumen\Routing\Router $router */
 $router->group(["middleware" => "auth:api"], function () use ($router) {
     $router->get("discounts[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "DiscountController@index");
 });

@@ -1,30 +1,31 @@
 <?php
+
 namespace Tests\API\Modules;
 
 use App\Models\Module;
 use App\Models\User;
 use Laravel\Passport\Passport;
-use Tests\API\Tree;
+use Tests\Utils\Tree;
 
 /**
  * Class ModulesAsPublicTest
- * Test modules as registered user
+ * Test modules as registered user.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * @version 1.0.0
- * @package Tests\Modules
+ *
+ * @version   1.0.0
  */
 class ModulesAsRegisteredTest extends ModulesAsPublicTest
 {
     /**
-     * GET /modules/{id} with a premium module as non premium user
+     * GET /modules/{id} with a premium module as non premium user.
      *
      * @throws \Exception
      */
     public function testGetPremiumAsNonPremium()
     {
-        $user = User::doesntHave("subscriptions")->whereType($this->user->type)->firstOrFail();
+        $user = User::whereNull("braintree_id")->whereType($this->user->type)->firstOrFail();
         Passport::actingAs($user, [$user->type]);
 
         /** @var Module $module */
@@ -32,15 +33,14 @@ class ModulesAsRegisteredTest extends ModulesAsPublicTest
         $this->get("/modules/{$module->id}");
 
         $response = $this->getResponseData();
-        $responseKeys = array_keys((array)$response);
+        $responseKeys = array_keys((array) $response);
         $expectedKeys = ["id", "premium"];
         $this->assertTrue($response->premium);
         $this->assertEquals($expectedKeys, $responseKeys);
     }
 
-
     /**
-     * Generic mark test
+     * Generic mark test.
      *
      * @param bool|null $favorite
      * @param bool|null $to_revise
@@ -73,9 +73,8 @@ class ModulesAsRegisteredTest extends ModulesAsPublicTest
         $this->assertInDatabase("metas", $expectedData);
     }
 
-
     /**
-     * PATCH /modules/{id}/mark with {favorite: true}
+     * PATCH /modules/{id}/mark with {favorite: true}.
      *
      * @throws \Exception
      */
@@ -84,9 +83,8 @@ class ModulesAsRegisteredTest extends ModulesAsPublicTest
         $this->mark(true, null, null);
     }
 
-
     /**
-     * PATCH /modules/{id}/mark with {to_revise: true}
+     * PATCH /modules/{id}/mark with {to_revise: true}.
      *
      * @throws \Exception
      */
@@ -95,9 +93,8 @@ class ModulesAsRegisteredTest extends ModulesAsPublicTest
         $this->mark(null, true, null);
     }
 
-
     /**
-     * PATCH /modules/{id}/mark with {completed: true}
+     * PATCH /modules/{id}/mark with {completed: true}.
      *
      * @throws \Exception
      */

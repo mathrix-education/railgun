@@ -1,0 +1,41 @@
+description: Comment.
+type: object
+properties:
+  id:
+    description: The comment id.
+    type: integer
+    example: 22
+  content:
+    description: The comment content.
+    type: string
+    example: lorem ipsum quae dolores.
+  parent_id:
+    description: The parent comment id if the comment is a response.
+    type: integer
+    example: 12
+  user_id:
+    description: The comment user_id.
+    type: integer
+    example: 10
+  commentable_id:
+    description: The model id which belongs to the comment.
+    type: integer
+  commentable_type:
+    description: The model type which belongs to the comment.
+    type: string
+    enum:
+    - activity
+    - post
+  created_ad:
+    description: The Date/time when the comment was created.
+    type: string
+    format: date-time
+  updated_at:
+    description: The Date/time when the comment was updated.
+    type: string
+    format: date-time
+  deleted_ad:
+    description: The Date/time when the comment was deleted.
+    type: string
+    format: date-time
+

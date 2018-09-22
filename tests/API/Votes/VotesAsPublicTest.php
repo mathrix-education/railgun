@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Votes;
 
 use App\Models\Comment;
@@ -9,17 +10,17 @@ use Tests\API\ScopeTestCase;
 
 /**
  * Class VotesAsPublicTest
- * Test Votes as public (non-logged user)
+ * Test Votes as public (non-logged user).
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * @version 4.0.3
- * @package Tests\Posts
+ *
+ * @version   4.0.3
  */
 class VotesAsPublicTest extends ScopeTestCase
 {
     /**
-     * POST /votes/{votable_type}/{votable_id}/up
+     * POST /votes/{votable_type}/{votable_id}/up.
      */
     public function testUp()
     {
@@ -34,9 +35,8 @@ class VotesAsPublicTest extends ScopeTestCase
         $this->assertHttp401Unauthorized();
     }
 
-
     /**
-     * POST /votes/{votable_type}/{votable_id}/down
+     * POST /votes/{votable_type}/{votable_id}/down.
      */
     public function testDown()
     {

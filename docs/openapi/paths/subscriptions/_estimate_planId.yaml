@@ -1,0 +1,34 @@
+get:
+  tags:
+  - Braintree Subscriptions
+  summary: Estimate a subscription trial period
+  operationId: subscriptionEstimate
+  parameters:
+  - name: planId
+    in: path
+    description: The plan id
+    required: true
+    schema:
+      type: string
+      enum:
+      - v4_monthly
+      - v4_annually
+      - v4_biannually
+  responses:
+    200:
+      description: The plan estimations (price and date)
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              price:
+                description: The price of the trial in euros (€)
+                type: number
+                format: float
+                example: 142.20
+              end_date:
+                description: The trial end date
+                type: string
+                format: date-time
+

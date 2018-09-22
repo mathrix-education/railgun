@@ -1,0 +1,65 @@
+openapi: 3.0.1
+info:
+  title: Mathrix Education SA API
+  version: 4.1.0
+  description: This is the official documentation of Mathrix Education SA API.
+  contact:
+    name: Mathieu Bour
+    email: mathieu.tin.bour@gmail.com
+  x-logo:
+    url: https://cdn.mathrix.fr/img/logo-redoc.png
+servers:
+- url: 'https://api.mathrix.fr/'
+- url: 'https://dev.api.mathrix.fr/'
+tags:
+- name: Activities
+  description: Activities API
+- name: Categories
+  description: Categories API
+- name: Products
+  description: Products API
+- name: Scores
+  description: Scores API
+- name: Users
+  description: Users API
+  # Braintree
+- name: Braintree global
+  description: Braintree global API
+- name: Braintree Plans
+  description: Braintree plans API
+- name: Braintree Subscriptions
+  description: Braintree subscriptions API
+- name: Braintree Transactions
+  description: Braintree transactions API
+security:
+- bearerAuth: []
+components:
+  securitySchemes:
+    registered:
+      description: The standard user authorizations.
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    redactor:
+      description: The redactor authorizations.
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    moderator:
+      description: The moderator authorizations.
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    admin:
+      description: The administrator authorizations.
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  requestBodies:
+    $ref: ./requestBodies/index.yaml
+  responses:
+    $ref: ./responses/index.yaml
+  schemas:
+    $ref: ./schemas/index.yaml
+paths:
+  $ref: ./paths/index.yaml

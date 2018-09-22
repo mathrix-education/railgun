@@ -7,7 +7,6 @@ require_once __DIR__ . "/../vendor/autoload.php";
 try {
     (new Dotenv\Dotenv(__DIR__ . "/../"))->load();
 } catch (Dotenv\Exception\InvalidPathException $e) {
-    //
 }
 
 /*
@@ -24,7 +23,6 @@ try {
 $app = new Laravel\Lumen\Application(realpath(__DIR__ . "/../"));
 $app->withFacades();
 $app->withEloquent();
-
 
 /*
 |--------------------------------------------------------------------------
@@ -59,7 +57,7 @@ $app->singleton(
     Illuminate\Routing\ResponseFactory::class
 );
 
-/**
+/*
  * Fix the sitemap issue
  *
  * @see https://stackoverflow.com/questions/37945911/lumen-cache-store-is-not-instantiable
@@ -68,6 +66,8 @@ $app->singleton(
     Illuminate\Cache\Repository::class,
     Illuminate\Contracts\Cache\Repository::class
 );
+
+$app->alias("mailer", \Illuminate\Contracts\Mail\Mailer::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -79,17 +79,19 @@ $app->singleton(
 */
 
 $app->configure("auth");
-$app->configure("cors");
-$app->configure("mail");
-$app->configure("services");
-$app->configure("filesystems");
 $app->configure("backup");
+$app->configure("cors");
+$app->configure("filesystems");
+$app->configure("logging");
+$app->configure("mail");
 $app->configure("queue");
+$app->configure("services");
 
-if ($app->environment("dev")) {
+if ($app->environment("dev", "local")) {
     $app->configure("ide-helper");
 }
 
+Carbon::setToStringFormat("c");
 
 /*
 |--------------------------------------------------------------------------
@@ -109,7 +111,6 @@ $app->middleware([
 $app->routeMiddleware([
     "auth" => App\Middleware\Authenticate::class,
 ]);
-
 
 /*
 |--------------------------------------------------------------------------
@@ -131,22 +132,6 @@ if ($app->environment("local", "dev")) {
 }
 
 $app->register(App\Providers\AppServiceProvider::class);
-$app->register(App\Providers\AuthServiceProvider::class);
-$app->register(Illuminate\Mail\MailServiceProvider::class);
-$app->register(App\Providers\NewsletterServiceProvider::class);
-$app->register(Laravel\Passport\PassportServiceProvider::class);
-$app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
-$app->register(Barryvdh\Cors\ServiceProvider::class);
-$app->register(Illuminate\Filesystem\FilesystemServiceProvider::class);
-$app->register(Roumen\Sitemap\SitemapServiceProvider::class);
-$app->register(App\Providers\GoogleDriveServiceProvider::class);
-$app->register(Backup\BackupServiceProvider::class);
-$app->register(App\Providers\EventServiceProvider::class);
-$app->register(App\Providers\PolicyServiceProvider::class);
-$app->register(App\Providers\TinifyServiceProvider::class);
-$app->register(\Illuminate\Redis\RedisServiceProvider::class);
-
-
 
 if ($app->environment("stage", "master")) {
     $app->register(Sentry\SentryLaravel\SentryLumenServiceProvider::class);
@@ -165,18 +150,19 @@ if ($app->environment("stage", "master")) {
 Dusterio\LumenPassport\LumenPassport::routes($app->router);
 
 $app->router->group(["namespace" => "App\\Controllers"], function ($router) {
-    /** @var Laravel\Lumen\Routing\Router $router */
+    /* @var Laravel\Lumen\Routing\Router $router */
     $router->get("/", function () {
         $build = basename(dirname(__DIR__, 1));
 
         try {
-            $build = Carbon::createFromFormat("Y-m-d_H-i-s", $build)->toIso8601String();
+            $build = Carbon::createFromFormat("Y-m-d_H-i-s", $build)
+                ->toIso8601String();
         } catch (InvalidArgumentException $e) {
         }
 
         return response()->json([
             "message" => "Welcome to Mathrix API version " . env("APP_VERSION") . " by Mathieu Bour",
-            "build" => $build
+            "build" => $build,
         ]);
     });
 

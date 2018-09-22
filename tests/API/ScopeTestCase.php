@@ -1,23 +1,23 @@
 <?php
+
 namespace Tests\API;
 
 use App\Models\BaseModel;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Laravel\Passport\Passport;
-use Tests\BaseTestCase;
-use Tests\Traits\Generics;
+use Tests\Utils\Traits\Generics\Generics;
 
 /**
  * Class ScopeTestCase
- * Base test case for actions which rely on permissions
+ * Base test case for actions which rely on permissions.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * @version 1.0.0
- * @package Tests\API
+ *
+ * @version   1.0.0
  */
-abstract class ScopeTestCase extends BaseTestCase
+abstract class ScopeTestCase extends APITestCase
 {
     use Generics;
 
@@ -37,27 +37,24 @@ abstract class ScopeTestCase extends BaseTestCase
 
     /** @var array Model map; will override model guessing process */
     protected $modelsMap = [
-        "Class" => "Class_"
+        "Class" => "Class_",
     ];
-
 
     /**
      * 1. Try to guess the model associated with test class
      * Ex: QuotesAsRegisteredTest -> \App\Models\Quotes
      * 2. Initialize user if needed using the test name
-     * Ex: testExampleAsAdmin -> admin
-     *
-     * @return void
+     * Ex: testExampleAsAdmin -> admin.
      */
     public function setUp()
     {
         parent::setUp();
-        $className = get_class($this);
-        $classPath = explode("\\", get_class($this));
+        $className = \get_class($this);
+        $classPath = explode("\\", \get_class($this));
         $classNameWithoutNameSpace = array_pop($classPath);
 
         // Check if the test class if matching the scope convention (i.e. contain "As")
-        $matchingScopeConventions = strstr($className, "As");
+        $matchingScopeConventions = mb_strstr($className, "As");
 
         /*
         |--------------------------------------------------------------------------
@@ -68,15 +65,15 @@ abstract class ScopeTestCase extends BaseTestCase
 
         if ($matchingScopeConventions) {
             // Ex: QuotesAsRegisteredTest
-            $indexOfAsSuffix = strpos($classNameWithoutNameSpace, "As");
+            $indexOfAsSuffix = mb_strpos($classNameWithoutNameSpace, "As");
             if ($indexOfAsSuffix !== false) {
-                $guessedModelPlural = substr($classNameWithoutNameSpace, 0, $indexOfAsSuffix); // Ex: Quotes
+                $guessedModelPlural = mb_substr($classNameWithoutNameSpace, 0, $indexOfAsSuffix); // Ex: Quotes
             }
         } else {
             // Ex: QuotesTest
-            $indexOfTestSuffix = strpos($classNameWithoutNameSpace, "Test");
+            $indexOfTestSuffix = mb_strpos($classNameWithoutNameSpace, "Test");
             if ($indexOfTestSuffix !== false) {
-                $guessedModelPlural = substr($classNameWithoutNameSpace, 0, $indexOfTestSuffix); // Ex: Quotes
+                $guessedModelPlural = mb_substr($classNameWithoutNameSpace, 0, $indexOfTestSuffix); // Ex: Quotes
             }
         }
 
@@ -93,8 +90,8 @@ abstract class ScopeTestCase extends BaseTestCase
 
             if (class_exists($guessedModelClass)) {
                 // If the model class exists, define a few useful vars
-                $this->modelPlural = strtolower($guessedModelPlural);
-                $this->modelSingular = strtolower($guessedModelName);
+                $this->modelPlural = mb_strtolower($guessedModelPlural);
+                $this->modelSingular = mb_strtolower($guessedModelName);
                 $this->modelClass = $guessedModelClass;
             }
         }
@@ -108,40 +105,39 @@ abstract class ScopeTestCase extends BaseTestCase
 
         // Try to guess scope from class name
         if ($matchingScopeConventions) {
-            $potentialScope = strtolower(substr($matchingScopeConventions, 2, -4));
+            $potentialScope = mb_strtolower(mb_substr($matchingScopeConventions, 2, -4));
         }
 
         // Scope may be overridden by test name
         $testName = $this->getName();
-        $potentialSubstringScopeFromTestName = strstr($testName, "As");
+        $potentialSubstringScopeFromTestName = mb_strstr($testName, "As");
 
-
-        if ($potentialSubstringScopeFromTestName !== false && in_array($potentialSubstringScopeFromTestName,
-                $this->scopes)) {
-            $potentialScope = strtolower(substr($potentialSubstringScopeFromTestName, 2));
+        if ($potentialSubstringScopeFromTestName !== false && \in_array($potentialSubstringScopeFromTestName,
+                $this->scopes, true)) {
+            $potentialScope = mb_strtolower(mb_substr($potentialSubstringScopeFromTestName, 2));
         }
 
         // Try to find the right scope
-        if (in_array($potentialScope, $this->scopes)) {
+        if (\in_array($potentialScope, $this->scopes, true)) {
             $this->scope = $potentialScope;
 
             // User has NOT be manually defined from a sameAs() method
             if ($this->user === null) {
-                $this->user = User::inRandomOrder()->where("type", $this->scope)->first();
+                $this->user = User::inRandomOrder()
+                    ->where("type", $this->scope)
+                    ->first();
             }
 
             // No user could be found, the database is probably not seeded
             if (!$this->user instanceof User) {
                 throw new ModelNotFoundException("Could not find user with type `{$this->scope}`. Is database seeded?");
-            } else {
-                Passport::actingAs($this->user, [$this->user->type]); // Set Passport behavior
             }
+            Passport::actingAs($this->user, [$this->user->type]); // Set Passport behavior
         }
     }
 
-
     /**
-     * Get a stranger
+     * Get a stranger.
      *
      * @param string|null $type null for same as user
      *

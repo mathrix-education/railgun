@@ -1,24 +1,23 @@
 <?php
+
 namespace App\Providers;
 
 use App\Models\Activity;
 use App\Models\Comment;
 use App\Models\Module;
 use App\Models\Notion;
-use App\Models\Pack;
 use App\Models\Post;
-use App\Models\Section;
-use App\Models\Training;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
 /**
  * Class AppServiceProvider
- * Register all application service providers
+ * Register all application service providers.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Providers
- * @since 4.1.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     4.1.0
+ *
  * @copyright Mathrix Education SA
  */
 class AppServiceProvider extends ServiceProvider
@@ -34,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(NewsletterServiceProvider::class);
         $this->app->register(ObserverServiceProvider::class);
         $this->app->register(PolicyServiceProvider::class);
-        $this->app->register(PayPalServiceProvider::class);
+        $this->app->register(BraintreeGatewayServiceProvider::class);
         $this->app->register(StripeServiceProvider::class);
         $this->app->register(TinifyServiceProvider::class);
 
@@ -44,11 +43,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(\Dusterio\LumenPassport\PassportServiceProvider::class);
         $this->app->register(\Illuminate\Filesystem\FilesystemServiceProvider::class);
         $this->app->register(\Illuminate\Mail\MailServiceProvider::class);
+        $this->app->register(\Illuminate\Notifications\NotificationServiceProvider::class);
+        $this->app->register(\Illuminate\Redis\RedisServiceProvider::class);
         $this->app->register(\Laravel\Passport\PassportServiceProvider::class);
         $this->app->register(\Roumen\Sitemap\SitemapServiceProvider::class);
 
         $this->app->register(GoogleDriveServiceProvider::class);
-
 
         // MorphMap
         Relation::morphMap([
@@ -57,9 +57,6 @@ class AppServiceProvider extends ServiceProvider
             "module" => Module::class,
             "post" => Post::class,
             "comment" => Comment::class,
-            "pack" => Pack::class,
-            "training" => Training::class,
-            "section" => Section::class
         ]);
     }
 }

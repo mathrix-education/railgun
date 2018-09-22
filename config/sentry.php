@@ -1,4 +1,5 @@
 <?php
+
 return [
     'dsn' => env('SENTRY_DSN'),
     // capture release as git sha

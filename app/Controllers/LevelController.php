@@ -1,17 +1,19 @@
 <?php
+
 namespace App\Controllers;
 
 /**
- * Class LevelController
+ * Class LevelController.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Controllers
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class LevelController extends BaseController
 {
-    /**
+    /*
      * @apiVersion 4.0.0
      * @api {get} /levels/{?page}/{?perPage} Index
      * @apiGroup Levels

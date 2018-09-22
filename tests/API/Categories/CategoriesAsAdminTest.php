@@ -1,21 +1,22 @@
 <?php
+
 namespace Tests\API\Categories;
 
 use App\Models\Category;
 
 /**
  * Class CategoriesAsAdminTest
- * Test Categories as admin
+ * Test Categories as admin.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * @version 1.0.0
- * @package Tests\Categories
+ *
+ * @version   1.0.0
  */
 class CategoriesAsAdminTest extends CategoriesAsModeratorTest
 {
     /**
-     * POST /categories
+     * POST /categories.
      *
      * @throws \Exception
      */
@@ -24,9 +25,8 @@ class CategoriesAsAdminTest extends CategoriesAsModeratorTest
         $this->genericAddSuccess();
     }
 
-
     /**
-     * PATCH /categories/{id}
+     * PATCH /categories/{id}.
      *
      * @throws \Exception
      */
@@ -35,9 +35,8 @@ class CategoriesAsAdminTest extends CategoriesAsModeratorTest
         $this->genericEditSuccess();
     }
 
-
     /**
-     * DELETE /categories/{id}
+     * DELETE /categories/{id}.
      *
      * @throws \Exception
      */
@@ -47,9 +46,8 @@ class CategoriesAsAdminTest extends CategoriesAsModeratorTest
         $this->genericDeleteSuccess();
     }
 
-
     /**
-     * DELETE /categories/{id}
+     * DELETE /categories/{id}.
      *
      * @throws \Exception
      */

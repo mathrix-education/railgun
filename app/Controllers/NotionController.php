@@ -1,17 +1,19 @@
 <?php
+
 namespace App\Controllers;
 
 /**
- * Class NotionController
+ * Class NotionController.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Controllers
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class NotionController extends BaseController
 {
-    /**
+    /*
      * @apiVersion 4.0.0
      * @api {get} /notions/{?page}/{?perPage} Index
      * @apiGroup Notions
@@ -23,8 +25,7 @@ class NotionController extends BaseController
      * @apiUse Http401Unauthorized
      */
 
-
-    /**
+    /*
      * @apiVersion 4.0.0
      * @api {get} /notions/{id} Get
      * @apiGroup Notions
@@ -36,8 +37,7 @@ class NotionController extends BaseController
      * @apiUse Http404ModelNotFound
      */
 
-
-    /**
+    /*
      * @apiVersion 4.0.0
      * @api {post} /notions Add
      * @apiGroup Notions
@@ -52,8 +52,7 @@ class NotionController extends BaseController
      * @apiUse Http422ModelSave
      */
 
-
-    /**
+    /*
      * @apiVersion 4.0.0
      * @api {patch} /notions/{id} Edit
      * @apiGroup Notions
@@ -70,8 +69,7 @@ class NotionController extends BaseController
      * @apiUse Http422ModelValidation
      */
 
-
-    /**
+    /*
      * @apiVersion 4.0.0
      * @api {delete} /notions/{id} Delete
      * @apiGroup Notions

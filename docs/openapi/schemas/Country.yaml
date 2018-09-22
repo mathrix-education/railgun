@@ -1,0 +1,19 @@
+description: Countrie.
+type: object
+properties:
+  id:
+    description: The contry id.
+    type: integer
+    example: 33
+  name:
+    description: The contry name.
+    type: string
+    example: France
+  slug:
+    description: The contry slug.
+    type: string
+    example: france
+  visible:
+    description: The chapter visibility.
+    type: boolean
+    example: true

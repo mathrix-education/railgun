@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -7,30 +8,33 @@ use Illuminate\Http\Request;
 use Spatie\Newsletter\NewsletterFacade as Newsletter;
 
 /**
- * Class MailchimpController
+ * Class MailchimpController.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Controllers
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class MailchimpController extends BaseController
 {
     /**
-     * @apiVersion 4.0.0
-     * @api {post} /newsletter/subscribe/{list}
-     * @apiGroup Newsletters
-     * @apiDescription Subscribe an email to a Mailchimp list
-     * @apiPermission registered
-     * @apiUse Bearer
-     * @apiParam {string=subscribers,parents,profs} list
-     * @apiUse Http400InvalidRequest
+     * @apiVersion     4.0.0
      *
-     * @param Request $request
-     * @param string $list
+     * @api            {post} /newsletter/subscribe/{list}
+     * @apiGroup       Newsletters
+     * @apiDescription Subscribe an email to a Mailchimp list
+     * @apiPermission  registered
+     * @apiUse         Bearer
+     * @apiParam {string=subscribers,parents,profs} list
+     * @apiUse         Http400InvalidRequest
+     *
+     * @param Request $request The request
+     * @param string  $list
+     *
+     * @throws Http400InvalidRequestException
      *
      * @return JsonResponse
-     * @throws Http400InvalidRequestException
      *
      * @codeCoverageIgnore
      */

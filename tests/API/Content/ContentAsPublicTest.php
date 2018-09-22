@@ -1,22 +1,23 @@
 <?php
-namespace Tests\API\Content;
 
+namespace Tests\API\Content;
 
 use Tests\API\ScopeTestCase;
 
 /**
  * Class ContentAsPublicTest
- * Test content as public (non-logged user)
+ * Test content as public (non-logged user).
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package Tests\Content
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
  * @since
+ *
  * @copyright Mathrix Education SA
  */
 class ContentAsPublicTest extends ScopeTestCase
 {
     /**
-     * GET /content/search
+     * GET /content/search.
      *
      * @throws \Exception
      */
@@ -31,9 +32,8 @@ class ContentAsPublicTest extends ScopeTestCase
         $this->assertTrue(isset($data->data->notions));
     }
 
-
     /**
-     * POST /content/upload
+     * POST /content/upload.
      */
     public function testUpload()
     {
@@ -41,9 +41,8 @@ class ContentAsPublicTest extends ScopeTestCase
         $this->assertHttp401Unauthorized();
     }
 
-
     /**
-     * POST /content/upload
+     * POST /content/upload.
      */
     public function testTree()
     {

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -15,119 +16,23 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 /**
- * Class ActivityController
+ * Class ActivityController.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Controllers
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class ActivityController extends BaseController
 {
     /**
-     * @apiVersion 4.0.0
-     * @api {get} /activities/{?page}/{?perPage} Index
-     * @apiGroup Activities
-     * @apiName ActivitiesIndex
-     * @apiDescription Retrieve activities
-     * @apiPermission moderator
-     * @apiUse Pagination
-     * @apiUse ActivityArray
-     * @apiUse Http401Unauthorized
-     */
-
-
-    /**
-     * @apiVersion 4.0.0
-     * @api {get} /activities/{id} Get
-     * @apiGroup Activities
-     * @apiName ActivityGet
-     * @apiDescription Get an activity by id
-     * @apiPermission public
-     * @apiParam {int} id The activity id
-     * @apiUse ActivityModel
-     * @apiUse Http404ModelNotFound
-     */
-
-
-    /**
-     * @apiVersion 4.0.0
-     * @api {post} /activities Add
-     * @apiGroup Activities
-     * @apiName ActivityAdd
-     * @apiDescription Add a activity
-     * @apiPermission moderator
-     * @apiUse Bearer
-     * @apiUse ActivityRequest
-     * @apiUse ActivityModel
-     * @apiUse Http401Unauthorized
-     * @apiUse Http422ModelValidation
-     * @apiUse Http422ModelSave
-     */
-
-
-    /**
-     * @apiVersion 4.0.0
-     * @api {patch} /activities/{id} Edit
-     * @apiGroup Activities
-     * @apiName ActivityEdit
-     * @apiDescription Edit an activity
-     * @apiPermission moderator
-     * @apiUse Bearer
-     * @apiParam {int} id The activity id
-     * @apiUse ActivityRequest
-     * @apiUse ActivityModel
-     * @apiUse Http401Unauthorized
-     * @apiUse Http404ModelNotFound
-     * @apiUse Http422ModelSave
-     * @apiUse Http422ModelValidation
-     */
-
-
-    /**
-     * @apiVersion 4.0.0
-     * @api {delete} /activities/{id} Delete
-     * @apiGroup Activities
-     * @apiName ActivityDelete
-     * @apiDescription Delete an activity
-     * @apiUse Bearer
-     * @apiPermission moderator
-     * @apiParam {int} id The activity id
-     * @apiUse Http401Unauthorized
-     * @apiUse Http404ModelNotFound
-     */
-
-
-    /**
-     * @apiVersion 4.0.0
-     * @api {post} /activities/search Search
-     * @apiGroup Activities
-     * @apiName ActivitiesSearch
-     * @apiDescription Search in activities
-     * @apiPermission moderator
-     * @apiUse Bearer
-     * @apiUse ActivityArray
-     * @apiUse Http400InvalidRequest
-     * @apiUse Http401Unauthorized
-     */
-
-
-    /**
-     * @apiVersion 4.0.0
-     * @api {get} /activities/favorites Favorites
-     * @apiGroup Activities
-     * @apiName ActivitiesFavorite
-     * @apiDescription Get user favorite activities
-     * @apiUse Bearer
-     * @apiPermission registered
-     * @apiUse MetaArray
-     * @apiUse Http401Unauthorized
+     * @param Request $request The request
      *
-     * @param Request $request
-     *
-     * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
+     *
+     * @return JsonResponse
      */
     public function favorites(Request $request): JsonResponse
     {
@@ -135,30 +40,20 @@ class ActivityController extends BaseController
         $metas = Meta::with(["country", "class_", "discipline", "chapter", "notion", "activity", "activity.modules"])
             ->where([
                 ["user_id", $user->id],
-                ["favorite", true]
+                ["favorite", true],
             ])
             ->get();
 
         return response()->json($metas);
     }
 
-
     /**
-     * @apiVersion 4.0.0
-     * @api {get} /activities/to-revise To revise
-     * @apiGroup Activities
-     * @apiName ActivitiesToRevise
-     * @apiDescription Get user to_revise activities
-     * @apiUse Bearer
-     * @apiPermission registered
-     * @apiUse MetaArray
-     * @apiUse Http401Unauthorized
+     * @param Request $request The request
      *
-     * @param Request $request
-     *
-     * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
+     *
+     * @return JsonResponse
      */
     public function to_revise(Request $request): JsonResponse
     {
@@ -166,35 +61,27 @@ class ActivityController extends BaseController
         $metas = Meta::with(["country", "class_", "discipline", "chapter", "notion", "activity", "activity.modules"])
             ->where([
                 ["user_id", $user->id],
-                ["to_revise", true]
+                ["to_revise", true],
             ])
             ->get();
 
         return response()->json($metas);
     }
 
-
     /**
-     * @apiVersion 4.0.0
-     * @api {get} /activities/incomplete Incomplete
-     * @apiGroup Activities
-     * @apiName ActivitiesIncomplete
-     * @apiDescription Get user incomplete activities
-     * @apiUse Bearer
-     * @apiPermission registered
-     * @apiUse MetaArray
-     * @apiUse Http401Unauthorized
+     * @param Request $request The request
      *
-     * @param Request $request
-     *
-     * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
+     *
+     * @return JsonResponse
      */
     public function incomplete(Request $request): JsonResponse
     {
         $user = $this->getUserByRequestOrUnauthorized($request);
-        $disciplinesIds = Discipline::all(["id"])->pluck("id")->toArray();
+        $disciplinesIds = Discipline::all(["id"])
+            ->pluck("id")
+            ->toArray();
 
         /**
          * @var Builder|null
@@ -206,7 +93,7 @@ class ActivityController extends BaseController
                 ->where([
                     ["user_id", $user->id],
                     ["completed", false],
-                    ["discipline_id", $disciplineId]
+                    ["discipline_id", $disciplineId],
                 ])
                 ->orderBy("updated_at", "desc")
                 ->limit(1);
@@ -214,7 +101,7 @@ class ActivityController extends BaseController
             if ($query === null) {
                 $query = $subQuery;
             } else {
-                /** @var Builder $query */
+                /* @var Builder $query */
                 $query->union($subQuery);
             }
         }
@@ -224,31 +111,17 @@ class ActivityController extends BaseController
         return response()->json($metas);
     }
 
-
     /**
-     * @apiVersion 4.0.0
-     * @api {patch} /activities/{id}/mark Mark
-     * @apiGroup Activities
-     * @apiName ActivityMark
-     * @apiDescription Mark an activity as favorite, to_revise, completed...
-     * @apiUse Bearer
-     * @apiPermission registered
-     * @apiUse MetaRequest
-     * @apiUse Http400InvalidRequest
-     * @apiUse Http401Unauthorized
-     * @apiUse Http404ModelNotFound
-     * @apiUse Http422ModelSave
-     * @apiUse Http422ModelValidation
+     * @param Request $request The request
+     * @param int     $id
      *
-     * @param Request $request
-     * @param int $id
-     *
-     * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
      * @throws Http404ModelNotFoundException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     *
+     * @return JsonResponse
      */
     public function mark(Request $request, int $id): JsonResponse
     {

@@ -1,6 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Sections" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" folderName="Details" singleton="true">
-    <TestRunner directory="$PROJECT_DIR$/tests/API/Sections" />
-    <method />
-  </configuration>
-</component>

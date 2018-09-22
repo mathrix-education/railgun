@@ -1,10 +1,10 @@
 <?php
+
 namespace Tests\API;
 
 use App\Models\Chapter;
-use Tests\BaseTestCase;
 
-class ChainTest extends BaseTestCase
+class ChainTest extends APITestCase
 {
     public function testChain()
     {
@@ -31,10 +31,30 @@ class ChainTest extends BaseTestCase
 
         $this->json("post", "chain", $data);
 
-        $this->debug();
-
         $responseKeys = array_keys($data["requests"]);
         $this->assertHttp200Success();
         $this->assertJsonKeys($responseKeys);
+    }
+
+    public function testChainWithPost()
+    {
+        $chapterData = factory(Chapter::class)->raw();
+
+        $this->call("post", "/chain", [
+            "requests" => [
+                "chapter_creation" => [
+                    "method" => "post",
+                    "url" => "/chapters",
+                    "data" => $chapterData
+                ],
+                "chapter" => [
+                    "method" => "get",
+                    "url" => "/chapters/{chapter_creation.id}"
+                ]
+            ]
+        ]);
+
+        $this->assertHttp200Success();
+        $this->debug();
     }
 }

@@ -6,7 +6,7 @@ use App\Models\User;
 use Faker\Generator;
 use Illuminate\Support\Facades\Hash;
 
-/**
+/*
  * UserFactory
  *
  * @author Mathrix Team
@@ -20,15 +20,16 @@ $factory->define(User::class, function (Generator $faker) {
         "email" => $faker->email,
         "firstname" => $names ? $faker->firstName : null,
         "lastname" => $names ? $faker->lastName : null,
-        "password" => Hash::make("test"),
+        "password" => Hash::make("test123"),
         "token" => $faker->uuid,
         "points" => $points,
         "level" => Level::getLevelByPoints($points),
         "daily" => $faker->randomElement([10, 20, 40]),
         "settings" => [
-            "sound" => $faker->boolean(70)
+            "sound" => $faker->boolean(70),
         ],
-        "class_id" => Class_::inRandomOrder()->firstOrFail()->id,
+        "class_id" => Class_::inRandomOrder()
+            ->firstOrFail()->id,
         "created_at" => $faker->dateTimeBetween("-1 years"),
     ];
 
@@ -39,18 +40,19 @@ $factory->define(User::class, function (Generator $faker) {
     return $data;
 });
 
-
-/**
+/*
  * UserRegisteredFactory
  *
  * @author Mathrix Team
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
-$factory->defineAs(User::class, "registered", function () use ($factory) {
+$registeredFactory = function () use ($factory) {
     return array_merge($factory->raw(User::class), ["type" => "registered"]);
-});
+};
 
-/**
+$factory->defineAs(User::class, "registered", $registeredFactory);
+
+/*
  * UserRedactorFactory
  *
  * @author Mathrix Team
@@ -63,14 +65,13 @@ $factory->defineAs(User::class, "redactor", function (Generator $faker) use ($fa
         "lastname" => $faker->lastName,
         "type" => "redactor",
         "class_id" => null,
-        "stripe_id" => null
+        "stripe_id" => null,
     ];
 
     return array_merge($factory->raw(User::class), $data);
 });
 
-
-/**
+/*
  * UserModeratorFactory
  *
  * @author Mathrix Team
@@ -80,8 +81,7 @@ $factory->defineAs(User::class, "moderator", function () use ($factory) {
     return array_merge($factory->rawOf(User::class, "redactor"), ["type" => "moderator"]);
 });
 
-
-/**
+/*
  * UserAdminFactory
  *
  * @author Mathrix Team
@@ -89,4 +89,14 @@ $factory->defineAs(User::class, "moderator", function () use ($factory) {
  */
 $factory->defineAs(User::class, "admin", function () use ($factory) {
     return array_merge($factory->rawOf(User::class, "redactor"), ["type" => "admin"]);
+});
+
+/*
+ * UserSupportFactory
+ *
+ * @author Mathrix Team
+ * @var Illuminate\Database\Eloquent\Factory $factory
+ */
+$factory->defineAs(User::class, "support", function () use ($factory) {
+    return array_merge($factory->rawOf(User::class, "redactor"), ["type" => "support"]);
 });

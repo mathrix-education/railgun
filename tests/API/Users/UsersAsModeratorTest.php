@@ -1,18 +1,20 @@
 <?php
+
 namespace Tests\API\Users;
 
 /**
- * Class UsersAsModeratorTest
+ * Class UsersAsModeratorTest.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package Tests\Users
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class UsersAsModeratorTest extends UsersAsRegisteredTest
 {
     /**
-     * POST /users/search
+     * POST /users/search.
      */
     public function testSearch()
     {
@@ -20,22 +22,21 @@ class UsersAsModeratorTest extends UsersAsRegisteredTest
             "username" => "%a%",
             "order" => [
                 "column" => "created_at",
-                "dir" => "desc"
+                "dir" => "desc",
             ],
             "having" => [
                 "comments" => [
-                    "content" => "%a%"
-                ]
-            ]
+                    "content" => "%a%",
+                ],
+            ],
         ]);
 
         $this->assertHttp200Success();
         $this->assertJsonKeys(["perPage", "page", "count", "data"]);
     }
 
-
     /**
-     * POST /users/search with wrong order direction
+     * POST /users/search with wrong order direction.
      */
     public function testSearchWrongOrder()
     {
@@ -43,13 +44,13 @@ class UsersAsModeratorTest extends UsersAsRegisteredTest
             "username" => "%a%",
             "order" => [
                 "column" => "created_at",
-                "dir" => "wrong"
+                "dir" => "wrong",
             ],
             "having" => [
                 "comments" => [
-                    "content" => "%a%"
-                ]
-            ]
+                    "content" => "%a%",
+                ],
+            ],
         ]);
 
         $this->assertHttp400InvalidRequest();

@@ -1,0 +1,64 @@
+post:
+  tags:
+  - Scores
+  summary: Register a score
+  description: Register a score using the signature
+  operationId: scoresRegister
+  requestBody:
+    content:
+      application/json:
+        schema:
+          description: The score registration body.
+          type: object
+          properties:
+            score:
+              description: The score score. May be `null`.
+              type: integer
+              nullable: true
+              example: 10000
+            time:
+              description: The score time. May be `null`.
+              type: integer
+              nullable: true
+              example: 17
+            data:
+              description: The score data, as an arbitrary object.
+              type: any
+              nullable: true
+              example: {}
+            token:
+              description: The token
+              type: string
+              example: 437057b1e7c92a427c60ef0fb9b616ec
+            signature:
+              description: >-
+                The signature, generated with `md5(score + time + token + game)`.
+                If `score` is `null`, use `"no-score"`, if `time` is `null`, use `"no-time"`.
+              type: string
+              example: 437057b1eef17c92a40fb9b6275426ec
+          required:
+          - score
+          - time
+          - data
+          - token
+          - signature
+  responses:
+    200:
+      description: The registered score.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Score'
+    401:
+      description: Invalid signature
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: unauthorized
+              message:
+                type: string
+                example: Invalid signature
