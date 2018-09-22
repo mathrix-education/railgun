@@ -386,6 +386,35 @@ class UserController extends BaseController
         $result = $user->addBraintreePaymentMethod($request->input("paymentMethodNonce"));
 
         if ($result->success) {
+            $newPaymentMethod = $result->paymentMethod;
+
+            // Now, change all subscriptions to the new payment method
+            $braintreeSubscriptions = $user->getBraintreeSubscriptions();
+
+            foreach ($braintreeSubscriptions as $braintreeSubscription) {
+                $subscriptionUpdateResult = \Braintree\Subscription::update($braintreeSubscription->id, [
+                    "paymentMethodToken" => $newPaymentMethod->token
+                ]);
+
+                if (!$subscriptionUpdateResult->success) {
+                    throw new Http400InvalidRequestException($subscriptionUpdateResult->message);
+                }
+            }
+
+            // Now, delete all the other payment methods
+            $user->forgetBraintreeCustomerCache();
+            $braintreeCustomer = $user->getBraintreeCustomer();
+
+            foreach ($braintreeCustomer->paymentMethods as $paymentMethod) {
+                if ($paymentMethod->token !== $newPaymentMethod->token) {
+                    $paymentMethodDeletionResult = \Braintree\PaymentMethod::delete($paymentMethod->token);
+
+                    if (!$paymentMethodDeletionResult) {
+                        throw new Http400InvalidRequestException($paymentMethodDeletionResult->message);
+                    }
+                }
+            }
+
             $user = User::find($user->id);
             $user->append(["premium", "braintree"]);
 
