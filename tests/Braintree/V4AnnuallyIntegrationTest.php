@@ -31,6 +31,7 @@ class V4AnnuallyIntegrationTest extends BraintreeTestCase
 
         $customer = User::where("type", "=", "registered")
             ->whereNull("braintree_id")
+            ->inRandomOrder()
             ->firstOrFail();
         Passport::actingAs($customer, ["registered"]);
 
