@@ -2,7 +2,7 @@
 
 /** @var Laravel\Lumen\Routing\Router $router */
 $router->group(["prefix" => "subscriptions"], function () use ($router) {
-    $router->get("estimate/{plan}", "SubscriptionController@estimate");
+    $router->get("estimate/{planId}[/{additionalChildren:[0-9]+}]", "SubscriptionController@estimate");
 
     $router->group(["middleware" => "auth:api"], function () use ($router) {
         $router->post("", "SubscriptionController@create");

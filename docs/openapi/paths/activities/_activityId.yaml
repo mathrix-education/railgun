@@ -3,7 +3,6 @@ get:
   - Activities
   summary: Get an activity by id
   operationId: activitiesGet
-  security: []
   parameters:
   - name: activityId
     in: path

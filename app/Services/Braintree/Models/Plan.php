@@ -152,6 +152,26 @@ class Plan extends BraintreeModel
     }
 
     /**
+     * Get the equivalent of a the old Striple plan using Braintree
+     *
+     * @param string $stripePlanId
+     *
+     * @return bool|string
+     */
+    public static function getStripeEquivalentPlanId(string $stripePlanId)
+    {
+        if (Str::contains($stripePlanId, "monthly")) {
+            return "v4_monthly";
+        } elseif (Str::contains($stripePlanId, "annually")) {
+            return "v4_annually";
+        } elseif (Str::contains($stripePlanId, "biannually")) {
+            return "v4_biannually";
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Get the trial price in euros.
      *
      * @return float

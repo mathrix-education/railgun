@@ -2,8 +2,12 @@ patch:
   tags:
   - Users
   summary: Update payment method
-  description: Update user's Braintree payment method using a payment method nonce.
+  description: >-
+    Update user's Braintree payment method using a payment method nonce. Any old Stripe subscriptions will be
+    canceled then migrated to Braintree.
   operationId: usersUpdatePaymentMethod
+  security:
+  - registered: []
   parameters:
   - name: userId
     in: path

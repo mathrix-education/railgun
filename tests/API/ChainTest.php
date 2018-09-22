@@ -3,6 +3,8 @@
 namespace Tests\API;
 
 use App\Models\Chapter;
+use App\Models\User;
+use Laravel\Passport\Passport;
 
 class ChainTest extends APITestCase
 {
@@ -38,6 +40,9 @@ class ChainTest extends APITestCase
 
     public function testChainWithPost()
     {
+        $admin = User::where("type", "=", "admin")->firstOrFail();
+        Passport::actingAs($admin, ["admin"]);
+
         $chapterData = factory(Chapter::class)->raw();
 
         $this->call("post", "/chain", [
@@ -47,7 +52,7 @@ class ChainTest extends APITestCase
                     "url" => "/chapters",
                     "data" => $chapterData
                 ],
-                "chapter" => [
+                "chapter_get" => [
                     "method" => "get",
                     "url" => "/chapters/{chapter_creation.id}"
                 ]
@@ -55,6 +60,5 @@ class ChainTest extends APITestCase
         ]);
 
         $this->assertHttp200Success();
-        $this->debug();
     }
 }

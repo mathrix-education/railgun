@@ -21,11 +21,11 @@ class SubscriptionsAsPublicTest extends ScopeTestCase
      */
     public function testEstimate()
     {
-        $planId = $this->faker->randomElement(array_keys(SubscriptionController::PRICE_PER_MONTH));
+        $planId = $this->faker->randomElement(["v4_annually", "v4_biannually"]);
 
         $response = $this->json("get", "/subscriptions/estimate/{$planId}");
 
         $response->assertHttp200Success()
-            ->assertJsonKeys(["price", "end_date"]);
+            ->assertJsonKeys(["planId", "trialPrice", "trialEndDate"]);
     }
 }

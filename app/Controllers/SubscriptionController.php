@@ -47,9 +47,11 @@ class SubscriptionController extends Controller
      *
      * @return JsonResponse
      */
-    public function estimate(string $planId, int $additionalChildren = 0)
+    public function estimate(string $planId, $additionalChildren = 0)
     {
         if (!\in_array($planId, array_keys(self::PRICE_PER_MONTH), true)) {
+            throw new Http400InvalidPlanException($planId);
+        } elseif ($planId === "v4_monthly") {
             throw new Http400InvalidPlanException($planId);
         }
 
@@ -294,7 +296,7 @@ class SubscriptionController extends Controller
             /** @var \Braintree_Subscription $subscription */
             $subscription = $subscriptionResult->subscription;
 
-            $customerResultSearch = \Braintree_Customer::search([
+            $customerResultSearch = \Braintree\Customer::search([
                 \Braintree_CustomerSearch::paymentMethodToken()
                     ->is($subscription->paymentMethodToken),
             ]);

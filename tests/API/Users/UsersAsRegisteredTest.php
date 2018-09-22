@@ -101,7 +101,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         unset($newUser["token"], $newUser["settings"], $newUser["points"], $newUser["level"], $newUser["stripe_id"],
             $newUser["created_at"]);
         $newUser["password"] = $newPassword;
-        $newUser["current_password"] = "test";
+        $newUser["current_password"] = "test123";
 
         $this->call("patch", "/users/" . $this->user->id, $newUser);
 
