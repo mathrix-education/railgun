@@ -1,0 +1,20 @@
+get:
+  tags:
+  - Braintree Transactions
+  summary: Get a transaction
+  operationId: transactionGet
+  parameters:
+  - name: transactionId
+    in: path
+    description: The transaction id
+    required: true
+    schema:
+      type: string
+      example: 024df54z
+  responses:
+    200:
+      description: The Braintree transaction
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Braintree_Transaction'

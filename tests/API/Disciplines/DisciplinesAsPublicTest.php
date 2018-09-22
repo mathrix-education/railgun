@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Disciplines;
 
 use App\Models\Class_;
@@ -6,17 +7,17 @@ use Tests\API\ScopeTestCase;
 
 /**
  * Class DisciplinesAsPublicTest
- * Test disciplines as public (non-logged user)
+ * Test disciplines as public (non-logged user).
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * @version 1.0.0
- * @package Tests\Disciplines
+ *
+ * @version   1.0.0
  */
 class DisciplinesAsPublicTest extends ScopeTestCase
 {
     /**
-     * GET /disciplines
+     * GET /disciplines.
      *
      * @throws \Exception
      */
@@ -25,9 +26,8 @@ class DisciplinesAsPublicTest extends ScopeTestCase
         $this->genericIndexSuccess();
     }
 
-
     /**
-     * GET /disciplines/{id}
+     * GET /disciplines/{id}.
      *
      * @throws \Exception
      */
@@ -36,9 +36,8 @@ class DisciplinesAsPublicTest extends ScopeTestCase
         $this->genericGetSuccess();
     }
 
-
     /**
-     * POST /disciplines -> HTTP 401 unauthorized
+     * POST /disciplines -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -47,9 +46,8 @@ class DisciplinesAsPublicTest extends ScopeTestCase
         $this->genericAddUnauthorized();
     }
 
-
     /**
-     * PATCH /disciplines/{id} -> HTTP 401 unauthorized
+     * PATCH /disciplines/{id} -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -58,9 +56,8 @@ class DisciplinesAsPublicTest extends ScopeTestCase
         $this->genericEditUnauthorized();
     }
 
-
     /**
-     * DELETE /disciplines/{id} -> HTTP 401 unauthorized
+     * DELETE /disciplines/{id} -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -69,9 +66,8 @@ class DisciplinesAsPublicTest extends ScopeTestCase
         $this->genericDeleteUnauthorized();
     }
 
-
     /**
-     * GET /classes/by-class/{class_id}
+     * GET /classes/by-class/{class_id}.
      */
     public function testByClass()
     {

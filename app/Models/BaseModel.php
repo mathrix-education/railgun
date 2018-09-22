@@ -1,21 +1,23 @@
 <?php
+
 namespace App\Models;
 
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use Illuminate\Validation\Validator;
 use Validator as ValidatorFacade;
 
 /**
  * Class BaseModel
- * Base for all models, implement validation on save useless manual disable
+ * Base for all models, implement validation on save useless manual disable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Models
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  *
  * @mixin Builder
@@ -35,20 +37,18 @@ abstract class BaseModel extends Model
     /** @var bool|array Validation errors */
     protected $errors = false;
 
-
     /**
-     * Get the table name
+     * Get the table name.
      *
      * @return string the table name
      */
     public static function getTableName(): string
     {
-        return with(new static)->getTable();
+        return with(new static())->getTable();
     }
 
-
     /**
-     * Get a random model from the database
+     * Get a random model from the database.
      *
      * @param array $conditions The conditions
      *
@@ -59,7 +59,7 @@ abstract class BaseModel extends Model
         $query = self::inRandomOrder();
 
         if (!empty($conditions)) {
-            if (!is_array($conditions[0])) {
+            if (!\is_array($conditions[0])) {
                 $conditions = [$conditions];
             }
 
@@ -69,31 +69,28 @@ abstract class BaseModel extends Model
         return $query->firstOrFail();
     }
 
-
     /**
-     * Use appends
+     * Use appends.
      */
     public static function withAppends()
     {
         self::$withAppends = true;
 
-        return (new static);
+        return new static();
     }
 
-
     /**
-     * Don't use appends
+     * Don"t use appends.
      */
     public static function withoutAppends()
     {
         self::$withAppends = false;
 
-        return (new static);
+        return new static();
     }
 
-
     /**
-     * Unguard some attributes
+     * Unguard some attributes.
      *
      * @param string|array $attributes
      *
@@ -101,7 +98,7 @@ abstract class BaseModel extends Model
      */
     public function unguardAttributes($attributes)
     {
-        if (is_string($attributes)) {
+        if (\is_string($attributes)) {
             $attributes = [$attributes];
         }
 
@@ -120,25 +117,25 @@ abstract class BaseModel extends Model
     |--------------------------------------------------------------------------
     */
 
-
     /**
-     * Override to inject systematic validation and exception
+     * Override to inject systematic validation and exception.
      *
      * @param array $options
      *
-     * @return bool
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      * @throws \Exception
+     *
+     * @return bool
      */
     public function save(array $options = [])
     {
         $query = $this->newQueryWithoutScopes();
 
-        // If the "saving" event returns false we'll bail out of the save and return
+        // If the "saving" event returns false we"ll bail out of the save and return
         // false, indicating that the save failed. This provides a chance for any
         // listeners to cancel save operations if validations fail or whatever.
-        if ($this->fireModelEvent('saving') === false) {
+        if ($this->fireModelEvent("saving") === false) {
             return false;
         }
 
@@ -148,14 +145,14 @@ abstract class BaseModel extends Model
 
         // If the model already exists in the database we can just update our record
         // that is already in this database using the current IDs in this "where"
-        // clause to only update this model. Otherwise, we'll just insert them.
+        // clause to only update this model. Otherwise, we"ll just insert them.
         if ($this->exists) {
             $saved = $this->isDirty() ?
                 $this->performUpdate($query) : true;
         }
 
-        // If the model is brand new, we'll insert it into our database and set the
-        // ID attribute on the model to the value of the newly inserted row's ID
+        // If the model is brand new, we"ll insert it into our database and set the
+        // ID attribute on the model to the value of the newly inserted row"s ID
         // which is typically an auto-increment value managed by the database.
         else {
             $saved = $this->performInsert($query);
@@ -180,13 +177,11 @@ abstract class BaseModel extends Model
         return $saved;
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | Validation
     |--------------------------------------------------------------------------
     */
-
 
     /**
      * @return bool If model need to be validated before save
@@ -196,9 +191,8 @@ abstract class BaseModel extends Model
         return $this->validate;
     }
 
-
     /**
-     * Validate model data
+     * Validate model data.
      *
      * @param string $rules
      *
@@ -206,7 +200,7 @@ abstract class BaseModel extends Model
      */
     public function validate($rules = "rules")
     {
-        if (is_string($rules)) {
+        if (\is_string($rules)) {
             $this->useRules = $rules;
         }
         $rules = array_intersect_key($this->{$this->useRules}, $this->getDirty());
@@ -216,16 +210,17 @@ abstract class BaseModel extends Model
         $validator = $this->injectInValidator($validator);
 
         if ($validator->fails()) {
-            $this->errors = $validator->errors()->getMessages();
+            $this->errors = $validator->errors()
+                ->getMessages();
+
             return false;
         }
 
         return true;
     }
 
-
     /**
-     * Inject custom rules in the validator before save
+     * Inject custom rules in the validator before save.
      *
      * @param Validator $validator
      *
@@ -236,13 +231,13 @@ abstract class BaseModel extends Model
         return $validator;
     }
 
-
     /**
-     * Override to inject exception
+     * Override to inject exception.
      *
-     * @return bool|null
      * @throws Http422ModelSaveException
      * @throws \Exception
+     *
+     * @return bool|null
      */
     public function delete()
     {
@@ -255,27 +250,24 @@ abstract class BaseModel extends Model
         return $deleted;
     }
 
-
     /**
-     * Enable the model validation
+     * Enable the model validation.
      */
     public function enableValidation()
     {
         $this->validate = true;
     }
 
-
     /**
-     * Disable the model validation
+     * Disable the model validation.
      */
     public function disableValidation()
     {
         $this->validate = false;
     }
 
-
     /**
-     * Returns the validation errors
+     * Returns the validation errors.
      *
      * @return bool|array
      */
@@ -284,21 +276,23 @@ abstract class BaseModel extends Model
         return $this->errors;
     }
 
-
     /**
      * @codeCoverageIgnore
+     *
      * @throws \Doctrine\DBAL\DBALException
      */
     public function getTableStructure()
     {
-        $table = $this->getConnection()->getTablePrefix() . $this->getTable();
-        $schema = $this->getConnection()->getDoctrineSchemaManager();
+        $table = $this->getConnection()
+                ->getTablePrefix() . $this->getTable();
+        $schema = $this->getConnection()
+            ->getDoctrineSchemaManager();
         $databasePlatform = $schema->getDatabasePlatform();
-        $databasePlatform->registerDoctrineTypeMapping('enum', 'string');
+        $databasePlatform->registerDoctrineTypeMapping("enum", "string");
 
         $database = null;
-        if (strpos($table, '.')) {
-            list($database, $table) = explode('.', $table);
+        if (mb_strpos($table, ".")) {
+            list($database, $table) = explode(".", $table);
         }
 
         $columns = $schema->listTableColumns($table, $database);
@@ -309,31 +303,32 @@ abstract class BaseModel extends Model
             foreach ($columns as $column) {
                 $name = $column->getName();
 
-                $type = $column->getType()->getName();
+                $type = $column->getType()
+                    ->getName();
                 switch ($type) {
-                    case 'string':
-                    case 'text':
-                    case 'date':
-                    case 'time':
-                    case 'guid':
-                    case 'datetimetz':
-                    case 'datetime':
-                        $type = 'string';
+                    case "string":
+                    case "text":
+                    case "date":
+                    case "time":
+                    case "guid":
+                    case "datetimetz":
+                    case "datetime":
+                        $type = "string";
                         break;
-                    case 'integer':
-                    case 'bigint':
-                    case 'smallint':
-                        $type = 'int';
+                    case "integer":
+                    case "bigint":
+                    case "smallint":
+                        $type = "int";
                         break;
-                    case 'boolean':
-                        $type = 'bool';
+                    case "boolean":
+                        $type = "bool";
                         break;
-                    case 'decimal':
-                    case 'float':
-                        $type = 'float';
+                    case "decimal":
+                    case "float":
+                        $type = "float";
                         break;
                     default:
-                        $type = 'mixed';
+                        $type = "mixed";
                         break;
                 }
 
@@ -341,7 +336,7 @@ abstract class BaseModel extends Model
                     "name" => $name,
                     "type" => $type,
                     "nullable" => !$column->getNotnull(),
-                    "default" => $column->getDefault() === null && $column->getNotnull() ? "required" : $column->getDefault()
+                    "default" => $column->getDefault() === null && $column->getNotnull() ? "required" : $column->getDefault(),
                 ];
             }
         }
@@ -349,9 +344,8 @@ abstract class BaseModel extends Model
         return $structure;
     }
 
-
     /**
-     * Override to support appends togglers
+     * Override to support appends togglers.
      *
      * @return array
      * @codeCoverageIgnore // TODO: Unused?

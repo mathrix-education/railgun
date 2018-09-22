@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Modules;
 
 use App\Models\Activity;
@@ -6,17 +7,17 @@ use App\Models\Module;
 
 /**
  * Class ModulesAsModeratorTest
- * Test modules as moderator
+ * Test modules as moderator.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * @version 1.0.0
- * @package Tests\Modules
+ *
+ * @version   1.0.0
  */
 class ModulesAsModeratorTest extends ModulesAsRedactorTest
 {
     /**
-     * POST /modules
+     * POST /modules.
      *
      * @throws \Exception
      */
@@ -26,9 +27,8 @@ class ModulesAsModeratorTest extends ModulesAsRedactorTest
         $this->assertHttp200Success();
     }
 
-
     /**
-     * PATCH /modules/{id}
+     * PATCH /modules/{id}.
      *
      * @throws \Exception
      */
@@ -38,21 +38,20 @@ class ModulesAsModeratorTest extends ModulesAsRedactorTest
 
         $this->genericEdit([
             "link" => [
-                "activities" => $activityIds
-            ]
+                "activities" => $activityIds,
+            ],
         ]);
 
         foreach ($activityIds as $activityId) {
             $this->assertInDatabase("activity_module", [
                 "activity_id" => $activityId,
-                "module_id" => $this->editModelId
+                "module_id" => $this->editModelId,
             ]);
         }
     }
 
-
     /**
-     * DELETE /modules/{id}
+     * DELETE /modules/{id}.
      *
      * @throws \Exception
      */
@@ -62,10 +61,9 @@ class ModulesAsModeratorTest extends ModulesAsRedactorTest
         $this->assertNotInDatabase("activity_module", ["module_id" => $this->deleteModelId]);
     }
 
-
     /**
      * GET /modules/{id} with a premium module as non premium user
-     * Moderator privileges overrides the premium limitation
+     * Moderator privileges overrides the premium limitation.
      *
      * @throws \Exception
      */

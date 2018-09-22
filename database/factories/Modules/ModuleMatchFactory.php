@@ -2,7 +2,7 @@
 
 use App\Models\Module;
 
-/**
+/*
  * ModuleMatchFactory
  *
  * @author Mathrix Team

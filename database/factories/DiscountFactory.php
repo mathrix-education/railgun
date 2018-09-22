@@ -3,7 +3,7 @@
 use App\Models\Discount;
 use Faker\Generator;
 
-/**
+/*
  * DisciplineFactory
  *
  * @author Mathrix Team
@@ -15,7 +15,7 @@ $factory->define(Discount::class, function (Generator $faker) {
 
     switch ($type) {
         case "absolute":
-            $value = random_int(3, 10) * 100;
+            $value = random_int(3, 10);
             break;
         case "percentage":
             $value = random_int(1, 3) * 10;
@@ -23,7 +23,7 @@ $factory->define(Discount::class, function (Generator $faker) {
     }
 
     return [
-        "code" => substr($faker->md5, 0, 20),
+        "code" => mb_substr($faker->md5, 0, 20),
         "type" => $type,
         "value" => $value,
         "counter" => $faker->boolean ? ($faker->boolean ? 0 : random_int(10, 20)) : -1,

@@ -1,0 +1,10 @@
+Activity:
+  $ref: ./Activity.yaml
+Cart:
+  $ref: ./Cart.yaml
+Category:
+  $ref: ./Category.yaml
+Product:
+  $ref: ./Product.yaml
+Search:
+  $ref: ./Search.yaml

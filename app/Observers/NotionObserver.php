@@ -1,16 +1,17 @@
 <?php
+
 namespace App\Observers;
 
+use App\Exceptions\Http422ModelSaveException;
 use App\Models\Activity;
 use App\Models\Chapter;
 use App\Models\Meta;
 use App\Models\Notion;
 
 /**
- * Class NotionObserver
+ * Class NotionObserver.
  *
  * @author Mathrix Team
- * @package App\Observers
  */
 class NotionObserver extends BaseObserver
 {
@@ -33,24 +34,28 @@ class NotionObserver extends BaseObserver
         if (isset($notion->link["chapters"])) {
             $toSync = [];
             foreach ($notion->link["chapters"] as $order => $chapterId) {
-                if (Chapter::whereId($chapterId)->exists()) {
+                if (Chapter::whereId($chapterId)
+                    ->exists()) {
                     $toSync[$chapterId] = ["order" => $order];
                 }
             }
 
-            $notion->chapters()->sync($toSync);
+            $notion->chapters()
+                ->sync($toSync);
         }
 
         // Sync activities
         if (isset($notion->link["activities"])) {
             $toSync = [];
             foreach ($notion->link["activities"] as $order => $activityId) {
-                if (Activity::whereId($activityId)->exists()) {
+                if (Activity::whereId($activityId)
+                    ->exists()) {
                     $toSync[$activityId] = ["order" => $order];
                 }
             }
 
-            $notion->activities()->sync($toSync);
+            $notion->activities()
+                ->sync($toSync);
         }
 
         if (isset($notion->link)) {
@@ -60,19 +65,23 @@ class NotionObserver extends BaseObserver
         return true;
     }
 
-
     /**
-     * Detach all activities link with the deleting notion
+     * Detach all activities link with the deleting notion.
      *
      * @param Notion $notion
+     *
+     * @throws Http422ModelSaveException
      *
      * @return bool
      */
     public function deleting($notion)
     {
-        $notion->chapters()->detach();
-        $notion->activities()->detach();
-        Meta::whereNotionId($notion->id)->delete();
+        $notion->chapters()
+            ->detach();
+        $notion->activities()
+            ->detach();
+        Meta::whereNotionId($notion->id)
+            ->delete();
 
         return true;
     }

@@ -1,4 +1,5 @@
 <?php
+
 /** @var Laravel\Lumen\Routing\Router $router */
 $router->get("categories[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "CategoryController@index");
 

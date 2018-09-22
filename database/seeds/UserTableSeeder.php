@@ -1,25 +1,17 @@
 <?php
 
-use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
-use App\Models\Activity;
-use App\Models\Chapter;
-use App\Models\Class_;
-use App\Models\Discipline;
-use App\Models\Log;
-use App\Models\Meta;
-use App\Models\Module;
-use App\Models\Notion;
 use App\Models\Report;
 use App\Models\User;
-use Carbon\Carbon;
 
 /**
- * Class UserTableSeeder
+ * Class UserTableSeeder.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class UserTableSeeder extends BaseTableSeeder
@@ -34,37 +26,43 @@ class UserTableSeeder extends BaseTableSeeder
         $this->seedFromFactory([
             "modelClass" => User::class,
             "subFactory" => "admin",
-            "count" => 5
+            "count" => 5,
         ]);
         User::where("type", "admin")
             ->first()
             ->update(["email" => "admin@mathrix.fr"]);
 
-
         $this->seedFromFactory([
             "modelClass" => User::class,
             "subFactory" => "moderator",
-            "count" => 10
+            "count" => 5,
         ]);
         User::where("type", "moderator")
             ->first()
             ->update(["email" => "moderator@mathrix.fr"]);
 
-
         $this->seedFromFactory([
             "modelClass" => User::class,
             "subFactory" => "redactor",
-            "count" => 10
+            "count" => 5,
         ]);
         User::where("type", "redactor")
             ->first()
             ->update(["email" => "redactor@mathrix.fr"]);
 
+        $this->seedFromFactory([
+            "modelClass" => User::class,
+            "subFactory" => "support",
+            "count" => 5,
+        ]);
+        User::where("type", "support")
+            ->first()
+            ->update(["email" => "support@mathrix.fr"]);
 
         $this->seedFromFactory([
             "modelClass" => User::class,
             "subFactory" => "registered",
-            "count" => 10
+            "count" => 30,
         ]);
         User::where("type", "=", "registered")
             ->first()
@@ -72,9 +70,8 @@ class UserTableSeeder extends BaseTableSeeder
 
         $this->seedFromJson([
             "modelClass" => \Laravel\Passport\Client::class,
-            "table" => "oauth_clients"
+            "table" => "oauth_clients",
         ]);
-
 
         // Simulate points
         Report::unguard();

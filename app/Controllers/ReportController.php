@@ -1,17 +1,19 @@
 <?php
+
 namespace App\Controllers;
 
 /**
- * Class ReportController
+ * Class ReportController.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Controllers
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class ReportController extends BaseController
 {
-    /**
+    /*
      * @apiVersion 4.0.0
      * @api {get} /reports/{?page}/{?perPage} Index
      * @apiGroup Reports
@@ -26,8 +28,7 @@ class ReportController extends BaseController
      * @apiUse Http422ModelSave
      */
 
-
-    /**
+    /*
      * @apiVersion 4.0.0
      * @api {get} /reports/{id} Get
      * @apiGroup Reports
@@ -40,8 +41,7 @@ class ReportController extends BaseController
      * @apiUse Http404ModelNotFound
      */
 
-
-    /**
+    /*
      * @apiVersion 4.0.0
      * @api {post} /reports Add
      * @apiGroup Reports
@@ -55,8 +55,7 @@ class ReportController extends BaseController
      * @apiUse Http422ModelSave
      */
 
-
-    /**
+    /*
      * @apiVersion 4.0.0
      * @api {patch} /reports Edit
      * @apiGroup Reports
@@ -70,8 +69,7 @@ class ReportController extends BaseController
      * @apiUse Http422ModelSave
      */
 
-
-    /**
+    /*
      * @apiVersion 4.0.0
      * @api {delete} /reports Delete
      * @apiGroup Reports

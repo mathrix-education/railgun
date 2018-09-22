@@ -1,19 +1,20 @@
 <?php
+
 namespace Tests\API\Discounts;
 
 /**
  * Class DiscountsAsAdminTest
- * Test discounts as admin
+ * Test discounts as admin.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * @version 4.0.3
- * @package Tests\Discounts
+ *
+ * @version   4.0.3
  */
 class DiscountsAsAdminTest extends DiscountsAsModeratorTest
 {
     /**
-     * GET /discounts
+     * GET /discounts.
      *
      * @throws \Exception
      */
@@ -22,9 +23,8 @@ class DiscountsAsAdminTest extends DiscountsAsModeratorTest
         $this->genericIndexSuccess();
     }
 
-
     /**
-     * GET /discounts/{id}
+     * GET /discounts/{id}.
      *
      * @throws \Exception
      */
@@ -33,9 +33,8 @@ class DiscountsAsAdminTest extends DiscountsAsModeratorTest
         $this->genericGetSuccess();
     }
 
-
     /**
-     * POST /discounts
+     * POST /discounts.
      *
      * @throws \Exception
      */
@@ -44,9 +43,8 @@ class DiscountsAsAdminTest extends DiscountsAsModeratorTest
         $this->genericAddSuccess();
     }
 
-
     /**
-     * PATCH /discounts/{id}
+     * PATCH /discounts/{id}.
      *
      * @throws \Exception
      */
@@ -55,9 +53,8 @@ class DiscountsAsAdminTest extends DiscountsAsModeratorTest
         $this->genericEditSuccess();
     }
 
-
     /**
-     * DELETE /discounts/{id}
+     * DELETE /discounts/{id}.
      *
      * @throws \Exception
      */

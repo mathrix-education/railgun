@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -9,24 +10,24 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-
 /**
- * Model Log
+ * Model Log.
  *
- * @package App\Models
- * @since 1.0.0
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @since     1.0.0
+ *
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
  *
- * @property int $id
- * @property string $event
- * @property int|null $user_id
- * @property string|null $value
- * @property Carbon $created_at
- * @property string|null $loggable_type
- * @property int|null $loggable_id
- * @property-read User|null $user
- * @property-read Activity|Module $loggable
+ * @property int             $id
+ * @property string          $event
+ * @property int|null        $user_id
+ * @property string|null     $value
+ * @property Carbon          $created_at
+ * @property string|null     $loggable_type
+ * @property int|null        $loggable_id
+ * @property User|null       $user
+ * @property Activity|Module $loggable
+ *
  * @method static Builder|Log whereCreatedAt($value)
  * @method static Builder|Log whereEvent($value)
  * @method static Builder|Log whereId($value)
@@ -34,11 +35,12 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @method static Builder|Log whereLoggableType($value)
  * @method static Builder|Log whereUserId($value)
  * @method static Builder|Log whereValue($value)
+ * @mixin \Eloquent
  */
 class Log extends BaseModel
 {
     /**
-     * Available events
+     * Available events.
      */
     public const EVENTS = [
         // User-related
@@ -65,9 +67,8 @@ class Log extends BaseModel
         "user_payment_failed_for_training",
         // Sections-related
         "user_payment_succeed_for_section",
-        "user_payment_failed_for_section"
+        "user_payment_failed_for_section",
     ];
-
 
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
@@ -76,46 +77,47 @@ class Log extends BaseModel
     /** @var array The attributes that should be cast to native types */
     protected $casts = ["value" => "array"];
 
-
     /**
-     * Add a log line the the database
+     * Add a log line the the database.
      *
-     * @param string $event the event name
-     * @param User|int|null $user the user as model, its id or njull for system log
-     * @param array $data the optional data to associate with the log, such as the loggable type and id
+     * @param string        $event the event name
+     * @param User|int|null $user  the user as model, its id or njull for system log
+     * @param array         $data  the optional data to associate with the log, such as the loggable type and id
      *
-     * @return bool
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      * @throws \Exception
+     *
+     * @return bool
      */
     public static function log(string $event, $user = null, $data = [])
     {
-        return self::build($event, $user, $data)->save();
+        return self::build($event, $user, $data)
+            ->save();
     }
 
-
     /**
-     * Build a log line
+     * Build a log line.
      *
-     * @param string $event the event name
-     * @param User|int|null $user the user as model, its id or njull for system log
-     * @param array $data the optional data to associate with the log, such as the loggable type and id
+     * @param string        $event the event name
+     * @param User|int|null $user  the user as model, its id or njull for system log
+     * @param array         $data  the optional data to associate with the log, such as the loggable type and id
      *
-     * @return Log
      * @throws Http400InvalidRequestException
      * @throws \Exception
+     *
+     * @return Log
      */
-    public static function build(string $event, $user = null, $data = []): Log
+    public static function build(string $event, $user = null, $data = []): self
     {
-        if (!in_array($event, self::EVENTS)) {
+        if (!\in_array($event, self::EVENTS, true)) {
             throw new Http400InvalidRequestException("`$event` is not a valid event");
         }
 
         $logData = [
             "event" => $event,
-            "user_id" => $user === null || is_int($user) ? $user : $user->id,
+            "user_id" => $user === null || \is_int($user) ? $user : $user->id,
         ];
 
         if (!empty($data["loggable_id"]) && !empty($data["loggable_type"])) {
@@ -124,19 +126,18 @@ class Log extends BaseModel
             unset($data["loggable_id"], $data["loggable_type"]);
         }
 
-        if(!empty($data["created_at"])) {
+        if (!empty($data["created_at"])) {
             $logData["created_at"] = $data["created_at"];
             unset($data["created_at"]);
         }
 
         $logData["value"] = !empty($data) ? $data : null;
 
-        return new Log($logData);
+        return new self($logData);
     }
 
-
     /**
-     * Disable updated_at field update; seems to be a hack
+     * Disable updated_at field update; seems to be a hack.
      *
      * @param mixed $value
      *
@@ -153,24 +154,20 @@ class Log extends BaseModel
     |--------------------------------------------------------------------------
     */
 
-
     /**
-     * BelongsTo User
+     * BelongsTo User.
      *
      * @return BelongsTo
-     * @codeCoverageIgnore
      */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-
     /**
-     * MorphTo Loggable
+     * MorphTo Loggable.
      *
      * @return MorphTo
-     * @codeCoverageIgnore
      */
     public function loggable(): MorphTo
     {

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Observers;
 
 use App\Models\Activity;
@@ -7,10 +8,9 @@ use App\Models\Module;
 use App\Models\Notion;
 
 /**
- * Class ActivityObserver
+ * Class ActivityObserver.
  *
  * @author Mathrix Team
- * @package App\Observers
  */
 class ActivityObserver extends BaseObserver
 {
@@ -31,22 +31,26 @@ class ActivityObserver extends BaseObserver
         if (isset($activity->link["notions"])) {
             $toSync = [];
             foreach ($activity->link["notions"] as $order => $notionId) {
-                if (Notion::whereId($notionId)->exists()) {
+                if (Notion::whereId($notionId)
+                    ->exists()) {
                     $toSync[$notionId] = ["order" => $order];
                 }
             }
-            $activity->notions()->sync($toSync);
+            $activity->notions()
+                ->sync($toSync);
         }
 
         // Sync modules
         if (isset($activity->link["modules"])) {
             $toSync = [];
             foreach ($activity->link["modules"] as $order => $moduleId) {
-                if (Module::whereId($moduleId)->exists()) {
+                if (Module::whereId($moduleId)
+                    ->exists()) {
                     $toSync[$moduleId] = ["order" => $order];
                 }
             }
-            $activity->modules()->sync($toSync);
+            $activity->modules()
+                ->sync($toSync);
         }
 
         if (isset($activity->link)) {
@@ -56,9 +60,8 @@ class ActivityObserver extends BaseObserver
         return true;
     }
 
-
     /**
-     * Detach all modules and notions linked with the deleting notion
+     * Detach all modules and notions linked with the deleting notion.
      *
      * @param Activity $activity
      *
@@ -66,9 +69,15 @@ class ActivityObserver extends BaseObserver
      */
     public function deleting($activity)
     {
-        $activity->notions()->detach();
-        $activity->modules()->detach();
-        Meta::whereActivityId($activity->id)->delete();
+        $activity->notions()
+            ->detach();
+        $activity->modules()
+            ->detach();
+        Meta::whereActivityId($activity->id)
+            ->get()
+            ->each(function (Meta $meta) {
+                $meta->delete();
+            });
 
         return true;
     }

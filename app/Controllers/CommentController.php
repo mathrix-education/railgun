@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -13,66 +14,70 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 /**
- * Class CommentController
+ * Class CommentController.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Controllers
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class CommentController extends BaseController
 {
     /**
-     * @apiVersion 4.0.0
-     * @api {get} /comments/{?page}/{?perPage} Index
-     * @apiGroup Comments
-     * @apiName CommentsIndex
+     * @apiVersion     4.0.0
+     *
+     * @api            {get} /comments/{?page}/{?perPage} Index
+     * @apiGroup       Comments
+     * @apiName        CommentsIndex
      * @apiDescription Retrieve comments
-     * @apiPermission moderator
-     * @apiUse Pagination
-     * @apiUse CommentArray
-     * @apiUse Http401Unauthorized
+     * @apiPermission  moderator
+     * @apiUse         Pagination
+     * @apiUse         CommentArray
+     * @apiUse         Http401Unauthorized
      */
 
-
     /**
-     * @apiVersion 4.0.0
-     * @api {get} /comments/{id} Get
-     * @apiGroup Comments
-     * @apiName CommentGet
+     * @apiVersion     4.0.0
+     *
+     * @api            {get} /comments/{id} Get
+     * @apiGroup       Comments
+     * @apiName        CommentGet
      * @apiDescription Get a class by id
-     * @apiPermission public
+     * @apiPermission  public
      * @apiParam {int} id The class id
-     * @apiUse CommentModel
-     * @apiUse Http404ModelNotFound
+     * @apiUse         CommentModel
+     * @apiUse         Http404ModelNotFound
      */
 
-
     /**
-     * @apiVersion 4.0.0
-     * @api {post} /comments Add
-     * @apiGroup Comments
-     * @apiName CommentAdd
+     * @apiVersion     4.0.0
+     *
+     * @api            {post} /comments Add
+     * @apiGroup       Comments
+     * @apiName        CommentAdd
      * @apiDescription Add class
-     * @apiPermission registered
-     * @apiUse Bearer
-     * @apiUse CommentRequest
-     * @apiUse CommentModel
-     * @apiUse Http401Unauthorized
-     * @apiUse Http422ModelValidation
-     * @apiUse Http422ModelSave
+     * @apiPermission  registered
+     * @apiUse         Bearer
+     * @apiUse         CommentRequest
+     * @apiUse         CommentModel
+     * @apiUse         Http401Unauthorized
+     * @apiUse         Http422ModelValidation
+     * @apiUse         Http422ModelSave
      *
-     * @param Request $request
+     * @param Request $request The request
      *
-     * @return JsonResponse
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     *
+     * @return JsonResponse
      */
     public function add(Request $request): JsonResponse
     {
-        $request->user()->canOrFail("add", Comment::class);
+        $request->user()
+            ->canOrFail("add", Comment::class);
 
         /** @var BaseModel $model */
         $comment = new Comment($request->all());
@@ -82,67 +87,69 @@ class CommentController extends BaseController
         return response()->json($comment);
     }
 
-
     /**
-     * @apiVersion 4.0.0
-     * @api {patch} /comments/{id} Edit
-     * @apiGroup Comments
-     * @apiName CommentEdit
+     * @apiVersion     4.0.0
+     *
+     * @api            {patch} /comments/{id} Edit
+     * @apiGroup       Comments
+     * @apiName        CommentEdit
      * @apiDescription Edit a class
-     * @apiPermission registered for own comment, moderator otherwise
-     * @apiUse Bearer
+     * @apiPermission  registered for own comment, moderator otherwise
+     * @apiUse         Bearer
      * @apiParam {int} id The comment id
-     * @apiUse CommentRequest
-     * @apiUse CommentModel
-     * @apiUse Http401Unauthorized
-     * @apiUse Http404ModelNotFound
-     * @apiUse Http422ModelSave
-     * @apiUse Http422ModelValidation
+     * @apiUse         CommentRequest
+     * @apiUse         CommentModel
+     * @apiUse         Http401Unauthorized
+     * @apiUse         Http404ModelNotFound
+     * @apiUse         Http422ModelSave
+     * @apiUse         Http422ModelValidation
      */
 
-
     /**
-     * @apiVersion 4.0.0
-     * @api {delete} /comments/{id} Delete
-     * @apiGroup Comments
-     * @apiName CommentDelete
+     * @apiVersion     4.0.0
+     *
+     * @api            {delete} /comments/{id} Delete
+     * @apiGroup       Comments
+     * @apiName        CommentDelete
      * @apiDescription Delete a comment and its children
-     * @apiPermission moderator
-     * @apiUse Bearer
+     * @apiPermission  moderator
+     * @apiUse         Bearer
      * @apiParam {int} id The comment id
-     * @apiUse Http401Unauthorized
-     * @apiUse Http404ModelNotFound
+     * @apiUse         Http401Unauthorized
+     * @apiUse         Http404ModelNotFound
      */
 
-
     /**
-     * @apiVersion 4.0.0
-     * @api {get} /comments/by-{what}/{id}/{?page}/{?perPage} By
-     * @apiGroup Comments
-     * @apiName CommentsBy
+     * @apiVersion     4.0.0
+     *
+     * @api            {get} /comments/by-{what}/{id}/{?page}/{?perPage} By
+     * @apiGroup       Comments
+     * @apiName        CommentsBy
      * @apiDescription Retrieve comments by type
-     * @apiPermission public
+     * @apiPermission  public
      * @apiParam {string=post,course,notion} what the commentable_type
      * @apiParam {int} id the commentable id
      * @apiParam {int} [page=1] the page to fetch
      * @apiParam {int} [perPage=10] the comments per page to fetch (excluding children)
-     * @apiUse CommentArray
+     * @apiUse         CommentArray
      *
-     * @param Request $request
-     * @param string $what
-     * @param int $id
-     * @param int $page
-     * @param int $perPage
+     * @param Request $request The request
+     * @param string  $what
+     * @param int     $id
+     * @param int     $page
+     * @param int     $perPage
+     *
+     * @throws Http400InvalidRequestException
      *
      * @return JsonResponse
-     * @throws Http400InvalidRequestException
      */
     public function by(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
     {
         $modelClass = $this->resolveModelClass($what);
 
         /** @var Commentable $model */
-        $model = $modelClass::where("id", $id)->firstOrFail();
+        $model = $modelClass::where("id", $id)
+            ->firstOrFail();
 
         $comments = $this->orderCollection(
             $model->comments()
@@ -155,37 +162,40 @@ class CommentController extends BaseController
         return new JsonResponse($comments);
     }
 
-
     /**
-     * @apiVersion 4.0.0
-     * @api {post} /comments/search Search
-     * @apiGroup Comments
-     * @apiName CommentSearch
+     * @apiVersion     4.0.0
+     *
+     * @api            {post} /comments/search Search
+     * @apiGroup       Comments
+     * @apiName        CommentSearch
      * @apiDescription Search for comments
-     * @apiPermission moderator
-     * @apiUse Bearer
+     * @apiPermission  moderator
+     * @apiUse         Bearer
      * @apiParam (Data) {string} [field1] The comment field1 search value (use % as wildcard)
      * @apiParam (Data) {string} [field2] The comment field2 search value (use % as wildcard)
      * @apiParam (Data) {array} order The order data
      * @apiParam (Data) {string} order.column The order column
      * @apiParam (Data) {string=asc,desc} order.dir The order direction
+     *
+     * @param mixed $page
+     * @param mixed $perPage
      */
 
-
     /**
-     * @apiVersion 4.0.0
-     * @api {get} /comments/latest/{?page}/{?perPage} Latest
-     * @apiGroup Comments
-     * @apiName CommentLatest
-     * @apiDescription Get the latest comments
-     * @apiPermission moderator
-     * @apiUse Pagination
-     * @apiUse Bearer
-     * @apiUse CommentArray
+     * @apiVersion     4.0.0
      *
-     * @param Request $request
-     * @param int $page
-     * @param int $perPage
+     * @api            {get} /comments/latest/{?page}/{?perPage} Latest
+     * @apiGroup       Comments
+     * @apiName        CommentLatest
+     * @apiDescription Get the latest comments
+     * @apiPermission  moderator
+     * @apiUse         Pagination
+     * @apiUse         Bearer
+     * @apiUse         CommentArray
+     *
+     * @param Request $request The request
+     * @param int     $page
+     * @param int     $perPage
      *
      * @return JsonResponse
      */

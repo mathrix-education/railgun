@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Providers;
 
 use App\Models\BaseModel;
@@ -10,11 +11,12 @@ use Illuminate\Support\ServiceProvider;
 
 /**
  * Class PolicyServiceProvider
- * Automatically register policies
+ * Automatically register policies.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Providers
- * @since 1.0.1
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.1
+ *
  * @copyright Mathrix Education SA
  */
 class PolicyServiceProvider extends ServiceProvider
@@ -23,9 +25,8 @@ class PolicyServiceProvider extends ServiceProvider
     private const POLICIES_NAMESPACE = "App\\Policies\\";
     private const EXCLUDED_POLICIES = [
         BasePolicy::class,
-        ClassPolicy::class
+        ClassPolicy::class,
     ];
-
 
     /**
      * @throws \Exception
@@ -33,12 +34,12 @@ class PolicyServiceProvider extends ServiceProvider
     public function boot()
     {
         $policiesDir = $this->app->basePath() . "/app/Policies";
-        $policyFiles = glob($policiesDir . DIRECTORY_SEPARATOR . "*.php");
+        $policyFiles = glob($policiesDir . \DIRECTORY_SEPARATOR . "*.php");
 
         foreach ($policyFiles as $policyFile) {
-            $policyClass = self::POLICIES_NAMESPACE . substr(basename($policyFile), 0, -4);
+            $policyClass = self::POLICIES_NAMESPACE . mb_substr(basename($policyFile), 0, -4);
 
-            if (in_array($policyClass, self::EXCLUDED_POLICIES)) {
+            if (\in_array($policyClass, self::EXCLUDED_POLICIES, true)) {
                 continue;
             }
 

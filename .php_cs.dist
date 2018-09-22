@@ -1,0 +1,65 @@
+<?php
+return PhpCsFixer\Config::create()
+    ->setRiskyAllowed(true)
+    ->setHideProgress(false)
+    ->setRules([
+        "@PSR2" => true,
+        "@Symfony" => true,
+        "@Symfony:risky" => true,
+        "@PHP70Migration" => true,
+        "array_syntax" => ["syntax" => "short"],
+        "combine_consecutive_unsets" => true,
+        "concat_space" => ["spacing" => "one"],
+        "declare_strict_types" => false,
+        "heredoc_to_nowdoc" => true,
+        "list_syntax" => ["syntax" => "long"],
+        "mb_str_functions" => true,
+        "modernize_types_casting" => true,
+        "method_argument_space" => true,
+        "no_extra_blank_lines" => [
+            "break",
+            "continue",
+            "extra",
+            "return",
+            "throw",
+            "use",
+            "parenthesis_brace_block",
+            "square_brace_block"
+        ],
+        "no_php4_constructor" => true,
+        "no_short_echo_tag" => true,
+        "no_unreachable_default_argument_value" => true,
+        "no_useless_else" => true,
+        "no_useless_return" => true,
+        "ordered_class_elements" => [
+            "use_trait",
+            "constant",
+            "property",
+            "construct",
+            "destruct",
+            "method_static",
+            "magic",
+            "phpunit",
+            "method",
+        ],
+        "ordered_imports" => true,
+        "phpdoc_add_missing_param_annotation" => true,
+        "phpdoc_order" => true,
+        "semicolon_after_instruction" => true,
+        "simplified_null_return" => true,
+        "single_quote" => false,
+        "strict_comparison" => true,
+        "strict_param" => true,
+        "trailing_comma_in_multiline_array" => false,
+        "yoda_style" => false,
+    ])
+    ->setFinder(
+        PhpCsFixer\Finder::create()
+            ->in([
+                __DIR__ . "/app",
+                __DIR__ . "/bootstrap",
+                __DIR__ . "/config",
+                __DIR__ . "/database",
+                __DIR__ . "/tests"
+            ])
+    );

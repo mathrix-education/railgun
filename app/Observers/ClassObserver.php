@@ -1,14 +1,13 @@
 <?php
+
 namespace App\Observers;
 
 use App\Models\Class_;
 
-
 /**
- * Class UserObserver
+ * Class UserObserver.
  *
  * @author Mathrix Team
- * @package App\Observers
  */
 class ClassObserver extends BaseObserver
 {
@@ -29,7 +28,8 @@ class ClassObserver extends BaseObserver
 
         // Sync disciplines
         if (!empty($class->link["disciplines"])) {
-            $class->disciplines()->sync($class->link["disciplines"]);
+            $class->disciplines()
+                ->sync($class->link["disciplines"]);
         }
 
         if (isset($class->link) || !empty($class->link)) {

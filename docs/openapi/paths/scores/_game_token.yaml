@@ -1,0 +1,26 @@
+get:
+  tags:
+  - Scores
+  summary: Generate token
+  description: Generate a token for a score registration
+  operationId: scoresToken
+  parameters:
+  - name: game
+    in: path
+    description: The score game slug
+    required: true
+    schema:
+      type: string
+      example: meteor
+  responses:
+    200:
+      description: The scores
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              token:
+                description: The token
+                type: string
+                example: 437057b1e7c92a427c60ef0fb9b616ec

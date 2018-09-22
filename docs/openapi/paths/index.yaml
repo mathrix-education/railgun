@@ -1,0 +1,103 @@
+# ----------
+# Activities
+# ----------
+/activities/{?page}/{?perPage}:
+  $ref: ./activities/_page_perPage.yaml
+/activities:
+  $ref: ./activities/_.yaml
+/activities/{activityId}:
+  $ref: ./activities/_activityId.yaml
+/activities/search:
+  $ref: ./activities/_search.yaml
+/activities/{activityId}/mark:
+  $ref: ./activities/_activityId_mark.yaml
+/activities/favorites:
+  $ref: ./activities/_favorites.yaml
+/activities/incomplete:
+  $ref: ./activities/_incomplete.yaml
+/activities/to-revise:
+  $ref: ./activities/_to-revise.yaml
+
+
+# ----------
+# Categories
+# ----------
+/categories:
+  $ref: ./categories/_.yaml
+/categories/{page}/{perPage}:
+  $ref: ./categories/_page_perPage.yaml
+/categories/{categoryId}:
+  $ref: ./categories/_categoryId.yaml
+
+
+# --------
+# Products
+# --------
+/products:
+  $ref: ./products/_.yaml
+/products/{productId}:
+  $ref: ./products/_productId.yaml
+/products/buy:
+  $ref: ./products/_buy.yaml
+/products/sale:
+  $ref: ./products/_sale.yaml
+
+
+# ------
+# Scores
+# ------
+/scores/{game}:
+  $ref: ./scores/_game.yaml
+/scores/{game}/token:
+  $ref: ./scores/_game_token.yaml
+/scores/{game}/top/{?interval}/{?count}:
+  $ref: ./scores/_game_top.yaml
+
+
+# -----
+# Users
+# -----
+/users/login:
+  $ref: ./users/_login.yaml
+/users/{userId}/payment-method:
+  $ref: ./users/_userId_payment-method.yaml
+
+
+# --------------------
+# Braintree global API
+# --------------------
+/braintree/client-token:
+  $ref: ./braintree/_client-token.yaml
+
+
+# -----------------------
+# Braintree Subscriptions
+# -----------------------
+/plans:
+  $ref: ./plans/_.yaml
+
+
+# -----------------------
+# Braintree Subscriptions
+# -----------------------
+/subscriptions:
+  $ref: ./subscriptions/_.yaml
+/subscriptions/estimate/{planId}:
+  $ref: ./subscriptions/_estimate_planId.yaml
+/subscriptions/by-user/{userId}:
+  $ref: ./subscriptions/_by-user_userId.yaml
+/subscriptions/{subscriptionId}:
+  $ref: ./subscriptions/_subscriptionId.yaml
+/subscriptions/{subscriptionId}/cancel:
+  $ref: ./subscriptions/_subscriptionId_cancel.yaml
+
+
+# ----------------------
+# Braintree Transactions
+# ----------------------
+/transactions/by-user/{userId}:
+  $ref: ./transactions/_by-user_userId.yaml
+/transactions/{transactionId}:
+  $ref: ./transactions/_transactionId.yaml
+/transactions/{transactionId}/refund:
+  $ref: ./transactions/_transactionId_refund.yaml

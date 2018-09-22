@@ -1,0 +1,36 @@
+patch:
+  tags:
+  - Activities
+  summary: Mark an activity
+  operationId: activitiesMark
+  parameters:
+  - name: activityId
+    in: path
+    description: The activity id.
+    required: true
+    schema:
+      type: int
+      example: 45
+  requestBody:
+    content:
+      application/json:
+        schema:
+          favorite:
+            description: If the activity should be marked as `favorite`.
+            type: boolean
+          to_revise:
+            description: If the activity should be marked as `to_revise`.
+            type: boolean
+          completed:
+            description: >-
+              If the activity should be marked as `completed`. Setting this to `false` marks the activity as incomplete.
+            type: boolean
+  responses:
+    200:
+      description: The marked activity.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Activity'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

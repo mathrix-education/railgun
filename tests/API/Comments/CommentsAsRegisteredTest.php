@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Comments;
 
 use App\Exceptions\Http422ModelSaveException;
@@ -9,17 +10,17 @@ use Laravel\Passport\Passport;
 
 /**
  * Class CommentsAsPublicTest
- * Test Comments as registered user
+ * Test Comments as registered user.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * @version 1.0.0
- * @package Tests\Comments
+ *
+ * @version   1.0.0
  */
 class CommentsAsRegisteredTest extends CommentsAsPublicTest
 {
     /**
-     * POST /comments
+     * POST /comments.
      */
     public function testAdd()
     {
@@ -33,9 +34,8 @@ class CommentsAsRegisteredTest extends CommentsAsPublicTest
         $this->assertInDatabase("comments", $expectedData);
     }
 
-
     /**
-     * POST /comments
+     * POST /comments.
      */
     public function testAddForStranger()
     {
@@ -51,9 +51,8 @@ class CommentsAsRegisteredTest extends CommentsAsPublicTest
         $this->assertNotInDatabase("comments", $data);
     }
 
-
     /**
-     * PATCH /comments/{id}
+     * PATCH /comments/{id}.
      *
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
@@ -68,7 +67,7 @@ class CommentsAsRegisteredTest extends CommentsAsPublicTest
         $comment->content = $this->faker->sentence;
 
         $this->call("patch", "/comments/{$comment->id}", [
-            "content" => $this->faker->sentence
+            "content" => $this->faker->sentence,
         ]);
 
         $this->assertHttp200Success();

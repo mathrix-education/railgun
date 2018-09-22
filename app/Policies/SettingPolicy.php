@@ -1,21 +1,23 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\Setting;
 use App\Models\User;
 
 /**
- * Class SettingPolicy
+ * Class SettingPolicy.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Policies
- * @since 4.0.3
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     4.0.3
+ *
  * @copyright Mathrix Education SA
  */
 class SettingPolicy extends BasePolicy
 {
     /**
-     * @param User $currentUser
+     * @param User    $currentUser
      * @param Setting $setting
      *
      * @return bool
@@ -24,7 +26,6 @@ class SettingPolicy extends BasePolicy
     {
         return $currentUser->isAdmin() || $setting->visible;
     }
-
 
     /**
      * @param User $currentUser
@@ -35,7 +36,6 @@ class SettingPolicy extends BasePolicy
     {
         return $currentUser->isAdmin();
     }
-
 
     /**
      * @param User $currentUser

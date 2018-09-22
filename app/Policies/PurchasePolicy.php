@@ -1,14 +1,16 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\User;
 
 /**
- * Class PurchasePolicy
+ * Class PurchasePolicy.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Policies
- * @since 4.0.4
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     4.0.4
+ *
  * @copyright Mathrix Education SA
  */
 class PurchasePolicy extends BasePolicy
@@ -22,7 +24,6 @@ class PurchasePolicy extends BasePolicy
     {
         return $currentUser->isAdmin();
     }
-
 
     /**
      * @return bool

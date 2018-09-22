@@ -5,18 +5,18 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Class CreateUserPurchaseTable
+ * Class CreateUserPurchaseTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @since 4.0.2
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     4.0.2
+ *
  * @copyright Mathrix Education SA
  */
 class CreateUserPurchaseTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -29,24 +29,27 @@ class CreateUserPurchaseTable extends Migration
 
         Schema::table("purchases", function (Blueprint $table) {
             $table->renameColumn("training_id", "purchasable_id");
-            $table->string("purchasable_type")->after("training_id");
-            $table->uuid("uuid")->after("id");
-            $table->integer("price")->after("id");
+            $table->string("purchasable_type")
+                ->after("training_id");
+            $table->uuid("uuid")
+                ->after("id");
+            $table->integer("price")
+                ->after("id");
             $table->timestamps();
         });
 
-        DB::table("purchases")->update(["purchasable_type" => "training"]);
+        DB::table("purchases")
+            ->update(["purchasable_type" => "training"]);
     }
-
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
-        DB::table("purchases")->where("purchasable_type", "!=", "training")->delete();
+        DB::table("purchases")
+            ->where("purchasable_type", "!=", "training")
+            ->delete();
 
         Schema::table("purchases", function (Blueprint $table) {
             $table->dropColumn("uuid");
@@ -60,8 +63,9 @@ class CreateUserPurchaseTable extends Migration
         Schema::rename("purchases", "training_user");
 
         Schema::table("training_user", function (Blueprint $table) {
-            $table->foreign("training_id")->references("id")->on("trainings");
+            $table->foreign("training_id")
+                ->references("id")
+                ->on("trainings");
         });
-
     }
 }

@@ -1,0 +1,17 @@
+post:
+  tags:
+  - Chapters
+  summary: Add a chapter
+  operationId: chaptersPost
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../index.yaml#/components/requestBodies/Chapter'
+  responses:
+    200:
+      description: The newly created chapter
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Chapter'

@@ -1,4 +1,5 @@
 <?php
+
 /** @var Laravel\Lumen\Routing\Router $router */
 $router->get("notions[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "NotionController@index");
 
@@ -14,5 +15,4 @@ $router->group(["prefix" => "notions"], function () use ($router) {
         $router->patch("{id:[1-9]\d*}", "NotionController@edit");
         $router->delete("{id:[1-9]\d*}", "NotionController@delete");
     });
-
 });

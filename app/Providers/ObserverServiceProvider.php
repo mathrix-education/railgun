@@ -1,20 +1,21 @@
 <?php
+
 namespace App\Providers;
 
 use App\Models\BaseModel;
 use App\Models\Class_;
-use App\Models\Pack;
 use App\Observers\BaseObserver;
 use App\Observers\ClassObserver;
 use Illuminate\Support\ServiceProvider;
 
 /**
  * Class ObserverServiceProvider
- * Provides all observers to the corresponding models
+ * Provides all observers to the corresponding models.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Controllers
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class ObserverServiceProvider extends ServiceProvider
@@ -23,23 +24,23 @@ class ObserverServiceProvider extends ServiceProvider
     private const OBSERVERS_NAMESPACE = "App\\Observers\\";
     private const EXCLUDED_OBSERVERS = [
         BaseObserver::class,
-        ClassObserver::class
+        ClassObserver::class,
     ];
 
-
     /**
-     * Auto-discover observers based on the filename
+     * Auto-discover observers based on the filename.
+     *
      * @throws \Exception
      */
     public function boot()
     {
         $observersDir = $this->app->basePath() . "/app/Observers";
-        $observerFiles = glob($observersDir . DIRECTORY_SEPARATOR . "*.php");
+        $observerFiles = glob($observersDir . \DIRECTORY_SEPARATOR . "*.php");
 
         foreach ($observerFiles as $observerFile) {
-            $observerClass = self::OBSERVERS_NAMESPACE . substr(basename($observerFile), 0, -4);
+            $observerClass = self::OBSERVERS_NAMESPACE . mb_substr(basename($observerFile), 0, -4);
 
-            if (in_array($observerClass, self::EXCLUDED_OBSERVERS)) {
+            if (\in_array($observerClass, self::EXCLUDED_OBSERVERS, true)) {
                 continue;
             }
 

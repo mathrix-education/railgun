@@ -10,37 +10,38 @@ use Spatie\Newsletter\NewsletterListCollection;
 
 /**
  * Class NewsletterServiceProvider
- * Adapted for Lumen
+ * Adapted for Lumen.
  *
- * @see \Spatie\Newsletter\NewsletterServiceProvider
+ * @see       \Spatie\Newsletter\NewsletterServiceProvider
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Providers
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
- * @property-read Application $app
+ *
+ * @property Application $app
  * @codeCoverageIgnore
  */
 class NewsletterServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        $this->app->configure('newsletter');
+        $this->app->configure("newsletter");
     }
-
 
     public function register()
     {
         $this->app->singleton(Newsletter::class, function () {
-            $mailChimp = new Mailchimp(config('newsletter.apiKey'));
+            $mailChimp = new Mailchimp(config("newsletter.apiKey"));
 
-            $mailChimp->verify_ssl = config('newsletter.ssl', true);
+            $mailChimp->verify_ssl = config("newsletter.ssl", true);
 
-            $configuredLists = NewsletterListCollection::createFromConfig(config('newsletter'));
+            $configuredLists = NewsletterListCollection::createFromConfig(config("newsletter"));
 
             return new Newsletter($mailChimp, $configuredLists);
         });
 
-        $this->app->alias(Newsletter::class, 'newsletter');
+        $this->app->alias(Newsletter::class, "newsletter");
     }
 }

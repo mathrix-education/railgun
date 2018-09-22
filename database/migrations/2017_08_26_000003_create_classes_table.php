@@ -4,18 +4,18 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
 /**
- * Class CreateClassesTable
+ * Class CreateClassesTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class CreateClassesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -25,22 +25,28 @@ class CreateClassesTable extends Migration
             $table->string("name_short");
             $table->string("slug");
             $table->string("slug_short");
-            $table->integer("order")->default(0);
-            $table->boolean("visible")->default(true);
-            $table->integer("parent_id")->unsigned()->nullable();
-            $table->integer("country_id")->unsigned();
+            $table->integer("order")
+                ->default(0);
+            $table->boolean("visible")
+                ->default(true);
+            $table->integer("parent_id")
+                ->unsigned()
+                ->nullable();
+            $table->integer("country_id")
+                ->unsigned();
 
             // Foreign keys
-            $table->foreign("parent_id")->references("id")->on("classes");
-            $table->foreign("country_id")->references("id")->on("countries");
+            $table->foreign("parent_id")
+                ->references("id")
+                ->on("classes");
+            $table->foreign("country_id")
+                ->references("id")
+                ->on("countries");
         });
     }
 
-
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

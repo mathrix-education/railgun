@@ -5,31 +5,29 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Class AddVisibleLessonsTable
+ * Class AddVisibleLessonsTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @since 4.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     4.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class AddVisibleLessonsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
         Schema::table("lessons", function (Blueprint $table) {
-            $table->boolean("visible")->after("slug");
+            $table->boolean("visible")
+                ->after("slug");
         });
     }
 
-
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

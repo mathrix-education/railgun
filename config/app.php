@@ -1,4 +1,5 @@
 <?php
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -13,7 +14,6 @@ return [
     "key" => env('APP_KEY'),
     "cipher" => "AES-256-CBC",
 
-
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
@@ -25,7 +25,6 @@ return [
     |
     */
     "locale" => env("APP_LOCALE", "en"),
-
 
     /*
     |--------------------------------------------------------------------------
@@ -39,7 +38,6 @@ return [
     */
     "fallback_locale" => env("APP_FALLBACK_LOCALE", "en"),
 
-
     /*
     |--------------------------------------------------------------------------
     | Aliases
@@ -51,9 +49,10 @@ return [
     "aliases" => [
         "Hash" => \Illuminate\Support\Facades\Hash::class,
         "Mail" => \Illuminate\Support\Facades\Mail::class,
+        "MailFake" => \Illuminate\Support\Testing\Fakes\MailFake::class,
         "Gate" => \Illuminate\Support\Facades\Gate::class,
         "Validator" => \Illuminate\Support\Facades\Validator::class,
         "Builder" => \Illuminate\Database\Eloquent\Builder::class,
-        "Newsletter" => \Spatie\Newsletter\NewsletterFacade::class
-    ]
+        "Newsletter" => \Spatie\Newsletter\NewsletterFacade::class,
+    ],
 ];

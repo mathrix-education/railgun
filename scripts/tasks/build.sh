@@ -2,6 +2,10 @@
 echo "Installing node packages"
 yarn install --silent
 
+echo "Building Redoc"
+node_modules/.bin/redoc-cli bundle docs/openapi/index.yaml
+mv redoc-static.html docs/openapi/index.html
+
 echo "Building emails"
 node_modules/.bin/gulp mjml
 
@@ -12,6 +16,7 @@ tar -zcf build.tar.gz \
     bootstrap/ \
     config/ \
     database/ \
+    docs/openapi/index.html \
     public/ \
     resources/views/emails/*/*.blade.php \
     scripts/tasks/setup_release.sh \

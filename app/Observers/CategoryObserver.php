@@ -1,14 +1,14 @@
 <?php
+
 namespace App\Observers;
 
 use App\Exceptions\Http400InvalidRequestException;
 use App\Models\Category;
 
 /**
- * Class CategoryObserver
+ * Class CategoryObserver.
  *
  * @author Mathrix Team
- * @package App\Observers
  */
 class CategoryObserver extends BaseObserver
 {
@@ -28,13 +28,13 @@ class CategoryObserver extends BaseObserver
         return true;
     }
 
-
     /**
      * @param Category $category
      *
-     * @return bool
      * @throws Http400InvalidRequestException
      * @throws \Exception
+     *
+     * @return bool
      */
     public function deleting($category)
     {
@@ -45,5 +45,4 @@ class CategoryObserver extends BaseObserver
 
         return true;
     }
-
 }

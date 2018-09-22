@@ -1,11 +1,11 @@
 <?php
+
 /** @var Laravel\Lumen\Routing\Router $router */
 $router->group(["middleware" => "auth:api"], function () use ($router) {
     $router->get("comments[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "CommentController@index");
 });
 
 $router->group(["prefix" => "comments"], function () use ($router) {
-
     $router->group(["middleware" => "auth:api"], function () use ($router) {
         $router->get("{key:[1-9]\d*}", "CommentController@get");
         $router->get("latest", "CommentController@latest");
@@ -17,5 +17,4 @@ $router->group(["prefix" => "comments"], function () use ($router) {
     });
 
     $router->get("by-{what:[a-z\-]+}/{id:[1-9]\d*}[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "CommentController@by");
-
 });

@@ -1,22 +1,23 @@
 <?php
+
 namespace Tests\API\Stats;
 
 use Carbon\Carbon;
 
 /**
  * Class StatsAsRegisteredTest
- * Test stats as registered user
+ * Test stats as registered user.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * @version 1.0.0
- * @package Tests\Section
+ *
+ * @version   1.0.0
  */
 class StatsAsRegisteredTest extends StatsAsPublicTest
 {
     /**
      * POST /stats/activities
-     * Assert that stats are coherent
+     * Assert that stats are coherent.
      *
      * @throws \Exception
      */
@@ -42,10 +43,9 @@ class StatsAsRegisteredTest extends StatsAsPublicTest
         }
     }
 
-
     /**
      * POST /stats/activities
-     * Assert that stats are coherent and limits are respected
+     * Assert that stats are coherent and limits are respected.
      *
      * @throws \Exception
      */
@@ -56,7 +56,7 @@ class StatsAsRegisteredTest extends StatsAsPublicTest
 
         $this->call("post", "/stats/activities", [
             "start" => $start->toDateString(),
-            "end" => $end->toDateString()
+            "end" => $end->toDateString(),
         ]);
 
         // Increase interval limits
@@ -84,16 +84,15 @@ class StatsAsRegisteredTest extends StatsAsPublicTest
         }
     }
 
-
     /**
-     * Test activities stats with the given interval
+     * Test activities stats with the given interval.
      *
      * @param $interval
      */
     public function activitiesWithIntervalSize($interval)
     {
         $this->call("post", "/stats/activities", [
-            "interval" => $interval
+            "interval" => $interval,
         ]);
 
         $data = $this->getResponseData();
@@ -117,16 +116,16 @@ class StatsAsRegisteredTest extends StatsAsPublicTest
             $this->assertEquals($totalCount, $stat->counts->total);
 
             if ($previousCarbonDate !== null) {
-                $this->assertEquals($previousCarbonDate->copy()->addWeek()->toDateString(), $carbonDate->toDateString());
+                $this->assertEquals($previousCarbonDate->copy()->addWeek()
+                    ->toDateString(), $carbonDate->toDateString());
             }
             $previousCarbonDate = $carbonDate;
         }
     }
 
-
     /**
      * POST /stats/activities
-     * Assert that stats are coherent and interval size is respected
+     * Assert that stats are coherent and interval size is respected.
      *
      * @throws \Exception
      */
@@ -135,10 +134,9 @@ class StatsAsRegisteredTest extends StatsAsPublicTest
         $this->activitiesWithIntervalSize("week");
     }
 
-
     /**
      * POST /stats/activities
-     * Assert that stats are coherent and interval size is respected
+     * Assert that stats are coherent and interval size is respected.
      *
      * @throws \Exception
      */
@@ -147,10 +145,9 @@ class StatsAsRegisteredTest extends StatsAsPublicTest
         $this->activitiesWithIntervalSize("month");
     }
 
-
     /**
      * POST /stats/activities
-     * Assert that stats are coherent and interval size is respected
+     * Assert that stats are coherent and interval size is respected.
      *
      * @throws \Exception
      */
@@ -159,16 +156,15 @@ class StatsAsRegisteredTest extends StatsAsPublicTest
         $this->activitiesWithIntervalSize("year");
     }
 
-
     /**
-     * POST /stats/activities as stranger -> HTTP 401 unauthorized
+     * POST /stats/activities as stranger -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
     public function testActivitiesForStranger()
     {
         $this->call("post", "/stats/activities", [
-            "user_id" => $this->stranger()->id
+            "user_id" => $this->stranger()->id,
         ]);
 
         $this->assertHttp401Unauthorized();

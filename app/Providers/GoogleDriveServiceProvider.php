@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Providers;
 
 use Hypweb\Flysystem\GoogleDrive\GoogleDriveAdapter;
@@ -7,11 +8,12 @@ use Illuminate\Support\ServiceProvider;
 use League\Flysystem\Filesystem;
 
 /**
- * Class GoogleDriveServiceProvider
+ * Class GoogleDriveServiceProvider.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Providers
- * @since 1.0.1
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.1
+ *
  * @copyright Mathrix Education SA
  * @codeCoverageIgnore
  */
@@ -19,8 +21,6 @@ class GoogleDriveServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
-     *
-     * @return void
      */
     public function boot()
     {
@@ -36,11 +36,8 @@ class GoogleDriveServiceProvider extends ServiceProvider
         });
     }
 
-
     /**
      * Register the application services.
-     *
-     * @return void
      */
     public function register()
     {

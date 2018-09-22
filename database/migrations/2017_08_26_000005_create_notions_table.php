@@ -5,18 +5,18 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
 /**
- * Class CreateNotionsTable
+ * Class CreateNotionsTable.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @since 1.0.0
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ *
+ * @since     1.0.0
+ *
  * @copyright Mathrix Education SA
  */
 class CreateNotionsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -25,20 +25,22 @@ class CreateNotionsTable extends Migration
             $table->string("name");
             $table->string("slug");
             $table->enum("type", Notion::TYPES);
-            $table->integer("order")->default(0);
-            $table->boolean("visible")->default(true);
-            $table->integer("chapter_id")->unsigned();
+            $table->integer("order")
+                ->default(0);
+            $table->boolean("visible")
+                ->default(true);
+            $table->integer("chapter_id")
+                ->unsigned();
 
             // Foreign keys
-            $table->foreign("chapter_id")->references("id")->on("chapters");
+            $table->foreign("chapter_id")
+                ->references("id")
+                ->on("chapters");
         });
     }
 
-
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

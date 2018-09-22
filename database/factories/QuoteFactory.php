@@ -3,7 +3,7 @@
 use App\Models\Quote;
 use Faker\Generator;
 
-/**
+/*
  * QuoteFactory
  *
  * @author Mathrix Team
@@ -12,6 +12,6 @@ use Faker\Generator;
 $factory->define(Quote::class, function (Generator $faker) {
     return [
         "content" => $faker->sentence(10),
-        "author" => $faker->firstName . " " . $faker->lastName
+        "author" => $faker->firstName . " " . $faker->lastName,
     ];
 });

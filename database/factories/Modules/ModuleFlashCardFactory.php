@@ -2,7 +2,7 @@
 
 use App\Models\Module;
 
-/**
+/*
  * ModuleFlashCardFactory
  *
  * @author Mathrix Team

@@ -1,21 +1,22 @@
 <?php
+
 namespace Tests\API\Posts;
 
 use Tests\API\ScopeTestCase;
 
 /**
  * Class PostsAsPublicTest
- * Test Posts as public (non-logged user)
+ * Test Posts as public (non-logged user).
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
- * @version 1.0.0
- * @package Tests\Posts
+ *
+ * @version   1.0.0
  */
 class PostsAsPublicTest extends ScopeTestCase
 {
     /**
-     * GET /posts
+     * GET /posts.
      *
      * @throws \Exception
      */
@@ -24,9 +25,8 @@ class PostsAsPublicTest extends ScopeTestCase
         $this->genericIndexSuccess();
     }
 
-
     /**
-     * POST /notions -> HTTP 401 unauthorized
+     * POST /notions -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -35,9 +35,8 @@ class PostsAsPublicTest extends ScopeTestCase
         $this->genericAddUnauthorized();
     }
 
-
     /**
-     * PATCH /notions/{id} -> HTTP 401 unauthorized
+     * PATCH /notions/{id} -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
@@ -46,9 +45,8 @@ class PostsAsPublicTest extends ScopeTestCase
         $this->genericEditUnauthorized();
     }
 
-
     /**
-     * DELETE /notions/{id} -> HTTP 401 unauthorized
+     * DELETE /notions/{id} -> HTTP 401 unauthorized.
      *
      * @throws \Exception
      */
