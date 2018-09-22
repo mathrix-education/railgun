@@ -52,6 +52,7 @@ class StripeMigrationIntegrationTest extends BraintreeTestCase
         ]);
         Passport::actingAs($user, ["registered"]);
 
+        // Do request
         $this->json("patch", "/users/{$user->id}/payment-method", [
             "paymentMethodNonce" => "fake-valid-visa-nonce"
         ]);
