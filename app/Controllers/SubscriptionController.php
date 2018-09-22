@@ -296,7 +296,7 @@ class SubscriptionController extends Controller
             /** @var \Braintree_Subscription $subscription */
             $subscription = $subscriptionResult->subscription;
 
-            $customerResultSearch = \Braintree_Customer::search([
+            $customerResultSearch = \Braintree\Customer::search([
                 \Braintree_CustomerSearch::paymentMethodToken()
                     ->is($subscription->paymentMethodToken),
             ]);
