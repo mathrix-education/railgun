@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Console\Commands\Backup\BackupCdn;
 use App\Console\Commands\Braintree\BraintreeCheck;
 use App\Console\Commands\Clean;
+use App\Console\Commands\Clear\ClearCache;
 use App\Console\Commands\Dry;
 use App\Console\Commands\Format\FormatCheckEnvironments;
 use App\Console\Commands\Format\FormatCopyrightChecker;
@@ -45,6 +46,8 @@ class Kernel extends ConsoleKernel
         BackupCdn::class,
         // braintree
         BraintreeCheck::class,
+        // clear
+        ClearCache::class,
         // format:
         FormatCopyrightChecker::class,
         FormatCheckEnvironments::class,

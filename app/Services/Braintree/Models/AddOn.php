@@ -2,6 +2,7 @@
 
 namespace App\Services\Braintree\Models;
 
+use App\Services\Braintree\Formatter;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;

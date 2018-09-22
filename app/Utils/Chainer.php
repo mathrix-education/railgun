@@ -89,7 +89,12 @@ class Chainer
             $responseSubKey = $params[2];
 
             if (empty($this->responseData[$responseKey]->{$responseSubKey})) {
-                throw new Http400InvalidRequestException("Unable to find the key $responseKey.$responseSubKey");
+                throw new Http400InvalidRequestException(
+                    "Unable to find the key $responseKey.$responseSubKey",
+                    400,
+                    null,
+                    $this->responseData
+                );
             }
 
             $toParse = str_replace($match, $this->responseData[$responseKey]->{$responseSubKey}, $toParse);

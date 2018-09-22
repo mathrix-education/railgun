@@ -43,7 +43,7 @@ class Report extends BaseModel
         "context" => "max:255",
         "type" => "required",
         "content" => "required",
-        "module_id" => "exists:modules,id"
+        "module_id" => "exists:modules,id",
         "visible" => "boolean",
         "slug" => "required|max:255",
     ];

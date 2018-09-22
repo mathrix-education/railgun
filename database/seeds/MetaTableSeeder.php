@@ -41,20 +41,21 @@ class MetaTableSeeder extends BaseTableSeeder
                 $class_ = $user->class_;
                 /** @var Discipline $discipline */
                 $discipline = $user->class_->disciplines()
+                    ->has("chapters")
                     ->inRandomOrder()
-                    ->first();
+                    ->firstOrFail();
                 /** @var Chapter $chapter */
                 $chapter = $discipline->chapters()
                     ->inRandomOrder()
-                    ->first();
+                    ->firstOrFail();
                 /** @var Notion $notion */
                 $notion = $chapter->notions()
                     ->inRandomOrder()
-                    ->first();
+                    ->firstOrFail();
                 /** @var Activity $activity */
                 $activity = $notion->activities()
                     ->inRandomOrder()
-                    ->first();
+                    ->firstOrFail();
 
                 $statusId = random_int(0, 2);
 

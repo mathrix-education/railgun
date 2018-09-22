@@ -143,7 +143,7 @@ class ProductController extends BaseController
             if ($cart->getDiscount() !== null) {
                 $discount = $cart->getDiscount();
                 if ($discount->counter !== null && $discount->counter !== -1) {
-                    --$discount->counter;
+                    $discount->counter--;
                     $discount->save();
                 }
             }

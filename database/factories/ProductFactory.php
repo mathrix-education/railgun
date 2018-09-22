@@ -20,7 +20,7 @@ $factory->define(Product::class, function (Generator $faker) {
         "image" => null,
         "type" => null,
         "description" => $faker->sentence,
-        "price" => $faker->boolean ? random_int(5, 40) : null,
+        "price" => $faker->boolean ? random_int(5, 40) * 10 : null,
         "visible" => $faker->boolean,
         "module_id" => $faker->boolean ? Module::random()->id : null,
         "created_at" => $created,
