@@ -44,6 +44,7 @@ use Laravel\Passport\Token;
  * @property int                                                   $daily
  * @property int                                                   $daily_achievements
  * @property array                                                 $settings
+ * @property bool                                                  $premium_bypass
  * @property int|null                                              $class_id
  * @property string|null                                           $braintree_id
  * @property string|null                                           $stripe_id
@@ -76,6 +77,7 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereDaily($value)
  * @method static Builder|User whereDailyAchievements($value)
  * @method static Builder|User whereSettings($value)
+ * @method static Builder|User wherePremiumBypass($value)
  * @method static Builder|User whereClassId($value)
  * @method static Builder|User whereBraintreeId($value)
  * @method static Builder|User whereStripeId($value)
@@ -98,7 +100,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     protected $fillable = ["email", "username", "firstname", "lastname", "password", "points", "daily", "settings",
         "class_id"];
     /** @var array The hidden attributes from the model"s JSON */
-    protected $hidden = ["password", "token"];
+    protected $hidden = ["password", "token", "premium_bypass"];
     /** @var array The attributes that should be cast to native types */
     protected $casts = ["settings" => "array"];
     /** @var array The validation rules on create */
@@ -316,9 +318,10 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function getPremiumAttribute()
     {
-        return $this->hasStripeSubscription(self::STRIPE_PLANS)
+        return $this->premium_bypass
             || $this->hasBraintreeSubscription(self::BRAINTREE_PLANS)
-            || $this->isChildOfAFamilyPack();
+            || $this->isChildOfAFamilyPack()
+            || $this->hasStripeSubscription(self::STRIPE_PLANS);
     }
 
     /*
