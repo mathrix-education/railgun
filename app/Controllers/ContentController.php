@@ -6,12 +6,14 @@ use App\Exceptions\Http401UnauthorizedException;
 use App\Models\Activity;
 use App\Models\Chapter;
 use App\Models\Class_;
+use App\Models\Module;
 use App\Models\Notion;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
@@ -30,6 +32,59 @@ use Tinify\Tinify;
  */
 class ContentController extends BaseController
 {
+    /**
+     * Retrieve all routes as csv file
+     *
+     * @return Response
+     */
+    public function routes()
+    {
+        $data = [
+            implode(",", ["uri", "country.name", "class.name", "discipline.name", "chapter.name", "notion.name",
+                "activity.name", "module.id"])
+        ];
+
+        /** @var Chapter[]|Collection $chapters */
+        $chapters = Chapter::all();
+
+        /** @var Chapter $chapter */
+        foreach ($chapters as $chapter) {
+            $class = $chapter->class_;
+            $country = $class->country;
+            $discipline = $chapter->discipline;
+
+            /** @var Notion $notion */
+            foreach ($chapter->notions as $notion) {
+                /** @var Activity $activity */
+                foreach ($notion->activities as $activity) {
+                    /** @var Module $module */
+                    foreach ($activity->modules as $module) {
+                        $data[] = implode(",", [
+                            "/{$country->slug}/{$class->slug}/{$discipline->slug}/{$chapter->slug}/{$notion->slug}"
+                            . "/{$activity->slug}/{$module->uri_front}/{$module->id}",
+                            $country->name,
+                            $class->name,
+                            $discipline->name,
+                            $chapter->name,
+                            $notion->name,
+                            $activity->name,
+                            $module->id
+                        ]);
+                    }
+                }
+            }
+        }
+
+        $response = new Response();
+        $response->withHeaders([
+            "Content-Type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=routes.csv"
+        ]);
+        $response->setContent(implode("\n", $data));
+
+        return $response;
+    }
+
     /**
      * @apiVersion     4.0.0
      *

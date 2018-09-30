@@ -35,6 +35,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property mixed                 $favorite
  * @property mixed                 $to_revise
  * @property bool                  $completed
+ * @property string                $uri_front
  *
  * @method static Builder|Module whereId($value)
  * @method static Builder|Module wherePremium($value)
@@ -180,6 +181,34 @@ class Module extends BaseModel
             ->first();
 
         return $meta === null ? null : $meta->completed;
+    }
+
+    /**
+     * Get the url-friendly module type
+     *
+     * @return string
+     */
+    public function getUriTypeAttribute()
+    {
+        switch ($this->type) {
+            case "mcq":
+                return "exercice";
+            case "mcq-table":
+                return "exercice-qcm";
+            case "match":
+                return "correspondance";
+            case "test":
+                return "interro";
+            case "fill":
+                return "texte-trou";
+            case "flashcard":
+                return "flashcard";
+            case "course":
+                return preg_match("/\[video\]([0-9A-Za-z]+)\[\/video\]/", $this->content) === 1 ? "video" : "cours";
+            default:
+                return null;
+
+        }
     }
 
     /*

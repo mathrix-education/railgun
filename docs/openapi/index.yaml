@@ -16,6 +16,8 @@ tags:
   description: Activities API
 - name: Categories
   description: Categories API
+- name: Content
+  description: Content API
 - name: Products
   description: Products API
 - name: Scores
@@ -31,8 +33,6 @@ tags:
   description: Braintree subscriptions API
 - name: Braintree Transactions
   description: Braintree transactions API
-security:
-- bearerAuth: []
 components:
   securitySchemes:
     registered:

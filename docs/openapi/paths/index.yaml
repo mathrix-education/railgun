@@ -30,6 +30,13 @@
   $ref: ./categories/_categoryId.yaml
 
 
+# -------
+# Content
+# -------
+/content/routes/csv:
+  $ref: ./content/_routes_csv.yaml
+
+
 # --------
 # Products
 # --------
