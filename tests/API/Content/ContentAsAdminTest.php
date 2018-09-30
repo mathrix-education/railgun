@@ -14,4 +14,11 @@ namespace Tests\API\Content;
  */
 class ContentAsAdminTest extends ContentAsModeratorTest
 {
+    public function testContentRoutes()
+    {
+        $this->json("get", "/content/routes");
+
+        $this->assertHttp200Success();
+        $this->debug();
+    }
 }

@@ -35,7 +35,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property mixed                 $favorite
  * @property mixed                 $to_revise
  * @property bool                  $completed
- * @property string                $uri_front
+ * @property string                $uri_type
  *
  * @method static Builder|Module whereId($value)
  * @method static Builder|Module wherePremium($value)

@@ -13,11 +13,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Tinify\Source;
 use Tinify\Tinify;
 
@@ -35,13 +35,27 @@ class ContentController extends BaseController
     /**
      * Retrieve all routes as csv file
      *
-     * @return Response
+     * @return StreamedResponse
+     * @throws Http401UnauthorizedException
      */
-    public function routes()
+    public function routes(Request $request)
     {
+        if (!$request->user()->isAdmin()) {
+            throw new Http401UnauthorizedException();
+        }
+
+        // Intit
         $data = [
-            implode(",", ["uri", "country.name", "class.name", "discipline.name", "chapter.name", "notion.name",
-                "activity.name", "module.id"])
+            [
+                "uri",
+                "country.name",
+                "class.name",
+                "discipline.name",
+                "chapter.name",
+                "notion.name",
+                "activity.name",
+                "module.id"
+            ]
         ];
 
         /** @var Chapter[]|Collection $chapters */
@@ -59,9 +73,9 @@ class ContentController extends BaseController
                 foreach ($notion->activities as $activity) {
                     /** @var Module $module */
                     foreach ($activity->modules as $module) {
-                        $data[] = implode(",", [
+                        $data[] = [
                             "/{$country->slug}/{$class->slug}/{$discipline->slug}/{$chapter->slug}/{$notion->slug}"
-                            . "/{$activity->slug}/{$module->uri_front}/{$module->id}",
+                            . "/{$activity->slug}/{$module->uri_type}/{$module->id}",
                             $country->name,
                             $class->name,
                             $discipline->name,
@@ -69,18 +83,27 @@ class ContentController extends BaseController
                             $notion->name,
                             $activity->name,
                             $module->id
-                        ]);
+                        ];
                     }
                 }
             }
         }
 
-        $response = new Response();
-        $response->withHeaders([
-            "Content-Type" => "text/csv",
-            "Content-Disposition" => "attachment; filename=routes.csv"
-        ]);
-        $response->setContent(implode("\n", $data));
+        $response = new StreamedResponse(
+            function () use ($data) {
+                // A resource pointer to the output stream for writing the CSV to
+                $handle = fopen("php://output", "w");
+                foreach ($data as $row) {
+                    // Loop through the data and write each entry as a new row in the csv
+                    fputcsv($handle, $row);
+                }
+
+                fclose($handle);
+            }, 200, [
+                "Content-Type" => "text/csv",
+                "Content-Disposition" => "attachment; filename=routes.csv"
+            ]
+        );
 
         return $response;
     }

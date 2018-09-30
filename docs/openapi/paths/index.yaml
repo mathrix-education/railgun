@@ -34,7 +34,7 @@
 # Content
 # -------
 /content/routes/csv:
-  $ref: ./content/_routes_csv.yaml
+  $ref: ./content/_routes.yaml
 
 
 # --------

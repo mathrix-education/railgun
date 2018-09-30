@@ -4,9 +4,9 @@
 $router->group(["prefix" => "content"], function () use ($router) {
     $router->group(["middleware" => "auth:api"], function () use ($router) {
         $router->post("upload", "ContentController@upload");
+        $router->get("routes", "ContentController@routes");
     });
     $router->get("tree", "ContentController@tree");
-    $router->get("routes/csv", "ContentController@routes");
 });
 
 $router->get("search/{query}[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "ContentController@searchGlobal");
