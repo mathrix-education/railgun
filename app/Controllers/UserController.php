@@ -59,6 +59,35 @@ class UserController extends BaseController
      */
 
     /**
+     * Get a user by a key/value
+     *
+     * @param Request    $request
+     * @param int|string $key
+     * @param null       $value
+     *
+     * @return JsonResponse
+     * @throws Http401UnauthorizedException
+     */
+    public function get(Request $request, $key, $value = null): JsonResponse
+    {
+        if (is_numeric($key) && $value === null) {
+            $value = $key;
+            $key = "id";
+        }
+
+        $user = User::where($key, $value)
+            ->firstOrFail();
+        $user->append(["premium", "braintree", "stripe"]);
+
+        if ($request->user() !== null && $request->user()
+                ->cant("get", $user)) {
+            throw new Http401UnauthorizedException();
+        }
+
+        return response()->json($user);
+    }
+
+    /**
      * @apiVersion     4.0.0
      *
      * @api            {patch} /users/{id} Edit
@@ -150,7 +179,7 @@ class UserController extends BaseController
      * @apiParam (Data) {int} [class_id=null] The class id; should be `null` for `moderator` and `admin`
      * @apiParam (Data) {int} [settings.facebook_id] The facebook id
      * @apiUse         UserModel
-     * @apiError (Error 422) validation The given data failed to pass validation
+     * @apiError (Error 422) validatio  n The given data failed to pass validation
      * @apiError (Error 422) save The validated user save failed
      * @apiError (Error 502) email_not_sent Unable to sent reset email
      *
