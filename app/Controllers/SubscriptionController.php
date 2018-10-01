@@ -140,7 +140,7 @@ class SubscriptionController extends Controller
 
         $plan = $request->input("planId");
         $data = [
-            "merchantAccountId" => "mathrixEUR",
+            "merchantAccountId" => env("BRAINTREE_MERCHANT_ACCOUNT"),
             "id" => $this->generateSubscriptionId(),
             "planId" => $request->input("planId"),
             "neverExpires" => true,
@@ -186,7 +186,7 @@ class SubscriptionController extends Controller
             $trialPrice = $this->getTrialPrice($plan);
 
             $initialSaleData = [
-                "merchantAccountId" => "mathrixEUR",
+                "merchantAccountId" => env("BRAINTREE_MERCHANT_ACCOUNT"),
                 "amount" => $trialPrice,
                 "customerId" => $user->braintree_id,
                 "lineItems" => [
