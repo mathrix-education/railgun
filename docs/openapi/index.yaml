@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Mathrix Education SA API
-  version: 4.1.0
+  version: 4.1.1
   description: This is the official documentation of Mathrix Education SA API.
   contact:
     name: Mathieu Bour
