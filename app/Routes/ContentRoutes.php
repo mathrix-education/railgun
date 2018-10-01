@@ -7,6 +7,7 @@ $router->group(["prefix" => "content"], function () use ($router) {
         $router->get("routes", "ContentController@routes");
     });
     $router->get("tree", "ContentController@tree");
+    $router->post("flat", "ContentController@flat");
 });
 
 $router->get("search/{query}[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "ContentController@searchGlobal");

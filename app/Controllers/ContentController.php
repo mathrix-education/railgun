@@ -6,6 +6,8 @@ use App\Exceptions\Http401UnauthorizedException;
 use App\Models\Activity;
 use App\Models\Chapter;
 use App\Models\Class_;
+use App\Models\Country;
+use App\Models\Discipline;
 use App\Models\Module;
 use App\Models\Notion;
 use Illuminate\Database\Eloquent\Builder;
@@ -104,6 +106,67 @@ class ContentController extends BaseController
                 "Content-Disposition" => "attachment; filename=routes.csv"
             ]
         );
+
+        return $response;
+    }
+
+    /**
+     * Get a flat map of a given content route (country/class/discipline/chapter/notion/activity/module)
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     * @throws ValidationException
+     */
+    public function flat(Request $request)
+    {
+        $this->validate($request, [
+            "country_slug" => "required",
+            "class_slug" => "required",
+            "discipline_slug" => "required",
+            "chapter_slug" => "required",
+            "notion_slug" => "required",
+            "activity_slug" => "required",
+            "module_id" => "required"
+        ]);
+
+        /** @var Country $country */
+        $country = Country::where("slug", "=", $request->input("country_slug"))
+            ->firstOrFail();
+        /** @var Class_ $class */
+        $class = Class_::where("slug", "=", $request->input("class_slug"))
+            ->firstOrFail();
+        /** @var Class_ $class */
+        $discipline = Discipline::where("slug", "=", $request->input("discipline_slug"))
+            ->firstOrFail();
+        /** @var Chapter $chapter */
+        $chapter = Chapter::where([
+            "class_id" => $class->id,
+            "discipline_id" => $discipline->id,
+            "slug" => $request->input("chapter_slug")
+        ])->firstOrFail();
+        /** @var Notion $notion */
+        $notion = $chapter->notions()
+            ->where("notions.slug", "=", $request->input("notion_slug"))
+            ->firstOrFail();
+        /** @var Activity $activity */
+        $activity = $notion->activities()
+            ->where("activities.slug", "=", $request->input("activity_slug"))
+            ->firstOrFail();
+        /** @var Module $module */
+        $module = $activity->modules()
+            ->where("modules.id", "=", $request->input("module_id"))
+            ->firstOrFail();
+
+        $response = new JsonResponse([
+            "country" => $country,
+            "class" => $class,
+            "discipline" => $discipline,
+            "chapter" => $chapter,
+            "notion" => $notion,
+            "activity" => $activity,
+            "module" => $module
+        ]);
 
         return $response;
     }

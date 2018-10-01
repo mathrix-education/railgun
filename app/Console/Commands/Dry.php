@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Models\User;
 use Illuminate\Console\Command;
 
 /**
@@ -25,9 +24,18 @@ class Dry extends Command
 
     public function handle()
     {
-        $email = "leopetrovic640@gmail.com";
-        $user = User::whereEmail($email)->firstOrFail();
-        $user->append(["premium"]);
-        dd($user->jsonSerialize());
+        $a = 15;
+        $b = 0;
+
+        try {
+            $c = $a / $b; // "Risqué"
+        } catch (\Exception $e) {
+            // Si ça crashe
+            dd($e);
+        } finally {
+            // Dans tous les cas
+        }
+
+        $this->line("Hello world");
     }
 }

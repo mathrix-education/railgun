@@ -35,6 +35,8 @@
 # -------
 /content/routes:
   $ref: ./content/_routes.yaml
+/content/flat:
+  $ref: ./content/_flat.yaml
 
 
 # --------

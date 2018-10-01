@@ -1,3 +1,44 @@
+Activity:
+  $ref: ./Activity.yaml
+Category:
+  $ref: ./Category.yaml
+Chapter:
+  $ref: ./Chapter.yaml
+Class:
+  $ref: ./Class.yaml
+Comment:
+  $ref: ./Comment.yaml
+Country:
+  $ref: ./Country.yaml
+Discipline:
+  $ref: ./Discipline.yaml
+Discount:
+  $ref: ./Discount.yaml
+Meta:
+  $ref: ./Meta.yaml
+Module:
+  $ref: ./Module.yaml
+Notion:
+  $ref: ./Notion.yaml
+Post:
+  $ref: ./Post.yaml
+Product:
+  $ref: ./Product.yaml
+Purchase:
+  $ref: ./Purchase.yaml
+Quote:
+  $ref: ./Quote.yaml
+Report:
+  $ref: ./Report.yaml
+Setting:
+  $ref: ./Setting.yaml
+Score:
+  $ref: ./Score.yaml
+User:
+  $ref: ./User.yaml
+Vote:
+  $ref: ./Vote.yaml
+
 Braintree_AddOn:
   $ref: ./Braintree/Braintree_AddOn.yaml
 Braintree_AndroidPayCard:
@@ -32,42 +73,3 @@ Braintree_TransactionStatus:
   $ref: ./Braintree/Braintree_TransactionStatus.yaml
 Braintree_VisaCheckoutDetails:
   $ref: ./Braintree/Braintree_VisaCheckoutDetails.yaml
-
-Activity:
-  $ref: ./Activity.yaml
-Category:
-  $ref: ./Category.yaml
-Chapter:
-  $ref: ./Chapter.yaml
-Class:
-  $ref: ./Class.yaml
-Comment:
-  $ref: ./Comment.yaml
-Country:
-  $ref: ./Country.yaml
-Discount:
-  $ref: ./Discount.yaml
-Meta:
-  $ref: ./Meta.yaml
-Module:
-  $ref: ./Module.yaml
-Notion:
-  $ref: ./Notion.yaml
-Post:
-  $ref: ./Post.yaml
-Product:
-  $ref: ./Product.yaml
-Purchase:
-  $ref: ./Purchase.yaml
-Quote:
-  $ref: ./Quote.yaml
-Report:
-  $ref: ./Report.yaml
-Setting:
-  $ref: ./Setting.yaml
-Score:
-  $ref: ./Score.yaml
-User:
-  $ref: ./User.yaml
-Vote:
-  $ref: ./Vote.yaml
