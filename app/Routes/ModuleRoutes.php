@@ -6,11 +6,14 @@ $router->get("modules[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "ModuleController@i
 $router->group(["prefix" => "modules"], function () use ($router) {
     $router->get("by-{what:[a-z\-]+}/{id:[1-9]\d*}", "ModuleController@by");
     $router->get("by-{what:[a-z\-]+}/{id:[1-9]\d*}/ids", "ModuleController@ids");
+    $router->get("{moduleId:[1-9]\d*}/routes", "ModuleController@routes");
     $router->get("{key:[1-9]\d*}", "ModuleController@get");
     $router->get("{key:[a-z\-]+}/{value:[a-z0-9\-]+}", "ModuleController@get");
 
     $router->group(["middleware" => "auth:api"], function () use ($router) {
         $router->post("", "ModuleController@add");
+        $router->post("{moduleId:[1-9]\d*}/no-index", "ModuleController@noIndex");
+
         $router->patch("{id:[1-9]\d*}", "ModuleController@edit");
         $router->patch("{id:[1-9]\d*}/mark", "ModuleController@mark");
         $router->delete("{id:[1-9]\d*}", "ModuleController@delete");

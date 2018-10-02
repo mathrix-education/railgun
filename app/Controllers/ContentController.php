@@ -10,6 +10,7 @@ use App\Models\Country;
 use App\Models\Discipline;
 use App\Models\Module;
 use App\Models\Notion;
+use App\Utils\RouterFront;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -165,7 +166,10 @@ class ContentController extends BaseController
             "chapter" => $chapter,
             "notion" => $notion,
             "activity" => $activity,
-            "module" => $module
+            "module" => array_merge(
+                $module->toArray(),
+                ["no_index" => RouterFront::noIndex($country, $class, $discipline, $chapter, $notion, $activity, $module)]
+            )
         ]);
 
         return $response;

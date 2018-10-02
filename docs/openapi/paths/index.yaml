@@ -48,6 +48,15 @@
   $ref: ./content/_flat.yaml
 
 
+# -------
+# Content
+# -------
+/modules/{moduleId}/routes:
+  $ref: ./modules/_moduleId_routes.yaml
+/content/{moduleId}/no-index:
+  $ref: ./modules/_moduleId_no-index.yaml
+
+
 # --------
 # Products
 # --------

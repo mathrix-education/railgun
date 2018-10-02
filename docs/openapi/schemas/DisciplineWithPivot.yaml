@@ -1,4 +1,4 @@
-description: Discipline
+description: Discipline with `pivot` field.
 type: object
 properties:
   id:

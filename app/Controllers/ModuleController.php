@@ -6,11 +6,19 @@ use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http401UnauthorizedException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
+use App\Models\Activity;
+use App\Models\Chapter;
+use App\Models\Class_;
+use App\Models\Country;
+use App\Models\Discipline;
 use App\Models\Meta;
 use App\Models\Module;
+use App\Models\Notion;
 use App\Models\User;
+use App\Utils\RouterFront;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Class ModuleController.
@@ -199,5 +207,120 @@ class ModuleController extends BaseController
         $meta->save();
 
         return response()->json(Module::find($id));
+    }
+
+    /**
+     * Get modules routes
+     *
+     * @param int $moduleId
+     *
+     * @return JsonResponse
+     */
+    public function routes(int $moduleId): JsonResponse
+    {
+        $module = Module::findOrFail($moduleId);
+
+        $routes = [];
+
+        foreach ($module->activities as $activity) {
+            foreach ($activity->notions as $notion) {
+                foreach ($notion->chapters as $chapter) {
+                    $class = $chapter->class_;
+                    $discipline = $chapter->discipline;
+                    $country = $class->country;
+
+                    $url = RouterFront::getModuleUrl($country, $class, $discipline, $chapter, $notion, $activity, $module);
+                    $noIndex = RouterFront::noIndex($country, $class, $discipline, $chapter, $notion, $activity, $module);
+
+                    $routes[] = [
+                        "url" => $url,
+                        "no_index" => $noIndex
+                    ];
+                }
+            }
+        }
+
+        $response = new JsonResponse($routes);
+
+        return $response;
+    }
+
+    /**
+     * Mark a content route a no-index.
+     *
+     * @param Request $request
+     * @param int     $moduleId
+     *
+     * @return JsonResponse
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
+     * @throws ValidationException
+     * @throws Http400InvalidRequestException
+     */
+    public function noIndex(Request $request, int $moduleId)
+    {
+        $request->user()->canOrFail("noIndex", Module::class);
+
+        $this->validate($request, [
+            "country_id" => "required|exists:countries,id",
+            "class_id" => "required|exists:classes,id",
+            "discipline_id" => "required|exists:disciplines,id",
+            "chapter_id" => "required|exists:chapters,id",
+            "notion_id" => "required|exists:notions,id",
+            "activity_id" => "required|exists:activities,id",
+        ]);
+
+        $country = Country::findOrFail($request->input("country_id"));
+        $class = Class_::findOrFail($request->input("class_id"));
+        $discipline = Discipline::findOrFail($request->input("discipline_id"));
+        $chapter = Chapter::findOrFail($request->input("chapter_id"));
+        $notion = Notion::findOrFail($request->input("notion_id"));
+        $activity = Activity::findOrFail($request->input("activity_id"));
+        $module = Module::findOrFail($moduleId);
+
+        $cancel = $request->input("cancel", false);
+        $noIndexed = RouterFront::noIndex($country, $class, $discipline, $chapter, $notion, $activity, $module);
+
+        if (!$cancel && $noIndexed) {
+            throw new Http400InvalidRequestException("Already marked as no-index");
+        } elseif ($cancel && $noIndexed) {
+            $existingMeta = Meta::where([
+                ["country_id", "=", $country->id],
+                ["class_id", "=", $class->id],
+                ["discipline_id", "=", $discipline->id],
+                ["chapter_id", "=", $chapter->id],
+                ["notion_id", "=", $notion->id],
+                ["activity_id", "=", $activity->id],
+                ["module_id", "=", $module->id],
+                ["no_index", "=", false]
+            ])
+                ->whereNull("user_id")
+                ->firstOrFail();
+            $existingMeta->delete();
+        } else {
+            $meta = new Meta([
+                "favorite" => false,
+                "to_revise" => false,
+                "completed" => false,
+                "no_index" => true,
+                "user_id" => null,
+                "country_id" => $country->id,
+                "class_id" => $class->id,
+                "discipline_id" => $discipline->id,
+                "chapter_id" => $chapter->id,
+                "notion_id" => $notion->id,
+                "activity_id" => $activity->id,
+                "module_id" => $module->id
+            ]);
+            $meta->save();
+        }
+
+        $module = Module::findOrFail($moduleId);
+        $response = new JsonResponse(array_merge(
+            $module->toArray(),
+            ["no_index" => RouterFront::noIndex($country, $class, $discipline, $chapter, $notion, $activity, $module)]
+        ));
+
+        return $response;
     }
 }

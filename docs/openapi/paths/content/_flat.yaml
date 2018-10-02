@@ -67,4 +67,4 @@ post:
               activity:
                 $ref: '../../index.yaml#/components/schemas/Activity'
               module:
-                $ref: '../../index.yaml#/components/schemas/Module'
+                $ref: '../../index.yaml#/components/schemas/ModuleWithNoIndex'

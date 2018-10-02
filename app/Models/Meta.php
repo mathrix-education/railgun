@@ -18,7 +18,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property bool        $favorite
  * @property bool        $to_revise
  * @property bool        $completed
- * @property int         $user_id
+ * @property bool        $no_index
+ * @property int|null    $user_id
  * @property int|null    $country_id
  * @property int|null    $class_id
  * @property int|null    $discipline_id
@@ -41,6 +42,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Meta whereFavorite($value)
  * @method static Builder|Meta whereToRevise($value)
  * @method static Builder|Meta whereCompleted($value)
+ * @method static Builder|Meta whereNoIndex($value)
  * @method static Builder|Meta whereUserId($value)
  * @method static Builder|Meta whereCountryId($value)
  * @method static Builder|Meta whereDisciplineId($value)
@@ -58,14 +60,14 @@ class Meta extends BaseModel
     /** @var bool Indicates if the model should be timestamped */
     public $timestamps = true;
     /** @var array The attributes that are mass assignable */
-    public $fillable = ["id", "favorite", "to_revise", "completed", "user_id", "country_id", "class_id", "discipline_id",
-        "chapter_id", "notion_id", "activity_id", "module_id", "created_at", "updated_at"];
+    public $fillable = ["id", "favorite", "to_revise", "completed", "no_index", "user_id", "country_id", "class_id",
+        "discipline_id", "chapter_id", "notion_id", "activity_id", "module_id", "created_at", "updated_at"];
     /** @var array The validation rules on create */
     protected $rules = [
         "favorite" => "boolean",
         "to_revise" => "boolean",
         "completed" => "boolean",
-        "user_id" => "required|exists:users,id",
+        "user_id" => "nullable|exists:users,id",
         "country_id" => "required|exists:countries,id",
         "class_id" => "required|exists:classes,id",
         "discipline_id" => "required|exists:disciplines,id",
@@ -79,6 +81,7 @@ class Meta extends BaseModel
         "favorite" => "boolean",
         "to_revise" => "boolean",
         "completed" => "boolean",
+        "no_index" => "boolean"
     ];
 
     /*

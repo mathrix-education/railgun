@@ -20,6 +20,8 @@ Meta:
   $ref: ./Meta.yaml
 Module:
   $ref: ./Module.yaml
+ModuleWithNoIndex:
+  $ref: ./ModuleWithNoIndex.yaml
 Notion:
   $ref: ./Notion.yaml
 Post:

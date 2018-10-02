@@ -22,6 +22,8 @@ tags:
   description: Disciplines API
 - name: Products
   description: Products API
+- name: Modules
+  description: Modules API
 - name: Scores
   description: Scores API
 - name: Users
