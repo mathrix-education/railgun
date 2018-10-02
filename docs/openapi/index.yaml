@@ -18,6 +18,8 @@ tags:
   description: Categories API
 - name: Content
   description: Content API
+- name: Disciplines
+  description: Disciplines API
 - name: Products
   description: Products API
 - name: Scores

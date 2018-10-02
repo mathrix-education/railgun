@@ -16,6 +16,3 @@ properties:
   beta:
     description: The discipline beta state.
     type: boolean
-  visible:
-    description: The discipline visibility.
-    type: boolean

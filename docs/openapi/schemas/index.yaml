@@ -12,6 +12,8 @@ Country:
   $ref: ./Country.yaml
 Discipline:
   $ref: ./Discipline.yaml
+DisciplineWithPivot:
+  $ref: ./DisciplineWithPivot.yaml
 Discount:
   $ref: ./Discount.yaml
 Meta:

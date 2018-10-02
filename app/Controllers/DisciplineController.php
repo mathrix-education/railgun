@@ -87,24 +87,6 @@ class DisciplineController extends BaseController
     /**
      * @apiVersion     4.0.0
      *
-     * @api            {patch} /disciplines/{id} Edit
-     * @apiGroup       Disciplines
-     * @apiName        DisciplineEdit
-     * @apiDescription Edit a discipline
-     * @apiPermission  admin
-     * @apiUse         Bearer
-     * @apiParam {int} id The discipline id
-     * @apiUse         DisciplineRequest
-     * @apiUse         DisciplineModel
-     * @apiUse         Http401Unauthorized
-     * @apiUse         Http404ModelNotFound
-     * @apiUse         Http422ModelSave
-     * @apiUse         Http422ModelValidation
-     */
-
-    /**
-     * @apiVersion     4.0.0
-     *
      * @api            {delete} /disciplines/{id} Delete (Not implemented)
      * @apiGroup       Disciplines
      * @apiName        DisciplineDelete
@@ -124,14 +106,4 @@ class DisciplineController extends BaseController
      *
      * @return JsonResponse
      */
-    public function delete(Request $request, int $id): JsonResponse
-    {
-        $discipline = Discipline::find($id);
-        $request->user()
-            ->canOrFail("delete", $discipline);
-
-        throw new Http501NotImplementedException();
-
-        return parent::delete($request, $id);
-    }
 }

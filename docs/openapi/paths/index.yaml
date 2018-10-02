@@ -19,6 +19,15 @@
   $ref: ./activities/_to-revise.yaml
 
 
+# -----------
+# Disciplines
+# -----------
+/disciplines/{disciplineId}:
+  $ref: ./disciplines/_disciplineId.yaml
+/disciplines/by-class/{classId}:
+  $ref: ./disciplines/_by-class_classId.yaml
+
+
 # ----------
 # Categories
 # ----------

@@ -19,7 +19,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string               $name
  * @property string               $slug
  * @property bool                 $beta
- * @property bool                 $visible
  * @property array                $link
  * @property Collection|Chapter[] $chapters
  * @property Collection|Class_[]  $classes
@@ -40,8 +39,7 @@ class Discipline extends BaseModel
     protected $rules = [
         "name" => "required|max:255",
         "slug" => "required|max:255",
-        "beta" => "boolean",
-        "visible" => "boolean",
+        "beta" => "boolean"
     ];
 
     /*
