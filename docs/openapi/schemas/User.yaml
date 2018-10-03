@@ -5,6 +5,10 @@ properties:
     description: The user id.
     type: integer
     example: 24
+  username:
+    description: The user username.
+    type: string
+    example: john.doe
   email:
     description: The user email address.
     type: string
