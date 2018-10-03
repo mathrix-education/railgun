@@ -41,6 +41,16 @@ class Discipline extends BaseModel
         "slug" => "required|max:255",
         "beta" => "boolean"
     ];
+    protected $appends = ["visible"];
+
+    /**
+     * @deprecated
+     * @return bool
+     */
+    public function getVisibleAttribute()
+    {
+        return !empty((bool) $this->pivot->attributes["visible"]);
+    }
 
     /*
     |--------------------------------------------------------------------------
