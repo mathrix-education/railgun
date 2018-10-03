@@ -49,7 +49,11 @@ class Discipline extends BaseModel
      */
     public function getVisibleAttribute()
     {
-        return !empty((bool) $this->pivot->attributes["visible"]);
+        if (isset($this->pivot->attributes["visible"])) {
+            return !empty((bool) $this->pivot->attributes["visible"]);
+        } else {
+            return null;
+        }
     }
 
     /*
