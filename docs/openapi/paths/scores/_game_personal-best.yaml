@@ -1,0 +1,13 @@
+post:
+  tags:
+  - Scores
+  summary: Personal best
+  description: Get the user personal best score
+  operationId: scoresPersonalBest
+  responses:
+    200:
+      description: The user personal best score.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Score'

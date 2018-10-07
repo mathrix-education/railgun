@@ -79,6 +79,10 @@
   $ref: ./scores/_game_token.yaml
 /scores/{game}/top/{?interval}/{?count}:
   $ref: ./scores/_game_top.yaml
+/scores/{game}/around/{score}/{?delta}:
+  $ref: ./scores/_game_around_score_delta.yaml
+/scores/{game}/personal-best:
+  $ref: ./scores/_game_personal-best.yaml
 
 
 # -----

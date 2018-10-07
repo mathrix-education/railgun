@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7dbc6780a64cecec9a2500e1517ce862",
+    "content-hash": "95818df11c6491db8ff694eeeee239b1",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -781,12 +781,12 @@
             "version": "v2.2.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/google/google-api-php-client.git",
+                "url": "https://github.com/googleapis/google-api-php-client.git",
                 "reference": "4e0fd83510e579043e10e565528b323b7c2b3c81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/google/google-api-php-client/zipball/4e0fd83510e579043e10e565528b323b7c2b3c81",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client/zipball/4e0fd83510e579043e10e565528b323b7c2b3c81",
                 "reference": "4e0fd83510e579043e10e565528b323b7c2b3c81",
                 "shasum": ""
             },
@@ -840,12 +840,12 @@
             "version": "v0.69",
             "source": {
                 "type": "git",
-                "url": "https://github.com/google/google-api-php-client-services.git",
+                "url": "https://github.com/googleapis/google-api-php-client-services.git",
                 "reference": "6e2507a5bb39d970ae98cc2f1421012e7b38248f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/google/google-api-php-client-services/zipball/6e2507a5bb39d970ae98cc2f1421012e7b38248f",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/6e2507a5bb39d970ae98cc2f1421012e7b38248f",
                 "reference": "6e2507a5bb39d970ae98cc2f1421012e7b38248f",
                 "shasum": ""
             },
@@ -877,12 +877,12 @@
             "version": "v1.3.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/google/google-auth-library-php.git",
+                "url": "https://github.com/googleapis/google-auth-library-php.git",
                 "reference": "af72b3f50420c801dc35cc07b1fa429ae027b847"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/google/google-auth-library-php/zipball/af72b3f50420c801dc35cc07b1fa429ae027b847",
+                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/af72b3f50420c801dc35cc07b1fa429ae027b847",
                 "reference": "af72b3f50420c801dc35cc07b1fa429ae027b847",
                 "shasum": ""
             },
@@ -6067,6 +6067,47 @@
             "time": "2017-07-22T11:58:36+00:00"
         },
         {
+            "name": "flow/jsonpath",
+            "version": "0.3.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FlowCommunications/JSONPath.git",
+                "reference": "00aa9c361e4d0a210dd95f3c917a1e0dde3a957f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FlowCommunications/JSONPath/zipball/00aa9c361e4d0a210dd95f3c917a1e0dde3a957f",
+                "reference": "00aa9c361e4d0a210dd95f3c917a1e0dde3a957f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "peekmo/jsonpath": "dev-master",
+                "phpunit/phpunit": "^4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Flow\\JSONPath": "src/",
+                    "Flow\\JSONPath\\Test": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stephen Frank",
+                    "email": "stephen@flowsa.com"
+                }
+            ],
+            "description": "JSONPath implementation for parsing, searching and flattening arrays",
+            "time": "2016-09-06T17:43:18+00:00"
+        },
+        {
             "name": "friendsofphp/php-cs-fixer",
             "version": "v2.13.0",
             "source": {
@@ -6206,6 +6247,48 @@
                 "test"
             ],
             "time": "2015-05-11T14:41:42+00:00"
+        },
+        {
+            "name": "helmich/phpunit-json-assert",
+            "version": "v2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/martin-helmich/phpunit-json-assert.git",
+                "reference": "d8b2ee200ee1be877c9936eabbc35d4f4246d132"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/martin-helmich/phpunit-json-assert/zipball/d8b2ee200ee1be877c9936eabbc35d4f4246d132",
+                "reference": "d8b2ee200ee1be877c9936eabbc35d4f4246d132",
+                "shasum": ""
+            },
+            "require": {
+                "flow/jsonpath": "^0.3.1",
+                "justinrainbow/json-schema": "^5.0",
+                "php": ">=7.0",
+                "phpunit/phpunit": ">=6.0"
+            },
+            "require-dev": {
+                "codeclimate/php-test-reporter": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Helmich\\JsonAssert\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Martin Helmich",
+                    "email": "m.helmich@mittwald.de"
+                }
+            ],
+            "description": "PHPUnit assertions for JSON documents",
+            "time": "2017-09-07T14:39:28+00:00"
         },
         {
             "name": "justinrainbow/json-schema",

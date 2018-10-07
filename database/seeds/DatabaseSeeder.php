@@ -23,5 +23,6 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->call(SettingTableSeeder::class);
         $this->call(ProductTableSeeder::class);
         $this->call(DiscountTableSeeder::class);
+        $this->call(ScoreTableSeeder::class);
     }
 }

@@ -4,6 +4,7 @@ namespace Tests;
 
 use Faker\Factory;
 use Faker\Generator;
+use Helmich\JsonAssert\JsonAssertions;
 use Laravel\Lumen\Testing\TestCase;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
@@ -15,6 +16,8 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  */
 abstract class BaseTestCase extends TestCase
 {
+    use JsonAssertions;
+
     /** @var Generator */
     public $faker;
 

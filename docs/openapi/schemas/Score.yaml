@@ -10,11 +10,10 @@ properties:
     type: integer
     nullable: true
     example: 10000
-  time:
-    description: The score time. May be `null`.
+  rank:
+    description: The score rank.
     type: integer
-    nullable: true
-    example: 17
+    example: 125
   user_id:
     description: The score user id.
     type: integer

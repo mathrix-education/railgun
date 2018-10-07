@@ -25,7 +25,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string      $game
  * @property int         $id
  * @property int|null    $score
- * @property int|null    $time
+ * @property int         $rank
  * @property mixed       $data
  * @property int         $user_id
  * @property Carbon|null $created_at
@@ -36,6 +36,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Score whereGame($value)
  * @method static Builder|Score whereScore($value)
  * @method static Builder|Score whereTime($value)
+ * @method static Builder|Score whereRank($value)
  * @method static Builder|Score whereData($value)
  * @method static Builder|Score whereUserId($value)
  * @method static Builder|Score whereCreatedAt($value)
@@ -45,12 +46,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Score extends BaseModel
 {
     /** @var array The guarded attributes */
-    protected $fillable = ["game", "score", "time", "data", "user_id", "created_at", "updated_at"];
+    protected $fillable = ["game", "score", "data", "user_id", "created_at", "updated_at"];
     /** @var array The validation rules on create */
     protected $rules = [
         "game" => "required",
         "score" => "nullable|integer|min:0",
-        "time" => "nullable|integer|min:0",
         "data" => "nullable|json"
     ];
     /** @var array The attributes that should be cast to native types */

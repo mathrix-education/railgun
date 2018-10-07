@@ -1,0 +1,38 @@
+get:
+  tags:
+  - Scores
+  operationId: scoresAround
+  summary: Around
+  description: Get a game scores around a given score.
+  parameters:
+  - name: game
+    in: path
+    description: The score game slug
+    required: true
+    schema:
+      type: string
+      example: meteor
+  - name: score
+    in: path
+    description: The score
+    required: true
+    schema:
+      type: integer
+      example: 17000
+  - name: delta
+    in: path
+    description: The number of score to get (`delta` higher, `delta` lower)
+    required: false
+    default: 5
+    schema:
+      type: int
+      example: 5
+  responses:
+    200:
+      description: The around scores.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../index.yaml#/components/schemas/Score'
