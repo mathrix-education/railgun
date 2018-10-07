@@ -7,7 +7,7 @@ get:
   parameters:
   - name: game
     in: path
-    description: The score game slug
+    description: The score game slug.
     required: true
     schema:
       type: string

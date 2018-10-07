@@ -4,6 +4,14 @@ post:
   summary: Personal best
   description: Get the user personal best score
   operationId: scoresPersonalBest
+  parameters:
+  - name: game
+    in: path
+    description: The score game slug.
+    required: true
+    schema:
+      type: string
+      example: meteor
   responses:
     200:
       description: The user personal best score.
