@@ -1,4 +1,4 @@
-post:
+get:
   tags:
   - Scores
   summary: Personal best
