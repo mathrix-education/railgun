@@ -140,6 +140,7 @@ class ScoreController extends BaseController
                 ["game", "=", $game],
                 ["user_id", "=", $user->id]
             ])
+            ->orderByDesc("score")
             ->first();
 
         $response = new JsonResponse($score ?? []);
