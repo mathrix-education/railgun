@@ -354,7 +354,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function getFamilyPackIdAsParentAttribute()
     {
-        return $this->familyPackAsParent->id;
+        return $this->familyPackAsParent !== null ? $this->familyPackAsParent->id : null;
     }
 
     /**
