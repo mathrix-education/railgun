@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
@@ -46,14 +47,17 @@ use Laravel\Passport\Token;
  * @property array                                                 $settings
  * @property bool                                                  $premium_bypass
  * @property int|null                                              $class_id
+ * @property int|null                                              $family_pack_id
  * @property string|null                                           $braintree_id
  * @property string|null                                           $stripe_id
  * @property Carbon                                                $created_at
  * @property Carbon                                                $updated_at
- * @property \Braintree_Customer|null                              $braintree
+ * @property \Braintree\Customer|null                              $braintree
  * @property bool                                                  $premium
  * @property int                                                   $daily_points
  * @property Class_                                                $class_
+ * @property FamilyPack                                            $familyPackAsParent
+ * @property FamilyPack                                            $familyPackAsChild
  * @property Collection|Client[]                                   $clients
  * @property Collection|Comment[]                                  $comments
  * @property DatabaseNotificationCollection|DatabaseNotification[] $notifications
@@ -119,7 +123,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     /** @var array The relations to include by default */
     protected $with = ["class_", "purchases"];
     /** @var array The virtual attributes */
-    protected $appends = ["daily_points"];
+    protected $appends = ["daily_points", "family_pack_id_as_parent"];
 
     /*
     |--------------------------------------------------------------------------
@@ -273,16 +277,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
     /**
-     * HasMany FamilyPack (as parent).
-     *
-     * @return HasMany
-     */
-    public function familyPacksParent()
-    {
-        return $this->hasMany(FamilyPack::class, "parent_id");
-    }
-
-    /**
      * daily_points attribute.
      *
      * @return int
@@ -319,8 +313,8 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function getPremiumAttribute()
     {
         return $this->premium_bypass
-            || $this->hasBraintreeSubscription(self::BRAINTREE_PLANS)
             || $this->isChildOfAFamilyPack()
+            || $this->hasBraintreeSubscription(self::BRAINTREE_PLANS)
             || $this->hasStripeSubscription(self::STRIPE_PLANS);
     }
 
@@ -329,39 +323,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     | Attributes
     |--------------------------------------------------------------------------
     */
-
-    /**
-     * Check if the user is a child of a family pack (allow to grant premium membership).
-     *
-     * @return bool
-     */
-    public function isChildOfAFamilyPack(): bool
-    {
-        $familyPacks = $this->familyPackChild()
-            ->get();
-
-        if ($familyPacks->isEmpty()) {
-            return false;
-        }
-        /** @var FamilyPack $familyPack */
-        $familyPack = $familyPacks->first(); // User should have only one family pack linked
-        /** @var User $parent */
-        $parent = self::where("id", "=", $familyPack->parent_id)
-            ->firstOrFail();
-        $parent->append(["premium", "braintree"]);
-
-        return $parent->premium;
-    }
-
-    /**
-     * HasMany FamilyPack (as child).
-     *
-     * @return HasMany
-     */
-    public function familyPackChild()
-    {
-        return $this->hasMany(FamilyPack::class, "child_id");
-    }
 
     /**
      * braintree attribute.
@@ -385,10 +346,53 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     /*
     |--------------------------------------------------------------------------
+    | Family pack-related
+    |--------------------------------------------------------------------------
+    */
+    /**
+     * @return int
+     */
+    public function getFamilyPackIdAsParentAttribute()
+    {
+        return $this->familyPackAsParent->id;
+    }
+
+    /**
+     * HasOne FamilyPack (as parent).
+     *
+     * @return HasOne
+     */
+    public function familyPackAsParent()
+    {
+        return $this->hasOne(FamilyPack::class, "parent_id");
+    }
+
+    /**
+     * BelongsTo FamilyPack (as child).
+     *
+     * @return BelongsTo
+     */
+    public function familyPackAsChild()
+    {
+        return $this->belongsTo(FamilyPack::class, "family_pack_id");
+    }
+
+    /**
+     * Check if the user is a child of a family pack (allow to grant premium membership).
+     *
+     * @return bool
+     */
+    public function isChildOfAFamilyPack(): bool
+    {
+        return $this->familyPackAsChild !== null ? $this->familyPackAsChild->isActive() : false;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
     | Products-related
     |--------------------------------------------------------------------------
     */
-
     /**
      * @param Product $product
      *

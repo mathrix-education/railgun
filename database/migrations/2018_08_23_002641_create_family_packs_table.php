@@ -28,6 +28,7 @@ class CreateFamilyPacksTable extends Migration
                 ->unsigned();
             $table->timestamps();
 
+            // Foreign keys
             $table->foreign("parent_id")
                 ->references("id")
                 ->on("users");

@@ -57,6 +57,13 @@
   $ref: ./modules/_moduleId_no-index.yaml
 
 
+# ------------
+# Family packs
+# ------------
+/family-packs/{familyPackId}/children:
+  $ref: ./family-packs/_familyPackId_children.yaml
+
+
 # --------
 # Products
 # --------

@@ -20,6 +20,8 @@ tags:
   description: Content API
 - name: Disciplines
   description: Disciplines API
+- name: Family Packs
+  description: Family Packs API
 - name: Products
   description: Products API
 - name: Modules

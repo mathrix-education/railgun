@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\User;
 use Illuminate\Console\Command;
 
 /**
@@ -24,18 +25,8 @@ class Dry extends Command
 
     public function handle()
     {
-        $a = 15;
-        $b = 0;
+        $user = User::find(44);
 
-        try {
-            $c = $a / $b; // "Risqué"
-        } catch (\Exception $e) {
-            // Si ça crashe
-            dd($e);
-        } finally {
-            // Dans tous les cas
-        }
-
-        $this->line("Hello world");
+        dd($user->premium);
     }
 }

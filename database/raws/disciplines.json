@@ -3,49 +3,42 @@
     "id": 1,
     "name": "Mathématiques",
     "slug": "maths",
-    "beta": 0,
-    "visible": 1
+    "beta": 0
   },
   {
     "id": 2,
     "name": "Physique",
     "slug": "physique",
-    "beta": 1,
-    "visible": 1
+    "beta": 1
   },
   {
     "id": 3,
     "name": "SVT",
     "slug": "svt",
-    "beta": 1,
-    "visible": 1
+    "beta": 1
   },
   {
     "id": 4,
     "name": "Histoire",
     "slug": "histoire",
-    "beta": 1,
-    "visible": 0
+    "beta": 1
   },
   {
     "id": 5,
     "name": "Géographie",
     "slug": "geographie",
-    "beta": 1,
-    "visible": 0
+    "beta": 1
   },
   {
     "id": 6,
     "name": "Chimie",
     "slug": "chimie",
-    "beta": 1,
-    "visible": 0
+    "beta": 1
   },
   {
     "id": 7,
     "name": "Philosophie",
     "slug": "philosophie",
-    "beta": 1,
-    "visible": 0
+    "beta": 1
   }
 ]

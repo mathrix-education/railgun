@@ -16,6 +16,8 @@ DisciplineWithPivot:
   $ref: ./DisciplineWithPivot.yaml
 Discount:
   $ref: ./Discount.yaml
+FamilyPack:
+  $ref: ./FamilyPack.yaml
 Meta:
   $ref: ./Meta.yaml
 Module:
