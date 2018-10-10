@@ -376,6 +376,7 @@ class UserController extends BaseController
 
         // Update the user points count
         $user->update(["points" => $user->points + $pointsToAdd]);
+        $user->append(["premium", "braintree", "stripe"]);
 
         // Log the points update
         $logData = ["points" => $pointsToAdd];
