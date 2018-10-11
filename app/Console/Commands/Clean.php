@@ -8,7 +8,7 @@ use Illuminate\Console\Command;
  * Class Clean
  * Clean files from cache, logs, builds...
  *
- * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
  * @since     4.1.0
  *

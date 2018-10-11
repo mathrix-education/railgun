@@ -22,14 +22,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property array                $link
  * @property Collection|Chapter[] $chapters
  * @property Collection|Class_[]  $classes
- *
- * @method static Builder|Discipline whereId($value)
- * @method static Builder|Discipline whereName($value)
- * @method static Builder|Discipline whereSlug($value)
- * @method static Builder|Discipline whereBeta($value)
- * @method static Builder|Discipline whereVisible($value)
- *
- * @mixin \Eloquent
  */
 class Discipline extends BaseModel
 {
@@ -61,7 +53,6 @@ class Discipline extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
-
     /**
      * HasMany Chapter.
      *

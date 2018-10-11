@@ -74,6 +74,6 @@ class MetaTableSeeder extends BaseTableSeeder
             }
         }
 
-        $this->seedFromArray($metas, Meta::class, true);
+        $this->seedFromArray($metas, Meta::class, "metas");
     }
 }

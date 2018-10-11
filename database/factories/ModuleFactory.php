@@ -3,7 +3,7 @@
 use App\Models\Module;
 use Faker\Generator;
 
-/*
+/**
  * ModuleFactory & ModuleRandomFactory
  *
  * @author Mathrix Team

@@ -12,7 +12,7 @@ use Illuminate\Console\Command;
 /**
  * Class Road
  *
- * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package   App\Console\Commands
  * @since
  * @copyright Mathrix Education SA

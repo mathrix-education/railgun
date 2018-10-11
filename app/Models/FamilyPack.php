@@ -15,28 +15,19 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * Class FamilyPack.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
  * @since     4.1.0
  *
  * @copyright Mathrix Education SA
  *
- * @property int               $id
- * @property string            $braintree_id
- * @property int               $children_count
- * @property int               $parent_id
- * @property Carbon|null       $created_at
- * @property Carbon|null       $updated_at
- * @property User              $parent
- * @property Collection|User[] $children
- *
- * @method static Builder|FamilyPack whereId($value)
- * @method static Builder|FamilyPack whereBraintreeId($value)
- * @method static Builder|FamilyPack whereChildrenCount($value)
- * @method static Builder|FamilyPack whereParentId($value)
- * @method static Builder|FamilyPack whereCreatedAt($value)
- * @method static Builder|FamilyPack whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property int         $id
+ * @property int         $child_id
+ * @property int         $parent_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property User        $child
+ * @property User        $parent
  */
 class FamilyPack extends BaseModel
 {
@@ -46,6 +37,12 @@ class FamilyPack extends BaseModel
     /** @var array The relations to eager load on every query */
     protected $with = ["parent", "children"];
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Methods
+    |--------------------------------------------------------------------------
+    */
     /**
      * BelongsTo User.
      *

@@ -104,7 +104,7 @@ abstract class BaseTableSeeder extends Seeder
 
         $this->println("<comment>Seeding:</comment> {$options["table"]} from json");
         $data = $this->loadDataFromJson($options["table"], $options["directory"]);
-        $this->seedFromArray($data, $options["modelClass"]);
+        $this->seedFromArray($data, $options["modelClass"], $options["table"]);
         $this->println("<info>Seeded:</info>  {$options["table"]} from json");
     }
 
@@ -183,30 +183,42 @@ abstract class BaseTableSeeder extends Seeder
      * @throws Http422ModelValidationException
      * @throws Exception
      */
-    public function seedFromArray(array $data, $modelClass, bool $display = false)
+    public function seedFromArray(array $data, $modelClass, string $table, int $chunkSize = 100)
     {
-        $table = "";
-
-        if ($display) {
+        if (method_exists($modelClass, "getTableName")) {
             $table = $modelClass::getTableName();
-            $this->println("<comment>Seeding:</comment> $table from factory");
         }
+
+        $this->println("<comment>Seeding:</comment> $table from factory");
 
         // Progress bar
         $this->output->progressStart(count($data));
 
+        $allInsertData = [];
+        $allModelKeys = [];
+
         foreach ($data as $row) {
             /** @var BaseModel $model */
             $model = new $modelClass($row);
-            $model->save();
-            $this->output->progressAdvance();
+            $modelData = $model->getAttributes();
+            $allModelKeys = array_merge($allModelKeys, array_keys($modelData));
+            $allInsertData[] = $modelData;
+        }
+
+        $emptyRow = array_fill_keys($allModelKeys, null);
+        foreach ($allInsertData as $key => $row) {
+            $allInsertData[$key] = array_merge($emptyRow, $row);
+        }
+
+        for ($i = 0; $i < count($allInsertData); $i += $chunkSize) {
+            $insertData = array_slice($allInsertData, $i, $chunkSize);
+            DB::table($table)->insert($insertData);
+            $this->output->progressAdvance(count($insertData));
         }
 
         $this->output->progressFinish();
 
-        if ($display) {
-            $this->println("<info>Seeded:</info>  $table from factory");
-        }
+        $this->println("<info>Seeded:</info>  $table from factory");
     }
 
     public function overwrite($message)
@@ -259,7 +271,7 @@ abstract class BaseTableSeeder extends Seeder
             );
         }
 
-        $this->seedFromArray($data, $options["modelClass"]);
+        $this->seedFromArray($data, $options["modelClass"], $options["table"]);
 
         $this->println("<info>Seeded:</info>  $factoryName from factory");
     }

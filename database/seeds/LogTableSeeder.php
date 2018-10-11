@@ -82,7 +82,7 @@ class LogTableSeeder extends BaseTableSeeder
         $this->println("<info>Generated:</info> {$counter} logs");
 
         $this->println("<comment>Seeding:</comment> logs");
-        $this->seedFromArray($logs, Log::class);
+        $this->seedFromArray($logs, Log::class, "logs");
         $this->println("<info>Seeded:</info> logs");
     }
 }

@@ -58,29 +58,6 @@ class DisciplinesAsAdminTest extends DisciplinesAsModeratorTest
     }
 
     /**
-     * PATCH /disciplines/{id}.
-     *
-     * @throws \Exception
-     */
-    public function testEditWithClasses()
-    {
-        $classIds = Class_::inRandomOrder()->limit(3)->get(["id"])->pluck("id");
-
-        $this->genericEditSuccess([
-            "link" => [
-                "classes" => $classIds,
-            ],
-        ]);
-
-        foreach ($classIds as $classId) {
-            $this->assertInDatabase("class_discipline", [
-                "class_id" => $classId,
-                "discipline_id" => $this->editModelId,
-            ]);
-        }
-    }
-
-    /**
      * DELETE /disciplines/{id}
      *
      * @throws \Exception

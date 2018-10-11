@@ -31,17 +31,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property User        $user
- *
- * @method static Builder|Score whereId($value)
- * @method static Builder|Score whereGame($value)
- * @method static Builder|Score whereScore($value)
- * @method static Builder|Score whereTime($value)
- * @method static Builder|Score whereRank($value)
- * @method static Builder|Score whereData($value)
- * @method static Builder|Score whereUserId($value)
- * @method static Builder|Score whereCreatedAt($value)
- * @method static Builder|Score whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 class Score extends BaseModel
 {

@@ -10,12 +10,11 @@ use ZipArchive;
 
 /**
  * Class BackupCdn.
+ * Artisan command used to save the content of the CDN to the Google Drive disk.
  *
- * @author    Mathrix Back-End Team
- *
- * @since
- *
- * @copyright Mathrix SA
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @since     4.1.0
+ * @copyright Mathrix Education SA
  */
 class BackupCdn extends Command
 {

@@ -23,8 +23,9 @@ class UserPolicy extends BasePolicy
      */
     public function get(User $currentUser, User $user)
     {
-        return $currentUser->isAdmin() || $currentUser->id === $user->id || ($this->atLeastModerator($currentUser) &&
-                $user->type === "registered");
+        return $currentUser->id === $user->id
+            || $currentUser->isAdmin()
+            || ($currentUser->isModerator() && $user->type === "registered");
     }
 
     /**

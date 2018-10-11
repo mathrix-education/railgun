@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Cache;
 /**
  * Class ClearCache
  *
- * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package   App\Console\Commands\Clear
  * @since
  * @copyright Mathrix Education SA

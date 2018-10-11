@@ -10,7 +10,7 @@ use Laravel\Passport\Passport;
 /**
  * Class StripeMigrationIntegrationTest
  *
- * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package   Tests\Braintree
  * @since
  * @copyright Mathrix Education SA

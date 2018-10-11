@@ -4,7 +4,7 @@ namespace App\Notifications;
 /**
  * Class MailNotification
  *
- * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package   App\Notifications
  * @since
  * @copyright Mathrix Education SA

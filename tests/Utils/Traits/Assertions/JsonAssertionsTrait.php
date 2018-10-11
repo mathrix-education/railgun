@@ -5,7 +5,7 @@ namespace Tests\Utils\Traits\Assertions;
 /**
  * Trait JsonAssertionsTrait.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
  * @since     4.0.3
  *

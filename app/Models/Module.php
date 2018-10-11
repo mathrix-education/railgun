@@ -35,20 +35,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property mixed                 $favorite
  * @property mixed                 $to_revise
  * @property bool                  $completed
- * @property string                $uri_type
- *
- * @method static Builder|Module whereId($value)
- * @method static Builder|Module wherePremium($value)
- * @method static Builder|Module whereVisible($value)
- * @method static Builder|Module whereType($value)
- * @method static Builder|Module whereChoices($value)
- * @method static Builder|Module whereContent($value)
- * @method static Builder|Module whereCorrections($value)
- * @method static Builder|Module whereOptions($value)
- * @method static Builder|Module whereQuestions($value)
- * @method static Builder|Module whereSolutions($value)
- *
- * @mixin \Eloquent
  */
 class Module extends BaseModel
 {
