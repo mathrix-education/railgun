@@ -43,7 +43,7 @@ class CommentPolicy extends BasePolicy
      */
     public function edit(User $currentUser, Comment $comment)
     {
-        if ($this->atLeastModerator($currentUser)) {
+        if ($currentUser->isModerator()) {
             return true;
         }
 

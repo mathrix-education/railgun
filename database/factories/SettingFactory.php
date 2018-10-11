@@ -3,10 +3,12 @@
 use App\Models\Setting;
 use Faker\Generator;
 
-/*
+/**
  * SettingFactory
  *
- * @author Mathrix Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
+ *
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->define(Setting::class, function (Generator $faker) {

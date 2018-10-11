@@ -20,14 +20,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $created_at
  * @property string $updated_at
  * @property Module $module
- *
- * @method static Builder|Report whereId($value)
- * @method static Builder|Report whereContent($value)
- * @method static Builder|Report whereStatus($value)
- * @method static Builder|Report whereModuleId($value)
- * @method static Builder|Report whereCreatedAt($value)
- * @method static Builder|Report whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 class Report extends BaseModel
 {

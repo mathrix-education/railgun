@@ -19,6 +19,5 @@ class ContentAsAdminTest extends ContentAsModeratorTest
         $this->json("get", "/content/routes");
 
         $this->assertHttp200Success();
-        $this->debug();
     }
 }

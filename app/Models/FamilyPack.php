@@ -7,45 +7,36 @@ use App\Exceptions\Http401UnauthorizedException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Class FamilyPack.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- *
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @since     4.1.0
- *
  * @copyright Mathrix Education SA
  *
- * @property int               $id
- * @property string            $braintree_id
- * @property int               $children_count
- * @property int               $parent_id
- * @property Carbon|null       $created_at
- * @property Carbon|null       $updated_at
- * @property User              $parent
- * @property Collection|User[] $children
- *
- * @method static Builder|FamilyPack whereId($value)
- * @method static Builder|FamilyPack whereBraintreeId($value)
- * @method static Builder|FamilyPack whereChildrenCount($value)
- * @method static Builder|FamilyPack whereParentId($value)
- * @method static Builder|FamilyPack whereCreatedAt($value)
- * @method static Builder|FamilyPack whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property int         $id
+ * @property string      $braintree_id
+ * @property int         $parent_id
+ * @property int         $children_count
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property User        $child
+ * @property User        $parent
  */
 class FamilyPack extends BaseModel
 {
     public $timestamps = true;
     /** @var array The attributes that are mass assignable */
     protected $fillable = ["braintree_id", "children_count", "parent_id", "created_at", "updated_at"];
-    /** @var array The relations to eager load on every query */
-    protected $with = ["parent", "children"];
 
+    /*
+    |--------------------------------------------------------------------------
+    | Methods
+    |--------------------------------------------------------------------------
+    */
     /**
      * BelongsTo User.
      *
@@ -123,9 +114,8 @@ class FamilyPack extends BaseModel
             $child->family_pack_id = null;
             return $child->save();
         } else {
-            throw new Http400InvalidRequestException(
-                "User with `id` {$child->id} is not a member of the family-pack with `id` {$this->id}"
-            );
+            throw new Http400InvalidRequestException("User with `id` {$child->id} is not a member of the " .
+                "family-pack with `id` {$this->id}");
         }
     }
 }

@@ -8,7 +8,7 @@ use App\Models\Product;
 /**
  * Class DiscountObserver.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
  * @since
  *

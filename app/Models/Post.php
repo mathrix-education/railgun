@@ -29,16 +29,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Category             $category
  * @property User                 $user
  * @property Collection|Comment[] $comments
- *
- * @method static Builder|Post whereId($value)
- * @method static Builder|Post whereSlug($value)
- * @method static Builder|Post whereTitle($value)
- * @method static Builder|Post whereModuleId($value)
- * @method static Builder|Post whereCategoryId($value)
- * @method static Builder|Post whereUserId($value)
- * @method static Builder|Post whereCreatedAt($value)
- * @method static Builder|Post whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 class Post extends BaseModel implements Commentable
 {

@@ -27,15 +27,6 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property int|null        $loggable_id
  * @property User|null       $user
  * @property Activity|Module $loggable
- *
- * @method static Builder|Log whereCreatedAt($value)
- * @method static Builder|Log whereEvent($value)
- * @method static Builder|Log whereId($value)
- * @method static Builder|Log whereLoggableId($value)
- * @method static Builder|Log whereLoggableType($value)
- * @method static Builder|Log whereUserId($value)
- * @method static Builder|Log whereValue($value)
- * @mixin \Eloquent
  */
 class Log extends BaseModel
 {

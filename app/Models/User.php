@@ -3,21 +3,18 @@
 namespace App\Models;
 
 use App\Exceptions\Http400InvalidRequestException;
-use App\Exceptions\Http401UnauthorizedException;
 use App\Models\Traits\BraintreeCustomer;
 use App\Models\Traits\StripeCustomer;
+use App\Models\UserTraits\PermissionsTrait;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Notifications\DatabaseNotification;
-use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\Client;
@@ -32,66 +29,50 @@ use Laravel\Passport\Token;
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
  *
- * @property int                                                   $id
- * @property string|null                                           $username
- * @property string                                                $email
- * @property string|null                                           $firstname
- * @property string|null                                           $lastname
- * @property string                                                $password
- * @property string                                                $type
- * @property string                                                $token
- * @property int                                                   $points
- * @property int                                                   $level
- * @property int                                                   $daily
- * @property int                                                   $daily_achievements
- * @property array                                                 $settings
- * @property bool                                                  $premium_bypass
- * @property int|null                                              $class_id
- * @property int|null                                              $family_pack_id
- * @property string|null                                           $braintree_id
- * @property string|null                                           $stripe_id
- * @property Carbon                                                $created_at
- * @property Carbon                                                $updated_at
- * @property \Braintree\Customer|null                              $braintree
- * @property bool                                                  $premium
- * @property int                                                   $daily_points
- * @property Class_                                                $class_
- * @property FamilyPack                                            $familyPackAsParent
- * @property FamilyPack                                            $familyPackAsChild
- * @property Collection|Client[]                                   $clients
- * @property Collection|Comment[]                                  $comments
- * @property DatabaseNotificationCollection|DatabaseNotification[] $notifications
- * @property Collection|Log[]                                      $logs
- * @property Collection|Meta[]                                     $meta
- * @property Collection|Product[]                                  $products
- * @property Collection|Purchase[]                                 $purchases
- * @property Collection|Token[]                                    $tokens
- * @property Collection|Vote[]                                     $votes
- *
- * @method static Builder|User whereId($value)
- * @method static Builder|User whereUsername($value)
- * @method static Builder|User whereEmail($value)
- * @method static Builder|User whereFirstname($value)
- * @method static Builder|User whereLastname($value)
- * @method static Builder|User whereToken($value)
- * @method static Builder|User wherePassword($value)
- * @method static Builder|User whereType($value)
- * @method static Builder|User wherePoints($value)
- * @method static Builder|User whereLevel($value)
- * @method static Builder|User whereDaily($value)
- * @method static Builder|User whereDailyAchievements($value)
- * @method static Builder|User whereSettings($value)
- * @method static Builder|User wherePremiumBypass($value)
- * @method static Builder|User whereClassId($value)
- * @method static Builder|User whereBraintreeId($value)
- * @method static Builder|User whereStripeId($value)
- * @method static Builder|User whereCreatedAt($value)
- * @method static Builder|User whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property int                      $id
+ * @property string|null              $username
+ * @property string                   $email
+ * @property string|null              $firstname
+ * @property string|null              $lastname
+ * @property string                   $password
+ * @property string                   $type
+ * @property string                   $token
+ * @property int                      $points
+ * @property int                      $level
+ * @property int                      $daily
+ * @property int                      $daily_achievements
+ * @property array                    $settings
+ * @property bool                     $premium_bypass
+ * @property int|null                 $class_id
+ * @property int|null                 $family_pack_id
+ * @property string|null              $braintree_id
+ * @property string|null              $stripe_id
+ * @property Carbon                   $created_at
+ * @property Carbon                   $updated_at
+ * @property \Braintree\Customer|null $braintree
+ * @property bool                     $premium
+ * @property int                      $daily_points
+ * @property Class_                   $class_
+ * @property FamilyPack               $familyPackAsParent
+ * @property FamilyPack               $familyPackAsChild
+ * @property Collection|Client[]      $clients
+ * @property Collection|Comment[]     $comments
+ * @property Collection|Log[]         $logs
+ * @property Collection|Meta[]        $meta
+ * @property Collection|Product[]     $products
+ * @property Collection|Purchase[]    $purchases
+ * @property Collection|Token[]       $tokens
+ * @property Collection|Vote[]        $votes
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
-    use Authenticatable, Authorizable, HasApiTokens, Notifiable, BraintreeCustomer, StripeCustomer {
+    use Authenticatable,
+        Authorizable,
+        HasApiTokens,
+        Notifiable,
+        BraintreeCustomer,
+        StripeCustomer,
+        PermissionsTrait {
         HasApiTokens::tokenCan as passportTokenCan;
     }
 
@@ -100,13 +81,17 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
+
     /** @var array The guarded attributes */
     protected $fillable = ["email", "username", "firstname", "lastname", "password", "points", "daily", "settings",
         "class_id"];
+
     /** @var array The hidden attributes from the model"s JSON */
     protected $hidden = ["password", "token", "premium_bypass"];
+
     /** @var array The attributes that should be cast to native types */
     protected $casts = ["settings" => "array"];
+
     /** @var array The validation rules on create */
     protected $rules = [
         "email" => "required|email|unique:users,email|max:60",
@@ -120,102 +105,18 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "daily" => "nullable|in:10,20,40",
         "class_id" => "nullable|exists:classes,id",
     ];
+
     /** @var array The relations to include by default */
     protected $with = ["class_", "purchases"];
+
     /** @var array The virtual attributes */
-    protected $appends = ["daily_points", "family_pack_id_as_parent"];
-
-    /*
-    |--------------------------------------------------------------------------
-    | Passport
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Chec if user is redactor.
-     *
-     * @return bool
-     */
-    public function isRedactor()
-    {
-        return $this->tokenCan("redactor");
-    }
-
-    /**
-     * Determine if user can do something according to its token.
-     *
-     * @param string $scope the minimum scope
-     *
-     * @return bool
-     */
-    public function tokenCan($scope)
-    {
-        $order = ["admin", "moderator", "redactor", "registered"];
-        $key = array_search($scope, $order, true);
-
-        if ($key !== false) {
-            foreach ($order as $k => $grantedScope) {
-                if ($this->passportTokenCan($grantedScope) && $k <= $key) {
-                    return true;
-                }
-            }
-        }
-
-        return $this->passportTokenCan($scope);
-    }
-
-    /**
-     * Check if user is at least moderator.
-     *
-     * @return bool
-     */
-    public function isModerator()
-    {
-        return $this->tokenCan("moderator");
-    }
-
-    /**
-     * Check if user is administrator.
-     *
-     * @return bool
-     */
-    public function isAdmin()
-    {
-        return $this->tokenCan("admin");
-    }
-
-    /**
-     * Check if user is administrator.
-     *
-     * @return bool
-     */
-    public function isSupport()
-    {
-        return $this->tokenCan("admin") || $this->tokenCan("support");
-    }
-
-    /**
-     * Check if user is authorized to do something; if not throw an exception.
-     *
-     * @see Authorizable
-     *
-     * @param        $ability
-     * @param array  $arguments
-     * @param string $exceptionClass
-     */
-    public function canOrFail($ability, $arguments = [], $exceptionClass = Http401UnauthorizedException::class)
-    {
-        if ($this->cant($ability, $arguments) && class_exists($exceptionClass)) {
-            throw new $exceptionClass();
-        }
-    }
+    protected $appends = ["daily_points"];
 
     /*
     |--------------------------------------------------------------------------
     | Relations
     |--------------------------------------------------------------------------
     */
-
     /**
      * BelongsTo Class_.
      *
@@ -234,6 +135,26 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * HasOne FamilyPack (as parent).
+     *
+     * @return HasOne
+     */
+    public function familyPackAsParent()
+    {
+        return $this->hasOne(FamilyPack::class, "parent_id");
+    }
+
+    /**
+     * BelongsTo FamilyPack (as child).
+     *
+     * @return BelongsTo
+     */
+    public function familyPackAsChild()
+    {
+        return $this->belongsTo(FamilyPack::class, "family_pack_id");
     }
 
     /**
@@ -257,6 +178,16 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
     /**
+     * BelongsToMany Product.
+     *
+     * @return BelongsToMany
+     */
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, "purchases");
+    }
+
+    /**
      * HasMany Purchase.
      *
      * @return HasMany
@@ -276,6 +207,12 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         return $this->hasMany(Vote::class);
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Attributes
+    |--------------------------------------------------------------------------
+    */
     /**
      * daily_points attribute.
      *
@@ -318,65 +255,34 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
             || $this->hasStripeSubscription(self::STRIPE_PLANS);
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Attributes
-    |--------------------------------------------------------------------------
-    */
-
     /**
-     * braintree attribute.
+     * Get the family pack id as parent.
      *
-     * @return \Braintree\Customer|null
-     */
-    public function getBraintreeAttribute(): ?\Braintree_Customer
-    {
-        return $this->isBraintreeCustomer() ? $this->getBraintreeCustomer() : null;
-    }
-
-    /**
-     * stripe attribute.
-     *
-     * @return \Stripe\Customer|null
-     */
-    public function getStripeAttribute(): ?\Stripe\Customer
-    {
-        return $this->isStripeCustomer() ? $this->getStripeCustomer() : null;
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Family pack-related
-    |--------------------------------------------------------------------------
-    */
-    /**
      * @return int
      */
-    public function getFamilyPackIdAsParentAttribute()
+    public function getFamilyPackIdAsParentAttribute(): ?int
     {
+        if ($this->has("family_pack_as_parent")) {
+
+        } else {
+            return null;
+        }
         return $this->familyPackAsParent !== null ? $this->familyPackAsParent->id : null;
     }
 
     /**
-     * HasOne FamilyPack (as parent).
-     *
-     * @return HasOne
+     * Append all required premium attributes
      */
-    public function familyPackAsParent()
+    public function appendPremiumAttributes()
     {
-        return $this->hasOne(FamilyPack::class, "parent_id");
+        $this->append(["premium", "braintree", "stripe", "family_pack_id_as_parent"]);
     }
 
-    /**
-     * BelongsTo FamilyPack (as child).
-     *
-     * @return BelongsTo
-     */
-    public function familyPackAsChild()
-    {
-        return $this->belongsTo(FamilyPack::class, "family_pack_id");
-    }
-
+    /*
+    |--------------------------------------------------------------------------
+    | Methods
+    |--------------------------------------------------------------------------
+    */
     /**
      * Check if the user is a child of a family pack (allow to grant premium membership).
      *
@@ -387,13 +293,9 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         return $this->familyPackAsChild !== null ? $this->familyPackAsChild->isActive() : false;
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Products-related
-    |--------------------------------------------------------------------------
-    */
     /**
+     * Check if user has purchased the given product.
+     *
      * @param Product $product
      *
      * @return bool
@@ -403,15 +305,5 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         return $this->products()
             ->where("product_id", "=", $product->id)
             ->exists();
-    }
-
-    /**
-     * HasManyThrough Product.
-     *
-     * @return BelongsToMany
-     */
-    public function products()
-    {
-        return $this->belongsToMany(Product::class, "purchases");
     }
 }

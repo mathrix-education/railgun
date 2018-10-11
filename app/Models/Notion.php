@@ -24,15 +24,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property Collection|Activity[] $activities
  * @property Collection|Chapter[]  $chapters
  * @property Collection|Comment[]  $comments
- *
- * @method static Builder|Notion whereId($value)
- * @method static Builder|Notion whereName($value)
- * @method static Builder|Notion whereSlug($value)
- * @method static Builder|Notion whereOrder($value)
- * @method static Builder|Notion wherePremium($value)
- * @method static Builder|Notion whereVisible($value)
- * @method static Builder|Notion whereType($value)
- * @mixin \Eloquent
  */
 class Notion extends BaseModel
 {

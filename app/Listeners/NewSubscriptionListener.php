@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Notification;
 /**
  * Class NewSubscriptionListener.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
  * @since     4.1.0
  *

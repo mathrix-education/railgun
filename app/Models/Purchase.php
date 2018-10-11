@@ -23,15 +23,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Carbon|null $updated_at
  * @property User        $user
  * @property Product     $product
- *
- * @method static Builder|Purchase whereId($value)
- * @method static Builder|Purchase wherePrice($value)
- * @method static Builder|Purchase whereRefund($value)
- * @method static Builder|Purchase whereUserId($value)
- * @method static Builder|Purchase whereProductId($value)
- * @method static Builder|Purchase whereCreatedAt($value)
- * @method static Builder|Purchase whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 class Purchase extends BaseModel
 {

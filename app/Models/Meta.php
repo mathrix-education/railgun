@@ -37,23 +37,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Module      $module
  * @property Carbon      $created_at
  * @property Carbon      $updated_at
- *
- * @method static Builder|Meta whereId($value)
- * @method static Builder|Meta whereFavorite($value)
- * @method static Builder|Meta whereToRevise($value)
- * @method static Builder|Meta whereCompleted($value)
- * @method static Builder|Meta whereNoIndex($value)
- * @method static Builder|Meta whereUserId($value)
- * @method static Builder|Meta whereCountryId($value)
- * @method static Builder|Meta whereDisciplineId($value)
- * @method static Builder|Meta whereNotionId($value)
- * @method static Builder|Meta whereChapterId($value)
- * @method static Builder|Meta whereClassId($value)
- * @method static Builder|Meta whereActivityId($value)
- * @method static Builder|Meta whereModuleId($value)
- * @method static Builder|Meta whereCreatedAt($value)
- * @method static Builder|Meta whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 class Meta extends BaseModel
 {

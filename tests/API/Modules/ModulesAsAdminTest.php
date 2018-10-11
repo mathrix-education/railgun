@@ -35,7 +35,5 @@ class ModulesAsAdminTest extends ModulesAsModeratorTest
             "activity_id" => $tree->getActivity()->id,
             "module_id" => $tree->getModule()->id
         ]);
-
-        $this->debug();
     }
 }

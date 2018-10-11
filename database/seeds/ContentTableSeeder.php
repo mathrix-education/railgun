@@ -1,12 +1,7 @@
 <?php
 
-use App\Exceptions\Http422ModelSaveException;
-use App\Exceptions\Http422ModelValidationException;
 use App\Models\Activity;
 use App\Models\Chapter;
-use App\Models\Class_;
-use App\Models\Country;
-use App\Models\Discipline;
 use App\Models\Module;
 use App\Models\Notion;
 
@@ -22,45 +17,27 @@ use App\Models\Notion;
 class ContentTableSeeder extends BaseTableSeeder
 {
     /**
-     * @throws Exception
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function run()
     {
+        $withOrder = function(int $order, array $data) {
+            return array_merge($data, ["order" => $order]);
+        };
+
         // Content
-        $this->seedFromJson([
-            "modelClass" => Country::class,
-        ]);
-        $this->seedFromJson([
-            "modelClass" => Class_::class,
-            "table" => "classes",
-        ]);
-        $this->seedFromJson([
-            "modelClass" => Discipline::class,
-        ]);
-        $this->link(Class_::class, Discipline::class);
+        $this->seedFromJson("countries");
+        $this->seedFromJson("classes");
+        $this->seedFromJson("disciplines");
+        $this->seedFromJson("class_discipline");
 
-        $this->seedFromFactory([
-            "modelClass" => Chapter::class,
-            "count" => random_int(50, 70),
-        ]);
-        $this->seedFromFactory([
-            "modelClass" => Notion::class,
-            "count" => random_int(100, 200),
-        ]);
-        $this->seedFromFactory([
-            "modelClass" => Activity::class,
-            "count" => random_int(150, 300),
-        ]);
-        $this->seedFromFactory([
-            "modelClass" => Module::class,
-            "subFactory" => "random",
-            "count" => random_int(200, 350),
-        ]);
+        $this->seedFromFactory(Chapter::class, random_int(50, 70));
+        $this->seedFromFactory(Notion::class, random_int(100, 200));
+        $this->seedFromFactory(Activity::class, random_int(150, 300));
+        $this->seedFromSubFactory(Module::class, "random", random_int(200, 350));
 
-        $this->link(Chapter::class, Notion::class);
-        $this->link(Notion::class, Activity::class);
-        $this->link(Activity::class, Module::class);
+        $this->link(Chapter::class, Notion::class, 3, 5, $withOrder);
+        $this->link(Notion::class, Activity::class, 3, 5, $withOrder);
+        $this->link(Activity::class, Module::class, 3, 5, $withOrder);
     }
 }

@@ -8,16 +8,26 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 
 /**
- * Trait Customer.
+ * Trait BraintreeCustomer.
+ * Contains all functions to access user's Braintree customer profile.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
  * @since     4.1.0
- *
  * @copyright Mathrix Education SA
  */
 trait BraintreeCustomer
 {
+
+    /**
+     * braintree attribute.
+     *
+     * @return \Braintree\Customer|null
+     */
+    public function getBraintreeAttribute(): ?\Braintree_Customer
+    {
+        return $this->isBraintreeCustomer() ? $this->getBraintreeCustomer() : null;
+    }
+
     /**
      * Create a Braintree customer associated with this user account.
      *

@@ -1,8 +1,6 @@
 <?php
 
 use App\Exceptions\Http400InvalidRequestException;
-use App\Exceptions\Http422ModelSaveException;
-use App\Exceptions\Http422ModelValidationException;
 use App\Models\Log;
 use App\Models\Module;
 use App\Models\User;
@@ -21,9 +19,7 @@ class LogTableSeeder extends BaseTableSeeder
 {
     /**
      * @throws Http400InvalidRequestException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
-     * @throws Exception
+     * @throws \Exception
      */
     public function run()
     {
@@ -33,7 +29,7 @@ class LogTableSeeder extends BaseTableSeeder
         $logs = [];
         $counter = 0;
 
-        $this->println("<comment>Generating:</comment> logs");
+        $this->output->writeln("<comment>Generating:</comment> logs");
 
         foreach ($users as $user) {
             /** @var User $user */
@@ -66,7 +62,7 @@ class LogTableSeeder extends BaseTableSeeder
                             "loggable_id" => $module->id,
                             "created_at" => $dateIterator,
                         ])
-                            ->toArray();
+                            ->getAttributes();
                         ++$counter;
 
                         if ($counter % 100 === 0) {
@@ -78,11 +74,11 @@ class LogTableSeeder extends BaseTableSeeder
                 $dateIterator->addDay(1);
             }
         }
-        $this->println("");
-        $this->println("<info>Generated:</info> {$counter} logs");
+        $this->output->writeln("");
+        $this->output->writeln("<info>Generated:</info> {$counter} logs");
 
-        $this->println("<comment>Seeding:</comment> logs");
-        $this->seedFromArray($logs, Log::class);
-        $this->println("<info>Seeded:</info> logs");
+        $this->output->writeln("<comment>Seeding:</comment> logs");
+        $this->seedFromArray($logs, "logs");
+        $this->output->writeln("<info>Seeded:</info> logs");
     }
 }

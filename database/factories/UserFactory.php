@@ -6,10 +6,12 @@ use App\Models\User;
 use Faker\Generator;
 use Illuminate\Support\Facades\Hash;
 
-/*
+/**
  * UserFactory
  *
- * @author Mathrix Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
+ *
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->define(User::class, function (Generator $faker) {

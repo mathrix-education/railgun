@@ -26,15 +26,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property Class_              $class_
  * @property Discipline          $discipline
  * @property Collection|Notion[] $notions
- *
- * @method static Builder|Chapter whereClassId($value)
- * @method static Builder|Chapter whereDisciplineId($value)
- * @method static Builder|Chapter whereId($value)
- * @method static Builder|Chapter whereName($value)
- * @method static Builder|Chapter whereSlug($value)
- * @method static Builder|Chapter whereOrder($value)
- * @method static Builder|Chapter whereVisible($value)
- * @mixin \Eloquent
  */
 class Chapter extends BaseModel
 {
@@ -54,7 +45,6 @@ class Chapter extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
-
     /**
      * BelongsTo Class_.
      *

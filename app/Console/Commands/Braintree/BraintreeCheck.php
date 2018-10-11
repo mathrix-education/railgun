@@ -12,10 +12,8 @@ use Symfony\Component\Console\Formatter\OutputFormatterStyle;
  * Class CheckModels
  * Check that all Braintree plans and add-ons are present in order to run the application.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- *
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @since     4.1.0
- *
  * @copyright Mathrix Education SA
  */
 class BraintreeCheck extends Command

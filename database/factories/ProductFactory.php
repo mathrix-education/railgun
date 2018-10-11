@@ -4,10 +4,12 @@ use App\Models\Module;
 use App\Models\Product;
 use Faker\Generator;
 
-/*
+/**
  * PostFactory
  *
- * @author Mathrix Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
+ *
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->define(Product::class, function (Generator $faker) {
