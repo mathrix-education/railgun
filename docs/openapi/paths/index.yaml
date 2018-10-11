@@ -60,6 +60,8 @@
 # ------------
 # Family packs
 # ------------
+/family-packs/{familyPackId}:
+  $ref: ./family-packs/_familyPackId.yaml
 /family-packs/{familyPackId}/children:
   $ref: ./family-packs/_familyPackId_children.yaml
 

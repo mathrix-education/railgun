@@ -199,17 +199,17 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
      */
     public function toArray()
     {
-        $planData = $this->model->jsonSerialize();
+        $rawModelAttributes = $this->model->jsonSerialize();
 
         foreach ($this->attributes as $key => $value) {
             if ($value instanceof Carbon) {
                 $value = $value->__toString();
             }
 
-            $planData[$key] = $value;
+            $rawModelAttributes[$key] = $value;
         }
 
-        return $planData;
+        return $rawModelAttributes;
     }
 
     /**

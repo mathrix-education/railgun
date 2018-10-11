@@ -24,7 +24,7 @@ class PlanController extends Controller
      */
     public function all()
     {
-        return new JsonResponse(Plan::all());
+        return new JsonResponse(Plan::all()->toArray());
     }
 
     /**

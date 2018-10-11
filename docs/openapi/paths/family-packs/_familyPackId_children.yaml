@@ -4,6 +4,8 @@ post:
   operationId: familyPackChildrenAdd
   summary: Add child
   description: Add a child to a family pack
+  security:
+  - registered: []
   parameters:
   - name: familyPackId
     in: path
@@ -33,6 +35,8 @@ delete:
   operationId: familyPackChildrenRemove
   summary: Remove child
   description: emove a child from a family pack
+  security:
+  - registered: []
   parameters:
   - name: familyPackId
     in: path

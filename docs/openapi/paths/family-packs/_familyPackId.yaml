@@ -1,0 +1,25 @@
+get:
+  tags:
+  - Family Packs
+  operationId: familyPackChildrenGet
+  summary: Get
+  description: >-
+    Get a family pack. While `admin` users can get all family packs, `registered` users can only get them if they are
+     the parent owner of the family pack.
+  security:
+  - registered: []
+  parameters:
+  - name: familyPackId
+    in: path
+    description: The family pack id.
+    required: true
+    schema:
+      type: int
+      example: 34
+  responses:
+    200:
+      description: The family pack.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/FamilyPack'

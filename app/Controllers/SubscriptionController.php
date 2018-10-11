@@ -59,7 +59,7 @@ class SubscriptionController extends Controller
         $data = [
             "planId" => $plan->id,
             "trialPrice" => $plan->trialPrice,
-            "trialEndDate" => $plan->trialEndDate
+            "trialEndDate" => $plan->trialEndDate->__toString() // Hack?
         ];
 
         if ($additionalChildren > 0) {
