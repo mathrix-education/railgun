@@ -110,7 +110,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     protected $with = ["class_", "purchases"];
 
     /** @var array The virtual attributes */
-    protected $appends = ["daily_points", "family_pack_id_as_parent"];
+    protected $appends = ["daily_points"];
 
     /*
     |--------------------------------------------------------------------------
@@ -262,9 +262,21 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function getFamilyPackIdAsParentAttribute(): ?int
     {
+        if ($this->has("family_pack_as_parent")) {
+
+        } else {
+            return null;
+        }
         return $this->familyPackAsParent !== null ? $this->familyPackAsParent->id : null;
     }
 
+    /**
+     * Append all required premium attributes
+     */
+    public function appendPremiumAttributes()
+    {
+        $this->append(["premium", "braintree", "stripe", "family_pack_id_as_parent"]);
+    }
 
     /*
     |--------------------------------------------------------------------------

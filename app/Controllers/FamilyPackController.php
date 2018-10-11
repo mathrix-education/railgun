@@ -22,6 +22,31 @@ use Illuminate\Validation\ValidationException;
 class FamilyPackController extends BaseController
 {
     /**
+     * Get a family pack with the parent and its children.
+     *
+     * @param Request    $request
+     * @param int|string $key
+     * @param null       $value
+     *
+     * @return JsonResponse
+     * @throws Http401UnauthorizedException
+     */
+    public function get(Request $request, $key, $value = null): JsonResponse
+    {
+        $familyPack = FamilyPack::with(["parent", "children"])
+            ->where("id", $key)
+            ->firstOrFail();
+
+        if ($request->user() !== null && $request->user()
+                ->cant("get", $familyPack)) {
+            throw new Http401UnauthorizedException();
+        }
+
+        $response = new JsonResponse($familyPack);
+        return $response;
+    }
+
+    /**
      * @param Request $request
      * @param int     $familyPackId
      * @param string  $action

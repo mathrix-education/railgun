@@ -3,10 +3,12 @@
 use App\Models\Country;
 use Faker\Generator;
 
-/*
+/**
  * CountryFactory
  *
- * @author Mathrix Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
+ *
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->define(Country::class, function (Generator $faker) {

@@ -1,12 +1,9 @@
 <?php
 
-use App\Exceptions\Http422ModelSaveException;
-use App\Exceptions\Http422ModelValidationException;
 use App\Models\Activity;
 use App\Models\Chapter;
 use App\Models\Class_;
 use App\Models\Discipline;
-use App\Models\Meta;
 use App\Models\Notion;
 use App\Models\User;
 
@@ -14,17 +11,13 @@ use App\Models\User;
  * Class MetaTableSeeder.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
  * @since     4.0.3
- *
  * @copyright Mathrix Education SA
  */
 class MetaTableSeeder extends BaseTableSeeder
 {
     /**
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
-     * @throws Exception
+     * @throws \Exception
      */
     public function run()
     {
@@ -74,6 +67,6 @@ class MetaTableSeeder extends BaseTableSeeder
             }
         }
 
-        $this->seedFromArray($metas, Meta::class, "metas");
+        $this->seedFromArray($metas, "metas");
     }
 }

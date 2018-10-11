@@ -19,26 +19,50 @@
   },
   {
     "id": 4,
+    "name": "Sciences de l'Ingénieur",
+    "slug": "science-ingenieur",
+    "beta": 1
+  },
+  {
+    "id": 5,
+    "name": "Sciences Economiques et Sociales",
+    "slug": "sciences-economiques-et-sociales",
+    "beta": 1
+  },
+  {
+    "id": 6,
+    "name": "Philosophie",
+    "slug": "philosophie",
+    "beta": 1
+  },
+  {
+    "id": 7,
     "name": "Histoire",
     "slug": "histoire",
     "beta": 1
   },
   {
-    "id": 5,
+    "id": 8,
     "name": "Géographie",
     "slug": "geographie",
     "beta": 1
   },
   {
-    "id": 6,
-    "name": "Chimie",
-    "slug": "chimie",
+    "id": 9,
+    "name": "Français",
+    "slug": "francais",
     "beta": 1
   },
   {
-    "id": 7,
-    "name": "Philosophie",
-    "slug": "philosophie",
+    "id": 10,
+    "name": "Anglais",
+    "slug": "anglais",
     "beta": 1
+  },
+  {
+    "id": 11,
+    "name": "Chimie",
+    "slug": "chimie",
+    "beta": 0
   }
 ]

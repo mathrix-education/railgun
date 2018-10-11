@@ -2,6 +2,7 @@
 
 namespace Tests\API\FamilyPacks;
 
+use App\Models\FamilyPack;
 use Tests\API\ScopeTestCase;
 
 /**
@@ -14,5 +15,15 @@ use Tests\API\ScopeTestCase;
  * @version   4.1.1
  */
 class FamilyPacksAsPublicTest extends ScopeTestCase
-{
+{    /**
+ * GET /family-packs/{familyPackId}
+ */
+    public function testGet()
+    {
+        $familyPack = FamilyPack::random();
+
+        $this->json("get", "/family-packs/{$familyPack->id}");
+
+        $this->assertHttp401Unauthorized();
+    }
 }

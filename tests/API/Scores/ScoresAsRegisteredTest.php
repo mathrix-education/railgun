@@ -12,9 +12,8 @@ use PHPUnit\Framework\Constraint\IsType;
  * Test scores as registered user.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @since     4.1.0
  * @copyright Mathrix Education SA
- *
- * @version   4.1.0
  */
 class ScoresAsRegisteredTest extends ScoresAsPublicTest
 {
@@ -97,7 +96,7 @@ class ScoresAsRegisteredTest extends ScoresAsPublicTest
             "$.[*].updated_at" => new IsType("string"),
             "$.[*].user.id" => new IsType("integer") // Assert user is present
         ]);
-        $this->assertJsonLength($delta * 2 + 1);
+        $this->assertJsonLengthMax($delta * 2 + 1);
     }
 
     /**

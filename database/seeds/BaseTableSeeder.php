@@ -1,61 +1,24 @@
 <?php
 
-use App\Exceptions\Http422ModelSaveException;
-use App\Exceptions\Http422ModelValidationException;
 use App\Models\BaseModel;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
-use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
+use Illuminate\Support\Facades\DB;
 
 /**
- * Class BaseTableSeeder.
+ * Class BaseTableSeeder
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
- * @since     1.0.0
- *
+ * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @package   Database\Seeds
+ * @since     4.1.1
  * @copyright Mathrix Education SA
  */
-abstract class BaseTableSeeder extends Seeder
+class BaseTableSeeder extends Seeder
 {
-    /** @var Model|BaseModel|string|null */
-    protected $modelClass = null;
-    /** @var string|null */
-    protected $table = null;
-    /** @var Illuminate\Console\OutputStyle */
+    /** @var \Illuminate\Console\OutputStyle */
     protected $output;
-
-    /**
-     * BaseTableSeeder constructor.
-     */
-    public function __construct()
-    {
-        $tableSeederClass = get_class($this);
-
-        // We are in a specific table seeder
-        if (mb_strstr($tableSeederClass, "TableSeeder")) {
-            // Guess model if not defined
-            if (empty($this->modelClass)) {
-                // Try to guess the model class
-                $guessedModelClass = str_replace("TableSeeder", "", $tableSeederClass);
-
-                // Re-add models namespace
-                $guessedModelClass = "App\\Models\\" . $guessedModelClass;
-
-                if (class_exists($guessedModelClass) && $this->modelClass === null) {
-                    $this->modelClass = $guessedModelClass;
-                }
-            }
-
-            // Get table
-            if (empty($this->table)) {
-                if ($this->modelClass instanceof BaseModel) {
-                    $this->table = $this->modelClass::getTableName();
-                }
-            }
-        }
-    }
 
     /**
      * Override default call.
@@ -85,290 +48,205 @@ abstract class BaseTableSeeder extends Seeder
     }
 
     /**
-     * Seed database from a json file.
+     * Send data to database using a raw array.
      *
-     * @param array $options The options
-     *                       "table" => $this->table, $this->modelClass::getTableName()
-     *                       "directory" => "raws"
-     *
-     * @throws Exception
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
+     * @param array  $rawData
+     * @param string $table
+     * @param int    $chunkSize
      */
-    public function seedFromJson(array $options)
+    public function seedFromArray(array $rawData, string $table, int $chunkSize = 100)
     {
-        $default = [
-            "directory" => "raws",
-        ];
-        $options = $this->parseOptions($options, $default);
+        $this->output->progressStart(count($rawData));
 
-        $this->println("<comment>Seeding:</comment> {$options["table"]} from json");
-        $data = $this->loadDataFromJson($options["table"], $options["directory"]);
-        $this->seedFromArray($data, $options["modelClass"], $options["table"]);
-        $this->println("<info>Seeded:</info>  {$options["table"]} from json");
-    }
-
-    /**
-     * Parse options to optimally discover options.
-     *
-     * @param array $options given options
-     * @param array $default default options
-     *
-     * @return array
-     */
-    public function parseOptions(array $options, array $default)
-    {
-        if (!empty($options["modelClass"])) {
-            $modelClass = $options["modelClass"];
-        } elseif (!empty($this->modelClass)) {
-            $modelClass = $this->modelClass;
-        } else {
-            $modelClass = null;
+        // Let's find all row keys
+        $keys = [];
+        foreach ($rawData as $row) {
+            $keys = array_merge($keys, array_keys($row));
         }
 
-        if (!empty($options["table"])) {
-            $table = $options["table"];
-        } elseif (!empty($this->table)) {
-            $table = $this->table;
-        } elseif (!empty($options["modelClass"])) {
-            $table = $options["modelClass"]::getTableName();
-        } elseif (!empty($this->modelClass)) {
-            $table = $this->modelClass::getTableName();
-        } else {
-            $table = null;
+        // Fill missing row with all keys
+        $emptyRow = array_fill_keys($keys, null);
+        foreach ($rawData as $k => $row) {
+            $rawData[$k] = array_merge($emptyRow, $row);
         }
 
-        return array_merge($default, $options, ["modelClass" => $modelClass, "table" => $table]);
-    }
-
-    /**
-     * Write output to console.
-     *
-     * @param $message
-     */
-    public function println($message)
-    {
-        if (isset($this->command) && !$this->output->isQuiet()) {
-            $this->output->writeln($message);
-        }
-    }
-
-    /**
-     * Load data from a json file.
-     *
-     * @param string $filename
-     * @param string $directory
-     *
-     * @return array
-     */
-    public function loadDataFromJson(string $filename, string $directory = "raws")
-    {
-        $path = app()->databasePath($directory) . DIRECTORY_SEPARATOR . "$filename.json";
-
-        if (!file_exists($path)) {
-            throw new FileNotFoundException($path);
-        }
-
-        return json_decode(file_get_contents($path), true);
-    }
-
-    /**
-     * Save data using Eloquent models.
-     *
-     * @param array                       $data
-     * @param BaseModel|Model|string|null $modelClass
-     * @param bool                        $display
-     *
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
-     * @throws Exception
-     */
-    public function seedFromArray(array $data, $modelClass, string $table, int $chunkSize = 100)
-    {
-        if (method_exists($modelClass, "getTableName")) {
-            $table = $modelClass::getTableName();
-        }
-
-        $this->println("<comment>Seeding:</comment> $table from factory");
-
-        // Progress bar
-        $this->output->progressStart(count($data));
-
-        $allInsertData = [];
-        $allModelKeys = [];
-
-        foreach ($data as $row) {
-            /** @var BaseModel $model */
-            $model = new $modelClass($row);
-            $modelData = $model->getAttributes();
-            $allModelKeys = array_merge($allModelKeys, array_keys($modelData));
-            $allInsertData[] = $modelData;
-        }
-
-        $emptyRow = array_fill_keys($allModelKeys, null);
-        foreach ($allInsertData as $key => $row) {
-            $allInsertData[$key] = array_merge($emptyRow, $row);
-        }
-
-        for ($i = 0; $i < count($allInsertData); $i += $chunkSize) {
-            $insertData = array_slice($allInsertData, $i, $chunkSize);
+        // Insert data in database by chunk
+        for ($i = 0; $i < count($rawData); $i += $chunkSize) {
+            $insertData = array_slice($rawData, $i, $chunkSize);
             DB::table($table)->insert($insertData);
             $this->output->progressAdvance(count($insertData));
         }
 
         $this->output->progressFinish();
-
-        $this->println("<info>Seeded:</info>  $table from factory");
-    }
-
-    public function overwrite($message)
-    {
-        // Move the cursor to the beginning of the line
-        $this->output->write("\x0D");
-
-        // Erase the line
-        $this->output->write("\x1B[2K");
-
-        $this->output->write($message);
     }
 
     /**
-     * Seed from a factory.
+     * Seed data using a json file.
      *
-     * @param array $options
-     *                       "subFactory" => null
-     *                       "count" => 1
-     *                       "override" => []
-     *                       "callback" => null
-     *
-     * @throws Exception
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
+     * @param string      $filename The json file name, without the trailing .json
+     * @param string|null $table    If null, same as filename
      */
-    public function seedFromFactory(array $options = [])
+    public function seedFromJson(string $filename, string $table = null)
     {
-        $default = [
+        if ($table === null) {
+            $table = $filename;
+        }
+
+        $path = app()->databasePath("raws") . DIRECTORY_SEPARATOR . "$filename.json";
+        $jsonData = json_decode(file_get_contents($path), true);
+
+        $this->output->writeln("<comment>Seeding:</comment> $table from json");
+        $this->seedFromArray($jsonData, $table);
+        $this->output->writeln("<info>Seeded:</info>  $table from json");
+    }
+
+    /**
+     * Seed from factory.
+     *
+     * @param string    $modelClass
+     * @param array|int $factoryOptions
+     */
+    public function seedFromFactory(string $modelClass, $factoryOptions)
+    {
+        $defaultFactoryOptions = [
             "subFactory" => null,
-            "count" => 100,
-            "override" => [],
+            "count" => -1,
+            "table" => null,
+            "override" => []
         ];
-        $options = $this->parseOptions($options, $default);
 
-        /** @var BaseModel|string $modelClass */
-        $factoryName = $options["table"] . ($options["subFactory"] !== null ? ":" . $options["subFactory"] : "");
+        if (is_integer($factoryOptions)) {
+            $factoryOptions = [
+                "count" => $factoryOptions
+            ];
+        }
 
-        $this->println("<comment>Seeding:</comment> $factoryName from factory");
-        $data = [];
+        $factoryOptions = array_merge($defaultFactoryOptions, $factoryOptions);
 
-        // Run factory
-        if (is_string($options["subFactory"])) {
-            $data = array_merge($data,
-                (factory($options["modelClass"], $options["subFactory"], $options["count"])->raw($options["override"]))
-            );
+        if ($factoryOptions["table"] === null) {
+            /** @var Model $model */
+            $model = new $modelClass();
+            $factoryOptions["table"] = $model->getTable();
+        }
+
+        if (is_string($factoryOptions["subFactory"])) {
+            /** @var Collection $factoryData */
+            $factoryData = factory(
+                $modelClass,
+                $factoryOptions["subFactory"],
+                $factoryOptions["count"]
+            )->make($factoryOptions["override"]);
         } else {
-            $data = array_merge($data,
-                (factory($options["modelClass"], $options["count"])->raw($options["override"]))
-            );
+            /** @var Collection $factoryData */
+            $factoryData = factory(
+                $modelClass,
+                $factoryOptions["count"]
+            )->make($factoryOptions["override"]);
         }
 
-        $this->seedFromArray($data, $options["modelClass"], $options["table"]);
+        /**
+         * @var int       $k
+         * @var BaseModel $model
+         */
+        foreach ($factoryData as $k => $model) {
+            $factoryData[$k] = $model->getAttributes();
+        }
 
-        $this->println("<info>Seeded:</info>  $factoryName from factory");
+        $factoryName = $factoryOptions["table"] .
+            ($factoryOptions["subFactory"] !== null ? ":{$factoryOptions["subFactory"]}" : "");
+
+        $this->output->writeln("<comment>Seeding:</comment> $factoryName from factory");
+        $this->seedFromArray($factoryData->toArray(), $factoryOptions["table"]);
+        $this->output->writeln("<info>Seeded:</info>  $factoryName from factory");
     }
 
     /**
-     * Register attachment between two models from a raw json file.
+     * Seed from sub-factory.
      *
-     * @param BaseModel|string $modelClass1
-     * @param BaseModel|string $modelClass2
-     * @param string           $dir
+     * @param string $modelClass
+     * @param string $subFactory
+     * @param int    $count
+     * @param array  $factoryOptions
      */
-    public function seedAttachmentsFromJson($modelClass1, $modelClass2, string $dir = "raws")
+    public function seedFromSubFactory(string $modelClass, string $subFactory, int $count, array $factoryOptions = [])
     {
-        $model1Table = $modelClass1::getTableName();
-        $model2Table = $modelClass2::getTableName();
-        $model1Key = str_singular($model1Table);
-        $model2Key = str_singular($model2Table);
-        $joinTableName = $model1Key . "_" . $model2Key;
-        $model1Key .= "_id";
-        $model2Key .= "_id";
+        $factoryOptions = array_merge([
+            "subFactory" => $subFactory,
+            "count" => $count
+        ], $factoryOptions);
 
-        $this->println("<comment>Seeding:</comment> $joinTableName from json");
-
-        $data = $this->loadDataFromJson($joinTableName, $dir);
-        $links = [];
-
-        foreach ($data as $row) {
-            $model1Id = $row[$model1Key];
-
-            $joinData = array_diff_assoc($row, [$model1Key => $row[$model1Key], $model2Key => $row[$model2Key]]);
-
-            $links[(int) $model1Id][(int) $row[$model2Key]] = $joinData;
-        }
-
-        $this->output->progressStart(count($links));
-
-        foreach ($links as $model1Id => $model2IdsWithData) {
-            $model1 = $modelClass1::where("id", $model1Id)
-                ->firstOrFail();
-            $model1->$model2Table()
-                ->attach($model2IdsWithData);
-            $this->output->progressAdvance();
-        }
-
-        $this->output->progressFinish();
-
-        $this->println("<info>Seeded:</info>  $joinTableName from json");
+        $this->seedFromFactory($modelClass, $factoryOptions);
     }
 
     /**
-     * Link two tables using $model::link property in both directions.
-     *
-     * @param BaseModel|string $modelClass1 the model class to use and link
-     * @param BaseModel|string $modelClass2 the model class to use and link
-     * @param int              $min         the minimum relations
-     * @param int              $max         the maximum relations
-     *
-     * @throws Exception
-     */
-    public function linkAll($modelClass1, $modelClass2, $min = 3, $max = 5)
-    {
-        $this->link($modelClass1, $modelClass2, $min, $max);
-        $this->link($modelClass2, $modelClass1, $min, $max);
-    }
-
-    /**
-     * Link two tables using $model::link property.
+     * Link two tables.
      *
      * @param BaseModel|string $modelClass1 the model class to use
      * @param BaseModel|string $modelClass2 the model class to link
      * @param int              $min         the minimum relations
      * @param int              $max         the maximum relations
-     *
-     * @throws Exception
+     * @param callable         $callback
      */
-    public function link($modelClass1, $modelClass2, $min = 3, $max = 5)
+    public function link($modelClass1, $modelClass2, $min = 3, $max = 5, callable $callback = null)
     {
-        $faker = Faker\Factory::create();
+        $faker = \Faker\Factory::create();
+
+        // Build all necessary variables (tables, ids...)
         $models1 = $modelClass1::all();
         $model1Table = $modelClass1::getTableName();
+        $model1Key = str_singular($model1Table) . "_id";
         $model2Ids = $modelClass2::get(["id"])
             ->pluck("id")
             ->toArray();
         $model2Table = $modelClass2::getTableName();
+        $model2Key = str_singular($model2Table) . "_id";
 
-        $this->println("<comment>Linking:</comment> $model1Table <=> $model2Table");
-
-        $this->output->progressStart($models1->count());
-        foreach ($models1 as $model1) {
-            $model1->link = [
-                $model2Table => $faker->randomElements($model2Ids, $faker->numberBetween($min, $max)),
-            ];
-            $model1->save();
-            $this->output->progressAdvance();
+        if (strcmp($model1Table, $model2Table) < 0) {
+            $linkTable = str_singular($model1Table) . "_" . str_singular($model2Table);
+        } else {
+            $linkTable = str_singular($model2Table) . "_" . str_singular($model1Table);
         }
-        $this->output->progressFinish();
 
-        $this->println("<info>Linked:</info>  $model1Table <=> $model2Table");
+        $this->output->writeln("<comment>Linking:</comment> $model1Table <=> $model2Table");
+
+        // Build link data
+        $linkData = [];
+        foreach ($models1 as $model1) {
+            $model1Id = $model1->id;
+
+            $model2IdsToLinkWithModel1 = $faker->randomElements($model2Ids, $faker->numberBetween($min, $max));
+
+            foreach ($model2IdsToLinkWithModel1 as $order => $model2Id) {
+                if(is_callable($callback)) {
+                    $linkData[] = $callback($order, [
+                        $model1Key => $model1Id,
+                        $model2Key => $model2Id
+                    ]);
+                } else {
+                    $linkData[] = [
+                        $model1Key => $model1Id,
+                        $model2Key => $model2Id
+                    ];
+                }
+            }
+        }
+
+        $this->seedFromArray($linkData, $linkTable);
+
+        $this->output->writeln("<info>Linked:</info>  $model1Table <=> $model2Table");
+    }
+
+    /**
+     * Link two tables in both directions.
+     *
+     * @param BaseModel|string $modelClass1 the model class to use and link
+     * @param BaseModel|string $modelClass2 the model class to use and link
+     * @param int              $min         the minimum relations
+     * @param int              $max         the maximum relations
+     */
+    public function linkAll($modelClass1, $modelClass2, $min = 3, $max = 5)
+    {
+        $this->link($modelClass1, $modelClass2, $min, $max);
+        $this->link($modelClass2, $modelClass1, $min, $max);
     }
 }

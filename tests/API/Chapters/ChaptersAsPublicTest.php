@@ -120,7 +120,5 @@ class ChaptersAsPublicTest extends ScopeTestCase
                 }
             }
         }
-
-        $this->debug();
     }
 }

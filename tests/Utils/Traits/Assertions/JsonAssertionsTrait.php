@@ -55,7 +55,14 @@ trait JsonAssertionsTrait
     public function assertJsonLengthMax(int $maxLength): void
     {
         $content = json_decode($this->response->getContent(), true);
-        $this->assertTrue($maxLength >= \count($content));
+        $this->assertTrue(
+            $maxLength >= \count($content),
+            sprintf(
+                "Failing asserting that json item count %d is less or equal than %s",
+                \count($content),
+                $maxLength
+            )
+        );
     }
 
     /**

@@ -5,10 +5,12 @@ use App\Models\Class_;
 use App\Models\Discipline;
 use Faker\Generator;
 
-/*
+/**
  * ChapterFactory
  *
- * @author Mathrix Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
+ *
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->define(Chapter::class, function (Generator $faker) {

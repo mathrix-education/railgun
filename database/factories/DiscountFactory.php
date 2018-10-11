@@ -3,10 +3,12 @@
 use App\Models\Discount;
 use Faker\Generator;
 
-/*
+/**
  * DisciplineFactory
  *
- * @author Mathrix Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
+ *
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->define(Discount::class, function (Generator $faker) {

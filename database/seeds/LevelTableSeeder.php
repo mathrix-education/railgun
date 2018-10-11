@@ -1,16 +1,10 @@
 <?php
 
-use App\Exceptions\Http422ModelSaveException;
-use App\Exceptions\Http422ModelValidationException;
-use App\Models\Level;
-
 /**
  * Class LevelTableSeeder.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
  * @since     1.0.0
- *
  * @copyright Mathrix Education SA
  */
 class LevelTableSeeder extends BaseTableSeeder
@@ -19,13 +13,11 @@ class LevelTableSeeder extends BaseTableSeeder
     private const POWER = 1.2;
 
     /**
-     * @throws Exception
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
+     * @throws \Exception
      */
     public function run()
     {
-        $this->println("<comment>Seeding:</comment> levels from generation");
+        $this->output->writeln("<comment>Seeding:</comment> levels from generation");
         $levels = [];
 
         for ($i = 1; $i <= self::COUNT; ++$i) {
@@ -36,7 +28,7 @@ class LevelTableSeeder extends BaseTableSeeder
             ];
         }
 
-        $this->seedFromArray($levels, Level::class, "levels");
-        $this->println("<info>Seeded:</info>  levels from generation");
+        $this->seedFromArray($levels, "levels");
+        $this->output->writeln("<info>Seeded:</info>  levels from generation");
     }
 }

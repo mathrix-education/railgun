@@ -3,10 +3,12 @@
 use App\Models\Discipline;
 use Faker\Generator;
 
-/*
+/**
  * DisciplineFactory
  *
- * @author Mathrix Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
+ *
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->define(Discipline::class, function (Generator $faker) {
