@@ -31,11 +31,14 @@ class CartTest extends BraintreeTestCase
         Notification::fake();
 
         /** @var Discount $discount */
-        $discount = Discount::has("products")
+        $discount = Discount::whereHas("products", function (\Illuminate\Database\Eloquent\Builder $q) {
+            $q->whereNotNull("price");
+        })
             ->where("counter", ">", 0)
             ->firstOrFail();
         $counterBefore = $discount->counter;
         $productIds = $discount->products()
+            ->whereNotNull("price")
             ->get()
             ->pluck("id");
         $user = $this->getBraintreeCustomer();

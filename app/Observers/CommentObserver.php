@@ -44,7 +44,11 @@ class CommentObserver extends BaseObserver
     {
         /** @var Comment $child */
         foreach ($comment->children as $child) {
-            $child->delete();
+            if ($comment->isForceDeleting()) {
+                $child->forceDelete();
+            } else {
+                $child->delete();
+            }
         }
 
         return true;
