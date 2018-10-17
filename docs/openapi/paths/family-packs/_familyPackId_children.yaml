@@ -18,10 +18,12 @@ post:
     content:
       application/json:
         schema:
-          email:
-            description: The child email
-            type: string
-            example: child@example.com
+          type: object
+          properties:
+            email:
+              description: The child email
+              type: string
+              example: child@example.com
   responses:
     200:
       description: The family pack.
@@ -34,7 +36,7 @@ delete:
   - Family Packs
   operationId: familyPackChildrenRemove
   summary: Remove child
-  description: emove a child from a family pack
+  description: Remove a child from a family pack
   security:
   - registered: []
   parameters:
@@ -49,10 +51,12 @@ delete:
     content:
       application/json:
         schema:
-          email:
-            description: The child email
-            type: string
-            example: child@example.com
+          type: object
+          properties:
+            email:
+              description: The child email
+              type: string
+              example: child@example.com
   responses:
     200:
       description: The family pack.
