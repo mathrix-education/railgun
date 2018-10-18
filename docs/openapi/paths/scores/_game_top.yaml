@@ -33,7 +33,7 @@ get:
       example: 100
   responses:
     200:
-      description: The scores
+      description: The top scores.
       content:
         application/json:
           schema:

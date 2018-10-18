@@ -1,0 +1,36 @@
+description: Discipline
+type: object
+properties:
+  name:
+    description: The discipline name.
+    type: string
+    example: lorem ipsum
+  slug:
+    description: The discipline slug.
+    type: string
+    example: lorem-ipsum
+  beta:
+    description: The discipline beta state.
+    type: boolean
+  link:
+    description: The modeks to link to the discipline.
+    type: object
+    properties:
+      classes:
+        description: The classes to link with the discipline.
+        type: array
+        items:
+          description: The class data to link with the discipline.
+          type: object
+          properties:
+            id:
+              description: The class id.
+              type: integer
+              example: 14
+            visible:
+              description: The visibiilty of the discipline in the given class.
+              type: boolean
+required:
+- name
+- slug
+- beta

@@ -4,10 +4,12 @@ use App\Models\Class_;
 use App\Models\Country;
 use Faker\Generator;
 
-/*
- * CLassFactory
+/**
+ * ClassFactory
  *
- * @author Mathrix Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
+ *
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->define(Class_::class, function (Generator $faker) {

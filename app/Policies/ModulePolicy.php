@@ -62,4 +62,14 @@ class ModulePolicy extends BasePolicy
     {
         return $currentUser->isModerator();
     }
+
+    /**
+     * @param User $currentUser
+     *
+     * @return bool
+     */
+    public function noIndex(User $currentUser)
+    {
+        return $currentUser->isAdmin();
+    }
 }

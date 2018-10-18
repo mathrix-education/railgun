@@ -15,6 +15,7 @@ use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use ReflectionClass;
 use Symfony\Component\HttpKernel\Exception\HttpException as SymphonyHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class Handler
@@ -126,6 +127,10 @@ class Handler extends ExceptionHandler
         // Include trace in debug mode
         if (app()->environment("testing", "local", "dev", "pipelines")) {
             $json["trace"] = explode("\n", $e->getTraceAsString());
+        }
+
+        if ($e instanceof NotFoundHttpException) {
+            $json["message"] = $request->url();
         }
 
         $rendered = parent::render($request, $e);

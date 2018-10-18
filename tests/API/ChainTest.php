@@ -5,6 +5,7 @@ namespace Tests\API;
 use App\Models\Chapter;
 use App\Models\User;
 use Laravel\Passport\Passport;
+use Tests\Utils\Tree;
 
 class ChainTest extends APITestCase
 {
@@ -55,6 +56,45 @@ class ChainTest extends APITestCase
                 "chapter_get" => [
                     "method" => "get",
                     "url" => "/chapters/{chapter_creation.id}"
+                ]
+            ]
+        ]);
+
+        $this->assertHttp200Success();
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testModuleDashboard()
+    {
+        $admin = User::where("type", "=", "admin")->firstOrFail();
+        Passport::actingAs($admin, ["admin"]);
+
+        $tree = new Tree();
+
+        $this->call("post", "/chain", [
+            "requests" => [
+                "flat" => [
+                    "method" => "post",
+                    "url" => "/content/flat",
+                    "data" => [
+                        "country_slug" => $tree->getCountry()->slug,
+                        "class_slug" => $tree->getClass()->slug,
+                        "discipline_slug" => $tree->getDiscipline()->slug,
+                        "chapter_slug" => $tree->getChapter()->slug,
+                        "notion_slug" => $tree->getNotion()->slug,
+                        "activity_slug" => $tree->getActivity()->slug,
+                        "module_id" => $tree->getModule()->id
+                    ]
+                ],
+                "comments" => [
+                    "method" => "get",
+                    "url" => "/comments/by-activity/{flat.activity.id}"
+                ],
+                "chapter_recursive" => [
+                    "method" => "get",
+                    "url" => "/chapters/recursive/{flat.chapter.id}"
                 ]
             ]
         ]);

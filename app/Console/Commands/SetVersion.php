@@ -8,7 +8,7 @@ use Illuminate\Console\Command;
  * Class SetVersion
  * Set app version from the local .env.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
  * @since     4.1.0
  *

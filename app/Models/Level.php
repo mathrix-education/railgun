@@ -16,12 +16,6 @@ use Illuminate\Database\Eloquent\Builder;
  * @property int         $level
  * @property int         $objective
  * @property string|null $youtube_id
- *
- * @method static Builder|Level whereId($value)
- * @method static Builder|Level whereLevel($value)
- * @method static Builder|Level whereObjective($value)
- * @method static Builder|Level whereYoutubeId($value)
- * @mixin \Eloquent
  */
 class Level extends BaseModel
 {

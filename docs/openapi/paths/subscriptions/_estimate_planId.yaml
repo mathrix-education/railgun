@@ -1,8 +1,10 @@
 get:
   tags:
   - Braintree Subscriptions
-  summary: Estimate a subscription trial period
   operationId: subscriptionEstimate
+  summary: Estimate a subscription trial period
+  description: >-
+    Since the `v4_monthly` plan has not trial period, it is not allowed here.
   parameters:
   - name: planId
     in: path
@@ -11,7 +13,6 @@ get:
     schema:
       type: string
       enum:
-      - v4_monthly
       - v4_annually
       - v4_biannually
   responses:

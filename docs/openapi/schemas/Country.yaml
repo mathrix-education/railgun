@@ -1,4 +1,4 @@
-description: Countrie.
+description: Country.
 type: object
 properties:
   id:

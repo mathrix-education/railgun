@@ -7,6 +7,7 @@ use App\Exceptions\Http401UnauthorizedException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\Score;
+use App\Models\User;
 use Carbon\Carbon;
 use Faker\Factory;
 use Illuminate\Http\JsonResponse;
@@ -15,9 +16,9 @@ use Illuminate\Http\Request;
 /**
  * Class ScoreController.
  *
- * @author Mathrix Back-End Team
+ * @author    Mathrix Back-End Team
  *
- * @since 4.1.0
+ * @since     4.1.0
  *
  * @copyright Mathrix SA
  */
@@ -56,7 +57,7 @@ class ScoreController extends BaseController
      *
      * @return JsonResponse
      */
-    public function top(string $game, string $interval = "month", int $count = 20)
+    public function top(string $game, string $interval = "month", int $count = 20): JsonResponse
     {
         $scores = Score::with("user")
             ->whereBetween("created_at", [$this->getStartDate($interval), Carbon::now()])
@@ -87,6 +88,67 @@ class ScoreController extends BaseController
     }
 
     /**
+     * Get scores around a certain value of score
+     *
+     * @param Request $request
+     * @param string  $game
+     * @param int     $score
+     * @param int     $delta
+     *
+     * @return JsonResponse
+     */
+    public function around(Request $request, string $game, int $score, int $delta = 5): JsonResponse
+    {
+        $user = $request->user();
+
+        $score = Score::where([
+            ["game", "=", $game],
+            ["score", "=", $score],
+            ["user_id", "=", $user->id],
+        ])
+            ->orderByDesc("created_at")
+            ->firstOrFail();
+
+        $start = $score->rank - $delta;
+        $end = $score->rank + $delta;
+
+        $scores = Score::with(["user"])
+            ->whereBetween("rank", [$start, $end])
+            ->orderBy("rank")
+            ->get();
+
+        $response = new JsonResponse($scores);
+
+        return $response;
+    }
+
+    /**
+     * Get user personal best score
+     *
+     * @param Request $request
+     * @param string  $game
+     *
+     * @return JsonResponse
+     */
+    public function personalBest(Request $request, string $game): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        $score = Score::with(["user"])
+            ->where([
+                ["game", "=", $game],
+                ["user_id", "=", $user->id]
+            ])
+            ->orderByDesc("score")
+            ->first();
+
+        $response = new JsonResponse($score ?? []);
+
+        return $response;
+    }
+
+    /**
      * Register user high score.
      *
      * @param Request $request
@@ -102,10 +164,9 @@ class ScoreController extends BaseController
     {
         $signature = $request->input("signature");
         $score = $request->input("score") ?? "no-score";
-        $time = $request->input("time") ?? "no-time";
         $token = $request->input("token");
 
-        $expected = md5($score . $time . $token . $game);
+        $expected = md5($score . $token . $game);
 
         if ($expected !== $signature) {
             throw new Http401UnauthorizedException("Invalid signature");
@@ -114,11 +175,12 @@ class ScoreController extends BaseController
         $score = new Score([
             "game" => $game,
             "score" => $request->input("score"),
-            "time" => $request->input("time"),
             "data" => $request->input("data"),
             "user_id" => $request->user()->id
         ]);
         $score->save();
+
+        $score = Score::with(["user"])->findOrFail($score->id);
 
         $response = new JsonResponse($score);
 

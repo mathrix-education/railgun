@@ -17,12 +17,6 @@ use Illuminate\Database\Eloquent\Builder;
  * @property string $key
  * @property string $value
  * @property bool   $visible
- *
- * @method static Builder|Setting whereId($value)
- * @method static Builder|Setting whereKey($value)
- * @method static Builder|Setting whereValue($value)
- * @method static Builder|Setting whereVisible($value)
- * @mixin \Eloquent
  */
 class Setting extends BaseModel
 {

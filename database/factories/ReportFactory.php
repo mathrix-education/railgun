@@ -4,10 +4,12 @@ use App\Models\Module;
 use App\Models\Report;
 use Faker\Generator;
 
-/*
+/**
  * QuoteFactory
  *
- * @author Mathrix Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
+ *
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->define(Report::class, function (Generator $faker) {

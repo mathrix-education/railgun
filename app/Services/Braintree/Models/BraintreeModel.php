@@ -13,7 +13,7 @@ use JsonSerializable;
 /**
  * Class BraintreeModel.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
  * @since     4.1.0
  *
@@ -199,17 +199,17 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
      */
     public function toArray()
     {
-        $planData = $this->model->jsonSerialize();
+        $rawModelAttributes = $this->model->jsonSerialize();
 
         foreach ($this->attributes as $key => $value) {
             if ($value instanceof Carbon) {
                 $value = $value->__toString();
             }
 
-            $planData[$key] = $value;
+            $rawModelAttributes[$key] = $value;
         }
 
-        return $planData;
+        return $rawModelAttributes;
     }
 
     /**

@@ -3,10 +3,12 @@
 use App\Models\Quote;
 use Faker\Generator;
 
-/*
+/**
  * QuoteFactory
  *
- * @author Mathrix Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
+ *
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->define(Quote::class, function (Generator $faker) {

@@ -7,15 +7,24 @@ use Illuminate\Support\Facades\Cache;
 
 /**
  * Trait StripeCustomer.
+ * Contains all functions to access user's Stripe customer profile.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- *
- * @since
- *
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @since     4.1.0
  * @copyright Mathrix Education SA
  */
 trait StripeCustomer
 {
+    /**
+     * stripe attribute.
+     *
+     * @return \Stripe\Customer|null
+     */
+    public function getStripeAttribute(): ?\Stripe\Customer
+    {
+        return $this->isStripeCustomer() ? $this->getStripeCustomer() : null;
+    }
+
     /**
      * Delete the Stripe customer from the cache.
      */

@@ -21,14 +21,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string              $slug_short
  * @property bool                $visible
  * @property Collection|Class_[] $classes
- *
- * @method static Builder|Country whereId($value)
- * @method static Builder|Country whereName($value)
- * @method static Builder|Country whereNameShort($value)
- * @method static Builder|Country whereSlug($value)
- * @method static Builder|Country whereSlugShort($value)
- * @method static Builder|Country whereVisible($value)
- * @mixin \Eloquent
  */
 class Country extends BaseModel
 {
@@ -46,7 +38,6 @@ class Country extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
-
     /**
      * HasMany Class_.
      *

@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 /**
  * Class Chainer.
  *
- * @author Mathrix Back-End Team
+ * @author    Mathrix Back-End Team
  *
- * @since 4.1.0
+ * @since     4.1.0
  *
  * @copyright Mathrix SA
  */
@@ -63,7 +63,7 @@ class Chainer
 
         $response = app()->dispatch($request);
 
-        $this->responseData[$key] = json_decode($response->getContent());
+        $this->responseData[$key] = json_decode($response->getContent(), true);
     }
 
     /**
@@ -76,30 +76,34 @@ class Chainer
     private function resolve(string $toParse)
     {
         $matches = [];
-        $result = preg_match("/\{[a-z\_]+.[a-z\_]+\}/", $toParse, $matches);
+        $result = preg_match_all("/\{(\w+\.[\.\w+]+\w+)\}/", $toParse, $matches);
 
         if ($result === 0) {
             return $toParse;
-        }
+        } else {
+            $keys = $matches[1];
 
-        foreach ($matches as $match) {
-            $params = [];
-            preg_match("/\{([a-z\_]+).([a-z\_]+)\}/", $match, $params);
-            $responseKey = $params[1];
-            $responseSubKey = $params[2];
-
-            if (empty($this->responseData[$responseKey]->{$responseSubKey})) {
-                throw new Http400InvalidRequestException(
-                    "Unable to find the key $responseKey.$responseSubKey",
-                    400,
-                    null,
-                    $this->responseData
-                );
+            foreach ($keys as $key) {
+                $toParse = str_replace("{" . $key . "}", $this->resolveParam($key), $toParse);
             }
 
-            $toParse = str_replace($match, $this->responseData[$responseKey]->{$responseSubKey}, $toParse);
+            return $toParse;
+        }
+    }
+
+    private function resolveParam(string $key)
+    {
+        $keys = explode(".", $key);
+        $array = $this->responseData;
+
+        foreach ($keys as $subKey) {
+            if (!empty($array[$subKey])) {
+                $array = $array[$subKey];
+            } else {
+                throw new Http400InvalidRequestException("Unable to find key `$key`.");
+            }
         }
 
-        return $toParse;
+        return $array;
     }
 }

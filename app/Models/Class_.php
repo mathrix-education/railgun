@@ -30,17 +30,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property Collection|Discipline[] $disciplines
  * @property Class_|null             $parent
  * @property Collection|User[]       $users
- *
- * @method static Builder|Class_ whereId($value)
- * @method static Builder|Class_ whereName($value)
- * @method static Builder|Class_ whereNameShort($value)
- * @method static Builder|Class_ whereSlug($value)
- * @method static Builder|Class_ whereSlugShort($value)
- * @method static Builder|Class_ whereOrder($value)
- * @method static Builder|Class_ whereVisible($value)
- * @method static Builder|Class_ whereParentId($value)
- * @method static Builder|Class_ whereCountryId($value)
- * @mixin \Eloquent
  */
 class Class_ extends BaseModel
 {
@@ -83,7 +72,6 @@ class Class_ extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
-
     /**
      * BelongsTo Class_.
      *
@@ -113,6 +101,7 @@ class Class_ extends BaseModel
     {
         return $this->belongsToMany(Discipline::class, "class_discipline", "class_id",
             "discipline_id")
+            ->withPivot("visible")
             ->orderBy("class_discipline.order");
     }
 

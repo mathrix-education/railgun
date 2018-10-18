@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Mathrix Education SA API
-  version: 4.1.0
+  version: 4.1.1
   description: This is the official documentation of Mathrix Education SA API.
   contact:
     name: Mathieu Bour
@@ -16,8 +16,16 @@ tags:
   description: Activities API
 - name: Categories
   description: Categories API
+- name: Content
+  description: Content API
+- name: Disciplines
+  description: Disciplines API
+- name: Family Packs
+  description: Family Packs API
 - name: Products
   description: Products API
+- name: Modules
+  description: Modules API
 - name: Scores
   description: Scores API
 - name: Users
@@ -31,8 +39,6 @@ tags:
   description: Braintree subscriptions API
 - name: Braintree Transactions
   description: Braintree transactions API
-security:
-- bearerAuth: []
 components:
   securitySchemes:
     registered:

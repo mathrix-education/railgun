@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 /**
  * Class Product.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
  * @since     4.1.0
  *
@@ -34,21 +34,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property Collection|Product[]  $children
  * @property Collection|Product[]  $parents
  * @property Collection|Discount[] $discounts
- *
- * @method static Builder|Product whereId($value)
- * @method static Builder|Product whereName($value)
- * @method static Builder|Product whereSlug($value)
- * @method static Builder|Product whereImage($value)
- * @method static Builder|Product whereType($value)
- * @method static Builder|Product whereDescription($value)
- * @method static Builder|Product wherePrice($value)
- * @method static Builder|Product whereVisible($value)
- * @method static Builder|Product whereOrder($value)
- * @method static Builder|Product whereModuleId($value)
- * @method static Builder|Product whereCreatedAt($value)
- * @method static Builder|Product whereUpdatedAt($value)
- *
- * @mixin \Eloquent
  */
 class Product extends BaseModel
 {

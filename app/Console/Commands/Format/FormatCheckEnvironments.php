@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
  * Class FormatCheckEnvironments
  * Check if environments files own the same keys as the local .env file.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
  * @since     4.1.0
  *

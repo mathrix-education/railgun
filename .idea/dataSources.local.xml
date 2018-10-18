@@ -12,5 +12,24 @@
       <introspection-schemas>*:@</introspection-schemas>
       <table-pattern>collation:-(.*)</table-pattern>
     </data-source>
+    <data-source name="mathrix_fr@web01.mathrix.fr" uuid="c776e30a-2711-4ea5-abab-9229a2b79ac8">
+      <database-info product="MySQL" version="8.0.12" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.46 ( Revision: 9cc87a48e75c2d2e87c1a293b2862ce651cb256e )" family="MYSQL" exact-version="8.0.12">
+        <extra-name-characters>#@</extra-name-characters>
+        <identifier-quote-string>`</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>mathrix_fr</user-name>
+      <introspection-schemas>*:mathrix_fr</introspection-schemas>
+      <table-pattern>collation:-(.*)</table-pattern>
+      <ssh-properties>
+        <enabled>true</enabled>
+        <proxy-host>web01.mathrix.fr</proxy-host>
+        <user>root</user>
+        <use-password>false</use-password>
+        <auth-type>KEY_PAIR</auth-type>
+        <private-key-path>$USER_HOME$/.ssh/id_rsa</private-key-path>
+      </ssh-properties>
+    </data-source>
   </component>
 </project>

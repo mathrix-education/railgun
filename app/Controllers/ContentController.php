@@ -6,7 +6,11 @@ use App\Exceptions\Http401UnauthorizedException;
 use App\Models\Activity;
 use App\Models\Chapter;
 use App\Models\Class_;
+use App\Models\Country;
+use App\Models\Discipline;
+use App\Models\Module;
 use App\Models\Notion;
+use App\Utils\RouterFront;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -16,6 +20,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Tinify\Source;
 use Tinify\Tinify;
 
@@ -30,6 +35,146 @@ use Tinify\Tinify;
  */
 class ContentController extends BaseController
 {
+    /**
+     * Retrieve all routes as csv file
+     *
+     * @return StreamedResponse
+     * @throws Http401UnauthorizedException
+     */
+    public function routes(Request $request)
+    {
+        if (!$request->user()->isAdmin()) {
+            throw new Http401UnauthorizedException();
+        }
+
+        // Intit
+        $data = [
+            [
+                "uri",
+                "country.name",
+                "class.name",
+                "discipline.name",
+                "chapter.name",
+                "notion.name",
+                "activity.name",
+                "module.id"
+            ]
+        ];
+
+        /** @var Chapter[]|Collection $chapters */
+        $chapters = Chapter::all();
+
+        /** @var Chapter $chapter */
+        foreach ($chapters as $chapter) {
+            $class = $chapter->class_;
+            $country = $class->country;
+            $discipline = $chapter->discipline;
+
+            /** @var Notion $notion */
+            foreach ($chapter->notions as $notion) {
+                /** @var Activity $activity */
+                foreach ($notion->activities as $activity) {
+                    /** @var Module $module */
+                    foreach ($activity->modules as $module) {
+                        $data[] = [
+                            "/{$country->slug}/{$class->slug}/{$discipline->slug}/{$chapter->slug}/{$notion->slug}"
+                            . "/{$activity->slug}/{$module->uri_type}/{$module->id}",
+                            $country->name,
+                            $class->name,
+                            $discipline->name,
+                            $chapter->name,
+                            $notion->name,
+                            $activity->name,
+                            $module->id
+                        ];
+                    }
+                }
+            }
+        }
+
+        $response = new StreamedResponse(
+            function () use ($data) {
+                // A resource pointer to the output stream for writing the CSV to
+                $handle = fopen("php://output", "w");
+                foreach ($data as $row) {
+                    // Loop through the data and write each entry as a new row in the csv
+                    fputcsv($handle, $row);
+                }
+
+                fclose($handle);
+            }, 200, [
+                "Content-Type" => "text/csv",
+                "Content-Disposition" => "attachment; filename=routes.csv"
+            ]
+        );
+
+        return $response;
+    }
+
+    /**
+     * Get a flat map of a given content route (country/class/discipline/chapter/notion/activity/module)
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     * @throws ValidationException
+     */
+    public function flat(Request $request)
+    {
+        $this->validate($request, [
+            "country_slug" => "required",
+            "class_slug" => "required",
+            "discipline_slug" => "required",
+            "chapter_slug" => "required",
+            "notion_slug" => "required",
+            "activity_slug" => "required",
+            "module_id" => "required"
+        ]);
+
+        /** @var Country $country */
+        $country = Country::where("slug", "=", $request->input("country_slug"))
+            ->firstOrFail();
+        /** @var Class_ $class */
+        $class = Class_::where("slug", "=", $request->input("class_slug"))
+            ->firstOrFail();
+        /** @var Class_ $class */
+        $discipline = Discipline::where("slug", "=", $request->input("discipline_slug"))
+            ->firstOrFail();
+        /** @var Chapter $chapter */
+        $chapter = Chapter::where([
+            "class_id" => $class->id,
+            "discipline_id" => $discipline->id,
+            "slug" => $request->input("chapter_slug")
+        ])->firstOrFail();
+        /** @var Notion $notion */
+        $notion = $chapter->notions()
+            ->where("notions.slug", "=", $request->input("notion_slug"))
+            ->firstOrFail();
+        /** @var Activity $activity */
+        $activity = $notion->activities()
+            ->where("activities.slug", "=", $request->input("activity_slug"))
+            ->firstOrFail();
+        /** @var Module $module */
+        $module = $activity->modules()
+            ->where("modules.id", "=", $request->input("module_id"))
+            ->firstOrFail();
+
+        $response = new JsonResponse([
+            "country" => $country,
+            "class" => $class,
+            "discipline" => $discipline,
+            "chapter" => $chapter,
+            "notion" => $notion,
+            "activity" => $activity,
+            "module" => array_merge(
+                $module->toArray(),
+                ["no_index" => RouterFront::noIndex($country, $class, $discipline, $chapter, $notion, $activity, $module)]
+            )
+        ]);
+
+        return $response;
+    }
+
     /**
      * @apiVersion     4.0.0
      *

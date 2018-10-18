@@ -6,10 +6,12 @@ use App\Models\Vote;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
-/*
+/**
  * VoteFactory
  *
- * @author Mathrix Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
+ *
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->define(Vote::class, function (Generator $faker) {

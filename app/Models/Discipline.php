@@ -19,18 +19,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string               $name
  * @property string               $slug
  * @property bool                 $beta
- * @property bool                 $visible
  * @property array                $link
  * @property Collection|Chapter[] $chapters
  * @property Collection|Class_[]  $classes
- *
- * @method static Builder|Discipline whereId($value)
- * @method static Builder|Discipline whereName($value)
- * @method static Builder|Discipline whereSlug($value)
- * @method static Builder|Discipline whereBeta($value)
- * @method static Builder|Discipline whereVisible($value)
- *
- * @mixin \Eloquent
  */
 class Discipline extends BaseModel
 {
@@ -40,16 +31,28 @@ class Discipline extends BaseModel
     protected $rules = [
         "name" => "required|max:255",
         "slug" => "required|max:255",
-        "beta" => "boolean",
-        "visible" => "boolean",
+        "beta" => "boolean"
     ];
+    protected $appends = ["visible"];
+
+    /**
+     * @deprecated
+     * @return bool
+     */
+    public function getVisibleAttribute()
+    {
+        if (isset($this->pivot->attributes["visible"])) {
+            return !empty((bool) $this->pivot->attributes["visible"]);
+        } else {
+            return null;
+        }
+    }
 
     /*
     |--------------------------------------------------------------------------
     | Relations
     |--------------------------------------------------------------------------
     */
-
     /**
      * HasMany Chapter.
      *

@@ -20,12 +20,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string            $slug
  * @property string|null       $image
  * @property Collection|Post[] $posts
- *
- * @method static Builder|Category whereImage($value)
- * @method static Builder|Category whereId($value)
- * @method static Builder|Category whereName($value)
- * @method static Builder|Category whereSlug($value)
- * @mixin \Eloquent
  */
 class Category extends BaseModel
 {
@@ -42,7 +36,6 @@ class Category extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
-
     /**
      * HasMany Post.
      *

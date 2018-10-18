@@ -32,14 +32,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property Collection|Log[]     $logs
  * @property Collection|Module[]  $modules
  * @property Collection|Notion[]  $notions
- *
- * @method static Builder|Activity whereId($value)
- * @method static Builder|Activity whereName($value)
- * @method static Builder|Activity whereSlug($value)
- * @method static Builder|Activity whereNameSeo($value)
- * @method static Builder|Activity whereType($value)
- * @method static Builder|Activity whereVisible($value)
- * @mixin \Eloquent
  */
 class Activity extends BaseModel implements Commentable
 {
@@ -106,10 +98,9 @@ class Activity extends BaseModel implements Commentable
 
     /*
     |--------------------------------------------------------------------------
-    | Appends fields
+    | Attributes
     |--------------------------------------------------------------------------
     */
-
     /**
      * favorite.
      *

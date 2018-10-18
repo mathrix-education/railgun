@@ -1,0 +1,34 @@
+description: Discipline with `pivot` field.
+type: object
+properties:
+  id:
+    description: The discipline id.
+    type: integer
+    example: 22
+  name:
+    description: The discipline name.
+    type: string
+    example: Maths
+  slug:
+    description: The discipline slug.
+    type: string
+    example: maths
+  beta:
+    description: The discipline beta state.
+    type: boolean
+  pivot:
+    description: Pivot with `classes` table.
+    type: object
+    properties:
+      class_id:
+        description: The linked class id.
+        type: integer
+        example: 12
+      discipline_id:
+        description: The discipline id.
+        type: integer
+        example: 22
+      order:
+        description: The order of the discipline regarding its class.
+        type: integer
+        example: 12

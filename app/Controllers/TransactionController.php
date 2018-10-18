@@ -16,7 +16,7 @@ use Laravel\Lumen\Routing\Controller;
 /**
  * Class TransactionController.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
  * @since
  *

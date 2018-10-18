@@ -3,10 +3,12 @@
 use App\Models\Notion;
 use Faker\Generator;
 
-/*
+/**
  * NotionFactory
  *
- * @author Mathrix Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
+ *
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->define(Notion::class, function (Generator $faker) {

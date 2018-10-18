@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
@@ -24,15 +23,6 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property Carbon       $updated_at
  * @property User|null    $user
  * @property Post|Comment $votable
- *
- * @method static Builder|Vote whereId($value)
- * @method static Builder|Vote whereValue($value)
- * @method static Builder|Vote whereUserId($value)
- * @method static Builder|Vote whereVotableId($value)
- * @method static Builder|Vote whereVotableType($value)
- * @method static Builder|Vote whereUpdatedAt($value)
- * @method static Builder|Vote whereCreatedAt($value)
- * @mixin \Eloquent
  */
 class Vote extends BaseModel
 {
@@ -54,7 +44,6 @@ class Vote extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
-
     /**
      * BelongsTo User.
      *

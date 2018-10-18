@@ -2,13 +2,13 @@
 
 namespace Tests\API;
 
+use PHPUnit\Framework\Constraint\IsType;
+
 /**
  * Class VersionTest.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- *
- * @since
- *
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @since     1.1.0
  * @copyright Mathrix Education SA
  */
 class VersionTest extends APITestCase
@@ -20,6 +20,9 @@ class VersionTest extends APITestCase
     {
         $this->json("get", "/");
 
-        $this->assertJsonKeys(["message", "build"]);
+        $this->assertJsonDocumentMatches($this->response->getContent(), [
+            "$.message" => new IsType("string"),
+            "$.build" => new IsType("string")
+        ]);
     }
 }

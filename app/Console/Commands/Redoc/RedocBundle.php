@@ -8,11 +8,10 @@ use Symfony\Component\Process\Process;
 
 /**
  * Class RedocBundle.
+ * Bundle Redoc to a single HTML file.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- *
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @since     4.1.0
- *
  * @copyright Mathrix Education SA
  */
 class RedocBundle extends Command

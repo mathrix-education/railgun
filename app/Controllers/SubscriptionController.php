@@ -59,7 +59,7 @@ class SubscriptionController extends Controller
         $data = [
             "planId" => $plan->id,
             "trialPrice" => $plan->trialPrice,
-            "trialEndDate" => $plan->trialEndDate
+            "trialEndDate" => $plan->trialEndDate->__toString() // Hack?
         ];
 
         if ($additionalChildren > 0) {
@@ -114,7 +114,7 @@ class SubscriptionController extends Controller
         // Validate the request
         $this->validate($request, [
             "planId" => "required|in:" . implode(",", array_keys(self::PRICE_PER_MONTH)),
-            "family.*" => "exists:users,email",
+            "family_pack_children_count" => "integer",
         ]);
 
         // Prepare the working variables
@@ -140,7 +140,7 @@ class SubscriptionController extends Controller
 
         $plan = $request->input("planId");
         $data = [
-            "merchantAccountId" => "mathrixEUR",
+            "merchantAccountId" => env("BRAINTREE_MERCHANT_ACCOUNT"),
             "id" => $this->generateSubscriptionId(),
             "planId" => $request->input("planId"),
             "neverExpires" => true,
@@ -148,28 +148,20 @@ class SubscriptionController extends Controller
         ];
 
         // Initial checks for family-pack requests
-        $familyEmails = $request->input("family", []);
-        $isFamilyPack = !empty($familyEmails);
+        $childrenCount = $request->input("family_pack_children_count", 0);
 
-        if ($isFamilyPack) {
-            $family = User::whereIn("email", $familyEmails)
-                ->get(); // Retrieve the other users
-
-            /** @var User $member */
-            foreach ($family as $member) {
-                $member->append(["premium", "braintree"]);
-
-                if ($member->premium) {
-                    throw new Http400InvalidRequestException("User with email `{$member->email}` is already premium");
-                }
-            }
-
+        if ($childrenCount > 0) {
             // We assume that everything is ok for family-pack
             $data["addOns"] = [
-                "add" => FamilyPackUtils::getAddOns($plan, \count($familyEmails)),
+                "add" => FamilyPackUtils::getAddOns($plan, $childrenCount),
             ];
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | Trial transaction
+        |--------------------------------------------------------------------------
+        */
         if ($plan === "v4_annually" || $plan === "v4_biannually") {
             // Add trial
             $data = array_merge($data, [
@@ -186,7 +178,7 @@ class SubscriptionController extends Controller
             $trialPrice = $this->getTrialPrice($plan);
 
             $initialSaleData = [
-                "merchantAccountId" => "mathrixEUR",
+                "merchantAccountId" => env("BRAINTREE_MERCHANT_ACCOUNT"),
                 "amount" => $trialPrice,
                 "customerId" => $user->braintree_id,
                 "lineItems" => [
@@ -208,10 +200,10 @@ class SubscriptionController extends Controller
             ];
 
             // Handle family pack additional price
-            if ($isFamilyPack) {
+            if ($childrenCount > 0) {
                 $initialSaleData["lineItems"] = array_merge(
                     $initialSaleData["lineItems"],
-                    FamilyPackUtils::getAddOnsAsLineItemsForTrial($plan, \count($familyEmails))
+                    FamilyPackUtils::getAddOnsAsLineItemsForTrial($plan, $childrenCount)
                 );
 
                 $totalPrice = $trialPrice;
@@ -225,24 +217,18 @@ class SubscriptionController extends Controller
             $chargeResult = \Braintree\Transaction::sale($initialSaleData);
 
             if ($chargeResult->success) {
-                // Handle family pack membership grant
-                if ($isFamilyPack) {
-                    /** @var User $child */
-                    foreach ($family as $child) {
-                        $familyPack = new FamilyPack([
-                            "parent_id" => $user->id,
-                            "child_id" => $child->id,
-                        ]);
-                        $familyPack->save();
-                    }
-                }
-
                 event(new TransactionSuccessEvent($chargeResult->transaction));
             } else {
                 throw new Http400InvalidRequestException($chargeResult->message);
             }
         }
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | Subscription
+        |--------------------------------------------------------------------------
+        */
         /** @var \Braintree\Result\Successful|\Braintree\Result\Error $subscriptionResult */
         $subscriptionResult = \Braintree_Subscription::create($data);
 
@@ -252,6 +238,16 @@ class SubscriptionController extends Controller
         if ($subscriptionResult->success) {
             /** @var \Braintree_Subscription $subscription */
             $subscription = $subscriptionResult->subscription;
+
+            // Handle family pack membership grant
+            if ($childrenCount > 0) {
+                $familyPack = new FamilyPack([
+                    "braintree_id" => $subscription->id,
+                    "children_count" => $childrenCount,
+                    "parent_id" => $user->id
+                ]);
+                $familyPack->save();
+            }
 
             // Raise event
             event(new NewSubscriptionEvent($user, $subscription));

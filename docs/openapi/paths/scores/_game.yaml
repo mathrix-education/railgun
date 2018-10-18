@@ -16,11 +16,6 @@ post:
               type: integer
               nullable: true
               example: 10000
-            time:
-              description: The score time. May be `null`.
-              type: integer
-              nullable: true
-              example: 17
             data:
               description: The score data, as an arbitrary object.
               type: any
@@ -32,13 +27,12 @@ post:
               example: 437057b1e7c92a427c60ef0fb9b616ec
             signature:
               description: >-
-                The signature, generated with `md5(score + time + token + game)`.
-                If `score` is `null`, use `"no-score"`, if `time` is `null`, use `"no-time"`.
+                The signature, generated with `md5(score + token + game)`.
+                If `score` is `null`, use `"no-score"`.
               type: string
               example: 437057b1eef17c92a40fb9b6275426ec
           required:
           - score
-          - time
           - data
           - token
           - signature

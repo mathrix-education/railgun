@@ -3,6 +3,7 @@
 namespace Tests\API\Disciplines;
 
 use App\Models\Class_;
+use App\Models\Discipline;
 
 /**
  * Class DisciplinesAsAdminTest
@@ -32,40 +33,39 @@ class DisciplinesAsAdminTest extends DisciplinesAsModeratorTest
      */
     public function testEdit()
     {
-        $this->genericEditSuccess();
-    }
-
-    /**
-     * PATCH /disciplines/{id}.
-     *
-     * @throws \Exception
-     */
-    public function testEditWithClasses()
-    {
-        $classIds = Class_::inRandomOrder()->limit(3)->get(["id"])->pluck("id");
+        $visible = $this->faker->boolean;
+        $class = Class_::random();
 
         $this->genericEditSuccess([
             "link" => [
-                "classes" => $classIds,
-            ],
+                "classes" => [
+                    [
+                        "id" => $class->id,
+                        "visible" => $visible
+                    ]
+                ]
+            ]
         ]);
 
-        foreach ($classIds as $classId) {
-            $this->assertInDatabase("class_discipline", [
-                "class_id" => $classId,
-                "discipline_id" => $this->editModelId,
-            ]);
-        }
+        $discipline = Discipline::findOrFail($this->editModelId);
+
+        $this->assertInDatabase("class_discipline", [
+            "class_id" => $class->id,
+            "discipline_id" => $this->editModelId,
+            "visible" => $visible
+        ]);
+        $this->assertEquals($discipline->classes()->count(), 1);
     }
 
     /**
-     * DELETE /disciplines/{id} -> HTTP 501 not_implemented.
+     * DELETE /disciplines/{id}
      *
      * @throws \Exception
      */
     public function testDelete()
     {
+        $discipline = factory(Discipline::class)->create();
+        $this->deleteModelId = $discipline->id;
         $this->genericDelete();
-        $this->assertHttp501NotImplemented();
     }
 }

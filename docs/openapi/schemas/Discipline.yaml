@@ -1,0 +1,18 @@
+description: Discipline
+type: object
+properties:
+  id:
+    description: The discipline id.
+    type: integer
+    example: 22
+  name:
+    description: The discipline name.
+    type: string
+    example: Maths
+  slug:
+    description: The discipline slug.
+    type: string
+    example: maths
+  beta:
+    description: The discipline beta state.
+    type: boolean

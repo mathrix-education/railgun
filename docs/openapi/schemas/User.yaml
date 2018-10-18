@@ -5,6 +5,10 @@ properties:
     description: The user id.
     type: integer
     example: 24
+  username:
+    description: The user username.
+    type: string
+    example: john.doe
   email:
     description: The user email address.
     type: string
@@ -61,6 +65,10 @@ properties:
   class_id:
     description: The class id which belongs to the user.
     type: integer
+  family_pack_id_as_parent:
+    description: The family pack id wher the user is the parent.
+    type: integer
+    nullable: true
   stripe_id:
     description: The Stripe customer id which is linked to the user.
     type: string

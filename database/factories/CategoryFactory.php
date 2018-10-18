@@ -3,10 +3,12 @@
 use App\Models\Category;
 use Faker\Generator;
 
-/*
+/**
  * CategoryFactory
  *
- * @author Mathrix Team
+ * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @copyright Mathrix Education SA
+ *
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->define(Category::class, function (Generator $faker) {

@@ -38,22 +38,11 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
  * @property Collection|Comment[] $children
  * @property Collection|Vote[]    $votes
  *
- * @method static Builder|Comment whereId($value)
- * @method static Builder|Comment whereContent($value)
- * @method static Builder|Comment whereScore($value)
- * @method static Builder|Comment whereUserId($value)
- * @method static Builder|Comment whereParentId($value)
- * @method static Builder|Comment whereCreatedAt($value)
- * @method static Builder|Comment whereUpdatedAt($value)
- * @method static Builder|Comment whereDeletedAt($value)
- * @method static Builder|Comment whereCommentableId($value)
- * @method static Builder|Comment whereCommentableType($value)
  * @method static QueryBuilder|Comment onlyTrashed()
  * @method static QueryBuilder|Comment withTrashed()
  * @method static QueryBuilder|Comment withoutTrashed()
  * @method static bool|null forceDelete()
  * @method static bool|null restore()
- * @mixin \Eloquent
  */
 class Comment extends BaseModel
 {
@@ -114,12 +103,10 @@ class Comment extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
-
     /**
      * BelongsTo Comment.
      *
      * @return BelongsTo
-     * @codeCoverageIgnore
      */
     public function parent(): BelongsTo
     {
@@ -130,7 +117,6 @@ class Comment extends BaseModel
      * HasMany Comment.
      *
      * @return HasMany
-     * @codeCoverageIgnore
      */
     public function children(): HasMany
     {

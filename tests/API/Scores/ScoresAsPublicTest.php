@@ -9,9 +9,8 @@ use Tests\API\ScopeTestCase;
  * Test scores as public (non-logged user).
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @since     4.1.0
  * @copyright Mathrix Education SA
- *
- * @version   4.1.0
  */
 class ScoresAsPublicTest extends ScopeTestCase
 {

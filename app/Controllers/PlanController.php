@@ -9,7 +9,7 @@ use Laravel\Lumen\Routing\Controller;
 /**
  * Class PlaController.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  *
  * @since     4.1.0
  *
@@ -24,7 +24,7 @@ class PlanController extends Controller
      */
     public function all()
     {
-        return new JsonResponse(Plan::all());
+        return new JsonResponse(Plan::all()->toArray());
     }
 
     /**

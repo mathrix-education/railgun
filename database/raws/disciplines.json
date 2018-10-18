@@ -3,49 +3,66 @@
     "id": 1,
     "name": "Mathématiques",
     "slug": "maths",
-    "beta": 0,
-    "visible": 1
+    "beta": 0
   },
   {
     "id": 2,
     "name": "Physique",
     "slug": "physique",
-    "beta": 1,
-    "visible": 1
+    "beta": 1
   },
   {
     "id": 3,
     "name": "SVT",
     "slug": "svt",
-    "beta": 1,
-    "visible": 1
+    "beta": 1
   },
   {
     "id": 4,
-    "name": "Histoire",
-    "slug": "histoire",
-    "beta": 1,
-    "visible": 0
+    "name": "Sciences de l'Ingénieur",
+    "slug": "science-ingenieur",
+    "beta": 1
   },
   {
     "id": 5,
-    "name": "Géographie",
-    "slug": "geographie",
-    "beta": 1,
-    "visible": 0
+    "name": "Sciences Economiques et Sociales",
+    "slug": "sciences-economiques-et-sociales",
+    "beta": 1
   },
   {
     "id": 6,
-    "name": "Chimie",
-    "slug": "chimie",
-    "beta": 1,
-    "visible": 0
+    "name": "Philosophie",
+    "slug": "philosophie",
+    "beta": 1
   },
   {
     "id": 7,
-    "name": "Philosophie",
-    "slug": "philosophie",
-    "beta": 1,
-    "visible": 0
+    "name": "Histoire",
+    "slug": "histoire",
+    "beta": 1
+  },
+  {
+    "id": 8,
+    "name": "Géographie",
+    "slug": "geographie",
+    "beta": 1
+  },
+  {
+    "id": 9,
+    "name": "Français",
+    "slug": "francais",
+    "beta": 1
+  },
+  {
+    "id": 10,
+    "name": "Anglais",
+    "slug": "anglais",
+    "beta": 1
+  },
+  {
+    "id": 11,
+    "name": "Chimie",
+    "slug": "chimie",
+    "beta": 0
   }
 ]

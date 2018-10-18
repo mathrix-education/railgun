@@ -7,14 +7,14 @@ get:
   parameters:
   - name: game
     in: path
-    description: The score game slug
+    description: The score game slug.
     required: true
     schema:
       type: string
       example: meteor
   responses:
     200:
-      description: The scores
+      description: The score registration token.
       content:
         application/json:
           schema:
