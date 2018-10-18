@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Notification;
 use Laravel\Passport\Passport;
 
 /**
- * Class FamilyPackInbtegrationTest
+ * Class FamilyPackIntegrationTest
  *
  * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
  * @package   Tests\Braintree

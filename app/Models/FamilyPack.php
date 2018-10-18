@@ -7,6 +7,7 @@ use App\Exceptions\Http401UnauthorizedException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -17,14 +18,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @since     4.1.0
  * @copyright Mathrix Education SA
  *
- * @property int         $id
- * @property string      $braintree_id
- * @property int         $parent_id
- * @property int         $children_count
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property User        $child
- * @property User        $parent
+ * @property int               $id
+ * @property string            $braintree_id
+ * @property int               $parent_id
+ * @property int               $children_count
+ * @property Carbon|null       $created_at
+ * @property Carbon|null       $updated_at
+ * @property User              $parent
+ * @property Collection|User[] $children
  */
 class FamilyPack extends BaseModel
 {

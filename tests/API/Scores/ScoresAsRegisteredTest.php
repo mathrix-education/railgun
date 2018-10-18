@@ -125,10 +125,12 @@ class ScoresAsRegisteredTest extends ScoresAsPublicTest
 
     /**
      * Test chain register score/around
+     *
+     * @throws \Exception
      */
     public function testChainer()
     {
-        $score = 1000;
+        $score = random_int(1, 1000);
         $token = "token";
         $game = "meteor";
         $signature = md5($score . $token . $game);
