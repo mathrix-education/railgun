@@ -9,8 +9,12 @@ properties:
     description: The activity slug.
     type: string
     example: lorem-ipsum
-  name_seo:
-    description: ___Deprecated___. The activity name_seo.
+  seo_title:
+    description: The activity title for SEO.
+    type: string
+    example: lorem_ipsum
+  seo_description:
+    description: The activity description for SEO.
     type: string
     example: lorem_ipsum
   type:

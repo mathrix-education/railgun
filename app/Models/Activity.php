@@ -21,9 +21,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property int                  $id
  * @property string               $name
  * @property string               $slug
- * @property string|null          $name_seo
+ * @property string|null          $seo_title
+ * @property string|null          $seo_description
  * @property string               $type
  * @property bool                 $visible
+ * @property bool                 $premium
  * @property array                $link
  * @property bool                 $completed
  * @property bool                 $favorite
@@ -40,7 +42,7 @@ class Activity extends BaseModel implements Commentable
     public const TYPES = ["video", "course", "test", "exercise", "summary", "flashcard"];
 
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "name", "slug", "name_seo", "type", "visible", "link"];
+    protected $fillable = ["id", "name", "slug", "seo_title", "seo_description", "type", "visible", "premium", "link"];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
         "visible" => "boolean",
