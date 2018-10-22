@@ -58,7 +58,7 @@ class ContentController extends BaseController
                 "notion.name",
                 "activity.name",
                 "module.id",
-                "no_index"
+                "seo_index"
             ]
         ];
 
@@ -87,7 +87,7 @@ class ContentController extends BaseController
                             $notion->name,
                             $activity->name,
                             $module->id,
-                            RouterFront::noIndex($country, $class, $discipline, $chapter, $notion, $activity, $module) ? 1 : 0
+                            RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity, $module) ? 1 : 0
                         ];
                     }
                 }
@@ -170,7 +170,7 @@ class ContentController extends BaseController
             "activity" => $activity,
             "module" => array_merge(
                 $module->toArray(),
-                ["no_index" => RouterFront::noIndex($country, $class, $discipline, $chapter, $notion, $activity, $module)]
+                ["seo_index" => RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity, $module)]
             )
         ]);
 

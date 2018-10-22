@@ -230,11 +230,11 @@ class ModuleController extends BaseController
                     $country = $class->country;
 
                     $url = RouterFront::getModuleUrl($country, $class, $discipline, $chapter, $notion, $activity, $module);
-                    $noIndex = RouterFront::noIndex($country, $class, $discipline, $chapter, $notion, $activity, $module);
+                    $seoIndex = RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity, $module);
 
                     $routes[] = [
                         "url" => $url,
-                        "no_index" => $noIndex
+                        "seo_index" => $seoIndex
                     ];
                 }
             }
@@ -257,9 +257,9 @@ class ModuleController extends BaseController
      * @throws ValidationException
      * @throws Http400InvalidRequestException
      */
-    public function noIndex(Request $request, int $moduleId)
+    public function markIndex(Request $request, int $moduleId)
     {
-        $request->user()->canOrFail("noIndex", Module::class);
+        $request->user()->canOrFail("markIndex", Module::class);
 
         $this->validate($request, [
             "country_id" => "required|exists:countries,id",
@@ -279,11 +279,11 @@ class ModuleController extends BaseController
         $module = Module::findOrFail($moduleId);
 
         $cancel = $request->input("cancel", false);
-        $noIndexed = RouterFront::noIndex($country, $class, $discipline, $chapter, $notion, $activity, $module);
+        $seoIndex = RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity, $module);
 
-        if (!$cancel && $noIndexed) {
-            throw new Http400InvalidRequestException("Already marked as no-index");
-        } elseif ($cancel && $noIndexed) {
+        if (!$cancel && $seoIndex) {
+            throw new Http400InvalidRequestException("Already marked as seo_index = true");
+        } elseif ($cancel && !$seoIndex) {
             $existingMeta = Meta::where([
                 ["country_id", "=", $country->id],
                 ["class_id", "=", $class->id],
@@ -292,7 +292,7 @@ class ModuleController extends BaseController
                 ["notion_id", "=", $notion->id],
                 ["activity_id", "=", $activity->id],
                 ["module_id", "=", $module->id],
-                ["no_index", "=", false]
+                ["seo_index", "=", true]
             ])
                 ->whereNull("user_id")
                 ->firstOrFail();
@@ -302,7 +302,7 @@ class ModuleController extends BaseController
                 "favorite" => false,
                 "to_revise" => false,
                 "completed" => false,
-                "no_index" => true,
+                "seo_index" => true,
                 "user_id" => null,
                 "country_id" => $country->id,
                 "class_id" => $class->id,
@@ -318,7 +318,7 @@ class ModuleController extends BaseController
         $module = Module::findOrFail($moduleId);
         $response = new JsonResponse(array_merge(
             $module->toArray(),
-            ["no_index" => RouterFront::noIndex($country, $class, $discipline, $chapter, $notion, $activity, $module)]
+            ["seo_index" => RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity, $module)]
         ));
 
         return $response;

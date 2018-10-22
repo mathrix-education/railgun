@@ -47,6 +47,6 @@ properties:
   visible:
     description: The module visibility.
     type: boolean
-  no_index:
-    description: If the module should not be indexed.
+  seo_index:
+    description: If the module should be indexed.
     type: boolean

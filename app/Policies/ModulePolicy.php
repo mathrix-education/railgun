@@ -68,7 +68,7 @@ class ModulePolicy extends BasePolicy
      *
      * @return bool
      */
-    public function noIndex(User $currentUser)
+    public function markIndex(User $currentUser)
     {
         return $currentUser->isAdmin();
     }

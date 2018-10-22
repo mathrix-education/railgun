@@ -1,8 +1,8 @@
 post:
   tags:
   - Modules
-  summary: No Index
-  operationId: modulesNoIndex
+  summary: Seo Index
+  operationId: modulesSeoIndex
   parameters:
   - name: moduleId
     in: path
@@ -59,9 +59,9 @@ post:
           - module_id
   responses:
     200:
-      description: The module with the `no-index` field.
+      description: The module with the `seo_index` field.
       content:
         application/json:
           schema:
-            $ref: '../../index.yaml#/components/schemas/ModuleWithNoIndex'
+            $ref: '../../index.yaml#/components/schemas/ModuleWithSeoIndex'
 

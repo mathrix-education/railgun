@@ -53,6 +53,7 @@ class Activity extends BaseModel implements Commentable
         "name" => "required|max:255",
         "slug" => "required|max:255",
         "visible" => "boolean",
+        "premium" => "boolean",
     ];
     /** @var array Appends attributes */
     protected $appends = ["favorite", "to_revise", "completed"];

@@ -15,17 +15,17 @@ use Tests\Utils\Tree;
  */
 class ModulesAsAdminTest extends ModulesAsModeratorTest
 {
-    public function testNoIndex()
+    public function testMarkIndex()
     {
         $tree = new Tree();
 
-        $this->json("post", "/modules/{$tree->getModule()->id}/no-index", $tree->flatIds());
+        $this->json("post", "/modules/{$tree->getModule()->id}/index", $tree->flatIds());
 
         $this->assertInDatabase("metas", [
             "favorite" => false,
             "to_revise" => false,
             "completed" => false,
-            "no_index" => true,
+            "seo_index" => true,
             "user_id" => null,
             "country_id" => $tree->getCountry()->id,
             "class_id" => $tree->getClass()->id,
