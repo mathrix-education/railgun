@@ -47,7 +47,7 @@ class ContentController extends BaseController
             throw new Http401UnauthorizedException();
         }
 
-        // Intit
+        // Init
         $data = [
             [
                 "uri",
@@ -57,7 +57,8 @@ class ContentController extends BaseController
                 "chapter.name",
                 "notion.name",
                 "activity.name",
-                "module.id"
+                "module.id",
+                "no_index"
             ]
         ];
 
@@ -85,7 +86,8 @@ class ContentController extends BaseController
                             $chapter->name,
                             $notion->name,
                             $activity->name,
-                            $module->id
+                            $module->id,
+                            RouterFront::noIndex($country, $class, $discipline, $chapter, $notion, $activity, $module) ? 1 : 0
                         ];
                     }
                 }
