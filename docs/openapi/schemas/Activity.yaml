@@ -35,6 +35,10 @@ properties:
     description: The activity visibility.
     type: boolean
     example: true
+  premium:
+    description: The activity premium state.
+    type: boolean
+    example: true
 
 
 
