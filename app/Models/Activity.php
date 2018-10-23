@@ -6,7 +6,6 @@ use App\Models\Interfaces\Commentable;
 use App\Models\Traits\CommentableTrait;
 use App\Models\Traits\Loggable;
 use Auth;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -42,7 +41,8 @@ class Activity extends BaseModel implements Commentable
     public const TYPES = ["video", "course", "test", "exercise", "summary", "flashcard"];
 
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "name", "slug", "seo_title", "seo_description", "type", "visible", "premium", "link"];
+    protected $fillable = ["id", "name", "slug", "seo_title", "seo_description", "seo_keywords", "type", "visible",
+        "premium", "link"];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
         "visible" => "boolean",
@@ -85,7 +85,8 @@ class Activity extends BaseModel implements Commentable
     public function modules(): BelongsToMany
     {
         return $this->belongsToMany(Module::class)
-            ->withPivot(["order"]);
+            ->withPivot(["order"])
+            ->orderBy("pivot_order");
     }
 
     /**
@@ -96,7 +97,8 @@ class Activity extends BaseModel implements Commentable
     public function notions(): BelongsToMany
     {
         return $this->belongsToMany(Notion::class)
-            ->withPivot(["order"]);
+            ->withPivot(["order"])
+            ->orderBy("pivot_order");
     }
 
     /*

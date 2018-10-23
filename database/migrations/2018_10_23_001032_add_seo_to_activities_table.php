@@ -17,6 +17,7 @@ class AddSeoToActivitiesTable extends Migration
             $table->boolean("premium")->after("visible");
             $table->string("seo_title")->nullable()->after("slug");
             $table->text("seo_description")->nullable()->after("seo_title");
+            $table->text("seo_keywords")->nullable()->after("seo_description");
         });
 
         DB::statement("UPDATE activities SET seo_title = name_seo");
@@ -45,6 +46,7 @@ class AddSeoToActivitiesTable extends Migration
             $table->dropColumn("premium");
             $table->dropColumn("seo_title");
             $table->dropColumn("seo_description");
+            $table->dropColumn("seo_keywords");
         });
     }
 }

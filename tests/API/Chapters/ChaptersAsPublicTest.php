@@ -112,7 +112,9 @@ class ChaptersAsPublicTest extends ScopeTestCase
         $this->assertHttp200Success();
         $response = $this->getResponseData();
 
+        $notionOrder = [];
         foreach ($response->notions as $notion) {
+            $notionOrder[] = $notion->pivot->order;
             foreach ($notion->activities as $activity) {
                 $this->assertTrue($activity->visible);
                 foreach ($activity->modules as $module) {
@@ -120,5 +122,10 @@ class ChaptersAsPublicTest extends ScopeTestCase
                 }
             }
         }
+
+        $originalNotionOrder = $notionOrder;
+        sort($notionOrder);
+
+        $this->assertEquals($notionOrder, $originalNotionOrder);
     }
 }

@@ -17,6 +17,10 @@ properties:
     description: The activity description for SEO.
     type: string
     example: lorem_ipsum
+  seo_keywords:
+    description: The activity keywords for SEO.
+    type: string
+    example: lorem,ipsum
   type:
     description: The activity type.
     type: string

@@ -211,7 +211,8 @@ class Module extends BaseModel
     public function activities(): BelongsToMany
     {
         return $this->belongsToMany(Activity::class)
-            ->withPivot(["order"]);
+            ->withPivot(["order"])
+            ->orderBy("pivot_order");
     }
 
     /**
