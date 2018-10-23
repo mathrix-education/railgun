@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property bool        $favorite
  * @property bool        $to_revise
  * @property bool        $completed
- * @property bool        $no_index
+ * @property bool        $seo_index
  * @property int|null    $user_id
  * @property int|null    $country_id
  * @property int|null    $class_id
@@ -43,13 +43,14 @@ class Meta extends BaseModel
     /** @var bool Indicates if the model should be timestamped */
     public $timestamps = true;
     /** @var array The attributes that are mass assignable */
-    public $fillable = ["id", "favorite", "to_revise", "completed", "no_index", "user_id", "country_id", "class_id",
+    public $fillable = ["id", "favorite", "to_revise", "completed", "seo_index", "user_id", "country_id", "class_id",
         "discipline_id", "chapter_id", "notion_id", "activity_id", "module_id", "created_at", "updated_at"];
     /** @var array The validation rules on create */
     protected $rules = [
         "favorite" => "boolean",
         "to_revise" => "boolean",
         "completed" => "boolean",
+        "seo_index" => "boolean",
         "user_id" => "nullable|exists:users,id",
         "country_id" => "required|exists:countries,id",
         "class_id" => "required|exists:classes,id",
@@ -64,7 +65,7 @@ class Meta extends BaseModel
         "favorite" => "boolean",
         "to_revise" => "boolean",
         "completed" => "boolean",
-        "no_index" => "boolean"
+        "seo_index" => "boolean"
     ];
 
     /*

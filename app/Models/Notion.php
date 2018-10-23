@@ -60,7 +60,8 @@ class Notion extends BaseModel
     public function activities(): BelongsToMany
     {
         return $this->belongsToMany(Activity::class)
-            ->withPivot(["order"]);
+            ->withPivot(["order"])
+            ->orderBy("pivot_order");
     }
 
     /**
@@ -71,6 +72,7 @@ class Notion extends BaseModel
     public function chapters(): BelongsToMany
     {
         return $this->belongsToMany(Chapter::class)
-            ->withPivot(["order"]);
+            ->withPivot(["order"])
+            ->orderBy("pivot_order");
     }
 }

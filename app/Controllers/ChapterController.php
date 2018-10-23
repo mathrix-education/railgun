@@ -2,15 +2,12 @@
 
 namespace App\Controllers;
 
-use App\Models\Activity;
 use App\Models\Chapter;
 use App\Models\Class_;
-use App\Models\Module;
-use App\Models\Notion;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 /**
  * Class ChapterController.
@@ -182,57 +179,18 @@ class ChapterController extends BaseController
      */
     public function recursive(int $id)
     {
-        // Chapter -> Notion
-        $chapterNotionLinks = DB::select("SELECT chapter_id,notion_id FROM chapter_notion WHERE chapter_id = ?", [$id]);
-        $chapterNotionLinks = new Collection($chapterNotionLinks);
-        $notionFlatIds = $chapterNotionLinks->pluck("notion_id")->toArray();
-
-        // Notion -> Activity
-        $notionActivityLinks = DB::select(
-            "SELECT notion_id,activity_id FROM activity_notion WHERE notion_id IN (" . implode(",", $notionFlatIds) . ")"
-        );
-        $notionActivityLinks = new Collection($notionActivityLinks);
-        $activityFlatIds = $notionActivityLinks->pluck("activity_id")->toArray();
-
-        // Activity -> Module
-        $activityModuleLinks = DB::select(
-            "SELECT module_id,activity_id FROM activity_module WHERE activity_id IN (" . implode(",", $activityFlatIds) . ")"
-        );
-        $activityModuleLinks = new Collection($activityModuleLinks);
-        $moduleFlatIds = $activityModuleLinks->pluck("module_id")->toArray();
-
-        // Retrieve models
-        $chapter = Chapter::findOrFail($id);
-        $notions = Notion::whereIn("id", $notionFlatIds)->get();
-        $activities = Activity::whereIn("id", $activityFlatIds)
-            ->where("visible", "=", true)
-            ->get();
-        $modules = Module::whereIn("id", $moduleFlatIds)
-            ->where("visible", "=", true)
-            ->get();
-
-        // Build tree
-        foreach ($activities as $key => $activity) {
-            $activityModules = $modules->whereIn(
-                "id",
-                $activityModuleLinks->where("activity_id", "=", $activity->id)
-                    ->pluck("module_id")
-                    ->toArray()
-            );
-            $activities[$key]->modules = $activityModules->values();
-        }
-
-        foreach ($notions as $key => $notion) {
-            $notionActivities = $activities->whereIn(
-                "id",
-                $notionActivityLinks->where("notion_id", "=", $notion->id)
-                    ->pluck("activity_id")
-                    ->toArray()
-            );
-            $notions[$key]->activities = $notionActivities->values();
-        }
-
-        $chapter->notions = $notions->values();
+        $chapter = Chapter::with([
+            "notions" => function (BelongsToMany $q) {
+                $q->where("visible", "=", true);
+            },
+            "notions.activities" => function (BelongsToMany $q) {
+                $q->where("visible", "=", true);
+            },
+            "notions.activities.modules" => function (BelongsToMany $q) {
+                $q->where("visible", "=", true);
+            }
+        ])
+            ->findOrFail($id);
 
         $response = new JsonResponse($chapter);
 

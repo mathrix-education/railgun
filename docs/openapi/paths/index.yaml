@@ -49,11 +49,11 @@
 
 
 # -------
-# Content
+# Modules
 # -------
 /modules/{moduleId}/routes:
   $ref: ./modules/_moduleId_routes.yaml
-/content/{moduleId}/no-index:
+/content/{moduleId}/index:
   $ref: ./modules/_moduleId_no-index.yaml
 
 

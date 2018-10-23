@@ -159,7 +159,7 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
 
         $meta = Meta::find($meta->id);
 
-        $this->assertTrue($oldDate < $meta->updated_at);
+        $this->assertNotInDatabase("metas", ["id" => $meta->id, "updated_at" => $oldDate]);
     }
 
     /**

@@ -53,8 +53,8 @@ class RouterFront
      *
      * @return bool
      */
-    public static function noIndex(Country $country, Class_ $class, Discipline $discipline, Chapter $chapter,
-                            Notion $notion, Activity $activity, Module $module)
+    public static function seoIndex(Country $country, Class_ $class, Discipline $discipline, Chapter $chapter,
+                                    Notion $notion, Activity $activity, Module $module)
     {
         return Meta::where([
             ["country_id", "=", $country->id],
@@ -64,7 +64,7 @@ class RouterFront
             ["notion_id", "=", $notion->id],
             ["activity_id", "=", $activity->id],
             ["module_id", "=", $module->id],
-            ["no_index", "=", true]
+            ["seo_index", "=", true]
         ])
             ->whereNull("user_id")
             ->exists();

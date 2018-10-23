@@ -6,7 +6,6 @@ use App\Models\Interfaces\Commentable;
 use App\Models\Traits\CommentableTrait;
 use App\Models\Traits\Loggable;
 use Auth;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -21,9 +20,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property int                  $id
  * @property string               $name
  * @property string               $slug
- * @property string|null          $name_seo
+ * @property string|null          $seo_title
+ * @property string|null          $seo_description
  * @property string               $type
  * @property bool                 $visible
+ * @property bool                 $premium
  * @property array                $link
  * @property bool                 $completed
  * @property bool                 $favorite
@@ -40,7 +41,8 @@ class Activity extends BaseModel implements Commentable
     public const TYPES = ["video", "course", "test", "exercise", "summary", "flashcard"];
 
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "name", "slug", "name_seo", "type", "visible", "link"];
+    protected $fillable = ["id", "name", "slug", "seo_title", "seo_description", "seo_keywords", "type", "visible",
+        "premium", "link"];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
         "visible" => "boolean",
@@ -51,6 +53,7 @@ class Activity extends BaseModel implements Commentable
         "name" => "required|max:255",
         "slug" => "required|max:255",
         "visible" => "boolean",
+        "premium" => "boolean",
     ];
     /** @var array Appends attributes */
     protected $appends = ["favorite", "to_revise", "completed"];
@@ -82,7 +85,8 @@ class Activity extends BaseModel implements Commentable
     public function modules(): BelongsToMany
     {
         return $this->belongsToMany(Module::class)
-            ->withPivot(["order"]);
+            ->withPivot(["order"])
+            ->orderBy("pivot_order");
     }
 
     /**
@@ -93,7 +97,8 @@ class Activity extends BaseModel implements Commentable
     public function notions(): BelongsToMany
     {
         return $this->belongsToMany(Notion::class)
-            ->withPivot(["order"]);
+            ->withPivot(["order"])
+            ->orderBy("pivot_order");
     }
 
     /*

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -73,6 +72,7 @@ class Chapter extends BaseModel
     public function notions(): BelongsToMany
     {
         return $this->belongsToMany(Notion::class)
-            ->withPivot(["order"]);
+            ->withPivot(["order"])
+            ->orderBy("pivot_order");
     }
 }
