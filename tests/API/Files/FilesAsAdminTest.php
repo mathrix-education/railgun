@@ -13,9 +13,4 @@ namespace Tests\API\Files;
  */
 class FilesAsAdminTest extends FilesAsModeratorTest
 {
-    public function testList()
-    {
-        $this->json("get", "/files/test");
-        $this->debug();
-    }
 }
