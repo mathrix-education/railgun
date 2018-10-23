@@ -15,6 +15,7 @@ use App\Console\Commands\Make\MakeTest;
 use App\Console\Commands\Redoc\RedocBundle;
 use App\Console\Commands\Redoc\RedocServe;
 use App\Console\Commands\Road;
+use App\Console\Commands\SEO\GenerateIndex;
 use App\Console\Commands\SetVersion;
 use App\Console\Commands\Sitemap\SitemapAll;
 use App\Console\Commands\Sitemap\SitemapContent;
@@ -58,6 +59,8 @@ class Kernel extends ConsoleKernel
         // redoc:
         RedocServe::class,
         RedocBundle::class,
+        // seo:
+        GenerateIndex::class,
         // sitemap:
         SitemapAll::class,
         SitemapContent::class,

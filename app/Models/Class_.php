@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property array                   $link
  * @property int|null                $parent_id
  * @property int                     $country_id
+ * @property Collection|Chapter[]    $chapters
  * @property Country                 $country
  * @property Collection|Discipline[] $disciplines
  * @property Class_|null             $parent
@@ -80,6 +81,16 @@ class Class_ extends BaseModel
     public function parent(): BelongsTo
     {
         return $this->belongsTo(self::class, "parent_id");
+    }
+
+    /**
+     * BelongsTo Country.
+     *
+     * @return HasMany
+     */
+    public function chapters(): HasMany
+    {
+        return $this->hasMany(Chapter::class, "class_id");
     }
 
     /**
