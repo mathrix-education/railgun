@@ -10,7 +10,7 @@ tests:
   image: edbizarro/gitlab-ci-pipeline-php:7.2
   stage: test
   services:
-  - mysql:8.0
+  - mysql:5.7
   retry: 2
   variables:
     MYSQL_DATABASE: mathrix_fr_pipelines
