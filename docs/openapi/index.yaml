@@ -22,6 +22,8 @@ tags:
   description: Disciplines API
 - name: Family Packs
   description: Family Packs API
+- name: Files
+  description: Files API
 - name: Products
   description: Products API
 - name: Modules

@@ -16,6 +16,6 @@ Standard response:
 ```json
 {
   "status": "success",
-  "message": "Model `id` {model_id} successfully deleted"
+  "message": "Model `id` {model_id} successfully deleted."
 }
 ```

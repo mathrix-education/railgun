@@ -18,6 +18,8 @@ Discount:
   $ref: ./Discount.yaml
 FamilyPack:
   $ref: ./FamilyPack.yaml
+File:
+  $ref: ./File.yaml
 Meta:
   $ref: ./Meta.yaml
 Module:
