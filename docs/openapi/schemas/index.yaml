@@ -23,7 +23,7 @@ Meta:
 Module:
   $ref: ./Module.yaml
 ModuleWithSeoIndex:
-  $ref: ./ModuleWithNoIndex.yaml
+  $ref: ./ModuleWithSeoIndex.yaml
 Notion:
   $ref: ./Notion.yaml
 Post:
