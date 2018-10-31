@@ -39,6 +39,13 @@
   $ref: ./categories/_categoryId.yaml
 
 
+# --------
+# Chapters
+# --------
+/by-class-discipline/{classId}/{disciplineId}:
+  $ref: ./chapters/_by_class_discipline.yaml
+
+
 # -------
 # Content
 # -------

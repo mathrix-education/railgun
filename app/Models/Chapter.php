@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Model Chapter.
@@ -21,6 +22,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property bool                $visible
  * @property int                 $class_id
  * @property int                 $discipline_id
+ * @property int                 $activity_count
  * @property array               $link
  * @property Class_              $class_
  * @property Discipline          $discipline
@@ -29,7 +31,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Chapter extends BaseModel
 {
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "name", "slug", "class_id", "discipline_id", "visible", "order", "link"];
+    protected $fillable = ["id", "name", "slug", "order", "visible", "class_id", "discipline_id", "link"];
     /** @var array Validation rules */
     protected $rules = [
         "name" => "required|max:255",
@@ -38,6 +40,8 @@ class Chapter extends BaseModel
         "discipline_id" => "required|exists:disciplines,id",
         "visible" => "boolean",
     ];
+    /** @var array Virtual fields */
+    protected $appends = ["activity_count", "activity_to_revise", "activity_completed"];
 
     /*
     |--------------------------------------------------------------------------
@@ -74,5 +78,66 @@ class Chapter extends BaseModel
         return $this->belongsToMany(Notion::class)
             ->withPivot(["order"])
             ->orderBy("pivot_order");
+    }
+
+    /**
+     * activity_count
+     *
+     * @return int
+     */
+    public function getActivityCountAttribute()
+    {
+        /** @var Notion[]|Collection $notions */
+        $count = $this->notions()->with(["activities" => function (BelongsToMany $q) {
+            $q->where("visible", "=", true);
+        }])->count();
+
+        return $count;
+    }
+
+    /**
+     * activity_to_revise
+     *
+     * @return int
+     */
+    public function getActivityToReviseAttribute(): ?int
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        if ($user === null) {
+            return null;
+        }
+
+        return Meta::where([
+            ["to_revise", "=", true],
+            ["user_id", "=", $user->id],
+            ["chapter", "=", $this->id],
+        ])
+            ->whereNull("module_id")
+            ->count();
+    }
+
+    /**
+     * activity_completed
+     *
+     * @return int|null
+     */
+    public function getActivityCompletedAttribute(): ?int
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        if ($user === null) {
+            return null;
+        }
+
+        return Meta::where([
+            ["completed", "=", true],
+            ["user_id", "=", $user->id],
+            ["chapter", "=", $this->id],
+        ])
+            ->whereNull("module_id")
+            ->count();
     }
 }

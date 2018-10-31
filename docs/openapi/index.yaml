@@ -16,6 +16,8 @@ tags:
   description: Activities API
 - name: Categories
   description: Categories API
+- name: Chapters
+  description: Chapters API
 - name: Content
   description: Content API
 - name: Disciplines
