@@ -109,13 +109,15 @@ class Chapter extends BaseModel
             return null;
         }
 
-        return Meta::where([
+        $count = Meta::where([
             ["to_revise", "=", true],
             ["user_id", "=", $user->id],
             ["chapter_id", "=", $this->id],
         ])
             ->whereNull("module_id")
             ->count();
+
+        return $count;
     }
 
     /**
@@ -132,12 +134,14 @@ class Chapter extends BaseModel
             return null;
         }
 
-        return Meta::where([
+        $count = Meta::where([
             ["completed", "=", true],
             ["user_id", "=", $user->id],
             ["chapter_id", "=", $this->id],
         ])
             ->whereNull("module_id")
             ->count();
+
+        return $count;
     }
 }

@@ -2,6 +2,9 @@
 
 namespace Tests\API\Chapters;
 
+use App\Models\Chapter;
+use PHPUnit\Framework\Constraint\IsType;
+
 /**
  * Class ChaptersAsPublicTest
  * Test chapters as registered user.
@@ -13,4 +16,42 @@ namespace Tests\API\Chapters;
  */
 class ChaptersAsRegisteredTest extends ChaptersAsPublicTest
 {
+
+    /**
+     * GET /chapters/{id}.
+     *
+     * @throws \Exception
+     */
+    public function testGet()
+    {
+        $this->genericGetSuccess();
+
+        $this->assertJsonDocumentMatches($this->response->getContent(), [
+            "activity_count" => new IsType("integer"),
+            "activity_completed" => new IsType("integer"),
+            "activity_to_revise" => new IsType("integer")
+        ]);
+    }
+
+    /**
+     * GET /chapters/slug/{chapterSlug}/by-class-slug/{classSlug}.
+     *
+     * @throws \Exception
+     */
+    public function testGetBySlugAndClassSlug()
+    {
+        $chapter = Chapter::random();
+        $class = $chapter->class_;
+
+        $this->call("get", "/chapters/slug/{$chapter->slug}/by-class-slug/{$class->slug}");
+
+        $this->assertHttp200Success();
+        $this->assertJsonKeys(["id", "name", "slug"]);
+
+        $this->assertJsonDocumentMatches($this->response->getContent(), [
+            "activity_count" => new IsType("integer"),
+            "activity_completed" => new IsType("integer"),
+            "activity_to_revise" => new IsType("integer")
+        ]);
+    }
 }
