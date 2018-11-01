@@ -20,6 +20,7 @@ class Chainer
     private $request;
     private $subRequests;
     private $responseData = [];
+    private $bearerToken;
 
     /**
      * Chainer constructor.
@@ -29,6 +30,7 @@ class Chainer
     public function __construct(Request $request)
     {
         $this->request = $request;
+        $this->bearerToken = $request->header("Authorization");
     }
 
     /**
@@ -60,6 +62,7 @@ class Chainer
             $subRequest["method"],
             $subRequest["data"] ?? []
         );
+        $request->headers->set("Authorization", $this->bearerToken);
 
         $response = app()->dispatch($request);
 
