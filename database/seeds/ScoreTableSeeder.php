@@ -16,6 +16,22 @@ class ScoreTableSeeder extends BaseTableSeeder
         $this->seedFromFactory(Score::class, 300);
 
         // Then, compute their rank
-        DB::statement("UPDATE scores, (SELECT id, ROW_NUMBER() OVER(ORDER BY score DESC, created_at ASC) as `rank` FROM scores) AS computed SET scores.rank = computed.rank WHERE scores.id = computed.id;");
+        DB::unprepared('
+        SET
+            @row_number = 0;
+        UPDATE
+            scores,
+            (
+                SELECT
+                    id,
+                    (@row_number: = @row_number + 1) AS `rank`
+                FROM
+                    scores
+            ) AS computed
+        SET
+            scores.rank = computed.rank
+        WHERE
+            scores.id = computed.id
+        ');
     }
 }

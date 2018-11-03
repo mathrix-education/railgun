@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Models\Chapter;
 use App\Models\Class_;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -95,18 +94,7 @@ class ChapterController extends BaseController
      */
 
     /**
-     * @apiVersion     4.0.0
-     *
-     * @api            {get} /chapters/by-class-discipline/{class_id}/{discipline_id} By Class and Discipline
-     * @apiGroup       Chapters
-     * @apiName        ChapterClassDiscipline
-     * @apiDescription Get chapters by class and discipline
-     * @apiUse         Bearer
-     * @apiPermission  public
-     * @apiParam {int} class_id The class id
-     * @apiParam {int} discipline_id The discipline id
-     * @apiUse         Http401Unauthorized
-     * @apiUse         Http404ModelNotFound
+     * Get chapters by class and discipline slugs
      *
      * @param Request $request       The request
      * @param int     $class_id      The class id
@@ -116,18 +104,16 @@ class ChapterController extends BaseController
      */
     public function by_class_discipline(Request $request, int $class_id, int $discipline_id)
     {
-        $fullyVisible = $request->query("fully-visible", false);
+        $chapters = Chapter::where([
+            ["class_id", "=", $class_id],
+            ["discipline_id", "=", $discipline_id]
+        ])
+            ->orderBy("order")
+            ->get();
 
-        if ($fullyVisible === false) {
-            Chapter::withoutAppends();
-        }
+        $response = new JsonResponse($chapters);
 
-        $chaptersQuery = Chapter::where([["class_id", $class_id], ["discipline_id", $discipline_id]])
-            ->orderBy("order");
-
-        $chapters = $chaptersQuery->get();
-
-        return response()->json($chapters);
+        return $response;
     }
 
     /**

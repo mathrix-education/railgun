@@ -39,6 +39,13 @@
   $ref: ./categories/_categoryId.yaml
 
 
+# --------
+# Chapters
+# --------
+/by-class-discipline/{classId}/{disciplineId}:
+  $ref: ./chapters/_by_class_discipline.yaml
+
+
 # -------
 # Content
 # -------
@@ -65,6 +72,16 @@
 /family-packs/{familyPackId}/children:
   $ref: ./family-packs/_familyPackId_children.yaml
 
+
+# -----
+# Files
+# -----
+/files:
+  $ref: ./files/_.yaml
+/files/{path}:
+  $ref: ./files/_path.yaml
+/files/explore/{path}:
+  $ref: ./files/_explore_path.yaml
 
 # --------
 # Products

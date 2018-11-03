@@ -21,4 +21,17 @@ properties:
     description: The chapter visibility.
     type: boolean
     example: true
-
+  activity_count:
+    description: The chapter activities count.
+    type: integer
+    example: 10
+  activity_to_revise:
+    description: The chapter activities `to_revise` count. `null` for not-logged users.
+    type: integer
+    nullable: true
+    example: 7
+  activity_completed:
+    description: The chapter activities `completed` count. `null` for not-logged users.
+    type: integer
+    nullable: true
+    example: 2

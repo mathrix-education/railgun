@@ -18,12 +18,14 @@ Discount:
   $ref: ./Discount.yaml
 FamilyPack:
   $ref: ./FamilyPack.yaml
+File:
+  $ref: ./File.yaml
 Meta:
   $ref: ./Meta.yaml
 Module:
   $ref: ./Module.yaml
 ModuleWithSeoIndex:
-  $ref: ./ModuleWithNoIndex.yaml
+  $ref: ./ModuleWithSeoIndex.yaml
 Notion:
   $ref: ./Notion.yaml
 Post:

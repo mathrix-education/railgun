@@ -3,6 +3,7 @@
 namespace Tests\API\Chapters;
 
 use App\Models\Chapter;
+use PHPUnit\Framework\Constraint\IsType;
 use Tests\API\ScopeTestCase;
 
 /**
@@ -50,6 +51,12 @@ class ChaptersAsPublicTest extends ScopeTestCase
 
         $this->assertHttp200Success();
         $this->assertJsonKeys(["id", "name", "slug"]);
+
+        $this->assertJsonDocumentMatches($this->response->getContent(), [
+            "activity_count" => new IsType("integer"),
+            "activity_completed" => null,
+            "activity_to_revise" => null
+        ]);
     }
 
     /**

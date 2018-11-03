@@ -3,15 +3,14 @@
 namespace App\Models;
 
 use App\Models\Traits\Votable;
-use Auth;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Model Comment.
@@ -77,10 +76,11 @@ class Comment extends BaseModel
      */
     public function getUserVoteAttribute()
     {
+        /** @var User $user */
         $user = Auth::user();
 
         if ($user === null) {
-            return;
+            return null;
         }
 
         /** @var Vote $potentialVote */
@@ -92,7 +92,7 @@ class Comment extends BaseModel
             ->first();
 
         if ($potentialVote === null) {
-            return;
+            return null;
         }
 
         return $potentialVote->value;
