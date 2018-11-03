@@ -87,10 +87,19 @@ class Chapter extends BaseModel
      */
     public function getActivityCountAttribute()
     {
-        /** @var Notion[]|Collection $notions */
-        $count = $this->notions()->with(["activities" => function (BelongsToMany $q) {
-            $q->where("visible", "=", true);
-        }])->count();
+        $count = 0;
+        $notions = $this->notions;
+
+        foreach ($notions as $notion) {
+            $notion->activities()
+                ->where("visible", "=", true)
+                ->get()
+                ->each(function (Activity $activity) use (&$count) {
+                    if ($activity->modules()->where("visible", "=", true)->count() > 0) {
+                        $count++;
+                    }
+                });
+        }
 
         return $count;
     }
