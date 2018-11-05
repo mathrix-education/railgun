@@ -106,7 +106,8 @@ class ChapterController extends BaseController
     {
         $chapters = Chapter::where([
             ["class_id", "=", $class_id],
-            ["discipline_id", "=", $discipline_id]
+            ["discipline_id", "=", $discipline_id],
+            ["visible", "=", true]
         ])
             ->orderBy("order")
             ->get();
