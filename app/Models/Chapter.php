@@ -88,7 +88,7 @@ class Chapter extends BaseModel
     public function getActivityCountAttribute()
     {
         $count = 0;
-        $notions = $this->notions;
+        $notions = $this->notions()->where("visible", "=", true)->get();
 
         foreach ($notions as $notion) {
             $notion->activities()

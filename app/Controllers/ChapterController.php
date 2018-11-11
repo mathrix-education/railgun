@@ -102,14 +102,18 @@ class ChapterController extends BaseController
      *
      * @return JsonResponse
      */
-    public function by_class_discipline(Request $request, int $class_id, int $discipline_id)
+    public function by_class_discipline(Request $request, int $class_id, int $discipline_id, string $scope = null)
     {
-        $chapters = Chapter::where([
+        $query = Chapter::where([
             ["class_id", "=", $class_id],
             ["discipline_id", "=", $discipline_id],
-            ["visible", "=", true]
-        ])
-            ->orderBy("order")
+        ]);
+
+        if ($scope !== "all" || $request->user() !== null || !$request->user()->isModerator()) {
+            $query = $query->where("visible", "=", true);
+        }
+
+        $chapters = $query->orderBy("order")
             ->get();
 
         $response = new JsonResponse($chapters);
