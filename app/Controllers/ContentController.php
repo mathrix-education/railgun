@@ -59,6 +59,9 @@ class ContentController extends BaseController
                 "chapter.name",
                 "notion.name",
                 "activity.name",
+                "activity.type",
+                "activity.seo_title",
+                "activity.seo_description",
                 "module.id",
                 "seo_index"
             ]
@@ -88,6 +91,9 @@ class ContentController extends BaseController
                             $chapter->name,
                             $notion->name,
                             $activity->name,
+                            $activity->type,
+                            $activity->seo_title,
+                            $activity->seo_description,
                             $module->id,
                             RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity, $module) ? 1 : 0
                         ];
