@@ -42,7 +42,7 @@
 # --------
 # Chapters
 # --------
-/by-class-discipline/{classId}/{disciplineId}:
+/by-class-discipline/{classId}/{disciplineId}/{?scope}:
   $ref: ./chapters/_by_class_discipline.yaml
 
 

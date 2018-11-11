@@ -18,6 +18,15 @@ get:
     schema:
       type: int
       example: 14
+  - name: scope
+    in: path
+    description: The scope (used to bypass chapters visibility).
+    required: true
+    schema:
+      type: string
+      enum:
+      - all
+      example: all
   responses:
     200:
       description: The chapters
