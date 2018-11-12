@@ -13,7 +13,7 @@ $router->group(["prefix" => "chapters"], function () use ($router) {
     });
 
     $router->get("slug/{chapterSlug:[a-z\-]+}/by-class-slug/{classSlug:[a-z0-9\-]+}", "ChapterController@getBySlugAndClassSlug");
-    $router->get("by-class-discipline/{class_id:[1-9]\d*}/{discipline_id:[1-9]\d*}/{scope:[a-z]+}", "ChapterController@by_class_discipline");
+    $router->get("by-class-discipline/{class_id:[1-9]\d*}/{discipline_id:[1-9]\d*}[/{scope:[a-z]+}]", "ChapterController@by_class_discipline");
     $router->get("by-{what:[a-z\-]+}/{id:[1-9]\d*}", "ChapterController@by");
     $router->get("by-{what:[a-z\-]+}/{id:[1-9]\d*}/ids", "ChapterController@ids");
     $router->get("recursive/{id:[1-9]\d*}", "ChapterController@recursive");
