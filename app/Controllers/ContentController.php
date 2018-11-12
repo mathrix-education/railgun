@@ -45,10 +45,6 @@ class ContentController extends BaseController
      */
     public function routes(Request $request)
     {
-        if (!$request->user()->isAdmin()) {
-            throw new Http401UnauthorizedException();
-        }
-
         // Init
         $data = [
             [

@@ -35,6 +35,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property mixed                 $favorite
  * @property mixed                 $to_revise
  * @property bool                  $completed
+ * @property string                $uri_type
  */
 class Module extends BaseModel
 {
