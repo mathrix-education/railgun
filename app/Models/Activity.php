@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Auth;
  * @property string               $type
  * @property bool                 $visible
  * @property bool                 $premium
+ * @property bool                 $reviewed
  * @property array                $link
  * @property bool                 $completed
  * @property bool                 $favorite
@@ -42,7 +43,7 @@ class Activity extends BaseModel implements Commentable
 
     /** @var array The attributes that are mass assignable */
     protected $fillable = ["id", "name", "slug", "seo_title", "seo_description", "seo_keywords", "type", "visible",
-        "premium", "link"];
+        "premium", "reviewed", "link"];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
         "visible" => "boolean",

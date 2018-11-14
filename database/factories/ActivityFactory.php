@@ -21,5 +21,6 @@ $factory->define(Activity::class, function (Generator $faker) {
         "seo_description" => $faker->boolean(70) ? $faker->text(10) : null,
         "type" => $faker->randomElement(Activity::TYPES),
         "visible" => $faker->boolean(95),
+        "reviewed" => $faker->boolean(),
     ];
 });
