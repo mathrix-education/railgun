@@ -96,9 +96,10 @@ class ChapterController extends BaseController
     /**
      * Get chapters by class and discipline slugs
      *
-     * @param Request $request       The request
-     * @param int     $class_id      The class id
-     * @param int     $discipline_id The discipline id
+     * @param Request     $request       The request
+     * @param int         $class_id      The class id
+     * @param int         $discipline_id The discipline id
+     * @param string|null $scope         The scope, use 'all' to display invisible chapters
      *
      * @return JsonResponse
      */
@@ -109,7 +110,9 @@ class ChapterController extends BaseController
             ["discipline_id", "=", $discipline_id],
         ]);
 
-        if ($scope !== "all" || $request->user() !== null || !$request->user()->isModerator()) {
+        $restrictToVisible = $scope !== "all" || !($request->user() !== null && $request->user()->isModerator());
+
+        if ($restrictToVisible) {
             $query = $query->where("visible", "=", true);
         }
 
