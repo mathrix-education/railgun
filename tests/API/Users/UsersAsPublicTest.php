@@ -27,6 +27,7 @@ class UsersAsPublicTest extends ScopeTestCase
         }
 
         $dataWithoutPassword = [
+            "username" => $this->faker->userName,
             "email" => $this->faker->email,
             "class_id" => Class_::inRandomOrder()->firstOrFail()->id,
         ];

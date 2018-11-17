@@ -323,4 +323,37 @@ class ModuleController extends BaseController
 
         return $response;
     }
+
+    /**
+     * Get the modules associated with a given route with the seo_index boolean.
+     *
+     * @param int $countryId
+     * @param int $classId
+     * @param int $disciplineId
+     * @param int $chapterId
+     * @param int $notionId
+     * @param int $activityId
+     *
+     * @return JsonResponse
+     */
+    public function byRoute(int $countryId, int $classId, int $disciplineId, int $chapterId, int $notionId,
+                            int $activityId)
+    {
+        $modules = Activity::find($activityId)->modules;
+
+        /**
+         * @var int    $key
+         * @var Module $module
+         */
+        foreach ($modules as $key => $module) {
+            $module->seo_index = RouterFront::seoIndexByIds($countryId, $classId, $disciplineId, $chapterId, $notionId,
+                $activityId, $module->id);
+
+            $modules->offsetSet($key, $module);
+        }
+
+        $response = new JsonResponse($modules);
+
+        return $response;
+    }
 }

@@ -56,14 +56,34 @@ class RouterFront
     public static function seoIndex(Country $country, Class_ $class, Discipline $discipline, Chapter $chapter,
                                     Notion $notion, Activity $activity, Module $module)
     {
+        return self::seoIndexByIds($country->id, $class->id, $discipline->id, $chapter->id, $notion->id, $activity->id,
+            $module->id);
+    }
+
+    /**
+     * Check if the current route should be NOT indexed with content ids.
+     *
+     * @param int $countryId
+     * @param int $classId
+     * @param int $disciplineId
+     * @param int $chapterId
+     * @param int $notionId
+     * @param int $activityId
+     * @param int $moduleId
+     *
+     * @return bool
+     */
+    public static function seoIndexByIds(int $countryId, int $classId, int $disciplineId, int $chapterId, int $notionId,
+                                         int $activityId, int $moduleId)
+    {
         return Meta::where([
-            ["country_id", "=", $country->id],
-            ["class_id", "=", $class->id],
-            ["discipline_id", "=", $discipline->id],
-            ["chapter_id", "=", $chapter->id],
-            ["notion_id", "=", $notion->id],
-            ["activity_id", "=", $activity->id],
-            ["module_id", "=", $module->id],
+            ["country_id", "=", $countryId],
+            ["class_id", "=", $classId],
+            ["discipline_id", "=", $disciplineId],
+            ["chapter_id", "=", $chapterId],
+            ["notion_id", "=", $notionId],
+            ["activity_id", "=", $activityId],
+            ["module_id", "=", $moduleId],
             ["seo_index", "=", true]
         ])
             ->whereNull("user_id")

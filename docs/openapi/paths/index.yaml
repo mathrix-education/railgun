@@ -62,7 +62,8 @@
   $ref: ./modules/_moduleId_routes.yaml
 /content/{moduleId}/index:
   $ref: ./modules/_moduleId_no-index.yaml
-
+/modules/by-route/{countryId}/{classId}/{disciplineId}/{chapterId}/{notionId}/{activityId}:
+  $ref: ./modules/_by_route_contrydId_classId_disciplineId_chapterId_notionId_activityId.yaml
 
 # ------------
 # Family packs
