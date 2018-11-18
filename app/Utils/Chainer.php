@@ -68,7 +68,7 @@ class Chainer
 
         $this->responseData[$key] = [
             "method" => $subRequest["method"],
-            "url" => $subRequest["url"],
+            "url" => $this->resolve($subRequest["url"]),
             "body" => json_decode($response->getContent(), true)
         ];
     }
