@@ -103,6 +103,9 @@ class Chainer
         $keys = explode(".", $key);
         $array = $this->responseData;
 
+        $subKey = array_shift($keys);
+        $array = $array[$subKey]["body"];
+
         foreach ($keys as $subKey) {
             if (!empty($array[$subKey])) {
                 $array = $array[$subKey];

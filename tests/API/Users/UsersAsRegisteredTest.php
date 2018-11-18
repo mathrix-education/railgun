@@ -103,6 +103,10 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $newUser["password"] = $newPassword;
         $newUser["current_password"] = "test123";
 
+        // Set the old password to test123
+        $this->user->password = "test123";
+        $this->user->save();
+
         $this->call("patch", "/users/" . $this->user->id, $newUser);
 
         $responseData = $this->getResponseData();

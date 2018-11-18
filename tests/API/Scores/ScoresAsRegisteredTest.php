@@ -155,8 +155,8 @@ class ScoresAsRegisteredTest extends ScoresAsPublicTest
 
         $this->assertHttp200Success();
         $this->assertJsonDocumentMatches($this->response->getContent(), [
-            "$.register.score" => new IsType("integer"),
-            "$.around.[*].score" => new IsType("integer")
+            "$.register.body.score" => new IsType("integer"),
+            "$.around.body.[*].score" => new IsType("integer")
         ]);
     }
 }

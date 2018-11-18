@@ -132,7 +132,5 @@ class ModulesAsPublicTest extends ScopeTestCase
             "[*].visible" => new IsType("boolean"),
             "[*].seo_index" => new IsType("boolean"),
         ]);
-
-        $this->debug();
     }
 }
