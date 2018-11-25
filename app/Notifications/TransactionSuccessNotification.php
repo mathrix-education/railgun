@@ -6,6 +6,7 @@ use App\Mails\TransactionSuccessMail;
 use App\Models\User;
 use Braintree\Transaction;
 use Braintree\Transaction\LineItem;
+use GuzzleHttp\Client;
 
 /**
  * Class TransactionSuccessNotification.
@@ -42,6 +43,7 @@ class TransactionSuccessNotification extends MailNotification
      * Get the mail representation of the notification.
      *
      * @return TransactionSuccessMail
+     * @throws \Exception
      */
     public function toMail()
     {

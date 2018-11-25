@@ -33,7 +33,13 @@ class NewSubscriptionListener extends BaseListener
                 $event->subscription->transactions[0]
             ));
         } elseif ($event->initialTransaction !== null) {
-            $event->user->notify(new TransactionSuccessNotification($event->user, $event->initialTransaction));
+            $event->user->notify(new TransactionSuccessNotification(
+                $event->user,
+                $event->initialTransaction
+            ));
         }
+
+        // Send to Google Analytics
+
     }
 }

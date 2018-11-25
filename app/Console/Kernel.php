@@ -63,7 +63,7 @@ class Kernel extends ConsoleKernel
         GenerateIndex::class,
         // sitemap:
         SitemapAll::class,
-        SitemapContent::class,
+        SitemapContent::class
     ];
 
     /**
