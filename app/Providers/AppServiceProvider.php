@@ -7,6 +7,8 @@ use App\Models\Comment;
 use App\Models\Module;
 use App\Models\Notion;
 use App\Models\Post;
+use App\Models\User;
+use App\Notifications\CommentAnswerNotification;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
@@ -52,11 +54,16 @@ class AppServiceProvider extends ServiceProvider
 
         // MorphMap
         Relation::morphMap([
+            // Models
             "activity" => Activity::class,
             "notion" => Notion::class,
             "module" => Module::class,
             "post" => Post::class,
             "comment" => Comment::class,
+            "user" => User::class,
+
+            // Notifications
+            "comment_answer" => CommentAnswerNotification::class
         ]);
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Comment;
 use App\Models\User;
+use App\Notifications\CommentAnswerNotification;
 use Illuminate\Console\Command;
 
 /**
@@ -18,15 +20,12 @@ class Dry extends Command
 {
     protected $signature = "dry";
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     public function handle()
     {
-        $user = User::find(44);
+        $user = User::random();
+        $user2 = User::random();
+        $comment = Comment::random();
 
-        dd($user->premium);
+        $user->notify(new CommentAnswerNotification($comment, $user2));
     }
 }

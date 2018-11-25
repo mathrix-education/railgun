@@ -6,6 +6,8 @@ use App\Models\BaseModel;
 use App\Models\Class_;
 use App\Observers\BaseObserver;
 use App\Observers\ClassObserver;
+use App\Observers\NotificationObserver;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -25,6 +27,7 @@ class ObserverServiceProvider extends ServiceProvider
     private const EXCLUDED_OBSERVERS = [
         BaseObserver::class,
         ClassObserver::class,
+        NotificationObserver::class
     ];
 
     /**
@@ -56,5 +59,6 @@ class ObserverServiceProvider extends ServiceProvider
         }
 
         Class_::observe(ClassObserver::class);
+        DatabaseNotification::observe(NotificationObserver::class);
     }
 }
