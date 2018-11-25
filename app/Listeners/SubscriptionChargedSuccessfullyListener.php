@@ -15,7 +15,7 @@ use GuzzleHttp\Client;
  */
 class SubscriptionChargedSuccessfullyListener extends BaseListener
 {
-    const BASE_URL = "www.google-analytics.com/collect";
+    const BASE_URL = "https://www.google-analytics.com/collect";
 
     public function handle(SubscriptionChargedSuccessfullyEvent $event)
     {
