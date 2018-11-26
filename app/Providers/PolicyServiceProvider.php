@@ -7,7 +7,9 @@ use App\Models\Class_;
 use App\Policies\BasePolicy;
 use App\Policies\ClassPolicy;
 use App\Policies\FilePolicy;
-use Gate;
+use App\Policies\NotificationPolicy;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -27,6 +29,7 @@ class PolicyServiceProvider extends ServiceProvider
     private const EXCLUDED_POLICIES = [
         BasePolicy::class,
         ClassPolicy::class,
+        NotificationPolicy::class,
         FilePolicy::class,
     ];
 
@@ -58,5 +61,6 @@ class PolicyServiceProvider extends ServiceProvider
 
         Gate::policy(Class_::class, ClassPolicy::class);
         Gate::policy(FilePolicy::class, FilePolicy::class);
+        Gate::policy(DatabaseNotification::class, NotificationPolicy::class);
     }
 }

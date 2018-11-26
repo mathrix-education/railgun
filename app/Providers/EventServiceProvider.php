@@ -2,12 +2,14 @@
 
 namespace App\Providers;
 
+use App\Events\CommentAnswerEvent;
 use App\Events\NewSubscriptionEvent;
 use App\Events\PasswordForgottenEvent;
 use App\Events\PasswordResetEvent;
 use App\Events\SubscriptionChargedSuccessfullyEvent;
 use App\Events\TransactionRefundSuccessEvent;
 use App\Events\TransactionSuccessEvent;
+use App\Listeners\CommentAnswerListener;
 use App\Listeners\NewSubscriptionListener;
 use App\Listeners\PasswordForgottenListener;
 use App\Listeners\PasswordResetListener;
@@ -28,6 +30,7 @@ use Laravel\Lumen\Providers\EventServiceProvider as ServiceProvider;
 class EventServiceProvider extends ServiceProvider
 {
     protected $listen = [
+        CommentAnswerEvent::class => [CommentAnswerListener::class],
         NewSubscriptionEvent::class => [NewSubscriptionListener::class],
         PasswordForgottenEvent::class => [PasswordForgottenListener::class],
         PasswordResetEvent::class => [PasswordResetListener::class],

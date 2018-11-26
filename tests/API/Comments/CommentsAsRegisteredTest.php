@@ -5,7 +5,9 @@ namespace Tests\API\Comments;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\Comment;
+use App\Notifications\CommentAnswerNotification;
 use Carbon\Carbon;
+use Illuminate\Notifications\Notification;
 use Laravel\Passport\Passport;
 
 /**
@@ -30,8 +32,30 @@ class CommentsAsRegisteredTest extends CommentsAsPublicTest
         $this->call("post", "/comments", $data);
 
         $expectedData = array_merge($data, ["user_id" => $this->user->id]);
+        $this->assertInDatabase("comments", $expectedData);
+        $this->assertHttp200Success();
+    }
+
+    public function testAddChild()
+    {
+        \Illuminate\Support\Facades\Notification::fake();
+
+        $data = factory(Comment::class, "child")->raw();
+        $parentComment = Comment::find($data["parent_id"]);
+        unset($data["user_id"], $data["created_at"], $data["updated_at"]);
+
+        $this->json("post", "/comments", $data);
+
+        $expectedData = array_merge($data, ["user_id" => $this->user->id]);
+
         $this->assertHttp200Success();
         $this->assertInDatabase("comments", $expectedData);
+        $this->assertNotificationSentToVia(
+            CommentAnswerNotification::class,
+            $parentComment->user,
+            "database"
+        );
+
     }
 
     /**
@@ -45,7 +69,7 @@ class CommentsAsRegisteredTest extends CommentsAsPublicTest
         $data["user_id"] = $stranger->id;
         unset($data["created_at"], $data["updated_at"]);
 
-        $this->call("post", "/comments", $data);
+        $this->json("post", "/comments", $data);
 
         $this->assertHttp401Unauthorized();
         $this->assertNotInDatabase("comments", $data);

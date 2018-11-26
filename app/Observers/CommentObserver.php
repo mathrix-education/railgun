@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Events\CommentAnswerEvent;
 use App\Exceptions\Http422ModelSaveException;
 use App\Models\Comment;
 use Exception;
@@ -31,6 +32,16 @@ class CommentObserver extends BaseObserver
         }
 
         return true;
+    }
+
+    /**
+     * @param Comment $comment
+     */
+    public function saved($comment)
+    {
+        if ($comment->parent_id !== null) {
+            event(new CommentAnswerEvent($comment));
+        }
     }
 
     /**

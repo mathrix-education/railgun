@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\Client;
@@ -29,40 +30,43 @@ use Laravel\Passport\Token;
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
  *
- * @property int                      $id
- * @property string|null              $username
- * @property string                   $email
- * @property string|null              $firstname
- * @property string|null              $lastname
- * @property string                   $password
- * @property string                   $type
- * @property string                   $token
- * @property int                      $points
- * @property int                      $level
- * @property int                      $daily
- * @property int                      $daily_achievements
- * @property array                    $settings
- * @property bool                     $premium_bypass
- * @property int|null                 $class_id
- * @property int|null                 $family_pack_id
- * @property string|null              $braintree_id
- * @property string|null              $stripe_id
- * @property Carbon                   $created_at
- * @property Carbon                   $updated_at
- * @property \Braintree\Customer|null $braintree
- * @property bool                     $premium
- * @property int                      $daily_points
- * @property Class_                   $class_
- * @property FamilyPack               $familyPackAsParent
- * @property FamilyPack               $familyPackAsChild
- * @property Collection|Client[]      $clients
- * @property Collection|Comment[]     $comments
- * @property Collection|Log[]         $logs
- * @property Collection|Meta[]        $meta
- * @property Collection|Product[]     $products
- * @property Collection|Purchase[]    $purchases
- * @property Collection|Token[]       $tokens
- * @property Collection|Vote[]        $votes
+ * @property int                               $id
+ * @property string|null                       $username
+ * @property string                            $email
+ * @property string|null                       $firstname
+ * @property string|null                       $lastname
+ * @property string                            $password
+ * @property string                            $type
+ * @property string                            $token
+ * @property int                               $points
+ * @property int                               $level
+ * @property int                               $daily
+ * @property int                               $daily_achievements
+ * @property array                             $settings
+ * @property bool                              $premium_bypass
+ * @property int|null                          $class_id
+ * @property int|null                          $family_pack_id
+ * @property string|null                       $braintree_id
+ * @property string|null                       $stripe_id
+ * @property Carbon                            $created_at
+ * @property Carbon                            $updated_at
+ * @property \Braintree\Customer|null          $braintree
+ * @property bool                              $premium
+ * @property int                               $daily_points
+ * @property Class_                            $class_
+ * @property FamilyPack                        $familyPackAsParent
+ * @property FamilyPack                        $familyPackAsChild
+ * @property Collection|Client[]               $clients
+ * @property Collection|Comment[]              $comments
+ * @property Collection|DatabaseNotification[] $notifications
+ * @property Collection|DatabaseNotification[] $unreadNotifications
+ * @property Collection|DatabaseNotification[] $readNotifications
+ * @property Collection|Log[]                  $logs
+ * @property Collection|Meta[]                 $meta
+ * @property Collection|Product[]              $products
+ * @property Collection|Purchase[]             $purchases
+ * @property Collection|Token[]                $tokens
+ * @property Collection|Vote[]                 $votes
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {

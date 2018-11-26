@@ -16,7 +16,7 @@ use Symfony\Component\Process\Process;
  */
 class RedocServe extends Command
 {
-    private const REDOC_COMMAND = "redoc-cli serve docs/openapi/index.yaml";
+    private const REDOC_COMMAND = "redoc-cli serve docs/openapi/index.yaml -t docs/openapi/template.hbs";
     protected $signature = "redoc:serve";
 
 
