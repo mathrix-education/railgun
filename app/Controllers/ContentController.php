@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Exceptions\Http401UnauthorizedException;
-use App\Exceptions\Http404ModelNotFoundException;
 use App\Models\Activity;
 use App\Models\Chapter;
 use App\Models\Class_;
@@ -11,7 +10,6 @@ use App\Models\Country;
 use App\Models\Discipline;
 use App\Models\Module;
 use App\Models\Notion;
-use App\Models\User;
 use App\Utils\RouterFront;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -40,8 +38,9 @@ class ContentController extends BaseController
     /**
      * Retrieve all routes as csv file
      *
+     * @param Request $request
+     *
      * @return StreamedResponse
-     * @throws Http401UnauthorizedException
      */
     public function routes(Request $request)
     {
@@ -58,6 +57,7 @@ class ContentController extends BaseController
                 "activity.type",
                 "activity.seo_title",
                 "activity.seo_description",
+                "activity.order",
                 "activity.reviewed",
                 "module.id",
                 "seo_index",
@@ -92,6 +92,7 @@ class ContentController extends BaseController
                             $activity->type,
                             $activity->seo_title,
                             $activity->seo_description,
+                            $activity->pivot->order,
                             $activity->reviewed ? 1 : 0,
                             $module->id,
                             RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity, $module) ? 1 : 0,
