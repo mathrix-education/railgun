@@ -12,7 +12,7 @@ use Illuminate\Notifications\DatabaseNotification;
  * Class NotificationController.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @since     4.1.3
+ * @since     4.2.0
  * @copyright Mathrix Education SA
  */
 class NotificationController extends BaseController

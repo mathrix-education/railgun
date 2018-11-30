@@ -2,6 +2,7 @@
 
 use App\Models\BaseModel;
 use App\Models\Comment;
+use App\Models\Module;
 use App\Models\User;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -39,7 +40,7 @@ $factory->define(Comment::class, function (Generator $faker) {
     ];
 });
 
-/*
+/**
  * CommentChildFactory
  *
  * @author Mathrix Team

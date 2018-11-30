@@ -2,8 +2,6 @@
 
 namespace Tests\API\Comments;
 
-use App\Models\Comment;
-
 /**
  * Class CommentsAsAdminTest
  * Test Comments as admin.
@@ -15,20 +13,4 @@ use App\Models\Comment;
  */
 class CommentsAsAdminTest extends CommentsAsModeratorTest
 {
-    /**
-     * POST /comments.
-     */
-    public function testAddForStranger()
-    {
-        $stranger = $this->stranger();
-
-        $data = factory(Comment::class)->raw();
-        $data["user_id"] = $stranger->id;
-        unset($data["created_at"], $data["updated_at"]);
-
-        $this->call("post", "/comments", $data);
-
-        $this->assertHttp200Success();
-        $this->assertInDatabase("comments", $data);
-    }
 }

@@ -53,6 +53,7 @@ class CommentObserver extends BaseObserver
      */
     public function deleting($comment)
     {
+        dd($comment->isForceDeleting());
         /** @var Comment $child */
         foreach ($comment->children as $child) {
             if ($comment->isForceDeleting()) {
@@ -63,5 +64,9 @@ class CommentObserver extends BaseObserver
         }
 
         return true;
+    }
+
+    public function forceDeleting($comment) {
+        dd($comment->isForceDeleting());
     }
 }

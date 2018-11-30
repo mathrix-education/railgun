@@ -16,7 +16,7 @@ use App\Console\Commands\Redoc\RedocBundle;
 use App\Console\Commands\Redoc\RedocServe;
 use App\Console\Commands\Road;
 use App\Console\Commands\SEO\GenerateIndex;
-use App\Console\Commands\SetVersion;
+use App\Console\Commands\Version;
 use App\Console\Commands\Sitemap\SitemapAll;
 use App\Console\Commands\Sitemap\SitemapContent;
 use Illuminate\Console\Scheduling\Schedule;
@@ -41,7 +41,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Clean::class,
         Dry::class,
-        SetVersion::class,
+        Version::class,
         Road::class,
         // backup:
         BackupCdn::class,

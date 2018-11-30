@@ -14,11 +14,11 @@ use Illuminate\Console\Command;
  *
  * @copyright Mathrix Education SA
  */
-class SetVersion extends Command
+class Version extends Command
 {
     private const VERSION_PATTERN = "[0-9]+.[0-9]+.[0-9]+";
 
-    protected $signature = "set:version";
+    protected $signature = "version {version}";
 
     private $base;
     private $version;
@@ -26,7 +26,7 @@ class SetVersion extends Command
     public function handle()
     {
         $this->base = app()->basePath();
-        $this->version = env("APP_VERSION");
+        $this->version = $this->argument("version");
 
         // apidoc.json
         $this->setVersionInFile("apidoc.json", '\"version\": \"%version%\"');
@@ -35,6 +35,8 @@ class SetVersion extends Command
         // package.json
         $this->setVersionInFile("package.json", '\"version\": \"%version%\"');
 
+        // .env
+        $this->setVersionInFile(".env", 'APP_VERSION=%version%');
         // config/env
         $this->setVersionInFile("config/env/.env.dev", 'APP_VERSION=%version%');
         $this->setVersionInFile("config/env/.env.local", 'APP_VERSION=%version%');
@@ -56,5 +58,7 @@ class SetVersion extends Command
         $content = file_get_contents($filePath);
         $content = preg_replace($regexSearch, $regexReplace, $content);
         file_put_contents($filePath, $content);
+
+        $this->line("Change version to {$this->version} in $file");
     }
 }

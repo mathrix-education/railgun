@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use Auth;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Model Module.
@@ -84,6 +83,7 @@ class Module extends BaseModel
     {
         $array = parent::toArray();
 
+        /** @var User $user */
         $user = Auth::user();
         $strip = $this->premium && ($user === null || !$user->premium && !$user->isModerator());
 
@@ -214,6 +214,16 @@ class Module extends BaseModel
         return $this->belongsToMany(Activity::class)
             ->withPivot(["order"])
             ->orderBy("pivot_order");
+    }
+
+    /**
+     * HasMany Comment.
+     *
+     * @return HasMany
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class)->orderBy("created_at");
     }
 
     /**

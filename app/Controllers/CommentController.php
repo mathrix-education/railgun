@@ -3,12 +3,12 @@
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
-use App\Exceptions\Http401UnauthorizedException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\BaseModel;
 use App\Models\Comment;
 use App\Models\Interfaces\Commentable;
+use App\Models\Path;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -67,8 +67,6 @@ class CommentController extends BaseController
      *
      * @param Request $request The request
      *
-     * @throws Http400InvalidRequestException
-     * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      *
@@ -76,13 +74,25 @@ class CommentController extends BaseController
      */
     public function add(Request $request): JsonResponse
     {
-        $request->user()
-            ->canOrFail("add", Comment::class);
+        /** @var User $user */
+        $user = $request->user();
+        $user->canOrFail("add", Comment::class);
+
+        // Get path
+        $pathData = $request->input("path");
+        $path = Path::retrieve($pathData);
 
         /** @var BaseModel $model */
-        $comment = new Comment($request->all());
-        $comment->user_id = $this->getUserByRequestOrUnauthorized($request)->id;
+        $comment = new Comment($request->only([
+            "content",
+            "parent_id",
+            "commentable_id",
+            "commentable_type"
+        ]));
+        $comment->user_id = $user->id;
+        $comment->path_id = $path->id;
         $comment->save();
+
 
         return response()->json($comment);
     }

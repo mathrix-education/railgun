@@ -37,6 +37,7 @@ class ChainTest extends APITestCase
         $responseKeys = array_keys($data["requests"]);
         $this->assertHttp200Success();
         $this->assertJsonKeys($responseKeys);
+        $this->debug();
     }
 
     public function testChainWithPost()

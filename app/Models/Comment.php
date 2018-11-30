@@ -7,7 +7,6 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Facades\Auth;
@@ -24,15 +23,16 @@ use Illuminate\Support\Facades\Auth;
  * @property string|null          $content
  * @property int|null             $parent_id
  * @property int|null             $user_id
+ * @property int                  $path_id
+ * @property int                  $module_id
+ * @property int                  $score
+ * @property int|null             $user_vote
  * @property Carbon               $created_at
  * @property Carbon               $updated_at
  * @property Carbon|null          $deleted_at
- * @property int                  $commentable_id
- * @property string               $commentable_type
- * @property int                  $score
- * @property int|null             $user_vote
  * @property User|null            $user
- * @property BaseModel            $commentable
+ * @property Path                 $path
+ * @property Module               $module
  * @property Comment|null         $parent
  * @property Collection|Comment[] $children
  * @property Collection|Vote[]    $votes
@@ -56,8 +56,17 @@ class Comment extends BaseModel
         "children.user:id,type,username,firstname,level,class_id",
     ];
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "content", "score", "parent_id", "user_id", "commentable_id", "commentable_type",
-        "created_at", "updated_at", "deleted_at"];
+    protected $fillable = [
+        "content",
+        "score",
+        "parent_id",
+        "user_id",
+        "module_id",
+        "path_id",
+        "created_at",
+        "updated_at",
+        "deleted_at"
+    ];
     /** @var array Validation rules */
     protected $rules = [
         "content" => "required",
@@ -120,7 +129,8 @@ class Comment extends BaseModel
      */
     public function children(): HasMany
     {
-        return $this->hasMany(self::class, "parent_id");
+        return $this->hasMany(self::class, "parent_id")
+            ->orderBy("created_at");
     }
 
     /**
@@ -131,13 +141,5 @@ class Comment extends BaseModel
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-
-    /**
-     * @return MorphTo
-     */
-    public function commentable(): MorphTo
-    {
-        return $this->morphTo();
     }
 }

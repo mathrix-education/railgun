@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Comment;
+use App\Models\Path;
 use App\Models\User;
 use App\Notifications\CommentAnswerNotification;
 use Illuminate\Console\Command;
@@ -22,10 +23,7 @@ class Dry extends Command
 
     public function handle()
     {
-        $user = User::random();
-        $user2 = User::random();
-        $comment = Comment::random();
-
-        $user->notify(new CommentAnswerNotification($comment, $user2));
+        Comment::where("commentable_type", "=", "")
+            ->forceDelete();
     }
 }

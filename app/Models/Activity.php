@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Interfaces\Commentable;
-use App\Models\Traits\CommentableTrait;
 use App\Models\Traits\Loggable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -35,9 +33,9 @@ use Illuminate\Support\Facades\Auth;
  * @property Collection|Module[]  $modules
  * @property Collection|Notion[]  $notions
  */
-class Activity extends BaseModel implements Commentable
+class Activity extends BaseModel
 {
-    use Loggable, CommentableTrait;
+    use Loggable;
 
     public const TYPES = ["video", "course", "test", "exercise", "summary", "flashcard"];
 
