@@ -18,15 +18,15 @@ class AddPathIdToComments extends Migration
                 ->unsigned()
                 ->nullable()
                 ->default(null)
-                ->after("deleted_at");
+                ->after("user_id");
             $table->integer("module_id")
                 ->unsigned()
-                ->after("deleted_at");
+                ->after("user_id");
 
             $table->foreign("path_id")->references("id")->on("paths");
         });
 
-        $comments = \App\Models\Comment::all();
+        $comments = \App\Models\Comment::withTrashed()->get();
 
         foreach ($comments as $comment) {
             if ($comment->commentable_type == "post") {
