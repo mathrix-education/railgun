@@ -77,6 +77,8 @@ class ContentController extends BaseController
             /** @var Notion $notion */
             foreach ($chapter->notions as $notion) {
                 /** @var Activity $activity */
+                $activityCounter = 1;
+
                 foreach ($notion->activities as $activity) {
                     /** @var Module $module */
                     foreach ($activity->modules as $module) {
@@ -92,12 +94,14 @@ class ContentController extends BaseController
                             $activity->type,
                             $activity->seo_title,
                             $activity->seo_description,
-                            $activity->pivot->order,
+                            $activityCounter++,
                             $activity->reviewed ? 1 : 0,
                             $module->id,
                             RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity, $module) ? 1 : 0,
                             ($notion->type == "premium" || $activity->premium) ? 1 : 0
                         ];
+
+                        $activityCounter++;
                     }
                 }
             }

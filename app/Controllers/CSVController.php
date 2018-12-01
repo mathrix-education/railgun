@@ -51,9 +51,10 @@ class CSVController extends BaseController
 
             /** @var Notion $notion */
             foreach ($chapter->notions as $notion) {
+                $activityCounter = 1;
+
                 /** @var Activity $activity */
                 foreach ($notion->activities as $activity) {
-
                     if ($activity->modules->count() > 0) {
                         $module = $activity->modules[0];
 
@@ -69,12 +70,14 @@ class CSVController extends BaseController
                             $activity->type,
                             $activity->seo_title,
                             $activity->seo_description,
-                            $activity->pivot->order,
+                            $activityCounter,
                             $activity->reviewed ? 1 : 0,
                             $module->id,
                             RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity, $module) ? 1 : 0,
                             ($notion->type == "premium" || $activity->premium) ? 1 : 0
                         ];
+
+                        $activityCounter++;
                     }
                 }
             }
