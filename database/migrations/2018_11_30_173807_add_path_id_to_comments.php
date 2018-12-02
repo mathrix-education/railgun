@@ -67,6 +67,11 @@ class AddPathIdToComments extends Migration
     public function down()
     {
         Schema::table("comments", function (Blueprint $table) {
+            $table->dropForeign("comments_path_id_foreign");
+            $table->dropForeign("comments_module_id_foreign");
+        });
+
+        Schema::table("comments", function (Blueprint $table) {
             $table->morphs("commentable");
             $table->dropColumn("path_id");
             $table->dropColumn("module_id");

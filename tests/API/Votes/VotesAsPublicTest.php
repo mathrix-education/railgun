@@ -24,13 +24,9 @@ class VotesAsPublicTest extends ScopeTestCase
      */
     public function testUp()
     {
-        $votableType = $this->faker->randomElement(Vote::VOTABLE_TYPES);
-        /** @var Comment|Post $votableClass */
-        $votableClass = Relation::getMorphedModel($votableType);
-        /** @var Comment|Post $votable */
-        $votable = $votableClass::random();
+        $comment = Comment::random();
 
-        $this->call("post", "/votes/$votableType/{$votable->id}/up");
+        $this->json("post", "/votes/comment/{$comment->id}/up");
 
         $this->assertHttp401Unauthorized();
     }
@@ -40,13 +36,9 @@ class VotesAsPublicTest extends ScopeTestCase
      */
     public function testDown()
     {
-        $votableType = $this->faker->randomElement(Vote::VOTABLE_TYPES);
-        /** @var Comment|Post $votableClass */
-        $votableClass = Relation::getMorphedModel($votableType);
-        /** @var Comment|Post $votable */
-        $votable = $votableClass::random();
+        $comment = Comment::random();
 
-        $this->call("post", "/votes/$votableType/{$votable->id}/down");
+        $this->call("post", "/votes/comment/{$comment->id}/down");
 
         $this->assertHttp401Unauthorized();
     }

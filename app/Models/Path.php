@@ -19,6 +19,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int        $notion_id
  * @property int        $activity_id
  * @property int        $module_id
+ * @property bool       $seo_index
+ *
  * @property Country    $country
  * @property Class_     $class
  * @property Discipline $discipline
@@ -38,6 +40,9 @@ class Path extends BaseModel
         "notion_id" => "nullable|exists:notions,id",
         "activity_id" => "nullable|exists:activities,id",
         "module_id" => "nullable|exists:modules,id"
+    ];
+    protected $casts = [
+        "seo_index" => "boolean"
     ];
 
     /**

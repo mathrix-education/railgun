@@ -134,6 +134,16 @@ class Comment extends BaseModel
     }
 
     /**
+     * BelongsTo Module.
+     *
+     * @return BelongsTo
+     */
+    public function module(): BelongsTo
+    {
+        return $this->belongsTo(Module::class);
+    }
+
+    /**
      * BelongsTo Comment.
      *
      * @return BelongsTo

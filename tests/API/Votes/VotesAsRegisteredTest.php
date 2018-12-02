@@ -26,19 +26,15 @@ class VotesAsRegisteredTest extends VotesAsPublicTest
      */
     public function testUp()
     {
-        $votableType = $this->faker->randomElement(Vote::VOTABLE_TYPES);
-        /** @var Comment|Post $votableClass */
-        $votableClass = Relation::getMorphedModel($votableType);
         $userVoteIds = $this->user->votes->pluck("votable_id")->toArray();
-        /** @var Comment|Post $votable */
-        $votable = $votableClass::whereNotIn("id", $userVoteIds)->firstOrFail();
+        /** @var Comment $comment */
+        $comment = Comment::whereNotIn("id", $userVoteIds)->firstOrFail();
+        $scoreBefore = $comment->score;
 
-        $scoreBefore = $votable->score;
-
-        $this->call("post", "/votes/$votableType/{$votable->id}/up");
+        $this->json("post", "/votes/comment/{$comment->id}/up");
 
         $this->assertHttp200Success();
-        $this->assertEquals($scoreBefore + 1, $votable->score);
+        $this->assertEquals($scoreBefore + 1, $comment->score);
     }
 
     /**
@@ -46,18 +42,15 @@ class VotesAsRegisteredTest extends VotesAsPublicTest
      */
     public function testDown()
     {
-        $votableType = $this->faker->randomElement(Vote::VOTABLE_TYPES);
-        /** @var Comment|Post $votableClass */
-        $votableClass = Relation::getMorphedModel($votableType);
         $userVoteIds = $this->user->votes->pluck("votable_id")->toArray();
-        /** @var Comment|Post $votable */
-        $votable = $votableClass::whereNotIn("id", $userVoteIds)->firstOrFail();
-        $scoreBefore = $votable->score;
+        /** @var Comment $comment */
+        $comment = Comment::whereNotIn("id", $userVoteIds)->firstOrFail();
+        $scoreBefore = $comment->score;
 
-        $this->call("post", "/votes/$votableType/{$votable->id}/down");
+        $this->json("post", "/votes/comment/{$comment->id}/down");
 
         $this->assertHttp200Success();
-        $this->assertEquals($scoreBefore - 1, $votable->score);
+        $this->assertEquals($scoreBefore - 1, $comment->score);
     }
 
     /**

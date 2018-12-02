@@ -42,26 +42,22 @@ deploy_web00_dev:
   stage: deploy
   dependencies:
   - build
+  environment:
+    name: web00/dev
+    url: https://dev.mathrix.fr/api
   script:
   - bash scripts/tasks/deploy.sh web00 dev
   only:
   - dev
-
-deploy_web00_next:
-  image: doomkin/ubuntu-ssh
-  stage: deploy
-  dependencies:
-  - build
-  script:
-  - bash scripts/tasks/deploy.sh web00 next
-  only:
-  - next
 
 deploy_web01_master:
   image: doomkin/ubuntu-ssh
   stage: deploy
   dependencies:
   - build
+  environment:
+    name: web01/dev
+    url: https://mathrix.fr/api
   script:
   - bash scripts/tasks/deploy.sh web01 master
   when: manual

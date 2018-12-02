@@ -7,6 +7,7 @@ use App\Exceptions\Http422ModelValidationException;
 use App\Models\Comment;
 use App\Notifications\CommentAnswerNotification;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Notification;
 use Laravel\Passport\Passport;
 use Tests\Utils\Tree;
 
@@ -29,12 +30,9 @@ class CommentsAsRegisteredTest extends CommentsAsPublicTest
     public function testAdd()
     {
         $data = factory(Comment::class)->raw();
-        unset($data["user_id"], $data["created_at"], $data["updated_at"]);
-
         $tree = new Tree();
         $data["path"] = $tree->flatIds();
-        $data["commentable_id"] = $tree->getModule()->id;
-        $data["commentable_type"] = "module";
+        unset($data["user_id"], $data["created_at"], $data["updated_at"]);
 
         $this->json("post", "/comments", $data);
 
@@ -56,16 +54,13 @@ class CommentsAsRegisteredTest extends CommentsAsPublicTest
      */
     public function testAddChild()
     {
-        \Illuminate\Support\Facades\Notification::fake();
+        Notification::fake();
 
         $data = factory(Comment::class, "child")->raw();
         $parentComment = Comment::find($data["parent_id"]);
-        unset($data["user_id"], $data["created_at"], $data["updated_at"]);
-
         $tree = new Tree();
         $data["path"] = $tree->flatIds();
-        $data["commentable_id"] = $tree->getModule()->id;
-        $data["commentable_type"] = "module";
+        unset($data["user_id"], $data["created_at"], $data["updated_at"]);
 
         $this->json("post", "/comments", $data);
 

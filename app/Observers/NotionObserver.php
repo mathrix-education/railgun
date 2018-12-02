@@ -7,6 +7,7 @@ use App\Models\Activity;
 use App\Models\Chapter;
 use App\Models\Meta;
 use App\Models\Notion;
+use App\Models\Path;
 
 /**
  * Class NotionObserver.
@@ -80,7 +81,9 @@ class NotionObserver extends BaseObserver
             ->detach();
         $notion->activities()
             ->detach();
-        Meta::whereNotionId($notion->id)
+        Meta::where("notion_id", "=", $notion->id)
+            ->delete();
+        Path::where("notion_id", "=", $notion->id)
             ->delete();
 
         return true;

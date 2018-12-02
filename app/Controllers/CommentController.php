@@ -7,7 +7,7 @@ use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\BaseModel;
 use App\Models\Comment;
-use App\Models\Interfaces\Commentable;
+use App\Models\Module;
 use App\Models\Path;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -86,13 +86,11 @@ class CommentController extends BaseController
         $comment = new Comment($request->only([
             "content",
             "parent_id",
-            "commentable_id",
-            "commentable_type"
+            "module_id"
         ]));
         $comment->user_id = $user->id;
         $comment->path_id = $path->id;
         $comment->save();
-
 
         return response()->json($comment);
     }
@@ -157,19 +155,19 @@ class CommentController extends BaseController
     {
         $modelClass = $this->resolveModelClass($what);
 
-        /** @var Commentable $model */
+        /** @var BaseModel|Module $model */
         $model = $modelClass::where("id", $id)
             ->firstOrFail();
 
-        $comments = $this->orderCollection(
-            $model->comments()
-                ->limit($perPage)
-                ->whereNull("parent_id")
-                ->offset(($page - 1) * $perPage)
-                ->get()
-        );
+        $comments = $model->comments()
+            ->limit($perPage)
+            ->whereNull("parent_id")
+            ->offset(($page - 1) * $perPage)
+            ->get();
 
-        return new JsonResponse($comments);
+        $response = new JsonResponse($comments);
+
+        return $response;
     }
 
     /**
@@ -217,7 +215,7 @@ class CommentController extends BaseController
         $user->canOrFail("latest", Comment::class);
 
         return response()->json(Comment::orderBy("created_at", "desc")
-            ->with(["commentable", "user", "children", "children.user"])
+            ->with(["module", "user", "children", "children.user"])
             ->limit($perPage)
             ->offset(($page - 1) * $perPage)
             ->get());

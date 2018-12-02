@@ -6,6 +6,7 @@ use App\Models\Class_;
 use App\Models\Discipline;
 use App\Models\Notion;
 use App\Models\User;
+use Carbon\Carbon;
 
 /**
  * Class MetaTableSeeder.
@@ -63,6 +64,9 @@ class MetaTableSeeder extends BaseTableSeeder
                     "favorite" => (bool) random_int(0, 1),
                     "completed" => $statusId === 0,
                     "to_revise" => $statusId === 1,
+                    "seo_index" => 0,
+                    "created_at" => Carbon::now(),
+                    "updated_at" => Carbon::now()
                 ];
             }
         }

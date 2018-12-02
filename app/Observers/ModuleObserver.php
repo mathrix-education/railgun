@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Models\Activity;
 use App\Models\Meta;
 use App\Models\Module;
+use App\Models\Path;
 use App\Models\Post;
 use App\Models\Product;
 use App\Models\Report;
@@ -57,16 +58,18 @@ class ModuleObserver extends BaseObserver
     {
         $module->activities()
             ->detach();
-        Meta::whereModuleId($module->id)
+        Meta::where("module_id", "=", $module->id)
             ->delete();
-        Post::whereModuleId($module->id)
+        Post::where("module_id", "=", $module->id)
             ->delete();
-        Product::whereModuleId($module->id)
+        Product::where("module_id", "=", $module->id)
             ->get()
             ->each(function (Product $product) {
                 $product->delete();
             });
-        Report::whereModuleId($module->id)
+        Report::where("module_id", "=", $module->id)
+            ->delete();
+        Path::where("module_id", "=", $module->id)
             ->delete();
 
         return true;
