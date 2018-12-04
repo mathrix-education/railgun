@@ -24,7 +24,7 @@ $factory->define(Comment::class, function (Generator $faker) {
         "content" => $faker->text(),
         "parent_id" => null,
         "user_id" => User::random()->id,
-        "module_id" => Module::random()->id,
+        "module_id" => $path->module->id,
         "path_id" => $path->id,
         "created_at" => $created,
         "updated_at" => $faker->boolean(90) ? $created : $faker->dateTimeBetween($created, "now"),

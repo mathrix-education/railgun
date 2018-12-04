@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Activity;
+use App\Models\Comment;
 use App\Models\Module;
 use App\Models\Path;
 use App\Models\Post;
@@ -57,17 +58,33 @@ class ModuleObserver extends BaseObserver
     {
         $module->activities()
             ->detach();
+
+        Comment::withTrashed()
+            ->where("module_id", "=", $module->id)
+            ->get()
+            ->each(function (Comment $comment) {
+                $comment->forceDelete();
+            });
         Post::where("module_id", "=", $module->id)
-            ->delete();
+            ->get()
+            ->each(function (Post $post) {
+                $post->delete();
+            });
         Product::where("module_id", "=", $module->id)
             ->get()
             ->each(function (Product $product) {
                 $product->delete();
             });
         Report::where("module_id", "=", $module->id)
-            ->delete();
+            ->get()
+            ->each(function (Report $report) {
+                $report->delete();
+            });
         Path::where("module_id", "=", $module->id)
-            ->delete();
+            ->get()
+            ->each(function (Path $path) {
+                $path->delete();
+            });
 
         return true;
     }

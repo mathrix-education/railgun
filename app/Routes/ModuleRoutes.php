@@ -4,8 +4,6 @@
 $router->get("modules[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "ModuleController@index");
 
 $router->group(["prefix" => "modules"], function () use ($router) {
-    $router->get("by-route/{countryId:[1-9]\d*}/{classId:[1-9]\d*}/{disciplineId:[1-9]\d*}/{chapterId:[1-9]\d*}"
-        . "/{notionId:[1-9]\d*}/{activityId:[1-9]\d*}", "ModuleController@byRoute");
     $router->get("by-{what:[a-z\-]+}/{id:[1-9]\d*}", "ModuleController@by");
     $router->get("by-{what:[a-z\-]+}/{id:[1-9]\d*}/ids", "ModuleController@ids");
     $router->get("{moduleId:[1-9]\d*}/routes", "ModuleController@routes");
@@ -14,7 +12,6 @@ $router->group(["prefix" => "modules"], function () use ($router) {
 
     $router->group(["middleware" => "auth:api"], function () use ($router) {
         $router->post("", "ModuleController@add");
-        $router->post("{moduleId:[1-9]\d*}/index", "ModuleController@markIndex");
 
         $router->patch("{id:[1-9]\d*}", "ModuleController@edit");
         $router->patch("{id:[1-9]\d*}/mark", "ModuleController@mark");

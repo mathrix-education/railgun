@@ -42,7 +42,7 @@ trait Delete
             $this->deleteModelId = ($this->modelClass)::inRandomOrder()->firstOrFail()->id;
         }
 
-        $this->call("delete", "/" . $this->modelPlural . "/" . $this->deleteModelId);
+        $this->json("delete", "/" . $this->modelPlural . "/" . $this->deleteModelId);
     }
 
     /**

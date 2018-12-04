@@ -10,8 +10,7 @@ use App\Models\Mark;
 use App\Models\Notion;
 use App\Models\Path;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -47,9 +46,9 @@ class ActivityController extends BaseController
          */
         foreach ($activities as $key => $activity) {
             $seoIndex = Path::isIndexed($countryId, $classId, $disciplineId, $chapterId, $notionId, $activity->id);
-            $activity->setAttribute("seo_index", $seoIndex);
+            $activity->seo_index = $seoIndex;
 
-            $activities->offsetSet($key, $activities);
+            $activities->offsetSet($key, $activity);
         }
 
         $response = new JsonResponse($activities);
@@ -67,15 +66,11 @@ class ActivityController extends BaseController
         /** @var User $user */
         $user = $request->user();
         $marks = $user->marks()
-            ->with("mark.path.activity")
+            ->with("path")
             ->where("status", "=", "to_revise")
             ->get();
 
-        $activities = $marks->map(function (Mark $mark) {
-            return $mark->path->activity;
-        });
-
-        $response = new JsonResponse($activities);
+        $response = new JsonResponse($marks);
 
         return $response;
     }
@@ -85,7 +80,7 @@ class ActivityController extends BaseController
      *
      * @return JsonResponse
      */
-    public function incomplete(Request $request): JsonResponse
+    public function view(Request $request): JsonResponse
     {
         /** @var User $user */
         $user = $request->user();
@@ -99,9 +94,16 @@ class ActivityController extends BaseController
         $query = null;
 
         foreach ($disciplinesIds as $disciplineId) {
-            $subQuery = $user->marks()->whereHas("paths", function (HasMany $query) use ($disciplineId) {
-                $query->where("discipline_id", "=", $disciplineId);
-            })
+            $subQuery = $user->marks()
+                ->with("path")
+                ->whereHas("path", function (Builder $query) use ($disciplineId) {
+                    $query->where("discipline_id", "=", $disciplineId)
+                        ->whereNotNull("chapter_id")
+                        ->whereNotNull("notion_id")
+                        ->whereNotNull("activity_id")
+                        ->whereNull("module_id");
+                })
+                ->where("status", "=", "view")
                 ->orderByDesc("updated_at")
                 ->limit(1);
 
@@ -132,6 +134,7 @@ class ActivityController extends BaseController
         /** @var User $user */
         $user = $request->user();
         Activity::findOrFail($id);
+        $status = $request->input("status");
 
         $path = Path::retrieve(
             array_merge(
@@ -143,8 +146,8 @@ class ActivityController extends BaseController
         $mark = Mark::retrieve([
             "user_id" => $user->id,
             "path_id" => $path->id
-        ]);
-        $mark->status = $request->input("status");
+        ], $status);
+        $mark->status = $status;
         $mark->save();
 
         $activity = Activity::findOrFail($id);

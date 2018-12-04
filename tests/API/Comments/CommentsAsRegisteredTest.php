@@ -95,7 +95,7 @@ class CommentsAsRegisteredTest extends CommentsAsPublicTest
         Passport::actingAs($user, [$user->type]);
         $comment->content = $this->faker->sentence;
 
-        $this->call("patch", "/comments/{$comment->id}", [
+        $this->json("patch", "/comments/{$comment->id}", [
             "content" => $this->faker->sentence,
         ]);
 

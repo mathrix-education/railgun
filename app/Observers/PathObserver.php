@@ -1,7 +1,9 @@
 <?php
 namespace App\Observers;
 
+use App\Exceptions\Http422ModelSaveException;
 use App\Models\Comment;
+use App\Models\Mark;
 use App\Models\Path;
 
 /**
@@ -19,11 +21,15 @@ class PathObserver extends BaseObserver
      * @param Path $path
      *
      * @return bool
+     * @throws Http422ModelSaveException
      */
     public function deleting($path)
     {
-        Comment::where("path_id", "=", $path->id)
+        Comment::withTrashed()
+            ->where("path_id", "=", $path->id)
             ->forceDelete();
+        Mark::where("path_id", "=", $path->id)
+            ->delete();
 
         return true;
     }

@@ -82,7 +82,6 @@ class RouterFront
             ["activity_id", "=", $activityId],
             ["seo_index", "=", true]
         ])
-            ->whereNull("user_id")
             ->exists();
     }
 }

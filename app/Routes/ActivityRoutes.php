@@ -6,15 +6,16 @@ $router->group(["middleware" => "auth:api"], function () use ($router) {
 });
 
 $router->group(["prefix" => "activities"], function () use ($router) {
+    $router->get("by-route/{countryId:[1-9]\d*}/{classId:[1-9]\d*}/{disciplineId:[1-9]\d*}/{chapterId:[1-9]\d*}"
+        . "/{notionId:[1-9]\d*}", "ActivityController@byRoute");
     $router->get("by-{what:[a-z\-]+}/{id:[1-9]\d*}/ids", "ActivityController@ids");
     $router->get("by-{what:[a-z\-]+}/{id:[1-9]\d*}", "ActivityController@by");
     $router->get("{key:[1-9]\d*}", "ActivityController@get");
     $router->get("{key:[a-z\-]+}/{value:[a-z0-9\-]+}", "ActivityController@get");
 
     $router->group(["middleware" => "auth:api"], function () use ($router) {
-        $router->get("favorites", "ActivityController@favorites");
+        $router->get("view", "ActivityController@view");
         $router->get("to-revise", "ActivityController@to_revise");
-        $router->get("incomplete", "ActivityController@incomplete");
 
         $router->post("", "ActivityController@add");
         $router->patch("{id:[1-9]\d*}", "ActivityController@edit");

@@ -36,7 +36,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         ];
         $data = array_merge($dataWithoutPassword, ["password" => "test"]);
 
-        $this->call("post", "/users/register", $data);
+        $this->json("post", "/users/register", $data);
 
         $this->assertHttp401Unauthorized();
         $this->assertNotInDatabase("users", $dataWithoutPassword);
@@ -47,7 +47,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
      */
     public function testGet()
     {
-        $this->call("get", "/users/{$this->user->id}");
+        $this->json("get", "/users/{$this->user->id}");
 
         $this->assertHttp200Success();
     }
@@ -59,7 +59,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
     {
         $stranger = $this->stranger();
 
-        $this->call("get", "/users/{$stranger->id}");
+        $this->json("get", "/users/{$stranger->id}");
 
         $this->assertHttp401Unauthorized();
     }
@@ -69,7 +69,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
      */
     public function testProfile()
     {
-        $this->call("get", "/users/profile");
+        $this->json("get", "/users/profile");
 
         $this->assertHttp200Success();
     }
@@ -81,9 +81,9 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
     {
         $newUser = factory(User::class, $this->user->type)->raw();
         unset($newUser["password"], $newUser["token"], $newUser["settings"], $newUser["points"], $newUser["level"],
-            $newUser["stripe_id"], $newUser["created_at"]);
+            $newUser["stripe_id"], $newUser["created_at"], $newUser["updated_at"]);
 
-        $this->call("patch", "/users/" . $this->user->id, $newUser);
+        $this->json("patch", "/users/" . $this->user->id, $newUser);
 
         $this->assertHttp200Success();
         $this->assertInDatabase("users", $newUser);
@@ -99,7 +99,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $newPassword = "test2";
         $newUser = factory(User::class, $this->user->type)->raw();
         unset($newUser["token"], $newUser["settings"], $newUser["points"], $newUser["level"], $newUser["stripe_id"],
-            $newUser["created_at"]);
+            $newUser["created_at"], $newUser["updated_at"]);
         $newUser["password"] = $newPassword;
         $newUser["current_password"] = "test123";
 
@@ -107,7 +107,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $this->user->password = "test123";
         $this->user->save();
 
-        $this->call("patch", "/users/" . $this->user->id, $newUser);
+        $this->json("patch", "/users/" . $this->user->id, $newUser);
 
         $responseData = $this->getResponseData();
         unset($newUser["current_password"], $newUser["password"]);
@@ -135,7 +135,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $newUser["password"] = $newPassword;
         $newUser["current_password"] = "test_incorrect";
 
-        $this->call("patch", "/users/" . $this->user->id, $newUser);
+        $this->json("patch", "/users/" . $this->user->id, $newUser);
 
         $this->assertHttp400InvalidRequest();
 
@@ -157,7 +157,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
             $newUser["created_at"]);
         $newUser["password"] = $newPassword;
 
-        $this->call("patch", "/users/" . $this->user->id, $newUser);
+        $this->json("patch", "/users/" . $this->user->id, $newUser);
 
         $this->assertHttp400InvalidRequest();
     }
@@ -170,7 +170,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $pointsBefore = $this->user->points;
         $pointsToAdd = $this->faker->numberBetween(1, 10);
 
-        $this->call("post", "/users/points", ["points" => $pointsToAdd]);
+        $this->json("post", "/users/points", ["points" => $pointsToAdd]);
 
         // Assertions
         $this->assertHttp200Success();
@@ -201,7 +201,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
             ->whereNotIn("id", $userModulesIdsToday)
             ->firstOrFail();
 
-        $this->call("post", "/users/points", [
+        $this->json("post", "/users/points", [
             "points" => $pointsToAdd,
             "loggable_type" => "module",
             "loggable_id" => $loggable->id,
@@ -221,7 +221,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
      */
     public function testPointsWithWrongLoggable()
     {
-        $this->call("post", "/users/points", [
+        $this->json("post", "/users/points", [
             "points" => $this->faker->numberBetween(1, 10),
             "loggable_type" => "wrongloggable",
             "loggable_id" => 6664242,
@@ -236,7 +236,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
      */
     public function testPointsWithoutPointsField()
     {
-        $this->call("post", "/users/points");
+        $this->json("post", "/users/points");
 
         // Assertions
         $this->assertHttp400InvalidRequest();
@@ -247,7 +247,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
      */
     public function testPointsWithInvalidPointsField()
     {
-        $this->call("post", "/users/points", ["points" => "lol"]);
+        $this->json("post", "/users/points", ["points" => "lol"]);
 
         // Assertions
         $this->assertHttp400InvalidRequest();
@@ -281,7 +281,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
             "loggable_id" => $loggable->id,
         ]);
 
-        $this->call("post", "/users/points", [
+        $this->json("post", "/users/points", [
             "points" => $pointsToAdd,
             "loggable_type" => "module",
             "loggable_id" => $loggable->id,
@@ -313,7 +313,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
             $potentialLog->delete();
         }
 
-        $this->call("post", "/users/points", ["points" => 100]); // To be sure to pass a daily achievement
+        $this->json("post", "/users/points", ["points" => 100]); // To be sure to pass a daily achievement
 
         // Assertions
         $this->assertHttp200Success();
@@ -333,7 +333,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $levelBefore = $this->user->level;
         $pointsToAdd = $level->objective - $this->user->points + 1; // +1 to be sure to pass the level
 
-        $this->call("post", "/users/points", ["points" => $pointsToAdd]);
+        $this->json("post", "/users/points", ["points" => $pointsToAdd]);
 
         // Assertions
         $this->assertHttp200Success();

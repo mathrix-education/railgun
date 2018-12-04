@@ -69,7 +69,7 @@ class VotesAsRegisteredTest extends VotesAsPublicTest
         $scoreBefore = $vote->votable->score;
         Passport::actingAs($user, [$user->type]);
 
-        $this->call("post", "/votes/{$vote->votable_type}/{$vote->votable_id}/up");
+        $this->json("post", "/votes/{$vote->votable_type}/{$vote->votable_id}/up");
 
         $this->assertHttp200Success();
         $this->assertEquals($scoreBefore - 1, $vote->votable->score);
@@ -91,7 +91,7 @@ class VotesAsRegisteredTest extends VotesAsPublicTest
         $scoreBefore = $vote->votable->score;
         Passport::actingAs($user, [$user->type]);
 
-        $this->call("post", "/votes/{$vote->votable_type}/{$vote->votable_id}/down");
+        $this->json("post", "/votes/{$vote->votable_type}/{$vote->votable_id}/down");
 
         $this->assertHttp200Success();
         $this->assertEquals($scoreBefore + 1, $vote->votable->score);
@@ -113,7 +113,7 @@ class VotesAsRegisteredTest extends VotesAsPublicTest
         $scoreBefore = $vote->votable->score;
         Passport::actingAs($user, [$user->type]);
 
-        $this->call("post", "/votes/{$vote->votable_type}/{$vote->votable_id}/up");
+        $this->json("post", "/votes/{$vote->votable_type}/{$vote->votable_id}/up");
 
         $this->assertHttp200Success();
         $this->assertEquals($scoreBefore + 2, $vote->votable->score);
@@ -135,7 +135,7 @@ class VotesAsRegisteredTest extends VotesAsPublicTest
         $scoreBefore = $vote->votable->score;
         Passport::actingAs($user, [$user->type]);
 
-        $this->call("post", "/votes/{$vote->votable_type}/{$vote->votable_id}/down");
+        $this->json("post", "/votes/{$vote->votable_type}/{$vote->votable_id}/down");
 
         $this->assertHttp200Success();
         $this->assertEquals($scoreBefore - 2, $vote->votable->score);
@@ -147,7 +147,7 @@ class VotesAsRegisteredTest extends VotesAsPublicTest
      */
     public function testNotVotable()
     {
-        $this->call("post", "/votes/wtf/4242666/up");
+        $this->json("post", "/votes/wtf/4242666/up");
 
         $this->assertHttp400InvalidRequest();
     }

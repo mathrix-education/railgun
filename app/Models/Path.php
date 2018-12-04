@@ -44,6 +44,7 @@ class Path extends BaseModel
     protected $casts = [
         "seo_index" => "boolean"
     ];
+    protected $with = ["country", "class_", "discipline", "chapter", "notion", "activity", "module"];
 
     /**
      * @param array $contentIds The array containing the key/value

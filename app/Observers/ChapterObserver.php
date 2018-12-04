@@ -55,14 +55,16 @@ class ChapterObserver extends BaseObserver
      * @param Chapter $chapter
      *
      * @return bool
-     * @throws Http422ModelSaveException
      */
     public function deleting($chapter)
     {
         $chapter->notions()
             ->detach();
         Path::where("chapter_id", "=", $chapter->id)
-            ->delete();
+            ->get()
+            ->each(function (Path $path) {
+                $path->delete();
+            });
 
         return true;
     }

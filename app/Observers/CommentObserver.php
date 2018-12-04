@@ -53,7 +53,9 @@ class CommentObserver extends BaseObserver
      */
     public function deleting($comment)
     {
-        $children = Comment::withTrashed()->where("parent_id", "=", $comment->id)->get();
+        $children = Comment::withTrashed()
+            ->where("parent_id", "=", $comment->id)
+            ->get();
 
         /** @var Comment $child */
         foreach ($children as $child) {

@@ -59,7 +59,7 @@ class CommentsAsPublicTest extends ScopeTestCase
      */
     public function testByNotExist()
     {
-        $this->call("get", "/comments/by-wtf/" . random_int(1, 1000));
+        $this->json("get", "/comments/by-wtf/" . random_int(1, 1000));
 
         // Assertions
         $this->assertHttp400InvalidRequest();
@@ -102,7 +102,7 @@ class CommentsAsPublicTest extends ScopeTestCase
      */
     public function testLatest()
     {
-        $this->call("get", "/comments/latest");
+        $this->json("get", "/comments/latest");
 
         $this->assertHttp401Unauthorized();
     }

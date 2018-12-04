@@ -15,25 +15,4 @@ use Tests\Utils\Tree;
  */
 class ModulesAsAdminTest extends ModulesAsModeratorTest
 {
-    public function testMarkIndex()
-    {
-        $tree = new Tree();
-
-        $this->json("post", "/modules/{$tree->getModule()->id}/index", $tree->flatIds());
-
-        $this->assertInDatabase("metas", [
-            "favorite" => false,
-            "to_revise" => false,
-            "completed" => false,
-            "seo_index" => true,
-            "user_id" => null,
-            "country_id" => $tree->getCountry()->id,
-            "class_id" => $tree->getClass()->id,
-            "discipline_id" => $tree->getDiscipline()->id,
-            "chapter_id" => $tree->getChapter()->id,
-            "notion_id" => $tree->getNotion()->id,
-            "activity_id" => $tree->getActivity()->id,
-            "module_id" => $tree->getModule()->id
-        ]);
-    }
 }

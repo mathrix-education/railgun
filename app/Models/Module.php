@@ -30,7 +30,7 @@ use Illuminate\Support\Facades\Auth;
  * @property mixed                 $status
  * @property Collection|Activity[] $activities
  * @property Collection|Comment[]  $comments
- * @property Collection|Mark[]    $marks
+ * @property Collection|Mark[]     $marks
  * @property Collection|Log[]      $logs
  * @property Collection|Product[]  $products
  * @property string|null           $mark
@@ -187,7 +187,7 @@ class Module extends BaseModel
      */
     public function marks(): HasManyThrough
     {
-        return $this->hasManyThrough(Mark::class, User::class);
+        return $this->hasManyThrough(Mark::class, Path::class);
     }
 
     /**

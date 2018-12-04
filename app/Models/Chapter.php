@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -70,6 +72,16 @@ class Chapter extends BaseModel
     }
 
     /**
+     * HasMany Marks.
+     *
+     * @return HasManyThrough
+     */
+    public function marks(): HasManyThrough
+    {
+        return $this->hasManyThrough(Mark::class, Path::class);
+    }
+
+    /**
      * HasMany Notion.
      *
      * @return BelongsToMany
@@ -121,7 +133,7 @@ class Chapter extends BaseModel
 
         $count = $user->marks()
             ->where("status", "=", "to_revise")
-            ->whereHas("paths", function (HasMany $query) {
+            ->whereHas("path", function (Builder $query) {
                 $query->where("chapter_id", "=", $this->id)
                     ->whereNull("module_id");
             })
@@ -146,7 +158,7 @@ class Chapter extends BaseModel
 
         $count = $user->marks()
             ->where("status", "=", "completed")
-            ->whereHas("paths", function (HasMany $query) {
+            ->whereHas("path", function (Builder $query) {
                 $query->where("chapter_id", "=", $this->id)
                     ->whereNull("module_id");
             })

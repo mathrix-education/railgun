@@ -32,7 +32,7 @@ class SettingsAsPublicTest extends ScopeTestCase
      */
     public function testAll()
     {
-        $this->call("get", "/settings");
+        $this->json("get", "/settings");
         $responseData = $this->getResponseData();
         $settingKeys = [];
 
@@ -54,7 +54,7 @@ class SettingsAsPublicTest extends ScopeTestCase
         /** @var Setting $setting */
         $setting = Setting::whereVisible(true)->inRandomOrder()->firstOrFail();
 
-        $this->call("get", "/settings/{$setting->key}");
+        $this->json("get", "/settings/{$setting->key}");
         $this->assertHttp200Success();
     }
 
@@ -66,7 +66,7 @@ class SettingsAsPublicTest extends ScopeTestCase
         /** @var Setting $setting */
         $setting = Setting::whereVisible(false)->inRandomOrder()->firstOrFail();
 
-        $this->call("get", "/settings/{$setting->key}");
+        $this->json("get", "/settings/{$setting->key}");
 
         $this->assertHttp404ModelNotFound();
     }
@@ -90,7 +90,7 @@ class SettingsAsPublicTest extends ScopeTestCase
     {
         $setting = Setting::random();
 
-        $this->call("delete", "/settings/{$setting->key}");
+        $this->json("delete", "/settings/{$setting->key}");
 
         $this->assertHttp401Unauthorized();
         $this->assertInDatabase("settings", ["id" => $setting->id, "key" => $setting->key]);

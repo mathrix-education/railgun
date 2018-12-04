@@ -84,7 +84,7 @@ class Activity extends BaseModel
      */
     public function marks(): HasManyThrough
     {
-        return $this->hasManyThrough(Mark::class, User::class);
+        return $this->hasManyThrough(Mark::class, Path::class);
     }
 
     /**

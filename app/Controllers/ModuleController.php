@@ -179,6 +179,7 @@ class ModuleController extends BaseController
         /** @var User $user */
         $user = $request->user();
         Module::findOrFail($id);
+        $status = $request->input("status");
 
         $path = Path::retrieve(
             array_merge(
@@ -190,8 +191,8 @@ class ModuleController extends BaseController
         $mark = Mark::retrieve([
             "user_id" => $user->id,
             "path_id" => $path->id
-        ]);
-        $mark->status = $request->input("status");
+        ], $status);
+        $mark->status = $status;
         $mark->save();
 
         $module = Module::findOrFail($id);

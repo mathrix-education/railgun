@@ -35,7 +35,7 @@ class CommentsAsModeratorTest extends CommentsAsRegisteredTest
         $data = factory(Comment::class)->raw();
         unset($data["user_id"], $data["created_at"], $data["updated_at"]);
 
-        $this->call("patch", "/comments/$commentId", $data);
+        $this->json("patch", "/comments/$commentId", $data);
 
         $this->assertHttp200Success();
         $this->assertInDatabase("comments", $data);
@@ -67,7 +67,7 @@ class CommentsAsModeratorTest extends CommentsAsRegisteredTest
      */
     public function testSearch()
     {
-        $this->call("POST", "/comments/search", [
+        $this->json("POST", "/comments/search", [
             "content" => "%lorem%",
         ]);
 
@@ -81,7 +81,7 @@ class CommentsAsModeratorTest extends CommentsAsRegisteredTest
      */
     public function testLatest()
     {
-        $this->call("get", "/comments/latest");
+        $this->json("get", "/comments/latest");
 
         $this->assertHttp200Success();
         $this->assertJsonLengthMax(100);

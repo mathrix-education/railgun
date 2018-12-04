@@ -25,9 +25,18 @@ class CreatePathsTable extends Migration
             $table->integer("discipline_id")->unsigned();
             $table->integer("class_id")->unsigned();
             $table->integer("chapter_id")->unsigned();
-            $table->integer("notion_id")->unsigned();
-            $table->integer("activity_id")->unsigned();
-            $table->integer("module_id")->unsigned();
+            $table->integer("notion_id")
+                ->unsigned()
+                ->default(null)
+                ->nullable();
+            $table->integer("activity_id")
+                ->unsigned()
+                ->default(null)
+                ->nullable();
+            $table->integer("module_id")
+                ->unsigned()
+                ->default(null)
+                ->nullable();
             $table->boolean("seo_index")->default(false);
 
             $table->foreign("country_id")

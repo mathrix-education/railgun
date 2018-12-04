@@ -26,7 +26,7 @@ class FilesAsAdminTest extends FilesAsModeratorTest
         $name = basename($existingFile);
         $destination = substr(str_replace($name, "", $existingFile), 0, -1);
 
-        $this->call("post", "/files", [
+        $this->json("post", "/files", [
             "file" => UploadedFile::fake()->image("avatar.jpg"),
             "destination" => $destination,
             "name" => $name,

@@ -91,8 +91,6 @@ if ($app->environment("dev", "local")) {
     $app->configure("ide-helper");
 }
 
-Carbon::setToStringFormat("c");
-
 /*
 |--------------------------------------------------------------------------
 | Register Middleware

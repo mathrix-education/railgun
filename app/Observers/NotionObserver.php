@@ -70,8 +70,6 @@ class NotionObserver extends BaseObserver
      *
      * @param Notion $notion
      *
-     * @throws Http422ModelSaveException
-     *
      * @return bool
      */
     public function deleting($notion)
@@ -81,7 +79,10 @@ class NotionObserver extends BaseObserver
         $notion->activities()
             ->detach();
         Path::where("notion_id", "=", $notion->id)
-            ->delete();
+            ->get()
+            ->each(function (Path $path) {
+                $path->delete();
+            });
 
         return true;
     }

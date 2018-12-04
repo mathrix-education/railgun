@@ -32,7 +32,7 @@ class UpdateMetasTable extends Migration
             $table->dateTime("updated_at");
         });
 
-        $metas = DB::table("metas")->select();
+        $metas = DB::table("metas")->select()->get();
 
         foreach ($metas as $meta) {
             DB::table("metas")->where("id", "=", $meta->id)->update([
@@ -54,10 +54,11 @@ class UpdateMetasTable extends Migration
         Schema::table("metas", function (Blueprint $table) {
             $table->enum("status", ["to_revise", "completed"])
                 ->after("favorite")
+                ->nullable()
                 ->default(null);
         });
 
-        $metas = DB::table("metas")->select();
+        $metas = DB::table("metas")->select()->get();
 
         foreach ($metas as $meta) {
             DB::table("metas")->where("id", "=", $meta->id)->update([

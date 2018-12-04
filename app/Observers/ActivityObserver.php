@@ -76,7 +76,10 @@ class ActivityObserver extends BaseObserver
         $activity->modules()
             ->detach();
         Path::where("activity_id", "=", $activity->id)
-            ->delete();
+            ->get()
+            ->each(function (Path $path) {
+                $path->delete();
+            });
 
         return true;
     }

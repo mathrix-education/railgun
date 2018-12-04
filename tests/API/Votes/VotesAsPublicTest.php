@@ -38,7 +38,7 @@ class VotesAsPublicTest extends ScopeTestCase
     {
         $comment = Comment::random();
 
-        $this->call("post", "/votes/comment/{$comment->id}/down");
+        $this->json("post", "/votes/comment/{$comment->id}/down");
 
         $this->assertHttp401Unauthorized();
     }

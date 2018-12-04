@@ -177,7 +177,7 @@ class FilesAsPublicTest extends ScopeTestCase
      */
     public function testUpload()
     {
-        $this->call("post", "/files", [
+        $this->json("post", "/files", [
             "file" => UploadedFile::fake()->image("avatar.jpg"),
             "destination" => "test",
             "name" => "avatar.jpg"
@@ -198,7 +198,7 @@ class FilesAsPublicTest extends ScopeTestCase
         $name = basename($existingFile);
         $destination = substr(str_replace($name, "", $existingFile), 0, -1);
 
-        $this->call("post", "/files", [
+        $this->json("post", "/files", [
             "file" => UploadedFile::fake()->image("avatar.jpg"),
             "destination" => $destination,
             "name" => $name,
@@ -218,7 +218,7 @@ class FilesAsPublicTest extends ScopeTestCase
         $name = basename($existingFile);
         $destination = substr(str_replace($name, "", $existingFile), 0, -1);
 
-        $this->call("post", "/files", [
+        $this->json("post", "/files", [
             "file" => UploadedFile::fake()->image("avatar.jpg"),
             "destination" => $destination,
             "name" => $name,

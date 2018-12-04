@@ -37,7 +37,7 @@ trait Get
 
         $id = $this->modelClass::random()->id;
 
-        $this->call("get", "/" . $this->modelPlural . "/$id");
+        $this->json("get", "/" . $this->modelPlural . "/$id");
     }
 
     /**
