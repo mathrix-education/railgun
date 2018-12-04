@@ -7,8 +7,9 @@ use App\Exceptions\Http422ModelValidationException;
 use App\Models\Comment;
 use App\Notifications\CommentAnswerNotification;
 use Carbon\Carbon;
-use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Notification;
 use Laravel\Passport\Passport;
+use Tests\Utils\Tree;
 
 /**
  * Class CommentsAsPublicTest
@@ -23,30 +24,52 @@ class CommentsAsRegisteredTest extends CommentsAsPublicTest
 {
     /**
      * POST /comments.
+     *
+     * @throws \Exception
      */
     public function testAdd()
     {
         $data = factory(Comment::class)->raw();
-        unset($data["user_id"], $data["created_at"], $data["updated_at"]);
-
-        $this->call("post", "/comments", $data);
-
-        $expectedData = array_merge($data, ["user_id" => $this->user->id]);
-        $this->assertInDatabase("comments", $expectedData);
-        $this->assertHttp200Success();
-    }
-
-    public function testAddChild()
-    {
-        \Illuminate\Support\Facades\Notification::fake();
-
-        $data = factory(Comment::class, "child")->raw();
-        $parentComment = Comment::find($data["parent_id"]);
+        $tree = new Tree();
+        $data["path"] = $tree->flatIds();
         unset($data["user_id"], $data["created_at"], $data["updated_at"]);
 
         $this->json("post", "/comments", $data);
 
-        $expectedData = array_merge($data, ["user_id" => $this->user->id]);
+        unset($data["path"]);
+        $pathId = json_decode($this->response->getContent())->path_id;
+        $expectedData = array_merge($data, [
+            "user_id" => $this->user->id,
+            "path_id" => $pathId
+        ]);
+
+        $this->assertInDatabase("comments", $expectedData);
+        $this->assertHttp200Success();
+    }
+
+    /**
+     * POST /comments
+     *
+     * @throws \Exception
+     */
+    public function testAddChild()
+    {
+        Notification::fake();
+
+        $data = factory(Comment::class, "child")->raw();
+        $parentComment = Comment::find($data["parent_id"]);
+        $tree = new Tree();
+        $data["path"] = $tree->flatIds();
+        unset($data["user_id"], $data["created_at"], $data["updated_at"]);
+
+        $this->json("post", "/comments", $data);
+
+        unset($data["path"]);
+        $pathId = json_decode($this->response->getContent())->path_id;
+        $expectedData = array_merge($data, [
+            "user_id" => $this->user->id,
+            "path_id" => $pathId
+        ]);
 
         $this->assertHttp200Success();
         $this->assertInDatabase("comments", $expectedData);
@@ -55,24 +78,6 @@ class CommentsAsRegisteredTest extends CommentsAsPublicTest
             $parentComment->user,
             "database"
         );
-
-    }
-
-    /**
-     * POST /comments.
-     */
-    public function testAddForStranger()
-    {
-        $stranger = $this->stranger();
-
-        $data = factory(Comment::class)->raw();
-        $data["user_id"] = $stranger->id;
-        unset($data["created_at"], $data["updated_at"]);
-
-        $this->json("post", "/comments", $data);
-
-        $this->assertHttp401Unauthorized();
-        $this->assertNotInDatabase("comments", $data);
     }
 
     /**
@@ -90,7 +95,7 @@ class CommentsAsRegisteredTest extends CommentsAsPublicTest
         Passport::actingAs($user, [$user->type]);
         $comment->content = $this->faker->sentence;
 
-        $this->call("patch", "/comments/{$comment->id}", [
+        $this->json("patch", "/comments/{$comment->id}", [
             "content" => $this->faker->sentence,
         ]);
 

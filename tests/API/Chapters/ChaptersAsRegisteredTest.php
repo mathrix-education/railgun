@@ -43,7 +43,7 @@ class ChaptersAsRegisteredTest extends ChaptersAsPublicTest
         $chapter = Chapter::random();
         $class = $chapter->class_;
 
-        $this->call("get", "/chapters/slug/{$chapter->slug}/by-class-slug/{$class->slug}");
+        $this->json("get", "/chapters/slug/{$chapter->slug}/by-class-slug/{$class->slug}");
 
         $this->assertHttp200Success();
         $this->assertJsonKeys(["id", "name", "slug"]);

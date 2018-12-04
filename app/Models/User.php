@@ -62,7 +62,6 @@ use Laravel\Passport\Token;
  * @property Collection|DatabaseNotification[] $unreadNotifications
  * @property Collection|DatabaseNotification[] $readNotifications
  * @property Collection|Log[]                  $logs
- * @property Collection|Meta[]                 $meta
  * @property Collection|Product[]              $products
  * @property Collection|Purchase[]             $purchases
  * @property Collection|Token[]                $tokens
@@ -169,6 +168,16 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function logs(): HasMany
     {
         return $this->hasMany(Log::class);
+    }
+
+    /**
+     * HasMany Mark.
+     *
+     * @return HasMany
+     */
+    public function marks(): HasMany
+    {
+        return $this->hasMany(Mark::class);
     }
 
     /**

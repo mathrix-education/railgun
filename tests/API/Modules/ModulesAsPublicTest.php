@@ -107,30 +107,4 @@ class ModulesAsPublicTest extends ScopeTestCase
     {
         $this->genericDeleteUnauthorized();
     }
-
-    /**
-     * GET /modules/by-route/{countryId}/{classId}/{disciplineId}/{chapterId}/{notionId}/{activityId}
-     *
-     * @throws \Exception
-     */
-    public function testByRoute()
-    {
-        $url = "/modules/by-route/{country_id}/{class_id}/{discipline_id}/{chapter_id}/{notion_id}/{activity_id}";
-        $tree = new Tree();
-        $ids = $tree->flatIds("module");
-
-        foreach ($ids as $k => $v) {
-            $url = str_replace("{". $k . "}", $v, $url);
-        }
-
-        $this->json("get", $url);
-
-        $this->assertResponseOk();
-        $this->assertJsonDocumentMatches($this->response->getContent(), [
-            "[*].id" => new IsType("integer"),
-            "[*].premium" => new IsType("boolean"),
-            "[*].visible" => new IsType("boolean"),
-            "[*].seo_index" => new IsType("boolean"),
-        ]);
-    }
 }

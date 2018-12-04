@@ -38,7 +38,8 @@ class ProductTableSeeder extends BaseTableSeeder
             foreach ($product2IdsToLinkWithProduct1 as $product2Id) {
                 $linkData[] = [
                     "parent_id" => $product1->id,
-                    "child_id" => $product2Id
+                    "child_id" => $product2Id,
+                    "order" => 0
                 ];
             }
         }
@@ -54,7 +55,8 @@ class ProductTableSeeder extends BaseTableSeeder
             foreach ($product3IdsToLinkWithProduct2 as $product3Id) {
                 $linkData[] = [
                     "parent_id" => $product2->id,
-                    "child_id" => $product3Id
+                    "child_id" => $product3Id,
+                    "order" => 0
                 ];
             }
         }

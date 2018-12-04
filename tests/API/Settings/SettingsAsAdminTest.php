@@ -22,7 +22,7 @@ class SettingsAsAdminTest extends SettingsAsModeratorTest
      */
     public function testAll()
     {
-        $this->call("get", "/settings");
+        $this->json("get", "/settings");
 
         $this->assertHttp200Success();
     }
@@ -35,7 +35,7 @@ class SettingsAsAdminTest extends SettingsAsModeratorTest
         /** @var Setting $setting */
         $setting = Setting::whereVisible(true)->inRandomOrder()->firstOrFail();
 
-        $this->call("get", "/settings/{$setting->key}");
+        $this->json("get", "/settings/{$setting->key}");
         $this->assertHttp200Success();
     }
 
@@ -47,7 +47,7 @@ class SettingsAsAdminTest extends SettingsAsModeratorTest
         /** @var Setting $setting */
         $setting = Setting::whereVisible(false)->inRandomOrder()->firstOrFail();
 
-        $this->call("get", "/settings/{$setting->key}");
+        $this->json("get", "/settings/{$setting->key}");
 
         $this->assertHttp200Success();
     }
@@ -82,7 +82,7 @@ class SettingsAsAdminTest extends SettingsAsModeratorTest
     {
         $setting = Setting::random();
 
-        $this->call("delete", "/settings/{$setting->key}");
+        $this->json("delete", "/settings/{$setting->key}");
 
         $this->assertHttp200Success();
         $this->assertNotInDatabase("settings", ["id" => $setting->id, "key" => $setting->key]);

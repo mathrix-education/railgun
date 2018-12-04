@@ -19,6 +19,7 @@ $factory->define(Score::class, function (Generator $faker) {
     return [
         "game" => "meteor",
         "score" => random_int(1, 1000),
+        "rank" => 0,
         "user_id" => User::random()->id,
         "data" => null,
         "created_at" => $createdAt,

@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -69,6 +72,16 @@ class Chapter extends BaseModel
     }
 
     /**
+     * HasMany Marks.
+     *
+     * @return HasManyThrough
+     */
+    public function marks(): HasManyThrough
+    {
+        return $this->hasManyThrough(Mark::class, Path::class);
+    }
+
+    /**
      * HasMany Notion.
      *
      * @return BelongsToMany
@@ -118,12 +131,12 @@ class Chapter extends BaseModel
             return null;
         }
 
-        $count = Meta::where([
-            ["to_revise", "=", true],
-            ["user_id", "=", $user->id],
-            ["chapter_id", "=", $this->id],
-        ])
-            ->whereNull("module_id")
+        $count = $user->marks()
+            ->where("status", "=", "to_revise")
+            ->whereHas("path", function (Builder $query) {
+                $query->where("chapter_id", "=", $this->id)
+                    ->whereNull("module_id");
+            })
             ->count();
 
         return $count;
@@ -143,12 +156,12 @@ class Chapter extends BaseModel
             return null;
         }
 
-        $count = Meta::where([
-            ["completed", "=", true],
-            ["user_id", "=", $user->id],
-            ["chapter_id", "=", $this->id],
-        ])
-            ->whereNull("module_id")
+        $count = $user->marks()
+            ->where("status", "=", "completed")
+            ->whereHas("path", function (Builder $query) {
+                $query->where("chapter_id", "=", $this->id)
+                    ->whereNull("module_id");
+            })
             ->count();
 
         return $count;

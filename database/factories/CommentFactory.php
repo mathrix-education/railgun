@@ -1,52 +1,45 @@
 <?php
 
-use App\Models\BaseModel;
 use App\Models\Comment;
+use App\Models\Module;
+use App\Models\Path;
 use App\Models\User;
 use Faker\Generator;
-use Illuminate\Database\Eloquent\Relations\Relation;
+use Tests\Utils\Tree;
 
 /**
  * CommentFactory
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
  *
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->define(Comment::class, function (Generator $faker) {
-    $commentable_type = $faker->randomElement(["activity", "post"]);
-    /** @var BaseModel|string $commentable_class */
-    $commentable_class = Relation::getMorphedModel($commentable_type);
     $created = $faker->dateTimeBetween("-1 month");
+    $tree = new Tree();
+    $path = Path::retrieve($tree->flatIds());
 
     return [
         "content" => $faker->text(),
-        "parent_id" => $faker->boolean(60) ? null : $faker->randomElement(
-            Comment::whereNull("parent_id")
-                ->pluck("id")
-                ->toArray()
-        ),
-        "user_id" => $faker->randomElement(User::all()
-            ->pluck("id")
-            ->toArray()),
+        "parent_id" => null,
+        "user_id" => User::random()->id,
+        "module_id" => $path->module->id,
+        "path_id" => $path->id,
         "created_at" => $created,
         "updated_at" => $faker->boolean(90) ? $created : $faker->dateTimeBetween($created, "now"),
-        "commentable_id" => $faker->randomElement($commentable_class::all()
-            ->pluck("id")
-            ->toArray()),
-        "commentable_type" => $commentable_type,
     ];
 });
 
-/*
+/**
  * CommentChildFactory
  *
  * @author Mathrix Team
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->defineAs(Comment::class, "child", function () use ($factory) {
-    $parent = Comment::whereNull("parent_id")
+    $parent = Comment::inRandomOrder()
+        ->whereNull("parent_id")
         ->firstOrFail();
 
     return array_merge($factory->raw(Comment::class), ["parent_id" => $parent->id]);

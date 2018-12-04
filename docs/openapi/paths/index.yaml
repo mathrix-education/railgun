@@ -49,6 +49,13 @@
 # -------
 # Content
 # -------
+/comments:
+  $ref: ./comments/_.yaml
+
+
+# -------
+# Content
+# -------
 /content/routes:
   $ref: ./content/_routes.yaml
 /content/flat:

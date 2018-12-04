@@ -3,9 +3,12 @@
 namespace App\Console\Commands;
 
 use App\Models\Comment;
+use App\Models\Path;
 use App\Models\User;
 use App\Notifications\CommentAnswerNotification;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * Class Dry.
@@ -22,10 +25,7 @@ class Dry extends Command
 
     public function handle()
     {
-        $user = User::random();
-        $user2 = User::random();
-        $comment = Comment::random();
-
-        $user->notify(new CommentAnswerNotification($comment, $user2));
+        $hash = Hash::make("test123");
+        DB::table("users")->update(["password" => $hash]);
     }
 }

@@ -2,9 +2,9 @@
 
 namespace Tests\API\Activities;
 
-use App\Models\Meta;
 use App\Models\Module;
 use App\Models\Notion;
+use PHPUnit\Framework\Constraint\IsType;
 use Tests\API\ScopeTestCase;
 use Tests\Utils\Tree;
 
@@ -47,7 +47,7 @@ class ActivitiesAsPublicTest extends ScopeTestCase
     {
         $notion = Notion::whereVisible(true)->firstOrFail();
 
-        $this->call("get", "/activities/by-notion/{$notion->id}");
+        $this->json("get", "/activities/by-notion/{$notion->id}");
 
         $activities = $this->getResponseData();
 
@@ -65,7 +65,7 @@ class ActivitiesAsPublicTest extends ScopeTestCase
      */
     public function testByWtf()
     {
-        $this->call("get", "/activities/by-wtf/4242666");
+        $this->json("get", "/activities/by-wtf/4242666");
 
         $this->assertHttp400InvalidRequest();
     }
@@ -75,9 +75,11 @@ class ActivitiesAsPublicTest extends ScopeTestCase
      */
     public function testIds()
     {
-        $module = Module::whereVisible(true)->firstOrFail();
+        $module = Module::inRandomOrder()
+            ->where("visible", "=", true)
+            ->firstOrFail();
 
-        $this->call("get", "/activities/by-module/{$module->id}/ids");
+        $this->json("get", "/activities/by-module/{$module->id}/ids");
 
         $activitiesIds = $this->getResponseData();
 
@@ -119,41 +121,21 @@ class ActivitiesAsPublicTest extends ScopeTestCase
     /**
      * Generic mark test.
      *
-     * @param bool|null $favorite
-     * @param bool|null $to_revise
-     * @param bool|null $completed
+     * @param $status
      *
      * @throws \Exception
      */
-    public function mark($favorite, $to_revise, $completed)
+    public function mark($status)
     {
         $tree = new Tree();
-        $data = $tree->flatIds("notion");
+        $data = $tree->flatIds("activity");
         $activityId = $tree->getActivity()->id;
 
-        if ($favorite !== null) {
-            $data["favorite"] = $favorite;
-        }
-        if ($to_revise !== null) {
-            $data["to_revise"] = $to_revise;
-        }
-        if ($completed !== null) {
-            $data["completed"] = $completed;
-        }
+        $data["status"] = $status;
 
-        $this->call("patch", "/activities/$activityId/mark", $data);
+        $this->json("patch", "/activities/$activityId/mark", $data);
 
         $this->assertHttp401Unauthorized();
-    }
-
-    /**
-     * PATCH /activities/{id}/mark with {favorite: true}.
-     *
-     * @throws \Exception
-     */
-    public function testMarkFavorite()
-    {
-        $this->mark(null, null, false);
     }
 
     /**
@@ -163,7 +145,7 @@ class ActivitiesAsPublicTest extends ScopeTestCase
      */
     public function testMarkToRevise()
     {
-        $this->mark(null, true, null);
+        $this->mark("to_revise");
     }
 
     /**
@@ -173,18 +155,29 @@ class ActivitiesAsPublicTest extends ScopeTestCase
      */
     public function testMarkCompleted()
     {
-        $this->mark(null, null, true);
+        $this->mark("completed");
     }
 
     /**
-     * PATCH /activities/{id}/mark
-     * Assert meta updated_at field changes even if the meta content is the same.
+     * GET /activities/by-route/{countryId}/{classId}/{disciplineId}/{chapterId}/{notionId}
+     *
+     * @throws \Exception
      */
-    public function testMarkForceUpdatedAt()
+    public function testByRoute()
     {
-        /** @var Meta $meta */
-        $meta = Meta::random();
-        $this->call("patch", "/activities/{$meta->activity_id}/mark", $meta->toArray());
-        $this->assertHttp401Unauthorized();
+        $url = "/activities/by-route/{country_id}/{class_id}/{discipline_id}/{chapter_id}/{notion_id}";
+        $tree = new Tree();
+        $ids = $tree->flatIds("notion");
+
+        foreach ($ids as $k => $v) {
+            $url = str_replace("{" . $k . "}", $v, $url);
+        }
+
+        $this->json("get", $url);
+
+        $this->assertResponseOk();
+        $this->assertJsonDocumentMatches($this->response->getContent(), [
+            "[*].seo_index" => new IsType("boolean"),
+        ]);
     }
 }

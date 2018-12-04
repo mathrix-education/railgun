@@ -18,7 +18,7 @@ class UsersAsModeratorTest extends UsersAsRegisteredTest
      */
     public function testSearch()
     {
-        $this->call("post", "/users/search", [
+        $this->json("post", "/users/search", [
             "username" => "%a%",
             "order" => [
                 "column" => "created_at",
@@ -40,7 +40,7 @@ class UsersAsModeratorTest extends UsersAsRegisteredTest
      */
     public function testSearchWrongOrder()
     {
-        $this->call("post", "/users/search", [
+        $this->json("post", "/users/search", [
             "username" => "%a%",
             "order" => [
                 "column" => "created_at",

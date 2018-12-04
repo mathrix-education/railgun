@@ -46,7 +46,7 @@ class ChainTest extends APITestCase
 
         $chapterData = factory(Chapter::class)->raw();
 
-        $this->call("post", "/chain", [
+        $this->json("post", "/chain", [
             "requests" => [
                 "chapter_creation" => [
                     "method" => "post",
@@ -73,7 +73,7 @@ class ChainTest extends APITestCase
 
         $tree = new Tree();
 
-        $this->call("post", "/chain", [
+        $this->json("post", "/chain", [
             "requests" => [
                 "flat" => [
                     "method" => "post",

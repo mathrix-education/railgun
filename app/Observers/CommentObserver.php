@@ -53,8 +53,12 @@ class CommentObserver extends BaseObserver
      */
     public function deleting($comment)
     {
+        $children = Comment::withTrashed()
+            ->where("parent_id", "=", $comment->id)
+            ->get();
+
         /** @var Comment $child */
-        foreach ($comment->children as $child) {
+        foreach ($children as $child) {
             if ($comment->isForceDeleting()) {
                 $child->forceDelete();
             } else {

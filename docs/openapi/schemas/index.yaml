@@ -8,6 +8,8 @@ Class:
   $ref: ./Class.yaml
 Comment:
   $ref: ./Comment.yaml
+CommentChild:
+  $ref: ./CommentChild.yaml
 Country:
   $ref: ./Country.yaml
 Discipline:

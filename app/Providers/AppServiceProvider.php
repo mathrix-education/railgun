@@ -48,7 +48,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(\Illuminate\Notifications\NotificationServiceProvider::class);
         $this->app->register(\Illuminate\Redis\RedisServiceProvider::class);
         $this->app->register(\Laravel\Passport\PassportServiceProvider::class);
-        $this->app->register(\Roumen\Sitemap\SitemapServiceProvider::class);
+        $this->app->register(\Laravelium\Sitemap\SitemapServiceProvider::class);
 
         $this->app->register(GoogleDriveServiceProvider::class);
 
