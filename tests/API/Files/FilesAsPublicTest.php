@@ -2,6 +2,7 @@
 
 namespace Tests\API\Files;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
@@ -38,35 +39,36 @@ class FilesAsPublicTest extends ScopeTestCase
         return Storage::disk("cdn");
     }
 
-    public static function setUpBeforeClass()
-    {
-        $disk = Storage::disk("cdn");
-
-        // Clean directories
-        foreach ($disk->directories() as $directory) {
-            $disk->deleteDirectory($directory);
-        }
-
-        // Clean files except .gitignore
-        foreach ($disk->files() as $file) {
-            if ($file !== ".gitignore") {
-                $disk->delete($file);
-            }
-        }
-
-        // Seed CDN
-        foreach (self::SEED_DIRECTORIES as $directory) {
-            $disk->makeDirectory($directory);
-        }
-
-        foreach (self::SEED_FILES as $file) {
-            $disk->put($file, \Faker\Factory::create()->text(500));
-        }
-    }
-
     public function setUp()
     {
         parent::setUp();
+
+        $disk = Storage::disk("cdn");
+
+        if (!$disk->exists("seed." . $this->scope . ".txt")) {
+            // Clean directories
+            foreach ($disk->directories() as $directory) {
+                $disk->deleteDirectory($directory);
+            }
+
+            // Clean files except .gitignore
+            foreach ($disk->files() as $file) {
+                if ($file !== ".gitignore") {
+                    $disk->delete($file);
+                }
+            }
+
+            // Seed CDN
+            foreach (self::SEED_DIRECTORIES as $directory) {
+                $disk->makeDirectory($directory);
+            }
+
+            foreach (self::SEED_FILES as $file) {
+                $disk->put($file, \Faker\Factory::create()->text(500));
+            }
+
+            $disk->put("seed.txt", Carbon::now()->__toString());
+        }
 
         $this->fileSignature = [
             "type" => "file",
@@ -104,7 +106,6 @@ class FilesAsPublicTest extends ScopeTestCase
     {
         return $this->faker->randomElement(self::SEED_FILES);
     }
-
 
     /**
      * GET /files/{path}
@@ -177,7 +178,7 @@ class FilesAsPublicTest extends ScopeTestCase
      */
     public function testUpload()
     {
-        $this->json("post", "/files", [
+        $this->call("post", "/files", [
             "file" => UploadedFile::fake()->image("avatar.jpg"),
             "destination" => "test",
             "name" => "avatar.jpg"
@@ -198,7 +199,7 @@ class FilesAsPublicTest extends ScopeTestCase
         $name = basename($existingFile);
         $destination = substr(str_replace($name, "", $existingFile), 0, -1);
 
-        $this->json("post", "/files", [
+        $this->call("post", "/files", [
             "file" => UploadedFile::fake()->image("avatar.jpg"),
             "destination" => $destination,
             "name" => $name,
@@ -218,7 +219,7 @@ class FilesAsPublicTest extends ScopeTestCase
         $name = basename($existingFile);
         $destination = substr(str_replace($name, "", $existingFile), 0, -1);
 
-        $this->json("post", "/files", [
+        $this->call("post", "/files", [
             "file" => UploadedFile::fake()->image("avatar.jpg"),
             "destination" => $destination,
             "name" => $name,
