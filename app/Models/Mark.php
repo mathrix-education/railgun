@@ -18,6 +18,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int    $path_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ *
+ * @property Path   $path
+ * @property User   $user
  */
 class Mark extends BaseModel
 {
@@ -25,13 +28,12 @@ class Mark extends BaseModel
     protected $fillable = ["status", "user_id", "path_id"];
 
     /**
-     * @param array  $conditions The array containing the key/value
-     *
-     * @param string $status
+     * @param array       $conditions The array containing the key/value
+     * @param string|null $status
      *
      * @return Mark
      */
-    public static function retrieve(array $conditions, string $status)
+    public static function retrieve(array $conditions, string $status = null)
     {
         $wheres = [];
         foreach ($conditions as $k => $v) {

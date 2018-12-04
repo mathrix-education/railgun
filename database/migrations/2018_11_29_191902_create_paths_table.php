@@ -2,10 +2,10 @@
 
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
-use App\Models\Meta;
 use App\Models\Path;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreatePathsTable extends Migration
@@ -53,8 +53,9 @@ class CreatePathsTable extends Migration
                 ->on("modules");
         });
 
-        $metas = Meta::whereNull("user_id")
-            ->where("seo_index", "=", true)
+        $metas = DB::table("metas")
+            ->whereNull("user_id")
+            ->where("seo_index", "=", 1)
             ->get();
 
         foreach ($metas as $meta) {

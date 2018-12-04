@@ -2,9 +2,9 @@
 
 namespace Tests\API\Activities;
 
-use App\Models\Meta;
 use App\Models\Module;
 use App\Models\Notion;
+use PHPUnit\Framework\Constraint\IsType;
 use Tests\API\ScopeTestCase;
 use Tests\Utils\Tree;
 
@@ -128,7 +128,7 @@ class ActivitiesAsPublicTest extends ScopeTestCase
     public function mark($favorite, $to_revise, $completed)
     {
         $tree = new Tree();
-        $data = $tree->flatIds("notion");
+        $data = $tree->flatIds("activity");
         $activityId = $tree->getActivity()->id;
 
         if ($favorite !== null) {
@@ -179,12 +179,37 @@ class ActivitiesAsPublicTest extends ScopeTestCase
     /**
      * PATCH /activities/{id}/mark
      * Assert meta updated_at field changes even if the meta content is the same.
+     *
+     * @throws \Exception
      */
     public function testMarkForceUpdatedAt()
     {
-        /** @var Meta $meta */
-        $meta = Meta::random();
-        $this->call("patch", "/activities/{$meta->activity_id}/mark", $meta->toArray());
+        $tree = new Tree();
+
+        $this->call("patch", "/activities/{$tree->getActivity()->id}/mark", $tree->flatIds("activity"));
         $this->assertHttp401Unauthorized();
+    }
+
+    /**
+     * GET /activities/by-route/{countryId}/{classId}/{disciplineId}/{chapterId}/{notionId}
+     *
+     * @throws \Exception
+     */
+    public function testByRoute()
+    {
+        $url = "/activities/by-route/{country_id}/{class_id}/{discipline_id}/{chapter_id}/{notion_id}";
+        $tree = new Tree();
+        $ids = $tree->flatIds("notion");
+
+        foreach ($ids as $k => $v) {
+            $url = str_replace("{" . $k . "}", $v, $url);
+        }
+
+        $this->json("get", $url);
+
+        $this->assertResponseOk();
+        $this->assertJsonDocumentMatches($this->response->getContent(), [
+            "[*].seo_index" => new IsType("boolean"),
+        ]);
     }
 }

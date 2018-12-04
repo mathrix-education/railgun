@@ -63,6 +63,33 @@ class Path extends BaseModel
         return $path;
     }
 
+    /**
+     * @param int $countryId
+     * @param int $classId
+     * @param int $disciplineId
+     * @param int $chapterId
+     * @param int $notionId
+     * @param int $activityId
+     *
+     * @return bool
+     */
+    public static function isIndexed(int $countryId, int $classId, int $disciplineId, int $chapterId, int $notionId,
+                                     int $activityId)
+    {
+        $path = self::where([
+            ["country_id", "=", $countryId],
+            ["class_id", "=", $classId],
+            ["discipline_id", "=", $disciplineId],
+            ["chapter_id", "=", $chapterId],
+            ["notion_id", "=", $notionId],
+            ["activity_id", "=", $activityId]
+        ])
+            ->whereNull("module_id")
+            ->first();
+
+        return $path !== null && $path->seo_index;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Relations

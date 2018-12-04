@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -118,12 +119,12 @@ class Chapter extends BaseModel
             return null;
         }
 
-        $count = Meta::where([
-            ["to_revise", "=", true],
-            ["user_id", "=", $user->id],
-            ["chapter_id", "=", $this->id],
-        ])
-            ->whereNull("module_id")
+        $count = $user->marks()
+            ->where("status", "=", "to_revise")
+            ->whereHas("paths", function (HasMany $query) {
+                $query->where("chapter_id", "=", $this->id)
+                    ->whereNull("module_id");
+            })
             ->count();
 
         return $count;
@@ -143,12 +144,12 @@ class Chapter extends BaseModel
             return null;
         }
 
-        $count = Meta::where([
-            ["completed", "=", true],
-            ["user_id", "=", $user->id],
-            ["chapter_id", "=", $this->id],
-        ])
-            ->whereNull("module_id")
+        $count = $user->marks()
+            ->where("status", "=", "completed")
+            ->whereHas("paths", function (HasMany $query) {
+                $query->where("chapter_id", "=", $this->id)
+                    ->whereNull("module_id");
+            })
             ->count();
 
         return $count;

@@ -6,14 +6,14 @@ use App\Models\Chapter;
 use App\Models\Class_;
 use App\Models\Country;
 use App\Models\Discipline;
-use App\Models\Meta;
 use App\Models\Module;
 use App\Models\Notion;
+use App\Models\Path;
 
 /**
  * Class RouterFront
  *
- * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package   App\Utils
  * @since
  * @copyright Mathrix Education SA
@@ -49,15 +49,13 @@ class RouterFront
      * @param Chapter    $chapter
      * @param Notion     $notion
      * @param Activity   $activity
-     * @param Module     $module
      *
      * @return bool
      */
     public static function seoIndex(Country $country, Class_ $class, Discipline $discipline, Chapter $chapter,
-                                    Notion $notion, Activity $activity, Module $module)
+                                    Notion $notion, Activity $activity)
     {
-        return self::seoIndexByIds($country->id, $class->id, $discipline->id, $chapter->id, $notion->id, $activity->id,
-            $module->id);
+        return self::seoIndexByIds($country->id, $class->id, $discipline->id, $chapter->id, $notion->id, $activity->id);
     }
 
     /**
@@ -69,21 +67,19 @@ class RouterFront
      * @param int $chapterId
      * @param int $notionId
      * @param int $activityId
-     * @param int $moduleId
      *
      * @return bool
      */
     public static function seoIndexByIds(int $countryId, int $classId, int $disciplineId, int $chapterId, int $notionId,
-                                         int $activityId, int $moduleId)
+                                         int $activityId)
     {
-        return Meta::where([
+        return Path::where([
             ["country_id", "=", $countryId],
             ["class_id", "=", $classId],
             ["discipline_id", "=", $disciplineId],
             ["chapter_id", "=", $chapterId],
             ["notion_id", "=", $notionId],
             ["activity_id", "=", $activityId],
-            ["module_id", "=", $moduleId],
             ["seo_index", "=", true]
         ])
             ->whereNull("user_id")

@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Meta;
 use App\Models\Path;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -28,7 +27,8 @@ class CreateMarksTable extends Migration
         });
 
         // Migrate existing metas
-        $metas = Meta::whereNotNull("user_id")
+        $metas = DB::table("metas")
+            ->whereNotNull("user_id")
             ->whereNotNull("country_id")
             ->whereNotNull("class_id")
             ->whereNotNull("discipline_id")

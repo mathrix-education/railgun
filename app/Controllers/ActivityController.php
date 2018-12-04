@@ -2,15 +2,15 @@
 
 namespace App\Controllers;
 
-use App\Exceptions\Http400InvalidRequestException;
-use App\Exceptions\Http401UnauthorizedException;
-use App\Exceptions\Http404ModelNotFoundException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\Activity;
 use App\Models\Discipline;
-use App\Models\Meta;
-use Carbon\Carbon;
+use App\Models\Mark;
+use App\Models\Notion;
+use App\Models\Path;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -27,58 +27,68 @@ use Illuminate\Http\Request;
 class ActivityController extends BaseController
 {
     /**
-     * @param Request $request The request
+     * Get the activities associated with a given route with the seo_index boolean.
      *
-     * @throws Http400InvalidRequestException
-     * @throws Http401UnauthorizedException
+     * @param int $countryId
+     * @param int $classId
+     * @param int $disciplineId
+     * @param int $chapterId
+     * @param int $notionId
      *
      * @return JsonResponse
      */
-    public function favorites(Request $request): JsonResponse
+    public function byRoute(int $countryId, int $classId, int $disciplineId, int $chapterId, int $notionId)
     {
-        $user = $this->getUserByRequestOrUnauthorized($request);
-        $metas = Meta::with(["country", "class_", "discipline", "chapter", "notion", "activity", "activity.modules"])
-            ->where([
-                ["user_id", $user->id],
-                ["favorite", true],
-            ])
-            ->get();
+        $activities = Notion::findOrFail($notionId)->activities;
 
-        return response()->json($metas);
+        /**
+         * @var int      $key
+         * @var Activity $activity
+         */
+        foreach ($activities as $key => $activity) {
+            $seoIndex = Path::isIndexed($countryId, $classId, $disciplineId, $chapterId, $notionId, $activity->id);
+            $activity->setAttribute("seo_index", $seoIndex);
+
+            $activities->offsetSet($key, $activities);
+        }
+
+        $response = new JsonResponse($activities);
+
+        return $response;
     }
 
     /**
      * @param Request $request The request
-     *
-     * @throws Http400InvalidRequestException
-     * @throws Http401UnauthorizedException
      *
      * @return JsonResponse
      */
     public function to_revise(Request $request): JsonResponse
     {
-        $user = $this->getUserByRequestOrUnauthorized($request);
-        $metas = Meta::with(["country", "class_", "discipline", "chapter", "notion", "activity", "activity.modules"])
-            ->where([
-                ["user_id", $user->id],
-                ["to_revise", true],
-            ])
+        /** @var User $user */
+        $user = $request->user();
+        $marks = $user->marks()
+            ->with("mark.path.activity")
+            ->where("status", "=", "to_revise")
             ->get();
 
-        return response()->json($metas);
+        $activities = $marks->map(function (Mark $mark) {
+            return $mark->path->activity;
+        });
+
+        $response = new JsonResponse($activities);
+
+        return $response;
     }
 
     /**
      * @param Request $request The request
      *
-     * @throws Http400InvalidRequestException
-     * @throws Http401UnauthorizedException
-     *
      * @return JsonResponse
      */
     public function incomplete(Request $request): JsonResponse
     {
-        $user = $this->getUserByRequestOrUnauthorized($request);
+        /** @var User $user */
+        $user = $request->user();
         $disciplinesIds = Discipline::all(["id"])
             ->pluck("id")
             ->toArray();
@@ -89,13 +99,10 @@ class ActivityController extends BaseController
         $query = null;
 
         foreach ($disciplinesIds as $disciplineId) {
-            $subQuery = Meta::with(["country", "class_", "discipline", "chapter", "notion", "activity", "activity.modules"])
-                ->where([
-                    ["user_id", $user->id],
-                    ["completed", false],
-                    ["discipline_id", $disciplineId],
-                ])
-                ->orderBy("updated_at", "desc")
+            $subQuery = $user->marks()->whereHas("paths", function (HasMany $query) use ($disciplineId) {
+                $query->where("discipline_id", "=", $disciplineId);
+            })
+                ->orderByDesc("updated_at")
                 ->limit(1);
 
             if ($query === null) {
@@ -106,46 +113,43 @@ class ActivityController extends BaseController
             }
         }
 
-        $metas = $query->get();
+        $paths = $query->get();
+        $response = new JsonResponse($paths);
 
-        return response()->json($metas);
+        return $response;
     }
 
     /**
      * @param Request $request The request
      * @param int     $id
      *
-     * @throws Http400InvalidRequestException
-     * @throws Http401UnauthorizedException
-     * @throws Http404ModelNotFoundException
+     * @return JsonResponse
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
-     *
-     * @return JsonResponse
      */
     public function mark(Request $request, int $id): JsonResponse
     {
-        $user = $this->getUserByRequestOrUnauthorized($request);
+        /** @var User $user */
+        $user = $request->user();
+        Activity::findOrFail($id);
 
-        if (Activity::find($id) === null) {
-            throw new Http404ModelNotFoundException();
-        }
-
-        $metaData = array_merge(
-            ["user_id" => $user->id, "activity_id" => $id],
-            $request->only(["country_id", "class_id", "discipline_id", "notion_id", "chapter_id"])
+        $path = Path::retrieve(
+            array_merge(
+                ["activity_id" => $id],
+                $request->only(["country_id", "class_id", "discipline_id", "notion_id", "chapter_id"])
+            )
         );
 
-        /** @var Meta $meta */
-        $meta = Meta::firstOrNew($metaData);
+        $mark = Mark::retrieve([
+            "user_id" => $user->id,
+            "path_id" => $path->id
+        ]);
+        $mark->status = $request->input("status");
+        $mark->save();
 
-        $meta->favorite = $request->input("favorite") ?? $meta->favorite ?? false;
-        $meta->to_revise = $request->input("to_revise") ?? $meta->to_revise ?? false;
-        $meta->completed = $request->input("completed") ?? $meta->completed ?? false;
-        $meta->updated_at = Carbon::now();
+        $activity = Activity::findOrFail($id);
+        $response = new JsonResponse($activity);
 
-        $meta->save();
-
-        return response()->json(Activity::find($id));
+        return $response;
     }
 }

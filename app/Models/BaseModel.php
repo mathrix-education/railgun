@@ -90,6 +90,16 @@ abstract class BaseModel extends Model
     }
 
     /**
+     * BaseModel constructor.
+     *
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+    }
+
+    /**
      * Unguard some attributes.
      *
      * @param string|array $attributes

@@ -4,7 +4,6 @@ namespace App\Observers;
 
 use App\Exceptions\Http422ModelSaveException;
 use App\Models\Activity;
-use App\Models\Meta;
 use App\Models\Module;
 use App\Models\Notion;
 use App\Models\Path;
@@ -76,11 +75,6 @@ class ActivityObserver extends BaseObserver
             ->detach();
         $activity->modules()
             ->detach();
-        Meta::where("activity_id", "=", $activity->id)
-            ->get()
-            ->each(function (Meta $meta) {
-                $meta->delete();
-            });
         Path::where("activity_id", "=", $activity->id)
             ->delete();
 

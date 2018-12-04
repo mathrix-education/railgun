@@ -2,7 +2,7 @@
 
 namespace Tests\API\Activities;
 
-use App\Models\Meta;
+use App\Models\Mark;
 use Laravel\Passport\Passport;
 use Tests\Utils\Tree;
 
@@ -30,7 +30,6 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
 
         $this->assertHttp200Success();
 
-        /** @var Meta $meta */
         foreach ($metas as $meta) {
             $this->assertEquals($this->user->id, $meta->user_id);
             $this->assertTrue($meta->favorite);
@@ -50,7 +49,6 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
 
         $this->assertHttp200Success();
 
-        /** @var Meta $meta */
         foreach ($metas as $meta) {
             $this->assertEquals($this->user->id, $meta->user_id);
             $this->assertTrue($meta->to_revise);
@@ -72,7 +70,6 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
 
         $disciplinesIncluded = [];
 
-        /** @var Meta $meta */
         foreach ($metas as $meta) {
             $this->assertEquals($this->user->id, $meta->user_id);
             $this->assertNotTrue($meta->completed);
@@ -93,7 +90,7 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
     public function mark($favorite, $to_revise, $completed)
     {
         $tree = new Tree();
-        $data = $tree->flatIds("notion");
+        $data = $tree->flatIds("activity");
         $activityId = $tree->getActivity()->id;
 
         if ($favorite !== null) {
@@ -150,16 +147,16 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
      */
     public function testMarkForceUpdatedAt()
     {
-        /** @var Meta $meta */
-        $meta = Meta::random();
-        Passport::actingAs($meta->user);
-        $oldDate = $meta->updated_at;
+        $mark = Mark::random();
+        Passport::actingAs($mark->user);
+        $oldDate = $mark->updated_at;
+        $activity = $mark->path->activity;
 
-        $this->call("patch", "/activities/{$meta->activity_id}/mark", $meta->toArray());
+        $this->call("patch", "/activities/{$activity->id}/mark", $mark->path->toArray());
 
-        $meta = Meta::find($meta->id);
+        $mark = Mark::find($mark->id);
 
-        $this->assertNotInDatabase("metas", ["id" => $meta->id, "updated_at" => $oldDate]);
+        $this->assertNotInDatabase("mark", ["id" => $mark->id, "updated_at" => $oldDate]);
     }
 
     /**

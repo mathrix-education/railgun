@@ -94,7 +94,7 @@ class ContentController extends BaseController
                             $activity->seo_description,
                             $activity->reviewed ? 1 : 0,
                             $module->id,
-                            RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity, $module) ? 1 : 0,
+                            RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity) ? 1 : 0,
                             ($notion->type == "premium" || $activity->premium) ? 1 : 0
                         ];
                     }
@@ -178,7 +178,7 @@ class ContentController extends BaseController
             "activity" => $activity,
             "module" => array_merge(
                 $module->toArray(),
-                ["seo_index" => RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity, $module)]
+                ["seo_index" => RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity)]
             )
         ]);
 
