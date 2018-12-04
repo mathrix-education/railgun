@@ -38,8 +38,9 @@ class ContentController extends BaseController
     /**
      * Retrieve all routes as csv file
      *
+     * @param Request $request
+     *
      * @return StreamedResponse
-     * @throws Http401UnauthorizedException
      */
     public function routes(Request $request)
     {

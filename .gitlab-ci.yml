@@ -37,6 +37,19 @@ build:
     expire_in: 1 days
     when: always
 
+deploy_web00_next:
+  image: doomkin/ubuntu-ssh
+  stage: deploy
+  dependencies:
+    - build
+  environment:
+    name: web00/dev
+    url: https://next.mathrix.fr/api
+  script:
+    - bash scripts/tasks/deploy.sh web00 next
+  only:
+    - next
+
 deploy_web00_dev:
   image: doomkin/ubuntu-ssh
   stage: deploy
@@ -56,7 +69,7 @@ deploy_web01_master:
   dependencies:
   - build
   environment:
-    name: web01/dev
+    name: web01/master
     url: https://mathrix.fr/api
   script:
   - bash scripts/tasks/deploy.sh web01 master

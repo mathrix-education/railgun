@@ -12,6 +12,7 @@ use App\Console\Commands\Format\FormatCopyrightChecker;
 use App\Console\Commands\Format\FormatHarmonize;
 use App\Console\Commands\Make\MakeApidoc;
 use App\Console\Commands\Make\MakeTest;
+use App\Console\Commands\Pipelines\Build;
 use App\Console\Commands\Redoc\RedocBundle;
 use App\Console\Commands\Redoc\RedocServe;
 use App\Console\Commands\Road;
