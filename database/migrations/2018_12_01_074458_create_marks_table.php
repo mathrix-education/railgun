@@ -53,8 +53,8 @@ class CreateMarksTable extends Migration
 
             $status = $meta->completed ? "completed" : ($meta->to_revise ? "to_revise" : "view");
 
-            $createdAt = $meta->created_at->format("Y-m-d H:i:s") !== "-0001-11-30 00:00:00" ? $meta->created_at : \Carbon\Carbon::now();
-            $updatedAt = $meta->created_at->format("Y-m-d H:i:s") !== "-0001-11-30 00:00:00" ? $meta->updated_at : \Carbon\Carbon::now();
+            $createdAt = $meta->created_at !== "0000-00-00 00:00:00" ? $meta->created_at : \Carbon\Carbon::now();
+            $updatedAt = $meta->created_at !== "0000-00-00 00:00:00" ? $meta->updated_at : \Carbon\Carbon::now();
 
             $buffer[] = [
                 "user_id" => $meta->user_id,
