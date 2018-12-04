@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @property int    $id
  * @property string $status
- * @property int    $parent_id
  * @property int    $user_id
  * @property int    $path_id
  * @property Carbon $created_at

@@ -43,14 +43,17 @@ class PathController extends BaseController
         ]);
         $cancel = $request->input("cancel", false);
 
-        $path = Path::retrieve($request->only([
-            "country_id",
-            "class_id",
-            "discipline_id",
-            "chapter_id",
-            "notion_id",
-            "activity_id",
-        ]));
+        $path = Path::retrieve(array_merge(
+            $request->only([
+                "country_id",
+                "class_id",
+                "discipline_id",
+                "chapter_id",
+                "notion_id",
+                "activity_id"
+            ]),
+            ["module_id" => null]
+        ));
 
         $path->seo_index = !$cancel;
         $path->save();

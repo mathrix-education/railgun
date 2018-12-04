@@ -41,19 +41,11 @@ class Kernel extends ConsoleKernel
         Clean::class,
         Dry::class,
         Version::class,
-        Road::class,
         // backup:
         BackupCdn::class,
         // braintree
         BraintreeCheck::class,
-        // clear
-        ClearCache::class,
-        // format:
-        FormatCopyrightChecker::class,
-        FormatCheckEnvironments::class,
-        FormatHarmonize::class,
         // make:
-        MakeApidoc::class,
         MakeTest::class,
         // redoc:
         RedocServe::class,

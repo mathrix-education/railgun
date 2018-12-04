@@ -27,7 +27,10 @@ class PathObserver extends BaseObserver
     {
         Comment::withTrashed()
             ->where("path_id", "=", $path->id)
-            ->forceDelete();
+            ->get()
+            ->each(function (Comment $comment) {
+                $comment->forceDelete();
+            });
         Mark::where("path_id", "=", $path->id)
             ->delete();
 

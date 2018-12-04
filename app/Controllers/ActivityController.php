@@ -138,8 +138,8 @@ class ActivityController extends BaseController
 
         $path = Path::retrieve(
             array_merge(
-                ["activity_id" => $id],
-                $request->only(["country_id", "class_id", "discipline_id", "notion_id", "chapter_id"])
+                $request->only(["country_id", "class_id", "discipline_id", "notion_id", "chapter_id"]),
+                ["activity_id" => $id]
             )
         );
 
