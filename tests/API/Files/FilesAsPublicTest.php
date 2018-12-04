@@ -22,9 +22,21 @@ use Tests\API\ScopeTestCase;
  */
 class FilesAsPublicTest extends ScopeTestCase
 {
-    protected const SEED_DIRECTORIES = ["a", "a/a1", "a/a1/a2", "b", "c"];
-    protected const SEED_FILES = ["root.txt", "a/a.txt", "a/a1/a1.txt", "a/a1/a1-prime.txt", "a/a1/a2/a2.txt",
-        "c/c.txt"];
+    protected const SEED_DIRECTORIES = [
+        "a",
+        "a/a1",
+        "a/a1/a2",
+        "b",
+        "c"
+    ];
+    protected const SEED_FILES = [
+        "root.txt",
+        "a/a.txt",
+        "a/a1/a1.txt",
+        "a/a1/a1-prime.txt",
+        "a/a1/a2/a2.txt",
+        "c/c.txt"
+    ];
 
     /** @var array $fileSignature The file JSON schema signature */
     protected $fileSignature;
@@ -46,16 +58,16 @@ class FilesAsPublicTest extends ScopeTestCase
         $disk = Storage::disk("cdn");
 
         if (!$disk->exists("seed." . $this->scope . ".txt")) {
-            // Clean directories
-            foreach ($disk->directories() as $directory) {
-                $disk->deleteDirectory($directory);
-            }
-
             // Clean files except .gitignore
-            foreach ($disk->files() as $file) {
+            foreach ($disk->allFiles() as $file) {
                 if ($file !== ".gitignore") {
                     $disk->delete($file);
                 }
+            }
+
+            // Clean directories
+            foreach ($disk->directories() as $directory) {
+                $disk->deleteDirectory($directory);
             }
 
             // Seed CDN
@@ -67,7 +79,7 @@ class FilesAsPublicTest extends ScopeTestCase
                 $disk->put($file, \Faker\Factory::create()->text(500));
             }
 
-            $disk->put("seed.txt", Carbon::now()->__toString());
+            $disk->put("seed." . $this->scope . ".txt", Carbon::now()->__toString());
         }
 
         $this->fileSignature = [
@@ -84,7 +96,6 @@ class FilesAsPublicTest extends ScopeTestCase
             "timestamp" => new IsType("integer"),
             "url" => new IsType("string")
         ];
-
     }
 
     /**
@@ -94,7 +105,7 @@ class FilesAsPublicTest extends ScopeTestCase
      */
     public function randomDirectory()
     {
-        return $this->faker->randomElement(self::SEED_DIRECTORIES);
+        return $this->faker->randomElement(self::getDisk()->allDirectories());
     }
 
     /**
@@ -104,7 +115,7 @@ class FilesAsPublicTest extends ScopeTestCase
      */
     public function randomFile()
     {
-        return $this->faker->randomElement(self::SEED_FILES);
+        return $this->faker->randomElement(self::getDisk()->allFiles());
     }
 
     /**
