@@ -135,7 +135,36 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
      */
     public function testMarkNotExists()
     {
-        $this->json("patch", "/activities/999999/mark", ["favorite" => true]);
+        $this->json("patch", "/activities/999999/mark", ["status" => "view"]);
         $this->assertHttp404ModelNotFound();
+    }
+
+    /**
+     * PATCH /activities/{id}/mark with {status: completed} on existing mark with {status: view}.
+     */
+    public function testMarkOverride()
+    {
+        $mark = Mark::random(["status", "=", "view"]);
+        Passport::actingAs($mark->user, [$mark->user->type]);
+
+        $this->json("patch", "/activities/{$mark->path->activity_id}/mark", [
+            "country_id" => $mark->path->country_id,
+            "class_id" => $mark->path->class_id,
+            "discipline_id" => $mark->path->discipline_id,
+            "chapter_id" => $mark->path->chapter_id,
+            "notion_id" => $mark->path->notion_id,
+            "status" => "completed"
+        ]);
+
+        $this->assertHttp200Success();
+        $this->assertJsonDocumentMatches($this->response->getContent(), [
+            "mark" => "completed"
+        ]);
+        $this->assertInDatabase("marks", [
+            "id" => $mark->id,
+            "path_id" => $mark->path_id,
+            "user_id" => $mark->user_id,
+            "status" => "completed"
+        ]);
     }
 }

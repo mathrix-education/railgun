@@ -122,41 +122,4 @@ class ScoresAsRegisteredTest extends ScoresAsPublicTest
             "$.user.id" => new IsType("integer") // Assert user is present
         ]);
     }
-
-    /**
-     * Test chain register score/around
-     *
-     * @throws \Exception
-     */
-    public function testChainer()
-    {
-        $score = random_int(1, 1000);
-        $token = "token";
-        $game = "meteor";
-        $signature = md5($score . $token . $game);
-
-        $this->json("post", "/chain", [
-            "requests" => [
-                "register" => [
-                    "method" => "post",
-                    "url" => "/scores/meteor",
-                    "data" => [
-                        "score" => $score,
-                        "token" => $token,
-                        "signature" => $signature
-                    ]
-                ],
-                "around" => [
-                    "method" => "get",
-                    "url" => "/scores/meteor/around/{register.score}/5"
-                ]
-            ]
-        ]);
-
-        $this->assertHttp200Success();
-        $this->assertJsonDocumentMatches($this->response->getContent(), [
-            "$.register.body.score" => new IsType("integer"),
-            "$.around.body.[*].score" => new IsType("integer")
-        ]);
-    }
 }

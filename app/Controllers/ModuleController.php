@@ -191,7 +191,8 @@ class ModuleController extends BaseController
         $mark = Mark::retrieve([
             "user_id" => $user->id,
             "path_id" => $path->id
-        ], $status);
+        ]);
+
         $mark->status = $status;
         $mark->save();
 

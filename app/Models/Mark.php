@@ -28,21 +28,22 @@ class Mark extends BaseModel
 
     /**
      * @param array       $conditions The array containing the key/value
-     * @param string|null $status
      *
      * @return Mark
      */
-    public static function retrieve(array $conditions, string $status = null)
+    public static function retrieve(array $conditions)
     {
         $wheres = [];
         foreach ($conditions as $k => $v) {
             $wheres[] = [$k, "=", $v];
         }
 
-        $data = array_merge($conditions, ["status" => $status]);
-
         /** @var Mark $path */
-        $mark = self::where($wheres)->firstOrCreate($data);
+        $mark = self::where($wheres)->first();
+
+        if ($mark === null) {
+            $mark = new Mark($conditions);
+        }
 
         return $mark;
     }
