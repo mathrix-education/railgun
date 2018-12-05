@@ -99,12 +99,12 @@ class FilesAsModeratorTest extends FilesAsRedactorTest
     {
         $this->call("post", "/files", [
             "file" => UploadedFile::fake()->image("avatar.jpg"),
-            "destination" => "test",
+            "destination" => "{$this->cdnSubFolderUuid}/test",
             "name" => "avatar.jpg"
         ]);
 
         $this->assertHttp200Success();
-        self::getDisk()->assertExists("test/avatar.jpg");
+        self::getDisk()->assertExists("{$this->cdnSubFolderUuid}/test/avatar.jpg");
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace Tests\API\Files;
 
-use Carbon\Carbon;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
@@ -38,6 +37,8 @@ class FilesAsPublicTest extends ScopeTestCase
         "c/c.txt"
     ];
 
+    /** @var string $cdnSubFolderUuid The test uuid folder */
+    protected $cdnSubFolderUuid;
     /** @var array $fileSignature The file JSON schema signature */
     protected $fileSignature;
     /** @var array $directorySignature The directory JSON schema signature */
@@ -56,30 +57,15 @@ class FilesAsPublicTest extends ScopeTestCase
         parent::setUp();
 
         $disk = Storage::disk("cdn");
+        $this->cdnSubFolderUuid = $this->faker->uuid;
 
-        if (!$disk->exists("seed." . $this->scope . ".txt")) {
-            // Clean files except .gitignore
-            foreach ($disk->allFiles() as $file) {
-                if ($file !== ".gitignore") {
-                    $disk->delete($file);
-                }
-            }
+        // Seed CDN
+        foreach (self::SEED_DIRECTORIES as $directory) {
+            $disk->makeDirectory($this->cdnSubFolderUuid . "/" . $directory);
+        }
 
-            // Clean directories
-            foreach ($disk->directories() as $directory) {
-                $disk->deleteDirectory($directory);
-            }
-
-            // Seed CDN
-            foreach (self::SEED_DIRECTORIES as $directory) {
-                $disk->makeDirectory($directory);
-            }
-
-            foreach (self::SEED_FILES as $file) {
-                $disk->put($file, \Faker\Factory::create()->text(500));
-            }
-
-            $disk->put("seed." . $this->scope . ".txt", Carbon::now()->__toString());
+        foreach (self::SEED_FILES as $file) {
+            $disk->put($this->cdnSubFolderUuid . "/" . $file, \Faker\Factory::create()->text(500));
         }
 
         $this->fileSignature = [
@@ -99,13 +85,35 @@ class FilesAsPublicTest extends ScopeTestCase
     }
 
     /**
+     * Delete created files
+     */
+    public function tearDown()
+    {
+        $disk = Storage::disk("cdn");
+
+        // Clean files except .gitignore
+        foreach ($disk->allFiles($this->cdnSubFolderUuid) as $file) {
+            if ($file !== ".gitignore") {
+                $disk->delete($file);
+            }
+        }
+
+        // Clean directories
+        foreach ($disk->directories($this->cdnSubFolderUuid) as $directory) {
+            $disk->deleteDirectory($directory);
+        }
+
+        $disk->deleteDirectory($this->cdnSubFolderUuid);
+    }
+
+    /**
      * Get a random cdn directory
      *
      * @return string
      */
     public function randomDirectory()
     {
-        return $this->faker->randomElement(self::getDisk()->allDirectories());
+        return $this->faker->randomElement(self::getDisk()->allDirectories($this->cdnSubFolderUuid));
     }
 
     /**
@@ -115,7 +123,7 @@ class FilesAsPublicTest extends ScopeTestCase
      */
     public function randomFile()
     {
-        return $this->faker->randomElement(self::getDisk()->allFiles());
+        return $this->faker->randomElement(self::getDisk()->allFiles($this->cdnSubFolderUuid));
     }
 
     /**
@@ -191,7 +199,7 @@ class FilesAsPublicTest extends ScopeTestCase
     {
         $this->call("post", "/files", [
             "file" => UploadedFile::fake()->image("avatar.jpg"),
-            "destination" => "test",
+            "destination" => $this->cdnSubFolderUuid . "/test",
             "name" => "avatar.jpg"
         ]);
 
