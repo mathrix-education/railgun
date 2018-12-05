@@ -43,7 +43,7 @@ deploy_web00_next:
   dependencies:
     - build
   environment:
-    name: web00/dev
+    name: web00/next
     url: https://next.mathrix.fr/api
   script:
     - bash scripts/tasks/deploy.sh web00 next
