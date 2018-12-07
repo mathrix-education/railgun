@@ -24,12 +24,20 @@ File:
   $ref: ./File.yaml
 Meta:
   $ref: ./Meta.yaml
+MarkActivity:
+  $ref: ./MarkActivity.yaml
+MarkModule:
+  $ref: ./MarkModule.yaml
 Module:
   $ref: ./Module.yaml
 ModuleWithSeoIndex:
   $ref: ./ModuleWithSeoIndex.yaml
 Notion:
   $ref: ./Notion.yaml
+PathActivity:
+  $ref: ./PathActivity.yaml
+PathModule:
+  $ref: ./PathModule.yaml
 Post:
   $ref: ./Post.yaml
 Product:

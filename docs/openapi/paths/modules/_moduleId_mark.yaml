@@ -1,0 +1,69 @@
+patch:
+  tags:
+    - Modules
+  security:
+    - registered: []
+  operationId: modulesMark
+  summary: Mark a module.
+  description: Mark a module using its path.
+  parameters:
+    - name: moduleId
+      in: path
+      description: The module id.
+      required: true
+      schema:
+        type: int
+        example: 1655
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            path:
+              description: The path.
+              type: object
+              properties:
+                country_id:
+                  description: The country id.
+                  type: integer
+                  example: 1
+                class_id:
+                  description: The class id.
+                  type: integer
+                  example: 5
+                discipline_id:
+                  description: The discipline id.
+                  type: integer
+                  example: 7
+                chapter_id:
+                  description: The chapter id.
+                  type: integer
+                  example: 16
+                notion_id:
+                  description: The notion id.
+                  type: integer
+                  example: 125
+                activity_id:
+                  description: The activity id.
+                  type: integer
+                  example: 352
+            status:
+              description: The mark status.
+              type: string
+              enum:
+                - view
+                - to_revise
+                - completed
+          required:
+            - path
+            - status
+  responses:
+    200:
+      description: The mark
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/MarkModule'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

@@ -65,6 +65,8 @@
 # -------
 # Modules
 # -------
+/modules/{moduleId}/mark:
+  $ref: ./modules/_moduleId_mark.yaml
 /modules/{moduleId}/routes:
   $ref: ./modules/_moduleId_routes.yaml
 /content/{moduleId}/index:
