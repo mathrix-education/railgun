@@ -46,6 +46,29 @@ class ProductController extends BaseController
     }
 
     /**
+     * Get a product with its children, recursively.
+     *
+     * @param int $productId
+     *
+     * @return JsonResponse
+     */
+    public function recursive(int $productId): JsonResponse
+    {
+        $maxDepth = 3;
+        $with = ["children"];
+
+        for ($i = 1; $i <= $maxDepth; $i++) {
+            $with[] = $with[$i - 1] . ".children";
+        }
+
+        $product = Product::with($with)->findOrFail($productId);
+
+        $response = new JsonResponse($product);
+
+        return $response;
+    }
+
+    /**
      * Buy products with Braintree.
      *
      * @param Request $request The request
