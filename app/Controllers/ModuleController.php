@@ -183,8 +183,8 @@ class ModuleController extends BaseController
 
         $path = Path::retrieve(
             array_merge(
-                ["module_id" => $id],
-                $request->only(["country_id", "class_id", "discipline_id", "notion_id", "chapter_id", "activity_id"])
+                $request->json("path"),
+                ["module_id" => $id]
             )
         );
 
