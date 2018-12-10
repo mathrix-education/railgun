@@ -173,15 +173,8 @@ class ProductController extends BaseController
 
             event(new TransactionSuccessEvent($saleResult->transaction));
         } else {
-            $errors = [];
-
-            /** @var \Braintree_Error_Validation $error */
-            foreach ($saleResult->errors->deepAll() as $error) {
-                $errors[$error->attribute] = $error->message;
-            }
-
             throw new Http400InvalidRequestException("Sale failed", 400, null, [
-                "errors" => $errors,
+                "data" => $saleResult->jsonSerialize()
             ]);
         }
 

@@ -256,15 +256,9 @@ class SubscriptionController extends Controller
                 Formatter::cast($subscription->jsonSerialize())
             );
         }
-        $errors = [];
-
-        /** @var \Braintree_Error_Validation $error */
-        foreach ($subscriptionResult->errors->deepAll() as $error) {
-            $errors[$error->attribute] = $error->message;
-        }
 
         throw new Http400InvalidRequestException($subscriptionResult->message, 400, null, [
-            "errors" => $errors,
+            "data" => $subscriptionResult->jsonSerialize(),
         ]);
     }
 
