@@ -7,6 +7,7 @@ $router->group(["prefix" => "products"], function () use ($router) {
     $router->get("buyable[/{type}]", "ProductController@buyable");
 
     $router->get("{key:[1-9]\d*}", "ProductController@get");
+    $router->get("{productId:[1-9]\d*}/recursive", "ProductController@recursive");
     $router->get("{key:[a-z\-]+}/{value:[a-z0-9\-]+}", "ProductController@get");
 
     $router->group(["middleware" => "auth:api"], function () use ($router) {
