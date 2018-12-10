@@ -75,6 +75,10 @@ class ChainTest extends APITestCase
 
         $this->json("post", "/chain", [
             "requests" => [
+                "comments" => [
+                    "method" => "get",
+                    "url" => "/comments/by-activity/{flat.activity.id}"
+                ],
                 "flat" => [
                     "method" => "post",
                     "url" => "/content/flat",
@@ -87,10 +91,6 @@ class ChainTest extends APITestCase
                         "activity_slug" => $tree->getActivity()->slug,
                         "module_id" => $tree->getModule()->id
                     ]
-                ],
-                "comments" => [
-                    "method" => "get",
-                    "url" => "/comments/by-activity/{flat.activity.id}"
                 ],
                 "chapter_recursive" => [
                     "method" => "get",
