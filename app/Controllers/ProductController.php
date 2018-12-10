@@ -61,6 +61,14 @@ class ProductController extends BaseController
             $with[] = $with[$i - 1] . ".children";
         }
 
+        $withModules = [];
+
+        foreach ($with as $relation) {
+            $withModules[] = $relation . ".module";
+        }
+
+        $with = array_merge($withModules);
+
         $product = Product::with($with)->findOrFail($productId);
 
         $response = new JsonResponse($product);
