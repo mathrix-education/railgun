@@ -2,7 +2,7 @@
 
 namespace Tests\API\Modules;
 
-use Tests\Utils\Tree;
+use App\Utils\Tree;
 
 /**
  * Class ModulesAsAdminTest

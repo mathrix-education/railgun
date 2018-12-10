@@ -148,7 +148,9 @@ class Chainer
             if (!empty($array[$subKey])) {
                 $array = $array[$subKey];
             } else {
-                throw new Http400InvalidRequestException("Unable to find key `$key`.");
+                throw new Http400InvalidRequestException("Unable to find key `$key`.", 400, null, [
+                    "data" => $this->responseData
+                ]);
             }
         }
 

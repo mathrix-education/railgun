@@ -5,7 +5,7 @@ namespace Tests\API;
 use App\Models\Chapter;
 use App\Models\User;
 use Laravel\Passport\Passport;
-use Tests\Utils\Tree;
+use App\Utils\Tree;
 
 class ChainTest extends APITestCase
 {
@@ -75,13 +75,9 @@ class ChainTest extends APITestCase
 
         $this->json("post", "/chain", [
             "requests" => [
-                "comments" => [
-                    "method" => "get",
-                    "url" => "/comments/by-activity/{flat.activity.id}"
-                ],
                 "flat" => [
                     "method" => "post",
-                    "url" => "/content/flat",
+                    "url" => "/content/flat/",
                     "data" => [
                         "country_slug" => $tree->getCountry()->slug,
                         "class_slug" => $tree->getClass()->slug,
@@ -90,14 +86,24 @@ class ChainTest extends APITestCase
                         "notion_slug" => $tree->getNotion()->slug,
                         "activity_slug" => $tree->getActivity()->slug,
                         "module_id" => $tree->getModule()->id
-                    ]
+                    ],
                 ],
-                "chapter_recursive" => [
+                "modules" => [
                     "method" => "get",
-                    "url" => "/chapters/recursive/{flat.chapter.id}"
-                ]
-            ]
+                    "url" => "/modules/by-activity/{flat.activity.id}",
+                ],
+                "comments" => [
+                    "method" => "get",
+                    "url" => "/comments/by-module/{flat.module.id}",
+                ],
+                "disciplines" => [
+                    "method" => "get",
+                    "url" => "/disciplines/by-class/{flat.class.id}",
+                ],
+            ],
         ]);
+
+        $this->debug();
 
         $this->assertHttp200Success();
     }

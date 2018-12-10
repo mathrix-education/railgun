@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Utils;
+namespace App\Utils;
 
 use App\Models\Activity;
 use App\Models\Chapter;

@@ -6,7 +6,7 @@ use App\Models\Module;
 use App\Models\Notion;
 use PHPUnit\Framework\Constraint\IsType;
 use Tests\API\ScopeTestCase;
-use Tests\Utils\Tree;
+use App\Utils\Tree;
 
 /**
  * Class ActivitiesAsPublicTest

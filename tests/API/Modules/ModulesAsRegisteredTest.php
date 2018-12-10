@@ -6,7 +6,7 @@ use App\Models\Module;
 use App\Models\Path;
 use App\Models\User;
 use Laravel\Passport\Passport;
-use Tests\Utils\Tree;
+use App\Utils\Tree;
 
 /**
  * Class ModulesAsPublicTest

@@ -1,11 +1,10 @@
 <?php
 
 use App\Models\Comment;
-use App\Models\Module;
 use App\Models\Path;
 use App\Models\User;
+use App\Utils\Tree;
 use Faker\Generator;
-use Tests\Utils\Tree;
 
 /**
  * CommentFactory

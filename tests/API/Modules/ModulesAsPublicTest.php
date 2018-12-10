@@ -6,7 +6,7 @@ use App\Models\Activity;
 use App\Models\Module;
 use PHPUnit\Framework\Constraint\IsType;
 use Tests\API\ScopeTestCase;
-use Tests\Utils\Tree;
+use App\Utils\Tree;
 
 /**
  * Class ModulesAsPublicTest

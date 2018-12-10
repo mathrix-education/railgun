@@ -9,7 +9,7 @@ use App\Notifications\CommentAnswerNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Notification;
 use Laravel\Passport\Passport;
-use Tests\Utils\Tree;
+use App\Utils\Tree;
 
 /**
  * Class CommentsAsPublicTest

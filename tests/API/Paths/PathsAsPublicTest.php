@@ -3,7 +3,7 @@
 namespace Tests\API\Paths;
 
 use Tests\API\ScopeTestCase;
-use Tests\Utils\Tree;
+use App\Utils\Tree;
 
 /**
  * Class PathsAsPublicTest

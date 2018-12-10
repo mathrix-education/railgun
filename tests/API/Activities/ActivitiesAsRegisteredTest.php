@@ -5,7 +5,7 @@ namespace Tests\API\Activities;
 use App\Models\Mark;
 use App\Models\Path;
 use Laravel\Passport\Passport;
-use Tests\Utils\Tree;
+use App\Utils\Tree;
 
 /**
  * Class ActivitiesAsPublicTest

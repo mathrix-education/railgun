@@ -2,7 +2,7 @@
 
 namespace Tests\API\Paths;
 
-use Tests\Utils\Tree;
+use App\Utils\Tree;
 
 /**
  * Class PathsAsAdminTest
