@@ -28,6 +28,8 @@ tags:
   description: Family Packs API
 - name: Files
   description: Files API
+- name: Paths
+  description: Paths API
 - name: Products
   description: Products API
 - name: Modules

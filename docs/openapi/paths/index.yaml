@@ -112,6 +112,13 @@
   $ref: ./notifications/_all_mark_read.yaml
 
 
+# ----
+# Path
+# ----
+/path/index:
+  $ref: ./paths/_index.yaml
+
+
 # --------
 # Products
 # --------

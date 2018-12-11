@@ -1,7 +1,4 @@
 #!/bin/sh
-echo "Installing node packages"
-yarn install
-
 echo "Building Redoc"
 node_modules/.bin/redoc-cli bundle docs/openapi/index.yaml
 mv redoc-static.html docs/openapi/index.html
