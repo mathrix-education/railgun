@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Models\User;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -9,6 +10,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
@@ -19,12 +21,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class Handler
- * Handle exceptions and display them in json as response.
+ * Handle exceptions and display them in json as response. Also handle Sentry's behavior.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
  * @since     1.0.0
- *
  * @copyright Mathrix Education SA
  */
 class Handler extends ExceptionHandler
@@ -61,8 +61,20 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
-        if (app()->environment("master") && app()->bound("sentry") && $this->shouldReport($e)) {
-            app("sentry")->captureException($e);
+        $sentryDSN = env("SENTRY_DSN");
+
+        if ($sentryDSN !== "none" && app()->bound("sentry") && $this->shouldReport($e)) {
+            /** @var \Raven_Client $sentry */
+            $sentry = app("sentry");
+
+            /** @var User $user */
+            $user = Auth::user();
+
+            if ($user !== null) {
+                $sentry->user_context($user->toArray());
+            }
+
+            $sentry->captureException($e);
         }
 
         parent::report($e);
@@ -125,7 +137,7 @@ class Handler extends ExceptionHandler
         }
 
         // Include trace in debug mode
-        if (app()->environment("testing", "local", "dev", "pipelines")) {
+        if (app()->environment("testing", "local", "dev", "pipelines", "next")) {
             $json["trace"] = explode("\n", $e->getTraceAsString());
         }
 
