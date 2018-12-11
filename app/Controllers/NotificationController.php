@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Models\User;
 use App\Responses\PaginationJsonResponse;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\DatabaseNotification;
@@ -18,26 +19,26 @@ use Illuminate\Notifications\DatabaseNotification;
 class NotificationController extends BaseController
 {
     /**
-     * Get all notifications of a user.
+     * Get the user notifications with a given relation
      *
-     * @param Request  $request The request object.
-     * @param int|null $userId  The userId, if null, is the current user id.
-     * @param int      $page    The page used for pagination.
-     * @param int      $perPage The notification count per page.
+     * @param string  $relation
+     * @param Request $request
+     * @param int     $page
+     * @param int     $perPage
      *
      * @return PaginationJsonResponse
      */
-    public function all(Request $request, int $userId = null, $page = 1, $perPage = 100)
+    private function getNotificationsJsonResponse(string $relation, Request $request, $page, $perPage)
     {
         /** @var User $user */
         $user = $request->user();
-        $userId = $userId ?? $user->id;
-        $user->canOrFail(DatabaseNotification::class, ["someone", $userId]);
-        $target = $userId === $user->id ? $user : User::findOrFail($userId);
 
-        $query = $target->notifications()
-            ->orderByDesc("created_at");
-        $notifications = $query->limit($perPage)->offset(($page - 1) * $perPage);
+        /** @var Builder $query */
+        $query = $user->{$relation}();
+        $query->orderByDesc("created_at");
+        $notifications = $query->limit($perPage)
+            ->offset(($page - 1) * $perPage)
+            ->get();
 
         $response = new PaginationJsonResponse(
             $notifications,
@@ -47,91 +48,64 @@ class NotificationController extends BaseController
         );
 
         return $response;
+    }
+
+    /**
+     * Get all notifications of a user.
+     *
+     * @param Request $request The request object.
+     * @param int     $page    The page used for pagination.
+     * @param int     $perPage The notification count per page.
+     *
+     * @return PaginationJsonResponse
+     */
+    public function all(Request $request, $page = 1, $perPage = 100)
+    {
+        return $this->getNotificationsJsonResponse("notifications", $request, $page, $perPage);
     }
 
     /**
      * Get unread notifications of a user.
      *
-     * @param Request  $request The request object.
-     * @param int|null $userId  The userId, if null, is the current user id.
-     * @param int      $page    The page used for pagination.
-     * @param int      $perPage The notification count per page.
+     * @param Request $request The request object.
+     * @param int     $page    The page used for pagination.
+     * @param int     $perPage The notification count per page.
      *
      * @return PaginationJsonResponse
      */
-    public function unread(Request $request, int $userId = null, $page = 1, $perPage = 100)
+    public function unread(Request $request, $page = 1, $perPage = 100)
     {
-        /** @var User $user */
-        $user = $request->user();
-        $userId = $userId ?? $user->id;
-        $user->canOrFail(DatabaseNotification::class, ["someone", $userId]);
-        $target = $userId === $user->id ? $user : User::findOrFail($userId);
-
-        $query = $target->unreadNotifications()->orderByDesc("created_at");
-
-        $notifications = $query->limit($perPage)->offset(($page - 1) * $perPage);
-
-        $response = new PaginationJsonResponse(
-            $notifications,
-            $page,
-            $perPage,
-            $query->count()
-        );
-
-        return $response;
+        return $this->getNotificationsJsonResponse("unreadNotifications", $request, $page, $perPage);
     }
 
     /**
      * Get read notifications of a user.
      *
-     * @param Request  $request The request object.
-     * @param int|null $userId  The userId, if null, is the current user id.
-     * @param int      $page    The page used for pagination.
-     * @param int      $perPage The notification count per page.
+     * @param Request $request The request object.
+     * @param int     $page    The page used for pagination.
+     * @param int     $perPage The notification count per page.
      *
      * @return PaginationJsonResponse
      */
-    public function read(Request $request, int $userId = null, $page = 1, $perPage = 100)
+    public function read(Request $request, $page = 1, $perPage = 100)
     {
-        /** @var User $user */
-        $user = $request->user();
-        $userId = $userId ?? $user->id;
-        $user->canOrFail(DatabaseNotification::class, ["someone", $userId]);
-        $target = $userId === $user->id ? $user : User::findOrFail($userId);
-
-        $query = $target->readNotifications()->orderByDesc("created_at");
-
-        $notifications = $query->limit($perPage)->offset(($page - 1) * $perPage);
-
-        $response = new PaginationJsonResponse(
-            $notifications,
-            $page,
-            $perPage,
-            $query->count()
-        );
-
-        return $response;
+        return $this->getNotificationsJsonResponse("readNotifications", $request, $page, $perPage);
     }
 
     /**
      * Mark all notification as read for a user.
      *
-     * @param Request  $request The request object.
-     * @param int|null $userId  The userId, if null, is the current user id.
+     * @param Request $request The request object.
      *
      * @return PaginationJsonResponse
      */
-    public function markAllRead(Request $request, int $userId = null)
+    public function markAllRead(Request $request)
     {
         /** @var User $user */
         $user = $request->user();
-        $userId = $userId ?? $user->id;
-        $user->canOrFail(DatabaseNotification::class, ["someone", $userId]);
-        $target = $userId === $user->id ? $user : User::findOrFail($userId);
+        $user->unreadNotifications()->update(["read_at" => Carbon::now()]);
 
-        $target->unreadNotifications()->update(["read_at" => Carbon::now()]);
-
-        return $this->all($request, $userId);
+        return $this->all($request);
     }
 
     /**

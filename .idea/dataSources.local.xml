@@ -31,5 +31,22 @@
         <private-key-path>$USER_HOME$/.ssh/id_rsa</private-key-path>
       </ssh-properties>
     </data-source>
+    <data-source name="mathrix_fr_next@localhost" uuid="aa55a8a1-620b-4277-893e-aaecfea2da2c">
+      <database-info product="MySQL" version="5.7.24-0ubuntu0.16.04.1" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.46 ( Revision: 9cc87a48e75c2d2e87c1a293b2862ce651cb256e )" dbms="MYSQL" exact-version="5.7.24">
+        <extra-name-characters>#@</extra-name-characters>
+        <identifier-quote-string>`</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>mathrix_fr_next</user-name>
+      <introspection-schemas>*:@</introspection-schemas>
+      <ssh-properties>
+        <enabled>true</enabled>
+        <proxy-host>web00.mathrix.fr</proxy-host>
+        <user>mathrix_dev</user>
+        <use-password>false</use-password>
+        <auth-type>OPEN_SSH</auth-type>
+      </ssh-properties>
+    </data-source>
   </component>
 </project>

@@ -26,6 +26,7 @@ class MarksTableSeeder extends BaseTableSeeder
         $registered = User::where(["type" => "registered"])
             ->get();
         $marks = [];
+        $marksSignatures = [];
 
         /** @var User $user */
         foreach ($registered as $user) {
@@ -64,6 +65,14 @@ class MarksTableSeeder extends BaseTableSeeder
                     "activity_id" => $activity->id,
                     "module_id" => null
                 ]);
+
+                $marksSignature = "{$user->id},{$activity->id}";
+
+                if (in_array($marksSignature, $marksSignatures)) {
+                    continue;
+                } else {
+                    $marksSignatures[] = $marksSignature;
+                }
 
                 $marks[] = [
                     "path_id" => $path->id,

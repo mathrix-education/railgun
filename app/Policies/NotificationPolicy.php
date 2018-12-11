@@ -23,6 +23,6 @@ class NotificationPolicy extends BasePolicy
      */
     public function mark(User $currentUser, DatabaseNotification $notification)
     {
-        return $currentUser->isAdmin() || $notification->notifiable->id === $currentUser;
+        return $currentUser->isAdmin() || $notification->notifiable->id === $currentUser->id;
     }
 }

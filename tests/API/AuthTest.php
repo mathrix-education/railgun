@@ -5,6 +5,8 @@ namespace Tests\API;
 use App\Models\User;
 use App\Notifications\PasswordForgottenNotification;
 use App\Notifications\PasswordResetNotification;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Laravel\Lumen\Testing\TestCase;
 use Tests\Utils\Traits\Assertions\DatabaseAssertionsTrait;
@@ -135,6 +137,10 @@ class AuthTest extends TestCase
 
         $this->assertHttp200Success();
         $this->assertNotificationSentToVia(PasswordResetNotification::class, $user, "mail");
+
+        DB::table("users")
+            ->where("id", "=", $user->id)
+            ->update(["password" => Hash::make("test123")]);
     }
 
     /**

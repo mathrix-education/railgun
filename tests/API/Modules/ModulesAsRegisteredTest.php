@@ -53,9 +53,11 @@ class ModulesAsRegisteredTest extends ModulesAsPublicTest
             $tree = new Tree();
         } while ($tree->getModule()->premium);
 
-        $data = $tree->flatIds();
+        $data = [
+            "path" => $tree->flatIds(),
+            "status" => $status
+        ];
         $moduleId = $tree->getModule()->id;
-        $data["status"] = $status;
 
         $this->json("patch", "/modules/$moduleId/mark", $data);
 
