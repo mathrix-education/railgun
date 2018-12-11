@@ -1,5 +1,7 @@
 Activity:
   $ref: ./Activity.yaml
+ActivityWithSeoIndex:
+  $ref: ./ActivityWithSeoIndex.yaml
 Category:
   $ref: ./Category.yaml
 Chapter:

@@ -17,6 +17,10 @@
   $ref: ./activities/_to-revise.yaml
 /activities/view:
   $ref: ./activities/_view.yaml
+/activities/by-route/{countryId}/{classId}/{disciplineId}/{chapterId}/{notionId}:
+  $ref: ./activities/_by-route.yaml
+
+
 # -----------
 # Disciplines
 # -----------
