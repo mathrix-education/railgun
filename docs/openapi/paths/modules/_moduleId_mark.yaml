@@ -60,7 +60,7 @@ patch:
             - status
   responses:
     200:
-      description: The mark
+      description: The Mark.
       content:
         application/json:
           schema:

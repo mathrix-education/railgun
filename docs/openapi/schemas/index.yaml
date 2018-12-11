@@ -34,6 +34,8 @@ ModuleWithSeoIndex:
   $ref: ./ModuleWithSeoIndex.yaml
 Notion:
   $ref: ./Notion.yaml
+Notification:
+  $ref: ./Notification.yaml
 PathActivity:
   $ref: ./PathActivity.yaml
 PathModule:
@@ -42,6 +44,10 @@ Post:
   $ref: ./Post.yaml
 Product:
   $ref: ./Product.yaml
+ProductWithChildren:
+  $ref: ./ProductWithChildren.yaml
+ProductWithModule:
+  $ref: ./ProductWithModule.yaml
 Purchase:
   $ref: ./Purchase.yaml
 Quote:

@@ -6,17 +6,17 @@ properties:
     type: integer
     example: 14
   type:
-    description: The notion type.
+    description: The module type.
     type: string
     enum:
-    - id
-    - course
-    - test
-    - mcq
-    - mcq-table
-    - match
-    - fill
-    - flashcard
+      - id
+      - course
+      - test
+      - mcq
+      - mcq-table
+      - match
+      - fill
+      - flashcard
   content:
     description: The module content.
     type: string
@@ -47,3 +47,10 @@ properties:
   visible:
     description: The module visibility.
     type: boolean
+  status:
+    description: The module status __per user__.
+    type: string
+    enum:
+      - view
+      - to_revise
+      - completed

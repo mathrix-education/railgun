@@ -11,13 +11,10 @@
   $ref: ./activities/_search.yaml
 /activities/{activityId}/mark:
   $ref: ./activities/_activityId_mark.yaml
-/activities/favorites:
-  $ref: ./activities/_favorites.yaml
-/activities/incomplete:
-  $ref: ./activities/_incomplete.yaml
 /activities/to-revise:
   $ref: ./activities/_to-revise.yaml
-
+/activities/view:
+  $ref: ./activities/_view.yaml
 
 # -----------
 # Disciplines
@@ -62,18 +59,6 @@
   $ref: ./content/_flat.yaml
 
 
-# -------
-# Modules
-# -------
-/modules/{moduleId}/mark:
-  $ref: ./modules/_moduleId_mark.yaml
-/modules/{moduleId}/routes:
-  $ref: ./modules/_moduleId_routes.yaml
-/content/{moduleId}/index:
-  $ref: ./modules/_moduleId_no-index.yaml
-/modules/by-route/{countryId}/{classId}/{disciplineId}/{chapterId}/{notionId}/{activityId}:
-  $ref: ./modules/_by_route_contrydId_classId_disciplineId_chapterId_notionId_activityId.yaml
-
 # ------------
 # Family packs
 # ------------
@@ -93,6 +78,35 @@
 /files/explore/{path}:
   $ref: ./files/_explore_path.yaml
 
+
+# -------
+# Modules
+# -------
+/modules/{moduleId}/mark:
+  $ref: ./modules/_moduleId_mark.yaml
+/modules/{moduleId}/routes:
+  $ref: ./modules/_moduleId_routes.yaml
+/content/{moduleId}/index:
+  $ref: ./modules/_moduleId_no-index.yaml
+/modules/by-route/{countryId}/{classId}/{disciplineId}/{chapterId}/{notionId}/{activityId}:
+  $ref: ./modules/_by_route_contrydId_classId_disciplineId_chapterId_notionId_activityId.yaml
+
+
+# -------------
+# Notifications
+# -------------
+/notifications/all/{?page}/{?perPage}:
+  $ref: ./notifications/_all_page_perPage.yaml
+/notifications/read/{?page}/{?perPage}:
+  $ref: ./notifications/_read_page_perPage.yaml
+/notifications/unread/{?page}/{?perPage}:
+  $ref: ./notifications/_unread_page_perPage.yaml
+/notifications/{notificationId}/mark/{type}:
+  $ref: ./notifications/_notificationId_mark_type.yaml
+/notifications/all/mark/read:
+  $ref: ./notifications/_all_mark_read.yaml
+
+
 # --------
 # Products
 # --------
@@ -100,6 +114,8 @@
   $ref: ./products/_.yaml
 /products/{productId}:
   $ref: ./products/_productId.yaml
+/products/{productId}/recursive:
+  $ref: ./products/_productId_recursive.yaml
 /products/buy:
   $ref: ./products/_buy.yaml
 /products/sale:

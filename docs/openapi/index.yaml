@@ -32,6 +32,8 @@ tags:
   description: Products API
 - name: Modules
   description: Modules API
+- name: Notifications
+  description: Notifications API
 - name: Scores
   description: Scores API
 - name: Users

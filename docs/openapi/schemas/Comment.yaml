@@ -57,3 +57,5 @@ properties:
         type: integer
   children:
     $ref: '../index.yaml#/components/schemas/CommentChild'
+  path:
+    $ref: '../index.yaml#/components/schemas/PathModule'
