@@ -1,0 +1,68 @@
+delete:
+  tags:
+    - Activities
+  security:
+    - registered: []
+  operationId: activitiesUnmark
+  summary: Unmark an activity
+  description: Unmark an activity using its path.
+  parameters:
+    - name: activityId
+      in: path
+      description: The activity id.
+      required: true
+      schema:
+        type: int
+        example: 1655
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            path:
+              description: The path.
+              type: object
+              properties:
+                country_id:
+                  description: The country id.
+                  type: integer
+                  example: 1
+                class_id:
+                  description: The class id.
+                  type: integer
+                  example: 5
+                discipline_id:
+                  description: The discipline id.
+                  type: integer
+                  example: 7
+                chapter_id:
+                  description: The chapter id.
+                  type: integer
+                  example: 16
+                notion_id:
+                  description: The notion id.
+                  type: integer
+                  example: 125
+          required:
+            - path
+            - status
+  responses:
+    200:
+      description: The unmark results.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                description: The unmark status.
+                type: string
+                enum:
+                  - success
+              message:
+                description: The unmark message.
+                type: string
+                example: Marks associated with activity id 42 were successfully deleted.
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

@@ -175,4 +175,33 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
             "status" => $newStatus
         ]);
     }
+
+    /**
+     * DELETE /activities/{activityId}/unmark
+     */
+    public function testUnmark()
+    {
+        $mark = Mark::random();
+        Passport::actingAs($mark->user, [$mark->user->type]);
+
+        $this->json("delete", "/activities/{$mark->path->activity_id}/unmark", [
+            "path" => [
+                "country_id" => $mark->path->country_id,
+                "class_id" => $mark->path->class_id,
+                "discipline_id" => $mark->path->discipline_id,
+                "chapter_id" => $mark->path->chapter_id,
+                "notion_id" => $mark->path->notion_id
+            ]
+        ]);
+
+        $this->assertHttp200Success();
+        $this->assertJsonDocumentMatches($this->response->getContent(), [
+            "status" => "success"
+        ]);
+        $this->assertNotInDatabase("marks", [
+            "id" => $mark->id,
+            "path_id" => $mark->path_id,
+            "user_id" => $mark->user_id
+        ]);
+    }
 }

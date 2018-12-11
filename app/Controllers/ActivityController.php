@@ -156,4 +156,45 @@ class ActivityController extends BaseController
 
         return $response;
     }
+
+    /**
+     * Unmark and activity.
+     *
+     * @param Request $request
+     * @param int     $id
+     *
+     * @return JsonResponse
+     */
+    public function unmark(Request $request, int $id): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+        /** @var Activity $activity */
+        $activity = Activity::findOrFail($id);
+
+        $path = Path::retrieve(
+            array_merge(
+                $request->json("path"),
+                ["activity_id" => $id]
+            )
+        );
+
+        $marks = Mark::where([
+            ["user_id", "=", $user->id],
+            ["path_id", "=", $path->id]
+        ])
+            ->get();
+
+        // Delete marks
+        $marks->each(function (Mark $mark) {
+            $mark->delete();
+        });
+
+        $response = new JsonResponse([
+            "status" => "success",
+            "message" => "Marks associated with activity id {$activity->id} were successfully deleted."
+        ]);
+
+        return $response;
+    }
 }

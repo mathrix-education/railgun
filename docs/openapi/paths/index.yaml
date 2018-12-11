@@ -11,11 +11,12 @@
   $ref: ./activities/_search.yaml
 /activities/{activityId}/mark:
   $ref: ./activities/_activityId_mark.yaml
+/activities/{activityId}/unmark:
+  $ref: ./activities/_activityId_unmark.yaml
 /activities/to-revise:
   $ref: ./activities/_to-revise.yaml
 /activities/view:
   $ref: ./activities/_view.yaml
-
 # -----------
 # Disciplines
 # -----------

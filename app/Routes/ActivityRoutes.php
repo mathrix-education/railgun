@@ -23,5 +23,6 @@ $router->group(["prefix" => "activities"], function () use ($router) {
 
         $router->post("search", "ActivityController@search");
         $router->patch("{id:[1-9]\d*}/mark", "ActivityController@mark");
+        $router->delete("{id:[1-9]\d*}/unmark", "ActivityController@unmark");
     });
 });

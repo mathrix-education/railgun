@@ -4,7 +4,7 @@ patch:
   security:
     - registered: []
   operationId: activitiesMark
-  summary: Mark an activity.
+  summary: Mark an activity
   description: Mark an activity using its path.
   parameters:
     - name: activityId
