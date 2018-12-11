@@ -184,7 +184,7 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
         $mark = Mark::random();
         Passport::actingAs($mark->user, [$mark->user->type]);
 
-        $this->json("delete", "/activities/{$mark->path->activity_id}/unmark", [
+        $this->json("patch", "/activities/{$mark->path->activity_id}/unmark", [
             "path" => [
                 "country_id" => $mark->path->country_id,
                 "class_id" => $mark->path->class_id,

@@ -1,6 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 echo "Installing node packages"
-yarn install --silent
+yarn install
+
+ls -l
 
 echo "Building Redoc"
 node_modules/.bin/redoc-cli bundle docs/openapi/index.yaml

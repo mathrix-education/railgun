@@ -30,7 +30,7 @@ build:
   image: node:10-alpine
   stage: build
   script:
-  - bash scripts/tasks/build.sh
+  - sh scripts/tasks/build.sh
   artifacts:
     paths:
     - build.tar.gz
