@@ -196,7 +196,8 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
 
         $this->assertHttp200Success();
         $this->assertJsonDocumentMatches($this->response->getContent(), [
-            "status" => "success"
+            "id" => $mark->path->activity_id,
+            "mark" => null
         ]);
         $this->assertNotInDatabase("marks", [
             "id" => $mark->id,

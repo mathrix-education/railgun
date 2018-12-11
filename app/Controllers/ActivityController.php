@@ -170,7 +170,7 @@ class ActivityController extends BaseController
         /** @var User $user */
         $user = $request->user();
         /** @var Activity $activity */
-        $activity = Activity::findOrFail($id);
+        Activity::findOrFail($id);
 
         $path = Path::retrieve(
             array_merge(
@@ -190,10 +190,9 @@ class ActivityController extends BaseController
             $mark->delete();
         });
 
-        $response = new JsonResponse([
-            "status" => "success",
-            "message" => "Marks associated with activity id {$activity->id} were successfully deleted."
-        ]);
+        /** @var Activity $activity */
+        $activity = Activity::findOrFail($id);
+        $response = new JsonResponse($activity);
 
         return $response;
     }

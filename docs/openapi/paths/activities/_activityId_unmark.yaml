@@ -53,16 +53,6 @@ delete:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              status:
-                description: The unmark status.
-                type: string
-                enum:
-                  - success
-              message:
-                description: The unmark message.
-                type: string
-                example: Marks associated with activity id 42 were successfully deleted.
+            $ref: '../../index.yaml#/components/schemas/Activity'
     404:
       $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
