@@ -27,10 +27,10 @@ tests:
     - master
 
 build:
-  image: node:10
+  image: node:10-alpine
   stage: build
   before_script:
-    - yarn install
+    - yarn install --verbose
   script:
     - sh scripts/tasks/build.sh
   artifacts:
