@@ -38,9 +38,10 @@ post:
               description: The activity id.
               type: integer
               example: 142
-            cancel:
-              description: If the index should be cancelled.
+            seo_index:
+              description: If the path should be indexed.
               type: boolean
+              example: true
           required:
             - country_id
             - class_id
@@ -48,6 +49,7 @@ post:
             - chapter_id
             - notion_id
             - activity_id
+            - seo_index
   responses:
     200:
       description: The indexed path.

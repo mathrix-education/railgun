@@ -39,9 +39,8 @@ class PathController extends BaseController
             "chapter_id" => "required|exists:chapters,id",
             "notion_id" => "required|exists:notions,id",
             "activity_id" => "required|exists:activities,id",
-            "cancel" => "boolean"
+            "seo_index" => "required|boolean"
         ]);
-        $cancel = $request->input("cancel", false);
 
         $path = Path::retrieve(array_merge(
             $request->only([
@@ -50,12 +49,12 @@ class PathController extends BaseController
                 "discipline_id",
                 "chapter_id",
                 "notion_id",
-                "activity_id"
+                "activity_id",
+                "seo_index"
             ]),
             ["module_id" => null]
         ));
 
-        $path->seo_index = !$cancel;
         $path->save();
 
         $response = new JsonResponse($path);
