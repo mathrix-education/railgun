@@ -54,12 +54,23 @@ class Path extends BaseModel
     public static function retrieve(array $contentIds)
     {
         $wheres = [];
+        $nulls = [];
         foreach ($contentIds as $k => $v) {
-            $wheres[] = [$k, "=", $v];
+            if ($v === null) {
+                $nulls[] = $k;
+            } else {
+                $wheres[] = [$k, "=", $v];
+            }
+        }
+
+        $query = self::where($wheres);
+
+        foreach ($nulls as $columnNull) {
+            $query = $query->whereNull($columnNull);
         }
 
         /** @var Path $path */
-        $path = self::where($wheres)->firstOrCreate($contentIds);
+        $path = $query->firstOrCreate($contentIds);
 
         return $path;
     }

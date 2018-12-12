@@ -130,7 +130,10 @@ class Activity extends BaseModel
             return null;
         } else {
             /** @var Mark $mark */
-            $mark = $this->marks()->where("user_id", "=", $user->id)->first();
+            $mark = $this->marks()
+                ->where("user_id", "=", $user->id)
+                ->whereNull("module_id")
+                ->first();
 
             return $mark !== null ? $mark->status : null;
         }

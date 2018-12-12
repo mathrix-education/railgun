@@ -136,12 +136,11 @@ class ActivityController extends BaseController
         Activity::findOrFail($id);
         $status = $request->input("status");
 
-        $path = Path::retrieve(
-            array_merge(
-                $request->json("path"),
-                ["activity_id" => $id]
-            )
-        );
+        $pathData = $request->json("path");
+        $pathData["activity_id"] = $id;
+        $pathData["module_id"] = null;
+
+        $path = Path::retrieve($pathData);
 
         $mark = Mark::retrieve([
             "user_id" => $user->id,
@@ -172,12 +171,11 @@ class ActivityController extends BaseController
         /** @var Activity $activity */
         Activity::findOrFail($id);
 
-        $path = Path::retrieve(
-            array_merge(
-                $request->json("path"),
-                ["activity_id" => $id]
-            )
-        );
+        $pathData = $request->json("path");
+        $pathData["activity_id"] = $id;
+        $pathData["module_id"] = null;
+
+        $path = Path::retrieve($pathData);
 
         $marks = Mark::where([
             ["user_id", "=", $user->id],
