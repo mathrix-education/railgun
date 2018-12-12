@@ -22,7 +22,10 @@ class PathsAsAdminTest extends PathsAsModeratorTest
     {
         $tree = new Tree();
 
-        $this->json("post", "/paths/index", $tree->flatIds());
+        $this->json("post", "/paths/index", array_merge(
+            $tree->flatIds(),
+            ["seo_index" => true]
+        ));
 
         $this->assertHttp200Success();
         $this->assertInDatabase("paths", [
@@ -32,7 +35,8 @@ class PathsAsAdminTest extends PathsAsModeratorTest
             "chapter_id" => $tree->getChapter()->id,
             "notion_id" => $tree->getNotion()->id,
             "activity_id" => $tree->getActivity()->id,
-            "module_id" => null
+            "module_id" => null,
+            "seo_index" => true
         ]);
     }
 }
