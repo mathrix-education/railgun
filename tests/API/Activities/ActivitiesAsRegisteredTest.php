@@ -5,6 +5,7 @@ namespace Tests\API\Activities;
 use App\Models\Mark;
 use App\Models\Path;
 use App\Utils\Tree;
+use Illuminate\Database\Eloquent\Builder;
 use Laravel\Passport\Passport;
 
 /**
@@ -87,7 +88,8 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
 
         $this->json("patch", "/activities/$activityId/mark", $data);
 
-        $path = Path::retrieve($tree->flatIds("activity"));
+        $pathData = array_merge($tree->flatIds("activity"), ["module_id" => null]);
+        $path = Path::retrieve($pathData);
 
         $this->assertHttp200Success();
         $this->assertJsonDocumentMatches($this->response->getContent(), [
@@ -148,7 +150,11 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
     {
         $this->markTestIncomplete("Unable to figure how to fix marks collisions for now.");
 
-        $mark = Mark::random();
+        $mark = Mark::inRandomOrder()
+            ->whereHas("path", function (Builder $path) {
+                $path->whereNull("module_id");
+            })
+            ->firstOrFail();
         Passport::actingAs($mark->user, [$mark->user->type]);
 
         $newStatus = $mark->status === "completed" ? "to_revise" : "completed";
