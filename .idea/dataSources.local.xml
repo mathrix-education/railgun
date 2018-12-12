@@ -40,6 +40,7 @@
       <secret-storage>master_key</secret-storage>
       <user-name>mathrix_fr_next</user-name>
       <introspection-schemas>*:@</introspection-schemas>
+      <table-pattern>collation:-(.*)</table-pattern>
       <ssh-properties>
         <enabled>true</enabled>
         <proxy-host>web00.mathrix.fr</proxy-host>

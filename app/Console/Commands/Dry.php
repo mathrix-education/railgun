@@ -21,7 +21,6 @@ class Dry extends Command
 
     public function handle()
     {
-        $hash = Hash::make("test123");
-        DB::table("users")->update(["password" => $hash]);
+
     }
 }

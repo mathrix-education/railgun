@@ -13,6 +13,8 @@ namespace Tests\Utils\Traits\Generics;
  */
 trait Get
 {
+    public $getId;
+
     /**
      * Generic get; expect HTTP 200.
      *
@@ -35,9 +37,9 @@ trait Get
     {
         $this->genericUsableOrFail();
 
-        $id = $this->modelClass::random()->id;
+        $this->getId = $this->modelClass::random()->id;
 
-        $this->json("get", "/" . $this->modelPlural . "/$id");
+        $this->json("get", "/" . $this->modelPlural . "/{$this->getId}");
     }
 
     /**

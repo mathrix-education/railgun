@@ -30,7 +30,7 @@ class MarksTableSeeder extends BaseTableSeeder
 
         /** @var User $user */
         foreach ($registered as $user) {
-            $metaCount = random_int(0, 10);
+            $metaCount = random_int(30, 50);
 
             for ($i = 0; $i < $metaCount; ++$i) {
                 /** @var Class_ $class_ */
@@ -53,6 +53,15 @@ class MarksTableSeeder extends BaseTableSeeder
                     ->inRandomOrder()
                     ->firstOrFail();
 
+                // Register mark in signatures to avoid marks duplicates
+                $marksSignature = "{$user->id},{$activity->id}";
+
+                if (in_array($marksSignature, $marksSignatures)) {
+                    continue;
+                }
+
+                $marksSignatures[] = $marksSignature;
+
                 $statusId = random_int(0, 2);
                 $statuses = ["view", "to_revise", "completed"];
 
@@ -65,14 +74,6 @@ class MarksTableSeeder extends BaseTableSeeder
                     "activity_id" => $activity->id,
                     "module_id" => null
                 ]);
-
-                $marksSignature = "{$user->id},{$activity->id}";
-
-                if (in_array($marksSignature, $marksSignatures)) {
-                    continue;
-                } else {
-                    $marksSignatures[] = $marksSignature;
-                }
 
                 $marks[] = [
                     "path_id" => $path->id,
