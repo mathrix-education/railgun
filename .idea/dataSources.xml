@@ -29,7 +29,7 @@
         <property name="yearIsDateType" value="false" />
       </driver-properties>
     </data-source>
-    <data-source source="LOCAL" name="mathrix_fr_next@web00.mathrix.fr" uuid="aa55a8a1-620b-4277-893e-aaecfea2da2c">
+    <data-source source="LOCAL" name="mathrix_fr_next@web00.mathrix.fr" uuid="734705c3-d985-4c78-a85d-9d4778b8ffb5">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>

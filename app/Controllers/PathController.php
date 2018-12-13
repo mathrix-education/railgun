@@ -49,11 +49,11 @@ class PathController extends BaseController
                 "discipline_id",
                 "chapter_id",
                 "notion_id",
-                "activity_id",
-                "seo_index"
+                "activity_id"
             ]),
             ["module_id" => null]
         ));
+        $path->seo_index = $request->input("seo_index");
 
         $path->save();
 
