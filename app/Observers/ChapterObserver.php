@@ -2,9 +2,10 @@
 
 namespace App\Observers;
 
+use App\Exceptions\Http422ModelSaveException;
 use App\Models\Chapter;
-use App\Models\Meta;
 use App\Models\Notion;
+use App\Models\Path;
 
 /**
  * Class ChapterObserver.
@@ -59,10 +60,10 @@ class ChapterObserver extends BaseObserver
     {
         $chapter->notions()
             ->detach();
-        Meta::whereChapterId($chapter->id)
+        Path::where("chapter_id", "=", $chapter->id)
             ->get()
-            ->each(function (Meta $meta) {
-                $meta->delete();
+            ->each(function (Path $path) {
+                $path->delete();
             });
 
         return true;

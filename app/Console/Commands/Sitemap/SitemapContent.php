@@ -8,22 +8,22 @@ use App\Models\Country;
 use App\Models\Discipline;
 use App\Models\Module;
 use App\Models\Notion;
+use App\Utils\RouterFront;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 /**
  * Class SitemapContent
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package App\Console\Commands
- * @since 1.0.1
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @package   App\Console\Commands
+ * @since     1.0.1
  * @copyright Mathrix Education SA
  */
 class SitemapContent extends Command
 {
     use SitemapUtils;
     protected $signature = "sitemap:content";
-
 
     /**
      * @throws \Exception
@@ -105,6 +105,12 @@ class SitemapContent extends Command
                                          ->orderBy("pivot_order", "asc")
                                          ->get()
                                      as $activity) {
+
+                                // Do not add activities with no-index to sitemap
+                                if (!RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity)) {
+                                    continue;
+                                }
+
                                 /** @var Module $module */
                                 foreach ($activity->modules()
                                              ->withPivot(["order"])
@@ -170,7 +176,6 @@ class SitemapContent extends Command
         $this->saveSitemap($modulesSitemap, "sitemap.modules");
         $this->saveSitemap($sitemapArray, "sitemap.main");
     }
-
 
     /**
      * Get the url-friendly module type

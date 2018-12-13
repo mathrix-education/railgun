@@ -21,7 +21,7 @@ class PostsAsAdminTest extends PostsAsModeratorTest
     public function testAdd()
     {
         $this->genericAddSuccess([], function ($data) {
-            unset($data["user_id"]);
+            unset($data["user_id"], $data["created_at"], $data["updated_at"]);
 
             return $data;
         });
@@ -35,7 +35,7 @@ class PostsAsAdminTest extends PostsAsModeratorTest
     public function testEdit()
     {
         $this->genericEditSuccess([], function ($data) {
-            unset($data["user_id"]);
+            unset($data["user_id"], $data["created_at"], $data["updated_at"]);
 
             return $data;
         });

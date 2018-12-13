@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Hash;
 $factory->define(User::class, function (Generator $faker) {
     $names = $faker->boolean(30);
     $points = $faker->numberBetween(0, 100) * 10;
+    $createdAt = $faker->dateTimeBetween("-1 years");
+
     $data = [
         "username" => !$names ? $faker->userName : null,
         "email" => $faker->email,
@@ -32,7 +34,8 @@ $factory->define(User::class, function (Generator $faker) {
         ],
         "class_id" => Class_::inRandomOrder()
             ->firstOrFail()->id,
-        "created_at" => $faker->dateTimeBetween("-1 years"),
+        "created_at" => $createdAt,
+        "updated_at" => $faker->boolean(90) ? $createdAt : $faker->dateTimeBetween($createdAt, "now"),
     ];
 
     if ($faker->boolean(50)) {

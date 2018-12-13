@@ -5,6 +5,8 @@ namespace Tests\API;
 use App\Models\User;
 use App\Notifications\PasswordForgottenNotification;
 use App\Notifications\PasswordResetNotification;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Laravel\Lumen\Testing\TestCase;
 use Tests\Utils\Traits\Assertions\DatabaseAssertionsTrait;
@@ -48,7 +50,7 @@ class AuthTest extends TestCase
     {
         $user = $this->getNonFacebookUser();
 
-        $this->call("post", "/users/login", [
+        $this->json("post", "/users/login", [
             "grant_type" => "password",
             "client_id" => env("OAUTH_CLIENT_ID"),
             "client_secret" => env("OAUTH_CLIENT_SECRET"),
@@ -106,7 +108,7 @@ class AuthTest extends TestCase
         $user = $this->getNonFacebookUser();
         Notification::fake();
 
-        $this->call("post", "/users/forgot", ["email" => $user->email]);
+        $this->json("post", "/users/forgot", ["email" => $user->email]);
 
         $this->assertHttp200Success();
         $this->assertNotificationSentToVia(PasswordForgottenNotification::class, $user, "mail");
@@ -118,7 +120,7 @@ class AuthTest extends TestCase
     public function testForgotAsFacebookUser()
     {
         $user = $this->getFacebookUser();
-        $this->call("post", "/users/forgot", ["email" => $user->email]);
+        $this->json("post", "/users/forgot", ["email" => $user->email]);
 
         $this->assertHttp400InvalidRequest();
     }
@@ -131,10 +133,14 @@ class AuthTest extends TestCase
         $user = $this->getNonFacebookUser();
         Notification::fake();
 
-        $this->call("post", "/users/reset/{$user->token}", ["password" => "test"]);
+        $this->json("post", "/users/reset/{$user->token}", ["password" => "test"]);
 
         $this->assertHttp200Success();
         $this->assertNotificationSentToVia(PasswordResetNotification::class, $user, "mail");
+
+        DB::table("users")
+            ->where("id", "=", $user->id)
+            ->update(["password" => Hash::make("test123")]);
     }
 
     /**
@@ -144,7 +150,7 @@ class AuthTest extends TestCase
     {
         $user = $this->getNonFacebookUser();
 
-        $this->call("post", "/users/reset/{$user->token}", ["password" => null]);
+        $this->json("post", "/users/reset/{$user->token}", ["password" => null]);
 
         $this->assertHttp400InvalidRequest();
     }
@@ -156,7 +162,7 @@ class AuthTest extends TestCase
     {
         $user = $this->getFacebookUser();
 
-        $this->call("post", "/users/reset/{$user->token}", ["password" => null]);
+        $this->json("post", "/users/reset/{$user->token}", ["password" => null]);
 
         $this->assertHttp400InvalidRequest();
     }

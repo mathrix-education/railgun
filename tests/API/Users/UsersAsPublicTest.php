@@ -27,12 +27,13 @@ class UsersAsPublicTest extends ScopeTestCase
         }
 
         $dataWithoutPassword = [
+            "username" => $this->faker->userName,
             "email" => $this->faker->email,
             "class_id" => Class_::inRandomOrder()->firstOrFail()->id,
         ];
         $data = array_merge($dataWithoutPassword, ["password" => "test"]);
 
-        $this->call("post", "/users/register", $data);
+        $this->json("post", "/users/register", $data);
 
         $user = User::whereEmail($data["email"])->firstOrFail();
 
@@ -50,7 +51,7 @@ class UsersAsPublicTest extends ScopeTestCase
      */
     public function testProfile()
     {
-        $this->call("get", "/users/profile");
+        $this->json("get", "/users/profile");
 
         $this->assertHttp401Unauthorized();
     }
@@ -61,7 +62,7 @@ class UsersAsPublicTest extends ScopeTestCase
     public function testExistsTrue()
     {
         $user = User::inRandomOrder()->first();
-        $this->call("post", "/users/exists", ["email" => $user->email]);
+        $this->json("post", "/users/exists", ["email" => $user->email]);
 
         $response = $this->getResponseData();
         $this->assertHttp200Success();
@@ -73,7 +74,7 @@ class UsersAsPublicTest extends ScopeTestCase
      */
     public function testExistsFalse()
     {
-        $this->call("post", "/users/exists", ["email" => "notexisting@email.com"]);
+        $this->json("post", "/users/exists", ["email" => "notexisting@email.com"]);
 
         $response = $this->getResponseData();
         $this->assertHttp200Success();
@@ -85,7 +86,7 @@ class UsersAsPublicTest extends ScopeTestCase
      */
     public function testSearch()
     {
-        $this->call("post", "/users/search");
+        $this->json("post", "/users/search");
 
         $this->assertHttp401Unauthorized();
     }

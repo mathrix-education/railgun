@@ -3,9 +3,10 @@
 namespace Tests\API\Modules;
 
 use App\Models\Module;
+use App\Models\Path;
 use App\Models\User;
 use Laravel\Passport\Passport;
-use Tests\Utils\Tree;
+use App\Utils\Tree;
 
 /**
  * Class ModulesAsPublicTest
@@ -42,64 +43,65 @@ class ModulesAsRegisteredTest extends ModulesAsPublicTest
     /**
      * Generic mark test.
      *
-     * @param bool|null $favorite
-     * @param bool|null $to_revise
-     * @param bool|null $completed
+     * @param $status
      *
      * @throws \Exception
      */
-    public function mark($favorite, $to_revise, $completed)
+    public function mark($status)
     {
-        $tree = new Tree();
-        $data = $tree->flatIds();
-        $moduleId = $data["module_id"];
-        unset($data["module_id"]);
+        do {
+            $tree = new Tree();
+        } while ($tree->getModule()->premium);
 
-        if ($favorite !== null) {
-            $data["favorite"] = $favorite;
-        }
-        if ($to_revise !== null) {
-            $data["to_revise"] = $to_revise;
-        }
-        if ($completed !== null) {
-            $data["completed"] = $completed;
-        }
+        $data = [
+            "path" => $tree->flatIds(),
+            "status" => $status
+        ];
+        $moduleId = $tree->getModule()->id;
 
-        $this->call("patch", "/modules/$moduleId/mark", $data);
+        $this->json("patch", "/modules/$moduleId/mark", $data);
 
-        $expectedData = array_merge($data, ["user_id" => $this->user->id]);
+        $path = Path::retrieve($tree->flatIds());
 
         $this->assertHttp200Success();
-        $this->assertInDatabase("metas", $expectedData);
+        $this->assertJsonDocumentMatches($this->response->getContent(), [
+            "id" => $moduleId,
+            "mark" => $status
+        ]);
+        $this->assertInDatabase("marks", [
+            "path_id" => $path->id,
+            "user_id" => $this->user->id,
+            "status" => $status
+        ]);
     }
 
     /**
-     * PATCH /modules/{id}/mark with {favorite: true}.
+     * PATCH /modules/{id}/mark with {status: view}.
      *
      * @throws \Exception
      */
-    public function testMarkFavorite()
+    public function testMarkView()
     {
-        $this->mark(true, null, null);
+        $this->mark("view");
     }
 
     /**
-     * PATCH /modules/{id}/mark with {to_revise: true}.
+     * PATCH /modules/{id}/mark with {status: to_to_reviserevise}.
      *
      * @throws \Exception
      */
     public function testMarkToRevise()
     {
-        $this->mark(null, true, null);
+        $this->mark("to_revise");
     }
 
     /**
-     * PATCH /modules/{id}/mark with {completed: true}.
+     * PATCH /modules/{id}/mark with {status: completed}.
      *
      * @throws \Exception
      */
     public function testMarkCompleted()
     {
-        $this->mark(null, null, true);
+        $this->mark("completed");
     }
 }

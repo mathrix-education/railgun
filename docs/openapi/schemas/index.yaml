@@ -1,5 +1,7 @@
 Activity:
   $ref: ./Activity.yaml
+ActivityWithSeoIndex:
+  $ref: ./ActivityWithSeoIndex.yaml
 Category:
   $ref: ./Category.yaml
 Chapter:
@@ -8,6 +10,8 @@ Class:
   $ref: ./Class.yaml
 Comment:
   $ref: ./Comment.yaml
+CommentChild:
+  $ref: ./CommentChild.yaml
 Country:
   $ref: ./Country.yaml
 Discipline:
@@ -22,16 +26,30 @@ File:
   $ref: ./File.yaml
 Meta:
   $ref: ./Meta.yaml
+MarkActivity:
+  $ref: ./MarkActivity.yaml
+MarkModule:
+  $ref: ./MarkModule.yaml
 Module:
   $ref: ./Module.yaml
 ModuleWithSeoIndex:
   $ref: ./ModuleWithSeoIndex.yaml
 Notion:
   $ref: ./Notion.yaml
+Notification:
+  $ref: ./Notification.yaml
+PathActivity:
+  $ref: ./PathActivity.yaml
+PathModule:
+  $ref: ./PathModule.yaml
 Post:
   $ref: ./Post.yaml
 Product:
   $ref: ./Product.yaml
+ProductWithChildren:
+  $ref: ./ProductWithChildren.yaml
+ProductWithModule:
+  $ref: ./ProductWithModule.yaml
 Purchase:
   $ref: ./Purchase.yaml
 Quote:

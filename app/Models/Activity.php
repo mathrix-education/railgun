@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Interfaces\Commentable;
-use App\Models\Traits\CommentableTrait;
 use App\Models\Traits\Loggable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -25,24 +24,26 @@ use Illuminate\Support\Facades\Auth;
  * @property string               $type
  * @property bool                 $visible
  * @property bool                 $premium
+ * @property bool                 $reviewed
  * @property array                $link
  * @property bool                 $completed
  * @property bool                 $favorite
  * @property bool                 $to_revise
  * @property Collection|Comment[] $comments
  * @property Collection|Log[]     $logs
+ * @property Collection|Mark[]    $marks
  * @property Collection|Module[]  $modules
  * @property Collection|Notion[]  $notions
  */
-class Activity extends BaseModel implements Commentable
+class Activity extends BaseModel
 {
-    use Loggable, CommentableTrait;
+    use Loggable;
 
     public const TYPES = ["video", "course", "test", "exercise", "summary", "flashcard"];
 
     /** @var array The attributes that are mass assignable */
     protected $fillable = ["id", "name", "slug", "seo_title", "seo_description", "seo_keywords", "type", "visible",
-        "premium", "link"];
+        "premium", "reviewed", "link"];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
         "visible" => "boolean",
@@ -56,7 +57,7 @@ class Activity extends BaseModel implements Commentable
         "premium" => "boolean",
     ];
     /** @var array Appends attributes */
-    protected $appends = ["favorite", "to_revise", "completed"];
+    protected $appends = ["mark"];
 
     /**
      * Activity constructor.
@@ -76,6 +77,15 @@ class Activity extends BaseModel implements Commentable
     | Relations
     |--------------------------------------------------------------------------
     */
+    /**
+     * HasMany Marks.
+     *
+     * @return HasManyThrough
+     */
+    public function marks(): HasManyThrough
+    {
+        return $this->hasManyThrough(Mark::class, Path::class);
+    }
 
     /**
      * BelongsToMany Module.
@@ -107,71 +117,25 @@ class Activity extends BaseModel implements Commentable
     |--------------------------------------------------------------------------
     */
     /**
-     * favorite.
+     * Get the mark attribute (view|to_revise|completed)
      *
-     * @return bool
+     * @return string|null
      */
-    public function getFavoriteAttribute()
-    {
-        /** @var User $user */
-        $user = Auth::user();
-
-        if ($user === null) {
-            return false;
-        }
-
-        $meta = Meta::where([
-            ["activity_id", $this->id],
-            ["user_id", $user->id],
-        ])
-            ->first();
-
-        return $meta === null ? false : (bool) $meta->favorite;
-    }
-
-    /**
-     * to_revise.
-     *
-     * @return bool
-     */
-    public function getToReviseAttribute()
+    public function getMarkAttribute()
     {
         /** @var User $user */
         $user = Auth::user();
 
         if ($user === null) {
             return null;
+        } else {
+            /** @var Mark $mark */
+            $mark = $this->marks()
+                ->where("user_id", "=", $user->id)
+                ->whereNull("module_id")
+                ->first();
+
+            return $mark !== null ? $mark->status : null;
         }
-
-        $meta = Meta::where([
-            ["activity_id", $this->id],
-            ["user_id", $user->id],
-        ])
-            ->first();
-
-        return $meta === null ? null : $meta->to_revise;
-    }
-
-    /**
-     * completed.
-     *
-     * @return bool
-     */
-    public function getCompletedAttribute()
-    {
-        /** @var User $user */
-        $user = Auth::user();
-
-        if ($user === null) {
-            return null;
-        }
-
-        $meta = Meta::where([
-            ["activity_id", $this->id],
-            ["user_id", $user->id],
-        ])
-            ->first();
-
-        return $meta === null ? null : $meta->completed;
     }
 }

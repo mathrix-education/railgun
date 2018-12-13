@@ -1,0 +1,59 @@
+post:
+  tags:
+    - Paths
+  summary: Index
+  operationId: pathsIndex
+  description: Mark a path as indexed.
+  security:
+    - moderator: []
+    - admin: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          description: The path.
+          type: object
+          properties:
+            country_id:
+              description: The country id.
+              type: integer
+              example: 1
+            class_id:
+              description: The class id.
+              type: integer
+              example: 5
+            discipline_id:
+              description: The discipline id.
+              type: integer
+              example: 7
+            chapter_id:
+              description: The chapter id.
+              type: integer
+              example: 16
+            notion_id:
+              description: The notion id.
+              type: integer
+              example: 125
+            activity_id:
+              description: The activity id.
+              type: integer
+              example: 142
+            seo_index:
+              description: If the path should be indexed.
+              type: boolean
+              example: true
+          required:
+            - country_id
+            - class_id
+            - discipline_id
+            - chapter_id
+            - notion_id
+            - activity_id
+            - seo_index
+  responses:
+    200:
+      description: The indexed path.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/PathActivity'

@@ -7,6 +7,8 @@ use App\Models\Comment;
 use App\Models\Module;
 use App\Models\Notion;
 use App\Models\Post;
+use App\Models\User;
+use App\Notifications\CommentAnswerNotification;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
@@ -46,17 +48,22 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(\Illuminate\Notifications\NotificationServiceProvider::class);
         $this->app->register(\Illuminate\Redis\RedisServiceProvider::class);
         $this->app->register(\Laravel\Passport\PassportServiceProvider::class);
-        $this->app->register(\Roumen\Sitemap\SitemapServiceProvider::class);
+        $this->app->register(\Laravelium\Sitemap\SitemapServiceProvider::class);
 
         $this->app->register(GoogleDriveServiceProvider::class);
 
         // MorphMap
         Relation::morphMap([
+            // Models
             "activity" => Activity::class,
             "notion" => Notion::class,
             "module" => Module::class,
             "post" => Post::class,
             "comment" => Comment::class,
+            "user" => User::class,
+
+            // Notifications
+            "comment_answer" => CommentAnswerNotification::class
         ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Events\SubscriptionChargedSuccessfullyEvent;
 use App\Events\TransactionSuccessEvent;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -60,10 +61,14 @@ class BraintreeController extends Controller
         ]);
 
         /** @var \Braintree_WebhookNotification $webhook */
-        $webhook = \Braintree_WebhookNotification::parse($request->input("signature"), $request->input("payload"));
+        $webhook = \Braintree_WebhookNotification::parse(
+            $request->input("bt_signature"),
+            $request->input("bt_payload")
+        );
 
         if ($webhook->kind === \Braintree_WebhookNotification::SUBSCRIPTION_CHARGED_SUCCESSFULLY) {
             event(new TransactionSuccessEvent($webhook->subscription->transactions[0]));
+            event(new SubscriptionChargedSuccessfullyEvent($webhook->subscription));
         }
 
         return new JsonResponse([

@@ -1,16 +1,16 @@
 post:
   tags:
-  - Modules
+    - Modules
   summary: Seo Index
   operationId: modulesSeoIndex
   parameters:
-  - name: moduleId
-    in: path
-    description: The module id.
-    required: true
-    schema:
-      type: int
-      example: 1655
+    - name: moduleId
+      in: path
+      description: The module id.
+      required: true
+      schema:
+        type: int
+        example: 1655
   requestBody:
     content:
       application/json:
@@ -50,13 +50,13 @@ post:
               type: boolean
               example: false
           required:
-          - country_id
-          - class_id
-          - discipline_id
-          - chapter_id
-          - notion_id
-          - activity_id
-          - module_id
+            - country_id
+            - class_id
+            - discipline_id
+            - chapter_id
+            - notion_id
+            - activity_id
+            - module_id
   responses:
     200:
       description: The module with the `seo_index` field.

@@ -23,21 +23,21 @@ echo "Running gulp install"
 gulp install --silent
 
 echo "Building storage directory"
-[ -d ${shared_dir} ] || mkdir ${shared_dir}
-[ -d ${shared_dir}/storage ] || mkdir ${shared_dir}/storage
+[[ -d ${shared_dir} ]] || mkdir ${shared_dir}
+[[ -d ${shared_dir}/storage ]] || mkdir ${shared_dir}/storage
 cp -R ${new_release_dir}/storage/* ${shared_dir}/storage
 rm -rf ${new_release_dir}/storage
-[ -d ${shared_dir}/storage/backups ] || mkdir ${shared_dir}/storage/backups
-[ -d ${shared_dir}/storage/backups/cdn ] || mkdir ${shared_dir}/storage/backups/cdn
-[ -d ${shared_dir}/storage/backups/database ] || mkdir ${shared_dir}/storage/backups/database
-[ -d ${shared_dir}/storage/framework ] || mkdir ${shared_dir}/storage/framework
-[ -d ${shared_dir}/storage/framework/cache ] || mkdir ${shared_dir}/storage/framework/cache
-[ -d ${shared_dir}/storage/framework/views ] || mkdir ${shared_dir}/storage/framework/views
-[ -d ${shared_dir}/storage/logs ] || mkdir ${shared_dir}/storage/logs
-[ -d ${shared_dir}/storage/sitemaps ] || mkdir ${shared_dir}/storage/sitemaps
+[[ -d ${shared_dir}/storage/backups ]] || mkdir ${shared_dir}/storage/backups
+[[ -d ${shared_dir}/storage/backups/cdn ]] || mkdir ${shared_dir}/storage/backups/cdn
+[[ -d ${shared_dir}/storage/backups/database ]] || mkdir ${shared_dir}/storage/backups/database
+[[ -d ${shared_dir}/storage/framework ]] || mkdir ${shared_dir}/storage/framework
+[[ -d ${shared_dir}/storage/framework/cache ]] || mkdir ${shared_dir}/storage/framework/cache
+[[ -d ${shared_dir}/storage/framework/views ]] || mkdir ${shared_dir}/storage/framework/views
+[[ -d ${shared_dir}/storage/logs ]] || mkdir ${shared_dir}/storage/logs
+[[ -d ${shared_dir}/storage/sitemaps ]] || mkdir ${shared_dir}/storage/sitemaps
 
 echo "Setup CDN"
-[ -d ${shared_dir}/storage/cdn ] || mkdir ${shared_dir}/storage/cdn
+[[ -d ${shared_dir}/storage/cdn ]] || mkdir ${shared_dir}/storage/cdn
 
 echo "Linking storage"
 ln -nfs ${shared_dir}/storage/ ${new_release_dir}/storage
@@ -50,11 +50,11 @@ echo "Delete oldest releases"
 ls -dt ${releases_dir}/*/ | tail -n +6 | xargs rm -rf
 
 echo "Linking current release"
-[ -f ${current} ] && rm ${current}
+[[ -f ${current} ]] && rm ${current}
 ln -nfs ${new_release_dir} ${current}
 
 echo "Cleaning build"
 rm -rf ${new_release_dir}/scripts
 rm ${new_release_dir}/build.tar.gz
 
-echo "$release successfully installed"
+echo "$release successfully deployed!"

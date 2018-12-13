@@ -28,7 +28,7 @@ class Report extends BaseModel
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "name", "type", "context", "content", "status", "module_id", "created_at", "updated_at"];
+    protected $fillable = ["id", "name", "type", "context", "content", "status", "module_id"];
     /** @var array The validation rules */
     protected $rules = [
         "name" => "required|max:255",

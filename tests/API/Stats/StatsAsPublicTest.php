@@ -20,7 +20,7 @@ class StatsAsPublicTest extends ScopeTestCase
      */
     public function testActivities()
     {
-        $this->call("post", "/stats/activities");
+        $this->json("post", "/stats/activities");
         $this->assertHttp401Unauthorized();
     }
 }

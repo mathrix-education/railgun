@@ -39,3 +39,7 @@ properties:
     description: The activity premium state.
     type: boolean
     example: true
+  reviewed:
+    description: If the activty has been reviewed.
+    type: boolean
+    example: false

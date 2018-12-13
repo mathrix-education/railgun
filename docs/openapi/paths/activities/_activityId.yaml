@@ -1,7 +1,7 @@
 get:
   tags:
   - Activities
-  summary: Get an activity by id
+  summary: Get an activity
   operationId: activitiesGet
   parameters:
   - name: activityId
@@ -23,7 +23,7 @@ get:
 patch:
   tags:
   - Activities
-  summary: Edit an activity by id
+  summary: Edit an activity
   operationId: activitiesPatch
   security:
   - moderator: []

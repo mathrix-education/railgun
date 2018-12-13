@@ -2,9 +2,11 @@
 
 namespace Tests\API\Activities;
 
-use App\Models\Meta;
+use App\Models\Mark;
+use App\Models\Path;
+use App\Utils\Tree;
+use Illuminate\Database\Eloquent\Builder;
 use Laravel\Passport\Passport;
-use Tests\Utils\Tree;
 
 /**
  * Class ActivitiesAsPublicTest
@@ -18,43 +20,25 @@ use Tests\Utils\Tree;
 class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
 {
     /**
-     * GET /activities/favorites.
-     *
-     * @throws \Exception
-     */
-    public function testFavorites()
-    {
-        $this->get("/activities/favorites");
-
-        $metas = $this->getResponseData();
-
-        $this->assertHttp200Success();
-
-        /** @var Meta $meta */
-        foreach ($metas as $meta) {
-            $this->assertEquals($this->user->id, $meta->user_id);
-            $this->assertTrue($meta->favorite);
-        }
-    }
-
-    /**
      * GET /activities/to-revise.
      *
      * @throws \Exception
      */
     public function testToRevise()
     {
+        $mark = Mark::inRandomOrder()
+            ->where("status", "=", "to_revise")
+            ->firstOrFail();
+        $user = $mark->user;
+        Passport::actingAs($user, [$this->user->type]);
+
         $this->get("/activities/to-revise");
 
-        $metas = $this->getResponseData();
-
         $this->assertHttp200Success();
-
-        /** @var Meta $meta */
-        foreach ($metas as $meta) {
-            $this->assertEquals($this->user->id, $meta->user_id);
-            $this->assertTrue($meta->to_revise);
-        }
+        $this->assertJsonDocumentMatches($this->response->getContent(), [
+            "[*].user_id" => $user->id,
+            "[*].status" => "to_revise"
+        ]);
     }
 
     /**
@@ -62,104 +46,91 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
      *
      * @throws \Exception
      */
-    public function testIncomplete()
+    public function testView()
     {
-        $this->get("/activities/incomplete");
+        $mark = Mark::inRandomOrder()
+            ->where("status", "=", "view")
+            ->firstOrFail();
+        $user = $mark->user;
+        Passport::actingAs($user, [$this->user->type]);
 
-        $metas = $this->getResponseData();
+        $this->get("/activities/view");
 
-        $this->assertHttp200Success();
-
+        $marks = $this->getResponseData();
         $disciplinesIncluded = [];
 
-        /** @var Meta $meta */
-        foreach ($metas as $meta) {
-            $this->assertEquals($this->user->id, $meta->user_id);
-            $this->assertNotTrue($meta->completed);
-            $this->assertNotTrue(\in_array($meta->discipline_id, $disciplinesIncluded, true));
-            $disciplinesIncluded[] = $meta->discipline_id;
+        $this->assertHttp200Success();
+        $this->assertJsonDocumentMatches($this->response->getContent(), [
+            "[*].user_id" => $user->id,
+            "[*].status" => "view"
+        ]);
+        foreach ($marks as $mark) {
+            $this->assertNotTrue(\in_array($mark->path->discipline_id, $disciplinesIncluded, true));
+            $disciplinesIncluded[] = $mark->path->discipline_id;
         }
     }
 
     /**
      * Generic mark test.
      *
-     * @param bool|null $favorite
-     * @param bool|null $to_revise
-     * @param bool|null $completed
+     * @param $status
      *
      * @throws \Exception
      */
-    public function mark($favorite, $to_revise, $completed)
+    public function mark($status)
     {
         $tree = new Tree();
-        $data = $tree->flatIds("notion");
+        $data = [
+            "path" => $tree->flatIds("activity"),
+            "status" => $status
+        ];
         $activityId = $tree->getActivity()->id;
 
-        if ($favorite !== null) {
-            $data["favorite"] = $favorite;
-        }
-        if ($to_revise !== null) {
-            $data["to_revise"] = $to_revise;
-        }
-        if ($completed !== null) {
-            $data["completed"] = $completed;
-        }
+        $this->json("patch", "/activities/$activityId/mark", $data);
 
-        $this->call("patch", "/activities/$activityId/mark", $data);
-
-        $expectedData = array_merge($data, ["user_id" => $this->user->id]);
+        $pathData = array_merge($tree->flatIds("activity"), ["module_id" => null]);
+        $path = Path::retrieve($pathData);
 
         $this->assertHttp200Success();
-        $this->assertInDatabase("metas", $expectedData);
+        $this->assertJsonDocumentMatches($this->response->getContent(), [
+            "id" => $activityId,
+            "mark" => $status
+        ]);
+        $this->assertInDatabase("marks", [
+            "path_id" => $path->id,
+            "user_id" => $this->user->id,
+            "status" => $status
+        ]);
     }
 
     /**
-     * PATCH /activities/{id}/mark with {favorite: true}.
+     * PATCH /activities/{id}/mark with {status: view}.
      *
      * @throws \Exception
      */
-    public function testMarkFavorite()
+    public function testMarkView()
     {
-        $this->mark(null, null, false);
+        $this->mark("view");
     }
 
     /**
-     * PATCH /activities/{id}/mark with {to_revise: true}.
+     * PATCH /activities/{id}/mark with {status: to_revise}.
      *
      * @throws \Exception
      */
     public function testMarkToRevise()
     {
-        $this->mark(null, true, null);
+        $this->mark("to_revise");
     }
 
     /**
-     * PATCH /activities/{id}/mark with {completed: true}.
+     * PATCH /activities/{id}/mark with {status: completed}.
      *
      * @throws \Exception
      */
     public function testMarkCompleted()
     {
-        $this->mark(null, null, true);
-    }
-
-    /**
-     * PATCH /activities/{id}/mark
-     * Assert meta updated_at field changes even if the meta content is the same.
-     */
-    public function testMarkForceUpdatedAt()
-    {
-        /** @var Meta $meta */
-        $meta = Meta::random();
-        Passport::actingAs($meta->user);
-        $oldDate = $meta->updated_at;
-
-        $this->call("patch", "/activities/{$meta->activity_id}/mark", $meta->toArray());
-
-        $meta = Meta::find($meta->id);
-
-        $this->assertNotInDatabase("metas", ["id" => $meta->id, "updated_at" => $oldDate]);
+        $this->mark("completed");
     }
 
     /**
@@ -168,7 +139,76 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
      */
     public function testMarkNotExists()
     {
-        $this->call("patch", "/activities/999999/mark", ["favorite" => true]);
+        $this->json("patch", "/activities/999999/mark", ["status" => "view"]);
         $this->assertHttp404ModelNotFound();
+    }
+
+    /**
+     * PATCH /activities/{id}/mark with {status: completed} on existing mark with {status: view}.
+     */
+    public function testMarkOverride()
+    {
+        $this->markTestIncomplete("Unable to figure how to fix marks collisions for now.");
+
+        $mark = Mark::inRandomOrder()
+            ->whereHas("path", function (Builder $path) {
+                $path->whereNull("module_id");
+            })
+            ->firstOrFail();
+        Passport::actingAs($mark->user, [$mark->user->type]);
+
+        $newStatus = $mark->status === "completed" ? "to_revise" : "completed";
+
+        $this->json("patch", "/activities/{$mark->path->activity_id}/mark", [
+            "path" => [
+                "country_id" => $mark->path->country_id,
+                "class_id" => $mark->path->class_id,
+                "discipline_id" => $mark->path->discipline_id,
+                "chapter_id" => $mark->path->chapter_id,
+                "notion_id" => $mark->path->notion_id
+            ],
+            "status" => $newStatus
+        ]);
+
+        $this->assertHttp200Success();
+        $this->assertJsonDocumentMatches($this->response->getContent(), [
+            "mark" => $newStatus
+        ]);
+        $this->assertInDatabase("marks", [
+            "id" => $mark->id,
+            "path_id" => $mark->path_id,
+            "user_id" => $mark->user_id,
+            "status" => $newStatus
+        ]);
+    }
+
+    /**
+     * DELETE /activities/{activityId}/unmark
+     */
+    public function testUnmark()
+    {
+        $mark = Mark::random();
+        Passport::actingAs($mark->user, [$mark->user->type]);
+
+        $this->json("patch", "/activities/{$mark->path->activity_id}/unmark", [
+            "path" => [
+                "country_id" => $mark->path->country_id,
+                "class_id" => $mark->path->class_id,
+                "discipline_id" => $mark->path->discipline_id,
+                "chapter_id" => $mark->path->chapter_id,
+                "notion_id" => $mark->path->notion_id
+            ]
+        ]);
+
+        $this->assertHttp200Success();
+        $this->assertJsonDocumentMatches($this->response->getContent(), [
+            "id" => $mark->path->activity_id,
+            "mark" => null
+        ]);
+        $this->assertNotInDatabase("marks", [
+            "id" => $mark->id,
+            "path_id" => $mark->path_id,
+            "user_id" => $mark->user_id
+        ]);
     }
 }

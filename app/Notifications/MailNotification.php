@@ -16,6 +16,6 @@ abstract class MailNotification extends BaseNotification
      */
     public function via(): array
     {
-        return env("MAILGUN_ENVIRONMENT") === "disabled" || app()->environment() === "offline" ? [] : ["mail"];
+        return (env("MAILGUN_ENVIRONMENT") === "disabled" && app()->environment() !== "testing") || app()->environment() === "offline" ? [] : ["mail"];
     }
 }

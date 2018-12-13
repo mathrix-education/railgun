@@ -42,7 +42,10 @@ class ReportsAsPublicTest extends ScopeTestCase
      */
     public function testAdd()
     {
-        $this->genericAddSuccess();
+        $this->genericAddSuccess([], function ($data) {
+            unset($data["created_at"], $data["updated_at"]);
+            return $data;
+        });
     }
 
     /**

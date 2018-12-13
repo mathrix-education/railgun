@@ -5,8 +5,8 @@ namespace App\Observers;
 use App\Exceptions\Http422ModelSaveException;
 use App\Models\Activity;
 use App\Models\Chapter;
-use App\Models\Meta;
 use App\Models\Notion;
+use App\Models\Path;
 
 /**
  * Class NotionObserver.
@@ -70,8 +70,6 @@ class NotionObserver extends BaseObserver
      *
      * @param Notion $notion
      *
-     * @throws Http422ModelSaveException
-     *
      * @return bool
      */
     public function deleting($notion)
@@ -80,8 +78,11 @@ class NotionObserver extends BaseObserver
             ->detach();
         $notion->activities()
             ->detach();
-        Meta::whereNotionId($notion->id)
-            ->delete();
+        Path::where("notion_id", "=", $notion->id)
+            ->get()
+            ->each(function (Path $path) {
+                $path->delete();
+            });
 
         return true;
     }

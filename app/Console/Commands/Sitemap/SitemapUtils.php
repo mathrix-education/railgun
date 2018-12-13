@@ -2,7 +2,7 @@
 namespace App\Console\Commands\Sitemap;
 
 use Illuminate\Support\Facades\Storage;
-use Roumen\Sitemap\Sitemap;
+use Laravelium\Sitemap\Sitemap;
 
 /**
  * Trait SitemapUtils

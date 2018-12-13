@@ -135,6 +135,7 @@ class UserController extends BaseController
             )
         ) {
             $currentPassword = $request->input("current_password", false);
+
             if (!$currentPassword) {
                 throw new Http400InvalidRequestException("`current_password` is required to change the password");
             } elseif (!Hash::check($currentPassword, $user->password)) {

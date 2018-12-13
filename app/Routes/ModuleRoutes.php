@@ -12,7 +12,6 @@ $router->group(["prefix" => "modules"], function () use ($router) {
 
     $router->group(["middleware" => "auth:api"], function () use ($router) {
         $router->post("", "ModuleController@add");
-        $router->post("{moduleId:[1-9]\d*}/index", "ModuleController@markIndex");
 
         $router->patch("{id:[1-9]\d*}", "ModuleController@edit");
         $router->patch("{id:[1-9]\d*}/mark", "ModuleController@mark");

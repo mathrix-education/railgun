@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Class_;
+use App\Models\Discipline;
 
 /**
  * Class UserObserver.
@@ -27,9 +28,16 @@ class ClassObserver extends BaseObserver
         }
 
         // Sync disciplines
-        if (!empty($class->link["disciplines"])) {
+        if (isset($class->link["disciplines"])) {
+            $toSync = [];
+            foreach ($class->link["disciplines"] as $order => $disciplineId) {
+                if (Discipline::where("id", "=", $disciplineId)
+                    ->exists()) {
+                    $toSync[$disciplineId] = ["order" => $order];
+                }
+            }
             $class->disciplines()
-                ->sync($class->link["disciplines"]);
+                ->sync($toSync);
         }
 
         if (isset($class->link) || !empty($class->link)) {

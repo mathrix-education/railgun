@@ -42,6 +42,8 @@ class Chainer
     {
         $this->subRequests = $this->request->input("requests", []);
 
+        $this->orderRequests();
+
         foreach ($this->subRequests as $key => $subRequest) {
             $this->processIndividualRequest($key, $subRequest);
         }
@@ -66,7 +68,41 @@ class Chainer
 
         $response = app()->dispatch($request);
 
-        $this->responseData[$key] = json_decode($response->getContent(), true);
+        $this->responseData[$key] = [
+            "method" => $subRequest["method"],
+            "url" => $this->resolve($subRequest["url"]),
+            "body" => json_decode($response->getContent(), true)
+        ];
+    }
+
+    private function orderRequests()
+    {
+        $keys = array_keys($this->subRequests);
+        $table = array_fill_keys($keys, 1);
+
+        foreach ($this->subRequests as $key => $subRequest) {
+            $url = $subRequest["url"];
+
+            $matches = [];
+            $result = preg_match_all("/\{(\w+\.[\.\w+]+\w+)\}/", $url, $matches);
+
+            if ($result !== 0) {
+                $param = $matches[1][0];
+
+                $depends = str_replace("{$param}", $param, $param);
+                $depends = explode(".", $depends);
+                $depends = $depends[0];
+
+                $table[$depends] += $table[$key];
+            }
+        }
+
+        uasort($this->subRequests, function($request1, $request2) use ($table) {
+            $key1 = array_search($request1, $this->subRequests);
+            $key2 = array_search($request2, $this->subRequests);
+
+            return $table[$key2] <=> $table[$key1];
+        });
     }
 
     /**
@@ -94,16 +130,27 @@ class Chainer
         }
     }
 
+    /**
+     * @param string $key
+     *
+     * @return array
+     * @throws Http400InvalidRequestException
+     */
     private function resolveParam(string $key)
     {
         $keys = explode(".", $key);
         $array = $this->responseData;
 
+        $subKey = array_shift($keys);
+        $array = $array[$subKey]["body"];
+
         foreach ($keys as $subKey) {
             if (!empty($array[$subKey])) {
                 $array = $array[$subKey];
             } else {
-                throw new Http400InvalidRequestException("Unable to find key `$key`.");
+                throw new Http400InvalidRequestException("Unable to find key `$key`.", 400, null, [
+                    "data" => $this->responseData
+                ]);
             }
         }
 

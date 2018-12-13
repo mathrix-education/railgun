@@ -13,5 +13,4 @@ namespace Tests\API\Activities;
  */
 class ActivitiesAsAdminTest extends ActivitiesAsModeratorTest
 {
-    // Inherited tests
 }

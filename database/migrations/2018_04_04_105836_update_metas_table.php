@@ -1,8 +1,9 @@
 <?php
 
-use App\Models\Meta;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 /**
  * Class UpdateMetasTable.
@@ -31,11 +32,13 @@ class UpdateMetasTable extends Migration
             $table->dateTime("updated_at");
         });
 
-        $metas = Meta::all();
+        $metas = DB::table("metas")->select()->get();
 
         foreach ($metas as $meta) {
-            $meta->to_revise = $meta->status === "to_revise";
-            $meta->completed = $meta->status === "completed";
+            DB::table("metas")->where("id", "=", $meta->id)->update([
+                "to_revise" => $meta->status === "to_revise",
+                "completed" => $meta->status === "completed"
+            ]);
         }
 
         Schema::table("metas", function (Blueprint $table) {
@@ -51,17 +54,16 @@ class UpdateMetasTable extends Migration
         Schema::table("metas", function (Blueprint $table) {
             $table->enum("status", ["to_revise", "completed"])
                 ->after("favorite")
+                ->nullable()
                 ->default(null);
         });
 
-        $metas = Meta::all();
+        $metas = DB::table("metas")->select()->get();
 
         foreach ($metas as $meta) {
-            if ($meta->to_revise) {
-                $meta->status = "to_revise";
-            } elseif ($meta->completed) {
-                $meta->status = "completed";
-            }
+            DB::table("metas")->where("id", "=", $meta->id)->update([
+                "status" => $meta->to_revise ? "to_revise" : ($meta->completed ? "completed" : null)
+            ]);
         }
 
         Schema::table("metas", function (Blueprint $table) {

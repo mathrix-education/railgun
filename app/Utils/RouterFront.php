@@ -6,14 +6,14 @@ use App\Models\Chapter;
 use App\Models\Class_;
 use App\Models\Country;
 use App\Models\Discipline;
-use App\Models\Meta;
 use App\Models\Module;
 use App\Models\Notion;
+use App\Models\Path;
 
 /**
  * Class RouterFront
  *
- * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @package   App\Utils
  * @since
  * @copyright Mathrix Education SA
@@ -49,24 +49,39 @@ class RouterFront
      * @param Chapter    $chapter
      * @param Notion     $notion
      * @param Activity   $activity
-     * @param Module     $module
      *
      * @return bool
      */
     public static function seoIndex(Country $country, Class_ $class, Discipline $discipline, Chapter $chapter,
-                                    Notion $notion, Activity $activity, Module $module)
+                                    Notion $notion, Activity $activity)
     {
-        return Meta::where([
-            ["country_id", "=", $country->id],
-            ["class_id", "=", $class->id],
-            ["discipline_id", "=", $discipline->id],
-            ["chapter_id", "=", $chapter->id],
-            ["notion_id", "=", $notion->id],
-            ["activity_id", "=", $activity->id],
-            ["module_id", "=", $module->id],
+        return self::seoIndexByIds($country->id, $class->id, $discipline->id, $chapter->id, $notion->id, $activity->id);
+    }
+
+    /**
+     * Check if the current route should be NOT indexed with content ids.
+     *
+     * @param int $countryId
+     * @param int $classId
+     * @param int $disciplineId
+     * @param int $chapterId
+     * @param int $notionId
+     * @param int $activityId
+     *
+     * @return bool
+     */
+    public static function seoIndexByIds(int $countryId, int $classId, int $disciplineId, int $chapterId, int $notionId,
+                                         int $activityId)
+    {
+        return Path::where([
+            ["country_id", "=", $countryId],
+            ["class_id", "=", $classId],
+            ["discipline_id", "=", $disciplineId],
+            ["chapter_id", "=", $chapterId],
+            ["notion_id", "=", $notionId],
+            ["activity_id", "=", $activityId],
             ["seo_index", "=", true]
         ])
-            ->whereNull("user_id")
             ->exists();
     }
 }

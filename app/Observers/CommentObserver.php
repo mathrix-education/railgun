@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Events\CommentAnswerEvent;
 use App\Exceptions\Http422ModelSaveException;
 use App\Models\Comment;
 use Exception;
@@ -35,6 +36,16 @@ class CommentObserver extends BaseObserver
 
     /**
      * @param Comment $comment
+     */
+    public function saved($comment)
+    {
+        if ($comment->parent_id !== null) {
+            event(new CommentAnswerEvent($comment));
+        }
+    }
+
+    /**
+     * @param Comment $comment
      *
      * @throws Http422ModelSaveException
      *
@@ -42,8 +53,12 @@ class CommentObserver extends BaseObserver
      */
     public function deleting($comment)
     {
+        $children = Comment::withTrashed()
+            ->where("parent_id", "=", $comment->id)
+            ->get();
+
         /** @var Comment $child */
-        foreach ($comment->children as $child) {
+        foreach ($children as $child) {
             if ($comment->isForceDeleting()) {
                 $child->forceDelete();
             } else {

@@ -5,7 +5,7 @@ namespace Tests\API;
 use App\Models\Chapter;
 use App\Models\User;
 use Laravel\Passport\Passport;
-use Tests\Utils\Tree;
+use App\Utils\Tree;
 
 class ChainTest extends APITestCase
 {
@@ -46,7 +46,7 @@ class ChainTest extends APITestCase
 
         $chapterData = factory(Chapter::class)->raw();
 
-        $this->call("post", "/chain", [
+        $this->json("post", "/chain", [
             "requests" => [
                 "chapter_creation" => [
                     "method" => "post",
@@ -73,11 +73,11 @@ class ChainTest extends APITestCase
 
         $tree = new Tree();
 
-        $this->call("post", "/chain", [
+        $this->json("post", "/chain", [
             "requests" => [
                 "flat" => [
                     "method" => "post",
-                    "url" => "/content/flat",
+                    "url" => "/content/flat/",
                     "data" => [
                         "country_slug" => $tree->getCountry()->slug,
                         "class_slug" => $tree->getClass()->slug,
@@ -86,18 +86,24 @@ class ChainTest extends APITestCase
                         "notion_slug" => $tree->getNotion()->slug,
                         "activity_slug" => $tree->getActivity()->slug,
                         "module_id" => $tree->getModule()->id
-                    ]
+                    ],
+                ],
+                "modules" => [
+                    "method" => "get",
+                    "url" => "/modules/by-activity/{flat.activity.id}",
                 ],
                 "comments" => [
                     "method" => "get",
-                    "url" => "/comments/by-activity/{flat.activity.id}"
+                    "url" => "/comments/by-module/{flat.module.id}",
                 ],
-                "chapter_recursive" => [
+                "disciplines" => [
                     "method" => "get",
-                    "url" => "/chapters/recursive/{flat.chapter.id}"
-                ]
-            ]
+                    "url" => "/disciplines/by-class/{flat.class.id}",
+                ],
+            ],
         ]);
+
+        $this->debug();
 
         $this->assertHttp200Success();
     }

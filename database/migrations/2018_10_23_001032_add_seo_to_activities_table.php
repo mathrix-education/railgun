@@ -40,7 +40,8 @@ class AddSeoToActivitiesTable extends Migration
             $table->string("name_seo")->after("slug");
         });
 
-        DB::statement("UPDATE activities SET name_seo = seo_title");
+        DB::statement("UPDATE activities SET name_seo = name");
+        DB::statement("UPDATE activities SET name_seo = seo_title WHERE seo_title IS NOT NULL");
 
         Schema::table("activities", function (Blueprint $table) {
             $table->dropColumn("premium");

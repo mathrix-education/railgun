@@ -60,7 +60,7 @@ trait Add
             $this->addModelData = $callback($this->addModelData);
         }
 
-        $this->call("post", "/" . $this->modelPlural, $this->addModelData);
+        $this->json("post", "/" . $this->modelPlural, $this->addModelData);
 
         // Dynamically add id from the response
         if ($this->response instanceof Response) {

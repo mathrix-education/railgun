@@ -4,7 +4,9 @@ namespace Tests\API\Modules;
 
 use App\Models\Activity;
 use App\Models\Module;
+use PHPUnit\Framework\Constraint\IsType;
 use Tests\API\ScopeTestCase;
+use App\Utils\Tree;
 
 /**
  * Class ModulesAsPublicTest

@@ -2,8 +2,9 @@
 
 namespace Tests\API\Comments;
 
-use App\Models\Activity;
-use App\Models\Post;
+use App\Models\Comment;
+use App\Models\Module;
+use PHPUnit\Framework\Constraint\IsType;
 use Tests\API\ScopeTestCase;
 
 /**
@@ -28,29 +29,27 @@ class CommentsAsPublicTest extends ScopeTestCase
     }
 
     /**
-     * GET /comments/by-activity/{activity_id}.
+     * GET /comments/by-module/{module_id}.
      */
-    public function testByActivity()
+    public function testByModule()
     {
-        $this->genericBySuccess(Activity::class);
-        $data = $this->getResponseData();
+        $module = Comment::inRandomOrder()
+            ->whereNull("parent_id")
+            ->firstOrFail()
+            ->module;
 
-        foreach ($data as $comment) {
-            $this->assertNull($comment->parent_id);
-        }
-    }
+        $this->json("get", "/comments/by-module/{$module->id}");
 
-    /**
-     * GET /comments/by-post/{post_id}.
-     */
-    public function testByPost()
-    {
-        $this->genericBySuccess(Post::class);
-        $data = $this->getResponseData();
+        $this->assertHttp200Success();
+        $this->assertJsonDocumentMatches($this->response->getContent(), [
+            "[*].id" => new IsType("integer"),
+            "[*].content" => new IsType("string"),
+            "[*].user_id" => new IsType("integer"),
+            "[*].path_id" => new IsType("integer"),
+            "[*].created_at" => new IsType("string"),
+            "[*].updated_at" => new IsType("string")
+        ]);
 
-        foreach ($data as $comment) {
-            $this->assertNull($comment->parent_id);
-        }
     }
 
     /**
@@ -60,7 +59,7 @@ class CommentsAsPublicTest extends ScopeTestCase
      */
     public function testByNotExist()
     {
-        $this->call("get", "/comments/by-wtf/" . random_int(1, 1000));
+        $this->json("get", "/comments/by-wtf/" . random_int(1, 1000));
 
         // Assertions
         $this->assertHttp400InvalidRequest();
@@ -103,7 +102,7 @@ class CommentsAsPublicTest extends ScopeTestCase
      */
     public function testLatest()
     {
-        $this->call("get", "/comments/latest");
+        $this->json("get", "/comments/latest");
 
         $this->assertHttp401Unauthorized();
     }

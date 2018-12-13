@@ -35,7 +35,7 @@ trait Search
     {
         $this->genericUsableOrFail();
 
-        $this->call("post", "/" . $this->modelPlural . "/search", $data);
+        $this->json("post", "/" . $this->modelPlural . "/search", $data);
     }
 
     /**

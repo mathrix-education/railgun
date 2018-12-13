@@ -18,12 +18,13 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->call(UserTableSeeder::class);
         $this->call(BlogTableSeeder::class);
         $this->call(CommentTableSeeder::class);
-        $this->call(MetaTableSeeder::class);
+        $this->call(MarksTableSeeder::class);
         $this->call(LogTableSeeder::class);
         $this->call(SettingTableSeeder::class);
         $this->call(ProductTableSeeder::class);
         $this->call(DiscountTableSeeder::class);
         $this->call(ScoreTableSeeder::class);
         $this->call(FamilyPackTableSeeder::class);
+        $this->call(NotificationsTableSeeder::class);
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Exceptions\Http401UnauthorizedException;
-use App\Exceptions\Http404ModelNotFoundException;
 use App\Models\Activity;
 use App\Models\Chapter;
 use App\Models\Class_;
@@ -11,7 +10,6 @@ use App\Models\Country;
 use App\Models\Discipline;
 use App\Models\Module;
 use App\Models\Notion;
-use App\Models\User;
 use App\Utils\RouterFront;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -40,15 +38,12 @@ class ContentController extends BaseController
     /**
      * Retrieve all routes as csv file
      *
+     * @param Request $request
+     *
      * @return StreamedResponse
-     * @throws Http401UnauthorizedException
      */
     public function routes(Request $request)
     {
-        if (!$request->user()->isAdmin()) {
-            throw new Http401UnauthorizedException();
-        }
-
         // Init
         $data = [
             [
@@ -59,8 +54,14 @@ class ContentController extends BaseController
                 "chapter.name",
                 "notion.name",
                 "activity.name",
+                "activity.type",
+                "activity.seo_title",
+                "activity.seo_description",
+                "activity.order",
+                "activity.reviewed",
                 "module.id",
-                "seo_index"
+                "seo_index",
+                "premium (N.premium || A.type == \"premium\")"
             ]
         ];
 
@@ -76,6 +77,8 @@ class ContentController extends BaseController
             /** @var Notion $notion */
             foreach ($chapter->notions as $notion) {
                 /** @var Activity $activity */
+                $activityCounter = 1;
+
                 foreach ($notion->activities as $activity) {
                     /** @var Module $module */
                     foreach ($activity->modules as $module) {
@@ -88,9 +91,17 @@ class ContentController extends BaseController
                             $chapter->name,
                             $notion->name,
                             $activity->name,
+                            $activity->type,
+                            $activity->seo_title,
+                            $activity->seo_description,
+                            $activityCounter++,
+                            $activity->reviewed ? 1 : 0,
                             $module->id,
-                            RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity, $module) ? 1 : 0
+                            RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity) ? 1 : 0,
+                            ($notion->type == "premium" || $activity->premium) ? 1 : 0
                         ];
+
+                        $activityCounter++;
                     }
                 }
             }
@@ -163,6 +174,8 @@ class ContentController extends BaseController
             ->where("modules.id", "=", $request->input("module_id"))
             ->firstOrFail();
 
+        $activity->setAttribute("seo_index", RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity));
+
         $response = new JsonResponse([
             "country" => $country,
             "class" => $class,
@@ -170,10 +183,7 @@ class ContentController extends BaseController
             "chapter" => $chapter,
             "notion" => $notion,
             "activity" => $activity,
-            "module" => array_merge(
-                $module->toArray(),
-                ["seo_index" => RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity, $module)]
-            )
+            "module" => $module
         ]);
 
         return $response;

@@ -21,10 +21,24 @@ use Tests\API\ScopeTestCase;
  */
 class FilesAsPublicTest extends ScopeTestCase
 {
-    protected const SEED_DIRECTORIES = ["a", "a/a1", "a/a1/a2", "b", "c"];
-    protected const SEED_FILES = ["root.txt", "a/a.txt", "a/a1/a1.txt", "a/a1/a1-prime.txt", "a/a1/a2/a2.txt",
-        "c/c.txt"];
+    protected const SEED_DIRECTORIES = [
+        "a",
+        "a/a1",
+        "a/a1/a2",
+        "b",
+        "c"
+    ];
+    protected const SEED_FILES = [
+        "root.txt",
+        "a/a.txt",
+        "a/a1/a1.txt",
+        "a/a1/a1-prime.txt",
+        "a/a1/a2/a2.txt",
+        "c/c.txt"
+    ];
 
+    /** @var string $cdnSubFolderUuid The test uuid folder */
+    protected $cdnSubFolderUuid;
     /** @var array $fileSignature The file JSON schema signature */
     protected $fileSignature;
     /** @var array $directorySignature The directory JSON schema signature */
@@ -38,35 +52,21 @@ class FilesAsPublicTest extends ScopeTestCase
         return Storage::disk("cdn");
     }
 
-    public static function setUpBeforeClass()
-    {
-        $disk = Storage::disk("cdn");
-
-        // Clean directories
-        foreach ($disk->directories() as $directory) {
-            $disk->deleteDirectory($directory);
-        }
-
-        // Clean files except .gitignore
-        foreach ($disk->files() as $file) {
-            if ($file !== ".gitignore") {
-                $disk->delete($file);
-            }
-        }
-
-        // Seed CDN
-        foreach (self::SEED_DIRECTORIES as $directory) {
-            $disk->makeDirectory($directory);
-        }
-
-        foreach (self::SEED_FILES as $file) {
-            $disk->put($file, \Faker\Factory::create()->text(500));
-        }
-    }
-
     public function setUp()
     {
         parent::setUp();
+
+        $disk = Storage::disk("cdn");
+        $this->cdnSubFolderUuid = $this->faker->uuid;
+
+        // Seed CDN
+        foreach (self::SEED_DIRECTORIES as $directory) {
+            $disk->makeDirectory($this->cdnSubFolderUuid . "/" . $directory);
+        }
+
+        foreach (self::SEED_FILES as $file) {
+            $disk->put($this->cdnSubFolderUuid . "/" . $file, \Faker\Factory::create()->text(500));
+        }
 
         $this->fileSignature = [
             "type" => "file",
@@ -82,7 +82,28 @@ class FilesAsPublicTest extends ScopeTestCase
             "timestamp" => new IsType("integer"),
             "url" => new IsType("string")
         ];
+    }
 
+    /**
+     * Delete created files
+     */
+    public function tearDown()
+    {
+        $disk = Storage::disk("cdn");
+
+        // Clean files except .gitignore
+        foreach ($disk->allFiles($this->cdnSubFolderUuid) as $file) {
+            if ($file !== ".gitignore") {
+                $disk->delete($file);
+            }
+        }
+
+        // Clean directories
+        foreach ($disk->directories($this->cdnSubFolderUuid) as $directory) {
+            $disk->deleteDirectory($directory);
+        }
+
+        $disk->deleteDirectory($this->cdnSubFolderUuid);
     }
 
     /**
@@ -92,7 +113,7 @@ class FilesAsPublicTest extends ScopeTestCase
      */
     public function randomDirectory()
     {
-        return $this->faker->randomElement(self::SEED_DIRECTORIES);
+        return $this->faker->randomElement(self::getDisk()->allDirectories($this->cdnSubFolderUuid));
     }
 
     /**
@@ -102,9 +123,8 @@ class FilesAsPublicTest extends ScopeTestCase
      */
     public function randomFile()
     {
-        return $this->faker->randomElement(self::SEED_FILES);
+        return $this->faker->randomElement(self::getDisk()->allFiles($this->cdnSubFolderUuid));
     }
-
 
     /**
      * GET /files/{path}
@@ -179,7 +199,7 @@ class FilesAsPublicTest extends ScopeTestCase
     {
         $this->call("post", "/files", [
             "file" => UploadedFile::fake()->image("avatar.jpg"),
-            "destination" => "test",
+            "destination" => $this->cdnSubFolderUuid . "/test",
             "name" => "avatar.jpg"
         ]);
 

@@ -2,7 +2,7 @@
 namespace App\Console\Commands\Sitemap;
 
 use Illuminate\Console\Command;
-use Roumen\Sitemap\Sitemap;
+use Laravelium\Sitemap\Sitemap;
 
 /**
  * Class SitemapAll

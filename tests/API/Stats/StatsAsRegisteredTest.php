@@ -23,7 +23,7 @@ class StatsAsRegisteredTest extends StatsAsPublicTest
      */
     public function testActivities()
     {
-        $this->call("post", "/stats/activities");
+        $this->json("post", "/stats/activities");
 
         $data = $this->getResponseData();
 
@@ -54,7 +54,7 @@ class StatsAsRegisteredTest extends StatsAsPublicTest
         $start = Carbon::now()->subDays(25);
         $end = Carbon::now()->subDays(2);
 
-        $this->call("post", "/stats/activities", [
+        $this->json("post", "/stats/activities", [
             "start" => $start->toDateString(),
             "end" => $end->toDateString(),
         ]);
@@ -91,7 +91,7 @@ class StatsAsRegisteredTest extends StatsAsPublicTest
      */
     public function activitiesWithIntervalSize($interval)
     {
-        $this->call("post", "/stats/activities", [
+        $this->json("post", "/stats/activities", [
             "interval" => $interval,
         ]);
 
@@ -163,7 +163,7 @@ class StatsAsRegisteredTest extends StatsAsPublicTest
      */
     public function testActivitiesForStranger()
     {
-        $this->call("post", "/stats/activities", [
+        $this->json("post", "/stats/activities", [
             "user_id" => $this->stranger()->id,
         ]);
 
