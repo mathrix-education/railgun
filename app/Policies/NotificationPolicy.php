@@ -8,7 +8,7 @@ use Illuminate\Notifications\DatabaseNotification;
  * Class NotificationPolicy.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @since     4.1.3
+ * @since     4.2.0
  * @copyright Mathrix Education SA
  */
 class NotificationPolicy extends BasePolicy
@@ -23,6 +23,6 @@ class NotificationPolicy extends BasePolicy
      */
     public function mark(User $currentUser, DatabaseNotification $notification)
     {
-        return $currentUser->isAdmin() || $notification->notifiable->id === $currentUser;
+        return $currentUser->isAdmin() || $notification->notifiable->id === $currentUser->id;
     }
 }

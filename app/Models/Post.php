@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Interfaces\Commentable;
-use App\Models\Traits\CommentableTrait;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Model Post.
@@ -30,10 +28,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property User                 $user
  * @property Collection|Comment[] $comments
  */
-class Post extends BaseModel implements Commentable
+class Post extends BaseModel
 {
-    use CommentableTrait;
-
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
     /** @var array The attributes that are mass assignable */
@@ -82,5 +78,15 @@ class Post extends BaseModel implements Commentable
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * HasMany Comments
+     *
+     * @return HasMany
+     */
+    public function comments(): HasMany
+    {
+        return $this->module->comments();
     }
 }

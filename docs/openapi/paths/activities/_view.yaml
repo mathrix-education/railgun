@@ -1,0 +1,14 @@
+get:
+  tags:
+  - Activities
+  summary: Get user's "view" activities
+  operationId: activitiesView
+  responses:
+    200:
+      description: Array of _Path_ describing incompleted activities, __one by discipline__.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../index.yaml#/components/schemas/PathActivity'

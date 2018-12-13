@@ -9,43 +9,43 @@
     "id": 2,
     "name": "Physique",
     "slug": "physique",
-    "beta": 1
+    "beta": 0
   },
   {
     "id": 3,
     "name": "SVT",
     "slug": "svt",
-    "beta": 1
+    "beta": 0
   },
   {
     "id": 4,
     "name": "Sciences de l'Ingénieur",
     "slug": "science-ingenieur",
-    "beta": 1
+    "beta": 0
   },
   {
     "id": 5,
     "name": "Sciences Economiques et Sociales",
     "slug": "sciences-economiques-et-sociales",
-    "beta": 1
+    "beta": 0
   },
   {
     "id": 6,
     "name": "Philosophie",
     "slug": "philosophie",
-    "beta": 1
+    "beta": 0
   },
   {
     "id": 7,
     "name": "Histoire",
     "slug": "histoire",
-    "beta": 1
+    "beta": 0
   },
   {
     "id": 8,
     "name": "Géographie",
     "slug": "geographie",
-    "beta": 1
+    "beta": 0
   },
   {
     "id": 9,

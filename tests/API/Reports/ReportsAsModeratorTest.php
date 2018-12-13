@@ -40,7 +40,10 @@ class ReportsAsModeratorTest extends ReportsAsRegisteredTest
      */
     public function testEdit()
     {
-        $this->genericEditSuccess();
+        $this->genericEditSuccess([], function ($data) {
+            unset($data["created_at"], $data["updated_at"]);
+            return $data;
+        });
     }
 
     /**
@@ -50,6 +53,6 @@ class ReportsAsModeratorTest extends ReportsAsRegisteredTest
      */
     public function testDelete()
     {
-        $this->genericEditSuccess();
+        $this->genericDeleteSuccess();
     }
 }

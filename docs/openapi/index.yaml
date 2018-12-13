@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Mathrix Education SA API
-  version: 4.1.2
+  version: 4.2.0
   description: This is the official documentation of Mathrix Education SA API.
   contact:
     name: Mathieu Bour
@@ -9,8 +9,8 @@ info:
   x-logo:
     url: https://cdn.mathrix.fr/img/logo-redoc.png
 servers:
-- url: 'https://api.mathrix.fr/'
-- url: 'https://dev.api.mathrix.fr/'
+- url: 'https://mathrix.fr/api'
+- url: 'https://dev.mathrix.fr/api'
 tags:
 - name: Activities
   description: Activities API
@@ -18,6 +18,8 @@ tags:
   description: Categories API
 - name: Chapters
   description: Chapters API
+- name: Comments
+  description: Comments API
 - name: Content
   description: Content API
 - name: Disciplines
@@ -26,10 +28,14 @@ tags:
   description: Family Packs API
 - name: Files
   description: Files API
+- name: Paths
+  description: Paths API
 - name: Products
   description: Products API
 - name: Modules
   description: Modules API
+- name: Notifications
+  description: Notifications API
 - name: Scores
   description: Scores API
 - name: Users

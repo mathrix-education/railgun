@@ -1,36 +1,65 @@
 patch:
   tags:
-  - Activities
-  summary: Mark an activity
+    - Activities
+  security:
+    - registered: []
   operationId: activitiesMark
+  summary: Mark an activity
+  description: Mark an activity using its path.
   parameters:
-  - name: activityId
-    in: path
-    description: The activity id.
-    required: true
-    schema:
-      type: int
-      example: 45
+    - name: activityId
+      in: path
+      description: The activity id.
+      required: true
+      schema:
+        type: int
+        example: 1655
   requestBody:
     content:
       application/json:
         schema:
-          favorite:
-            description: If the activity should be marked as `favorite`.
-            type: boolean
-          to_revise:
-            description: If the activity should be marked as `to_revise`.
-            type: boolean
-          completed:
-            description: >-
-              If the activity should be marked as `completed`. Setting this to `false` marks the activity as incomplete.
-            type: boolean
+          type: object
+          properties:
+            path:
+              description: The path.
+              type: object
+              properties:
+                country_id:
+                  description: The country id.
+                  type: integer
+                  example: 1
+                class_id:
+                  description: The class id.
+                  type: integer
+                  example: 5
+                discipline_id:
+                  description: The discipline id.
+                  type: integer
+                  example: 7
+                chapter_id:
+                  description: The chapter id.
+                  type: integer
+                  example: 16
+                notion_id:
+                  description: The notion id.
+                  type: integer
+                  example: 125
+            status:
+              description: The mark status.
+              type: string
+              enum:
+                - view
+                - to_revise
+                - completed
+          required:
+            - path
+            - status
   responses:
     200:
-      description: The marked activity.
+      description: The _Mark_.
       content:
         application/json:
           schema:
-            $ref: '../../index.yaml#/components/schemas/Activity'
+            $ref: '../../index.yaml#/components/schemas/MarkActivity'
     404:
       $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

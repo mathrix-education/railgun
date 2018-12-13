@@ -20,12 +20,18 @@ class ProductsAsAdminTest extends ProductsAsModeratorTest
 
     public function testAdd()
     {
-        $this->genericAddSuccess();
+        $this->genericAddSuccess([], function ($data) {
+            unset($data["created_at"], $data["updated_at"]);
+            return $data;
+        });
     }
 
     public function testEdit()
     {
-        $this->genericEditSuccess();
+        $this->genericEditSuccess([], function ($data) {
+            unset($data["created_at"], $data["updated_at"]);
+            return $data;
+        });
     }
 
     public function testDelete()

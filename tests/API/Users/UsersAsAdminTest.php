@@ -28,7 +28,7 @@ class UsersAsAdminTest extends UsersAsModeratorTest
         ];
         $data = array_merge($dataWithoutPassword, ["password" => "test"]);
 
-        $this->call("post", "/users/register", $data);
+        $this->json("post", "/users/register", $data);
 
         $user = User::whereEmail($data["email"])->firstOrFail();
 
@@ -48,7 +48,7 @@ class UsersAsAdminTest extends UsersAsModeratorTest
     {
         $stranger = $this->stranger();
 
-        $this->call("get", "/users/{$stranger->id}");
+        $this->json("get", "/users/{$stranger->id}");
 
         $this->assertHttp200Success();
     }

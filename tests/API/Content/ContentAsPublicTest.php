@@ -23,7 +23,7 @@ class ContentAsPublicTest extends ScopeTestCase
      */
     public function testSearchGlobal()
     {
-        $this->call("get", "/search/lorem");
+        $this->json("get", "/search/lorem");
 
         $this->assertHttp200Success();
         $data = $this->getResponseData();
@@ -37,7 +37,7 @@ class ContentAsPublicTest extends ScopeTestCase
      */
     public function testUpload()
     {
-        $this->call("post", "/content/upload");
+        $this->json("post", "/content/upload");
         $this->assertHttp401Unauthorized();
     }
 
@@ -46,7 +46,7 @@ class ContentAsPublicTest extends ScopeTestCase
      */
     public function testTree()
     {
-        $this->call("get", "/content/tree");
+        $this->json("get", "/content/tree");
         $this->assertHttp200Success();
     }
 }

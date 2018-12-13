@@ -2,9 +2,6 @@
 
 namespace Tests\API\Notifications;
 
-use App\Models\Comment;
-use App\Models\User;
-
 /**
  * Class NotificationsAsRedactorTest
  * Test notifications as redactor.
@@ -12,7 +9,7 @@ use App\Models\User;
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
  *
- * @version   4.1.1
+ * @version   4.2.0
  */
 class NotificationsAsRedactorTest extends NotificationsAsRegisteredTest
 {

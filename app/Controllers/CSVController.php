@@ -73,7 +73,7 @@ class CSVController extends BaseController
                             $activityCounter,
                             $activity->reviewed ? 1 : 0,
                             $module->id,
-                            RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity, $module) ? 1 : 0,
+                            RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity) ? 1 : 0,
                             ($notion->type == "premium" || $activity->premium) ? 1 : 0
                         ];
 

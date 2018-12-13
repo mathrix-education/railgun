@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use Auth;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Model Module.
@@ -30,11 +30,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property mixed                 $status
  * @property Collection|Activity[] $activities
  * @property Collection|Comment[]  $comments
+ * @property Collection|Mark[]     $marks
  * @property Collection|Log[]      $logs
  * @property Collection|Product[]  $products
- * @property mixed                 $favorite
- * @property mixed                 $to_revise
- * @property bool                  $completed
+ * @property string|null           $mark
  * @property string                $uri_type
  */
 class Module extends BaseModel
@@ -59,21 +58,20 @@ class Module extends BaseModel
         "visible" => "boolean",
     ];
     /** @var array The accessors to append to the model's array form */
-    protected $appends = ["favorite", "to_revise", "completed"];
+    protected $appends = ["mark"];
 
+    /**
+     * Module constructor.
+     *
+     * @param array $attributes
+     */
     public function __construct(array $attributes = [])
     {
+        parent::__construct($attributes);
+
         // Dynamic rules
         $this->rules["type"] = "required|in:" . implode(",", self::TYPES);
-
-        parent::__construct($attributes);
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Appends
-    |--------------------------------------------------------------------------
-    */
 
     /**
      * Handle too array strips if user is not premium.
@@ -84,6 +82,7 @@ class Module extends BaseModel
     {
         $array = parent::toArray();
 
+        /** @var User $user */
         $user = Auth::user();
         $strip = $this->premium && ($user === null || !$user->premium && !$user->isModerator());
 
@@ -101,73 +100,29 @@ class Module extends BaseModel
         return $array;
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Appends
+    |--------------------------------------------------------------------------
+    */
     /**
-     * favorite.
+     * Get the mark attribute (view|to_revise|completed)
      *
-     * @return bool|mixed|null
+     * @return string
      */
-    public function getFavoriteAttribute()
+    public function getMarkAttribute(): ?string
     {
         /** @var User $user */
         $user = Auth::user();
 
         if ($user === null) {
-            return;
+            return null;
+        } else {
+            /** @var Mark $mark */
+            $mark = $this->marks()->where("user_id", "=", $user->id)->first();
+
+            return $mark !== null ? $mark->status : null;
         }
-
-        $meta = Meta::where([
-            ["module_id", $this->id],
-            ["user_id", $user->id],
-        ])
-            ->first();
-
-        return $meta === null ? false : $meta->favorite;
-    }
-
-    /**
-     * to_revise.
-     *
-     * @return bool
-     */
-    public function getToReviseAttribute()
-    {
-        /** @var User $user */
-        $user = Auth::user();
-
-        if ($user === null) {
-            return;
-        }
-
-        $meta = Meta::where([
-            ["module_id", $this->id],
-            ["user_id", $user->id],
-        ])
-            ->first();
-
-        return $meta === null ? false : $meta->to_revise;
-    }
-
-    /**
-     * completed.
-     *
-     * @return bool
-     */
-    public function getCompletedAttribute()
-    {
-        /** @var User $user */
-        $user = Auth::user();
-
-        if ($user === null) {
-            return;
-        }
-
-        $meta = Meta::where([
-            ["module_id", $this->id],
-            ["user_id", $user->id],
-        ])
-            ->first();
-
-        return $meta === null ? null : $meta->completed;
     }
 
     /**
@@ -175,7 +130,7 @@ class Module extends BaseModel
      *
      * @return string
      */
-    public function getUriTypeAttribute()
+    public function getUriTypeAttribute(): ?string
     {
         switch ($this->type) {
             case "mcq":
@@ -203,7 +158,6 @@ class Module extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
-
     /**
      * BelongsToMany Activity.
      *
@@ -214,6 +168,26 @@ class Module extends BaseModel
         return $this->belongsToMany(Activity::class)
             ->withPivot(["order"])
             ->orderBy("pivot_order");
+    }
+
+    /**
+     * HasMany Comment.
+     *
+     * @return HasMany
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class)->orderBy("created_at");
+    }
+
+    /**
+     * HasMany Marks.
+     *
+     * @return HasManyThrough
+     */
+    public function marks(): HasManyThrough
+    {
+        return $this->hasManyThrough(Mark::class, Path::class);
     }
 
     /**

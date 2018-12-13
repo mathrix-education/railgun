@@ -1,0 +1,49 @@
+description: Path
+type: object
+properties:
+  id:
+    description: The path id.
+    type: integer
+    example: 33
+  country_id:
+    description: The country id which belongs to the path.
+    type: integer
+    example: 1
+  class_id:
+    description: The class id which belongs to the path.
+    type: integer
+    example: 12
+  discpline_id:
+    description: The discipline id which belongs to the path.
+    type: integer
+    example: 3
+  chapter_id:
+    description: The chapter id which belongs to the path.
+    type: integer
+    example: 314
+  notion_id:
+    description: The notion id which belongs to the path.
+    type: integer
+    example: 164
+  activity_id:
+    description: The activty id which belongs to the path.
+    type: integer
+    example: 1422
+  module_id:
+    description: The module id which belongs to the path.
+    type: integer
+    example: 1745
+  country:
+    $ref: '../index.yaml#/components/schemas/Country'
+  class_:
+    $ref: '../index.yaml#/components/schemas/Class'
+  discipline:
+    $ref: '../index.yaml#/components/schemas/Discipline'
+  chapter:
+    $ref: '../index.yaml#/components/schemas/Chapter'
+  notion:
+    $ref: '../index.yaml#/components/schemas/Notion'
+  activity:
+    $ref: '../index.yaml#/components/schemas/Activity'
+  module:
+    $ref: '../index.yaml#/components/schemas/Module'

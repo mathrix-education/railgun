@@ -2,23 +2,14 @@
 
 namespace App\Controllers;
 
-use App\Exceptions\Http400InvalidRequestException;
-use App\Exceptions\Http401UnauthorizedException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
-use App\Models\Activity;
-use App\Models\Chapter;
-use App\Models\Class_;
-use App\Models\Country;
-use App\Models\Discipline;
-use App\Models\Meta;
+use App\Models\Mark;
 use App\Models\Module;
-use App\Models\Notion;
+use App\Models\Path;
 use App\Models\User;
-use App\Utils\RouterFront;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 
 /**
  * Class ModuleController.
@@ -179,180 +170,34 @@ class ModuleController extends BaseController
      * @param Request $request The request
      * @param int     $id
      *
-     * @throws Http400InvalidRequestException
-     * @throws Http401UnauthorizedException
+     * @return JsonResponse
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
-     *
-     * @return JsonResponse
      */
     public function mark(Request $request, int $id): JsonResponse
     {
-        $user = $this->getUserByRequestOrUnauthorized($request);
+        /** @var User $user */
+        $user = $request->user();
+        Module::findOrFail($id);
+        $status = $request->input("status");
 
-        $metaData = array_merge(
-            ["user_id" => $user->id, "module_id" => $id],
-            $request->only(
-                ["country_id", "class_id", "discipline_id", "notion_id", "chapter_id", "activity_id"]
+        $path = Path::retrieve(
+            array_merge(
+                $request->json("path"),
+                ["module_id" => $id]
             )
         );
 
-        /** @var Meta $meta */
-        $meta = Meta::firstOrNew($metaData);
-
-        $meta->favorite = $request->input("favorite") ?? $meta->favorite ?? false;
-        $meta->to_revise = $request->input("to_revise") ?? $meta->to_revise ?? false;
-        $meta->completed = $request->input("completed") ?? $meta->completed ?? false;
-
-        $meta->save();
-
-        return response()->json(Module::find($id));
-    }
-
-    /**
-     * Get modules routes
-     *
-     * @param int $moduleId
-     *
-     * @return JsonResponse
-     */
-    public function routes(int $moduleId): JsonResponse
-    {
-        $module = Module::findOrFail($moduleId);
-
-        $routes = [];
-
-        foreach ($module->activities as $activity) {
-            foreach ($activity->notions as $notion) {
-                foreach ($notion->chapters as $chapter) {
-                    $class = $chapter->class_;
-                    $discipline = $chapter->discipline;
-                    $country = $class->country;
-
-                    $url = RouterFront::getModuleUrl($country, $class, $discipline, $chapter, $notion, $activity, $module);
-                    $seoIndex = RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity, $module);
-
-                    $routes[] = [
-                        "url" => $url,
-                        "seo_index" => $seoIndex
-                    ];
-                }
-            }
-        }
-
-        $response = new JsonResponse($routes);
-
-        return $response;
-    }
-
-    /**
-     * Mark a content route a no-index.
-     *
-     * @param Request $request
-     * @param int     $moduleId
-     *
-     * @return JsonResponse
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
-     * @throws ValidationException
-     * @throws Http400InvalidRequestException
-     */
-    public function markIndex(Request $request, int $moduleId)
-    {
-        $request->user()->canOrFail("markIndex", Module::class);
-
-        $this->validate($request, [
-            "country_id" => "required|exists:countries,id",
-            "class_id" => "required|exists:classes,id",
-            "discipline_id" => "required|exists:disciplines,id",
-            "chapter_id" => "required|exists:chapters,id",
-            "notion_id" => "required|exists:notions,id",
-            "activity_id" => "required|exists:activities,id",
+        $mark = Mark::retrieve([
+            "user_id" => $user->id,
+            "path_id" => $path->id
         ]);
 
-        $country = Country::findOrFail($request->input("country_id"));
-        $class = Class_::findOrFail($request->input("class_id"));
-        $discipline = Discipline::findOrFail($request->input("discipline_id"));
-        $chapter = Chapter::findOrFail($request->input("chapter_id"));
-        $notion = Notion::findOrFail($request->input("notion_id"));
-        $activity = Activity::findOrFail($request->input("activity_id"));
-        $module = Module::findOrFail($moduleId);
+        $mark->status = $status;
+        $mark->save();
 
-        $cancel = $request->input("cancel", false);
-        $seoIndex = RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity, $module);
-
-        if (!$cancel && $seoIndex) {
-            throw new Http400InvalidRequestException("Already marked as seo_index = true");
-        } elseif ($cancel && !$seoIndex) {
-            $existingMeta = Meta::where([
-                ["country_id", "=", $country->id],
-                ["class_id", "=", $class->id],
-                ["discipline_id", "=", $discipline->id],
-                ["chapter_id", "=", $chapter->id],
-                ["notion_id", "=", $notion->id],
-                ["activity_id", "=", $activity->id],
-                ["module_id", "=", $module->id],
-                ["seo_index", "=", true]
-            ])
-                ->whereNull("user_id")
-                ->firstOrFail();
-            $existingMeta->delete();
-        } else {
-            $meta = new Meta([
-                "favorite" => false,
-                "to_revise" => false,
-                "completed" => false,
-                "seo_index" => true,
-                "user_id" => null,
-                "country_id" => $country->id,
-                "class_id" => $class->id,
-                "discipline_id" => $discipline->id,
-                "chapter_id" => $chapter->id,
-                "notion_id" => $notion->id,
-                "activity_id" => $activity->id,
-                "module_id" => $module->id
-            ]);
-            $meta->save();
-        }
-
-        $module = Module::findOrFail($moduleId);
-        $response = new JsonResponse(array_merge(
-            $module->toArray(),
-            ["seo_index" => RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity, $module)]
-        ));
-
-        return $response;
-    }
-
-    /**
-     * Get the modules associated with a given route with the seo_index boolean.
-     *
-     * @param int $countryId
-     * @param int $classId
-     * @param int $disciplineId
-     * @param int $chapterId
-     * @param int $notionId
-     * @param int $activityId
-     *
-     * @return JsonResponse
-     */
-    public function byRoute(int $countryId, int $classId, int $disciplineId, int $chapterId, int $notionId,
-                            int $activityId)
-    {
-        $modules = Activity::find($activityId)->modules;
-
-        /**
-         * @var int    $key
-         * @var Module $module
-         */
-        foreach ($modules as $key => $module) {
-            $module->seo_index = RouterFront::seoIndexByIds($countryId, $classId, $disciplineId, $chapterId, $notionId,
-                $activityId, $module->id);
-
-            $modules->offsetSet($key, $module);
-        }
-
-        $response = new JsonResponse($modules);
+        $module = Module::findOrFail($id);
+        $response = new JsonResponse($module);
 
         return $response;
     }

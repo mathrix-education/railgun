@@ -105,6 +105,12 @@ class SitemapContent extends Command
                                          ->orderBy("pivot_order", "asc")
                                          ->get()
                                      as $activity) {
+
+                                // Do not add activities with no-index to sitemap
+                                if (!RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity)) {
+                                    continue;
+                                }
+
                                 /** @var Module $module */
                                 foreach ($activity->modules()
                                              ->withPivot(["order"])
@@ -113,11 +119,6 @@ class SitemapContent extends Command
                                              ->limit(2)
                                              ->get()
                                          as $module) {
-
-                                    // Do not add modules with no-index to sitemap
-                                    if (!RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity, $module)) {
-                                        continue;
-                                    }
 
                                     $type = $this->getModuleType($module);
 

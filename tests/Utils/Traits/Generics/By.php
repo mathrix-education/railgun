@@ -39,7 +39,7 @@ trait By
         $foreignId = $foreignModelClass::random()->id;
         $foreignSingular = str_singular($foreignModelClass::getTableName());
 
-        $this->call("get", "/{$this->modelPlural}/by-$foreignSingular/$foreignId");
+        $this->json("get", "/{$this->modelPlural}/by-$foreignSingular/$foreignId");
     }
 
     /**

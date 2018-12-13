@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Score;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class ScoreTableSeeder.

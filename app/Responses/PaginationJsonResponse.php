@@ -12,7 +12,7 @@ use Illuminate\Http\JsonResponse;
  */
 class PaginationJsonResponse extends JsonResponse
 {
-    public function __construct($data, int $perPage, int $page, int $total, $status = 200, $headers = [], $options = 0)
+    public function __construct($data, int $page, int $perPage, int $total, $status = 200, $headers = [], $options = 0)
     {
         $data = [
             "page" => $page,

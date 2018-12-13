@@ -30,11 +30,12 @@ class DisciplineObserver extends BaseObserver
         if (!empty($discipline->link["classes"])) {
             $toSync = [];
 
-            foreach ($discipline->link["classes"] as $classData) {
+            foreach ($discipline->link["classes"] as $order => $classData) {
                 [$id, $visible] = [$classData["id"], $classData["visible"]];
 
                 if (Class_::where("id", "=", $id)->exists()) {
                     $toSync[$id] = [
+                        "order" => $order,
                         "visible" => $visible
                     ];
                 }

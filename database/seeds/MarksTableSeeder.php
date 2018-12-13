@@ -6,16 +6,18 @@ use App\Models\Class_;
 use App\Models\Discipline;
 use App\Models\Notion;
 use App\Models\User;
+use Carbon\Carbon;
 
 /**
- * Class MetaTableSeeder.
+ * Class MarksTableSeeder.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @since     4.0.3
+ * @since     4.2.0
  * @copyright Mathrix Education SA
  */
-class MetaTableSeeder extends BaseTableSeeder
+class MarksTableSeeder extends BaseTableSeeder
 {
+
     /**
      * @throws \Exception
      */
@@ -23,11 +25,12 @@ class MetaTableSeeder extends BaseTableSeeder
     {
         $registered = User::where(["type" => "registered"])
             ->get();
-        $metas = [];
+        $marks = [];
+        $marksSignatures = [];
 
         /** @var User $user */
         foreach ($registered as $user) {
-            $metaCount = random_int(0, 10);
+            $metaCount = random_int(30, 50);
 
             for ($i = 0; $i < $metaCount; ++$i) {
                 /** @var Class_ $class_ */
@@ -50,23 +53,38 @@ class MetaTableSeeder extends BaseTableSeeder
                     ->inRandomOrder()
                     ->firstOrFail();
 
-                $statusId = random_int(0, 2);
+                // Register mark in signatures to avoid marks duplicates
+                $marksSignature = "{$user->id},{$activity->id}";
 
-                $metas[] = [
-                    "user_id" => $user->id,
+                if (in_array($marksSignature, $marksSignatures)) {
+                    continue;
+                }
+
+                $marksSignatures[] = $marksSignature;
+
+                $statusId = random_int(0, 2);
+                $statuses = ["view", "to_revise", "completed"];
+
+                $path = \App\Models\Path::retrieve([
                     "country_id" => $user->class_->country->id,
                     "class_id" => $class_->id,
                     "discipline_id" => $discipline->id,
                     "chapter_id" => $chapter->id,
                     "notion_id" => $notion->id,
                     "activity_id" => $activity->id,
-                    "favorite" => (bool) random_int(0, 1),
-                    "completed" => $statusId === 0,
-                    "to_revise" => $statusId === 1,
+                    "module_id" => null
+                ]);
+
+                $marks[] = [
+                    "path_id" => $path->id,
+                    "user_id" => $user->id,
+                    "status" => $statuses[$statusId],
+                    "created_at" => Carbon::now(),
+                    "updated_at" => Carbon::now()
                 ];
             }
         }
 
-        $this->seedFromArray($metas, "metas");
+        $this->seedFromArray($marks, "marks");
     }
 }

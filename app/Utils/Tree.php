@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Utils;
+namespace App\Utils;
 
 use App\Models\Activity;
 use App\Models\Chapter;
@@ -135,12 +135,12 @@ class Tree
         if ($stripAfter !== null) {
             $strip = false;
             foreach ($flatIds as $key => $id) {
-                if ($key === $stripAfter . "_id") {
-                    $strip = true;
-                }
-
                 if ($strip) {
                     unset($flatIds[$key]);
+                }
+
+                if ($key === $stripAfter . "_id") {
+                    $strip = true;
                 }
             }
 

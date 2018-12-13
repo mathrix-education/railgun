@@ -12,13 +12,13 @@ use App\Console\Commands\Format\FormatCopyrightChecker;
 use App\Console\Commands\Format\FormatHarmonize;
 use App\Console\Commands\Make\MakeApidoc;
 use App\Console\Commands\Make\MakeTest;
+use App\Console\Commands\Pipelines\Build;
 use App\Console\Commands\Redoc\RedocBundle;
 use App\Console\Commands\Redoc\RedocServe;
 use App\Console\Commands\Road;
-use App\Console\Commands\SEO\GenerateIndex;
-use App\Console\Commands\SetVersion;
 use App\Console\Commands\Sitemap\SitemapAll;
 use App\Console\Commands\Sitemap\SitemapContent;
+use App\Console\Commands\Version;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
@@ -41,26 +41,16 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Clean::class,
         Dry::class,
-        SetVersion::class,
-        Road::class,
+        Version::class,
         // backup:
         BackupCdn::class,
         // braintree
         BraintreeCheck::class,
-        // clear
-        ClearCache::class,
-        // format:
-        FormatCopyrightChecker::class,
-        FormatCheckEnvironments::class,
-        FormatHarmonize::class,
         // make:
-        MakeApidoc::class,
         MakeTest::class,
         // redoc:
         RedocServe::class,
         RedocBundle::class,
-        // seo:
-        GenerateIndex::class,
         // sitemap:
         SitemapAll::class,
         SitemapContent::class

@@ -37,9 +37,18 @@ class CommentAnswerNotification extends BaseNotification
 
     public function toDatabase(): array
     {
-        return [
-            "comment_id" => $this->comment->id,
-            "user_id" => $this->user->id
+        // Unset unwanted relations
+        unset($this->comment->user);
+        unset($this->comment->parent);
+        $path = $this->comment->path;
+        unset($this->comment->path);
+
+        $data = [
+            "comment" => $this->comment->toArray(),
+            "path" => $path->toArray(),
+            "user" => $this->user->makeHidden(["email"])->toArray()
         ];
+
+        return $data;
     }
 }

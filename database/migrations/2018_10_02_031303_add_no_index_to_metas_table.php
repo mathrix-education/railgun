@@ -1,10 +1,9 @@
 <?php
 
-use App\Exceptions\Http422ModelSaveException;
-use App\Models\Meta;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class AddNoIndexToMetasTable extends Migration
 {
@@ -29,7 +28,6 @@ class AddNoIndexToMetasTable extends Migration
      * Reverse the migrations.
      *
      * @return void
-     * @throws Http422ModelSaveException
      */
     public function down()
     {
@@ -37,7 +35,7 @@ class AddNoIndexToMetasTable extends Migration
             $table->dropColumn("no_index");
         });
 
-        Meta::whereNull("user_id")->delete();
+        DB::table("metas")->whereNull("user_id")->delete();
         //DB::statement("ALTER TABLE metas MODIFY user_id int(11) unsigned NOT NULL;");
     }
 }

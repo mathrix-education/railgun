@@ -1,0 +1,46 @@
+get:
+  tags:
+    - Notifications
+  summary: Read notifications
+  description: Retrieve read notifications by descending creation date, paginated.
+  operationId: notificationsRead
+  security:
+    - registered: []
+  parameters:
+    - name: page
+      in: path
+      description: The page of notifications.
+      schema:
+        type: int
+        default: 1
+    - name: perPage
+      in: path
+      description: The number of notifications per page.
+      schema:
+        type: int
+        default: 100
+  responses:
+    200:
+      description: An array of notifications.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              page:
+                description: The current page.
+                type: integer
+                example: 2
+              per_page:
+                description: The number of notifications per page.
+                type: integer
+                example: 100
+              total:
+                description: The total number of notifications matching the request criteria.
+                type: integer
+                example: 245
+              data:
+                description: An array of __read__ notifications.
+                type: array
+                items:
+                  $ref: '../../index.yaml#/components/schemas/Notification'

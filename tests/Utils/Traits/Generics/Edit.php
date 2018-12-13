@@ -62,7 +62,7 @@ trait Edit
             $this->editModelData = $callback($this->editModelData);
         }
 
-        $this->call("patch", "/" . $this->modelPlural . "/" . $this->editModelId, $this->editModelData);
+        $this->json("patch", "/" . $this->modelPlural . "/" . $this->editModelId, $this->editModelData);
 
         if (isset($this->editModelData["link"])) {
             unset($this->editModelData["link"]);

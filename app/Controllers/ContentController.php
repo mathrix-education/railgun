@@ -97,7 +97,7 @@ class ContentController extends BaseController
                             $activityCounter++,
                             $activity->reviewed ? 1 : 0,
                             $module->id,
-                            RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity, $module) ? 1 : 0,
+                            RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity) ? 1 : 0,
                             ($notion->type == "premium" || $activity->premium) ? 1 : 0
                         ];
 
@@ -174,6 +174,8 @@ class ContentController extends BaseController
             ->where("modules.id", "=", $request->input("module_id"))
             ->firstOrFail();
 
+        $activity->setAttribute("seo_index", RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity));
+
         $response = new JsonResponse([
             "country" => $country,
             "class" => $class,
@@ -181,10 +183,7 @@ class ContentController extends BaseController
             "chapter" => $chapter,
             "notion" => $notion,
             "activity" => $activity,
-            "module" => array_merge(
-                $module->toArray(),
-                ["seo_index" => RouterFront::seoIndex($country, $class, $discipline, $chapter, $notion, $activity, $module)]
-            )
+            "module" => $module
         ]);
 
         return $response;

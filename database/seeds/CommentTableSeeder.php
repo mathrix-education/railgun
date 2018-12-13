@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\CommentAnswerEvent;
 use App\Models\Comment;
 use App\Models\Vote;
 
@@ -17,8 +18,8 @@ class CommentTableSeeder extends BaseTableSeeder
      */
     public function run()
     {
-        $this->seedFromFactory(Comment::class, random_int(50, 180));
-        $this->seedFromSubFactory(Comment::class, "child", random_int(100, 200));
+        $this->seedFromFactory(Comment::class, random_int(50, 80));
+        $this->seedFromSubFactory(Comment::class, "child", random_int(150, 200));
         $this->seedFromFactory(Vote::class, random_int(250, 300));
     }
 }

@@ -9,7 +9,7 @@ namespace Tests\API\Notifications;
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @copyright Mathrix Education SA
  *
- * @version   4.1.1
+ * @version   4.2.0
  */
 class NotificationsAsModeratorTest extends NotificationsAsRedactorTest
 {

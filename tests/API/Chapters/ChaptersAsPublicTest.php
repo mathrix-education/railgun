@@ -47,7 +47,7 @@ class ChaptersAsPublicTest extends ScopeTestCase
         $chapter = Chapter::random();
         $class = $chapter->class_;
 
-        $this->call("get", "/chapters/slug/{$chapter->slug}/by-class-slug/{$class->slug}");
+        $this->json("get", "/chapters/slug/{$chapter->slug}/by-class-slug/{$class->slug}");
 
         $this->assertHttp200Success();
         $this->assertJsonKeys(["id", "name", "slug"]);
@@ -100,7 +100,7 @@ class ChaptersAsPublicTest extends ScopeTestCase
         $class = $chapter->class_;
         $discipline = $chapter->discipline;
 
-        $this->call("GET", "/chapters/by-class-discipline/{$class->id}/{$discipline->id}");
+        $this->json("GET", "/chapters/by-class-discipline/{$class->id}/{$discipline->id}");
 
         $this->assertHttp200Success();
         $this->assertJsonLengthMin(1);
@@ -115,7 +115,7 @@ class ChaptersAsPublicTest extends ScopeTestCase
     {
         /** @var Chapter $chapter */
         $chapter = Chapter::random();
-        $this->call("GET", "/chapters/recursive/{$chapter->id}");
+        $this->json("GET", "/chapters/recursive/{$chapter->id}");
         $this->assertHttp200Success();
         $response = $this->getResponseData();
 
