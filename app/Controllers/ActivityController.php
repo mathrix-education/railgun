@@ -10,7 +10,9 @@ use App\Models\Mark;
 use App\Models\Notion;
 use App\Models\Path;
 use App\Models\User;
+use function foo\func;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -95,7 +97,9 @@ class ActivityController extends BaseController
 
         foreach ($disciplinesIds as $disciplineId) {
             $subQuery = $user->marks()
-                ->with("path")
+                ->with(["path", "path.activity.modules" => function(BelongsToMany $q) {
+                    $q->limit(1);
+                }])
                 ->whereHas("path", function (Builder $query) use ($disciplineId) {
                     $query->where("discipline_id", "=", $disciplineId)
                         ->whereNotNull("chapter_id")

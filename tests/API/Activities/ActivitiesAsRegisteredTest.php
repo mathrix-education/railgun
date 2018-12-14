@@ -7,6 +7,7 @@ use App\Models\Path;
 use App\Utils\Tree;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Passport\Passport;
+use PHPUnit\Framework\Constraint\IsType;
 
 /**
  * Class ActivitiesAsPublicTest
@@ -62,7 +63,8 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
         $this->assertHttp200Success();
         $this->assertJsonDocumentMatches($this->response->getContent(), [
             "[*].user_id" => $user->id,
-            "[*].status" => "view"
+            "[*].status" => "view",
+            "[*].path.activity.modules.[*].id" => new IsType("integer")
         ]);
         foreach ($marks as $mark) {
             $this->assertNotTrue(\in_array($mark->path->discipline_id, $disciplinesIncluded, true));
