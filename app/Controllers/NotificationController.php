@@ -35,7 +35,9 @@ class NotificationController extends BaseController
 
         /** @var Builder $query */
         $query = $user->{$relation}();
-        $query->orderByDesc("created_at");
+        $query = $query->orderByDesc("created_at");
+        $total = $query->count();
+
         $notifications = $query->limit($perPage)
             ->offset(($page - 1) * $perPage)
             ->get();
@@ -44,7 +46,7 @@ class NotificationController extends BaseController
             $notifications,
             $page,
             $perPage,
-            $query->count()
+            $total
         );
 
         return $response;
