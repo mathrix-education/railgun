@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Auth;
  * @property string               $slug
  * @property string|null          $seo_title
  * @property string|null          $seo_description
+ * @property string|null          $seo_keywords
  * @property string               $type
  * @property bool                 $visible
  * @property bool                 $premium
