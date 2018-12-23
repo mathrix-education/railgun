@@ -39,6 +39,7 @@ tests:
 build:
   stage: build
   script:
+    - cp config/env/.env.$CI_COMMIT_REF_NAME .env
     - php artisan pipelines:build $CI_COMMIT_REF_NAME
   artifacts:
     paths:
