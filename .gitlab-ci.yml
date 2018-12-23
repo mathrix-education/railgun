@@ -74,7 +74,7 @@ deploy_web00_dev:
     name: web00/dev
     url: https://dev.mathrix.fr/api
   script:
-    - php artisan pipelines:deploy --server web00 --environment dev --no-interaction
+    - php artisan pipelines:deploy --server web00 --environment dev --no-interaction -v
   artifacts:
     paths:
       - dist/

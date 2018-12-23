@@ -130,7 +130,7 @@ trait InteractsWithServer
                     $this->line(rtrim($line));
                 }
 
-                usleep(100);
+                usleep(500);
             }
 
             while ($o = fgets($errorStream)) {
