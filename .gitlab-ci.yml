@@ -68,6 +68,12 @@ deploy_web00_dev:
     url: https://dev.mathrix.fr/api
   script:
     - php artisan pipelines:deploy --server web00 --environment dev --no-interaction
+  artifacts:
+    paths:
+      - dist/*.zip
+      - storage/logs/
+    expire_in: 1 days
+    when: always
   only:
     - dev
 
