@@ -6,7 +6,7 @@ stages:
   - build
   - deploy
 
-image: edbizarro/gitlab-ci-pipeline-php:7.2
+image: registry.gitlab.com/mathrix/mathrix-api
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:

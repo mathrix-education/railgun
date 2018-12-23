@@ -28,8 +28,6 @@ class Version extends Command
         $this->base = app()->basePath();
         $this->version = $this->argument("version");
 
-        // apidoc.json
-        $this->setVersionInFile("apidoc.json", '\"version\": \"%version%\"');
         // composer.json
         $this->setVersionInFile("composer.json", '\"version\": \"%version%\"');
         // package.json
