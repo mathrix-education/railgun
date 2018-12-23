@@ -33,6 +33,19 @@ class DeployCommand extends PipelineCommand
     public function buildIfNeeded()
     {
         if (!$this->buildExists()) {
+            $existingBuilds = $this->getBuilds();
+
+            if ($existingBuilds) {
+                $shouldUseExistingBuild = $this->confirm("Builds are present in $this->buildsDirectory. Do want you to use one of them?", true);
+
+                if ($shouldUseExistingBuild) {
+                    $useBuild = $this->choice("Choose a build.", $existingBuilds, 0);
+
+                    $this->setBuild($useBuild, true);
+                    return;
+                }
+            }
+
             $shouldBuild = $this->confirm("Build $this->buildName does not exists. Do you want to create it now?", true);
 
             if ($shouldBuild) {

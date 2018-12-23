@@ -24,4 +24,10 @@ abstract class BaseCommand extends Command
     {
         $this->line("[<info>✔</info>] $string", null, $verbosity);
     }
+
+    public function fatal(string $string, $verbosity = null)
+    {
+        $this->block($string, "error", $verbosity);
+        exit(1);
+    }
 }
