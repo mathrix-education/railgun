@@ -119,8 +119,25 @@ trait InteractsWithServer
         stream_set_blocking($errorStream, true);
         stream_set_blocking($stream, true);
 
-        if ($this->getOutput()->isVerbose()) {
-            while ($o = fgets($stream)) {
+        while ($o = fgets($stream)) {
+
+            if ($this->getOutput()->isVerbose()) {
+                $lines = explode("\n", $o);
+
+                foreach ($lines as $line) {
+                    if (empty($line)) {
+                        continue;
+                    }
+
+                    $this->line(rtrim($line));
+                }
+            }
+
+            usleep(100);
+        }
+
+        while ($o = fgets($errorStream)) {
+            if ($this->getOutput()->isVerbose()) {
                 $lines = explode("\n", $o);
                 foreach ($lines as $line) {
                     if (empty($line)) {
@@ -129,22 +146,9 @@ trait InteractsWithServer
 
                     $this->line(rtrim($line));
                 }
-
-                usleep(500);
             }
 
-            while ($o = fgets($errorStream)) {
-                $lines = explode("\n", $o);
-                foreach ($lines as $line) {
-                    if (empty($line)) {
-                        continue;
-                    }
-
-                    $this->line(rtrim($line));
-                }
-
-                usleep(100);
-            }
+            usleep(100);
         }
 
         // Close the streams
