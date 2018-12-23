@@ -1,4 +1,5 @@
 /.env
+/dist
 /build.tar.gz
 /_ide_helper.php
 /.php_cs.cache

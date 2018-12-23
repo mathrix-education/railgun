@@ -1,0 +1,20 @@
+{
+  "web00": {
+    "host": "web00.mathrix.fr",
+    "port": 22,
+    "user": "mathrix_dev",
+    "environments": [
+      "next",
+      "dev",
+      "master"
+    ]
+  },
+  "web01": {
+    "host": "web01.mathrix.fr",
+    "port": 22,
+    "user": "mathrix",
+    "environments": [
+      "master"
+    ]
+  }
+}

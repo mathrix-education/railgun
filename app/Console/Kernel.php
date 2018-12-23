@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Console\Commands\Backup\BackupCdn;
 use App\Console\Commands\Braintree\BraintreeCheck;
+use App\Console\Commands\Braintree\NewPayPalCheck;
 use App\Console\Commands\Clean;
 use App\Console\Commands\Clear\ClearCache;
 use App\Console\Commands\Dry;
@@ -13,6 +14,8 @@ use App\Console\Commands\Format\FormatHarmonize;
 use App\Console\Commands\Make\MakeApidoc;
 use App\Console\Commands\Make\MakeTest;
 use App\Console\Commands\Pipelines\Build;
+use App\Console\Commands\Pipelines\BuildCommand;
+use App\Console\Commands\Pipelines\DeployCommand;
 use App\Console\Commands\Redoc\RedocBundle;
 use App\Console\Commands\Redoc\RedocServe;
 use App\Console\Commands\Road;
@@ -46,6 +49,7 @@ class Kernel extends ConsoleKernel
         BackupCdn::class,
         // braintree
         BraintreeCheck::class,
+        NewPayPalCheck::class,
         // make:
         MakeTest::class,
         // redoc:
@@ -53,7 +57,10 @@ class Kernel extends ConsoleKernel
         RedocBundle::class,
         // sitemap:
         SitemapAll::class,
-        SitemapContent::class
+        SitemapContent::class,
+        // Pipelines
+        BuildCommand::class,
+        DeployCommand::class,
     ];
 
     /**

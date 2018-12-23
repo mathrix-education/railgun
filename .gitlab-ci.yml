@@ -6,8 +6,18 @@ stages:
   - build
   - deploy
 
+image: edbizarro/gitlab-ci-pipeline-php:7.2
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules
+    - vendor/
+
+before_script:
+  - composer install
+  - yarn install
+
 tests:
-  image: edbizarro/gitlab-ci-pipeline-php:7.2
   stage: test
   services:
     - mysql:5.7
@@ -27,20 +37,16 @@ tests:
     - master
 
 build:
-  image: node:10-jessie
   stage: build
-  before_script:
-    - yarn install
   script:
-    - sh scripts/tasks/build.sh
+    - php artisan pipelines:build $CI_COMMIT_REF_NAME
   artifacts:
     paths:
-      - build.tar.gz
+      - dist
     expire_in: 1 days
     when: always
 
 deploy_web00_next:
-  image: doomkin/ubuntu-ssh
   stage: deploy
   dependencies:
     - build
@@ -48,12 +54,11 @@ deploy_web00_next:
     name: web00/next
     url: https://next.mathrix.fr/api
   script:
-    - bash scripts/tasks/deploy.sh web00 next
+    - php artisan pipelines:deploy --server web00 --environment next --no-interaction
   only:
     - next
 
 deploy_web00_dev:
-  image: doomkin/ubuntu-ssh
   stage: deploy
   dependencies:
     - build
@@ -61,12 +66,11 @@ deploy_web00_dev:
     name: web00/dev
     url: https://dev.mathrix.fr/api
   script:
-    - bash scripts/tasks/deploy.sh web00 dev
+    - php artisan pipelines:deploy --server web00 --environment dev --no-interaction
   only:
     - dev
 
 deploy_web01_master:
-  image: doomkin/ubuntu-ssh
   stage: deploy
   dependencies:
     - build
@@ -74,7 +78,7 @@ deploy_web01_master:
     name: web01/master
     url: https://mathrix.fr/api
   script:
-    - bash scripts/tasks/deploy.sh web01 master
+    - php artisan pipelines:deploy --server web01 --environment master --no-interaction -v
   when: manual
   only:
     - master

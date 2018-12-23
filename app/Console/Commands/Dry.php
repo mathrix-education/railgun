@@ -27,15 +27,8 @@ class Dry extends Command
      */
     public function handle()
     {
-        $this->output->progressStart(1000);
-        for ($i = 0; $i < 1000; $i++) {
-            /** @var Comment $newComment */
-            $newComment = factory(Comment::class)->make();
-            $newComment->parent_id = 3107;
-            $newComment->user_id = User::random()->id;
-            $newComment->save();
-            $this->output->progressAdvance();
-        }
-        $this->output->progressFinish();
+        $user = User::find(1);
+        $settings = $user->settings;
+        dd($settings);
     }
 }

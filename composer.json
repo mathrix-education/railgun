@@ -10,6 +10,7 @@
   "require": {
     "php": ">=7.1",
     "ext-json": "*",
+    "ext-ssh2": "*",
     "ext-zip": "*",
     "barryvdh/laravel-cors": "^0.11",
     "braintree/braintree_php": "^3.37",
