@@ -40,7 +40,7 @@ build:
   stage: build
   script:
     - cp config/env/.env.$CI_COMMIT_REF_NAME .env
-    - php artisan pipelines:build $CI_COMMIT_REF_NAME
+    - php artisan pipelines:build --environment $CI_COMMIT_REF_NAME --no-interaction
   artifacts:
     paths:
       - dist
