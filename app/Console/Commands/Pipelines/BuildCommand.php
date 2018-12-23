@@ -39,7 +39,7 @@ class BuildCommand extends PipelineCommand
     public function handle()
     {
         $this->setupEnvironment();
-        $this->setupBuild();
+        $this->defaultBuild();
 
         $this->build();
     }

@@ -16,18 +16,43 @@ trait InteractsWithBuild
     protected $buildName;
     protected $buildFileName;
 
-    public function setupBuild()
+    /**
+     * Set the build name as the current datetime
+     */
+    public function defaultBuild()
+    {
+        $buildName = env("APP_VERSION") . "." . Carbon::now()->format("YmdHis") . "-{$this->environment}";
+        $this->setBuild($buildName);
+    }
+
+    /**
+     * Setup the build. Build name will be in priority order:
+     * 1. The --build option value
+     * 2. The latest build in the dist/ folder
+     * 3. The current datetime
+     */
+    public function selectBuild()
     {
         $this->buildsDirectory = app()->basePath("dist");
 
-        // Get or generate version
-        if (!$this->hasOption("buildName") || $this->option("buildName") === null) {
-            $buildName = env("APP_VERSION") . "." . Carbon::now()->format("YmdHis") . "-{$this->environment}";
-        } else {
-            $buildName = $this->option("buildName");
-        }
+        $existingBuilds = $this->getBuilds();
 
-        $this->setBuild($buildName);
+        if ($this->hasOption("build")) {
+            $this->setBuild($this->option("buildName"), true);
+            return;
+        } elseif ($existingBuilds) {
+            $shouldUseExistingBuild = $this->confirm("Builds are present in $this->buildsDirectory. Do want you to use one of them?", true);
+
+            if ($shouldUseExistingBuild) {
+                $useBuild = $this->choice("Choose a build.", $existingBuilds, 0);
+
+                $this->setBuild($useBuild, true);
+            } else {
+                $this->defaultBuild();
+            }
+        } else {
+            $this->defaultBuild();
+        }
     }
 
     /**
@@ -47,6 +72,8 @@ trait InteractsWithBuild
     }
 
     /**
+     * Get the builds present in the dist/ folder
+     *
      * @return array|false
      */
     protected function getBuilds()
@@ -57,7 +84,9 @@ trait InteractsWithBuild
             return false;
         } else {
             sort($builds);
-            $builds = array_map(function($b) { return str_replace(".zip", "", basename($b)); }, $builds);
+            $builds = array_map(function ($b) {
+                return str_replace(".zip", "", basename($b));
+            }, $builds);
             return array_reverse($builds);
         }
     }
