@@ -16,6 +16,7 @@ cache:
 before_script:
   - composer install
   - yarn install
+  - cp config/env/.env.$CI_COMMIT_REF_NAME .env
 
 tests:
   stage: test
@@ -39,7 +40,6 @@ tests:
 build:
   stage: build
   script:
-    - cp config/env/.env.$CI_COMMIT_REF_NAME .env
     - php artisan pipelines:build --environment $CI_COMMIT_REF_NAME --no-interaction
   artifacts:
     paths:
