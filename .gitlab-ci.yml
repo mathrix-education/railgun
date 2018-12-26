@@ -24,7 +24,7 @@ build:
 
 tests:
   stage: tests
-  image: mathrix/mathrix-api/lumen:${CI_COMMIT_REF_NAME}
+  image: mathrix/mathrix-api/lumen:${CI_COMMIT_SHA}
   services:
     - mysql:5.7
   retry: 2
