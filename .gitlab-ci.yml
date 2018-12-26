@@ -2,11 +2,10 @@
 # Define the GtLab Pipelines behaviour
 
 stages:
-  - test
   - build
-  - deploy
+  - tests
+  - push
 
-image: registry.gitlab.com/mathrix/mathrix-api
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
@@ -14,12 +13,20 @@ cache:
     - vendor/
 
 before_script:
+  - docker info
   - composer install
   - yarn install
   - cp config/env/.env.$CI_COMMIT_REF_NAME .env
 
+build:
+  image: docker:stable
+  stage: build
+  script:
+    - docker build -t registry.gitlab.com/mathrix/mathrix-api/lumen:$CI_COMMIT_REF_NAME .
+
 tests:
-  stage: test
+  stage: tests
+  image: registry.gitlab.com/mathrix/mathrix-api/lumen:$CI_COMMIT_REF_NAME
   services:
     - mysql:5.7
   retry: 2
@@ -33,74 +40,10 @@ tests:
       - storage/logs/
     expire_in: 1 days
     when: always
-  only:
-    - next
-    - master
 
-build:
-  stage: build
+push:
+  image: docker:stable
+  stage: push
   script:
-    - php artisan pipelines:build --environment $CI_COMMIT_REF_NAME --no-interaction
-  artifacts:
-    paths:
-      - dist/
-      - storage/logs/
-    expire_in: 1 days
-    when: always
-
-deploy_web00_next:
-  stage: deploy
-  dependencies:
-    - build
-  environment:
-    name: web00/next
-    url: https://next.mathrix.fr/api
-  script:
-    - php artisan pipelines:deploy --server web00 --environment next --no-interaction
-  artifacts:
-    paths:
-      - dist/
-      - storage/logs/
-    expire_in: 1 days
-    when: always
-  only:
-    - next
-
-deploy_web00_dev:
-  stage: deploy
-  dependencies:
-    - build
-  environment:
-    name: web00/dev
-    url: https://dev.mathrix.fr/api
-  script:
-    - php artisan pipelines:deploy --server web00 --environment dev --no-interaction -v
-  artifacts:
-    paths:
-      - dist/
-      - storage/logs/
-    expire_in: 1 days
-    when: always
-  only:
-    - dev
-
-deploy_web01_master:
-  stage: deploy
-  dependencies:
-    - build
-  environment:
-    name: web01/master
-    url: https://mathrix.fr/api
-  script:
-    - php artisan pipelines:deploy --server web01 --environment master --no-interaction -v
-  artifacts:
-    paths:
-      - dist/
-      - storage/logs/
-    expire_in: 1 days
-    when: always
-  when: manual
-  only:
-    - master
-    - hotfix
+    - docker push registry.gitlab.com/mathrix/mathrix-api/lumen:$CI_COMMIT_REF_NAME .
 
