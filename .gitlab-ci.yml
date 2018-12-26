@@ -32,6 +32,7 @@ tests:
     MYSQL_DATABASE: mathrix_fr_pipelines
     MYSQL_ROOT_PASSWORD: 3AEzrLrSh8j8xJfyHAdB
   before_script:
+    - cp configs/env/.env.pipelines .env
     - composer install
   script:
     - bash scripts/tasks/tests.sh $CI_COMMIT_REF_NAME
