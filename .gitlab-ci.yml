@@ -14,14 +14,13 @@ cache:
 
 before_script:
   - docker info
-  - composer install
-  - yarn install
-  - cp config/env/.env.$CI_COMMIT_REF_NAME .env
+  - docker login registry.gitlab.com -u $REGISTRY_USERNAME -p $REGISTRY_PASSWORD
 
 build:
   image: docker:stable
   stage: build
   script:
+    - cp config/env/.env.$CI_COMMIT_REF_NAME .env
     - docker build -t registry.gitlab.com/mathrix/mathrix-api/lumen:$CI_COMMIT_REF_NAME .
 
 tests:
@@ -33,6 +32,8 @@ tests:
   variables:
     MYSQL_DATABASE: mathrix_fr_pipelines
     MYSQL_ROOT_PASSWORD: 3AEzrLrSh8j8xJfyHAdB
+  before_script:
+    - composer install
   script:
     - bash scripts/tasks/tests.sh $CI_COMMIT_REF_NAME
   artifacts:
