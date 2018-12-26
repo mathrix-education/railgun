@@ -20,7 +20,6 @@ build:
   image: docker:stable
   stage: build
   script:
-    - cp config/env/.env.$CI_COMMIT_REF_NAME .env
     - docker build -t registry.gitlab.com/mathrix/mathrix-api/lumen:$CI_COMMIT_REF_NAME .
 
 tests:
