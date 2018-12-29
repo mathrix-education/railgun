@@ -10,7 +10,7 @@ use Illuminate\Console\Command;
  */
 abstract class BaseCommand extends Command
 {
-    public function block(\string $string, $style = null, $verbosity = null)
+    public function block(string $string, $style = null, $verbosity = null)
     {
         $string = " $string ";
         $l = str_repeat(" ", strlen($string));
@@ -20,12 +20,12 @@ abstract class BaseCommand extends Command
         $this->line($l, $style, $verbosity);
     }
 
-    public function success(\string $string, $verbosity = null)
+    public function success(string $string, $verbosity = null)
     {
         $this->line("[<info>✔</info>] $string", null, $verbosity);
     }
 
-    public function fatal(\string $string, $verbosity = null)
+    public function fatal(string $string, $verbosity = null)
     {
         $this->block($string, "error", $verbosity);
         exit(1);
