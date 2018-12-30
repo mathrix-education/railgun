@@ -14,7 +14,7 @@ use App\Models\Path;
  */
 class McqNoIndexCommand extends BaseCommand
 {
-    protected $signature = "seo:mcq-no-index";
+    protected $signature = "seo:mcq-no-index {--no-dry}";
 
     /**
      * @throws \App\Exceptions\Http422ModelSaveException
@@ -55,7 +55,7 @@ class McqNoIndexCommand extends BaseCommand
                             ]);
                             $path->seo_index = false;
 
-                            if ($this->option("no-dry")) {
+                            if ($this->hasOption("no-dry")) {
                                 $path->save();
                             }
 
@@ -74,6 +74,7 @@ class McqNoIndexCommand extends BaseCommand
             }
         }
 
+        $this->line("");
         $this->success("Patched $mcqCounter activities");
     }
 }
