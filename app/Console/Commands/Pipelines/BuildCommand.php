@@ -7,7 +7,11 @@ use Illuminate\Support\Str;
  * Class BuildCommand.
  * Build a zip file which contains the valid deployment files.
  *
- * @package App\Console\Commands\Pipelines
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
+ * @copyright Mathrix Education SA
+ * @package   App\Console\Commands\Pipelines
  */
 class BuildCommand extends PipelineCommand
 {
