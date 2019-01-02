@@ -4,11 +4,14 @@ namespace App\Console\Commands\Pipelines;
 use Carbon\Carbon;
 
 /**
- * Trait InteractsWithBuild
+ * Trait InteractsWithBuild.
  *
- * @package App\Console\Commands\Pipelines
- *
- * @mixin PipelineCommand
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
+ * @copyright Mathrix Education SA
+ * @package   App\Console\Commands\Pipelines
+ * @mixin     PipelineCommand
  */
 trait InteractsWithBuild
 {
