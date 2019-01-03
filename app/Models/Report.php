@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * Model Report.
+ * Class Report.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @author    Jérémie Levain <munezero999@live.fr>

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * Model Discipline.
+ * Class Discipline.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @author    Jérémie Levain <munezero999@live.fr>

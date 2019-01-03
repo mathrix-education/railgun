@@ -5,7 +5,7 @@ use App\Exceptions\Http422ModelSaveException;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Model Setting.
+ * Class Setting.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @author    Jérémie Levain <munezero999@live.fr>

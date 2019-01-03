@@ -22,7 +22,7 @@ use Laravel\Passport\HasApiTokens;
 use Laravel\Passport\Token;
 
 /**
- * Model User.
+ * Class User.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @author    Jérémie Levain <munezero999@live.fr>
