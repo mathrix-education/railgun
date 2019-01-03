@@ -1,5 +1,5 @@
 <?php
-namespace App\Console\Commands\stubs;
+namespace App\Console\Commands;
 
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
