@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 /**
  * Class Authenticate.
- * Handle auth using Auth via Passport.
+ * Handle auth using OAuth via Passport.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @author    Jérémie Levain <munezero999@live.fr>
