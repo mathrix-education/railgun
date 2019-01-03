@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Collection;
  *
  * @see       \Braintree\Transaction::sale()
  * @see       https://developers.braintreepayments.com/reference/request/transaction/sale/php
+ *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
