@@ -7,7 +7,6 @@ use App\Models\Category;
 /**
  * Class CategoryObserver.
  *
- * @author    Mathrix Back-End Team
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
  * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.3.0
