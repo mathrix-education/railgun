@@ -12,6 +12,7 @@
     "ext-json": "*",
     "ext-ssh2": "*",
     "ext-zip": "*",
+    "appzcoder/lumen-routes-list": "^1.0",
     "barryvdh/laravel-cors": "^0.11",
     "braintree/braintree_php": "^3.37",
     "drewm/mailchimp-api": "^2.5",

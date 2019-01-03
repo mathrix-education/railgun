@@ -10,6 +10,7 @@ use App\Console\Commands\Dry;
 use App\Console\Commands\Format\FormatCheckEnvironments;
 use App\Console\Commands\Format\FormatCopyrightChecker;
 use App\Console\Commands\Format\FormatHarmonize;
+use App\Console\Commands\Harmonization\ClassCommentCommand;
 use App\Console\Commands\Make\MakeApidoc;
 use App\Console\Commands\Make\MakeTest;
 use App\Console\Commands\Pipelines\Build;
@@ -50,6 +51,8 @@ class Kernel extends ConsoleKernel
         // braintree
         BraintreeCheck::class,
         NewPayPalCheck::class,
+        // harmonize
+        ClassCommentCommand::class,
         // make:
         MakeTest::class,
         // redoc:
