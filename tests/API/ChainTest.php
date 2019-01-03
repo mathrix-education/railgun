@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\API;
 
 use App\Models\Chapter;
@@ -7,6 +6,15 @@ use App\Models\User;
 use Laravel\Passport\Passport;
 use App\Utils\Tree;
 
+/**
+ * Class ChainTest.
+ *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @version   4.0.3
+ * @copyright Mathrix Education SA
+ * @package   Tests\API
+ */
 class ChainTest extends APITestCase
 {
     public function testChain()

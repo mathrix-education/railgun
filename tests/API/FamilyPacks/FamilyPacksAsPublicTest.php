@@ -1,18 +1,18 @@
 <?php
-
 namespace Tests\API\FamilyPacks;
 
 use App\Models\FamilyPack;
 use Tests\API\ScopeTestCase;
 
 /**
- * Class FamilyPacksAsPublicTest
+ * Class FamilyPacksAsPublicTest.
  * Test family packs as public (non-logged user).
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @version   4.1.1
+ * @copyright Mathrix Education SA
+ * @package   Tests\API\FamilyPacks
  */
 class FamilyPacksAsPublicTest extends ScopeTestCase
 {    /**

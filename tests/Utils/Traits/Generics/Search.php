@@ -1,15 +1,15 @@
 <?php
-
 namespace Tests\Utils\Traits\Generics;
 
 /**
- * Trait Search
+ * Trait Search.
  * Generic index tests.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.0.3
+ * @copyright Mathrix Education SA
+ * @package   Tests\Utils\Traits\Generics
  */
 trait Search
 {

@@ -1,15 +1,15 @@
 <?php
-
 namespace Tests\API\Files;
 
 /**
- * Class FilesAsPublicTest
+ * Class FilesAsRegisteredTest.
  * Test files as registered user.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @version   4.1.1
+ * @copyright Mathrix Education SA
+ * @package   Tests\API\Files
  */
 class FilesAsRegisteredTest extends FilesAsPublicTest
 {

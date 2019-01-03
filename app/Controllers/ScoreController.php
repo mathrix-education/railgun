@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -17,10 +16,11 @@ use Illuminate\Http\Request;
  * Class ScoreController.
  *
  * @author    Mathrix Back-End Team
- *
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
- *
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
+ * @package   App\Controllers
  */
 class ScoreController extends BaseController
 {

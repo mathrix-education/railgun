@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\Braintree;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -11,7 +10,7 @@ use Illuminate\Support\Facades\Notification;
 use Laravel\Passport\Passport;
 
 /**
- * Class SubscriptionsTest.
+ * Class V4MonthlyIntegrationTest.
  *
  * Scenario
  * - Non-Braintree Customer create is Braintree account by adding its payment method
@@ -21,11 +20,11 @@ use Laravel\Passport\Passport;
  * - Support refunds the last transaction
  * - Support get the last transaction
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
- *
  * @copyright Mathrix Education SA
+ * @package   Tests\Braintree
  */
 class V4MonthlyIntegrationTest extends BraintreeTestCase
 {

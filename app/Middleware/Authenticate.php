@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Middleware;
 
 use App\Exceptions\Http401UnauthorizedException;
@@ -8,14 +7,14 @@ use Illuminate\Contracts\Auth\Factory as Auth;
 use Illuminate\Http\Request;
 
 /**
- * Class Authenticate
- * Handle auth using oAuth via Passport.
+ * Class Authenticate.
+ * Handle auth using Auth via Passport.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.0
- *
  * @copyright Mathrix Education SA
+ * @package   App\Middleware
  */
 class Authenticate
 {

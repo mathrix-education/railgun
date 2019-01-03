@@ -1,21 +1,20 @@
 <?php
-
 namespace App\Exceptions;
 
 use Illuminate\Http\JsonResponse;
 use Throwable;
 
 /**
- * Class HttpException
+ * Class HttpException.
  * Define the HTTP Exceptions basics.
  *
  * @see       https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.0
- *
  * @copyright Mathrix Education SA
+ * @package   App\Exceptions
  */
 abstract class HttpException extends \Exception
 {

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Services\Braintree;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -9,17 +8,16 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * Class Cart
+ * Class Cart.
  * Used to generate \Braintree\Transaction::sale() request data.
  *
  * @see       \Braintree\Transaction::sale()
  * @see       https://developers.braintreepayments.com/reference/request/transaction/sale/php
- *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
- *
  * @copyright Mathrix Education SA
+ * @package   App\Services\Braintree
  */
 class Cart
 {

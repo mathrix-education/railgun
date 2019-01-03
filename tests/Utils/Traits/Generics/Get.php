@@ -1,15 +1,14 @@
 <?php
-
 namespace Tests\Utils\Traits\Generics;
 
 /**
  * Trait Get.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.1
- *
  * @copyright Mathrix Education SA
+ * @package   Tests\Utils\Traits\Generics
  */
 trait Get
 {

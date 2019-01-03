@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\API\FamilyPacks;
 
 use App\Models\FamilyPack;
@@ -7,13 +6,14 @@ use Laravel\Passport\Passport;
 use PHPUnit\Framework\Constraint\IsType;
 
 /**
- * Class FamilyPacksAsRegisteredTest
+ * Class FamilyPacksAsRegisteredTest.
  * Test family packs as registered user.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @version   4.1.1
+ * @copyright Mathrix Education SA
+ * @package   Tests\API\FamilyPacks
  */
 class FamilyPacksAsRegisteredTest extends FamilyPacksAsPublicTest
 {

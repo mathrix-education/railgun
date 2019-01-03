@@ -1,15 +1,15 @@
 <?php
-
 namespace Tests\API\Levels;
 
 /**
- * Class LevelsAsModeratorTest
+ * Class LevelsAsModeratorTest.
  * Test levels as moderator.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @version   4.0.3
+ * @copyright Mathrix Education SA
+ * @package   Tests\API\Levels
  */
 class LevelsAsModeratorTest extends LevelsAsRegisteredTest
 {

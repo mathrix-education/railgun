@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controllers;
 
 use App\Events\NewSubscriptionEvent;
@@ -24,10 +23,10 @@ use Zend\Diactoros\Response\JsonResponse;
  * Class SubscriptionController.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
- *
  * @copyright Mathrix Education SA
+ * @package   App\Controllers
  */
 class SubscriptionController extends Controller
 {

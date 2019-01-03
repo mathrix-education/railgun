@@ -2,11 +2,14 @@
 namespace App\Console\Commands\Pipelines;
 
 /**
- * Trait InteractsWithServer
+ * Trait InteractsWithServer.
  *
- * @package App\Console\Commands\Pipelines
- *
- * @mixin PipelineCommand
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
+ * @copyright Mathrix Education SA
+ * @package   App\Console\Commands\Pipelines
+ * @mixin     PipelineCommand
  */
 trait InteractsWithServer
 {

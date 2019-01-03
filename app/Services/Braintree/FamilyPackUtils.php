@@ -1,17 +1,16 @@
 <?php
-
 namespace App\Services\Braintree;
 
 use App\Services\Braintree\Models\AddOn;
 
 /**
- * Class FamilyPack.
+ * Class FamilyPackUtils.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
- *
  * @copyright Mathrix Education SA
+ * @package   App\Services\Braintree
  */
 class FamilyPackUtils
 {

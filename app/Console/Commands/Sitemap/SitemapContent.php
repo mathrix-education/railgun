@@ -13,12 +13,13 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 /**
- * Class SitemapContent
+ * Class SitemapContent.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package   App\Console\Commands
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.1
  * @copyright Mathrix Education SA
+ * @package   App\Console\Commands\Sitemap
  */
 class SitemapContent extends Command
 {

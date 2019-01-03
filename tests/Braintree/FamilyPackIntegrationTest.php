@@ -9,10 +9,11 @@ use Laravel\Passport\Passport;
 /**
  * Class FamilyPackIntegrationTest
  *
- * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package   Tests\Braintree
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.1
  * @copyright Mathrix Education SA
+ * @package   Tests\Braintree
  */
 class FamilyPackIntegrationTest extends BraintreeTestCase
 {

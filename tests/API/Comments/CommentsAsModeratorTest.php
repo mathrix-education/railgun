@@ -1,17 +1,17 @@
 <?php
-
 namespace Tests\API\Comments;
 
 use App\Models\Comment;
 
 /**
- * Class CommentsAsModeratorTest
+ * Class CommentsAsModeratorTest.
  * Test Comments as moderator.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @version   1.0.0
+ * @copyright Mathrix Education SA
+ * @package   Tests\API\Comments
  */
 class CommentsAsModeratorTest extends CommentsAsRegisteredTest
 {

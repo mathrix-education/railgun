@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controllers;
 
 use App\Models\Quote;
@@ -9,10 +8,10 @@ use Illuminate\Http\JsonResponse;
  * Class QuoteController.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.0
- *
  * @copyright Mathrix Education SA
+ * @package   App\Controllers
  */
 class QuoteController extends BaseController
 {

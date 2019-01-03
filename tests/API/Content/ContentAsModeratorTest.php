@@ -1,19 +1,18 @@
 <?php
-
 namespace Tests\API\Content;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * Class ContentAsModeratorTest
+ * Class ContentAsModeratorTest.
  * Test content as moderator.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
- * @since
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @version   4.3.0
  * @copyright Mathrix Education SA
+ * @package   Tests\API\Contents
  */
 class ContentAsModeratorTest extends ContentAsRegisteredTest
 {

@@ -1,15 +1,15 @@
 <?php
-
 namespace Tests\API\Notifications;
 
 /**
- * Class NotificationsAsModeratorTest
+ * Class NotificationsAsModeratorTest.
  * Test notifications as moderator.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @version   4.2.0
+ * @copyright Mathrix Education SA
+ * @package   Tests\API\Notifications
  */
 class NotificationsAsModeratorTest extends NotificationsAsRedactorTest
 {

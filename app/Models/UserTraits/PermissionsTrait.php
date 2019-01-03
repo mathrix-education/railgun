@@ -8,9 +8,10 @@ use App\Exceptions\Http401UnauthorizedException;
  * Describes all user permissions based on their token scope.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package   App\Models\UserTraits
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.1
  * @copyright Mathrix Education SA
+ * @package   App\Models\UserTraits
  */
 trait PermissionsTrait
 {

@@ -9,6 +9,15 @@ use Braintree_TransactionSearch;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 
+/**
+ * Class NewPayPalCheck.
+ *
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
+ * @copyright Mathrix Education SA
+ * @package   App\Console\Commands\Braintree
+ */
 class NewPayPalCheck extends Command
 {
     protected $signature = "braintree:new-paypal-check";

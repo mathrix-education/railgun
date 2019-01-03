@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\API\Activities;
 
 use App\Models\Activity;
@@ -7,13 +6,14 @@ use App\Models\Module;
 use App\Models\Notion;
 
 /**
- * Class ActivitiesAsModeratorTest
+ * Class ActivitiesAsModeratorTest.
  * Test activities as moderator.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @version   1.0.0
+ * @copyright Mathrix Education SA
+ * @package   Tests\API\Activities
  */
 class ActivitiesAsModeratorTest extends ActivitiesAsRegisteredTest
 {

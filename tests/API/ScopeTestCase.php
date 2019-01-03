@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\API;
 
 use App\Models\BaseModel;
@@ -9,13 +8,14 @@ use Laravel\Passport\Passport;
 use Tests\Utils\Traits\Generics\Generics;
 
 /**
- * Class ScopeTestCase
+ * Class ScopeTestCase.
  * Base test case for actions which rely on permissions.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     1.0.0
  * @copyright Mathrix Education SA
- *
- * @version   1.0.0
+ * @package   Tests\API
  */
 abstract class ScopeTestCase extends APITestCase
 {

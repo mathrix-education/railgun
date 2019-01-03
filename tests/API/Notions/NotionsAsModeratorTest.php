@@ -1,18 +1,18 @@
 <?php
-
 namespace Tests\API\Notions;
 
 use App\Models\Activity;
 use App\Models\Chapter;
 
 /**
- * Class NotionsAsModeratorTest
+ * Class NotionsAsModeratorTest.
  * Test notions as moderator.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @version   1.0.0
+ * @copyright Mathrix Education SA
+ * @package   Tests\API\Notions
  */
 class NotionsAsModeratorTest extends NotionsAsRegisteredTest
 {

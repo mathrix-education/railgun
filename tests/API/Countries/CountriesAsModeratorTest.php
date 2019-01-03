@@ -1,15 +1,15 @@
 <?php
-
 namespace Tests\API\Countries;
 
 /**
- * Class CountriesAsModeratorTest
+ * Class CountriesAsModeratorTest.
  * Test countries as moderator.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @version   1.0.0
+ * @copyright Mathrix Education SA
+ * @package   Tests\API\Countries
  */
 class CountriesAsModeratorTest extends CountriesAsRegisteredTest
 {

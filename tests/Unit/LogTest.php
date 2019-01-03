@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\Unit;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -8,12 +7,13 @@ use Carbon\Carbon;
 use Tests\BaseTestCase;
 
 /**
- * Class LogUtils.
+ * Class LogTest.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @version   4.0.3
+ * @copyright Mathrix Education SA
+ * @package   Tests\Unit
  */
 class LogTest extends BaseTestCase
 {

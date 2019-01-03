@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Exceptions;
 
 use App\Models\User;
@@ -20,12 +19,14 @@ use Symfony\Component\HttpKernel\Exception\HttpException as SymphonyHttpExceptio
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * Class Handler
+ * Class Handler.
  * Handle exceptions and display them in json as response. Also handle Sentry's behavior.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.0
  * @copyright Mathrix Education SA
+ * @package   App\Exceptions
  */
 class Handler extends ExceptionHandler
 {

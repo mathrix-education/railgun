@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Console\Commands\Backup;
 
 use Carbon\Carbon;
@@ -13,8 +12,10 @@ use ZipArchive;
  * Artisan command used to save the content of the CDN to the Google Drive disk.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
  * @copyright Mathrix Education SA
+ * @package   App\Console\Commands\Backup
  */
 class BackupCdn extends Command
 {

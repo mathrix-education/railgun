@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Console\Commands\Redoc;
 
 use Illuminate\Console\Command;
@@ -11,8 +10,10 @@ use Symfony\Component\Process\Process;
  * Bundle Redoc to a single HTML file.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
  * @copyright Mathrix Education SA
+ * @package   App\Console\Commands\Redoc
  */
 class RedocBundle extends Command
 {

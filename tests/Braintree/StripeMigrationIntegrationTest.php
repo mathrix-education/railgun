@@ -8,12 +8,13 @@ use App\Models\User;
 use Laravel\Passport\Passport;
 
 /**
- * Class StripeMigrationIntegrationTest
+ * Class StripeMigrationIntegrationTest.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package   Tests\Braintree
- * @since
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
  * @copyright Mathrix Education SA
+ * @package   Tests\Braintree
  */
 class StripeMigrationIntegrationTest extends BraintreeTestCase
 {

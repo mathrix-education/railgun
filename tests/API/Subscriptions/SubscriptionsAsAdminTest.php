@@ -1,15 +1,15 @@
 <?php
-
 namespace Tests\API\Subscriptions;
 
 /**
- * Class SubscriptionsAsAdminTest
+ * Class SubscriptionsAsAdminTest.
  * Test subscriptions as admin.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @version   4.1.0
+ * @copyright Mathrix Education SA
+ * @package   Tests\API\Subscriptions
  */
 class SubscriptionsAsAdminTest extends SubscriptionsAsModeratorTest
 {

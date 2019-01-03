@@ -1,15 +1,15 @@
 <?php
-
 namespace Tests\API\Countries;
 
 /**
- * Class CountriesAsAdminTest
+ * Class CountriesAsAdminTest.
  * Test countries as admin.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @version   1.0.0
+ * @copyright Mathrix Education SA
+ * @package   Tests\API\Countries
  */
 class CountriesAsAdminTest extends CountriesAsModeratorTest
 {

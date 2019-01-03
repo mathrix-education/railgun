@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\API\Users;
 
 use App\Models\Class_;
@@ -7,13 +6,14 @@ use App\Models\User;
 use Tests\API\ScopeTestCase;
 
 /**
- * Class UsersAsPublicTest
+ * Class UsersAsPublicTest.
  * Test users as public user.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @version   1.0.0
+ * @copyright Mathrix Education SA
+ * @package   Tests\API\Users
  */
 class UsersAsPublicTest extends ScopeTestCase
 {

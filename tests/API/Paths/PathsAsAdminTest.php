@@ -1,17 +1,17 @@
 <?php
-
 namespace Tests\API\Paths;
 
 use App\Utils\Tree;
 
 /**
- * Class PathsAsAdminTest
+ * Class PathsAsAdminTest.
  * Test paths as admin.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @version   4.2.0
+ * @copyright Mathrix Education SA
+ * @package   Tests\API\Paths
  */
 class PathsAsAdminTest extends PathsAsModeratorTest
 {

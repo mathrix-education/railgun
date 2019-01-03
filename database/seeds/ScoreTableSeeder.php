@@ -1,4 +1,5 @@
 <?php
+namespace Database\seeds;
 
 use App\Models\Score;
 use Illuminate\Support\Facades\DB;
@@ -7,8 +8,10 @@ use Illuminate\Support\Facades\DB;
  * Class ScoreTableSeeder.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
  * @copyright Mathrix Education SA
+ * @package   Database\seeds
  */
 class ScoreTableSeeder extends BaseTableSeeder
 {

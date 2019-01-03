@@ -1,11 +1,14 @@
 <?php
+namespace Database\seeds;
 
 /**
  * Class LevelTableSeeder.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.0
  * @copyright Mathrix Education SA
+ * @package   Database\seeds
  */
 class LevelTableSeeder extends BaseTableSeeder
 {

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Providers;
 
 use App\Events\CommentAnswerEvent;
@@ -22,10 +21,10 @@ use Laravel\Lumen\Providers\EventServiceProvider as ServiceProvider;
  * Class EventServiceProvider.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.1
- *
  * @copyright Mathrix Education SA
+ * @package   App\Providers
  */
 class EventServiceProvider extends ServiceProvider
 {

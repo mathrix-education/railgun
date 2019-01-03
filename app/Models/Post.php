@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Carbon\Carbon;
@@ -10,10 +9,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * Model Post.
  *
- * @since     1.0.0
- *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     1.0.0
  * @copyright Mathrix Education SA
+ * @package   App\Models
  *
  * @property int                  $id
  * @property string               $title

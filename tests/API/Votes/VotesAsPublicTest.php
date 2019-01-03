@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\API\Votes;
 
 use App\Models\Comment;
@@ -9,13 +8,14 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Tests\API\ScopeTestCase;
 
 /**
- * Class VotesAsPublicTest
+ * Class VotesAsPublicTest.
  * Test Votes as public (non-logged user).
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @version   4.0.3
+ * @copyright Mathrix Education SA
+ * @package   Tests\API\Votes
  */
 class VotesAsPublicTest extends ScopeTestCase
 {

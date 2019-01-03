@@ -1,18 +1,18 @@
 <?php
-
 namespace Tests\API\Discounts;
 
 use App\Models\Discount;
 use Tests\API\ScopeTestCase;
 
 /**
- * Class DiscountsAsPublicTest
+ * Class DiscountsAsPublicTest.
  * Test discounts as public (non-logged user).
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @version   4.0.3
+ * @copyright Mathrix Education SA
+ * @package   Tests\API\Discounts
  */
 class DiscountsAsPublicTest extends ScopeTestCase
 {

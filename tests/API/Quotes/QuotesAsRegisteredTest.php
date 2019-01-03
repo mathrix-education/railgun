@@ -1,9 +1,8 @@
 <?php
-
 namespace Tests\API\Quotes;
 
 /**
- * Class QuotesAsPublicTest
+ * Class QuotesAsRegisteredTest.
  * Test quotes as registered user.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>

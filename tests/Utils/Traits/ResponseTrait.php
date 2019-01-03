@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\Utils\Traits;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -7,10 +6,11 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Trait ResponseTrait.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @version   4.0.3
+ * @copyright Mathrix Education SA
+ * @package   Tests\Utils\Traits
  */
 trait ResponseTrait
 {

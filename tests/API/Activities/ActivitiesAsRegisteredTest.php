@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\API\Activities;
 
 use App\Models\Mark;
@@ -10,13 +9,14 @@ use Laravel\Passport\Passport;
 use PHPUnit\Framework\Constraint\IsType;
 
 /**
- * Class ActivitiesAsPublicTest
+ * Class ActivitiesAsRegisteredTest.
  * Test activities as registered user.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @version   1.0.0
+ * @copyright Mathrix Education SA
+ * @package   Tests\API\Activities
  */
 class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
 {

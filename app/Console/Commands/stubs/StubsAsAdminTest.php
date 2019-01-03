@@ -1,15 +1,15 @@
 <?php
-
-namespace Tests\API\Stubs;
+namespace App\Console\Commands\stubs;
 
 /**
- * Class StubsAsAdminTest
+ * Class StubsAsAdminTest.
  * Test stubs as admin.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
  * @copyright Mathrix Education SA
- *
- * @version   {version}
+ * @package   App\Console\Commands\stubs
  */
 class StubsAsAdminTest extends StubsAsModeratorTest
 {

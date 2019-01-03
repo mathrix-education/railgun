@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Notifications;
 
 use App\Models\User;
@@ -10,10 +9,10 @@ use Illuminate\Notifications\Messages\SlackMessage;
  * Class NewSubscriptionNotification.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
- *
  * @copyright Mathrix Education SA
+ * @package   App\Notifications
  */
 class NewSubscriptionNotification extends BaseNotification
 {

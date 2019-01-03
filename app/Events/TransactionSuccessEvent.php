@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Events;
 
 use Braintree\Transaction;
@@ -8,10 +7,10 @@ use Braintree\Transaction;
  * Class TransactionSuccessEvent.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
- * @since
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
  * @copyright Mathrix Education SA
+ * @package   App\Events
  */
 class TransactionSuccessEvent extends BaseEvent
 {

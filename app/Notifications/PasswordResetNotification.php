@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Notifications;
 
 use App\Mails\PasswordResetMail;
@@ -9,10 +8,10 @@ use App\Models\User;
  * Class PasswordResetNotification.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
- *
  * @copyright Mathrix Education SA
+ * @package   App\Notifications
  */
 class PasswordResetNotification extends MailNotification
 {

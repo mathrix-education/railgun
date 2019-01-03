@@ -1,17 +1,17 @@
 <?php
-
 namespace Tests\API\Categories;
 
 use Tests\API\ScopeTestCase;
 
 /**
- * Class CategoriesAsPublicTest
+ * Class CategoriesAsPublicTest.
  * Test Categories as public (non-logged user).
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @version   1.0.0
+ * @copyright Mathrix Education SA
+ * @package   Tests\API\Categories
  */
 class CategoriesAsPublicTest extends ScopeTestCase
 {

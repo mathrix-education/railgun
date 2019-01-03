@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Console\Commands\Braintree;
 
 use App\Services\Braintree\Models\AddOn;
@@ -9,12 +8,14 @@ use Illuminate\Support\Facades\Cache;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 /**
- * Class CheckModels
+ * Class BraintreeCheck.
  * Check that all Braintree plans and add-ons are present in order to run the application.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
  * @copyright Mathrix Education SA
+ * @package   App\Console\Commands\Braintree
  */
 class BraintreeCheck extends Command
 {

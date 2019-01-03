@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Traits;
 
 use App\Models\Log;
@@ -9,10 +8,10 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * Trait Loggable.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.0
- *
  * @copyright Mathrix Education SA
+ * @package   App\Models\Traits
  */
 trait Loggable
 {

@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\API\Notifications;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -8,13 +7,14 @@ use Laravel\Passport\Passport;
 use PHPUnit\Framework\Constraint\IsType;
 
 /**
- * Class NotificationsAsPublicTest
+ * Class NotificationsAsRegisteredTest.
  * Test notifications as registered user.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @version   4.2.0
+ * @copyright Mathrix Education SA
+ * @package   Tests\API\Notifications
  */
 class NotificationsAsRegisteredTest extends NotificationsAsPublicTest
 {

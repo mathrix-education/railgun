@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Notifications;
 
 use App\Mails\TransactionRefundMail;
@@ -11,10 +10,10 @@ use Braintree\Transaction\LineItem;
  * Class TransactionRefundSuccessNotification.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
- * @since
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
  * @copyright Mathrix Education SA
+ * @package   App\Notifications
  */
 class TransactionRefundSuccessNotification extends MailNotification
 {

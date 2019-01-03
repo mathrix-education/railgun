@@ -1,17 +1,17 @@
 <?php
-
 namespace Tests\API\Stats;
 
 use Carbon\Carbon;
 
 /**
- * Class StatsAsRegisteredTest
+ * Class StatsAsRegisteredTest.
  * Test stats as registered user.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @version   1.0.0
+ * @copyright Mathrix Education SA
+ * @package   Tests\API\Stats
  */
 class StatsAsRegisteredTest extends StatsAsPublicTest
 {

@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\API\Users;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -16,11 +15,11 @@ use Illuminate\Support\Facades\Hash;
 /**
  * Class UsersAsRegisteredTest.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
- * @since     1.0.0
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @version   1.0.0
  * @copyright Mathrix Education SA
+ * @package   Tests\API\Users
  */
 class UsersAsRegisteredTest extends UsersAsPublicTest
 {

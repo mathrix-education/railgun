@@ -1,4 +1,5 @@
 <?php
+namespace Database\seeds;
 
 use App\Models\Comment;
 use App\Models\User;
@@ -8,8 +9,10 @@ use Faker\Factory;
  * Class NotificationsTableSeeder.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.2.0
  * @copyright Mathrix Education SA
+ * @package   Database\seeds
  */
 class NotificationsTableSeeder extends BaseTableSeeder
 {

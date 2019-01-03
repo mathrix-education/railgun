@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\API\Chapters;
 
 use App\Models\Chapter;
@@ -7,13 +6,14 @@ use Illuminate\Support\Facades\DB;
 use PHPUnit\Framework\Constraint\IsType;
 
 /**
- * Class ChaptersAsPublicTest
+ * Class ChaptersAsRegisteredTest.
  * Test chapters as registered user.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @version   1.0.0
+ * @copyright Mathrix Education SA
+ * @package   Tests\API\Chapters
  */
 class ChaptersAsRegisteredTest extends ChaptersAsPublicTest
 {

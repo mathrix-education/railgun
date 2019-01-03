@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Listeners;
 
 use App\Events\TransactionSuccessEvent;
@@ -10,10 +9,10 @@ use App\Notifications\TransactionSuccessNotification;
  * Class TransactionSuccessListener.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
- * @since
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
  * @copyright Mathrix Education SA
+ * @package   App\Listeners
  */
 class TransactionSuccessListener extends BaseListener
 {
