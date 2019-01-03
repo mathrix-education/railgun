@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author    Mathieu Bour <mathieu@mathrix.fr>
  * @author    Jérémie Levain <munezero999@live.fr>
- * @version   4.0.3
+ * @since     4.0.3
  * @copyright Mathrix Education SA
  * @package   Tests\Utils\Traits
  */

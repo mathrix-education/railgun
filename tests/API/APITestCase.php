@@ -15,7 +15,7 @@ use Tests\Utils\Traits\ResponseTrait;
  *
  * @author    Mathieu Bour <mathieu@mathrix.fr>
  * @author    Jérémie Levain <munezero999@live.fr>
- * @version   4.3.0
+ * @since     4.3.0
  * @copyright Mathrix Education SA
  * @package   Tests\API
  */

@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\API\Content;
 
 use Tests\API\ScopeTestCase;
@@ -10,9 +9,9 @@ use Tests\API\ScopeTestCase;
  *
  * @author    Mathieu Bour <mathieu@mathrix.fr>
  * @author    Jérémie Levain <munezero999@live.fr>
- * @version   4.3.0
+ * @since     4.3.0
  * @copyright Mathrix Education SA
- * @package   Tests\API\Contents
+ * @package   Tests\API\Content
  */
 class ContentAsPublicTest extends ScopeTestCase
 {

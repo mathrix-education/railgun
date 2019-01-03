@@ -12,7 +12,7 @@ use PHPUnit\Framework\Constraint\IsType;
  *
  * @author    Mathieu Bour <mathieu@mathrix.fr>
  * @author    Jérémie Levain <munezero999@live.fr>
- * @version   4.2.0
+ * @since     4.2.0
  * @copyright Mathrix Education SA
  * @package   Tests\API\Notifications
  */

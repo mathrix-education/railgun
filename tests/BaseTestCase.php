@@ -11,7 +11,6 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  * Class BaseTestCase.
  * Base class for every test.
  *
- * @author Mathrix Back-End Team
  * @author    Mathieu Bour <mathieu@mathrix.fr>
  * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.3.0

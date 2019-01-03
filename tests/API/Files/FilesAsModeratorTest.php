@@ -12,7 +12,7 @@ use PHPUnit\Framework\Constraint\RegularExpression;
  *
  * @author    Mathieu Bour <mathieu@mathrix.fr>
  * @author    Jérémie Levain <munezero999@live.fr>
- * @version   4.1.1
+ * @since     4.1.1
  * @copyright Mathrix Education SA
  * @package   Tests\API\Files
  */
