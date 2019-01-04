@@ -1,35 +1,24 @@
 version: '3.7'
 services:
-  lumen:
-    image: registry.gitlab.com/mathrix/mathrix-api/lumen
-    build:
-      context: ./
-      dockerfile: Dockerfile
+  api:
+    image: ${API_IMAGE}
+#    image: api:latest
     working_dir: /var/www
     volumes:
-      - ./:/var/www
-    environment:
-      - DB_PORT=3306
-      - DB_HOST=mysql
-      - DB_DATABASE=mathrix_api
-      - DB_USERNAME=root
-      - DB_PASSWORD=salome3004
-  nginx:
-    image: nginx:1.15.7-alpine
-    working_dir: /var/www
-    volumes:
-      - ./vhost.nginx:/etc/nginx/conf.d/default.conf
-      - ./:/var/www
-    ports:
-      - 8080:80
+      - code:/var/www
   mysql:
     image: mysql:5.7
-    volumes:
-      - mysql_data:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=salome3004
-      - MYSQL_DATABASE=mathrix_api
-      - MYSQL_USER=mathrix_api
-      - MYSQL_PASSWORD=salome3004
+      - MYSQL_ROOT_PASSWORD=3AEzrLrSh8j8xJfyHAdB
+      - MYSQL_DATABASE=mathrix_fr_pipelines
+  engine:
+    depends_on:
+      - api
+      - mysql
+    image: ${ENGINE_IMAGE}
+#    image: engine:latest
+    working_dir: /var/www
+    volumes:
+      - code:/var/www
 volumes:
-  mysql_data:
+  code:

@@ -2,6 +2,8 @@
 # Define the GtLab Pipelines behaviour
 stages:
   - build
+  - tests
+
 variables:
   DOCKER_HOST: tcp://docker:2375
   DOCKER_DRIVER: overlay2
@@ -13,7 +15,7 @@ variables:
 cache:
   key: ${CI_COMMIT_SHA}
   paths:
-    - node_modules
+    - node_modules/
     - vendor/
 services:
   - docker:dind
@@ -27,10 +29,22 @@ before_script:
 build-engine:
   stage: build
   script:
-    - docker build -f docker/engine/Dockerfile -t $ENGINE_IMAGE .
+    - docker build --pull -f docker/engine/Dockerfile -t $ENGINE_IMAGE .
     - docker push $ENGINE_IMAGE
 build-api:
   stage: build
   script:
-    - docker build -f docker/api/Dockerfile -t $API_IMAGE .
+    - docker build --pull -f docker/api/Dockerfile -t $API_IMAGE .
     - docker push $API_IMAGE
+
+# -------
+# phpunit
+# -------
+tests-phpunit:
+  stage: tests
+  before_script:
+    - curl -L https://github.com/docker/compose/releases/download/1.8.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+    - chmod +x /usr/local/bin/docker-compose
+  script:
+    - docker-compose up
+    - docker-compose engine run docker/engine/phpunit.sh $CI_COMMIT_REF_SLUG

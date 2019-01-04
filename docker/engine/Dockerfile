@@ -4,6 +4,10 @@ MAINTAINER Mathieu Bour <mathieu@mathrix.fr>
 
 USER root
 
+WORKDIR /var/www
+
+RUN rm -rf /var/www/html
+
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
 
 RUN apk add -U \
@@ -44,22 +48,6 @@ RUN pecl install xdebug-2.6.1 \
 RUN curl --silent --show-error https://getcomposer.org/installer --output /tmp/installer.php \
     && php /tmp/installer.php --install-dir=/usr/bin --filename=composer \
     && rm /tmp/installer.php
-
-RUN apk del --purge \
-    autoconf \
-    gcc \
-    dpkg-dev \
-    dpkg \
-    libmagic \
-    file \
-    musl-dev \
-    libc-dev \
-    g++ \
-    make \
-    re2c \
-    libssh2-dev \
-    libpng-dev \
-    icu-dev
 
 RUN rm -rf /var/cache/apk/* \
     /usr/src/* \
