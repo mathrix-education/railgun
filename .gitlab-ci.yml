@@ -1,52 +1,36 @@
 # gitlab-ci.yml
 # Define the GtLab Pipelines behaviour
-
 stages:
   - build
-  - tests
-  - push
-
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
+  REGISTRY: registry.gitlab.com/mathrix/mathrix-api
+  ENGINE_IMAGE: $REGISTRY/engine:$CI_COMMIT_REF_SLUG
+  API_IMAGE: $REGISTRY/api:$CI_COMMIT_REF_SLUG
+  ENGINE_RELEASE_IMAGE: $REGISTRY/engine:latest
+  API_RELEASE_IMAGE: $REGISTRY/api:latest
 cache:
-  key: ${CI_COMMIT_REF_SLUG}
+  key: ${CI_COMMIT_SHA}
   paths:
     - node_modules
     - vendor/
-
+services:
+  - docker:dind
 before_script:
-  - docker info
-  - docker login registry.gitlab.com -u $REGISTRY_USERNAME -p $REGISTRY_PASSWORD
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
 
-build:
-  image: docker:stable
+# -------------------
+# Build custom images
+# -------------------
+# Engine image, which contains php-fpm, composer, etc.
+build-engine:
   stage: build
   script:
-    - docker build -t mathrix/mathrix-api/lumen:$CI_COMMIT_SHA .
-
-tests:
-  stage: tests
-  image: mathrix/mathrix-api/lumen:${CI_COMMIT_SHA}
-  services:
-    - mysql:5.7
-  retry: 2
-  variables:
-    MYSQL_DATABASE: mathrix_fr_pipelines
-    MYSQL_ROOT_PASSWORD: 3AEzrLrSh8j8xJfyHAdB
-  before_script:
-    - cp configs/env/.env.pipelines .env
-    - composer install
+    - docker build -f docker/engine/Dockerfile -t $ENGINE_IMAGE .
+    - docker push $ENGINE_IMAGE
+build-api:
+  stage: build
   script:
-    #- bash scripts/tasks/tests.sh $CI_COMMIT_REF_NAME
-    - echo "Skipped"
-  artifacts:
-    paths:
-      - storage/logs/
-    expire_in: 1 days
-    when: always
-
-push:
-  image: docker:stable
-  stage: push
-  script:
-    - docker tag mathrix/mathrix-api/lumen:$CI_COMMIT_SHORT_SHA registry.gitlab.com/mathrix/mathrix-api/lumen:$CI_COMMIT_REF_NAME
-    - docker push registry.gitlab.com/mathrix/mathrix-api/lumen:$CI_COMMIT_REF_NAME .
-
+    - docker build -f docker/api/Dockerfile -t $API_IMAGE .
+    - docker push $API_IMAGE
