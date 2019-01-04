@@ -107,10 +107,11 @@ class QuoteController extends BaseController
      */
     public function random($count = 1)
     {
-        return response()->json(
-            Quote::inRandomOrder()
-                ->limit($count)
-                ->get()
-        );
+        $quotes = Quote::inRandomOrder()
+            ->limit($count)
+            ->get();
+        $response = new JsonResponse($quotes);
+        
+        return $response;
     }
 }
