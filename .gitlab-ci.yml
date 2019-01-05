@@ -32,7 +32,7 @@ build-engine:
   stage: build
   script:
     - docker pull $ENGINE_IMAGE || true
-    - docker build --cache-from $ENGINE_IMAGE -f docker/engine/Dockerfile -t $ENGINE_IMAGE .
+    - docker build --cache-from $ENGINE_IMAGE -f docker/engine-alpine/Dockerfile -t $ENGINE_IMAGE .
     - docker push $ENGINE_IMAGE
 build-api:
   stage: build
@@ -50,4 +50,4 @@ tests-phpunit:
     - apk add py-pip
     - pip install docker-compose
     - docker-compose up -d
-    - docker-compose exec -T engine ./docker/engine/phpunit.sh $CI_COMMIT_REF_SLUG
+    - docker-compose exec -T engine ./docker/pipelines/phpunit.sh $CI_COMMIT_REF_SLUG

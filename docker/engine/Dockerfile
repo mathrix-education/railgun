@@ -26,6 +26,7 @@ RUN apk add -U \
     re2c \
     libssh2-dev \
     libpng-dev \
+    libjpeg-turbo-dev \
     icu-dev
 
 RUN pecl update-channels
