@@ -46,9 +46,8 @@ build-api:
 # -------
 tests-phpunit:
   stage: tests
-  before_script:
+  script:
     - apk add py-pip
     - pip install docker-compose
-  script:
     - docker-compose up
     - docker-compose engine run docker/engine/phpunit.sh $CI_COMMIT_REF_SLUG
