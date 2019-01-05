@@ -50,4 +50,4 @@ tests-phpunit:
     - apk add py-pip
     - pip install docker-compose
     - docker-compose up -d
-    - docker-compose engine run docker/engine/phpunit.sh $CI_COMMIT_REF_SLUG
+    - docker-compose exec engine ./docker/engine/phpunit.sh $CI_COMMIT_REF_SLUG
