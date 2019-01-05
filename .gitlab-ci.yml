@@ -47,7 +47,7 @@ build-api:
 tests-phpunit:
   stage: tests
   before_script:
-    - apk py-pip
+    - apk add py-pip
     - pip install docker-compose
   script:
     - docker-compose up
