@@ -37,3 +37,5 @@ RUN composer check-platform-reqs
 RUN rm -rf \
     /var/cache/apk/* \
     ./composer.json
+
+CMD ["php", "-a"]
