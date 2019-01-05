@@ -38,4 +38,4 @@ RUN rm -rf \
     /var/cache/apk/* \
     ./composer.json
 
-CMD ["php", "-a"]
+CMD tail -f /dev/null
