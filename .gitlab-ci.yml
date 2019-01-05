@@ -29,12 +29,14 @@ before_script:
 build-engine:
   stage: build
   script:
-    - docker build --pull -f docker/engine/Dockerfile -t $ENGINE_IMAGE .
+    - docker pull $ENGINE_IMAGE || true
+    - docker build --cache-from $ENGINE_IMAGE -f docker/engine/Dockerfile -t $ENGINE_IMAGE .
     - docker push $ENGINE_IMAGE
 build-api:
   stage: build
   script:
-    - docker build --pull -f docker/api/Dockerfile -t $API_IMAGE .
+    - docker pull $API_IMAGE || true
+    - docker build --cache-from $API_IMAGE -f docker/api/Dockerfile -t $API_IMAGE .
     - docker push $API_IMAGE
 
 # -------
@@ -43,6 +45,7 @@ build-api:
 tests-phpunit:
   stage: tests
   before_script:
+    - apk -U add curl
     - curl -L https://github.com/docker/compose/releases/download/1.8.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
     - chmod +x /usr/local/bin/docker-compose
   script:
