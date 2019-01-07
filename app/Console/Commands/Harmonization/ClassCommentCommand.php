@@ -4,7 +4,7 @@ namespace App\Console\Commands\Harmonization;
 use App\Console\Commands\BaseCommand;
 
 /**
- * Class ClassCommentCommand
+ * Class ClassCommentCommand.
  *
  * @author    Mathieu Bour <mathieu@mathrix.fr>
  * @since     4.1.0
