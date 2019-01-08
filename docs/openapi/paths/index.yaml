@@ -19,6 +19,8 @@
   $ref: ./activities/_view.yaml
 /activities/by-route/{countryId}/{classId}/{disciplineId}/{chapterId}/{notionId}:
   $ref: ./activities/_by-route.yaml
+/activities/by-{what}/{id}/ids:
+  $ref: ./ativities/_by_ids.yaml
 
 
 # -----------
