@@ -1,0 +1,22 @@
+get:
+  tags:
+    - Posts
+  summary: Get a post
+  operationId: postsGet
+  parameters:
+    - name: postId
+      in: path
+      description: The post id.
+      required: true
+      schema:
+        type: int
+        example: 19
+  responses:
+    200:
+      description: The requested post.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Post'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

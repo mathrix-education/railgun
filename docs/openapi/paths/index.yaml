@@ -181,6 +181,15 @@
   $ref: ./paths/_index.yaml
 
 
+# -----
+# Posts
+# -----
+/posts/{postId}:
+  $ref: ./posts/_postId.yaml
+/posts/{key}/{value}:
+  $ref: ./posts/_key_value.yaml
+
+
 # --------
 # Products
 # --------

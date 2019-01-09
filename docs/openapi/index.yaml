@@ -36,6 +36,8 @@ tags:
   description: Files API
 - name: Paths
   description: Paths API
+- name: Posts
+  description: Posts API
 - name: Products
   description: Products API
 - name: Modules
