@@ -1,8 +1,8 @@
 get:
   tags:
     - Activities
-  summary: Get an activiy by property
-  descritpion: Get the first activiy which matches with the couple property, value.
+  summary: Get an activity by property
+  description: Get the first activiy which matches with the couple property, value.
   operationId: activitiesGetKey
   parameters:
     - name: key
@@ -15,8 +15,9 @@ get:
     - name: value
       in: path
       description: The value of the property.
+      required: true
       schema:
-        type: [int, boolean, string]
+        type: int, boolean, string
         example: lorem-ipsum
   responses:
     200:
