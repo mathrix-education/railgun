@@ -24,6 +24,8 @@ tags:
   description: Comments API
 - name: Content
   description: Content API
+- name: Countries
+  description: Countries API
 - name: Disciplines
   description: Disciplines API
 - name: Family Packs

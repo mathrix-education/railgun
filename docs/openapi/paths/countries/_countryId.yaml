@@ -1,0 +1,22 @@
+get:
+  tags:
+    - Countries
+  summary: Get a country
+  operationId: countriesGet
+  parameters:
+    - name: countryId
+      in: path
+      description: The country id.
+      required: true
+      schema:
+        type: int
+        example: 17
+  responses:
+    200:
+      description: The requested country.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Country'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
