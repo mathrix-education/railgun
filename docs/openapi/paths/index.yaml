@@ -54,6 +54,8 @@
   $ref: ./chapters/_by_class_discipline.yaml
 /chapters/{page}/{perPage}:
   $ref: ./chapters/_page_perPage.yaml
+/chapters/slug/{chapterSlug}/by-class-slug/{classSlug}:
+  $ref: ./chapters/_slug.yaml
 
 
 # -------
