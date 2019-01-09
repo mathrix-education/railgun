@@ -20,7 +20,9 @@
 /activities/by-route/{countryId}/{classId}/{disciplineId}/{chapterId}/{notionId}:
   $ref: ./activities/_by-route.yaml
 /activities/by-{what}/{id}/ids:
-  $ref: ./ativities/_by_ids.yaml
+  $ref: ./activities/_by_ids.yaml
+/activities/{key}/{value}:
+  $ref: ./activities/_key_value.yaml
 
 
 # -----------
