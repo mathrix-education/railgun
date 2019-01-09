@@ -98,6 +98,8 @@
 # ---------
 /countries/{countryId}:
   $ref: ./countries/_countryId.yaml
+/countries/{key}/{value}:
+  $ref: ./countries/_key_value.yaml
 
 
 # ------------
