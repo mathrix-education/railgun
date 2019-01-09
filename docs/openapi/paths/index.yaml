@@ -93,6 +93,12 @@
 /content/flat:
   $ref: ./content/_flat.yaml
 
+# ---------
+# Countries
+# ---------
+/countries/{countryId}:
+  $ref: ./countries/_countryId.yaml
+
 
 # ------------
 # Family packs

@@ -367,39 +367,6 @@ class ContentController extends BaseController
     /**
      * @apiVersion     4.0.0
      *
-     * @api            {get} /content/tree Tree
-     * @apiGroup       Content
-     * @apiName        ContentTree
-     * @apiDescription Retrieve all cdn files
-     * @apiPermission  public
-     * @apiSuccess {string[]} - The cdn files
-     *
-     * @param Request $request The request
-     *
-     * @return JsonResponse
-     */
-    public function tree(Request $request)
-    {
-        $storage = Storage::disk("cdn");
-
-        $directory = $request->query("directory", "/");
-
-        $directories = $storage->directories($directory);
-        foreach ($directories as $key => $v) {
-            $directories[$key] = env("APP_CDN") . "/$v/";
-        }
-
-        $files = $storage->files($directory);
-        foreach ($files as $key => $file) {
-            $files[$key] = env("APP_CDN") . "/$file";
-        }
-
-        return response()->json(array_merge($directories, $files));
-    }
-
-    /**
-     * @apiVersion     4.0.0
-     *
      * @api            {post} /content/upload Upload
      * @apiGroup       Content
      * @apiName        ContentUpload
