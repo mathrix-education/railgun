@@ -58,6 +58,8 @@
   $ref: ./chapters/_slug.yaml
 /chapters/recursive/{chapterId}:
   $ref: ./chapters/_recursive.yaml
+/chapters/{chapterId}:
+  $ref: ./chapters/_chapterId.yaml
 
 
 # -------
