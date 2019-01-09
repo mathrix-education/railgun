@@ -1,0 +1,14 @@
+get:
+  tags:
+    - Add-ons
+  summary: Get all add-ons
+  operationId: addOns
+  responses:
+    200:
+      description: An array of add-ons.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../index.yaml#/components/schemas/Add-ons'

@@ -25,6 +25,13 @@
   $ref: ./activities/_key_value.yaml
 
 
+#------------
+# Add-ons
+#------------
+/add-ons:
+  $ref: ./add-ons/_.yaml
+
+
 # -----------
 # Disciplines
 # -----------
