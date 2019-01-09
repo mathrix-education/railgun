@@ -18,6 +18,8 @@ tags:
   description: Categories API
 - name: Chapters
   description: Chapters API
+- name: Classes
+  description: Classes API
 - name: Comments
   description: Comments API
 - name: Content

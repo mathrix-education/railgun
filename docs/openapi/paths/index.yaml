@@ -65,6 +65,13 @@
 
 
 # -------
+# Classes
+# -------
+/classes/{page}/{perPage}:
+  $ref: ./classes/_page_perPage.yaml
+
+
+# -------
 # Content
 # -------
 /comments:
@@ -174,9 +181,9 @@
   $ref: ./users/_userId_payment-method.yaml
 
 
-#------------------
+# -----------------
 # Braintree Add-ons
-#------------------
+# -----------------
 /add-ons:
   $ref: ./add-ons/_.yaml
 /add-ons/{addOnId}:

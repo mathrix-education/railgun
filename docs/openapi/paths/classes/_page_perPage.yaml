@@ -1,0 +1,28 @@
+get:
+  tags:
+    - Classes
+  summary: Index classes
+  description: Retrive all classes by ascending ids, paginated.
+  operationId: classesIndexPagination
+  parameters:
+    - name: page
+      in: path
+      description: The page of classes.
+      schema:
+        type: int
+        default: 1
+    - name: perPage
+      in: path
+      description: The number of classes per page.
+      schema:
+        type: int
+        default: 100
+  responses:
+    200:
+      description: An array of classes.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../index.yaml#/components/schemas/Class'
