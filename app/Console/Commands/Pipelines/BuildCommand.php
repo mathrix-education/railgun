@@ -19,6 +19,7 @@ class BuildCommand extends PipelineCommand
 
     private const DIRECTORIES = [
         "app/",
+        "config/",
         "bootstrap/",
         "database/",
         "public/",
@@ -36,6 +37,7 @@ class BuildCommand extends PipelineCommand
         "config/*.php",
         "resources/views/emails/*/*.blade.php",
     ];
+
 
     protected $signature = "pipelines:build {--environment=} {--buildName=}";
     private $zipFile;

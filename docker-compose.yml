@@ -1,0 +1,24 @@
+version: '3.7'
+services:
+  api:
+    image: ${API_IMAGE}
+#    image: api:latest
+    working_dir: /var/www
+    volumes:
+      - code:/var/www
+  mysql:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=3AEzrLrSh8j8xJfyHAdB
+      - MYSQL_DATABASE=mathrix_fr_pipelines
+  engine:
+    depends_on:
+      - api
+      - mysql
+    image: ${ENGINE_IMAGE}
+#    image: engine:latest
+    working_dir: /var/www
+    volumes:
+      - code:/var/www
+volumes:
+  code:

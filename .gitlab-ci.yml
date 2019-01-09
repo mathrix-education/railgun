@@ -1,106 +1,53 @@
 # gitlab-ci.yml
 # Define the GtLab Pipelines behaviour
-
 stages:
-  - test
   - build
-  - deploy
+  - tests
 
-image: registry.gitlab.com/mathrix/mathrix-api
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
+  DOCKER_COMPOSE_VERSION: 1.23.2
+  DOCKER_COMPOSE_URL: https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION
+  REGISTRY: registry.gitlab.com/mathrix/mathrix-api
+  ENGINE_IMAGE: $REGISTRY/engine:$CI_COMMIT_REF_SLUG
+  API_IMAGE: $REGISTRY/api:$CI_COMMIT_REF_SLUG
+  ENGINE_RELEASE_IMAGE: $REGISTRY/engine:latest
+  API_RELEASE_IMAGE: $REGISTRY/api:latest
 cache:
-  key: ${CI_COMMIT_REF_SLUG}
+  key: ${CI_COMMIT_SHA}
   paths:
-    - node_modules
+    - node_modules/
     - vendor/
-
+services:
+  - docker:dind
 before_script:
-  - composer install
-  - yarn install
-  - cp config/env/.env.$CI_COMMIT_REF_NAME .env
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
 
-tests:
-  stage: test
-  services:
-    - mysql:5.7
-  retry: 2
-  variables:
-    MYSQL_DATABASE: mathrix_fr_pipelines
-    MYSQL_ROOT_PASSWORD: 3AEzrLrSh8j8xJfyHAdB
-  script:
-    - bash scripts/tasks/tests.sh $CI_COMMIT_REF_NAME
-  artifacts:
-    paths:
-      - storage/logs/
-    expire_in: 1 days
-    when: always
-  only:
-    - next
-    - master
-
-build:
+# -------------------
+# Build custom images
+# -------------------
+# Engine image, which contains php-fpm, composer, etc.
+build-engine:
   stage: build
   script:
-    - php artisan pipelines:build --environment $CI_COMMIT_REF_NAME --no-interaction
-  artifacts:
-    paths:
-      - dist/
-      - storage/logs/
-    expire_in: 1 days
-    when: always
-
-deploy_web00_next:
-  stage: deploy
-  dependencies:
-    - build
-  environment:
-    name: web00/next
-    url: https://next.mathrix.fr/api
+    - docker pull $ENGINE_IMAGE || true
+    - docker build --cache-from $ENGINE_IMAGE -f docker/engine-alpine/Dockerfile -t $ENGINE_IMAGE .
+    - docker push $ENGINE_IMAGE
+build-api:
+  stage: build
   script:
-    - php artisan pipelines:deploy --server web00 --environment next --no-interaction
-  artifacts:
-    paths:
-      - dist/
-      - storage/logs/
-    expire_in: 1 days
-    when: always
-  only:
-    - next
+    - docker pull $API_IMAGE || true
+    - docker build --cache-from $API_IMAGE -f docker/api/Dockerfile -t $API_IMAGE .
+    - docker push $API_IMAGE
 
-deploy_web00_dev:
-  stage: deploy
-  dependencies:
-    - build
-  environment:
-    name: web00/dev
-    url: https://dev.mathrix.fr/api
+# -------
+# phpunit
+# -------
+tests-phpunit:
+  stage: tests
   script:
-    - php artisan pipelines:deploy --server web00 --environment dev --no-interaction -v
-  artifacts:
-    paths:
-      - dist/
-      - storage/logs/
-    expire_in: 1 days
-    when: always
-  only:
-    - dev
-
-deploy_web01_master:
-  stage: deploy
-  dependencies:
-    - build
-  environment:
-    name: web01/master
-    url: https://mathrix.fr/api
-  script:
-    - php artisan pipelines:deploy --server web01 --environment master --no-interaction -v
-  artifacts:
-    paths:
-      - dist/
-      - storage/logs/
-    expire_in: 1 days
-    when: always
-  when: manual
-  only:
-    - master
-    - hotfix
-
+    - apk add py-pip
+    - pip install docker-compose
+    - docker-compose up -d
+    - docker-compose exec -T engine ./docker/pipelines/phpunit.sh $CI_COMMIT_REF_SLUG
