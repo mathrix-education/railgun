@@ -1,4 +1,5 @@
 <?php
+namespace Database\seeds;
 
 use App\Models\Report;
 use App\Models\User;
@@ -7,8 +8,10 @@ use App\Models\User;
  * Class UserTableSeeder.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.0
  * @copyright Mathrix Education SA
+ * @package   Database\seeds
  */
 class UserTableSeeder extends BaseTableSeeder
 {

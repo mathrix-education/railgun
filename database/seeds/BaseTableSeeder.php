@@ -1,4 +1,5 @@
 <?php
+namespace Database\seeds;
 
 use App\Models\BaseModel;
 use Illuminate\Console\Command;
@@ -8,12 +9,13 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Class BaseTableSeeder
+ * Class BaseTableSeeder.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package   Database\Seeds
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.1
  * @copyright Mathrix Education SA
+ * @package   Database\seeds
  */
 class BaseTableSeeder extends Seeder
 {

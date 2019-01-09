@@ -1,17 +1,17 @@
 <?php
-
 namespace Tests\API\Notions;
 
 use Tests\API\ScopeTestCase;
 
 /**
- * Class NotionsAsPublicTest
+ * Class NotionsAsPublicTest.
  * Test notions as public (non-logged user).
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     1.0.0
  * @copyright Mathrix Education SA
- *
- * @version   1.0.0
+ * @package   Tests\API\Notions
  */
 class NotionsAsPublicTest extends ScopeTestCase
 {

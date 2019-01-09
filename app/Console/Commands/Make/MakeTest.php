@@ -1,17 +1,16 @@
 <?php
-
 namespace App\Console\Commands\Make;
 
 use Illuminate\Console\Command;
 
 /**
- * Class MakeApidoc.
+ * Class MakeTest.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.0.3
- *
  * @copyright Mathrix Education SA
+ * @package   App\Console\Commands\Make
  */
 class MakeTest extends Command
 {

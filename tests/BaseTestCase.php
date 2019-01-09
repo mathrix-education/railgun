@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests;
 
 use Faker\Factory;
@@ -9,10 +8,14 @@ use Laravel\Lumen\Testing\TestCase;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
- * Class BaseTest
+ * Class BaseTestCase.
  * Base class for every test.
  *
- * @author Mathrix Team
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
+ * @copyright Mathrix Education SA
+ * @package   Tests
  */
 abstract class BaseTestCase extends TestCase
 {

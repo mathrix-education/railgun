@@ -12,12 +12,13 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 /**
- * Class FamilyPackController
+ * Class FamilyPackController.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package   App\Controllers
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.1
  * @copyright Mathrix Education SA
+ * @package   App\Controllers
  */
 class FamilyPackController extends BaseController
 {

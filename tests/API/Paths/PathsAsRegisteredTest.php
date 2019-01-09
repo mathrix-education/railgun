@@ -1,15 +1,15 @@
 <?php
-
 namespace Tests\API\Paths;
 
 /**
- * Class PathsAsPublicTest
+ * Class PathsAsRegisteredTest.
  * Test paths as registered user.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.2.0
  * @copyright Mathrix Education SA
- *
- * @version   4.2.0
+ * @package   Tests\API\Paths
  */
 class PathsAsRegisteredTest extends PathsAsPublicTest
 {

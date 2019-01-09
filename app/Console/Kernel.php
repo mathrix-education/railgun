@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Console;
 
 use App\Console\Commands\Backup\BackupCdn;
@@ -11,6 +10,7 @@ use App\Console\Commands\Dry;
 use App\Console\Commands\Format\FormatCheckEnvironments;
 use App\Console\Commands\Format\FormatCopyrightChecker;
 use App\Console\Commands\Format\FormatHarmonize;
+use App\Console\Commands\Harmonization\ClassCommentCommand;
 use App\Console\Commands\Make\MakeApidoc;
 use App\Console\Commands\Make\MakeTest;
 use App\Console\Commands\Pipelines\Build;
@@ -30,10 +30,10 @@ use Laravel\Lumen\Console\Kernel as ConsoleKernel;
  * Class Kernel.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.1
- *
  * @copyright Mathrix Education SA
+ * @package   App\Console
  */
 class Kernel extends ConsoleKernel
 {
@@ -51,6 +51,8 @@ class Kernel extends ConsoleKernel
         // braintree
         BraintreeCheck::class,
         NewPayPalCheck::class,
+        // harmonize
+        ClassCommentCommand::class,
         // make:
         MakeTest::class,
         // redoc:

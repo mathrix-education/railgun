@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Mails;
 
 use App\Models\User;
@@ -8,10 +7,10 @@ use App\Models\User;
  * Class PasswordForgottenMail.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.1
- *
  * @copyright Mathrix Education SA
+ * @package   App\Mails
  */
 class PasswordForgottenMail extends BaseMail
 {

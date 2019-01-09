@@ -5,12 +5,13 @@ use App\Models\Score;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Class ScoreObserver
+ * Class ScoreObserver.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@ŋmail.com>
- * @package   App\Observers
- * @since
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
  * @copyright Mathrix Education SA
+ * @package   App\Observers
  */
 class ScoreObserver extends BaseObserver
 {

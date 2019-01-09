@@ -1,15 +1,15 @@
 <?php
-
 namespace Tests\API\Modules;
 
 /**
- * Class ModulesAsModeratorTest
- * Test modules as moderator.
+ * Class ModulesAsRedactorTest.
+ * Test modules as redactor.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     1.0.0
  * @copyright Mathrix Education SA
- *
- * @version   1.0.0
+ * @package   Tests\API\Modules
  */
 class ModulesAsRedactorTest extends ModulesAsRegisteredTest
 {

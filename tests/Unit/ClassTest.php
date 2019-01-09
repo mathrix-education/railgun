@@ -1,17 +1,17 @@
 <?php
-
 namespace Tests\Unit;
 
 use App\Models\Class_;
 use Tests\BaseTestCase;
 
 /**
- * Class ClassUtilsTest.
+ * Class ClassTest.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.0.3
  * @copyright Mathrix Education SA
- *
- * @version   4.0.3
+ * @package   Tests\Unit
  */
 class ClassTest extends BaseTestCase
 {

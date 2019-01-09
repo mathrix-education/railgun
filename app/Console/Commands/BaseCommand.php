@@ -4,9 +4,13 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 
 /**
- * Class BaseCommand
+ * Class BaseCommand.
  *
- * @package App\Console\Commands
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
+ * @copyright Mathrix Education SA
+ * @package   App\Console\Commands
  */
 abstract class BaseCommand extends Command
 {

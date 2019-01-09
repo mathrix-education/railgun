@@ -1,18 +1,17 @@
 <?php
-
 namespace Tests\API\Content;
 
 use Tests\API\ScopeTestCase;
 
 /**
- * Class ContentAsPublicTest
+ * Class ContentAsPublicTest.
  * Test content as public (non-logged user).
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
- * @since
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
  * @copyright Mathrix Education SA
+ * @package   Tests\API\Content
  */
 class ContentAsPublicTest extends ScopeTestCase
 {

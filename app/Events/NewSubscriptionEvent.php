@@ -1,18 +1,17 @@
 <?php
-
 namespace App\Events;
 
 use App\Models\User;
 
 /**
- * Class NewSubscriptionEvent
+ * Class NewSubscriptionEvent.
  * Fired when a user successfully subscribed to Mathrix Premium.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
- * @since
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
  * @copyright Mathrix Education SA
+ * @package   App\Events
  */
 class NewSubscriptionEvent extends BaseEvent
 {

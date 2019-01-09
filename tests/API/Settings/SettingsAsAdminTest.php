@@ -1,17 +1,17 @@
 <?php
-
 namespace Tests\API\Settings;
 
 use App\Models\Setting;
 
 /**
- * Class SettingsAsAdminTest
+ * Class SettingsAsAdminTest.
  * Test settings as admin.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.0.3
  * @copyright Mathrix Education SA
- *
- * @version   4.0.3
+ * @package   Tests\API\Settings
  */
 class SettingsAsAdminTest extends SettingsAsModeratorTest
 {

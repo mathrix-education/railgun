@@ -1,4 +1,5 @@
 <?php
+namespace Database\seeds;
 
 use App\Models\Activity;
 use App\Models\Chapter;
@@ -9,10 +10,10 @@ use App\Models\Notion;
  * Class ContentTableSeeder.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.1
- *
  * @copyright Mathrix Education SA
+ * @package   Database\seeds
  */
 class ContentTableSeeder extends BaseTableSeeder
 {

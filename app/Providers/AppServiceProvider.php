@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Providers;
 
 use App\Models\Activity;
@@ -13,14 +12,14 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
 /**
- * Class AppServiceProvider
+ * Class AppServiceProvider.
  * Register all application service providers.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
- *
  * @copyright Mathrix Education SA
+ * @package   App\Providers
  */
 class AppServiceProvider extends ServiceProvider
 {
@@ -49,6 +48,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(\Illuminate\Redis\RedisServiceProvider::class);
         $this->app->register(\Laravel\Passport\PassportServiceProvider::class);
         $this->app->register(\Laravelium\Sitemap\SitemapServiceProvider::class);
+        $this->app->register(\Appzcoder\LumenRoutesList\RoutesCommandServiceProvider::class);
 
         $this->app->register(GoogleDriveServiceProvider::class);
 

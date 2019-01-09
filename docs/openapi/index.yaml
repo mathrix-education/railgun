@@ -18,6 +18,8 @@ tags:
   description: Categories API
 - name: Chapters
   description: Chapters API
+- name: Classes
+  description: Classes API
 - name: Comments
   description: Comments API
 - name: Content
@@ -41,6 +43,8 @@ tags:
 - name: Users
   description: Users API
   # Braintree
+- name: Braintree Add-ons
+  description: Braintree add-ons API
 - name: Braintree global
   description: Braintree global API
 - name: Braintree Plans

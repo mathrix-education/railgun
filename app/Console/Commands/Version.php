@@ -1,18 +1,17 @@
 <?php
-
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
 /**
- * Class SetVersion
+ * Class Version.
  * Set app version from the local .env.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
- *
  * @copyright Mathrix Education SA
+ * @package   App\Console\Commands
  */
 class Version extends Command
 {

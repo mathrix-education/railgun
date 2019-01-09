@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\Unit;
 
 use App\Models\Setting;
@@ -10,12 +9,13 @@ use Tests\Utils\Traits\Assertions\JsonAssertionsTrait;
 use Tests\Utils\Traits\Assertions\NotificationsAssertionsTrait;
 
 /**
- * Class SettingsUtilsTest.
+ * Class SettingsTest.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.0.3
  * @copyright Mathrix Education SA
- *
- * @version   4.0.3
+ * @package   Tests\Unit
  */
 class SettingsTest extends BaseTestCase
 {

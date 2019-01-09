@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\API\Votes;
 
 use App\Models\Comment;
@@ -11,13 +10,14 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Laravel\Passport\Passport;
 
 /**
- * Class VotesAsPublicTest
+ * Class VotesAsRegisteredTest.
  * Test Votes as registered user.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.0.3
  * @copyright Mathrix Education SA
- *
- * @version   4.0.3
+ * @package   Tests\API\Votes
  */
 class VotesAsRegisteredTest extends VotesAsPublicTest
 {

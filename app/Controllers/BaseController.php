@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -16,14 +15,14 @@ use Illuminate\Support\Str;
 use Laravel\Lumen\Routing\Controller;
 
 /**
- * Class BaseController
+ * Class BaseController.
  * Add a few methods to all controllers.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.0
- *
  * @copyright Mathrix Education SA
+ * @package   App\Controllers
  */
 abstract class BaseController extends Controller
 {

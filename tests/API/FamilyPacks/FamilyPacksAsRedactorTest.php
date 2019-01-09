@@ -1,15 +1,15 @@
 <?php
-
 namespace Tests\API\FamilyPacks;
 
 /**
- * Class FamilyPacksAsRedactorTest
+ * Class FamilyPacksAsRedactorTest.
  * Test family packs as redactor.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.1.1
  * @copyright Mathrix Education SA
- *
- * @version   4.1.1
+ * @package   Tests\API\FamilyPacks
  */
 class FamilyPacksAsRedactorTest extends FamilyPacksAsRegisteredTest
 {

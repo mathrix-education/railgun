@@ -7,8 +7,10 @@ use App\Models\User;
  * Class FilePolicy.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @since
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
  * @copyright Mathrix Education SA
+ * @package   App\Policies
  */
 class FilePolicy extends BasePolicy
 {

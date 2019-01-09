@@ -1,16 +1,17 @@
 <?php
-
 namespace Tests\API\Scores;
 
 use Tests\API\ScopeTestCase;
 
 /**
- * Class ScoresAsPublicTest
+ * Class ScoresAsPublicTest.
  * Test scores as public (non-logged user).
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
  * @copyright Mathrix Education SA
+ * @package   Tests\API\Scores
  */
 class ScoresAsPublicTest extends ScopeTestCase
 {

@@ -1,0 +1,30 @@
+get:
+  tags:
+    - Activities
+  summary: Get an activity by property
+  description: Get the first activiy which matches with the couple property, value.
+  operationId: activitiesGetKey
+  parameters:
+    - name: key
+      in: path
+      description: The property used.
+      required: true
+      schema:
+        type: string
+        example: slug
+    - name: value
+      in: path
+      description: The value of the property.
+      required: true
+      schema:
+        type: int, boolean, string
+        example: lorem-ipsum
+  responses:
+    200:
+      description: The requested activity.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Activity'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

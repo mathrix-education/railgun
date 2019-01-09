@@ -5,7 +5,11 @@ namespace App\Console\Commands\Pipelines;
  * Class DeployCommand.
  * Allow an easy deployment procedure.
  *
- * @package App\Console\Commands\Pipelines
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
+ * @copyright Mathrix Education SA
+ * @package   App\Console\Commands\Pipelines
  */
 class DeployCommand extends PipelineCommand
 {

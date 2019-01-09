@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Utils;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -9,11 +8,11 @@ use Illuminate\Http\Request;
 /**
  * Class Chainer.
  *
- * @author    Mathrix Back-End Team
- *
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
- *
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
+ * @package   App\Utils
  */
 class Chainer
 {

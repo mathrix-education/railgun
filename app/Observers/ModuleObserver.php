@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Observers;
 
 use App\Models\Activity;
@@ -13,7 +12,11 @@ use App\Models\Report;
 /**
  * Class ModuleObserver.
  *
- * @author Mathrix Team
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
+ * @copyright Mathrix Education SA
+ * @package   App\Observers
  */
 class ModuleObserver extends BaseObserver
 {

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use App\Exceptions\Http422ModelSaveException;
@@ -11,16 +10,15 @@ use Illuminate\Support\Collection;
 use Validator as ValidatorFacade;
 
 /**
- * Class BaseModel
+ * Class BaseModel.
  * Base for all models, implement validation on save useless manual disable.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.0
- *
  * @copyright Mathrix Education SA
- *
- * @mixin Builder
+ * @package   App\Models
+ * @mixin     Builder
  */
 abstract class BaseModel extends Model
 {

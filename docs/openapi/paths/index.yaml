@@ -19,6 +19,10 @@
   $ref: ./activities/_view.yaml
 /activities/by-route/{countryId}/{classId}/{disciplineId}/{chapterId}/{notionId}:
   $ref: ./activities/_by-route.yaml
+/activities/by-{what}/{id}/ids:
+  $ref: ./activities/_by_ids.yaml
+/activities/{key}/{value}:
+  $ref: ./activities/_key_value.yaml
 
 
 # -----------
@@ -39,6 +43,8 @@
   $ref: ./categories/_page_perPage.yaml
 /categories/{categoryId}:
   $ref: ./categories/_categoryId.yaml
+/categories/{key}/{value}:
+  $ref: ./categories/_key_value.yaml
 
 
 # --------
@@ -46,11 +52,35 @@
 # --------
 /by-class-discipline/{classId}/{disciplineId}/{?scope}:
   $ref: ./chapters/_by_class_discipline.yaml
+/chapters/{page}/{perPage}:
+  $ref: ./chapters/_page_perPage.yaml
+/chapters/slug/{chapterSlug}/by-class-slug/{classSlug}:
+  $ref: ./chapters/_slug.yaml
+/chapters/recursive/{chapterId}:
+  $ref: ./chapters/_recursive.yaml
+/chapters/{chapterId}:
+  $ref: ./chapters/_chapterId.yaml
+/chapters/{key}/{value}:
+  $ref: ./chapters/_key_value.yaml
 
 
 # -------
-# Content
+# Classes
 # -------
+/classes/{page}/{perPage}:
+  $ref: ./classes/_page_perPage.yaml
+/classes/{classId}:
+  $ref: ./classes/_classId.yaml
+/classes/{key}/{value}:
+  $ref: ./classes/_key_value.yaml
+
+# --------
+# Comments
+# --------
+/comments/{page}/{perPage}:
+  $ref: ./comments/_page_perPage.yaml
+/comments/{commentId}:
+  $ref: ./comments/_commentId.yaml
 /comments:
   $ref: ./comments/_.yaml
 
@@ -158,11 +188,22 @@
   $ref: ./users/_userId_payment-method.yaml
 
 
+# -----------------
+# Braintree Add-ons
+# -----------------
+/add-ons:
+  $ref: ./add-ons/_.yaml
+/add-ons/{addOnId}:
+  $ref: ./add-ons/_addOnId.yaml
+
+
 # --------------------
 # Braintree global API
 # --------------------
 /braintree/client-token:
   $ref: ./braintree/_client-token.yaml
+/braintree/webhook:
+  $ref: ./braintree/_webhook.yaml
 
 
 # -----------------------

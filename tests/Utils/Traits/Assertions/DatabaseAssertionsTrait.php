@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\Utils\Traits\Assertions;
 
 use App\Models\Log;
@@ -7,13 +6,13 @@ use App\Models\User;
 use Carbon\Carbon;
 
 /**
- * Trait DatabaseAssertions.
+ * Trait DatabaseAssertionsTrait.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
- *
  * @copyright Mathrix Education SA
+ * @package   Tests\Utils\Traits\Assertions
  */
 trait DatabaseAssertionsTrait
 {

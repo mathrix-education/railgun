@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Providers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -7,14 +6,14 @@ use Braintree_Configuration;
 use Illuminate\Support\ServiceProvider;
 
 /**
- * Class BraintreeGatewayServiceProvider
+ * Class BraintreeGatewayServiceProvider.
  * Provides Braintree_Gateway to the Laravel Container.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
- *
  * @copyright Mathrix Education SA
+ * @package   App\Providers
  */
 class BraintreeGatewayServiceProvider extends ServiceProvider
 {

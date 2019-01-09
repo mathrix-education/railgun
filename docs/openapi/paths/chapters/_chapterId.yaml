@@ -1,0 +1,22 @@
+get:
+  tags:
+    - Chapters
+  summary: Get a chapter
+  operationId: chaptersGet
+  parameters:
+    - name: chapterId
+      in: path
+      description: The chapter id.
+      required: true
+      schema:
+        type: int
+        example: 34
+  responses:
+    200:
+      description: The requested chapter.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Chapter'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

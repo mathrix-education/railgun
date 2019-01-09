@@ -7,7 +7,11 @@ use App\Console\Commands\BaseCommand;
  * Class PipelineCommand.
  * Base pipeline command, which allow ssh connection to production servers.
  *
- * @package App\Console\Commands\Pipelines
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
+ * @copyright Mathrix Education SA
+ * @package   App\Console\Commands\Pipelines
  */
 abstract class PipelineCommand extends BaseCommand
 {

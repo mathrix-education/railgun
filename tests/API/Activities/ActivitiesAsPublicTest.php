@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\API\Activities;
 
 use App\Models\Module;
@@ -9,13 +8,14 @@ use Tests\API\ScopeTestCase;
 use App\Utils\Tree;
 
 /**
- * Class ActivitiesAsPublicTest
+ * Class ActivitiesAsPublicTest.
  * Test activities as public (non-logged user).
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     1.0.0
  * @copyright Mathrix Education SA
- *
- * @version   1.0.0
+ * @package   Tests\API\Activities
  */
 class ActivitiesAsPublicTest extends ScopeTestCase
 {

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Utils;
 
 use App\Models\Activity;
@@ -14,10 +13,10 @@ use App\Models\Notion;
  * Class Tree.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.0.1
- *
  * @copyright Mathrix Education SA
+ * @package   App\Utils
  */
 class Tree
 {

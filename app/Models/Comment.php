@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use App\Models\Traits\Votable;
@@ -12,12 +11,13 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * Model Comment.
- *
- * @since     1.0.0
+ * Class Comment.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     1.0.0
  * @copyright Mathrix Education SA
+ * @package   App\Models
  *
  * @property int                  $id
  * @property string|null          $content

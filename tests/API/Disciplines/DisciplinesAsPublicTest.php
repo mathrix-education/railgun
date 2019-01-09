@@ -1,18 +1,18 @@
 <?php
-
 namespace Tests\API\Disciplines;
 
 use App\Models\Class_;
 use Tests\API\ScopeTestCase;
 
 /**
- * Class DisciplinesAsPublicTest
+ * Class DisciplinesAsPublicTest.
  * Test disciplines as public (non-logged user).
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     1.0.0
  * @copyright Mathrix Education SA
- *
- * @version   1.0.0
+ * @package   Tests\API\Disciplines
  */
 class DisciplinesAsPublicTest extends ScopeTestCase
 {

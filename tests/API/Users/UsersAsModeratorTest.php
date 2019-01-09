@@ -1,15 +1,14 @@
 <?php
-
 namespace Tests\API\Users;
 
 /**
  * Class UsersAsModeratorTest.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.0
- *
  * @copyright Mathrix Education SA
+ * @package   Tests\API\Users
  */
 class UsersAsModeratorTest extends UsersAsRegisteredTest
 {

@@ -8,9 +8,13 @@ use App\Models\Notion;
 use App\Models\Path;
 
 /**
- * Class McqNoIndexCommand
+ * Class McqNoIndexCommand.
  *
- * @package App\Console\Commands\SEO
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
+ * @copyright Mathrix Education SA
+ * @package   App\Console\Commands\SEO
  */
 class McqNoIndexCommand extends BaseCommand
 {

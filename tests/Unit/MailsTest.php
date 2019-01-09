@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\Unit;
 
 use App\Mails\PasswordForgottenMail;
@@ -11,11 +10,11 @@ use Tests\BaseTestCase;
 /**
  * Class MailsTest.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
- * @since
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
  * @copyright Mathrix Education SA
+ * @package   Tests\Unit
  */
 class MailsTest extends BaseTestCase
 {

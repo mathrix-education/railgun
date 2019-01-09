@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Policies;
 
 use App\Models\Setting;
@@ -9,10 +8,10 @@ use App\Models\User;
  * Class SettingPolicy.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.0.3
- *
  * @copyright Mathrix Education SA
+ * @package   App\Policies
  */
 class SettingPolicy extends BasePolicy
 {
