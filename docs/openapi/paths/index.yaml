@@ -56,6 +56,8 @@
   $ref: ./chapters/_page_perPage.yaml
 /chapters/slug/{chapterSlug}/by-class-slug/{classSlug}:
   $ref: ./chapters/_slug.yaml
+/chapters/recursive/{chapterId}:
+  $ref: ./chapters/_recursive.yaml
 
 
 # -------
