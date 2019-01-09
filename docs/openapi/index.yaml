@@ -42,6 +42,8 @@ tags:
   description: Modules API
 - name: Notifications
   description: Notifications API
+- name: Notions
+  description: Notions API
 - name: Scores
   description: Scores API
 - name: Users

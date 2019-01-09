@@ -165,6 +165,15 @@
   $ref: ./notifications/_all_mark_read.yaml
 
 
+# -------
+# Notions
+# -------
+/notions/{notionId}:
+  $ref: ./notions/_notionId.yaml
+/notions/{key}/{value}:
+  $ref: ./notions/_key_value.yaml
+
+
 # ----
 # Path
 # ----

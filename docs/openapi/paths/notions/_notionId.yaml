@@ -1,0 +1,22 @@
+get:
+  tags:
+    - Notions
+  summary: Get a notion
+  operationId: notionsGet
+  parameters:
+    - name: notionId
+      in: path
+      description: The notion id.
+      required: true
+      schema:
+        type: int
+        example: 19
+  responses:
+    200:
+      description: The requested notion.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Notion'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
