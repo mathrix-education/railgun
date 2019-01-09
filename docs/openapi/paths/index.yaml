@@ -30,6 +30,8 @@
 # -----------
 /disciplines/{disciplineId}:
   $ref: ./disciplines/_disciplineId.yaml
+/disciplines/{key}/{value}:
+  $ref: ./disciplines/_key_value.yaml
 /disciplines/by-class/{classId}:
   $ref: ./disciplines/_by-class_classId.yaml
 

@@ -26,3 +26,25 @@ patch:
         application/json:
           schema:
             $ref: '../../index.yaml#/components/schemas/Discipline'
+get:
+  tags:
+    - Disciplines
+  summary: Get a discipline
+  operationId: disciplinesGet
+  parameters:
+    - name: disciplineId
+      in: path
+      description: The discipline id.
+      required: true
+      schema:
+        type: int
+        example: 21
+  responses:
+    200:
+      description: The discipline country.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Discipline'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
