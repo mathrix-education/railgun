@@ -1,0 +1,22 @@
+get:
+  tags:
+    - Classes
+  summary: Get a class
+  operationId: classesGet
+  parameters:
+    - name: classId
+      in: path
+      description: The class id.
+      required: true
+      schema:
+        type: int
+        example: 22
+  responses:
+    200:
+      description: The requested class.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Class'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
