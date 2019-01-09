@@ -167,6 +167,8 @@
 #------------------
 /add-ons:
   $ref: ./add-ons/_.yaml
+/add-ons/{addOnId}:
+  $ref: ./add-ons/_addOnId.yaml
 
 
 # --------------------
