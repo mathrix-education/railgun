@@ -1,0 +1,30 @@
+get:
+  tags:
+    - Categories
+  summary: Get a category by property
+  description: Get the first category which matches with the couple property, value.
+  operationId: categoriesGetKey
+  parameters:
+    - name: key
+      in: path
+      description: The property used.
+      required: true
+      schema:
+        type: string
+        example: slug
+    - name: value
+      in: path
+      description: The value of the property.
+      required: true
+      schema:
+        type: int, string
+        example: lorem-ipsum
+  responses:
+    200:
+      description: The requested category.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Category'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

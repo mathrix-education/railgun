@@ -43,6 +43,8 @@
   $ref: ./categories/_page_perPage.yaml
 /categories/{categoryId}:
   $ref: ./categories/_categoryId.yaml
+/categories/{key}/{value}:
+  $ref: ./categories/_key_value.yaml
 
 
 # --------
