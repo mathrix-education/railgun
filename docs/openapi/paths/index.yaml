@@ -210,8 +210,6 @@
 # --------------------
 /braintree/client-token:
   $ref: ./braintree/_client-token.yaml
-/braintree/webhook:
-  $ref: ./braintree/_webhook.yaml
 
 
 # -----------------------
