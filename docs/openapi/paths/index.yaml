@@ -241,6 +241,8 @@
 # -----------------------
 /plans:
   $ref: ./plans/_.yaml
+/plans/{planId}:
+  $ref: ./plans/_planId.yaml
 
 
 # -----------------------
