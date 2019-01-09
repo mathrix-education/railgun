@@ -14,8 +14,6 @@ servers:
 tags:
 - name: Activities
   description: Activities API
-- name: Add-ons
-  description: Add-ons API
 - name: Categories
   description: Categories API
 - name: Chapters
@@ -43,6 +41,8 @@ tags:
 - name: Users
   description: Users API
   # Braintree
+- name: Braintree Add-ons
+  description: Braintree add-ons API
 - name: Braintree global
   description: Braintree global API
 - name: Braintree Plans

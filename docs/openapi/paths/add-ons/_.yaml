@@ -1,7 +1,7 @@
 get:
   tags:
-    - Add-ons
-  summary: Get all add-ons
+    - Braintree Add-ons
+  summary: Get the add-ons
   operationId: addOns
   responses:
     200:
@@ -11,4 +11,4 @@ get:
           schema:
             type: array
             items:
-              $ref: '../../index.yaml#/components/schemas/Add-ons'
+              $ref: '../../index.yaml#/components/schemas/Braintree_AddOn'

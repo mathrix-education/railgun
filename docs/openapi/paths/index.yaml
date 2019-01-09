@@ -25,13 +25,6 @@
   $ref: ./activities/_key_value.yaml
 
 
-#------------
-# Add-ons
-#------------
-/add-ons:
-  $ref: ./add-ons/_.yaml
-
-
 # -----------
 # Disciplines
 # -----------
@@ -167,6 +160,13 @@
   $ref: ./users/_login.yaml
 /users/{userId}/payment-method:
   $ref: ./users/_userId_payment-method.yaml
+
+
+#------------------
+# Braintree Add-ons
+#------------------
+/add-ons:
+  $ref: ./add-ons/_.yaml
 
 
 # --------------------
