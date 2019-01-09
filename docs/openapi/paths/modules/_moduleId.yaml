@@ -1,0 +1,22 @@
+get:
+  tags:
+    - Modules
+  summary: Get a module
+  operationId: modulesGet
+  parameters:
+    - name: moduleId
+      in: path
+      description: The module id.
+      required: true
+      schema:
+        type: int
+        example: 14
+  responses:
+    200:
+      description: The requested module.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Module'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

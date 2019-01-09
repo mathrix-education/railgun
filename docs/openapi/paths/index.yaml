@@ -138,6 +138,10 @@
 # -------
 /modules/{moduleId}/mark:
   $ref: ./modules/_moduleId_mark.yaml
+/modules/{moduleId}:
+  $ref: ./modules/_moduleId.yaml
+/modules/{key}/{value}:
+  $ref: ./modules/_key_value.yaml
 /modules/{moduleId}/routes:
   $ref: ./modules/_moduleId_routes.yaml
 /content/{moduleId}/index:
