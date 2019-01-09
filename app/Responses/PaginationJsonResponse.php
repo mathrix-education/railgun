@@ -1,6 +1,7 @@
 <?php
 namespace App\Responses;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -14,8 +15,13 @@ use Illuminate\Http\JsonResponse;
  */
 class PaginationJsonResponse extends JsonResponse
 {
-    public function __construct($data, int $page, int $perPage, int $total, $status = 200, $headers = [], $options = 0)
+    public function __construct(Builder $query, int $page, int $perPage, $status = 200, $headers = [], $options = 0)
     {
+        $total = $query->count();
+        $data = $query->limit($perPage)
+            ->offset(($page - 1) * $perPage)
+            ->get();
+
         $data = [
             "page" => $page,
             "per_page" => $perPage,

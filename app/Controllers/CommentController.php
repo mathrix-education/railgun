@@ -9,6 +9,7 @@ use App\Models\Comment;
 use App\Models\Module;
 use App\Models\Path;
 use App\Models\User;
+use App\Responses\PaginationJsonResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -189,16 +190,7 @@ class CommentController extends BaseController
      */
 
     /**
-     * @apiVersion     4.0.0
-     *
-     * @api            {get} /comments/latest/{?page}/{?perPage} Latest
-     * @apiGroup       Comments
-     * @apiName        CommentLatest
-     * @apiDescription Get the latest comments
-     * @apiPermission  moderator
-     * @apiUse         Pagination
-     * @apiUse         Bearer
-     * @apiUse         CommentArray
+     * Get the latest comments
      *
      * @param Request $request The request
      * @param int     $page
@@ -213,10 +205,9 @@ class CommentController extends BaseController
 
         $user->canOrFail("latest", Comment::class);
 
-        return response()->json(Comment::orderBy("created_at", "desc")
-            ->with(["module", "user", "children", "children.user"])
-            ->limit($perPage)
-            ->offset(($page - 1) * $perPage)
-            ->get());
+        $query = Comment::orderBy("created_at", "desc");
+        $response = new PaginationJsonResponse($query, $page, $perPage);
+
+        return $response;
     }
 }
