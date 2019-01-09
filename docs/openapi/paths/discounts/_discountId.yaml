@@ -1,0 +1,22 @@
+get:
+  tags:
+    - Discounts
+  summary: Get a discount
+  operationId: discountsGet
+  parameters:
+    - name: discountId
+      in: path
+      description: The discount id.
+      required: true
+      schema:
+        type: int
+        example: 8
+  responses:
+    200:
+      description: The requested discount.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Discount'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

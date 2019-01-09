@@ -36,6 +36,15 @@
   $ref: ./disciplines/_by-class_classId.yaml
 
 
+# --------
+# Discount
+# --------
+/discounts/{discountId}:
+  $ref: ./discounts/_discountId.yaml
+/discounts/{key}/{value}:
+  $ref: ./discounts/_key_value.yaml
+
+
 # ----------
 # Categories
 # ----------

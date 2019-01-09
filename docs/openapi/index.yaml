@@ -28,6 +28,8 @@ tags:
   description: Countries API
 - name: Disciplines
   description: Disciplines API
+- name: Discounts
+  description: Discounts API
 - name: Family Packs
   description: Family Packs API
 - name: Files
