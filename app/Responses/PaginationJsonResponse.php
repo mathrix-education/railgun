@@ -18,7 +18,7 @@ class PaginationJsonResponse extends JsonResponse
     public function __construct(Builder $query, int $page, int $perPage, $status = 200, $headers = [], $options = 0)
     {
         $total = $query->count();
-        $data = $query->limit($perPage)
+        $models = $query->limit($perPage)
             ->offset(($page - 1) * $perPage)
             ->get();
 
@@ -26,7 +26,7 @@ class PaginationJsonResponse extends JsonResponse
             "page" => $page,
             "per_page" => $perPage,
             "total" => $total,
-            "data" => $data,
+            "data" => $models,
         ];
 
         parent::__construct($data, $status, $headers, $options);
