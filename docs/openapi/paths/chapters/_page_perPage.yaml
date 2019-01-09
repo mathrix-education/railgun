@@ -1,0 +1,28 @@
+get:
+  tags:
+    - Chapters
+  summary: Index chapters
+  description: Retrive all chapters by ascending ids, paginated.
+  operationId: chaptersIndexPagination
+  parameters:
+    - name: page
+      in: path
+      description: The page of chapters.
+      schema:
+        type: int
+        default: 1
+    - name: perPage
+      in: path
+      description: The number of chapters per page.
+      schema:
+        type: int
+        default: 100
+  responses:
+    200:
+      description: An array of chapters.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../index.yaml#/components/schemas/Chapter'
