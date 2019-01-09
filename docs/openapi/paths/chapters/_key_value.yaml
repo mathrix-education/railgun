@@ -1,0 +1,30 @@
+get:
+  tags:
+    - Chapters
+  summary: Get a chapter by property
+  description: Get the first chapter which matches with the couple property, value.
+  operationId: chaptersGetKey
+  parameters:
+    - name: key
+      in: path
+      description: The property used.
+      required: true
+      schema:
+        type: string
+        example: order
+    - name: value
+      in: path
+      description: The value of the property.
+      required: true
+      schema:
+        type: int, string, boolean
+        example: 2
+  responses:
+    200:
+      description: The requested chapter.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Chapter'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
