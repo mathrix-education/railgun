@@ -1,0 +1,17 @@
+post:
+  tags:
+    - Classes
+  summary: Add a class
+  operationId: classesPost
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../index.yaml#/components/requestBodies/Class'
+  responses:
+    200:
+      description: The newly created class.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Class'

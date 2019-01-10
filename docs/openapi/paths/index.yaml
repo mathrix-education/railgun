@@ -80,12 +80,15 @@
 # -------
 # Classes
 # -------
+/classes:
+  $ref: ./classes/_.yaml
 /classes/{page}/{perPage}:
   $ref: ./classes/_page_perPage.yaml
-/classes/{classId}:
-  $ref: ./classes/_classId.yaml
 /classes/{key}/{value}:
   $ref: ./classes/_key_value.yaml
+/classes/{classId}:
+  $ref: ./classes/_classId.yaml
+
 
 # --------
 # Comments
