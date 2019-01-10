@@ -10,6 +10,8 @@ Class:
   $ref: ./Class.yaml
 Comment:
   $ref: ./Comment.yaml
+Country:
+  $ref: ./Country.yaml
 Discipline:
   $ref: ./Discipline.yaml
 Product:

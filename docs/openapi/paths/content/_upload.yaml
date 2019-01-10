@@ -11,15 +11,14 @@ post:
           type: object
           properties:
             file:
-              description: The file to upload.
-              type: jpeg, jpg, png, gif, pdf, mp3, mp4
-              example: my_super_file.gif
+              description: The file content.
+              type: file
             destination:
-              description: The file destination on the cdn.
+              description: The file destination folder on the CDN.
               type: string
               example: my-destination
             name:
-              description: The file destination on the cdn.
+              description: The filename on the CDN.
               type: string
               example: Name
           required:
@@ -28,13 +27,12 @@ post:
             - name
   responses:
     200:
-      description: The response of upload file.
+      description: The uploaded file metadata
       content:
         application/json:
           schema:
             type: object
             properties:
               url:
-                description: The url of upload file.
+                description: The file public URL, starting with the CDN root.
                 type: string
-                example: ../my-destination/Name

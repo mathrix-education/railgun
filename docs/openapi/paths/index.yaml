@@ -117,10 +117,12 @@
 # ---------
 # Countries
 # ---------
-/countries/{countryId}:
-  $ref: ./countries/_countryId.yaml
+/countries:
+  $ref: ./countries/_.yaml
 /countries/{key}/{value}:
   $ref: ./countries/_key_value.yaml
+/countries/{countryId}:
+  $ref: ./countries/_countryId.yaml
 
 
 # ------------

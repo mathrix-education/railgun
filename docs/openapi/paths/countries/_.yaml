@@ -1,0 +1,21 @@
+post:
+  tags:
+    - Countries
+  summary: Create a country
+  operationId: countriesPost
+  security:
+    - moderator: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../index.yaml#/components/requestBodies/Country'
+  responses:
+    200:
+      description: The newly created country.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Country'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
