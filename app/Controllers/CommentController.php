@@ -101,7 +101,7 @@ class CommentController extends BaseController
      * @api            {patch} /comments/{id} Edit
      * @apiGroup       Comments
      * @apiName        CommentEdit
-     * @apiDescription Edit a class
+     * @apiDescription Edit a comment
      * @apiPermission  registered for own comment, moderator otherwise
      * @apiUse         Bearer
      * @apiParam {int} id The comment id

@@ -25,6 +25,8 @@ patch:
     - Countries
   summary: Edit a country
   operationId: countriesPatch
+  security:
+    - admin: []
   parameters:
     - name: countryId
       in: path
@@ -37,19 +39,25 @@ patch:
     content:
       application/json:
         schema:
-          $ref: '../../index.yaml#/components/requestBodies/Country'
+          $ref: '../../index.yaml#/components/schemas/Country'
   responses:
     200:
-      description: The patched country.
+      description: The edited country.
       content:
         application/json:
           schema:
-            $ref: '../../index.yaml#/components/schemas/Class'
+            $ref: '../../index.yaml#/components/schemas/Country'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
 delete:
   tags:
     - Countries
   summary: Delete a country (not implemented)
   operationId: countriesDelete
+  security:
+    - admin: []
   parameters:
     - name: countryId
       in: path
@@ -74,3 +82,5 @@ delete:
                 description: The deletion message.
                 type: string
                 example: Country id 13 was successfully deleted.
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

@@ -9,7 +9,7 @@ post:
     content:
       application/json:
         schema:
-          $ref: '../../index.yaml#/components/requestBodies/Class'
+          $ref: '../../index.yaml#/components/schemas/Class'
   responses:
     200:
       description: The newly created class.

@@ -25,6 +25,8 @@ patch:
     - Classes
   summary: Edit a class
   operationId: classesPatch
+  security:
+    - admin: []
   parameters:
     - name: classId
       in: path
@@ -37,19 +39,25 @@ patch:
     content:
       application/json:
         schema:
-          $ref: '../../index.yaml#/components/requestBodies/Class'
+          $ref: '../../index.yaml#/components/schemas/Class'
   responses:
     200:
-      description: The patched class.
+      description: The edited class.
       content:
         application/json:
           schema:
             $ref: '../../index.yaml#/components/schemas/Class'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
 delete:
   tags:
     - Classes
   summary: Delete a class (not implemented)
   operationId: classesDelete
+  security:
+    - admin: []
   parameters:
     - name: classId
       in: path
@@ -74,3 +82,5 @@ delete:
                 description: The deletion message.
                 type: string
                 example: Class id 15 was successfully deleted.
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

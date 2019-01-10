@@ -25,6 +25,9 @@ patch:
     - Comments
   summary: Edit a comment
   operationId: commentsPatch
+  security:
+    - registered: []
+    - moderator: []
   parameters:
     - name: commentId
       in: path
@@ -45,11 +48,17 @@ patch:
         application/json:
           schema:
             $ref: '../../index.yaml#/components/schemas/Comment'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
 delete:
   tags:
     - Comments
-  summary: Delete a comment (not implemented)
+  summary: Delete a comment
   operationId: commentsDelete
+  security:
+    - moderator: []
   parameters:
     - name: commentId
       in: path
@@ -74,3 +83,5 @@ delete:
                 description: The deletion message.
                 type: string
                 example: Comment id 5 was successfully deleted.
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

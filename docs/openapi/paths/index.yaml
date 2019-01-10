@@ -25,26 +25,6 @@
   $ref: ./activities/_key_value.yaml
 
 
-# -----------
-# Disciplines
-# -----------
-/disciplines/{disciplineId}:
-  $ref: ./disciplines/_disciplineId.yaml
-/disciplines/{key}/{value}:
-  $ref: ./disciplines/_key_value.yaml
-/disciplines/by-class/{classId}:
-  $ref: ./disciplines/_by-class_classId.yaml
-
-
-# --------
-# Discount
-# --------
-/discounts/{discountId}:
-  $ref: ./discounts/_discountId.yaml
-/discounts/{key}/{value}:
-  $ref: ./discounts/_key_value.yaml
-
-
 # ----------
 # Categories
 # ----------
@@ -123,6 +103,28 @@
   $ref: ./countries/_key_value.yaml
 /countries/{countryId}:
   $ref: ./countries/_countryId.yaml
+
+
+# -----------
+# Disciplines
+# -----------
+/disciplines:
+  $ref: ./disciplines/_.yaml
+/disciplines/{key}/{value}:
+  $ref: ./disciplines/_key_value.yaml
+/disciplines/by-class/{classId}:
+  $ref: ./disciplines/_by-class_classId.yaml
+/disciplines/{disciplineId}:
+  $ref: ./disciplines/_disciplineId.yaml
+
+
+# --------
+# Discount
+# --------
+/discounts/{discountId}:
+  $ref: ./discounts/_discountId.yaml
+/discounts/{key}/{value}:
+  $ref: ./discounts/_key_value.yaml
 
 
 # ------------
