@@ -4,6 +4,8 @@ Cart:
   $ref: ./Cart.yaml
 Category:
   $ref: ./Category.yaml
+Chapter:
+  $ref: ./Chapter.yaml
 Comment:
   $ref: ./Comment.yaml
 Discipline:

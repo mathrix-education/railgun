@@ -10,7 +10,7 @@ post:
           $ref: '../../index.yaml#/components/requestBodies/Category'
   responses:
     200:
-      description: The newly created category
+      description: The newly created category.
       content:
         application/json:
           schema:

@@ -51,14 +51,14 @@ delete:
   parameters:
   - name: categoryId
     in: path
-    description: The category id
+    description: The category id.
     required: true
     schema:
       type: int
       example: 45
   responses:
     200:
-      description: The deletion result
+      description: The deletion result.
       content:
         application/json:
           schema:

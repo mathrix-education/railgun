@@ -52,15 +52,17 @@
   $ref: ./categories/_.yaml
 /categories/{page}/{perPage}:
   $ref: ./categories/_page_perPage.yaml
-/categories/{categoryId}:
-  $ref: ./categories/_categoryId.yaml
 /categories/{key}/{value}:
   $ref: ./categories/_key_value.yaml
+/categories/{categoryId}:
+  $ref: ./categories/_categoryId.yaml
 
 
 # --------
 # Chapters
 # --------
+/chapters:
+  $ref: ./chapters/_.yaml
 /by-class-discipline/{classId}/{disciplineId}/{?scope}:
   $ref: ./chapters/_by_class_discipline.yaml
 /chapters/{page}/{perPage}:
@@ -69,10 +71,10 @@
   $ref: ./chapters/_slug.yaml
 /chapters/recursive/{chapterId}:
   $ref: ./chapters/_recursive.yaml
-/chapters/{chapterId}:
-  $ref: ./chapters/_chapterId.yaml
 /chapters/{key}/{value}:
   $ref: ./chapters/_key_value.yaml
+/chapters/{chapterId}:
+  $ref: ./chapters/_chapterId.yaml
 
 
 # -------

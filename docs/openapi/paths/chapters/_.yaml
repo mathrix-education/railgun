@@ -10,7 +10,7 @@ post:
           $ref: '../../index.yaml#/components/requestBodies/Chapter'
   responses:
     200:
-      description: The newly created chapter
+      description: The newly created chapter.
       content:
         application/json:
           schema:
