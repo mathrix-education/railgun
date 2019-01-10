@@ -2,6 +2,7 @@
 namespace App\Responses;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -15,7 +16,17 @@ use Illuminate\Http\JsonResponse;
  */
 class PaginationJsonResponse extends JsonResponse
 {
-    public function __construct(Builder $query, int $page, int $perPage, $status = 200, $headers = [], $options = 0)
+    /**
+     * PaginationJsonResponse constructor.
+     *
+     * @param Builder|Relation $query
+     * @param int              $page
+     * @param int              $perPage
+     * @param int              $status
+     * @param array            $headers
+     * @param int              $options
+     */
+    public function __construct($query, int $page, int $perPage, $status = 200, $headers = [], $options = 0)
     {
         $total = $query->count();
         $models = $query->limit($perPage)
