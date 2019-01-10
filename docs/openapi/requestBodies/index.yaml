@@ -20,5 +20,7 @@ Product:
   $ref: ./Product.yaml
 Purchase:
   $ref: ./Purchase.yaml
+Quote:
+  $ref: ./Quote.yaml
 Search:
   $ref: ./Search.yaml

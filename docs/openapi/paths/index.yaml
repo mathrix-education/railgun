@@ -143,10 +143,10 @@
 # -----
 /files:
   $ref: ./files/_.yaml
-/files/{path}:
-  $ref: ./files/_path.yaml
 /files/explore/{path}:
   $ref: ./files/_explore_path.yaml
+/files/{path}:
+  $ref: ./files/_path.yaml
 
 
 # -------
@@ -241,6 +241,8 @@
 # ------
 # Quotes
 # ------
+/quotes:
+  $ref: ./quotes/_.yaml
 /quotes/{quoteId}:
   $ref: ./quotes/_quoteId.yaml
 

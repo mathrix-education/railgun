@@ -20,3 +20,67 @@ get:
             $ref: '../../index.yaml#/components/schemas/Quote'
     404:
       $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+patch:
+  tags:
+    - Quotes
+  summary: Edit a quote
+  operationId: quotesPatch
+  security:
+    - admin: []
+  parameters:
+    - name: quoteId
+      in: path
+      description: The quote id.
+      required: true
+      schema:
+        type: int
+        example: 9
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../index.yaml#/components/requestBodies/Quote'
+  responses:
+    200:
+      description: The edited quote.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Quote'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
+delete:
+  tags:
+    - Quotes
+  summary: Delete a quote
+  operationId: quotesDelete
+  security:
+    - admin: []
+  parameters:
+    - name: quoteId
+      in: path
+      description: The quote id.
+      required: true
+      schema:
+        type: int
+        example: 9
+  responses:
+    200:
+      description: The deletion result.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                description: If the deletion was sucessful.
+                type: boolean
+                default: true
+              message:
+                description: The deletion message.
+                type: string
+                example: Quote id 9 was successfully deleted.
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
