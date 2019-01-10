@@ -255,6 +255,10 @@
 # -----
 # Users
 # -----
+/users/{userId}:
+  $ref: ./users/_userId.yaml
+/users/{key}/{value}:
+  $ref: ./users/_key_value.yaml
 /users/login:
   $ref: ./users/_login.yaml
 /users/{userId}/payment-method:
