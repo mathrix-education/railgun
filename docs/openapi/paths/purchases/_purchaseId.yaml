@@ -6,14 +6,14 @@ get:
   parameters:
     - name: purchaseId
       in: path
-      description: The purchase id
+      description: The purchase id.
       required: true
       schema:
         type: int
         example: 23
   responses:
     200:
-      description: The requested purchase
+      description: The requested purchase.
       content:
         application/json:
           schema:

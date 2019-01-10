@@ -50,8 +50,12 @@ tags:
   description: Purchases API
 - name: Quotes
   description: Quotes API
+- name: Reports
+  description: Reports API
 - name: Scores
   description: Scores API
+- name: Settings
+  description: Settings API
 - name: Users
   description: Users API
   # Braintree

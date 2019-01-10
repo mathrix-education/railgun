@@ -1,0 +1,22 @@
+get:
+  tags:
+    - Reports
+  summary: Get a report
+  operationId: reportsGet
+  parameters:
+    - name: reportId
+      in: path
+      description: The report id.
+      required: true
+      schema:
+        type: int
+        example: 3
+  responses:
+    200:
+      description: The requested report.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Report'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

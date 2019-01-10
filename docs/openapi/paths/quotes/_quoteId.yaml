@@ -6,14 +6,14 @@ get:
   parameters:
     - name: quoteId
       in: path
-      description: The quote id
+      description: The quote id.
       required: true
       schema:
         type: int
         example: 3
   responses:
     200:
-      description: The requested quote
+      description: The requested quote.
       content:
         application/json:
           schema:

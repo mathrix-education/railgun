@@ -1,0 +1,23 @@
+get:
+  tags:
+    - Settings
+  summary: Read a setting
+  description: Get a setting with its key.
+  operationId: settingsGet
+  parameters:
+    - name: key
+      in: path
+      description: The setting key.
+      required: true
+      schema:
+        type: string
+        example: youtube_live_id
+  responses:
+    200:
+      description: The requested setting.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Setting'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

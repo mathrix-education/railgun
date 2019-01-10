@@ -221,6 +221,13 @@
   $ref: ./quotes/_quoteId.yaml
 
 
+# -------
+# Reports
+# -------
+/reports/{reportId}:
+  $ref: ./reports/_reportId.yaml
+
+
 # ------
 # Scores
 # ------
@@ -234,6 +241,15 @@
   $ref: ./scores/_game_around_score_delta.yaml
 /scores/{game}/personal-best:
   $ref: ./scores/_game_personal-best.yaml
+
+
+# --------
+# Settings
+# --------
+/settings:
+  $ref: ./settings/_.yaml
+/settings/{key}:
+  $ref: ./settings/_key.yaml
 
 
 # -----
