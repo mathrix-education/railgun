@@ -1,3 +1,24 @@
+post:
+  tags:
+    - Settings
+  summary: Write a setting
+  operationId: settingsPost
+  security:
+    - admin: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../index.yaml#/components/requestBodies/Setting'
+  responses:
+    200:
+      description: The newly created setting.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Setting'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
 get:
   tags:
     - Settings

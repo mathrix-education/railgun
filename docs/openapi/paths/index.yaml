@@ -250,6 +250,8 @@
 # -------
 # Reports
 # -------
+/reports:
+  $ref: ./reports/_.yaml
 /reports/{reportId}:
   $ref: ./reports/_reportId.yaml
 

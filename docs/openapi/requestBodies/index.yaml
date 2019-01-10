@@ -22,5 +22,9 @@ Purchase:
   $ref: ./Purchase.yaml
 Quote:
   $ref: ./Quote.yaml
+Report:
+  $ref: ./Report.yaml
 Search:
   $ref: ./Search.yaml
+Setting:
+  $ref: ./Setting.yaml
