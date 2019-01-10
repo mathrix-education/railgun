@@ -1,0 +1,21 @@
+post:
+  tags:
+    - Discounts
+  summary: Create a discount
+  operationId: discountsPost
+  security:
+    - moderator: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../index.yaml#/components/schemas/Discount'
+  responses:
+    200:
+      description: The newly created discount.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Discount'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'

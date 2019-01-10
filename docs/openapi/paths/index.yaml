@@ -121,10 +121,12 @@
 # --------
 # Discount
 # --------
-/discounts/{discountId}:
-  $ref: ./discounts/_discountId.yaml
+/discounts:
+  $ref: ./discounts/_.yaml
 /discounts/{key}/{value}:
   $ref: ./discounts/_key_value.yaml
+/discounts/{discountId}:
+  $ref: ./discounts/_discountId.yaml
 
 
 # ------------
@@ -150,18 +152,20 @@
 # -------
 # Modules
 # -------
-/modules/{moduleId}/mark:
-  $ref: ./modules/_moduleId_mark.yaml
-/modules/{moduleId}:
-  $ref: ./modules/_moduleId.yaml
-/modules/{key}/{value}:
-  $ref: ./modules/_key_value.yaml
-/modules/{moduleId}/routes:
-  $ref: ./modules/_moduleId_routes.yaml
+/modules:
+  $ref: ./modules/_.yaml
 /content/{moduleId}/index:
   $ref: ./modules/_moduleId_no-index.yaml
 /modules/by-route/{countryId}/{classId}/{disciplineId}/{chapterId}/{notionId}/{activityId}:
   $ref: ./modules/_by_route_contrydId_classId_disciplineId_chapterId_notionId_activityId.yaml
+/modules/{key}/{value}:
+  $ref: ./modules/_key_value.yaml
+/modules/{moduleId}/routes:
+  $ref: ./modules/_moduleId_routes.yaml
+/modules/{moduleId}:
+  $ref: ./modules/_moduleId.yaml
+/modules/{moduleId}/mark:
+  $ref: ./modules/_moduleId_mark.yaml
 
 
 # -------------

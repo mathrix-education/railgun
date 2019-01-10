@@ -1,0 +1,21 @@
+post:
+  tags:
+    - Modules
+  summary: Create a module
+  operationId: modulesPost
+  security:
+    - moderator: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../index.yaml#/components/requestBodies/Module'
+  responses:
+    200:
+      description: The newly created module.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Module'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'

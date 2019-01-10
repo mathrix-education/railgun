@@ -10,6 +10,8 @@ Comment:
   $ref: ./Comment.yaml
 Discipline:
   $ref: ./Discipline.yaml
+Module:
+  $ref: ./Module.yaml
 Product:
   $ref: ./Product.yaml
 Search:

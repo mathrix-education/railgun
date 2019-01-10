@@ -20,3 +20,67 @@ get:
             $ref: '../../index.yaml#/components/schemas/Module'
     404:
       $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+delete:
+  tags:
+    - Modules
+  summary: Delete a module
+  operationId: ModulesDelete
+  security:
+    - moderator: []
+  parameters:
+    - name: moduleId
+      in: path
+      description: The module id.
+      required: true
+      schema:
+        type: int
+        example: 11
+  responses:
+    200:
+      description: The deletion result.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                description: If the deletion was sucessful.
+                type: boolean
+                default: true
+              message:
+                description: The deletion message.
+                type: string
+                example: Module id 11 was successfully deleted.
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+patch:
+  tags:
+    - Modules
+  summary: Edit a module
+  operationId: modulesPatch
+  security:
+    - moderator: []
+  parameters:
+    - name: moduleId
+      in: path
+      description: The module id.
+      required: true
+      schema:
+        type: int
+        example: 11
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../index.yaml#/components/requestBodies/Module'
+  responses:
+    200:
+      description: The edited module.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Module'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
