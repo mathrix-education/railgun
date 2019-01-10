@@ -20,3 +20,67 @@ get:
             $ref: '../../index.yaml#/components/schemas/Notion'
     404:
       $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+patch:
+  tags:
+    - Notions
+  summary: Edit a notion
+  operationId: notionsPatch
+  security:
+    - moderator: []
+  parameters:
+    - name: notionId
+      in: path
+      description: The notion id.
+      required: true
+      schema:
+        type: int
+        example: 18
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../index.yaml#/components/requestBodies/Notion'
+  responses:
+    200:
+      description: The edited notion.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Notion'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
+delete:
+  tags:
+    - Notions
+  summary: Delete a notion
+  operationId: notionsDelete
+  security:
+    - moderator: []
+  parameters:
+    - name: notionId
+      in: path
+      description: The notion id.
+      required: true
+      schema:
+        type: int
+        example: 18
+  responses:
+    200:
+      description: The deletion result.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                description: If the deletion was sucessful.
+                type: boolean
+                default: true
+              message:
+                description: The deletion message.
+                type: string
+                example: Notion id 18 was successfully deleted.
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

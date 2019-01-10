@@ -186,10 +186,12 @@
 # -------
 # Notions
 # -------
-/notions/{notionId}:
-  $ref: ./notions/_notionId.yaml
+/notions:
+  $ref: ./notions/_.yaml
 /notions/{key}/{value}:
   $ref: ./notions/_key_value.yaml
+/notions/{notionId}:
+  $ref: ./notions/_notionId.yaml
 
 
 # ----
@@ -202,10 +204,12 @@
 # -----
 # Posts
 # -----
-/posts/{postId}:
-  $ref: ./posts/_postId.yaml
+/posts:
+  $ref: ./posts/_.yaml
 /posts/{key}/{value}:
   $ref: ./posts/_key_value.yaml
+/posts/{postId}:
+  $ref: ./posts/_postId.yaml
 
 
 # --------

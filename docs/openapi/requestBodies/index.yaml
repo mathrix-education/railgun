@@ -12,6 +12,10 @@ Discipline:
   $ref: ./Discipline.yaml
 Module:
   $ref: ./Module.yaml
+Notion:
+  $ref: ./Notion.yaml
+Post:
+  $ref: ./Post.yaml
 Product:
   $ref: ./Product.yaml
 Search:

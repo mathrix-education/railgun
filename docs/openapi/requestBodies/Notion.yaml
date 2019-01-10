@@ -1,0 +1,22 @@
+description: Notion
+type: object
+properties:
+  name:
+    description: The notion name.
+    type: string
+    example: My super nice notion
+  slug:
+    description: The notion slug.
+    type: string
+    example: my-super-nice-notion
+  type:
+    description: The notion type.
+    type: string
+    enum:
+    - normal
+    - premium
+    - reminder
+    - further
+  visible:
+    description: The notion visibility.
+    type: boolean

@@ -1,0 +1,21 @@
+post:
+  tags:
+    - Posts
+  summary: Create a post
+  operationId: postsPost
+  security:
+    - moderator: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../index.yaml#/components/requestBodies/Post'
+  responses:
+    200:
+      description: The newly created activity.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Post'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
