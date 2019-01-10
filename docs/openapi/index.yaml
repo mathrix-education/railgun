@@ -34,18 +34,22 @@ tags:
   description: Family Packs API
 - name: Files
   description: Files API
-- name: Paths
-  description: Paths API
-- name: Posts
-  description: Posts API
-- name: Products
-  description: Products API
 - name: Modules
   description: Modules API
 - name: Notifications
   description: Notifications API
 - name: Notions
   description: Notions API
+- name: Paths
+  description: Paths API
+- name: Posts
+  description: Posts API
+- name: Products
+  description: Products API
+- name: Purchases
+  description: Purchases API
+- name: Quotes
+  description: Quotes API
 - name: Scores
   description: Scores API
 - name: Users

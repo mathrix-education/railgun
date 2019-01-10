@@ -1,0 +1,22 @@
+get:
+  tags:
+    - Purchases
+  summary: Get a purchase
+  operationId: purchasesGet
+  parameters:
+    - name: purchaseId
+      in: path
+      description: The purchase id
+      required: true
+      schema:
+        type: int
+        example: 23
+  responses:
+    200:
+      description: The requested purchase
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Purchase'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

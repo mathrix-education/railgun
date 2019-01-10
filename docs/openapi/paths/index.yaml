@@ -207,6 +207,20 @@
   $ref: ./products/_productId.yaml
 
 
+# ---------
+# Purchases
+# ---------
+/purchases/{purchasId}:
+  $ref: ./purchases/_purchaseId.yaml
+
+
+# ------
+# Quotes
+# ------
+/quotes/{quoteId}:
+  $ref: ./quotes/_quoteId.yaml
+
+
 # ------
 # Scores
 # ------

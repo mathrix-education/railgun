@@ -1,0 +1,22 @@
+get:
+  tags:
+    - Quotes
+  summary: Get a quote
+  operationId: quotesGet
+  parameters:
+    - name: quoteId
+      in: path
+      description: The quote id
+      required: true
+      schema:
+        type: int
+        example: 3
+  responses:
+    200:
+      description: The requested quote
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Quote'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
