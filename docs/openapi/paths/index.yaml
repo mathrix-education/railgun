@@ -106,10 +106,13 @@
 # -------
 # Content
 # -------
-/content/routes:
-  $ref: ./content/_routes.yaml
+/content/upload:
+  $ref: ./content/_upload.yaml
 /content/flat:
   $ref: ./content/_flat.yaml
+/content/routes:
+  $ref: ./content/_routes.yaml
+
 
 # ---------
 # Countries
