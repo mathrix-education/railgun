@@ -93,12 +93,12 @@
 # --------
 # Comments
 # --------
+/comments:
+  $ref: ./comments/_.yaml
 /comments/{page}/{perPage}:
   $ref: ./comments/_page_perPage.yaml
 /comments/{commentId}:
   $ref: ./comments/_commentId.yaml
-/comments:
-  $ref: ./comments/_.yaml
 
 
 # -------
