@@ -18,5 +18,7 @@ Post:
   $ref: ./Post.yaml
 Product:
   $ref: ./Product.yaml
+Purchase:
+  $ref: ./Purchase.yaml
 Search:
   $ref: ./Search.yaml

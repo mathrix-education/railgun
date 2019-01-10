@@ -232,6 +232,8 @@
 # ---------
 # Purchases
 # ---------
+/purchases:
+  $ref: ./purchases/_.yaml
 /purchases/{purchasId}:
   $ref: ./purchases/_purchaseId.yaml
 
