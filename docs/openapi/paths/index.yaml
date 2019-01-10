@@ -95,6 +95,8 @@
 # --------
 /comments:
   $ref: ./comments/_.yaml
+/comments/search:
+  $ref: ./comments/_search.yaml
 /comments/{page}/{perPage}:
   $ref: ./comments/_page_perPage.yaml
 /comments/{commentId}:
