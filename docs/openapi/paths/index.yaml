@@ -193,16 +193,18 @@
 # --------
 # Products
 # --------
-/products:
-  $ref: ./products/_.yaml
-/products/{productId}:
-  $ref: ./products/_productId.yaml
-/products/{productId}/recursive:
-  $ref: ./products/_productId_recursive.yaml
 /products/buy:
   $ref: ./products/_buy.yaml
 /products/sale:
   $ref: ./products/_sale.yaml
+/products:
+  $ref: ./products/_.yaml
+/products/{key}/{value}:
+  $ref: ./products/_key_value.yaml
+/products/{productId}/recursive:
+  $ref: ./products/_productId_recursive.yaml
+/products/{productId}:
+  $ref: ./products/_productId.yaml
 
 
 # ------
