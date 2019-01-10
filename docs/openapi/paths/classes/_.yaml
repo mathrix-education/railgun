@@ -1,8 +1,10 @@
 post:
   tags:
     - Classes
-  summary: Add a class
+  summary: Create a class
   operationId: classesPost
+  security:
+    - moderator: []
   requestBody:
     content:
       application/json:
@@ -15,3 +17,5 @@ post:
         application/json:
           schema:
             $ref: '../../index.yaml#/components/schemas/Class'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
