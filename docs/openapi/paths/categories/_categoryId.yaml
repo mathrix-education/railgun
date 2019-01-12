@@ -23,10 +23,12 @@ patch:
   - Categories
   summary: Edit a category
   operationId: categoriesPatch
+  security:
+    - moderator: []
   parameters:
   - name: categoryId
     in: path
-    description: The category id
+    description: The category id.
     required: true
     schema:
       type: int
@@ -38,27 +40,33 @@ patch:
           $ref: '../../index.yaml#/components/requestBodies/Category'
   responses:
     200:
-      description: The category
+      description: The edited category.
       content:
         application/json:
           schema:
             $ref: '../../index.yaml#/components/schemas/Category'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
 delete:
   tags:
   - Categories
   summary: Delete a category (not implemented)
   operationId: categoriesDelete
+  security:
+    - moderator: []
   parameters:
   - name: categoryId
     in: path
-    description: The category id
+    description: The category id.
     required: true
     schema:
       type: int
       example: 45
   responses:
     200:
-      description: The deletion result
+      description: The deletion result.
       content:
         application/json:
           schema:
@@ -72,3 +80,5 @@ delete:
                 description: The deletion message.
                 type: string
                 example: category id 45 was successfully deleted.
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

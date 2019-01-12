@@ -1,8 +1,10 @@
 post:
   tags:
   - Categories
-  summary: Add a category
+  summary: Create a category
   operationId: categoriesPost
+  security:
+    - moderator: []
   requestBody:
     content:
       application/json:
@@ -10,8 +12,10 @@ post:
           $ref: '../../index.yaml#/components/requestBodies/Category'
   responses:
     200:
-      description: The newly created category
+      description: The newly created category.
       content:
         application/json:
           schema:
             $ref: '../../index.yaml#/components/schemas/Category'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'

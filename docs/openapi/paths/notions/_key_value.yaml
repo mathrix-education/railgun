@@ -1,0 +1,30 @@
+get:
+  tags:
+    - Notions
+  summary: Get a notion by property
+  description: Get the first notion which matches with the couple property, value.
+  operationId: notionsGetKey
+  parameters:
+    - name: key
+      in: path
+      description: The property used.
+      required: true
+      schema:
+        type: string
+        example: slug
+    - name: value
+      in: path
+      description: The value of the property.
+      required: true
+      schema:
+        type: int, string, array
+        example: my-super-nice-notion
+  responses:
+    200:
+      description: The requested notion.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Notion'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

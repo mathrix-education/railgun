@@ -1,0 +1,30 @@
+get:
+  tags:
+    - Countries
+  summary: Get a country by property
+  description: Get the first country which matches with the couple property, value.
+  operationId: countriesGetKey
+  parameters:
+    - name: key
+      in: path
+      description: The property used.
+      required: true
+      schema:
+        type: string
+        example: slug
+    - name: value
+      in: path
+      description: The value of the property.
+      required: true
+      schema:
+        type: int, string, boolean
+        example: france
+  responses:
+    200:
+      description: The requested country.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Country'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

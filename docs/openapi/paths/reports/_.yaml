@@ -1,0 +1,21 @@
+post:
+  tags:
+    - Reports
+  summary: Create a report
+  operationId: reportsPost
+  security:
+    - moderator: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../index.yaml#/components/requestBodies/Report'
+  responses:
+    200:
+      description: The newly created report.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Report'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'

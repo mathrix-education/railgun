@@ -7,7 +7,9 @@ use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\BaseModel;
 use App\Models\User;
+use App\Responses\PaginationJsonResponse;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -66,13 +68,9 @@ abstract class BaseController extends Controller
             throw new Http401UnauthorizedException();
         }
 
-        return response()->json(
-            $this->orderCollection(
-                $this->modelClass::limit($perPage)
-                    ->offset(($page - 1) * $perPage)
-                    ->get()
-            )
-        );
+        $response = new PaginationJsonResponse($this->modelClass::newQuery(), $page, $perPage);
+
+        return $response;
     }
 
     /**
@@ -101,7 +99,9 @@ abstract class BaseController extends Controller
             throw new Http401UnauthorizedException();
         }
 
-        return response()->json($model);
+        $response = new JsonResponse($model);
+
+        return $response;
     }
 
     /*
@@ -109,7 +109,6 @@ abstract class BaseController extends Controller
     | Generic actions
     |--------------------------------------------------------------------------
     */
-
     /**
      * Generic add action.
      *
@@ -132,7 +131,9 @@ abstract class BaseController extends Controller
         $model = new $this->modelClass($request->all());
         $model->save();
 
-        return response()->json($model);
+        $response = new JsonResponse($model);
+
+        return $response;
     }
 
     /**
@@ -158,7 +159,9 @@ abstract class BaseController extends Controller
 
         $model->update($request->all());
 
-        return response()->json($model);
+        $response = new JsonResponse($model);
+
+        return $response;
     }
 
     /**
@@ -185,10 +188,12 @@ abstract class BaseController extends Controller
 
         $model->delete();
 
-        return response()->json([
+        $response = new JsonResponse([
             "success" => true,
             "message" => ucfirst(str_singular($this->modelClass::getTableName())) . " id $id was successfully deleted.",
         ]);
+
+        return $response;
     }
 
     /**
@@ -259,19 +264,9 @@ abstract class BaseController extends Controller
 
         $queryBuilder = $queryBuilder->orderBy($order["column"], $order["dir"]);
 
-        $count = $queryBuilder->count();
+        $response = new PaginationJsonResponse($queryBuilder, $page, $perPage);
 
-        $queryBuilder = $queryBuilder->limit($perPage)
-            ->offset(($page - 1) * $perPage);
-
-        $data = $queryBuilder->get();
-
-        return response()->json([
-            "perPage" => $perPage,
-            "page" => $page,
-            "count" => $count,
-            "data" => $data,
-        ]);
+        return $response;
     }
 
     /**
@@ -288,9 +283,12 @@ abstract class BaseController extends Controller
      *
      * @return JsonResponse
      */
-    public function by(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
+    public function by(Request $request, string $what, int $id, int $page = 1, int $perPage = 100): JsonResponse
     {
-        return response()->json($this->getByQuery($request, $what, $id, $page, $perPage));
+        $query = $this->getByQuery($request, $what, $id, $page, $perPage);
+        $response = new PaginationJsonResponse($query, $page, $perPage);
+
+        return $response;
     }
 
     /**
@@ -309,8 +307,12 @@ abstract class BaseController extends Controller
      */
     public function ids(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
     {
-        return response()->json($this->getByQuery($request, $what, $id, $page, $perPage)
-            ->pluck("id"));
+        $ids = $this->getByQuery($request, $what, $id, $page, $perPage)
+            ->get()
+            ->pluck("id");
+        $response = new JsonResponse($ids);
+
+        return $response;
     }
 
     /**
@@ -342,30 +344,6 @@ abstract class BaseController extends Controller
     }
 
     /**
-     * Order a collection of models by their order key if it exists. If not, just return the collection.
-     *
-     * @param Collection $collection
-     *
-     * @return Collection
-     */
-    protected function orderCollection(Collection $collection): Collection
-    {
-        if (isset($collection->first()->order)) {
-            $collection = $collection->sortBy(function ($model) {
-                return $model->order;
-            })
-                ->values();
-        } elseif (isset($collection->first()->pivot->order)) {
-            $collection = $collection->sortBy(function ($model) {
-                return $model->pivot->order;
-            })
-                ->values();
-        }
-
-        return $collection;
-    }
-
-    /**
      * Handle foreign models queries.
      *
      * @param Request $request The request
@@ -377,7 +355,7 @@ abstract class BaseController extends Controller
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
      *
-     * @return Collection
+     * @return Relation
      */
     protected function getByQuery(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
     {
@@ -399,12 +377,7 @@ abstract class BaseController extends Controller
             throw new Http401UnauthorizedException();
         }
 
-        return $this->orderCollection(
-            $model->{$potentialRelation}()
-                ->limit($perPage)
-                ->offset(($page - 1) * $perPage)
-                ->get()
-        );
+        return $model->{$potentialRelation}();
     }
 
     /**

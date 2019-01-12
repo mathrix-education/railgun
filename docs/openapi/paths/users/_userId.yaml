@@ -1,0 +1,22 @@
+get:
+  tags:
+    - Users
+  summary: Get a user
+  operationId: usersGet
+  parameters:
+    - name: userId
+      in: path
+      description: The user id.
+      required: true
+      schema:
+        type: int
+        example: 10
+  responses:
+    200:
+      description: The requested user.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/User'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

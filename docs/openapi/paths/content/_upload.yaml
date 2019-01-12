@@ -1,0 +1,38 @@
+post:
+  tags:
+    - Content
+  summary: Upload a file
+  description: The file to upload to the cdn must be jpeg, jpg, png, gif, pdf, mp3, mp4.
+  operationId: contentUpload
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            file:
+              description: The file content.
+              type: file
+            destination:
+              description: The file destination folder on the CDN.
+              type: string
+              example: my-destination
+            name:
+              description: The filename on the CDN.
+              type: string
+              example: Name
+          required:
+            - file
+            - destination
+            - name
+  responses:
+    200:
+      description: The uploaded file metadata
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              url:
+                description: The file public URL, starting with the CDN root.
+                type: string

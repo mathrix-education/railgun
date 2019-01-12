@@ -1,7 +1,7 @@
 post:
   tags:
   - Comments
-  operationId: commentPost
+  operationId: commentsPost
   summary: Add a comment
   description: >-
     A comment in the database. Comment author is determined from the Bearer authentication token.

@@ -24,22 +24,38 @@ tags:
   description: Comments API
 - name: Content
   description: Content API
+- name: Countries
+  description: Countries API
 - name: Disciplines
   description: Disciplines API
+- name: Discounts
+  description: Discounts API
 - name: Family Packs
   description: Family Packs API
 - name: Files
   description: Files API
-- name: Paths
-  description: Paths API
-- name: Products
-  description: Products API
 - name: Modules
   description: Modules API
 - name: Notifications
   description: Notifications API
+- name: Notions
+  description: Notions API
+- name: Paths
+  description: Paths API
+- name: Posts
+  description: Posts API
+- name: Products
+  description: Products API
+- name: Purchases
+  description: Purchases API
+- name: Quotes
+  description: Quotes API
+- name: Reports
+  description: Reports API
 - name: Scores
   description: Scores API
+- name: Settings
+  description: Settings API
 - name: Users
   description: Users API
   # Braintree

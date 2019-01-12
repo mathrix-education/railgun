@@ -1,0 +1,21 @@
+post:
+  tags:
+    - Notions
+  summary: Create a notion
+  operationId: notionsPost
+  security:
+    - moderator: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../index.yaml#/components/requestBodies/Notion'
+  responses:
+    200:
+      description: The newly created notion.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Notion'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'

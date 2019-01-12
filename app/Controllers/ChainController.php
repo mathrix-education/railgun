@@ -18,6 +18,8 @@ use Illuminate\Http\Request;
 class ChainController extends BaseController
 {
     /**
+     * Create a chainer request.
+     *
      * @param Request $request
      *
      * @throws Http400InvalidRequestException
