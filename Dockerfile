@@ -1,6 +1,7 @@
 FROM composer:latest as composer
 WORKDIR /build
 ADD . .
+RUN composer global require hirak/prestissimo
 RUN composer install --prefer-dist --ignore-platform-reqs --no-interaction --no-suggest
 
 
@@ -8,8 +9,8 @@ FROM alpine:3.8
 MAINTAINER Mathieu Bour <mathieu@mathrix.fr>
 USER root
 WORKDIR /var/www
+
 RUN apk -U add \
-    openrc \
     nginx \
     libcrypto1.0 \
     libzip \
@@ -28,11 +29,18 @@ RUN apk -U add \
     php7-xdebug \
     php7-xml \
     php7-zip
+
+COPY deploy/nginx.conf /etc/nginx/nginx.conf
+COPY deploy/php-fpm.conf /etc/php7/php-fpm.conf
+COPY deploy/www.conf /etc/php7/php-fpm.d/www.conf
 COPY deploy/vhost.conf /etc/nginx/conf.d/default.conf
+
 COPY --from=composer /build /var/www
 
 # Clean
 RUN rm -rf \
     /var/cache/apk/*
 
-CMD tail -f /dev/null
+STOPSIGNAL SIGTERM
+
+CMD nginx && php-fpm7 --allow-to-run-as-root && tail -f /dev/null
