@@ -22,7 +22,7 @@ class BraintreeGatewayServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $environment = env("BRAINTREE_ENVIRONMENT");
+        $environment = env("BRAINTREE_ENVIRONMENT", "sandbox");
 
         if (!\in_array($environment, ["sandbox", "production"], true)) {
             throw new Http400InvalidRequestException("`$environment` is not a valid Braintree environment");

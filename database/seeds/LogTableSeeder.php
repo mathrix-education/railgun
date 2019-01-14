@@ -1,5 +1,4 @@
 <?php
-namespace Database\seeds;
 
 use App\Exceptions\Http400InvalidRequestException;
 use App\Models\Log;

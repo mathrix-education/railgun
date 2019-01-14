@@ -32,7 +32,7 @@ build-engine:
   stage: build
   script:
     - docker pull $ENGINE_IMAGE || true
-    - docker build --cache-from $ENGINE_IMAGE -f docker/engine-alpine/Dockerfile -t $ENGINE_IMAGE .
+    - docker build --cache-from $ENGINE_IMAGE -f docker/php7.2-fpm-alpine/Dockerfile -t $ENGINE_IMAGE .
     - docker push $ENGINE_IMAGE
 build-api:
   stage: build

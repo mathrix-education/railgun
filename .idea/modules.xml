@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/api.iml" filepath="$PROJECT_DIR$/.idea/api.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/mathrix-api.iml" filepath="$PROJECT_DIR$/.idea/mathrix-api.iml" />
     </modules>
   </component>
 </project>

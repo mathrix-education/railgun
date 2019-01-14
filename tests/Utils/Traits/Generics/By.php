@@ -2,6 +2,7 @@
 namespace Tests\Utils\Traits\Generics;
 
 use App\Models\BaseModel;
+use Tests\Utils\Traits\ResponseTrait;
 
 /**
  * Trait By.
@@ -18,25 +19,28 @@ trait By
      * Generic by; expect HTTP 200.
      *
      * @param BaseModel|string $foreignModelClass
+     * @param null             $overrideId
      */
-    public function genericBySuccess($foreignModelClass)
+    public function genericBySuccess($foreignModelClass, $overrideId = null)
     {
-        $this->genericBy($foreignModelClass);
+        $this->genericBy($foreignModelClass, $overrideId);
 
         // Assertions
         $this->assertHttp200Success();
+        $this->assertIsPaginatedResponse();
     }
 
     /**
      * Generic by call.
      *
      * @param BaseModel|string $foreignModelClass
+     * @param null             $overrideId
      */
-    public function genericBy($foreignModelClass)
+    public function genericBy($foreignModelClass, $overrideId = null)
     {
         $this->genericUsableOrFail();
 
-        $foreignId = $foreignModelClass::random()->id;
+        $foreignId = $overrideId ?? $foreignModelClass::random()->id;
         $foreignSingular = str_singular($foreignModelClass::getTableName());
 
         $this->json("get", "/{$this->modelPlural}/by-$foreignSingular/$foreignId");

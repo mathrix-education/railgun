@@ -37,19 +37,18 @@ class CommentsAsPublicTest extends ScopeTestCase
             ->whereNull("parent_id")
             ->firstOrFail()
             ->module;
+        $this->genericBySuccess(Module::class, $module->id);
 
         $this->json("get", "/comments/by-module/{$module->id}");
 
-        $this->assertHttp200Success();
         $this->assertJsonDocumentMatches($this->response->getContent(), [
-            "[*].id" => new IsType("integer"),
-            "[*].content" => new IsType("string"),
-            "[*].user_id" => new IsType("integer"),
-            "[*].path_id" => new IsType("integer"),
-            "[*].created_at" => new IsType("string"),
-            "[*].updated_at" => new IsType("string")
+            "data.[*].id" => new IsType("integer"),
+            "data.[*].content" => new IsType("string"),
+            "data.[*].user_id" => new IsType("integer"),
+            "data.[*].path_id" => new IsType("integer"),
+            "data.[*].created_at" => new IsType("string"),
+            "data.[*].updated_at" => new IsType("string")
         ]);
-
     }
 
     /**

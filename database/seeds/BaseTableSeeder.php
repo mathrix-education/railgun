@@ -1,5 +1,4 @@
 <?php
-namespace Database\seeds;
 
 use App\Models\BaseModel;
 use Illuminate\Console\Command;

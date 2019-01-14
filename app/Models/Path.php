@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property bool       $seo_index
  *
  * @property Country    $country
- * @property Class_     $class
+ * @property Class_     $class_
  * @property Discipline $discipline
  * @property Chapter    $chapter
  * @property Notion     $notion

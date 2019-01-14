@@ -1,6 +1,8 @@
 <?php
 namespace Tests\Utils\Traits;
 
+use Helmich\JsonAssert\JsonAssertions;
+use PHPUnit\Framework\Constraint\IsType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -14,6 +16,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 trait ResponseTrait
 {
+    use JsonAssertions;
+
     /**
      * Get the response data.
      *
@@ -26,5 +30,19 @@ trait ResponseTrait
 
             return json_decode($response);
         }
+    }
+
+    /**
+     * @param int|null $page
+     * @param int|null $perPage
+     * @param int|null $total
+     */
+    public function assertIsPaginatedResponse(int $page = null, int $perPage = null, int $total = null)
+    {
+        $this->assertJsonDocumentMatches($this->response->getContent(), [
+            "page" => $page ?? new IsType("integer"),
+            "per_page" => $perPage ?? new IsType("integer"),
+            "total" => $total ?? new IsType("integer"),
+        ]);
     }
 }

@@ -1,7 +1,5 @@
 <?php
-namespace Database\seeds;
 
-use App\Events\CommentAnswerEvent;
 use App\Models\Comment;
 use App\Models\Vote;
 

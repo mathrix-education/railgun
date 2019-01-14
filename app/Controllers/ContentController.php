@@ -17,6 +17,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Tinify\Source;
@@ -355,5 +356,35 @@ class ContentController extends BaseController
         return response()->json([
             "url" => env("APP_CDN") . "/$destination/$name",
         ]);
+    }
+
+    /**
+     * Get the content of a given directory
+     *
+     * @param Request $request
+     *
+     * @deprecated
+     * @return mixed
+     */
+    public function tree(Request $request): JsonResponse
+    {
+        $storage = Storage::disk("cdn");
+        $directory = $request->query("directory", "/");
+
+        $directories = $storage->directories($directory);
+        foreach ($directories as $key => $value) {
+            $directories[$key] = env("APP_CDN") . "/$value/";
+        }
+
+        $files = $storage->files($directory);
+        foreach ($directories as $key => $value) {
+            $files[$key] = env("APP_CDN") . "/$value";
+        }
+
+        $content = array_merge($directories, $files);
+
+        $response = new JsonResponse($content);
+
+        return new $response;
     }
 }

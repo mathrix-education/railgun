@@ -1,5 +1,4 @@
 <?php
-namespace Database\seeds;
 
 /**
  * Class DatabaseSeeder.

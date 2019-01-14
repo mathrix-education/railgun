@@ -31,7 +31,7 @@ class UsersAsModeratorTest extends UsersAsRegisteredTest
         ]);
 
         $this->assertHttp200Success();
-        $this->assertJsonKeys(["perPage", "page", "count", "data"]);
+        $this->assertIsPaginatedResponse();
     }
 
     /**

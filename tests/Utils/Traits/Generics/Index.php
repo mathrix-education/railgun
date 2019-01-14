@@ -1,6 +1,8 @@
 <?php
 namespace Tests\Utils\Traits\Generics;
 
+use Tests\Utils\Traits\ResponseTrait;
+
 /**
  * Trait Index.
  * Generic index tests.
@@ -14,19 +16,6 @@ namespace Tests\Utils\Traits\Generics;
 trait Index
 {
     /**
-     * Generic index with pagination; expect HTTP 200.
-     *
-     * @param int $perPage model count per page
-     *
-     * @throws \Exception
-     */
-    public function genericIndexSuccessWithPagination($perPage = 10)
-    {
-        $this->genericIndexSuccess();
-        $this->assertJsonLength($perPage);
-    }
-
-    /**
      * Generic index; expect HTTP 200.
      *
      * @throws \Exception
@@ -37,6 +26,7 @@ trait Index
 
         // Assertions
         $this->assertHttp200Success();
+        $this->assertIsPaginatedResponse();
     }
 
     /**

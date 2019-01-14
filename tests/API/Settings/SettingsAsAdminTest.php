@@ -30,8 +30,7 @@ class SettingsAsAdminTest extends SettingsAsModeratorTest
             "[*].id" => new IsType("integer"),
             "[*].key" => new IsType("string"),
             "[*].value" => new IsType("string"),
-            "[*].visible" => new IsType("boolean"),
-            "[*].meta" => new IsType("string")
+            "[*].visible" => new IsType("boolean")
         ]);
     }
 

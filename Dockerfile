@@ -4,7 +4,6 @@ ADD . .
 RUN composer global require hirak/prestissimo
 RUN composer install --prefer-dist --ignore-platform-reqs --no-interaction --no-suggest
 
-
 FROM alpine:3.8
 MAINTAINER Mathieu Bour <mathieu@mathrix.fr>
 USER root

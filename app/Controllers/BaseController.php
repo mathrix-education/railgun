@@ -68,7 +68,7 @@ abstract class BaseController extends Controller
             throw new Http401UnauthorizedException();
         }
 
-        $response = new PaginationJsonResponse($this->modelClass::newQuery(), $page, $perPage);
+        $response = new PaginationJsonResponse($this->modelClass::query(), $page, $perPage);
 
         return $response;
     }

@@ -1,5 +1,4 @@
 <?php
-namespace Database\seeds;
 
 use App\Models\Score;
 use Illuminate\Support\Facades\DB;
