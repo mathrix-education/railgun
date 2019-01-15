@@ -12,7 +12,6 @@ use App\Models\Notion;
  * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.1
  * @copyright Mathrix Education SA
- * @package   Database\seeds
  */
 class ContentTableSeeder extends BaseTableSeeder
 {

@@ -10,7 +10,6 @@ use App\Models\Vote;
  * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.1
  * @copyright Mathrix Education SA
- * @package   Database\seeds
  */
 class CommentTableSeeder extends BaseTableSeeder
 {

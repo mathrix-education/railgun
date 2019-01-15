@@ -7,7 +7,6 @@
  * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.0
  * @copyright Mathrix Education SA
- * @package   Database\seeds
  */
 class DatabaseSeeder extends BaseTableSeeder
 {
@@ -26,5 +25,6 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->call(ScoreTableSeeder::class);
         $this->call(FamilyPackTableSeeder::class);
         $this->call(NotificationsTableSeeder::class);
+        $this->call(ReferenceTableSeeder::class);
     }
 }

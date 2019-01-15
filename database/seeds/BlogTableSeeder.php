@@ -12,7 +12,6 @@ use App\Models\Quote;
  * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.0
  * @copyright Mathrix Education SA
- * @package   Database\seeds
  */
 class BlogTableSeeder extends BaseTableSeeder
 {

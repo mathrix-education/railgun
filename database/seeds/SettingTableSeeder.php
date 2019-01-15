@@ -9,7 +9,6 @@ use App\Models\Setting;
  * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.0.3
  * @copyright Mathrix Education SA
- * @package   Database\seeds
  */
 class SettingTableSeeder extends BaseTableSeeder
 {

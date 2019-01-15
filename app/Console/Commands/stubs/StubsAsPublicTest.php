@@ -1,7 +1,5 @@
 <?php
-namespace App\Console\Commands\stubs;
-
-use Tests\API\ScopeTestCase;
+namespace Tests\API;
 
 /**
  * Class StubsAsPublicTest.

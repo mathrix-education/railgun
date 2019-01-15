@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\DB;
  * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.1
  * @copyright Mathrix Education SA
- * @package   Database\seeds
  */
 class BaseTableSeeder extends Seeder
 {

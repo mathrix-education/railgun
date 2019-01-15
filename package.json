@@ -1,11 +1,7 @@
 {
   "name": "mathrix-api",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "description": "[![pipeline status](https://gitlab.com/mathrix/mathrix-api/badges/master/pipeline.svg)](https://gitlab.com/mathrix/mathrix-api/commits/master)",
-  "directories": {
-    "doc": "docs",
-    "test": "tests"
-  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@gitlab.com/mathrix/mathrix-api.git"
@@ -17,7 +13,6 @@
   },
   "homepage": "https://gitlab.com/mathrix/mathrix-api#README",
   "dependencies": {
-    "mjml": "^3.3.5",
-    "redoc-cli": "^0.7.0"
+    "mjml": "^3.3.5"
   }
 }

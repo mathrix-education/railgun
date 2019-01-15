@@ -10,7 +10,6 @@ use App\Models\User;
  * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.0
  * @copyright Mathrix Education SA
- * @package   Database\seeds
  */
 class UserTableSeeder extends BaseTableSeeder
 {

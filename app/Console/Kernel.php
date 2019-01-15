@@ -19,6 +19,7 @@ use App\Console\Commands\Pipelines\DeployCommand;
 use App\Console\Commands\Redoc\RedocBundle;
 use App\Console\Commands\Redoc\RedocServe;
 use App\Console\Commands\Road;
+use App\Console\Commands\SEO\InitialSEOCommand;
 use App\Console\Commands\SEO\McqNoIndexCommand;
 use App\Console\Commands\Sitemap\SitemapAll;
 use App\Console\Commands\Sitemap\SitemapContent;
@@ -66,6 +67,7 @@ class Kernel extends ConsoleKernel
         // Pipelines
         BuildCommand::class,
         DeployCommand::class,
+        InitialSEOCommand::class
     ];
 
     /**

@@ -15,7 +15,6 @@ use Carbon\Carbon;
  * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.2.0
  * @copyright Mathrix Education SA
- * @package   Database\seeds
  */
 class MarksTableSeeder extends BaseTableSeeder
 {

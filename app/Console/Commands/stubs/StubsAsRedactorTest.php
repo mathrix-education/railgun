@@ -1,5 +1,5 @@
 <?php
-namespace App\Console\Commands\stubs;
+namespace Tests\API;
 
 /**
  * Class StubsAsRedactorTest
