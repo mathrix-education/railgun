@@ -18,13 +18,16 @@ class PathsAsAdminTest extends PathsAsModeratorTest
     /**
      * @throws \Exception
      */
-    public function testMarkIndex()
+    public function testPatch()
     {
         $tree = new Tree();
 
-        $this->json("post", "/paths/index", array_merge(
+        $this->json("patch", "/paths", array_merge(
             $tree->flatIds(),
-            ["seo_index" => true]
+            [
+                "seo_index" => true,
+                "seo_lastmod" => "2017-01-01"
+            ]
         ));
 
         $this->assertHttp200Success();
@@ -36,7 +39,8 @@ class PathsAsAdminTest extends PathsAsModeratorTest
             "notion_id" => $tree->getNotion()->id,
             "activity_id" => $tree->getActivity()->id,
             "module_id" => null,
-            "seo_index" => true
+            "seo_index" => true,
+            "seo_lastmod" => "2017-01-01"
         ]);
     }
 }

@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use App\Models\Traits\Loggable;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;

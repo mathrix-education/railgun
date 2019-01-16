@@ -19,11 +19,14 @@ class PathsAsPublicTest extends ScopeTestCase
     /**
      * @throws \Exception
      */
-    public function testMarkIndex()
+    public function testPatch()
     {
         $tree = new Tree();
 
-        $this->json("post", "/paths/index", $tree->flatIds());
+        $this->json("patch", "/paths", array_merge(
+            $tree->flatIds(),
+            ["seo_index" => false]
+        ));
 
         $this->assertHttp401Unauthorized();
     }

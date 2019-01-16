@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -22,6 +23,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int        $activity_id
  * @property int        $module_id
  * @property bool       $seo_index
+ * @property Carbon     $seo_lastmod
  *
  * @property Country    $country
  * @property Class_     $class_
@@ -44,7 +46,8 @@ class Path extends BaseModel
         "module_id" => "nullable|exists:modules,id"
     ];
     protected $casts = [
-        "seo_index" => "boolean"
+        "seo_index" => "boolean",
+        "seo_lastmod" => "date"
     ];
     protected $with = ["country", "class_", "discipline", "chapter", "notion", "activity", "module"];
 

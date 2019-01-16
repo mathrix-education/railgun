@@ -6,6 +6,7 @@ use App\Exceptions\Http401UnauthorizedException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\Post;
+use App\Responses\PaginationJsonResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -34,19 +35,15 @@ class PostController extends BaseController
      * @param Request $request The request
      * @param int     $page
      * @param int     $perPage
-     * @param array   $options
      *
      * @return JsonResponse
      */
-    public function index(Request $request, int $page = 1, int $perPage = 10, array $options = []): JsonResponse
+    public function index(Request $request, int $page = 1, int $perPage = 10): JsonResponse
     {
-        return response()->json(
-            Post::with("module")
-                ->limit($perPage)
-                ->offset(($page - 1) * $perPage)
-                ->orderByDesc('created_at')
-                ->get()
-        );
+        $query = Post::with("module")
+            ->orderBy("created_at", "desc");
+
+        return new PaginationJsonResponse($query, $page, $perPage);
     }
 
     /**
