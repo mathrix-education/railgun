@@ -150,8 +150,6 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
      */
     public function testMarkOverride()
     {
-        $this->markTestIncomplete("Unable to figure how to fix marks collisions for now.");
-
         $mark = Mark::inRandomOrder()
             ->whereHas("path", function (Builder $path) {
                 $path->whereNull("module_id");

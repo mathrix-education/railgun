@@ -135,6 +135,7 @@ class Activity extends BaseModel
             $mark = $this->marks()
                 ->where("user_id", "=", $user->id)
                 ->whereNull("module_id")
+                ->orderBy("created_at", "desc")
                 ->first();
 
             return $mark !== null ? $mark->status : null;
