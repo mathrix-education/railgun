@@ -7,6 +7,7 @@ use App\Models\Module;
 use App\Models\Path;
 use App\Models\Post;
 use App\Models\Product;
+use App\Models\Reference;
 use App\Models\Report;
 
 /**
@@ -77,6 +78,11 @@ class ModuleObserver extends BaseObserver
             ->get()
             ->each(function (Product $product) {
                 $product->delete();
+            });
+        Reference::where("module_id", "=", $module->id)
+            ->get()
+            ->each(function (Reference $reference) {
+                $reference->delete();
             });
         Report::where("module_id", "=", $module->id)
             ->get()
