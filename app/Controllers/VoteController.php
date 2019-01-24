@@ -126,6 +126,8 @@ class VoteController extends BaseController
             }
         }
 
-        return response()->json($vote->exists());
+        $response = new JsonResponse($vote->votable);
+
+        return $response;
     }
 }

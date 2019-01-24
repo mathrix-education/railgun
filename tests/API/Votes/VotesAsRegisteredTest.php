@@ -2,11 +2,9 @@
 namespace Tests\API\Votes;
 
 use App\Models\Comment;
-use App\Models\Post;
 use App\Models\User;
 use App\Models\Vote;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Laravel\Passport\Passport;
 
 /**
