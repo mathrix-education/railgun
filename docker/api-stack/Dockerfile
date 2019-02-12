@@ -35,7 +35,7 @@ RUN apk -U add \
     php7-zip
 
 COPY docker/api-stack/php-fpm.conf /etc/php7/php-fpm.conf
-COPY deploy/api-stack/www.conf /etc/php7/php-fpm.d/www.conf
+COPY docker/api-stack/www.conf /etc/php7/php-fpm.d/www.conf
 
 COPY --from=composer /build /var/www/${COMMIT_SHORT_SHA}
 
