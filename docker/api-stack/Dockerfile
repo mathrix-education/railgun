@@ -7,12 +7,10 @@ RUN composer install --prefer-dist --ignore-platform-reqs --no-interaction --no-
 # Alpine build, PHP 7.2 and the code itself
 FROM alpine:3.8
 
-MAINTAINER Mathieu Bour <mathieu@mathrix.fr>
-
 ARG COMMIT_SHORT_SHA=unknown
 
+MAINTAINER Mathieu Bour <mathieu@mathrix.fr>
 USER root
-
 WORKDIR /var/www/${COMMIT_SHORT_SHA}
 
 EXPOSE 9000
@@ -36,8 +34,8 @@ RUN apk -U add \
     php7-xml \
     php7-zip
 
-COPY deploy/php-fpm.conf /etc/php7/php-fpm.conf
-COPY deploy/www.conf /etc/php7/php-fpm.d/www.conf
+COPY docker/api-stack/php-fpm.conf /etc/php7/php-fpm.conf
+COPY deploy/api-stack/www.conf /etc/php7/php-fpm.d/www.conf
 
 COPY --from=composer /build /var/www/${COMMIT_SHORT_SHA}
 
