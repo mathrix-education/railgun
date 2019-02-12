@@ -7,8 +7,8 @@ RUN apk -U add \
     nginx
 
 # Copy configs
-COPY deploy/nginx.conf /etc/nginx/nginx.conf
-COPY deploy/vhost.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY vhost.conf /etc/nginx/conf.d/default.conf
 
 # Clean
 RUN rm -rf \
