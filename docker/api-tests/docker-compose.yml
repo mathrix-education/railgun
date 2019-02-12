@@ -1,0 +1,12 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=vM5qJKdng2B3WVBCz5e5
+      - MYSQL_DATABASE=mathrix_fr_tests
+  stack:
+    depends_on:
+      - mysql
+    image: "${STACK_IMAGE}"
+    entrypoint: ['vendor/bin/paratest']
