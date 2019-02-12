@@ -16,7 +16,7 @@ steps:
   - id: 'tests'
     name: 'docker/compose'
     waitFor: ['build:stack']
-    args: ['up', '-d'
+    args: ['up', '-d',
            '-f', 'docker/api-tests/docker-compose.yml',
            '-e',  'STACK_IMAGE=api-stack:$SHORT_SHA']
 images:
