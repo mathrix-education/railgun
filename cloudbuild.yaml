@@ -10,6 +10,7 @@ steps:
     name: 'gcr.io/cloud-builders/docker'
     args: ['build',
            '-f', 'docker/api-stack/Dockerfile',
+           '--build-arg', 'COMMIT_SHORT_SHA=$SHORT_SHA',
            '-t', 'gcr.io/$PROJECT_ID/api-stack:$SHORT_SHA',
            '-t', 'gcr.io/$PROJECT_ID/api-stack:latest-$BRANCH_NAME',
            '.']

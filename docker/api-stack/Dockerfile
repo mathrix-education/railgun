@@ -8,8 +8,12 @@ RUN composer install --prefer-dist --ignore-platform-reqs --no-interaction --no-
 FROM alpine:3.8
 
 MAINTAINER Mathieu Bour <mathieu@mathrix.fr>
+
+ARG COMMIT_SHORT_SHA=unknown
+
 USER root
-WORKDIR /var/www
+
+WORKDIR /var/www/${COMMIT_SHORT_SHA}
 
 EXPOSE 9000
 
@@ -35,7 +39,7 @@ RUN apk -U add \
 COPY deploy/php-fpm.conf /etc/php7/php-fpm.conf
 COPY deploy/www.conf /etc/php7/php-fpm.d/www.conf
 
-COPY --from=composer /build /var/www
+COPY --from=composer /build /var/www/${COMMIT_SHORT_SHA}
 
 RUN cp config/env/.env.dev .env
 

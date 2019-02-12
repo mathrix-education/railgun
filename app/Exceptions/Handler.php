@@ -3,6 +3,7 @@ namespace App\Exceptions;
 
 use App\Models\User;
 use Exception;
+use Google\Cloud\ErrorReporting\Bootstrap;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -78,6 +79,11 @@ class Handler extends ExceptionHandler
             $sentry->captureException($e);
         }
 
+        // GCP Stackdriver
+        if (isset($_SERVER['GAE_SERVICE'])) {
+            Bootstrap::exceptionHandler($e);
+        }
+
         parent::report($e);
     }
 
@@ -143,7 +149,7 @@ class Handler extends ExceptionHandler
         }
 
         if ($e instanceof NotFoundHttpException) {
-            $json["message"] = $request->url();
+            $json["data"] = $request->url();
         }
 
         $rendered = parent::render($request, $e);
