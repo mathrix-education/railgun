@@ -14,9 +14,9 @@ steps:
            '-t', 'gcr.io/$PROJECT_ID/api-stack:latest-$BRANCH_NAME',
            '.']
   - id: 'tests'
-    name: 'gcr.io/cloud-builders-community/docker-compose'
+    name: 'docker/compose'
     waitFor: ['build:stack']
-    args: ['up',
+    args: ['up', '-d'
            '-f', 'docker/api-tests/docker-compose.yml',
            '-e',  'STACK_IMAGE=api-stack:$SHORT_SHA']
 images:
