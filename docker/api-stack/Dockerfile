@@ -37,6 +37,8 @@ COPY deploy/www.conf /etc/php7/php-fpm.d/www.conf
 
 COPY --from=composer /build /var/www
 
+RUN cp configs/env/.env.dev .env
+
 # Clean
 RUN rm -rf \
     /var/cache/apk/*
