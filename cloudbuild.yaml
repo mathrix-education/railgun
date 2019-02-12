@@ -14,7 +14,7 @@ steps:
            '-t', 'gcr.io/$PROJECT_ID/api-stack:latest-$BRANCH_NAME',
            '.']
   - id: 'tests'
-    name: 'gcr.io/cloud-builders-community/docker-compose'
+    name: 'docker/compose:1.19.0'
     waitFor: ['build:stack']
     args: ['up', '-d',
            '-f', 'docker/api-tests/docker-compose.yml',
