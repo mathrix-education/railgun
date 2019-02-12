@@ -13,12 +13,6 @@ steps:
            '-t', 'gcr.io/$PROJECT_ID/api-stack:$SHORT_SHA',
            '-t', 'gcr.io/$PROJECT_ID/api-stack:latest-$BRANCH_NAME',
            '.']
-  - id: 'tests'
-    name: 'docker/compose:1.19.0'
-    waitFor: ['build:stack']
-    args: ['up', '-d',
-           '-f', 'docker/api-tests/docker-compose.yml',
-           '-e',  'STACK_IMAGE=api-stack:$SHORT_SHA']
 images:
   - 'gcr.io/$PROJECT_ID/api-nginx:$SHORT_SHA'
   - 'gcr.io/$PROJECT_ID/api-nginx:latest-$BRANCH_NAME'
