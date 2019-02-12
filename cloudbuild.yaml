@@ -14,5 +14,5 @@ steps:
 images:
   - 'gcr.io/$PROJECT_ID/api-nginx:$SHORT_SHA'
   - 'gcr.io/$PROJECT_ID/api-nginx:latest-$BRANCH_NAME'
-  - 'gcr.io/$PROJECT_ID/api-stack:$SHORT_SHA',
-  - 'gcr.io/$PROJECT_ID/api-stack:latest-$BRANCH_NAME',
+  - 'gcr.io/$PROJECT_ID/api-stack:$SHORT_SHA'
+  - 'gcr.io/$PROJECT_ID/api-stack:latest-$BRANCH_NAME'
