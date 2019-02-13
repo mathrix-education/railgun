@@ -39,7 +39,7 @@ COPY docker/api-stack/www.conf /etc/php7/php-fpm.d/www.conf
 
 COPY --from=composer /build /var/www/${COMMIT_SHORT_SHA}
 
-RUN cp config/env/.env.dev .env
+RUN cp config/env/.env.gcp-dev .env
 
 # Clean
 RUN rm -rf \
