@@ -13,13 +13,15 @@ use Illuminate\Validation\ValidationException;
  * Class PathController.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @since
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
  * @copyright Mathrix Education SA
+ * @package   App\Controllers
  */
 class PathController extends BaseController
 {
     /**
-     * Mark a content route a no-index.
+     * Patch a path (allow to set seo_index and seo_lastmod).
      *
      * @param Request $request
      *
@@ -28,7 +30,7 @@ class PathController extends BaseController
      * @throws Http422ModelValidationException
      * @throws ValidationException
      */
-    public function markIndex(Request $request)
+    public function patch(Request $request)
     {
         $request->user()->canOrFail("markIndex", Module::class);
 
@@ -39,7 +41,8 @@ class PathController extends BaseController
             "chapter_id" => "required|exists:chapters,id",
             "notion_id" => "required|exists:notions,id",
             "activity_id" => "required|exists:activities,id",
-            "seo_index" => "required|boolean"
+            "seo_index" => "required|boolean",
+            "seo_lastmod" => "date"
         ]);
 
         $path = Path::retrieve(array_merge(
@@ -54,6 +57,7 @@ class PathController extends BaseController
             ["module_id" => null]
         ));
         $path->seo_index = $request->input("seo_index");
+        $path->seo_lastmod = $request->input("seo_lastmod");
 
         $path->save();
 

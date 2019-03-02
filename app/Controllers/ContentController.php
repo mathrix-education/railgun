@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controllers;
 
 use App\Exceptions\Http401UnauthorizedException;
@@ -28,10 +27,10 @@ use Tinify\Tinify;
  * Class ContentController.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.0
- *
  * @copyright Mathrix Education SA
+ * @package   App\Controllers
  */
 class ContentController extends BaseController
 {
@@ -192,63 +191,10 @@ class ContentController extends BaseController
     }
 
     /**
-     * @apiVersion     4.0.0
-     *
-     * @api            {get} /content/search/{query}/{?page}/{?perPage} Search
-     * @apiGroup       Content
-     * @apiName        ContentSearch
-     * @apiDescription Search for chapters and notions
-     * @apiPermission  public
-     * @apiParam {int} [page=1] The page number
-     * @apiParam {int} [perPage=10] The search count per page
-     * @apiSuccess {Chapter[]} chapters Array of chapters
-     * @apiSuccess {int} chapters.id The chapter id
-     * @apiSuccess {string} chapters.name The chapter name
-     * @apiSuccess {string} chapters.slug The chapter slug
-     * @apiSuccess  {int} chapters.class_id The chapter class id
-     * @apiSuccess {int} chapters.discipline_id The chapter discipline id
-     * @apiSuccess {Discipline} chapters.discipline The discipline
-     * @apiSuccess {int} chapters.discipline.id The discipline id
-     * @apiSuccess {string} chapters.discipline.name The discipline name
-     * @apiSuccess {string} chapters.discipline.slug The discipline slug
-     * @apiSuccess {bool} chapters.discipline.beta If the discipline is in beta
-     * @apiSuccess {string} chapters.discipline.image The discipline image
-     * @apiSuccess {Class} chapters.class_ The class
-     * @apiSuccess {int} chapters.class_.id The class id
-     * @apiSuccess {string} chapters.class_.name The class name
-     * @apiSuccess {string} chapters.class_.slug The class slug
-     * @apiSuccess {string} chapters.class_.country_id The class country id
-     * @apiSuccess {Country} chapters.class_.country The country
-     * @apiSuccess {int} chapters.class_.country.id The country id
-     * @apiSuccess {string} chapters.class_.country.name The country name
-     * @apiSuccess {string} chapters.class_.country.slug The country slug
-     * @apiSuccess {Notion[]} notions Array of notions
-     * @apiSuccess {int} notions.id The notion id
-     * @apiSuccess {string} notions.name The notion name
-     * @apiSuccess {string} notions.slug The notion slug
-     * @apiSuccess {int} notions.chapters_id The notion chapter_id
-     * @apiSuccess {Chapter} notions.chapters The chapter
-     * @apiSuccess {int} notions.chapters.id The chapter id
-     * @apiSuccess {string} notions.chapters.name The chapter name
-     * @apiSuccess {string} notions.chapters.slug The chapter slug
-     * @apiSuccess {Discipline} notions.chapters.discipline The discipline
-     * @apiSuccess {int} notions.chapters.discipline.id The discipline id
-     * @apiSuccess {string} notions.chapters.discipline.name The discipline name
-     * @apiSuccess {string} notions.chapters.discipline.slug The discipline slug
-     * @apiSuccess {bool} notions.chapters.discipline.beta If the discipline is in beta
-     * @apiSuccess {string} notions.chapters.discipline.image The discipline image
-     * @apiSuccess {Class} notions.chapters.class_ The class
-     * @apiSuccess {int} notions.chapters.class_.id The class id
-     * @apiSuccess {string} notions.chapters.class_.name The class name
-     * @apiSuccess {string} notions.chapters.class_.slug The class slug
-     * @apiSuccess {string} notions.chapters.class_.country_id The class country id
-     * @apiSuccess {Country} notions.chapters.class_.country The country
-     * @apiSuccess {int} notions.chapters.class_.country.id The country id
-     * @apiSuccess {string} notions.chapters.class_.country.name The country name
-     * @apiSuccess {string} notions.chapters.class_.country.slug The country slug
+     * Global research.
      *
      * @param Request $request The request
-     * @param string  $query
+     * @param string  $query   The query string.
      * @param int     $page
      * @param int     $perPage
      *
@@ -366,50 +312,7 @@ class ContentController extends BaseController
     }
 
     /**
-     * @apiVersion     4.0.0
-     *
-     * @api            {get} /content/tree Tree
-     * @apiGroup       Content
-     * @apiName        ContentTree
-     * @apiDescription Retrieve all cdn files
-     * @apiPermission  public
-     * @apiSuccess {string[]} - The cdn files
-     *
-     * @param Request $request The request
-     *
-     * @return JsonResponse
-     */
-    public function tree(Request $request)
-    {
-        $storage = Storage::disk("cdn");
-
-        $directory = $request->query("directory", "/");
-
-        $directories = $storage->directories($directory);
-        foreach ($directories as $key => $v) {
-            $directories[$key] = env("APP_CDN") . "/$v/";
-        }
-
-        $files = $storage->files($directory);
-        foreach ($files as $key => $file) {
-            $files[$key] = env("APP_CDN") . "/$file";
-        }
-
-        return response()->json(array_merge($directories, $files));
-    }
-
-    /**
-     * @apiVersion     4.0.0
-     *
-     * @api            {post} /content/upload Upload
-     * @apiGroup       Content
-     * @apiName        ContentUpload
-     * @apiDescription Upload a file to the cdn
-     * @apiPermission  public
-     * @apiParam (Data) {file} file The file to upload (must be jpeg,jpg,png,gif,pdf,mp3,mp4)
-     * @apiParam (Data) {string} destination The file destination on the cdn
-     * @apiParam (Data) {string} name The file destination on the cdn
-     * @apiSuccess     url The file url on the cdn
+     * Upload a file.
      *
      * @param Request $request The request
      *
@@ -417,6 +320,7 @@ class ContentController extends BaseController
      * @throws ValidationException
      *
      * @return JsonResponse
+     * @deprecated
      */
     public function upload(Request $request)
     {
@@ -452,5 +356,35 @@ class ContentController extends BaseController
         return response()->json([
             "url" => env("APP_CDN") . "/$destination/$name",
         ]);
+    }
+
+    /**
+     * Get the content of a given directory
+     *
+     * @param Request $request
+     *
+     * @deprecated
+     * @return mixed
+     */
+    public function tree(Request $request): JsonResponse
+    {
+        $storage = Storage::disk("cdn");
+        $directory = $request->query("directory", "/");
+
+        $directories = $storage->directories($directory);
+        foreach ($directories as $key => $value) {
+            $directories[$key] = env("APP_CDN") . "/$value/";
+        }
+
+        $files = $storage->files($directory);
+        foreach ($directories as $key => $value) {
+            $files[$key] = env("APP_CDN") . "/$value";
+        }
+
+        $content = array_merge($directories, $files);
+
+        $response = new JsonResponse($content);
+
+        return new $response;
     }
 }

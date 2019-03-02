@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\API\Scores;
 
 use App\Models\Score;
@@ -8,12 +7,14 @@ use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\IsType;
 
 /**
- * Class ScoresAsPublicTest
+ * Class ScoresAsRegisteredTest.
  * Test scores as registered user.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
  * @copyright Mathrix Education SA
+ * @package   Tests\API\Scores
  */
 class ScoresAsRegisteredTest extends ScoresAsPublicTest
 {

@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\API\Chapters;
 
 use App\Models\Chapter;
@@ -7,13 +6,14 @@ use PHPUnit\Framework\Constraint\IsType;
 use Tests\API\ScopeTestCase;
 
 /**
- * Class ChaptersAsPublicTest
+ * Class ChaptersAsPublicTest.
  * Test chapters as public (non-logged user).
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     1.0.0
  * @copyright Mathrix Education SA
- *
- * @version   1.0.0
+ * @package   Tests\API\Chapters
  */
 class ChaptersAsPublicTest extends ScopeTestCase
 {

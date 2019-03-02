@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Services\Braintree\Models;
 
 use App\Services\Braintree\Formatter;
@@ -12,11 +11,11 @@ use Illuminate\Support\Str;
  * Class AddOn.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
- *
  * @copyright Mathrix Education SA
- * @mixin \Braintree\AddOn
+ * @package   App\Services\Braintree\Models
+ * @mixin     \Braintree\AddOn
  *
  * @property float    $amount
  * @property int|null $currentBillingCycle

@@ -1,17 +1,15 @@
 <?php
-
-namespace Tests\API\Stubs;
-
-use Tests\API\ScopeTestCase;
+namespace Tests\API;
 
 /**
- * Class StubsAsPublicTest
+ * Class StubsAsPublicTest.
  * Test stubs as public (non-logged user).
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
  * @copyright Mathrix Education SA
- *
- * @version   {version}
+ * @package   App\Console\Commands\stubs
  */
 class StubsAsPublicTest extends ScopeTestCase
 {

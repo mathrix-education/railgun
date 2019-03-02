@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\Unit;
 
 use App\Services\Braintree\Models\Plan;
@@ -10,11 +9,11 @@ use Tests\BaseTestCase;
 /**
  * Class PlanTest.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
- *
  * @copyright Mathrix Education SA
+ * @package   Tests\Unit
  */
 class PlanTest extends BaseTestCase
 {

@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\API\Comments;
 
 use App\Exceptions\Http422ModelSaveException;
@@ -12,13 +11,14 @@ use Laravel\Passport\Passport;
 use App\Utils\Tree;
 
 /**
- * Class CommentsAsPublicTest
+ * Class CommentsAsRegisteredTest
  * Test Comments as registered user.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     1.0.0
  * @copyright Mathrix Education SA
- *
- * @version   1.0.0
+ * @package   Tests\API\Comments
  */
 class CommentsAsRegisteredTest extends CommentsAsPublicTest
 {

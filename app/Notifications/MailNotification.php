@@ -2,12 +2,13 @@
 namespace App\Notifications;
 
 /**
- * Class MailNotification
+ * Class MailNotification.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package   App\Notifications
- * @since
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
  * @copyright Mathrix Education SA
+ * @package   App\Notifications
  */
 abstract class MailNotification extends BaseNotification
 {

@@ -1,21 +1,22 @@
 <?php
-
 namespace Tests\API\Activities;
 
 use App\Models\Module;
 use App\Models\Notion;
+use App\Models\Path;
 use PHPUnit\Framework\Constraint\IsType;
 use Tests\API\ScopeTestCase;
 use App\Utils\Tree;
 
 /**
- * Class ActivitiesAsPublicTest
+ * Class ActivitiesAsPublicTest.
  * Test activities as public (non-logged user).
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     1.0.0
  * @copyright Mathrix Education SA
- *
- * @version   1.0.0
+ * @package   Tests\API\Activities
  */
 class ActivitiesAsPublicTest extends ScopeTestCase
 {
@@ -45,14 +46,14 @@ class ActivitiesAsPublicTest extends ScopeTestCase
      */
     public function testByNotion()
     {
-        $notion = Notion::whereVisible(true)->firstOrFail();
+        $notion = Notion::where("visible", "=",true)->firstOrFail();
 
         $this->json("get", "/activities/by-notion/{$notion->id}");
 
-        $activities = $this->getResponseData();
+        $responseData = $this->getResponseData();
 
         $this->assertHttp200Success();
-        foreach ($activities as $activity) {
+        foreach ($responseData->data as $activity) {
             $this->assertInDatabase("activity_notion", [
                 "activity_id" => $activity->id,
                 "notion_id" => $notion->id,
@@ -169,6 +170,17 @@ class ActivitiesAsPublicTest extends ScopeTestCase
         $tree = new Tree();
         $ids = $tree->flatIds("notion");
 
+        // Set seo_index to true to the first activity
+        $activity = $tree->getNotion()->activities[0];
+        $path = Path::retrieve(
+            array_merge(
+                $ids,
+                ["activity_id" => $activity->id, "module_id" => null]
+            )
+        );
+        $path->seo_index = true;
+        $path->save();
+
         foreach ($ids as $k => $v) {
             $url = str_replace("{" . $k . "}", $v, $url);
         }
@@ -177,6 +189,7 @@ class ActivitiesAsPublicTest extends ScopeTestCase
 
         $this->assertResponseOk();
         $this->assertJsonDocumentMatches($this->response->getContent(), [
+            "[0].seo_index" => true,
             "[*].seo_index" => new IsType("boolean"),
         ]);
     }

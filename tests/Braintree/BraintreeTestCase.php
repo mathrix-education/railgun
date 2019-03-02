@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\Braintree;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -14,14 +13,14 @@ use Tests\Utils\Traits\PassportTrait;
 use Tests\Utils\Traits\ResponseTrait;
 
 /**
- * Class BraintreeTestCase
+ * Class BraintreeTestCase.
  * Base class for Braintree tests.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
- *
  * @copyright Mathrix Education SA
+ * @package   Tests\Braintree
  */
 class BraintreeTestCase extends TestCase
 {

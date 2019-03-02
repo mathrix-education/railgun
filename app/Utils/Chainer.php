@@ -1,19 +1,19 @@
 <?php
-
 namespace App\Utils;
 
 use App\Exceptions\Http400InvalidRequestException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * Class Chainer.
  *
- * @author    Mathrix Back-End Team
- *
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
- *
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
+ * @package   App\Utils
  */
 class Chainer
 {
@@ -64,15 +64,17 @@ class Chainer
             $subRequest["method"],
             $subRequest["data"] ?? []
         );
+        $request->setJson(new ParameterBag($subRequest["data"] ?? []));
         $request->headers->set("Authorization", $this->bearerToken);
 
-        $response = app()->dispatch($request);
-
+        app()->offsetSet("request", $request);
+        $response = app()->handle($request);
         $this->responseData[$key] = [
             "method" => $subRequest["method"],
             "url" => $this->resolve($subRequest["url"]),
             "body" => json_decode($response->getContent(), true)
         ];
+        app()->offsetSet("request", $this->request);
     }
 
     private function orderRequests()

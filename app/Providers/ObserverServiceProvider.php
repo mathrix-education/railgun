@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Providers;
 
 use App\Models\BaseModel;
@@ -11,14 +10,14 @@ use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\ServiceProvider;
 
 /**
- * Class ObserverServiceProvider
+ * Class ObserverServiceProvider.
  * Provides all observers to the corresponding models.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.0
- *
  * @copyright Mathrix Education SA
+ * @package   App\Providers
  */
 class ObserverServiceProvider extends ServiceProvider
 {

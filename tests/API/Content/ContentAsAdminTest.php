@@ -1,16 +1,15 @@
 <?php
-
 namespace Tests\API\Content;
 
 /**
- * Class ContentAsAdminTest
+ * Class ContentAsAdminTest.
  * Test content as admin.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
- * @since
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
  * @copyright Mathrix Education SA
+ * @package   Tests\API\Content
  */
 class ContentAsAdminTest extends ContentAsModeratorTest
 {

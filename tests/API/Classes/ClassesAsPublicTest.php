@@ -1,18 +1,18 @@
 <?php
-
 namespace Tests\API\Classes;
 
 use App\Models\Country;
 use Tests\API\ScopeTestCase;
 
 /**
- * Class ClassesAsPublicTest
+ * Class ClassesAsPublicTest.
  * Test classes as public (non-logged user).
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     1.0.0
  * @copyright Mathrix Education SA
- *
- * @version   1.0.0
+ * @package   Tests\API\Classes
  */
 class ClassesAsPublicTest extends ScopeTestCase
 {

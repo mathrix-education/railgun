@@ -1,15 +1,15 @@
 <?php
-
 namespace Tests\API\Reports;
 
 /**
- * Class ReportsAsModeratorTest
+ * Class ReportsAsModeratorTest.
  * Test reports as moderator.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     1.0.0
  * @copyright Mathrix Education SA
- *
- * @version   1.0.0
+ * @package   Tests\API\Reports
  */
 class ReportsAsModeratorTest extends ReportsAsRegisteredTest
 {

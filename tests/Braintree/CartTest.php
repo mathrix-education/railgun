@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\Braintree;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -9,13 +8,13 @@ use App\Models\User;
 use Illuminate\Support\Facades\Notification;
 
 /**
- * Class CartIntegrationTest.
+ * Class CartTest.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
- *
  * @copyright Mathrix Education SA
+ * @package   Tests\Braintree
  */
 class CartTest extends BraintreeTestCase
 {

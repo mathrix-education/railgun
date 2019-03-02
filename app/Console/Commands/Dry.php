@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Console\Commands;
 
 use App\Exceptions\Http422ModelSaveException;
@@ -12,10 +11,10 @@ use Illuminate\Console\Command;
  * Class Dry.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
- *
  * @copyright Mathrix Education SA
+ * @package   App\Console\Commands
  */
 class Dry extends Command
 {
@@ -27,15 +26,8 @@ class Dry extends Command
      */
     public function handle()
     {
-        $this->output->progressStart(1000);
-        for ($i = 0; $i < 1000; $i++) {
-            /** @var Comment $newComment */
-            $newComment = factory(Comment::class)->make();
-            $newComment->parent_id = 3107;
-            $newComment->user_id = User::random()->id;
-            $newComment->save();
-            $this->output->progressAdvance();
-        }
-        $this->output->progressFinish();
+        $user = User::find(1);
+        $settings = $user->settings;
+        dd($settings);
     }
 }

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Observers;
 
 use App\Models\Activity;
@@ -8,12 +7,17 @@ use App\Models\Module;
 use App\Models\Path;
 use App\Models\Post;
 use App\Models\Product;
+use App\Models\Reference;
 use App\Models\Report;
 
 /**
  * Class ModuleObserver.
  *
- * @author Mathrix Team
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
+ * @copyright Mathrix Education SA
+ * @package   App\Observers
  */
 class ModuleObserver extends BaseObserver
 {
@@ -74,6 +78,11 @@ class ModuleObserver extends BaseObserver
             ->get()
             ->each(function (Product $product) {
                 $product->delete();
+            });
+        Reference::where("module_id", "=", $module->id)
+            ->get()
+            ->each(function (Reference $reference) {
+                $reference->delete();
             });
         Report::where("module_id", "=", $module->id)
             ->get()

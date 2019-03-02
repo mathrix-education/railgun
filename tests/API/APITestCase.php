@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\API;
 
 use Laravel\Lumen\Testing\DatabaseTransactions;
@@ -14,11 +13,11 @@ use Tests\Utils\Traits\ResponseTrait;
 /**
  * Class APITestCase.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
- * @since
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
  * @copyright Mathrix Education SA
+ * @package   Tests\API
  */
 class APITestCase extends BaseTestCase
 {

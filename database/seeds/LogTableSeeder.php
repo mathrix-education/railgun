@@ -10,9 +10,8 @@ use Carbon\Carbon;
  * Class LogTableSeeder.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.0.3
- *
  * @copyright Mathrix Education SA
  */
 class LogTableSeeder extends BaseTableSeeder

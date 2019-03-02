@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Providers;
 
 use App\Models\BaseModel;
@@ -13,14 +12,14 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 /**
- * Class PolicyServiceProvider
+ * Class PolicyServiceProvider.
  * Automatically register policies.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.1
- *
  * @copyright Mathrix Education SA
+ * @package   App\Providers
  */
 class PolicyServiceProvider extends ServiceProvider
 {

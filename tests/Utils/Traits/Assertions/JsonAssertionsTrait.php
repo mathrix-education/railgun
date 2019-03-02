@@ -1,15 +1,14 @@
 <?php
-
 namespace Tests\Utils\Traits\Assertions;
 
 /**
  * Trait JsonAssertionsTrait.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.0.3
- *
  * @copyright Mathrix Education SA
+ * @package   Tests\Utils\Traits\Assertions
  */
 trait JsonAssertionsTrait
 {

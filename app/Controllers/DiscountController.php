@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controllers;
 
 use App\Models\Discount;
@@ -7,13 +6,13 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 /**
- * Class DisciplineController.
+ * Class DiscountController.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.0.3
- *
  * @copyright Mathrix Education SA
+ * @package   App\Controllers
  */
 class DiscountController extends BaseController
 {

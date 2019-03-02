@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -15,8 +14,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * Class FamilyPack.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
  * @copyright Mathrix Education SA
+ * @package   App\Models
  *
  * @property int               $id
  * @property string            $braintree_id

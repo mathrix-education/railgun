@@ -1,15 +1,15 @@
 <?php
-
 namespace Tests\API\Posts;
 
 /**
- * Class PostsAsPublicTest
+ * Class PostsAsRegisteredTest.
  * Test Posts as registered user.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     1.0.0
  * @copyright Mathrix Education SA
- *
- * @version   1.0.0
+ * @package   Tests\API\Posts
  */
 class PostsAsRegisteredTest extends PostsAsPublicTest
 {

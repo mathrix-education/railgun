@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Exceptions;
 
 use Throwable;
@@ -8,10 +7,10 @@ use Throwable;
  * Class Http400InvalidPlanException.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
- *
  * @copyright Mathrix Education SA
+ * @package   App\Exceptions
  */
 class Http400InvalidPlanException extends Http400InvalidRequestException
 {

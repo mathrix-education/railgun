@@ -5,9 +5,13 @@ use Illuminate\Support\Facades\Storage;
 use Laravelium\Sitemap\Sitemap;
 
 /**
- * Trait SitemapUtils
+ * Trait SitemapUtils.
  *
- * @package App\Console\Commands
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
+ * @copyright Mathrix Education SA
+ * @package   App\Console\Commands\Sitemap
  */
 trait SitemapUtils
 {

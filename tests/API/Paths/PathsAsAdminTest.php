@@ -1,30 +1,33 @@
 <?php
-
 namespace Tests\API\Paths;
 
 use App\Utils\Tree;
 
 /**
- * Class PathsAsAdminTest
+ * Class PathsAsAdminTest.
  * Test paths as admin.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.2.0
  * @copyright Mathrix Education SA
- *
- * @version   4.2.0
+ * @package   Tests\API\Paths
  */
 class PathsAsAdminTest extends PathsAsModeratorTest
 {
     /**
      * @throws \Exception
      */
-    public function testMarkIndex()
+    public function testPatch()
     {
         $tree = new Tree();
 
-        $this->json("post", "/paths/index", array_merge(
+        $this->json("patch", "/paths", array_merge(
             $tree->flatIds(),
-            ["seo_index" => true]
+            [
+                "seo_index" => true,
+                "seo_lastmod" => "2017-01-01"
+            ]
         ));
 
         $this->assertHttp200Success();
@@ -36,7 +39,8 @@ class PathsAsAdminTest extends PathsAsModeratorTest
             "notion_id" => $tree->getNotion()->id,
             "activity_id" => $tree->getActivity()->id,
             "module_id" => null,
-            "seo_index" => true
+            "seo_index" => true,
+            "seo_lastmod" => "2017-01-01"
         ]);
     }
 }

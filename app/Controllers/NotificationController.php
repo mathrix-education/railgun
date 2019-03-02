@@ -13,8 +13,10 @@ use Illuminate\Notifications\DatabaseNotification;
  * Class NotificationController.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.2.0
  * @copyright Mathrix Education SA
+ * @package   App\Controllers
  */
 class NotificationController extends BaseController
 {
@@ -36,18 +38,8 @@ class NotificationController extends BaseController
         /** @var Builder $query */
         $query = $user->{$relation}();
         $query = $query->orderByDesc("created_at");
-        $total = $query->count();
 
-        $notifications = $query->limit($perPage)
-            ->offset(($page - 1) * $perPage)
-            ->get();
-
-        $response = new PaginationJsonResponse(
-            $notifications,
-            $page,
-            $perPage,
-            $total
-        );
+        $response = new PaginationJsonResponse($query, $page, $perPage);
 
         return $response;
     }

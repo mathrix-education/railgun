@@ -1,17 +1,18 @@
 <?php
-
 namespace Tests\API\Settings;
 
 use App\Models\Setting;
+use PHPUnit\Framework\Constraint\IsType;
 
 /**
- * Class SettingsAsAdminTest
+ * Class SettingsAsAdminTest.
  * Test settings as admin.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.0.3
  * @copyright Mathrix Education SA
- *
- * @version   4.0.3
+ * @package   Tests\API\Settings
  */
 class SettingsAsAdminTest extends SettingsAsModeratorTest
 {
@@ -25,6 +26,12 @@ class SettingsAsAdminTest extends SettingsAsModeratorTest
         $this->json("get", "/settings");
 
         $this->assertHttp200Success();
+        $this->assertJsonDocumentMatches($this->response->getContent(), [
+            "[*].id" => new IsType("integer"),
+            "[*].key" => new IsType("string"),
+            "[*].value" => new IsType("string"),
+            "[*].visible" => new IsType("boolean")
+        ]);
     }
 
     /**

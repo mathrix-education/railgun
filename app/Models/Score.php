@@ -1,12 +1,4 @@
 <?php
-/**
- * @author    Mathrix Back-End Team
- *
- * @since     ${CARET}
- *
- * @copyright Mathrix SA
- */
-
 namespace App\Models;
 
 use Carbon\Carbon;
@@ -16,11 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * Class Score.
  *
- * @author    Mathrix Back-End Team
- *
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
- *
- * @copyright Mathrix SA
+ * @copyright Mathrix Education SA
+ * @package   App\Models
  *
  * @property string      $game
  * @property int         $id

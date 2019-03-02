@@ -1,14 +1,17 @@
 <?php
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Class Path.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.2.0
  * @copyright Mathrix Education SA
+ * @package   App\Models
  *
  * @property int        $id
  * @property string     $content
@@ -20,9 +23,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int        $activity_id
  * @property int        $module_id
  * @property bool       $seo_index
+ * @property Carbon     $seo_lastmod
  *
  * @property Country    $country
- * @property Class_     $class
+ * @property Class_     $class_
  * @property Discipline $discipline
  * @property Chapter    $chapter
  * @property Notion     $notion
@@ -42,7 +46,8 @@ class Path extends BaseModel
         "module_id" => "nullable|exists:modules,id"
     ];
     protected $casts = [
-        "seo_index" => "boolean"
+        "seo_index" => "boolean",
+        "seo_lastmod" => "date"
     ];
     protected $with = ["country", "class_", "discipline", "chapter", "notion", "activity", "module"];
 

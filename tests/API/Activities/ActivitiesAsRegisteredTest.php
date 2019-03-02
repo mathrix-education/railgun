@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\API\Activities;
 
 use App\Models\Mark;
@@ -10,13 +9,14 @@ use Laravel\Passport\Passport;
 use PHPUnit\Framework\Constraint\IsType;
 
 /**
- * Class ActivitiesAsPublicTest
+ * Class ActivitiesAsRegisteredTest.
  * Test activities as registered user.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     1.0.0
  * @copyright Mathrix Education SA
- *
- * @version   1.0.0
+ * @package   Tests\API\Activities
  */
 class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
 {
@@ -150,8 +150,6 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
      */
     public function testMarkOverride()
     {
-        $this->markTestIncomplete("Unable to figure how to fix marks collisions for now.");
-
         $mark = Mark::inRandomOrder()
             ->whereHas("path", function (Builder $path) {
                 $path->whereNull("module_id");

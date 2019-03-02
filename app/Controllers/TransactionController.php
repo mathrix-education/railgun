@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controllers;
 
 use App\Events\TransactionRefundSuccessEvent;
@@ -17,10 +16,10 @@ use Laravel\Lumen\Routing\Controller;
  * Class TransactionController.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
- * @since
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
  * @copyright Mathrix Education SA
+ * @package   App\Controllers
  */
 class TransactionController extends Controller
 {

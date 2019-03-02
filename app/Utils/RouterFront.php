@@ -11,12 +11,13 @@ use App\Models\Notion;
 use App\Models\Path;
 
 /**
- * Class RouterFront
+ * Class RouterFront.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @package   App\Utils
- * @since
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
  * @copyright Mathrix Education SA
+ * @package   App\Utils
  */
 class RouterFront
 {

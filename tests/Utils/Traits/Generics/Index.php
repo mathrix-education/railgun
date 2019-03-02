@@ -1,31 +1,20 @@
 <?php
-
 namespace Tests\Utils\Traits\Generics;
 
+use Tests\Utils\Traits\ResponseTrait;
+
 /**
- * Trait Index
+ * Trait Index.
  * Generic index tests.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.0
+ * @copyright Mathrix Education SA
+ * @package   Tests\Utils\Traits\Generics
  */
 trait Index
 {
-    /**
-     * Generic index with pagination; expect HTTP 200.
-     *
-     * @param int $perPage model count per page
-     *
-     * @throws \Exception
-     */
-    public function genericIndexSuccessWithPagination($perPage = 10)
-    {
-        $this->genericIndexSuccess();
-        $this->assertJsonLength($perPage);
-    }
-
     /**
      * Generic index; expect HTTP 200.
      *
@@ -37,6 +26,7 @@ trait Index
 
         // Assertions
         $this->assertHttp200Success();
+        $this->assertIsPaginatedResponse();
     }
 
     /**

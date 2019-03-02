@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controllers;
 
 use App\Events\TransactionSuccessEvent;
@@ -16,13 +15,13 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 /**
- * Class ProductsController.
+ * Class ProductController.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
- *
  * @copyright Mathrix Education SA
+ * @package   App\Controllers
  */
 class ProductController extends BaseController
 {

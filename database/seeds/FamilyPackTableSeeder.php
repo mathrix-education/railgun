@@ -4,9 +4,10 @@ use App\Models\FamilyPack;
 use App\Models\User;
 
 /**
- * Class FamilyPackTableSeeder
+ * Class FamilyPackTableSeeder.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.1
  * @copyright Mathrix Education SA
  */

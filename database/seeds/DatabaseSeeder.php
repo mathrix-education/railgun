@@ -4,9 +4,8 @@
  * Class DatabaseSeeder.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.0
- *
  * @copyright Mathrix Education SA
  */
 class DatabaseSeeder extends BaseTableSeeder
@@ -26,5 +25,6 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->call(ScoreTableSeeder::class);
         $this->call(FamilyPackTableSeeder::class);
         $this->call(NotificationsTableSeeder::class);
+        $this->call(ReferenceTableSeeder::class);
     }
 }

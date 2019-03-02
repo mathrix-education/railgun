@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\API\Modules;
 
 use App\Models\Activity;
@@ -9,13 +8,14 @@ use Tests\API\ScopeTestCase;
 use App\Utils\Tree;
 
 /**
- * Class ModulesAsPublicTest
+ * Class ModulesAsPublicTest.
  * Test modules as public (non-logged user).
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     1.0.0
  * @copyright Mathrix Education SA
- *
- * @version   1.0.0
+ * @package   Tests\API\Modules
  */
 class ModulesAsPublicTest extends ScopeTestCase
 {
@@ -41,9 +41,9 @@ class ModulesAsPublicTest extends ScopeTestCase
     {
         $this->genericBySuccess(Activity::class);
 
-        $data = $this->getResponseData();
+        $responseData = $this->getResponseData();
 
-        foreach ($data as $order => $module) {
+        foreach ($responseData->data as $order => $module) {
             $this->assertEquals($order, $module->pivot->order);
         }
     }

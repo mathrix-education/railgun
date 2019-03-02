@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Observers;
 
 use App\Models\Discount;
@@ -9,10 +8,10 @@ use App\Models\Product;
  * Class DiscountObserver.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
- * @since
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
  * @copyright Mathrix Education SA
+ * @package   App\Observers
  */
 class DiscountObserver extends BaseObserver
 {

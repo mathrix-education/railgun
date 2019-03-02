@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -10,6 +9,7 @@ use App\Models\Comment;
 use App\Models\Module;
 use App\Models\Path;
 use App\Models\User;
+use App\Responses\PaginationJsonResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -17,53 +17,15 @@ use Illuminate\Http\Request;
  * Class CommentController.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.0
- *
  * @copyright Mathrix Education SA
+ * @package   App\Controllers
  */
 class CommentController extends BaseController
 {
     /**
-     * @apiVersion     4.0.0
-     *
-     * @api            {get} /comments/{?page}/{?perPage} Index
-     * @apiGroup       Comments
-     * @apiName        CommentsIndex
-     * @apiDescription Retrieve comments
-     * @apiPermission  moderator
-     * @apiUse         Pagination
-     * @apiUse         CommentArray
-     * @apiUse         Http401Unauthorized
-     */
-
-    /**
-     * @apiVersion     4.0.0
-     *
-     * @api            {get} /comments/{id} Get
-     * @apiGroup       Comments
-     * @apiName        CommentGet
-     * @apiDescription Get a class by id
-     * @apiPermission  public
-     * @apiParam {int} id The class id
-     * @apiUse         CommentModel
-     * @apiUse         Http404ModelNotFound
-     */
-
-    /**
-     * @apiVersion     4.0.0
-     *
-     * @api            {post} /comments Add
-     * @apiGroup       Comments
-     * @apiName        CommentAdd
-     * @apiDescription Add class
-     * @apiPermission  registered
-     * @apiUse         Bearer
-     * @apiUse         CommentRequest
-     * @apiUse         CommentModel
-     * @apiUse         Http401Unauthorized
-     * @apiUse         Http422ModelValidation
-     * @apiUse         Http422ModelSave
+     * Post a new comment.
      *
      * @param Request $request The request
      *
@@ -96,50 +58,7 @@ class CommentController extends BaseController
     }
 
     /**
-     * @apiVersion     4.0.0
-     *
-     * @api            {patch} /comments/{id} Edit
-     * @apiGroup       Comments
-     * @apiName        CommentEdit
-     * @apiDescription Edit a class
-     * @apiPermission  registered for own comment, moderator otherwise
-     * @apiUse         Bearer
-     * @apiParam {int} id The comment id
-     * @apiUse         CommentRequest
-     * @apiUse         CommentModel
-     * @apiUse         Http401Unauthorized
-     * @apiUse         Http404ModelNotFound
-     * @apiUse         Http422ModelSave
-     * @apiUse         Http422ModelValidation
-     */
-
-    /**
-     * @apiVersion     4.0.0
-     *
-     * @api            {delete} /comments/{id} Delete
-     * @apiGroup       Comments
-     * @apiName        CommentDelete
-     * @apiDescription Delete a comment and its children
-     * @apiPermission  moderator
-     * @apiUse         Bearer
-     * @apiParam {int} id The comment id
-     * @apiUse         Http401Unauthorized
-     * @apiUse         Http404ModelNotFound
-     */
-
-    /**
-     * @apiVersion     4.0.0
-     *
-     * @api            {get} /comments/by-{what}/{id}/{?page}/{?perPage} By
-     * @apiGroup       Comments
-     * @apiName        CommentsBy
-     * @apiDescription Retrieve comments by type
-     * @apiPermission  public
-     * @apiParam {string=post,course,notion} what the commentable_type
-     * @apiParam {int} id the commentable id
-     * @apiParam {int} [page=1] the page to fetch
-     * @apiParam {int} [perPage=10] the comments per page to fetch (excluding children)
-     * @apiUse         CommentArray
+     * Get comments associated with a given model.
      *
      * @param Request $request The request
      * @param string  $what
@@ -151,7 +70,7 @@ class CommentController extends BaseController
      *
      * @return JsonResponse
      */
-    public function by(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
+    public function by(Request $request, string $what, int $id, int $page = 1, int $perPage = 100): JsonResponse
     {
         $modelClass = $this->resolveModelClass($what);
 
@@ -159,47 +78,16 @@ class CommentController extends BaseController
         $model = $modelClass::where("id", $id)
             ->firstOrFail();
 
-        $comments = $model->comments()
-            ->limit($perPage)
-            ->whereNull("parent_id")
-            ->offset(($page - 1) * $perPage)
-            ->get();
+        $query = $model->comments()
+            ->whereNull("parent_id");
 
-        $response = new JsonResponse($comments);
+        $response = new PaginationJsonResponse($query, $page, $perPage);
 
         return $response;
     }
 
     /**
-     * @apiVersion     4.0.0
-     *
-     * @api            {post} /comments/search Search
-     * @apiGroup       Comments
-     * @apiName        CommentSearch
-     * @apiDescription Search for comments
-     * @apiPermission  moderator
-     * @apiUse         Bearer
-     * @apiParam (Data) {string} [field1] The comment field1 search value (use % as wildcard)
-     * @apiParam (Data) {string} [field2] The comment field2 search value (use % as wildcard)
-     * @apiParam (Data) {array} order The order data
-     * @apiParam (Data) {string} order.column The order column
-     * @apiParam (Data) {string=asc,desc} order.dir The order direction
-     *
-     * @param mixed $page
-     * @param mixed $perPage
-     */
-
-    /**
-     * @apiVersion     4.0.0
-     *
-     * @api            {get} /comments/latest/{?page}/{?perPage} Latest
-     * @apiGroup       Comments
-     * @apiName        CommentLatest
-     * @apiDescription Get the latest comments
-     * @apiPermission  moderator
-     * @apiUse         Pagination
-     * @apiUse         Bearer
-     * @apiUse         CommentArray
+     * Get the latest comments, ordered by desc created_at field.
      *
      * @param Request $request The request
      * @param int     $page
@@ -214,10 +102,9 @@ class CommentController extends BaseController
 
         $user->canOrFail("latest", Comment::class);
 
-        return response()->json(Comment::orderBy("created_at", "desc")
-            ->with(["module", "user", "children", "children.user"])
-            ->limit($perPage)
-            ->offset(($page - 1) * $perPage)
-            ->get());
+        $query = Comment::orderBy("created_at", "desc");
+        $response = new PaginationJsonResponse($query, $page, $perPage);
+
+        return $response;
     }
 }

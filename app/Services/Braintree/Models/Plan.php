@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Services\Braintree\Models;
 
 use Braintree\Discount;
@@ -9,15 +8,15 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 /**
- * Class Plan
+ * Class Plan.
  * Implements the Braintree Plan object and add a few more details.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
- *
  * @copyright Mathrix Education SA
- * @mixin \Braintree\Plan
+ * @package   App\Services\Braintree\Models
+ * @mixin     \Braintree\Plan
  *
  * @property int         $billingDayOfMonth
  * @property int         $billingFrequency

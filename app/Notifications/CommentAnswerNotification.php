@@ -8,8 +8,10 @@ use App\Models\User;
  * Class CommentAnswerNotification.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @since
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     4.3.0
  * @copyright Mathrix Education SA
+ * @package   App\Notifications
  */
 class CommentAnswerNotification extends BaseNotification
 {

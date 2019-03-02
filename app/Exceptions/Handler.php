@@ -1,9 +1,9 @@
 <?php
-
 namespace App\Exceptions;
 
 use App\Models\User;
 use Exception;
+use Google\Cloud\ErrorReporting\Bootstrap;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -20,12 +20,14 @@ use Symfony\Component\HttpKernel\Exception\HttpException as SymphonyHttpExceptio
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * Class Handler
+ * Class Handler.
  * Handle exceptions and display them in json as response. Also handle Sentry's behavior.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.0
  * @copyright Mathrix Education SA
+ * @package   App\Exceptions
  */
 class Handler extends ExceptionHandler
 {
@@ -75,6 +77,11 @@ class Handler extends ExceptionHandler
             }
 
             $sentry->captureException($e);
+        }
+
+        // GCP Stackdriver
+        if (isset($_SERVER['GAE_SERVICE'])) {
+            Bootstrap::exceptionHandler($e);
         }
 
         parent::report($e);
@@ -142,7 +149,7 @@ class Handler extends ExceptionHandler
         }
 
         if ($e instanceof NotFoundHttpException) {
-            $json["message"] = $request->url();
+            $json["data"] = $request->url();
         }
 
         $rendered = parent::render($request, $e);

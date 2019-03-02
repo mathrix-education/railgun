@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\Utils\Traits\Generics;
 
 use Closure;
@@ -7,10 +6,11 @@ use Closure;
 /**
  * Trait Edit.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
- *
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.0
+ * @copyright Mathrix Education SA
+ * @package   Tests\Utils\Traits\Generics
  */
 trait Edit
 {

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controllers;
 
 use App\Exceptions\Http422ModelSaveException;
@@ -10,7 +9,6 @@ use App\Models\Mark;
 use App\Models\Notion;
 use App\Models\Path;
 use App\Models\User;
-use function foo\func;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Http\JsonResponse;
@@ -20,10 +18,10 @@ use Illuminate\Http\Request;
  * Class ActivityController.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.0
- *
  * @copyright Mathrix Education SA
+ * @package   App\Controllers
  */
 class ActivityController extends BaseController
 {
@@ -59,6 +57,8 @@ class ActivityController extends BaseController
     }
 
     /**
+     * Get the activities marked as "to_revise" for the current user.
+     *
      * @param Request $request The request
      *
      * @return JsonResponse
@@ -78,6 +78,8 @@ class ActivityController extends BaseController
     }
 
     /**
+     * Get the activities marked as "view" for the current user, one per discipline.
+     *
      * @param Request $request The request
      *
      * @return JsonResponse
@@ -90,14 +92,12 @@ class ActivityController extends BaseController
             ->pluck("id")
             ->toArray();
 
-        /**
-         * @var Builder|null
-         */
+        /** @var Builder|null */
         $query = null;
 
         foreach ($disciplinesIds as $disciplineId) {
             $subQuery = $user->marks()
-                ->with(["path", "path.activity.modules" => function(BelongsToMany $q) {
+                ->with(["path", "path.activity.modules" => function (BelongsToMany $q) {
                     $q->limit(1);
                 }])
                 ->whereHas("path", function (Builder $query) use ($disciplineId) {
@@ -126,6 +126,8 @@ class ActivityController extends BaseController
     }
 
     /**
+     * Mark an activity.
+     *
      * @param Request $request The request
      * @param int     $id
      *
@@ -161,10 +163,10 @@ class ActivityController extends BaseController
     }
 
     /**
-     * Unmark and activity.
+     * Unmark an activity.
      *
-     * @param Request $request
-     * @param int     $id
+     * @param Request $request The request
+     * @param int     $id      The activity_id
      *
      * @return JsonResponse
      */

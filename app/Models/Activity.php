@@ -1,20 +1,21 @@
 <?php
-
 namespace App\Models;
 
 use App\Models\Traits\Loggable;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * Model Activity.
- *
- * @since     1.0.0
+ * Class Activity.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     1.0.0
  * @copyright Mathrix Education SA
+ * @package   App\Models
  *
  * @property int                  $id
  * @property string               $name
@@ -134,6 +135,7 @@ class Activity extends BaseModel
             $mark = $this->marks()
                 ->where("user_id", "=", $user->id)
                 ->whereNull("module_id")
+                ->orderBy("created_at", "desc")
                 ->first();
 
             return $mark !== null ? $mark->status : null;

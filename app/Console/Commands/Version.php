@@ -1,18 +1,17 @@
 <?php
-
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
 /**
- * Class SetVersion
+ * Class Version.
  * Set app version from the local .env.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
- *
  * @copyright Mathrix Education SA
+ * @package   App\Console\Commands
  */
 class Version extends Command
 {
@@ -28,8 +27,6 @@ class Version extends Command
         $this->base = app()->basePath();
         $this->version = $this->argument("version");
 
-        // apidoc.json
-        $this->setVersionInFile("apidoc.json", '\"version\": \"%version%\"');
         // composer.json
         $this->setVersionInFile("composer.json", '\"version\": \"%version%\"');
         // package.json
@@ -43,9 +40,6 @@ class Version extends Command
         $this->setVersionInFile("config/env/.env.master", 'APP_VERSION=%version%');
         $this->setVersionInFile("config/env/.env.next", 'APP_VERSION=%version%');
         $this->setVersionInFile("config/env/.env.pipelines", 'APP_VERSION=%version%');
-
-        // docs/openapi/index.yaml
-        $this->setVersionInFile("docs/openapi/index.yaml", "  version: %version%");
     }
 
     private function setVersionInFile($file, $search)

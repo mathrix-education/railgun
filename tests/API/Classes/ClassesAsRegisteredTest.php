@@ -3,13 +3,14 @@
 namespace Tests\API\Classes;
 
 /**
- * Class ClassesAsPublicTest
+ * Class ClassesAsRegisteredTest.
  * Test classes as registered user.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     1.0.0
  * @copyright Mathrix Education SA
- *
- * @version   1.0.0
+ * @package   Tests\API\Classes
  */
 class ClassesAsRegisteredTest extends ClassesAsPublicTest
 {

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Policies;
 
 use App\Models\User;
@@ -8,10 +7,10 @@ use App\Models\User;
  * Class BasePolicy.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.0
- *
  * @copyright Mathrix Education SA
+ * @package   App\Policies
  *
  * @method bool atLeastAdmin(User $currentUser)
  * @method bool atLeastModerator(User $currentUser)

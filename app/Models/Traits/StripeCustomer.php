@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Traits;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -10,8 +9,10 @@ use Illuminate\Support\Facades\Cache;
  * Contains all functions to access user's Stripe customer profile.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     4.1.0
  * @copyright Mathrix Education SA
+ * @package   App\Models\Traits
  */
 trait StripeCustomer
 {

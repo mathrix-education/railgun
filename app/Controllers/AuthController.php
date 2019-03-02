@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controllers;
 
 use App\Events\PasswordForgottenEvent;
@@ -17,30 +16,15 @@ use Illuminate\Http\Request;
  * Class AuthController.
  *
  * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- *
+ * @author    Jérémie Levain <munezero999@live.fr>
  * @since     1.0.0
- *
  * @copyright Mathrix Education SA
+ * @package   App\Controllers
  */
 class AuthController extends BaseController
 {
     /**
-     * @apiVersion     4.0.0
-     *
-     * @api            {post} /users/login Login
-     * @apiGroup       Authentication
-     * @apiName        AuthenticationLogin
-     * @apiDescription Login a user
-     * @apiPermission  public
-     * @apiParam (Data) {int} client_id The oAuth client id; see `/database/raws/oauth_clients.json`
-     * @apiParam (Data) {string} client_secret The oAuth client secret `/database/raws/oauth_clients.json`
-     * @apiParam (Data) {string} username The user <b>email</b>
-     * @apiParam (Data) {string} password The user password or the user facebook_token
-     * @apiUse         oAuth
-     * @apiParam (Data) {string=password} grant_type
-     * @apiError (Error 401) invalid_credentials User credentials were invalid
-     * @apiError (Error 404) model_not_found The user with given `email` was not found
-     * @apiError (Error 422) validation At least one field is missing
+     * Login using email/password credentials.
      *
      * @param Request $request The request
      *
@@ -76,21 +60,7 @@ class AuthController extends BaseController
     }
 
     /**
-     * @apiVersion     4.0.0
-     *
-     * @api            {post} /users/refresh Refresh
-     * @apiGroup       Authentication
-     * @apiName        AuthenticationRefresh
-     * @apiDescription Refresh the access_token
-     * @apiPermission  public
-     * @apiUse         oAuth
-     * @apiParam (Data) {string=refresh_token} grant_type
-     * @apiParam (Data) {int} client_id The oAuth client id; see `/database/raws/oauth_clients.json`
-     * @apiParam (Data) {string} client_secret The oAuth client secret `/database/raws/oauth_clients.json`
-     * @apiParam (Data) {string} refresh_token The refresh token stored on
-     *     [/users/login](#api-Authentication-AuthenticationLogin)
-     * @apiError (Error 401) invalid_client Invalid client id or secret
-     * @apiError (Error 401) invalid_request Invalid refresh token
+     * Refresh the Bearer token.
      *
      * @param Request $request The request
      *
@@ -104,19 +74,7 @@ class AuthController extends BaseController
     }
 
     /**
-     * @apiVersion     4.0.0
-     *
-     * @api            {post} /users/forgot Forgot password
-     * @apiGroup       Authentication
-     * @apiName        AuthenticationForgot
-     * @apiDescription Ask for a password reset email
-     * @apiPermission  public
-     * @apiParam (Data) {string} email The user email
-     * @apiError (Error 400) invalid_request Cannot reset password of a facebook account
-     * @apiError (Error 404) model_not_found The user with given `email` was not found
-     * @apiError (Error 422) validation The email field is missing
-     * @apiError (Error 422) save Unable to save the user
-     * @apiError (Error 502) email_not_sent Unable to send reset email
+     * Ask for an new password.
      *
      * @param Request $request The request
      *
@@ -141,22 +99,15 @@ class AuthController extends BaseController
         // Send PasswordForgottenMail
         event(new PasswordForgottenEvent($user));
 
-        return response()->json(["message" => "Reset email sent successfully"]);
+        $response = new JsonResponse([
+            "message" => "Reset email sent successfully"
+        ]);
+
+        return $response;
     }
 
     /**
-     * @apiVersion     4.0.0
-     *
-     * @api            {post} /users/reset/{token} Reset password
-     * @apiGroup       Authentication
-     * @apiName        AuthenticationReset
-     * @apiDescription Ask for a password reset email
-     * @apiPermission  public
-     * @apiParam {string} token The reset token
-     * @apiParam (Data) {string} password The new password
-     * @apiError (Error 404) model_not_found The user with given `token` was not found
-     * @apiError (Error 422) validation The password field is missing
-     * @apiError (Error 422) save The validated password save failed
+     * Reset the user password using its current token.
      *
      * @param Request $request The request
      * @param string  $token   The reset token
@@ -186,6 +137,8 @@ class AuthController extends BaseController
         // Send PasswordResetMail
         event(new PasswordResetEvent($user));
 
-        return response()->json($user);
+        $response = new JsonResponse($user);
+
+        return $response;
     }
 }
