@@ -1,0 +1,18 @@
+version: '3'
+services:
+  mysql_tests:
+    container_name: mysql_tests
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=MykJJVpA98zr7QL8CwVD
+      - MYSQL_DATABASE=mathrix_fr_tests
+  paratest:
+    container_name: paratest
+    image: eu.gcr.io/mathrix-education/runner-lumen-paratest
+    depends_on:
+      - mysql_tests
+    links:
+      - mysql_tests:mysql_tests
+    volumes:
+      - .:/workspace
+    entrypoint: sh -c 'wait-for mysql_tests:3306 -- /entrypoint.sh'

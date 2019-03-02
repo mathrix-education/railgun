@@ -7,9 +7,9 @@
         <option name="command" value="" />
         <option name="containerName" value="" />
         <option name="entrypoint" value="" />
-        <option name="imageTag" value="api:latest" />
+        <option name="imageTag" value="education-api:latest" />
         <option name="commandLineOptions" value="" />
-        <option name="sourceFilePath" value="docker/api/Dockerfile" />
+        <option name="sourceFilePath" value="Dockerfile" />
       </settings>
     </deployment>
     <method v="2" />

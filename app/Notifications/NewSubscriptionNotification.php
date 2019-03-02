@@ -38,7 +38,7 @@ class NewSubscriptionNotification extends BaseNotification
      */
     public function via(): array
     {
-        return ["slack"];
+        return env("APP_ENV") == "master" ? ["slack"] : [];
     }
 
     /**
