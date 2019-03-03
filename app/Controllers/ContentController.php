@@ -20,8 +20,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Tinify\Source;
-use Tinify\Tinify;
 
 /**
  * Class ContentController.
@@ -37,11 +35,9 @@ class ContentController extends BaseController
     /**
      * Retrieve all routes as csv file
      *
-     * @param Request $request
-     *
      * @return StreamedResponse
      */
-    public function routes(Request $request)
+    public function routes()
     {
         // Init
         $data = [
@@ -346,12 +342,6 @@ class ContentController extends BaseController
             $name,
             ["disk" => "cdn"]
         );
-
-        // File is an image, try to optimize it
-        if (\in_array($file->getMimeType(), ["image/png", "image/jpeg"], true) && Tinify::getCompressionCount() < 500) {
-            $source = Source::fromFile($file->getRealPath());
-            $source->toFile($file->getRealPath());
-        }
 
         return response()->json([
             "url" => env("APP_CDN") . "/$destination/$name",

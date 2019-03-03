@@ -36,7 +36,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(PolicyServiceProvider::class);
         $this->app->register(BraintreeGatewayServiceProvider::class);
         $this->app->register(StripeServiceProvider::class);
-        $this->app->register(TinifyServiceProvider::class);
 
         // Vendor service providers
         $this->app->register(\Backup\BackupServiceProvider::class);

@@ -1,9 +1,8 @@
 # Mathrix Education API
+# =====================
 # Cloud Build Recipe
 # Author: Mathieu Bour
-#
-# Branch: dev
-# =======================================================
+# ====================
 substitutions:
   _IMAGE: 'education-api'
   _SONARQUBE_HOST_URL: 'https://sonarqube.mathrix.fr'
@@ -11,8 +10,8 @@ substitutions:
   _SONARQUBE_PROJECT_KEY: 'mathrix-education-api'
   _GKE_COMPUTE_ZONE: 'europe-west1-b'
   _GKE_CLUSTER: 'mathrix-education-cluster'
-  _GKE_DEPLOYMENT: 'api-dev-stack'
-  _GKE_CONTAINER: 'drive-api-sha256'
+  _GKE_DEPLOYMENT: ' education-api-$BRANCH_NAME-deployment'
+  _GKE_CONTAINER: 'education-api'
 options:
   machineType: 'N1_HIGHCPU_32'
 steps:
@@ -44,7 +43,7 @@ steps:
     args:
       - '-Dsonar.host.url=$_SONARQUBE_HOST_URL'
       - '-Dsonar.login=$_SONARQUBE_TOKEN'
-      - '-Dsonar.projectKey=$_SONARQUBE_PROJECT_KEY:$BRANCH_NAME'
+      - '-Dsonar.projectKey=$_SONARQUBE_PROJECT_KEY'
       - '-Dsonar.projectVersion=$SHORT_SHA'
       - '-Dsonar.branch.name=$BRANCH_NAME'
       - '-Dsonar.scm.disabled=true'

@@ -1,7 +1,6 @@
 <?php
 namespace App\Providers;
 
-use App\Exceptions\Http400InvalidRequestException;
 use Braintree_Configuration;
 use Illuminate\Support\ServiceProvider;
 
@@ -17,18 +16,9 @@ use Illuminate\Support\ServiceProvider;
  */
 class BraintreeGatewayServiceProvider extends ServiceProvider
 {
-    /**
-     * @throws Http400InvalidRequestException
-     */
     public function boot()
     {
-        $environment = env("BRAINTREE_ENVIRONMENT", "sandbox");
-
-        if (!\in_array($environment, ["sandbox", "production"], true)) {
-            throw new Http400InvalidRequestException("`$environment` is not a valid Braintree environment");
-        }
-
-        Braintree_Configuration::environment($environment);
+        Braintree_Configuration::environment(env("BRAINTREE_ENVIRONMENT", "sandbox"));
         Braintree_Configuration::merchantId(env("BRAINTREE_MERCHANT_ID"));
         Braintree_Configuration::publicKey(env("BRAINTREE_PUBLIC_KEY"));
         Braintree_Configuration::privateKey(env("BRAINTREE_PRIVATE_KEY"));
