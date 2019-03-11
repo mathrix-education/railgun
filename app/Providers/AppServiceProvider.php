@@ -51,6 +51,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->register(GoogleDriveServiceProvider::class);
 
+        if (app()->environment("dev", "local")) {
+            $this->app->register(\Vluzrmos\Tinker\TinkerServiceProvider::class);
+        }
+
         // MorphMap
         Relation::morphMap([
             // Models
