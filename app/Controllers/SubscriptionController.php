@@ -6,13 +6,15 @@ use App\Events\TransactionSuccessEvent;
 use App\Exceptions\Http400InvalidPlanException;
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http401UnauthorizedException;
-use App\Exceptions\Http422ModelSaveException;
-use App\Exceptions\Http422ModelValidationException;
-use App\Models\FamilyPack;
 use App\Models\User;
 use App\Services\Braintree\FamilyPackUtils;
 use App\Services\Braintree\Formatter;
 use App\Services\Braintree\Models\Plan;
+use Braintree\PaymentMethod;
+use Braintree\Result\Error;
+use Braintree\Result\Successful;
+use Braintree\Subscription;
+use Braintree\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -101,19 +103,15 @@ class SubscriptionController extends Controller
      *
      * @param Request $request The request
      *
-     * @throws Http400InvalidRequestException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
-     * @throws ValidationException
-     *
      * @return JsonResponse
+     * @throws Http400InvalidRequestException
+     * @throws ValidationException
      */
     public function create(Request $request)
     {
         // Validate the request
         $this->validate($request, [
             "planId" => "required|in:" . implode(",", array_keys(self::PRICE_PER_MONTH)),
-            "family_pack_children_count" => "integer",
         ]);
 
         // Prepare the working variables
@@ -126,60 +124,117 @@ class SubscriptionController extends Controller
             throw new Http400InvalidRequestException("User is already premium");
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | Payment method selection
+        |--------------------------------------------------------------------------
+        | We need to select a payment method based on the given request. If the user is a not already a valid Braintree
+        | customer, a paymentMethodNonce is REQUIRED in order to attach a default payment method to the newly created
+        | Braintree customer account.
+        | If the user is already a valid Braintree customer, and provides a paymentMethodNonce, we will change his
+        | default payment to the one linked with the paymentMethodNonce. Else, we will use his default payment method.
+        */
         // Create user as Braintree customer if necessary
         if (!$user->isBraintreeCustomer()) {
+            /**
+             * User is not a Braintree customer. A valid payment method nonce is required in order to define the new
+             * customer's default payment method.
+             */
             $this->validate($request, [
                 "paymentMethodNonce" => "required", // Now paymentMethodNonce is required
             ]);
 
             $user->createBraintreeCustomer($request->input("paymentMethodNonce"));
+
+            $paymentMethod = $user->braintree->defaultPaymentMethod();
+        } elseif ($request->has("paymentMethodNonce")) {
+            /*
+             * User is already a Braintree customer but a paymentMethodNonce was passed: it means that the user want to
+             * use another payment method. We will automatically set this new payment method as default for future
+             * payments.
+             */
+            $paymentMethodCreation = PaymentMethod::create([
+                "customerId" => $user->braintree->id,
+                "paymentMethodNonce" => $request->input("paymentMethodNonce"),
+                "options" => [
+                    "makeDefault" => true
+                ]
+            ]);
+
+            $paymentMethod = $paymentMethodCreation->paymentMethod;
+        } else {
+            /*
+             * User is already a Braintree customer and no paymentMethodNonce was passed: we will use its default
+             * payment method.
+             */
+            $paymentMethod = $user->braintree->defaultPaymentMethod();
         }
 
-        // Now we assume that the user is a Braintree customer
-
+        /*
+        |--------------------------------------------------------------------------
+        | Subscription creation.
+        |--------------------------------------------------------------------------
+        | Now we assume that the user is valid Braintree customer with an attached payment method.
+        | We will now create the subscription.
+        */
         $plan = $request->input("planId");
-        $data = [
+        /**
+         * @var bool $hasTrialPeriod If we should attempt to create a subscription with trial period and charge an
+         * initial transaction for the trial period.
+         */
+        $hasTrialPeriod = $plan === "v4_annually" || $plan === "v4_biannually";
+        /**
+         * @var array $subscriptionPayload The subscription payload.
+         */
+        $subscriptionPayload = [
             "merchantAccountId" => env("BRAINTREE_MERCHANT_ACCOUNT"),
             "id" => $this->generateSubscriptionId(),
             "planId" => $request->input("planId"),
             "neverExpires" => true,
-            "paymentMethodToken" => $user->getBraintreeDefaultPaymentMethodToken(),
+            "paymentMethodToken" => $paymentMethod->token,
         ];
 
-        // Initial checks for family-pack requests
-        $childrenCount = $request->input("family_pack_children_count", 0);
+        if ($hasTrialPeriod) {
+            // Add trial parameters to subscription payload.
+            $subscriptionPayload = array_merge($subscriptionPayload, [
+                "trialPeriod" => true,
+                "trialDurationUnit" => "day",
+                "trialDuration" => $this->getStartDate($plan)
+                        ->diffInDays(Carbon::now()) + 1,
+            ]);
+        }
+        /**
+         * @var Successful|Error $subscriptionCreation The subscription creation
+         * result. If the creation succeeded, we can continue the process.
+         */
+        $subscriptionCreation = \Braintree_Subscription::create($subscriptionPayload);
 
-        if ($childrenCount > 0) {
-            // We assume that everything is ok for family-pack
-            $data["addOns"] = [
-                "add" => FamilyPackUtils::getAddOns($plan, $childrenCount),
-            ];
+        if (!$subscriptionCreation->success) {
+            throw new Http400InvalidRequestException(
+                "Subscription creation failed.",
+                400,
+                null,
+                ["data" => $subscriptionCreation->jsonSerialize()]
+            );
         }
 
         /*
         |--------------------------------------------------------------------------
         | Trial transaction
         |--------------------------------------------------------------------------
+        | We now assume that the transaction succeeded. If the subscription requires a forced trial period, we create
+        | the initial transaction.
         */
-        if ($plan === "v4_annually" || $plan === "v4_biannually") {
-            // Add trial
-            $data = array_merge($data, [
-                "trialPeriod" => true,
-                "trialDurationUnit" => "day",
-                "trialDuration" => $this->getStartDate($plan)
-                        ->diffInDays(Carbon::now()) + 1,
-            ]);
-
-            $description = "Abonnement premium du " . Carbon::now()
-                    ->format("d/m/Y") . " au " .
-                $this->getStartDate($plan)
-                    ->format("d/m/Y");
+        if ($hasTrialPeriod) {
+            $description = "Abonnement premium du " . Carbon::now()->format("d/m/Y") . " au " .
+                $this->getStartDate($plan)->format("d/m/Y");
             $trialPrice = $this->getTrialPrice($plan);
 
-            $initialSaleData = [
+            $initialTransactionPayload = [
                 "merchantAccountId" => env("BRAINTREE_MERCHANT_ACCOUNT"),
                 "amount" => $trialPrice,
                 "customerId" => $user->braintree_id,
+                "paymentMethodToken" => $paymentMethod->token,
                 "lineItems" => [
                     [
                         "description" => $description,
@@ -198,67 +253,50 @@ class SubscriptionController extends Controller
                 ],
             ];
 
-            // Handle family pack additional price
-            if ($childrenCount > 0) {
-                $initialSaleData["lineItems"] = array_merge(
-                    $initialSaleData["lineItems"],
-                    FamilyPackUtils::getAddOnsAsLineItemsForTrial($plan, $childrenCount)
-                );
-
-                $totalPrice = $trialPrice;
-                foreach ($initialSaleData["lineItems"] as $lineItem) {
-                    $totalPrice += $lineItem["totalAmount"];
-                }
-
-                $initialSaleData["amount"] = $totalPrice;
-            }
             // Charge for the trial
-            $chargeResult = \Braintree\Transaction::sale($initialSaleData);
+            $initialTransactionSale = Transaction::sale($initialTransactionPayload);
 
-            if ($chargeResult->success) {
-                event(new TransactionSuccessEvent($chargeResult->transaction));
-            } else {
-                throw new Http400InvalidRequestException($chargeResult->message);
+            if (!$initialTransactionSale->success) {
+                /*
+                 * Initial transaction failed. We will now revert everything, including, in this order:
+                 * 1. Cancel the subscription.
+                 * 2. Remove the payment method?
+                 */
+                /** @var Subscription $subscription The created subscription. */
+                $subscription = $subscriptionCreation->subscription;
+                /** @var Successful|Error $subscriptionResult $subscriptionCancellationResult */
+                $subscriptionCancellationResult = Subscription::cancel($subscription->id);
+
+                throw new Http400InvalidRequestException(
+                    "Initial transaction failed.",
+                    400,
+                    null,
+                    ["data" => $initialTransactionSale->jsonSerialize()]
+                );
             }
         }
-
 
         /*
         |--------------------------------------------------------------------------
-        | Subscription
+        | Finalisation of the process
         |--------------------------------------------------------------------------
+        | The subscription creation succeeded and the initial transaction, if it was needed, did not failed. We can now
+        | safely send our notifications to the user by dispatching the required events.
         */
-        /** @var \Braintree\Result\Successful|\Braintree\Result\Error $subscriptionResult */
-        $subscriptionResult = \Braintree_Subscription::create($data);
-
-        // Forget cache about the user, as we updated his subscriptions
-        $user->forgetBraintreeCustomerCache();
-
-        if ($subscriptionResult->success) {
-            /** @var \Braintree_Subscription $subscription */
-            $subscription = $subscriptionResult->subscription;
-
-            // Handle family pack membership grant
-            if ($childrenCount > 0) {
-                $familyPack = new FamilyPack([
-                    "braintree_id" => $subscription->id,
-                    "children_count" => $childrenCount,
-                    "parent_id" => $user->id
-                ]);
-                $familyPack->save();
-            }
-
-            // Raise event
-            event(new NewSubscriptionEvent($user, $subscription));
-
-            return new JsonResponse(
-                Formatter::cast($subscription->jsonSerialize())
-            );
+        if (isset($initialTransactionSale) && $initialTransactionSale->success) {
+            // Send the success event for the initial transaction
+            event(new TransactionSuccessEvent($initialTransactionSale->transaction));
         }
 
-        throw new Http400InvalidRequestException($subscriptionResult->message, 400, null, [
-            "data" => $subscriptionResult->jsonSerialize(),
-        ]);
+        /** @var Subscription $subscription */
+        $subscription = $subscriptionCreation->subscription;
+        event(new NewSubscriptionEvent($user, $subscription));
+
+        $user->forgetBraintreeCustomerCache(); // Forget cache about the user, as we updated his subscriptions
+
+        return new JsonResponse(
+            Formatter::cast($subscription->jsonSerialize())
+        );
     }
 
     /**

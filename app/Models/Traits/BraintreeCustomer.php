@@ -56,7 +56,9 @@ trait BraintreeCustomer
                 $this->braintree_id = $braintreeId;
                 $this->save();
             } else {
-                throw new Http400InvalidRequestException("Unable to create Braintree customer");
+                throw new Http400InvalidRequestException("Unable to create Braintree customer", 400, null, [
+                    "data" => $result->jsonSerialize()
+                ]);
             }
         }
 

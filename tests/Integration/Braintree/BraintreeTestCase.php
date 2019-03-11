@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Braintree;
+namespace Tests\Integration\Braintree;
 
 use App\Exceptions\Http400InvalidRequestException;
 use App\Models\User;
@@ -36,7 +36,7 @@ class BraintreeTestCase extends TestCase
      */
     public function createApplication()
     {
-        return require __DIR__ . "/../../bootstrap/app.php";
+        return require __DIR__ . "/../../../bootstrap/app.php";
     }
 
     /**
