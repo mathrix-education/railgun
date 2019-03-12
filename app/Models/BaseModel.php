@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use App\Exceptions\Http422ModelSaveException;
@@ -35,6 +36,18 @@ abstract class BaseModel extends Model
     /** @var bool|array Validation errors */
     protected $errors = false;
 
+
+    /**
+     * BaseModel constructor.
+     *
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+    }
+
+
     /**
      * Get the table name.
      *
@@ -44,6 +57,7 @@ abstract class BaseModel extends Model
     {
         return with(new static())->getTable();
     }
+
 
     /**
      * Get a random model from the database.
@@ -67,6 +81,7 @@ abstract class BaseModel extends Model
         return $query->firstOrFail();
     }
 
+
     /**
      * Use appends.
      */
@@ -76,6 +91,7 @@ abstract class BaseModel extends Model
 
         return new static();
     }
+
 
     /**
      * Don"t use appends.
@@ -87,15 +103,6 @@ abstract class BaseModel extends Model
         return new static();
     }
 
-    /**
-     * BaseModel constructor.
-     *
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-    }
 
     /**
      * Unguard some attributes.
@@ -199,6 +206,7 @@ abstract class BaseModel extends Model
         return $this->validate;
     }
 
+
     /**
      * Validate model data.
      *
@@ -227,6 +235,7 @@ abstract class BaseModel extends Model
         return true;
     }
 
+
     /**
      * Inject custom rules in the validator before save.
      *
@@ -238,6 +247,7 @@ abstract class BaseModel extends Model
     {
         return $validator;
     }
+
 
     /**
      * Override to inject exception.
@@ -258,6 +268,7 @@ abstract class BaseModel extends Model
         return $deleted;
     }
 
+
     /**
      * Enable the model validation.
      */
@@ -266,6 +277,7 @@ abstract class BaseModel extends Model
         $this->validate = true;
     }
 
+
     /**
      * Disable the model validation.
      */
@@ -273,6 +285,7 @@ abstract class BaseModel extends Model
     {
         $this->validate = false;
     }
+
 
     /**
      * Returns the validation errors.
@@ -283,6 +296,7 @@ abstract class BaseModel extends Model
     {
         return $this->errors;
     }
+
 
     /**
      * @codeCoverageIgnore
@@ -351,6 +365,7 @@ abstract class BaseModel extends Model
 
         return $structure;
     }
+
 
     /**
      * Override to support appends togglers.

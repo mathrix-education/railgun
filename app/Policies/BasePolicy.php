@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\User;
@@ -20,9 +21,9 @@ abstract class BasePolicy
     /**
      * Check, if the current user can access to target user content.
      *
-     * @param User     $currentUser       The current user.
-     * @param User|int $targetUser        The target user.
-     * @param string   $minimumPermission The minimum permission level.
+     * @param User $currentUser The current user.
+     * @param User|int $targetUser The target user.
+     * @param string $minimumPermission The minimum permission level.
      *
      * @return bool
      */
@@ -35,6 +36,7 @@ abstract class BasePolicy
 
         return $currentUser->isAdmin() || $currentUser->id === $targetUser->id;
     }
+
 
     /**
      * Global search policy.

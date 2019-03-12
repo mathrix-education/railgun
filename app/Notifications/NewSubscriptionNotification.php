@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Notifications;
 
 use App\Models\User;
@@ -21,10 +22,11 @@ class NewSubscriptionNotification extends BaseNotification
     /** @var \Braintree_Subscription $subscription */
     public $subscription;
 
+
     /**
      * NewSubscriptionEvent constructor.
      *
-     * @param User                    $user
+     * @param User $user
      * @param \Braintree_Subscription $subscription
      */
     public function __construct(User $user, \Braintree_Subscription $subscription)
@@ -33,6 +35,7 @@ class NewSubscriptionNotification extends BaseNotification
         $this->subscription = $subscription;
     }
 
+
     /**
      * @return array
      */
@@ -40,6 +43,7 @@ class NewSubscriptionNotification extends BaseNotification
     {
         return env("APP_ENV") == "master" ? ["slack"] : [];
     }
+
 
     /**
      * Get the Slack representation of the notification.

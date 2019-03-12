@@ -36,6 +36,7 @@ class AtomizeFamilyPacksTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      *

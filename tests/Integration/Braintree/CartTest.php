@@ -1,5 +1,6 @@
 <?php
-namespace Tests\Braintree;
+
+namespace Tests\Integration\Braintree;
 
 use App\Exceptions\Http400InvalidRequestException;
 use App\Models\Discount;
@@ -50,10 +51,11 @@ class CartTest extends BraintreeTestCase
 
         /** @var Discount $discount */
         $discount = Discount::find($discount->id);
-        $this->assertHttp200Success();
+        $this->assertResponseOk();
         $this->assertInDatabase("purchases", ["user_id" => $user->id, "product_id" => $productIds[0]]);
         $this->assertEquals($discount->counter, $counterBefore - 1);
     }
+
 
     /**
      * Test sale products to an user.
@@ -83,7 +85,7 @@ class CartTest extends BraintreeTestCase
             "cart" => $productIds,
             "user_id" => $customer->id,
         ]);
-        $this->assertHttp200Success();
+        $this->assertResponseOk();
         $this->assertInDatabase("purchases", ["user_id" => $customer->id, "product_id" => $productIds[0]]);
     }
 }

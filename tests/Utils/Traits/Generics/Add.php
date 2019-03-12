@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Utils\Traits\Generics;
 
 use Closure;
@@ -18,10 +19,11 @@ trait Add
     /** @var array factorized model data */
     protected $addModelData;
 
+
     /**
      * Generic add; expect HTTP 200 and data present in database.
      *
-     * @param array         $override the overridden properties
+     * @param array $override the overridden properties
      * @param \Closure|null $callback the callback on generated data
      *
      * @throws \Exception
@@ -35,10 +37,11 @@ trait Add
         $this->assertInDatabase($this->modelPlural, $this->addModelData);
     }
 
+
     /**
      * Generic add call.
      *
-     * @param array         $override the overridden properties
+     * @param array $override the overridden properties
      * @param \Closure|null $callback the callback on generated data
      *
      * @throws \Exception
@@ -68,7 +71,7 @@ trait Add
             $json = json_decode($response);
 
             if (json_last_error() === JSON_ERROR_NONE && !empty($json["id"]) && is_numeric($json["id"])) {
-                $this->addModelData["id"] = (int) $json["id"];
+                $this->addModelData["id"] = (int)$json["id"];
             }
         }
 
@@ -77,10 +80,11 @@ trait Add
         }
     }
 
+
     /**
      * Generic add; expect HTTP 200 and data present in database.
      *
-     * @param array         $override the overridden properties
+     * @param array $override the overridden properties
      * @param \Closure|null $callback the callback on generated data
      *
      * @throws \Exception

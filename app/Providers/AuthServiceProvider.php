@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Providers;
 
 use Carbon\Carbon;

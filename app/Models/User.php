@@ -1,7 +1,10 @@
 <?php
+
 namespace App\Models;
 
 use App\Exceptions\Http400InvalidRequestException;
+use App\Exceptions\Http422ModelSaveException;
+use App\Exceptions\Http422ModelValidationException;
 use App\Models\Traits\BraintreeCustomer;
 use App\Models\Traits\StripeCustomer;
 use App\Models\UserTraits\PermissionsTrait;
@@ -30,42 +33,42 @@ use Laravel\Passport\Token;
  * @copyright Mathrix Education SA
  * @package   App\Models
  *
- * @property int                               $id
- * @property string|null                       $username
- * @property string                            $email
- * @property string|null                       $firstname
- * @property string|null                       $lastname
- * @property string                            $password
- * @property string                            $type
- * @property string                            $token
- * @property int                               $points
- * @property int                               $level
- * @property int                               $daily
- * @property int                               $daily_achievements
- * @property array                             $settings
- * @property bool                              $premium_bypass
- * @property int|null                          $class_id
- * @property int|null                          $family_pack_id
- * @property string|null                       $braintree_id
- * @property string|null                       $stripe_id
- * @property Carbon                            $created_at
- * @property Carbon                            $updated_at
- * @property \Braintree\Customer|null          $braintree
- * @property bool                              $premium
- * @property int                               $daily_points
- * @property Class_                            $class_
- * @property FamilyPack                        $familyPackAsParent
- * @property FamilyPack                        $familyPackAsChild
- * @property Collection|Client[]               $clients
- * @property Collection|Comment[]              $comments
+ * @property int $id
+ * @property string|null $username
+ * @property string $email
+ * @property string|null $firstname
+ * @property string|null $lastname
+ * @property string $password
+ * @property string $type
+ * @property string $token
+ * @property int $points
+ * @property int $level
+ * @property int $daily
+ * @property int $daily_achievements
+ * @property array $settings
+ * @property bool $premium_bypass
+ * @property int|null $class_id
+ * @property int|null $family_pack_id
+ * @property string|null $braintree_id
+ * @property string|null $stripe_id
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property \Braintree\Customer|null $braintree
+ * @property bool $premium
+ * @property int $daily_points
+ * @property Class_ $class_
+ * @property FamilyPack $familyPackAsParent
+ * @property FamilyPack $familyPackAsChild
+ * @property Collection|Client[] $clients
+ * @property Collection|Comment[] $comments
  * @property Collection|DatabaseNotification[] $notifications
  * @property Collection|DatabaseNotification[] $unreadNotifications
  * @property Collection|DatabaseNotification[] $readNotifications
- * @property Collection|Log[]                  $logs
- * @property Collection|Product[]              $products
- * @property Collection|Purchase[]             $purchases
- * @property Collection|Token[]                $tokens
- * @property Collection|Vote[]                 $votes
+ * @property Collection|Log[] $logs
+ * @property Collection|Product[] $products
+ * @property Collection|Purchase[] $purchases
+ * @property Collection|Token[] $tokens
+ * @property Collection|Vote[] $votes
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
@@ -130,6 +133,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         return $this->belongsTo(Class_::class, "class_id");
     }
 
+
     /**
      * HasMany Comment.
      *
@@ -139,6 +143,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     {
         return $this->hasMany(Comment::class);
     }
+
 
     /**
      * HasOne FamilyPack (as parent).
@@ -150,6 +155,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         return $this->hasOne(FamilyPack::class, "parent_id");
     }
 
+
     /**
      * BelongsTo FamilyPack (as child).
      *
@@ -159,6 +165,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     {
         return $this->belongsTo(FamilyPack::class, "family_pack_id");
     }
+
 
     /**
      * HasMany Log.
@@ -170,6 +177,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         return $this->hasMany(Log::class);
     }
 
+
     /**
      * HasMany Mark.
      *
@@ -179,6 +187,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     {
         return $this->hasMany(Mark::class);
     }
+
 
     /**
      * HasMany Activity.
@@ -190,15 +199,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         return $this->hasMany(Activity::class);
     }
 
-    /**
-     * BelongsToMany Product.
-     *
-     * @return BelongsToMany
-     */
-    public function products()
-    {
-        return $this->belongsToMany(Product::class, "purchases");
-    }
 
     /**
      * HasMany Purchase.
@@ -209,6 +209,18 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     {
         return $this->hasMany(Purchase::class);
     }
+
+
+    /**
+     * HasMany Records.
+     *
+     * @return HasMany
+     */
+    public function records(): HasMany
+    {
+        return $this->hasMany(Record::class);
+    }
+
 
     /**
      * HasMany Vote.
@@ -221,11 +233,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Attributes
-    |--------------------------------------------------------------------------
-    */
     /**
      * daily_points attribute.
      *
@@ -253,6 +260,14 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         return $sum;
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Attributes
+    |--------------------------------------------------------------------------
+    */
+
+
     /**
      * premium attribute.
      *
@@ -268,6 +283,18 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
             || $this->hasStripeSubscription(self::STRIPE_PLANS);
     }
 
+
+    /**
+     * Check if the user is a child of a family pack (allow to grant premium membership).
+     *
+     * @return bool
+     */
+    public function isChildOfAFamilyPack(): bool
+    {
+        return $this->familyPackAsChild !== null ? $this->familyPackAsChild->isActive() : false;
+    }
+
+
     /**
      * Get the family pack id as parent.
      *
@@ -280,8 +307,10 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         } else {
             return null;
         }
+
         return $this->familyPackAsParent !== null ? $this->familyPackAsParent->id : null;
     }
+
 
     /**
      * Append all required premium attributes
@@ -296,15 +325,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     | Methods
     |--------------------------------------------------------------------------
     */
-    /**
-     * Check if the user is a child of a family pack (allow to grant premium membership).
-     *
-     * @return bool
-     */
-    public function isChildOfAFamilyPack(): bool
-    {
-        return $this->familyPackAsChild !== null ? $this->familyPackAsChild->isActive() : false;
-    }
+
 
     /**
      * Check if user has purchased the given product.
@@ -318,5 +339,33 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         return $this->products()
             ->where("product_id", "=", $product->id)
             ->exists();
+    }
+
+
+    /**
+     * BelongsToMany Product.
+     *
+     * @return BelongsToMany
+     */
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, "purchases");
+    }
+
+
+    /**
+     * @param string $service
+     * @param string $event
+     * @param string $status
+     * @param array $payload
+     *
+     * @return Record
+     * @throws Http400InvalidRequestException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
+     */
+    public function record(string $service, string $event, string $status, array $payload)
+    {
+        return Record::record($this, $service, $event, $status, $payload);
     }
 }

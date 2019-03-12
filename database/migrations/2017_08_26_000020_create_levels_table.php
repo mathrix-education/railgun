@@ -28,6 +28,7 @@ class CreateLevelsTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

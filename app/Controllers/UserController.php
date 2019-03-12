@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -60,9 +61,9 @@ class UserController extends BaseController
     /**
      * Get a user by a key/value
      *
-     * @param Request    $request
+     * @param Request $request
      * @param int|string $key
-     * @param null       $value
+     * @param null $value
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
@@ -86,6 +87,7 @@ class UserController extends BaseController
         return response()->json($user);
     }
 
+
     /**
      * @apiVersion     4.0.0
      *
@@ -101,8 +103,8 @@ class UserController extends BaseController
      * @apiUse         Http401Unauthorized
      * @apiUse         Http404ModelNotFound
      *
-     * @param Request  $request The request
-     * @param int|null $id      The user id; if null set edit the current user
+     * @param Request $request The request
+     * @param int|null $id The user id; if null set edit the current user
      *
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
@@ -137,7 +139,7 @@ class UserController extends BaseController
 
             if (!$currentPassword) {
                 throw new Http400InvalidRequestException("`current_password` is required to change the password");
-            } elseif (!Hash::check($currentPassword, $user->password)) {
+            } else if (!Hash::check($currentPassword, $user->password)) {
                 throw new Http400InvalidRequestException("Current password is incorrect");
             }
         }
@@ -223,6 +225,7 @@ class UserController extends BaseController
         return response()->json($user);
     }
 
+
     /**
      * @apiVersion     4.0.0
      *
@@ -253,6 +256,7 @@ class UserController extends BaseController
         return response()->json(["exists" => false]);
     }
 
+
     /**
      * @apiVersion     4.0.0
      *
@@ -282,6 +286,7 @@ class UserController extends BaseController
         return response()->json($user);
     }
 
+
     /**
      * @apiVersion     4.0.0
      *
@@ -302,8 +307,8 @@ class UserController extends BaseController
      * @apiUse         Http422ModelSave
      * @apiError (Error 429) too_many_requests Already gathered points today for this model
      *
-     * @param Request  $request The request
-     * @param int|null $id      The user id
+     * @param Request $request The request
+     * @param int|null $id The user id
      *
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
@@ -368,11 +373,11 @@ class UserController extends BaseController
         }
 
         // Check if field is a valid positive integer
-        if (!is_numeric($pointsToAdd) || (int) $pointsToAdd < 0) {
+        if (!is_numeric($pointsToAdd) || (int)$pointsToAdd < 0) {
             throw new Http400InvalidRequestException("points field has to be a positive integer");
         }
 
-        $pointsToAdd = (int) $pointsToAdd;
+        $pointsToAdd = (int)$pointsToAdd;
 
         // Update the user points count
         $user->update(["points" => $user->points + $pointsToAdd]);
@@ -393,6 +398,7 @@ class UserController extends BaseController
 
         return response()->json($user);
     }
+
 
     /**
      * @param Request $request The request

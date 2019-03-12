@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Categories;
 
 use Tests\API\ScopeTestCase;
@@ -17,6 +18,7 @@ class CategoriesAsPublicTest extends ScopeTestCase
 {
     protected $modelClass = "\App\Models\Category";
 
+
     /**
      * GET /categories.
      *
@@ -26,6 +28,7 @@ class CategoriesAsPublicTest extends ScopeTestCase
     {
         $this->genericIndexSuccess();
     }
+
 
     /**
      * GET /categories/{id}.
@@ -37,6 +40,7 @@ class CategoriesAsPublicTest extends ScopeTestCase
         $this->genericGetSuccess();
     }
 
+
     /**
      * POST /categories -> HTTP 401 unauthorized.
      *
@@ -47,6 +51,7 @@ class CategoriesAsPublicTest extends ScopeTestCase
         $this->genericAddUnauthorized();
     }
 
+
     /**
      * PATCH /categories/{id} -> HTTP 401 unauthorized.
      *
@@ -56,6 +61,7 @@ class CategoriesAsPublicTest extends ScopeTestCase
     {
         $this->genericEditUnauthorized();
     }
+
 
     /**
      * DELETE /categories/{id} -> HTTP 401 unauthorized.

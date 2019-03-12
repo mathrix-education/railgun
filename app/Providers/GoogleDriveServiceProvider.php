@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Providers;
 
 use Hypweb\Flysystem\GoogleDrive\GoogleDriveAdapter;
@@ -34,6 +35,7 @@ class GoogleDriveServiceProvider extends ServiceProvider
             return new Filesystem($adapter);
         });
     }
+
 
     /**
      * Register the application services.

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands\Pipelines;
 
 use Carbon\Carbon;
@@ -19,14 +20,6 @@ trait InteractsWithBuild
     protected $buildName;
     protected $buildFileName;
 
-    /**
-     * Set the build name as the current datetime
-     */
-    public function defaultBuild()
-    {
-        $buildName = env("APP_VERSION") . "." . Carbon::now()->format("YmdHis") . "-{$this->environment}";
-        $this->setBuild($buildName);
-    }
 
     /**
      * Setup the build. Build name will be in priority order:
@@ -42,8 +35,9 @@ trait InteractsWithBuild
 
         if ($this->hasOption("build")) {
             $this->setBuild($this->option("buildName"), true);
+
             return;
-        } elseif ($existingBuilds) {
+        } else if ($existingBuilds) {
             $shouldUseExistingBuild = $this->confirm("Builds are present in $this->buildsDirectory. Do want you to use one of them?", true);
 
             if ($shouldUseExistingBuild) {
@@ -58,21 +52,6 @@ trait InteractsWithBuild
         }
     }
 
-    /**
-     * Set the build name.
-     *
-     * @param string $buildName
-     * @param bool   $raiseFatal
-     */
-    protected function setBuild(string $buildName, $raiseFatal = false)
-    {
-        $this->buildName = $buildName;
-        $this->buildFileName = "$this->buildsDirectory/{$this->buildName}.zip";
-
-        if ($raiseFatal && !$this->buildExists()) {
-            $this->fatal("File $this->buildFileName does not exist");
-        }
-    }
 
     /**
      * Get the builds present in the dist/ folder
@@ -90,9 +69,28 @@ trait InteractsWithBuild
             $builds = array_map(function ($b) {
                 return str_replace(".zip", "", basename($b));
             }, $builds);
+
             return array_reverse($builds);
         }
     }
+
+
+    /**
+     * Set the build name.
+     *
+     * @param string $buildName
+     * @param bool $raiseFatal
+     */
+    protected function setBuild(string $buildName, $raiseFatal = false)
+    {
+        $this->buildName = $buildName;
+        $this->buildFileName = "$this->buildsDirectory/{$this->buildName}.zip";
+
+        if ($raiseFatal && !$this->buildExists()) {
+            $this->fatal("File $this->buildFileName does not exist");
+        }
+    }
+
 
     /**
      * Check if build file exists.
@@ -102,5 +100,15 @@ trait InteractsWithBuild
     public function buildExists()
     {
         return file_exists($this->buildFileName);
+    }
+
+
+    /**
+     * Set the build name as the current datetime
+     */
+    public function defaultBuild()
+    {
+        $buildName = env("APP_VERSION") . "." . Carbon::now()->format("YmdHis") . "-{$this->environment}";
+        $this->setBuild($buildName);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -29,7 +30,7 @@ class MailchimpController extends BaseController
      * @apiUse         Http400InvalidRequest
      *
      * @param Request $request The request
-     * @param string  $list
+     * @param string $list
      *
      * @throws Http400InvalidRequestException
      *

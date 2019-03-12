@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Notifications;
 
 use App\Mails\PasswordResetMail;
@@ -18,6 +19,7 @@ class PasswordResetNotification extends MailNotification
     /** @var User $user */
     public $user;
 
+
     /**
      * PasswordResetNotification constructor.
      *
@@ -27,6 +29,7 @@ class PasswordResetNotification extends MailNotification
     {
         $this->user = $user;
     }
+
 
     /**
      * Get the mail representation of the notification.

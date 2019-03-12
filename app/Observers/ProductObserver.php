@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Observers;
 
 use App\Models\Product;
@@ -46,6 +47,7 @@ class ProductObserver extends BaseObserver
 
         return true;
     }
+
 
     /**
      * @param Product $product

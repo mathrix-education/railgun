@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Utils\Traits\Generics;
 
 /**
@@ -15,6 +16,7 @@ trait Delete
     /** @var int model id */
     protected $deleteModelId;
 
+
     /**
      * Generic delete; expect HTTP 200 and data present in database.
      *
@@ -28,6 +30,7 @@ trait Delete
         $this->assertHttp200Success();
         $this->assertNotInDatabase($this->modelPlural, ["id" => $this->deleteModelId]);
     }
+
 
     /**
      * Generic delete call.
@@ -45,6 +48,7 @@ trait Delete
         $this->json("delete", "/" . $this->modelPlural . "/" . $this->deleteModelId);
     }
 
+
     /**
      * Generic delete; expect HTTP 200 and data present in database.
      *
@@ -60,6 +64,7 @@ trait Delete
         $this->assertHttp200Success();
         $this->assertInDatabase($this->modelPlural, ["id" => $this->deleteModelId, "deleted_at" => $deletedAt]);
     }
+
 
     /**
      * Generic delete; expect HTTP 200 and data present in database.

@@ -1,8 +1,8 @@
 <?php
+
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -16,22 +16,22 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @copyright Mathrix Education SA
  * @package   App\Models
  *
- * @property int                   $id
- * @property string                $name
- * @property string                $slug
- * @property string|null           $image
- * @property string|null           $type
- * @property string|null           $description
- * @property float|null            $price
- * @property bool                  $visible
- * @property int|null              $order
- * @property int|null              $module_id
- * @property Carbon|null           $created_at
- * @property Carbon|null           $updated_at
- * @property array                 $link
- * @property Module|null           $module
- * @property Collection|Product[]  $children
- * @property Collection|Product[]  $parents
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property string|null $image
+ * @property string|null $type
+ * @property string|null $description
+ * @property float|null $price
+ * @property bool $visible
+ * @property int|null $order
+ * @property int|null $module_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property array $link
+ * @property Module|null $module
+ * @property Collection|Product[] $children
+ * @property Collection|Product[] $parents
  * @property Collection|Discount[] $discounts
  */
 class Product extends BaseModel
@@ -56,6 +56,7 @@ class Product extends BaseModel
         "visible" => "boolean",
     ];
 
+
     /**
      * BelongsTo Module.
      *
@@ -65,6 +66,7 @@ class Product extends BaseModel
     {
         return $this->belongsTo(Module::class);
     }
+
 
     /**
      * BelongsToMany Products.
@@ -76,6 +78,7 @@ class Product extends BaseModel
         return $this->belongsToMany(self::class, "product_product", "child_id", "parent_id");
     }
 
+
     /**
      * BelongsToMany Products.
      *
@@ -86,6 +89,7 @@ class Product extends BaseModel
         return $this->belongsToMany(self::class, "product_product", "parent_id", "child_id");
     }
 
+
     /**
      * BelongsToMany Discount.
      *
@@ -95,6 +99,7 @@ class Product extends BaseModel
     {
         return $this->belongsToMany(Discount::class);
     }
+
 
     /**
      * Get the product price after the application of the given discount.
@@ -107,11 +112,11 @@ class Product extends BaseModel
     {
         if ($discount === null) {
             return $this->price;
-        } elseif (!$discount->isApplicableOn($this)) {
+        } else if (!$discount->isApplicableOn($this)) {
             return $this->price;
-        } elseif ($discount->type === "percentage") {
+        } else if ($discount->type === "percentage") {
             return $this->price * (1 - $discount->value / 100);
-        } elseif ($discount->type === "absolute") {
+        } else if ($discount->type === "absolute") {
             return $this->price - $discount->value;
         }
 

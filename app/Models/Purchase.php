@@ -1,8 +1,8 @@
 <?php
+
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -14,15 +14,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @copyright Mathrix Education SA
  * @package   App\Models
  *
- * @property int         $id
- * @property int         $price
- * @property int         $refund
- * @property int         $user_id
- * @property int         $product_id
+ * @property int $id
+ * @property int $price
+ * @property int $refund
+ * @property int $user_id
+ * @property int $product_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property User        $user
- * @property Product     $product
+ * @property User $user
+ * @property Product $product
  */
 class Purchase extends BaseModel
 {
@@ -51,6 +51,7 @@ class Purchase extends BaseModel
     {
         return $this->belongsTo(User::class);
     }
+
 
     /**
      * BelongsTo Product.

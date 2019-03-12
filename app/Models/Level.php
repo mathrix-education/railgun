@@ -1,7 +1,6 @@
 <?php
-namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
+namespace App\Models;
 
 /**
  * Class Level.
@@ -12,9 +11,9 @@ use Illuminate\Database\Eloquent\Builder;
  * @copyright Mathrix Education SA
  * @package   App\Models
  *
- * @property int         $id
- * @property int         $level
- * @property int         $objective
+ * @property int $id
+ * @property int $level
+ * @property int $objective
  * @property string|null $youtube_id
  */
 class Level extends BaseModel
@@ -26,6 +25,7 @@ class Level extends BaseModel
         "level" => "required|integer",
         "objective" => "required|integer",
     ];
+
 
     /**
      * Get the level associated with the given points amount.

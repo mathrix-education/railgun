@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\Setting;
@@ -16,7 +17,7 @@ use App\Models\User;
 class SettingPolicy extends BasePolicy
 {
     /**
-     * @param User    $currentUser
+     * @param User $currentUser
      * @param Setting $setting
      *
      * @return bool
@@ -25,6 +26,7 @@ class SettingPolicy extends BasePolicy
     {
         return $currentUser->isAdmin() || $setting->visible;
     }
+
 
     /**
      * @param User $currentUser
@@ -35,6 +37,7 @@ class SettingPolicy extends BasePolicy
     {
         return $currentUser->isAdmin();
     }
+
 
     /**
      * @param User $currentUser

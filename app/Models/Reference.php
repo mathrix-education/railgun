@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,10 +12,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @copyright Mathrix Education SA
  * @package   App\Models
  *
- * @property int    $id
+ * @property int $id
  * @property string $key
  * @property string $text
- * @property int    $module_id
+ * @property int $module_id
  * @property Module $module
  */
 class Reference extends BaseModel

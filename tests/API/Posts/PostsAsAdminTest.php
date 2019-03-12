@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Posts;
 
 /**
@@ -27,6 +28,7 @@ class PostsAsAdminTest extends PostsAsModeratorTest
         });
     }
 
+
     /**
      * PATCH /posts/{id}.
      *
@@ -40,6 +42,7 @@ class PostsAsAdminTest extends PostsAsModeratorTest
             return $data;
         });
     }
+
 
     /**
      * DELETE /posts/{id}.

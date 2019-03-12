@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Notifications;
 
 use App\Mails\PasswordForgottenMail;
@@ -18,6 +19,7 @@ class PasswordForgottenNotification extends MailNotification
     /** @var User $user */
     public $user;
 
+
     /**
      * PasswordForgottenNotification constructor.
      *
@@ -27,6 +29,7 @@ class PasswordForgottenNotification extends MailNotification
     {
         $this->user = $user;
     }
+
 
     /**
      * Get the mail representation of the notification.

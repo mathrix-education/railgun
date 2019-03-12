@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Observers;
 
 use App\Models\Comment;
@@ -30,6 +31,7 @@ class PostObserver extends BaseObserver
 
         return true;
     }
+
 
     /**
      * @param Post $post

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands\Pipelines;
 
 use Illuminate\Support\Str;
@@ -42,6 +43,7 @@ class BuildCommand extends PipelineCommand
     protected $signature = "pipelines:build {--environment=} {--buildName=}";
     private $zipFile;
 
+
     public function handle()
     {
         $this->setupEnvironment();
@@ -49,6 +51,7 @@ class BuildCommand extends PipelineCommand
 
         $this->build();
     }
+
 
     /**
      * Build the zip file

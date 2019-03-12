@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\References;
 
 /**
@@ -23,6 +24,7 @@ class ReferencesAsModeratorTest extends ReferencesAsRedactorTest
         $this->genericAddSuccess();
     }
 
+
     /**
      * PATCH /quotes/{id}.
      *
@@ -32,6 +34,7 @@ class ReferencesAsModeratorTest extends ReferencesAsRedactorTest
     {
         $this->genericEditSuccess();
     }
+
 
     /**
      * DELETE /quotes/{id}.

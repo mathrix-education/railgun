@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Observers;
 
 use App\Exceptions\Http422ModelSaveException;
@@ -63,6 +64,7 @@ class ActivityObserver extends BaseObserver
 
         return true;
     }
+
 
     /**
      * Detach all modules and notions linked with the deleting notion.

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Events;
 
 use Braintree\Subscription;
@@ -19,6 +20,7 @@ class SubscriptionChargedSuccessfullyEvent
     public $subscription;
     /** @var Transaction $transaction */
     public $transaction;
+
 
     /**
      * TransactionSuccessEvent constructor.

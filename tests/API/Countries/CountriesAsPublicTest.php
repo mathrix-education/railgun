@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Countries;
 
 use Tests\API\ScopeTestCase;
@@ -25,6 +26,7 @@ class CountriesAsPublicTest extends ScopeTestCase
         $this->genericIndexSuccess();
     }
 
+
     /**
      * GET /countries/{id}.
      *
@@ -34,6 +36,7 @@ class CountriesAsPublicTest extends ScopeTestCase
     {
         $this->genericGetSuccess();
     }
+
 
     /**
      * POST /countries -> HTTP 401 unauthorized.
@@ -45,6 +48,7 @@ class CountriesAsPublicTest extends ScopeTestCase
         $this->genericAddUnauthorized();
     }
 
+
     /**
      * PATCH /countries/{id} -> HTTP 401 unauthorized.
      *
@@ -54,6 +58,7 @@ class CountriesAsPublicTest extends ScopeTestCase
     {
         $this->genericEditUnauthorized();
     }
+
 
     /**
      * DELETE /countries/{id} -> HTTP 401 unauthorized.

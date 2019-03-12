@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -12,7 +13,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Laravel\Lumen\Routing\Controller;
 
@@ -33,6 +33,7 @@ abstract class BaseController extends Controller
     /** @var array The model map to handle cancerous models name */
     public $modelMap = ["Class" => "Class_"];
 
+
     /**
      * BaseController constructor
      * Build model class.
@@ -49,12 +50,42 @@ abstract class BaseController extends Controller
         }
     }
 
+
+    /**
+     * @param string $name the model name
+     * @param bool $fail if true, raise and exception
+     *
+     * @throws Http400InvalidRequestException
+     *
+     * @return BaseModel|bool
+     */
+    protected function resolveModelClass($name, $fail = true)
+    {
+        $potentialModel = Str::studly(Str::singular($name));
+
+        if (\in_array($potentialModel, array_keys($this->modelMap), true)) {
+            $potentialModel = $this->modelMap[$potentialModel];
+        }
+
+        /** @var BaseModel $potentialModelClass */
+        $potentialModelClass = "App\\Models\\$potentialModel";
+
+        if (!class_exists($potentialModelClass) && $fail) {
+            throw new Http400InvalidRequestException("$potentialModelClass does not exist"); // @codeCoverageIgnore
+        } else if (!class_exists($potentialModelClass) && !$fail) {
+            return false;
+        }
+
+        return $potentialModelClass;
+    }
+
+
     /**
      * Generic paginated index method.
      *
      * @param Request $request The request
-     * @param int     $page
-     * @param int     $perPage
+     * @param int $page
+     * @param int $perPage
      *
      * @throws Http401UnauthorizedException
      *
@@ -73,12 +104,19 @@ abstract class BaseController extends Controller
         return $response;
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Generic actions
+    |--------------------------------------------------------------------------
+    */
+
+
     /**
      * Generic get action.
      *
-     * @param Request    $request The request
-     * @param string|int $key     The field or the id
-     * @param null       $value   If set, the field value to search
+     * @param Request $request The request
+     * @param string|int $key The field or the id
+     * @param null $value If set, the field value to search
      *
      * @throws Http401UnauthorizedException
      *
@@ -104,11 +142,7 @@ abstract class BaseController extends Controller
         return $response;
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Generic actions
-    |--------------------------------------------------------------------------
-    */
+
     /**
      * Generic add action.
      *
@@ -136,11 +170,12 @@ abstract class BaseController extends Controller
         return $response;
     }
 
+
     /**
      * Generic edit action.
      *
      * @param Request $request The request
-     * @param int     $id
+     * @param int $id
      *
      * @throws Http401UnauthorizedException
      *
@@ -164,11 +199,12 @@ abstract class BaseController extends Controller
         return $response;
     }
 
+
     /**
      * Generic delete action.
      *
      * @param Request $request The request
-     * @param int     $id
+     * @param int $id
      *
      * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException
@@ -196,12 +232,13 @@ abstract class BaseController extends Controller
         return $response;
     }
 
+
     /**
      * Generic search action.
      *
      * @param Request $request The request
-     * @param int     $page
-     * @param int     $perPage
+     * @param int $page
+     * @param int $perPage
      *
      * @throws Http400InvalidRequestException
      *
@@ -269,14 +306,15 @@ abstract class BaseController extends Controller
         return $response;
     }
 
+
     /**
      * Get the models which satisfy a given relation.
      *
      * @param Request $request The request
-     * @param string  $what    the linked model
-     * @param int     $id      the linked model id
-     * @param int     $page    the query page
-     * @param int     $perPage the query per page
+     * @param string $what the linked model
+     * @param int $id the linked model id
+     * @param int $page the query page
+     * @param int $perPage the query per page
      *
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
@@ -291,66 +329,15 @@ abstract class BaseController extends Controller
         return $response;
     }
 
-    /**
-     * Get the models ids which satisfy a given relation.
-     *
-     * @param Request $request The request
-     * @param string  $what    the linked model
-     * @param int     $id      the linked model id
-     * @param int     $page    the query page
-     * @param int     $perPage the query per page
-     *
-     * @throws Http400InvalidRequestException
-     * @throws Http401UnauthorizedException
-     *
-     * @return JsonResponse
-     */
-    public function ids(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
-    {
-        $ids = $this->getByQuery($request, $what, $id, $page, $perPage)
-            ->get()
-            ->pluck("id");
-        $response = new JsonResponse($ids);
-
-        return $response;
-    }
-
-    /**
-     * @param string $name the model name
-     * @param bool   $fail if true, raise and exception
-     *
-     * @throws Http400InvalidRequestException
-     *
-     * @return BaseModel|bool
-     */
-    protected function resolveModelClass($name, $fail = true)
-    {
-        $potentialModel = Str::studly(Str::singular($name));
-
-        if (\in_array($potentialModel, array_keys($this->modelMap), true)) {
-            $potentialModel = $this->modelMap[$potentialModel];
-        }
-
-        /** @var BaseModel $potentialModelClass */
-        $potentialModelClass = "App\\Models\\$potentialModel";
-
-        if (!class_exists($potentialModelClass) && $fail) {
-            throw new Http400InvalidRequestException("$potentialModelClass does not exist"); // @codeCoverageIgnore
-        } elseif (!class_exists($potentialModelClass) && !$fail) {
-            return false;
-        }
-
-        return $potentialModelClass;
-    }
 
     /**
      * Handle foreign models queries.
      *
      * @param Request $request The request
-     * @param string  $what
-     * @param int     $id
-     * @param int     $page
-     * @param int     $perPage
+     * @param string $what
+     * @param int $id
+     * @param int $page
+     * @param int $perPage
      *
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException
@@ -380,12 +367,38 @@ abstract class BaseController extends Controller
         return $model->{$potentialRelation}();
     }
 
+
+    /**
+     * Get the models ids which satisfy a given relation.
+     *
+     * @param Request $request The request
+     * @param string $what the linked model
+     * @param int $id the linked model id
+     * @param int $page the query page
+     * @param int $perPage the query per page
+     *
+     * @throws Http400InvalidRequestException
+     * @throws Http401UnauthorizedException
+     *
+     * @return JsonResponse
+     */
+    public function ids(Request $request, string $what, int $id, int $page = 1, int $perPage = 100)
+    {
+        $ids = $this->getByQuery($request, $what, $id, $page, $perPage)
+            ->get()
+            ->pluck("id");
+        $response = new JsonResponse($ids);
+
+        return $response;
+    }
+
+
     /**
      * Get the user according to a optional request key and its permission.
      *
-     * @param Request $request      the request
-     * @param string  $minimumScope the minimum permission accepted
-     * @param string  $key          the key in request corresponding the user id
+     * @param Request $request the request
+     * @param string $minimumScope the minimum permission accepted
+     * @param string $key the key in request corresponding the user id
      *
      * @throws Http400InvalidRequestException
      * @throws Http401UnauthorizedException

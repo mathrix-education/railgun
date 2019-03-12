@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Events;
 
 use App\Models\Comment;
@@ -15,6 +16,7 @@ use App\Models\Comment;
 class CommentAnswerEvent extends BaseEvent
 {
     public $comment;
+
 
     public function __construct(Comment $comment)
     {

@@ -1,7 +1,6 @@
 <?php
-namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
+namespace App\Models;
 
 /**
  * Class Quote.
@@ -12,7 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @copyright Mathrix Education SA
  * @package   App\Models
  *
- * @property int    $id
+ * @property int $id
  * @property string $content
  * @property string $author
  */

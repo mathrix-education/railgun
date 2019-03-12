@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\Comment;
@@ -26,6 +27,7 @@ class CommentPolicy extends BasePolicy
         return $currentUser->isModerator();
     }
 
+
     /**
      * @return bool
      */
@@ -34,8 +36,9 @@ class CommentPolicy extends BasePolicy
         return true;
     }
 
+
     /**
-     * @param User    $currentUser
+     * @param User $currentUser
      * @param Comment $comment
      *
      * @return bool
@@ -54,6 +57,7 @@ class CommentPolicy extends BasePolicy
         return false;
     }
 
+
     /**
      * @param User $currentUser
      *
@@ -64,6 +68,7 @@ class CommentPolicy extends BasePolicy
         return $currentUser->isModerator();
     }
 
+
     /**
      * @param User $currentUser
      *
@@ -73,6 +78,7 @@ class CommentPolicy extends BasePolicy
     {
         return $currentUser->isModerator();
     }
+
 
     /**
      * @param User $currentUser

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Models\Reference;
@@ -19,9 +20,9 @@ class ReferenceController extends BaseController
      * Query references by keys, comma-separated.
      * Example: test,lol%,%foo
      *
-     * @param string $query   The query string.
-     * @param int    $page    The current page.
-     * @param int    $perPage The number of references per page.
+     * @param string $query The query string.
+     * @param int $page The current page.
+     * @param int $perPage The number of references per page.
      *
      * @return PaginationJsonResponse
      */

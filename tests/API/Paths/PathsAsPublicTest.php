@@ -1,8 +1,9 @@
 <?php
+
 namespace Tests\API\Paths;
 
-use Tests\API\ScopeTestCase;
 use App\Utils\Tree;
+use Tests\API\ScopeTestCase;
 
 /**
  * Class PathsAsPublicTest.

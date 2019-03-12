@@ -41,6 +41,7 @@ class CreateLessonsTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

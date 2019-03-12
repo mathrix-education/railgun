@@ -1,8 +1,8 @@
 <?php
+
 namespace App\Models;
 
 use App\Exceptions\Http422ModelSaveException;
-use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class Setting.
@@ -13,10 +13,10 @@ use Illuminate\Database\Eloquent\Builder;
  * @copyright Mathrix Education SA
  * @package   App\Models
  *
- * @property int    $id
+ * @property int $id
  * @property string $key
  * @property string $value
- * @property bool   $visible
+ * @property bool $visible
  */
 class Setting extends BaseModel
 {
@@ -32,6 +32,7 @@ class Setting extends BaseModel
     protected $casts = [
         "visible" => "boolean",
     ];
+
 
     /**
      * Read a setting.
@@ -49,12 +50,13 @@ class Setting extends BaseModel
         return $setting->value;
     }
 
+
     /**
      * Write a setting.
      *
-     * @param string $key     the setting key
-     * @param mixed  $value   the setting value
-     * @param bool   $visible the setting visibility (true for public visibility, 0 for admin-only)
+     * @param string $key the setting key
+     * @param mixed $value the setting value
+     * @param bool $visible the setting visibility (true for public visibility, 0 for admin-only)
      *
      * @return bool
      */
@@ -69,6 +71,7 @@ class Setting extends BaseModel
 
         return $setting instanceof self;
     }
+
 
     /**
      * Delete a setting.
@@ -86,6 +89,7 @@ class Setting extends BaseModel
             ->delete();
     }
 
+
     /**
      * Un-serialize value attribute.
      *
@@ -97,6 +101,7 @@ class Setting extends BaseModel
     {
         return unserialize($value);
     }
+
 
     /**
      * Serialize value attribute.

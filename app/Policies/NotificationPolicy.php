@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\User;
@@ -18,7 +19,7 @@ class NotificationPolicy extends BasePolicy
     /**
      * Check if user can mark a notification
      *
-     * @param User                 $currentUser
+     * @param User $currentUser
      * @param DatabaseNotification $notification
      *
      * @return bool

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\User;
@@ -24,6 +25,7 @@ class DiscountPolicy extends BasePolicy
         return $currentUser->isAdmin();
     }
 
+
     /**
      * @param User $currentUser
      *
@@ -33,6 +35,7 @@ class DiscountPolicy extends BasePolicy
     {
         return $currentUser->isAdmin();
     }
+
 
     /**
      * @param User $currentUser
@@ -44,6 +47,7 @@ class DiscountPolicy extends BasePolicy
         return $currentUser->isAdmin();
     }
 
+
     /**
      * @param User $currentUser
      *
@@ -53,6 +57,7 @@ class DiscountPolicy extends BasePolicy
     {
         return $currentUser->isAdmin();
     }
+
 
     /**
      * @param User $currentUser

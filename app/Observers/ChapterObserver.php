@@ -1,7 +1,7 @@
 <?php
+
 namespace App\Observers;
 
-use App\Exceptions\Http422ModelSaveException;
 use App\Models\Chapter;
 use App\Models\Notion;
 use App\Models\Path;
@@ -52,6 +52,7 @@ class ChapterObserver extends BaseObserver
 
         return true;
     }
+
 
     /**
      * Delete all notions linked with the deleting chapter.

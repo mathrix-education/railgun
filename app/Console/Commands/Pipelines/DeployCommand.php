@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands\Pipelines;
 
 /**
@@ -17,6 +18,7 @@ class DeployCommand extends PipelineCommand
 
     protected $signature = "pipelines:deploy {--server=} {--environment=} {--buildName=}";
 
+
     public function handle()
     {
         $this->setupEnvironment();
@@ -30,6 +32,7 @@ class DeployCommand extends PipelineCommand
         $this->send();
         $this->setup();
     }
+
 
     /**
      * Build if needed
@@ -49,6 +52,7 @@ class DeployCommand extends PipelineCommand
             }
         }
     }
+
 
     /**
      * Initialize environment and server
@@ -84,6 +88,7 @@ class DeployCommand extends PipelineCommand
         }
     }
 
+
     /**
      * Send the build.tar.gz over SCP to the remote server
      */
@@ -98,6 +103,7 @@ class DeployCommand extends PipelineCommand
             $this->abort("Error while sending $this->buildFileName over SCP.");
         }
     }
+
 
     /**
      * Extract and setup the new release

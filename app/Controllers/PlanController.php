@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Services\Braintree\Models\Plan;
@@ -25,6 +26,7 @@ class PlanController extends Controller
     {
         return new JsonResponse(Plan::all()->toArray());
     }
+
 
     /**
      * Fin a pla by its id.

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands\SEO;
 
 use App\Console\Commands\BaseCommand;
@@ -19,6 +20,7 @@ use App\Models\Path;
 class McqNoIndexCommand extends BaseCommand
 {
     protected $signature = "seo:mcq-no-index {--no-dry}";
+
 
     /**
      * @throws \App\Exceptions\Http422ModelSaveException

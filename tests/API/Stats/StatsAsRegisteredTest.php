@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Stats;
 
 use Carbon\Carbon;
@@ -43,6 +44,7 @@ class StatsAsRegisteredTest extends StatsAsPublicTest
         }
     }
 
+
     /**
      * POST /stats/activities
      * Assert that stats are coherent and limits are respected.
@@ -84,6 +86,19 @@ class StatsAsRegisteredTest extends StatsAsPublicTest
         }
     }
 
+
+    /**
+     * POST /stats/activities
+     * Assert that stats are coherent and interval size is respected.
+     *
+     * @throws \Exception
+     */
+    public function testActivitiesWithIntervalWeek()
+    {
+        $this->activitiesWithIntervalSize("week");
+    }
+
+
     /**
      * Test activities stats with the given interval.
      *
@@ -123,16 +138,6 @@ class StatsAsRegisteredTest extends StatsAsPublicTest
         }
     }
 
-    /**
-     * POST /stats/activities
-     * Assert that stats are coherent and interval size is respected.
-     *
-     * @throws \Exception
-     */
-    public function testActivitiesWithIntervalWeek()
-    {
-        $this->activitiesWithIntervalSize("week");
-    }
 
     /**
      * POST /stats/activities
@@ -145,6 +150,7 @@ class StatsAsRegisteredTest extends StatsAsPublicTest
         $this->activitiesWithIntervalSize("month");
     }
 
+
     /**
      * POST /stats/activities
      * Assert that stats are coherent and interval size is respected.
@@ -155,6 +161,7 @@ class StatsAsRegisteredTest extends StatsAsPublicTest
     {
         $this->activitiesWithIntervalSize("year");
     }
+
 
     /**
      * POST /stats/activities as stranger -> HTTP 401 unauthorized.

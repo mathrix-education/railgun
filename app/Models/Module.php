@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
@@ -16,25 +17,25 @@ use Illuminate\Support\Facades\Auth;
  * @copyright Mathrix Education SA
  * @package   App\Models
  *
- * @property int                   $id
- * @property bool                  $premium
- * @property bool                  $visible
- * @property string                $type
- * @property string                $content
- * @property array                 $questions
- * @property array                 $choices
- * @property array                 $solutions
- * @property array                 $corrections
- * @property string                $options
- * @property array                 $link
- * @property mixed                 $status
+ * @property int $id
+ * @property bool $premium
+ * @property bool $visible
+ * @property string $type
+ * @property string $content
+ * @property array $questions
+ * @property array $choices
+ * @property array $solutions
+ * @property array $corrections
+ * @property string $options
+ * @property array $link
+ * @property mixed $status
  * @property Collection|Activity[] $activities
- * @property Collection|Comment[]  $comments
- * @property Collection|Mark[]     $marks
- * @property Collection|Log[]      $logs
- * @property Collection|Product[]  $products
- * @property string|null           $mark
- * @property string                $uri_type
+ * @property Collection|Comment[] $comments
+ * @property Collection|Mark[] $marks
+ * @property Collection|Log[] $logs
+ * @property Collection|Product[] $products
+ * @property string|null $mark
+ * @property string $uri_type
  */
 class Module extends BaseModel
 {
@@ -60,6 +61,7 @@ class Module extends BaseModel
     /** @var array The accessors to append to the model's array form */
     protected $appends = ["mark"];
 
+
     /**
      * Module constructor.
      *
@@ -72,6 +74,7 @@ class Module extends BaseModel
         // Dynamic rules
         $this->rules["type"] = "required|in:" . implode(",", self::TYPES);
     }
+
 
     /**
      * Handle too array strips if user is not premium.
@@ -125,6 +128,24 @@ class Module extends BaseModel
         }
     }
 
+
+    /**
+     * HasMany Marks.
+     *
+     * @return HasManyThrough
+     */
+    public function marks(): HasManyThrough
+    {
+        return $this->hasManyThrough(Mark::class, Path::class);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
+
+
     /**
      * Get the url-friendly module type
      *
@@ -153,11 +174,7 @@ class Module extends BaseModel
         }
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Relations
-    |--------------------------------------------------------------------------
-    */
+
     /**
      * BelongsToMany Activity.
      *
@@ -170,6 +187,7 @@ class Module extends BaseModel
             ->orderBy("pivot_order");
     }
 
+
     /**
      * HasMany Comment.
      *
@@ -180,15 +198,6 @@ class Module extends BaseModel
         return $this->hasMany(Comment::class)->orderBy("created_at");
     }
 
-    /**
-     * HasMany Marks.
-     *
-     * @return HasManyThrough
-     */
-    public function marks(): HasManyThrough
-    {
-        return $this->hasManyThrough(Mark::class, Path::class);
-    }
 
     /**
      * HasMany Product.

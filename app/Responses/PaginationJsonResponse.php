@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Responses;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -20,11 +21,11 @@ class PaginationJsonResponse extends JsonResponse
      * PaginationJsonResponse constructor.
      *
      * @param Builder|Relation $query
-     * @param int              $page
-     * @param int              $perPage
-     * @param int              $status
-     * @param array            $headers
-     * @param int              $options
+     * @param int $page
+     * @param int $perPage
+     * @param int $status
+     * @param array $headers
+     * @param int $options
      */
     public function __construct($query, int $page, int $perPage, $status = 200, $headers = [], $options = 0)
     {

@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Comments;
 
 use App\Models\Comment;
@@ -25,6 +26,7 @@ class CommentsAsModeratorTest extends CommentsAsRegisteredTest
         $this->genericIndexSuccess();
     }
 
+
     /**
      * PATCH /comments/{id} without changing the user_id.
      */
@@ -41,6 +43,7 @@ class CommentsAsModeratorTest extends CommentsAsRegisteredTest
         $this->assertInDatabase("comments", $data);
     }
 
+
     /**
      * DELETE /comments/{id}.
      *
@@ -50,6 +53,7 @@ class CommentsAsModeratorTest extends CommentsAsRegisteredTest
     {
         $this->genericSoftDeleteSuccess();
     }
+
 
     /**
      * DELETE /comments/{id}.
@@ -62,6 +66,7 @@ class CommentsAsModeratorTest extends CommentsAsRegisteredTest
         $this->genericSoftDeleteSuccess();
     }
 
+
     /**
      * POST /comments/search.
      */
@@ -73,6 +78,7 @@ class CommentsAsModeratorTest extends CommentsAsRegisteredTest
 
         $this->assertHttp200Success();
     }
+
 
     /**
      * GET /comments/latest.

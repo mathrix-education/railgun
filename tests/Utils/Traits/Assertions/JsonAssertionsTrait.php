@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Utils\Traits\Assertions;
 
 /**
@@ -15,14 +16,15 @@ trait JsonAssertionsTrait
     /**
      * Assert the response has the right error and status code.
      *
-     * @param string $error  the error name
-     * @param int    $status the status code
+     * @param string $error the error name
+     * @param int $status the status code
      */
     public function assertJsonError(string $error, int $status): void
     {
         $this->seeJsonContains(["error" => $error]); // Check for error
         $this->assertResponseStatus($status); // Check for code
     }
+
 
     /**
      * Assert the response has the right length.
@@ -35,6 +37,7 @@ trait JsonAssertionsTrait
         $this->assertEquals($expectedLength, \count($content));
     }
 
+
     /**
      * Assert the response has the right length.
      *
@@ -45,6 +48,7 @@ trait JsonAssertionsTrait
         $content = json_decode($this->response->getContent(), true);
         $this->assertTrue($minLength <= \count($content));
     }
+
 
     /**
      * Assert the response has the right length.
@@ -63,6 +67,7 @@ trait JsonAssertionsTrait
             )
         );
     }
+
 
     /**
      * Assert the response has the keys.

@@ -1,5 +1,6 @@
 <?php
-namespace App\Services\Braintree;
+
+namespace App\Services\Braintree\Utils;
 
 /**
  * Class Formatter.
@@ -22,12 +23,12 @@ class Formatter
         foreach ($data as $key => $value) {
             if ($value instanceof \Braintree\Base) {
                 $data[$key] = self::cast($value->jsonSerialize());
-            } elseif ($value instanceof \DateTime) {
+            } else if ($value instanceof \DateTime) {
                 $data[$key] = $value->format("c");
-            } elseif (\is_array($value)) {
+            } else if (\is_array($value)) {
                 $data[$key] = self::cast($value);
-            } elseif (\is_string($value) && preg_match("/^-?(?:\d+|\d*\.\d+)$/", $value)) {
-                $data[$key] = (float) $value;
+            } else if (\is_string($value) && preg_match("/^-?(?:\d+|\d*\.\d+)$/", $value)) {
+                $data[$key] = (float)$value;
             }
         }
 

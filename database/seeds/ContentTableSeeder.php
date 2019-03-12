@@ -20,7 +20,7 @@ class ContentTableSeeder extends BaseTableSeeder
      */
     public function run()
     {
-        $withOrder = function(int $order, array $data) {
+        $withOrder = function (int $order, array $data) {
             return array_merge($data, ["order" => $order]);
         };
 

@@ -1,6 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="PHPUnit Braintree" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" singleton="true">
-    <TestRunner directory="$PROJECT_DIR$/tests/Braintree" />
-    <method v="2" />
-  </configuration>
-</component>

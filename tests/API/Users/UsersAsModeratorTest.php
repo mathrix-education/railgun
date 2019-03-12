@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Users;
 
 /**
@@ -33,6 +34,7 @@ class UsersAsModeratorTest extends UsersAsRegisteredTest
         $this->assertHttp200Success();
         $this->assertIsPaginatedResponse();
     }
+
 
     /**
      * POST /users/search with wrong order direction.

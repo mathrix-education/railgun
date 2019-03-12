@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Observers;
 
 use App\Models\Discount;
@@ -45,6 +46,7 @@ class DiscountObserver extends BaseObserver
 
         return true;
     }
+
 
     /**
      * @param Discount $discount

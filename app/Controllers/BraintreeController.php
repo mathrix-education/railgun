@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Events\SubscriptionChargedSuccessfullyEvent;
@@ -42,6 +43,7 @@ class BraintreeController extends Controller
             "token" => $token,
         ]);
     }
+
 
     /**
      * Handle Braintree webhooks.

@@ -1,7 +1,6 @@
 <?php
-namespace Tests\API\Modules;
 
-use App\Utils\Tree;
+namespace Tests\API\Modules;
 
 /**
  * Class ModulesAsAdminTest.

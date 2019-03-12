@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests;
 
 use Faker\Factory;
@@ -24,6 +25,7 @@ abstract class BaseTestCase extends TestCase
     /** @var Generator */
     public $faker;
 
+
     /**
      * Setup the test environment.
      * Inject a new Faker instance.
@@ -33,6 +35,7 @@ abstract class BaseTestCase extends TestCase
         $this->faker = Factory::create();
         parent::setUp();
     }
+
 
     /**
      * Destroy database connection after each test to avoid the Too Many Connections error.

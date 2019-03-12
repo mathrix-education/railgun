@@ -1,9 +1,9 @@
 <?php
+
 namespace App\Console\Commands;
 
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
-use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Console\Command;
 
@@ -19,6 +19,7 @@ use Illuminate\Console\Command;
 class Dry extends Command
 {
     protected $signature = "dry";
+
 
     /**
      * @throws Http422ModelSaveException

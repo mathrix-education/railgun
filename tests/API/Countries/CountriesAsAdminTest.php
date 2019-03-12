@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Countries;
 
 /**
@@ -23,6 +24,7 @@ class CountriesAsAdminTest extends CountriesAsModeratorTest
         $this->genericAddSuccess();
     }
 
+
     /**
      * PATCH /countries/{id}.
      *
@@ -32,6 +34,7 @@ class CountriesAsAdminTest extends CountriesAsModeratorTest
     {
         $this->genericEditSuccess();
     }
+
 
     /**
      * DELETE /countries/{id}.

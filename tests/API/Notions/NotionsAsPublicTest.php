@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Notions;
 
 use Tests\API\ScopeTestCase;
@@ -25,6 +26,7 @@ class NotionsAsPublicTest extends ScopeTestCase
         $this->genericIndexSuccess();
     }
 
+
     /**
      * GET /notions/{id}.
      *
@@ -34,6 +36,7 @@ class NotionsAsPublicTest extends ScopeTestCase
     {
         $this->genericGetSuccess();
     }
+
 
     /**
      * POST /notions -> HTTP 401 unauthorized.
@@ -45,6 +48,7 @@ class NotionsAsPublicTest extends ScopeTestCase
         $this->genericAddUnauthorized();
     }
 
+
     /**
      * PATCH /notions/{id} -> HTTP 401 unauthorized.
      *
@@ -54,6 +58,7 @@ class NotionsAsPublicTest extends ScopeTestCase
     {
         $this->genericEditUnauthorized();
     }
+
 
     /**
      * DELETE /notions/{id} -> HTTP 401 unauthorized.

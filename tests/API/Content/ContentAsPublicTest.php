@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Content;
 
 use Tests\API\ScopeTestCase;
@@ -31,6 +32,7 @@ class ContentAsPublicTest extends ScopeTestCase
         $this->assertTrue(isset($data->data->notions));
     }
 
+
     /**
      * POST /content/upload.
      */
@@ -39,6 +41,7 @@ class ContentAsPublicTest extends ScopeTestCase
         $this->json("post", "/content/upload");
         $this->assertHttp401Unauthorized();
     }
+
 
     /**
      * POST /content/upload.

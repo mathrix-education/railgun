@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands\Redoc;
 
 use Illuminate\Console\Command;
@@ -21,6 +22,7 @@ class RedocBundle extends Command
     private const REDOC_OUTPUT_FILE = "redoc-static.html";
     private const REDOC_DESTINATION_FILE = "docs/openapi/index.html";
     protected $signature = "redoc:bundle";
+
 
     public function handle()
     {

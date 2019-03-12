@@ -1,8 +1,8 @@
 <?php
+
 namespace Tests\Utils\Traits\Generics;
 
 use App\Models\BaseModel;
-use Tests\Utils\Traits\ResponseTrait;
 
 /**
  * Trait By.
@@ -19,7 +19,7 @@ trait By
      * Generic by; expect HTTP 200.
      *
      * @param BaseModel|string $foreignModelClass
-     * @param null             $overrideId
+     * @param null $overrideId
      */
     public function genericBySuccess($foreignModelClass, $overrideId = null)
     {
@@ -30,11 +30,12 @@ trait By
         $this->assertIsPaginatedResponse();
     }
 
+
     /**
      * Generic by call.
      *
      * @param BaseModel|string $foreignModelClass
-     * @param null             $overrideId
+     * @param null $overrideId
      */
     public function genericBy($foreignModelClass, $overrideId = null)
     {
@@ -45,6 +46,7 @@ trait By
 
         $this->json("get", "/{$this->modelPlural}/by-$foreignSingular/$foreignId");
     }
+
 
     /**
      * Generic by; expect HTTP 422 Unauthorized.

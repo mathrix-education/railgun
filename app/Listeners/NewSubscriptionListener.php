@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Listeners;
 
 use App\Events\NewSubscriptionEvent;
@@ -31,7 +32,7 @@ class NewSubscriptionListener extends BaseListener
                 $event->user,
                 $event->subscription->transactions[0]
             ));
-        } elseif ($event->initialTransaction !== null) {
+        } else if ($event->initialTransaction !== null) {
             $event->user->notify(new TransactionSuccessNotification(
                 $event->user,
                 $event->initialTransaction

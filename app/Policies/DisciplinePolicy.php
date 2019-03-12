@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\User;
@@ -22,6 +23,7 @@ class DisciplinePolicy extends BasePolicy
         return true;
     }
 
+
     /**
      * @return bool
      */
@@ -29,6 +31,7 @@ class DisciplinePolicy extends BasePolicy
     {
         return true;
     }
+
 
     /**
      * @param User $currentUser
@@ -40,6 +43,7 @@ class DisciplinePolicy extends BasePolicy
         return $currentUser->isAdmin();
     }
 
+
     /**
      * @param User $currentUser
      *
@@ -50,6 +54,7 @@ class DisciplinePolicy extends BasePolicy
         return $currentUser->isAdmin();
     }
 
+
     /**
      * @param User $currentUser
      *
@@ -59,6 +64,7 @@ class DisciplinePolicy extends BasePolicy
     {
         return $currentUser->isAdmin();
     }
+
 
     /**
      * @return bool

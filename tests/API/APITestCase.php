@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API;
 
 use Laravel\Lumen\Testing\DatabaseTransactions;

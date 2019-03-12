@@ -1,8 +1,13 @@
 <?php
+
 namespace App\Models\Traits;
 
 use App\Exceptions\Http400InvalidRequestException;
-use App\Services\Braintree\Formatter;
+use App\Services\Braintree\Utils\Formatter;
+use Braintree\Customer;
+use Braintree\PaymentMethod;
+use Braintree\Result\Error;
+use Braintree\Result\Successful;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 
@@ -22,46 +27,13 @@ trait BraintreeCustomer
     /**
      * braintree attribute.
      *
-     * @return \Braintree\Customer|null
+     * @return Customer|null
      */
     public function getBraintreeAttribute(): ?\Braintree_Customer
     {
         return $this->isBraintreeCustomer() ? $this->getBraintreeCustomer() : null;
     }
 
-    /**
-     * Create a Braintree customer associated with this user account.
-     *
-     * @param string|null $paymentMethodNonce a payment nonce to attach
-     *
-     * @throws Http400InvalidRequestException
-     *
-     * @return \Braintree_Customer
-     */
-    public function createBraintreeCustomer(string $paymentMethodNonce = null): \Braintree_Customer
-    {
-        if (!$this->isBraintreeCustomer(true)) {
-            $braintreeId = "cus_" . str_replace("-", "", \Faker\Factory::create()->uuid);
-
-            /** @var \Braintree_Result_Successful|\Braintree_Result_Error $result */
-            $result = \Braintree_Customer::create([
-                "id" => $braintreeId,
-                "email" => $this->email,
-                "firstName" => $this->firstname,
-                "lastName" => $this->lastname,
-                "paymentMethodNonce" => $paymentMethodNonce ?? null,
-            ]);
-
-            if ($result->success) {
-                $this->braintree_id = $braintreeId;
-                $this->save();
-            } else {
-                throw new Http400InvalidRequestException("Unable to create Braintree customer");
-            }
-        }
-
-        return $this->getBraintreeCustomer();
-    }
 
     /**
      * Check if the user is already a Braintree customer.
@@ -78,38 +50,92 @@ trait BraintreeCustomer
 
         if ($this->braintree_id === null) {
             return false;
-        } elseif (!$strict) {
+        } else if (!$strict) {
             return true;
         }
+
         try {
-            \Braintree_Customer::find($this->braintree_id);
+            Customer::find($this->braintree_id);
 
             return true;
-        } catch (\Braintree_Exception_NotFound $e) {
+        } catch (\Braintree\Exception\NotFound $e) {
             return false;
         }
     }
 
+
     /**
      * @return \Braintree_Customer
      */
-    public function getBraintreeCustomer(): ?\Braintree_Customer
+    public function getBraintreeCustomer(): ?Customer
     {
         if (app()->environment() === "offline") {
-            return \Braintree\Customer::factory([]);
+            return Customer::factory([]);
         }
 
         return Cache::remember(self::getBraintreeCustomerCacheKey(), 5, function () {
             try {
-                return \Braintree_Customer::find($this->braintree_id);
+                return Customer::find($this->braintree_id);
             } catch (\Braintree\Exception\NotFound $e) {
                 $this->braintree_id = null;
                 $this->save();
 
-                return;
+                return null;
             }
         });
     }
+
+
+    /**
+     * Get the Brain customer cache used to get customer information from the cache.
+     *
+     * @return string
+     */
+    private function getBraintreeCustomerCacheKey()
+    {
+        return "braintree-customer-" . $this->braintree_id;
+    }
+
+
+    /**
+     * Create a Braintree customer associated with this user account.
+     *
+     * @param string|null $paymentMethodNonce a payment nonce to attach
+     *
+     * @throws Http400InvalidRequestException
+     *
+     * @return Customer
+     */
+    public function createBraintreeCustomer(string $paymentMethodNonce = null): Customer
+    {
+        if (!$this->isBraintreeCustomer(true)) {
+            $braintreeId = "cus_" . str_replace("-", "", \Faker\Factory::create()->uuid);
+
+            /** @var Successful|Error $result */
+            $result = Customer::create([
+                "id" => $braintreeId,
+                "email" => $this->email,
+                "firstName" => $this->firstname,
+                "lastName" => $this->lastname,
+                "paymentMethodNonce" => $paymentMethodNonce ?? null,
+            ]);
+
+            if ($result->success) {
+                $this->braintree_id = $braintreeId;
+                $this->save();
+            } else {
+                /** @var Error $result */
+                $this->record("braintree", "customer_creation", "error", $result->jsonSerialize());
+
+                throw new Http400InvalidRequestException("Unable to create Braintree customer", 400, null, [
+                    "data" => Formatter::cast($result)
+                ]);
+            }
+        }
+
+        return $this->getBraintreeCustomer();
+    }
+
 
     /**
      * Get user's Braintree payment methods.
@@ -125,8 +151,9 @@ trait BraintreeCustomer
         return $this->getBraintreeCustomer()->paymentMethods;
     }
 
+
     /**
-     * Throw an Http400InvalidRequestException if the user is not a Braintree cusstomer.
+     * Throw an Http400InvalidRequestException if the user is not a Braintree customer.
      *
      * @param bool $strict
      *
@@ -138,6 +165,7 @@ trait BraintreeCustomer
             throw new Http400InvalidRequestException("User with id `{$this->id}` is not a Braintree customer");
         }
     }
+
 
     /**
      * Get the user's default payment method token.
@@ -151,8 +179,10 @@ trait BraintreeCustomer
         $this->requireBraintreeCustomer();
 
         return $this->getBraintreeCustomer()
-            ->defaultPaymentMethod()->token;
+            ->defaultPaymentMethod()
+            ->token;
     }
+
 
     /**
      * Attach a new payment method to the current user.
@@ -161,18 +191,19 @@ trait BraintreeCustomer
      *
      * @throws Http400InvalidRequestException
      *
-     * @return \Braintree_Result_Successful|\Braintree_Result_Error
+     * @return Successful|Error
      */
     public function addBraintreePaymentMethod(string $paymentMethodNonce)
     {
         $this->requireBraintreeCustomer();
         $this->forgetBraintreeCustomerCache();
 
-        return \Braintree_PaymentMethod::create([
+        return PaymentMethod::create([
             "customerId" => $this->braintree_id,
             "paymentMethodNonce" => $paymentMethodNonce,
         ]);
     }
+
 
     /**
      * Delete the Braintree customer from the cache.
@@ -181,6 +212,7 @@ trait BraintreeCustomer
     {
         Cache::forget($this->getBraintreeCustomerCacheKey());
     }
+
 
     /**
      * Delete a payment method with a token from the vault.
@@ -195,8 +227,9 @@ trait BraintreeCustomer
     {
         $this->requireBraintreeCustomer();
 
-        return \Braintree_PaymentMethod::delete($paymentMethodToken);
+        return PaymentMethod::delete($paymentMethodToken);
     }
+
 
     /**
      * Check if the user has subscribed to the given plan.
@@ -221,7 +254,7 @@ trait BraintreeCustomer
         if ($this->isBraintreeCustomer(true)) {
             /** @var \Braintree_Subscription $subscription */
             foreach ($this->getBraintreeSubscriptions() as $subscription) {
-                if (\in_array($subscription->planId, $plans, true) && $subscription->status === "Active") {
+                if (in_array($subscription->planId, $plans, true) && $subscription->status === "Active") {
                     return true;
                 }
             }
@@ -229,6 +262,7 @@ trait BraintreeCustomer
 
         return false;
     }
+
 
     /**
      * Get the user subscriptions.
@@ -266,15 +300,5 @@ trait BraintreeCustomer
         });
 
         return $subscriptions;
-    }
-
-    /**
-     * Get the Brain customer cache used to get customer information from the cache.
-     *
-     * @return string
-     */
-    private function getBraintreeCustomerCacheKey()
-    {
-        return "braintree-customer-" . $this->braintree_id;
     }
 }

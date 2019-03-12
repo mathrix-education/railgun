@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -25,9 +26,9 @@ class FamilyPackController extends BaseController
     /**
      * Get a family pack with the parent and its children.
      *
-     * @param Request    $request
+     * @param Request $request
      * @param int|string $key
-     * @param null       $value
+     * @param null $value
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
@@ -44,13 +45,37 @@ class FamilyPackController extends BaseController
         }
 
         $response = new JsonResponse($familyPack);
+
         return $response;
     }
 
+
+    /**
+     * Add a child to an existing family pack
+     *
+     * @param Request $request
+     * @param int $familyPackId
+     *
+     * @return JsonResponse
+     * @throws ValidationException
+     * @throws Http400InvalidRequestException
+     * @throws Http401UnauthorizedException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
+     */
+    public function addChild(Request $request, int $familyPackId)
+    {
+        $familyPack = $this->manageChildren($request, $familyPackId, "add");
+        $response = new JsonResponse($familyPack);
+
+        return $response;
+    }
+
+
     /**
      * @param Request $request
-     * @param int     $familyPackId
-     * @param string  $action
+     * @param int $familyPackId
+     * @param string $action
      *
      * @return FamilyPack
      * @throws Http400InvalidRequestException
@@ -89,32 +114,12 @@ class FamilyPackController extends BaseController
         return $familyPack;
     }
 
-    /**
-     * Add a child to an existing family pack
-     *
-     * @param Request $request
-     * @param int     $familyPackId
-     *
-     * @return JsonResponse
-     * @throws ValidationException
-     * @throws Http400InvalidRequestException
-     * @throws Http401UnauthorizedException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
-     */
-    public function addChild(Request $request, int $familyPackId)
-    {
-        $familyPack = $this->manageChildren($request, $familyPackId, "add");
-        $response = new JsonResponse($familyPack);
-
-        return $response;
-    }
 
     /**
      * Remove a child from an existing family pack.
      *
      * @param Request $request
-     * @param int     $familyPackId
+     * @param int $familyPackId
      *
      * @return JsonResponse
      * @throws ValidationException

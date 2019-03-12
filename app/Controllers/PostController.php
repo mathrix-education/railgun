@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -33,8 +34,8 @@ class PostController extends BaseController
      * @apiUse         PostArray
      *
      * @param Request $request The request
-     * @param int     $page
-     * @param int     $perPage
+     * @param int $page
+     * @param int $perPage
      *
      * @return JsonResponse
      */

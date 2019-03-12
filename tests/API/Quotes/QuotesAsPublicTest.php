@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Quotes;
 
 use App\Models\Quote;
@@ -26,6 +27,7 @@ class QuotesAsPublicTest extends ScopeTestCase
         $this->genericIndexSuccess();
     }
 
+
     /**
      * GET /quotes/{id}.
      *
@@ -35,6 +37,7 @@ class QuotesAsPublicTest extends ScopeTestCase
     {
         $this->genericGetSuccess();
     }
+
 
     /**
      * POST /quotes -> HTTP 401 unauthorized.
@@ -46,6 +49,7 @@ class QuotesAsPublicTest extends ScopeTestCase
         $this->genericAddUnauthorized();
     }
 
+
     /**
      * PATCH /quotes/{id} -> HTTP 401 unauthorized.
      *
@@ -56,6 +60,7 @@ class QuotesAsPublicTest extends ScopeTestCase
         $this->genericEditUnauthorized();
     }
 
+
     /**
      * DELETE /quotes/{id} -> HTTP 401 unauthorized.
      *
@@ -65,6 +70,7 @@ class QuotesAsPublicTest extends ScopeTestCase
     {
         $this->genericDeleteUnauthorized();
     }
+
 
     /**
      * GET /quotes/random.
@@ -77,6 +83,7 @@ class QuotesAsPublicTest extends ScopeTestCase
         $this->assertHttp200Success();
         $this->assertJsonLength(1);
     }
+
 
     /**
      * GET /quotes/random/{number}.

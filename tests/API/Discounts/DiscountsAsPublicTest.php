@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Discounts;
 
 use App\Models\Discount;
@@ -26,6 +27,7 @@ class DiscountsAsPublicTest extends ScopeTestCase
         $this->genericIndexUnauthorized();
     }
 
+
     /**
      * GET /discounts/{id} -> HTTP 401 unauthorized.
      *
@@ -35,6 +37,7 @@ class DiscountsAsPublicTest extends ScopeTestCase
     {
         $this->genericGetUnauthorized();
     }
+
 
     /**
      * POST /discounts -> HTTP 401 unauthorized.
@@ -46,6 +49,7 @@ class DiscountsAsPublicTest extends ScopeTestCase
         $this->genericAddUnauthorized();
     }
 
+
     /**
      * PATCH /discounts/{id} -> HTTP 401 unauthorized.
      *
@@ -56,6 +60,7 @@ class DiscountsAsPublicTest extends ScopeTestCase
         $this->genericEditUnauthorized();
     }
 
+
     /**
      * DELETE /discounts/{id} -> HTTP 401 unauthorized.
      *
@@ -65,6 +70,7 @@ class DiscountsAsPublicTest extends ScopeTestCase
     {
         $this->genericDeleteUnauthorized();
     }
+
 
     /**
      * POST /discounts/check.

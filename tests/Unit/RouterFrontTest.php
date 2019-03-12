@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Unit;
 
 use App\Exceptions\Http422ModelSaveException;

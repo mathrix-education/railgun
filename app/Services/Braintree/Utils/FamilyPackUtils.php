@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services\Braintree;
 
 use App\Services\Braintree\Models\AddOn;
@@ -18,7 +19,7 @@ class FamilyPackUtils
      * Get add-ons for family pack.
      *
      * @param string $plan
-     * @param int    $numberOfAdditionalChildren
+     * @param int $numberOfAdditionalChildren
      *
      * @return array
      */
@@ -45,11 +46,12 @@ class FamilyPackUtils
         return $addOns;
     }
 
+
     /**
      * Get add-ons for family pack as line-items for initial transaction on plans with trial.
      *
      * @param string $planId
-     * @param int    $numberOfAdditionalChildren
+     * @param int $numberOfAdditionalChildren
      *
      * @return array
      */

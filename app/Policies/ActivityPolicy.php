@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\User;
@@ -24,6 +25,7 @@ class ActivityPolicy extends BasePolicy
         return $currentUser->isModerator();
     }
 
+
     /**
      * @return bool
      */
@@ -31,6 +33,7 @@ class ActivityPolicy extends BasePolicy
     {
         return true;
     }
+
 
     /**
      * @return bool
@@ -40,6 +43,7 @@ class ActivityPolicy extends BasePolicy
         return true;
     }
 
+
     /**
      * @return bool
      */
@@ -47,6 +51,7 @@ class ActivityPolicy extends BasePolicy
     {
         return true;
     }
+
 
     /**
      * @param User $currentUser
@@ -58,6 +63,7 @@ class ActivityPolicy extends BasePolicy
         return $currentUser->isModerator();
     }
 
+
     /**
      * @param User $currentUser
      *
@@ -67,6 +73,7 @@ class ActivityPolicy extends BasePolicy
     {
         return $currentUser->isModerator();
     }
+
 
     /**
      * @param User $currentUser

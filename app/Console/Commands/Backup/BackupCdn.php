@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands\Backup;
 
 use Carbon\Carbon;
@@ -22,6 +23,7 @@ class BackupCdn extends Command
     private const DRIVE_CDN_FOLDER = "1E4XQBZThR9OcngnoveG_1YYvaoop1o6p";
     protected $signature = "backup:cdn";
 
+
     /**
      * @throws \Exception
      */
@@ -30,6 +32,7 @@ class BackupCdn extends Command
         $zipPath = $this->zipCdn();
         $this->pushZip($zipPath);
     }
+
 
     /**
      * @throws \Exception
@@ -70,6 +73,7 @@ class BackupCdn extends Command
 
         return $zipFileName;
     }
+
 
     /**
      * Push the zip file to Google Drive Cloud.

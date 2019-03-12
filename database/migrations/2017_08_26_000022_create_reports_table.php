@@ -36,6 +36,7 @@ class CreateReportsTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

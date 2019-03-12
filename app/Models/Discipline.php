@@ -1,7 +1,7 @@
 <?php
+
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -15,13 +15,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @copyright Mathrix Education SA
  * @package   App\Models
  *
- * @property int                  $id
- * @property string               $name
- * @property string               $slug
- * @property bool                 $beta
- * @property array                $link
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property bool $beta
+ * @property array $link
  * @property Collection|Chapter[] $chapters
- * @property Collection|Class_[]  $classes
+ * @property Collection|Class_[] $classes
  */
 class Discipline extends BaseModel
 {
@@ -35,6 +35,7 @@ class Discipline extends BaseModel
     ];
     protected $appends = ["visible"];
 
+
     /**
      * @deprecated
      * @return bool
@@ -42,7 +43,7 @@ class Discipline extends BaseModel
     public function getVisibleAttribute()
     {
         if (isset($this->pivot->attributes["visible"])) {
-            return !empty((bool) $this->pivot->attributes["visible"]);
+            return !empty((bool)$this->pivot->attributes["visible"]);
         } else {
             return null;
         }
@@ -62,6 +63,7 @@ class Discipline extends BaseModel
     {
         return $this->hasMany(Chapter::class);
     }
+
 
     /**
      * BelongsToMany Class_.

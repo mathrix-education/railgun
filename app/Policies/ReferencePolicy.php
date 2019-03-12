@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\User;
@@ -21,6 +22,7 @@ class ReferencePolicy extends BasePolicy
         return true;
     }
 
+
     /**
      * @return bool
      */
@@ -28,6 +30,7 @@ class ReferencePolicy extends BasePolicy
     {
         return true;
     }
+
 
     /**
      * @param User $currentUser
@@ -39,6 +42,7 @@ class ReferencePolicy extends BasePolicy
         return $currentUser->isModerator();
     }
 
+
     /**
      * @param User $currentUser
      *
@@ -48,6 +52,7 @@ class ReferencePolicy extends BasePolicy
     {
         return $currentUser->isModerator();
     }
+
 
     /**
      * @param User $currentUser

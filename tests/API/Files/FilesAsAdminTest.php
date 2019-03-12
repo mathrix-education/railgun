@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Files;
 
 use Illuminate\Http\UploadedFile;
@@ -37,6 +38,7 @@ class FilesAsAdminTest extends FilesAsModeratorTest
         self::getDisk()->assertExists($existingFile);
     }
 
+
     /**
      * GET /files/explore/{directory}
      *
@@ -65,6 +67,7 @@ class FilesAsAdminTest extends FilesAsModeratorTest
         self::getDisk()->move($destination, $source);
         self::getDisk()->move("$destination.old", $destination);
     }
+
 
     /**
      * DELETE /files/{file}

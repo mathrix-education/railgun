@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Events;
 
 use App\Models\User;
@@ -17,6 +18,7 @@ class PasswordForgottenEvent extends BaseEvent
 {
     /** @var User */
     public $user;
+
 
     /**
      * PasswordForgottenEvent constructor.

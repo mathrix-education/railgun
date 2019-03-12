@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\User;
@@ -22,6 +23,7 @@ class ModulePolicy extends BasePolicy
         return true;
     }
 
+
     /**
      * @return bool
      */
@@ -31,6 +33,7 @@ class ModulePolicy extends BasePolicy
     }
 
     // Get policy directly handled in the controller
+
 
     /**
      * @param User $currentUser
@@ -42,6 +45,7 @@ class ModulePolicy extends BasePolicy
         return $currentUser->isModerator();
     }
 
+
     /**
      * @param User $currentUser
      *
@@ -52,6 +56,7 @@ class ModulePolicy extends BasePolicy
         return $currentUser->isRedactor();
     }
 
+
     /**
      * @param User $currentUser
      *
@@ -61,6 +66,7 @@ class ModulePolicy extends BasePolicy
     {
         return $currentUser->isModerator();
     }
+
 
     /**
      * @param User $currentUser

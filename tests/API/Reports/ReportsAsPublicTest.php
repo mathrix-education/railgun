@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Reports;
 
 use Tests\API\ScopeTestCase;
@@ -25,6 +26,7 @@ class ReportsAsPublicTest extends ScopeTestCase
         $this->genericIndexUnauthorized();
     }
 
+
     /**
      * GET /reports/{id}.
      *
@@ -35,6 +37,7 @@ class ReportsAsPublicTest extends ScopeTestCase
         $this->genericGetUnauthorized();
     }
 
+
     /**
      * POST /reports.
      *
@@ -44,9 +47,11 @@ class ReportsAsPublicTest extends ScopeTestCase
     {
         $this->genericAddSuccess([], function ($data) {
             unset($data["created_at"], $data["updated_at"]);
+
             return $data;
         });
     }
+
 
     /**
      * PATCH /reports/{id}.
@@ -57,6 +62,7 @@ class ReportsAsPublicTest extends ScopeTestCase
     {
         $this->genericEditUnauthorized();
     }
+
 
     /**
      * DELETE /reports/{id}.

@@ -24,6 +24,7 @@ class AddNoIndexToMetasTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      *

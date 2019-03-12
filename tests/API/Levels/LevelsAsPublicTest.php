@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Levels;
 
 use Tests\API\ScopeTestCase;

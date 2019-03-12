@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Utils\Traits;
 
 use App\Models\User;

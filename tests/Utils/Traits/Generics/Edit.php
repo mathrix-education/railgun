@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Utils\Traits\Generics;
 
 use Closure;
@@ -19,10 +20,11 @@ trait Edit
     /** @var array factorized model data */
     protected $editModelData;
 
+
     /**
      * Generic edit; expect HTTP 200 and data present in database.
      *
-     * @param array         $override overridden attributes
+     * @param array $override overridden attributes
      * @param \Closure|null $callback the callback on generated data
      *
      * @throws \Exception
@@ -36,10 +38,11 @@ trait Edit
         $this->assertInDatabase($this->modelPlural, $this->editModelData);
     }
 
+
     /**
      * Generic edit call.
      *
-     * @param array         $override overridden attributes
+     * @param array $override overridden attributes
      * @param \Closure|null $callback the callback on generated data
      *
      * @throws \Exception
@@ -69,10 +72,11 @@ trait Edit
         }
     }
 
+
     /**
      * Generic edit; expect HTTP 200 and data present in database.
      *
-     * @param array         $override overridden attributes
+     * @param array $override overridden attributes
      * @param \Closure|null $callback the callback on generated data
      *
      * @throws \Exception

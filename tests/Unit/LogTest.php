@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Unit;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -26,6 +27,7 @@ class LogTest extends BaseTestCase
 
         Log::build("wrong_event");
     }
+
 
     /**
      * @throws Http400InvalidRequestException

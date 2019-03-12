@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Users;
 
 use App\Models\Class_;
@@ -40,6 +41,7 @@ class UsersAsAdminTest extends UsersAsModeratorTest
         ]);
     }
 
+
     /**
      * GET /users/{id}.
      */
@@ -51,6 +53,7 @@ class UsersAsAdminTest extends UsersAsModeratorTest
 
         $this->assertHttp200Success();
     }
+
 
     public function testChangeType()
     {

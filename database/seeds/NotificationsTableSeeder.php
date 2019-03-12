@@ -19,6 +19,7 @@ class NotificationsTableSeeder extends BaseTableSeeder
     private $counter = 0;
     private $notifications;
 
+
     public function run()
     {
         $this->faker = Factory::create();
@@ -61,10 +62,11 @@ class NotificationsTableSeeder extends BaseTableSeeder
         $this->output->writeln("<info>Seeded:</info> notifications");
     }
 
+
     /**
      * Generate a notification database line
      *
-     * @param User    $target
+     * @param User $target
      * @param Comment $comment
      */
     public function generateNotification(User $target, Comment $comment)

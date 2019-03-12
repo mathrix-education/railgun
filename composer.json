@@ -4,6 +4,12 @@
   "version": "4.3.0",
   "license": "proprietary",
   "type": "project",
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://source.developers.google.com/p/mathrix-education/r/mathrix-lumen"
+    }
+  ],
   "config": {
     "sort-packages": true
   },
@@ -28,6 +34,7 @@
     "laravel/passport": "^7.0",
     "laravelium/sitemap": "^3.0",
     "league/flysystem": " ~1.0",
+    "mathrix/lumen": "dev-master",
     "nao-pon/flysystem-google-drive": "^1.1",
     "paulvl/backup": "3.*",
     "ramsey/uuid": "^3.8",
@@ -45,6 +52,7 @@
     "helmich/phpunit-json-assert": "^2.0",
     "mockery/mockery": "~1.0",
     "phpunit/phpunit": "^7.0",
+    "vluzrmos/tinker": "^1.4",
     "xethron/migrations-generator": "^2.0"
   },
   "autoload": {

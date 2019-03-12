@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 /**
  * Class AddTypeToReportsTable
@@ -25,6 +25,7 @@ class AddTypeToReportsTable extends Migration
             $table->string("context")->nullable()->after("id");
         });
     }
+
 
     /**
      * Reverse the migrations.

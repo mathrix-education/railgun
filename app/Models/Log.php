@@ -1,11 +1,11 @@
 <?php
+
 namespace App\Models;
 
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
@@ -18,14 +18,14 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @copyright Mathrix Education SA
  * @package   App\Models
  *
- * @property int             $id
- * @property string          $event
- * @property int|null        $user_id
- * @property string|null     $value
- * @property Carbon          $created_at
- * @property string|null     $loggable_type
- * @property int|null        $loggable_id
- * @property User|null       $user
+ * @property int $id
+ * @property string $event
+ * @property int|null $user_id
+ * @property string|null $value
+ * @property Carbon $created_at
+ * @property string|null $loggable_type
+ * @property int|null $loggable_id
+ * @property User|null $user
  * @property Activity|Module $loggable
  */
 class Log extends BaseModel
@@ -59,6 +59,8 @@ class Log extends BaseModel
         // Sections-related
         "user_payment_succeed_for_section",
         "user_payment_failed_for_section",
+        // Braintree
+        "braintree_user_customer_creation_failed",
     ];
 
     /** @var bool If timestamps (created_at and updated_at) should be used */
@@ -68,12 +70,13 @@ class Log extends BaseModel
     /** @var array The attributes that should be cast to native types */
     protected $casts = ["value" => "array"];
 
+
     /**
      * Add a log line the the database.
      *
-     * @param string        $event the event name
-     * @param User|int|null $user  the user as model, its id or njull for system log
-     * @param array         $data  the optional data to associate with the log, such as the loggable type and id
+     * @param string $event the event name
+     * @param User|int|null $user the user as model, its id or njull for system log
+     * @param array $data the optional data to associate with the log, such as the loggable type and id
      *
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
@@ -88,12 +91,13 @@ class Log extends BaseModel
             ->save();
     }
 
+
     /**
      * Build a log line.
      *
-     * @param string        $event the event name
-     * @param User|int|null $user  the user as model, its id or njull for system log
-     * @param array         $data  the optional data to associate with the log, such as the loggable type and id
+     * @param string $event the event name
+     * @param User|int|null $user the user as model, its id or njull for system log
+     * @param array $data the optional data to associate with the log, such as the loggable type and id
      *
      * @throws Http400InvalidRequestException
      * @throws \Exception
@@ -127,6 +131,7 @@ class Log extends BaseModel
         return new self($logData);
     }
 
+
     /**
      * Disable updated_at field update; seems to be a hack.
      *
@@ -154,6 +159,7 @@ class Log extends BaseModel
     {
         return $this->belongsTo(User::class);
     }
+
 
     /**
      * MorphTo Loggable.

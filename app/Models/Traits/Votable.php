@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models\Traits;
 
 use App\Models\Vote;
@@ -23,6 +24,7 @@ trait Votable
         return $this->votes()
             ->sum("value");
     }
+
 
     /**
      * Get the votes.

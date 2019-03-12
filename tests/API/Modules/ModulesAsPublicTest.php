@@ -1,11 +1,10 @@
 <?php
+
 namespace Tests\API\Modules;
 
 use App\Models\Activity;
 use App\Models\Module;
-use PHPUnit\Framework\Constraint\IsType;
 use Tests\API\ScopeTestCase;
-use App\Utils\Tree;
 
 /**
  * Class ModulesAsPublicTest.
@@ -24,6 +23,7 @@ class ModulesAsPublicTest extends ScopeTestCase
      */
     protected $subFactory = "random";
 
+
     /**
      * GET /modules.
      *
@@ -33,6 +33,7 @@ class ModulesAsPublicTest extends ScopeTestCase
     {
         $this->genericIndexSuccess();
     }
+
 
     /**
      * GET /modules/by-activity/{activity_id}.
@@ -48,6 +49,7 @@ class ModulesAsPublicTest extends ScopeTestCase
         }
     }
 
+
     /**
      * GET /modules/{id}.
      */
@@ -59,6 +61,7 @@ class ModulesAsPublicTest extends ScopeTestCase
 
         $this->assertHttp200Success();
     }
+
 
     /**
      * GET /modules/{id} with a premium module as non premium user.
@@ -72,11 +75,12 @@ class ModulesAsPublicTest extends ScopeTestCase
         $this->get("/modules/{$module->id}");
 
         $response = $this->getResponseData();
-        $responseKeys = array_keys((array) $response);
+        $responseKeys = array_keys((array)$response);
         $expectedKeys = ["id", "premium"];
         $this->assertTrue($response->premium);
         $this->assertEquals($expectedKeys, $responseKeys);
     }
+
 
     /**
      * POST /modules -> HTTP 401 unauthorized.
@@ -88,6 +92,7 @@ class ModulesAsPublicTest extends ScopeTestCase
         $this->genericAddUnauthorized();
     }
 
+
     /**
      * PATCH /modules/{id} -> HTTP 401 unauthorized.
      *
@@ -97,6 +102,7 @@ class ModulesAsPublicTest extends ScopeTestCase
     {
         $this->genericEditUnauthorized();
     }
+
 
     /**
      * DELETE /modules/{id} -> HTTP 401 unauthorized.

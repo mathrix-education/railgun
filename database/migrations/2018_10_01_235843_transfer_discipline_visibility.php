@@ -32,6 +32,7 @@ class TransferDisciplineVisibility extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      *

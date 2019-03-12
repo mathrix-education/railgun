@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Posts;
 
 use Tests\API\ScopeTestCase;
@@ -25,6 +26,7 @@ class PostsAsPublicTest extends ScopeTestCase
         $this->genericIndexSuccess();
     }
 
+
     /**
      * POST /notions -> HTTP 401 unauthorized.
      *
@@ -35,6 +37,7 @@ class PostsAsPublicTest extends ScopeTestCase
         $this->genericAddUnauthorized();
     }
 
+
     /**
      * PATCH /notions/{id} -> HTTP 401 unauthorized.
      *
@@ -44,6 +47,7 @@ class PostsAsPublicTest extends ScopeTestCase
     {
         $this->genericEditUnauthorized();
     }
+
 
     /**
      * DELETE /notions/{id} -> HTTP 401 unauthorized.

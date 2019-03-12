@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Carbon\Carbon;
@@ -13,23 +14,24 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @copyright Mathrix Education SA
  * @package   App\Models
  *
- * @property int    $id
+ * @property int $id
  * @property string $status
- * @property int    $user_id
- * @property int    $path_id
+ * @property int $user_id
+ * @property int $path_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *
- * @property Path   $path
- * @property User   $user
+ * @property Path $path
+ * @property User $user
  */
 class Mark extends BaseModel
 {
     public $timestamps = true;
     protected $fillable = ["status", "user_id", "path_id"];
 
+
     /**
-     * @param array       $conditions The array containing the key/value
+     * @param array $conditions The array containing the key/value
      *
      * @return Mark
      */
@@ -50,6 +52,7 @@ class Mark extends BaseModel
         return $mark;
     }
 
+
     /**
      * BelongsTo Path.
      *
@@ -59,6 +62,7 @@ class Mark extends BaseModel
     {
         return $this->belongsTo(Path::class);
     }
+
 
     /**
      * BelongsTo User.

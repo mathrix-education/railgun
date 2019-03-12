@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Comments;
 
 use App\Models\Comment;
@@ -28,6 +29,7 @@ class CommentsAsPublicTest extends ScopeTestCase
         $this->genericIndexUnauthorized();
     }
 
+
     /**
      * GET /comments/by-module/{module_id}.
      */
@@ -51,6 +53,7 @@ class CommentsAsPublicTest extends ScopeTestCase
         ]);
     }
 
+
     /**
      * GET /comments/by-wtf/{wtf_id} -> HTTP 400 Invalid Request.
      *
@@ -64,6 +67,7 @@ class CommentsAsPublicTest extends ScopeTestCase
         $this->assertHttp400InvalidRequest();
     }
 
+
     /**
      * POST /comments -> HTTP 401 unauthorized.
      *
@@ -73,6 +77,7 @@ class CommentsAsPublicTest extends ScopeTestCase
     {
         $this->genericAddUnauthorized();
     }
+
 
     /**
      * PATCH /comments/{id} -> HTTP 401 unauthorized.
@@ -84,6 +89,7 @@ class CommentsAsPublicTest extends ScopeTestCase
         $this->genericEditUnauthorized();
     }
 
+
     /**
      * DELETE /comments/{id} -> HTTP 401 unauthorized.
      *
@@ -93,6 +99,7 @@ class CommentsAsPublicTest extends ScopeTestCase
     {
         $this->genericDeleteUnauthorized();
     }
+
 
     /**
      * GET /comments/latest.

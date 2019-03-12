@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Exceptions;
 
 use App\Models\User;
@@ -15,6 +16,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use League\OAuth2\Server\Exception\OAuthServerException;
+use Mathrix\Lumen\Exceptions\Http\HttpException as MathrixHTTPException;
 use ReflectionClass;
 use Symfony\Component\HttpKernel\Exception\HttpException as SymphonyHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -52,6 +54,7 @@ class Handler extends ExceptionHandler
         Http501NotImplementedException::class,
     ];
 
+
     /**
      * Sentry integration.
      *
@@ -87,10 +90,11 @@ class Handler extends ExceptionHandler
         parent::report($e);
     }
 
+
     /**
      * Render an exception into an HTTP response.
      *
-     * @param Request    $request
+     * @param Request $request
      * @param \Exception $e
      *
      * @throws \ReflectionException
@@ -99,6 +103,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        if ($e instanceof MathrixHTTPException) {
+            return $e->toJsonResponse();
+        }
+
         $overriddenStatusCode = false;
 
         if ($e instanceof HttpException) {
@@ -126,7 +134,7 @@ class Handler extends ExceptionHandler
                     "column" => $matches[2],
                     "sql" => $matches[3],
                 ]);
-            } elseif (preg_match(self::REGEX_MYSQL_GENERIC, $e->getMessage(), $matches)) {
+            } else if (preg_match(self::REGEX_MYSQL_GENERIC, $e->getMessage(), $matches)) {
                 $json = array_merge($json, [
                     "type" => "generic",
                     "sqlstate" => $matches[1],
@@ -145,7 +153,7 @@ class Handler extends ExceptionHandler
 
         // Include trace in debug mode
         if (app()->environment("testing", "local", "dev", "pipelines", "next")) {
-            $json["trace"] = explode("\n", $e->getTraceAsString());
+            //$json["trace"] = explode("\n", $e->getTraceAsString());
         }
 
         if ($e instanceof NotFoundHttpException) {

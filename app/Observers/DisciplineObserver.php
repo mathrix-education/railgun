@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Observers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -54,6 +55,7 @@ class DisciplineObserver extends BaseObserver
         return true;
     }
 
+
     /**
      * @param Discipline $discipline
      *
@@ -63,7 +65,7 @@ class DisciplineObserver extends BaseObserver
     {
         if ($discipline->has("chapters")) {
             throw new Http400InvalidRequestException("Discipline id `{$discipline->id}` still has chapters.");
-        } elseif ($discipline->has("classes")) {
+        } else if ($discipline->has("classes")) {
             throw new Http400InvalidRequestException("Discipline id `{$discipline->id}` still has classes.");
         }
     }

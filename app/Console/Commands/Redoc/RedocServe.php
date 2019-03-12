@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands\Redoc;
 
 use Illuminate\Console\Command;

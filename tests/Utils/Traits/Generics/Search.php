@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Utils\Traits\Generics;
 
 /**
@@ -26,6 +27,7 @@ trait Search
         $this->assertHttp200Success();
     }
 
+
     /**
      * Generic search call.
      *
@@ -37,6 +39,7 @@ trait Search
 
         $this->json("post", "/" . $this->modelPlural . "/search", $data);
     }
+
 
     /**
      * Generic search; expect HTTP 422 Unauthorized.

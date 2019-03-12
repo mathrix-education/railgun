@@ -56,6 +56,7 @@ class CreateChapterNotionTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      *

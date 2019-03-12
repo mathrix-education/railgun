@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Utils;
 
 use App\Models\Activity;
@@ -35,6 +36,7 @@ class Tree
     /** @var Module */
     private $module;
 
+
     public function __construct()
     {
         // Build the tree
@@ -53,6 +55,7 @@ class Tree
             ->firstOrFail();
     }
 
+
     /**
      * @return Country
      */
@@ -60,6 +63,7 @@ class Tree
     {
         return $this->country;
     }
+
 
     /**
      * @return Class_
@@ -69,6 +73,7 @@ class Tree
         return $this->class;
     }
 
+
     /**
      * @return Discipline
      */
@@ -76,6 +81,7 @@ class Tree
     {
         return $this->discipline;
     }
+
 
     /**
      * @return Chapter
@@ -85,6 +91,7 @@ class Tree
         return $this->chapter;
     }
 
+
     /**
      * @return Notion
      */
@@ -92,6 +99,7 @@ class Tree
     {
         return $this->notion;
     }
+
 
     /**
      * @return Activity
@@ -101,6 +109,7 @@ class Tree
         return $this->activity;
     }
 
+
     /**
      * @return Module
      */
@@ -108,6 +117,7 @@ class Tree
     {
         return $this->module;
     }
+
 
     /**
      * Get a flat tree as array with the model ids.

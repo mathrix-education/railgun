@@ -34,6 +34,7 @@ class CreateScoresTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

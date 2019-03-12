@@ -1,10 +1,8 @@
 <?php
+
 namespace Tests\API\Votes;
 
 use App\Models\Comment;
-use App\Models\Post;
-use App\Models\Vote;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Tests\API\ScopeTestCase;
 
 /**
@@ -30,6 +28,7 @@ class VotesAsPublicTest extends ScopeTestCase
 
         $this->assertHttp401Unauthorized();
     }
+
 
     /**
      * POST /votes/{votable_type}/{votable_id}/down.

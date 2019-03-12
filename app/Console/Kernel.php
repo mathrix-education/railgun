@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console;
 
 use App\Console\Commands\Backup\BackupCdn;
@@ -6,6 +7,7 @@ use App\Console\Commands\Braintree\BraintreeCheck;
 use App\Console\Commands\Braintree\NewPayPalCheck;
 use App\Console\Commands\Clean;
 use App\Console\Commands\Clear\ClearCache;
+use App\Console\Commands\CompileMails;
 use App\Console\Commands\Dry;
 use App\Console\Commands\Format\FormatCheckEnvironments;
 use App\Console\Commands\Format\FormatCopyrightChecker;
@@ -67,8 +69,10 @@ class Kernel extends ConsoleKernel
         // Pipelines
         BuildCommand::class,
         DeployCommand::class,
-        InitialSEOCommand::class
+        InitialSEOCommand::class,
+        CompileMails::class
     ];
+
 
     /**
      * Define the application's command schedule.

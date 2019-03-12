@@ -63,6 +63,7 @@ class UpdatePostsTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      *

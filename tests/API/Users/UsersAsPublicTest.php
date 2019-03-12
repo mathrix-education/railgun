@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Users;
 
 use App\Models\Class_;
@@ -46,6 +47,7 @@ class UsersAsPublicTest extends ScopeTestCase
         ]);
     }
 
+
     /**
      * GET /users/profile.
      */
@@ -55,6 +57,7 @@ class UsersAsPublicTest extends ScopeTestCase
 
         $this->assertHttp401Unauthorized();
     }
+
 
     /**
      * GET /users/exists.
@@ -69,6 +72,7 @@ class UsersAsPublicTest extends ScopeTestCase
         $this->assertTrue($response->exists);
     }
 
+
     /**
      * GET /users/exists.
      */
@@ -80,6 +84,7 @@ class UsersAsPublicTest extends ScopeTestCase
         $this->assertHttp200Success();
         $this->assertFalse($response->exists);
     }
+
 
     /**
      * POST /users/search.

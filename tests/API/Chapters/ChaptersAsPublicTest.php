@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Chapters;
 
 use App\Models\Chapter;
@@ -27,6 +28,7 @@ class ChaptersAsPublicTest extends ScopeTestCase
         $this->genericIndexUnauthorized();
     }
 
+
     /**
      * GET /chapters/{id}.
      *
@@ -36,6 +38,7 @@ class ChaptersAsPublicTest extends ScopeTestCase
     {
         $this->genericGetSuccess();
     }
+
 
     /**
      * GET /chapters/slug/{chapterSlug}/by-class-slug/{classSlug}.
@@ -59,6 +62,7 @@ class ChaptersAsPublicTest extends ScopeTestCase
         ]);
     }
 
+
     /**
      * POST /chapters -> HTTP 401 unauthorized.
      *
@@ -68,6 +72,7 @@ class ChaptersAsPublicTest extends ScopeTestCase
     {
         $this->genericAddUnauthorized();
     }
+
 
     /**
      * PATCH /chapters/{id} -> HTTP 401 unauthorized.
@@ -79,6 +84,7 @@ class ChaptersAsPublicTest extends ScopeTestCase
         $this->genericEditUnauthorized();
     }
 
+
     /**
      * DELETE /chapters/{id} -> HTTP 401 unauthorized.
      *
@@ -88,6 +94,7 @@ class ChaptersAsPublicTest extends ScopeTestCase
     {
         $this->genericDeleteUnauthorized();
     }
+
 
     /**
      * GET /chapters/by-class-discipline/{class_id}/{discipline_id}.
@@ -105,6 +112,7 @@ class ChaptersAsPublicTest extends ScopeTestCase
         $this->assertHttp200Success();
         $this->assertJsonLengthMin(1);
     }
+
 
     /**
      * GET /chapters/recursive/{id}.

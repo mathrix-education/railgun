@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Mails;
 
 use App\Models\User;
@@ -24,6 +25,7 @@ class TransactionRefundMail extends BaseMail
     /** @var \Braintree\Transaction $transaction */
     private $refund;
 
+
     public function __construct(User $user, \Braintree\Transaction $transaction, array $lineItems,
                                 \Braintree\Transaction $refund)
     {
@@ -34,6 +36,7 @@ class TransactionRefundMail extends BaseMail
 
         parent::__construct();
     }
+
 
     /**
      * Mock the Mail.
@@ -56,6 +59,7 @@ class TransactionRefundMail extends BaseMail
 
         return new self($user, $transaction, [], $refund);
     }
+
 
     /**
      * Build the mail.

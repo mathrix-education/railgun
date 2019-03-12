@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\User;
@@ -24,6 +25,7 @@ class ChapterPolicy extends BasePolicy
         return $currentUser->isModerator();
     }
 
+
     /**
      * @return bool
      */
@@ -31,6 +33,7 @@ class ChapterPolicy extends BasePolicy
     {
         return true;
     }
+
 
     /**
      * @param User $currentUser
@@ -42,6 +45,7 @@ class ChapterPolicy extends BasePolicy
         return $currentUser->isModerator();
     }
 
+
     /**
      * @param User $currentUser
      *
@@ -51,6 +55,7 @@ class ChapterPolicy extends BasePolicy
     {
         return $currentUser->isModerator();
     }
+
 
     /**
      * @param User $currentUser

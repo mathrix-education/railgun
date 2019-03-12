@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http404ModelNotFoundException;
@@ -49,6 +50,7 @@ class SettingController extends BaseController
         return new JsonResponse($settings);
     }
 
+
     /**
      * @apiVersion     4.0.3
      *
@@ -62,7 +64,7 @@ class SettingController extends BaseController
      * @apiUse         Http404ModelNotFound
      *
      * @param Request $request The request
-     * @param string  $key
+     * @param string $key
      *
      * @throws Http404ModelNotFoundException
      *
@@ -85,6 +87,7 @@ class SettingController extends BaseController
 
         return new JsonResponse($setting);
     }
+
 
     /**
      * @apiVersion     4.0.3
@@ -130,6 +133,7 @@ class SettingController extends BaseController
         return new JsonResponse($setting);
     }
 
+
     /**
      * @apiVersion     4.0.3
      *
@@ -144,7 +148,7 @@ class SettingController extends BaseController
      * @apiUse         Http404ModelNotFound
      *
      * @param Request $request The request
-     * @param string  $key
+     * @param string $key
      *
      * @throws Http422ModelSaveException
      *

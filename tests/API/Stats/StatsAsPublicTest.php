@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Stats;
 
 use Tests\API\ScopeTestCase;

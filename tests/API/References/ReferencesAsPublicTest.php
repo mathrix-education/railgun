@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\References;
 
 use App\Models\Reference;
@@ -16,15 +17,17 @@ use Tests\API\ScopeTestCase;
  * @package   App\Console\Commands\references
  */
 class ReferencesAsPublicTest extends ScopeTestCase
-{    /**
- * GET /quotes.
- *
- * @throws \Exception
- */
+{
+    /**
+     * GET /quotes.
+     *
+     * @throws \Exception
+     */
     public function testIndex()
     {
         $this->genericIndexSuccess();
     }
+
 
     /**
      * GET /quotes/{id}.
@@ -36,6 +39,7 @@ class ReferencesAsPublicTest extends ScopeTestCase
         $this->genericGetSuccess();
     }
 
+
     /**
      * POST /quotes -> HTTP 401 unauthorized.
      *
@@ -45,6 +49,7 @@ class ReferencesAsPublicTest extends ScopeTestCase
     {
         $this->genericAddUnauthorized();
     }
+
 
     /**
      * PATCH /quotes/{id} -> HTTP 401 unauthorized.
@@ -56,6 +61,7 @@ class ReferencesAsPublicTest extends ScopeTestCase
         $this->genericEditUnauthorized();
     }
 
+
     /**
      * DELETE /quotes/{id} -> HTTP 401 unauthorized.
      *
@@ -65,6 +71,7 @@ class ReferencesAsPublicTest extends ScopeTestCase
     {
         $this->genericDeleteUnauthorized();
     }
+
 
     /**
      * GET /quotes/random.

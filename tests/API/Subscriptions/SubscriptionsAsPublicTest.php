@@ -1,7 +1,7 @@
 <?php
+
 namespace Tests\API\Subscriptions;
 
-use App\Controllers\SubscriptionController;
 use Tests\API\ScopeTestCase;
 
 /**

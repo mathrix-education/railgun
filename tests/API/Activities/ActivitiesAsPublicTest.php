@@ -1,12 +1,13 @@
 <?php
+
 namespace Tests\API\Activities;
 
 use App\Models\Module;
 use App\Models\Notion;
 use App\Models\Path;
+use App\Utils\Tree;
 use PHPUnit\Framework\Constraint\IsType;
 use Tests\API\ScopeTestCase;
-use App\Utils\Tree;
 
 /**
  * Class ActivitiesAsPublicTest.
@@ -31,6 +32,7 @@ class ActivitiesAsPublicTest extends ScopeTestCase
         $this->genericIndexUnauthorized();
     }
 
+
     /**
      * GET /activities/{id}.
      *
@@ -41,12 +43,13 @@ class ActivitiesAsPublicTest extends ScopeTestCase
         $this->genericGetSuccess();
     }
 
+
     /**
      * GET /activities/by-notion/{id}.
      */
     public function testByNotion()
     {
-        $notion = Notion::where("visible", "=",true)->firstOrFail();
+        $notion = Notion::where("visible", "=", true)->firstOrFail();
 
         $this->json("get", "/activities/by-notion/{$notion->id}");
 
@@ -61,6 +64,7 @@ class ActivitiesAsPublicTest extends ScopeTestCase
         }
     }
 
+
     /**
      * GET /activities/by-notion/{id}.
      */
@@ -70,6 +74,7 @@ class ActivitiesAsPublicTest extends ScopeTestCase
 
         $this->assertHttp400InvalidRequest();
     }
+
 
     /**
      * GET /activities/by-notion/{id}.
@@ -87,6 +92,7 @@ class ActivitiesAsPublicTest extends ScopeTestCase
         $this->assertHttp200Success();
     }
 
+
     /**
      * POST /activities -> HTTP 401 unauthorized.
      *
@@ -96,6 +102,7 @@ class ActivitiesAsPublicTest extends ScopeTestCase
     {
         $this->genericAddUnauthorized();
     }
+
 
     /**
      * @covers \App\Controllers\ActivityController::edit()
@@ -108,6 +115,7 @@ class ActivitiesAsPublicTest extends ScopeTestCase
         $this->genericEditUnauthorized();
     }
 
+
     /**
      * @covers \App\Controllers\ActivityController::delete()
      * DELETE /activities/{id} -> HTTP 401 unauthorized
@@ -118,6 +126,18 @@ class ActivitiesAsPublicTest extends ScopeTestCase
     {
         $this->genericDeleteUnauthorized();
     }
+
+
+    /**
+     * PATCH /activities/{id}/mark with {to_revise: true}.
+     *
+     * @throws \Exception
+     */
+    public function testMarkToRevise()
+    {
+        $this->mark("to_revise");
+    }
+
 
     /**
      * Generic mark test.
@@ -139,15 +159,6 @@ class ActivitiesAsPublicTest extends ScopeTestCase
         $this->assertHttp401Unauthorized();
     }
 
-    /**
-     * PATCH /activities/{id}/mark with {to_revise: true}.
-     *
-     * @throws \Exception
-     */
-    public function testMarkToRevise()
-    {
-        $this->mark("to_revise");
-    }
 
     /**
      * PATCH /activities/{id}/mark with {completed: true}.
@@ -158,6 +169,7 @@ class ActivitiesAsPublicTest extends ScopeTestCase
     {
         $this->mark("completed");
     }
+
 
     /**
      * GET /activities/by-route/{countryId}/{classId}/{disciplineId}/{chapterId}/{notionId}

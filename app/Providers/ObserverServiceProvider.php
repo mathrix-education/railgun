@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Providers;
 
 use App\Models\BaseModel;
@@ -28,6 +29,7 @@ class ObserverServiceProvider extends ServiceProvider
         ClassObserver::class,
         NotificationObserver::class
     ];
+
 
     /**
      * Auto-discover observers based on the filename.

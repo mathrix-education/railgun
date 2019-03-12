@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Observers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -92,6 +93,7 @@ class UserObserver extends BaseObserver
         return true;
     }
 
+
     /**
      * @param User $user
      */
@@ -99,6 +101,7 @@ class UserObserver extends BaseObserver
     {
         $user->token = Factory::create()->uuid;
     }
+
 
     /**
      * @param User $user
@@ -112,6 +115,7 @@ class UserObserver extends BaseObserver
     {
         Log::log("user_registered", $user);
     }
+
 
     /**
      * @param User $user

@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API;
 
 use PHPUnit\Framework\Constraint\IsType;

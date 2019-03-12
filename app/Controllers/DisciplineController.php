@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http401UnauthorizedException;
@@ -21,7 +22,7 @@ class DisciplineController extends BaseController
      * Get visible disciplines by class id
      *
      * @param Request $request
-     * @param int     $classId
+     * @param int $classId
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException

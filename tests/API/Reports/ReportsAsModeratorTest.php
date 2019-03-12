@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Reports;
 
 /**
@@ -23,6 +24,7 @@ class ReportsAsModeratorTest extends ReportsAsRegisteredTest
         $this->genericIndexSuccess();
     }
 
+
     /**
      * GET /reports/{id}.
      *
@@ -33,6 +35,7 @@ class ReportsAsModeratorTest extends ReportsAsRegisteredTest
         $this->genericGetSuccess();
     }
 
+
     /**
      * PATCH /reports/{id}.
      *
@@ -42,9 +45,11 @@ class ReportsAsModeratorTest extends ReportsAsRegisteredTest
     {
         $this->genericEditSuccess([], function ($data) {
             unset($data["created_at"], $data["updated_at"]);
+
             return $data;
         });
     }
+
 
     /**
      * DELETE /reports/{id}.

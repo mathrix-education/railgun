@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Notifications;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -17,6 +18,15 @@ use Tests\API\ScopeTestCase;
  */
 class NotificationsAsPublicTest extends ScopeTestCase
 {
+    /**
+     * GET /notifications/all
+     */
+    public function testAll()
+    {
+        $this->genericTestNotifications("all");
+    }
+
+
     /**
      * Generically test notifications.
      *
@@ -44,13 +54,6 @@ class NotificationsAsPublicTest extends ScopeTestCase
         $this->assertHttp401Unauthorized();
     }
 
-    /**
-     * GET /notifications/all
-     */
-    public function testAll()
-    {
-        $this->genericTestNotifications("all");
-    }
 
     /**
      * GET /notifications/all
@@ -60,6 +63,7 @@ class NotificationsAsPublicTest extends ScopeTestCase
         $this->genericTestNotifications("read");
     }
 
+
     /**
      * GET /notifications/all
      */
@@ -67,6 +71,7 @@ class NotificationsAsPublicTest extends ScopeTestCase
     {
         $this->genericTestNotifications("unread");
     }
+
 
     /**
      * GET /notifications/all/mark/read
@@ -77,6 +82,7 @@ class NotificationsAsPublicTest extends ScopeTestCase
 
         $this->assertHttp401Unauthorized();
     }
+
 
     /**
      * PATCH /notifications/{notificationId}/mark/read
@@ -90,6 +96,7 @@ class NotificationsAsPublicTest extends ScopeTestCase
 
         $this->assertHttp401Unauthorized();
     }
+
 
     /**
      * PATCH /notifications/{notificationId}/mark/unread

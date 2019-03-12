@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Events\PasswordForgottenEvent;
@@ -59,6 +60,7 @@ class AuthController extends BaseController
         return $response;
     }
 
+
     /**
      * Refresh the Bearer token.
      *
@@ -72,6 +74,7 @@ class AuthController extends BaseController
             $request->create("/oauth/token", "post", $request->all())
         );
     }
+
 
     /**
      * Ask for an new password.
@@ -106,11 +109,12 @@ class AuthController extends BaseController
         return $response;
     }
 
+
     /**
      * Reset the user password using its current token.
      *
      * @param Request $request The request
-     * @param string  $token   The reset token
+     * @param string $token The reset token
      *
      * @throws Http400InvalidRequestException
      *

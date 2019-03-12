@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Discounts;
 
 /**
@@ -23,6 +24,7 @@ class DiscountsAsAdminTest extends DiscountsAsModeratorTest
         $this->genericIndexSuccess();
     }
 
+
     /**
      * GET /discounts/{id}.
      *
@@ -32,6 +34,7 @@ class DiscountsAsAdminTest extends DiscountsAsModeratorTest
     {
         $this->genericGetSuccess();
     }
+
 
     /**
      * POST /discounts.
@@ -43,6 +46,7 @@ class DiscountsAsAdminTest extends DiscountsAsModeratorTest
         $this->genericAddSuccess();
     }
 
+
     /**
      * PATCH /discounts/{id}.
      *
@@ -52,6 +56,7 @@ class DiscountsAsAdminTest extends DiscountsAsModeratorTest
     {
         $this->genericEditSuccess();
     }
+
 
     /**
      * DELETE /discounts/{id}.

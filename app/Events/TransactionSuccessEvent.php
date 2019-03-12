@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Events;
 
 use Braintree\Transaction;
@@ -15,6 +16,7 @@ use Braintree\Transaction;
 class TransactionSuccessEvent extends BaseEvent
 {
     public $transaction;
+
 
     /**
      * TransactionSuccessEvent constructor.

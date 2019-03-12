@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Providers;
 
 use App\Models\BaseModel;
@@ -31,6 +32,7 @@ class PolicyServiceProvider extends ServiceProvider
         NotificationPolicy::class,
         FilePolicy::class,
     ];
+
 
     /**
      * @throws \Exception
