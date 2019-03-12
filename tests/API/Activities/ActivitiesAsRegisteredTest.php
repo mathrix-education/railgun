@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Activities;
 
 use App\Models\Mark;
@@ -42,6 +43,7 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
         ]);
     }
 
+
     /**
      * GET /activities/incomplete.
      *
@@ -71,6 +73,18 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
             $disciplinesIncluded[] = $mark->path->discipline_id;
         }
     }
+
+
+    /**
+     * PATCH /activities/{id}/mark with {status: view}.
+     *
+     * @throws \Exception
+     */
+    public function testMarkView()
+    {
+        $this->mark("view");
+    }
+
 
     /**
      * Generic mark test.
@@ -105,15 +119,6 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
         ]);
     }
 
-    /**
-     * PATCH /activities/{id}/mark with {status: view}.
-     *
-     * @throws \Exception
-     */
-    public function testMarkView()
-    {
-        $this->mark("view");
-    }
 
     /**
      * PATCH /activities/{id}/mark with {status: to_revise}.
@@ -125,6 +130,7 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
         $this->mark("to_revise");
     }
 
+
     /**
      * PATCH /activities/{id}/mark with {status: completed}.
      *
@@ -135,6 +141,7 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
         $this->mark("completed");
     }
 
+
     /**
      * PATCH /activities/{id}/mark
      * Try to mark an activity which does not exist, assert HTTP 404 model_not_found.
@@ -144,6 +151,7 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
         $this->json("patch", "/activities/999999/mark", ["status" => "view"]);
         $this->assertHttp404ModelNotFound();
     }
+
 
     /**
      * PATCH /activities/{id}/mark with {status: completed} on existing mark with {status: view}.
@@ -181,6 +189,7 @@ class ActivitiesAsRegisteredTest extends ActivitiesAsPublicTest
             "status" => $newStatus
         ]);
     }
+
 
     /**
      * DELETE /activities/{activityId}/unmark

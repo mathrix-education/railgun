@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -57,14 +58,15 @@ class CommentController extends BaseController
         return response()->json($comment);
     }
 
+
     /**
      * Get comments associated with a given model.
      *
      * @param Request $request The request
-     * @param string  $what
-     * @param int     $id
-     * @param int     $page
-     * @param int     $perPage
+     * @param string $what
+     * @param int $id
+     * @param int $page
+     * @param int $perPage
      *
      * @throws Http400InvalidRequestException
      *
@@ -86,12 +88,13 @@ class CommentController extends BaseController
         return $response;
     }
 
+
     /**
      * Get the latest comments, ordered by desc created_at field.
      *
      * @param Request $request The request
-     * @param int     $page
-     * @param int     $perPage
+     * @param int $page
+     * @param int $perPage
      *
      * @return JsonResponse
      */

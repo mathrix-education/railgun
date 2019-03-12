@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands\SEO;
 
 use App\Models\Path;
@@ -16,6 +17,7 @@ use Illuminate\Console\Command;
 class InitialSEOCommand extends Command
 {
     protected $signature = "seo:patch";
+
 
     public function handle()
     {

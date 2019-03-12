@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Modules;
 
 use App\Models\Activity;
@@ -27,6 +28,7 @@ class ModulesAsModeratorTest extends ModulesAsRedactorTest
         $this->assertHttp200Success();
     }
 
+
     /**
      * PATCH /modules/{id}.
      *
@@ -50,6 +52,7 @@ class ModulesAsModeratorTest extends ModulesAsRedactorTest
         }
     }
 
+
     /**
      * DELETE /modules/{id}.
      *
@@ -60,6 +63,7 @@ class ModulesAsModeratorTest extends ModulesAsRedactorTest
         $this->genericDeleteSuccess();
         $this->assertNotInDatabase("activity_module", ["module_id" => $this->deleteModelId]);
     }
+
 
     /**
      * GET /modules/{id} with a premium module as non premium user

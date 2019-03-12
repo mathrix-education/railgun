@@ -38,6 +38,7 @@ class CreateActivityModuleTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

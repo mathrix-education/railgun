@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Settings;
 
 use App\Models\Setting;
@@ -25,6 +26,7 @@ class SettingsAsPublicTest extends ScopeTestCase
         return parent::castData($data);
     }
 
+
     /**
      * GET /settings.
      *
@@ -46,6 +48,7 @@ class SettingsAsPublicTest extends ScopeTestCase
             ->first());
     }
 
+
     /**
      * GET /settings/{key} with visible setting.
      */
@@ -57,6 +60,7 @@ class SettingsAsPublicTest extends ScopeTestCase
         $this->json("get", "/settings/{$setting->key}");
         $this->assertHttp200Success();
     }
+
 
     /**
      * GET /settings/{key} with not visible setting.
@@ -71,6 +75,7 @@ class SettingsAsPublicTest extends ScopeTestCase
         $this->assertHttp404ModelNotFound();
     }
 
+
     /**
      * POST /settings.
      *
@@ -80,6 +85,7 @@ class SettingsAsPublicTest extends ScopeTestCase
     {
         $this->genericAddUnauthorized();
     }
+
 
     /**
      * DELETE /settings/{key}.

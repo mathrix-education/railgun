@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -19,13 +20,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @copyright Mathrix Education SA
  * @package   App\Models
  *
- * @property int               $id
- * @property string            $braintree_id
- * @property int               $parent_id
- * @property int               $children_count
- * @property Carbon|null       $created_at
- * @property Carbon|null       $updated_at
- * @property User              $parent
+ * @property int $id
+ * @property string $braintree_id
+ * @property int $parent_id
+ * @property int $children_count
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property User $parent
  * @property Collection|User[] $children
  */
 class FamilyPack extends BaseModel
@@ -49,15 +50,6 @@ class FamilyPack extends BaseModel
         return $this->belongsTo(User::class, "parent_id");
     }
 
-    /**
-     * BelongsToMany User (children)
-     *
-     * @return HasMany
-     */
-    public function children()
-    {
-        return $this->hasMany(User::class);
-    }
 
     /**
      * Check if the family pack is active
@@ -72,6 +64,7 @@ class FamilyPack extends BaseModel
             return $this->parent->premium;
         }
     }
+
 
     /**
      * Add a child to the family pack
@@ -97,8 +90,21 @@ class FamilyPack extends BaseModel
         }
 
         $child->family_pack_id = $this->id;
+
         return $child->save();
     }
+
+
+    /**
+     * BelongsToMany User (children)
+     *
+     * @return HasMany
+     */
+    public function children()
+    {
+        return $this->hasMany(User::class);
+    }
+
 
     /**
      * Remove a child from this family pack
@@ -114,6 +120,7 @@ class FamilyPack extends BaseModel
     {
         if ($this->children()->where("id", "=", $child->id)->exists()) {
             $child->family_pack_id = null;
+
             return $child->save();
         } else {
             throw new Http400InvalidRequestException("User with `id` {$child->id} is not a member of the " .

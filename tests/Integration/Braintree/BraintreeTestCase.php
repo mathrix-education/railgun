@@ -1,16 +1,15 @@
 <?php
+
 namespace Tests\Integration\Braintree;
 
 use App\Exceptions\Http400InvalidRequestException;
 use App\Models\User;
 use Laravel\Lumen\Testing\TestCase;
+use Mathrix\Lumen\Tests\Traits\DebugTrait;
+use Mathrix\Lumen\Tests\Traits\ResponseTrait;
 use Tests\Utils\Traits\Assertions\DatabaseAssertionsTrait;
-use Tests\Utils\Traits\Assertions\HttpAssertionsTrait;
-use Tests\Utils\Traits\Assertions\JsonAssertionsTrait;
 use Tests\Utils\Traits\Assertions\NotificationsAssertionsTrait;
-use Tests\Utils\Traits\DebugTrait;
 use Tests\Utils\Traits\PassportTrait;
-use Tests\Utils\Traits\ResponseTrait;
 
 /**
  * Class BraintreeTestCase.
@@ -24,8 +23,8 @@ use Tests\Utils\Traits\ResponseTrait;
  */
 class BraintreeTestCase extends TestCase
 {
-    use DatabaseAssertionsTrait, HttpAssertionsTrait, JsonAssertionsTrait, NotificationsAssertionsTrait, ResponseTrait,
-        DebugTrait, PassportTrait;
+    use DatabaseAssertionsTrait, NotificationsAssertionsTrait, PassportTrait, ResponseTrait, DebugTrait;
+
 
     /**
      * Creates the application.
@@ -38,6 +37,7 @@ class BraintreeTestCase extends TestCase
     {
         return require __DIR__ . "/../../../bootstrap/app.php";
     }
+
 
     /**
      * Get a Braintree customer.
@@ -53,6 +53,25 @@ class BraintreeTestCase extends TestCase
         if (!$user->isBraintreeCustomer()) {
             $user->createBraintreeCustomer("fake-valid-visa-nonce");
         }
+
+        return $user;
+    }
+
+
+    /**
+     * Get a pristine customer, which means that user is not already a customer.
+     *
+     * @return User
+     */
+    public function getPristineCustomer(): User
+    {
+        /** @var User $user */
+        $user = User::query()
+            ->where("type", "=", "registered")
+            ->whereNull("braintree_id")
+            ->whereNull("stripe_id")
+            ->inRandomOrder()
+            ->firstOrFail();
 
         return $user;
     }

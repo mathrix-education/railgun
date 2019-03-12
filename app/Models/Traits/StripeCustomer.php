@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models\Traits;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -26,6 +27,63 @@ trait StripeCustomer
         return $this->isStripeCustomer() ? $this->getStripeCustomer() : null;
     }
 
+
+    /**
+     * Check if the user is already a Stripe customer.
+     *
+     * @param bool $strict also check on the API
+     *
+     * @return bool
+     */
+    public function isStripeCustomer($strict = false): bool
+    {
+        if (app()->environment() === "offline") {
+            return $this->stripe_id === null;
+        }
+
+        if ($this->stripe_id === null) {
+            return false;
+        } else if (!$strict) {
+            return true;
+        }
+
+        return $this->getStripeCustomer() !== null;
+    }
+
+
+    /**
+     * @return \Stripe\Customer
+     */
+    public function getStripeCustomer(): ?\Stripe\Customer
+    {
+        if (app()->environment() === "offline") {
+            return new \Stripe\Customer();
+        }
+
+        return Cache::remember($this->getStripeCustomerCacheKey(), 5, function () {
+            try {
+                return \Stripe\Customer::retrieve($this->stripe_id);
+            } catch (\Stripe\Error\InvalidRequest $e) {
+                $this->stripe_id = null;
+                $this->save();
+
+                return;
+            }
+        });
+    }
+
+
+    /**
+     * Get the Brain customer cache used to get customer information from the cache.
+     *
+     * @return string
+     */
+    private function getStripeCustomerCacheKey()
+    {
+        return "stripe-customer-" . $this->stripe_id;
+    }
+
+
     /**
      * Delete the Stripe customer from the cache.
      */
@@ -33,6 +91,7 @@ trait StripeCustomer
     {
         Cache::forget($this->getStripeCustomerCacheKey());
     }
+
 
     /**
      * Check if the user has subscribed to the given plan.
@@ -69,48 +128,6 @@ trait StripeCustomer
         return false;
     }
 
-    /**
-     * Check if the user is already a Stripe customer.
-     *
-     * @param bool $strict also check on the API
-     *
-     * @return bool
-     */
-    public function isStripeCustomer($strict = false): bool
-    {
-        if (app()->environment() === "offline") {
-            return $this->stripe_id === null;
-        }
-
-        if ($this->stripe_id === null) {
-            return false;
-        } elseif (!$strict) {
-            return true;
-        }
-
-        return $this->getStripeCustomer() !== null;
-    }
-
-    /**
-     * @return \Stripe\Customer
-     */
-    public function getStripeCustomer(): ?\Stripe\Customer
-    {
-        if (app()->environment() === "offline") {
-            return new \Stripe\Customer();
-        }
-
-        return Cache::remember($this->getStripeCustomerCacheKey(), 5, function () {
-            try {
-                return \Stripe\Customer::retrieve($this->stripe_id);
-            } catch (\Stripe\Error\InvalidRequest $e) {
-                $this->stripe_id = null;
-                $this->save();
-
-                return;
-            }
-        });
-    }
 
     /**
      * Get the user subscriptions.
@@ -126,6 +143,7 @@ trait StripeCustomer
         return $this->getStripeCustomer()->subscriptions->data;
     }
 
+
     /**
      * Throw an Http400InvalidRequestException if the user is not a Stripe cusstomer.
      *
@@ -138,15 +156,5 @@ trait StripeCustomer
         if (!$this->isStripeCustomer($strict)) {
             throw new Http400InvalidRequestException("User with id `{$this->id}` is not a Stripe customer");
         }
-    }
-
-    /**
-     * Get the Brain customer cache used to get customer information from the cache.
-     *
-     * @return string
-     */
-    private function getStripeCustomerCacheKey()
-    {
-        return "stripe-customer-" . $this->stripe_id;
     }
 }

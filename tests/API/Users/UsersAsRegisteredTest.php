@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Users;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -41,6 +42,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $this->assertNotInDatabase("users", $dataWithoutPassword);
     }
 
+
     /**
      * GET /users/{id}.
      */
@@ -50,6 +52,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
 
         $this->assertHttp200Success();
     }
+
 
     /**
      * GET /users/{id}.
@@ -63,6 +66,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $this->assertHttp401Unauthorized();
     }
 
+
     /**
      * GET /users/profile.
      */
@@ -72,6 +76,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
 
         $this->assertHttp200Success();
     }
+
 
     /**
      * PATCH /users/{id}.
@@ -87,6 +92,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $this->assertHttp200Success();
         $this->assertInDatabase("users", $newUser);
     }
+
 
     /**
      * PATCH /users/{id} with the current_password field.
@@ -120,6 +126,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
             "with the one in the database");
     }
 
+
     /**
      * PATCH /users/{id} with the incorrect current_password field.
      *
@@ -143,6 +150,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $this->assertNotInDatabase("users", $newUser);
     }
 
+
     /**
      * PATCH /users/{id} without the current_password field.
      *
@@ -160,6 +168,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
 
         $this->assertHttp400InvalidRequest();
     }
+
 
     /**
      * POST /users/points without loggable.
@@ -179,6 +188,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         ]);
         $this->assertLogged("user_gathered_points", $this->user);
     }
+
 
     /**
      * POST /users/points with loggable.
@@ -215,6 +225,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $this->assertLogged("user_gathered_points", $this->user);
     }
 
+
     /**
      * POST /users/points wrong loggable.
      */
@@ -230,6 +241,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $this->assertHttp400InvalidRequest();
     }
 
+
     /**
      * POST /users/points without points field.
      */
@@ -241,6 +253,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $this->assertHttp400InvalidRequest();
     }
 
+
     /**
      * POST /users/points without points field.
      */
@@ -251,6 +264,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         // Assertions
         $this->assertHttp400InvalidRequest();
     }
+
 
     /**
      * POST /users/points with loggable.
@@ -290,6 +304,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
         $this->assertHttp429TooManyRequests();
     }
 
+
     /**
      * POST /users/points with daily achievement trigger.
      *
@@ -321,6 +336,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
             "daily_achievements" => $dailyAchievementsBefore + 1,
         ]);
     }
+
 
     /**
      * POST /users/points with level pass trigger.

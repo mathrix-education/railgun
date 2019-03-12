@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a0d361afcc8b1ae8936167bb0ba9d362",
+    "content-hash": "f5997d3719967e29b6b118c3a30aa6de",
     "packages": [
         {
             "name": "appzcoder/lumen-routes-list",
@@ -102,16 +102,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.89.1",
+            "version": "3.90.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "9b085dff6b07eac417caef8cb6d26b471cde9a23"
+                "reference": "c4e20a477f2ec8c880a9821f9e81641b8e3bb696"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/9b085dff6b07eac417caef8cb6d26b471cde9a23",
-                "reference": "9b085dff6b07eac417caef8cb6d26b471cde9a23",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c4e20a477f2ec8c880a9821f9e81641b8e3bb696",
+                "reference": "c4e20a477f2ec8c880a9821f9e81641b8e3bb696",
                 "shasum": ""
             },
             "require": {
@@ -180,7 +180,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-03-08T19:15:34+00:00"
+            "time": "2019-03-11T18:09:51+00:00"
         },
         {
             "name": "barryvdh/laravel-cors",
@@ -881,16 +881,16 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.88",
+            "version": "v0.89",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client-services.git",
-                "reference": "1ad0a77dc28f658cf65b7146ee5342bd12cfff3f"
+                "reference": "8a285822d48df1650c4c298653aa4961049a1ee8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/1ad0a77dc28f658cf65b7146ee5342bd12cfff3f",
-                "reference": "1ad0a77dc28f658cf65b7146ee5342bd12cfff3f",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/8a285822d48df1650c4c298653aa4961049a1ee8",
+                "reference": "8a285822d48df1650c4c298653aa4961049a1ee8",
                 "shasum": ""
             },
             "require": {
@@ -914,7 +914,7 @@
             "keywords": [
                 "google"
             ],
-            "time": "2019-03-04T00:22:51+00:00"
+            "time": "2019-03-10T00:23:16+00:00"
         },
         {
             "name": "google/auth",
@@ -3265,7 +3265,7 @@
                 {
                     "name": "Luís Otávio Cobucci Oblonczyk",
                     "email": "lcobucci@gmail.com",
-                    "role": "developer"
+                    "role": "Developer"
                 }
             ],
             "description": "A simple library to work with JSON Web Token and JSON Web Signature",
@@ -3579,6 +3579,45 @@
                 "server"
             ],
             "time": "2018-11-21T21:42:43+00:00"
+        },
+        {
+            "name": "mathrix/lumen",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://source.developers.google.com/p/mathrix-education/r/mathrix-lumen",
+                "reference": "51d7401903a0f4820ad3cc4e5fe81890a6b33ae3"
+            },
+            "require": {
+                "dusterio/lumen-passport": "^0.2.9",
+                "ext-json": "*",
+                "ext-pdo": "*",
+                "illuminate/mail": "^5.7",
+                "laravel/lumen-framework": "5.7.*",
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "fzaninotto/faker": "~1.4",
+                "helmich/phpunit-json-assert": "^2.0",
+                "phpunit/phpunit": "~7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mathrix\\Lumen\\": "src"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "Mathieu Bour",
+                    "email": "mathieu@mathrix.fr"
+                }
+            ],
+            "description": "The main library for Mathrix Lumen REST APIs.",
+            "time": "2019-03-11T07:23:40+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -5010,16 +5049,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v6.30.4",
+            "version": "v6.30.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "0d9e2773b1df27d4f0c590b15bed3a1433e0414c"
+                "reference": "1ffc751e7ee2d68b3e4a0068f5537b8334945467"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/0d9e2773b1df27d4f0c590b15bed3a1433e0414c",
-                "reference": "0d9e2773b1df27d4f0c590b15bed3a1433e0414c",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/1ffc751e7ee2d68b3e4a0068f5537b8334945467",
+                "reference": "1ffc751e7ee2d68b3e4a0068f5537b8334945467",
                 "shasum": ""
             },
             "require": {
@@ -5062,7 +5101,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2019-02-27T18:07:30+00:00"
+            "time": "2019-03-11T20:45:23+00:00"
         },
         {
             "name": "superbalist/flysystem-google-storage",
@@ -5776,7 +5815,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
+                    "email": "backendtea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
@@ -6075,41 +6114,44 @@
         },
         {
             "name": "symfony/psr-http-message-bridge",
-            "version": "v1.1.0",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/psr-http-message-bridge.git",
-                "reference": "53c15a6a7918e6c2ab16ae370ea607fb40cab196"
+                "reference": "9ab9d71f97d5c7d35a121a7fb69f74fee95cd0ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/psr-http-message-bridge/zipball/53c15a6a7918e6c2ab16ae370ea607fb40cab196",
-                "reference": "53c15a6a7918e6c2ab16ae370ea607fb40cab196",
+                "url": "https://api.github.com/repos/symfony/psr-http-message-bridge/zipball/9ab9d71f97d5c7d35a121a7fb69f74fee95cd0ad",
+                "reference": "9ab9d71f97d5c7d35a121a7fb69f74fee95cd0ad",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.3.3 || ^7.0",
+                "php": "^7.1",
                 "psr/http-message": "^1.0",
-                "symfony/http-foundation": "^2.3.42 || ^3.4 || ^4.0"
+                "symfony/http-foundation": "^3.4 || ^4.0"
             },
             "require-dev": {
-                "symfony/phpunit-bridge": "^3.4 || 4.0"
+                "nyholm/psr7": "^1.1",
+                "symfony/phpunit-bridge": "^3.4.20 || ^4.0",
+                "zendframework/zend-diactoros": "^1.4.1 || ^2.0"
             },
             "suggest": {
-                "psr/http-factory-implementation": "To use the PSR-17 factory",
-                "psr/http-message-implementation": "To use the HttpFoundation factory",
-                "zendframework/zend-diactoros": "To use the Zend Diactoros factory"
+                "nyholm/psr7": "For a super lightweight PSR-7/17 implementation"
             },
             "type": "symfony-bridge",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1-dev"
+                    "dev-master": "1.2-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
                     "Symfony\\Bridge\\PsrHttpMessage\\": ""
-                }
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -6130,9 +6172,10 @@
             "keywords": [
                 "http",
                 "http-message",
+                "psr-17",
                 "psr-7"
             ],
-            "time": "2018-08-30T16:28:28+00:00"
+            "time": "2019-03-11T18:22:33+00:00"
         },
         {
             "name": "symfony/routing",
@@ -9565,7 +9608,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "mathrix/lumen": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

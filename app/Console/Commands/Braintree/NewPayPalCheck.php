@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands\Braintree;
 
 use App\Exceptions\Http422ModelSaveException;
@@ -21,6 +22,7 @@ use Illuminate\Support\Collection;
 class NewPayPalCheck extends Command
 {
     protected $signature = "braintree:new-paypal-check";
+
 
     /**
      * @throws Http422ModelSaveException

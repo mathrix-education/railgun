@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\FamilyPacks;
 
 use App\Models\FamilyPack;
@@ -15,9 +16,10 @@ use Tests\API\ScopeTestCase;
  * @package   Tests\API\FamilyPacks
  */
 class FamilyPacksAsPublicTest extends ScopeTestCase
-{    /**
- * GET /family-packs/{familyPackId}
- */
+{
+    /**
+     * GET /family-packs/{familyPackId}
+     */
     public function testGet()
     {
         $familyPack = FamilyPack::random();

@@ -20,17 +20,19 @@ class BaseTableSeeder extends Seeder
     /** @var \Illuminate\Console\OutputStyle */
     protected $output;
 
+
     /**
      * Override default call.
      *
      * @param string $class
-     * @param bool   $silent
+     * @param bool $silent
      */
     public function call($class, $silent = false)
     {
         $this->resolve($class)
             ->__invoke();
     }
+
 
     /**
      * Set the console command instance.
@@ -47,12 +49,34 @@ class BaseTableSeeder extends Seeder
         return $this;
     }
 
+
+    /**
+     * Seed data using a json file.
+     *
+     * @param string $filename The json file name, without the trailing .json
+     * @param string|null $table If null, same as filename
+     */
+    public function seedFromJson(string $filename, string $table = null)
+    {
+        if ($table === null) {
+            $table = $filename;
+        }
+
+        $path = app()->databasePath("raws") . DIRECTORY_SEPARATOR . "$filename.json";
+        $jsonData = json_decode(file_get_contents($path), true);
+
+        $this->output->writeln("<comment>Seeding:</comment> $table from json");
+        $this->seedFromArray($jsonData, $table);
+        $this->output->writeln("<info>Seeded:</info>  $table from json");
+    }
+
+
     /**
      * Send data to database using a raw array.
      *
-     * @param array  $rawData
+     * @param array $rawData
      * @param string $table
-     * @param int    $chunkSize
+     * @param int $chunkSize
      */
     public function seedFromArray(array $rawData, string $table, int $chunkSize = 100)
     {
@@ -80,30 +104,30 @@ class BaseTableSeeder extends Seeder
         $this->output->progressFinish();
     }
 
+
     /**
-     * Seed data using a json file.
+     * Seed from sub-factory.
      *
-     * @param string      $filename The json file name, without the trailing .json
-     * @param string|null $table    If null, same as filename
+     * @param string $modelClass
+     * @param string $subFactory
+     * @param int $count
+     * @param array $factoryOptions
      */
-    public function seedFromJson(string $filename, string $table = null)
+    public function seedFromSubFactory(string $modelClass, string $subFactory, int $count, array $factoryOptions = [])
     {
-        if ($table === null) {
-            $table = $filename;
-        }
+        $factoryOptions = array_merge([
+            "subFactory" => $subFactory,
+            "count" => $count
+        ], $factoryOptions);
 
-        $path = app()->databasePath("raws") . DIRECTORY_SEPARATOR . "$filename.json";
-        $jsonData = json_decode(file_get_contents($path), true);
-
-        $this->output->writeln("<comment>Seeding:</comment> $table from json");
-        $this->seedFromArray($jsonData, $table);
-        $this->output->writeln("<info>Seeded:</info>  $table from json");
+        $this->seedFromFactory($modelClass, $factoryOptions);
     }
+
 
     /**
      * Seed from factory.
      *
-     * @param string    $modelClass
+     * @param string $modelClass
      * @param array|int $factoryOptions
      */
     public function seedFromFactory(string $modelClass, $factoryOptions)
@@ -145,7 +169,7 @@ class BaseTableSeeder extends Seeder
         }
 
         /**
-         * @var int       $k
+         * @var int $k
          * @var BaseModel $model
          */
         foreach ($factoryData as $k => $model) {
@@ -160,32 +184,30 @@ class BaseTableSeeder extends Seeder
         $this->output->writeln("<info>Seeded:</info>  $factoryName from factory");
     }
 
-    /**
-     * Seed from sub-factory.
-     *
-     * @param string $modelClass
-     * @param string $subFactory
-     * @param int    $count
-     * @param array  $factoryOptions
-     */
-    public function seedFromSubFactory(string $modelClass, string $subFactory, int $count, array $factoryOptions = [])
-    {
-        $factoryOptions = array_merge([
-            "subFactory" => $subFactory,
-            "count" => $count
-        ], $factoryOptions);
 
-        $this->seedFromFactory($modelClass, $factoryOptions);
+    /**
+     * Link two tables in both directions.
+     *
+     * @param BaseModel|string $modelClass1 the model class to use and link
+     * @param BaseModel|string $modelClass2 the model class to use and link
+     * @param int $min the minimum relations
+     * @param int $max the maximum relations
+     */
+    public function linkAll($modelClass1, $modelClass2, $min = 3, $max = 5)
+    {
+        $this->link($modelClass1, $modelClass2, $min, $max);
+        $this->link($modelClass2, $modelClass1, $min, $max);
     }
+
 
     /**
      * Link two tables.
      *
      * @param BaseModel|string $modelClass1 the model class to use
      * @param BaseModel|string $modelClass2 the model class to link
-     * @param int              $min         the minimum relations
-     * @param int              $max         the maximum relations
-     * @param callable         $callback
+     * @param int $min the minimum relations
+     * @param int $max the maximum relations
+     * @param callable $callback
      */
     public function link($modelClass1, $modelClass2, $min = 3, $max = 5, callable $callback = null)
     {
@@ -217,7 +239,7 @@ class BaseTableSeeder extends Seeder
             $model2IdsToLinkWithModel1 = $faker->randomElements($model2Ids, $faker->numberBetween($min, $max));
 
             foreach ($model2IdsToLinkWithModel1 as $order => $model2Id) {
-                if(is_callable($callback)) {
+                if (is_callable($callback)) {
                     $linkData[] = $callback($order, [
                         $model1Key => $model1Id,
                         $model2Key => $model2Id
@@ -234,19 +256,5 @@ class BaseTableSeeder extends Seeder
         $this->seedFromArray($linkData, $linkTable);
 
         $this->output->writeln("<info>Linked:</info>  $model1Table <=> $model2Table");
-    }
-
-    /**
-     * Link two tables in both directions.
-     *
-     * @param BaseModel|string $modelClass1 the model class to use and link
-     * @param BaseModel|string $modelClass2 the model class to use and link
-     * @param int              $min         the minimum relations
-     * @param int              $max         the maximum relations
-     */
-    public function linkAll($modelClass1, $modelClass2, $min = 3, $max = 5)
-    {
-        $this->link($modelClass1, $modelClass2, $min, $max);
-        $this->link($modelClass2, $modelClass1, $min, $max);
     }
 }

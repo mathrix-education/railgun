@@ -1,7 +1,7 @@
 <?php
+
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -16,21 +16,21 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @copyright Mathrix Education SA
  * @package   App\Models
  *
- * @property int                     $id
- * @property string                  $name
- * @property string                  $name_short
- * @property string                  $slug
- * @property string                  $slug_short
- * @property int                     $order
- * @property bool                    $visible
- * @property array                   $link
- * @property int|null                $parent_id
- * @property int                     $country_id
- * @property Collection|Chapter[]    $chapters
- * @property Country                 $country
+ * @property int $id
+ * @property string $name
+ * @property string $name_short
+ * @property string $slug
+ * @property string $slug_short
+ * @property int $order
+ * @property bool $visible
+ * @property array $link
+ * @property int|null $parent_id
+ * @property int $country_id
+ * @property Collection|Chapter[] $chapters
+ * @property Country $country
  * @property Collection|Discipline[] $disciplines
- * @property Class_|null             $parent
- * @property Collection|User[]       $users
+ * @property Class_|null $parent
+ * @property Collection|User[] $users
  */
 class Class_ extends BaseModel
 {
@@ -46,6 +46,7 @@ class Class_ extends BaseModel
         "visible" => "boolean",
         "country_id" => "required|exists:countries,id",
     ];
+
 
     /**
      * Get the cursus (ie. the class it self and all its previous).
@@ -83,6 +84,7 @@ class Class_ extends BaseModel
         return $this->belongsTo(self::class, "parent_id");
     }
 
+
     /**
      * BelongsTo Country.
      *
@@ -93,6 +95,7 @@ class Class_ extends BaseModel
         return $this->hasMany(Chapter::class, "class_id");
     }
 
+
     /**
      * BelongsTo Country.
      *
@@ -102,6 +105,7 @@ class Class_ extends BaseModel
     {
         return $this->belongsTo(Country::class);
     }
+
 
     /**
      * BelongsToMany Discipline.
@@ -115,6 +119,7 @@ class Class_ extends BaseModel
             ->withPivot("visible")
             ->orderBy("class_discipline.order");
     }
+
 
     /**
      * HasMany User.

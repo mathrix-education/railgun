@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Categories;
 
 use App\Models\Category;
@@ -25,6 +26,7 @@ class CategoriesAsAdminTest extends CategoriesAsModeratorTest
         $this->genericAddSuccess();
     }
 
+
     /**
      * PATCH /categories/{id}.
      *
@@ -34,6 +36,7 @@ class CategoriesAsAdminTest extends CategoriesAsModeratorTest
     {
         $this->genericEditSuccess();
     }
+
 
     /**
      * DELETE /categories/{id}.
@@ -45,6 +48,7 @@ class CategoriesAsAdminTest extends CategoriesAsModeratorTest
         $this->deleteModelId = Category::doesntHave("posts")->inRandomOrder()->firstOrFail()->id;
         $this->genericDeleteSuccess();
     }
+
 
     /**
      * DELETE /categories/{id}.

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -25,6 +26,32 @@ use Illuminate\Http\Request;
 class ScoreController extends BaseController
 {
     /**
+     * Get the top scores for a given game.
+     *
+     * @param string $game the game, such as `meteor`
+     * @param string $interval The interval (allowed values: year, month, day)
+     * @param int $count The number of high score to fetch
+     *
+     * @throws Http400InvalidRequestException
+     *
+     * @return JsonResponse
+     */
+    public function top(string $game, string $interval = "month", int $count = 20): JsonResponse
+    {
+        $scores = Score::with("user")
+            ->whereBetween("created_at", [$this->getStartDate($interval), Carbon::now()])
+            ->where("game", "=", $game)
+            ->orderByDesc("score")
+            ->limit($count)
+            ->get();
+
+        $response = new JsonResponse($scores);
+
+        return $response;
+    }
+
+
+    /**
      * @param string $interval
      *
      * @throws Http400InvalidRequestException
@@ -46,30 +73,6 @@ class ScoreController extends BaseController
         }
     }
 
-    /**
-     * Get the top scores for a given game.
-     *
-     * @param string $game     the game, such as `meteor`
-     * @param string $interval The interval (allowed values: year, month, day)
-     * @param int    $count    The number of high score to fetch
-     *
-     * @throws Http400InvalidRequestException
-     *
-     * @return JsonResponse
-     */
-    public function top(string $game, string $interval = "month", int $count = 20): JsonResponse
-    {
-        $scores = Score::with("user")
-            ->whereBetween("created_at", [$this->getStartDate($interval), Carbon::now()])
-            ->where("game", "=", $game)
-            ->orderByDesc("score")
-            ->limit($count)
-            ->get();
-
-        $response = new JsonResponse($scores);
-
-        return $response;
-    }
 
     /**
      * Generate a game token.
@@ -87,13 +90,14 @@ class ScoreController extends BaseController
         return $response;
     }
 
+
     /**
      * Get scores around a certain value of score
      *
      * @param Request $request
-     * @param string  $game
-     * @param int     $score
-     * @param int     $delta
+     * @param string $game
+     * @param int $score
+     * @param int $delta
      *
      * @return JsonResponse
      */
@@ -122,11 +126,12 @@ class ScoreController extends BaseController
         return $response;
     }
 
+
     /**
      * Get user personal best score
      *
      * @param Request $request
-     * @param string  $game
+     * @param string $game
      *
      * @return JsonResponse
      */
@@ -148,11 +153,12 @@ class ScoreController extends BaseController
         return $response;
     }
 
+
     /**
      * Register user high score.
      *
      * @param Request $request
-     * @param string  $game
+     * @param string $game
      *
      * @throws Http401UnauthorizedException
      * @throws Http422ModelSaveException

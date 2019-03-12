@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http401UnauthorizedException;
@@ -123,6 +124,7 @@ class ContentController extends BaseController
         return $response;
     }
 
+
     /**
      * Get a flat map of a given content route (country/class/discipline/chapter/notion/activity/module)
      *
@@ -186,13 +188,14 @@ class ContentController extends BaseController
         return $response;
     }
 
+
     /**
      * Global research.
      *
      * @param Request $request The request
-     * @param string  $query   The query string.
-     * @param int     $page
-     * @param int     $perPage
+     * @param string $query The query string.
+     * @param int $page
+     * @param int $perPage
      *
      * @return JsonResponse
      */
@@ -307,6 +310,7 @@ class ContentController extends BaseController
         ]);
     }
 
+
     /**
      * Upload a file.
      *
@@ -347,6 +351,7 @@ class ContentController extends BaseController
             "url" => env("APP_CDN") . "/$destination/$name",
         ]);
     }
+
 
     /**
      * Get the content of a given directory

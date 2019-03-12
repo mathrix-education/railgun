@@ -1,11 +1,12 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Events\TransactionRefundSuccessEvent;
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http401UnauthorizedException;
 use App\Models\User;
-use App\Services\Braintree\Formatter;
+use App\Services\Braintree\Utils\Formatter;
 use Braintree_TransactionSearch;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
@@ -26,8 +27,8 @@ class TransactionController extends Controller
     /**
      * Find a transaction by its id.
      *
-     * @param Request $request       The request
-     * @param string  $transactionId The Braintree transaction id
+     * @param Request $request The request
+     * @param string $transactionId The Braintree transaction id
      *
      * @throws Http401UnauthorizedException
      *
@@ -48,11 +49,12 @@ class TransactionController extends Controller
         );
     }
 
+
     /**
      * Refund a transaction by its id.
      *
-     * @param Request $request       The request
-     * @param string  $transactionId The Braintree transaction id
+     * @param Request $request The request
+     * @param string $transactionId The Braintree transaction id
      *
      * @throws Http401UnauthorizedException
      * @throws Http400InvalidRequestException
@@ -91,11 +93,12 @@ class TransactionController extends Controller
         throw new Http400InvalidRequestException($result->message);
     }
 
+
     /**
      * Attempt to void a transaction by its id.
      *
-     * @param Request $request       The request
-     * @param string  $transactionId The Braintree transaction id
+     * @param Request $request The request
+     * @param string $transactionId The Braintree transaction id
      *
      * @throws Http401UnauthorizedException
      * @throws Http400InvalidRequestException
@@ -134,11 +137,12 @@ class TransactionController extends Controller
             . " refund instead");
     }
 
+
     /**
      * Get transactions linked with a subscription.
      *
-     * @param Request $request        The request
-     * @param string  $subscriptionId The Braintree subscription id
+     * @param Request $request The request
+     * @param string $subscriptionId The Braintree subscription id
      *
      * @throws Http401UnauthorizedException
      *
@@ -159,11 +163,12 @@ class TransactionController extends Controller
         return new JsonResponse(Formatter::cast($transactions));
     }
 
+
     /**
      * Get transactions linked with an user.
      *
      * @param Request $request The request
-     * @param string  $userId  The user id
+     * @param string $userId The user id
      *
      * @throws Http401UnauthorizedException
      * @throws Http400InvalidRequestException

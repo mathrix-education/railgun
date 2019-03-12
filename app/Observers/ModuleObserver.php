@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Observers;
 
 use App\Models\Activity;
@@ -48,6 +49,7 @@ class ModuleObserver extends BaseObserver
 
         return true;
     }
+
 
     /**
      * Detach all activities linked with the deleting module.

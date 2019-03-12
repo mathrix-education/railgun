@@ -1,11 +1,12 @@
 <?php
+
 namespace Tests\API\Modules;
 
 use App\Models\Module;
 use App\Models\Path;
 use App\Models\User;
-use Laravel\Passport\Passport;
 use App\Utils\Tree;
+use Laravel\Passport\Passport;
 
 /**
  * Class ModulesAsRegisteredTest.
@@ -34,11 +35,23 @@ class ModulesAsRegisteredTest extends ModulesAsPublicTest
         $this->get("/modules/{$module->id}");
 
         $response = $this->getResponseData();
-        $responseKeys = array_keys((array) $response);
+        $responseKeys = array_keys((array)$response);
         $expectedKeys = ["id", "premium"];
         $this->assertTrue($response->premium);
         $this->assertEquals($expectedKeys, $responseKeys);
     }
+
+
+    /**
+     * PATCH /modules/{id}/mark with {status: view}.
+     *
+     * @throws \Exception
+     */
+    public function testMarkView()
+    {
+        $this->mark("view");
+    }
+
 
     /**
      * Generic mark test.
@@ -75,15 +88,6 @@ class ModulesAsRegisteredTest extends ModulesAsPublicTest
         ]);
     }
 
-    /**
-     * PATCH /modules/{id}/mark with {status: view}.
-     *
-     * @throws \Exception
-     */
-    public function testMarkView()
-    {
-        $this->mark("view");
-    }
 
     /**
      * PATCH /modules/{id}/mark with {status: to_to_reviserevise}.
@@ -94,6 +98,7 @@ class ModulesAsRegisteredTest extends ModulesAsPublicTest
     {
         $this->mark("to_revise");
     }
+
 
     /**
      * PATCH /modules/{id}/mark with {status: completed}.

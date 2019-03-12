@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands\Make;
 
 use Illuminate\Console\Command;
@@ -15,6 +16,7 @@ use Illuminate\Console\Command;
 class MakeTest extends Command
 {
     protected $signature = "make:tests {model} {--f|force}";
+
 
     public function handle()
     {

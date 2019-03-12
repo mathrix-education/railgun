@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Utils;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -22,6 +23,7 @@ class Chainer
     private $responseData = [];
     private $bearerToken;
 
+
     /**
      * Chainer constructor.
      *
@@ -32,6 +34,7 @@ class Chainer
         $this->request = $request;
         $this->bearerToken = $request->header("Authorization");
     }
+
 
     /**
      * @throws Http400InvalidRequestException
@@ -51,31 +54,6 @@ class Chainer
         return new JsonResponse($this->responseData);
     }
 
-    /**
-     * @param string $key
-     * @param array  $subRequest
-     *
-     * @throws Http400InvalidRequestException
-     */
-    private function processIndividualRequest(string $key, array $subRequest)
-    {
-        $request = Request::create(
-            $this->resolve($subRequest["url"]),
-            $subRequest["method"],
-            $subRequest["data"] ?? []
-        );
-        $request->setJson(new ParameterBag($subRequest["data"] ?? []));
-        $request->headers->set("Authorization", $this->bearerToken);
-
-        app()->offsetSet("request", $request);
-        $response = app()->handle($request);
-        $this->responseData[$key] = [
-            "method" => $subRequest["method"],
-            "url" => $this->resolve($subRequest["url"]),
-            "body" => json_decode($response->getContent(), true)
-        ];
-        app()->offsetSet("request", $this->request);
-    }
 
     private function orderRequests()
     {
@@ -99,13 +77,41 @@ class Chainer
             }
         }
 
-        uasort($this->subRequests, function($request1, $request2) use ($table) {
+        uasort($this->subRequests, function ($request1, $request2) use ($table) {
             $key1 = array_search($request1, $this->subRequests);
             $key2 = array_search($request2, $this->subRequests);
 
             return $table[$key2] <=> $table[$key1];
         });
     }
+
+
+    /**
+     * @param string $key
+     * @param array $subRequest
+     *
+     * @throws Http400InvalidRequestException
+     */
+    private function processIndividualRequest(string $key, array $subRequest)
+    {
+        $request = Request::create(
+            $this->resolve($subRequest["url"]),
+            $subRequest["method"],
+            $subRequest["data"] ?? []
+        );
+        $request->setJson(new ParameterBag($subRequest["data"] ?? []));
+        $request->headers->set("Authorization", $this->bearerToken);
+
+        app()->offsetSet("request", $request);
+        $response = app()->handle($request);
+        $this->responseData[$key] = [
+            "method" => $subRequest["method"],
+            "url" => $this->resolve($subRequest["url"]),
+            "body" => json_decode($response->getContent(), true)
+        ];
+        app()->offsetSet("request", $this->request);
+    }
+
 
     /**
      * @param string $toParse
@@ -131,6 +137,7 @@ class Chainer
             return $toParse;
         }
     }
+
 
     /**
      * @param string $key

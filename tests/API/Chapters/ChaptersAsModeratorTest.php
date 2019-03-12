@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Chapters;
 
 use App\Models\Notion;
@@ -25,6 +26,7 @@ class ChaptersAsModeratorTest extends ChaptersAsRegisteredTest
         $this->genericIndexSuccess();
     }
 
+
     /**
      * POST /chapters.
      *
@@ -35,6 +37,7 @@ class ChaptersAsModeratorTest extends ChaptersAsRegisteredTest
         $this->genericAddSuccess();
     }
 
+
     /**
      * PATCH /chapters/{id}.
      *
@@ -44,6 +47,7 @@ class ChaptersAsModeratorTest extends ChaptersAsRegisteredTest
     {
         $this->genericEditSuccess();
     }
+
 
     /**
      * PATCH /chapters/{id} with linkable models.
@@ -69,6 +73,7 @@ class ChaptersAsModeratorTest extends ChaptersAsRegisteredTest
             ]);
         }
     }
+
 
     /**
      * DELETE /chapters/{id}.

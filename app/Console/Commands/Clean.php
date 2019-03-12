@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -16,6 +17,7 @@ use Illuminate\Console\Command;
 class Clean extends Command
 {
     protected $signature = "clean {--g|go}";
+
 
     public function handle()
     {

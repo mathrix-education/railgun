@@ -82,6 +82,7 @@ class CreatePathsTable extends Migration
         }
     }
 
+
     /**
      * Reverse the migrations.
      *

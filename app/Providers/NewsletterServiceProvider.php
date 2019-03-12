@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Providers;
 
 use DrewM\MailChimp\MailChimp;
@@ -28,6 +29,7 @@ class NewsletterServiceProvider extends ServiceProvider
     {
         $this->app->configure("newsletter");
     }
+
 
     public function register()
     {

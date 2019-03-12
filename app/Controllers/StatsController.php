@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -145,7 +146,7 @@ class StatsController extends BaseController
                         ],
                     ],
                 ];
-            } elseif (empty($stats[$key]["points"]["details"][$type])) {
+            } else if (empty($stats[$key]["points"]["details"][$type])) {
                 $stats[$key]["points"]["total"] += $points;
                 $stats[$key]["points"]["details"][$type] = $points;
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Notions;
 
 use App\Models\Activity;
@@ -26,6 +27,7 @@ class NotionsAsModeratorTest extends NotionsAsRegisteredTest
         $this->genericAddSuccess();
     }
 
+
     /**
      * PATCH /notions/{id}.
      *
@@ -35,6 +37,7 @@ class NotionsAsModeratorTest extends NotionsAsRegisteredTest
     {
         $this->genericEditSuccess();
     }
+
 
     /**
      * PATCH /notions/{id}.
@@ -66,6 +69,7 @@ class NotionsAsModeratorTest extends NotionsAsRegisteredTest
             ]);
         }
     }
+
 
     /**
      * DELETE /notions/{id}.

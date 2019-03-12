@@ -1,7 +1,6 @@
 <?php
-namespace Tests\Utils\Traits\Generics;
 
-use Tests\Utils\Traits\ResponseTrait;
+namespace Tests\Utils\Traits\Generics;
 
 /**
  * Trait Index.
@@ -16,6 +15,19 @@ use Tests\Utils\Traits\ResponseTrait;
 trait Index
 {
     /**
+     * Generic index without pagination; expect HTTP 200.
+     *
+     * @throws \Exception
+     */
+    public function genericIndexSuccessWithoutPagination()
+    {
+        $this->genericIndexSuccess();
+        $modelCount = ($this->modelClass)::count();
+        $this->assertJsonLength($modelCount);
+    }
+
+
+    /**
      * Generic index; expect HTTP 200.
      *
      * @throws \Exception
@@ -29,6 +41,7 @@ trait Index
         $this->assertIsPaginatedResponse();
     }
 
+
     /**
      * Generic index call.
      *
@@ -41,17 +54,6 @@ trait Index
         $this->json("get", "/" . $this->modelPlural . "/");
     }
 
-    /**
-     * Generic index without pagination; expect HTTP 200.
-     *
-     * @throws \Exception
-     */
-    public function genericIndexSuccessWithoutPagination()
-    {
-        $this->genericIndexSuccess();
-        $modelCount = ($this->modelClass)::count();
-        $this->assertJsonLength($modelCount);
-    }
 
     /**
      * Generic index; expect HTTP 422 Unauthorized.

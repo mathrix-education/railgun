@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console;
 
 use App\Console\Commands\Backup\BackupCdn;
@@ -71,6 +72,7 @@ class Kernel extends ConsoleKernel
         InitialSEOCommand::class,
         CompileMails::class
     ];
+
 
     /**
      * Define the application's command schedule.

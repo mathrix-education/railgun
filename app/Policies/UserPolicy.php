@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\User;
@@ -27,6 +28,7 @@ class UserPolicy extends BasePolicy
             || ($currentUser->isModerator() && $user->type === "registered");
     }
 
+
     /**
      * @param User $currentUser
      *
@@ -36,6 +38,7 @@ class UserPolicy extends BasePolicy
     {
         return $currentUser->isModerator();
     }
+
 
     /**
      * @param User $currentUser
@@ -48,6 +51,7 @@ class UserPolicy extends BasePolicy
         return $currentUser->isAdmin() || $currentUser->id === $user->id;
     }
 
+
     /**
      * @param User $currentUser
      * @param User $user
@@ -58,6 +62,7 @@ class UserPolicy extends BasePolicy
     {
         return $currentUser->isAdmin() || $currentUser->id === $user->id;
     }
+
 
     /**
      * @param User $currentUser

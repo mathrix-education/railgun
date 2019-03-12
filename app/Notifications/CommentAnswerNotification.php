@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Notifications;
 
 use App\Models\Comment;
@@ -20,10 +21,11 @@ class CommentAnswerNotification extends BaseNotification
     /** @var User $user */
     public $user;
 
+
     /**
      * CommentAnswerNotification constructor.
      *
-     * @param User    $user
+     * @param User $user
      * @param Comment $comment
      */
     public function __construct(Comment $comment, User $user)
@@ -32,10 +34,12 @@ class CommentAnswerNotification extends BaseNotification
         $this->user = $user;
     }
 
+
     public function via(): array
     {
         return ["database"];
     }
+
 
     public function toDatabase(): array
     {

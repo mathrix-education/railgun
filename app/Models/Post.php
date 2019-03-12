@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Carbon\Carbon;
@@ -15,17 +16,17 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @copyright Mathrix Education SA
  * @package   App\Models
  *
- * @property int                  $id
- * @property string               $title
- * @property string               $slug
- * @property int                  $module_id
- * @property int                  $user_id
- * @property int                  $category_id
- * @property Carbon               $created_at
- * @property Carbon               $updated_at
- * @property Module               $module
- * @property Category             $category
- * @property User                 $user
+ * @property int $id
+ * @property string $title
+ * @property string $slug
+ * @property int $module_id
+ * @property int $user_id
+ * @property int $category_id
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property Module $module
+ * @property Category $category
+ * @property User $user
  * @property Collection|Comment[] $comments
  */
 class Post extends BaseModel
@@ -60,6 +61,7 @@ class Post extends BaseModel
         return $this->belongsTo(Module::class);
     }
 
+
     /**
      * BelongsTo Category.
      *
@@ -70,6 +72,7 @@ class Post extends BaseModel
         return $this->belongsTo(Category::class);
     }
 
+
     /**
      * BelongsTo User.
      *
@@ -79,6 +82,7 @@ class Post extends BaseModel
     {
         return $this->belongsTo(User::class);
     }
+
 
     /**
      * HasMany Comments

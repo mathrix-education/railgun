@@ -27,6 +27,7 @@ class CreateReferencesTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      *

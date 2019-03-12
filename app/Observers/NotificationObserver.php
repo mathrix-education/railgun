@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Observers;
 
 use Illuminate\Notifications\DatabaseNotification;

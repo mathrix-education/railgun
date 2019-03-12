@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API;
 
 use App\Models\BaseModel;
@@ -39,6 +40,7 @@ abstract class ScopeTestCase extends APITestCase
     protected $modelsMap = [
         "Class" => "Class_",
     ];
+
 
     /**
      * 1. Try to guess the model associated with test class
@@ -135,6 +137,7 @@ abstract class ScopeTestCase extends APITestCase
             Passport::actingAs($this->user, [$this->user->type]); // Set Passport behavior
         }
     }
+
 
     /**
      * Get a stranger.

@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Notifications;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -19,26 +20,13 @@ use PHPUnit\Framework\Constraint\IsType;
 class NotificationsAsRegisteredTest extends NotificationsAsPublicTest
 {
     /**
-     * Get the notification page signature.
-     *
-     * @param int|null $page
-     * @param int|null $perPage
-     *
-     * @return array
+     * GET /notifications/all
      */
-    protected function getNotificationsPageSignature(int $page = null, int $perPage = null)
+    public function testAll()
     {
-        return [
-            "page" => $page ?? new IsType("integer"),
-            "per_page" => $perPage ?? new IsType("integer"),
-            "total" => new IsType("integer"),
-            "data.[*].id" => new IsType("string"),
-            "data.[*].type" => new IsType("string"),
-            "data.[*].notifiable_type" => "user",
-            "data.[*].notifiable_id" => new IsType("integer"),
-            "data.[*].data" => new IsType("object")
-        ];
+        $this->genericTestNotifications("all");
     }
+
 
     /**
      * Generically test notifications.
@@ -76,13 +64,29 @@ class NotificationsAsRegisteredTest extends NotificationsAsPublicTest
         );
     }
 
+
     /**
-     * GET /notifications/all
+     * Get the notification page signature.
+     *
+     * @param int|null $page
+     * @param int|null $perPage
+     *
+     * @return array
      */
-    public function testAll()
+    protected function getNotificationsPageSignature(int $page = null, int $perPage = null)
     {
-        $this->genericTestNotifications("all");
+        return [
+            "page" => $page ?? new IsType("integer"),
+            "per_page" => $perPage ?? new IsType("integer"),
+            "total" => new IsType("integer"),
+            "data.[*].id" => new IsType("string"),
+            "data.[*].type" => new IsType("string"),
+            "data.[*].notifiable_type" => "user",
+            "data.[*].notifiable_id" => new IsType("integer"),
+            "data.[*].data" => new IsType("object")
+        ];
     }
+
 
     /**
      * GET /notifications/all
@@ -92,6 +96,7 @@ class NotificationsAsRegisteredTest extends NotificationsAsPublicTest
         $this->genericTestNotifications("read");
     }
 
+
     /**
      * GET /notifications/all
      */
@@ -99,6 +104,7 @@ class NotificationsAsRegisteredTest extends NotificationsAsPublicTest
     {
         $this->genericTestNotifications("unread");
     }
+
 
     /**
      * GET /notifications/all/mark/read
@@ -127,6 +133,7 @@ class NotificationsAsRegisteredTest extends NotificationsAsPublicTest
         ]);
     }
 
+
     /**
      * PATCH /notifications/{notificationId}/mark/read
      */
@@ -146,6 +153,7 @@ class NotificationsAsRegisteredTest extends NotificationsAsPublicTest
             "read_at" => null
         ]);
     }
+
 
     /**
      * PATCH /notifications/{notificationId}/mark/unread

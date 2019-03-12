@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Classes;
 
 use App\Models\Discipline;
@@ -25,6 +26,7 @@ class ClassesAsAdminTest extends ClassesAsModeratorTest
         $this->genericAddSuccess();
     }
 
+
     /**
      * PATCH /classes/{id}.
      *
@@ -34,6 +36,7 @@ class ClassesAsAdminTest extends ClassesAsModeratorTest
     {
         $this->genericEditSuccess();
     }
+
 
     /**
      * PATCH /classes/{id}.
@@ -57,6 +60,7 @@ class ClassesAsAdminTest extends ClassesAsModeratorTest
             ]);
         }
     }
+
 
     /**
      * DELETE /classes/{id} -> HTTP 501 not_implemented.

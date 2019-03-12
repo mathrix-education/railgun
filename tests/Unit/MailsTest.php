@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Unit;
 
 use App\Mails\PasswordForgottenMail;
@@ -25,6 +26,7 @@ class MailsTest extends BaseTestCase
         $this->assertInstanceOf(PasswordForgottenMail::class, $mail);
     }
 
+
     public function testPasswordReset()
     {
         $mail = PasswordResetMail::mock()
@@ -32,12 +34,14 @@ class MailsTest extends BaseTestCase
         $this->assertInstanceOf(PasswordResetMail::class, $mail);
     }
 
+
     public function testTransactionRefundSuccess()
     {
         $mail = TransactionRefundMail::mock()
             ->build();
         $this->assertInstanceOf(TransactionRefundMail::class, $mail);
     }
+
 
     public function testTransactionSuccess()
     {

@@ -46,6 +46,7 @@ class UpdateMetasTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

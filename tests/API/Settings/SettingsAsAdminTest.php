@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Settings;
 
 use App\Models\Setting;
@@ -34,6 +35,7 @@ class SettingsAsAdminTest extends SettingsAsModeratorTest
         ]);
     }
 
+
     /**
      * GET /settings/{key} with visible setting.
      */
@@ -45,6 +47,7 @@ class SettingsAsAdminTest extends SettingsAsModeratorTest
         $this->json("get", "/settings/{$setting->key}");
         $this->assertHttp200Success();
     }
+
 
     /**
      * GET /settings/{key} with not visible setting.
@@ -59,6 +62,7 @@ class SettingsAsAdminTest extends SettingsAsModeratorTest
         $this->assertHttp200Success();
     }
 
+
     /**
      * POST /settings.
      *
@@ -68,6 +72,7 @@ class SettingsAsAdminTest extends SettingsAsModeratorTest
     {
         $this->genericAddSuccess();
     }
+
 
     /**
      * POST /settings.
@@ -79,6 +84,7 @@ class SettingsAsAdminTest extends SettingsAsModeratorTest
         $key = Setting::random();
         $this->genericAddSuccess(["key" => $key]);
     }
+
 
     /**
      * DELETE /settings/{key}.

@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\FamilyPacks;
 
 use App\Models\FamilyPack;

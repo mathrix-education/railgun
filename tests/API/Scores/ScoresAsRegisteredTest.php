@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Scores;
 
 use App\Models\Score;
@@ -29,6 +30,7 @@ class ScoresAsRegisteredTest extends ScoresAsPublicTest
         $this->assertJsonKeys(["token"]);
     }
 
+
     /**
      * Test score register.
      *
@@ -55,6 +57,7 @@ class ScoresAsRegisteredTest extends ScoresAsPublicTest
         ]);
     }
 
+
     /**
      * Test score register with an invalid signature.
      *
@@ -70,6 +73,7 @@ class ScoresAsRegisteredTest extends ScoresAsPublicTest
 
         $this->assertHttp401Unauthorized();
     }
+
 
     /**
      * Test score around
@@ -99,6 +103,7 @@ class ScoresAsRegisteredTest extends ScoresAsPublicTest
         ]);
         $this->assertJsonLengthMax($delta * 2 + 1);
     }
+
 
     /**
      * Test personal best score

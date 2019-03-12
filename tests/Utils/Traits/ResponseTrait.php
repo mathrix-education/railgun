@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Utils\Traits;
 
 use Helmich\JsonAssert\JsonAssertions;
@@ -18,6 +19,7 @@ trait ResponseTrait
 {
     use JsonAssertions;
 
+
     /**
      * Get the response data.
      *
@@ -31,6 +33,7 @@ trait ResponseTrait
             return json_decode($response);
         }
     }
+
 
     /**
      * @param int|null $page

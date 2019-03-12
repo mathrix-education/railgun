@@ -1,7 +1,7 @@
 <?php
+
 namespace App\Observers;
 
-use App\Exceptions\Http422ModelSaveException;
 use App\Models\Activity;
 use App\Models\Chapter;
 use App\Models\Notion;
@@ -67,6 +67,7 @@ class NotionObserver extends BaseObserver
 
         return true;
     }
+
 
     /**
      * Detach all activities link with the deleting notion.

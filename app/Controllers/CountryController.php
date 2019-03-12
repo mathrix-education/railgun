@@ -1,10 +1,8 @@
 <?php
+
 namespace App\Controllers;
 
-use App\Exceptions\Http401UnauthorizedException;
-use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http501NotImplementedException;
-use App\Models\Class_;
 use App\Models\Country;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -25,7 +23,7 @@ class CountryController extends BaseController
      * Delete a country; not yet implemented.
      *
      * @param Request $request
-     * @param int     $id
+     * @param int $id
      *
      * @return JsonResponse
      * @throws Http501NotImplementedException

@@ -40,6 +40,7 @@ class CreateSubscriptionsTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

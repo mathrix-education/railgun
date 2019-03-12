@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Votes;
 
 use App\Models\Comment;
@@ -35,6 +36,7 @@ class VotesAsRegisteredTest extends VotesAsPublicTest
         $this->assertEquals($scoreBefore + 1, $comment->score);
     }
 
+
     /**
      * POST /votes/{votable_type}/{votable_id}/down.
      */
@@ -50,6 +52,7 @@ class VotesAsRegisteredTest extends VotesAsPublicTest
         $this->assertHttp200Success();
         $this->assertEquals($scoreBefore - 1, $comment->score);
     }
+
 
     /**
      * POST /votes/{votable_type}/{votable_id}/up.
@@ -73,6 +76,7 @@ class VotesAsRegisteredTest extends VotesAsPublicTest
         $this->assertEquals($scoreBefore - 1, $vote->votable->score);
     }
 
+
     /**
      * POST /votes/{votable_type}/{votable_id}/down.
      */
@@ -94,6 +98,7 @@ class VotesAsRegisteredTest extends VotesAsPublicTest
         $this->assertHttp200Success();
         $this->assertEquals($scoreBefore + 1, $vote->votable->score);
     }
+
 
     /**
      * POST /votes/{votable_type}/{votable_id}/up.
@@ -117,6 +122,7 @@ class VotesAsRegisteredTest extends VotesAsPublicTest
         $this->assertEquals($scoreBefore + 2, $vote->votable->score);
     }
 
+
     /**
      * POST /votes/{votable_type}/{votable_id}/down.
      */
@@ -138,6 +144,7 @@ class VotesAsRegisteredTest extends VotesAsPublicTest
         $this->assertHttp200Success();
         $this->assertEquals($scoreBefore - 2, $vote->votable->score);
     }
+
 
     /**
      * POST /tests/wtf/4242666/up

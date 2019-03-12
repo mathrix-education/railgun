@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http422ModelSaveException;
@@ -62,6 +63,7 @@ class PathController extends BaseController
         $path->save();
 
         $response = new JsonResponse($path);
+
         return $response;
     }
 }

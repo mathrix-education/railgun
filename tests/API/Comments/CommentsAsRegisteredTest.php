@@ -1,14 +1,15 @@
 <?php
+
 namespace Tests\API\Comments;
 
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
 use App\Models\Comment;
 use App\Notifications\CommentAnswerNotification;
+use App\Utils\Tree;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Notification;
 use Laravel\Passport\Passport;
-use App\Utils\Tree;
 
 /**
  * Class CommentsAsRegisteredTest
@@ -47,6 +48,7 @@ class CommentsAsRegisteredTest extends CommentsAsPublicTest
         $this->assertHttp200Success();
     }
 
+
     /**
      * POST /comments
      *
@@ -79,6 +81,7 @@ class CommentsAsRegisteredTest extends CommentsAsPublicTest
             "database"
         );
     }
+
 
     /**
      * PATCH /comments/{id}.

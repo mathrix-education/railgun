@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands\Pipelines;
 
 /**
@@ -30,6 +31,7 @@ trait InteractsWithServer
     protected $sharedDirectory;
     protected $nextReleaseDirectory;
     protected $distantBuildFileName;
+
 
     /**
      * Setup server, asking for environment and server.
@@ -64,48 +66,6 @@ trait InteractsWithServer
         }
     }
 
-    /**
-     * Setup distant server variables.
-     */
-    private function setupVars()
-    {
-        // Server variables
-        $this->apiDirectory = "/var/www/{$this->environment}/api";
-        $this->currentSymlink = "$this->apiDirectory/current";
-        $this->releasesDirectory = "$this->apiDirectory/releases";
-        $this->sharedDirectory = "$this->apiDirectory/shared";
-        $this->nextReleaseDirectory = "$this->releasesDirectory/$this->buildName";
-        $this->distantBuildFileName = "$this->releasesDirectory/$this->buildName.zip";
-    }
-
-    /**
-     * SSH connection via public/private key files
-     */
-    private function connect()
-    {
-        $this->line("Establishing secure SSH connection with SSH keys as $this->user@$this->host:$this->port", null, "v");
-
-        // Load keys
-        $this->publicKey = app()->basePath("deploy/keys/$this->server/id_rsa.pub");
-        $this->privateKey = app()->basePath("deploy/keys/$this->server/id_rsa");
-
-        if (!file_exists($this->publicKey)) {
-            $this->error("$this->publicKey does not exists, aborting.");
-        }
-        if (!file_exists($this->privateKey)) {
-            $this->error("$this->privateKey does not exists, aborting.");
-        }
-
-        $this->session = ssh2_connect($this->host, $this->port);
-        $result = ssh2_auth_pubkey_file($this->session, $this->user, $this->publicKey, $this->privateKey);
-
-        if ($result) {
-            $this->success("Logged as $this->user@$this->host:$this->port");
-            $this->shell = ssh2_shell($this->session);
-        } else {
-            $this->abort("Authentication failed.");
-        }
-    }
 
     /**
      * Execute a command on the distant server.
@@ -157,5 +117,50 @@ trait InteractsWithServer
         // Close the streams
         fclose($errorStream);
         fclose($stream);
+    }
+
+
+    /**
+     * Setup distant server variables.
+     */
+    private function setupVars()
+    {
+        // Server variables
+        $this->apiDirectory = "/var/www/{$this->environment}/api";
+        $this->currentSymlink = "$this->apiDirectory/current";
+        $this->releasesDirectory = "$this->apiDirectory/releases";
+        $this->sharedDirectory = "$this->apiDirectory/shared";
+        $this->nextReleaseDirectory = "$this->releasesDirectory/$this->buildName";
+        $this->distantBuildFileName = "$this->releasesDirectory/$this->buildName.zip";
+    }
+
+
+    /**
+     * SSH connection via public/private key files
+     */
+    private function connect()
+    {
+        $this->line("Establishing secure SSH connection with SSH keys as $this->user@$this->host:$this->port", null, "v");
+
+        // Load keys
+        $this->publicKey = app()->basePath("deploy/keys/$this->server/id_rsa.pub");
+        $this->privateKey = app()->basePath("deploy/keys/$this->server/id_rsa");
+
+        if (!file_exists($this->publicKey)) {
+            $this->error("$this->publicKey does not exists, aborting.");
+        }
+        if (!file_exists($this->privateKey)) {
+            $this->error("$this->privateKey does not exists, aborting.");
+        }
+
+        $this->session = ssh2_connect($this->host, $this->port);
+        $result = ssh2_auth_pubkey_file($this->session, $this->user, $this->publicKey, $this->privateKey);
+
+        if ($result) {
+            $this->success("Logged as $this->user@$this->host:$this->port");
+            $this->shell = ssh2_shell($this->session);
+        } else {
+            $this->abort("Authentication failed.");
+        }
     }
 }

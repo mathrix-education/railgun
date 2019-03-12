@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Middleware;
 
 use App\Exceptions\Http401UnauthorizedException;
@@ -25,6 +26,7 @@ class Authenticate
      */
     protected $auth;
 
+
     /**
      * Create a new middleware instance.
      *
@@ -35,11 +37,12 @@ class Authenticate
         $this->auth = $auth;
     }
 
+
     /**
      * Handle an incoming request.
      *
-     * @param Request     $request
-     * @param Closure     $next
+     * @param Request $request
+     * @param Closure $next
      * @param string|null $guard
      *
      * @throws Http401UnauthorizedException

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Events\TransactionSuccessEvent;
@@ -9,7 +10,7 @@ use App\Exceptions\Http422ModelValidationException;
 use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\User;
-use App\Services\Braintree\Cart;
+use App\Services\Braintree\Pipelines\CartPipeline;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -44,6 +45,7 @@ class ProductController extends BaseController
         return new JsonResponse($products);
     }
 
+
     /**
      * Get a product with its children, recursively.
      *
@@ -75,6 +77,7 @@ class ProductController extends BaseController
         return $response;
     }
 
+
     /**
      * Buy products with Braintree.
      *
@@ -97,40 +100,12 @@ class ProductController extends BaseController
         return new JsonResponse($saleResult->transaction->jsonSerialize());
     }
 
-    /**
-     * Sale products to an user.
-     *
-     * @param Request $request The request
-     *
-     * @throws Http400InvalidRequestException
-     * @throws Http401UnauthorizedException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
-     * @throws ValidationException
-     *
-     * @return JsonResponse
-     */
-    public function sale(Request $request): JsonResponse
-    {
-        $user = $request->user();
-
-        if (!$user->isSupport()) {
-            throw new Http401UnauthorizedException();
-        }
-
-        /** @var User $customer */
-        $customer = User::findOrFail($request->input("user_id"));
-
-        $saleResult = $this->saleTo($request, $customer);
-
-        return new JsonResponse($saleResult->transaction->jsonSerialize());
-    }
 
     /**
      * Base function for selling products.
      *
-     * @param Request $request  The request
-     * @param User    $customer The customer
+     * @param Request $request The request
+     * @param User $customer The customer
      *
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
@@ -152,7 +127,7 @@ class ProductController extends BaseController
             $customer->createBraintreeCustomer($paymentMethodNonce);
         }
 
-        $cart = new Cart();
+        $cart = new CartPipeline();
         $request = $cart->setCustomer($customer)
             ->setDiscount($request->input("discount"))
             ->setProducts($request->input("cart"))
@@ -186,5 +161,35 @@ class ProductController extends BaseController
         }
 
         return $saleResult;
+    }
+
+
+    /**
+     * Sale products to an user.
+     *
+     * @param Request $request The request
+     *
+     * @throws Http400InvalidRequestException
+     * @throws Http401UnauthorizedException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
+     * @throws ValidationException
+     *
+     * @return JsonResponse
+     */
+    public function sale(Request $request): JsonResponse
+    {
+        $user = $request->user();
+
+        if (!$user->isSupport()) {
+            throw new Http401UnauthorizedException();
+        }
+
+        /** @var User $customer */
+        $customer = User::findOrFail($request->input("user_id"));
+
+        $saleResult = $this->saleTo($request, $customer);
+
+        return new JsonResponse($saleResult->transaction->jsonSerialize());
     }
 }

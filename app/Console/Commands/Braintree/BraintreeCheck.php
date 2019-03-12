@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands\Braintree;
 
 use App\Services\Braintree\Models\AddOn;
@@ -21,6 +22,7 @@ class BraintreeCheck extends Command
 {
     private const PLANS = ["v4_monthly", "v4_annually", "v4_biannually"];
     protected $signature = "braintree:check";
+
 
     public function handle()
     {

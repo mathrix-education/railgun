@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Unit;
 
 use App\Models\Setting;
@@ -21,6 +22,7 @@ class SettingsTest extends BaseTestCase
 {
     use DatabaseAssertionsTrait, HttpAssertionsTrait, JsonAssertionsTrait, NotificationsAssertionsTrait;
 
+
     public function testRead()
     {
         $settingKey = Setting::random()->key;
@@ -31,6 +33,7 @@ class SettingsTest extends BaseTestCase
             "value" => serialize($value),
         ]);
     }
+
 
     public function testWrite()
     {

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands\Sitemap;
 
 use App\Models\Activity;
@@ -25,6 +26,7 @@ class SitemapContent extends Command
 {
     use SitemapUtils;
     protected $signature = "sitemap:content";
+
 
     /**
      * @throws \Exception
@@ -177,6 +179,7 @@ class SitemapContent extends Command
         $this->saveSitemap($modulesSitemap, "sitemap.modules");
         $this->saveSitemap($sitemapArray, "sitemap.main");
     }
+
 
     /**
      * Get the url-friendly module type

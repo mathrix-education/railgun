@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Observers;
 
 use App\Events\CommentAnswerEvent;
@@ -38,6 +39,7 @@ class CommentObserver extends BaseObserver
         return true;
     }
 
+
     /**
      * @param Comment $comment
      */
@@ -47,6 +49,7 @@ class CommentObserver extends BaseObserver
             event(new CommentAnswerEvent($comment));
         }
     }
+
 
     /**
      * @param Comment $comment

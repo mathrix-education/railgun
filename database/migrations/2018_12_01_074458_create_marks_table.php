@@ -73,6 +73,7 @@ class CreateMarksTable extends Migration
         DB::table("marks")->insert($buffer);
     }
 
+
     /**
      * Reverse the migrations.
      *

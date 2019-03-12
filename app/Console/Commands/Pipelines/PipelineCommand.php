@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands\Pipelines;
 
 use App\Console\Commands\BaseCommand;
@@ -17,6 +18,7 @@ abstract class PipelineCommand extends BaseCommand
 {
     protected $environment;
 
+
     /**
      * Parse environment/server options
      */
@@ -24,6 +26,7 @@ abstract class PipelineCommand extends BaseCommand
     {
         $this->environment = $this->option("environment");
     }
+
 
     protected function abort(string $message)
     {

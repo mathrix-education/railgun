@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http501NotImplementedException;
@@ -22,7 +23,7 @@ class ClassController extends BaseController
      * Delete a class; not yet implemented.
      *
      * @param Request $request
-     * @param int     $id
+     * @param int $id
      *
      * @return JsonResponse
      * @throws Http501NotImplementedException

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands\Sitemap;
 
 use Illuminate\Support\Facades\Storage;

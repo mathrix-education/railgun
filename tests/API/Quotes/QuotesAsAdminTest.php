@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Quotes;
 
 /**
@@ -23,6 +24,7 @@ class QuotesAsAdminTest extends QuotesAsModeratorTest
         $this->genericAddSuccess();
     }
 
+
     /**
      * PATCH /quotes/{id}.
      *
@@ -32,6 +34,7 @@ class QuotesAsAdminTest extends QuotesAsModeratorTest
     {
         $this->genericEditSuccess();
     }
+
 
     /**
      * DELETE /quotes/{id}.

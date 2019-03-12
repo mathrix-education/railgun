@@ -15,6 +15,7 @@ class ScoreTableSeeder extends BaseTableSeeder
 {
     const SCORE_COUNT = 300;
 
+
     public function run()
     {
         $this->seedFromFactory(Score::class, 300);

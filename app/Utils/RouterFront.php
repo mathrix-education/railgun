@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Utils;
 
 use App\Models\Activity;
@@ -24,13 +25,13 @@ class RouterFront
     /**
      * Get the module route URL.
      *
-     * @param Country    $country
-     * @param Class_     $class
+     * @param Country $country
+     * @param Class_ $class
      * @param Discipline $discipline
-     * @param Chapter    $chapter
-     * @param Notion     $notion
-     * @param Activity   $activity
-     * @param Module     $module
+     * @param Chapter $chapter
+     * @param Notion $notion
+     * @param Activity $activity
+     * @param Module $module
      *
      * @return string
      */
@@ -41,15 +42,16 @@ class RouterFront
             . "/{$module->uri_type}/{$module->id}";
     }
 
+
     /**
      * Check if the current route should be NOT indexed.
      *
-     * @param Country    $country
-     * @param Class_     $class
+     * @param Country $country
+     * @param Class_ $class
      * @param Discipline $discipline
-     * @param Chapter    $chapter
-     * @param Notion     $notion
-     * @param Activity   $activity
+     * @param Chapter $chapter
+     * @param Notion $notion
+     * @param Activity $activity
      *
      * @return bool
      */
@@ -58,6 +60,7 @@ class RouterFront
     {
         return self::seoIndexByIds($country->id, $class->id, $discipline->id, $chapter->id, $notion->id, $activity->id);
     }
+
 
     /**
      * Check if the current route should be NOT indexed with content ids.

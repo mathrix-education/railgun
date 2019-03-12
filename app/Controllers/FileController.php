@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -29,15 +30,23 @@ class FileController extends Controller
     public const DISK = "cdn";
     public const TRASH_DIR = "trash";
 
+
     /**
-     * Get the storage disk
+     * @param Request $request
+     * @param string $path
      *
-     * @return Filesystem|FilesystemAdapter
+     * @return JsonResponse
+     * @throws Http404FileNotFoundException
      */
-    private function getDisk()
+    public function info(Request $request, string $path)
     {
-        return Storage::disk(self::DISK);
+        $request->user()->canOrFail("info", FilePolicy::class);
+
+        $response = new JsonResponse($this->metadata($path));
+
+        return $response;
     }
+
 
     /**
      * Get a file/directory  metadata
@@ -62,26 +71,22 @@ class FileController extends Controller
         return $metadata;
     }
 
+
     /**
-     * @param Request $request
-     * @param string  $path
+     * Get the storage disk
      *
-     * @return JsonResponse
-     * @throws Http404FileNotFoundException
+     * @return Filesystem|FilesystemAdapter
      */
-    public function info(Request $request, string $path)
+    private function getDisk()
     {
-        $request->user()->canOrFail("info", FilePolicy::class);
-
-        $response = new JsonResponse($this->metadata($path));
-
-        return $response;
+        return Storage::disk(self::DISK);
     }
 
+
     /**
      * @param Request $request
      *
-     * @param string  $directory
+     * @param string $directory
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
@@ -118,6 +123,7 @@ class FileController extends Controller
 
         return $response;
     }
+
 
     /**
      * @param Request $request
@@ -166,9 +172,10 @@ class FileController extends Controller
         return $response;
     }
 
+
     /**
      * @param Request $request
-     * @param string  $path
+     * @param string $path
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
@@ -224,11 +231,12 @@ class FileController extends Controller
         return $response;
     }
 
+
     /**
      * Delete a file or a directory from the CDN
      *
      * @param Request $request
-     * @param string  $path
+     * @param string $path
      *
      * @return JsonResponse
      * @throws Http400InvalidRequestException
@@ -267,6 +275,7 @@ class FileController extends Controller
             $disk->move($path, $trashPath);
 
             $response = new JsonResponse($this->metadata($trashPath));
+
             return $response;
         } else {
             // Force delete file

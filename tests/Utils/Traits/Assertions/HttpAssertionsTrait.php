@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Utils\Traits\Assertions;
 
 /**
@@ -31,10 +32,12 @@ trait HttpAssertionsTrait
         return $this;
     }
 
+
     public function assertHttpError(int $code, string $error)
     {
         $this->assertJsonError($error, $code);
     }
+
 
     /**
      * Shortcut to assertResponseStatus(200).

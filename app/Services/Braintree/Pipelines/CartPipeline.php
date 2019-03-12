@@ -1,5 +1,6 @@
 <?php
-namespace App\Services\Braintree;
+
+namespace App\Services\Braintree\Pipelines;
 
 use App\Exceptions\Http400InvalidRequestException;
 use App\Models\Discount;
@@ -20,7 +21,7 @@ use Illuminate\Database\Eloquent\Collection;
  * @copyright Mathrix Education SA
  * @package   App\Services\Braintree
  */
-class Cart
+class CartPipeline
 {
     /** @var User $customer */
     private $customer;
@@ -28,6 +29,7 @@ class Cart
     private $products;
     /** @var Discount|null $discount */
     private $discount;
+
 
     /**
      * Cart constructor.
@@ -37,12 +39,13 @@ class Cart
         $this->products = new Collection();
     }
 
+
     /**
      * Set the cart customer.
      *
      * @param User $customer
      *
-     * @return Cart
+     * @return CartPipeline
      */
     public function setCustomer(User $customer)
     {
@@ -50,6 +53,7 @@ class Cart
 
         return $this;
     }
+
 
     /**
      * Get the cart products.
@@ -61,6 +65,7 @@ class Cart
         return $this->products;
     }
 
+
     /**
      * Set the cart products.
      *
@@ -68,7 +73,7 @@ class Cart
      *
      * @throws Http400InvalidRequestException
      *
-     * @return Cart
+     * @return CartPipeline
      */
     public function setProducts(array $productIds)
     {
@@ -94,6 +99,7 @@ class Cart
         return $this;
     }
 
+
     /**
      * Get the discount.
      *
@@ -104,12 +110,13 @@ class Cart
         return $this->discount;
     }
 
+
     /**
      * Set the discount based on its code.
      *
      * @param string $discountCode
      *
-     * @return Cart
+     * @return CartPipeline
      */
     public function setDiscount(string $discountCode = null)
     {
@@ -120,6 +127,7 @@ class Cart
 
         return $this;
     }
+
 
     /**
      * Get the \Braintree\Transaction::sale() request data.
@@ -173,6 +181,7 @@ class Cart
 
         return $saleData;
     }
+
 
     /**
      * Validate all properties before engaging the Braintree request data.

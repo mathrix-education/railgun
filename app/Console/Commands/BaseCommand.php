@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -14,6 +15,19 @@ use Illuminate\Console\Command;
  */
 abstract class BaseCommand extends Command
 {
+    public function success(string $string, $verbosity = null)
+    {
+        $this->line("[<info>✔</info>] $string", null, $verbosity);
+    }
+
+
+    public function fatal(string $string, $verbosity = null)
+    {
+        $this->block($string, "error", $verbosity);
+        exit(1);
+    }
+
+
     public function block(string $string, $style = null, $verbosity = null)
     {
         $string = " $string ";
@@ -22,16 +36,5 @@ abstract class BaseCommand extends Command
         $this->line($l, $style, $verbosity);
         $this->line($string, $style, $verbosity);
         $this->line($l, $style, $verbosity);
-    }
-
-    public function success(string $string, $verbosity = null)
-    {
-        $this->line("[<info>✔</info>] $string", null, $verbosity);
-    }
-
-    public function fatal(string $string, $verbosity = null)
-    {
-        $this->block($string, "error", $verbosity);
-        exit(1);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
@@ -11,6 +12,7 @@ class ChangeTypeOnUsersTable extends Migration
     {
         DB::statement("ALTER TABLE users CHANGE `type` `type` VARCHAR(255)");
     }
+
 
     /**
      * Reverse the migrations.

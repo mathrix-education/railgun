@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Utils\Traits\Assertions;
 
 use App\Models\Log;
@@ -19,14 +20,15 @@ trait DatabaseAssertionsTrait
     /**
      * Assert that a given where condition exists in the database.
      *
-     * @param string      $table
-     * @param array       $data
+     * @param string $table
+     * @param array $data
      * @param string|null $onConnection
      */
     public function assertInDatabase(string $table, array $data, $onConnection = null)
     {
         $this->seeInDatabase($table, $this->castData($data), $onConnection);
     }
+
 
     /**
      * Cast data to its right MySQL values.
@@ -40,9 +42,9 @@ trait DatabaseAssertionsTrait
         foreach ($data as $field => $value) {
             if ($value === true) {
                 $data[$field] = 1;
-            } elseif ($value === false) {
+            } else if ($value === false) {
                 $data[$field] = 0;
-            } elseif ($value instanceof \DateTime) {
+            } else if ($value instanceof \DateTime) {
                 $data[$field] = $value->format("Y-m-d H:i:s");
             }
         }
@@ -50,11 +52,12 @@ trait DatabaseAssertionsTrait
         return $data;
     }
 
+
     /**
      * Assert that a given where condition does not exist in the database.
      *
-     * @param string      $table
-     * @param array       $data
+     * @param string $table
+     * @param array $data
      * @param string|null $onConnection
      */
     public function assertNotInDatabase(string $table, array $data, $onConnection = null)
@@ -62,12 +65,13 @@ trait DatabaseAssertionsTrait
         $this->notSeeInDatabase($table, $this->castData($data), $onConnection);
     }
 
+
     /**
      * Assert that an event is logged in the database.
      *
-     * @param string        $event The event type
-     * @param User|int|null $user  The user as object, the user_id or null if not relying on user
-     * @param array         $data  The additional data to filter the event (associative or Eloquent mode)
+     * @param string $event The event type
+     * @param User|int|null $user The user as object, the user_id or null if not relying on user
+     * @param array $data The additional data to filter the event (associative or Eloquent mode)
      */
     public function assertLogged(string $event, $user = null, array $data = [])
     {

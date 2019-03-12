@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Carbon\Carbon;
@@ -13,25 +14,25 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @copyright Mathrix Education SA
  * @package   App\Models
  *
- * @property int        $id
- * @property string     $content
- * @property int        $country_id
- * @property int        $class_id
- * @property int        $discipline_id
- * @property int        $chapter_id
- * @property int        $notion_id
- * @property int        $activity_id
- * @property int        $module_id
- * @property bool       $seo_index
- * @property Carbon     $seo_lastmod
+ * @property int $id
+ * @property string $content
+ * @property int $country_id
+ * @property int $class_id
+ * @property int $discipline_id
+ * @property int $chapter_id
+ * @property int $notion_id
+ * @property int $activity_id
+ * @property int $module_id
+ * @property bool $seo_index
+ * @property Carbon $seo_lastmod
  *
- * @property Country    $country
- * @property Class_     $class_
+ * @property Country $country
+ * @property Class_ $class_
  * @property Discipline $discipline
- * @property Chapter    $chapter
- * @property Notion     $notion
- * @property Activity   $activity
- * @property Module     $module
+ * @property Chapter $chapter
+ * @property Notion $notion
+ * @property Activity $activity
+ * @property Module $module
  */
 class Path extends BaseModel
 {
@@ -50,6 +51,7 @@ class Path extends BaseModel
         "seo_lastmod" => "date"
     ];
     protected $with = ["country", "class_", "discipline", "chapter", "notion", "activity", "module"];
+
 
     /**
      * @param array $contentIds The array containing the key/value
@@ -79,6 +81,7 @@ class Path extends BaseModel
 
         return $path;
     }
+
 
     /**
      * @param int $countryId
@@ -122,6 +125,7 @@ class Path extends BaseModel
         return $this->belongsTo(Country::class);
     }
 
+
     /**
      * BelongsTo Class_.
      *
@@ -131,6 +135,7 @@ class Path extends BaseModel
     {
         return $this->belongsTo(Class_::class, "class_id");
     }
+
 
     /**
      * BelongsTo Discipline.
@@ -142,6 +147,7 @@ class Path extends BaseModel
         return $this->belongsTo(Discipline::class);
     }
 
+
     /**
      * BelongsTo Chapter.
      *
@@ -151,6 +157,7 @@ class Path extends BaseModel
     {
         return $this->belongsTo(Chapter::class);
     }
+
 
     /**
      * BelongsTo Notion.
@@ -162,6 +169,7 @@ class Path extends BaseModel
         return $this->belongsTo(Notion::class);
     }
 
+
     /**
      * BelongsTo Activity.
      *
@@ -171,6 +179,7 @@ class Path extends BaseModel
     {
         return $this->belongsTo(Activity::class);
     }
+
 
     /**
      * BelongsTo Module.

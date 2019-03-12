@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Exceptions;
 
 use Illuminate\Http\JsonResponse;
@@ -30,13 +31,14 @@ abstract class HttpException extends \Exception
     /** @var array Exception data; has to be manually defined */
     protected $data;
 
+
     /**
      * HttpException constructor.
      *
-     * @param string         $message
-     * @param int            $code
+     * @param string $message
+     * @param int $code
      * @param Throwable|null $previous
-     * @param array          $data
+     * @param array $data
      */
     public function __construct($message = "", $code = 0, Throwable $previous = null, $data = [])
     {
@@ -50,7 +52,7 @@ abstract class HttpException extends \Exception
             if (300 <= $code && $code < 600) {
                 $this->code = $code; // @codeCoverageIgnore
             } else {
-                $this->code = (int) $matches[1];
+                $this->code = (int)$matches[1];
             }
 
             // Define the error name
@@ -67,6 +69,7 @@ abstract class HttpException extends \Exception
 
         parent::__construct($this->message, $this->code, $previous);
     }
+
 
     /**
      * Build Response object.

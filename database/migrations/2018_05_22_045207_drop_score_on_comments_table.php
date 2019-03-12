@@ -25,6 +25,7 @@ class DropScoreOnCommentsTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

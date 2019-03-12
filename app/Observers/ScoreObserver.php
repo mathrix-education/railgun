@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Observers;
 
 use App\Models\Score;
@@ -40,12 +41,14 @@ class ScoreObserver extends BaseObserver
         return true;
     }
 
+
     /**
      * @param Score $score
      *
      * @return bool
      */
-    public function saved($score) {
+    public function saved($score)
+    {
         DB::update("UPDATE scores SET scores.rank = scores.rank + 1 WHERE scores.game = ? AND scores.score < ?", [
             $score->game,
             $score->score

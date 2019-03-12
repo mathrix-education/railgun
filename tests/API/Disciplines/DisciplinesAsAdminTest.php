@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Disciplines;
 
 use App\Models\Class_;
@@ -25,6 +26,7 @@ class DisciplinesAsAdminTest extends DisciplinesAsModeratorTest
     {
         $this->genericAddSuccess();
     }
+
 
     /**
      * PATCH /disciplines/{id}.
@@ -56,6 +58,7 @@ class DisciplinesAsAdminTest extends DisciplinesAsModeratorTest
         ]);
         $this->assertEquals($discipline->classes()->count(), 1);
     }
+
 
     /**
      * DELETE /disciplines/{id}

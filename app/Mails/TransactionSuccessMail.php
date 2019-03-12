@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Mails;
 
 use App\Models\User;
@@ -24,6 +25,7 @@ class TransactionSuccessMail extends BaseMail
     /** @var User $user */
     private $user;
 
+
     public function __construct(User $user, Transaction $transaction, array $lineItems)
     {
         $this->user = $user;
@@ -32,6 +34,7 @@ class TransactionSuccessMail extends BaseMail
 
         parent::__construct();
     }
+
 
     /**
      * Mock the Mail.
@@ -61,6 +64,7 @@ class TransactionSuccessMail extends BaseMail
 
         return new self($user, $transaction, $transactionLineItems);
     }
+
 
     /**
      * Build the mail.

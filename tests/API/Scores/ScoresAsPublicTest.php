@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Scores;
 
 use Tests\API\ScopeTestCase;
@@ -27,6 +28,7 @@ class ScoresAsPublicTest extends ScopeTestCase
         $this->assertHttp200Success();
         $this->assertJsonLengthMax(20);
     }
+
 
     /**
      * Test score register.

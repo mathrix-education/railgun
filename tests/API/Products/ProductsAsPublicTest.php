@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Products;
 
 use Tests\API\ScopeTestCase;
@@ -23,6 +24,7 @@ class ProductsAsPublicTest extends ScopeTestCase
         $this->genericIndexSuccess();
     }
 
+
     /**
      * @throws \Exception
      */
@@ -30,6 +32,7 @@ class ProductsAsPublicTest extends ScopeTestCase
     {
         $this->genericGetSuccess();
     }
+
 
     /**
      * @throws \Exception
@@ -39,6 +42,7 @@ class ProductsAsPublicTest extends ScopeTestCase
         $this->genericAddUnauthorized();
     }
 
+
     /**
      * @throws \Exception
      */
@@ -46,6 +50,7 @@ class ProductsAsPublicTest extends ScopeTestCase
     {
         $this->genericEditUnauthorized();
     }
+
 
     /**
      * @throws \Exception

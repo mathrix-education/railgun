@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use App\Models\Traits\Votable;
@@ -19,23 +20,23 @@ use Illuminate\Support\Facades\Auth;
  * @copyright Mathrix Education SA
  * @package   App\Models
  *
- * @property int                  $id
- * @property string|null          $content
- * @property int|null             $parent_id
- * @property int|null             $user_id
- * @property int                  $path_id
- * @property int                  $module_id
- * @property int                  $score
- * @property int|null             $user_vote
- * @property Carbon               $created_at
- * @property Carbon               $updated_at
- * @property Carbon|null          $deleted_at
- * @property User|null            $user
- * @property Path                 $path
- * @property Module               $module
- * @property Comment|null         $parent
+ * @property int $id
+ * @property string|null $content
+ * @property int|null $parent_id
+ * @property int|null $user_id
+ * @property int $path_id
+ * @property int $module_id
+ * @property int $score
+ * @property int|null $user_vote
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property Carbon|null $deleted_at
+ * @property User|null $user
+ * @property Path $path
+ * @property Module $module
+ * @property Comment|null $parent
  * @property Collection|Comment[] $children
- * @property Collection|Vote[]    $votes
+ * @property Collection|Vote[] $votes
  *
  * @method static QueryBuilder|Comment onlyTrashed()
  * @method static QueryBuilder|Comment withTrashed()
@@ -77,6 +78,7 @@ class Comment extends BaseModel
     protected $dates = ["deleted_at"];
     /** @var array Virtual fields */
     protected $appends = ["score", "user_vote"];
+
 
     /**
      * Get the user vote value (null|1|-1).
@@ -122,6 +124,7 @@ class Comment extends BaseModel
         return $this->belongsTo(self::class, "parent_id");
     }
 
+
     /**
      * HasMany Comment.
      *
@@ -133,6 +136,7 @@ class Comment extends BaseModel
             ->orderBy("created_at");
     }
 
+
     /**
      * BelongsTo Path.
      *
@@ -143,6 +147,7 @@ class Comment extends BaseModel
         return $this->belongsTo(Path::class);
     }
 
+
     /**
      * BelongsTo Module.
      *
@@ -152,6 +157,7 @@ class Comment extends BaseModel
     {
         return $this->belongsTo(Module::class);
     }
+
 
     /**
      * BelongsTo Comment.

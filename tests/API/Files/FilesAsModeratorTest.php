@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Files;
 
 use App\Controllers\FileController;
@@ -32,6 +33,7 @@ class FilesAsModeratorTest extends FilesAsRedactorTest
         $this->assertJsonDocumentMatches($this->response->getContent(), $this->fileSignature);
     }
 
+
     /**
      * GET /files/{path}
      *
@@ -45,6 +47,7 @@ class FilesAsModeratorTest extends FilesAsRedactorTest
         $this->assertHttp200Success();
         $this->assertJsonDocumentMatches($this->response->getContent(), $this->directorySignature);
     }
+
 
     /**
      * GET /files/explore/{directory}
@@ -65,6 +68,7 @@ class FilesAsModeratorTest extends FilesAsRedactorTest
         ]);
     }
 
+
     /**
      * GET /files/explore/{directory}
      *
@@ -78,6 +82,7 @@ class FilesAsModeratorTest extends FilesAsRedactorTest
         $this->assertHttpError(404, "file_not_found");
     }
 
+
     /**
      * GET /files/explore/{directory}
      *
@@ -90,6 +95,7 @@ class FilesAsModeratorTest extends FilesAsRedactorTest
 
         $this->assertHttp400InvalidRequest();
     }
+
 
     /**
      * POST /content/upload
@@ -106,6 +112,7 @@ class FilesAsModeratorTest extends FilesAsRedactorTest
         $this->assertHttp200Success();
         self::getDisk()->assertExists("{$this->cdnSubFolderUuid}/test/avatar.jpg");
     }
+
 
     /**
      * POST /content/upload
@@ -129,6 +136,7 @@ class FilesAsModeratorTest extends FilesAsRedactorTest
         $this->assertHttp401Unauthorized();
     }
 
+
     /**
      * POST /content/upload
      * Test file uploads on CDN with existing file with force set to false.
@@ -149,6 +157,7 @@ class FilesAsModeratorTest extends FilesAsRedactorTest
         $this->assertHttp400InvalidRequest();
         self::getDisk()->assertExists($existingFile);
     }
+
 
     /**
      * PATCH /files/{file}
@@ -174,6 +183,7 @@ class FilesAsModeratorTest extends FilesAsRedactorTest
         self::getDisk()->move($destination, $source); // Rollback
     }
 
+
     /**
      * PATCH /files/{file}
      * Rename a file to an existing destination file, without force
@@ -194,6 +204,7 @@ class FilesAsModeratorTest extends FilesAsRedactorTest
         $this->assertHttp400InvalidRequest();
         self::getDisk()->assertExists($source);
     }
+
 
     /**
      * PATCH /files/{file}
@@ -217,6 +228,7 @@ class FilesAsModeratorTest extends FilesAsRedactorTest
         $this->assertHttp401Unauthorized();
     }
 
+
     /**
      * DELETE /files/{file}
      * Delete a file (send it to trash)
@@ -238,6 +250,7 @@ class FilesAsModeratorTest extends FilesAsRedactorTest
         self::getDisk()->move(FileController::TRASH_DIR . "/$file", $file);
     }
 
+
     /**
      * DELETE /files/{file}
      * Delete a file which does not exist
@@ -251,6 +264,7 @@ class FilesAsModeratorTest extends FilesAsRedactorTest
 
         $this->assertHttpError(404, "file_not_found");
     }
+
 
     /**
      * DELETE /files/{file}

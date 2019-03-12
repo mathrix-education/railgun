@@ -17,6 +17,7 @@ class AddExpirationToDiscountsTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

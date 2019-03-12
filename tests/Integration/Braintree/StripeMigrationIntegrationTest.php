@@ -1,10 +1,10 @@
 <?php
-namespace Tests\Braintree;
+
+namespace Tests\Integration\Braintree;
 
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
-use App\Models\User;
 use Laravel\Passport\Passport;
 
 /**
@@ -18,19 +18,18 @@ use Laravel\Passport\Passport;
  */
 class StripeMigrationIntegrationTest extends BraintreeTestCase
 {
+    /** @var \Stripe\Subscription $stripeSubscription */
+    private $stripeSubscription;
+
+
     /**
-     * Test migration from Stripe to Braintree
-     *
-     * @throws Http400InvalidRequestException
+     * Create and initialize a valid Stripe customer.
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      */
-    public function testStripeMigration()
+    private function createStripeCustomer()
     {
-        // Create Stripe customer
-        $user = User::where("type", "=", "registered")
-            ->whereNull("braintree_id")
-            ->firstOrFail();
+        $user = $this->getPristineCustomer();
 
         /** @var \Stripe\Customer $stripeCustomer */
         $stripeCustomer = \Stripe\Customer::create([
@@ -42,8 +41,7 @@ class StripeMigrationIntegrationTest extends BraintreeTestCase
         $user->save();
 
         // Create Stripe subscription
-        /** @var \Stripe\Subscription $subscription */
-        $subscription = \Stripe\Subscription::create([
+        $this->stripeSubscription = \Stripe\Subscription::create([
             "customer" => $user->stripe_id,
             "items" => [
                 [
@@ -51,6 +49,22 @@ class StripeMigrationIntegrationTest extends BraintreeTestCase
                 ]
             ]
         ]);
+
+        return $user;
+    }
+
+
+    /**
+     * Test migration from Stripe to Braintree
+     *
+     * @throws Http400InvalidRequestException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
+     */
+    public function testStripeMigration()
+    {
+        // Create Stripe customer
+        $user = $this->createStripeCustomer();
         Passport::actingAs($user, ["registered"]);
 
         // Do request
@@ -58,16 +72,18 @@ class StripeMigrationIntegrationTest extends BraintreeTestCase
             "paymentMethodNonce" => "fake-valid-visa-nonce"
         ]);
 
-        $this->assertHttp200Success();
+        $this->assertResponseOk();
         $this->assertInDatabase("users", ["id" => $user->id, "stripe_id" => null]);
 
         // Assert Stripe subscriptions were canceled
-        $subscription = \Stripe\Subscription::retrieve($subscription->id);
+        /** @var \Stripe\Subscription $subscription */
+        $subscription = \Stripe\Subscription::retrieve($this->stripeSubscription->id);
         $this->assertEquals($subscription->status, "canceled");
 
         // Assert Braintree subscriptions were created
         $braintreeSubscriptions = $user->getBraintreeSubscriptions();
         $this->assertNotEmpty($braintreeSubscriptions);
+
         /** @var \Braintree\Subscription $newBraintreeSubscription */
         $newBraintreeSubscription = $braintreeSubscriptions->first();
         $this->assertEquals($newBraintreeSubscription->planId, "v4_monthly");

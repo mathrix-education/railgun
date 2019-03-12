@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Models\User;
@@ -21,12 +22,27 @@ use Illuminate\Notifications\DatabaseNotification;
 class NotificationController extends BaseController
 {
     /**
+     * Get unread notifications of a user.
+     *
+     * @param Request $request The request object.
+     * @param int $page The page used for pagination.
+     * @param int $perPage The notification count per page.
+     *
+     * @return PaginationJsonResponse
+     */
+    public function unread(Request $request, $page = 1, $perPage = 100)
+    {
+        return $this->getNotificationsJsonResponse("unreadNotifications", $request, $page, $perPage);
+    }
+
+
+    /**
      * Get the user notifications with a given relation
      *
-     * @param string  $relation
+     * @param string $relation
      * @param Request $request
-     * @param int     $page
-     * @param int     $perPage
+     * @param int $page
+     * @param int $perPage
      *
      * @return PaginationJsonResponse
      */
@@ -44,40 +60,13 @@ class NotificationController extends BaseController
         return $response;
     }
 
-    /**
-     * Get all notifications of a user.
-     *
-     * @param Request $request The request object.
-     * @param int     $page    The page used for pagination.
-     * @param int     $perPage The notification count per page.
-     *
-     * @return PaginationJsonResponse
-     */
-    public function all(Request $request, $page = 1, $perPage = 100)
-    {
-        return $this->getNotificationsJsonResponse("notifications", $request, $page, $perPage);
-    }
-
-    /**
-     * Get unread notifications of a user.
-     *
-     * @param Request $request The request object.
-     * @param int     $page    The page used for pagination.
-     * @param int     $perPage The notification count per page.
-     *
-     * @return PaginationJsonResponse
-     */
-    public function unread(Request $request, $page = 1, $perPage = 100)
-    {
-        return $this->getNotificationsJsonResponse("unreadNotifications", $request, $page, $perPage);
-    }
 
     /**
      * Get read notifications of a user.
      *
      * @param Request $request The request object.
-     * @param int     $page    The page used for pagination.
-     * @param int     $perPage The notification count per page.
+     * @param int $page The page used for pagination.
+     * @param int $perPage The notification count per page.
      *
      * @return PaginationJsonResponse
      */
@@ -85,6 +74,7 @@ class NotificationController extends BaseController
     {
         return $this->getNotificationsJsonResponse("readNotifications", $request, $page, $perPage);
     }
+
 
     /**
      * Mark all notification as read for a user.
@@ -102,12 +92,28 @@ class NotificationController extends BaseController
         return $this->all($request);
     }
 
+
+    /**
+     * Get all notifications of a user.
+     *
+     * @param Request $request The request object.
+     * @param int $page The page used for pagination.
+     * @param int $perPage The notification count per page.
+     *
+     * @return PaginationJsonResponse
+     */
+    public function all(Request $request, $page = 1, $perPage = 100)
+    {
+        return $this->getNotificationsJsonResponse("notifications", $request, $page, $perPage);
+    }
+
+
     /**
      * Mark a notification as read or unread.
      *
-     * @param Request $request        The request object.
-     * @param string  $notificationId The notification id (uuid format).
-     * @param string  $type           The type of mark (read or unread).
+     * @param Request $request The request object.
+     * @param string $notificationId The notification id (uuid format).
+     * @param string $type The type of mark (read or unread).
      *
      * @return JsonResponse
      */
@@ -122,7 +128,7 @@ class NotificationController extends BaseController
 
         if ($type == "read") {
             $notification->markAsRead();
-        } elseif ($type == "unread") {
+        } else if ($type == "unread") {
             $notification->markAsUnread();
         }
 

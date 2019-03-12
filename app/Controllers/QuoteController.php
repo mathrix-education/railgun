@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Models\Quote;
@@ -111,7 +112,7 @@ class QuoteController extends BaseController
             ->limit($count)
             ->get();
         $response = new JsonResponse($quotes);
-        
+
         return $response;
     }
 }

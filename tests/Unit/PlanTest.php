@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Unit;
 
 use App\Services\Braintree\Models\Plan;
@@ -26,6 +27,7 @@ class PlanTest extends BaseTestCase
         }
     }
 
+
     /**
      * @return Plan|null
      */
@@ -39,6 +41,7 @@ class PlanTest extends BaseTestCase
         return $plan;
     }
 
+
     /**
      * @expectedException \App\Exceptions\Http404ModelNotFoundException
      */
@@ -48,6 +51,7 @@ class PlanTest extends BaseTestCase
         $this->assertInstanceOf(Plan::class, $plan);
         Plan::findOrFail("non_existing_plan");
     }
+
 
     /**
      * @depends testFind
@@ -60,6 +64,7 @@ class PlanTest extends BaseTestCase
         $this->assertArrayHasKey("id", $planArray);
         $this->assertArrayHasKey("pricePerMonth", $planArray);
     }
+
 
     /**
      * @depends testFind

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -33,9 +34,9 @@ class VoteController extends BaseController
      * @apiUse         Http401Unauthorized
      * @apiUse         Http422ModelSave
      *
-     * @param Request $request      The request
-     * @param string  $votable_type The votable type
-     * @param int     $votable_id   The votable id
+     * @param Request $request The request
+     * @param string $votable_type The votable type
+     * @param int $votable_id The votable id
      *
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
@@ -48,40 +49,14 @@ class VoteController extends BaseController
         return $this->vote($request, $votable_type, $votable_id, 1);
     }
 
-    /**
-     * @apiVersion     4.0.0
-     *
-     * @api            {post} /votes/{votable_type}/{votable_id}/down Down
-     * @apiGroup       Votes
-     * @apiName        VoteDown
-     * @apiDescription Down vote something
-     * @apiPermission  registered
-     * @apiUse         Bearer
-     * @apiUse         Http401Unauthorized
-     * @apiUse         Http422ModelSave
-     *
-     * @param Request $request      The request
-     * @param string  $votable_type The votable type
-     * @param int     $votable_id   The votable id
-     *
-     * @throws Http400InvalidRequestException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
-     *
-     * @return JsonResponse
-     */
-    public function down(Request $request, string $votable_type, int $votable_id)
-    {
-        return $this->vote($request, $votable_type, $votable_id, -1);
-    }
 
     /**
      * Handle vote action.
      *
-     * @param Request $request      The request
-     * @param string  $votable_type The votable type
-     * @param int     $votable_id   The votable id
-     * @param int     $value        The vote value +1/-1
+     * @param Request $request The request
+     * @param string $votable_type The votable type
+     * @param int $votable_id The votable id
+     * @param int $value The vote value +1/-1
      *
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
@@ -129,5 +104,33 @@ class VoteController extends BaseController
         $response = new JsonResponse($vote->votable);
 
         return $response;
+    }
+
+
+    /**
+     * @apiVersion     4.0.0
+     *
+     * @api            {post} /votes/{votable_type}/{votable_id}/down Down
+     * @apiGroup       Votes
+     * @apiName        VoteDown
+     * @apiDescription Down vote something
+     * @apiPermission  registered
+     * @apiUse         Bearer
+     * @apiUse         Http401Unauthorized
+     * @apiUse         Http422ModelSave
+     *
+     * @param Request $request The request
+     * @param string $votable_type The votable type
+     * @param int $votable_id The votable id
+     *
+     * @throws Http400InvalidRequestException
+     * @throws Http422ModelSaveException
+     * @throws Http422ModelValidationException
+     *
+     * @return JsonResponse
+     */
+    public function down(Request $request, string $votable_type, int $votable_id)
+    {
+        return $this->vote($request, $votable_type, $votable_id, -1);
     }
 }

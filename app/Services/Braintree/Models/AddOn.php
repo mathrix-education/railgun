@@ -1,7 +1,7 @@
 <?php
+
 namespace App\Services\Braintree\Models;
 
-use App\Services\Braintree\Formatter;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -17,21 +17,21 @@ use Illuminate\Support\Str;
  * @package   App\Services\Braintree\Models
  * @mixin     \Braintree\AddOn
  *
- * @property float    $amount
+ * @property float $amount
  * @property int|null $currentBillingCycle
- * @property string   $description
- * @property string   $id
- * @property string   $kind
- * @property string   $name
- * @property bool     $neverExpires
+ * @property string $description
+ * @property string $id
+ * @property string $kind
+ * @property string $name
+ * @property bool $neverExpires
  * @property int|null $numberOfBillingCycles
  * @property int|null $quantity
- * @property Carbon   $createdAt
- * @property Carbon   $updatedAt
- * @property bool     $hasTrial
- * @property int      $billingFrequency
- * @property float    $pricePerMonth
- * @property float    $trialPrice
+ * @property Carbon $createdAt
+ * @property Carbon $updatedAt
+ * @property bool $hasTrial
+ * @property int $billingFrequency
+ * @property float $pricePerMonth
+ * @property float $trialPrice
  */
 class AddOn extends BraintreeModel
 {
@@ -39,12 +39,12 @@ class AddOn extends BraintreeModel
     {
         parent::__construct($addOn);
 
-        $this->amount = (float) ($addOn->amount);
+        $this->amount = (float)($addOn->amount);
         $this->hasTrial = Str::contains($this->id, ["v4_biannually", "v4_annually"]);
 
         if (Str::contains($this->id, ["v4_biannually", "v4_annually"])) {
             $this->billingFrequency = 12;
-        } elseif (Str::contains($this->id, "v4_monthly")) {
+        } else if (Str::contains($this->id, "v4_monthly")) {
             $this->billingFrequency = 1;
         }
 
@@ -55,46 +55,6 @@ class AddOn extends BraintreeModel
         $this->trialPrice = $this->getTrialPrice();
     }
 
-    /**
-     * The findOr function, must be reimplemented.
-     *
-     * @param string   $id
-     * @param callable $callback
-     *
-     * @return mixed
-     */
-    public static function findOr(string $id, callable $callback)
-    {
-        $addOns = self::all();
-
-        /** @var AddOn $addOn */
-        foreach ($addOns as $addOn) {
-            if ($addOn->id === $id) {
-                return $addOn;
-            }
-        }
-
-        return $callback($id);
-    }
-
-    /**
-     * @return Collection
-     */
-    public static function all()
-    {
-        return Cache::remember("addons", 30, function () {
-            $addOns = \Braintree\AddOn::all();
-            $collection = new Collection();
-
-            foreach ($addOns as $addOn) {
-                $collection->push(new self($addOn));
-            }
-
-            // Don't forget to sort the values
-            return $collection->sortByDesc("id")
-                ->values();
-        });
-    }
 
     /**
      * Get the trial price in euros.
@@ -116,6 +76,7 @@ class AddOn extends BraintreeModel
         return round($diffInMonths * $this->pricePerMonth + $diffInDays * ($this->pricePerMonth / 30), 2);
     }
 
+
     /**
      * Get the plan trial end date.
      *
@@ -131,7 +92,7 @@ class AddOn extends BraintreeModel
 
         if ($nextThirtyFirstJuly->isPast()) {
             $nextThirtyFirstJuly->addYear();
-        } elseif ((new Carbon("1st May"))->isPast()) {
+        } else if ((new Carbon("1st May"))->isPast()) {
             $nextThirtyFirstJuly->addYear();
         }
 
@@ -140,5 +101,48 @@ class AddOn extends BraintreeModel
         }
 
         return $nextThirtyFirstJuly;
+    }
+
+
+    /**
+     * The findOr function, must be reimplemented.
+     *
+     * @param string $id
+     * @param callable $callback
+     *
+     * @return mixed
+     */
+    public static function findOr(string $id, callable $callback)
+    {
+        $addOns = self::all();
+
+        /** @var AddOn $addOn */
+        foreach ($addOns as $addOn) {
+            if ($addOn->id === $id) {
+                return $addOn;
+            }
+        }
+
+        return $callback($id);
+    }
+
+
+    /**
+     * @return Collection
+     */
+    public static function all()
+    {
+        return Cache::remember("addons", 30, function () {
+            $addOns = \Braintree\AddOn::all();
+            $collection = new Collection();
+
+            foreach ($addOns as $addOn) {
+                $collection->push(new self($addOn));
+            }
+
+            // Don't forget to sort the values
+            return $collection->sortByDesc("id")
+                ->values();
+        });
     }
 }

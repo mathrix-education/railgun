@@ -1,7 +1,7 @@
 <?php
+
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -14,12 +14,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @copyright Mathrix Education SA
  * @package   App\Models
  *
- * @property int                 $id
- * @property string              $name
- * @property string              $name_short
- * @property string              $slug
- * @property string              $slug_short
- * @property bool                $visible
+ * @property int $id
+ * @property string $name
+ * @property string $name_short
+ * @property string $slug
+ * @property string $slug_short
+ * @property bool $visible
  * @property Collection|Class_[] $classes
  */
 class Country extends BaseModel

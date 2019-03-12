@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Activities;
 
 use App\Models\Activity;
@@ -27,6 +28,7 @@ class ActivitiesAsModeratorTest extends ActivitiesAsRegisteredTest
         $this->genericIndexSuccess();
     }
 
+
     /**
      * POST /activities.
      *
@@ -37,6 +39,7 @@ class ActivitiesAsModeratorTest extends ActivitiesAsRegisteredTest
         $this->genericAddSuccess();
     }
 
+
     /**
      * PATCH /activities/{id}.
      *
@@ -46,6 +49,7 @@ class ActivitiesAsModeratorTest extends ActivitiesAsRegisteredTest
     {
         $this->genericEditSuccess();
     }
+
 
     /**
      * PATCH /activities/{id} with linkable models.
@@ -84,6 +88,7 @@ class ActivitiesAsModeratorTest extends ActivitiesAsRegisteredTest
         }
     }
 
+
     /**
      * PATCH /activities/{id} while re-ordering module ids.
      */
@@ -110,6 +115,7 @@ class ActivitiesAsModeratorTest extends ActivitiesAsRegisteredTest
             ]);
         }
     }
+
 
     /**
      * DELETE /activities/{id}.

@@ -19,6 +19,7 @@ class AddRankToScoresTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      *

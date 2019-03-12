@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Events;
 
 use App\Models\User;
@@ -22,12 +23,13 @@ class NewSubscriptionEvent extends BaseEvent
     /** @var \Braintree\Transaction $initialTransaction */
     public $initialTransaction;
 
+
     /**
      * NewSubscriptionEvent constructor.
      *
-     * @param User                    $user
+     * @param User $user
      * @param \Braintree_Subscription $subscription
-     * @param \Braintree\Transaction  $initialTransaction
+     * @param \Braintree\Transaction $initialTransaction
      */
     public function __construct(User $user, \Braintree_Subscription $subscription, \Braintree\Transaction $initialTransaction = null)
     {

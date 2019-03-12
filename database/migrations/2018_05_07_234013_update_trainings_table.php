@@ -29,6 +29,7 @@ class UpdateTrainingsTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

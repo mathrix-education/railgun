@@ -45,6 +45,7 @@ class CreateClassesTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

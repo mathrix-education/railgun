@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Utils\Traits\Generics;
 
 /**
@@ -14,6 +15,7 @@ trait Get
 {
     public $getId;
 
+
     /**
      * Generic get; expect HTTP 200.
      *
@@ -26,6 +28,7 @@ trait Get
         // Assertions
         $this->assertHttp200Success();
     }
+
 
     /**
      * Generic get call.
@@ -40,6 +43,7 @@ trait Get
 
         $this->json("get", "/" . $this->modelPlural . "/{$this->getId}");
     }
+
 
     /**
      * Generic get; expect HTTP 422 Unauthorized.

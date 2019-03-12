@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
@@ -6,7 +7,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 /**
  * Class Chapter.
@@ -17,17 +17,17 @@ use Illuminate\Support\Facades\DB;
  * @copyright Mathrix Education SA
  * @package   App\Models
  *
- * @property int                 $id
- * @property string              $name
- * @property string              $slug
- * @property int                 $order
- * @property bool                $visible
- * @property int                 $class_id
- * @property int                 $discipline_id
- * @property int                 $activity_count
- * @property array               $link
- * @property Class_              $class_
- * @property Discipline          $discipline
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property int $order
+ * @property bool $visible
+ * @property int $class_id
+ * @property int $discipline_id
+ * @property int $activity_count
+ * @property array $link
+ * @property Class_ $class_
+ * @property Discipline $discipline
  * @property Collection|Notion[] $notions
  */
 class Chapter extends BaseModel
@@ -60,6 +60,7 @@ class Chapter extends BaseModel
         return $this->belongsTo(Class_::class, "class_id");
     }
 
+
     /**
      * BelongsTo Discipline.
      *
@@ -70,27 +71,6 @@ class Chapter extends BaseModel
         return $this->belongsTo(Discipline::class);
     }
 
-    /**
-     * HasMany Marks.
-     *
-     * @return HasManyThrough
-     */
-    public function marks(): HasManyThrough
-    {
-        return $this->hasManyThrough(Mark::class, Path::class);
-    }
-
-    /**
-     * HasMany Notion.
-     *
-     * @return BelongsToMany
-     */
-    public function notions(): BelongsToMany
-    {
-        return $this->belongsToMany(Notion::class)
-            ->withPivot(["order"])
-            ->orderBy("pivot_order");
-    }
 
     /**
      * activity_count
@@ -116,6 +96,20 @@ class Chapter extends BaseModel
         return $count;
     }
 
+
+    /**
+     * HasMany Notion.
+     *
+     * @return BelongsToMany
+     */
+    public function notions(): BelongsToMany
+    {
+        return $this->belongsToMany(Notion::class)
+            ->withPivot(["order"])
+            ->orderBy("pivot_order");
+    }
+
+
     /**
      * activity_to_revise
      *
@@ -140,6 +134,18 @@ class Chapter extends BaseModel
 
         return $count;
     }
+
+
+    /**
+     * HasMany Marks.
+     *
+     * @return HasManyThrough
+     */
+    public function marks(): HasManyThrough
+    {
+        return $this->hasManyThrough(Mark::class, Path::class);
+    }
+
 
     /**
      * activity_completed

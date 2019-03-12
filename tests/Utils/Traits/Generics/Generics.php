@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Utils\Traits\Generics;
 
 /**
@@ -18,6 +19,7 @@ trait Generics
     /** @var string|null the subfactory to use; null for default factory */
     protected $subFactory = null;
 
+
     /**
      * Check if generic tests are usable; otherwise throw exception.
      *
@@ -29,6 +31,7 @@ trait Generics
             throw new \Exception("Generic tests are not usable in this context");
         }
     }
+
 
     /**
      * Check if generic tests are usable.

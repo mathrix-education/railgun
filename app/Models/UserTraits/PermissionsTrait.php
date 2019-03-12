@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models\UserTraits;
 
 use App\Exceptions\Http401UnauthorizedException;
@@ -16,14 +17,15 @@ use App\Exceptions\Http401UnauthorizedException;
 trait PermissionsTrait
 {
     /**
-     * Check if user is administrator.
+     * Check if user is redactor.
      *
      * @return bool
      */
-    public function isAdmin()
+    public function isRedactor()
     {
-        return $this->tokenCan("admin");
+        return $this->isModerator() || $this->tokenCan("redactor");
     }
+
 
     /**
      * Check if user is at least moderator.
@@ -35,15 +37,17 @@ trait PermissionsTrait
         return $this->isAdmin() || $this->tokenCan("moderator");
     }
 
+
     /**
-     * Check if user is redactor.
+     * Check if user is administrator.
      *
      * @return bool
      */
-    public function isRedactor()
+    public function isAdmin()
     {
-        return $this->isModerator() || $this->tokenCan("redactor");
+        return $this->tokenCan("admin");
     }
+
 
     /**
      * Check if user is administrator.
@@ -55,13 +59,14 @@ trait PermissionsTrait
         return $this->isAdmin() || $this->tokenCan("support");
     }
 
+
     /**
      * Check if user is authorized to do something; if not throw an exception.
      *
      * @see Authorizable
      *
      * @param        $ability
-     * @param array  $arguments
+     * @param array $arguments
      * @param string $exceptionClass
      */
     public function canOrFail($ability, $arguments = [], $exceptionClass = Http401UnauthorizedException::class)

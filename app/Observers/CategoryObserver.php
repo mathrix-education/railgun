@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Observers;
 
 use App\Exceptions\Http400InvalidRequestException;
@@ -30,6 +31,7 @@ class CategoryObserver extends BaseObserver
 
         return true;
     }
+
 
     /**
      * @param Category $category

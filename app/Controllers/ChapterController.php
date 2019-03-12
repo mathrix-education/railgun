@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Models\Chapter;
@@ -21,10 +22,10 @@ class ChapterController extends BaseController
     /**
      * Get chapters by class and discipline slugs
      *
-     * @param Request     $request       The request
-     * @param int         $class_id      The class id
-     * @param int         $discipline_id The discipline id
-     * @param string|null $scope         The scope, use 'all' to display invisible chapters
+     * @param Request $request The request
+     * @param int $class_id The class id
+     * @param int $discipline_id The discipline id
+     * @param string|null $scope The scope, use 'all' to display invisible chapters
      *
      * @return JsonResponse
      */
@@ -50,11 +51,12 @@ class ChapterController extends BaseController
         return $response;
     }
 
+
     /**
      * Get a chapter by its slug and class slug.
      *
      * @param string $chapterSlug The chapter slug.
-     * @param string $classSlug   The class slug.
+     * @param string $classSlug The class slug.
      *
      * @return JsonResponse
      */
@@ -70,6 +72,7 @@ class ChapterController extends BaseController
 
         return new JsonResponse($chapter);
     }
+
 
     /**
      * Get a chapter and all its visible children (notions, activities, modules).

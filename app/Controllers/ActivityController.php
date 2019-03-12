@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http422ModelSaveException;
@@ -41,7 +42,7 @@ class ActivityController extends BaseController
         $activities = Notion::findOrFail($notionId)->activities;
 
         /**
-         * @var int      $key
+         * @var int $key
          * @var Activity $activity
          */
         foreach ($activities as $key => $activity) {
@@ -55,6 +56,7 @@ class ActivityController extends BaseController
 
         return $response;
     }
+
 
     /**
      * Get the activities marked as "to_revise" for the current user.
@@ -76,6 +78,7 @@ class ActivityController extends BaseController
 
         return $response;
     }
+
 
     /**
      * Get the activities marked as "view" for the current user, one per discipline.
@@ -125,11 +128,12 @@ class ActivityController extends BaseController
         return $response;
     }
 
+
     /**
      * Mark an activity.
      *
      * @param Request $request The request
-     * @param int     $id
+     * @param int $id
      *
      * @return JsonResponse
      * @throws Http422ModelSaveException
@@ -162,11 +166,12 @@ class ActivityController extends BaseController
         return $response;
     }
 
+
     /**
      * Unmark an activity.
      *
      * @param Request $request The request
-     * @param int     $id      The activity_id
+     * @param int $id The activity_id
      *
      * @return JsonResponse
      */

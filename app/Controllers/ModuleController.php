@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Exceptions\Http422ModelSaveException;
@@ -32,7 +33,7 @@ class ModuleController extends BaseController
      * @apiUse         ModuleArray
      * @apiUse         Http401Unauthorized
      *
-     * @param mixed      $key
+     * @param mixed $key
      * @param null|mixed $value
      *
      * @return JsonResponse
@@ -52,8 +53,8 @@ class ModuleController extends BaseController
      * @apiUse         Http404ModelNotFound
      *
      * @param Request $request The request
-     * @param int     $key     the module id
-     * @param null    $value   not used here
+     * @param int $key the module id
+     * @param null $value not used here
      *
      * @return JsonResponse
      */
@@ -167,7 +168,7 @@ class ModuleController extends BaseController
      * @apiUse         Http422ModelValidation
      *
      * @param Request $request The request
-     * @param int     $id
+     * @param int $id
      *
      * @return JsonResponse
      * @throws Http422ModelSaveException

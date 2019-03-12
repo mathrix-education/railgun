@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API;
 
 use App\Models\User;
@@ -28,6 +29,7 @@ class AuthTest extends TestCase
 {
     use DatabaseAssertionsTrait, HttpAssertionsTrait, JsonAssertionsTrait, NotificationsAssertionsTrait, ResponseTrait, DebugTrait;
 
+
     /**
      * Creates the application.
      *
@@ -39,6 +41,7 @@ class AuthTest extends TestCase
     {
         return require __DIR__ . "/../../bootstrap/app.php";
     }
+
 
     /**
      * POST /users/login.
@@ -72,6 +75,20 @@ class AuthTest extends TestCase
         return $args;
     }
 
+
+    /**
+     * Get regular (non Facebook) user.
+     *
+     * @return User
+     */
+    private function getNonFacebookUser(): User
+    {
+        return User::inRandomOrder()
+            ->where("settings", "NOT LIKE", "%facebook_id%")
+            ->firstOrFail();
+    }
+
+
     /**
      * POST /users/refresh.
      *
@@ -99,6 +116,7 @@ class AuthTest extends TestCase
         $this->assertNotEmpty($data->access_token);
     }
 
+
     /**
      * POST /users/forgot.
      */
@@ -113,6 +131,7 @@ class AuthTest extends TestCase
         $this->assertNotificationSentToVia(PasswordForgottenNotification::class, $user, "mail");
     }
 
+
     /**
      * POST /users/forgot.
      */
@@ -123,6 +142,20 @@ class AuthTest extends TestCase
 
         $this->assertHttp400InvalidRequest();
     }
+
+
+    /**
+     * Get a Facebook user.
+     *
+     * @return User
+     */
+    private function getFacebookUser(): User
+    {
+        return User::inRandomOrder()
+            ->where("settings", "LIKE", "%facebook_id%")
+            ->firstOrFail();
+    }
+
 
     /**
      * POST /users/reset.
@@ -142,6 +175,7 @@ class AuthTest extends TestCase
             ->update(["password" => Hash::make("test123")]);
     }
 
+
     /**
      * POST /users/reset.
      */
@@ -154,6 +188,7 @@ class AuthTest extends TestCase
         $this->assertHttp400InvalidRequest();
     }
 
+
     /**
      * POST /users/reset.
      */
@@ -164,29 +199,5 @@ class AuthTest extends TestCase
         $this->json("post", "/users/reset/{$user->token}", ["password" => null]);
 
         $this->assertHttp400InvalidRequest();
-    }
-
-    /**
-     * Get regular (non Facebook) user.
-     *
-     * @return User
-     */
-    private function getNonFacebookUser(): User
-    {
-        return User::inRandomOrder()
-            ->where("settings", "NOT LIKE", "%facebook_id%")
-            ->firstOrFail();
-    }
-
-    /**
-     * Get a Facebook user.
-     *
-     * @return User
-     */
-    private function getFacebookUser(): User
-    {
-        return User::inRandomOrder()
-            ->where("settings", "LIKE", "%facebook_id%")
-            ->firstOrFail();
     }
 }

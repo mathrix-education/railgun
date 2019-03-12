@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Listeners;
 
 use App\Events\SubscriptionChargedSuccessfullyEvent;
@@ -18,6 +19,7 @@ use GuzzleHttp\Client;
 class SubscriptionChargedSuccessfullyListener extends BaseListener
 {
     const BASE_URL = "https://www.google-analytics.com/collect";
+
 
     public function handle(SubscriptionChargedSuccessfullyEvent $event)
     {

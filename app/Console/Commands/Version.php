@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -22,6 +23,7 @@ class Version extends Command
     private $base;
     private $version;
 
+
     public function handle()
     {
         $this->base = app()->basePath();
@@ -41,6 +43,7 @@ class Version extends Command
         $this->setVersionInFile("config/env/.env.next", 'APP_VERSION=%version%');
         $this->setVersionInFile("config/env/.env.pipelines", 'APP_VERSION=%version%');
     }
+
 
     private function setVersionInFile($file, $search)
     {

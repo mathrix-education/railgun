@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Chapters;
 
 use App\Models\Chapter;
@@ -69,6 +70,7 @@ SQL;
         ]);
 
     }
+
 
     /**
      * GET /chapters/slug/{chapterSlug}/by-class-slug/{classSlug}.

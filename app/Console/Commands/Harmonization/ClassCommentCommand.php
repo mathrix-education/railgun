@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands\Harmonization;
 
 use App\Console\Commands\BaseCommand;
@@ -22,11 +23,13 @@ class ClassCommentCommand extends BaseCommand
 
     protected $signature = "harmonize:class:comment";
 
+
     public function handle()
     {
         $content = file_get_contents(app()->basePath("app/Console/Commands/Dry.php"));
         $this->testNamespace($content);
     }
+
 
     private function testNamespace($content)
     {
@@ -42,8 +45,8 @@ class ClassCommentCommand extends BaseCommand
         preg_match("/(class|interface|trait)\s([A-Za-z]+)/", $content, $matches);
 
 
-
     }
+
 
     private function testFirstLine($fileContent)
     {

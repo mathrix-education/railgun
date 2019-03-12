@@ -1,7 +1,7 @@
 <?php
+
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -13,10 +13,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @copyright Mathrix Education SA
  * @package   App\Models
  *
- * @property int    $id
+ * @property int $id
  * @property string $content
  * @property string $status
- * @property int    $module_id
+ * @property int $module_id
  * @property string $created_at
  * @property string $updated_at
  * @property Module $module
@@ -42,6 +42,7 @@ class Report extends BaseModel
 
     /** @var array Relation included by default */
     protected $with = ["module"];
+
 
     public function __construct(array $attributes = [])
     {

@@ -37,6 +37,7 @@ class CreateTrainingUserTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

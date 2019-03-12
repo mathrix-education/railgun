@@ -1,8 +1,8 @@
 <?php
+
 namespace App\Models;
 
 use App\Models\Traits\Loggable;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
@@ -17,25 +17,25 @@ use Illuminate\Support\Facades\Auth;
  * @copyright Mathrix Education SA
  * @package   App\Models
  *
- * @property int                  $id
- * @property string               $name
- * @property string               $slug
- * @property string|null          $seo_title
- * @property string|null          $seo_description
- * @property string|null          $seo_keywords
- * @property string               $type
- * @property bool                 $visible
- * @property bool                 $premium
- * @property bool                 $reviewed
- * @property array                $link
- * @property bool                 $completed
- * @property bool                 $favorite
- * @property bool                 $to_revise
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property string|null $seo_title
+ * @property string|null $seo_description
+ * @property string|null $seo_keywords
+ * @property string $type
+ * @property bool $visible
+ * @property bool $premium
+ * @property bool $reviewed
+ * @property array $link
+ * @property bool $completed
+ * @property bool $favorite
+ * @property bool $to_revise
  * @property Collection|Comment[] $comments
- * @property Collection|Log[]     $logs
- * @property Collection|Mark[]    $marks
- * @property Collection|Module[]  $modules
- * @property Collection|Notion[]  $notions
+ * @property Collection|Log[] $logs
+ * @property Collection|Mark[] $marks
+ * @property Collection|Module[] $modules
+ * @property Collection|Notion[] $notions
  */
 class Activity extends BaseModel
 {
@@ -61,6 +61,7 @@ class Activity extends BaseModel
     /** @var array Appends attributes */
     protected $appends = ["mark"];
 
+
     /**
      * Activity constructor.
      *
@@ -79,15 +80,7 @@ class Activity extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
-    /**
-     * HasMany Marks.
-     *
-     * @return HasManyThrough
-     */
-    public function marks(): HasManyThrough
-    {
-        return $this->hasManyThrough(Mark::class, Path::class);
-    }
+
 
     /**
      * BelongsToMany Module.
@@ -101,6 +94,7 @@ class Activity extends BaseModel
             ->orderBy("pivot_order");
     }
 
+
     /**
      * BelongsToMany Notion.
      *
@@ -113,11 +107,7 @@ class Activity extends BaseModel
             ->orderBy("pivot_order");
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Attributes
-    |--------------------------------------------------------------------------
-    */
+
     /**
      * Get the mark attribute (view|to_revise|completed)
      *
@@ -140,5 +130,22 @@ class Activity extends BaseModel
 
             return $mark !== null ? $mark->status : null;
         }
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Attributes
+    |--------------------------------------------------------------------------
+    */
+
+
+    /**
+     * HasMany Marks.
+     *
+     * @return HasManyThrough
+     */
+    public function marks(): HasManyThrough
+    {
+        return $this->hasManyThrough(Mark::class, Path::class);
     }
 }

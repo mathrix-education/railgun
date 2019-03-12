@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Mails;
 
 use Illuminate\Bus\Queueable;
@@ -19,6 +20,7 @@ abstract class BaseMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+
     public function __construct()
     {
         // Push to the email view the app, cdn and webroot urls defined in the .env file
@@ -28,6 +30,7 @@ abstract class BaseMail extends Mailable
             "webroot" => env("APP_WEBROOT"),
         ]);
     }
+
 
     abstract public static function mock();
 }

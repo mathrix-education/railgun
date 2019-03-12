@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Content;
 
 use Illuminate\Http\UploadedFile;

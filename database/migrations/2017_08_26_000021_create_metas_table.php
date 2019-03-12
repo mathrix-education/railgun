@@ -78,6 +78,7 @@ class CreateMetasTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

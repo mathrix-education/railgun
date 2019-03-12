@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Files;
 
 use Illuminate\Contracts\Filesystem\Filesystem;
@@ -44,13 +45,6 @@ class FilesAsPublicTest extends ScopeTestCase
     /** @var array $directorySignature The directory JSON schema signature */
     protected $directorySignature;
 
-    /**
-     * @return Filesystem|FilesystemAdapter
-     */
-    public static function getDisk()
-    {
-        return Storage::disk("cdn");
-    }
 
     public function setUp()
     {
@@ -84,6 +78,7 @@ class FilesAsPublicTest extends ScopeTestCase
         ];
     }
 
+
     /**
      * Delete created files
      */
@@ -106,25 +101,6 @@ class FilesAsPublicTest extends ScopeTestCase
         $disk->deleteDirectory($this->cdnSubFolderUuid);
     }
 
-    /**
-     * Get a random cdn directory
-     *
-     * @return string
-     */
-    public function randomDirectory()
-    {
-        return $this->faker->randomElement(self::getDisk()->allDirectories($this->cdnSubFolderUuid));
-    }
-
-    /**
-     * Get a random cdn file
-     *
-     * @return mixed
-     */
-    public function randomFile()
-    {
-        return $this->faker->randomElement(self::getDisk()->allFiles($this->cdnSubFolderUuid));
-    }
 
     /**
      * GET /files/{path}
@@ -139,6 +115,27 @@ class FilesAsPublicTest extends ScopeTestCase
         $this->assertHttp401Unauthorized();
     }
 
+
+    /**
+     * Get a random cdn file
+     *
+     * @return mixed
+     */
+    public function randomFile()
+    {
+        return $this->faker->randomElement(self::getDisk()->allFiles($this->cdnSubFolderUuid));
+    }
+
+
+    /**
+     * @return Filesystem|FilesystemAdapter
+     */
+    public static function getDisk()
+    {
+        return Storage::disk("cdn");
+    }
+
+
     /**
      * GET /files/{path}
      *
@@ -151,6 +148,18 @@ class FilesAsPublicTest extends ScopeTestCase
 
         $this->assertHttp401Unauthorized();
     }
+
+
+    /**
+     * Get a random cdn directory
+     *
+     * @return string
+     */
+    public function randomDirectory()
+    {
+        return $this->faker->randomElement(self::getDisk()->allDirectories($this->cdnSubFolderUuid));
+    }
+
 
     /**
      * GET /files/explore/{directory}
@@ -165,6 +174,7 @@ class FilesAsPublicTest extends ScopeTestCase
         $this->assertHttp401Unauthorized();
     }
 
+
     /**
      * GET /files/explore/{directory}
      *
@@ -178,6 +188,7 @@ class FilesAsPublicTest extends ScopeTestCase
         $this->assertHttp401Unauthorized();
     }
 
+
     /**
      * GET /files/explore/{directory}
      *
@@ -190,6 +201,7 @@ class FilesAsPublicTest extends ScopeTestCase
 
         $this->assertHttp401Unauthorized();
     }
+
 
     /**
      * POST /content/upload
@@ -205,6 +217,7 @@ class FilesAsPublicTest extends ScopeTestCase
 
         $this->assertHttp401Unauthorized();
     }
+
 
     /**
      * POST /content/upload
@@ -228,6 +241,7 @@ class FilesAsPublicTest extends ScopeTestCase
         $this->assertHttp401Unauthorized();
     }
 
+
     /**
      * POST /content/upload
      * Test file uploads on CDN with existing file with force set to false.
@@ -248,6 +262,7 @@ class FilesAsPublicTest extends ScopeTestCase
         $this->assertHttp401Unauthorized();
     }
 
+
     /**
      * PATCH /files/{file}
      * Rename a file
@@ -266,6 +281,7 @@ class FilesAsPublicTest extends ScopeTestCase
 
         $this->assertHttp401Unauthorized();
     }
+
 
     /**
      * PATCH /files/{file}
@@ -286,6 +302,7 @@ class FilesAsPublicTest extends ScopeTestCase
 
         $this->assertHttp401Unauthorized();
     }
+
 
     /**
      * PATCH /files/{file}
@@ -309,6 +326,7 @@ class FilesAsPublicTest extends ScopeTestCase
         $this->assertHttp401Unauthorized();
     }
 
+
     /**
      * DELETE /files/{file}
      * Delete a file (send it to trash)
@@ -325,6 +343,7 @@ class FilesAsPublicTest extends ScopeTestCase
         $this->assertHttp401Unauthorized();
     }
 
+
     /**
      * DELETE /files/{file}
      * Delete a file which does not exist
@@ -338,6 +357,7 @@ class FilesAsPublicTest extends ScopeTestCase
 
         $this->assertHttp401Unauthorized();
     }
+
 
     /**
      * DELETE /files/{file}

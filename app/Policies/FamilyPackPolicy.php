@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\FamilyPack;
@@ -16,7 +17,7 @@ use App\Models\User;
 class FamilyPackPolicy
 {
     /**
-     * @param User       $currentUser
+     * @param User $currentUser
      * @param FamilyPack $familyPack
      *
      * @return bool
@@ -26,8 +27,9 @@ class FamilyPackPolicy
         return $currentUser->isSupport() || $currentUser->id === $familyPack->parent_id;
     }
 
+
     /**
-     * @param User       $currentUser
+     * @param User $currentUser
      * @param FamilyPack $familyPack
      *
      * @return bool
@@ -37,8 +39,9 @@ class FamilyPackPolicy
         return $currentUser->isSupport() || $currentUser->id === $familyPack->parent_id;
     }
 
+
     /**
-     * @param User       $currentUser
+     * @param User $currentUser
      * @param FamilyPack $familyPack
      *
      * @return bool

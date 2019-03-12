@@ -1,10 +1,11 @@
 <?php
+
 namespace Tests\API;
 
 use App\Models\Chapter;
 use App\Models\User;
-use Laravel\Passport\Passport;
 use App\Utils\Tree;
+use Laravel\Passport\Passport;
 
 /**
  * Class ChainTest.
@@ -47,6 +48,7 @@ class ChainTest extends APITestCase
         $this->assertJsonKeys($responseKeys);
     }
 
+
     public function testChainWithPost()
     {
         $admin = User::where("type", "=", "admin")->firstOrFail();
@@ -70,6 +72,7 @@ class ChainTest extends APITestCase
 
         $this->assertHttp200Success();
     }
+
 
     /**
      * @throws \Exception

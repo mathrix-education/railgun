@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Mails;
 
 use App\Models\User;
@@ -17,6 +18,7 @@ class PasswordForgottenMail extends BaseMail
     /** @var User The mail user */
     protected $user;
 
+
     /**
      * PasswordForgottenMail constructor.
      *
@@ -29,6 +31,7 @@ class PasswordForgottenMail extends BaseMail
         parent::__construct();
     }
 
+
     /**
      * Mock the Mail.
      *
@@ -40,6 +43,7 @@ class PasswordForgottenMail extends BaseMail
 
         return new self($user);
     }
+
 
     /**
      * Build the Mail.

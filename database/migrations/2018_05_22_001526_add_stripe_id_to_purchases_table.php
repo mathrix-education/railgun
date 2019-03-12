@@ -27,6 +27,7 @@ class AddStripeIdToPurchasesTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

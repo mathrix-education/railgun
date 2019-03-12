@@ -13,6 +13,7 @@ class LevelTableSeeder extends BaseTableSeeder
     private const COUNT = 100;
     private const POWER = 1.2;
 
+
     /**
      * @throws \Exception
      */
@@ -24,7 +25,7 @@ class LevelTableSeeder extends BaseTableSeeder
         for ($i = 1; $i <= self::COUNT; ++$i) {
             $levels[] = [
                 "level" => $i,
-                "objective" => (int) pow(($i - 1) * 10, self::POWER),
+                "objective" => (int)pow(($i - 1) * 10, self::POWER),
                 "youtube_id" => null,
             ];
         }

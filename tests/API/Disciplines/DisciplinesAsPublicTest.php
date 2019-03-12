@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\API\Disciplines;
 
 use App\Models\Class_;
@@ -26,6 +27,7 @@ class DisciplinesAsPublicTest extends ScopeTestCase
         $this->genericIndexSuccess();
     }
 
+
     /**
      * GET /disciplines/{id}.
      *
@@ -35,6 +37,7 @@ class DisciplinesAsPublicTest extends ScopeTestCase
     {
         $this->genericGetSuccess();
     }
+
 
     /**
      * POST /disciplines -> HTTP 401 unauthorized.
@@ -46,6 +49,7 @@ class DisciplinesAsPublicTest extends ScopeTestCase
         $this->genericAddUnauthorized();
     }
 
+
     /**
      * PATCH /disciplines/{id} -> HTTP 401 unauthorized.
      *
@@ -56,6 +60,7 @@ class DisciplinesAsPublicTest extends ScopeTestCase
         $this->genericEditUnauthorized();
     }
 
+
     /**
      * DELETE /disciplines/{id} -> HTTP 401 unauthorized.
      *
@@ -65,6 +70,7 @@ class DisciplinesAsPublicTest extends ScopeTestCase
     {
         $this->genericDeleteUnauthorized();
     }
+
 
     /**
      * GET /classes/by-class/{class_id}.

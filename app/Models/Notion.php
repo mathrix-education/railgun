@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
@@ -14,16 +15,16 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @copyright Mathrix Education SA
  * @package   App\Models
  *
- * @property int                   $id
- * @property string                $name
- * @property string                $slug
- * @property bool                  $premium
- * @property bool                  $visible
- * @property array                 $link
- * @property string                $type
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property bool $premium
+ * @property bool $visible
+ * @property array $link
+ * @property string $type
  * @property Collection|Activity[] $activities
- * @property Collection|Chapter[]  $chapters
- * @property Collection|Comment[]  $comments
+ * @property Collection|Chapter[] $chapters
+ * @property Collection|Comment[] $comments
  */
 class Notion extends BaseModel
 {
@@ -37,6 +38,7 @@ class Notion extends BaseModel
         "slug" => "required|max:255",
         "chapter_id" => "required|exists:chapters,id",
     ];
+
 
     public function __construct(array $attributes = [])
     {
@@ -64,6 +66,7 @@ class Notion extends BaseModel
             ->orderBy("pivot_order");
     }
 
+
     /**
      * BelongsToMany Chapter.
      *
@@ -75,6 +78,7 @@ class Notion extends BaseModel
             ->withPivot(["order"])
             ->orderBy("pivot_order");
     }
+
 
     /**
      * HasMany Marks.

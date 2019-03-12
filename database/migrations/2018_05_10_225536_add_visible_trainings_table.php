@@ -26,6 +26,7 @@ class AddVisibleTrainingsTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

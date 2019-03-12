@@ -29,6 +29,7 @@ class CreateDiscountsTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */
