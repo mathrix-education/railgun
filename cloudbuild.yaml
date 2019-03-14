@@ -19,7 +19,7 @@ steps:
   # ----------------
   - id: 'composer:install'
     waitFor: ['-']
-    name: 'eu.gcr.io/$PROJECT_ID/runner-composer-prestissimo'
+    name: 'eu.gcr.io/mathrix-drive/runner-composer-prestissimo'
     args: ['install', '--optimize-autoloader', '--no-interaction', '--no-suggest']
 
 
