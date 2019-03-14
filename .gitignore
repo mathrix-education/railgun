@@ -22,6 +22,5 @@
 
 /node_modules/
 /resources/views/emails/**/*.html
-/resources/views/emails/**/*.blade.php
 /storage/code-coverage/
 /vendor/
