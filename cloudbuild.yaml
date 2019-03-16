@@ -88,8 +88,7 @@ steps:
   - id: 'kubectl:deploy:branch'
     waitFor: ['gcloud:add-tag:latest']
     name: 'gcr.io/cloud-builders/kubectl'
-    args: ['set', 'image', 'deployment', '$_GKE_DEPLOYMENT',
-           '$_GKE_CONTAINER=eu.gcr.io/$PROJECT_ID/$_IMAGE:$SHORT_SHA']
+    args: ['set', 'image', 'deployment', '$_GKE_DEPLOYMENT', '$_GKE_CONTAINER=eu.gcr.io/$PROJECT_ID/$_IMAGE:$SHORT_SHA']
   env:
     - 'CLOUDSDK_COMPUTE_ZONE=$_GKE_COMPUTE_ZONE'
     - 'CLOUDSDK_CONTAINER_CLUSTER=$_GKE_CLUSTER'
