@@ -74,6 +74,7 @@ class SubscriptionPipeline
      * @throws Http422ModelValidationException
      * @throws ValidationException
      * @throws BraintreeProcessorException
+     * @throws Http400BadRequestException
      */
     public function run()
     {
@@ -99,7 +100,7 @@ class SubscriptionPipeline
     {
         $rules = [
             "planId" => "required|in:" . implode(",", Arr::pluck(Plan::all()->toArray(), "id")),
-            "error_code" => "number"
+            "error_code" => "integer"
         ];
 
         $validator = Validator::make($this->request->all(), $rules);
