@@ -68,7 +68,7 @@ class Handler extends ExceptionHandler
     {
         $sentryDSN = env("SENTRY_DSN");
 
-        if ($sentryDSN !== "none" && app()->bound("sentry") && $this->shouldReport($e)) {
+        if ($sentryDSN !== null && app()->bound("sentry") && $this->shouldReport($e)) {
             /** @var \Raven_Client $sentry */
             $sentry = app("sentry");
 
@@ -153,7 +153,7 @@ class Handler extends ExceptionHandler
 
         // Include trace in debug mode
         if (app()->environment("testing", "local", "dev", "pipelines", "next")) {
-            //$json["trace"] = explode("\n", $e->getTraceAsString());
+            $json["trace"] = explode("\n", $e->getTraceAsString());
         }
 
         if ($e instanceof NotFoundHttpException) {

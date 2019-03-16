@@ -17,7 +17,6 @@
     "php": ">=7.2",
     "ext-json": "*",
     "ext-zip": "*",
-    "appzcoder/lumen-routes-list": "^1.0",
     "barryvdh/laravel-cors": "^0.11",
     "braintree/braintree_php": "^3.37",
     "drewm/mailchimp-api": "^2.5",
@@ -52,8 +51,7 @@
     "helmich/phpunit-json-assert": "^2.0",
     "mockery/mockery": "~1.0",
     "phpunit/phpunit": "^7.0",
-    "vluzrmos/tinker": "^1.4",
-    "xethron/migrations-generator": "^2.0"
+    "vluzrmos/tinker": "^1.4"
   },
   "autoload": {
     "psr-4": {

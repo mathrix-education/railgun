@@ -131,8 +131,7 @@ class SubscriptionPipeline
      * We do not record the exception.
      * @throws Http400InvalidRequestException
      */
-    private
-    function premiumCheck(): void
+    private function premiumCheck(): void
     {
         $this->user->append(["premium", "braintree"]);
 
@@ -148,8 +147,7 @@ class SubscriptionPipeline
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      */
-    private
-    function selectPaymentMethod()
+    private function selectPaymentMethod()
     {
         if (!$this->user->isBraintreeCustomer()) {
             /**
@@ -199,8 +197,7 @@ class SubscriptionPipeline
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
      */
-    private
-    function createSubscription()
+    private function createSubscription()
     {
         /** @var array $subscriptionPayload The subscription payload. */
         $subscriptionPayload = [
@@ -325,8 +322,7 @@ class SubscriptionPipeline
      * The subscription creation succeeded and the initial transaction, if it was needed, did not failed. We can now
      * safely send our notifications to the user by dispatching the required events.
      */
-    private
-    function finalize()
+    private function finalize()
     {
         // If we have an init
         if ($this->transaction instanceof Transaction) {

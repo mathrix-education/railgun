@@ -130,10 +130,7 @@ if ($app->environment("local", "dev")) {
 }
 
 $app->register(App\Providers\AppServiceProvider::class);
-
-if ($app->environment("stage", "master")) {
-    $app->register(Sentry\SentryLaravel\SentryLumenServiceProvider::class);
-}
+$app->register(Sentry\SentryLaravel\SentryLumenServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
