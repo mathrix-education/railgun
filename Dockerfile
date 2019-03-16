@@ -27,6 +27,7 @@ RUN apk -U add \
     php7-redis \
     php7-xdebug \
     php7-xml \
+    php7-xmlwriter \
     php7-zip
 
 COPY deploy/nginx/nginx.conf /etc/nginx/nginx.conf
