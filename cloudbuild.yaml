@@ -12,8 +12,8 @@ substitutions:
   _GKE_CLUSTER: 'mathrix-education-cluster'
   _GKE_DEPLOYMENT: ' education-api-$BRANCH_NAME-deployment'
   _GKE_CONTAINER: 'education-api'
-options:
-  machineType: 'N1_HIGHCPU_32'
+#options:
+#  machineType: 'N1_HIGHCPU_32'
 steps:
   # Install composer
   # ----------------
@@ -75,7 +75,7 @@ steps:
   # ----------------------------------------------
   - id: 'docker:push:short-sha'
 #    waitFor: ['docker:build', 'docker-compose:tests']
-    waitFor: ['docker:build', 'docker-compose:tests']
+    waitFor: ['docker:build']
     name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'eu.gcr.io/$PROJECT_ID/$_IMAGE:$SHORT_SHA']
 
