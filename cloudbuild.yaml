@@ -20,7 +20,7 @@ steps:
   - id: 'composer:install'
     waitFor: ['-']
     name: 'eu.gcr.io/$PROJECT_ID/runner-composer-prestissimo'
-    args: ['install', '--optimize-autoloader', '--no-interaction', '--no-suggest', '--no-ansi]
+    args: ['install', '--optimize-autoloader', '--no-interaction', '--no-suggest', '--no-ansi']
 
 
   # Run paratest in coverage mode
