@@ -20,7 +20,13 @@ steps:
   - id: 'composer:install'
     waitFor: ['-']
     name: 'eu.gcr.io/$PROJECT_ID/runner-composer-prestissimo'
-    args: ['install', '--optimize-autoloader', '--no-interaction', '--no-suggest', '--no-ansi']
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        git config --system credential.helper gcloud.sh
+        composer clearcache
+        composer install --optimize-autoloader --no-interaction --no-suggest --no-progress --no-ansi
 
 
   # Run paratest in coverage mode
