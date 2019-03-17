@@ -13,7 +13,6 @@ tar -zcf build.tar.gz \
     scripts/tasks/setup_release.sh \
     storage/oauth-private.key \
     storage/oauth-public.key \
-    apidoc.json \
     artisan \
     composer.json \
     composer.lock
