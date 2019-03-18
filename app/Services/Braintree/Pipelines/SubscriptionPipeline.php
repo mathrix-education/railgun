@@ -7,6 +7,7 @@ use App\Events\TransactionSuccessEvent;
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
+use App\Exceptions\UserAlreadyPremiumException;
 use App\Models\User;
 use App\Services\Braintree\Exceptions\BraintreeErrorHandler;
 use App\Services\Braintree\Exceptions\BraintreeProcessorException;
@@ -69,12 +70,14 @@ class SubscriptionPipeline
 
 
     /**
+     * @return JsonResponse
+     * @throws BraintreeProcessorException
+     * @throws Http400BadRequestException
      * @throws Http400InvalidRequestException
      * @throws Http422ModelSaveException
      * @throws Http422ModelValidationException
+     * @throws UserAlreadyPremiumException
      * @throws ValidationException
-     * @throws BraintreeProcessorException
-     * @throws Http400BadRequestException
      */
     public function run()
     {
@@ -129,7 +132,7 @@ class SubscriptionPipeline
     /**
      * Check that the user is not already premium.
      * We do not record the exception.
-     * @throws Http400InvalidRequestException
+     * @throws UserAlreadyPremiumException
      */
     private function premiumCheck(): void
     {
@@ -137,7 +140,7 @@ class SubscriptionPipeline
 
         // Check if user is already premium
         if ($this->user->premium) {
-            throw new Http400InvalidRequestException("User is already premium");
+            throw new UserAlreadyPremiumException();
         }
     }
 
