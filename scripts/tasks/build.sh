@@ -9,7 +9,7 @@ tar -zcf build.tar.gz \
     config/ \
     database/ \
     public/ \
-    resources/views/emails/*/*.blade.php \
+    resources/views/mails/*/*.blade.php \
     scripts/tasks/setup_release.sh \
     storage/oauth-private.key \
     storage/oauth-public.key \

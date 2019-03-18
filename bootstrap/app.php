@@ -130,7 +130,10 @@ if ($app->environment("local", "dev")) {
 }
 
 $app->register(App\Providers\AppServiceProvider::class);
-$app->register(Sentry\SentryLaravel\SentryLumenServiceProvider::class);
+
+if (env("SENTRY_DSN") !== null) {
+    $app->register(Sentry\SentryLaravel\SentryLumenServiceProvider::class);
+}
 
 /*
 |--------------------------------------------------------------------------
