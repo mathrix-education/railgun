@@ -51,6 +51,8 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->register(GoogleDriveServiceProvider::class);
 
+        $this->app->register(\Mathrix\Lumen\Providers\RegistrarServiceProvider::class);
+
         if (app()->environment("dev", "local")) {
             $this->app->register(\Vluzrmos\Tinker\TinkerServiceProvider::class);
         }
