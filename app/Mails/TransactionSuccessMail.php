@@ -75,7 +75,7 @@ class TransactionSuccessMail extends BaseMail
     {
         $this->subject("Votre reçu de Mathrix");
 
-        return $this->view("emails.transactions.success", [
+        return $this->view("mails.transactions.success", [
             "title" => "Reçu de Mathrix",
             "user" => $this->user,
             "transaction" => $this->transaction,

@@ -54,7 +54,7 @@ class PasswordResetMail extends BaseMail
     {
         $this->subject("Mot de passe réinitialisé");
 
-        return $this->view("emails.users.passwordReset", [
+        return $this->view("mails.users.passwordReset", [
             "title" => "Mot de passe réinitialisé",
             "firstname" => $this->user->firstname ?? $this->user->username,
         ]);

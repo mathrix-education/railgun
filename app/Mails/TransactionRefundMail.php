@@ -70,7 +70,7 @@ class TransactionRefundMail extends BaseMail
     {
         $this->subject("Votre remboursement de Mathrix");
 
-        return $this->view("emails.transactions.refund", [
+        return $this->view("mails.transactions.refund", [
             "title" => "Reçu de Mathrix",
             "user" => $this->user,
             "transaction" => $this->transaction,

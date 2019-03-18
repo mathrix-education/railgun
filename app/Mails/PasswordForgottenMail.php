@@ -54,7 +54,7 @@ class PasswordForgottenMail extends BaseMail
     {
         $this->subject("Modification de mot de passe");
 
-        return $this->view("emails.users.passwordForgotten", [
+        return $this->view("mails.users.passwordForgotten", [
             "title" => "Modification de mot de passe",
             "firstname" => $this->user->firstname ?? $this->user->username,
             "token" => $this->user->token,
