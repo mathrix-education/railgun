@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Laravel\Lumen\Testing\TestCase;
+use Laravel\Passport\Passport;
 use Tests\Utils\Traits\Assertions\DatabaseAssertionsTrait;
 use Tests\Utils\Traits\Assertions\HttpAssertionsTrait;
 use Tests\Utils\Traits\Assertions\JsonAssertionsTrait;
@@ -27,7 +28,8 @@ use Tests\Utils\Traits\ResponseTrait;
  */
 class AuthTest extends TestCase
 {
-    use DatabaseAssertionsTrait, HttpAssertionsTrait, JsonAssertionsTrait, NotificationsAssertionsTrait, ResponseTrait, DebugTrait;
+    use DatabaseAssertionsTrait, HttpAssertionsTrait, JsonAssertionsTrait, NotificationsAssertionsTrait,
+        ResponseTrait, DebugTrait;
 
 
     /**
@@ -199,5 +201,23 @@ class AuthTest extends TestCase
         $this->json("post", "/users/reset/{$user->token}", ["password" => null]);
 
         $this->assertHttp400InvalidRequest();
+    }
+
+
+    public function testAuthAs()
+    {
+        $admin = User::random(["type", "=", "admin"]);
+        $user = User::random();
+
+        Passport::actingAs($admin, ["admin"]);
+
+        $this->json("get", "/users/profile", [], [
+            "X-As-User-Id" => $user->id
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertJsonDocumentMatches($this->response->getContent(), [
+            "id" => $user->id
+        ]);
     }
 }

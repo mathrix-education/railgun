@@ -3,9 +3,11 @@
 namespace App\Middleware;
 
 use App\Exceptions\Http401UnauthorizedException;
+use App\Models\User;
 use Closure;
 use Illuminate\Contracts\Auth\Factory as Auth;
 use Illuminate\Http\Request;
+use Laravel\Passport\Passport;
 
 /**
  * Class Authenticate.
@@ -53,10 +55,20 @@ class Authenticate
     public function handle($request, Closure $next, $guard = null)
     {
         // Define unauthorized response
-        if ($this->auth->guard($guard)
-            ->guest()) {
+        if ($this->auth->guard($guard)->guest()) {
             throw new Http401UnauthorizedException();
         }
+
+        /** @var User $requester */
+        $requester = $this->auth->guard($guard)->user();
+        $targetId = $request->header("X-As-User-Id");
+
+        if ($requester->tokenCan("admin") && $targetId !== null) {
+            /** @var User $target */
+            $target = User::query()->findOrFail($targetId);
+            Passport::actingAs($target, [$target->type]);
+        }
+
 
         return $next($request);
     }

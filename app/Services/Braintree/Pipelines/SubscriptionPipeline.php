@@ -250,8 +250,7 @@ class SubscriptionPipeline
      * @throws Http422ModelValidationException
      * @throws BraintreeProcessorException
      */
-    private
-    function createInitialTransaction()
+    private function createInitialTransaction()
     {
         if (!$this->hasTrialPeriod) {
             // Immediately returns if there is no trial payment
