@@ -45,6 +45,25 @@ class CompileMails extends BaseCommand
         if (!$process->isSuccessful()) {
             throw new ProcessFailedException($process);
         }
+
+        // Replace &#36; by $
+        $this->fixDollar($bladeFile);
         $this->success($mjmlFile);
+    }
+
+
+    /**
+     * @param string $bladeFile
+     *
+     * @return bool|int
+     */
+    private function fixDollar(string $bladeFile)
+    {
+        if (file_exists($bladeFile)) {
+            $bladeContent = file_get_contents($bladeFile);
+            $bladeContent = str_replace("&#36;", "\$", $bladeContent);
+
+            return file_put_contents($bladeFile, $bladeContent);
+        }
     }
 }
