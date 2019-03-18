@@ -41,27 +41,6 @@ class NewSubscriptionNotification extends BaseNotification
      */
     public function via(): array
     {
-        return env("APP_ENV") == "master" ? ["slack"] : [];
-    }
-
-
-    /**
-     * Get the Slack representation of the notification.
-     *
-     * @return SlackMessage
-     */
-    public function toSlack()
-    {
-        return (new SlackMessage())
-            ->from("Ghost")
-            ->to("#code-chat")
-            ->content("Nouvel abonnement premium !")
-            ->attachment(function (SlackAttachment $attachment) {
-                $attachment->title("Subscription {$this->subscription->id}")
-                    ->fields([
-                        "Plan" => $this->subscription->planId,
-                        "Email" => $this->user->email,
-                    ]);
-            });
+        return [];
     }
 }
