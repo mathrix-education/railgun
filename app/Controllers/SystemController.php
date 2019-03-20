@@ -24,10 +24,10 @@ class SystemController extends BaseController
      */
     public function sitemaps()
     {
-        $command = "sitemaps:all";
+        $command = "sitemap:all";
         $output = new BufferedOutput();
 
-        $exitCode = Artisan::call("sitemaps:all", [], $output);
+        $exitCode = Artisan::call($command, [], $output);
         $data = [
             "command" => $command,
             "exit" => $exitCode,

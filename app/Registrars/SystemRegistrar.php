@@ -2,6 +2,7 @@
 
 namespace App\Registrars;
 
+use App\Controllers\SystemController;
 use Mathrix\Lumen\Bases\BaseRegistrar;
 
 /**
@@ -18,6 +19,6 @@ class SystemRegistrar extends BaseRegistrar
      */
     public function register(): void
     {
-        $this->post("system/sitemaps", SystemRegistrar::class . "@sitemaps");
+        $this->post("system/sitemaps", SystemController::class . "@sitemaps");
     }
 }

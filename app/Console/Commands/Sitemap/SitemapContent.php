@@ -25,7 +25,7 @@ use Illuminate\Console\Command;
 class SitemapContent extends Command
 {
     use SitemapUtils;
-    protected $signature = "sitemap:content";
+    protected $signature = "sitemap";
 
 
     /**
@@ -46,62 +46,21 @@ class SitemapContent extends Command
                 "priority" => 1
             ]
         ];
-        $dashboardsSitemap = [];
-        $disciplinesSitemap = [];
-        $chaptersSitemap = [];
-        $notionsSitemap = [];
-        $modulesSitemap = [];
 
         /** @var Country $country */
         foreach (Country::all() as $country) {
             /** @var Class_ $class */
             foreach ($country->classes as $class) {
-                $dashboardsSitemap[] = [
-                    "url" => $this->url("/{$country->slug}/{$class->slug}"),
-                    "lastmod" => $today,
-                    "priority" => 0.9
-                ];
-
                 /** @var Discipline $discipline */
                 foreach ($class->disciplines as $discipline) {
-                    $disciplinesSitemap[] = [
-                        "url" => $this->url("/{$country->slug}/{$class->slug}/{$discipline->slug}"),
-                        "lastmod" => $today,
-                        "priority" => 0.8
-                    ];
-
                     $chapters = $discipline->chapters()
                         ->where("chapters.class_id", "=", $class->id)
                         ->get();
-
                     /** @var Chapter $chapter */
                     foreach ($chapters as $chapter) {
-                        $chaptersSitemap[] = [
-                            "url" => $this->url("/" . implode("/", [
-                                    $country->slug,
-                                    $class->slug,
-                                    $discipline->slug,
-                                    $chapter->slug,
-                                ])),
-                            "lastmod" => $today,
-                            "priority" => 0.7
-                        ];
-
                         /** @var Notion $notion */
                         foreach ($chapter->notions()->where("type", "!=", "premium")->get()
                                  as $notion) {
-                            $notionsSitemap[] = [
-                                "url" => $this->url("/" . implode("/", [
-                                        $country->slug,
-                                        $class->slug,
-                                        $discipline->slug,
-                                        $chapter->slug,
-                                        $notion->slug
-                                    ])),
-                                "lastmod" => $today,
-                                "priority" => 0.6
-                            ];
-
                             /** @var Activity $activity */
                             foreach ($notion->activities()
                                          ->withPivot(["order"])
@@ -148,7 +107,7 @@ class SitemapContent extends Command
                                         }
                                     }
 
-                                    $modulesSitemap[] = [
+                                    $sitemapArray[] = [
                                         "url" => $this->url("/" . implode("/", [
                                                 $country->slug,
                                                 $class->slug,
@@ -160,7 +119,7 @@ class SitemapContent extends Command
                                                 $module->id
                                             ])),
                                         "lastmod" => $today,
-                                        "priority" => 0.5,
+                                        "priority" => 0.9,
                                         "videos" => $videos
                                     ];
                                 }
@@ -172,12 +131,7 @@ class SitemapContent extends Command
         }
 
         // Finally, register all links
-        $this->saveSitemap($dashboardsSitemap, "sitemap.dashboards");
-        $this->saveSitemap($disciplinesSitemap, "sitemap.disciplines");
-        $this->saveSitemap($chaptersSitemap, "sitemap.chapters");
-        $this->saveSitemap($notionsSitemap, "sitemap.notions");
-        $this->saveSitemap($modulesSitemap, "sitemap.modules");
-        $this->saveSitemap($sitemapArray, "sitemap.main");
+        $this->saveSitemap($sitemapArray, "sitemap");
     }
 
 
