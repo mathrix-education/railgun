@@ -15,6 +15,10 @@ use App\Console\Commands\Format\FormatHarmonize;
 use App\Console\Commands\Harmonization\ClassCommentCommand;
 use App\Console\Commands\Make\MakeApidoc;
 use App\Console\Commands\Make\MakeTest;
+use App\Console\Commands\Migrations\PyramidCommand;
+use App\Console\Commands\Migrations\PyramidMigrateCommand;
+use App\Console\Commands\Migrations\PyramidCheckCommand;
+use App\Console\Commands\Migrations\PyramidResetCommand;
 use App\Console\Commands\Pipelines\Build;
 use App\Console\Commands\Pipelines\BuildCommand;
 use App\Console\Commands\Pipelines\DeployCommand;
@@ -70,7 +74,12 @@ class Kernel extends ConsoleKernel
         BuildCommand::class,
         DeployCommand::class,
         InitialSEOCommand::class,
-        CompileMails::class
+        CompileMails::class,
+        // Migration
+        PyramidCommand::class,
+        PyramidResetCommand::class,
+        PyramidMigrateCommand::class,
+        PyramidCheckCommand::class
     ];
 
 
