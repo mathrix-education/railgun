@@ -8,6 +8,7 @@ use App\Exceptions\Http422ModelValidationException;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Mathrix\Lumen\Bases\BaseModel;
 
 /**
  * Class Log.

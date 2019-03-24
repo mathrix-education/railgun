@@ -1,0 +1,134 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Mathrix\Lumen\Bases\BaseModel;
+
+/**
+ * Class Class_.
+ *
+ * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
+ * @author    Jérémie Levain <munezero999@live.fr>
+ * @since     1.0.0
+ * @copyright Mathrix Education SA
+ * @package   App\Models
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $name_short
+ * @property string $slug
+ * @property string $slug_short
+ * @property int $order
+ * @property bool $visible
+ * @property array $link
+ * @property int|null $parent_id
+ * @property int $country_id
+ * @property Collection|Chapter[] $chapters
+ * @property Country $country
+ * @property Collection|Discipline[] $disciplines
+ * @property Grade|null $parent
+ * @property Collection|User[] $users
+ */
+class Grade extends BaseModel
+{
+    /** @var string Custom table definition */
+    protected $table = "classes";
+    /** @var array The attributes that are mass assignable */
+    protected $fillable = ["id", "name", "slug", "order", "visible", "parent_id", "country_id", "link"];
+    /** @var array Validation rules */
+    protected $rules = [
+        "name" => "required|max:255",
+        "slug" => "required|max:255",
+        "order" => "required|integer",
+        "visible" => "boolean",
+        "country_id" => "required|exists:countries,id",
+    ];
+
+
+    /**
+     * Get the cursus (ie. the class it self and all its previous).
+     *
+     * @return Collection
+     */
+    public function cursus()
+    {
+        $classes = new Collection();
+        $classes->add($this);
+
+        /** @var Grade $end */
+        $end = $classes->last();
+
+        while (null !== $end->parent_id) {
+            $classes[] = self::find($end->parent_id);
+            $end = $classes->last();
+        }
+
+        return $classes;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
+    /**
+     * BelongsTo Class_.
+     *
+     * @return BelongsTo
+     */
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(self::class, "parent_id");
+    }
+
+
+    /**
+     * BelongsTo Country.
+     *
+     * @return HasMany
+     */
+    public function chapters(): HasMany
+    {
+        return $this->hasMany(Chapter::class, "class_id");
+    }
+
+
+    /**
+     * BelongsTo Country.
+     *
+     * @return BelongsTo
+     */
+    public function country(): BelongsTo
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+
+    /**
+     * BelongsToMany Discipline.
+     *
+     * @return BelongsToMany
+     */
+    public function disciplines(): BelongsToMany
+    {
+        return $this->belongsToMany(Discipline::class, "class_discipline", "class_id",
+            "discipline_id")
+            ->withPivot("visible")
+            ->orderBy("class_discipline.order");
+    }
+
+
+    /**
+     * HasMany User.
+     *
+     * @return HasMany
+     */
+    public function users(): HasMany
+    {
+        return $this->hasMany(User::class);
+    }
+}

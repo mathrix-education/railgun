@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Exceptions\Http422ModelSaveException;
+use Mathrix\Lumen\Bases\BaseModel;
 
 /**
  * Class Setting.

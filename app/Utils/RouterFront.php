@@ -4,7 +4,7 @@ namespace App\Utils;
 
 use App\Models\Activity;
 use App\Models\Chapter;
-use App\Models\Class_;
+use App\Models\Grade;
 use App\Models\Country;
 use App\Models\Discipline;
 use App\Models\Module;
@@ -26,7 +26,7 @@ class RouterFront
      * Get the module route URL.
      *
      * @param Country $country
-     * @param Class_ $class
+     * @param Grade $class
      * @param Discipline $discipline
      * @param Chapter $chapter
      * @param Notion $notion
@@ -35,7 +35,7 @@ class RouterFront
      *
      * @return string
      */
-    public static function getModuleUrl(Country $country, Class_ $class, Discipline $discipline, Chapter $chapter,
+    public static function getModuleUrl(Country $country, Grade $class, Discipline $discipline, Chapter $chapter,
                                         Notion $notion, Activity $activity, Module $module)
     {
         return "/{$country->slug}/{$class->slug}/{$discipline->slug}/{$chapter->slug}/{$notion->slug}/{$activity->slug}"
@@ -47,7 +47,7 @@ class RouterFront
      * Check if the current route should be NOT indexed.
      *
      * @param Country $country
-     * @param Class_ $class
+     * @param Grade $class
      * @param Discipline $discipline
      * @param Chapter $chapter
      * @param Notion $notion
@@ -55,7 +55,7 @@ class RouterFront
      *
      * @return bool
      */
-    public static function seoIndex(Country $country, Class_ $class, Discipline $discipline, Chapter $chapter,
+    public static function seoIndex(Country $country, Grade $class, Discipline $discipline, Chapter $chapter,
                                     Notion $notion, Activity $activity)
     {
         return self::seoIndexByIds($country->id, $class->id, $discipline->id, $chapter->id, $notion->id, $activity->id);

@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Module;
 use App\Models\User;
 
 /**
@@ -21,6 +22,18 @@ class ModulePolicy extends BasePolicy
     public function index()
     {
         return true;
+    }
+
+
+    /**
+     * @param User $requester
+     * @param Module $module
+     *
+     * @return bool
+     */
+    public function get(User $requester, Module $module)
+    {
+        return !$module->premium || $requester->isModerator() || $requester->premium;
     }
 
 

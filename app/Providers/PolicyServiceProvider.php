@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Models\BaseModel;
-use App\Models\Class_;
+use App\Models\Grade;
 use App\Policies\BasePolicy;
 use App\Policies\ClassPolicy;
 use App\Policies\FilePolicy;
@@ -60,7 +60,7 @@ class PolicyServiceProvider extends ServiceProvider
             }
         }
 
-        Gate::policy(Class_::class, ClassPolicy::class);
+        Gate::policy(Grade::class, ClassPolicy::class);
         Gate::policy(FilePolicy::class, FilePolicy::class);
         Gate::policy(DatabaseNotification::class, NotificationPolicy::class);
     }

@@ -4,7 +4,6 @@ namespace App\Exceptions;
 
 use App\Models\User;
 use Exception;
-use Google\Cloud\ErrorReporting\Bootstrap;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -47,11 +46,6 @@ class Handler extends ExceptionHandler
         ModelNotFoundException::class,
         ValidationException::class,
         OAuthServerException::class,
-        Http401UnauthorizedException::class,
-        Http404ModelNotFoundException::class,
-        Http422ModelValidationException::class,
-        Http429TooManyRequestsException::class,
-        Http501NotImplementedException::class,
     ];
 
 
@@ -80,11 +74,6 @@ class Handler extends ExceptionHandler
             }
 
             $sentry->captureException($e);
-        }
-
-        // GCP Stackdriver
-        if (isset($_SERVER['GAE_SERVICE'])) {
-            Bootstrap::exceptionHandler($e);
         }
 
         parent::report($e);

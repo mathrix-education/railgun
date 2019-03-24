@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Models\Class_;
+use App\Models\Grade;
 use Tests\BaseTestCase;
 
 /**
@@ -18,13 +18,13 @@ class ClassTest extends BaseTestCase
 {
     public function testClassCursus()
     {
-        $class = Class_::whereNotNull("parent_id")
+        $class = Grade::whereNotNull("parent_id")
             ->firstOrFail();
         $cursus = $class->cursus();
 
         $currentParentId = $class->id;
 
-        /** @var Class_ $parent */
+        /** @var Grade $parent */
         foreach ($cursus as $parent) {
             if ($parent->id !== null) {
                 $this->assertEquals($currentParentId, $parent->id);

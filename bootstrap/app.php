@@ -107,6 +107,8 @@ $app->middleware([
 ]);
 
 $app->routeMiddleware([
+    "login" => \Mathrix\Lumen\Middleware\LoggedMiddleware::class,
+    "scope" => \Mathrix\Lumen\Middleware\ScopeMiddleware::class,
     "auth" => App\Middleware\Authenticate::class,
 ]);
 

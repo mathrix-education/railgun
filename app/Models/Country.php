@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Mathrix\Lumen\Bases\BaseModel;
 
 /**
  * Class Country.
@@ -20,7 +21,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $slug
  * @property string $slug_short
  * @property bool $visible
- * @property Collection|Class_[] $classes
+ * @property Collection|Grade[] $classes
  */
 class Country extends BaseModel
 {
@@ -45,6 +46,6 @@ class Country extends BaseModel
      */
     public function classes(): HasMany
     {
-        return $this->hasMany(Class_::class);
+        return $this->hasMany(Grade::class);
     }
 }

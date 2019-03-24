@@ -2,7 +2,7 @@
 
 namespace Tests\API\Files;
 
-use App\Controllers\FileController;
+use App\Controllers\FilesController;
 use Illuminate\Http\UploadedFile;
 use PHPUnit\Framework\Constraint\IsType;
 use PHPUnit\Framework\Constraint\RegularExpression;
@@ -244,10 +244,10 @@ class FilesAsModeratorTest extends FilesAsRedactorTest
 
         $this->assertHttp200Success();
         $this->assertJsonDocumentMatches($this->response->getContent(), $this->fileSignature);
-        self::getDisk()->assertExists(FileController::TRASH_DIR . "/$file");
+        self::getDisk()->assertExists(FilesController::TRASH_DIR . "/$file");
 
         // Rollback
-        self::getDisk()->move(FileController::TRASH_DIR . "/$file", $file);
+        self::getDisk()->move(FilesController::TRASH_DIR . "/$file", $file);
     }
 
 

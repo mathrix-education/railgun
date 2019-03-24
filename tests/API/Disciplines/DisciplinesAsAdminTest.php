@@ -2,7 +2,7 @@
 
 namespace Tests\API\Disciplines;
 
-use App\Models\Class_;
+use App\Models\Grade;
 use App\Models\Discipline;
 
 /**
@@ -36,7 +36,7 @@ class DisciplinesAsAdminTest extends DisciplinesAsModeratorTest
     public function testEdit()
     {
         $visible = $this->faker->boolean;
-        $class = Class_::random();
+        $class = Grade::random();
 
         $this->genericEditSuccess([
             "link" => [

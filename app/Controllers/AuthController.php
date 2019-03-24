@@ -4,71 +4,78 @@ namespace App\Controllers;
 
 use App\Events\PasswordForgottenEvent;
 use App\Events\PasswordResetEvent;
-use App\Exceptions\Http400InvalidRequestException;
-use App\Exceptions\Http422ModelSaveException;
-use App\Exceptions\Http422ModelValidationException;
-use App\Models\Log;
 use App\Models\User;
+use Dusterio\LumenPassport\Http\Controllers\AccessTokenController;
 use Faker\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Mathrix\Lumen\Bases\BaseController;
+use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Class AuthController.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
- * @package   App\Controllers
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  */
 class AuthController extends BaseController
 {
     /**
-     * Login using email/password credentials.
+     * POST /auth/login
+     * Allow users to login with their privileges.
      *
-     * @param Request $request The request
-     *
-     * @throws Http400InvalidRequestException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
+     * @param ServerRequestInterface $request The implementation of ServerRequestInterface is forced in order to match
+     * the AccessTokenController::issueToken method.
      *
      * @return JsonResponse
+     *
+     * @see AccessTokenController::issueToken
      */
-    public function login(Request $request)
+    public function login(ServerRequestInterface $request): JsonResponse
     {
-        // Try to find the user by email to get scope
-        /** @var User $user */
-        $user = User::where("email", $request->input("username"))
+        $requestBody = $request->getParsedBody();
+
+        /** @var User|null $user */
+        $user = User::query()
+            ->where("email", "=", $requestBody["username"])
             ->first();
 
+        // Define the allowed scopes based on user scopes
         if ($user !== null) {
-            $request->merge(["scope" => $user->type]);
+            /*
+             * Since we currently use a pyramidal architecture, we define scope here.
+             * registered < redactor < moderator < admin
+             */
+            $scopes = "registered redactor moderator admin";
+            $requestBody["scope"] = strstr($scopes, $user->type);
         }
+        $request = $request->withParsedBody($requestBody);
 
-        $response = app()->dispatch(
-            $request->create("/oauth/token", "post", $request->all())
+        /** @var AccessTokenController $controller */
+        $controller = app()->make(AccessTokenController::class);
+        /** @var Response $response */
+        $response = $controller->issueToken($request);
+
+        return new JsonResponse(
+            json_decode($response->getContent()),
+            $response->getStatusCode(),
+            $response->headers->all()
         );
-
-        // If user successfully logged, log it into the database
-        if ($response->getStatusCode() === 200) {
-            Log::log("user_logged", $user->id, [
-                "ip" => $request->getClientIp(),
-            ]);
-        }
-
-        return $response;
     }
 
 
     /**
+     * POST /auth/refresh
      * Refresh the Bearer token.
      *
-     * @param Request $request The request
+     * @param Request $request The Illuminate HTTP request.
      *
      * @return JsonResponse
      */
-    public function refresh(Request $request)
+    public function refresh(Request $request): JsonResponse
     {
         return app()->dispatch(
             $request->create("/oauth/token", "post", $request->all())
@@ -77,23 +84,24 @@ class AuthController extends BaseController
 
 
     /**
+     * POST /auth/forgot
      * Ask for an new password.
      *
-     * @param Request $request The request
-     *
-     * @throws Http400InvalidRequestException
+     * @param Request $request The Illuminate HTTP request.
      *
      * @return JsonResponse
+     * @throws Http400BadRequestException
      */
-    public function forgot(Request $request)
+    public function forgot(Request $request): JsonResponse
     {
         // Try to find the user with the given email
         /** @var User $user */
-        $user = User::where("email", $request->input("email"))
+        $user = User::query()
+            ->where("email", "=", $request->input("email"))
             ->firstOrFail();
 
         if (!empty($user->settings["facebook_id"])) {
-            throw new Http400InvalidRequestException("Cannot reset password of a facebook account");
+            throw new Http400BadRequestException([], "Cannot reset password of a facebook account");
         }
         // Generate token
         $user->unguardAttributes(["token"]);
@@ -102,47 +110,44 @@ class AuthController extends BaseController
         // Send PasswordForgottenMail
         event(new PasswordForgottenEvent($user));
 
-        $response = new JsonResponse([
+        return new JsonResponse([
             "message" => "Reset email sent successfully"
         ]);
-
-        return $response;
     }
 
 
     /**
+     * POST /auth/reset/{token}
      * Reset the user password using its current token.
      *
-     * @param Request $request The request
-     * @param string $token The reset token
-     *
-     * @throws Http400InvalidRequestException
+     * @param Request $request The Illuminate HTTP request.
+     * @param string $token The reset token.
      *
      * @return JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function reset(Request $request, string $token)
     {
-        if ($request->input("password") === null) {
-            throw new Http400InvalidRequestException("password cannot be null");
-        }
+        $this->validate($request, [
+            "password" => "required"
+        ]);
 
         // Try to find with the given token
         /** @var User $user */
-        $user = User::where("token", $token)
+        $user = User::query()
+            ->where("token", "=", $token)
             ->firstOrFail();
 
         // Update password
         $user->unguardAttributes(["token"]);
         $user->update([
             "password" => $request->input("password"),
-            "token" => Factory::create()->uuid, // Refresh token
+            "token" => null, // Remove token
         ]);
 
         // Send PasswordResetMail
         event(new PasswordResetEvent($user));
 
-        $response = new JsonResponse($user);
-
-        return $response;
+        return new JsonResponse($user->refresh());
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Mathrix\Lumen\Bases\BaseModel;
+
 /**
  * Class Level.
  *

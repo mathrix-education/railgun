@@ -3,7 +3,7 @@
 namespace App\Observers;
 
 use App\Exceptions\Http400InvalidRequestException;
-use App\Models\Class_;
+use App\Models\Grade;
 use App\Models\Discipline;
 
 /**
@@ -37,7 +37,7 @@ class DisciplineObserver extends BaseObserver
             foreach ($discipline->link["classes"] as $order => $classData) {
                 [$id, $visible] = [$classData["id"], $classData["visible"]];
 
-                if (Class_::where("id", "=", $id)->exists()) {
+                if (Grade::where("id", "=", $id)->exists()) {
                     $toSync[$id] = [
                         "order" => $order,
                         "visible" => $visible

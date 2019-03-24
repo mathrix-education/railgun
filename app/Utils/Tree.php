@@ -4,7 +4,7 @@ namespace App\Utils;
 
 use App\Models\Activity;
 use App\Models\Chapter;
-use App\Models\Class_;
+use App\Models\Grade;
 use App\Models\Country;
 use App\Models\Discipline;
 use App\Models\Module;
@@ -23,7 +23,7 @@ class Tree
 {
     /** @var Country */
     private $country;
-    /** @var Class_ */
+    /** @var Grade */
     private $class;
     /** @var Discipline */
     private $discipline;
@@ -66,9 +66,9 @@ class Tree
 
 
     /**
-     * @return Class_
+     * @return Grade
      */
-    public function getClass(): Class_
+    public function getClass(): Grade
     {
         return $this->class;
     }

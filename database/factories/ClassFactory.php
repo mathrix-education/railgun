@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Class_;
+use App\Models\Grade;
 use App\Models\Country;
 use Faker\Generator;
 
@@ -12,7 +12,7 @@ use Faker\Generator;
  *
  * @var Illuminate\Database\Eloquent\Factory $factory
  */
-$factory->define(Class_::class, function (Generator $faker) {
+$factory->define(Grade::class, function (Generator $faker) {
     $name = $faker->firstName;
     $slug = str_slug(mb_substr($name, 0, random_int(2, 3)));
 

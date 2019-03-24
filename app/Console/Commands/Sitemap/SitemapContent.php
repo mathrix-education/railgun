@@ -4,7 +4,7 @@ namespace App\Console\Commands\Sitemap;
 
 use App\Models\Activity;
 use App\Models\Chapter;
-use App\Models\Class_;
+use App\Models\Grade;
 use App\Models\Country;
 use App\Models\Discipline;
 use App\Models\Module;
@@ -49,7 +49,7 @@ class SitemapContent extends Command
 
         /** @var Country $country */
         foreach (Country::all() as $country) {
-            /** @var Class_ $class */
+            /** @var Grade $class */
             foreach ($country->classes as $class) {
                 /** @var Discipline $discipline */
                 foreach ($class->disciplines as $discipline) {

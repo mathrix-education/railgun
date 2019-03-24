@@ -7,7 +7,7 @@
   "repositories": [
     {
       "type": "git",
-      "url": "https://source.developers.google.com/p/mathrix-education/r/mathrix-lumen"
+      "url": "git@github.com:mathrix-education/lumen-zero.git"
     }
   ],
   "config": {
@@ -33,7 +33,7 @@
     "laravel/passport": "^7.0",
     "laravelium/sitemap": "^3.0",
     "league/flysystem": " ~1.0",
-    "mathrix/lumen": "dev-master",
+    "mathrix/lumen-zero": "dev-master",
     "nao-pon/flysystem-google-drive": "^1.1",
     "paulvl/backup": "3.*",
     "ramsey/uuid": "^3.8",

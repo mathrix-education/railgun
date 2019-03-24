@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use App\Exceptions\Http400InvalidRequestException;
-use App\Exceptions\Http422ModelSaveException;
-use App\Exceptions\Http422ModelValidationException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Mathrix\Lumen\Bases\BaseModel;
 
 /**
  * Class Record.
@@ -36,9 +34,7 @@ class Record extends BaseModel
      * @param array $payload
      *
      * @return Record
-     * @throws Http400InvalidRequestException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
+     * @throws \Mathrix\Lumen\Exceptions\ValidationException
      */
     public static function record(User $user, string $service, string $event, string $status, array $payload)
     {
@@ -61,9 +57,7 @@ class Record extends BaseModel
      * @param array $options
      *
      * @return bool
-     * @throws Http400InvalidRequestException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
+     * @throws \Mathrix\Lumen\Exceptions\ValidationException
      */
     public function save(array $options = [])
     {

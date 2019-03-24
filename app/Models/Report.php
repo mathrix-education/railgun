@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Mathrix\Lumen\Bases\BaseModel;
 
 /**
  * Class Report.

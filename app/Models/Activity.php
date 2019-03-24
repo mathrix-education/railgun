@@ -4,9 +4,10 @@ namespace App\Models;
 
 use App\Models\Traits\Loggable;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Auth;
+use Mathrix\Lumen\Bases\BaseModel;
 
 /**
  * Class Activity.
@@ -45,7 +46,7 @@ class Activity extends BaseModel
 
     /** @var array The attributes that are mass assignable */
     protected $fillable = ["id", "name", "slug", "seo_title", "seo_description", "seo_keywords", "type", "visible",
-        "premium", "reviewed", "link"];
+        "premium", "reviewed"];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
         "visible" => "boolean",
@@ -85,29 +86,38 @@ class Activity extends BaseModel
     /**
      * BelongsToMany Module.
      *
-     * @return BelongsToMany
+     * @return HasMany
      */
-    public function modules(): BelongsToMany
+    public function modules(): HasMany
     {
-        return $this->belongsToMany(Module::class)
-            ->withPivot(["order"])
-            ->orderBy("pivot_order");
+        return $this->hasMany(Module::class)->orderBy("order");
     }
 
 
     /**
-     * BelongsToMany Notion.
-     *
-     * @return BelongsToMany
+     * The activity's notion.
+     * @return BelongsTo
      */
-    public function notions(): BelongsToMany
+    public function notion(): BelongsTo
     {
-        return $this->belongsToMany(Notion::class)
-            ->withPivot(["order"])
-            ->orderBy("pivot_order");
+        return $this->belongsTo(Notion::class);
     }
 
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function marks()
+    {
+        return $this->morphMany(Mark::class, "markable");
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Attributes
+    |--------------------------------------------------------------------------
+    */
     /**
      * Get the mark attribute (view|to_revise|completed)
      *
@@ -130,22 +140,5 @@ class Activity extends BaseModel
 
             return $mark !== null ? $mark->status : null;
         }
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Attributes
-    |--------------------------------------------------------------------------
-    */
-
-
-    /**
-     * HasMany Marks.
-     *
-     * @return HasManyThrough
-     */
-    public function marks(): HasManyThrough
-    {
-        return $this->hasManyThrough(Mark::class, Path::class);
     }
 }

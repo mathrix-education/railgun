@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Models\Class_;
+use App\Models\Grade;
 use App\Models\Discipline;
 
 /**
@@ -18,7 +18,7 @@ use App\Models\Discipline;
 class ClassObserver extends BaseObserver
 {
     /**
-     * @param Class_ $class
+     * @param Grade $class
      *
      * @return bool
      */

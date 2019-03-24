@@ -2,7 +2,7 @@
 
 use App\Models\Activity;
 use App\Models\Chapter;
-use App\Models\Class_;
+use App\Models\Grade;
 use App\Models\Discipline;
 use App\Models\Notion;
 use App\Models\User;
@@ -34,7 +34,7 @@ class MarksTableSeeder extends BaseTableSeeder
             $metaCount = random_int(30, 50);
 
             for ($i = 0; $i < $metaCount; ++$i) {
-                /** @var Class_ $class_ */
+                /** @var Grade $class_ */
                 $class_ = $user->class_;
                 /** @var Discipline $discipline */
                 $discipline = $user->class_->disciplines()

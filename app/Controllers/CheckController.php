@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Mathrix\Lumen\Bases\BaseController;
 
 /**
  * Class CheckController

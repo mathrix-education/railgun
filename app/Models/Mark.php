@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Mathrix\Lumen\Bases\BaseModel;
 
 /**
  * Class Mark.
@@ -31,36 +32,53 @@ class Mark extends BaseModel
 
 
     /**
-     * @param array $conditions The array containing the key/value
+     * @param Activity|Module $model The markable model
+     * @param User|int $user The user
      *
-     * @return Mark
+     * @return Mark[]|\Illuminate\Database\Eloquent\Collection
      */
-    public static function retrieve(array $conditions)
+    public static function retrieveAll($model, $user)
     {
+        $modelClass = get_class($model);
+        $userId = is_int($user) ? $user : $user->id;
+
+        $conditions = [
+            "markable_type" => $modelClass,
+            "markable_id" => $model->id,
+            "user_id" => $userId
+        ];
+
         $wheres = [];
         foreach ($conditions as $k => $v) {
             $wheres[] = [$k, "=", $v];
         }
 
         /** @var Mark $path */
-        $mark = self::where($wheres)->first();
+        $marks = self::query()->where($wheres)->get();
 
-        if ($mark === null) {
-            $mark = new Mark($conditions);
+        if ($marks->count() === 0) {
+            $marks = new \Illuminate\Database\Eloquent\Collection(new Mark($conditions));
         }
 
-        return $mark;
+        return $marks;
     }
 
 
     /**
-     * BelongsTo Path.
+     * @param Activity|Module $model The markable model
+     * @param User|int $user The user
      *
-     * @return BelongsTo
+     * @return Mark
      */
-    public function path(): BelongsTo
+    public static function retrieve($model, $user)
     {
-        return $this->belongsTo(Path::class);
+        return self::retrieveAll($model, $user)->first();
+    }
+
+
+    public function markable()
+    {
+        return $this->morphTo();
     }
 
 

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Facades\Auth;
+use Mathrix\Lumen\Bases\BaseModel;
 
 /**
  * Class Chapter.
@@ -26,7 +27,7 @@ use Illuminate\Support\Facades\Auth;
  * @property int $discipline_id
  * @property int $activity_count
  * @property array $link
- * @property Class_ $class_
+ * @property Grade $class_
  * @property Discipline $discipline
  * @property Collection|Notion[] $notions
  */
@@ -57,7 +58,7 @@ class Chapter extends BaseModel
      */
     public function class_(): BelongsTo
     {
-        return $this->belongsTo(Class_::class, "class_id");
+        return $this->belongsTo(Grade::class, "class_id");
     }
 
 

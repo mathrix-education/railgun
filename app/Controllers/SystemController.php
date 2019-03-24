@@ -18,13 +18,14 @@ use Symfony\Component\Console\Output\BufferedOutput;
 class SystemController extends BaseController
 {
     /**
-     * POST /system/sitemaps
+     * POST /system/sitemap
+     * Regenerate sitemap.
      *
      * @return JsonResponse
      */
-    public function sitemaps()
+    public function sitemap()
     {
-        $command = "sitemap:all";
+        $command = "sitemap";
         $output = new BufferedOutput();
 
         $exitCode = Artisan::call($command, [], $output);

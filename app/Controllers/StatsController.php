@@ -8,97 +8,65 @@ use App\Models\Log;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
+use Mathrix\Lumen\Bases\BaseController;
 
 /**
  * Class StatsController.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
- * @package   App\Controllers
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  */
 class StatsController extends BaseController
 {
     /**
-     * @apiVersion     4.0.0
+     * GET /stats/activities
      *
-     * @api            {post} /stats/activities Activities
-     * @apiGroup       Stats
-     * @apiName        StatsActivities
-     * @apiDescription Get statistics of activities completed by user
-     * @apiPermission  registered for self get, at least admin for strangers
-     * @apiParam (Data) {int} [user_id] The user id (only use to get another user stats)
-     * @apiParam (Data) {string=day,week,month,year} [interval=day] The interval unit
-     * @apiParam (Data) {string} [start] The interval start (format Y-m-d)
-     * @apiParam (Data) {string} [end] The interval end (format Y-m-d)
-     * @apiSuccess {string[]} stats Array of stats, key is the date
-     * @apiSuccess {int[][]} stats.points The points stats
-     * @apiSuccess {int} stats.points.total The total of points gathered during the given interval
-     * @apiSuccess {int[]} stats.points.details The detailed points gathered all activities types
-     * @apiSuccess {int} stats.points.details.course The detailed points gathered for course activities
-     * @apiSuccess {int} stats.points.details.exercise The detailed points gathered for exercise activities
-     * @apiSuccess {int} stats.points.details.flashcard The detailed points gathered for flashcard activities
-     * @apiSuccess {int} stats.points.details.summary The detailed points gathered for summary activities
-     * @apiSuccess {int} stats.points.details.test The detailed points gathered for test activities
-     * @apiSuccess {int[][]} stats.counts The activities completed count stats
-     * @apiSuccess {int} stats.counts.total The total count of activities completed during the current interval
-     * @apiSuccess {int[]} stats.counts.details The detailed count of activities completed during the current interval
-     * @apiSuccess {int} stats.counts.details.course The detailed course completed activities count
-     * @apiSuccess {int} stats.counts.details.exercise The detailed exercise completed activities count
-     * @apiSuccess {int} stats.counts.details.flashcard The detailed flashcard completed activities count
-     * @apiSuccess {int} stats.counts.details.summary The detailed summary completed activities count
-     * @apiSuccess {int} stats.counts.details.test The detailed test completed activities count
-     * @apiUse         Http401Unauthorized
-     * @apiUse         Http422ModelSave
-     *
-     * @param Request $request The request
-     *
-     * @throws Http400InvalidRequestException
-     * @throws Http401UnauthorizedException
-     * @throws ValidationException
+     * @param Request $request The Illuminate HTTP request.
      *
      * @return JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function activities(Request $request)
     {
-        $user = $this->getUserByRequestOrUnauthorized($request);
+        $user = $request->user();
 
-        $rules = [
+        $this->validate($request, [
             "interval" => "in:day,week,month,year",
             "start" => "date_format:Y-m-d",
             "end" => "date_format:Y-m-d",
-        ];
-
-        $this->validate($request, $rules);
+        ]);
 
         $interval = $request->input("interval", "day");
         $start = $request->input("start");
         $end = $request->input("end");
 
-        $statsRequest = Log::whereUserId($user->id)
-            ->whereEvent("user_gathered_points");
+        $query = Log::query()
+            ->where([
+                ["user_id", "=", $user->id],
+                ["event", "=", "user_gathered_points"]
+            ]);
 
         if (!empty($start)) {
             $start = Carbon::createFromFormat("Y-m-d", $start);
-            $statsRequest = $statsRequest->whereDate("created_at", ">", $start);
+            $query = $query->whereDate("created_at", ">", $start);
         }
 
         if (!empty($end)) {
             $end = Carbon::createFromFormat("Y-m-d", $end);
-            $statsRequest = $statsRequest->whereDate("created_at", "<", $end);
+            $query = $query->whereDate("created_at", "<", $end);
         }
 
-        $statsRaw = $statsRequest->where("loggable_type", "module")
+        $statsRaw = $query->where("loggable_type", "module")
             ->with(["loggable.activities"])
             ->get(["value", "loggable_type", "loggable_id", "created_at"]);
 
         $stats = [];
 
         if ($statsRaw->isEmpty()) {
-            return response()->json($stats);
+            return new JsonResponse($stats);
         }
+
         /** @var Carbon $dateIterator */
         $dateIterator = $statsRaw->first()->created_at;
 
@@ -150,17 +118,17 @@ class StatsController extends BaseController
                 $stats[$key]["points"]["total"] += $points;
                 $stats[$key]["points"]["details"][$type] = $points;
 
-                ++$stats[$key]["counts"]["total"];
+                $stats[$key]["counts"]["total"]++;
                 $stats[$key]["counts"]["details"][$type] = 1;
             } else {
                 $stats[$key]["points"]["total"] += $points;
                 $stats[$key]["points"]["details"][$type] += $points;
 
-                ++$stats[$key]["counts"]["total"];
-                ++$stats[$key]["counts"]["details"][$type];
+                $stats[$key]["counts"]["total"]++;
+                $stats[$key]["counts"]["details"][$type]++;
             }
         }
 
-        return response()->json($stats);
+        return new JsonResponse($stats);
     }
 }

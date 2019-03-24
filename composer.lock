@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0d43b454cd9c24b855ef209fbbc448e9",
+    "content-hash": "b50c5de62f063493e32e5dedd4bb56f8",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -60,16 +60,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.90.3",
+            "version": "3.90.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "12ba8071bcc3d79cbfbf8cca77f59f146816b17a"
+                "reference": "5b188c9f5f21e87b4994bc1b477951eff4608547"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/12ba8071bcc3d79cbfbf8cca77f59f146816b17a",
-                "reference": "12ba8071bcc3d79cbfbf8cca77f59f146816b17a",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/5b188c9f5f21e87b4994bc1b477951eff4608547",
+                "reference": "5b188c9f5f21e87b4994bc1b477951eff4608547",
                 "shasum": ""
             },
             "require": {
@@ -138,7 +138,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-03-14T18:32:41+00:00"
+            "time": "2019-03-21T18:10:13+00:00"
         },
         {
             "name": "barryvdh/laravel-cors",
@@ -484,20 +484,21 @@
         },
         {
             "name": "drewm/mailchimp-api",
-            "version": "v2.5",
+            "version": "v2.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drewm/mailchimp-api.git",
-                "reference": "f532fa26cd6e7d17c9ba40a757d8c6bfee47dace"
+                "reference": "40296b5ea9d8b53e6478891e11dff30c1ef96cdc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drewm/mailchimp-api/zipball/f532fa26cd6e7d17c9ba40a757d8c6bfee47dace",
-                "reference": "f532fa26cd6e7d17c9ba40a757d8c6bfee47dace",
+                "url": "https://api.github.com/repos/drewm/mailchimp-api/zipball/40296b5ea9d8b53e6478891e11dff30c1ef96cdc",
+                "reference": "40296b5ea9d8b53e6478891e11dff30c1ef96cdc",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
+                "ext-json": "*",
                 "php": ">=5.3"
             },
             "require-dev": {
@@ -523,7 +524,7 @@
             ],
             "description": "Super-simple, minimum abstraction MailChimp API v3 wrapper",
             "homepage": "https://github.com/drewm/mailchimp-api",
-            "time": "2018-02-16T15:31:05+00:00"
+            "time": "2019-03-19T11:43:38+00:00"
         },
         {
             "name": "dusterio/lumen-passport",
@@ -638,16 +639,16 @@
         },
         {
             "name": "erusev/parsedown",
-            "version": "1.7.1",
+            "version": "v1.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/erusev/parsedown.git",
-                "reference": "92e9c27ba0e74b8b028b111d1b6f956a15c01fc1"
+                "reference": "d60bcdc46978357759ecb13cb4b078da783f8faf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erusev/parsedown/zipball/92e9c27ba0e74b8b028b111d1b6f956a15c01fc1",
-                "reference": "92e9c27ba0e74b8b028b111d1b6f956a15c01fc1",
+                "url": "https://api.github.com/repos/erusev/parsedown/zipball/d60bcdc46978357759ecb13cb4b078da783f8faf",
+                "reference": "d60bcdc46978357759ecb13cb4b078da783f8faf",
                 "shasum": ""
             },
             "require": {
@@ -680,7 +681,7 @@
                 "markdown",
                 "parser"
             ],
-            "time": "2018-03-08T01:11:30+00:00"
+            "time": "2019-03-17T17:19:46+00:00"
         },
         {
             "name": "firebase/php-jwt",
@@ -839,16 +840,16 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.89",
+            "version": "v0.90",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client-services.git",
-                "reference": "8a285822d48df1650c4c298653aa4961049a1ee8"
+                "reference": "7ec8bd600d813d1307aafb4ab46d97495b4a88cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/8a285822d48df1650c4c298653aa4961049a1ee8",
-                "reference": "8a285822d48df1650c4c298653aa4961049a1ee8",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/7ec8bd600d813d1307aafb4ab46d97495b4a88cf",
+                "reference": "7ec8bd600d813d1307aafb4ab46d97495b4a88cf",
                 "shasum": ""
             },
             "require": {
@@ -872,7 +873,7 @@
             "keywords": [
                 "google"
             ],
-            "time": "2019-03-10T00:23:16+00:00"
+            "time": "2019-03-16T00:23:00+00:00"
         },
         {
             "name": "google/auth",
@@ -2989,16 +2990,16 @@
         },
         {
             "name": "laravel/passport",
-            "version": "v7.2.1",
+            "version": "v7.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/passport.git",
-                "reference": "bd8ae09775778f96b6642d87e2f579fea5bf92b5"
+                "reference": "c0c3fca80d8f5af90dcbf65e62bdd1abee9ac25d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/passport/zipball/bd8ae09775778f96b6642d87e2f579fea5bf92b5",
-                "reference": "bd8ae09775778f96b6642d87e2f579fea5bf92b5",
+                "url": "https://api.github.com/repos/laravel/passport/zipball/c0c3fca80d8f5af90dcbf65e62bdd1abee9ac25d",
+                "reference": "c0c3fca80d8f5af90dcbf65e62bdd1abee9ac25d",
                 "shasum": ""
             },
             "require": {
@@ -3017,7 +3018,7 @@
                 "php": ">=7.1",
                 "phpseclib/phpseclib": "^2.0",
                 "symfony/psr-http-message-bridge": "~1.0",
-                "zendframework/zend-diactoros": "~1.0"
+                "zendframework/zend-diactoros": "~1.0|~2.0"
             },
             "require-dev": {
                 "mockery/mockery": "~1.0",
@@ -3055,7 +3056,7 @@
                 "oauth",
                 "passport"
             ],
-            "time": "2019-03-12T11:42:07+00:00"
+            "time": "2019-03-13T14:21:06+00:00"
         },
         {
             "name": "laravel/slack-notification-channel",
@@ -3539,18 +3540,19 @@
             "time": "2018-11-21T21:42:43+00:00"
         },
         {
-            "name": "mathrix/lumen",
+            "name": "mathrix/lumen-zero",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://source.developers.google.com/p/mathrix-education/r/mathrix-lumen",
-                "reference": "51d7401903a0f4820ad3cc4e5fe81890a6b33ae3"
+                "url": "git@github.com:mathrix-education/lumen-zero.git",
+                "reference": "070a204c1b9bedb67910e5cc285cc11528a51940"
             },
             "require": {
                 "dusterio/lumen-passport": "^0.2.9",
                 "ext-json": "*",
                 "ext-pdo": "*",
                 "illuminate/mail": "^5.7",
+                "illuminate/notifications": "^5.7",
                 "laravel/lumen-framework": "5.7.*",
                 "php": ">=7.2"
             },
@@ -3575,7 +3577,7 @@
                 }
             ],
             "description": "The main library for Mathrix Lumen REST APIs.",
-            "time": "2019-03-11T07:23:40+00:00"
+            "time": "2019-03-22T07:26:27+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -5007,16 +5009,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v6.30.5",
+            "version": "v6.31.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "1ffc751e7ee2d68b3e4a0068f5537b8334945467"
+                "reference": "a44a095af88057922a08b03daaf79d6859e12e2d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/1ffc751e7ee2d68b3e4a0068f5537b8334945467",
-                "reference": "1ffc751e7ee2d68b3e4a0068f5537b8334945467",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/a44a095af88057922a08b03daaf79d6859e12e2d",
+                "reference": "a44a095af88057922a08b03daaf79d6859e12e2d",
                 "shasum": ""
             },
             "require": {
@@ -5059,7 +5061,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2019-03-11T20:45:23+00:00"
+            "time": "2019-03-18T23:36:33+00:00"
         },
         {
             "name": "superbalist/flysystem-google-storage",
@@ -6946,16 +6948,16 @@
         },
         {
             "name": "composer/semver",
-            "version": "1.4.2",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/semver.git",
-                "reference": "c7cb9a2095a074d131b65a8a0cd294479d785573"
+                "reference": "46d9139568ccb8d9e7cdd4539cab7347568a5e2e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/semver/zipball/c7cb9a2095a074d131b65a8a0cd294479d785573",
-                "reference": "c7cb9a2095a074d131b65a8a0cd294479d785573",
+                "url": "https://api.github.com/repos/composer/semver/zipball/46d9139568ccb8d9e7cdd4539cab7347568a5e2e",
+                "reference": "46d9139568ccb8d9e7cdd4539cab7347568a5e2e",
                 "shasum": ""
             },
             "require": {
@@ -7004,7 +7006,7 @@
                 "validation",
                 "versioning"
             ],
-            "time": "2016-08-30T16:08:34+00:00"
+            "time": "2019-03-19T17:25:45+00:00"
         },
         {
             "name": "composer/spdx-licenses",
@@ -9461,7 +9463,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "mathrix/lumen": 20
+        "mathrix/lumen-zero": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

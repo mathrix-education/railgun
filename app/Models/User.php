@@ -23,6 +23,7 @@ use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\Client;
 use Laravel\Passport\HasApiTokens;
 use Laravel\Passport\Token;
+use Mathrix\Lumen\Bases\BaseModel;
 
 /**
  * Class User.
@@ -56,7 +57,7 @@ use Laravel\Passport\Token;
  * @property \Braintree\Customer|null $braintree
  * @property bool $premium
  * @property int $daily_points
- * @property Class_ $class_
+ * @property Grade $class_
  * @property FamilyPack $familyPackAsParent
  * @property FamilyPack $familyPackAsChild
  * @property Collection|Client[] $clients
@@ -130,7 +131,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function class_(): BelongsTo
     {
-        return $this->belongsTo(Class_::class, "class_id");
+        return $this->belongsTo(Grade::class, "class_id");
     }
 
 
@@ -360,9 +361,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * @param array $payload
      *
      * @return Record
-     * @throws Http400InvalidRequestException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
+     * @throws \Mathrix\Lumen\Exceptions\ValidationException
      */
     public function record(string $service, string $event, string $status, array $payload)
     {

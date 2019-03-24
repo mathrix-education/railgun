@@ -1,7 +1,7 @@
 <?php
 
 /** @var Laravel\Lumen\Routing\Router $router */
-$router->get("modules[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "ModuleController@index");
+/*$router->get("modules[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", "ModuleController@index");
 
 $router->group(["prefix" => "modules"], function () use ($router) {
     $router->get("by-{what:[a-z\-]+}/{id:[1-9]\d*}", "ModuleController@by");
@@ -19,4 +19,4 @@ $router->group(["prefix" => "modules"], function () use ($router) {
 
         $router->post("search", "ModuleController@search");
     });
-});
+});*/

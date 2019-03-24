@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Mathrix\Lumen\Bases\BaseModel;
 
 /**
  * Class Discipline.
@@ -21,7 +22,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property bool $beta
  * @property array $link
  * @property Collection|Chapter[] $chapters
- * @property Collection|Class_[] $classes
+ * @property Collection|Grade[] $classes
  */
 class Discipline extends BaseModel
 {
@@ -72,7 +73,7 @@ class Discipline extends BaseModel
      */
     public function classes(): BelongsToMany
     {
-        return $this->belongsToMany(Class_::class, "class_discipline", "discipline_id",
+        return $this->belongsToMany(Grade::class, "class_discipline", "discipline_id",
             "class_id");
     }
 }
