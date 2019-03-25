@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands\Pyramid;
 
-use App\Console\Commands\BaseCommand;
+use Mathrix\Lumen\Bases\BaseCommand;
 
 /**
  * Class PyramidCommand.
@@ -17,9 +17,13 @@ class PyramidCommand extends BaseCommand
 
     public function handle()
     {
-        $this->call("pyramid:reset");
+        $this->block("Pyramid Migrator by Mathieu Bour");
+        //$this->call("pyramid:reset");
+        $this->call("pyramid:fix");
+        $this->call("migrate", ["--step" => 4]);
         $this->call("pyramid:migrate");
-        $this->call("pyramid:check");
         $this->call("pyramid:seo");
+        $this->call("pyramid:foreign-keys");
+        //$this->call("pyramid:check");
     }
 }

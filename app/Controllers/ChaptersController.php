@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Chapter;
 use App\Models\Grade;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mathrix\Lumen\Bases\BaseController;
@@ -28,13 +29,13 @@ class ChaptersController extends BaseController
     public function recursive(int $id)
     {
         $chapter = Chapter::with([
-            "notions" => function (BelongsToMany $q) {
+            "notions" => function (HasMany $q) {
                 $q->where("visible", "=", true);
             },
-            "notions.activities" => function (BelongsToMany $q) {
+            "notions.activities" => function (HasMany $q) {
                 $q->where("visible", "=", true);
             },
-            "notions.activities.modules" => function (BelongsToMany $q) {
+            "notions.activities.modules" => function (HasMany $q) {
                 $q->where("visible", "=", true);
             }
         ])
@@ -88,13 +89,15 @@ class ChaptersController extends BaseController
      */
     public function getBySlugGradeSlug(string $chapterSlug, string $gradeSlug): JsonResponse
     {
+        /** @var Grade $grade */
         $grade = Grade::query()
             ->where("slug", "=", $gradeSlug)
             ->firstOrFail();
 
+        /** @var Chapter $chapter */
         $chapter = Chapter::query()
             ->where([
-                ["class_id", "=", $grade->id],
+                ["grade_id", "=", $grade->id],
                 ["slug", "=", $chapterSlug],
             ])
             ->firstOrFail();

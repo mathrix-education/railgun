@@ -2,22 +2,18 @@
 
 namespace App\Models;
 
-use App\Exceptions\Http400InvalidRequestException;
-use App\Exceptions\Http422ModelSaveException;
-use App\Exceptions\Http422ModelValidationException;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Mathrix\Lumen\Bases\BaseModel;
+use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 
 /**
  * Class Log.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
- * @package   App\Models
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  *
  * @property int $id
  * @property string $event
@@ -26,6 +22,7 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @property Carbon $created_at
  * @property string|null $loggable_type
  * @property int|null $loggable_id
+ * ---
  * @property User|null $user
  * @property Activity|Module $loggable
  */
@@ -79,9 +76,6 @@ class Log extends BaseModel
      * @param User|int|null $user the user as model, its id or njull for system log
      * @param array $data the optional data to associate with the log, such as the loggable type and id
      *
-     * @throws Http400InvalidRequestException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
      * @throws \Exception
      *
      * @return bool
@@ -97,18 +91,16 @@ class Log extends BaseModel
      * Build a log line.
      *
      * @param string $event the event name
-     * @param User|int|null $user the user as model, its id or njull for system log
+     * @param User|int|null $user the user as model, its id or null for system log
      * @param array $data the optional data to associate with the log, such as the loggable type and id
      *
-     * @throws Http400InvalidRequestException
-     * @throws \Exception
-     *
      * @return Log
+     * @throws Http400BadRequestException
      */
     public static function build(string $event, $user = null, $data = []): self
     {
         if (!\in_array($event, self::EVENTS, true)) {
-            throw new Http400InvalidRequestException("`$event` is not a valid event");
+            throw new Http400BadRequestException(["event" => $event], "`$event` is not a valid event");
         }
 
         $logData = [
@@ -150,7 +142,6 @@ class Log extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
-
     /**
      * BelongsTo User.
      *

@@ -9,16 +9,15 @@ use Mathrix\Lumen\Bases\BaseModel;
 /**
  * Class Category.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
- * @package   App\Models
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  *
  * @property int $id
  * @property string $name
  * @property string $slug
  * @property string|null $image
+ * ---
  * @property Collection|Post[] $posts
  */
 class Category extends BaseModel

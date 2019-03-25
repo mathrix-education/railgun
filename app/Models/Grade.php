@@ -9,28 +9,25 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Mathrix\Lumen\Bases\BaseModel;
 
 /**
- * Class Class_.
+ * Class Grade.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
- * @package   App\Models
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  *
  * @property int $id
  * @property string $name
- * @property string $name_short
  * @property string $slug
- * @property string $slug_short
  * @property int $order
  * @property bool $visible
  * @property array $link
  * @property int|null $parent_id
  * @property int $country_id
- * @property Collection|Chapter[] $chapters
- * @property Country $country
- * @property Collection|Discipline[] $disciplines
+ * ---
  * @property Grade|null $parent
+ * @property Country $country
+ * @property Collection|Chapter[] $chapters
+ * @property Collection|Discipline[] $disciplines
  * @property Collection|User[] $users
  */
 class Grade extends BaseModel
@@ -50,24 +47,24 @@ class Grade extends BaseModel
 
 
     /**
-     * Get the cursus (ie. the class it self and all its previous).
+     * Get the cursus (ie. the grade itself and all its previous).
      *
      * @return Collection
      */
     public function cursus()
     {
-        $classes = new Collection();
-        $classes->add($this);
+        $grades = new Collection();
+        $grades->add($this);
 
         /** @var Grade $end */
-        $end = $classes->last();
+        $end = $grades->last();
 
-        while (null !== $end->parent_id) {
-            $classes[] = self::find($end->parent_id);
-            $end = $classes->last();
+        while ($end->parent_id !== null) {
+            $grades[] = self::query()->find($end->parent_id);
+            $end = $grades->last();
         }
 
-        return $classes;
+        return $grades;
     }
 
     /*
@@ -89,22 +86,22 @@ class Grade extends BaseModel
     /**
      * BelongsTo Country.
      *
-     * @return HasMany
+     * @return BelongsTo
      */
-    public function chapters(): HasMany
+    public function country(): BelongsTo
     {
-        return $this->hasMany(Chapter::class, "class_id");
+        return $this->belongsTo(Country::class);
     }
 
 
     /**
      * BelongsTo Country.
      *
-     * @return BelongsTo
+     * @return HasMany
      */
-    public function country(): BelongsTo
+    public function chapters(): HasMany
     {
-        return $this->belongsTo(Country::class);
+        return $this->hasMany(Chapter::class);
     }
 
 
@@ -115,10 +112,9 @@ class Grade extends BaseModel
      */
     public function disciplines(): BelongsToMany
     {
-        return $this->belongsToMany(Discipline::class, "class_discipline", "class_id",
-            "discipline_id")
+        return $this->belongsToMany(Discipline::class)
             ->withPivot("visible")
-            ->orderBy("class_discipline.order");
+            ->orderBy("discipline_grade.order");
     }
 
 

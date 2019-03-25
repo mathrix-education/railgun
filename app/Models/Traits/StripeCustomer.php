@@ -2,18 +2,19 @@
 
 namespace App\Models\Traits;
 
-use App\Exceptions\Http400InvalidRequestException;
 use Illuminate\Support\Facades\Cache;
+use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Stripe\Subscription;
 
 /**
  * Trait StripeCustomer.
  * Contains all functions to access user's Stripe customer profile.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.0
- * @copyright Mathrix Education SA
- * @package   App\Models\Traits
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.1.0
+ *
+ * @property \Stripe\Customer $stripe
  */
 trait StripeCustomer
 {
@@ -66,8 +67,7 @@ trait StripeCustomer
             } catch (\Stripe\Error\InvalidRequest $e) {
                 $this->stripe_id = null;
                 $this->save();
-
-                return;
+                return null;
             }
         });
     }
@@ -98,9 +98,8 @@ trait StripeCustomer
      *
      * @param string|array $plans
      *
-     * @throws Http400InvalidRequestException
-     *
      * @return bool
+     * @throws Http400BadRequestException
      */
     public function hasStripeSubscription($plans)
     {
@@ -114,7 +113,7 @@ trait StripeCustomer
         }
 
         if ($this->isStripeCustomer(true)) {
-            /** @var \Stripe\Subscription $subscription */
+            /** @var Subscription $subscription */
             foreach ($this->getStripeSubscriptions() as $subscription) {
                 if (
                     \in_array($subscription->plan->id, $plans, true) &&
@@ -132,9 +131,8 @@ trait StripeCustomer
     /**
      * Get the user subscriptions.
      *
-     * @throws Http400InvalidRequestException
-     *
-     * @return \Stripe\Subscription[]
+     * @return Subscription[]
+     * @throws Http400BadRequestException
      */
     public function getStripeSubscriptions(): array
     {
@@ -149,12 +147,12 @@ trait StripeCustomer
      *
      * @param bool $strict
      *
-     * @throws Http400InvalidRequestException
+     * @throws Http400BadRequestException
      */
     public function requireStripeCustomer(bool $strict = false)
     {
         if (!$this->isStripeCustomer($strict)) {
-            throw new Http400InvalidRequestException("User with id `{$this->id}` is not a Stripe customer");
+            throw new Http400BadRequestException([], "User with id `{$this->id}` is not a Stripe customer");
         }
     }
 }

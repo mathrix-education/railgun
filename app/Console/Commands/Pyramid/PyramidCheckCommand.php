@@ -2,13 +2,11 @@
 
 namespace App\Console\Commands\Pyramid;
 
-use App\Console\Commands\BaseCommand;
-use App\Models\Activity;
 use App\Models\Chapter;
-use App\Models\Module;
-use App\Models\Notion;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Mathrix\Lumen\Bases\BaseCommand;
 use Symfony\Component\VarDumper\VarDumper;
 
 /**
@@ -28,15 +26,21 @@ class PyramidCheckCommand extends BaseCommand
     {
         // Generating dataset
         $this->block("Generating dataset...");
-        $dataset = $this->makeDataset();
+        $dataset = Cache::remember("pyramid.dataset", 60, function () {
+            return $this->makeDataset();
+        });
 
         // Check existence of every route
         $this->block("Checking integrity...");
 
         $this->output->progressStart($dataset->count());
         foreach ($dataset as $line) {
-            $this->search($line);
-            $this->output->progressAdvance();
+            if ($this->search($line)) {
+                $this->output->progressAdvance();
+            } else {
+                VarDumper::dump($line);
+                $this->fatal("Error found.");
+            }
         }
         $this->output->progressFinish();
 
@@ -80,28 +84,27 @@ class PyramidCheckCommand extends BaseCommand
         $this->line("Generating dataset (this might take a while)...");
         /** @var Chapter $chapter */
         foreach ($chapters as $chapter) {
-            $chapterNotionMappings = $mappingsCN
+            $chapterNotionMappings = DB::table("chapter_notion")
                 ->where("chapter_id", "=", $chapter->id)
-                ->sortBy("order");
+                ->orderBy("order")
+                ->get();
 
             /** @var \stdClass $chapterNotionMapping [chapter_id, notion_id, order] */
             foreach ($chapterNotionMappings as $chapterNotionMapping) {
-                $notionActivityMappings = $mappingsNA
+                $notionActivityMappings = DB::table("activity_notion")
                     ->where("notion_id", "=", $chapterNotionMapping->notion_id)
-                    ->sortBy("order");
+                    ->orderBy("order")
+                    ->get();
 
                 /** @var \stdClass $notionActivityMapping [notion_id, activity_id, order] */
                 foreach ($notionActivityMappings as $notionActivityMapping) {
-                    $activityModuleMappings = $mappingsAM
+                    $activityModuleMappings = DB::table("activity_module")
                         ->where("activity_id", "=", $notionActivityMapping->activity_id)
-                        ->sortBy("order");
+                        ->orderBy("order")
+                        ->get();
 
                     /** @var \stdClass $activityModuleMappings [activity_id, module_id, order] */
                     foreach ($activityModuleMappings as $activityModuleMapping) {
-                        /*$chapter = $chapters->where("id", "=", $chapterNotionMapping->chapter_id)->first();
-                        $notion = $notions->where("id", "=", $notionActivityMapping->notion_id)->first();
-                        $activity = $activities->where("id", "=", $activityModuleMapping->activity_id)->first();
-                        $module = $modules->where("id", "=", $activityModuleMapping->module_id)->first();*/
                         $chapter = DB::table("chapters")
                             ->where("id", "=", $chapterNotionMapping->chapter_id)
                             ->get()
@@ -139,7 +142,15 @@ class PyramidCheckCommand extends BaseCommand
                             "notion_name" => $notion->name,
                             "activity_name" => $activity->name,
                             "module_content" => $module->content,
-                            "module_questions" => $module->questions
+                            "module_questions" => $module->questions,
+
+                            "module" => [
+                                "type" => $module->type,
+                                "content" => $module->content,
+                                "questions" => $module->questions,
+                                "choices" => $module->choices,
+                                "corrections" => $module->corrections
+                            ]
                         ]);
                     }
                 }
@@ -154,93 +165,40 @@ class PyramidCheckCommand extends BaseCommand
     }
 
 
-    /**
-     * Search a line in the database starting from module. Since we start from modules, the route
-     * module => activity => notion => chapter is unique and guarantees the unicity.
-     *
-     * @param array $line The line to search.
-     *
-     * @return bool If the line was found.
-     */
-    private function search($line)
+    public function search($line)
     {
-        // Module
-        $activityIds = DB::table("modules")
-            ->select(["id"])
-            ->where("content", "=", $line["module_content"])
-            ->where("questions", "=", $line["module_questions"])
-            ->get()
-            ->pluck("id");
+        $wheres = [];
+        $nulls = [];
 
-        if ($activityIds->count() === 0) {
-            VarDumper::dump($line);
-            $this->fatal("Unable to find module with content `{$line["module_content"]}` and questions "
-                . "`{$line["module_content"]}`");
-
-            return false;
-        }
-
-        // Explore each module route
-        $found = "none";
-
-        foreach ($activityIds as $activityId) {
-            // Search for activity
-            $results = DB::table("activities")
-                ->select(["notion_id"])
-                ->where("name", "=", $line["activity_name"])
-                ->where("id", "=", $activityId)
-                ->get()
-                ->pluck("notion_id");
-            if (empty($results)) {
-                continue;
-            } else if ($found == "none") {
-                $found = "activity";
-            }
-            $notionId = $results->first();
-
-            // Search for notion
-            $results = DB::table("notions")
-                ->select(["chapter_id"])
-                ->where("name", "=", $line["notion_name"])
-                ->where("id", "=", $notionId)
-                ->get()
-                ->pluck("chapter_id");
-            if (empty($results)) {
-                continue;
-            } else if ($found == "activity") {
-                $found = "notion";
-            }
-            $chapter_id = $results->first();
-
-            // Search for chapter
-            $results = DB::table("chapters")
-                ->select("id")
-                ->where("name", "=", $line["chapter_name"])
-                ->where("id", "=", $chapter_id)
-                ->get();
-            if (empty($results)) {
-                continue;
+        foreach ($line["module"] as $key => $value) {
+            if ($value === null) {
+                $nulls[] = $key;
             } else {
-                return true; // Exit here, success!
+                $wheres[] = ["modules.$key", "=", $value];
             }
         }
 
-        // Handle error
-        switch ($found) {
-            case "none":
-                VarDumper::dump($line);
-                $this->fatal("Unable to find activity with name `{$line["activity_name"]}`");
-                break;
-            case "activity":
-                VarDumper::dump($line);
-                $this->fatal("Unable to find notion with name `{$line["notion_name"]}`");
-                break;
-            case "notion":
-                VarDumper::dump($line);
-                $this->fatal("Unable to find chapter with name `{$line["chapter_name"]}`");
-                break;
+        $wheres = array_merge($wheres, [
+            ["chapters.name", "=", $line["chapter_name"]],
+            ["notions.name", "=", $line["notion_name"]],
+            ["activities.name", "=", $line["activity_name"]]
+        ]);
+
+        $query = DB::table("modules")
+            ->join("activities", "activities.id", "=", "modules.activity_id")
+            ->join("notions", "notions.id", "=", "activities.notion_id")
+            ->join("chapters", "chapters.id", "=", "notions.chapter_id");
+
+        if (!empty($wheres)) {
+            $query = $query->where($wheres);
         }
 
-        return false;
+        if (!empty($nulls)) {
+            foreach ($nulls as $null) {
+                $query = $query->whereNull($null);
+            }
+        }
+
+        return $query->count() > 0;
     }
 }

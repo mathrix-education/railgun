@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Exceptions\Http422ModelSaveException;
 use Mathrix\Lumen\Bases\BaseModel;
 
 /**
@@ -45,7 +44,8 @@ class Setting extends BaseModel
     public static function read(string $key)
     {
         /** @var Setting $setting */
-        $setting = self::where("key", "=", $key)
+        $setting = self::query()
+            ->where("key", "=", $key)
             ->firstOrFail();
 
         return $setting->value;
@@ -59,18 +59,22 @@ class Setting extends BaseModel
      * @param mixed $value the setting value
      * @param bool $visible the setting visibility (true for public visibility, 0 for admin-only)
      *
-     * @return bool
+     * @return mixed
+     * @throws \Mathrix\Lumen\Exceptions\ValidationException
      */
     public static function write(string $key, $value, bool $visible = true)
     {
-        $setting = self::where("key", "=", $key)
-            ->firstOrCreate([
-                "key" => $key,
-                "value" => $value,
-                "visible" => $visible,
-            ]);
+        /** @var Setting $setting */
+        $setting = self::query()
+            ->where("key", "=", $key)
+            ->firstOrNew(["key" => $key]);
+        $setting->fill([
+            "value" => $value,
+            "visible" => $visible
+        ]);
+        $setting->save();
 
-        return $setting instanceof self;
+        return $setting->value;
     }
 
 
@@ -79,13 +83,13 @@ class Setting extends BaseModel
      *
      * @param string $key the setting key
      *
-     * @throws Http422ModelSaveException
-     *
      * @return bool|null
+     * @throws \Exception
      */
     public static function forgot(string $key)
     {
-        return self::where("key", "=", $key)
+        return self::query()
+            ->where("key", "=", $key)
             ->firstOrFail()
             ->delete();
     }

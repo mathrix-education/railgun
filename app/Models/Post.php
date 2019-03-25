@@ -11,11 +11,9 @@ use Mathrix\Lumen\Bases\BaseModel;
 /**
  * Class Post.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
- * @package   App\Models
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  *
  * @property int $id
  * @property string $title
@@ -25,9 +23,10 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @property int $category_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * ---
  * @property Module $module
  * @property Category $category
- * @property User $user
+ * @property User $user The post author.
  * @property Collection|Comment[] $comments
  */
 class Post extends BaseModel
@@ -51,7 +50,6 @@ class Post extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
-
     /**
      * BelongsTo Module.
      *

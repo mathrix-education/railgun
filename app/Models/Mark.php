@@ -4,26 +4,26 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Mathrix\Lumen\Bases\BaseModel;
 
 /**
  * Class Mark.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.2.0
- * @copyright Mathrix Education SA
- * @package   App\Models
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.2.0
  *
  * @property int $id
  * @property string $status
  * @property int $user_id
- * @property int $path_id
+ * @property int $markable_id
+ * @property int $markable_type
  * @property Carbon $created_at
  * @property Carbon $updated_at
- *
- * @property Path $path
+ * ---
  * @property User $user
+ * @property Activity|Module $markable
  */
 class Mark extends BaseModel
 {
@@ -32,6 +32,8 @@ class Mark extends BaseModel
 
 
     /**
+     * Retrieve all models linked with a given user.
+     *
      * @param Activity|Module $model The markable model
      * @param User|int $user The user
      *
@@ -76,12 +78,11 @@ class Mark extends BaseModel
     }
 
 
-    public function markable()
-    {
-        return $this->morphTo();
-    }
-
-
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
     /**
      * BelongsTo User.
      *
@@ -91,4 +92,14 @@ class Mark extends BaseModel
     {
         return $this->belongsTo(User::class);
     }
+
+
+    /**
+     * @return MorphTo
+     */
+    public function markable()
+    {
+        return $this->morphTo();
+    }
+
 }

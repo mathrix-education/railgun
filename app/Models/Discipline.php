@@ -10,19 +10,18 @@ use Mathrix\Lumen\Bases\BaseModel;
 /**
  * Class Discipline.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
- * @package   App\Models
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  *
  * @property int $id
  * @property string $name
  * @property string $slug
  * @property bool $beta
  * @property array $link
+ * ---
+ * @property Collection|Grade[] $grades
  * @property Collection|Chapter[] $chapters
- * @property Collection|Grade[] $classes
  */
 class Discipline extends BaseModel
 {
@@ -35,20 +34,6 @@ class Discipline extends BaseModel
         "beta" => "boolean"
     ];
     protected $appends = ["visible"];
-
-
-    /**
-     * @deprecated
-     * @return bool
-     */
-    public function getVisibleAttribute()
-    {
-        if (isset($this->pivot->attributes["visible"])) {
-            return !empty((bool)$this->pivot->attributes["visible"]);
-        } else {
-            return null;
-        }
-    }
 
     /*
     |--------------------------------------------------------------------------
@@ -67,13 +52,31 @@ class Discipline extends BaseModel
 
 
     /**
-     * BelongsToMany Class_.
+     * BelongsToMany Grade.
      *
      * @return BelongsToMany
      */
-    public function classes(): BelongsToMany
+    public function grades(): BelongsToMany
     {
-        return $this->belongsToMany(Grade::class, "class_discipline", "discipline_id",
-            "class_id");
+        return $this->belongsToMany(Grade::class);
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Attributes
+    |--------------------------------------------------------------------------
+    */
+    /**
+     * @return bool
+     * @deprecated
+     */
+    public function getVisibleAttribute()
+    {
+        if (isset($this->pivot->attributes["visible"])) {
+            return !empty((bool)$this->pivot->attributes["visible"]);
+        } else {
+            return null;
+        }
     }
 }

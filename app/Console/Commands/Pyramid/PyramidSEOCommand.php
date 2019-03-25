@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands\Pyramid;
 
-use App\Console\Commands\BaseCommand;
 use Illuminate\Support\Facades\DB;
+use Mathrix\Lumen\Bases\BaseCommand;
 
 /**
  * Class PyramidSEOCommand.

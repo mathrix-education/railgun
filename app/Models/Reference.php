@@ -17,6 +17,7 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @property string $key
  * @property string $text
  * @property int $module_id
+ * ---
  * @property Module $module
  */
 class Reference extends BaseModel

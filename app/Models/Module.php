@@ -4,19 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Mathrix\Lumen\Bases\BaseModel;
 
 /**
  * Class Module.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
- * @package   App\Models
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  *
  * @property int $id
  * @property bool $premium
@@ -28,9 +27,11 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @property array $solutions
  * @property array $corrections
  * @property string $options
- * @property mixed $status
+ * ---
+ * @property string|null $status
  * @property string|null $mark
- * @property Collection|Activity[] $activities
+ * ---
+ * @property Activity $activity
  * @property Collection|Comment[] $comments
  * @property Collection|Mark[] $marks
  * @property Collection|Log[] $logs
@@ -40,7 +41,7 @@ class Module extends BaseModel
 {
     public const TYPES = ["id", "course", "test", "mcq", "mcq-table", "match", "fill", "flashcard"];
     public const CLONE_FIELDS = ["premium", "type", "content", "questions", "choices", "solutions", "corrections",
-        "options", "visible"];
+        "options"];
 
     /** @var array The attributes that are mass assignable */
     protected $fillable = ["premium", "type", "content", "questions", "choices", "solutions", "corrections", "options",
@@ -78,7 +79,7 @@ class Module extends BaseModel
 
 
     /**
-     * Handle too array strips if user is not premium.
+     * Allow module data striping if the user is not premium.
      *
      * @return array
      */
@@ -88,41 +89,28 @@ class Module extends BaseModel
 
         /** @var User $user */
         $user = Auth::user();
-        $strip = $this->premium && ($user === null || !$user->premium && !$user->isModerator());
-
-        $keep = ["premium", "visible"];
+        $strip = !app()->runningInConsole() && $this->premium && ($user === null || !$user->premium && !$user->isModerator());
+        $keep = ["premium", "visible", "comments"];
 
         if ($strip) {
-            foreach (array_merge($this->with, $this->appends, $this->fillable, ["comments"]) as $field) {
-                if (array_key_exists($field, $array) && !\in_array($field, $keep, true)) {
-                    unset($array[$field]);
-                }
-            }
-            $array["premium"] = true;
+            $array = Arr::only($array, $keep);
         }
 
         return $array;
     }
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
     /**
-     * Get the mark attribute (view|to_revise|completed)
-     *
-     * @return string
+     * @return BelongsTo
      */
-    public function getMarkAttribute(): ?string
+    public function activity(): BelongsTo
     {
-        /** @var User $user */
-        $user = Auth::user();
-
-        if ($user === null) {
-            return null;
-        } else {
-            /** @var Mark $mark */
-            $mark = $this->marks()->where("user_id", "=", $user->id)->first();
-
-            return $mark !== null ? $mark->status : null;
-        }
+        return $this->belongsTo(Activity::class);
     }
 
 
@@ -166,10 +154,44 @@ class Module extends BaseModel
     public function clones()
     {
         // Build conditions
-        $conditions = array_map(function ($field) {
-            return [$field, "=", $this->{$field}];
-        }, self::CLONE_FIELDS);
+        $query = self::query();
+        foreach (self::CLONE_FIELDS as $field) {
+            $value = $this->getAttributeFromArray($field);
 
-        return Module::query()->where($conditions);
+            if ($value === null) {
+                $query = $query->whereNull($field);
+            } else {
+                $query->where($field, "=", $value);
+            }
+        }
+        $query->where("id", "!=", $this->id);
+
+        return $query;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Attributes
+    |--------------------------------------------------------------------------
+    */
+    /**
+     * Get the mark attribute (view|to_revise|completed)
+     *
+     * @return string
+     */
+    public function getMarkAttribute(): ?string
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        if ($user === null) {
+            return null;
+        } else {
+            /** @var Mark $mark */
+            $mark = $this->marks()->where("user_id", "=", $user->id)->first();
+
+            return $mark !== null ? $mark->status : null;
+        }
     }
 }

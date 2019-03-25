@@ -2,28 +2,26 @@
 
 namespace App\Models\Traits;
 
-use App\Exceptions\Http400InvalidRequestException;
 use App\Services\Braintree\Utils\Formatter;
 use Braintree\Customer;
 use Braintree\PaymentMethod;
 use Braintree\Result\Error;
 use Braintree\Result\Successful;
+use Braintree\Subscription;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
+use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 
 /**
  * Trait BraintreeCustomer.
  * Contains all functions to access user's Braintree customer profile.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.0
- * @copyright Mathrix Education SA
- * @package   App\Models\Traits
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.1.0
  */
 trait BraintreeCustomer
 {
-
     /**
      * braintree attribute.
      *
@@ -102,9 +100,8 @@ trait BraintreeCustomer
      *
      * @param string|null $paymentMethodNonce a payment nonce to attach
      *
-     * @throws Http400InvalidRequestException
-     *
      * @return Customer
+     * @throws Http400BadRequestException
      */
     public function createBraintreeCustomer(string $paymentMethodNonce = null): Customer
     {
@@ -127,9 +124,10 @@ trait BraintreeCustomer
                 /** @var Error $result */
                 $this->record("braintree", "customer_creation", "error", $result->jsonSerialize());
 
-                throw new Http400InvalidRequestException("Unable to create Braintree customer", 400, null, [
-                    "data" => Formatter::cast($result)
-                ]);
+                throw new Http400BadRequestException(
+                    Formatter::cast($result),
+                    "Unable to create Braintree customer"
+                );
             }
         }
 
@@ -140,9 +138,8 @@ trait BraintreeCustomer
     /**
      * Get user's Braintree payment methods.
      *
-     * @throws Http400InvalidRequestException
-     *
      * @return array
+     * @throws Http400BadRequestException
      */
     public function getBraintreePaymentMethods()
     {
@@ -157,12 +154,12 @@ trait BraintreeCustomer
      *
      * @param bool $strict
      *
-     * @throws Http400InvalidRequestException
+     * @throws Http400BadRequestException
      */
     public function requireBraintreeCustomer(bool $strict = false)
     {
         if (!$this->isBraintreeCustomer($strict)) {
-            throw new Http400InvalidRequestException("User with id `{$this->id}` is not a Braintree customer");
+            throw new Http400BadRequestException([], "User with id `{$this->id}` is not a Braintree customer");
         }
     }
 
@@ -170,9 +167,8 @@ trait BraintreeCustomer
     /**
      * Get the user's default payment method token.
      *
-     * @throws Http400InvalidRequestException
-     *
      * @return string
+     * @throws Http400BadRequestException
      */
     public function getBraintreeDefaultPaymentMethodToken()
     {
@@ -189,9 +185,8 @@ trait BraintreeCustomer
      *
      * @param string $paymentMethodNonce
      *
-     * @throws Http400InvalidRequestException
-     *
      * @return Successful|Error
+     * @throws Http400BadRequestException
      */
     public function addBraintreePaymentMethod(string $paymentMethodNonce)
     {
@@ -219,9 +214,8 @@ trait BraintreeCustomer
      *
      * @param string $paymentMethodToken
      *
-     * @throws Http400InvalidRequestException
-     *
-     * @return \Braintree_Result_Successful|\Braintree_Result_Error
+     * @return Successful|Error
+     * @throws Http400BadRequestException
      */
     public function deleteBraintreePaymentMethod(string $paymentMethodToken)
     {
@@ -236,9 +230,8 @@ trait BraintreeCustomer
      *
      * @param string|array $plans
      *
-     * @throws Http400InvalidRequestException
-     *
      * @return bool
+     * @throws Http400BadRequestException
      */
     public function hasBraintreeSubscription($plans)
     {
@@ -267,9 +260,8 @@ trait BraintreeCustomer
     /**
      * Get the user subscriptions.
      *
-     * @throws Http400InvalidRequestException
-     *
-     * @return Collection|\Braintree_Subscription[]
+     * @return Collection|Subscription[]
+     * @throws Http400BadRequestException
      */
     public function getBraintreeSubscriptions(): Collection
     {

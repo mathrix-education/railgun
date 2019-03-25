@@ -2,9 +2,6 @@
 
 namespace App\Console\Commands\Pyramid;
 
-use App\Models\Activity;
-use App\Models\Module;
-use App\Models\Notion;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -58,7 +55,6 @@ trait CopyTrait
      */
     public function copyActivity(int $activityId, int $notionId, int $order)
     {
-        /** @var Activity $activity */
         $copyActivity = DB::table("activities")->where("id", "=", $activityId)->first();
 
         unset($copyActivity->id);

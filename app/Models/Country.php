@@ -9,11 +9,9 @@ use Mathrix\Lumen\Bases\BaseModel;
 /**
  * Class Country.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
- * @package   App\Models
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  *
  * @property int $id
  * @property string $name
@@ -21,7 +19,8 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @property string $slug
  * @property string $slug_short
  * @property bool $visible
- * @property Collection|Grade[] $classes
+ * ---
+ * @property Collection|Grade[] $grades
  */
 class Country extends BaseModel
 {
@@ -40,11 +39,10 @@ class Country extends BaseModel
     |--------------------------------------------------------------------------
     */
     /**
-     * HasMany Class_.
-     *
+     * The country grades.
      * @return HasMany
      */
-    public function classes(): HasMany
+    public function grades(): HasMany
     {
         return $this->hasMany(Grade::class);
     }

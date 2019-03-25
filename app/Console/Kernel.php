@@ -4,10 +4,14 @@ namespace App\Console;
 
 use App\Console\Commands\Braintree\BraintreeCheck;
 use App\Console\Commands\Braintree\NewPayPalCheck;
-use App\Console\Commands\Clean;
 use App\Console\Commands\CompileMails;
 use App\Console\Commands\Pyramid\PyramidCheckCommand;
 use App\Console\Commands\Pyramid\PyramidCommand;
+use App\Console\Commands\Pyramid\PyramidFixCommand;
+use App\Console\Commands\Pyramid\PyramidForeignKeysCommand;
+use App\Console\Commands\Pyramid\PyramidMarksActivitiesCommand;
+use App\Console\Commands\Pyramid\PyramidMarksCommand;
+use App\Console\Commands\Pyramid\PyramidMarksModuleCommand;
 use App\Console\Commands\Pyramid\PyramidMigrateCommand;
 use App\Console\Commands\Pyramid\PyramidResetCommand;
 use App\Console\Commands\Pyramid\PyramidSEOCommand;
@@ -39,10 +43,15 @@ class Kernel extends ConsoleKernel
         SitemapContent::class,
         CompileMails::class,
         PyramidCommand::class,
+        PyramidFixCommand::class,
         PyramidResetCommand::class,
         PyramidMigrateCommand::class,
-        PyramidCheckCommand::class,
-        PyramidSEOCommand::class
+        PyramidSEOCommand::class,
+        PyramidForeignKeysCommand::class,
+        PyramidMarksCommand::class,
+        PyramidMarksModuleCommand::class,
+        PyramidMarksActivitiesCommand::class,
+        PyramidCheckCommand::class
     ];
 
 

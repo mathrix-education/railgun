@@ -1,7 +1,6 @@
 <?php
 
-namespace App\Models\UserTraits;
-
+namespace App\Models\Traits;
 
 use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
 
@@ -9,11 +8,9 @@ use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
  * Trait PermissionsTrait.
  * Describes all user permissions based on their token scope.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.1
- * @copyright Mathrix Education SA
- * @package   App\Models\UserTraits
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.1.1
  */
 trait PermissionsTrait
 {
@@ -66,7 +63,7 @@ trait PermissionsTrait
      *
      * @see Authorizable
      *
-     * @param        $ability
+     * @param string $ability
      * @param array $arguments
      * @param string $exceptionClass
      */

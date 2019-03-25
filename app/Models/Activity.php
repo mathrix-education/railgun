@@ -6,17 +6,16 @@ use App\Models\Traits\Loggable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Auth;
 use Mathrix\Lumen\Bases\BaseModel;
 
 /**
  * Class Activity.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
- * @package   App\Models
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  *
  * @property int $id
  * @property string $name
@@ -28,15 +27,14 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @property bool $visible
  * @property bool $premium
  * @property bool $reviewed
- * @property array $link
+ * ---
  * @property bool $completed
  * @property bool $favorite
  * @property bool $to_revise
- * @property Collection|Comment[] $comments
- * @property Collection|Log[] $logs
+ * ---
+ * @property Notion $notion
  * @property Collection|Mark[] $marks
  * @property Collection|Module[] $modules
- * @property Collection|Notion[] $notions
  */
 class Activity extends BaseModel
 {
@@ -81,6 +79,14 @@ class Activity extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
+    /**
+     * The activity's notion.
+     * @return BelongsTo
+     */
+    public function notion(): BelongsTo
+    {
+        return $this->belongsTo(Notion::class);
+    }
 
 
     /**
@@ -95,19 +101,9 @@ class Activity extends BaseModel
 
 
     /**
-     * The activity's notion.
-     * @return BelongsTo
+     * @return MorphMany
      */
-    public function notion(): BelongsTo
-    {
-        return $this->belongsTo(Notion::class);
-    }
-
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function marks()
+    public function marks(): MorphMany
     {
         return $this->morphMany(Mark::class, "markable");
     }
@@ -134,7 +130,6 @@ class Activity extends BaseModel
             /** @var Mark $mark */
             $mark = $this->marks()
                 ->where("user_id", "=", $user->id)
-                ->whereNull("module_id")
                 ->orderBy("created_at", "desc")
                 ->first();
 
