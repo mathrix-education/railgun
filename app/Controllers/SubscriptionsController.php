@@ -14,13 +14,11 @@ use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
 
 /**
- * Class SubscriptionController.
+ * Class SubscriptionsController.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.0
- * @copyright Mathrix Education SA
- * @package   App\Controllers
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.1.0
  */
 class SubscriptionsController extends BaseController
 {

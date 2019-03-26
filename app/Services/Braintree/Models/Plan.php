@@ -38,7 +38,6 @@ use Illuminate\Support\Str;
  * @property float|null $trialPrice
  * @property Carbon|null $trialStartDate
  * @property Carbon|null $trialEndDate
- * @property AddOn[] $addOns
  * @property Discount[] $discounts
  */
 class Plan extends BraintreeModel
@@ -89,16 +88,6 @@ class Plan extends BraintreeModel
         } else {
             $this->discount = null;
         }
-
-        $addOns = [];
-        foreach (["_child_30", "_child_50"] as $addOnSuffix) {
-            $addOn = AddOn::find($this->id . $addOnSuffix);
-
-            if ($addOn !== null) {
-                $addOns[] = $addOn;
-            }
-        }
-        $this->addOns = $addOns;
     }
 
 

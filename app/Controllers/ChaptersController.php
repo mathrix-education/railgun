@@ -20,6 +20,7 @@ use Mathrix\Lumen\Bases\BaseController;
 class ChaptersController extends BaseController
 {
     /**
+     * GET /chapters/{id}/recursive
      * Get a chapter and all its visible children (notions, activities, modules).
      *
      * @param int $id The chapter id
@@ -46,8 +47,7 @@ class ChaptersController extends BaseController
 
 
     /**
-     * GET /chapters/by-grade-discipline/{grade_id}/{discipline_id}
-     *
+     * GET /chapters/by-grade-discipline/{gradeId}/{disciplineId}[/{scope}]
      * Get chapters by class and discipline ids
      *
      * @param Request $request The Illuminate HTTP request.

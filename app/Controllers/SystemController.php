@@ -30,6 +30,17 @@ class SystemController extends BaseController
 
 
     /**
+     * GET /system/health
+     * Health check for Docker
+     *
+     * @return JsonResponse
+     */
+    public function health(): JsonResponse
+    {
+    }
+
+
+    /**
      * POST /system/sitemap
      * Regenerate sitemap.
      *

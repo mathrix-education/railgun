@@ -17,6 +17,8 @@ use Mathrix\Lumen\Exceptions\Http\Http429TooManyRequestsException;
 
 /**
  * Class ProfileController.
+ * Handle Profile API requests. It should be noted that this controller name is a singular noun, even it is against
+ * conventions.
  *
  * @author Mathieu Bour <mathieu@mathrix.fr>
  * @copyright Mathrix Education SA.

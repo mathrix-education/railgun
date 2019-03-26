@@ -19,25 +19,27 @@ class ModulesRegistrar extends BaseRegistrar
      */
     public function register(): void
     {
-        $this->get("modules/by-{what:activity}/{id:[1-9]\d*}[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]", [
-            "uses" => ModulesController::class . "@search",
-            "middleware" => "scope:redactor"
-        ]);
-        $this->post("modules/search", [
-            "uses" => ModulesController::class . "@search",
-            "middleware" => "scope:redactor"
-        ]);
-        $this->patch("modules/{moduleId:[1-9]\d*}/mark", [
-            "uses" => ModulesController::class . "@mark",
-            "middleware" => "scope:registered"
-        ]);
+        $controller = ModulesController::class;
 
-        $this->rest("modules", ModulesController::class, [
+        $this->rest("modules", $controller, [
             "index" => null,
             "get" => null,
             "post" => "moderator",
             "patch" => "redactor",
             "delete" => "admin"
+        ]);
+
+        $this->get("modules/by-{what:activity}/{id:[1-9]\d*}[/{page:[0-9]+}/{perPage:[1-9]\d*}]",
+            "$controller@by");
+
+        $this->patch("modules/{moduleId:[1-9]\d*}/mark", [
+            "uses" => "$controller@mark",
+            "middleware" => "scope:registered"
+        ]);
+
+        $this->post("modules/search", [
+            "uses" => "$controller@search",
+            "middleware" => "scope:redactor"
         ]);
     }
 }

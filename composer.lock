@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d024b38f25b6e294235b2c429862f9cd",
+    "content-hash": "66cfe108c5a2f7bc106f49db49ea54ea",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3449,6 +3449,36 @@
                 "server"
             ],
             "time": "2018-11-21T21:42:43+00:00"
+        },
+        {
+            "name": "mathrix/lumen-chainer",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:mathrix-education/lumen-chainer.git",
+                "reference": "756fcc9bcec812066be8093e55a43e33bc87b3c0"
+            },
+            "require": {
+                "mathrix/lumen-zero": "dev-master",
+                "php": ">=7.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mathrix\\Chainer\\": "src"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "Mathieu Bour",
+                    "email": "mathieu@mathrix.fr"
+                }
+            ],
+            "description": "A small util which be used to make multiple API request at once.",
+            "time": "2019-03-26T00:50:17+00:00"
         },
         {
             "name": "mathrix/lumen-zero",
@@ -9212,6 +9242,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "mathrix/lumen-chainer": 20,
         "mathrix/lumen-zero": 20
     },
     "prefer-stable": true,

@@ -15,7 +15,6 @@ use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
 use Mathrix\Lumen\Responses\PaginationJsonResponse;
 
-
 /**
  * Class ProductsController.
  *
