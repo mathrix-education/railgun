@@ -18,6 +18,18 @@ use Symfony\Component\Console\Output\BufferedOutput;
 class SystemController extends BaseController
 {
     /**
+     * GET /
+     * The base application route.
+     *
+     * @return JsonResponse
+     */
+    public function base(): JsonResponse
+    {
+
+    }
+
+
+    /**
      * POST /system/sitemap
      * Regenerate sitemap.
      *

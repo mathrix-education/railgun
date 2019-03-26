@@ -24,7 +24,7 @@ class CopyClassesTable extends Migration
             $table->integer("country_id")->unsigned();
 
             // Foreign keys
-            $table->foreign("parent_id")->references("id")->on("classes");
+            $table->foreign("parent_id")->references("id")->on("grades");
             $table->foreign("country_id")->references("id")->on("countries");
         });
 

@@ -53,7 +53,7 @@ class PlansController extends BaseController
      */
     public function estimate(string $planId)
     {
-        if (!\in_array($planId, array_keys(self::PRICE_PER_MONTH), true) || $planId === "v4_monthly") {
+        if (!in_array($planId, ["v4_annually", "v4_biannually"])) {
             throw new Http400BadRequestException([
                 "planId" => $planId
             ], "The plan {$planId} cannot be estimated.");

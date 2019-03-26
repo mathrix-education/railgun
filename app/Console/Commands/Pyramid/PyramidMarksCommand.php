@@ -20,8 +20,8 @@ class PyramidMarksCommand extends BaseCommand
     public function handle()
     {
         $this->block("Migrating marks...");
-        //$this->call("pyramid:marks:activities");
-        //$this->call("pyramid:marks:modules");
+        $this->call("pyramid:marks:activities");
+        $this->call("pyramid:marks:modules");
 
         // Generate statistics
         $total = DB::table("marks")->count();
