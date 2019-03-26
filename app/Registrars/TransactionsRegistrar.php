@@ -21,13 +21,13 @@ class TransactionsRegistrar extends BaseRegistrar
     {
         $controller = TransactionsController::class;
 
-        $this->get("by-user/{userId:[a-z0-9\_]+}", "$controller@byUser");
+        $this->get("transactions/by-user/{userId:[a-z0-9\_]+}", "$controller@byUser");
 
         $this->group(["middleware" => "scope:support"], function () use ($controller) {
-            $this->get("by-subscription/{subscriptionId:[a-z0-9\_]+}", "$controller@bySubscription");
-            $this->get("{transactionId:[a-z0-9\_]+}", "$controller@find");
-            $this->post("{transactionId:[a-z0-9\_]+}/void", "$controller@void");
-            $this->post("{transactionId:[a-z0-9\_]+}/refund", "$controller@refund");
+            $this->get("transactions/by-subscription/{subscriptionId:[a-z0-9\_]+}", "$controller@bySubscription");
+            $this->get("transactions/{transactionId:[a-z0-9\_]+}", "$controller@find");
+            $this->post("transactions/{transactionId:[a-z0-9\_]+}/void", "$controller@void");
+            $this->post("transactions/{transactionId:[a-z0-9\_]+}/refund", "$controller@refund");
         });
     }
 }
