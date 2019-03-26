@@ -18,13 +18,37 @@ use Symfony\Component\Console\Output\BufferedOutput;
 class SystemController extends BaseController
 {
     /**
-     * POST /system/sitemaps
+     * GET /
+     * The base application route.
      *
      * @return JsonResponse
      */
-    public function sitemaps()
+    public function base(): JsonResponse
     {
-        $command = "sitemap:all";
+
+    }
+
+
+    /**
+     * GET /system/health
+     * Health check for Docker
+     *
+     * @return JsonResponse
+     */
+    public function health(): JsonResponse
+    {
+    }
+
+
+    /**
+     * POST /system/sitemap
+     * Regenerate sitemap.
+     *
+     * @return JsonResponse
+     */
+    public function sitemap()
+    {
+        $command = "sitemap";
         $output = new BufferedOutput();
 
         $exitCode = Artisan::call($command, [], $output);

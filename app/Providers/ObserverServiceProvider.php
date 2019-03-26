@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Models\BaseModel;
-use App\Models\Class_;
+use App\Models\Grade;
 use App\Observers\BaseObserver;
 use App\Observers\ClassObserver;
 use App\Observers\NotificationObserver;
@@ -59,7 +59,7 @@ class ObserverServiceProvider extends ServiceProvider
             }
         }
 
-        Class_::observe(ClassObserver::class);
+        Grade::observe(ClassObserver::class);
         DatabaseNotification::observe(NotificationObserver::class);
     }
 }

@@ -7,7 +7,11 @@
   "repositories": [
     {
       "type": "git",
-      "url": "https://source.developers.google.com/p/mathrix-education/r/mathrix-lumen"
+      "url": "git@github.com:mathrix-education/lumen-zero.git"
+    },
+    {
+      "type": "git",
+      "url": "git@github.com:mathrix-education/lumen-chainer.git"
     }
   ],
   "config": {
@@ -19,7 +23,6 @@
     "ext-zip": "*",
     "barryvdh/laravel-cors": "^0.11",
     "braintree/braintree_php": "^3.37",
-    "drewm/mailchimp-api": "^2.5",
     "dusterio/lumen-passport": "^0.2.0",
     "fzaninotto/faker": "~1.4",
     "google/cloud-error-reporting": "^0.12.4",
@@ -27,21 +30,19 @@
     "guzzlehttp/guzzle": "^6.3",
     "illuminate/mail": "^5.7",
     "illuminate/notifications": "^5.7",
-    "illuminate/redis": "^5.7",
     "illuminate/routing": "^5.7",
     "laravel/lumen-framework": "5.7.*",
     "laravel/passport": "^7.0",
     "laravelium/sitemap": "^3.0",
     "league/flysystem": " ~1.0",
-    "mathrix/lumen": "dev-master",
+    "mathrix/lumen-chainer": "dev-master",
+    "mathrix/lumen-zero": "dev-master",
     "nao-pon/flysystem-google-drive": "^1.1",
     "paulvl/backup": "3.*",
     "ramsey/uuid": "^3.8",
     "sentry/sentry-laravel": "^0.8.0",
-    "spatie/laravel-newsletter": "^4.1",
     "stripe/stripe-php": "^6.15",
     "superbalist/laravel-google-cloud-storage": "^2.1",
-    "tinify/tinify": "^1.5",
     "vlucas/phpdotenv": "~2.2"
   },
   "require-dev": {

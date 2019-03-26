@@ -45,16 +45,14 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(\Illuminate\Filesystem\FilesystemServiceProvider::class);
         $this->app->register(\Illuminate\Mail\MailServiceProvider::class);
         $this->app->register(\Illuminate\Notifications\NotificationServiceProvider::class);
-        $this->app->register(\Illuminate\Redis\RedisServiceProvider::class);
         $this->app->register(\Laravel\Passport\PassportServiceProvider::class);
         $this->app->register(\Laravelium\Sitemap\SitemapServiceProvider::class);
-
-        $this->app->register(GoogleDriveServiceProvider::class);
-
         $this->app->register(\Mathrix\Lumen\Providers\RegistrarServiceProvider::class);
 
-        if (app()->environment("dev", "local")) {
+        if (app()->environment("local")) {
             $this->app->register(\Vluzrmos\Tinker\TinkerServiceProvider::class);
+            $this->app->register(\Way\Generators\GeneratorsServiceProvider::class);
+            $this->app->register(\Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class);
         }
 
         // MorphMap

@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use Braintree_Configuration;
+use Braintree\Configuration;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -19,9 +19,9 @@ class BraintreeGatewayServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        Braintree_Configuration::environment(env("BRAINTREE_ENVIRONMENT", "sandbox"));
-        Braintree_Configuration::merchantId(env("BRAINTREE_MERCHANT_ID"));
-        Braintree_Configuration::publicKey(env("BRAINTREE_PUBLIC_KEY"));
-        Braintree_Configuration::privateKey(env("BRAINTREE_PRIVATE_KEY"));
+        Configuration::environment(env("BRAINTREE_ENVIRONMENT", "sandbox"));
+        Configuration::merchantId(env("BRAINTREE_MERCHANT_ID"));
+        Configuration::publicKey(env("BRAINTREE_PUBLIC_KEY"));
+        Configuration::privateKey(env("BRAINTREE_PRIVATE_KEY"));
     }
 }

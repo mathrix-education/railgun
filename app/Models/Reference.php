@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Mathrix\Lumen\Bases\BaseModel;
 
 /**
  * Class Quote.
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $key
  * @property string $text
  * @property int $module_id
+ * ---
  * @property Module $module
  */
 class Reference extends BaseModel

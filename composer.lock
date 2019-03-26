@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0d43b454cd9c24b855ef209fbbc448e9",
+    "content-hash": "66cfe108c5a2f7bc106f49db49ea54ea",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -60,16 +60,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.90.3",
+            "version": "3.90.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "12ba8071bcc3d79cbfbf8cca77f59f146816b17a"
+                "reference": "b9d93ad14a504a0833bdafa2e80c9bd90d6cf47a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/12ba8071bcc3d79cbfbf8cca77f59f146816b17a",
-                "reference": "12ba8071bcc3d79cbfbf8cca77f59f146816b17a",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/b9d93ad14a504a0833bdafa2e80c9bd90d6cf47a",
+                "reference": "b9d93ad14a504a0833bdafa2e80c9bd90d6cf47a",
                 "shasum": ""
             },
             "require": {
@@ -138,7 +138,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-03-14T18:32:41+00:00"
+            "time": "2019-03-25T18:17:43+00:00"
         },
         {
             "name": "barryvdh/laravel-cors",
@@ -483,49 +483,6 @@
             "time": "2018-06-06T03:12:17+00:00"
         },
         {
-            "name": "drewm/mailchimp-api",
-            "version": "v2.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/drewm/mailchimp-api.git",
-                "reference": "f532fa26cd6e7d17c9ba40a757d8c6bfee47dace"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/drewm/mailchimp-api/zipball/f532fa26cd6e7d17c9ba40a757d8c6bfee47dace",
-                "reference": "f532fa26cd6e7d17c9ba40a757d8c6bfee47dace",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "php": ">=5.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "7.0.*",
-                "vlucas/phpdotenv": "^2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "DrewM\\MailChimp\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Drew McLellan",
-                    "email": "drew.mclellan@gmail.com",
-                    "homepage": "http://allinthehead.com/"
-                }
-            ],
-            "description": "Super-simple, minimum abstraction MailChimp API v3 wrapper",
-            "homepage": "https://github.com/drewm/mailchimp-api",
-            "time": "2018-02-16T15:31:05+00:00"
-        },
-        {
             "name": "dusterio/lumen-passport",
             "version": "0.2.10",
             "source": {
@@ -638,16 +595,16 @@
         },
         {
             "name": "erusev/parsedown",
-            "version": "1.7.1",
+            "version": "v1.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/erusev/parsedown.git",
-                "reference": "92e9c27ba0e74b8b028b111d1b6f956a15c01fc1"
+                "reference": "d60bcdc46978357759ecb13cb4b078da783f8faf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erusev/parsedown/zipball/92e9c27ba0e74b8b028b111d1b6f956a15c01fc1",
-                "reference": "92e9c27ba0e74b8b028b111d1b6f956a15c01fc1",
+                "url": "https://api.github.com/repos/erusev/parsedown/zipball/d60bcdc46978357759ecb13cb4b078da783f8faf",
+                "reference": "d60bcdc46978357759ecb13cb4b078da783f8faf",
                 "shasum": ""
             },
             "require": {
@@ -680,7 +637,7 @@
                 "markdown",
                 "parser"
             ],
-            "time": "2018-03-08T01:11:30+00:00"
+            "time": "2019-03-17T17:19:46+00:00"
         },
         {
             "name": "firebase/php-jwt",
@@ -839,16 +796,16 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.89",
+            "version": "v0.91",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client-services.git",
-                "reference": "8a285822d48df1650c4c298653aa4961049a1ee8"
+                "reference": "16635a92f500f35276c1e106c29cba4b59a940a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/8a285822d48df1650c4c298653aa4961049a1ee8",
-                "reference": "8a285822d48df1650c4c298653aa4961049a1ee8",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/16635a92f500f35276c1e106c29cba4b59a940a5",
+                "reference": "16635a92f500f35276c1e106c29cba4b59a940a5",
                 "shasum": ""
             },
             "require": {
@@ -872,7 +829,7 @@
             "keywords": [
                 "google"
             ],
-            "time": "2019-03-10T00:23:16+00:00"
+            "time": "2019-03-23T00:22:53+00:00"
         },
         {
             "name": "google/auth",
@@ -2494,51 +2451,6 @@
             "time": "2019-02-22T10:35:45+00:00"
         },
         {
-            "name": "illuminate/redis",
-            "version": "v5.7.28",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/illuminate/redis.git",
-                "reference": "3c20e8395b6e698560977ae9afb5ef408c8f24d3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/redis/zipball/3c20e8395b6e698560977ae9afb5ef408c8f24d3",
-                "reference": "3c20e8395b6e698560977ae9afb5ef408c8f24d3",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/contracts": "5.7.*",
-                "illuminate/support": "5.7.*",
-                "php": "^7.1.3",
-                "predis/predis": "^1.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "5.7-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Illuminate\\Redis\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylor@laravel.com"
-                }
-            ],
-            "description": "The Illuminate Redis package.",
-            "homepage": "https://laravel.com",
-            "time": "2019-02-11T13:48:57+00:00"
-        },
-        {
             "name": "illuminate/routing",
             "version": "v5.7.28",
             "source": {
@@ -2989,16 +2901,16 @@
         },
         {
             "name": "laravel/passport",
-            "version": "v7.2.1",
+            "version": "v7.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/passport.git",
-                "reference": "bd8ae09775778f96b6642d87e2f579fea5bf92b5"
+                "reference": "c0c3fca80d8f5af90dcbf65e62bdd1abee9ac25d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/passport/zipball/bd8ae09775778f96b6642d87e2f579fea5bf92b5",
-                "reference": "bd8ae09775778f96b6642d87e2f579fea5bf92b5",
+                "url": "https://api.github.com/repos/laravel/passport/zipball/c0c3fca80d8f5af90dcbf65e62bdd1abee9ac25d",
+                "reference": "c0c3fca80d8f5af90dcbf65e62bdd1abee9ac25d",
                 "shasum": ""
             },
             "require": {
@@ -3017,7 +2929,7 @@
                 "php": ">=7.1",
                 "phpseclib/phpseclib": "^2.0",
                 "symfony/psr-http-message-bridge": "~1.0",
-                "zendframework/zend-diactoros": "~1.0"
+                "zendframework/zend-diactoros": "~1.0|~2.0"
             },
             "require-dev": {
                 "mockery/mockery": "~1.0",
@@ -3055,7 +2967,7 @@
                 "oauth",
                 "passport"
             ],
-            "time": "2019-03-12T11:42:07+00:00"
+            "time": "2019-03-13T14:21:06+00:00"
         },
         {
             "name": "laravel/slack-notification-channel",
@@ -3539,18 +3451,49 @@
             "time": "2018-11-21T21:42:43+00:00"
         },
         {
-            "name": "mathrix/lumen",
+            "name": "mathrix/lumen-chainer",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://source.developers.google.com/p/mathrix-education/r/mathrix-lumen",
-                "reference": "51d7401903a0f4820ad3cc4e5fe81890a6b33ae3"
+                "url": "git@github.com:mathrix-education/lumen-chainer.git",
+                "reference": "756fcc9bcec812066be8093e55a43e33bc87b3c0"
+            },
+            "require": {
+                "mathrix/lumen-zero": "dev-master",
+                "php": ">=7.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mathrix\\Chainer\\": "src"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "Mathieu Bour",
+                    "email": "mathieu@mathrix.fr"
+                }
+            ],
+            "description": "A small util which be used to make multiple API request at once.",
+            "time": "2019-03-26T00:50:17+00:00"
+        },
+        {
+            "name": "mathrix/lumen-zero",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:mathrix-education/lumen-zero.git",
+                "reference": "070a204c1b9bedb67910e5cc285cc11528a51940"
             },
             "require": {
                 "dusterio/lumen-passport": "^0.2.9",
                 "ext-json": "*",
                 "ext-pdo": "*",
                 "illuminate/mail": "^5.7",
+                "illuminate/notifications": "^5.7",
                 "laravel/lumen-framework": "5.7.*",
                 "php": ">=7.2"
             },
@@ -3575,7 +3518,7 @@
                 }
             ],
             "description": "The main library for Mathrix Lumen REST APIs.",
-            "time": "2019-03-11T07:23:40+00:00"
+            "time": "2019-03-22T07:26:27+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -4363,56 +4306,6 @@
             "time": "2019-03-10T16:53:45+00:00"
         },
         {
-            "name": "predis/predis",
-            "version": "v1.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nrk/predis.git",
-                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nrk/predis/zipball/f0210e38881631afeafb56ab43405a92cafd9fd1",
-                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.9"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.8"
-            },
-            "suggest": {
-                "ext-curl": "Allows access to Webdis when paired with phpiredis",
-                "ext-phpiredis": "Allows faster serialization and deserialization of the Redis protocol"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Predis\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Daniele Alessandri",
-                    "email": "suppakilla@gmail.com",
-                    "homepage": "http://clorophilla.net"
-                }
-            ],
-            "description": "Flexible and feature-complete Redis client for PHP and HHVM",
-            "homepage": "http://github.com/nrk/predis",
-            "keywords": [
-                "nosql",
-                "predis",
-                "redis"
-            ],
-            "time": "2016-06-16T16:22:20+00:00"
-        },
-        {
             "name": "psr/cache",
             "version": "1.0.1",
             "source": {
@@ -4946,77 +4839,17 @@
             "time": "2019-02-28T10:40:05+00:00"
         },
         {
-            "name": "spatie/laravel-newsletter",
-            "version": "4.2.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/spatie/laravel-newsletter.git",
-                "reference": "b6f6b6f7fdac3916e8d6ed3c15ca7ea7b6f2131a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-newsletter/zipball/b6f6b6f7fdac3916e8d6ed3c15ca7ea7b6f2131a",
-                "reference": "b6f6b6f7fdac3916e8d6ed3c15ca7ea7b6f2131a",
-                "shasum": ""
-            },
-            "require": {
-                "drewm/mailchimp-api": "^2.4",
-                "illuminate/support": "~5.5.0|~5.6.0|~5.7.0|~5.8.0",
-                "php": "~7.1"
-            },
-            "require-dev": {
-                "mockery/mockery": "^1.0",
-                "phpunit/phpunit": "^6.3|^7.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Spatie\\Newsletter\\NewsletterServiceProvider"
-                    ],
-                    "aliases": {
-                        "Newsletter": "Spatie\\Newsletter\\NewsletterFacade"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Spatie\\Newsletter\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Freek Van der Herten",
-                    "email": "freek@spatie.be",
-                    "homepage": "https://murze.be",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Manage newsletters in Laravel",
-            "homepage": "https://github.com/spatie/laravel-newsletter",
-            "keywords": [
-                "laravel",
-                "mailchimp",
-                "newsletter"
-            ],
-            "time": "2019-02-27T16:21:30+00:00"
-        },
-        {
             "name": "stripe/stripe-php",
-            "version": "v6.30.5",
+            "version": "v6.31.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "1ffc751e7ee2d68b3e4a0068f5537b8334945467"
+                "reference": "19456bcbdde319a4e936e042f65769f0993eb90b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/1ffc751e7ee2d68b3e4a0068f5537b8334945467",
-                "reference": "1ffc751e7ee2d68b3e4a0068f5537b8334945467",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/19456bcbdde319a4e936e042f65769f0993eb90b",
+                "reference": "19456bcbdde319a4e936e042f65769f0993eb90b",
                 "shasum": ""
             },
             "require": {
@@ -5059,7 +4892,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2019-03-11T20:45:23+00:00"
+            "time": "2019-03-25T20:28:43+00:00"
         },
         {
             "name": "superbalist/flysystem-google-storage",
@@ -5730,16 +5563,16 @@
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.10.0",
+            "version": "v1.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
-                "reference": "e3d826245268269cd66f8326bd8bc066687b4a19"
+                "reference": "82ebae02209c21113908c229e9883c419720738a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/e3d826245268269cd66f8326bd8bc066687b4a19",
-                "reference": "e3d826245268269cd66f8326bd8bc066687b4a19",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/82ebae02209c21113908c229e9883c419720738a",
+                "reference": "82ebae02209c21113908c229e9883c419720738a",
                 "shasum": ""
             },
             "require": {
@@ -5751,7 +5584,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.9-dev"
+                    "dev-master": "1.11-dev"
                 }
             },
             "autoload": {
@@ -5784,20 +5617,20 @@
                 "polyfill",
                 "portable"
             ],
-            "time": "2018-08-06T14:22:27+00:00"
+            "time": "2019-02-06T07:57:58+00:00"
         },
         {
             "name": "symfony/polyfill-iconv",
-            "version": "v1.10.0",
+            "version": "v1.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-iconv.git",
-                "reference": "97001cfc283484c9691769f51cdf25259037eba2"
+                "reference": "f037ea22acfaee983e271dd9c3b8bb4150bd8ad7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-iconv/zipball/97001cfc283484c9691769f51cdf25259037eba2",
-                "reference": "97001cfc283484c9691769f51cdf25259037eba2",
+                "url": "https://api.github.com/repos/symfony/polyfill-iconv/zipball/f037ea22acfaee983e271dd9c3b8bb4150bd8ad7",
+                "reference": "f037ea22acfaee983e271dd9c3b8bb4150bd8ad7",
                 "shasum": ""
             },
             "require": {
@@ -5809,7 +5642,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.9-dev"
+                    "dev-master": "1.11-dev"
                 }
             },
             "autoload": {
@@ -5843,20 +5676,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2018-09-21T06:26:08+00:00"
+            "time": "2019-02-06T07:57:58+00:00"
         },
         {
             "name": "symfony/polyfill-intl-idn",
-            "version": "v1.10.0",
+            "version": "v1.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-idn.git",
-                "reference": "89de1d44f2c059b266f22c9cc9124ddc4cd0987a"
+                "reference": "c766e95bec706cdd89903b1eda8afab7d7a6b7af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-idn/zipball/89de1d44f2c059b266f22c9cc9124ddc4cd0987a",
-                "reference": "89de1d44f2c059b266f22c9cc9124ddc4cd0987a",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-idn/zipball/c766e95bec706cdd89903b1eda8afab7d7a6b7af",
+                "reference": "c766e95bec706cdd89903b1eda8afab7d7a6b7af",
                 "shasum": ""
             },
             "require": {
@@ -5905,20 +5738,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2018-09-30T16:36:12+00:00"
+            "time": "2019-03-04T13:44:35+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.10.0",
+            "version": "v1.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "c79c051f5b3a46be09205c73b80b346e4153e494"
+                "reference": "fe5e94c604826c35a32fa832f35bd036b6799609"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/c79c051f5b3a46be09205c73b80b346e4153e494",
-                "reference": "c79c051f5b3a46be09205c73b80b346e4153e494",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/fe5e94c604826c35a32fa832f35bd036b6799609",
+                "reference": "fe5e94c604826c35a32fa832f35bd036b6799609",
                 "shasum": ""
             },
             "require": {
@@ -5930,7 +5763,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.9-dev"
+                    "dev-master": "1.11-dev"
                 }
             },
             "autoload": {
@@ -5964,20 +5797,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2018-09-21T13:07:52+00:00"
+            "time": "2019-02-06T07:57:58+00:00"
         },
         {
             "name": "symfony/polyfill-php72",
-            "version": "v1.10.0",
+            "version": "v1.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php72.git",
-                "reference": "9050816e2ca34a8e916c3a0ae8b9c2fccf68b631"
+                "reference": "ab50dcf166d5f577978419edd37aa2bb8eabce0c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php72/zipball/9050816e2ca34a8e916c3a0ae8b9c2fccf68b631",
-                "reference": "9050816e2ca34a8e916c3a0ae8b9c2fccf68b631",
+                "url": "https://api.github.com/repos/symfony/polyfill-php72/zipball/ab50dcf166d5f577978419edd37aa2bb8eabce0c",
+                "reference": "ab50dcf166d5f577978419edd37aa2bb8eabce0c",
                 "shasum": ""
             },
             "require": {
@@ -5986,7 +5819,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.9-dev"
+                    "dev-master": "1.11-dev"
                 }
             },
             "autoload": {
@@ -6019,7 +5852,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2018-09-21T13:07:52+00:00"
+            "time": "2019-02-06T07:57:58+00:00"
         },
         {
             "name": "symfony/process",
@@ -6407,62 +6240,6 @@
             "description": "CssToInlineStyles is a class that enables you to convert HTML-pages/files into HTML-pages/files with inline styles. This is very useful when you're sending emails.",
             "homepage": "https://github.com/tijsverkoyen/CssToInlineStyles",
             "time": "2017-11-27T11:13:29+00:00"
-        },
-        {
-            "name": "tinify/tinify",
-            "version": "1.5.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/tinify/tinify-php.git",
-                "reference": "b15d1f31d94d9b06e60251543cc918f426f0d55b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/tinify/tinify-php/zipball/b15d1f31d94d9b06e60251543cc918f426f0d55b",
-                "reference": "b15d1f31d94d9b06e60251543cc918f426f0d55b",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "ext-json": "*",
-                "lib-curl": ">=7.20.0",
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0",
-                "symfony/yaml": "~2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "lib/Tinify.php",
-                    "lib/Tinify/Exception.php"
-                ],
-                "psr-4": {
-                    "Tinify\\": "lib/Tinify/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Rolf Timmermans",
-                    "email": "rolftimmermans@voormedia.com"
-                }
-            ],
-            "description": "PHP client for the Tinify API. Tinify compresses your images intelligently. Read more at https://tinify.com.",
-            "homepage": "https://tinify.com/developers",
-            "keywords": [
-                "api",
-                "compress",
-                "images",
-                "tinify",
-                "tinyjpg",
-                "tinypng"
-            ],
-            "time": "2017-07-19T12:26:04+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -6946,16 +6723,16 @@
         },
         {
             "name": "composer/semver",
-            "version": "1.4.2",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/semver.git",
-                "reference": "c7cb9a2095a074d131b65a8a0cd294479d785573"
+                "reference": "46d9139568ccb8d9e7cdd4539cab7347568a5e2e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/semver/zipball/c7cb9a2095a074d131b65a8a0cd294479d785573",
-                "reference": "c7cb9a2095a074d131b65a8a0cd294479d785573",
+                "url": "https://api.github.com/repos/composer/semver/zipball/46d9139568ccb8d9e7cdd4539cab7347568a5e2e",
+                "reference": "46d9139568ccb8d9e7cdd4539cab7347568a5e2e",
                 "shasum": ""
             },
             "require": {
@@ -7004,7 +6781,7 @@
                 "validation",
                 "versioning"
             ],
-            "time": "2016-08-30T16:08:34+00:00"
+            "time": "2019-03-19T17:25:45+00:00"
         },
         {
             "name": "composer/spdx-licenses",
@@ -7377,27 +7154,29 @@
         },
         {
             "name": "doctrine/instantiator",
-            "version": "1.1.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/instantiator.git",
-                "reference": "185b8868aa9bf7159f5f953ed5afb2d7fcdc3bda"
+                "reference": "a2c590166b2133a4633738648b6b064edae0814a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/instantiator/zipball/185b8868aa9bf7159f5f953ed5afb2d7fcdc3bda",
-                "reference": "185b8868aa9bf7159f5f953ed5afb2d7fcdc3bda",
+                "url": "https://api.github.com/repos/doctrine/instantiator/zipball/a2c590166b2133a4633738648b6b064edae0814a",
+                "reference": "a2c590166b2133a4633738648b6b064edae0814a",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.1"
             },
             "require-dev": {
-                "athletic/athletic": "~0.1.8",
+                "doctrine/coding-standard": "^6.0",
                 "ext-pdo": "*",
                 "ext-phar": "*",
-                "phpunit/phpunit": "^6.2.3",
-                "squizlabs/php_codesniffer": "^3.0.2"
+                "phpbench/phpbench": "^0.13",
+                "phpstan/phpstan-phpunit": "^0.11",
+                "phpstan/phpstan-shim": "^0.11",
+                "phpunit/phpunit": "^7.0"
             },
             "type": "library",
             "extra": {
@@ -7422,25 +7201,25 @@
                 }
             ],
             "description": "A small, lightweight utility to instantiate objects in PHP without invoking their constructors",
-            "homepage": "https://github.com/doctrine/instantiator",
+            "homepage": "https://www.doctrine-project.org/projects/instantiator.html",
             "keywords": [
                 "constructor",
                 "instantiate"
             ],
-            "time": "2017-07-22T11:58:36+00:00"
+            "time": "2019-03-17T17:37:11+00:00"
         },
         {
             "name": "flow/jsonpath",
-            "version": "0.3.4",
+            "version": "0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FlowCommunications/JSONPath.git",
-                "reference": "00aa9c361e4d0a210dd95f3c917a1e0dde3a957f"
+                "reference": "f0222818d5c938e4ab668ab2e2c079bd51a27112"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FlowCommunications/JSONPath/zipball/00aa9c361e4d0a210dd95f3c917a1e0dde3a957f",
-                "reference": "00aa9c361e4d0a210dd95f3c917a1e0dde3a957f",
+                "url": "https://api.github.com/repos/FlowCommunications/JSONPath/zipball/f0222818d5c938e4ab668ab2e2c079bd51a27112",
+                "reference": "f0222818d5c938e4ab668ab2e2c079bd51a27112",
                 "shasum": ""
             },
             "require": {
@@ -7468,7 +7247,7 @@
                 }
             ],
             "description": "JSONPath implementation for parsing, searching and flattening arrays",
-            "time": "2016-09-06T17:43:18+00:00"
+            "time": "2018-03-04T16:39:47+00:00"
         },
         {
             "name": "hamcrest/hamcrest-php",
@@ -7520,26 +7299,28 @@
         },
         {
             "name": "helmich/phpunit-json-assert",
-            "version": "v2.0.2",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/martin-helmich/phpunit-json-assert.git",
-                "reference": "d8b2ee200ee1be877c9936eabbc35d4f4246d132"
+                "reference": "8ec83fc433ac60b99b51615fdfb5e061b1371a5c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/martin-helmich/phpunit-json-assert/zipball/d8b2ee200ee1be877c9936eabbc35d4f4246d132",
-                "reference": "d8b2ee200ee1be877c9936eabbc35d4f4246d132",
+                "url": "https://api.github.com/repos/martin-helmich/phpunit-json-assert/zipball/8ec83fc433ac60b99b51615fdfb5e061b1371a5c",
+                "reference": "8ec83fc433ac60b99b51615fdfb5e061b1371a5c",
                 "shasum": ""
             },
             "require": {
-                "flow/jsonpath": "^0.3.1",
+                "flow/jsonpath": "^0.4.0",
                 "justinrainbow/json-schema": "^5.0",
-                "php": ">=7.0",
-                "phpunit/phpunit": ">=6.0"
+                "php": ">=7.0"
+            },
+            "conflict": {
+                "phpunit/phpunit": "<6.0 || >= 8.0"
             },
             "require-dev": {
-                "codeclimate/php-test-reporter": "dev-master"
+                "phpunit/phpunit": "^6.0 | ^7.0"
             },
             "type": "library",
             "autoload": {
@@ -7558,7 +7339,7 @@
                 }
             ],
             "description": "PHPUnit assertions for JSON documents",
-            "time": "2017-09-07T14:39:28+00:00"
+            "time": "2019-03-22T17:40:25+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -9461,7 +9242,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "mathrix/lumen": 20
+        "mathrix/lumen-chainer": 20,
+        "mathrix/lumen-zero": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

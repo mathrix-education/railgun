@@ -3,15 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Mathrix\Lumen\Bases\BaseModel;
 
 /**
  * Class Report.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
- * @package   App\Models
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  *
  * @property int $id
  * @property string $content
@@ -19,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $module_id
  * @property string $created_at
  * @property string $updated_at
+ * ---
  * @property Module $module
  */
 class Report extends BaseModel
@@ -57,7 +57,6 @@ class Report extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
-
     /**
      * BelongsTo Module.
      *

@@ -2,7 +2,6 @@
 
 namespace App\Observers;
 
-use App\Models\Activity;
 use App\Models\Comment;
 use App\Models\Module;
 use App\Models\Path;
@@ -10,6 +9,7 @@ use App\Models\Post;
 use App\Models\Product;
 use App\Models\Reference;
 use App\Models\Report;
+use Illuminate\Support\Arr;
 
 /**
  * Class ModuleObserver.
@@ -29,23 +29,18 @@ class ModuleObserver extends BaseObserver
      */
     public function saving($module)
     {
-        // Sync activities
-        if (isset($module->link["activities"])) {
-            $toSync = [];
-            foreach ($module->link["activities"] as $order => $notionId) {
-                if (Activity::whereId($notionId)
-                    ->exists()) {
-                    $toSync[$notionId] = ["order" => $order];
-                }
-            }
+        // Disabled event dispatcher to avoid infinite loops
+        $dispatcher = Module::getEventDispatcher();
+        Module::unsetEventDispatcher();
 
-            $module->activities()
-                ->sync($toSync);
-        }
+        // Propagate modification to cloned modules
+        $clonedData = Arr::only($module->getOriginal(), Module::CLONE_FIELDS);
+        $module->clones()->get()->map(function (Module $clone) use ($clonedData) {
+            $clone->update($clonedData);
+        });
 
-        if (isset($module->link)) {
-            unset($module->link);
-        }
+        // Enable event dispatcher
+        Module::setEventDispatcher($dispatcher);
 
         return true;
     }
@@ -62,9 +57,6 @@ class ModuleObserver extends BaseObserver
      */
     public function deleting($module)
     {
-        $module->activities()
-            ->detach();
-
         Comment::withTrashed()
             ->where("module_id", "=", $module->id)
             ->get()
@@ -90,11 +82,6 @@ class ModuleObserver extends BaseObserver
             ->get()
             ->each(function (Report $report) {
                 $report->delete();
-            });
-        Path::where("module_id", "=", $module->id)
-            ->get()
-            ->each(function (Path $path) {
-                $path->delete();
             });
 
         return true;

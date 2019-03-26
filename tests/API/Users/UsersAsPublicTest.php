@@ -2,7 +2,7 @@
 
 namespace Tests\API\Users;
 
-use App\Models\Class_;
+use App\Models\Grade;
 use App\Models\User;
 use Tests\API\ScopeTestCase;
 
@@ -30,7 +30,7 @@ class UsersAsPublicTest extends ScopeTestCase
         $dataWithoutPassword = [
             "username" => $this->faker->userName,
             "email" => $this->faker->email,
-            "class_id" => Class_::inRandomOrder()->firstOrFail()->id,
+            "class_id" => Grade::inRandomOrder()->firstOrFail()->id,
         ];
         $data = array_merge($dataWithoutPassword, ["password" => "test"]);
 

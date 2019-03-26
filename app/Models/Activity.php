@@ -4,18 +4,18 @@ namespace App\Models;
 
 use App\Models\Traits\Loggable;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Auth;
+use Mathrix\Lumen\Bases\BaseModel;
 
 /**
  * Class Activity.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
- * @package   App\Models
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  *
  * @property int $id
  * @property string $name
@@ -27,15 +27,14 @@ use Illuminate\Support\Facades\Auth;
  * @property bool $visible
  * @property bool $premium
  * @property bool $reviewed
- * @property array $link
+ * ---
  * @property bool $completed
  * @property bool $favorite
  * @property bool $to_revise
- * @property Collection|Comment[] $comments
- * @property Collection|Log[] $logs
+ * ---
+ * @property Notion $notion
  * @property Collection|Mark[] $marks
  * @property Collection|Module[] $modules
- * @property Collection|Notion[] $notions
  */
 class Activity extends BaseModel
 {
@@ -45,7 +44,7 @@ class Activity extends BaseModel
 
     /** @var array The attributes that are mass assignable */
     protected $fillable = ["id", "name", "slug", "seo_title", "seo_description", "seo_keywords", "type", "visible",
-        "premium", "reviewed", "link"];
+        "premium", "reviewed"];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
         "visible" => "boolean",
@@ -80,34 +79,41 @@ class Activity extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
+    /**
+     * The activity's notion.
+     * @return BelongsTo
+     */
+    public function notion(): BelongsTo
+    {
+        return $this->belongsTo(Notion::class);
+    }
 
 
     /**
      * BelongsToMany Module.
      *
-     * @return BelongsToMany
+     * @return HasMany
      */
-    public function modules(): BelongsToMany
+    public function modules(): HasMany
     {
-        return $this->belongsToMany(Module::class)
-            ->withPivot(["order"])
-            ->orderBy("pivot_order");
+        return $this->hasMany(Module::class)->orderBy("order");
     }
 
 
     /**
-     * BelongsToMany Notion.
-     *
-     * @return BelongsToMany
+     * @return MorphMany
      */
-    public function notions(): BelongsToMany
+    public function marks(): MorphMany
     {
-        return $this->belongsToMany(Notion::class)
-            ->withPivot(["order"])
-            ->orderBy("pivot_order");
+        return $this->morphMany(Mark::class, "markable");
     }
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | Attributes
+    |--------------------------------------------------------------------------
+    */
     /**
      * Get the mark attribute (view|to_revise|completed)
      *
@@ -124,28 +130,10 @@ class Activity extends BaseModel
             /** @var Mark $mark */
             $mark = $this->marks()
                 ->where("user_id", "=", $user->id)
-                ->whereNull("module_id")
                 ->orderBy("created_at", "desc")
                 ->first();
 
             return $mark !== null ? $mark->status : null;
         }
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Attributes
-    |--------------------------------------------------------------------------
-    */
-
-
-    /**
-     * HasMany Marks.
-     *
-     * @return HasManyThrough
-     */
-    public function marks(): HasManyThrough
-    {
-        return $this->hasManyThrough(Mark::class, Path::class);
     }
 }

@@ -22,7 +22,7 @@ use Tests\API\ScopeTestCase;
 class ActivitiesAsPublicTest extends ScopeTestCase
 {
     /**
-     * @covers \App\Controllers\ActivityController::index()
+     * @covers \App\Controllers\ActivitiesController::index()
      * GET /activities -> HTTP 401 unauthorized
      *
      * @throws \Exception
@@ -105,7 +105,7 @@ class ActivitiesAsPublicTest extends ScopeTestCase
 
 
     /**
-     * @covers \App\Controllers\ActivityController::edit()
+     * @covers \App\Controllers\ActivitiesController::edit()
      * PATCH /activities/{id} -> HTTP 401 unauthorized
      *
      * @throws \Exception
@@ -117,7 +117,7 @@ class ActivitiesAsPublicTest extends ScopeTestCase
 
 
     /**
-     * @covers \App\Controllers\ActivityController::delete()
+     * @covers \App\Controllers\ActivitiesController::delete()
      * DELETE /activities/{id} -> HTTP 401 unauthorized
      *
      * @throws \Exception

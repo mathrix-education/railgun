@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Chapter;
-use App\Models\Class_;
+use App\Models\Grade;
 use App\Models\Discipline;
 use Faker\Generator;
 
@@ -15,8 +15,8 @@ use Faker\Generator;
  */
 $factory->define(Chapter::class, function (Generator $faker) {
     $name = mb_substr($faker->sentence($faker->numberBetween(1, 3)), 0, -1);
-    /** @var Class_ $class */
-    $class = Class_::inRandomOrder()
+    /** @var Grade $class */
+    $class = Grade::inRandomOrder()
         ->firstOrFail();
     /** @var Discipline $discipline */
     $discipline = $class->disciplines()->firstOrFail();

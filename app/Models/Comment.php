@@ -10,15 +10,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Facades\Auth;
+use Mathrix\Lumen\Bases\BaseModel;
 
 /**
  * Class Comment.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
- * @package   App\Models
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  *
  * @property int $id
  * @property string|null $content
@@ -32,7 +31,6 @@ use Illuminate\Support\Facades\Auth;
  * @property Carbon $updated_at
  * @property Carbon|null $deleted_at
  * @property User|null $user
- * @property Path $path
  * @property Module $module
  * @property Comment|null $parent
  * @property Collection|Comment[] $children
@@ -52,9 +50,9 @@ class Comment extends BaseModel
     public $timestamps = true;
     /** @var array The default relations included */
     public $with = [
-        "user:id,type,username,firstname,level,class_id",
+        "user:id,type,username,firstname,level,grade_id",
         "children",
-        "children.user:id,type,username,firstname,level,class_id",
+        "children.user:id,type,username,firstname,level,grade_id",
     ];
     /** @var array The attributes that are mass assignable */
     protected $fillable = [
@@ -78,36 +76,6 @@ class Comment extends BaseModel
     protected $dates = ["deleted_at"];
     /** @var array Virtual fields */
     protected $appends = ["score", "user_vote"];
-
-
-    /**
-     * Get the user vote value (null|1|-1).
-     *
-     * @return int|null
-     */
-    public function getUserVoteAttribute()
-    {
-        /** @var User $user */
-        $user = Auth::user();
-
-        if ($user === null) {
-            return null;
-        }
-
-        /** @var Vote $potentialVote */
-        $potentialVote = Vote::where([
-            ["user_id", $user->id],
-            ["votable_type", "comment"],
-            ["votable_id", $this->id],
-        ])
-            ->first();
-
-        if ($potentialVote === null) {
-            return null;
-        }
-
-        return $potentialVote->value;
-    }
 
     /*
     |--------------------------------------------------------------------------
@@ -138,17 +106,6 @@ class Comment extends BaseModel
 
 
     /**
-     * BelongsTo Path.
-     *
-     * @return BelongsTo
-     */
-    public function path(): BelongsTo
-    {
-        return $this->belongsTo(Path::class);
-    }
-
-
-    /**
      * BelongsTo Module.
      *
      * @return BelongsTo
@@ -167,5 +124,37 @@ class Comment extends BaseModel
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Attributes
+    |--------------------------------------------------------------------------
+    */
+    /**
+     * Get the user vote value (null|1|-1).
+     *
+     * @return int|null
+     */
+    public function getUserVoteAttribute()
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        if ($user === null) {
+            return null;
+        }
+
+        /** @var Vote $potentialVote */
+        $potentialVote = Vote::query()
+            ->where([
+                ["user_id", $user->id],
+                ["votable_type", "comment"],
+                ["votable_id", $this->id],
+            ])
+            ->first();
+
+        return $potentialVote instanceof Vote ? $potentialVote->value : null;
     }
 }

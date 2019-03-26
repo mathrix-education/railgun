@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Class_;
+use App\Models\Grade;
 use App\Models\Level;
 use App\Models\User;
 use Faker\Generator;
@@ -32,8 +32,7 @@ $factory->define(User::class, function (Generator $faker) {
         "settings" => [
             "sound" => $faker->boolean(70),
         ],
-        "class_id" => Class_::inRandomOrder()
-            ->firstOrFail()->id,
+        "grade_id" => Grade::random()->id,
         "created_at" => $createdAt,
         "updated_at" => $faker->boolean(90) ? $createdAt : $faker->dateTimeBetween($createdAt, "now"),
     ];
@@ -69,7 +68,7 @@ $factory->defineAs(User::class, "redactor", function (Generator $faker) use ($fa
         "firstname" => $faker->firstName,
         "lastname" => $faker->lastName,
         "type" => "redactor",
-        "class_id" => null,
+        "grade_id" => null,
         "stripe_id" => null,
     ];
 

@@ -5,7 +5,7 @@ namespace Tests\API\Users;
 use App\Exceptions\Http400InvalidRequestException;
 use App\Exceptions\Http422ModelSaveException;
 use App\Exceptions\Http422ModelValidationException;
-use App\Models\Class_;
+use App\Models\Grade;
 use App\Models\Level;
 use App\Models\Log;
 use App\Models\Module;
@@ -31,7 +31,7 @@ class UsersAsRegisteredTest extends UsersAsPublicTest
     {
         $dataWithoutPassword = [
             "email" => $this->faker->email,
-            "class_id" => Class_::inRandomOrder()->firstOrFail()->id,
+            "class_id" => Grade::inRandomOrder()->firstOrFail()->id,
             "type" => "admin",
         ];
         $data = array_merge($dataWithoutPassword, ["password" => "test"]);

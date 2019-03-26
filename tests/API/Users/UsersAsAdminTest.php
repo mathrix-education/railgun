@@ -2,7 +2,7 @@
 
 namespace Tests\API\Users;
 
-use App\Models\Class_;
+use App\Models\Grade;
 use App\Models\User;
 
 /**
@@ -23,7 +23,7 @@ class UsersAsAdminTest extends UsersAsModeratorTest
     {
         $dataWithoutPassword = [
             "email" => $this->faker->email,
-            "class_id" => Class_::inRandomOrder()->firstOrFail()->id,
+            "class_id" => Grade::inRandomOrder()->firstOrFail()->id,
             "type" => "admin",
         ];
         $data = array_merge($dataWithoutPassword, ["password" => "test"]);

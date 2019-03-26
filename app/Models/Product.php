@@ -6,15 +6,14 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Mathrix\Lumen\Bases\BaseModel;
 
 /**
  * Class Product.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.0
- * @copyright Mathrix Education SA
- * @package   App\Models
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  *
  * @property int $id
  * @property string $name
@@ -29,6 +28,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property array $link
+ * ---
  * @property Module|null $module
  * @property Collection|Product[] $children
  * @property Collection|Product[] $parents

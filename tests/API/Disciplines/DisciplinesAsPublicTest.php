@@ -2,7 +2,7 @@
 
 namespace Tests\API\Disciplines;
 
-use App\Models\Class_;
+use App\Models\Grade;
 use Tests\API\ScopeTestCase;
 
 /**
@@ -77,6 +77,6 @@ class DisciplinesAsPublicTest extends ScopeTestCase
      */
     public function testByClass()
     {
-        $this->genericBySuccess(Class_::class);
+        $this->genericBySuccess(Grade::class);
     }
 }
