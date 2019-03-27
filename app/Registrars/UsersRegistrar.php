@@ -35,6 +35,5 @@ class UsersRegistrar extends BaseRegistrar
         });
 
         $this->post("users/search[/{page:[0-9]+}/{perPage:[1-9]\d*}]", "$controller@search");
-
     }
 }

@@ -13,6 +13,7 @@ use App\Console\Commands\Pyramid\PyramidMarksActivitiesCommand;
 use App\Console\Commands\Pyramid\PyramidMarksCommand;
 use App\Console\Commands\Pyramid\PyramidMarksModuleCommand;
 use App\Console\Commands\Pyramid\PyramidMigrateCommand;
+use App\Console\Commands\Pyramid\PyramidOrphansCommand;
 use App\Console\Commands\Pyramid\PyramidPostMigrate;
 use App\Console\Commands\Pyramid\PyramidPreMigrateCommand;
 use App\Console\Commands\Pyramid\PyramidResetCommand;
@@ -50,6 +51,7 @@ class Kernel extends ConsoleKernel
         PyramidPreMigrateCommand::class,
         PyramidResetCommand::class,
         PyramidMigrateCommand::class,
+        PyramidOrphansCommand::class,
         PyramidSEOCommand::class,
         PyramidForeignKeysCommand::class,
         PyramidMarksCommand::class,

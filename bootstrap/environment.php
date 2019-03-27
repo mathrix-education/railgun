@@ -1,4 +1,11 @@
 <?php
+// Load DotEnv
+try {
+    (new Dotenv\Dotenv(__DIR__ . "/../"))->load();
+} catch (Dotenv\Exception\InvalidPathException $e) {
+}
+
+
 // APP_BUILD
 $build = "unknown";
 

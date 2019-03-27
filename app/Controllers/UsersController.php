@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Controllers\Traits\SearchTrait;
 use App\Models\Activity;
 use App\Models\Log;
 use App\Models\Module;
@@ -27,6 +28,8 @@ use Mathrix\Lumen\Exceptions\Http\Http429TooManyRequestsException;
  */
 class UsersController extends BaseController
 {
+    use SearchTrait;
+
     /**
      * POST /users
      * Create a new user.

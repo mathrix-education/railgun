@@ -4,12 +4,10 @@ namespace App\Observers;
 
 use App\Models\Comment;
 use App\Models\Module;
-use App\Models\Path;
 use App\Models\Post;
 use App\Models\Product;
 use App\Models\Reference;
 use App\Models\Report;
-use Illuminate\Support\Arr;
 
 /**
  * Class ModuleObserver.
@@ -22,30 +20,6 @@ use Illuminate\Support\Arr;
  */
 class ModuleObserver extends BaseObserver
 {
-    /**
-     * @param Module $module
-     *
-     * @return bool
-     */
-    public function saving($module)
-    {
-        // Disabled event dispatcher to avoid infinite loops
-        $dispatcher = Module::getEventDispatcher();
-        Module::unsetEventDispatcher();
-
-        // Propagate modification to cloned modules
-        $clonedData = Arr::only($module->getOriginal(), Module::CLONE_FIELDS);
-        $module->clones()->get()->map(function (Module $clone) use ($clonedData) {
-            $clone->update($clonedData);
-        });
-
-        // Enable event dispatcher
-        Module::setEventDispatcher($dispatcher);
-
-        return true;
-    }
-
-
     /**
      * Detach all activities linked with the deleting module.
      *

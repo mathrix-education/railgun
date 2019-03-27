@@ -1,11 +1,5 @@
 <?php
-
 require_once __DIR__ . "/../vendor/autoload.php";
-
-try {
-    (new Dotenv\Dotenv(__DIR__ . "/../"))->load();
-} catch (Dotenv\Exception\InvalidPathException $e) {
-}
 
 // Generate environment variables
 require_once __DIR__ . "/environment.php";
@@ -20,7 +14,6 @@ require_once __DIR__ . "/environment.php";
 | application as an "IoC" container and router for this framework.
 |
 */
-
 $app = new Laravel\Lumen\Application(realpath(__DIR__ . "/../"));
 $app->withFacades();
 $app->withEloquent();
@@ -35,7 +28,6 @@ $app->withEloquent();
 | your own bindings here if you like or you can make another file.
 |
 */
-
 $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
     App\Exceptions\Handler::class

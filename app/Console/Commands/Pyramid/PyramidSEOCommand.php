@@ -22,12 +22,17 @@ class PyramidSEOCommand extends BaseCommand
         // Migrate paths
         $this->block("Migrate paths seo_index");
         $moduleIds = DB::table("paths")
-            ->select("module_id")
+            ->join("activity_module", "paths.activity_id", "=", "activity_module.activity_id")
+            ->selectRaw("paths.activity_id, MIN(activity_module.module_id) as module_min_id")
             ->where("seo_index", "=", 1)
+            ->groupBy("paths.activity_id")
             ->get()
-            ->pluck("module_id");
+            ->pluck("module_min_id");
 
-        DB::table("modules")->whereIn("id", $moduleIds)->update(["seo_index" => 1]);
+        DB::table("modules")
+            ->whereIn("id", $moduleIds)
+            ->update(["seo_index" => 1]);
+
         $this->success("Paths migrated.");
 
         // Activities SEO

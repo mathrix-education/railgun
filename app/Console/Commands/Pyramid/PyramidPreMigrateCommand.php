@@ -14,7 +14,7 @@ use Mathrix\Lumen\Bases\BaseCommand;
 class PyramidPreMigrateCommand extends BaseCommand
 {
     protected $signature = "pyramid:pre-migrate";
-    public const MIGRATE_STOP_BEFORE = "2019_03_25_235918_clean_post_v5";
+    public const MIGRATE_STOP_BEFORE = "2019_03_27_235918_clean_post_v5";
 
 
     public function handle()

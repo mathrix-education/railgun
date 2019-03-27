@@ -89,4 +89,13 @@ class CommentPolicy extends BasePolicy
     {
         return $currentUser->isModerator();
     }
+
+
+    /**
+     * @return bool
+     */
+    public function byModule()
+    {
+        return true;
+    }
 }

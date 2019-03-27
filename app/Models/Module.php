@@ -40,9 +40,6 @@ use Mathrix\Lumen\Bases\BaseModel;
 class Module extends BaseModel
 {
     public const TYPES = ["id", "course", "test", "mcq", "mcq-table", "match", "fill", "flashcard"];
-    public const CLONE_FIELDS = ["premium", "type", "content", "questions", "choices", "solutions", "corrections",
-        "options"];
-
     /** @var array The attributes that are mass assignable */
     protected $fillable = ["premium", "type", "content", "questions", "choices", "solutions", "corrections", "options",
         "visible"];
@@ -142,31 +139,6 @@ class Module extends BaseModel
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
-    }
-
-
-    /**
-     * The cloned modules.
-     * A clone is defined by the equality of the CLONE_FIELDS with the current module.
-     *
-     * @return Builder
-     */
-    public function clones()
-    {
-        // Build conditions
-        $query = self::query();
-        foreach (self::CLONE_FIELDS as $field) {
-            $value = $this->getAttributeFromArray($field);
-
-            if ($value === null) {
-                $query = $query->whereNull($field);
-            } else {
-                $query->where($field, "=", $value);
-            }
-        }
-        $query->where("id", "!=", $this->id);
-
-        return $query;
     }
 
 
