@@ -41,7 +41,7 @@ steps:
 
   # Send cover results to SonarQube
   # ------------------------------
-  - id: 'sonar-scanner'
+#  - id: 'sonar-scanner'
 #    waitFor: ['docker-compose:tests']
 #    name: 'eu.gcr.io/$PROJECT_ID/runner-sonar-scanner:php'
 #    args:
