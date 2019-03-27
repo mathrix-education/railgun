@@ -46,7 +46,7 @@ class UserPolicy extends BasePolicy
      *
      * @return bool
      */
-    public function edit(User $currentUser, User $user)
+    public function patch(User $currentUser, User $user)
     {
         return $currentUser->isAdmin() || $currentUser->id === $user->id;
     }

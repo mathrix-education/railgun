@@ -43,7 +43,7 @@ class CommentPolicy extends BasePolicy
      *
      * @return bool
      */
-    public function edit(User $currentUser, Comment $comment)
+    public function patch(User $currentUser, Comment $comment)
     {
         if ($currentUser->isModerator()) {
             return true;

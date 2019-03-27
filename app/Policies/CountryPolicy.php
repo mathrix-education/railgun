@@ -49,7 +49,7 @@ class CountryPolicy extends BasePolicy
      *
      * @return bool
      */
-    public function edit(User $currentUser)
+    public function patch(User $currentUser)
     {
         return $currentUser->isAdmin();
     }
