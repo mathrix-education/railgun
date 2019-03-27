@@ -9,7 +9,6 @@ use Dusterio\LumenPassport\Http\Controllers\AccessTokenController;
 use Faker\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Psr\Http\Message\ServerRequestInterface;
@@ -44,26 +43,37 @@ class AuthController extends BaseController
             ->first();
 
         // Define the allowed scopes based on user scopes
+        // If we did not find the user, we do not do anything, even if we already know that the request will fail
         if ($user !== null) {
-            /*
-             * Since we currently use a pyramidal architecture, we define scope here.
-             * registered < redactor < moderator < admin
-             */
-            $scopes = "registered redactor moderator admin";
-            $requestBody["scope"] = strstr($scopes, $user->type);
+            $requestBody["scope"] = $user->getPassportScopes();
         }
+
         $request = $request->withParsedBody($requestBody);
 
         /** @var AccessTokenController $controller */
         $controller = app()->make(AccessTokenController::class);
-        /** @var Response $response */
+        /** @var \Illuminate\Http\Response $response */
         $response = $controller->issueToken($request);
 
-        return new JsonResponse(
-            json_decode($response->getContent()),
-            $response->getStatusCode(),
-            $response->headers->all()
-        );
+        $body = new \stdClass();
+        $status = null;
+        $headers = [];
+
+        if ($response instanceof \Illuminate\Http\Response) {
+            $body = json_decode($response->getContent());
+            $status = $response->getStatusCode();
+            $headers = $response->headers->all();
+        } else if ($response instanceof \Zend\Diactoros\Response) {
+            $body = json_decode($response->getBody());
+            $status = $response->getStatusCode();
+            $headers = $response->getHeaders();
+        }
+
+        if ($user !== null) {
+            $body->user_id = $user->id;
+        }
+
+        return new JsonResponse($body, $status, $headers);
     }
 
 

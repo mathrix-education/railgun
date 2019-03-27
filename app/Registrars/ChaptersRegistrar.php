@@ -22,7 +22,7 @@ class ChaptersRegistrar extends BaseRegistrar
         $controller = ChaptersController::class;
         $this->rest("chapters", $controller, [
             "index" => "admin",
-            "get" => "admin",
+            "get" => null,
             "post" => "admin",
             "patch" => "admin",
             "delete" => "admin"

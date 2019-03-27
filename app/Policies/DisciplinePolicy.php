@@ -69,7 +69,7 @@ class DisciplinePolicy extends BasePolicy
     /**
      * @return bool
      */
-    public function byClass()
+    public function byGrade()
     {
         return true;
     }

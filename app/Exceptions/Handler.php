@@ -98,10 +98,6 @@ class Handler extends ExceptionHandler
 
         $overriddenStatusCode = false;
 
-        if ($e instanceof HttpException) {
-            /* @var $e HttpException */
-            return $e->getResponse();
-        }
         $exceptionClass = (new ReflectionClass($e))->getShortName(); // Get the Exception class name
 
         // Default exception handler
@@ -141,7 +137,7 @@ class Handler extends ExceptionHandler
         }
 
         // Include trace in debug mode
-        if (app()->environment("testing", "local", "dev", "pipelines", "next")) {
+        if (app()->environment("testing", "local", "dev")) {
             $json["trace"] = explode("\n", $e->getTraceAsString());
         }
 

@@ -43,8 +43,17 @@ class Activity extends BaseModel
     public const TYPES = ["video", "course", "test", "exercise", "summary", "flashcard"];
 
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "name", "slug", "seo_title", "seo_description", "seo_keywords", "type", "visible",
-        "premium", "reviewed"];
+    protected $fillable = [
+        "id",
+        "name",
+        "slug",
+        "type",
+        "visible",
+        "order",
+        "premium",
+        "reviewed",
+        "notion_id"
+    ];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
         "visible" => "boolean",

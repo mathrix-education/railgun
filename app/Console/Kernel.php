@@ -13,6 +13,8 @@ use App\Console\Commands\Pyramid\PyramidMarksActivitiesCommand;
 use App\Console\Commands\Pyramid\PyramidMarksCommand;
 use App\Console\Commands\Pyramid\PyramidMarksModuleCommand;
 use App\Console\Commands\Pyramid\PyramidMigrateCommand;
+use App\Console\Commands\Pyramid\PyramidPostMigrate;
+use App\Console\Commands\Pyramid\PyramidPreMigrateCommand;
 use App\Console\Commands\Pyramid\PyramidResetCommand;
 use App\Console\Commands\Pyramid\PyramidSEOCommand;
 use App\Console\Commands\Sitemap\SitemapAll;
@@ -37,13 +39,15 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        BraintreeCheck::class,
         NewPayPalCheck::class,
         SitemapAll::class,
         SitemapContent::class,
         CompileMails::class,
+
         PyramidCommand::class,
+
         PyramidFixCommand::class,
+        PyramidPreMigrateCommand::class,
         PyramidResetCommand::class,
         PyramidMigrateCommand::class,
         PyramidSEOCommand::class,
@@ -51,6 +55,7 @@ class Kernel extends ConsoleKernel
         PyramidMarksCommand::class,
         PyramidMarksModuleCommand::class,
         PyramidMarksActivitiesCommand::class,
+        PyramidPostMigrate::class,
         PyramidCheckCommand::class
     ];
 

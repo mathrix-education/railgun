@@ -2,9 +2,9 @@
 
 namespace App\Controllers;
 
-use App\Utils\Chainer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Mathrix\Chainer\Chainer;
 use Mathrix\Lumen\Bases\BaseController;
 
 /**

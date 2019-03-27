@@ -1,13 +1,14 @@
 <?php
 
-use Carbon\Carbon;
-
 require_once __DIR__ . "/../vendor/autoload.php";
 
 try {
     (new Dotenv\Dotenv(__DIR__ . "/../"))->load();
 } catch (Dotenv\Exception\InvalidPathException $e) {
 }
+
+// Generate environment variables
+require_once __DIR__ . "/environment.php";
 
 /*
 |--------------------------------------------------------------------------
@@ -87,9 +88,6 @@ $app->configure("mail");
 $app->configure("queue");
 $app->configure("services");
 
-if ($app->environment("dev", "local")) {
-    $app->configure("ide-helper");
-}
 
 /*
 |--------------------------------------------------------------------------
@@ -108,8 +106,7 @@ $app->middleware([
 
 $app->routeMiddleware([
     "login" => \Mathrix\Lumen\Middleware\LoggedMiddleware::class,
-    "scope" => \Mathrix\Lumen\Middleware\ScopeMiddleware::class,
-    "auth" => App\Middleware\Authenticate::class,
+    "scope" => \Mathrix\Lumen\Middleware\ScopeMiddleware::class
 ]);
 
 /*
@@ -122,15 +119,6 @@ $app->routeMiddleware([
 | totally optional, so you are not required to uncomment this line.
 |
 */
-
-if ($app->environment("local", "dev")) {
-    $app->register(Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
-    $app->bind(
-        Illuminate\Database\ConnectionResolverInterface::class,
-        Illuminate\Database\ConnectionResolver::class
-    );
-}
-
 $app->register(App\Providers\AppServiceProvider::class);
 
 if (env("SENTRY_DSN") !== null) {
@@ -148,28 +136,5 @@ if (env("SENTRY_DSN") !== null) {
 |
 */
 Dusterio\LumenPassport\LumenPassport::routes($app->router);
-
-$app->router->group(["namespace" => "App\\Controllers"], function ($router) {
-    /* @var Laravel\Lumen\Routing\Router $router */
-    $router->get("/", function () {
-        $build = basename(dirname(__DIR__, 1));
-
-        try {
-            $build = Carbon::createFromFormat("Y-m-d_H-i-s", $build)
-                ->toIso8601String();
-        } catch (InvalidArgumentException $e) {
-        }
-
-        return response()->json([
-            "message" => "Welcome to Mathrix API version " . env("APP_VERSION") . " by Mathieu Bour",
-            "build" => $build,
-        ]);
-    });
-
-    foreach (glob(__DIR__ . "/../app/Routes/*.php") as $routeFile) {
-        /** @noinspection PhpIncludeInspection */
-        require $routeFile;
-    }
-});
 
 return $app;

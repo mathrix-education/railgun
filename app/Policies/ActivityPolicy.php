@@ -16,29 +16,9 @@ use App\Models\User;
 class ActivityPolicy extends BasePolicy
 {
     /**
-     * @param User $currentUser
-     *
      * @return bool
      */
-    public function index(User $currentUser)
-    {
-        return $currentUser->isModerator();
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function byNotion()
-    {
-        return true;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function byModule()
+    public function index()
     {
         return true;
     }
@@ -54,34 +34,37 @@ class ActivityPolicy extends BasePolicy
 
 
     /**
-     * @param User $currentUser
-     *
      * @return bool
      */
-    public function add(User $currentUser)
+    public function post()
     {
-        return $currentUser->isModerator();
+        return true;
     }
 
 
     /**
-     * @param User $currentUser
-     *
      * @return bool
      */
-    public function edit(User $currentUser)
+    public function patch()
     {
-        return $currentUser->isModerator();
+        return true;
     }
 
 
     /**
-     * @param User $currentUser
-     *
      * @return bool
      */
-    public function delete(User $currentUser)
+    public function delete()
     {
-        return $currentUser->isModerator();
+        return true;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function byNotion()
+    {
+        return true;
     }
 }

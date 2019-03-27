@@ -47,10 +47,6 @@ class PyramidSEOCommand extends BaseCommand
 
             if ($results->count() > 0) {
                 $seoFields = ((array)$results->first());
-
-                if ($moduleSEO->id === 116) {
-                    dd($seoFields);
-                }
                 DB::table("modules")
                     ->where("id", "=", $moduleSEO->id)
                     ->update($seoFields);

@@ -19,6 +19,8 @@ class CountriesRegistrar extends BaseRegistrar
      */
     public function register(): void
     {
+        $controller = CountriesController::class;
+
         $this->rest("countries", CountriesController::class, [
             "index" => null,
             "get" => null,
@@ -26,5 +28,7 @@ class CountriesRegistrar extends BaseRegistrar
             "patch" => "admin",
             "delete" => "admin"
         ]);
+
+        $this->get("countries/slug/{countrySlug:[a-z\_]+}", "$controller@getBySlug");
     }
 }

@@ -20,9 +20,12 @@ class CleanPostV5 extends Migration
         Schema::dropIfExists("courses");
 
         // Dropping path_id
-        Schema::dropIfExists("marks");
         Schema::table("comments", function (Blueprint $table) {
             $table->dropForeign("comments_path_id_foreign");
+            $table->dropColumn("path_id");
+        });
+        Schema::table("marks", function (Blueprint $table) {
+            $table->dropForeign("marks_path_id_foreign");
             $table->dropColumn("path_id");
         });
         Schema::dropIfExists("paths");

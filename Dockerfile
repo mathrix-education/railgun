@@ -38,7 +38,7 @@ COPY deploy/php7/www.conf /etc/php7/php-fpm.d/www.conf
 
 ADD . .
 
-RUN echo "${COMMIT_SHORT_SHA}" >> version.txt
+RUN echo "${COMMIT_SHORT_SHA}" >> build.txt
 
 # Clean
 RUN rm -rf \
