@@ -32,8 +32,6 @@ use Mathrix\Lumen\Bases\BaseModel;
  */
 class Grade extends BaseModel
 {
-    /** @var string Custom table definition */
-    protected $table = "classes";
     /** @var array The attributes that are mass assignable */
     protected $fillable = ["id", "name", "slug", "order", "visible", "parent_id", "country_id", "link"];
     /** @var array Validation rules */

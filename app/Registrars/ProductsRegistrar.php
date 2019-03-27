@@ -2,6 +2,7 @@
 
 namespace App\Registrars;
 
+use App\Controllers\ProductsController;
 use Mathrix\Lumen\Bases\BaseRegistrar;
 
 /**
@@ -18,7 +19,7 @@ class ProductsRegistrar extends BaseRegistrar
      */
     public function register(): void
     {
-        $controller = ProductsRegistrar::class;
+        $controller = ProductsController::class;
 
         $this->rest("products", $controller, [
             "index" => "admin",
@@ -29,7 +30,7 @@ class ProductsRegistrar extends BaseRegistrar
         ]);
 
         $this->get("products/{id:[1-9]\d*}/recursive", "$controller@recursive");
-        $this->get("products/buyable[/{type:all}]", "$controller@recursive");
+        $this->get("products/buyable[/{type:all|training}]", "$controller@buyable");
 
         $this->group(["middleware" => "scope:support"], function () {
             $this->post("products/buy", "ProductController@buy");

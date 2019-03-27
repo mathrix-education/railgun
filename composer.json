@@ -1,7 +1,7 @@
 {
-  "name": "mathrix/mathrix-api",
+  "name": "mathrix/education-api",
   "description": "The Mathrix API server",
-  "version": "4.3.0",
+  "version": "5.0.0",
   "license": "proprietary",
   "type": "project",
   "repositories": [
@@ -43,7 +43,8 @@
     "sentry/sentry-laravel": "^0.8.0",
     "stripe/stripe-php": "^6.15",
     "superbalist/laravel-google-cloud-storage": "^2.1",
-    "vlucas/phpdotenv": "~2.2"
+    "vlucas/phpdotenv": "~2.2",
+    "zendframework/zend-diactoros": "~1.0"
   },
   "require-dev": {
     "barryvdh/laravel-ide-helper": "^2.4",

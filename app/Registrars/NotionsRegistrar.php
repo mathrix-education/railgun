@@ -23,7 +23,7 @@ class NotionsRegistrar extends BaseRegistrar
 
         $this->rest("notions", $controller, [
             "index" => "admin",
-            "get" => "admin",
+            "get" => null,
             "post" => "admin",
             "patch" => "admin",
             "delete" => "admin"

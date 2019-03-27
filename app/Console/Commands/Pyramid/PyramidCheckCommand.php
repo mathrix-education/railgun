@@ -44,16 +44,6 @@ class PyramidCheckCommand extends BaseCommand
         }
         $this->output->progressFinish();
 
-        // Print broke models
-        $this->block("Looking for broken models...");
-
-        $brokenNotions = DB::table("notions")->whereNull("chapter_id")->count();
-        $brokenActivities = DB::table("activities")->whereNull("notion_id")->count();
-        $brokenModules = DB::table("modules")->whereNull("activity_id")->count();
-        $this->line("$brokenNotions notions are not linked");
-        $this->line("$brokenActivities activities are not linked");
-        $this->line("$brokenModules modules are not linked");
-
         $this->success("Everything is correct. Well played Mr. Bour!");
     }
 
@@ -73,9 +63,6 @@ class PyramidCheckCommand extends BaseCommand
 
         // Load linking tables
         $this->line("Loading mappings...");
-        $mappingsCN = DB::table("chapter_notion")->get();
-        $mappingsNA = DB::table("activity_notion")->get();
-        $mappingsAM = DB::table("activity_module")->get();
         $this->success("Mappings loaded");
 
         $counter = 0;

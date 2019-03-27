@@ -23,7 +23,7 @@ class ActivitiesRegistrar extends BaseRegistrar
 
         $this->rest("activities", $controller, [
             "index" => "redactor",
-            "get" => "redactor",
+            "get" => null,
             "post" => "moderator",
             "patch" => "redactor",
             "delete" => "admin"

@@ -25,7 +25,12 @@ class SystemController extends BaseController
      */
     public function base(): JsonResponse
     {
-
+        return new JsonResponse([
+            "message" => "Welcome to the official Mathrix Education REST API!",
+            "authors" => ["Mathieu Bour <mathieu@mathrix.fr>"],
+            "version" => env("APP_VERSION"),
+            "build" => env("APP_BUILD")
+        ]);
     }
 
 

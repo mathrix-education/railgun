@@ -16,7 +16,7 @@ class ContentRegistrar extends BaseRegistrar
 {
     public function register(): void
     {
-        $this->get("content/search/{query}[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]",
+        $this->get("search/{query}[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]",
             ContentController::class . "@searchGlobal");
     }
 }

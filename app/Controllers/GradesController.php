@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Models\Grade;
+use Illuminate\Http\JsonResponse;
 use Mathrix\Lumen\Bases\BaseController;
 
 /**
@@ -13,4 +15,20 @@ use Mathrix\Lumen\Bases\BaseController;
  */
 class GradesController extends BaseController
 {
+
+    /**
+     * GET /grades/slug/{gradeSlug}
+     *
+     * @param string $gradeSlug The grade slug.
+     *
+     * @return JsonResponse
+     */
+    public function getBySlug(string $gradeSlug)
+    {
+        $grade = Grade::query()
+            ->where("slug", "=", $gradeSlug)
+            ->firstOrFail();
+
+        return new JsonResponse($grade);
+    }
 }

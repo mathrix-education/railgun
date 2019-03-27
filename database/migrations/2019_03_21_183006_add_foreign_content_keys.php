@@ -29,7 +29,7 @@ class AddForeignContentKeys extends Migration
             $table->string("seo_description")->after("visible")->nullable();
             $table->string("seo_keywords")->after("visible")->nullable();
             $table->string("seo_title")->after("visible")->nullable();
-            $table->boolean("seo_index")->after("visible")->nullable();
+            $table->boolean("seo_index")->after("visible")->default(0);
             $table->timestamps();
         });
     }

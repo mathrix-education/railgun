@@ -108,7 +108,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "lastname" => "nullable|max:60",
         "password" => "required|min:3",
         "type" => "required|in:registered,redactor,moderator,admin,support",
-        "token" => "required|size:36",
+        "token" => "nullable|size:36",
         "points" => "required|integer",
         "daily" => "nullable|in:10,20,40",
         "grade_id" => "nullable|exists:grades,id",
@@ -156,6 +156,37 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         return $this->products()
             ->where("product_id", "=", $product->id)
             ->exists();
+    }
+
+
+    /**
+     * Get users scopes, space-separated.
+     * @return string
+     */
+    public function getPassportScopes()
+    {
+        switch ($this->type) {
+            case "admin":
+                $scopes = "admin moderator redactor registered support";
+                break;
+            case "moderator":
+                $scopes = "moderator redactor registered";
+                break;
+            case "redactor":
+                $scopes = "redactor registered";
+                break;
+            case "registered":
+                $scopes = "registered";
+                break;
+            case "support":
+                $scopes = "registered support";
+                break;
+            default:
+                $scopes = "";
+                break;
+        }
+
+        return $scopes;
     }
 
 

@@ -17,11 +17,11 @@ $factory->define(Activity::class, function (Generator $faker) {
     return [
         "name" => $name,
         "slug" => str_slug($name),
-        "seo_title" => $faker->boolean(70) ? $name : null,
-        "seo_description" => $faker->boolean(70) ? $faker->text(10) : null,
         "type" => $faker->randomElement(Activity::TYPES),
         "visible" => $faker->boolean(95),
+        "order" => 0,
         "premium" => $faker->boolean(30),
         "reviewed" => $faker->boolean(),
+        "notion_id" => \App\Models\Notion::random()->id
     ];
 });

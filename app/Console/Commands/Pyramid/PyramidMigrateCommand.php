@@ -38,6 +38,7 @@ class PyramidMigrateCommand extends BaseCommand
         $childPlural = Str::plural(mb_strtolower($child));
 
         $this->line("Fetching $parentPlural <=> $childPlural mappings...");
+
         $query = "SELECT $parentKey, $table.$childKey, `order`, duplicated
         FROM $table
           INNER JOIN
@@ -45,6 +46,7 @@ class PyramidMigrateCommand extends BaseCommand
           FROM $table
           GROUP BY $childKey) dup ON $table.$childKey = dup.$childKey
         ORDER BY $table.$childKey, $parentKey";
+
         $mappings = collect(DB::select($query));
         $processed = new Collection();
 
@@ -57,9 +59,16 @@ class PyramidMigrateCommand extends BaseCommand
             $parentId = $line->{$parentKey};
             $childId = $line->{$childKey};
             $order = $line->order;
+            $hasDuplicates = $line->duplicated == 1;
 
-            if (!$line->duplicated || $processed->search($childId) !== false) {
-                DB::update("UPDATE $childPlural SET $parentKey = $parentId, `order` = $order WHERE `id` = $childId");
+            if (!$hasDuplicates || $processed->search($childId) !== false) {
+                DB::table($childPlural)
+                    ->where("id", "=", $childId)
+                    ->update([
+                        $parentKey => $parentId,
+                        "order" => $order
+                    ]);
+
                 $processed->push($childId);
             } else {
                 $method = "copy$child";

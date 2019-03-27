@@ -7,7 +7,7 @@ use App\Models\Discipline;
 use App\Models\Mark;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mathrix\Lumen\Bases\BaseController;
@@ -34,8 +34,11 @@ class ActivitiesController extends BaseController
         /** @var User $user */
         $user = $request->user();
         $marks = $user->marks()
-            ->with("path")
-            ->where("status", "=", "to_revise")
+            ->with("markable")
+            ->where([
+                ["status", "=", "to_revise"],
+                ["markable_type", "=", "activity"]
+            ])
             ->get();
 
         return new JsonResponse($marks);
@@ -63,17 +66,14 @@ class ActivitiesController extends BaseController
 
         foreach ($disciplinesIds as $disciplineId) {
             $subQuery = $user->marks()
-                ->with(["path", "path.activity.modules" => function (BelongsToMany $q) {
+                ->with(["markable" => function (MorphTo $q) {
                     $q->limit(1);
                 }])
-                ->whereHas("path", function (Builder $query) use ($disciplineId) {
-                    $query->where("discipline_id", "=", $disciplineId)
-                        ->whereNotNull("chapter_id")
-                        ->whereNotNull("notion_id")
-                        ->whereNotNull("activity_id")
-                        ->whereNull("module_id");
-                })
-                ->where("status", "=", "view")
+                ->where([
+                    ["status", "=", "view"],
+                    ["markable_type", "=", "activity"],
+                    ["markable_id", "=", $disciplineId]
+                ])
                 ->orderByDesc("updated_at")
                 ->limit(1);
 

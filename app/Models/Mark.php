@@ -28,8 +28,7 @@ use Mathrix\Lumen\Bases\BaseModel;
 class Mark extends BaseModel
 {
     public $timestamps = true;
-    protected $fillable = ["status", "user_id", "path_id"];
-
+    protected $fillable = ["status", "user_id", "markable", "markable_id"];
 
     /**
      * Retrieve all models linked with a given user.

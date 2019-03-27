@@ -51,8 +51,6 @@ class AppServiceProvider extends ServiceProvider
 
         if (app()->environment("local")) {
             $this->app->register(\Vluzrmos\Tinker\TinkerServiceProvider::class);
-            $this->app->register(\Way\Generators\GeneratorsServiceProvider::class);
-            $this->app->register(\Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class);
         }
 
         // MorphMap

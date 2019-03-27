@@ -40,7 +40,7 @@ class ChapterPolicy extends BasePolicy
      *
      * @return bool
      */
-    public function add(User $currentUser)
+    public function post(User $currentUser)
     {
         return $currentUser->isModerator();
     }
@@ -51,7 +51,7 @@ class ChapterPolicy extends BasePolicy
      *
      * @return bool
      */
-    public function edit(User $currentUser)
+    public function patch(User $currentUser)
     {
         return $currentUser->isModerator();
     }
