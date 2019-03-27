@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Exceptions\Http400InvalidRequestException;
 use App\Models\Category;
+use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 
 /**
  * Class CategoryObserver.
@@ -36,16 +37,16 @@ class CategoryObserver extends BaseObserver
     /**
      * @param Category $category
      *
-     * @throws Http400InvalidRequestException
-     * @throws \Exception
-     *
      * @return bool
+     * @throws Http400BadRequestException
      */
     public function deleting($category)
     {
         if (!$category->posts->isEmpty()) {
-            throw new Http400InvalidRequestException("Cannot delete category {$category->id} be cause it has " .
-                "attached posts");
+            throw new Http400BadRequestException(
+                ["category" => $category],
+                "Cannot delete category {$category->id} since it has referenced posts."
+            );
         }
 
         return true;

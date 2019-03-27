@@ -5,7 +5,7 @@ namespace App\Providers;
 use App\Models\BaseModel;
 use App\Models\Grade;
 use App\Observers\BaseObserver;
-use App\Observers\ClassObserver;
+use App\Observers\GradeObserver;
 use App\Observers\NotificationObserver;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\ServiceProvider;
@@ -26,7 +26,7 @@ class ObserverServiceProvider extends ServiceProvider
     private const OBSERVERS_NAMESPACE = "App\\Observers\\";
     private const EXCLUDED_OBSERVERS = [
         BaseObserver::class,
-        ClassObserver::class,
+        GradeObserver::class,
         NotificationObserver::class
     ];
 
@@ -59,7 +59,7 @@ class ObserverServiceProvider extends ServiceProvider
             }
         }
 
-        Grade::observe(ClassObserver::class);
+        Grade::observe(GradeObserver::class);
         DatabaseNotification::observe(NotificationObserver::class);
     }
 }

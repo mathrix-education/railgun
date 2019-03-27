@@ -21,27 +21,6 @@ class CommentObserver extends BaseObserver
 {
     /**
      * @param Comment $comment
-     *
-     * @throws Http422ModelSaveException
-     * @throws Exception
-     *
-     * @return bool
-     */
-    public function saving($comment)
-    {
-        if ($comment->isDirty("deleted_at")) {
-            /** @var Comment $child */
-            foreach ($comment->children as $child) {
-                $child->delete();
-            }
-        }
-
-        return true;
-    }
-
-
-    /**
-     * @param Comment $comment
      */
     public function saved($comment)
     {
@@ -54,9 +33,8 @@ class CommentObserver extends BaseObserver
     /**
      * @param Comment $comment
      *
-     * @throws Http422ModelSaveException
-     *
      * @return bool
+     * @throws Exception
      */
     public function deleting($comment)
     {

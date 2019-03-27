@@ -3,8 +3,8 @@
 namespace App\Observers;
 
 use App\Models\Chapter;
-use App\Models\Notion;
 use App\Models\Path;
+use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 
 /**
  * Class ChapterObserver.
@@ -26,28 +26,8 @@ class ChapterObserver extends BaseObserver
     public function saving($chapter)
     {
         // Sluggify if needed
-        if (empty($chapter->slug) ||
-            ($chapter->isDirty("name") && !$chapter->isDirty("slug"))
-        ) {
+        if (empty($chapter->slug) || ($chapter->isDirty("name") && !$chapter->isDirty("slug"))) {
             $chapter->slug = str_slug($chapter->name);
-        }
-        $chapter->slug = str_slug($chapter->name);
-
-        // Sync notions
-        if (isset($chapter->link["notions"])) {
-            $toSync = [];
-            foreach ($chapter->link["notions"] as $order => $notionId) {
-                if (Notion::whereId($notionId)
-                    ->exists()) {
-                    $toSync[$notionId] = ["order" => $order];
-                }
-            }
-            $chapter->notions()
-                ->sync($toSync);
-        }
-
-        if (isset($chapter->link)) {
-            unset($chapter->link);
         }
 
         return true;
@@ -55,21 +35,19 @@ class ChapterObserver extends BaseObserver
 
 
     /**
-     * Delete all notions linked with the deleting chapter.
-     *
      * @param Chapter $chapter
      *
      * @return bool
+     * @throws Http400BadRequestException
      */
     public function deleting($chapter)
     {
-        $chapter->notions()
-            ->detach();
-        Path::where("chapter_id", "=", $chapter->id)
-            ->get()
-            ->each(function (Path $path) {
-                $path->delete();
-            });
+        if (!$chapter->notions->isEmpty()) {
+            throw new Http400BadRequestException(
+                ["chapter" => $chapter],
+                "Cannot delete chapter {$chapter->id} since it has referenced notions."
+            );
+        }
 
         return true;
     }

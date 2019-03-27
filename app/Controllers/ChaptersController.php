@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Models\Chapter;
 use App\Models\Grade;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -51,9 +50,9 @@ class ChaptersController extends BaseController
      * Get chapters by class and discipline ids
      *
      * @param Request $request The Illuminate HTTP request.
-     * @param int $gradeId The class id
-     * @param int $disciplineId The discipline id
-     * @param string|null $scope The scope, use 'all' to display invisible chapters
+     * @param int $gradeId The class id.
+     * @param int $disciplineId The discipline id.
+     * @param string|null $scope The scope, use 'all' to display invisible chapters.
      *
      * @return JsonResponse
      */
@@ -71,8 +70,7 @@ class ChaptersController extends BaseController
             $query = $query->where("visible", "=", true);
         }
 
-        $chapters = $query->orderBy("order")
-            ->get();
+        $chapters = $query->orderBy("order")->get();
 
         return new JsonResponse($chapters);
     }
