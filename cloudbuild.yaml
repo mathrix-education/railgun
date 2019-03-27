@@ -43,11 +43,10 @@ steps:
   # ------------------------------
   - id: 'sonar-scanner'
 #    waitFor: ['docker-compose:tests']
-    waitFor: ['-']
-    name: 'eu.gcr.io/$PROJECT_ID/runner-sonar-scanner:php'
-    args:
-      - '-Dsonar.projectVersion=$SHORT_SHA'
-      - '-Dsonar.branch.name=$BRANCH_NAME'
+#    name: 'eu.gcr.io/$PROJECT_ID/runner-sonar-scanner:php'
+#    args:
+#      - '-Dsonar.projectVersion=$SHORT_SHA'
+#      - '-Dsonar.branch.name=$BRANCH_NAME'
 
 
   # Meanwhile, begin the image build
