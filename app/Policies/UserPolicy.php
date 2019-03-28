@@ -7,11 +7,9 @@ use App\Models\User;
 /**
  * Class UserPolicy.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
- * @package   App\Policies
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  */
 class UserPolicy extends BasePolicy
 {
@@ -26,17 +24,6 @@ class UserPolicy extends BasePolicy
         return $currentUser->id === $user->id
             || $currentUser->isAdmin()
             || ($currentUser->isModerator() && $user->type === "registered");
-    }
-
-
-    /**
-     * @param User $currentUser
-     *
-     * @return bool
-     */
-    public function search(User $currentUser)
-    {
-        return $currentUser->isModerator();
     }
 
 
@@ -57,10 +44,22 @@ class UserPolicy extends BasePolicy
      * @param User $user
      *
      * @return bool
+     * @codeCoverageIgnore // TODO: For now #GDPR
      */
-    public function points(User $currentUser, User $user)
+    public function delete(User $currentUser, User $user)
     {
         return $currentUser->isAdmin() || $currentUser->id === $user->id;
+    }
+
+
+    /**
+     * @param User $currentUser
+     *
+     * @return bool
+     */
+    public function search(User $currentUser)
+    {
+        return $currentUser->isModerator();
     }
 
 
@@ -69,9 +68,8 @@ class UserPolicy extends BasePolicy
      * @param User $user
      *
      * @return bool
-     * @codeCoverageIgnore // TODO: For now #GDPR
      */
-    public function delete(User $currentUser, User $user)
+    public function points(User $currentUser, User $user)
     {
         return $currentUser->isAdmin() || $currentUser->id === $user->id;
     }

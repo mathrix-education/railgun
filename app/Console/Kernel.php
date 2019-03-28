@@ -2,7 +2,6 @@
 
 namespace App\Console;
 
-use App\Console\Commands\Braintree\BraintreeCheck;
 use App\Console\Commands\Braintree\NewPayPalCheck;
 use App\Console\Commands\CompileMails;
 use App\Console\Commands\Pyramid\PyramidCheckCommand;
@@ -25,28 +24,23 @@ use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
 /**
  * Class Kernel.
+ * Console Kernel, where we declare commands and cron tasks.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.1
- * @copyright Mathrix Education SA
- * @package   App\Console
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.1
  */
 class Kernel extends ConsoleKernel
 {
-    /**
-     * The Artisan commands provided by your application.
-     *
-     * @var array
-     */
+    /** @var array The Artisan commands. */
     protected $commands = [
         NewPayPalCheck::class,
         SitemapAll::class,
         SitemapContent::class,
         CompileMails::class,
 
+        // Pyramid commands
         PyramidCommand::class,
-
         PyramidFixCommand::class,
         PyramidPreMigrateCommand::class,
         PyramidResetCommand::class,

@@ -76,14 +76,13 @@ class Log extends BaseModel
      * @param User|int|null $user the user as model, its id or njull for system log
      * @param array $data the optional data to associate with the log, such as the loggable type and id
      *
-     * @throws \Exception
-     *
      * @return bool
+     * @throws Http400BadRequestException
+     * @throws \Mathrix\Lumen\Exceptions\ValidationException
      */
     public static function log(string $event, $user = null, $data = [])
     {
-        return self::build($event, $user, $data)
-            ->save();
+        return self::build($event, $user, $data)->save();
     }
 
 
@@ -99,7 +98,7 @@ class Log extends BaseModel
      */
     public static function build(string $event, $user = null, $data = []): self
     {
-        if (!\in_array($event, self::EVENTS, true)) {
+        if (!in_array($event, self::EVENTS, true)) {
             throw new Http400BadRequestException(["event" => $event], "`$event` is not a valid event");
         }
 

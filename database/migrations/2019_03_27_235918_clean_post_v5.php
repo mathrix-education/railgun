@@ -18,6 +18,7 @@ class CleanPostV5 extends Migration
         Schema::dropIfExists("activity_module");
         Schema::dropIfExists("class_discipline");
         Schema::dropIfExists("courses");
+        Schema::dropIfExists("quotes");
 
         // Dropping path_id
         Schema::table("comments", function (Blueprint $table) {

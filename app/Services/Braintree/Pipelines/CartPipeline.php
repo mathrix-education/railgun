@@ -2,24 +2,22 @@
 
 namespace App\Services\Braintree\Pipelines;
 
-use App\Exceptions\Http400InvalidRequestException;
 use App\Models\Discount;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 
 /**
- * Class Cart.
+ * Class CartPipeline.
  * Used to generate \Braintree\Transaction::sale() request data.
  *
- * @see       \Braintree\Transaction::sale()
- * @see       https://developers.braintreepayments.com/reference/request/transaction/sale/php
+ * @see \Braintree\Transaction::sale()
+ * @link https://developers.braintreepayments.com/reference/request/transaction/sale/php
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.0
- * @copyright Mathrix Education SA
- * @package   App\Services\Braintree
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.1.0
  */
 class CartPipeline
 {
@@ -71,7 +69,7 @@ class CartPipeline
      *
      * @param int[] $productIds
      *
-     * @throws Http400InvalidRequestException
+     * @throws Http400BadRequestException
      *
      * @return CartPipeline
      */
@@ -80,17 +78,21 @@ class CartPipeline
         $productIds = array_unique($productIds); // Remove double ids
 
         foreach ($productIds as $productId) {
-            $product = Product::where("id", "=", $productId)
-                ->firstOrFail();
+            /** @var Product $product */
+            $product = Product::query()->findOrFail($productId);
 
             if ($product->price === null) {
-                throw new Http400InvalidRequestException("Product `id` {$this->customer->id} cannot be "
-                    . "purchased");
+                throw new Http400BadRequestException(
+                    ["product" => $product],
+                    "Product `id` {$this->customer->id} cannot be purchased"
+                );
             }
 
             if ($this->customer->hasPurchased($product)) {
-                throw new Http400InvalidRequestException("User `id` {$this->customer->id} has already "
-                    . "purchased product `id` {$product->id}");
+                throw new Http400BadRequestException(
+                    ["product" => $product],
+                    "User `id` {$this->customer->id} has already purchased product `id` {$product->id}"
+                );
             }
 
             $this->products->add($product);
@@ -121,7 +123,8 @@ class CartPipeline
     public function setDiscount(string $discountCode = null)
     {
         if ($discountCode !== null) {
-            $this->discount = Discount::where("code", "=", $discountCode)
+            $this->discount = Discount::query()
+                ->where("code", "=", $discountCode)
                 ->firstOrFail();
         }
 
@@ -135,9 +138,8 @@ class CartPipeline
      * @see \Braintree\Transaction::sale()
      * @see https://developers.braintreepayments.com/reference/request/transaction/sale/php
      *
-     * @throws Http400InvalidRequestException
-     *
      * @return array
+     * @throws Http400BadRequestException
      */
     public function getBraintreeSaleRequest()
     {
@@ -185,14 +187,13 @@ class CartPipeline
 
     /**
      * Validate all properties before engaging the Braintree request data.
-     *
-     * @throws Http400InvalidRequestException
+     * @throws Http400BadRequestException
      */
     private function validate()
     {
         // Check customer existence
         if ($this->customer === null) {
-            throw new Http400InvalidRequestException("Not customer set in the cart");
+            throw new Http400BadRequestException(null, "No customer set.");
         }
 
         // Check customer validity
@@ -201,13 +202,12 @@ class CartPipeline
         if ($this->discount !== null) {
             // Check for discount expiration
             if ($this->discount->isExpired()) {
-                throw new Http400InvalidRequestException("Discount with code `{$this->discount->code}` has expired");
+                throw new Http400BadRequestException(null, "Discount has expired");
             }
 
             // Check discount application
             if (!$this->discount->isApplicableBleOnAtLeastOneOf($this->products)) {
-                throw new Http400InvalidRequestException("Discount with code `{$this->discount->code}` is not"
-                    . " applicable on current cart");
+                throw new Http400BadRequestException(null, "Discount is not applicable on current cart");
             }
         }
     }

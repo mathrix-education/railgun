@@ -25,7 +25,7 @@ class StatsController extends BaseController
      * @param Request $request The Illuminate HTTP request.
      *
      * @return JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws \Mathrix\Lumen\Exceptions\ValidationException
      */
     public function activities(Request $request)
     {

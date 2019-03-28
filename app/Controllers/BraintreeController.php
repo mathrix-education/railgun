@@ -50,9 +50,8 @@ class BraintreeController extends BaseController
      *
      * @param Request $request The Illuminate HTTP request.
      *
-     * @throws \Illuminate\Validation\ValidationException
-     *
      * @return JsonResponse
+     * @throws \Mathrix\Lumen\Exceptions\ValidationException
      */
     public function webhook(Request $request): JsonResponse
     {

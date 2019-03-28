@@ -8,11 +8,9 @@ use Laravelium\Sitemap\Sitemap;
 /**
  * Trait SitemapUtils.
  *
- * @author    Mathieu Bour <mathieu@mathrix.fr>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.3.0
- * @copyright Mathrix Education SA
- * @package   App\Console\Commands\Sitemap
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.3.0
  */
 trait SitemapUtils
 {

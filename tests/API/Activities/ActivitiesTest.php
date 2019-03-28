@@ -51,4 +51,14 @@ class ActivitiesTest extends APITestCase
         $this->mockScope("redactor");
         $this->assertRestPatchSuccess();
     }
+
+
+    /**
+     * PATCH /activities/{activityId}
+     */
+    public function testDelete()
+    {
+        $this->mockScope("admin");
+        $this->assertRestDeleteSuccess();
+    }
 }

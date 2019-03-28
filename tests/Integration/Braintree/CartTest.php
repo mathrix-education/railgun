@@ -2,38 +2,36 @@
 
 namespace Tests\Integration\Braintree;
 
-use App\Exceptions\Http400InvalidRequestException;
 use App\Models\Discount;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Support\Facades\Notification;
+use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 
 /**
  * Class CartTest.
  *
- * @author    Mathieu Bour <mathieu@mathrix.fr>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.0
- * @copyright Mathrix Education SA
- * @package   Tests\Braintree
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.1.0
  */
 class CartTest extends BraintreeTestCase
 {
     /**
+     * POST /transactions/buy
      * Test buy with a discount code applicable on at least one product of the cart.
      *
-     * POST /transactions/buy
-     *
-     * @throws Http400InvalidRequestException
+     * @throws Http400BadRequestException
      */
     public function testBuy()
     {
         Notification::fake();
 
         /** @var Discount $discount */
-        $discount = Discount::whereHas("products", function (\Illuminate\Database\Eloquent\Builder $q) {
-            $q->whereNotNull("price");
-        })
+        $discount = Discount::query()
+            ->whereHas("products", function (\Illuminate\Database\Eloquent\Builder $q) {
+                $q->whereNotNull("price");
+            })
             ->where("counter", ">", 0)
             ->firstOrFail();
         $counterBefore = $discount->counter;
@@ -42,7 +40,7 @@ class CartTest extends BraintreeTestCase
             ->get()
             ->pluck("id");
         $user = $this->getBraintreeCustomer();
-        $this->setUser($user);
+        $this->setUser($user); // IM HERE
 
         $this->json("post", "/products/buy", [
             "cart" => $productIds,
@@ -50,7 +48,7 @@ class CartTest extends BraintreeTestCase
         ]);
 
         /** @var Discount $discount */
-        $discount = Discount::find($discount->id);
+        $discount->refresh();
         $this->assertResponseOk();
         $this->assertInDatabase("purchases", ["user_id" => $user->id, "product_id" => $productIds[0]]);
         $this->assertEquals($discount->counter, $counterBefore - 1);
@@ -74,7 +72,8 @@ class CartTest extends BraintreeTestCase
             ->firstOrFail();
         $this->setUser($support);
 
-        $productIds = Product::inRandomOrder()
+        $productIds = Product::query()
+            ->inRandomOrder()
             ->whereNotNull("price")
             ->limit(random_int(1, 5))
             ->get()

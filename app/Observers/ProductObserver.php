@@ -7,11 +7,9 @@ use App\Models\Product;
 /**
  * Class ProductObserver.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.3.0
- * @copyright Mathrix Education SA
- * @package   App\Observers
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.3.0
  */
 class ProductObserver extends BaseObserver
 {
@@ -22,7 +20,7 @@ class ProductObserver extends BaseObserver
      */
     public function saving($product)
     {
-        // Sluggify if needed
+        // Set the slug if needed
         if (empty($product->slug) ||
             ($product->isDirty("name") && !$product->isDirty("slug"))) {
             $product->slug = str_slug($product->name);
@@ -32,8 +30,7 @@ class ProductObserver extends BaseObserver
         if (isset($product->link["children"])) {
             $toSync = [];
             foreach ($product->link["children"] as $order => $childId) {
-                if (Product::whereId($childId)
-                    ->exists()) {
+                if (Product::query()->where("id", "=", $childId)->exists()) {
                     $toSync[$childId] = ["order" => $order];
                 }
             }
@@ -56,12 +53,9 @@ class ProductObserver extends BaseObserver
      */
     public function deleting($product)
     {
-        $product->discounts()
-            ->detach();
-        $product->parents()
-            ->detach();
-        $product->children()
-            ->detach();
+        $product->discounts()->detach();
+        $product->parents()->detach();
+        $product->children()->detach();
 
         return true;
     }

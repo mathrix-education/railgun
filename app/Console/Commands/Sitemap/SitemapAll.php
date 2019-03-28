@@ -8,11 +8,9 @@ use Laravelium\Sitemap\Sitemap;
 /**
  * Class SitemapAll.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.1
- * @copyright Mathrix Education SA
- * @package   App\Console\Commands\Sitemap
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.1
  */
 class SitemapAll extends Command
 {

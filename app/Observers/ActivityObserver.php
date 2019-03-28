@@ -2,9 +2,9 @@
 
 namespace App\Observers;
 
-use App\Exceptions\Http422ModelSaveException;
+use App\Exceptions\ForeignConstraintsException;
 use App\Models\Activity;
-use App\Models\Path;
+use Illuminate\Support\Str;
 
 /**
  * Class ActivityObserver.
@@ -20,12 +20,12 @@ class ActivityObserver extends BaseObserver
      *
      * @return bool
      */
-    public function saving($activity)
+    public function saving(Activity $activity)
     {
-        // Sluggify if needed
+        // Set the slug if needed
         if (empty($activity->slug) ||
             ($activity->isDirty("name") && !$activity->isDirty("slug"))) {
-            $activity->slug = str_slug($activity->name);
+            $activity->slug = Str::slug($activity->name);
         }
 
         return true;
@@ -33,14 +33,15 @@ class ActivityObserver extends BaseObserver
 
 
     /**
-     * Detach all modules and notions linked with the deleting notion.
-     *
      * @param Activity $activity
      *
      * @return bool
+     * @throws ForeignConstraintsException
      */
-    public function deleting($activity)
+    public function deleting(Activity $activity)
     {
+        $this->handleRelationDeletion($activity, "modules");
+
         return true;
     }
 }

@@ -2,22 +2,20 @@
 
 namespace App\Services\Braintree\Models;
 
-use App\Exceptions\Http404ModelNotFoundException;
 use ArrayAccess;
 use Braintree\Base;
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use JsonSerializable;
+use Mathrix\Lumen\Exceptions\Http\Http404NotFoundException;
 
 /**
  * Class BraintreeModel.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.0
- * @copyright Mathrix Education SA
- * @package   App\Services\Braintree\Models
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.1.0
  */
 abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 {
@@ -84,7 +82,7 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
     public static function findOrFail(string $id)
     {
         return static::findOr($id, function () {
-            throw new Http404ModelNotFoundException();
+            throw new Http404NotFoundException();
         });
     }
 
@@ -124,7 +122,7 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
      */
     public function __call($name, $arguments)
     {
-        return \call_user_func_array([$this->model, $name], $arguments);
+        return call_user_func_array([$this->model, $name], $arguments);
     }
 
 

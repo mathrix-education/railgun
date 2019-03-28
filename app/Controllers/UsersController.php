@@ -30,6 +30,7 @@ class UsersController extends BaseController
 {
     use SearchTrait;
 
+
     /**
      * POST /users
      * Create a new user.
@@ -97,7 +98,6 @@ class UsersController extends BaseController
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
-     * @throws \Illuminate\Validation\ValidationException
      * @throws \Mathrix\Lumen\Exceptions\ValidationException
      */
     public function patch(Request $request, int $id): JsonResponse
@@ -108,7 +108,7 @@ class UsersController extends BaseController
         $user = $request->user();
 
         // Check permission
-        $user->canOrFail("edit", $target);
+        $user->canOrFail("patch", $target);
 
         // Unlock fields for admin
         if ($user->tokenCan("admin")) {
@@ -172,8 +172,7 @@ class UsersController extends BaseController
      * @return JsonResponse
      * @throws Http400BadRequestException
      * @throws Http429TooManyRequestsException
-     * @throws \Illuminate\Validation\ValidationException
-     * @throws \Exception
+     * @throws \Mathrix\Lumen\Exceptions\ValidationException
      */
     public function points(Request $request)
     {
@@ -260,7 +259,6 @@ class UsersController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400BadRequestException
-     * @throws \Illuminate\Validation\ValidationException
      * @throws \Mathrix\Lumen\Exceptions\ValidationException
      */
     public function updatePaymentMethod(Request $request)

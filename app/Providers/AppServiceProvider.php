@@ -9,18 +9,25 @@ use App\Models\Notion;
 use App\Models\Post;
 use App\Models\User;
 use App\Notifications\CommentAnswerNotification;
+use App\Observers\BaseObserver;
+use App\Observers\NotificationObserver;
+use App\Policies\BasePolicy;
+use App\Policies\FilePolicy;
+use App\Policies\NotificationPolicy;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Mathrix\Lumen\Providers\ObserverServiceProvider;
+use Mathrix\Lumen\Providers\PolicyServiceProvider;
 
 /**
  * Class AppServiceProvider.
  * Register all application service providers.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.0
- * @copyright Mathrix Education SA
- * @package   App\Providers
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.1.0
  */
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,9 +39,6 @@ class AppServiceProvider extends ServiceProvider
         // App service providers
         $this->app->register(AuthServiceProvider::class);
         $this->app->register(EventServiceProvider::class);
-        $this->app->register(NewsletterServiceProvider::class);
-        $this->app->register(ObserverServiceProvider::class);
-        $this->app->register(PolicyServiceProvider::class);
         $this->app->register(BraintreeGatewayServiceProvider::class);
         $this->app->register(StripeServiceProvider::class);
 
@@ -47,6 +51,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(\Illuminate\Notifications\NotificationServiceProvider::class);
         $this->app->register(\Laravel\Passport\PassportServiceProvider::class);
         $this->app->register(\Laravelium\Sitemap\SitemapServiceProvider::class);
+
+        // Mathrix Zero Providers
+        $this->registerObservers();
+        $this->registerPolicies();
         $this->app->register(\Mathrix\Lumen\Providers\RegistrarServiceProvider::class);
 
         if (app()->environment("local")) {
@@ -66,5 +74,39 @@ class AppServiceProvider extends ServiceProvider
             // Notifications
             "comment_answer" => CommentAnswerNotification::class
         ]);
+    }
+
+
+    /**
+     * Register observers.
+     */
+    private function registerObservers(): void
+    {
+        ObserverServiceProvider::$IgnoredObservers = [
+            BaseObserver::class,
+            NotificationObserver::class
+        ];
+
+        $this->app->register(ObserverServiceProvider::class);
+
+        DatabaseNotification::observe(NotificationObserver::class);
+    }
+
+
+    /**
+     * Register policies.
+     */
+    private function registerPolicies(): void
+    {
+        PolicyServiceProvider::$IgnoredPolicies = [
+            BasePolicy::class,
+            NotificationPolicy::class,
+            FilePolicy::class,
+        ];
+
+        $this->app->register(PolicyServiceProvider::class);
+
+        Gate::policy(FilePolicy::class, FilePolicy::class);
+        Gate::policy(DatabaseNotification::class, NotificationPolicy::class);
     }
 }

@@ -21,7 +21,7 @@ class GradeObserver extends BaseObserver
      */
     public function saving($grade)
     {
-        // Sluggify if needed
+        // Set the slug if needed
         if (
             empty($grade->slug) ||
             ($grade->isDirty("name") && !$grade->isDirty("slug"))
@@ -45,5 +45,17 @@ class GradeObserver extends BaseObserver
         }
 
         return true;
+    }
+
+
+    /**
+     * @param Grade $grade
+     *
+     * @throws \App\Exceptions\ForeignConstraintsException
+     */
+    public function deleting(Grade $grade)
+    {
+        $this->handleRelationDeletion($grade, "disciplines");
+        $grade->disciplines()->detach();
     }
 }

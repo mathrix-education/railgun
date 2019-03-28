@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Utils\Traits\Assertions;
+namespace Tests\Utils\NotificationsAssertionsTrait;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Notification;
@@ -8,11 +8,9 @@ use Illuminate\Support\Facades\Notification;
 /**
  * Trait NotificationsAssertionsTrait.
  *
- * @author    Mathieu Bour <mathieu@mathrix.fr>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.0
- * @copyright Mathrix Education SA
- * @package   Tests\Utils\Traits\Assertions
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.1.0
  */
 trait NotificationsAssertionsTrait
 {

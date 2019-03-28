@@ -111,7 +111,7 @@ class AuthController extends BaseController
             ->firstOrFail();
 
         if (!empty($user->settings["facebook_id"])) {
-            throw new Http400BadRequestException([], "Cannot reset password of a facebook account");
+            throw new Http400BadRequestException(null, "Cannot reset password of a facebook account");
         }
         // Generate token
         $user->unguardAttributes(["token"]);
@@ -134,7 +134,7 @@ class AuthController extends BaseController
      * @param string $token The reset token.
      *
      * @return JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws \Mathrix\Lumen\Exceptions\ValidationException
      */
     public function reset(Request $request, string $token)
     {

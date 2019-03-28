@@ -4,23 +4,20 @@ namespace App\Console\Commands\Sitemap;
 
 use App\Models\Activity;
 use App\Models\Chapter;
-use App\Models\Grade;
 use App\Models\Country;
 use App\Models\Discipline;
+use App\Models\Grade;
 use App\Models\Module;
 use App\Models\Notion;
-use App\Utils\RouterFront;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 /**
  * Class SitemapContent.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.1
- * @copyright Mathrix Education SA
- * @package   App\Console\Commands\Sitemap
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.1
  */
 class SitemapContent extends Command
 {

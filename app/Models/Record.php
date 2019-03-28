@@ -68,7 +68,7 @@ class Record extends BaseModel
         if (!$this->exists) {
             return parent::save($options);
         } else {
-            throw new Http400BadRequestException([], "Records are immutable by definition.");
+            throw new Http400BadRequestException(null, "Records are immutable by definition.");
         }
     }
 

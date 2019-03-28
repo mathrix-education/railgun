@@ -4,32 +4,25 @@ namespace App\Observers;
 
 use App\Models\Comment;
 use App\Models\Module;
-use App\Models\Post;
-use App\Models\Product;
-use App\Models\Reference;
-use App\Models\Report;
 
 /**
  * Class ModuleObserver.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.3.0
- * @copyright Mathrix Education SA
- * @package   App\Observers
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.3.0
  */
 class ModuleObserver extends BaseObserver
 {
     /**
      * Detach all activities linked with the deleting module.
      *
-     * @param Module $module
-     *
-     * @throws \App\Exceptions\Http422ModelSaveException
+     * @param Module $module The Module which will be deleted.
      *
      * @return bool
+     * @throws \App\Exceptions\ForeignConstraintsException
      */
-    public function deleting($module)
+    public function deleting(Module $module)
     {
         Comment::withTrashed()
             ->where("module_id", "=", $module->id)
@@ -37,26 +30,11 @@ class ModuleObserver extends BaseObserver
             ->each(function (Comment $comment) {
                 $comment->forceDelete();
             });
-        Post::where("module_id", "=", $module->id)
-            ->get()
-            ->each(function (Post $post) {
-                $post->delete();
-            });
-        Product::where("module_id", "=", $module->id)
-            ->get()
-            ->each(function (Product $product) {
-                $product->delete();
-            });
-        Reference::where("module_id", "=", $module->id)
-            ->get()
-            ->each(function (Reference $reference) {
-                $reference->delete();
-            });
-        Report::where("module_id", "=", $module->id)
-            ->get()
-            ->each(function (Report $report) {
-                $report->delete();
-            });
+
+        $this->handleRelationDeletion($module, "posts");
+        $this->handleRelationDeletion($module, "products");
+        $this->handleRelationDeletion($module, "references");
+        $this->handleRelationDeletion($module, "reports");
 
         return true;
     }

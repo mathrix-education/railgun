@@ -264,7 +264,7 @@ class FilesController extends BaseController
 
         // Check if we are not trying to delete something from the trash
         if (Str::startsWith($path, self::TRASH_DIR)) {
-            throw new Http400BadRequestException([], self::TRASH_DIR . " is the trash directory.");
+            throw new Http400BadRequestException(null, self::TRASH_DIR . " is the trash directory.");
         }
 
         // Check if path exists
@@ -287,7 +287,7 @@ class FilesController extends BaseController
             $request->user()->canOrFail("forceDelete", FilePolicy::class);
 
             if (!$disk->delete($path)) {
-                throw new Http400BadRequestException([], "Unable to delete $path.");
+                throw new Http400BadRequestException(null, "Unable to delete $path.");
             } else {
                 return new JsonResponse([
                     "status" => "success",

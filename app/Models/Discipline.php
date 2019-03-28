@@ -41,17 +41,6 @@ class Discipline extends BaseModel
     |--------------------------------------------------------------------------
     */
     /**
-     * HasMany Chapter.
-     *
-     * @return HasMany
-     */
-    public function chapters(): HasMany
-    {
-        return $this->hasMany(Chapter::class);
-    }
-
-
-    /**
      * BelongsToMany Grade.
      *
      * @return BelongsToMany
@@ -59,6 +48,17 @@ class Discipline extends BaseModel
     public function grades(): BelongsToMany
     {
         return $this->belongsToMany(Grade::class);
+    }
+
+
+    /**
+     * HasMany Chapter.
+     *
+     * @return HasMany
+     */
+    public function chapters(): HasMany
+    {
+        return $this->hasMany(Chapter::class);
     }
 
 

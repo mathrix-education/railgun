@@ -4,9 +4,6 @@ namespace App\Services\Braintree\Pipelines;
 
 use App\Events\NewSubscriptionEvent;
 use App\Events\TransactionSuccessEvent;
-use App\Exceptions\Http400InvalidRequestException;
-use App\Exceptions\Http422ModelSaveException;
-use App\Exceptions\Http422ModelValidationException;
 use App\Exceptions\UserAlreadyPremiumException;
 use App\Models\User;
 use App\Services\Braintree\Exceptions\BraintreeErrorHandler;
@@ -73,11 +70,9 @@ class SubscriptionPipeline
      * @return JsonResponse
      * @throws BraintreeProcessorException
      * @throws Http400BadRequestException
-     * @throws Http400InvalidRequestException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
      * @throws UserAlreadyPremiumException
      * @throws ValidationException
+     * @throws \Mathrix\Lumen\Exceptions\ValidationException
      */
     public function run()
     {
@@ -117,7 +112,7 @@ class SubscriptionPipeline
         // Mock processor error
         if ($this->request->has("error_code")) {
             if (env("BRAINTREE_ENVIRONMENT") !== "sandbox") {
-                throw new Http400BadRequestException([], "error_code should not be used in non-sandbox environment!");
+                throw new Http400BadRequestException(null, "error_code should not be used in non-sandbox environment!");
             }
 
             SubscriptionUtils::fake();
@@ -146,9 +141,8 @@ class SubscriptionPipeline
 
 
     /**
-     * @throws Http400InvalidRequestException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
+     * @throws Http400BadRequestException
+     * @throws \Mathrix\Lumen\Exceptions\ValidationException
      */
     private function selectPaymentMethod()
     {

@@ -240,17 +240,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
 
     /**
-     * HasMany Activity.
-     *
-     * @return HasMany
-     */
-    public function meta(): HasMany
-    {
-        return $this->hasMany(Activity::class);
-    }
-
-
-    /**
      * HasMany Purchase.
      *
      * @return HasMany

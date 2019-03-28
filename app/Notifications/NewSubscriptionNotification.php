@@ -3,17 +3,14 @@
 namespace App\Notifications;
 
 use App\Models\User;
-use Illuminate\Notifications\Messages\SlackAttachment;
-use Illuminate\Notifications\Messages\SlackMessage;
+use Mathrix\Lumen\Notifications\BaseNotification;
 
 /**
  * Class NewSubscriptionNotification.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.0
- * @copyright Mathrix Education SA
- * @package   App\Notifications
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.1.0
  */
 class NewSubscriptionNotification extends BaseNotification
 {

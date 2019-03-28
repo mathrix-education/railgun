@@ -13,6 +13,7 @@ use Braintree\Transaction;
 use Braintree\TransactionSearch;
 use Illuminate\Support\Facades\Notification;
 use Laravel\Passport\Passport;
+use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use PHPUnit\Framework\Constraint\StringStartsWith;
 
 /**
@@ -40,7 +41,8 @@ class SubscriptionVisa2001ThenPayPal1000Test extends BraintreeTestCase
 
 
     /**
-     * @throws \App\Exceptions\Http400InvalidRequestException
+     * @return User
+     * @throws Http400BadRequestException
      */
     public function testPayWithVisa2001()
     {

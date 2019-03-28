@@ -3,31 +3,30 @@
 namespace App\Mails;
 
 use App\Models\User;
+use Braintree\Transaction;
+use Braintree\TransactionSearch;
 use Illuminate\Support\Facades\Cache;
 
 /**
  * Class TransactionRefundMail.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.3.0
- * @copyright Mathrix Education SA
- * @package   App\Mails
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.3.0
  */
 class TransactionRefundMail extends BaseMail
 {
     /** @var User $user */
     private $user;
-    /** @var \Braintree\Transaction $transaction */
+    /** @var Transaction $transaction */
     private $transaction;
     /** @var \Braintree\Transaction\LineItem[] $lineItems */
     private $lineItems;
-    /** @var \Braintree\Transaction $transaction */
+    /** @var Transaction $transaction */
     private $refund;
 
 
-    public function __construct(User $user, \Braintree\Transaction $transaction, array $lineItems,
-                                \Braintree\Transaction $refund)
+    public function __construct(User $user, Transaction $transaction, array $lineItems, Transaction $refund)
     {
         $this->user = $user;
         $this->transaction = $transaction;
@@ -47,14 +46,13 @@ class TransactionRefundMail extends BaseMail
     {
         $user = User::random();
         $refund = Cache::remember("mail-transaction-refund_refund", 5, function () {
-            return \Braintree\Transaction::search([
-                \Braintree\TransactionSearch::type()
-                    ->is("credit"),
+            return Transaction::search([
+                TransactionSearch::type()->is("credit")
             ])
                 ->firstItem();
         });
         $transaction = Cache::remember("mail-transaction-refund_refund", 5, function () use ($refund) {
-            return \Braintree\Transaction::find($refund->refundedTransactionId);
+            return Transaction::find($refund->refundedTransactionId);
         });
 
         return new self($user, $transaction, [], $refund);

@@ -75,7 +75,7 @@ class TransactionsController extends BaseController
         ];
         $transaction = \Braintree\Transaction::find($transactionId);
 
-        if (\in_array($transaction->status, $voidableStatuses, true)) {
+        if (in_array($transaction->status, $voidableStatuses, true)) {
             $result = \Braintree\Transaction::void($transactionId);
 
             if ($result->success) {
@@ -125,7 +125,7 @@ class TransactionsController extends BaseController
             "settlement_pending",
         ];
         $transaction = \Braintree\Transaction::find($transactionId);
-        if (\in_array($transaction->status, $voidableStatuses, true)) {
+        if (in_array($transaction->status, $voidableStatuses, true)) {
             return $this->void($request, $transactionId);
         }
 

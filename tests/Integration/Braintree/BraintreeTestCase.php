@@ -2,14 +2,13 @@
 
 namespace Tests\Integration\Braintree;
 
-use App\Exceptions\Http400InvalidRequestException;
 use App\Models\User;
-use Laravel\Lumen\Testing\TestCase;
+use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Tests\Traits\DebugTrait;
+use Mathrix\Lumen\Tests\Traits\PassportTrait;
 use Mathrix\Lumen\Tests\Traits\ResponseTrait;
-use Tests\Utils\Traits\Assertions\DatabaseAssertionsTrait;
-use Tests\Utils\Traits\Assertions\NotificationsAssertionsTrait;
-use Tests\Utils\Traits\PassportTrait;
+use Tests\BaseTestCase;
+use Tests\Utils\NotificationsAssertionsTrait\NotificationsAssertionsTrait;
 
 /**
  * Class BraintreeTestCase.
@@ -21,30 +20,16 @@ use Tests\Utils\Traits\PassportTrait;
  * @copyright Mathrix Education SA
  * @package   Tests\Braintree
  */
-class BraintreeTestCase extends TestCase
+class BraintreeTestCase extends BaseTestCase
 {
-    use DatabaseAssertionsTrait, NotificationsAssertionsTrait, PassportTrait, ResponseTrait, DebugTrait;
-
-
-    /**
-     * Creates the application.
-     *
-     * Needs to be implemented by subclasses.
-     *
-     * @return \Symfony\Component\HttpKernel\HttpKernelInterface
-     */
-    public function createApplication()
-    {
-        return require __DIR__ . "/../../../bootstrap/app.php";
-    }
+    use NotificationsAssertionsTrait, PassportTrait, ResponseTrait, DebugTrait;
 
 
     /**
      * Get a Braintree customer.
      *
-     * @throws Http400InvalidRequestException
-     *
      * @return User
+     * @throws Http400BadRequestException
      */
     public function getBraintreeCustomer(): User
     {

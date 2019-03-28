@@ -3,19 +3,14 @@
 namespace App\Observers;
 
 use App\Events\CommentAnswerEvent;
-use App\Exceptions\Http422ModelSaveException;
 use App\Models\Comment;
-use Exception;
 
 /**
  * Class CommentObserver.
  *
- * @author    Mathrix Back-End Team
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.3.0
- * @copyright Mathrix Education SA
- * @package   App\Observers
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.3.0
  */
 class CommentObserver extends BaseObserver
 {
@@ -34,7 +29,7 @@ class CommentObserver extends BaseObserver
      * @param Comment $comment
      *
      * @return bool
-     * @throws Exception
+     * @throws \Exception
      */
     public function deleting($comment)
     {

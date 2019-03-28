@@ -2,10 +2,9 @@
 
 namespace Tests\Integration\Braintree;
 
-use App\Exceptions\Http400InvalidRequestException;
-use App\Exceptions\Http422ModelSaveException;
-use App\Exceptions\Http422ModelValidationException;
 use Laravel\Passport\Passport;
+use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Exceptions\ValidationException;
 
 /**
  * Class StripeMigrationIntegrationTest.
@@ -24,8 +23,8 @@ class StripeMigrationIntegrationTest extends BraintreeTestCase
 
     /**
      * Create and initialize a valid Stripe customer.
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
+     * @return \App\Models\User
+     * @throws ValidationException
      */
     private function createStripeCustomer()
     {
@@ -57,9 +56,8 @@ class StripeMigrationIntegrationTest extends BraintreeTestCase
     /**
      * Test migration from Stripe to Braintree
      *
-     * @throws Http400InvalidRequestException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
+     * @throws Http400BadRequestException
+     * @throws ValidationException
      */
     public function testStripeMigration()
     {

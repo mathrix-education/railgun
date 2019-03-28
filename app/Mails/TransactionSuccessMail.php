@@ -5,16 +5,14 @@ namespace App\Mails;
 use App\Models\User;
 use Braintree\Transaction;
 use Braintree\Transaction\LineItem;
-use Cache;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * Class TransactionSuccessMail.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.0
- * @copyright Mathrix Education SA
- * @package   App\Mails
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.1.0
  */
 class TransactionSuccessMail extends BaseMail
 {
@@ -45,8 +43,7 @@ class TransactionSuccessMail extends BaseMail
      */
     public static function mock(string $transactionId = null): self
     {
-        $user = User::inRandomOrder()
-            ->first();
+        $user = User::random();
 
         if ($transactionId === null) {
             $transaction = Cache::remember("TransactionSuccessMail_transaction", 1, function () {
