@@ -4,27 +4,29 @@ use App\Models\Grade;
 use App\Models\Level;
 use App\Models\User;
 use Faker\Generator;
+use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Facades\Hash;
 
 /**
- * UserFactory
+ * UserFactory.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 5.0.0
  *
- * @var Illuminate\Database\Eloquent\Factory $factory
+ * @var Factory $factory
  */
 $factory->define(User::class, function (Generator $faker) {
     $names = $faker->boolean(30);
     $points = $faker->numberBetween(0, 100) * 10;
-    $createdAt = $faker->dateTimeBetween("-1 years");
+    [$createdAt, $updatedAt] = timestamps();
 
     $data = [
         "username" => !$names ? $faker->userName : null,
         "email" => $faker->email,
         "firstname" => $names ? $faker->firstName : null,
         "lastname" => $names ? $faker->lastName : null,
-        "password" => Hash::make("test123"),
+        "password" => Hash::make("123456"),
         "token" => $faker->uuid,
         "points" => $points,
         "level" => Level::getLevelByPoints($points),
@@ -34,7 +36,7 @@ $factory->define(User::class, function (Generator $faker) {
         ],
         "grade_id" => Grade::random()->id,
         "created_at" => $createdAt,
-        "updated_at" => $faker->boolean(90) ? $createdAt : $faker->dateTimeBetween($createdAt, "now"),
+        "updated_at" => $updatedAt,
     ];
 
     if ($faker->boolean(50)) {
@@ -44,63 +46,23 @@ $factory->define(User::class, function (Generator $faker) {
     return $data;
 });
 
-/*
- * UserRegisteredFactory
- *
- * @author Mathrix Team
- * @var Illuminate\Database\Eloquent\Factory $factory
- */
-$registeredFactory = function () use ($factory) {
-    return array_merge($factory->raw(User::class), ["type" => "registered"]);
-};
+$additionalFactories = ["registered", "redactor", "moderator", "admin", "support"];
+foreach ($additionalFactories as $type) {
+    $factory->defineAs(User::class, $type, function (Generator $faker) use ($factory, $type) {
+        $data = [
+            "username" => $faker->userName,
+            "firstname" => $faker->firstName,
+            "lastname" => $faker->lastName,
+            "type" => $type
+        ];
 
-$factory->defineAs(User::class, "registered", $registeredFactory);
+        if ($type != "registered") {
+            $data = array_merge($data, [
+                "grade_id" => null,
+                "stripe_id" => null
+            ]);
+        }
 
-/*
- * UserRedactorFactory
- *
- * @author Mathrix Team
- * @var Illuminate\Database\Eloquent\Factory $factory
- */
-$factory->defineAs(User::class, "redactor", function (Generator $faker) use ($factory) {
-    $data = [
-        "username" => $faker->userName,
-        "firstname" => $faker->firstName,
-        "lastname" => $faker->lastName,
-        "type" => "redactor",
-        "grade_id" => null,
-        "stripe_id" => null,
-    ];
-
-    return array_merge($factory->raw(User::class), $data);
-});
-
-/*
- * UserModeratorFactory
- *
- * @author Mathrix Team
- * @var Illuminate\Database\Eloquent\Factory $factory
- */
-$factory->defineAs(User::class, "moderator", function () use ($factory) {
-    return array_merge($factory->rawOf(User::class, "redactor"), ["type" => "moderator"]);
-});
-
-/*
- * UserAdminFactory
- *
- * @author Mathrix Team
- * @var Illuminate\Database\Eloquent\Factory $factory
- */
-$factory->defineAs(User::class, "admin", function () use ($factory) {
-    return array_merge($factory->rawOf(User::class, "redactor"), ["type" => "admin"]);
-});
-
-/*
- * UserSupportFactory
- *
- * @author Mathrix Team
- * @var Illuminate\Database\Eloquent\Factory $factory
- */
-$factory->defineAs(User::class, "support", function () use ($factory) {
-    return array_merge($factory->rawOf(User::class, "redactor"), ["type" => "support"]);
-});
+        return array_merge($factory->raw(User::class), $data);
+    });
+}

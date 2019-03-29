@@ -20,7 +20,6 @@ class APITestCase extends BaseTestCase
 {
     use DatabaseTransactions,
         DebugTrait,
-        PassportTrait,
         RESTTrait;
 
     /** @var BaseModel The test main model class */

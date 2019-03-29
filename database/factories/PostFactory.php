@@ -5,31 +5,28 @@ use App\Models\Module;
 use App\Models\Post;
 use App\Models\User;
 use Faker\Generator;
+use Illuminate\Database\Eloquent\Factory;
 
 /**
- * PostFactory
+ * NotionFactory.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 5.0.0
  *
- * @var Illuminate\Database\Eloquent\Factory $factory
+ * @var Factory $factory
  */
 $factory->define(Post::class, function (Generator $faker) {
     $title = mb_substr($faker->sentence($faker->numberBetween(3, 5)), 0, -1);
-    $created = $faker->dateTimeBetween("-30 days", "now");
+    [$createdAt, $updatedAt] = timestamps();
 
     return [
         "title" => $title,
         "slug" => str_slug($title),
-        "module_id" => Module::where("type", "course")
-            ->inRandomOrder()
-            ->first()->id,
-        "category_id" => Category::inRandomOrder()
-            ->first()->id,
-        "user_id" => User::where("type", "admin")
-            ->inRandomOrder()
-            ->first()->id,
-        "created_at" => $created,
-        "updated_at" => $faker->boolean(10) ? $faker->dateTimeBetween($created, "now") : $created,
+        "module_id" => Module::random(["type", "=", "course"])->id,
+        "category_id" => Category::random()->id,
+        "user_id" => User::random(["type", "=", "admin"])->id,
+        "created_at" => $createdAt,
+        "updated_at" => $updatedAt,
     ];
 });

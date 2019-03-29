@@ -3,32 +3,35 @@
 use App\Models\Comment;
 use App\Models\User;
 use Faker\Factory;
+use Illuminate\Support\Collection;
+use Mathrix\Lumen\Bases\BaseTableSeeder;
 
 /**
  * Class NotificationsTableSeeder.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.2.0
- * @copyright Mathrix Education SA
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.2.0
  */
 class NotificationsTableSeeder extends BaseTableSeeder
 {
     /** @var Faker\Generator */
     private $faker;
-    private $counter = 0;
+    /** @var Collection */
     private $notifications;
 
 
     public function run()
     {
         $this->faker = Factory::create();
-
-        $this->output->writeln("<comment>Generating:</comment> notifications");
-        $parents = Comment::has("children")
+        $this->notifications = new Collection();
+        $parents = Comment::query()
+            ->has("children")
             ->orderBy("created_at")
             ->get();
 
+        $this->output->writeln("<comment>Generating:</comment> notifications");
+        $this->output->progressStart($parents->count());
         /** @var Comment $parent */
         foreach ($parents as $parent) {
             /** @var Comment $child */
@@ -52,13 +55,14 @@ class NotificationsTableSeeder extends BaseTableSeeder
                     $this->generateNotification($comment->user, $childComment);
                 }
             }
+            $this->output->progressAdvance();
         }
+        $this->output->progressFinish();
+        $this->output->writeln("<info>Generated:</info> {$this->notifications->count()} notifications");
 
-        $this->output->writeln("");
-        $this->output->writeln("<info>Generated:</info> {$this->counter} notifications");
-
+        // Seed generated array
         $this->output->writeln("<comment>Seeding:</comment> notifications");
-        $this->seedFromArray($this->notifications, "notifications");
+        $this->seedFromArray($this->notifications->toArray(), "notifications");
         $this->output->writeln("<info>Seeded:</info> notifications");
     }
 
@@ -75,9 +79,7 @@ class NotificationsTableSeeder extends BaseTableSeeder
 
         // Unset unwanted relations
         unset($comment->parent);
-
         $data = $comment->toArray();
-        $data["path"] = $comment->path;
 
         $notificationsData = [
             "id" => $this->faker->uuid,
@@ -86,16 +88,11 @@ class NotificationsTableSeeder extends BaseTableSeeder
             "notifiable_id" => $target->id,
             "data" => json_encode($data),
             "read_at" => $this->faker->boolean(30) ?
-                $this->faker->dateTimeBetween($comment->created_at, 'now') : null,
+                $this->faker->dateTimeBetween($comment->created_at) : null,
             "created_at" => $comment->created_at,
             "updated_at" => $comment->created_at
         ];
 
-        $this->notifications[] = $notificationsData;
-
-        $this->counter++;
-        if ($this->counter % 100 === 0) {
-            $this->output->write(".");
-        }
+        $this->notifications->push($notificationsData);
     }
 }

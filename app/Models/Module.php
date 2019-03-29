@@ -41,8 +41,23 @@ class Module extends BaseModel
 {
     public const TYPES = ["id", "course", "test", "mcq", "mcq-table", "match", "fill", "flashcard"];
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["premium", "type", "content", "questions", "choices", "solutions", "corrections", "options",
-        "visible"];
+    protected $fillable = [
+        "premium",
+        "type",
+        "content",
+        "questions",
+        "choices",
+        "solutions",
+        "corrections",
+        "options",
+        "visible",
+        "seo_index",
+        "seo_title",
+        "seo_keywords",
+        "seo_description",
+        "order",
+        "activity_id"
+    ];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
         "premium" => "boolean",
@@ -52,6 +67,7 @@ class Module extends BaseModel
         "solutions" => "array",
         "corrections" => "array",
         "options" => "array",
+        "seo_index" => "boolean"
     ];
     /** @var array The validation rules */
     protected $rules = [

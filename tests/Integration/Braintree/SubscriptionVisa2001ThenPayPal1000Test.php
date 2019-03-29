@@ -11,6 +11,7 @@ use Braintree\PaymentMethod;
 use Braintree\PayPalAccount;
 use Braintree\Transaction;
 use Braintree\TransactionSearch;
+use Exception;
 use Illuminate\Support\Facades\Notification;
 use Laravel\Passport\Passport;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
@@ -48,7 +49,6 @@ class SubscriptionVisa2001ThenPayPal1000Test extends BraintreeTestCase
     {
         // Configuration
         $processorCode = 2000;
-        $processorText = "Insufficient Funds";
         $processorType = "soft_declined";
 
         // Setup mocks
@@ -107,7 +107,7 @@ class SubscriptionVisa2001ThenPayPal1000Test extends BraintreeTestCase
      *
      * @param User $user The user from the previous test.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function testPayWithPayPal1000(User $user)
     {

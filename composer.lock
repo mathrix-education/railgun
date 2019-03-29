@@ -204,16 +204,16 @@
         },
         {
             "name": "braintree/braintree_php",
-            "version": "3.39.0",
+            "version": "3.40.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/braintree/braintree_php.git",
-                "reference": "19c6f50fa9fee1388ea5e7f556457243dc35a145"
+                "reference": "840fc6ebf8d96756fed475cce94565fef178187d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/braintree/braintree_php/zipball/19c6f50fa9fee1388ea5e7f556457243dc35a145",
-                "reference": "19c6f50fa9fee1388ea5e7f556457243dc35a145",
+                "url": "https://api.github.com/repos/braintree/braintree_php/zipball/840fc6ebf8d96756fed475cce94565fef178187d",
+                "reference": "840fc6ebf8d96756fed475cce94565fef178187d",
                 "shasum": ""
             },
             "require": {
@@ -247,7 +247,7 @@
                 }
             ],
             "description": "Braintree PHP Client Library",
-            "time": "2019-01-24T20:25:28+00:00"
+            "time": "2019-03-28T23:16:53+00:00"
         },
         {
             "name": "defuse/php-encryption",
@@ -2877,7 +2877,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:mathrix-education/lumen-zero.git",
-                "reference": "3ef4e53cd7ecad5f0f7d5b00d940df64649ab312"
+                "reference": "9eed5cc313d057e4d165de00b2682fb0b954f84e"
             },
             "require": {
                 "dusterio/lumen-passport": "^0.2.9",
@@ -2909,7 +2909,7 @@
                 }
             ],
             "description": "The main library for Mathrix Lumen REST APIs.",
-            "time": "2019-03-28T18:42:09+00:00"
+            "time": "2019-03-29T04:38:26+00:00"
         },
         {
             "name": "monolog/monolog",

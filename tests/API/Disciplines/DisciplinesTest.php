@@ -16,10 +16,6 @@ class DisciplinesTest extends APITestCase
 {
     public function testByGrade()
     {
-        $grade = Grade::random();
-
-        $this->json("get", "/disciplines/by-grade/{$grade->id}");
-
-        $this->debug();
+        $this->assertRestBySuccess(Grade::class);
     }
 }

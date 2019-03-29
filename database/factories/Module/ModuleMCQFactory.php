@@ -2,14 +2,18 @@
 
 use App\Models\Module;
 use Faker\Generator;
+use Illuminate\Database\Eloquent\Factory;
 
-/*
- * ModuleMCQFactory
+/**
+ * ModuleMCQFactory.
  *
- * @author Mathrix Team
- * @var Illuminate\Database\Eloquent\Factory $factory
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 5.0.0
+ *
+ * @var Factory $factory
  */
-$factory->defineAs(Module::class, 'mcq', function (Generator $faker) use ($factory) {
+$factory->defineAs(Module::class, "mcq", function (Generator $faker) use ($factory) {
     $questionCount = $faker->numberBetween(1, 5);
     $questions = [];
     $choices = [];
@@ -17,7 +21,7 @@ $factory->defineAs(Module::class, 'mcq', function (Generator $faker) use ($facto
     $corrections = [];
 
     for ($q = 0; $q < $questionCount; ++$q) {
-        $questions[] = str_replace('.', '?', $faker->sentence());
+        $questions[] = str_replace(".", "?", $faker->sentence());
 
         $choiceCount = $faker->numberBetween(2, 4);
         $questionChoices = $faker->words($choiceCount);
@@ -28,11 +32,11 @@ $factory->defineAs(Module::class, 'mcq', function (Generator $faker) use ($facto
     }
 
     $data = [
-        'type' => 'mcq',
-        'questions' => $questions,
-        'choices' => $choices,
-        'solutions' => $solutions,
-        'corrections' => $corrections,
+        "type" => "mcq",
+        "questions" => $questions,
+        "choices" => $choices,
+        "solutions" => $solutions,
+        "corrections" => $corrections,
     ];
 
     return array_merge($factory->raw(Module::class), $data);

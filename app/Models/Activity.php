@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\Loggable;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -20,13 +21,13 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @property int $id
  * @property string $name
  * @property string $slug
- * @property string|null $seo_title
- * @property string|null $seo_description
- * @property string|null $seo_keywords
  * @property string $type
  * @property bool $visible
  * @property bool $premium
  * @property bool $reviewed
+ * @property int $notion_id
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  * ---
  * @property bool $completed
  * @property bool $favorite
@@ -57,7 +58,8 @@ class Activity extends BaseModel
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
         "visible" => "boolean",
-        "options" => "array",
+        "premium" => "boolean",
+        "reviewed" => "boolean"
     ];
     /** @var array The validation rules */
     protected $rules = [
@@ -65,6 +67,7 @@ class Activity extends BaseModel
         "slug" => "required|max:255",
         "visible" => "boolean",
         "premium" => "boolean",
+        "reviewed" => "boolean"
     ];
     /** @var array Appends attributes */
     protected $appends = ["mark"];

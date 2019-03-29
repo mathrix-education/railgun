@@ -19,6 +19,7 @@ use App\Console\Commands\Pyramid\PyramidResetCommand;
 use App\Console\Commands\Pyramid\PyramidSEOCommand;
 use App\Console\Commands\Sitemap\SitemapAll;
 use App\Console\Commands\Sitemap\SitemapContent;
+use App\Console\Commands\TestRouter;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
@@ -52,14 +53,16 @@ class Kernel extends ConsoleKernel
         PyramidMarksModuleCommand::class,
         PyramidMarksActivitiesCommand::class,
         PyramidPostMigrate::class,
-        PyramidCheckCommand::class
+        PyramidCheckCommand::class,
+
+        TestRouter::class
     ];
 
 
     /**
      * Define the application's command schedule.
      *
-     * @param \Illuminate\Console\Scheduling\Schedule $schedule
+     * @param Schedule $schedule
      */
     protected function schedule(Schedule $schedule)
     {

@@ -2,21 +2,25 @@
 
 use App\Models\Module;
 use Faker\Generator;
+use Illuminate\Database\Eloquent\Factory;
 
-/*
- * ModuleCourseFactory
+/**
+ * ModuleCourseFactory.
  *
- * @author Mathrix Team
- * @var Illuminate\Database\Eloquent\Factory $factory
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 5.0.0
+ *
+ * @var Factory $factory
  */
-$factory->defineAs(Module::class, 'course', function (Generator $faker) use ($factory) {
+$factory->defineAs(Module::class, "course", function (Generator $faker) use ($factory) {
     $content = [];
     $hasVideo = $faker->boolean(80);
 
     if ($hasVideo) {
         $videoCount = $faker->numberBetween(1, 3);
         for ($i = 0; $i < $videoCount; ++$i) {
-            $content[] = '[video]FNUTWw17rkM[/video]';
+            $content[] = "[video]FNUTWw17rkM[/video]";
             $content = array_merge($content, $faker->paragraphs($faker->numberBetween(1, 3)));
         }
     } else {
@@ -24,8 +28,8 @@ $factory->defineAs(Module::class, 'course', function (Generator $faker) use ($fa
     }
 
     $data = [
-        'type' => 'course',
-        'content' => implode("\n\n", $content),
+        "type" => "course",
+        "content" => implode("\n\n", $content),
     ];
 
     return array_merge($factory->raw(Module::class), $data);

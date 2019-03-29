@@ -2,6 +2,11 @@
 
 namespace Tests\API;
 
+use Mathrix\Lumen\Tests\Standard\StandardGetTest;
+use Mathrix\Lumen\Tests\Standard\StandardIndexTest;
+use Mathrix\Lumen\Tests\Standard\StandardPatchTest;
+use Mathrix\Lumen\Tests\Standard\StandardPostTest;
+
 /**
  * Class ModulesTest.
  *
@@ -11,30 +16,5 @@ namespace Tests\API;
  */
 class ModulesTest extends APITestCase
 {
-    public function testIndex()
-    {
-        $this->mockScope("redactor");
-        $this->assertRestIndexSuccess();
-    }
-
-
-    public function testGet()
-    {
-        $this->mockScope("redactor");
-        $this->assertRestGetSuccess();
-    }
-
-
-    public function testPost()
-    {
-        $this->mockScope("moderator");
-        $this->assertRestGetSuccess();
-    }
-
-
-    public function testPatch()
-    {
-        $this->mockScope("redactor");
-        $this->assertRestPatchSuccess();
-    }
+    use StandardIndexTest, StandardGetTest, StandardPostTest, StandardPatchTest;
 }

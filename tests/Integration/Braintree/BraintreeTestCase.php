@@ -14,11 +14,9 @@ use Tests\Utils\NotificationsAssertionsTrait\NotificationsAssertionsTrait;
  * Class BraintreeTestCase.
  * Base class for Braintree tests.
  *
- * @author    Mathieu Bour <mathieu@mathrix.fr>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.0
- * @copyright Mathrix Education SA
- * @package   Tests\Braintree
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.1.0
  */
 class BraintreeTestCase extends BaseTestCase
 {

@@ -2,18 +2,19 @@
 
 namespace Tests\Integration\Braintree;
 
+use App\Models\User;
+use Braintree\Subscription;
 use Laravel\Passport\Passport;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Exceptions\ValidationException;
+use Stripe\Customer;
 
 /**
  * Class StripeMigrationIntegrationTest.
  *
- * @author    Mathieu Bour <mathieu@mathrix.fr>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.3.0
- * @copyright Mathrix Education SA
- * @package   Tests\Braintree
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.3.0
  */
 class StripeMigrationIntegrationTest extends BraintreeTestCase
 {
@@ -23,15 +24,15 @@ class StripeMigrationIntegrationTest extends BraintreeTestCase
 
     /**
      * Create and initialize a valid Stripe customer.
-     * @return \App\Models\User
+     * @return User
      * @throws ValidationException
      */
     private function createStripeCustomer()
     {
         $user = $this->getPristineCustomer();
 
-        /** @var \Stripe\Customer $stripeCustomer */
-        $stripeCustomer = \Stripe\Customer::create([
+        /** @var Customer $stripeCustomer */
+        $stripeCustomer = Customer::create([
             "email" => $user->email,
             "source" => "tok_visa"
         ]);
@@ -82,7 +83,7 @@ class StripeMigrationIntegrationTest extends BraintreeTestCase
         $braintreeSubscriptions = $user->getBraintreeSubscriptions();
         $this->assertNotEmpty($braintreeSubscriptions);
 
-        /** @var \Braintree\Subscription $newBraintreeSubscription */
+        /** @var Subscription $newBraintreeSubscription */
         $newBraintreeSubscription = $braintreeSubscriptions->first();
         $this->assertEquals($newBraintreeSubscription->planId, "v4_monthly");
     }

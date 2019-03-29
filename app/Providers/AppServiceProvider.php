@@ -14,12 +14,22 @@ use App\Observers\NotificationObserver;
 use App\Policies\BasePolicy;
 use App\Policies\FilePolicy;
 use App\Policies\NotificationPolicy;
+use Backup\BackupServiceProvider;
+use Barryvdh\Cors\ServiceProvider as CorsServiceProvider;
+use Dusterio\LumenPassport\PassportServiceProvider as LumenPassportServiceProvider;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Filesystem\FilesystemServiceProvider;
+use Illuminate\Mail\MailServiceProvider;
 use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\NotificationServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Passport\PassportServiceProvider;
+use Laravelium\Sitemap\SitemapServiceProvider;
 use Mathrix\Lumen\Providers\ObserverServiceProvider;
 use Mathrix\Lumen\Providers\PolicyServiceProvider;
+use Mathrix\Lumen\Providers\RegistrarServiceProvider;
+use Vluzrmos\Tinker\TinkerServiceProvider;
 
 /**
  * Class AppServiceProvider.
@@ -43,22 +53,22 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(StripeServiceProvider::class);
 
         // Vendor service providers
-        $this->app->register(\Backup\BackupServiceProvider::class);
-        $this->app->register(\Barryvdh\Cors\ServiceProvider::class);
-        $this->app->register(\Dusterio\LumenPassport\PassportServiceProvider::class);
-        $this->app->register(\Illuminate\Filesystem\FilesystemServiceProvider::class);
-        $this->app->register(\Illuminate\Mail\MailServiceProvider::class);
-        $this->app->register(\Illuminate\Notifications\NotificationServiceProvider::class);
-        $this->app->register(\Laravel\Passport\PassportServiceProvider::class);
-        $this->app->register(\Laravelium\Sitemap\SitemapServiceProvider::class);
+        $this->app->register(BackupServiceProvider::class);
+        $this->app->register(CorsServiceProvider::class);
+        $this->app->register(FilesystemServiceProvider::class);
+        $this->app->register(MailServiceProvider::class);
+        $this->app->register(NotificationServiceProvider::class);
+        $this->app->register(PassportServiceProvider::class);
+        $this->app->register(LumenPassportServiceProvider::class);
+        $this->app->register(SitemapServiceProvider::class);
 
         // Mathrix Zero Providers
         $this->registerObservers();
         $this->registerPolicies();
-        $this->app->register(\Mathrix\Lumen\Providers\RegistrarServiceProvider::class);
+        $this->app->register(RegistrarServiceProvider::class);
 
         if (app()->environment("local")) {
-            $this->app->register(\Vluzrmos\Tinker\TinkerServiceProvider::class);
+            $this->app->register(TinkerServiceProvider::class);
         }
 
         // MorphMap

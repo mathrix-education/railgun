@@ -63,6 +63,11 @@ class CleanPostV5 extends Migration
             $table->dropColumn(["seo_title", "seo_description", "seo_keywords"]);
         });
 
+        // Drop chapters.activity_count
+        Schema::table("chapters", function (Blueprint $table) {
+            $table->dropColumn(["activity_count"]);
+        });
+
         Schema::dropIfExists("scores");
     }
 

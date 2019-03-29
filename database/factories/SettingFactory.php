@@ -2,14 +2,16 @@
 
 use App\Models\Setting;
 use Faker\Generator;
+use Illuminate\Database\Eloquent\Factory;
 
 /**
- * SettingFactory
+ * SettingFactory.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 5.0.0
  *
- * @var Illuminate\Database\Eloquent\Factory $factory
+ * @var Factory $factory
  */
 $factory->define(Setting::class, function (Generator $faker) {
     return [

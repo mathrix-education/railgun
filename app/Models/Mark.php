@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Mathrix\Lumen\Bases\BaseModel;
 
 /**
@@ -27,8 +29,15 @@ use Mathrix\Lumen\Bases\BaseModel;
  */
 class Mark extends BaseModel
 {
-    public $timestamps = true;
-    protected $fillable = ["status", "user_id", "markable", "markable_id"];
+    public const STATUSES = ["view", "to_revise", "completed"];
+
+    protected $fillable = [
+        "status",
+        "user_id",
+        "markable_type",
+        "markable_id"
+    ];
+
 
     /**
      * Retrieve all models linked with a given user.
@@ -36,7 +45,7 @@ class Mark extends BaseModel
      * @param Activity|Module $model The markable model
      * @param User|int $user The user
      *
-     * @return Mark[]|\Illuminate\Database\Eloquent\Collection
+     * @return Mark[]|Collection
      */
     public static function retrieveAll($model, $user)
     {
@@ -44,7 +53,7 @@ class Mark extends BaseModel
         $userId = is_int($user) ? $user : $user->id;
 
         $conditions = [
-            "markable_type" => $modelClass,
+            "markable_type" => array_search($modelClass, Relation::$morphMap),
             "markable_id" => $model->id,
             "user_id" => $userId
         ];
@@ -57,8 +66,8 @@ class Mark extends BaseModel
         /** @var Mark $path */
         $marks = self::query()->where($wheres)->get();
 
-        if ($marks->count() === 0) {
-            $marks = new \Illuminate\Database\Eloquent\Collection(new Mark($conditions));
+        if ($marks->isEmpty()) {
+            $marks = new Collection([new Mark($conditions)]);
         }
 
         return $marks;
@@ -100,5 +109,4 @@ class Mark extends BaseModel
     {
         return $this->morphTo();
     }
-
 }

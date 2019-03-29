@@ -4,6 +4,7 @@ namespace Tests\Integration\Braintree;
 
 use App\Notifications\TransactionSuccessNotification;
 use Braintree\Customer;
+use Braintree\Exception\NotFound;
 use Braintree\Subscription;
 use Illuminate\Support\Facades\Notification;
 use Laravel\Passport\Passport;
@@ -26,7 +27,7 @@ use Laravel\Passport\Passport;
 class SubscriptionPayPal1000Test extends BraintreeTestCase
 {
     /**
-     * @throws \Braintree\Exception\NotFound
+     * @throws NotFound
      */
     public function testPayWithPayPal1000(): void
     {

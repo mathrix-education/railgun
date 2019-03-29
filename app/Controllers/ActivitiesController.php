@@ -3,14 +3,13 @@
 namespace App\Controllers;
 
 use App\Models\Activity;
-use App\Models\Discipline;
 use App\Models\Mark;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Mathrix\Lumen\Bases\BaseController;
+use Mathrix\Lumen\Exceptions\ValidationException;
 
 /**
  * Class ActivitiesController.
@@ -29,7 +28,7 @@ class ActivitiesController extends BaseController
      *
      * @return JsonResponse
      */
-    public function to_revise(Request $request): JsonResponse
+    public function toRevise(Request $request): JsonResponse
     {
         /** @var User $user */
         $user = $request->user();
@@ -57,37 +56,26 @@ class ActivitiesController extends BaseController
     {
         /** @var User $user */
         $user = $request->user();
-        $disciplinesIds = Discipline::all(["id"])
-            ->pluck("id")
-            ->toArray();
 
-        /** @var Builder|null */
-        $query = null;
+        $marksIds = DB::table("marks")
+            ->selectRaw("MAX(marks.id) as id, disciplines.id as discipline_id")
+            ->join("activities", "activities.id", "=", "marks.markable_id")
+            ->join("notions", "notions.id", "=", "activities.notion_id")
+            ->join("chapters", "chapters.id", "=", "notions.chapter_id")
+            ->join("disciplines", "disciplines.id", "=", "chapters.discipline_id")
+            ->where("marks.status", "=", "view")
+            ->where("marks.user_id", "=", $user->id)
+            ->where("marks.markable_type", "=", "activity")
+            ->groupBy("discipline_id")
+            ->get()
+            ->pluck("id");
 
-        foreach ($disciplinesIds as $disciplineId) {
-            $subQuery = $user->marks()
-                ->with(["markable" => function (MorphTo $q) {
-                    $q->limit(1);
-                }])
-                ->where([
-                    ["status", "=", "view"],
-                    ["markable_type", "=", "activity"],
-                    ["markable_id", "=", $disciplineId]
-                ])
-                ->orderByDesc("updated_at")
-                ->limit(1);
+        $marks = Mark::query()
+            ->with(["markable"])
+            ->whereIn("id", $marksIds)
+            ->get();
 
-            if ($query === null) {
-                $query = $subQuery;
-            } else {
-                /* @var Builder $query */
-                $query->union($subQuery);
-            }
-        }
-
-        $paths = $query->get();
-
-        return new JsonResponse($paths);
+        return new JsonResponse($marks);
     }
 
 
@@ -99,7 +87,7 @@ class ActivitiesController extends BaseController
      * @param int $id The activity id.
      *
      * @return JsonResponse
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
+     * @throws ValidationException
      */
     public function mark(Request $request, int $id): JsonResponse
     {
@@ -107,7 +95,7 @@ class ActivitiesController extends BaseController
         $user = $request->user();
         /** @var Activity $activity */
         $activity = Activity::query()->findOrFail($id);
-        $status = $request->input("status");
+        $status = $request->json("status");
 
         $mark = Mark::retrieve($activity, $user);
         $mark->status = $status;

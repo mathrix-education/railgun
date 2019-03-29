@@ -3,19 +3,21 @@
 use App\Models\Module;
 use App\Models\Reference;
 use Faker\Generator;
+use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Str;
 
 /**
- * ReferenceFactory
+ * ReferenceFactory.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 5.0.0
  *
- * @var Illuminate\Database\Eloquent\Factory $factory
+ * @var Factory $factory
  */
 $factory->define(Reference::class, function (Generator $faker) {
     return [
-        "key" => Str::slug($faker->firstName . " " . $faker->lastName),
+        "key" => Str::slug(implode("-", $faker->words($faker->numberBetween(1, 3)))),
         "text" => $faker->text(),
         "module_id" => Module::random()->id
     ];

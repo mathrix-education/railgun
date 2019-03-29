@@ -1,14 +1,15 @@
 <?php
 
 use App\Models\Product;
+use Faker\Factory;
+use Mathrix\Lumen\Bases\BaseTableSeeder;
 
 /**
  * Class ProductTableSeeder.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.0
- * @copyright Mathrix Education SA
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.1.0
  */
 class ProductTableSeeder extends BaseTableSeeder
 {
@@ -16,13 +17,16 @@ class ProductTableSeeder extends BaseTableSeeder
     {
         $this->seedFromFactory(Product::class, 300);
 
-        $faker = \Faker\Factory::create();
+        $faker = Factory::create();
 
-        $products1 = Product::where("id", "<", 50)
+        $products1 = Product::query()
+            ->where("id", "<", 50)
             ->get();
-        $products2 = Product::where([["id", ">", 51], ["id", "<", 150]])
+        $products2 = Product::query()
+            ->where([["id", ">", 51], ["id", "<", 150]])
             ->get();
-        $products3 = Product::where("id", ">", 151)
+        $products3 = Product::query()
+            ->where("id", ">", 151)
             ->get();
 
         $this->output->writeln("<comment>Linking:</comment> products <=> products");
