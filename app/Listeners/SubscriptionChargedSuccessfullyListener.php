@@ -6,6 +6,7 @@ use App\Events\SubscriptionChargedSuccessfullyEvent;
 use App\Models\User;
 use App\Services\Braintree\Models\Plan;
 use GuzzleHttp\Client;
+use Mathrix\Lumen\Bases\BaseListener;
 
 /**
  * Class SubscriptionChargedSuccessfullyListener.

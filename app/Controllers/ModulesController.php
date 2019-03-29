@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mathrix\Lumen\Bases\BaseController;
+use Mathrix\Lumen\Exceptions\ValidationException;
 
 /**
  * Class ModulesController.
@@ -26,7 +27,7 @@ class ModulesController extends BaseController
      * @param int $moduleId
      *
      * @return JsonResponse
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
+     * @throws ValidationException
      */
     public function mark(Request $request, int $moduleId): JsonResponse
     {

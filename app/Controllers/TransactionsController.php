@@ -5,6 +5,9 @@ namespace App\Controllers;
 use App\Events\TransactionRefundSuccessEvent;
 use App\Models\User;
 use App\Services\Braintree\Utils\Formatter;
+use Braintree\Subscription;
+use Braintree\Transaction;
+use Braintree\TransactionSearch;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -36,11 +39,11 @@ class TransactionsController extends BaseController
     {
         $user = $request->user();
 
-        if (!$user->isSupport()) {
+        if (!$user->tokenCan("support")) {
             throw new Http401UnauthorizedException();
         }
 
-        $transaction = \Braintree\Transaction::find($transactionId);
+        $transaction = Transaction::find($transactionId);
 
         return new JsonResponse(
             Formatter::cast($transaction->jsonSerialize())
@@ -63,7 +66,7 @@ class TransactionsController extends BaseController
     {
         $user = $request->user();
 
-        if (!$user->isSupport()) {
+        if (!$user->tokenCan("support")) {
             throw new Http401UnauthorizedException();
         }
 
@@ -73,10 +76,10 @@ class TransactionsController extends BaseController
             "submitted_for_settlement",
             "settlement_pending",
         ];
-        $transaction = \Braintree\Transaction::find($transactionId);
+        $transaction = Transaction::find($transactionId);
 
         if (in_array($transaction->status, $voidableStatuses, true)) {
-            $result = \Braintree\Transaction::void($transactionId);
+            $result = Transaction::void($transactionId);
 
             if ($result->success) {
                 event(new TransactionRefundSuccessEvent($result->transaction));
@@ -113,7 +116,7 @@ class TransactionsController extends BaseController
     {
         $user = $request->user();
 
-        if (!$user->isSupport()) {
+        if (!$user->tokenCan("support")) {
             throw new Http401UnauthorizedException();
         }
 
@@ -124,12 +127,12 @@ class TransactionsController extends BaseController
             "submitted_for_settlement",
             "settlement_pending",
         ];
-        $transaction = \Braintree\Transaction::find($transactionId);
+        $transaction = Transaction::find($transactionId);
         if (in_array($transaction->status, $voidableStatuses, true)) {
             return $this->void($request, $transactionId);
         }
 
-        $result = \Braintree\Transaction::refund($transactionId);
+        $result = Transaction::refund($transactionId);
 
         if ($result->success) {
             event(new TransactionRefundSuccessEvent($result->transaction));
@@ -159,11 +162,11 @@ class TransactionsController extends BaseController
         /** @var User $user */
         $user = $request->user();
 
-        if (!$user->isSupport()) {
+        if (!$user->tokenCan("support")) {
             throw new Http401UnauthorizedException();
         }
 
-        $subscription = \Braintree\Subscription::find($subscriptionId);
+        $subscription = Subscription::find($subscriptionId);
         $transactions = $subscription->jsonSerialize()["transactions"];
 
         return new JsonResponse(Formatter::cast($transactions));
@@ -177,24 +180,24 @@ class TransactionsController extends BaseController
      * @param Request $request The Illuminate HTTP request.
      * @param string $userId The user id.
      *
-     * @throws Http401UnauthorizedException
-     *
      * @return JsonResponse
+     * @throws Http400BadRequestException
+     * @throws Http401UnauthorizedException
      */
     public function byUser(Request $request, string $userId)
     {
         /** @var User $user */
         $user = $request->user();
 
-        if (!$user->isSupport()) {
+        if (!$user->tokenCan("support")) {
             throw new Http401UnauthorizedException();
         }
 
         /** @var User $customer */
         $customer = User::query()->findOrFail($userId);
         $customer->requireBraintreeCustomer();
-        $transactionResults = \Braintree\Transaction::search([
-            \Braintree\TransactionSearch::customerId()
+        $transactionResults = Transaction::search([
+            TransactionSearch::customerId()
                 ->is($customer->braintree_id),
         ]);
         $transactions = new Collection();

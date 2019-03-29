@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Notifications\TransactionSuccessNotification;
 use Braintree\Transaction;
 use Braintree\Transaction\CustomerDetails;
+use Mathrix\Lumen\Bases\BaseListener;
 
 /**
  * Class TransactionSuccessListener.

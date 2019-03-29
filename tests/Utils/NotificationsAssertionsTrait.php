@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Utils\NotificationsAssertionsTrait;
+namespace Tests\Utils;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Notification;

@@ -3,7 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\User;
-use Mathrix\Lumen\Notifications\BaseNotification;
+use Mathrix\Lumen\Bases\BaseNotification;
 
 /**
  * Class NewSubscriptionNotification.

@@ -102,7 +102,9 @@ class Module extends BaseModel
 
         /** @var User $user */
         $user = Auth::user();
-        $strip = !app()->runningInConsole() && $this->premium && ($user === null || !$user->premium && !$user->isModerator());
+        $strip = !app()->runningInConsole()
+            && $this->premium
+            && ($user === null || !$user->premium && !$user->tokenCan("moderator"));
         $keep = ["premium", "visible", "comments"];
 
         if ($strip) {

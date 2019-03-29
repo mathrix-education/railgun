@@ -26,6 +26,7 @@ use Mathrix\Lumen\Bases\BaseModel;
  * ---
  * @property Grade|null $parent
  * @property Country $country
+ * @property Collection|Grade[] $children
  * @property Collection|Chapter[] $chapters
  * @property Collection|Discipline[] $disciplines
  * @property Collection|User[] $users
@@ -71,13 +72,20 @@ class Grade extends BaseModel
     |--------------------------------------------------------------------------
     */
     /**
-     * BelongsTo Class_.
-     *
      * @return BelongsTo
      */
     public function parent(): BelongsTo
     {
         return $this->belongsTo(self::class, "parent_id");
+    }
+
+
+    /**
+     * @return HasMany
+     */
+    public function children(): HasMany
+    {
+        return $this->hasMany(self::class, "parent_id");
     }
 
 

@@ -36,4 +36,13 @@ class CommentPolicy extends BasePolicy
 
         return false;
     }
+
+
+    /**
+     * @return bool
+     */
+    public function latest(): bool
+    {
+        return true;
+    }
 }

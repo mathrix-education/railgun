@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\PasswordForgottenEvent;
 use App\Notifications\PasswordForgottenNotification;
+use Mathrix\Lumen\Bases\BaseListener;
 
 /**
  * Class PasswordForgottenListener.

@@ -6,6 +6,7 @@ use App\Events\TransactionRefundSuccessEvent;
 use App\Models\User;
 use App\Notifications\TransactionRefundSuccessNotification;
 use Braintree\Transaction;
+use Mathrix\Lumen\Bases\BaseListener;
 
 /**
  * Class TransactionRefundSuccessListener.

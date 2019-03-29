@@ -5,7 +5,10 @@ namespace Tests\Integration\Braintree;
 use App\Models\Discount;
 use App\Models\Product;
 use App\Models\User;
+use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Notification;
+use Laravel\Passport\Passport;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 
 /**
@@ -29,7 +32,7 @@ class CartTest extends BraintreeTestCase
 
         /** @var Discount $discount */
         $discount = Discount::query()
-            ->whereHas("products", function (\Illuminate\Database\Eloquent\Builder $q) {
+            ->whereHas("products", function (Builder $q) {
                 $q->whereNotNull("price");
             })
             ->where("counter", ">", 0)
@@ -37,8 +40,10 @@ class CartTest extends BraintreeTestCase
         $counterBefore = $discount->counter;
         $productIds = $discount->products()
             ->whereNotNull("price")
+            ->limit(3)
             ->get()
             ->pluck("id");
+
         $user = $this->getBraintreeCustomer();
         $this->setUser($user); // IM HERE
 
@@ -60,15 +65,17 @@ class CartTest extends BraintreeTestCase
      *
      * POST /transactions/sale
      *
-     * @throws Http400InvalidRequestException
-     * @throws \Exception
+     * @throws Exception
      */
-    public function testSale()
+    public function testSell()
     {
         Notification::fake();
 
         $customer = $this->getBraintreeCustomer();
-        $support = User::where("type", "=", "support")
+
+        /** @var User $support */
+        $support = User::query()
+            ->where("type", "=", "support")
             ->firstOrFail();
         $this->setUser($support);
 
@@ -80,7 +87,7 @@ class CartTest extends BraintreeTestCase
             ->pluck("id")
             ->toArray();
 
-        $this->json("post", "/products/sale", [
+        $this->json("post", "/products/sell", [
             "cart" => $productIds,
             "user_id" => $customer->id,
         ]);

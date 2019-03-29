@@ -8,6 +8,7 @@ use App\Models\Discount;
 use App\Models\Module;
 use App\Models\Notion;
 use App\Models\Post;
+use App\Models\Product;
 use App\Models\Reference;
 use App\Models\Setting;
 use App\Models\User;
@@ -47,7 +48,8 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->seedFromSubFactory(User::class, "moderator", 5);
         $this->seedFromSubFactory(User::class, "redactor", 5);
         $this->seedFromSubFactory(User::class, "support", 5);
-        $this->seedFromSubFactory(User::class, "registered", 10);
+        $this->seedFromSubFactory(User::class, "registered", 50);
+        User::random(["type", "=", "admin"])->update(["email" => "admin@mathrix.fr"]);
 
         // Categories & Posts
         $this->seedFromFactory(Category::class, 10);
@@ -61,6 +63,7 @@ class DatabaseSeeder extends BaseTableSeeder
         // Products & discounts
         $this->call(ProductTableSeeder::class);
         $this->seedFromFactory(Discount::class, 30);
+        $this->linkAll(Discount::class, Product::class);
 
         // References
         $this->seedFromFactory(Reference::class, 50);

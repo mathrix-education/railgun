@@ -2,7 +2,7 @@
 
 namespace App\Registrars;
 
-use App\Controllers\ContentController;
+use App\Controllers\SearchController;
 use Mathrix\Lumen\Bases\BaseRegistrar;
 
 /**
@@ -12,11 +12,11 @@ use Mathrix\Lumen\Bases\BaseRegistrar;
  * @copyright Mathrix Education SA.
  * @since 5.0.0
  */
-class ContentRegistrar extends BaseRegistrar
+class SearchRegistrar extends BaseRegistrar
 {
     public function register(): void
     {
         $this->get("search/{query}[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]",
-            ContentController::class . "@searchGlobal");
+            SearchController::class . "@content");
     }
 }

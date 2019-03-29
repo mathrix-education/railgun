@@ -2,13 +2,12 @@
 
 namespace App\Controllers;
 
-use App\Exceptions\Http400InvalidRequestException;
-use App\Exceptions\Http401UnauthorizedException;
 use App\Models\Log;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mathrix\Lumen\Bases\BaseController;
+use Mathrix\Lumen\Exceptions\ValidationException;
 
 /**
  * Class StatsController.
@@ -25,7 +24,7 @@ class StatsController extends BaseController
      * @param Request $request The Illuminate HTTP request.
      *
      * @return JsonResponse
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
+     * @throws ValidationException
      */
     public function activities(Request $request)
     {

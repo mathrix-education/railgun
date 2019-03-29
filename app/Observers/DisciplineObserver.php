@@ -60,7 +60,7 @@ class DisciplineObserver extends BaseObserver
      */
     public function deleting(Discipline $discipline)
     {
-        $this->handleRelationDeletion($discipline, "grades");
+        $this->handleRelationDeletion($discipline, "chapters");
 
         $discipline->grades()->detach();
     }

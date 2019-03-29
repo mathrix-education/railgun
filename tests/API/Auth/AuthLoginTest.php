@@ -68,4 +68,24 @@ class AuthLoginTest extends APITestCase
         // Revert password change
         DB::update("UPDATE users SET password = ? WHERE id = ?", [$oldHash, $user->id]);
     }
+
+
+    /**
+     * POST /auth/login
+     */
+    public function testLoginFailed()
+    {
+        $client = $this->getValidPassportClient();
+        $user = User::random();
+
+        $this->json("post", "/auth/login", [
+            "grant_type" => "password",
+            "client_id" => $client->getAttribute("id"),
+            "client_secret" => $client->getAttribute("secret"),
+            "username" => $user->email,
+            "password" => "incorrect-password"
+        ]);
+
+        $this->assertJsonErrorResponse(401, "invalid_credentials");
+    }
 }

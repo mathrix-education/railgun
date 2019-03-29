@@ -22,7 +22,7 @@ class SettingPolicy extends BasePolicy
      */
     public function read(User $currentUser, Setting $setting)
     {
-        return $currentUser->isAdmin() || $setting->visible;
+        return $currentUser->tokenCan("admin") || $setting->visible;
     }
 
 
@@ -33,7 +33,7 @@ class SettingPolicy extends BasePolicy
      */
     public function write(User $currentUser)
     {
-        return $currentUser->isAdmin();
+        return $currentUser->tokenCan("admin");
     }
 
 
@@ -44,6 +44,6 @@ class SettingPolicy extends BasePolicy
      */
     public function forgot(User $currentUser)
     {
-        return $currentUser->isAdmin();
+        return $currentUser->tokenCan("admin");
     }
 }

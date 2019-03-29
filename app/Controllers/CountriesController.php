@@ -16,7 +16,7 @@ use Mathrix\Lumen\Bases\BaseController;
 class CountriesController extends BaseController
 {
     /**
-     * GET /countries/slug{countrySlug}
+     * GET /countries/slug/{countrySlug}
      *
      * @param string $countrySlug The country slug.
      *

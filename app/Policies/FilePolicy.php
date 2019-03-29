@@ -20,7 +20,7 @@ class FilePolicy extends BasePolicy
      */
     public function info(User $currentUser)
     {
-        return $currentUser->isModerator();
+        return $currentUser->tokenCan("moderator");
     }
 
 
@@ -31,7 +31,7 @@ class FilePolicy extends BasePolicy
      */
     public function explore(User $currentUser)
     {
-        return $currentUser->isModerator();
+        return $currentUser->tokenCan("moderator");
     }
 
 
@@ -42,7 +42,7 @@ class FilePolicy extends BasePolicy
      */
     public function upload(User $currentUser)
     {
-        return $currentUser->isModerator();
+        return $currentUser->tokenCan("moderator");
     }
 
 
@@ -53,7 +53,7 @@ class FilePolicy extends BasePolicy
      */
     public function forceUpload(User $currentUser)
     {
-        return $currentUser->isAdmin();
+        return $currentUser->tokenCan("admin");
     }
 
 
@@ -64,7 +64,7 @@ class FilePolicy extends BasePolicy
      */
     public function rename(User $currentUser)
     {
-        return $currentUser->isModerator();
+        return $currentUser->tokenCan("moderator");
     }
 
 
@@ -75,7 +75,7 @@ class FilePolicy extends BasePolicy
      */
     public function forceRename(User $currentUser)
     {
-        return $currentUser->isAdmin();
+        return $currentUser->tokenCan("admin");
     }
 
 
@@ -86,7 +86,7 @@ class FilePolicy extends BasePolicy
      */
     public function delete(User $currentUser)
     {
-        return $currentUser->isModerator();
+        return $currentUser->tokenCan("moderator");
     }
 
 
@@ -97,6 +97,6 @@ class FilePolicy extends BasePolicy
      */
     public function forceDelete(User $currentUser)
     {
-        return $currentUser->isAdmin();
+        return $currentUser->tokenCan("admin");
     }
 }

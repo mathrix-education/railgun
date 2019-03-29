@@ -6,6 +6,7 @@ use App\Events\NewSubscriptionEvent;
 use App\Notifications\NewSubscriptionNotification;
 use App\Notifications\TransactionSuccessNotification;
 use Illuminate\Support\Facades\Notification;
+use Mathrix\Lumen\Bases\BaseListener;
 
 /**
  * Class NewSubscriptionListener.

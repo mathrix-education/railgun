@@ -29,7 +29,7 @@ class PostsRegistrar extends BaseRegistrar
             "delete" => "admin"
         ]);
 
-        $this->get("posts/by-{what:category}/{id:[1-9]\d*}[/{page:[0-9]+}/{perPage:[1-9]\d*}]",
+        $this->get("posts/by-{what:category}/{id:[1-9]\d*}[/{page:\d+}/{perPage:[1-9]\d*}]",
             "$controller@by");
     }
 }

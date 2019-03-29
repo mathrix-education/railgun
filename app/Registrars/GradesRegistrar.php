@@ -29,9 +29,9 @@ class GradesRegistrar extends BaseRegistrar
             "delete" => "administrator"
         ]);
 
-        $this->get("grades/slug/{gradeSlug:[a-z0-9\_]+}", "$controller@getBySlug");
+        $this->get("grades/slug/{gradeSlug:[a-z0-9\-]+}", "$controller@getBySlug");
 
-        $this->get("grades/by-{what:country}/{id:[1-9]\d*}[/{page:[0-9]+}/{perPage:[1-9]\d*}]",
+        $this->get("grades/by-{what:country}/{id:[1-9]\d*}[/{page:\d+}/{perPage:[1-9]\d*}]",
             "$controller@by");
     }
 }

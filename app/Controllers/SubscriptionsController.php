@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Exceptions\UserAlreadyPremiumException;
 use App\Models\User;
 use App\Services\Braintree\Exceptions\BraintreeProcessorException;
 use App\Services\Braintree\Pipelines\SubscriptionPipeline;
@@ -38,8 +39,9 @@ class SubscriptionsController extends BaseController
      * @return JsonResponse
      * @throws BraintreeProcessorException
      * @throws Http400BadRequestException
+     * @throws UserAlreadyPremiumException
      * @throws ValidationException
-     * @throws \App\Exceptions\UserAlreadyPremiumException
+     * @throws \Mathrix\Lumen\Exceptions\ValidationException
      */
     public function create(Request $request): JsonResponse
     {
@@ -65,7 +67,7 @@ class SubscriptionsController extends BaseController
         /** @var User $user */
         $user = $request->user();
 
-        if (!$user->isSupport()) {
+        if (!$user->tokenCan("support")) {
             throw new Http401UnauthorizedException();
         }
 
@@ -93,7 +95,7 @@ class SubscriptionsController extends BaseController
         /** @var User $user */
         $user = $request->user();
 
-        if (!$user->isSupport()) {
+        if (!$user->tokenCan("support")) {
             throw new Http401UnauthorizedException();
         }
 
@@ -140,7 +142,7 @@ class SubscriptionsController extends BaseController
         /** @var User $user */
         $user = $request->user();
 
-        if ($user->id !== $userId && !$user->isSupport()) {
+        if ($user->id !== $userId && !$user->tokenCan("support")) {
             throw new Http401UnauthorizedException();
         }
 

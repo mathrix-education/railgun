@@ -19,25 +19,20 @@ class DiscountObserver extends BaseObserver
      *
      * @return bool
      */
-    public function saving($discount)
+    public function saving(Discount $discount)
     {
         // Sync notions
-        if (isset($discount->link["products"])) {
+        if ($discount->exists && isset($discount->link["products"])) {
             $toSync = [];
             foreach ($discount->link["products"] as $productId) {
-                $exists = Product::query()->where("id", "=", $productId)->exists();
+                /** @var Product $product */
+                $product = Product::query()->find($productId);
 
-                if ($exists) {
-                    /** @var Product $product */
-                    $product = Product::query()->find($productId);
-
-                    if ($product->price !== null) {
-                        $toSync[] = $productId;
-                    }
+                if ($product && $product->price !== null) {
+                    $toSync[] = $product->id;
                 }
             }
-            $discount->products()
-                ->sync($toSync);
+            $discount->products()->sync($toSync);
         }
 
         if (isset($discount->link)) {

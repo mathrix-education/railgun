@@ -1,0 +1,56 @@
+<?php
+
+namespace Tests\API;
+
+use App\Models\Discipline;
+use App\Models\Grade;
+use Mathrix\Lumen\Tests\Standard\StandardGetTest;
+use Mathrix\Lumen\Tests\Standard\StandardIndexTest;
+use Mathrix\Lumen\Tests\Standard\StandardPatchTest;
+use Mathrix\Lumen\Tests\Standard\StandardPostTest;
+
+/**
+ * Class DisciplinesTest.
+ *
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 5.0.0
+ */
+class DisciplinesTest extends APITestCase
+{
+    use StandardIndexTest, StandardPostTest, StandardGetTest, StandardPatchTest;
+
+
+    /**
+     * DELETE /disciplines/{disciplineId}
+     */
+    public function testDelete(): void
+    {
+        /** @var Discipline $discipline */
+        $discipline = Discipline::random();
+        $pivot = Discipline::random(["id", "!=", $discipline->id]);
+
+        $discipline->grades()->update(["discipline_id" => $pivot->id]);
+        $discipline->chapters()->update(["discipline_id" => $pivot->id]);
+
+        $this->assertRestDeleteSuccess(["conditions" => ["id", "=", $discipline->id]]);
+    }
+
+
+    /**
+     * GET /disciplines/by-grade/{gradeId}
+     */
+    public function testByGrade()
+    {
+        $this->assertRestBySuccess(Grade::class);
+    }
+
+
+    /**
+     * GET /disciplines/slug/{disciplineSlug}
+     */
+    public function testBySlug(): void
+    {
+        $this->assertRestGetBySuccess("slug");
+    }
+}

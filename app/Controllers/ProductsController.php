@@ -7,12 +7,14 @@ use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\User;
 use App\Services\Braintree\Pipelines\CartPipeline;
+use Braintree\Result\Successful;
+use Braintree\Transaction;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
+use Mathrix\Lumen\Exceptions\ValidationException;
 use Mathrix\Lumen\Responses\PaginationJsonResponse;
 
 /**
@@ -30,10 +32,9 @@ class ProductsController extends BaseController
      * @param Request $request The Illuminate HTTP request.
      * @param User $customer The customer.
      *
-     * @return \Braintree\Result\Successful
+     * @return Successful
      * @throws Http400BadRequestException
      * @throws ValidationException
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
      */
     private function sellTo(Request $request, User $customer)
     {
@@ -54,7 +55,7 @@ class ProductsController extends BaseController
             ->setProducts($request->input("cart"))
             ->getBraintreeSaleRequest();
 
-        $saleResult = \Braintree\Transaction::sale($request);
+        $saleResult = Transaction::sale($request);
 
         if ($saleResult->success) {
             /** @var Product $product */
@@ -146,7 +147,7 @@ class ProductsController extends BaseController
      * @return JsonResponse
      * @throws Http400BadRequestException
      * @throws ValidationException
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
+     * @throws ValidationException
      */
     public function buy(Request $request): JsonResponse
     {
@@ -169,13 +170,14 @@ class ProductsController extends BaseController
      * @throws Http400BadRequestException
      * @throws Http401UnauthorizedException
      * @throws ValidationException
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
+     * @throws ValidationException
      */
     public function sell(Request $request): JsonResponse
     {
+        /** @var User $user */
         $user = $request->user();
 
-        if (!$user->isSupport()) {
+        if (!$user->tokenCan("support")) {
             throw new Http401UnauthorizedException();
         }
 

@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mathrix\Lumen\Bases\BaseController;
+use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
 use Mathrix\Lumen\Responses\PaginationJsonResponse;
 
 /**
@@ -27,6 +28,7 @@ class CommentsController extends BaseController
      * @param int $perPage The number of comments per page.
      *
      * @return JsonResponse
+     * @throws Http401UnauthorizedException
      */
     public function latest(Request $request, $page = 0, $perPage = 100): JsonResponse
     {

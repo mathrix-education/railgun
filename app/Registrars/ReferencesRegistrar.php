@@ -29,6 +29,6 @@ class ReferencesRegistrar extends BaseRegistrar
             "delete" => "moderator"
         ]);
 
-        $this->get("query/{query}[/{page:[0-9]+}/{perPage:[1-9]\d*}]", "$controller@query");
+        $this->get("query/{query}[/{page:\d+}/{perPage:[1-9]\d*}]", "$controller@query");
     }
 }

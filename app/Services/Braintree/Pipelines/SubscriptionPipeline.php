@@ -24,8 +24,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Exceptions\ValidationException;
 
 /**
  * Class SubscriptionPipeline.
@@ -72,7 +72,6 @@ class SubscriptionPipeline
      * @throws Http400BadRequestException
      * @throws UserAlreadyPremiumException
      * @throws ValidationException
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
      */
     public function run()
     {
@@ -104,9 +103,8 @@ class SubscriptionPipeline
         $validator = Validator::make($this->request->all(), $rules);
 
         if ($validator->fails()) {
-            $validationException = new ValidationException($validator);
-            $validationException->status(422);
-            throw $validationException;
+            $errors = $validator->errors()->getMessages();
+            throw new ValidationException($errors, "Model data failed to pass validation.");
         }
 
         // Mock processor error
@@ -142,7 +140,7 @@ class SubscriptionPipeline
 
     /**
      * @throws Http400BadRequestException
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
+     * @throws ValidationException
      */
     private function selectPaymentMethod()
     {
@@ -190,9 +188,8 @@ class SubscriptionPipeline
     /**
      * Now we assume that the user is valid Braintree customer with an attached payment method. We will now create the
      * subscription.
-     * @throws Http400InvalidRequestException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
+     * @throws Http400BadRequestException
+     * @throws ValidationException
      */
     private function createSubscription()
     {
@@ -229,11 +226,9 @@ class SubscriptionPipeline
             $this->user->record("braintree", "subscription_creation", "error",
                 $subscriptionCreation->jsonSerialize());
 
-            throw new Http400InvalidRequestException(
-                "Subscription creation failed.",
-                400,
-                null,
-                ["data" => $subscriptionCreation->jsonSerialize()]
+            throw new Http400BadRequestException(
+                $subscriptionCreation->jsonSerialize(),
+                "Subscription creation failed."
             );
         }
     }
@@ -242,10 +237,9 @@ class SubscriptionPipeline
     /**
      * We now assume that the transaction succeeded. If the subscription requires a forced trial period, we create the
      * initial transaction.
-     * @throws Http400InvalidRequestException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
      * @throws BraintreeProcessorException
+     * @throws Http400BadRequestException
+     * @throws ValidationException
      */
     private function createInitialTransaction()
     {

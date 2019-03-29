@@ -3,12 +3,14 @@
 namespace Tests\Integration\Braintree;
 
 use App\Models\User;
+use Laravel\Passport\Passport;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Tests\Traits\DatabaseTrait;
 use Mathrix\Lumen\Tests\Traits\DebugTrait;
 use Mathrix\Lumen\Tests\Traits\PassportTrait;
 use Mathrix\Lumen\Tests\Traits\ResponseTrait;
 use Tests\BaseTestCase;
-use Tests\Utils\NotificationsAssertionsTrait\NotificationsAssertionsTrait;
+use Tests\Utils\NotificationsAssertionsTrait;
 
 /**
  * Class BraintreeTestCase.
@@ -20,7 +22,18 @@ use Tests\Utils\NotificationsAssertionsTrait\NotificationsAssertionsTrait;
  */
 class BraintreeTestCase extends BaseTestCase
 {
-    use NotificationsAssertionsTrait, PassportTrait, ResponseTrait, DebugTrait;
+    use NotificationsAssertionsTrait, DatabaseTrait, PassportTrait, ResponseTrait, DebugTrait;
+
+
+    /**
+     * Set the current user.
+     *
+     * @param User $user
+     */
+    public function setUser(User $user)
+    {
+        Passport::actingAs($user, explode(" ", $user->getPassportScopes()));
+    }
 
 
     /**

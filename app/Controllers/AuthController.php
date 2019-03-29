@@ -9,9 +9,12 @@ use Dusterio\LumenPassport\Http\Controllers\AccessTokenController;
 use Faker\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response as IlluminateResponse;
 use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Exceptions\ValidationException;
 use Psr\Http\Message\ServerRequestInterface;
+use Zend\Diactoros\Response as ZendResponse;
 
 /**
  * Class AuthController.
@@ -52,18 +55,18 @@ class AuthController extends BaseController
 
         /** @var AccessTokenController $controller */
         $controller = app()->make(AccessTokenController::class);
-        /** @var \Illuminate\Http\Response $response */
+        /** @var IlluminateResponse $response */
         $response = $controller->issueToken($request);
 
         $body = new \stdClass();
         $status = null;
         $headers = [];
 
-        if ($response instanceof \Illuminate\Http\Response) {
+        if ($response instanceof IlluminateResponse) {
             $body = json_decode($response->getContent());
             $status = $response->getStatusCode();
             $headers = $response->headers->all();
-        } else if ($response instanceof \Zend\Diactoros\Response) {
+        } else if ($response instanceof ZendResponse) {
             $body = json_decode($response->getBody());
             $status = $response->getStatusCode();
             $headers = $response->getHeaders();
@@ -134,7 +137,7 @@ class AuthController extends BaseController
      * @param string $token The reset token.
      *
      * @return JsonResponse
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
+     * @throws ValidationException
      */
     public function reset(Request $request, string $token)
     {

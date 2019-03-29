@@ -53,7 +53,7 @@ class UsersController extends BaseController
         // Build and save the user
         $user = new User();
 
-        if ($request->user() instanceof User && $user->isAdmin()) {
+        if ($request->user() instanceof User && $user->tokenCan("admin")) {
             $user->unguardAttributes(["type"]);
         }
 
@@ -118,7 +118,7 @@ class UsersController extends BaseController
         // Check for current_password, skip for admins if they are editing another user
         $this->validate($request, [
             "current_password" => Rule::requiredIf(function () use ($request, $user, $target) {
-                return ($user->id === $target->id || !$user->isAdmin()) && $request->has("password");
+                return ($user->id === $target->id || !$user->tokenCan("admin")) && $request->has("password");
             })
         ]);
 

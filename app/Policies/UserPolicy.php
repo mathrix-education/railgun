@@ -22,8 +22,8 @@ class UserPolicy extends BasePolicy
     public function get(User $currentUser, User $user)
     {
         return $currentUser->id === $user->id
-            || $currentUser->isAdmin()
-            || ($currentUser->isModerator() && $user->type === "registered");
+            || $currentUser->tokenCan("admin")
+            || ($currentUser->tokenCan("moderator") && $user->type === "registered");
     }
 
 
@@ -35,7 +35,7 @@ class UserPolicy extends BasePolicy
      */
     public function patch(User $currentUser, User $user)
     {
-        return $currentUser->isAdmin() || $currentUser->id === $user->id;
+        return $currentUser->tokenCan("admin") || $currentUser->id === $user->id;
     }
 
 
@@ -48,7 +48,7 @@ class UserPolicy extends BasePolicy
      */
     public function delete(User $currentUser, User $user)
     {
-        return $currentUser->isAdmin() || $currentUser->id === $user->id;
+        return $currentUser->tokenCan("admin") || $currentUser->id === $user->id;
     }
 
 
@@ -59,7 +59,7 @@ class UserPolicy extends BasePolicy
      */
     public function search(User $currentUser)
     {
-        return $currentUser->isModerator();
+        return $currentUser->tokenCan("moderator");
     }
 
 
@@ -71,6 +71,6 @@ class UserPolicy extends BasePolicy
      */
     public function points(User $currentUser, User $user)
     {
-        return $currentUser->isAdmin() || $currentUser->id === $user->id;
+        return $currentUser->tokenCan("admin") || $currentUser->id === $user->id;
     }
 }

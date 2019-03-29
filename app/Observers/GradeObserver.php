@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Exceptions\ForeignConstraintsException;
 use App\Models\Discipline;
 use App\Models\Grade;
 
@@ -51,11 +52,14 @@ class GradeObserver extends BaseObserver
     /**
      * @param Grade $grade
      *
-     * @throws \App\Exceptions\ForeignConstraintsException
+     * @throws ForeignConstraintsException
      */
     public function deleting(Grade $grade)
     {
-        $this->handleRelationDeletion($grade, "disciplines");
+        $this->handleRelationDeletion($grade, "children");
+        $this->handleRelationDeletion($grade, "chapters");
+        $this->handleRelationDeletion($grade, "users");
+
         $grade->disciplines()->detach();
     }
 }

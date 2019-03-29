@@ -15,62 +15,18 @@ use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
 trait PermissionsTrait
 {
     /**
-     * Check if user is redactor.
-     *
-     * @return bool
-     */
-    public function isRedactor()
-    {
-        return $this->isModerator() || $this->tokenCan("redactor");
-    }
-
-
-    /**
-     * Check if user is at least moderator.
-     *
-     * @return bool
-     */
-    public function isModerator()
-    {
-        return $this->isAdmin() || $this->tokenCan("moderator");
-    }
-
-
-    /**
-     * Check if user is administrator.
-     *
-     * @return bool
-     */
-    public function isAdmin()
-    {
-        return $this->tokenCan("admin");
-    }
-
-
-    /**
-     * Check if user is administrator.
-     *
-     * @return bool
-     */
-    public function isSupport()
-    {
-        return $this->isAdmin() || $this->tokenCan("support");
-    }
-
-
-    /**
      * Check if user is authorized to do something; if not throw an exception.
-     *
-     * @see Authorizable
      *
      * @param string $ability
      * @param array $arguments
-     * @param string $exceptionClass
+     *
+     * @throws Http401UnauthorizedException
+     * @see Authorizable
      */
-    public function canOrFail($ability, $arguments = [], $exceptionClass = Http401UnauthorizedException::class)
+    public function canOrFail($ability, $arguments = [])
     {
-        if ($this->cant($ability, $arguments) && class_exists($exceptionClass)) {
-            throw new $exceptionClass();
+        if ($this->cant($ability, $arguments)) {
+            throw new Http401UnauthorizedException(null, "Failed to pass $ability policy");
         }
     }
 }

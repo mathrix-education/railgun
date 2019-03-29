@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\PasswordResetEvent;
 use App\Notifications\PasswordResetNotification;
+use Mathrix\Lumen\Bases\BaseListener;
 
 /**
  * Class PasswordResetListener.

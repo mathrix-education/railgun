@@ -10,11 +10,10 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
 use League\Flysystem\FileNotFoundException as FlysystemFileNotFoundException;
 use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Exceptions\ValidationException;
 
 
 /**
@@ -27,7 +26,6 @@ use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 class FilesController extends BaseController
 {
     public const DISK = "cdn";
-    public const TRASH_DIR = "trash";
 
 
     /**
@@ -70,9 +68,8 @@ class FilesController extends BaseController
      * @param Request $request The Illuminate HTTP request.
      *
      * @return JsonResponse
-     * @throws ValidationException
-     * @throws Http400BadRequestException
      * @throws FileNotFoundException
+     * @throws ValidationException
      */
     public function upload(Request $request): JsonResponse
     {
@@ -86,31 +83,20 @@ class FilesController extends BaseController
         ]);
 
         $disk = $this->getDisk();
+        $destination = trim($request->input("destination"), "/");
+        $name = trim($request->input("name"), "/");
+        $path = "$destination/$name";
 
         /** @var UploadedFile $file */
         $file = $request->file("file") ?? $request->input("file");
 
-        $destination = trim($request->input("destination"), "/");
-        $name = trim($request->input("name"), "/");
-        $force = $request->input("force", false);
-
-        $path = "$destination/$name";
-
         if ($this->getDisk()->exists($path)) {
-            if (!$force) {
-                throw new Http400BadRequestException("$path already exists. Set `force` to true to override it.");
-            } else {
-                // Force, delete the destination file first
-                $request->user()->canOrFail("forceUpload", FilePolicy::class);
-                $disk->delete($destination);
-            }
+            $disk->delete($destination);
         }
 
-        $file->storeAs($destination, $name, ["disk" => self::DISK]);
+        $effectivePath = $disk->putFileAs($destination, $file, $name);
 
-        $response = new JsonResponse($this->metadata($path));
-
-        return $response;
+        return new JsonResponse($this->metadata($effectivePath));
     }
 
 
@@ -192,35 +178,19 @@ class FilesController extends BaseController
         $request->user()->canOrFail("rename", FilePolicy::class);
 
         $this->validate($request, [
-            "destination" => "required",
-            "force" => "boolean"
+            "destination" => "required"
         ]);
 
         $disk = $this->getDisk();
-
         $source = trim($path);
         $destination = trim($request->input("destination"), "/");
-        $force = $request->input("force", false);
-
-        // Check destination does not start with "trash"
-        if (Str::startsWith($destination, "trash")) {
-            throw new Http400BadRequestException(
-                "`destination` cannot starts with \"trash\". Use DELETE /files/{path} instead"
-            );
-        }
 
         if (!$disk->exists($source)) {
             throw new FileNotFoundException($source);
         }
 
         if ($disk->exists($destination)) {
-            if (!$force) {
-                throw new Http400BadRequestException("$path already exists. Set `force` to true to override it.");
-            } else {
-                // Force, delete the destination file first
-                $request->user()->canOrFail("forceRename", FilePolicy::class);
-                $disk->delete($destination);
-            }
+            $disk->delete($destination);
         }
 
         $result = $disk->move($path, $request->input("destination"));
@@ -248,52 +218,24 @@ class FilesController extends BaseController
      * @return JsonResponse
      * @throws FileNotFoundException
      * @throws Http400BadRequestException
-     * @throws ValidationException
      */
     public function remove(Request $request, string $path)
     {
         $request->user()->canOrFail("delete", FilePolicy::class);
-
-        $this->validate($request, [
-            "force" => "boolean"
-        ]);
-
         $disk = $this->getDisk();
-
-        $force = $request->input("force", false);
-
-        // Check if we are not trying to delete something from the trash
-        if (Str::startsWith($path, self::TRASH_DIR)) {
-            throw new Http400BadRequestException(null, self::TRASH_DIR . " is the trash directory.");
-        }
 
         // Check if path exists
         if (!$disk->has($path)) {
             throw new FileNotFoundException($path);
         }
 
-        if (!$force) {
-            // Delete by moving to the trash
-            if ($disk->has(self::TRASH_DIR)) {
-                $disk->makeDirectory(self::TRASH_DIR);
-            }
-
-            $trashPath = self::TRASH_DIR . "/$path";
-            $disk->move($path, $trashPath);
-
-            return new JsonResponse($this->metadata($trashPath));
+        if (!$disk->delete($path)) {
+            throw new Http400BadRequestException(null, "Unable to delete $path.");
         } else {
-            // Force delete file
-            $request->user()->canOrFail("forceDelete", FilePolicy::class);
-
-            if (!$disk->delete($path)) {
-                throw new Http400BadRequestException(null, "Unable to delete $path.");
-            } else {
-                return new JsonResponse([
-                    "status" => "success",
-                    "message" => "File $path successfully deleted."
-                ]);
-            }
+            return new JsonResponse([
+                "status" => "success",
+                "message" => "File $path successfully deleted."
+            ]);
         }
     }
 }

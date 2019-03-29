@@ -26,7 +26,7 @@ class FilesRegistrar extends BaseRegistrar
             $this->get("explore/[{directory:[a-zA-Z0-9\_\-\/\.]+}]", "$controller@explore");
             $this->get("[{path:[a-zA-Z0-9\_\-\/\.]+}]", "$controller@info");
             $this->patch("[{path:[a-zA-Z0-9\_\-\/\.]+}]", "$controller@rename");
-            $this->delete("[{path:[a-zA-Z0-9\_\-\/\.]+}]", "$controller@delete");
+            $this->delete("[{path:[a-zA-Z0-9\_\-\/\.]+}]", "$controller@remove");
         });
 
     }

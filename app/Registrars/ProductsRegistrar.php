@@ -32,9 +32,14 @@ class ProductsRegistrar extends BaseRegistrar
         $this->get("products/{id:[1-9]\d*}/recursive", "$controller@recursive");
         $this->get("products/buyable[/{type:all|training}]", "$controller@buyable");
 
-        $this->group(["middleware" => "scope:support"], function () {
-            $this->post("products/buy", "ProductController@buy");
-            $this->post("products/sale", "ProductController@sale");
-        });
+        $this->post("products/buy", [
+            "uses" => "$controller@buy",
+            "middleware" => "scope:registered"
+        ]);
+
+        $this->post("products/sell", [
+            "uses" => "$controller@sell",
+            "middleware" => "scope:support"
+        ]);
     }
 }

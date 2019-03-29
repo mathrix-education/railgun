@@ -1,0 +1,26 @@
+<?php
+
+namespace Tests\API;
+
+/**
+ * Class SearchTest.
+ *
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 5.0.0
+ */
+class SearchTest extends APITestCase
+{
+    /**
+     * GET /search/{query}
+     */
+    public function testContent()
+    {
+        $this->json("get","/search/lorem");
+
+        $this->assertResponseOk();
+        $this->assertJsonResponseMatches([
+            "data.videos.[*].type" => "video"
+        ]);
+    }
+}

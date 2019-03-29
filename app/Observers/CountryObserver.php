@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Exceptions\ForeignConstraintsException;
 use App\Models\Country;
 
 /**
@@ -34,7 +35,7 @@ class CountryObserver extends BaseObserver
      * @param Country $country
      *
      * @return bool
-     * @throws \App\Exceptions\ForeignConstraintsException
+     * @throws ForeignConstraintsException
      */
     public function deleting(Country $country)
     {

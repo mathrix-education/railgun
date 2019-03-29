@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\CommentAnswerEvent;
 use App\Models\Comment;
 use App\Notifications\CommentAnswerNotification;
+use Mathrix\Lumen\Bases\BaseListener;
 
 /**
  * Class CommentAnswerListener.

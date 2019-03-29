@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use Mathrix\Lumen\Notifications\BaseNotification;
+use Mathrix\Lumen\Bases\BaseNotification;
 
 /**
  * Class MailNotification.
