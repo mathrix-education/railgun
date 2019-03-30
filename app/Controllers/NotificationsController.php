@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\DatabaseNotification;
 use Mathrix\Lumen\Bases\BaseController;
+use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
 use Mathrix\Lumen\Responses\PaginationJsonResponse;
 
 /**
@@ -87,7 +88,7 @@ class NotificationsController extends BaseController
      *
      * @return PaginationJsonResponse
      */
-    public function all(Request $request, $page = 1, $perPage = 100)
+    public function all(Request $request, $page = 0, $perPage = 100)
     {
         return $this->getNotificationsJsonResponse("notifications", $request, $page, $perPage);
     }
@@ -102,6 +103,7 @@ class NotificationsController extends BaseController
      * @param string $type The type of mark (read or unread).
      *
      * @return JsonResponse
+     * @throws Http401UnauthorizedException
      */
     public function mark(Request $request, string $notificationId, string $type)
     {

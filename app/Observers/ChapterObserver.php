@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Chapter;
+use Illuminate\Support\Str;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 
 /**
@@ -23,7 +24,7 @@ class ChapterObserver extends BaseObserver
     {
         // Set the slug if needed
         if (empty($chapter->slug) || ($chapter->isDirty("name") && !$chapter->isDirty("slug"))) {
-            $chapter->slug = str_slug($chapter->name);
+            $chapter->slug = Str::slug($chapter->name);
         }
 
         return true;

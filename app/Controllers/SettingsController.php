@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\Http\Http404NotFoundException;
+use Mathrix\Lumen\Exceptions\ValidationException;
 
 /**
  * Class SettingsController.
@@ -86,7 +87,8 @@ class SettingsController extends BaseController
      * @param string $key The setting key.
      *
      * @return JsonResponse
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
+     * @throws ValidationException
+     * @throws \Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException
      */
     public function write(Request $request, string $key)
     {

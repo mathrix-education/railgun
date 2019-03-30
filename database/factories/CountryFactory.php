@@ -3,6 +3,7 @@
 use App\Models\Country;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Support\Str;
 
 /**
  * CountryFactory.
@@ -15,11 +16,11 @@ use Illuminate\Database\Eloquent\Factory;
  */
 $factory->define(Country::class, function (Generator $faker) {
     $name = $faker->firstName;
-    $slug = str_slug(mb_substr($name, 0, random_int(2, 3)));
+    $slug = Str::slug(mb_substr($name, 0, random_int(2, 3)));
 
     return [
         "name" => $name,
-        "slug" => str_slug($slug),
+        "slug" => Str::slug($slug),
         "visible" => $faker->boolean(95),
     ];
 });

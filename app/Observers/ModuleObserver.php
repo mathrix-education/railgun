@@ -2,8 +2,10 @@
 
 namespace App\Observers;
 
+use App\Exceptions\ForeignConstraintsException;
 use App\Models\Comment;
 use App\Models\Module;
+use App\Models\Report;
 
 /**
  * Class ModuleObserver.
@@ -20,21 +22,26 @@ class ModuleObserver extends BaseObserver
      * @param Module $module The Module which will be deleted.
      *
      * @return bool
-     * @throws \App\Exceptions\ForeignConstraintsException
+     * @throws ForeignConstraintsException
      */
     public function deleting(Module $module)
     {
+        $this->handleRelationDeletion($module, "posts");
+        $this->handleRelationDeletion($module, "products");
+        $this->handleRelationDeletion($module, "references");
+
         Comment::withTrashed()
             ->where("module_id", "=", $module->id)
             ->get()
             ->each(function (Comment $comment) {
                 $comment->forceDelete();
             });
+        $module->reports()
+            ->get()
+            ->each(function(Report $report) {
+                $report->delete();
+            });
 
-        $this->handleRelationDeletion($module, "posts");
-        $this->handleRelationDeletion($module, "products");
-        $this->handleRelationDeletion($module, "references");
-        $this->handleRelationDeletion($module, "reports");
 
         return true;
     }

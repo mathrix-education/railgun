@@ -26,7 +26,10 @@ class MarksTableSeeder extends BaseTableSeeder
         $marks = new Collection();
 
         $this->output->writeln("<comment>Generating:</comment> marks");
-        $this->output->progressStart($registered->count());
+        $progressBar = $this->output->createProgressBar($registered->count());
+        $progressBar->setFormat("verbose");
+        $progressBar->start();
+
         /** @var User $user */
         foreach ($registered as $user) {
             $marksCount = $faker->numberBetween(30, 50);
@@ -54,9 +57,11 @@ class MarksTableSeeder extends BaseTableSeeder
                 $marks->push($markData);
             }
 
-            $this->output->progressAdvance();
+            $progressBar->advance();
         }
-        $this->output->progressFinish();
+
+        $progressBar->finish();
+        $this->output->writeln("");
         $this->output->writeln("<info>Generated:</info>  marks");
 
         // See generated array

@@ -22,7 +22,7 @@ $factory->define(Grade::class, function (Generator $faker) {
     return [
         "name" => $name,
         "slug" => $slug,
-        "order" => 0,
+        "order" => $faker->numberBetween(0, 100),
         "parent_id" => null,
         "country_id" => Country::random()->id,
         "visible" => $faker->boolean(95),

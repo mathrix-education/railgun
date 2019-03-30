@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Exceptions\ForeignConstraintsException;
 use App\Models\Discipline;
 use App\Models\Grade;
+use Illuminate\Support\Str;
 
 /**
  * Class GradeObserver.
@@ -27,7 +28,7 @@ class GradeObserver extends BaseObserver
             empty($grade->slug) ||
             ($grade->isDirty("name") && !$grade->isDirty("slug"))
         ) {
-            $grade->slug = str_slug($grade->name);
+            $grade->slug = Str::slug($grade->name);
         }
 
         // Sync disciplines

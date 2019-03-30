@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Notion;
+use Illuminate\Support\Str;
 
 /**
  * Class NotionObserver.
@@ -25,7 +26,7 @@ class NotionObserver extends BaseObserver
             empty($notion->slug) ||
             ($notion->isDirty('name') && !$notion->isDirty('slug'))
         ) {
-            $notion->slug = str_slug($notion->name);
+            $notion->slug = Str::slug($notion->name);
         }
 
         return true;

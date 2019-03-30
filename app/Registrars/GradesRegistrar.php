@@ -24,9 +24,9 @@ class GradesRegistrar extends BaseRegistrar
         $this->rest("grades", $controller, [
             "index" => null,
             "get" => null,
-            "post" => "administrator",
-            "patch" => "administrator",
-            "delete" => "administrator"
+            "post" => "admin",
+            "patch" => "admin",
+            "delete" => "admin"
         ]);
 
         $this->get("grades/slug/{gradeSlug:[a-z0-9\-]+}", "$controller@getBySlug");

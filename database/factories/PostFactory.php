@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\User;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Support\Str;
 
 /**
  * NotionFactory.
@@ -22,7 +23,7 @@ $factory->define(Post::class, function (Generator $faker) {
 
     return [
         "title" => $title,
-        "slug" => str_slug($title),
+        "slug" => Str::slug($title),
         "module_id" => Module::random(["type", "=", "course"])->id,
         "category_id" => Category::random()->id,
         "user_id" => User::random(["type", "=", "admin"])->id,

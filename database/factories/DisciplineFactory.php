@@ -3,6 +3,7 @@
 use App\Models\Discipline;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Support\Str;
 
 /**
  * DisciplineFactory.
@@ -18,7 +19,7 @@ $factory->define(Discipline::class, function (Generator $faker) {
 
     return [
         "name" => $name,
-        "slug" => str_slug($name),
+        "slug" => Str::slug($name),
         "beta" => $faker->boolean()
     ];
 });

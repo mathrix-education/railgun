@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Comment;
 use App\Models\Post;
+use Illuminate\Support\Str;
 
 /**
  * Class PostObserver.
@@ -24,7 +25,7 @@ class PostObserver extends BaseObserver
         // Set the slug if needed
         if (empty($post->slug) ||
             ($post->isDirty("title") && !$post->isDirty("slug"))) {
-            $post->slug = str_slug($post->title);
+            $post->slug = Str::slug($post->title);
         }
 
         return true;

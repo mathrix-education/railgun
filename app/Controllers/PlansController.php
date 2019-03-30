@@ -22,7 +22,7 @@ class PlansController extends BaseController
      *
      * @return JsonResponse
      */
-    public function all()
+    public function all(): JsonResponse
     {
         return new JsonResponse(Plan::all()->toArray());
     }
@@ -36,7 +36,7 @@ class PlansController extends BaseController
      *
      * @return JsonResponse
      */
-    public function find(string $planId)
+    public function find(string $planId): JsonResponse
     {
         return new JsonResponse(Plan::findOrFail($planId));
     }
@@ -51,7 +51,7 @@ class PlansController extends BaseController
      * @return JsonResponse
      * @throws Http400BadRequestException
      */
-    public function estimate(string $planId)
+    public function estimate(string $planId): JsonResponse
     {
         if (!in_array($planId, ["v4_annually", "v4_biannually"])) {
             throw new Http400BadRequestException([

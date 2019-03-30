@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Exceptions\ForeignConstraintsException;
 use App\Models\Country;
+use Illuminate\Support\Str;
 
 /**
  * Class CountryObserver.
@@ -24,7 +25,7 @@ class CountryObserver extends BaseObserver
         // Set the slug if needed
         if (empty($country->slug) ||
             ($country->isDirty("name") && !$country->isDirty("slug"))) {
-            $country->slug = str_slug($country->name);
+            $country->slug = Str::slug($country->name);
         }
 
         return true;

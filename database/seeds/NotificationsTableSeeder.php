@@ -31,7 +31,10 @@ class NotificationsTableSeeder extends BaseTableSeeder
             ->get();
 
         $this->output->writeln("<comment>Generating:</comment> notifications");
-        $this->output->progressStart($parents->count());
+        $progressBar = $this->output->createProgressBar($parents->count());
+        $progressBar->setFormat("verbose");
+        $progressBar->start();
+
         /** @var Comment $parent */
         foreach ($parents as $parent) {
             /** @var Comment $child */
@@ -55,9 +58,11 @@ class NotificationsTableSeeder extends BaseTableSeeder
                     $this->generateNotification($comment->user, $childComment);
                 }
             }
-            $this->output->progressAdvance();
+            $progressBar->advance();
         }
-        $this->output->progressFinish();
+
+        $progressBar->finish();
+        $this->output->writeln("");
         $this->output->writeln("<info>Generated:</info> {$this->notifications->count()} notifications");
 
         // Seed generated array

@@ -19,8 +19,8 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @property string $title
  * @property string $slug
  * @property int $module_id
- * @property int $user_id
  * @property int $category_id
+ * @property int $user_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * ---

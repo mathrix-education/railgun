@@ -64,7 +64,7 @@ class ChaptersController extends BaseController
         ]);
 
         // Check if all chapters should be returned.
-        $restrictToVisible = $scope !== "all" || !($request->user() !== null && $request->user()->isModerator());
+        $restrictToVisible = $scope !== "all" || !($request->user() !== null && $request->user()->tokenCan("redactor"));
 
         if ($restrictToVisible) {
             $query = $query->where("visible", "=", true);

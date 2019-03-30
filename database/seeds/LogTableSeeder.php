@@ -33,7 +33,10 @@ class LogTableSeeder extends BaseTableSeeder
         $logs = new Collection();
 
         $this->output->writeln("<comment>Generating:</comment> logs from {$users->count()} users");
-        $this->output->progressStart($users->count());
+
+        $progressBar = $this->output->createProgressBar($users->count());
+        $progressBar->setFormat("verbose");
+        $progressBar->start();
 
         /** @var User $user */
         foreach ($users as $user) {
@@ -69,9 +72,11 @@ class LogTableSeeder extends BaseTableSeeder
                 $dateIterator->addDay(1);
             }
 
-            $this->output->progressAdvance();
+            $progressBar->advance();
         }
-        $this->output->progressFinish();
+
+        $progressBar->finish();
+        $this->output->writeln("");
         $this->output->writeln("<info>Generated:</info> {$logs->count()} logs");
 
         // Seed generated array

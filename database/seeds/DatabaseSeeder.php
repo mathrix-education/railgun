@@ -30,7 +30,6 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->seedFromJson("countries");
         $this->seedFromJson("grades");
         $this->seedFromJson("disciplines");
-        $this->seedFromJson("discipline_grade");
         $this->seedFromFactory(Chapter::class, 30);
         $this->seedFromFactory(Notion::class, 90);
         $this->seedFromFactory(Activity::class, 270);

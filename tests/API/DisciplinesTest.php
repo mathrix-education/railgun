@@ -30,7 +30,6 @@ class DisciplinesTest extends APITestCase
         $discipline = Discipline::random();
         $pivot = Discipline::random(["id", "!=", $discipline->id]);
 
-        $discipline->grades()->update(["discipline_id" => $pivot->id]);
         $discipline->chapters()->update(["discipline_id" => $pivot->id]);
 
         $this->assertRestDeleteSuccess(["conditions" => ["id", "=", $discipline->id]]);

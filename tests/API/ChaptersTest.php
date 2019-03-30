@@ -54,7 +54,7 @@ class ChaptersTest extends APITestCase
      */
     public function testByGradeIdDisciplineId(): void
     {
-        $chapter = Chapter::random();
+        $chapter = Chapter::random(["visible", "=", true]);
         $uri = "/chapters/by-grade-discipline/{$chapter->grade_id}/{$chapter->discipline_id}";
 
         $this->autoMockScope("get", $uri);

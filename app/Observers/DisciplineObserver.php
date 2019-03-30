@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Discipline;
 use App\Models\Grade;
+use Illuminate\Support\Str;
 
 /**
  * Class DisciplineObserver.
@@ -24,7 +25,7 @@ class DisciplineObserver extends BaseObserver
         // Set the slug if needed
         if (empty($discipline->slug) ||
             ($discipline->isDirty("name") && !$discipline->isDirty("slug"))) {
-            $discipline->slug = str_slug($discipline->name);
+            $discipline->slug = Str::slug($discipline->name);
         }
 
         // Sync classes

@@ -18,7 +18,6 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @property string $name
  * @property string $slug
  * @property bool $beta
- * @property array $link
  * ---
  * @property Collection|Grade[] $grades
  * @property Collection|Chapter[] $chapters
@@ -26,14 +25,13 @@ use Mathrix\Lumen\Bases\BaseModel;
 class Discipline extends BaseModel
 {
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "name", "slug", "beta", "visible", "link"];
+    protected $fillable = ["id", "name", "slug", "beta", "visible"];
     /** @var array Validation rules */
     protected $rules = [
         "name" => "required|max:255",
         "slug" => "required|max:255",
         "beta" => "boolean"
     ];
-    protected $appends = ["visible"];
 
     /*
     |--------------------------------------------------------------------------
@@ -47,7 +45,8 @@ class Discipline extends BaseModel
      */
     public function grades(): BelongsToMany
     {
-        return $this->belongsToMany(Grade::class);
+        return $this->belongsToMany(Grade::class, "chapters")
+            ->groupBy(["grade_id", "discipline_id"]);
     }
 
 
@@ -59,24 +58,5 @@ class Discipline extends BaseModel
     public function chapters(): HasMany
     {
         return $this->hasMany(Chapter::class);
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Attributes
-    |--------------------------------------------------------------------------
-    */
-    /**
-     * @return bool
-     * @deprecated
-     */
-    public function getVisibleAttribute()
-    {
-        if (isset($this->pivot->attributes["visible"])) {
-            return !empty((bool)$this->pivot->attributes["visible"]);
-        } else {
-            return null;
-        }
     }
 }

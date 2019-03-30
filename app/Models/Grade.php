@@ -34,7 +34,7 @@ use Mathrix\Lumen\Bases\BaseModel;
 class Grade extends BaseModel
 {
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "name", "slug", "order", "visible", "parent_id", "country_id", "link"];
+    protected $fillable = ["id", "name", "slug", "order", "visible", "parent_id", "country_id"];
     /** @var array Validation rules */
     protected $rules = [
         "name" => "required|max:255",
@@ -118,9 +118,8 @@ class Grade extends BaseModel
      */
     public function disciplines(): BelongsToMany
     {
-        return $this->belongsToMany(Discipline::class)
-            ->withPivot("visible")
-            ->orderBy("discipline_grade.order");
+        return $this->belongsToMany(Discipline::class, "chapters")
+            ->groupBy(["grade_id", "discipline_id"]);
     }
 
 

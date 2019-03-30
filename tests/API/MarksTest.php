@@ -5,6 +5,7 @@ namespace Tests\API;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Passport\Passport;
+use PHPUnit\Framework\Constraint\IsType;
 
 /**
  * Class MarksTest.
@@ -37,8 +38,13 @@ class MarksTest extends APITestCase
 
         $this->assertResponseOk();
         $this->assertJsonResponseMatches([
-            "[*].status" => "to_revise",
-            "[*].markable.mark" => "to_revise"
+            "[*].country" => new IsType("object"),
+            "[*].discipline" => new IsType("object"),
+            "[*].grade" => new IsType("object"),
+            "[*].chapter" => new IsType("object"),
+            "[*].notion" => new IsType("object"),
+            "[*].activity" => new IsType("object"),
+            "[*].activity.mark" => "to_revise"
         ]);
     }
 
@@ -65,8 +71,13 @@ class MarksTest extends APITestCase
 
         $this->assertResponseOk();
         $this->assertJsonResponseMatches([
-            "[*].status" => "view",
-            "[*].markable.mark" => "view"
+            "[*].country" => new IsType("object"),
+            "[*].discipline" => new IsType("object"),
+            "[*].grade" => new IsType("object"),
+            "[*].chapter" => new IsType("object"),
+            "[*].notion" => new IsType("object"),
+            "[*].activity" => new IsType("object"),
+            "[*].activity.mark" => "view"
         ]);
     }
 }

@@ -24,7 +24,7 @@ $factory->define(Activity::class, function (Generator $faker) {
         "slug" => Str::slug($name),
         "type" => $faker->randomElement(Activity::TYPES),
         "visible" => $faker->boolean(95),
-        "order" => 0,
+        "order" => $faker->numberBetween(0, 100),
         "premium" => $faker->boolean(30),
         "reviewed" => $faker->boolean(),
         "notion_id" => Notion::random()->id,

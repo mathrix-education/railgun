@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Mathrix\Lumen\Bases\BaseModel;
@@ -33,9 +33,10 @@ use Mathrix\Lumen\Bases\BaseModel;
  * ---
  * @property Activity $activity
  * @property Collection|Comment[] $comments
- * @property Collection|Mark[] $marks
  * @property Collection|Log[] $logs
+ * @property Collection|Mark[] $marks
  * @property Collection|Product[] $products
+ * @property Collection|Report[] $reports
  */
 class Module extends BaseModel
 {
@@ -130,15 +131,6 @@ class Module extends BaseModel
 
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function marks()
-    {
-        return $this->morphMany(Mark::class, "markable");
-    }
-
-
-    /**
      * HasMany Comment.
      *
      * @return HasMany
@@ -150,6 +142,17 @@ class Module extends BaseModel
 
 
     /**
+     * MorphMany Mark.
+     *
+     * @return MorphMany
+     */
+    public function marks(): MorphMany
+    {
+        return $this->morphMany(Mark::class, "markable");
+    }
+
+
+    /**
      * HasMany Product.
      *
      * @return HasMany
@@ -157,6 +160,17 @@ class Module extends BaseModel
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
+    }
+
+
+    /**
+     * HasMany Report.
+     *
+     * @return HasMany
+     */
+    public function reports(): HasMany
+    {
+        return $this->hasMany(Report::class);
     }
 
 

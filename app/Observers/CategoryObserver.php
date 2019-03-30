@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Category;
+use Illuminate\Support\Str;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 
 /**
@@ -24,7 +25,7 @@ class CategoryObserver extends BaseObserver
         // Set the slug if needed
         if (empty($category->slug) ||
             ($category->isDirty("name") && !$category->isDirty("slug"))) {
-            $category->slug = str_slug($category->name);
+            $category->slug = Str::slug($category->name);
         }
 
         return true;

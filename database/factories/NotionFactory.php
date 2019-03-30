@@ -24,7 +24,7 @@ $factory->define(Notion::class, function (Generator $faker) {
         "slug" => Str::slug($name),
         "type" => $faker->randomElement(Notion::TYPES),
         "visible" => $faker->boolean(95),
-        "order" => 0,
+        "order" => $faker->numberBetween(0, 100),
         "chapter_id" => Chapter::random()->id,
         "created_at" => $createdAt,
         "updated_at" => $updatedAt

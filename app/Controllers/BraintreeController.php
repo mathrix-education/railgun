@@ -63,7 +63,7 @@ class BraintreeController extends BaseController
             "bt_payload" => "required",
         ]);
 
-        /** @var \Braintree_WebhookNotification $webhook */
+        /** @var WebhookNotification $webhook */
         $webhook = WebhookNotification::parse(
             $request->input("bt_signature"),
             $request->input("bt_payload")

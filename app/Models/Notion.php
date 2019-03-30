@@ -30,7 +30,15 @@ class Notion extends BaseModel
     public const TYPES = ["normal", "premium", "reminder", "further"];
 
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "name", "slug", "type", "visible", "link"];
+    protected $fillable = [
+        "id",
+        "name",
+        "slug",
+        "type",
+        "visible",
+        "order",
+        "chapter_id"
+    ];
     /** @var array The validation rules */
     protected $rules = [
         "name" => "required|max:255",

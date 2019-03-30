@@ -3,12 +3,14 @@
 namespace App\Controllers;
 
 use App\Models\Vote;
+use Exception;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Bases\BaseModel;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Exceptions\ValidationException;
 
 /**
  * Class VotesController.
@@ -29,8 +31,8 @@ class VotesController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400BadRequestException
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
-     * @throws \Exception
+     * @throws ValidationException
+     * @throws Exception
      */
     private function vote(Request $request, string $votableType, int $votableId, int $value)
     {
@@ -80,7 +82,7 @@ class VotesController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400BadRequestException
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
+     * @throws ValidationException
      */
     public function up(Request $request, string $votableType, int $votableId)
     {
@@ -98,7 +100,7 @@ class VotesController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400BadRequestException
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
+     * @throws ValidationException
      */
     public function down(Request $request, string $votableType, int $votableId)
     {

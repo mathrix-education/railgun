@@ -24,7 +24,7 @@ $factory->define(Module::class, function (Generator $faker) {
         "seo_title" => substr($faker->sentence, 0, -1),
         "seo_keywords" => implode(",", $faker->words),
         "seo_description" => $faker->sentence,
-        "order" => 0,
+        "order" => $faker->numberBetween(0, 100),
         "activity_id" => Activity::random()->id,
         "created_at" => $createdAt,
         "updated_at" => $updatedAt

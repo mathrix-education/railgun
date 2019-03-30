@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Product;
+use Illuminate\Support\Str;
 
 /**
  * Class ProductObserver.
@@ -23,7 +24,7 @@ class ProductObserver extends BaseObserver
         // Set the slug if needed
         if (empty($product->slug) ||
             ($product->isDirty("name") && !$product->isDirty("slug"))) {
-            $product->slug = str_slug($product->name);
+            $product->slug = Str::slug($product->name);
         }
 
         // Sync children
