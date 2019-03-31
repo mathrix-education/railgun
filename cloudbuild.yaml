@@ -13,19 +13,46 @@ substitutions:
 #options:
 #  machineType: 'N1_HIGHCPU_32'
 steps:
+  # Decrypt the SSH private key for composer git clone
+  # --------------------------------------------------
+  - id: 'gcloud:kms:decrypt'
+    name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - kms
+      - decrypt
+      - --ciphertext-file=deploy/id_rsa.enc
+      - --plaintext-file=/root/.ssh/id_rsa
+      - --location=global
+      - --keyring=mathrix-education-keyring
+      - --key=github-key
+    volumes:
+      - name: 'ssh'
+        path: /root/.ssh
+
   # Install composer
   # ----------------
   - id: 'composer:install'
     waitFor: ['-']
     name: 'eu.gcr.io/$PROJECT_ID/runner-composer-prestissimo'
+    entrypoint: 'ash'
     args:
-      - 'install'
-      - '--optimize-autoloader'
-      - '--no-interaction'
-      - '--no-suggest'
-      - '--no-progress'
-      - '--no-ansi'
-
+      - '-c'
+      - |
+        chmod 600 /root/.ssh/id_rsa
+        cat <<EOF >/root/.ssh/config
+        Hostname github.com
+        IdentityFile /root/.ssh/id_rsa
+        EOF
+        cp deploy/known_hosts /root/.ssh/known_hosts
+        composer install \
+          --optimize-autoloader
+          --no-interaction
+          --no-suggest
+          --no-progress
+          --no-ansi
+    volumes:
+      - name: 'ssh'
+        path: '/root/.ssh'
 
   # Run paratest in coverage mode
   # Hack to allow step to fail: https://github.com/GoogleCloudPlatform/cloud-builders/issues/253

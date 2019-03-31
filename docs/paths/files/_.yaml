@@ -1,0 +1,37 @@
+post:
+  tags:
+  - Files
+  summary: Upload
+  operationId: filesUpload
+  description: Upload a file to the CDN.
+  security:
+  - moderator: []
+  - admin: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            file:
+              description: The file content.
+              type: file
+            destination:
+              description: The file destination folder on the CDN.
+              type: string
+              example: test
+            name:
+              description: The filename on the CDN.
+              type: string
+              example: foo.jpg
+            force:
+              description: Force override if destination file already exist (`admin` only).
+              type: boolean
+              example: false
+  responses:
+    200:
+      description: The uploaded file metadata
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/File'

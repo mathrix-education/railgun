@@ -1,0 +1,101 @@
+openapi: 3.0.1
+info:
+  title: Mathrix Education SA API
+  version: 4.2.0
+  description: This is the official documentation of Mathrix Education SA API.
+  contact:
+    name: Mathieu Bour
+    email: mathieu.tin.bour@gmail.com
+  x-logo:
+    url: https://cdn.mathrix.fr/img/logo-redoc.png
+servers:
+- url: 'https://mathrix.fr/api'
+- url: 'https://dev.mathrix.fr/api'
+tags:
+- name: Activities
+  description: Activities API
+- name: Categories
+  description: Categories API
+- name: Chapters
+  description: Chapters API
+- name: Classes
+  description: Classes API
+- name: Comments
+  description: Comments API
+- name: Content
+  description: Content API
+- name: Countries
+  description: Countries API
+- name: Disciplines
+  description: Disciplines API
+- name: Discounts
+  description: Discounts API
+- name: Family Packs
+  description: Family Packs API
+- name: Files
+  description: Files API
+- name: Modules
+  description: Modules API
+- name: Notifications
+  description: Notifications API
+- name: Notions
+  description: Notions API
+- name: Paths
+  description: Paths API
+- name: Posts
+  description: Posts API
+- name: Products
+  description: Products API
+- name: Purchases
+  description: Purchases API
+- name: Quotes
+  description: Quotes API
+- name: Reports
+  description: Reports API
+- name: Scores
+  description: Scores API
+- name: Settings
+  description: Settings API
+- name: Users
+  description: Users API
+  # Braintree
+- name: Braintree Add-ons
+  description: Braintree add-ons API
+- name: Braintree global
+  description: Braintree global API
+- name: Braintree Plans
+  description: Braintree plans API
+- name: Braintree Subscriptions
+  description: Braintree subscriptions API
+- name: Braintree Transactions
+  description: Braintree transactions API
+components:
+  securitySchemes:
+    registered:
+      description: The standard user authorizations.
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    redactor:
+      description: The redactor authorizations.
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    moderator:
+      description: The moderator authorizations.
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    admin:
+      description: The administrator authorizations.
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  requestBodies:
+    $ref: ./requestBodies/index.yaml
+  responses:
+    $ref: ./responses/index.yaml
+  schemas:
+    $ref: ./schemas/index.yaml
+paths:
+  $ref: ./paths/index.yaml

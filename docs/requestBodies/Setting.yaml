@@ -1,0 +1,15 @@
+description: Setting
+type: object
+properties:
+  key:
+    description: The setting key.
+    type: string
+    example: youtube_live_id
+  value:
+    description: The setting value.
+    type: any
+    example: https://youtubne.com/channel/mathrix/live
+  visible:
+    description: The setting visibility.
+    type: boolean
+    example: false

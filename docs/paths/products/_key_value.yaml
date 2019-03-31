@@ -1,0 +1,30 @@
+get:
+  tags:
+    - Products
+  summary: Get a product by property
+  description: Get the first product which matches with the couple property, value.
+  operationId: productsGetKey
+  parameters:
+    - name: key
+      in: path
+      description: The property used.
+      required: true
+      schema:
+        type: string
+        example: image
+    - name: value
+      in: path
+      description: The value of the property.
+      required: true
+      schema:
+        type: int, number, boolean, string
+        example: https://cdn.mathrix.fr/products/example.jpg
+  responses:
+    200:
+      description: The requested product.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Product'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

@@ -1,0 +1,21 @@
+post:
+  tags:
+    - Classes
+  summary: Create a class
+  operationId: classesPost
+  security:
+    - moderator: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../index.yaml#/components/schemas/Class'
+  responses:
+    200:
+      description: The newly created class.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Class'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'

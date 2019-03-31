@@ -4,6 +4,7 @@ namespace Tests\API;
 
 use App\Models\Chapter;
 use App\Models\Grade;
+use App\Services\OpenAPI\Parser;
 use Mathrix\Lumen\Tests\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\Standard\StandardIndexTest;
 use Mathrix\Lumen\Tests\Standard\StandardPatchTest;
@@ -41,6 +42,11 @@ class GradesTest extends APITestCase
      */
     public function testBySlug(): void
     {
+        $parser = new Parser();
+
         $this->assertRestGetBySuccess("slug");
+
+        $this->assertJsonDocumentMatchesSchema($this->response->getContent(), $parser->getSchema("Grade"));
+
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -23,6 +25,8 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @property array $link
  * @property int|null $parent_id
  * @property int $country_id
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  * ---
  * @property Grade|null $parent
  * @property Country $country
@@ -43,7 +47,9 @@ class Grade extends BaseModel
         "visible" => "boolean",
         "country_id" => "required|exists:countries,id",
     ];
-
+    protected $casts = [
+        "visible" => "boolean"
+    ];
 
     /**
      * Get the cursus (ie. the grade itself and all its previous).

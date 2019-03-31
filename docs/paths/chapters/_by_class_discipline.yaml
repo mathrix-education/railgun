@@ -1,0 +1,38 @@
+get:
+  tags:
+  - Chapters
+  summary: By class & disicpline
+  operationId: chaptersByClassDiscipline
+  parameters:
+  - name: classId
+    in: path
+    description: The class id.
+    required: true
+    schema:
+      type: int
+      example: 11
+  - name: disciplineId
+    in: path
+    description: The disicpline id.
+    required: true
+    schema:
+      type: int
+      example: 14
+  - name: scope
+    in: path
+    description: The scope (used to bypass chapters visibility).
+    required: true
+    schema:
+      type: string
+      enum:
+      - all
+      example: all
+  responses:
+    200:
+      description: The chapters
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../index.yaml#/components/schemas/Chapter'

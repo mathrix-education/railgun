@@ -10,7 +10,6 @@ use Mathrix\Lumen\Tests\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\Standard\StandardIndexTest;
 use Mathrix\Lumen\Tests\Standard\StandardPatchTest;
 use Mathrix\Lumen\Tests\Standard\StandardPostTest;
-use Tests\API\APITestCase;
 
 /**
  * Class ActivitiesTest.

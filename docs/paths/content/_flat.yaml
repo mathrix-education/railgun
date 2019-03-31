@@ -1,0 +1,70 @@
+post:
+  tags:
+  - Content
+  operationId: contentFlat
+  summary: Flat
+  description: Get a flat map of a given content route (country/class/discipline/chapter/notion/activity/module)
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            country_slug:
+              description: The country slug.
+              type: string
+              example: fr
+            class_slug:
+              description: The class slug.
+              type: string
+              example: terminale-s
+            discipline_slug:
+              description: The discipline slug.
+              type: string
+              example: maths
+            chapter_slug:
+              description: The chapter slug.
+              type: string
+              example: limites-de-fonctions
+            notion_slug:
+              description: The notion slug.
+              type: string
+              example: limite-finie-et-infinie
+            activity_slug:
+              description: The activity slug.
+              type: string
+              example: limite-infinie-et-asymptote-horizontale-lorsque-x-tend-vers-linfini
+            module_id:
+              description: The module id.
+              type: number
+              example: 963
+          required:
+          - country_slug
+          - class_slug
+          - discipline_slug
+          - chapter_slug
+          - notion_slug
+          - activity_slug
+          - module_id
+  responses:
+    200:
+      description: The flat route.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              country:
+                $ref: '../../index.yaml#/components/schemas/Country'
+              class:
+                $ref: '../../index.yaml#/components/schemas/Class'
+              discipline:
+                $ref: '../../index.yaml#/components/schemas/Discipline'
+              chapter:
+                $ref: '../../index.yaml#/components/schemas/Chapter'
+              notion:
+                $ref: '../../index.yaml#/components/schemas/Notion'
+              activity:
+                $ref: '../../index.yaml#/components/schemas/Activity'
+              module:
+                $ref: '../../index.yaml#/components/schemas/ModuleWithSeoIndex'

@@ -1,0 +1,29 @@
+get:
+  tags:
+  - Categories
+  summary: Get all categories (pagination)
+  operationId: categoriesIndexPagination
+  parameters:
+  - name: page
+    in: path
+    description: The page of categories
+    required: true
+    schema:
+      type: int
+      default: 1
+  - name: perPage
+    in: path
+    description: The number of categories per page
+    required: true
+    schema:
+      type: int
+      default: 100
+  responses:
+    200:
+      description: An array of categories.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../index.yaml#/components/schemas/Category'

@@ -1,0 +1,56 @@
+description: Activity
+type: object
+properties:
+  id:
+    description: The activity id.
+    type: integer
+    example: 22
+  name:
+    description: The activity name.
+    type: string
+    example: lorem ipsum
+  slug:
+    description: The activity slug.
+    type: string
+    example: lorem-ipsum
+  seo_title:
+    description: The activity title for SEO.
+    type: string
+    example: lorem_ipsum
+  seo_description:
+    description: The activity description for SEO.
+    type: string
+    example: lorem_ipsum
+  seo_keywords:
+    description: The activity keywords for SEO.
+    type: string
+    example: lorem,ipsum
+  type:
+    description: The activity type.
+    type: string
+    enum:
+      - video
+      - course
+      - test
+      - exercise
+      - summary
+      - flashcard
+  visible:
+    description: The activity visibility.
+    type: boolean
+    example: true
+  premium:
+    description: The activity premium state.
+    type: boolean
+    example: true
+  reviewed:
+    description: If the activty has been reviewed.
+    type: boolean
+    example: false
+  status:
+    description: The activity status __per user__.
+    type: string
+    enum:
+      - view
+      - to_revise
+      - completed

@@ -1,0 +1,344 @@
+# ----------
+# Activities
+# ----------
+/activities:
+  $ref: ./activities/_.yaml
+/activities/search:
+  $ref: ./activities/_search.yaml
+/activities/{?page}/{?perPage}:
+  $ref: ./activities/_page_perPage.yaml
+/activities/by-route/{countryId}/{classId}/{disciplineId}/{chapterId}/{notionId}:
+  $ref: ./activities/_by-route.yaml
+/activities/to-revise:
+  $ref: ./activities/_to-revise.yaml
+/activities/view:
+  $ref: ./activities/_view.yaml
+/activities/by-{what}/{id}/ids:
+  $ref: ./activities/_by_ids.yaml
+/activities/{key}/{value}:
+  $ref: ./activities/_key_value.yaml
+/activities/{activityId}:
+  $ref: ./activities/_activityId.yaml
+/activities/{activityId}/mark:
+  $ref: ./activities/_activityId_mark.yaml
+/activities/{activityId}/unmark:
+  $ref: ./activities/_activityId_unmark.yaml
+
+
+# ----------
+# Categories
+# ----------
+/categories:
+  $ref: ./categories/_.yaml
+/categories/{page}/{perPage}:
+  $ref: ./categories/_page_perPage.yaml
+/categories/{key}/{value}:
+  $ref: ./categories/_key_value.yaml
+/categories/{categoryId}:
+  $ref: ./categories/_categoryId.yaml
+
+
+# --------
+# Chapters
+# --------
+/chapters:
+  $ref: ./chapters/_.yaml
+/by-class-discipline/{classId}/{disciplineId}/{?scope}:
+  $ref: ./chapters/_by_class_discipline.yaml
+/chapters/{page}/{perPage}:
+  $ref: ./chapters/_page_perPage.yaml
+/chapters/slug/{chapterSlug}/by-class-slug/{classSlug}:
+  $ref: ./chapters/_slug.yaml
+/chapters/recursive/{chapterId}:
+  $ref: ./chapters/_recursive.yaml
+/chapters/{key}/{value}:
+  $ref: ./chapters/_key_value.yaml
+/chapters/{chapterId}:
+  $ref: ./chapters/_chapterId.yaml
+
+
+# -------
+# Classes
+# -------
+/classes:
+  $ref: ./classes/_.yaml
+/classes/{page}/{perPage}:
+  $ref: ./classes/_page_perPage.yaml
+/classes/{key}/{value}:
+  $ref: ./classes/_key_value.yaml
+/classes/{classId}:
+  $ref: ./classes/_classId.yaml
+
+
+# --------
+# Comments
+# --------
+/comments:
+  $ref: ./comments/_.yaml
+/comments/search:
+  $ref: ./comments/_search.yaml
+/comments/{page}/{perPage}:
+  $ref: ./comments/_page_perPage.yaml
+/comments/{commentId}:
+  $ref: ./comments/_commentId.yaml
+
+
+# -------
+# Content
+# -------
+/content/upload:
+  $ref: ./content/_upload.yaml
+/content/flat:
+  $ref: ./content/_flat.yaml
+/content/routes:
+  $ref: ./content/_routes.yaml
+
+
+# ---------
+# Countries
+# ---------
+/countries:
+  $ref: ./countries/_.yaml
+/countries/{key}/{value}:
+  $ref: ./countries/_key_value.yaml
+/countries/{countryId}:
+  $ref: ./countries/_countryId.yaml
+
+
+# -----------
+# Disciplines
+# -----------
+/disciplines:
+  $ref: ./disciplines/_.yaml
+/disciplines/{key}/{value}:
+  $ref: ./disciplines/_key_value.yaml
+/disciplines/by-class/{classId}:
+  $ref: ./disciplines/_by-class_classId.yaml
+/disciplines/{disciplineId}:
+  $ref: ./disciplines/_disciplineId.yaml
+
+
+# --------
+# Discount
+# --------
+/discounts:
+  $ref: ./discounts/_.yaml
+/discounts/{key}/{value}:
+  $ref: ./discounts/_key_value.yaml
+/discounts/{discountId}:
+  $ref: ./discounts/_discountId.yaml
+
+
+# ------------
+# Family packs
+# ------------
+/family-packs/{familyPackId}:
+  $ref: ./family-packs/_familyPackId.yaml
+/family-packs/{familyPackId}/children:
+  $ref: ./family-packs/_familyPackId_children.yaml
+
+
+# -----
+# Files
+# -----
+/files:
+  $ref: ./files/_.yaml
+/files/explore/{path}:
+  $ref: ./files/_explore_path.yaml
+/files/{path}:
+  $ref: ./files/_path.yaml
+
+
+# -------
+# Modules
+# -------
+/modules:
+  $ref: ./modules/_.yaml
+/content/{moduleId}/index:
+  $ref: ./modules/_moduleId_no-index.yaml
+/modules/by-route/{countryId}/{classId}/{disciplineId}/{chapterId}/{notionId}/{activityId}:
+  $ref: ./modules/_by_route_contrydId_classId_disciplineId_chapterId_notionId_activityId.yaml
+/modules/{key}/{value}:
+  $ref: ./modules/_key_value.yaml
+/modules/{moduleId}/routes:
+  $ref: ./modules/_moduleId_routes.yaml
+/modules/{moduleId}:
+  $ref: ./modules/_moduleId.yaml
+/modules/{moduleId}/mark:
+  $ref: ./modules/_moduleId_mark.yaml
+
+
+# -------------
+# Notifications
+# -------------
+/notifications/all/{?page}/{?perPage}:
+  $ref: ./notifications/_all_page_perPage.yaml
+/notifications/read/{?page}/{?perPage}:
+  $ref: ./notifications/_read_page_perPage.yaml
+/notifications/unread/{?page}/{?perPage}:
+  $ref: ./notifications/_unread_page_perPage.yaml
+/notifications/{notificationId}/mark/{type}:
+  $ref: ./notifications/_notificationId_mark_type.yaml
+/notifications/all/mark/read:
+  $ref: ./notifications/_all_mark_read.yaml
+
+
+# -------
+# Notions
+# -------
+/notions:
+  $ref: ./notions/_.yaml
+/notions/{key}/{value}:
+  $ref: ./notions/_key_value.yaml
+/notions/{notionId}:
+  $ref: ./notions/_notionId.yaml
+
+
+# -----
+# Paths
+# -----
+/paths:
+  $ref: ./paths/_index.yaml
+
+
+# -----
+# Posts
+# -----
+/posts:
+  $ref: ./posts/_.yaml
+/posts/{key}/{value}:
+  $ref: ./posts/_key_value.yaml
+/posts/{postId}:
+  $ref: ./posts/_postId.yaml
+
+
+# --------
+# Products
+# --------
+/products/buy:
+  $ref: ./products/_buy.yaml
+/products/sale:
+  $ref: ./products/_sale.yaml
+/products:
+  $ref: ./products/_.yaml
+/products/{key}/{value}:
+  $ref: ./products/_key_value.yaml
+/products/{productId}/recursive:
+  $ref: ./products/_productId_recursive.yaml
+/products/{productId}:
+  $ref: ./products/_productId.yaml
+
+
+# ---------
+# Purchases
+# ---------
+/purchases:
+  $ref: ./purchases/_.yaml
+/purchases/{purchasId}:
+  $ref: ./purchases/_purchaseId.yaml
+
+
+# ------
+# Quotes
+# ------
+/quotes:
+  $ref: ./quotes/_.yaml
+/quotes/{quoteId}:
+  $ref: ./quotes/_quoteId.yaml
+
+
+# -------
+# Reports
+# -------
+/reports:
+  $ref: ./reports/_.yaml
+/reports/{reportId}:
+  $ref: ./reports/_reportId.yaml
+
+
+# ------
+# Scores
+# ------
+/scores/{game}:
+  $ref: ./scores/_game.yaml
+/scores/{game}/token:
+  $ref: ./scores/_game_token.yaml
+/scores/{game}/top/{?interval}/{?count}:
+  $ref: ./scores/_game_top.yaml
+/scores/{game}/around/{score}/{?delta}:
+  $ref: ./scores/_game_around_score_delta.yaml
+/scores/{game}/personal-best:
+  $ref: ./scores/_game_personal-best.yaml
+
+
+# --------
+# Settings
+# --------
+/settings:
+  $ref: ./settings/_.yaml
+/settings/{key}:
+  $ref: ./settings/_key.yaml
+
+
+# -----
+# Users
+# -----
+/users/login:
+  $ref: ./users/_login.yaml
+/users/{userId}:
+  $ref: ./users/_userId.yaml
+/users/{key}/{value}:
+  $ref: ./users/_key_value.yaml
+/users/{userId}/payment-method:
+  $ref: ./users/_userId_payment-method.yaml
+
+
+# -----------------
+# Braintree Add-ons
+# -----------------
+/add-ons:
+  $ref: ./add-ons/_.yaml
+/add-ons/{addOnId}:
+  $ref: ./add-ons/_addOnId.yaml
+
+
+# --------------------
+# Braintree global API
+# --------------------
+/braintree/client-token:
+  $ref: ./braintree/_client-token.yaml
+
+
+# -----------------------
+# Braintree Subscriptions
+# -----------------------
+/plans:
+  $ref: ./plans/_.yaml
+/plans/{planId}:
+  $ref: ./plans/_planId.yaml
+
+
+# -----------------------
+# Braintree Subscriptions
+# -----------------------
+/subscriptions:
+  $ref: ./subscriptions/_.yaml
+/subscriptions/{subscriptionId}/cancel:
+  $ref: ./subscriptions/_subscriptionId_cancel.yaml
+/subscriptions/estimate/{planId}:
+  $ref: ./subscriptions/_estimate_planId.yaml
+/subscriptions/by-user/{userId}:
+  $ref: ./subscriptions/_by-user_userId.yaml
+/subscriptions/{subscriptionId}:
+  $ref: ./subscriptions/_subscriptionId.yaml
+
+
+# ----------------------
+# Braintree Transactions
+# ----------------------
+/transactions/{transactionId}/refund:
+  $ref: ./transactions/_transactionId_refund.yaml
+/transactions/by-user/{userId}:
+  $ref: ./transactions/_by-user_userId.yaml
+/transactions/{transactionId}:
+  $ref: ./transactions/_transactionId.yaml

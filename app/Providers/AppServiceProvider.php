@@ -16,6 +16,7 @@ use App\Policies\FilePolicy;
 use App\Policies\NotificationPolicy;
 use Backup\BackupServiceProvider;
 use Barryvdh\Cors\ServiceProvider as CorsServiceProvider;
+use Carbon\Carbon;
 use Dusterio\LumenPassport\PassportServiceProvider as LumenPassportServiceProvider;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Filesystem\FilesystemServiceProvider;
@@ -84,6 +85,8 @@ class AppServiceProvider extends ServiceProvider
             // Notifications
             "comment_answer" => CommentAnswerNotification::class
         ]);
+
+        Carbon::setToStringFormat("c");
     }
 
 

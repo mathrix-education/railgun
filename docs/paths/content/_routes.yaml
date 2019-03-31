@@ -1,0 +1,17 @@
+get:
+  tags:
+  - Content
+  operationId: contentRoutes
+  summary: Routes
+  description: >-
+    Get the application content routes as a CSV file. The column headers are the following:
+    `uri`, `country.name`, `discipline.name`, `chapter.name`, `notion.name`, `activity.name`, `module.id`
+  security:
+  - admin: []
+  responses:
+    200:
+      description: The application content routes (csv file)
+      content:
+        text/csv:
+          schema:
+            data: string

@@ -1,0 +1,87 @@
+get:
+  tags:
+    - Disciplines
+  summary: Get a discipline
+  operationId: disciplinesGet
+  parameters:
+    - name: disciplineId
+      in: path
+      description: The discipline id.
+      required: true
+      schema:
+        type: int
+        example: 21
+  responses:
+    200:
+      description: The discipline country.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Discipline'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+patch:
+  tags:
+    - Disciplines
+  description: Edit a discipline by its `id`.
+  summary: Edit a discipline (not implemented)
+  operationId: disciplineEdit
+  security:
+    - moderator: []
+  parameters:
+    - name: disciplineId
+      in: path
+      description: The discipline id.
+      required: true
+      schema:
+        type: int
+        example: 11
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../index.yaml#/components/requestBodies/Discipline'
+  responses:
+    200:
+      description: The edited discipline.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Discipline'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
+delete:
+  tags:
+    - Disciplines
+  summary: Delete a discipline (not implemented)
+  operationId: disciplinesDelete
+  security:
+    - admin: []
+  parameters:
+    - name: disciplineId
+      in: path
+      description: The discipline id.
+      required: true
+      schema:
+        type: int
+        example: 6
+  responses:
+    200:
+      description: The deletion result.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                description: If the deletion was sucessful.
+                type: boolean
+                default: true
+              message:
+                description: The deletion message.
+                type: string
+                example: Discipline id 6 was successfully deleted.
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

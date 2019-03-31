@@ -1,0 +1,87 @@
+get:
+  tags:
+    - Comments
+  summary: Get a comment
+  operationId: commentsGet
+  parameters:
+    - name: commentId
+      in: path
+      description: The comment id.
+      required: true
+      schema:
+        type: int
+        example: 34
+  responses:
+    200:
+      description: The requested comment.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Comment'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+patch:
+  tags:
+    - Comments
+  summary: Edit a comment
+  operationId: commentsPatch
+  security:
+    - registered: []
+    - moderator: []
+  parameters:
+    - name: commentId
+      in: path
+      description: The comment id.
+      required: true
+      schema:
+        type: int
+        example: 5
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../index.yaml#/components/requestBodies/Comment'
+  responses:
+    200:
+      description: The patched comment.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Comment'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
+delete:
+  tags:
+    - Comments
+  summary: Delete a comment
+  operationId: commentsDelete
+  security:
+    - moderator: []
+  parameters:
+    - name: commentId
+      in: path
+      description: The comment id.
+      required: true
+      schema:
+        type: int
+        example: 5
+  responses:
+    200:
+      description: The deletion result.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                description: If the deletion was sucessful.
+                type: boolean
+                default: true
+              message:
+                description: The deletion message.
+                type: string
+                example: Comment id 5 was successfully deleted.
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

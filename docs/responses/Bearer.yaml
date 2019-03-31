@@ -1,0 +1,24 @@
+description: Bearer access and refresh token.
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        token_type:
+          decription: The token type. Will always be `Bearer`.
+          type: string
+          example: Bearer
+        expires_in:
+          description: The `access_token` duration in seconds.
+          type: integer
+          example: 86400
+        access_token:
+          description: >-
+            The access token which has to be provided in the headers of every request which requires privileges.
+          type: string
+          example: Bearer eysdnkcqslwjdsdfksdjlwxcsdjxfhcjsdxfhcjdsbxdkczkleqsfchdfcglfce...
+        refresh_token:
+          description: >-
+            The refresh token which can be used to get a new `access_token` without prompting user for his credentials.
+          type: string
+          example: Bearer eysdnkcqslwjdsdfksdjlwxcsdjxfhcjsdxfhcjdsbxdkczkleqsfchdfcglfce...

@@ -1,0 +1,86 @@
+get:
+  tags:
+    - Chapters
+  summary: Get a chapter
+  operationId: chaptersGet
+  parameters:
+    - name: chapterId
+      in: path
+      description: The chapter id.
+      required: true
+      schema:
+        type: int
+        example: 34
+  responses:
+    200:
+      description: The requested chapter.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Chapter'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+patch:
+  tags:
+    - Chapters
+  summary: Edit a chapter
+  operationId: chaptersPatch
+  security:
+    - moderator: []
+  parameters:
+    - name: chapterId
+      in: path
+      description: The chapter id.
+      required: true
+      schema:
+        type: int
+        example: 25
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../index.yaml#/components/requestBodies/Chapter'
+  responses:
+    200:
+      description: The patched chapter.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Chapter'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
+delete:
+  tags:
+    - Chapters
+  summary: Delete a chapter
+  operationId: chaptersDelete
+  security:
+    - admin: []
+  parameters:
+    - name: chapterId
+      in: path
+      description: The chapter id.
+      required: true
+      schema:
+        type: int
+        example: 25
+  responses:
+    200:
+      description: The deletion result.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                description: If the deletion was sucessful.
+                type: boolean
+                default: true
+              message:
+                description: The deletion message.
+                type: string
+                example: Chapter id 25 was successfully deleted.
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

@@ -1,0 +1,20 @@
+get:
+  tags:
+  - Products
+  summary: Get a product recursively
+  operationId: productsGetRecrusive
+  parameters:
+  - name: productId
+    in: path
+    description: The product id
+    required: true
+    schema:
+      type: int
+      example: 34
+  responses:
+    200:
+      description: The product and its children
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/ProductWithChildren'

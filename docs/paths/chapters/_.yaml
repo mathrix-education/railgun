@@ -1,0 +1,21 @@
+post:
+  tags:
+  - Chapters
+  summary: Create a chapter
+  operationId: chaptersPost
+  security:
+    - moderator: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../index.yaml#/components/requestBodies/Chapter'
+  responses:
+    200:
+      description: The newly created chapter.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Chapter'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'

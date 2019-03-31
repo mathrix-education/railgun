@@ -1,0 +1,45 @@
+description: Module
+type: object
+properties:
+  type:
+    description: The module type.
+    type: string
+    enum:
+      - id
+      - course
+      - test
+      - mcq
+      - mcq-table
+      - match
+      - fill
+      - flashcard
+  content:
+    description: The module content.
+    type: string
+    example: Epic module content
+  questions:
+    description: The module questions.
+    type: array
+    items:
+      type: string
+  choices:
+    description: The module choices.
+    type: array
+    items:
+      type: string
+  corrections:
+    description: The module questions.
+    type: array
+    items:
+      type: integer
+  solutions:
+    description: The module solutions.
+    type: array
+    items:
+      type: any
+  options:
+    description: The module options.
+    type: any
+  visible:
+    description: The module visibility.
+    type: boolean

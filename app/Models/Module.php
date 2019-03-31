@@ -164,6 +164,28 @@ class Module extends BaseModel
 
 
     /**
+     * HasMany Post.
+     *
+     * @return HasMany
+     */
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
+
+
+    /**
+     * HasMany Reference.
+     *
+     * @return HasMany
+     */
+    public function references(): HasMany
+    {
+        return $this->hasMany(Reference::class);
+    }
+
+
+    /**
      * HasMany Report.
      *
      * @return HasMany
@@ -172,6 +194,7 @@ class Module extends BaseModel
     {
         return $this->hasMany(Report::class);
     }
+
 
 
     /*

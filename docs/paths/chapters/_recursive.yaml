@@ -1,0 +1,23 @@
+get:
+  tags:
+    - Chapters
+  summary: Get a chapter and its linked models
+  description: Get the notions, activities and modules of a chapter.
+  operationId: chaptersRecursive
+  parameters:
+    - name: chapterId
+      in: path
+      description: The chapter id.
+      required: true
+      schema:
+        type: int
+        example: 39
+  responses:
+    200:
+      description: The requested notions, activities and modules.
+      content:
+        application/json:
+          schema:
+            type: array
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

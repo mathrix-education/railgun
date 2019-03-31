@@ -1,0 +1,12 @@
+post:
+  tags:
+    - Braintree global
+  summary: Handle Braintree webhooks
+  operationId: webhook
+  responses:
+    200:
+      description: The notification of success.
+      content:
+        application/json:
+          schema:
+            type: string

@@ -1,0 +1,7 @@
+description: Purchase
+type: object
+properties:
+  product_id:
+    description: The product id which belongs to the purchase.
+    type: integer
+    example: 43
