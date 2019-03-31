@@ -45,10 +45,10 @@ steps:
         EOF
         cp deploy/known_hosts /root/.ssh/known_hosts
         composer install \
-          --optimize-autoloader
-          --no-interaction
-          --no-suggest
-          --no-progress
+          --optimize-autoloader \
+          --no-interaction \
+          --no-suggest \
+          --no-progress \
           --no-ansi
     volumes:
       - name: 'ssh'
