@@ -32,7 +32,7 @@ steps:
   # Install composer
   # ----------------
   - id: 'composer:install'
-    waitFor: ['-']
+    waitFor: ['gcloud:kms:decrypt']
     name: 'eu.gcr.io/$PROJECT_ID/runner-composer-prestissimo'
     entrypoint: 'ash'
     args:
