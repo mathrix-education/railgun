@@ -8,6 +8,11 @@ try {
 } catch (Dotenv\Exception\InvalidPathException $e) {
 }
 
+// APP_VERSION
+$version = "unknown";
+$composerData = json_decode(file_get_contents(__DIR__ . "/../composer.json"));
+putenv("APP_VERSION={$composerData->version}");
+
 
 // APP_BUILD
 $build = "unknown";
@@ -20,6 +25,7 @@ if (file_exists(__DIR__ . "/../build.txt")) {
 }
 
 putenv("APP_BUILD=$build");
+
 
 /*
 |--------------------------------------------------------------------------
