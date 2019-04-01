@@ -1,5 +1,6 @@
 description: Report
 type: object
+additionalProperties: false
 properties:
   id:
     description: The report id.

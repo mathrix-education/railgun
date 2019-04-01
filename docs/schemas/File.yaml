@@ -1,5 +1,6 @@
 description: File
 type: object
+additionalProperties: false
 properties:
   type:
     description: The file type.

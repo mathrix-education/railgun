@@ -1,5 +1,6 @@
 description: Purchase
 type: object
+additionalProperties: false
 properties:
   id:
     description: The purchase id.

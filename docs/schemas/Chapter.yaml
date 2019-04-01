@@ -1,5 +1,6 @@
 description: Chapter
 type: object
+additionalProperties: false
 properties:
   id:
     description: The chapter id.

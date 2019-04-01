@@ -1,5 +1,6 @@
 description: Vote
 type: object
+additionalProperties: false
 properties:
   id:
     description: The vote id.

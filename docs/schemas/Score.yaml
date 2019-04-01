@@ -1,5 +1,6 @@
 description: Score.
 type: object
+additionalProperties: false
 properties:
   id:
     description: The score id.

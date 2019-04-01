@@ -1,5 +1,6 @@
 description: Module
 type: object
+additionalProperties: false
 properties:
   id:
     description: The module id.

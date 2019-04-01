@@ -1,5 +1,6 @@
 description: Mark
 type: object
+additionalProperties: false
 properties:
   id:
     description: The mark id.

@@ -1,5 +1,6 @@
 description: Notion
 type: object
+additionalProperties: false
 properties:
   id:
     description: The notion id.

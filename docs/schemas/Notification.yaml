@@ -1,5 +1,6 @@
 description: Notification.
 type: object
+additionalProperties: false
 properties:
   id:
     description: The notification id.

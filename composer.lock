@@ -2851,7 +2851,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:mathrix-education/lumen-chainer.git",
-                "reference": "5b7394e9827367172cbd35ab7a36daefbc0abf9e"
+                "reference": "a71578b981c8b35a82a7ae193011cfdcdf153003"
             },
             "require": {
                 "ext-json": "*",
@@ -2874,7 +2874,7 @@
                 }
             ],
             "description": "A small util which be used to make multiple API request at once.",
-            "time": "2019-03-26T16:38:05+00:00"
+            "time": "2019-04-01T09:19:29+00:00"
         },
         {
             "name": "mathrix/lumen-zero",

@@ -1,5 +1,6 @@
 description: Country.
 type: object
+additionalProperties: false
 properties:
   id:
     description: The contry id.
