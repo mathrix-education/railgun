@@ -43,6 +43,9 @@ class Chapter extends BaseModel
         "discipline_id" => "required|exists:disciplines,id",
         "visible" => "boolean",
     ];
+    protected $casts = [
+        "visible" => "boolean"
+    ];
     /** @var array Virtual fields */
     protected $appends = ["activity_count", "activity_to_revise", "activity_completed"];
 

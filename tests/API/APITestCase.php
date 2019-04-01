@@ -2,12 +2,13 @@
 
 namespace Tests\API;
 
+use Exception;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Mathrix\Lumen\Bases\BaseModel;
+use Mathrix\Lumen\Tests\REST\RESTTrait;
 use Mathrix\Lumen\Tests\Traits\DebugTrait;
-use Mathrix\Lumen\Tests\Traits\PassportTrait;
-use Mathrix\Lumen\Tests\Traits\RESTTrait;
 use Tests\BaseTestCase;
+use Throwable;
 
 /**
  * Class API5TestCase.
@@ -42,11 +43,11 @@ class APITestCase extends BaseTestCase
     /**
      * Handle response printing.
      *
-     * @param \Exception|\Throwable $e
+     * @param Exception|Throwable $e
      *
-     * @throws \Throwable
+     * @throws Throwable
      */
-    protected function onNotSuccessfulTest(\Throwable $e)
+    protected function onNotSuccessfulTest(Throwable $e)
     {
         $this->debug();
         parent::onNotSuccessfulTest($e);

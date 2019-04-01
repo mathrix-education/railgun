@@ -46,8 +46,6 @@ class Comment extends BaseModel
 {
     use Votable, SoftDeletes;
 
-    /** @var bool If timestamps (created_at and updated_at) should be used */
-    public $timestamps = true;
     /** @var array The default relations included */
     public $with = [
         "user:id,type,username,firstname,level,grade_id",

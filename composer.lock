@@ -2882,15 +2882,15 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:mathrix-education/lumen-zero.git",
-                "reference": "76e326e8316a22ac6d063c9295dec929625ec25e"
+                "reference": "3a2f5c5b466ac951d1e59262fad77c1676bcb59d"
             },
             "require": {
                 "dusterio/lumen-passport": "^0.2.9",
                 "ext-json": "*",
                 "ext-pdo": "*",
-                "illuminate/mail": "^5.7",
-                "illuminate/notifications": "^5.7",
-                "laravel/lumen-framework": "5.7.*",
+                "illuminate/mail": "^5.7|^5.8",
+                "illuminate/notifications": "^5.7|^5.8",
+                "laravel/lumen-framework": "5.7.*|5.8.*",
                 "php": ">=7.2",
                 "symfony/yaml": "^4.2"
             },
@@ -2915,7 +2915,7 @@
                 }
             ],
             "description": "The main library for Mathrix Lumen REST APIs.",
-            "time": "2019-03-31T18:23:51+00:00"
+            "time": "2019-04-01T08:51:38+00:00"
         },
         {
             "name": "monolog/monolog",

@@ -32,6 +32,10 @@ class Discipline extends BaseModel
         "slug" => "required|max:255",
         "beta" => "boolean"
     ];
+    protected $casts = [
+        "visible" => "boolean",
+        "beta" => "boolean"
+    ];
 
     /*
     |--------------------------------------------------------------------------

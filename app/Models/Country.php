@@ -32,6 +32,9 @@ class Country extends BaseModel
         "slug" => "required|max:255",
         "visible" => "boolean",
     ];
+    protected $casts = [
+        "visible" => "boolean"
+    ];
 
     /*
     |--------------------------------------------------------------------------
