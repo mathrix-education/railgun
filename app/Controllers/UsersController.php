@@ -44,7 +44,6 @@ class UsersController extends BaseController
     {
         /** @var User $user */
         $request->merge([
-            "type" => "registered",
             "points" => 0,
             "settings" => [
                 "sound" => true,
@@ -54,8 +53,12 @@ class UsersController extends BaseController
         // Build and save the user
         $user = new User();
 
-        if ($request->user() instanceof User && $user->tokenCan("admin")) {
-            $user->unguardAttributes(["type"]);
+        $user->unguardAttributes(["type"]);
+
+        if (!$request->user() instanceof User || !$user->tokenCan("admin")) {
+            $request->merge([
+                "type" => "registered"
+            ]);
         }
 
         $user->fill($request->all())
