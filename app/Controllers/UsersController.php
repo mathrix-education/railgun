@@ -44,6 +44,7 @@ class UsersController extends BaseController
     {
         /** @var User $user */
         $request->merge([
+            "type" => "registered",
             "points" => 0,
             "settings" => [
                 "sound" => true,
