@@ -23,39 +23,48 @@ class ChainerTest extends APITestCase
 
         $this->json("post", "/chain", [
             "requests" => [
-                "module" => [
+                [
+                    "name" => "module",
                     "method" => "get",
                     "url" => "/modules/{$moduleId}"
                 ],
-                "activity" => [
+                [
+                    "name" => "activity",
                     "method" => "get",
                     "url" => "/activities/{module.activity_id}"
                 ],
-                "notion" => [
+                [
+                    "name" => "notion",
                     "method" => "get",
                     "url" => "/notions/{activity.notion_id}"
                 ],
-                "chapter" => [
+                [
+                    "name" => "chapter",
                     "method" => "get",
                     "url" => "/chapters/{notion.chapter_id}"
                 ],
-                "discipline" => [
+                [
+                    "name" => "discipline",
                     "method" => "get",
                     "url" => "/disciplines/{chapter.discipline_id}"
                 ],
-                "grade" => [
+                [
+                    "name" => "grade",
                     "method" => "get",
                     "url" => "/grades/{chapter.grade_id}"
                 ],
-                "country" => [
+                [
+                    "name" => "country",
                     "method" => "get",
                     "url" => "/countries/{grade.country_id}"
                 ],
-                "comments" => [
+                [
+                    "name" => "comments",
                     "method" => "get",
                     "url" => "/comments/by-module/{$moduleId}"
                 ],
-                "chapter_recursive" => [
+                [
+                    "name" => "chapter_recursive",
                     "method" => "get",
                     "url" => "/chapters/{chapter.id}/recursive"
                 ],

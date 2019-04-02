@@ -33,8 +33,6 @@ class ActivitiesRegistrar extends BaseRegistrar
             "$controller@by");
 
         $this->group(["middleware" => "scope:registered"], function () use ($controller) {
-            $this->get("activities/view", "$controller@view");
-            $this->get("activities/to-revise", "$controller@toRevise");
             $this->patch("activities/{id:[1-9]\d*}/mark", "$controller@mark");
             $this->patch("activities/{id:[1-9]\d*}/unmark", "$controller@unmark");
         });
