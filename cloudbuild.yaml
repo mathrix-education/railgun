@@ -117,7 +117,7 @@ steps:
   - id: 'docker:push:api'
     waitFor: ['docker:build:api', 'docker-compose:tests']
     name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'eu.gcr.io/$PROJECT_ID/$_IMAGE:$SHORT_SHA']
+    args: ['push', 'eu.gcr.io/$PROJECT_ID/$_API_IMAGE:$SHORT_SHA']
 
 
   # Push the image docs to the registry with commit tag
@@ -125,7 +125,7 @@ steps:
   - id: 'docker:push:docs'
     waitFor: ['docker:build:docs', 'docker-compose:tests']
     name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'eu.gcr.io/$PROJECT_ID/_DOCS_IMAGE:$SHORT_SHA']
+    args: ['push', 'eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:$SHORT_SHA']
 
 
   # Send cover results to SonarQube
