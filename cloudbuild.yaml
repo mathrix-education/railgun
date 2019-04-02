@@ -82,8 +82,7 @@ steps:
     name: 'gcr.io/cloud-builders/docker'
     args: ['build',
            '--build-arg', 'COMMIT_SHORT_SHA=$SHORT_SHA',
-           '-t', 'eu.gcr.io/$PROJECT_ID/$_IMAGE:$SHORT_SHA',
-           '-t', 'eu.gcr.io/$PROJECT_ID/$_IMAGE:latest-$BRANCH_NAME',
+           '-t', 'eu.gcr.io/$PROJECT_ID/$_API_IMAGE:$SHORT_SHA',
            '.']
 
 
@@ -95,9 +94,8 @@ steps:
     args: ['build',
            '-f', 'docs/Dockerfile',
            '--build-arg', 'COMMIT_SHORT_SHA=$SHORT_SHA',
-           '-t', 'eu.gcr.io/$PROJECT_ID/$_IMAGE:$SHORT_SHA',
-           '-t', 'eu.gcr.io/$PROJECT_ID/$_IMAGE:latest-$BRANCH_NAME',
-           './docs/']
+           '-t', 'eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:$SHORT_SHA',
+           '.']
 
 
   # Run paratest in coverage mode

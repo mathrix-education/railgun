@@ -28,7 +28,7 @@
   "scripts": {
     "docs:generate": "node docs/generate.js",
     "docs:serve": "yarn run docs:generate && yarn run redoc-cli serve docs/out/index.yaml",
-    "docs:compile": "yarn run docs:generate && yarn run redoc-cli bundle docs/out/index.yaml",
+    "docs:compile": "yarn run docs:generate && yarn run redoc-cli bundle docs/out/index.yaml && mv redoc-static.html docs/out/index.html",
     "mails:compile": "node resources/views/mjml/compile.js"
   },
   "devDependencies": {
