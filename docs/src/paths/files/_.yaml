@@ -1,0 +1,21 @@
+post:
+  summary: Upload
+  description: Upload a file to the CDN.
+  security:
+    - bearer: [moderator]
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            file:
+              description: The file content.
+              type: file
+  responses:
+    200:
+      description: The uploaded file metadata
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/File'

@@ -2,6 +2,3 @@ schemas:
   dirs:
     - source: "Braintree"
       prefix: "Braintree_"
-tags:
-  additional: []
-  noPlural: ['Braintree']

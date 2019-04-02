@@ -14,23 +14,8 @@ servers:
 
 components:
   securitySchemes:
-    registered:
+    bearer:
       description: The standard user authorizations.
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-    redactor:
-      description: The redactor authorizations.
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-    moderator:
-      description: The moderator authorizations.
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-    admin:
-      description: The administrator authorizations.
       type: http
       scheme: bearer
       bearerFormat: JWT

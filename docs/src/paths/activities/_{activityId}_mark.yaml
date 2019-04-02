@@ -1,11 +1,8 @@
 patch:
-  tags:
-    - Activities
   security:
-    - registered: []
-  operationId: activitiesMark
+    - bearer: [registered]
   summary: Mark an activity
-  description: Mark an activity using its path.
+  description: Mark a activity.
   parameters:
     - name: activityId
       in: path
@@ -14,49 +11,9 @@ patch:
       schema:
         type: int
         example: 1655
-  requestBody:
-    content:
-      application/json:
-        schema:
-          type: object
-          properties:
-            path:
-              description: The path.
-              type: object
-              properties:
-                country_id:
-                  description: The country id.
-                  type: integer
-                  example: 1
-                class_id:
-                  description: The class id.
-                  type: integer
-                  example: 5
-                discipline_id:
-                  description: The discipline id.
-                  type: integer
-                  example: 7
-                chapter_id:
-                  description: The chapter id.
-                  type: integer
-                  example: 16
-                notion_id:
-                  description: The notion id.
-                  type: integer
-                  example: 125
-            status:
-              description: The mark status.
-              type: string
-              enum:
-                - view
-                - to_revise
-                - completed
-          required:
-            - path
-            - status
   responses:
     200:
-      description: The _Mark_.
+      description: The marked activity.
       content:
         application/json:
           schema:

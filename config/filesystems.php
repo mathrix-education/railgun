@@ -1,19 +1,13 @@
 <?php
-
 return [
     "default" => env("FILESYSTEM_DRIVER", "cdn"),
-
     "disks" => [
-        "storage" => [
-            "driver" => "local",
-            "root" => storage_path(),
-            "visibility" => "public",
-        ],
         "cdn" => [
-            "driver" => "local",
-            "root" => storage_path("cdn"),
-            "url" => env("APP_CDN"),
-            "visibility" => "public",
+            "driver" => "gcs",
+            "project_id" => "mathrix-education",
+            "key_file" => storage_path("google-cloud-storage/key.json"),
+            "bucket" => env("GOOGLE_CLOUD_STORAGE_BUCKET", "your-bucket"),
+            "visibility" => "private"
         ]
     ],
 ];

@@ -44,10 +44,10 @@
     "league/flysystem": " ~1.0",
     "mathrix/lumen-chainer": "dev-master",
     "mathrix/lumen-zero": "dev-master",
-    "paulvl/backup": "3.*",
     "ramsey/uuid": "^3.8",
     "sentry/sentry-laravel": "^0.8.0",
     "stripe/stripe-php": "^6.15",
+    "superbalist/laravel-google-cloud-storage": "^2.1",
     "vlucas/phpdotenv": "~2.2",
     "zendframework/zend-diactoros": "~1.0"
   },

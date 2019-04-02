@@ -1,0 +1,21 @@
+description: Directory
+type: object
+additionalProperties: false
+properties:
+  type:
+    description: The directory type.
+    type: string
+    enum:
+    - dir
+  path:
+    description: The directory path on the CDN.
+    type: string
+    example: test/
+  timestamp:
+    description: The directory last-modified timestamp.
+    type: integer
+    example: 1540371288
+  url:
+    description: The directory public URL, starting with the CDN root.
+    type: string
+    example: https://cdn.mathrix.fr/test/

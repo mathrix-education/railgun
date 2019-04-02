@@ -14,9 +14,7 @@ use App\Observers\NotificationObserver;
 use App\Policies\BasePolicy;
 use App\Policies\FilePolicy;
 use App\Policies\NotificationPolicy;
-use Backup\BackupServiceProvider;
 use Barryvdh\Cors\ServiceProvider as CorsServiceProvider;
-use Carbon\Carbon;
 use Dusterio\LumenPassport\PassportServiceProvider as LumenPassportServiceProvider;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Filesystem\FilesystemServiceProvider;
@@ -30,6 +28,7 @@ use Laravelium\Sitemap\SitemapServiceProvider;
 use Mathrix\Lumen\Providers\ObserverServiceProvider;
 use Mathrix\Lumen\Providers\PolicyServiceProvider;
 use Mathrix\Lumen\Providers\RegistrarServiceProvider;
+use Superbalist\LaravelGoogleCloudStorage\GoogleCloudStorageServiceProvider;
 use Vluzrmos\Tinker\TinkerServiceProvider;
 
 /**
@@ -54,7 +53,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(StripeServiceProvider::class);
 
         // Vendor service providers
-        $this->app->register(BackupServiceProvider::class);
         $this->app->register(CorsServiceProvider::class);
         $this->app->register(FilesystemServiceProvider::class);
         $this->app->register(MailServiceProvider::class);
@@ -62,8 +60,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(PassportServiceProvider::class);
         $this->app->register(LumenPassportServiceProvider::class);
         $this->app->register(SitemapServiceProvider::class);
+        $this->app->register(GoogleCloudStorageServiceProvider::class);
 
-        // Mathrix Zero Providers
+        // Mathrix Lumen Zero Providers
         $this->registerObservers();
         $this->registerPolicies();
         $this->app->register(RegistrarServiceProvider::class);
@@ -85,8 +84,6 @@ class AppServiceProvider extends ServiceProvider
             // Notifications
             "comment_answer" => CommentAnswerNotification::class
         ]);
-
-        Carbon::setToStringFormat("c");
     }
 
 

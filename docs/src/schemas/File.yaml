@@ -7,7 +7,6 @@ properties:
     type: string
     enum:
     - file
-    - dir
   path:
     description: The file path on the CDN.
     type: string
@@ -16,6 +15,10 @@ properties:
     description: The file last-modified timestamp.
     type: integer
     example: 1540371288
+  size:
+    description: The file size in bytes.
+    type: integer
+    example: 4096
   url:
     description: The file public URL, starting with the CDN root.
     type: string

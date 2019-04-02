@@ -22,7 +22,7 @@ class FilesRegistrar extends BaseRegistrar
         $this->group(["middleware" => "scope:moderator", "prefix" => "files"], function () {
             $controller = FilesController::class;
 
-            $this->post("", "$controller@upload");
+            $this->post("{path:[a-zA-Z0-9\_\-\/\.]+}", "$controller@upload");
             $this->get("explore/[{directory:[a-zA-Z0-9\_\-\/\.]+}]", "$controller@explore");
             $this->get("[{path:[a-zA-Z0-9\_\-\/\.]+}]", "$controller@info");
             $this->patch("[{path:[a-zA-Z0-9\_\-\/\.]+}]", "$controller@rename");

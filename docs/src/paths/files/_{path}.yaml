@@ -1,0 +1,88 @@
+get:
+  summary: Info
+  description: Display the metadata of a file on the CDN.
+  security:
+    - bearer: [moderator]
+  parameters:
+  - name: path
+    in: path
+    description: The file path on the CDN.
+    required: true
+    schema:
+      type: string
+      example: test/foo.jpg
+  responses:
+    200:
+      description: A file/directory metadata.
+      content:
+        application/json:
+          schema:
+            anyOf:
+              - $ref: '../../index.yaml#/components/schemas/Directory'
+              - $ref: '../../index.yaml#/components/schemas/File'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_FileNotFound'
+patch:
+  summary: Rename/Move
+  description: Rename or move a file on the CDN.
+  security:
+    - bearer: [moderator]
+  parameters:
+  - name: path
+    in: path
+    description: The file path on the CDN.
+    required: true
+    schema:
+      type: string
+      example: test/foo.jpg
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            destination:
+              description: >-
+                The file destination folder on the CDN. Cannot starts with `trash`, see
+                [Files API Delete](#operation/filesDelete) instead.
+              type: string
+              example: test/foo2.jpg
+  responses:
+    200:
+      description: The patched file metadata.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/File'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_FileNotFound'
+delete:
+  summary: Delete
+  description: Delete a file on the CDN.
+  security:
+    - bearer: [moderator]
+  parameters:
+  - name: path
+    in: path
+    description: The file path on the CDN.
+    required: true
+    schema:
+      type: string
+      example: test/foo.jpg
+  responses:
+    200:
+      description: The deletetion result.
+      content:
+        application/json:
+          schema:
+            success:
+              description: If the file deletion was successful.
+              type: boolean
+              example: true
+            message:
+              description: The deletion message.
+              type: string
+              example: File `test/foo.jpg` was successfully deleted.
+
+    404:
+      $ref: '../../index.yaml#/components/responses/404_FileNotFound'

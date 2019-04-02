@@ -1,9 +1,6 @@
 get:
-  tags:
-  - Activities
   summary: Index activities
   description: Retrive all activities by ascending ids, paginated.
-  operationId: GET/activities/{page}/{perPage}
   parameters:
   - name: page
     in: path

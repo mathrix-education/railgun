@@ -185,13 +185,11 @@ class FilesTest extends APITestCase
      */
     public function testUpload()
     {
-        $uri = "/files";
+        $uri = "/files/test/avatar.jpg";
         $this->autoMockScope("post", $uri);
 
         $this->call("post", $uri, [
             "file" => UploadedFile::fake()->image("avatar.jpg"),
-            "destination" => "test",
-            "name" => "avatar.jpg"
         ]);
 
         $this->assertResponseOk();
@@ -238,7 +236,7 @@ class FilesTest extends APITestCase
 
         $this->assertResponseOk();
         $this->assertJsonDocumentMatches($this->response->getContent(), [
-            "status" => "success",
+            "success" => true,
             "message" => new IsType("string")
         ]);
         self::getDisk()->assertMissing($file);

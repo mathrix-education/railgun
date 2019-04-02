@@ -1,11 +1,8 @@
-delete:
-  tags:
-    - Activities
+patch:
   security:
-    - registered: []
-  operationId: activitiesUnmark
+    - bearer: [registered]
   summary: Unmark an activity
-  description: Unmark an activity using its path.
+  description: Unmark an activity.
   parameters:
     - name: activityId
       in: path
@@ -14,42 +11,9 @@ delete:
       schema:
         type: int
         example: 1655
-  requestBody:
-    content:
-      application/json:
-        schema:
-          type: object
-          properties:
-            path:
-              description: The path.
-              type: object
-              properties:
-                country_id:
-                  description: The country id.
-                  type: integer
-                  example: 1
-                class_id:
-                  description: The class id.
-                  type: integer
-                  example: 5
-                discipline_id:
-                  description: The discipline id.
-                  type: integer
-                  example: 7
-                chapter_id:
-                  description: The chapter id.
-                  type: integer
-                  example: 16
-                notion_id:
-                  description: The notion id.
-                  type: integer
-                  example: 125
-          required:
-            - path
-            - status
   responses:
     200:
-      description: The unmark results.
+      description: The un-marked activity.
       content:
         application/json:
           schema:

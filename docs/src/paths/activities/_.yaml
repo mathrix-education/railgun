@@ -1,10 +1,7 @@
 post:
-  tags:
-  - Activities
   summary: Create an activity
-  operationId: POST/activities
   security:
-  - moderator: []
+  - bearer: [moderator]
   requestBody:
     content:
       application/json:

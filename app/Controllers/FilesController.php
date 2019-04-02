@@ -66,29 +66,26 @@ class FilesController extends BaseController
      * POST /files
      *
      * @param Request $request The Illuminate HTTP request.
+     * @param string $path The destination path.
      *
      * @return JsonResponse
      * @throws FileNotFoundException
      * @throws ValidationException
      */
-    public function upload(Request $request): JsonResponse
+    public function upload(Request $request, string $path): JsonResponse
     {
         $request->user()->canOrFail("upload", FilePolicy::class);
 
         $this->validate($request, [
             "file" => "required|file|max:15360|mimes:jpeg,jpg,png,gif,pdf,mp3,mp4",
-            "destination" => "required",
-            "name" => "required",
-            "force" => "boolean"
         ]);
 
         $disk = $this->getDisk();
-        $destination = trim($request->input("destination"), "/");
-        $name = trim($request->input("name"), "/");
-        $path = "$destination/$name";
+        $destination = trim(dirname($path), "/");
+        $name = trim(basename($path), "/");
 
         /** @var UploadedFile $file */
-        $file = $request->file("file") ?? $request->input("file");
+        $file = $request->file("file") ?? $request->input("file") ?? $request->json("file");
 
         if ($this->getDisk()->exists($path)) {
             $disk->delete($destination);
@@ -233,8 +230,8 @@ class FilesController extends BaseController
             throw new Http400BadRequestException(null, "Unable to delete $path.");
         } else {
             return new JsonResponse([
-                "status" => "success",
-                "message" => "File $path successfully deleted."
+                "success" => true,
+                "message" => "File $path was successfully deleted."
             ]);
         }
     }

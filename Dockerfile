@@ -8,7 +8,6 @@ USER root
 WORKDIR /var/www/
 
 EXPOSE 80
-EXPOSE 9000
 
 RUN apk -U add \
     nginx \
@@ -41,8 +40,8 @@ ADD . .
 RUN echo "${COMMIT_SHORT_SHA}" >> build.txt
 
 # Clean
-RUN rm -rf \
-    /var/cache/apk/*
+RUN rm -rf /var/cache/apk/* && \
+    rm /var/www/storage/google-cloud-storage.json
 
 HEALTHCHECK CMD curl -f http://localhost
 

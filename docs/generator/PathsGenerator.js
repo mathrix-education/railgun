@@ -2,8 +2,7 @@ const BaseGenerator = require("./BaseGenerator");
 
 module.exports = class PathsGenerator extends BaseGenerator {
     process() {
-        //const folders = this.fs.readdirSync(`${this.src}/paths`);
-        const folders = ["activities"];
+        const folders = this.fs.readdirSync(`${this.src}/paths`);
         const paths = {};
 
         folders.map(models => {
@@ -36,10 +35,30 @@ module.exports = class PathsGenerator extends BaseGenerator {
                     $ref: `../${pathFile}`
                 };
 
-                this.writeYaml(pathFile, this.readYaml(pathFile));
+                const data = this.readYaml(pathFile);
+                const tag = models.charAt(0).toUpperCase() + models.slice(1);
+                this.writeYaml(pathFile, this.pipe(data, tag, url));
             });
         });
 
         this.writeYaml("includes/paths.yaml", paths);
+    }
+
+    /**
+     * Pipe path object.
+     * @param {*} data
+     * @param {string} tag
+     * @param {string} url
+     * @returns {*}
+     */
+    pipe(data, tag, url) {
+        ["post", "put", "get", "patch", "delete"].map(method => {
+            if (data.hasOwnProperty(method)) {
+                data[method]["tags"] = [tag];
+                data[method]["operationId"] = `${method}${url}`;
+            }
+        });
+
+        return data;
     }
 };

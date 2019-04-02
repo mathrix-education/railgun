@@ -1,8 +1,5 @@
 get:
-  tags:
-  - Activities
   summary: Get an activity
-  operationId: GET/activities/{activityId}
   parameters:
   - name: activityId
     in: path
@@ -21,10 +18,7 @@ get:
     404:
       $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
 patch:
-  tags:
-    - Activities
   summary: Edit an activity
-  operationId: PATCH/activities/{activityId}
   security:
     - moderator: []
   parameters:
@@ -52,10 +46,7 @@ patch:
     422:
       $ref: '../../index.yaml#/components/responses/422_ModelValidation'
 delete:
-  tags:
-    - Activities
   summary: Delete an activity
-  operationId: DELETE/activities/{activityId}
   security:
     - moderator: []
   parameters:

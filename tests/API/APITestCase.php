@@ -52,21 +52,4 @@ class APITestCase extends BaseTestCase
         $this->debug();
         parent::onNotSuccessfulTest($e);
     }
-
-
-    /**
-     * Generate the array signature from the model signature, considering that it exists.
-     *
-     * @return array
-     */
-    protected function getSignatureArray(): array
-    {
-        $signature = method_exists($this, "getSignature") ? $this->getSignature() : [];
-        $keys = array_keys($signature);
-        $keysPatched = array_map(function ($k) {
-            return "data.[*].$k";
-        }, $keys);
-
-        return array_combine($keysPatched, array_values($signature));
-    }
 }
