@@ -30,6 +30,7 @@ class ProductsRegistrar extends BaseRegistrar
         ]);
 
         $this->get("products/{id:[1-9]\d*}/recursive", "$controller@recursive");
+        $this->get("products/slug/{productSlug:[a-z0-9\-]+}", "$controller@getBySlug");
         $this->get("products/buyable[/{type:all|training}]", "$controller@buyable");
 
         $this->post("products/buy", [

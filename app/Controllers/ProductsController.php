@@ -87,6 +87,23 @@ class ProductsController extends BaseController
 
 
     /**
+     * GET /products/slug/{productSlug}
+     *
+     * @param string $productSlug The products slug.
+     *
+     * @return JsonResponse
+     */
+    public function getBySlug(string $productSlug)
+    {
+        $product = Product::query()
+            ->where("slug", "=", $productSlug)
+            ->firstOrFail();
+
+        return new JsonResponse($product);
+    }
+
+
+    /**
      * GET /products/buyable/{type}/{page}/{perPage}
      * Get buyable products.
      *

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f3e8f1ee53ad17c92e713ccb6a60fcd3",
+    "content-hash": "edddc6ba1cdd507c29c8d042492ff901",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -60,16 +60,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.90.13",
+            "version": "3.91.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "69d688e81420d623270aa8f5103ac20032685675"
+                "reference": "b33f6ed79c207f5dfd38f187337a31e4c7619699"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/69d688e81420d623270aa8f5103ac20032685675",
-                "reference": "69d688e81420d623270aa8f5103ac20032685675",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/b33f6ed79c207f5dfd38f187337a31e4c7619699",
+                "reference": "b33f6ed79c207f5dfd38f187337a31e4c7619699",
                 "shasum": ""
             },
             "require": {
@@ -138,7 +138,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-03-29T18:42:16+00:00"
+            "time": "2019-04-01T18:20:23+00:00"
         },
         {
             "name": "barryvdh/laravel-cors",
@@ -7197,63 +7197,6 @@
                 "shell"
             ],
             "time": "2018-10-13T15:16:03+00:00"
-        },
-        {
-            "name": "rebilly/openapi-php",
-            "version": "0.6.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Rebilly/openapi-php.git",
-                "reference": "0d2a979833e24cacd53c92e613d5e0a0d82d254f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Rebilly/openapi-php/zipball/0d2a979833e24cacd53c92e613d5e0a0d82d254f",
-                "reference": "0d2a979833e24cacd53c92e613d5e0a0d82d254f",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "justinrainbow/json-schema": "~5.2",
-                "php": "^7.1",
-                "phpunit/phpunit": "~7.5",
-                "psr/http-message": "^1.0"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "~2.0",
-                "guzzlehttp/guzzle": "~6.2",
-                "scrutinizer/ocular": "~1.1"
-            },
-            "suggest": {
-                "guzzlehttp/guzzle": "~6.2"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Rebilly\\OpenAPI\\": [
-                        "src"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Veaceslav Medvedev",
-                    "email": "slavcopost@gmail.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "OpenAPI Specification SDK for PHP",
-            "homepage": "https://github.com/rebilly/openapi-php/",
-            "time": "2018-12-18T17:19:27+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",

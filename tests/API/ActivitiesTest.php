@@ -20,7 +20,7 @@ use Mathrix\Lumen\Tests\Standard\StandardPostTest;
  */
 class ActivitiesTest extends APITestCase
 {
-    use StandardIndexTest, StandardGetTest, StandardPostTest, StandardPatchTest;
+    use StandardIndexTest, StandardPostTest, StandardGetTest, StandardPatchTest;
 
 
     /**

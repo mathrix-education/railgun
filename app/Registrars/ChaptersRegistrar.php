@@ -28,10 +28,6 @@ class ChaptersRegistrar extends BaseRegistrar
             "delete" => "admin"
         ]);
 
-        // Removed for now since we do not really know if it is useful.
-        /*$this->get("chapters/by-{what:???}[/{page:\d+}/{perPage:[1-9]\d*}]",
-            "$controller@by");*/
-
         $this->get("chapters/{id:[1-9]\d*}/recursive", "$controller@recursive");
         $this->get("chapters/by-grade-discipline/{gradeId:[1-9]\d*}/{disciplineId:[1-9]\d*}[/{scope:all}]",
             "$controller@byGradeIdDisciplineId");

@@ -4,14 +4,19 @@
 # Author: Mathieu Bour
 # ====================
 substitutions:
-  _IMAGE: 'education-api'
-  _SONARQUBE_HOST_URL: 'https://sonarqube.mathrix.fr'
-  _SONARQUBE_TOKEN: 'a030445727da3c9dc5513a8f1c76223def619a5f'
-  _SONARQUBE_PROJECT_KEY: 'mathrix-education-api'
-  _GKE_COMPUTE_ZONE: 'europe-west1-b'
-  _GKE_CLUSTER: 'mathrix-education-cluster'
-#options:
-#  machineType: 'N1_HIGHCPU_32'
+  # SonarQube
+  _SONARQUBE_PARENT_BRANCH:
+  # API
+  _API_IMAGE: 'education-api'
+  _API_DEPLOYMENT:
+  _API_CONTAINER:
+  # Docs
+  _DOCS_IMAGE: 'education-api-docs'
+  _DOCS_DEPLOYMENT:
+  _DOCS_CONTAINER:
+  # CLOUDSDK
+  _CLOUDSDK_COMPUTE_ZONE: 'europe-west1-b'
+  _CLOUDSDK_CONTAINER_CLUSTER: 'mathrix-education-cluster'
 steps:
   # Decrypt the SSH private key for composer git clone
   # --------------------------------------------------
@@ -29,8 +34,9 @@ steps:
       - name: 'ssh'
         path: /root/.ssh
 
-  # Install composer
-  # ----------------
+
+  # Install PHP dependencies using composer
+  # ---------------------------------------
   - id: 'composer:install'
     waitFor: ['gcloud:kms:decrypt']
     name: 'eu.gcr.io/$PROJECT_ID/runner-composer-prestissimo'
@@ -54,32 +60,25 @@ steps:
       - name: 'ssh'
         path: '/root/.ssh'
 
-  # Run paratest in coverage mode
-  # Hack to allow step to fail: https://github.com/GoogleCloudPlatform/cloud-builders/issues/253
-  # --------------------------------------------------------------------------------------------
-#  - id: 'docker-compose:tests'
-#    waitFor: ['composer:install']
-#    name: 'eu.gcr.io/$PROJECT_ID/runner-docker-compose'
-#    entrypoint: 'sh'
-#    args:
-#      - '-c'
-#      - |
-#        docker-compose up --abort-on-container-exit || exit 0
 
-  # Send cover results to SonarQube
-  # ------------------------------
-#  - id: 'sonar-scanner'
-#    waitFor: ['docker-compose:tests']
-#    name: 'eu.gcr.io/$PROJECT_ID/runner-sonar-scanner:php'
-#    args:
-#      - '-Dsonar.projectVersion=$SHORT_SHA'
-#      - '-Dsonar.branch.name=$BRANCH_NAME'
+  # Install Node dependencies using yarn
+  # ------------------------------------
+  - id: 'node:compile'
+    waitFor: ['-']
+    name: 'node:11-alpine'
+    entrypoint: 'ash'
+    args:
+      - 'c'
+      - |
+        yarn install
+        yarn run docs:compile
+        yarn run mails:compile
 
 
-  # Meanwhile, begin the image build
-  # --------------------------------
-  - id: 'docker:build'
-    waitFor: ['composer:install']
+  # Build API image
+  # ---------------
+  - id: 'docker:build:api'
+    waitFor: ['composer:install', 'node:compile']
     name: 'gcr.io/cloud-builders/docker'
     args: ['build',
            '--build-arg', 'COMMIT_SHORT_SHA=$SHORT_SHA',
@@ -88,32 +87,76 @@ steps:
            '.']
 
 
-  # Push the image to the registry with commit tag
-  # ----------------------------------------------
-  - id: 'docker:push:short-sha'
-#    waitFor: ['docker:build', 'docker-compose:tests']
-    waitFor: ['docker:build']
+  # Build docs image
+  # ----------------
+  - id: 'docker:build:docs'
+    waitFor: ['composer:install', 'node:compile']
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['build',
+           '-f', 'docs/Dockerfile',
+           '--build-arg', 'COMMIT_SHORT_SHA=$SHORT_SHA',
+           '-t', 'eu.gcr.io/$PROJECT_ID/$_IMAGE:$SHORT_SHA',
+           '-t', 'eu.gcr.io/$PROJECT_ID/$_IMAGE:latest-$BRANCH_NAME',
+           './docs/']
+
+
+  # Run paratest in coverage mode
+  # Hack to allow step to fail: https://github.com/GoogleCloudPlatform/cloud-builders/issues/253
+  # --------------------------------------------------------------------------------------------
+  - id: 'docker-compose:tests'
+    waitFor: ['composer:install', 'node:compile']
+    name: 'eu.gcr.io/$PROJECT_ID/runner-docker-compose'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        echo "Skipped for now"
+  #        docker-compose up --abort-on-container-exit || exit 0
+
+
+  # Push the image API to the registry with commit tag
+  # --------------------------------------------------
+  - id: 'docker:push:api'
+    waitFor: ['docker:build:api', 'docker-compose:tests']
     name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'eu.gcr.io/$PROJECT_ID/$_IMAGE:$SHORT_SHA']
 
 
-  # Also tag add the branch latest tag
-  # ----------------------------------
-  - id: 'gcloud:add-tag:latest'
-    waitFor: ['docker:push:short-sha']
-    name: 'gcr.io/cloud-builders/gcloud'
-    args: ['container', 'images', 'add-tag',
-           'eu.gcr.io/$PROJECT_ID/$_IMAGE:$SHORT_SHA',
-           'eu.gcr.io/$PROJECT_ID/$_IMAGE:latest-$BRANCH_NAME']
+  # Push the image docs to the registry with commit tag
+  # ---------------------------------------------------
+  - id: 'docker:push:docs'
+    waitFor: ['docker:build:docs', 'docker-compose:tests']
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'eu.gcr.io/$PROJECT_ID/_DOCS_IMAGE:$SHORT_SHA']
 
 
-  # Deploy to the dev environment
+  # Send cover results to SonarQube
   # ------------------------------
-  - id: 'kubectl:deploy'
-    waitFor: ['docker:push:short-sha']
+  - id: 'sonar-scanner'
+    waitFor: ['docker-compose:tests']
+    name: 'eu.gcr.io/$PROJECT_ID/runner-sonar-scanner:php'
+    args:
+      - '-Dsonar.projectVersion=$SHORT_SHA'
+      - '-Dsonar.branch.name=$BRANCH_NAME'
+
+
+  # Deploy API
+  # ------------------------------
+  - id: 'kubectl:deploy:api'
     name: 'gcr.io/cloud-builders/kubectl'
-    args: ['set', 'image', 'deployment', '$_GKE_DEPLOYMENT',
-           '$_GKE_CONTAINER=eu.gcr.io/$PROJECT_ID/$_IMAGE:$SHORT_SHA']
+    args: ['set', 'image', 'deployment', '$_API_DEPLOYMENT',
+           '$_API_CONTAINER=eu.gcr.io/$PROJECT_ID/$_API_IMAGE:$SHORT_SHA']
     env:
-      - 'CLOUDSDK_COMPUTE_ZONE=$_GKE_COMPUTE_ZONE'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=$_GKE_CLUSTER'
+      - 'CLOUDSDK_COMPUTE_ZONE=$_CLOUDSDK_COMPUTE_ZONE'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLOUDSDK_CONTAINER_CLUSTER'
+
+
+  # Deploy docs
+  # -----------
+  - id: 'kubectl:deploy:docs'
+    name: 'gcr.io/cloud-builders/kubectl'
+    args: ['set', 'image', 'deployment', '$_DOCS_DEPLOYMENT',
+           '$_DOCS_CONTAINER=eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:$SHORT_SHA']
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=$_CLOUDSDK_COMPUTE_ZONE'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLOUDSDK_CONTAINER_CLUSTER'

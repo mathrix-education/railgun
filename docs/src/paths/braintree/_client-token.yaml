@@ -1,0 +1,16 @@
+get:
+  tags:
+  - Braintree
+  summary: Get the generated Client Token for Braintree
+  operationId: braintree
+  responses:
+    200:
+      description: The Braintree Client Token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              token:
+                description: The Braintree Client Token
+                type: string

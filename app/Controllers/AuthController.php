@@ -14,6 +14,7 @@ use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Exceptions\ValidationException;
 use Psr\Http\Message\ServerRequestInterface;
+use stdClass;
 use Zend\Diactoros\Response as ZendResponse;
 
 /**
@@ -58,7 +59,7 @@ class AuthController extends BaseController
         /** @var IlluminateResponse $response */
         $response = $controller->issueToken($request);
 
-        $body = new \stdClass();
+        $body = new stdClass();
         $status = null;
         $headers = [];
 
