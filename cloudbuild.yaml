@@ -68,7 +68,7 @@ steps:
     name: 'node:11-alpine'
     entrypoint: 'ash'
     args:
-      - 'c'
+      - '-c'
       - |
         yarn install
         yarn run docs:compile
