@@ -37,6 +37,22 @@ class Discipline extends BaseModel
         "beta" => "boolean"
     ];
 
+
+    /**
+     * Remove the pivot column. Sounds like a hack, we should be careful.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $data = parent::toArray();
+        if (isset($data["pivot"])) {
+            unset($data["pivot"]);
+        }
+
+        return $data;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Relations

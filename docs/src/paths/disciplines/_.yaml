@@ -1,0 +1,18 @@
+post:
+  summary: Post a discipline
+  security:
+    - bearer: [admin]
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../index.yaml#/components/schemas/Discipline'
+  responses:
+    200:
+      description: The newly created discipline.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Discipline'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'

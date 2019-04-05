@@ -17,12 +17,12 @@ get:
                 example: 4
                 readOnly: true
               per_page:
-                description: The number of activties per page.
+                description: The number of activities per page.
                 type: integer
                 example: 100
                 readOnly: true
               total:
-                description: The total number of activties processed.
+                description: The total number of activities processed.
                 type: integer
                 example: 1845
                 readOnly: true
