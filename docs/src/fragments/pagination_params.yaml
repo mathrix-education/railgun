@@ -1,0 +1,15 @@
+parameters:
+  - name: page
+    in: path
+    description: The page (starts at 0).
+    schema:
+      type: int
+    example: 4
+    required: true
+  - name: perPage
+    in: path
+    description: The number of models per page.
+    schema:
+      type: int
+    example: 100
+    required: true

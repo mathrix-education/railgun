@@ -1,19 +1,7 @@
 get:
+  $extends: ../../fragments/pagination_params.yaml
   summary: Paginate comments
   description: Retrive all comments by ascending ids, paginated.
-  parameters:
-    - name: page
-      in: path
-      description: The page of comments.
-      schema:
-        type: int
-        default: 1
-    - name: perPage
-      in: path
-      description: The number of comments per page.
-      schema:
-        type: int
-        default: 100
   responses:
     200:
       description: The comments in a paginator.

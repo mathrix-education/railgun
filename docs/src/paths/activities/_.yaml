@@ -1,7 +1,7 @@
 post:
   summary: Post an activity
   security:
-  - bearer: [moderator]
+    - bearer: [moderator]
   requestBody:
     content:
       application/json:

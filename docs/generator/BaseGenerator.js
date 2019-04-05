@@ -21,7 +21,52 @@ module.exports = class BaseGenerator {
      * @returns {*} The data
      */
     readYaml(file) {
-        return this.yaml.parse(this.fs.readFileSync(`${this.src}/${file}`, {encoding: "utf8"}));
+        const path = `${this.src}/${file}`;
+
+        const parsed = this.yaml.parse(this.fs.readFileSync(path, {encoding: "utf8"}));
+
+        return this.ext(parsed, path);
+    }
+
+    ext(schema, dir) {
+        if (typeof schema === "object" && schema !== null) {
+            if (schema.hasOwnProperty("$extends")) {
+                const schemaDir = this.path.dirname(dir).replace(`${this.src}`, "");
+                const extended = this.readYaml(`${schemaDir}/${schema.$extends}`);
+
+                const merged = this.merge(extended, schema);
+                delete merged["$extends"];
+
+                return merged;
+            } else {
+                Object.keys(schema).map(k => {
+                    schema[k] = this.ext(schema[k], dir);
+                });
+            }
+        }
+
+        return schema;
+    }
+
+    merge(...objects) {
+        const isObject = obj => obj && typeof obj === 'object';
+
+        return objects.reduce((prev, obj) => {
+            Object.keys(obj).forEach(key => {
+                const pVal = prev[key];
+                const oVal = obj[key];
+
+                if (Array.isArray(pVal) && Array.isArray(oVal)) {
+                    prev[key] = pVal.concat(...oVal);
+                } else if (isObject(pVal) && isObject(oVal)) {
+                    prev[key] = this.merge(pVal, oVal);
+                } else {
+                    prev[key] = oVal;
+                }
+            });
+
+            return prev;
+        }, {});
     }
 
     /**

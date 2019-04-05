@@ -1,20 +1,6 @@
 get:
+  $extends: ../../fragments/pagination_params.yaml
   summary: Paginate categories
-  parameters:
-  - name: page
-    in: path
-    description: The page of categories
-    required: true
-    schema:
-      type: int
-      default: 1
-  - name: perPage
-    in: path
-    description: The number of categories per page
-    required: true
-    schema:
-      type: int
-      default: 100
   responses:
     200:
       description: The categories in a paginator.

@@ -1,19 +1,7 @@
 get:
+  $extends: ../../fragments/pagination_params.yaml
   summary: Paginate chapters
   description: Retrive all chapters by ascending ids, paginated.
-  parameters:
-    - name: page
-      in: path
-      description: The page of chapters.
-      schema:
-        type: int
-        default: 1
-    - name: perPage
-      in: path
-      description: The number of chapters per page.
-      schema:
-        type: int
-        default: 100
   responses:
     200:
       description: The chapters in a paginator.

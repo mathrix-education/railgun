@@ -1,71 +1,62 @@
 get:
-  tags:
-    - Chapters
-  summary: Get a chapter
-  operationId: chaptersGet
+  summary: Get a country
   parameters:
-    - name: chapterId
+    - name: countryId
       in: path
-      description: The chapter id.
+      description: The country id.
       required: true
       schema:
         type: int
-        example: 34
+        example: 17
   responses:
     200:
-      description: The requested chapter.
+      description: The requested country.
       content:
         application/json:
           schema:
-            $ref: '../../index.yaml#/components/schemas/Chapter'
+            $ref: '../../index.yaml#/components/schemas/Country'
     404:
       $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
 patch:
-  tags:
-    - Chapters
-  summary: Edit a chapter
-  operationId: chaptersPatch
+  summary: Patch a country
   security:
-    - moderator: []
+    - bearer: [admin]
   parameters:
-    - name: chapterId
+    - name: countryId
       in: path
-      description: The chapter id.
+      description: The country id.
       required: true
       schema:
         type: int
-        example: 25
+        example: 13
   requestBody:
     content:
       application/json:
         schema:
-          $ref: '../../index.yaml#/components/requestBodies/Chapter'
+          $ref: '../../index.yaml#/components/schemas/Country'
   responses:
     200:
-      description: The patched chapter.
+      description: The edited country.
       content:
         application/json:
           schema:
-            $ref: '../../index.yaml#/components/schemas/Chapter'
+            $ref: '../../index.yaml#/components/schemas/Country'
     404:
       $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
     422:
       $ref: '../../index.yaml#/components/responses/422_ModelValidation'
 delete:
-  tags:
-    - Chapters
-  summary: Delete a chapter
-  operationId: chaptersDelete
+  summary: Delete a country
   security:
-    - admin: []
+    - bearer: [admin]
   parameters:
-    - name: chapterId
+    - name: countryId
       in: path
-      description: The chapter id.
+      description: The country id.
       required: true
       schema:
         type: int
-        example: 25
+        example: 13
   responses:
     200:
       description: The deletion result.
@@ -81,6 +72,6 @@ delete:
               message:
                 description: The deletion message.
                 type: string
-                example: Chapter id 25 was successfully deleted.
+                example: Country id 13 was successfully deleted.
     404:
       $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

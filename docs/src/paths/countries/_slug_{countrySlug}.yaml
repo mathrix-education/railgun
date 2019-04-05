@@ -1,0 +1,20 @@
+get:
+  summary: Get a country by slug
+  description: Get the first country which matches the given slug.
+  parameters:
+    - name: countrySlug
+      in: path
+      description: The country slug.
+      required: true
+      schema:
+        type: string
+        example: france
+  responses:
+    200:
+      description: The requested country.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Country'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

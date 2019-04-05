@@ -5,13 +5,14 @@ info:
   description: This is the official documentation of Mathrix Education SA API.
   contact:
     name: Mathieu Bour
-    email: mathieu.tin.bour@gmail.com
+    email: mathieu@mathrix.fr
   x-logo:
     url: https://cdn.mathrix.fr/img/logo-redoc.png
 servers:
   - url: 'https://mathrix.fr/api'
+    description: The production API.
   - url: 'https://dev.mathrix.fr/api'
-
+    description: The development API.
 components:
   securitySchemes:
     bearer:
@@ -19,13 +20,3 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-  requestBodies:
-    $ref: ./includes/requestBodies.yaml
-  responses:
-    $ref: ./includes/responses.yaml
-  schemas:
-    $ref: ./includes/schemas.yaml
-tags:
-  $ref: ./includes/tags.yaml
-paths:
-  $ref: ./includes/paths.yaml

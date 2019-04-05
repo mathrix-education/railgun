@@ -1,0 +1,17 @@
+get:
+  $extends: ../../fragments/pagination_params.yaml
+  summary: Paginate countries
+  description: Retrive all countries by ascending ids, paginated.
+  responses:
+    200:
+      description: The countries in a paginator.
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: ../../schemas/Paginator.yaml
+              - properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '../../index.yaml#/components/schemas/Country'

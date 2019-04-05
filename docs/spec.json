@@ -6,7 +6,7 @@
     "description": "This is the official documentation of Mathrix Education SA API.",
     "contact": {
       "name": "Mathieu Bour",
-      "email": "mathieu.tin.bour@gmail.com"
+      "email": "mathieu@mathrix.fr"
     },
     "x-logo": {
       "url": "https://cdn.mathrix.fr/img/logo-redoc.png"
@@ -14,10 +14,12 @@
   },
   "servers": [
     {
-      "url": "https://mathrix.fr/api"
+      "url": "https://mathrix.fr/api",
+      "description": "The production API."
     },
     {
-      "url": "https://dev.mathrix.fr/api"
+      "url": "https://dev.mathrix.fr/api",
+      "description": "The development API."
     }
   ],
   "components": {
@@ -4838,46 +4840,14 @@
       }
     }
   },
-  "tags": [
-    {
-      "name": "Activities",
-      "description": "Activities API"
-    },
-    {
-      "name": "Auth",
-      "description": "Auth API"
-    },
-    {
-      "name": "Braintree",
-      "description": "Braintree API"
-    },
-    {
-      "name": "Categories",
-      "description": "Categories API"
-    },
-    {
-      "name": "Chapters",
-      "description": "Chapters API"
-    },
-    {
-      "name": "Comments",
-      "description": "Comments API"
-    },
-    {
-      "name": "Files",
-      "description": "Files API"
-    }
-  ],
   "paths": {
     "/activities/{page}/{perPage}": {
       "get": {
-        "summary": "Paginate activities",
-        "description": "Retrive all activities by ascending ids, paginated.",
         "parameters": [
           {
             "name": "page",
             "in": "path",
-            "description": "The page of activities.",
+            "description": "The page (starts at 0).",
             "schema": {
               "type": "int"
             },
@@ -4887,7 +4857,7 @@
           {
             "name": "perPage",
             "in": "path",
-            "description": "The number of activities per page.",
+            "description": "The number of models per page.",
             "schema": {
               "type": "int"
             },
@@ -4895,6 +4865,8 @@
             "required": true
           }
         ],
+        "summary": "Paginate activities",
+        "description": "Retrive all activities by ascending ids, paginated.",
         "responses": {
           "200": {
             "description": "The activities in a paginator.",
@@ -6787,29 +6759,29 @@
     },
     "/categories/{page}/{perPage}": {
       "get": {
-        "summary": "Paginate categories",
         "parameters": [
           {
             "name": "page",
             "in": "path",
-            "description": "The page of categories",
-            "required": true,
+            "description": "The page (starts at 0).",
             "schema": {
-              "type": "int",
-              "default": 1
-            }
+              "type": "int"
+            },
+            "example": 4,
+            "required": true
           },
           {
             "name": "perPage",
             "in": "path",
-            "description": "The number of categories per page",
-            "required": true,
+            "description": "The number of models per page.",
             "schema": {
-              "type": "int",
-              "default": 100
-            }
+              "type": "int"
+            },
+            "example": 100,
+            "required": true
           }
         ],
+        "summary": "Paginate categories",
         "responses": {
           "200": {
             "description": "The categories in a paginator.",
@@ -7414,28 +7386,30 @@
     },
     "/chapters/{page}/{perPage}": {
       "get": {
-        "summary": "Paginate chapters",
-        "description": "Retrive all chapters by ascending ids, paginated.",
         "parameters": [
           {
             "name": "page",
             "in": "path",
-            "description": "The page of chapters.",
+            "description": "The page (starts at 0).",
             "schema": {
-              "type": "int",
-              "default": 1
-            }
+              "type": "int"
+            },
+            "example": 4,
+            "required": true
           },
           {
             "name": "perPage",
             "in": "path",
-            "description": "The number of chapters per page.",
+            "description": "The number of models per page.",
             "schema": {
-              "type": "int",
-              "default": 100
-            }
+              "type": "int"
+            },
+            "example": 100,
+            "required": true
           }
         ],
+        "summary": "Paginate chapters",
+        "description": "Retrive all chapters by ascending ids, paginated.",
         "responses": {
           "200": {
             "description": "The chapters in a paginator.",
@@ -8662,28 +8636,30 @@
     },
     "/comments/{page}/{perPage}": {
       "get": {
-        "summary": "Paginate comments",
-        "description": "Retrive all comments by ascending ids, paginated.",
         "parameters": [
           {
             "name": "page",
             "in": "path",
-            "description": "The page of comments.",
+            "description": "The page (starts at 0).",
             "schema": {
-              "type": "int",
-              "default": 1
-            }
+              "type": "int"
+            },
+            "example": 4,
+            "required": true
           },
           {
             "name": "perPage",
             "in": "path",
-            "description": "The number of comments per page.",
+            "description": "The number of models per page.",
             "schema": {
-              "type": "int",
-              "default": 100
-            }
+              "type": "int"
+            },
+            "example": 100,
+            "required": true
           }
         ],
+        "summary": "Paginate comments",
+        "description": "Retrive all comments by ascending ids, paginated.",
         "responses": {
           "200": {
             "description": "The comments in a paginator.",
@@ -11001,28 +10977,30 @@
     },
     "/comments/latest/{page}/{perPage}": {
       "get": {
-        "summary": "Paginate latest",
-        "description": "Retrive all comments by ascending ids, paginated.",
         "parameters": [
           {
             "name": "page",
             "in": "path",
-            "description": "The page of comments.",
+            "description": "The page (starts at 0).",
             "schema": {
-              "type": "int",
-              "default": 1
-            }
+              "type": "int"
+            },
+            "example": 4,
+            "required": true
           },
           {
             "name": "perPage",
             "in": "path",
-            "description": "The number of comments per page.",
+            "description": "The number of models per page.",
             "schema": {
-              "type": "int",
-              "default": 100
-            }
+              "type": "int"
+            },
+            "example": 100,
+            "required": true
           }
         ],
+        "summary": "Paginate latest",
+        "description": "Retrive all comments by ascending ids, paginated.",
         "responses": {
           "200": {
             "description": "The comments in a paginator.",
@@ -11360,6 +11338,737 @@
           "Comments"
         ],
         "operationId": "get/comments/latest/{page}/{perPage}"
+      }
+    },
+    "/countries/{page}/{perPage}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "description": "The page (starts at 0).",
+            "schema": {
+              "type": "int"
+            },
+            "example": 4,
+            "required": true
+          },
+          {
+            "name": "perPage",
+            "in": "path",
+            "description": "The number of models per page.",
+            "schema": {
+              "type": "int"
+            },
+            "example": 100,
+            "required": true
+          }
+        ],
+        "summary": "Paginate countries",
+        "description": "Retrive all countries by ascending ids, paginated.",
+        "responses": {
+          "200": {
+            "description": "The countries in a paginator.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "page",
+                        "per_page",
+                        "total",
+                        "data"
+                      ],
+                      "properties": {
+                        "page": {
+                          "description": "The current page.",
+                          "type": "integer",
+                          "example": 4,
+                          "readOnly": true
+                        },
+                        "per_page": {
+                          "description": "The number of models per page.",
+                          "type": "integer",
+                          "example": 100,
+                          "readOnly": true
+                        },
+                        "total": {
+                          "description": "The total number of models processed.",
+                          "type": "integer",
+                          "example": 1845,
+                          "readOnly": true
+                        },
+                        "data": {
+                          "description": "The models as an array.",
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          },
+                          "readOnly": true
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "description": "Country.",
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "id": {
+                                "description": "The country id.",
+                                "type": "integer",
+                                "example": 33
+                              },
+                              "name": {
+                                "description": "The country name.",
+                                "type": "string",
+                                "example": "France"
+                              },
+                              "slug": {
+                                "description": "The country slug.",
+                                "type": "string",
+                                "example": "france"
+                              },
+                              "visible": {
+                                "description": "The country visibility.",
+                                "type": "boolean",
+                                "example": true
+                              },
+                              "created_at": {
+                                "description": "The country creation date-time.",
+                                "anyOf": [
+                                  {
+                                    "type": "null"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "format": "date-time"
+                                  }
+                                ]
+                              },
+                              "updated_at": {
+                                "description": "The country last update date-time.",
+                                "anyOf": [
+                                  {
+                                    "type": "null"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "format": "date-time"
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Countries"
+        ],
+        "operationId": "get/countries/{page}/{perPage}"
+      }
+    },
+    "/countries": {
+      "post": {
+        "summary": "Post a country",
+        "security": [
+          {
+            "bearer": [
+              "admin"
+            ]
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "Country.",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "description": "The country id.",
+                    "type": "integer",
+                    "example": 33
+                  },
+                  "name": {
+                    "description": "The country name.",
+                    "type": "string",
+                    "example": "France"
+                  },
+                  "slug": {
+                    "description": "The country slug.",
+                    "type": "string",
+                    "example": "france"
+                  },
+                  "visible": {
+                    "description": "The country visibility.",
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "created_at": {
+                    "description": "The country creation date-time.",
+                    "anyOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    ]
+                  },
+                  "updated_at": {
+                    "description": "The country last update date-time.",
+                    "anyOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The newly created country.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Country.",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "description": "The country id.",
+                      "type": "integer",
+                      "example": 33
+                    },
+                    "name": {
+                      "description": "The country name.",
+                      "type": "string",
+                      "example": "France"
+                    },
+                    "slug": {
+                      "description": "The country slug.",
+                      "type": "string",
+                      "example": "france"
+                    },
+                    "visible": {
+                      "description": "The country visibility.",
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "created_at": {
+                      "description": "The country creation date-time.",
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      ]
+                    },
+                    "updated_at": {
+                      "description": "The country last update date-time.",
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Model failed to pass validation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "The error description.",
+                      "type": "string",
+                      "example": "model_validation"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Countries"
+        ],
+        "operationId": "post/countries"
+      }
+    },
+    "/countries/{countryId}": {
+      "get": {
+        "summary": "Get a country",
+        "parameters": [
+          {
+            "name": "countryId",
+            "in": "path",
+            "description": "The country id.",
+            "required": true,
+            "schema": {
+              "type": "int",
+              "example": 17
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested country.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Country.",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "description": "The country id.",
+                      "type": "integer",
+                      "example": 33
+                    },
+                    "name": {
+                      "description": "The country name.",
+                      "type": "string",
+                      "example": "France"
+                    },
+                    "slug": {
+                      "description": "The country slug.",
+                      "type": "string",
+                      "example": "france"
+                    },
+                    "visible": {
+                      "description": "The country visibility.",
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "created_at": {
+                      "description": "The country creation date-time.",
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      ]
+                    },
+                    "updated_at": {
+                      "description": "The country last update date-time.",
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Model not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "The error message.",
+                      "type": "string",
+                      "example": "model_not_found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Countries"
+        ],
+        "operationId": "get/countries/{countryId}"
+      },
+      "patch": {
+        "summary": "Patch a country",
+        "security": [
+          {
+            "bearer": [
+              "admin"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "countryId",
+            "in": "path",
+            "description": "The country id.",
+            "required": true,
+            "schema": {
+              "type": "int",
+              "example": 13
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "Country.",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "description": "The country id.",
+                    "type": "integer",
+                    "example": 33
+                  },
+                  "name": {
+                    "description": "The country name.",
+                    "type": "string",
+                    "example": "France"
+                  },
+                  "slug": {
+                    "description": "The country slug.",
+                    "type": "string",
+                    "example": "france"
+                  },
+                  "visible": {
+                    "description": "The country visibility.",
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "created_at": {
+                    "description": "The country creation date-time.",
+                    "anyOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    ]
+                  },
+                  "updated_at": {
+                    "description": "The country last update date-time.",
+                    "anyOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The edited country.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Country.",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "description": "The country id.",
+                      "type": "integer",
+                      "example": 33
+                    },
+                    "name": {
+                      "description": "The country name.",
+                      "type": "string",
+                      "example": "France"
+                    },
+                    "slug": {
+                      "description": "The country slug.",
+                      "type": "string",
+                      "example": "france"
+                    },
+                    "visible": {
+                      "description": "The country visibility.",
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "created_at": {
+                      "description": "The country creation date-time.",
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      ]
+                    },
+                    "updated_at": {
+                      "description": "The country last update date-time.",
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Model not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "The error message.",
+                      "type": "string",
+                      "example": "model_not_found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Model failed to pass validation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "The error description.",
+                      "type": "string",
+                      "example": "model_validation"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Countries"
+        ],
+        "operationId": "patch/countries/{countryId}"
+      },
+      "delete": {
+        "summary": "Delete a country",
+        "security": [
+          {
+            "bearer": [
+              "admin"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "countryId",
+            "in": "path",
+            "description": "The country id.",
+            "required": true,
+            "schema": {
+              "type": "int",
+              "example": 13
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The deletion result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "description": "If the deletion was sucessful.",
+                      "type": "boolean",
+                      "default": true
+                    },
+                    "message": {
+                      "description": "The deletion message.",
+                      "type": "string",
+                      "example": "Country id 13 was successfully deleted."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Model not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "The error message.",
+                      "type": "string",
+                      "example": "model_not_found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Countries"
+        ],
+        "operationId": "delete/countries/{countryId}"
+      }
+    },
+    "/countries/slug/{countrySlug}": {
+      "get": {
+        "summary": "Get a country by slug",
+        "description": "Get the first country which matches the given slug.",
+        "parameters": [
+          {
+            "name": "countrySlug",
+            "in": "path",
+            "description": "The country slug.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "france"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested country.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Country.",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "description": "The country id.",
+                      "type": "integer",
+                      "example": 33
+                    },
+                    "name": {
+                      "description": "The country name.",
+                      "type": "string",
+                      "example": "France"
+                    },
+                    "slug": {
+                      "description": "The country slug.",
+                      "type": "string",
+                      "example": "france"
+                    },
+                    "visible": {
+                      "description": "The country visibility.",
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "created_at": {
+                      "description": "The country creation date-time.",
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      ]
+                    },
+                    "updated_at": {
+                      "description": "The country last update date-time.",
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Model not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "The error message.",
+                      "type": "string",
+                      "example": "model_not_found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Countries"
+        ],
+        "operationId": "get/countries/slug/{countrySlug}"
       }
     },
     "/files": {
@@ -11872,5 +12581,39 @@
         "operationId": "delete/files/{path}"
       }
     }
-  }
+  },
+  "tags": [
+    {
+      "name": "Activities",
+      "description": "Activities API"
+    },
+    {
+      "name": "Auth",
+      "description": "Auth API"
+    },
+    {
+      "name": "Braintree",
+      "description": "Braintree API"
+    },
+    {
+      "name": "Categories",
+      "description": "Categories API"
+    },
+    {
+      "name": "Chapters",
+      "description": "Chapters API"
+    },
+    {
+      "name": "Comments",
+      "description": "Comments API"
+    },
+    {
+      "name": "Countries",
+      "description": "Countries API"
+    },
+    {
+      "name": "Files",
+      "description": "Files API"
+    }
+  ]
 }

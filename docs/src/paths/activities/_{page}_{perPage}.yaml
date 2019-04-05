@@ -1,21 +1,7 @@
 get:
   summary: Paginate activities
   description: Retrive all activities by ascending ids, paginated.
-  parameters:
-  - name: page
-    in: path
-    description: The page of activities.
-    schema:
-      type: int
-    example: 4
-    required: true
-  - name: perPage
-    in: path
-    description: The number of activities per page.
-    schema:
-      type: int
-    example: 100
-    required: true
+  $extends: ../../fragments/pagination_params.yaml
   responses:
     200:
       description: The activities in a paginator.

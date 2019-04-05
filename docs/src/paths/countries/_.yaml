@@ -1,0 +1,18 @@
+post:
+  summary: Post a country
+  security:
+    - bearer: [admin]
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../index.yaml#/components/schemas/Country'
+  responses:
+    200:
+      description: The newly created country.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Country'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
