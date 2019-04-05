@@ -2957,7 +2957,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:mathrix-education/lumen-zero.git",
-                "reference": "a2cf285452aaa246443f553d859ba8c8e1b84c8f"
+                "reference": "4a5ef40ece8f2517d0c9f4606427394b754e35eb"
             },
             "require": {
                 "dusterio/lumen-passport": "^0.2.9",
@@ -2998,7 +2998,7 @@
                 }
             ],
             "description": "The main library for Mathrix Lumen REST APIs.",
-            "time": "2019-04-05T08:22:10+00:00"
+            "time": "2019-04-05T17:53:08+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -4129,16 +4129,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v6.31.3",
+            "version": "v6.31.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "d14f02d603c47824d7acaf88491195e3f199408d"
+                "reference": "917973d36f77d8658ecc54b70a8d6b32232c51e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/d14f02d603c47824d7acaf88491195e3f199408d",
-                "reference": "d14f02d603c47824d7acaf88491195e3f199408d",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/917973d36f77d8658ecc54b70a8d6b32232c51e4",
+                "reference": "917973d36f77d8658ecc54b70a8d6b32232c51e4",
                 "shasum": ""
             },
             "require": {
@@ -4181,7 +4181,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2019-04-02T18:31:38+00:00"
+            "time": "2019-04-05T17:10:58+00:00"
         },
         {
             "name": "superbalist/flysystem-google-storage",

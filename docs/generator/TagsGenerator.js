@@ -15,6 +15,7 @@ module.exports = class TagsGenerator extends BaseGenerator {
                 }
             });
 
-        this.writeYaml("includes/tags.yaml", tags);
+        //this.writeYaml("includes/tags.yaml", tags);
+        return tags;
     }
 };

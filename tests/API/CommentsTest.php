@@ -5,6 +5,7 @@ namespace Tests\API;
 use App\Models\Comment;
 use App\Models\Module;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\Passport;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
@@ -21,6 +22,14 @@ use Mathrix\Lumen\Tests\REST\Standard\StandardPostTest;
 class CommentsTest extends APITestCase
 {
     use StandardIndexTest, StandardPostTest, StandardGetTest;
+
+    public function testPost()
+    {
+        $this->assertRestPostSuccess(null, function($data) {
+            $data["user_id"] = $this->passportUser->id;
+            return Arr::except($data, []);
+        });
+    }
 
 
     /**
@@ -40,6 +49,7 @@ class CommentsTest extends APITestCase
         ]);
 
         $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
         $this->assertInDatabase("comments", ["id" => $comment->id, "content" => $newContent]);
     }
 
@@ -64,6 +74,6 @@ class CommentsTest extends APITestCase
         $this->json("get", $uri);
 
         $this->assertResponseOk();
-        $this->assertIsPaginatedResponse(1, 10);
+        $this->assertOpenAPIResponse();
     }
 }

@@ -12,13 +12,14 @@ module.exports = class ResponsesGenerator extends BaseGenerator {
                 const responseName = responseFile.replace(".yaml", "");
 
                 responses[responseName] = {
-                    $ref: `../${responsePath}`
+                    $ref: `${responsePath}`
                 };
 
                 // Write schema file
                 this.writeYaml(responsePath, this.readYaml(responsePath));
             });
 
-        this.writeYaml("includes/responses.yaml", responses);
+        //this.writeYaml("includes/responses.yaml", responses);
+        return responses;
     }
 };

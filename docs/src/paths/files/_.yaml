@@ -11,11 +11,11 @@ post:
           properties:
             file:
               description: The file content.
-              type: file
+              type: object
   responses:
     200:
       description: The uploaded file metadata
       content:
         application/json:
           schema:
-            $ref: '../../spec.yaml#/components/schemas/File'
+            $ref: '../../index.yaml#/components/schemas/File'

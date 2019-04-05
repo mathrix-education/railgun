@@ -21,7 +21,7 @@ properties:
     example: 135
   data:
     description: The score data, as an arbitrary object.
-    type: any
+    type: object
     example: {}
   created_at:
     description: The date/time when the score was created.
@@ -32,4 +32,4 @@ properties:
     type: string
     format: date-time
   user:
-    $ref: '../spec.yaml#/components/schemas/User'
+    $ref: '../index.yaml#/components/schemas/User'

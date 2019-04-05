@@ -2,7 +2,8 @@ type: object
 properties:
   amount:
     description: The add-on amount.
-    type: float
+    type: number
+    format: float
     example: 9.85
   currentBillingCycle:
     description: >-
@@ -47,7 +48,8 @@ properties:
     example: 2
   pricePerMonth:
     description: The add-on price per month.
-    type: float
+    type: number
+    format: float
     example: 6.45
   quantity:
     description: >-
@@ -58,6 +60,7 @@ properties:
     example: 2
   trialPrice:
     description: The add-on price for the trial period
-    type: float
+    type: number
+    format: float
     nullable: true
     example: 72.46

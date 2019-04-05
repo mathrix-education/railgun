@@ -51,5 +51,5 @@ get:
                 description: The activities as an array.
                 type: array
                 items:
-                  $ref: '../../spec.yaml#/components/schemas/Activity'
+                  $ref: '../../index.yaml#/components/schemas/Activity'
                 readOnly: true

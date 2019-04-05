@@ -37,7 +37,7 @@ module.exports = class PathsGenerator extends BaseGenerator {
                 const pathFile = `paths/${models}/${file}`;
 
                 paths[url] = {
-                    $ref: `../${pathFile}`
+                    $ref: `${pathFile}`
                 };
 
                 const data = this.readYaml(pathFile);
@@ -46,7 +46,8 @@ module.exports = class PathsGenerator extends BaseGenerator {
             });
         });
 
-        this.writeYaml("includes/paths.yaml", paths);
+        //this.writeYaml("includes/paths.yaml", paths);
+        return paths;
     }
 
     /**

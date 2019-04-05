@@ -8,7 +8,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
-use Mathrix\Lumen\Exceptions\ValidationException;
 use Mathrix\Lumen\Responses\PaginationJsonResponse;
 
 /**
@@ -28,7 +27,6 @@ class CommentsController extends BaseController
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
-     * @throws ValidationException
      */
     public function post(Request $request): JsonResponse
     {
@@ -61,7 +59,11 @@ class CommentsController extends BaseController
 
         $user->canOrFail("latest", Comment::class);
 
-        $query = Comment::query()
+        $query = Comment::with([
+            "user:id,type,username,firstname,level,grade_id",
+            "children",
+            "children.user:id,type,username,firstname,level,grade_id"
+        ])
             ->orderBy("created_at", "desc");
         $response = new PaginationJsonResponse($query, $page, $perPage);
 

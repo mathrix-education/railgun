@@ -27,7 +27,6 @@ class ModulesController extends BaseController
      * @param int $moduleId
      *
      * @return JsonResponse
-     * @throws ValidationException
      */
     public function mark(Request $request, int $moduleId): JsonResponse
     {

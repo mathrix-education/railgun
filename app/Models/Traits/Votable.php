@@ -19,8 +19,7 @@ trait Votable
      */
     public function getScoreAttribute()
     {
-        return $this->votes()
-            ->sum("value");
+        return (int)$this->votes()->sum("value");
     }
 
 

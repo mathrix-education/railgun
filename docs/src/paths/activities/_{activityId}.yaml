@@ -14,9 +14,9 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../spec.yaml#/components/schemas/Activity'
+            $ref: '../../index.yaml#/components/schemas/Activity'
     404:
-      $ref: '../../spec.yaml#/components/responses/404_ModelNotFound'
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
 patch:
   summary: Patch an activity
   security:
@@ -33,18 +33,18 @@ patch:
     content:
       application/json:
         schema:
-          $ref: '../../spec.yaml#/components/schemas/Activity'
+          $ref: '../../index.yaml#/components/schemas/Activity'
   responses:
     200:
       description: The edited activity.
       content:
         application/json:
           schema:
-            $ref: '../../spec.yaml#/components/schemas/Activity'
+            $ref: '../../index.yaml#/components/schemas/Activity'
     404:
-      $ref: '../../spec.yaml#/components/responses/404_ModelNotFound'
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
     422:
-      $ref: '../../spec.yaml#/components/responses/422_ModelValidation'
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
 delete:
   summary: Delete an activity
   security:
@@ -74,4 +74,4 @@ delete:
                 type: string
                 example: Activity id 45 was successfully deleted.
     404:
-      $ref: '../../spec.yaml#/components/responses/404_ModelNotFound'
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

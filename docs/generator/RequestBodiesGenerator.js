@@ -12,12 +12,14 @@ module.exports = class RequestBodiesGenerator extends BaseGenerator {
                 const requestBodyName = requestBodyFile.replace(".yaml", "");
 
                 requestBodies[requestBodyName] = {
-                    $ref: `../${requestBodyPath}`
+                    $ref: `${requestBodyPath}`
                 };
 
                 // Write schema file
                 this.writeYaml(requestBodyPath, this.readYaml(requestBodyPath));
             });
-        this.writeYaml("includes/requestBodies.yaml", requestBodies);
+
+        //this.writeYaml("includes/requestBodies.yaml", requestBodies);
+        return requestBodies;
     }
 };

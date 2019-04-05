@@ -5,12 +5,12 @@ properties:
     description: Android Pay cards associated with the customer.
     type: array
     items:
-      $ref: '../../spec.yaml#/components/schemas/Braintree_AndroidPayCard'
+      $ref: '../../index.yaml#/components/schemas/Braintree_AndroidPayCard'
   applePayCards:
     description: Apple Pay cards associated with the customer.
     type: array
     items:
-      $ref: '../../spec.yaml#/components/schemas/Braintree_ApplePayCard'
+      $ref: '../../index.yaml#/components/schemas/Braintree_ApplePayCard'
   createdAt:
     description: The date/time the object was created.
     type: string
@@ -19,7 +19,7 @@ properties:
     description: Credit cards associated with the customer.
     type: array
     items:
-      $ref: '../../spec.yaml#/components/schemas/Braintree_CreditCardDetails'
+      $ref: '../../index.yaml#/components/schemas/Braintree_CreditCardDetails'
   email:
     description: Email address composed of ASCII characters.
     type: string
@@ -40,17 +40,17 @@ properties:
     description: Masterpass cards associated with the customer.
     type: array
     items:
-      $ref: '../../spec.yaml#/components/schemas/Braintree_MasterpassCardDetails'
+      $ref: '../../index.yaml#/components/schemas/Braintree_MasterpassCardDetails'
   paymentMethods:
     description: Masterpass cards associated with the customer.
     type: array
     items:
-      $ref: '../../spec.yaml#/components/schemas/Braintree_PaymentMethod'
+      $ref: '../../index.yaml#/components/schemas/Braintree_PaymentMethod'
   paypalAccounts:
     description: Masterpass cards associated with the customer.
     type: array
     items:
-      $ref: '../../spec.yaml#/components/schemas/Braintree_PayPalDetails'
+      $ref: '../../index.yaml#/components/schemas/Braintree_PayPalDetails'
   updated:
     description: The date/time the object last updated.
     type: string
@@ -59,5 +59,5 @@ properties:
     description: Visa Checkout cards associated with the customer.
     type: array
     items:
-      $ref: '../../spec.yaml#/components/schemas/Braintree_VisaCheckoutDetails'
+      $ref: '../../index.yaml#/components/schemas/Braintree_VisaCheckoutDetails'
 

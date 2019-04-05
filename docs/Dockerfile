@@ -10,6 +10,6 @@ RUN apk -U add nginx \
 
 COPY ./docs/deploy/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./docs/deploy/nginx/vhost.conf /etc/nginx/conf.d/default.conf
-COPY ./docs/out/index.html /var/www/index.html
+COPY ./docs/spec.html /var/www/index.html
 
 CMD ["nginx", "-g", "daemon off;"]

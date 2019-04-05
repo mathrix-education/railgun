@@ -137,7 +137,8 @@ class Module extends BaseModel
      */
     public function comments(): HasMany
     {
-        return $this->hasMany(Comment::class)->orderBy("created_at");
+        return $this->hasMany(Comment::class)
+            ->orderBy("created_at");
     }
 
 

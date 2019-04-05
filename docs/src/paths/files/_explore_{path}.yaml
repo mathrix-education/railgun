@@ -20,7 +20,7 @@ get:
             type: array
             items:
               anyOf:
-                - $ref: '../../spec.yaml#/components/schemas/Directory'
-                - $ref: '../../spec.yaml#/components/schemas/File'
+                - $ref: '../../index.yaml#/components/schemas/Directory'
+                - $ref: '../../index.yaml#/components/schemas/File'
     404:
-      $ref: '../../spec.yaml#/components/responses/404_FileNotFound'
+      $ref: '../../index.yaml#/components/responses/404_FileNotFound'

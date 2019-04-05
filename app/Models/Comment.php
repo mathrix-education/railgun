@@ -47,11 +47,7 @@ class Comment extends BaseModel
     use Votable, SoftDeletes;
 
     /** @var array The default relations included */
-    public $with = [
-        "user:id,type,username,firstname,level,grade_id",
-        "children",
-        "children.user:id,type,username,firstname,level,grade_id",
-    ];
+    public $with = ["user:id,type,username,firstname,level,grade_id"];
     /** @var array The attributes that are mass assignable */
     protected $fillable = [
         "content",

@@ -6,6 +6,7 @@ properties:
     description: The category id.
     type: integer
     example: 22
+    readOnly: true
   name:
     description: The category name.
     type: string

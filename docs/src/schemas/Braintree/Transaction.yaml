@@ -7,27 +7,27 @@ properties:
     format: float
     example: 41.90
   androidPayCardDetails:
-    $ref: '../../spec.yaml#/components/schemas/Braintree_AndroidPayCard'
+    $ref: '../../index.yaml#/components/schemas/Braintree_AndroidPayCard'
   applePayCardDetails:
-    $ref: '../../spec.yaml#/components/schemas/Braintree_ApplePayCard'
+    $ref: '../../index.yaml#/components/schemas/Braintree_ApplePayCard'
   createdAt:
     description: The date/time the object was created.
     type: string
     format: date-time
   creditCardDetails:
-    $ref: '../../spec.yaml#/components/schemas/Braintree_CreditCardDetails'
+    $ref: '../../index.yaml#/components/schemas/Braintree_CreditCardDetails'
   currencyIsoCode:
     description: >-
       The currency for the transaction (e.g. "USD" for US dollars). See the [ISO 4217](http://en.wikipedia.org/wiki/
       ISO_4217) codes.
   customerDetails:
-    $ref: '../../spec.yaml#/components/schemas/Braintree_CustomerDetails'
+    $ref: '../../index.yaml#/components/schemas/Braintree_CustomerDetails'
   id:
     description: The transaction id.
     type: string
     example: 024df54z
   descriptor:
-    $ref: '../../spec.yaml#/components/schemas/Braintree_Descriptor'
+    $ref: '../../index.yaml#/components/schemas/Braintree_Descriptor'
   discountAmount:
     description: Discount amount that was excluded from the total transaction amount.
     type: number
@@ -36,9 +36,9 @@ properties:
     description: A collection of line items associated with the transaction.
     type: array
     items:
-      $ref: '../../spec.yaml#/components/schemas/Braintree_LineItem'
+      $ref: '../../index.yaml#/components/schemas/Braintree_LineItem'
   masterpassCardDetails:
-    $ref: '../../spec.yaml#/components/schemas/Braintree_MasterpassCardDetails'
+    $ref: '../../index.yaml#/components/schemas/Braintree_MasterpassCardDetails'
   merchantAccountId:
     description: >-
       The merchant account ID used to create a transaction. Currency is also determined by merchant
@@ -62,7 +62,7 @@ properties:
     - venmo_account
     - visa_checkout_card
   paypalDetails:
-    $ref: '../../spec.yaml#/components/schemas/Braintree_PayPalDetails'
+    $ref: '../../index.yaml#/components/schemas/Braintree_PayPalDetails'
   planId:
     description: The plan idetifier.
     type: string
@@ -81,12 +81,12 @@ properties:
     type: string
     exmaple: '5sd6vsz'
   status:
-    $ref: '../../spec.yaml#/components/schemas/Braintree_TransactionStatus'
+    $ref: '../../index.yaml#/components/schemas/Braintree_TransactionStatus'
   status:History:
     description: This value is a record of the statuses that a transaction has progressed through.
     type: array
     items:
-      $ref: '../../spec.yaml#/components/schemas/Braintree_TransactionStatus'
+      $ref: '../../index.yaml#/components/schemas/Braintree_TransactionStatus'
   subscriptionDetails:
     description: The details of the subscription that belongs to the transaction if necessary.
     type: object
@@ -112,4 +112,4 @@ properties:
     type: string
     format: date-time
   visaCheckoutCardDetails:
-    $ref: '../../spec.yaml#/components/schemas/Braintree_VisaCheckoutDetails'
+    $ref: '../../index.yaml#/components/schemas/Braintree_VisaCheckoutDetails'

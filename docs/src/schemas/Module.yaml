@@ -41,10 +41,10 @@ properties:
     description: The module solutions.
     type: array
     items:
-      type: any
+      type: object
   options:
     description: The module options.
-    type: any
+    type: object
   visible:
     description: The module visibility.
     type: boolean

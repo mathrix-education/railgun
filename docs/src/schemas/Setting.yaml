@@ -12,5 +12,5 @@ properties:
     example: youtube_live_id
   value:
     description: The setting value.
-    type: any
+    type: object
     example: https://youtubne.com/channel/mathrix/live
