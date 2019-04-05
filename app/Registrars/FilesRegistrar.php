@@ -23,10 +23,10 @@ class FilesRegistrar extends BaseRegistrar
             $controller = FilesController::class;
 
             $this->post("{path:[a-zA-Z0-9\_\-\/\.]+}", "$controller@upload");
-            $this->get("explore/[{directory:[a-zA-Z0-9\_\-\/\.]+}]", "$controller@explore");
-            $this->get("[{path:[a-zA-Z0-9\_\-\/\.]+}]", "$controller@info");
-            $this->patch("[{path:[a-zA-Z0-9\_\-\/\.]+}]", "$controller@rename");
-            $this->delete("[{path:[a-zA-Z0-9\_\-\/\.]+}]", "$controller@remove");
+            $this->get("explore/{directory:[a-zA-Z0-9\_\-\/\.]+}", "$controller@explore");
+            $this->get("{path:[a-zA-Z0-9\_\-\/\.]+}", "$controller@info");
+            $this->patch("{path:[a-zA-Z0-9\_\-\/\.]+}", "$controller@rename");
+            $this->delete("{path:[a-zA-Z0-9\_\-\/\.]+}", "$controller@remove");
         });
 
     }

@@ -9,6 +9,7 @@ module.exports = class BaseGenerator {
         this.pluralize = require("pluralize");
         this.singularize = this.pluralize["singular"];
 
+        this.base = __dirname + "/..";
         this.src = __dirname + "/../src";
         this.out = __dirname + "/../out";
         this.config = this.readYaml("config.yaml");

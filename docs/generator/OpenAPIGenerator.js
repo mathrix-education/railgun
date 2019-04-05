@@ -13,6 +13,12 @@ module.exports = class OpenAPIGenerator extends BaseGenerator {
         (new SchemasGenerator()).process();
         (new TagsGenerator()).process();
 
-        this.writeYaml("index.yaml", this.readYaml("index.yaml"));
+        this.writeYaml("spec.yaml", this.readYaml("index.yaml"));
+
+        const JsonSchemaRefParser = require("json-schema-ref-parser");
+
+        JsonSchemaRefParser.dereference(`${this.out}/spec.yaml`).then(schema => {
+            this.fs.writeFileSync(`${this.base}/spec.json`, JSON.stringify(schema, null, 2));
+        })
     }
 };

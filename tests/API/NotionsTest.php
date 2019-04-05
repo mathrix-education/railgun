@@ -4,10 +4,10 @@ namespace Tests\API;
 
 use App\Models\Chapter;
 use App\Models\Notion;
-use Mathrix\Lumen\Tests\Standard\StandardGetTest;
-use Mathrix\Lumen\Tests\Standard\StandardIndexTest;
-use Mathrix\Lumen\Tests\Standard\StandardPatchTest;
-use Mathrix\Lumen\Tests\Standard\StandardPostTest;
+use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
+use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
+use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
+use Mathrix\Lumen\Tests\REST\Standard\StandardPostTest;
 
 /**
  * Class NotionsTest.

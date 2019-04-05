@@ -3,10 +3,10 @@
 namespace Tests\API;
 
 use App\Models\Chapter;
-use Mathrix\Lumen\Tests\Standard\StandardGetTest;
-use Mathrix\Lumen\Tests\Standard\StandardIndexTest;
-use Mathrix\Lumen\Tests\Standard\StandardPatchTest;
-use Mathrix\Lumen\Tests\Standard\StandardPostTest;
+use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
+use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
+use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
+use Mathrix\Lumen\Tests\REST\Standard\StandardPostTest;
 
 /**
  * Class ChaptersTest.
@@ -61,10 +61,7 @@ class ChaptersTest extends APITestCase
         $this->json("get", $uri);
 
         $this->assertResponseOk();
-        $this->assertJsonResponseMatches([
-            "[*].grade_id" => $chapter->grade_id,
-            "[*].discipline_id" => $chapter->discipline_id
-        ]);
+        $this->assertOpenAPIResponse();
     }
 
 
@@ -80,10 +77,6 @@ class ChaptersTest extends APITestCase
         $this->json("get", $uri);
 
         $this->assertResponseOk();
-        $this->assertJsonResponseMatches([
-            "id" => $chapter->id,
-            "slug" => $chapter->slug,
-            "grade_id" => $chapter->grade_id,
-        ]);
+        $this->assertOpenAPIResponse();
     }
 }

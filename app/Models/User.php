@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Validation\Rule;
 use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\Client;
 use Laravel\Passport\HasApiTokens;
@@ -102,7 +103,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     /** @var array The validation rules on create */
     protected $rules = [
-        "email" => "required|email|unique:users,email|max:60",
         "username" => "nullable|max:60",
         "firstname" => "nullable|max:60",
         "lastname" => "nullable|max:60",
@@ -119,6 +119,19 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     /** @var array The virtual attributes */
     protected $appends = ["daily_points"];
+
+
+    /**
+     * Custom validation rules
+     *
+     * @return array
+     */
+    public function getValidationRules()
+    {
+        return array_merge($this->rules, [
+            "email" => ["required", "email", "max:60", Rule::unique("users", "email")->ignore($this->id)],
+        ]);
+    }
 
 
     /*
@@ -161,6 +174,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     /**
      * Get users scopes, space-separated.
+     *
      * @return string
      */
     public function getPassportScopes()
@@ -320,9 +334,9 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     /**
      * premium attribute.
      *
+     * @return bool
      * @throws Http400BadRequestException
      *
-     * @return bool
      */
     public function getPremiumAttribute()
     {

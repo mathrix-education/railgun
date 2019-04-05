@@ -6,7 +6,7 @@ properties:
   addOns:
     type: array
     items:
-      $ref: '../../index.yaml#/components/schemas/Braintree_AddOn'
+      $ref: '../../spec.yaml#/components/schemas/Braintree_AddOn'
   billingDayOfMonth:
     description: >-
       The The value that specifies the day of the month that the gateway will charge the subscription
@@ -35,7 +35,7 @@ properties:
       #description: A collection of discounts associated with this subscription.
       #type: array
     #items:
-    #$ref: '../../index.yaml#/components/schemas/Braintree_Discount'
+    #$ref: '../../spec.yaml#/components/schemas/Braintree_Discount'
   discount:
     description: The plan discount based on the highest price per month.
     type: integer

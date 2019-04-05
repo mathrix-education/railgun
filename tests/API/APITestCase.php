@@ -2,9 +2,9 @@
 
 namespace Tests\API;
 
-use Exception;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Mathrix\Lumen\Bases\BaseModel;
+use Mathrix\Lumen\Tests\OpenAPI\OpenAPITrait;
 use Mathrix\Lumen\Tests\REST\RESTTrait;
 use Mathrix\Lumen\Tests\Traits\DebugTrait;
 use Tests\BaseTestCase;
@@ -19,9 +19,7 @@ use Throwable;
  */
 class APITestCase extends BaseTestCase
 {
-    use DatabaseTransactions,
-        DebugTrait,
-        RESTTrait;
+    use DatabaseTransactions, RESTTrait, DebugTrait;
 
     /** @var BaseModel The test main model class */
     protected $modelClass = null;
@@ -36,20 +34,14 @@ class APITestCase extends BaseTestCase
     public function setUp()
     {
         parent::setUp();
+
+        $this->bootOpenAPI();
         $this->initializeREST();
     }
 
-
-    /**
-     * Handle response printing.
-     *
-     * @param Exception|Throwable $e
-     *
-     * @throws Throwable
-     */
-    protected function onNotSuccessfulTest(Throwable $e)
+    public function onNotSuccessfulTest(Throwable $t)
     {
         $this->debug();
-        parent::onNotSuccessfulTest($e);
+        parent::onNotSuccessfulTest($t);
     }
 }

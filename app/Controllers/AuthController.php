@@ -7,6 +7,7 @@ use App\Events\PasswordResetEvent;
 use App\Models\User;
 use Dusterio\LumenPassport\Http\Controllers\AccessTokenController;
 use Faker\Factory;
+use Faker\Factory as FakerFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as IlluminateResponse;
@@ -82,22 +83,6 @@ class AuthController extends BaseController
 
 
     /**
-     * POST /auth/refresh
-     * Refresh the Bearer token.
-     *
-     * @param Request $request The Illuminate HTTP request.
-     *
-     * @return JsonResponse
-     */
-    public function refresh(Request $request): JsonResponse
-    {
-        return app()->dispatch(
-            $request->create("/oauth/token", "post", $request->all())
-        );
-    }
-
-
-    /**
      * POST /auth/forgot
      * Ask for an new password.
      *
@@ -117,9 +102,11 @@ class AuthController extends BaseController
         if (!empty($user->settings["facebook_id"])) {
             throw new Http400BadRequestException(null, "Cannot reset password of a facebook account");
         }
-        // Generate token
-        $user->unguardAttributes(["token"]);
-        $user->update(["token" => Factory::create()->uuid]);
+
+        User::unguarded(function () use ($user) {
+            // Generate token
+            $user->update(["token" => Factory::create()->uuid]);
+        });
 
         // Send PasswordForgottenMail
         event(new PasswordForgottenEvent($user));
@@ -153,11 +140,12 @@ class AuthController extends BaseController
             ->firstOrFail();
 
         // Update password
-        $user->unguardAttributes(["token"]);
-        $user->update([
-            "password" => $request->input("password"),
-            "token" => null, // Remove token
-        ]);
+        User::unguarded(function () use ($user, $request) {
+            $user->update([
+                "password" => $request->input("password"),
+                "token" => FakerFactory::create()->uuid, // Remove token
+            ]);
+        });
 
         // Send PasswordResetMail
         event(new PasswordResetEvent($user));

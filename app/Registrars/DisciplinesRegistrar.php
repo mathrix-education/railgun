@@ -30,7 +30,6 @@ class DisciplinesRegistrar extends BaseRegistrar
         ]);
 
         $this->get("disciplines/slug/{disciplineSlug:[a-z\-]+}", "$controller@getBySlug");
-        $this->get("disciplines/by-{what:grade}/{id:[1-9]\d*}[/{page:\d+}/{perPage:[1-9]\d*}]",
-            "$controller@by");
+        $this->get("disciplines/by-{what:grade}/{id:[1-9]\d*}/{page:\d+}/{perPage:[1-9]\d*}", "$controller@by");
     }
 }

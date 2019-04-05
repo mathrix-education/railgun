@@ -14,13 +14,13 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../index.yaml#/components/schemas/Activity'
+            $ref: '../../spec.yaml#/components/schemas/Activity'
     404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+      $ref: '../../spec.yaml#/components/responses/404_ModelNotFound'
 patch:
-  summary: Edit an activity
+  summary: Patch an activity
   security:
-    - moderator: []
+    - bearer: [moderator]
   parameters:
     - name: activityId
       in: path
@@ -33,22 +33,22 @@ patch:
     content:
       application/json:
         schema:
-          $ref: '../../index.yaml#/components/schemas/Activity'
+          $ref: '../../spec.yaml#/components/schemas/Activity'
   responses:
     200:
       description: The edited activity.
       content:
         application/json:
           schema:
-            $ref: '../../index.yaml#/components/schemas/Activity'
+            $ref: '../../spec.yaml#/components/schemas/Activity'
     404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+      $ref: '../../spec.yaml#/components/responses/404_ModelNotFound'
     422:
-      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
+      $ref: '../../spec.yaml#/components/responses/422_ModelValidation'
 delete:
   summary: Delete an activity
   security:
-    - moderator: []
+    - bearer: [moderator]
   parameters:
     - name: activityId
       in: path
@@ -74,4 +74,4 @@ delete:
                 type: string
                 example: Activity id 45 was successfully deleted.
     404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+      $ref: '../../spec.yaml#/components/responses/404_ModelNotFound'

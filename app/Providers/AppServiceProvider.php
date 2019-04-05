@@ -28,6 +28,7 @@ use Laravelium\Sitemap\SitemapServiceProvider;
 use Mathrix\Lumen\Providers\ObserverServiceProvider;
 use Mathrix\Lumen\Providers\PolicyServiceProvider;
 use Mathrix\Lumen\Providers\RegistrarServiceProvider;
+use Sentry\SentryLaravel\SentryLumenServiceProvider;
 use Superbalist\LaravelGoogleCloudStorage\GoogleCloudStorageServiceProvider;
 use Vluzrmos\Tinker\TinkerServiceProvider;
 
@@ -69,6 +70,10 @@ class AppServiceProvider extends ServiceProvider
 
         if (app()->environment("local")) {
             $this->app->register(TinkerServiceProvider::class);
+        }
+
+        if (env("SENTRY_DSN") !== null) {
+            $this->app->register(SentryLumenServiceProvider::class);
         }
 
         // MorphMap

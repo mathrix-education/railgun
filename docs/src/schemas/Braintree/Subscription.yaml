@@ -6,7 +6,7 @@ properties:
   addOns:
     type: array
     items:
-      $ref: '../../index.yaml#/components/schemas/Braintree_AddOn'
+      $ref: '../../spec.yaml#/components/schemas/Braintree_AddOn'
   balance:
     description: The amount of outstanding charges associated with a subscription.
     type: number
@@ -42,7 +42,7 @@ properties:
     description: The description of the transaction that is displayed to customers in email receipts from PayPal.
     type: string
   descriptor:
-    $ref: '../../index.yaml#/components/schemas/Braintree_Descriptor'
+    $ref: '../../spec.yaml#/components/schemas/Braintree_Descriptor'
   discounts:
     type: array
     items:
@@ -99,12 +99,12 @@ properties:
     type: number
     example: 17.9
   status:
-    $ref: '../../index.yaml#/components/schemas/Braintree_SubscriptionStatus'
+    $ref: '../../spec.yaml#/components/schemas/Braintree_SubscriptionStatus'
   statusHistory:
     description: Array of up to 50 subscription history events.
     type: array
     items:
-      $ref: '../../index.yaml#/components/schemas/Braintree_SubscriptionStatus'
+      $ref: '../../spec.yaml#/components/schemas/Braintree_SubscriptionStatus'
     example:
     - active
     - pending
@@ -113,7 +113,7 @@ properties:
     description: Transactions associated with the subscription, sorted by creation date with the most recent first.
     type: array
     items:
-      $ref: '../../index.yaml#/components/schemas/Braintree_Transaction'
+      $ref: '../../spec.yaml#/components/schemas/Braintree_Transaction'
   trialDuration:
     description: The trial timeframe specified in a plan.
     type: integer

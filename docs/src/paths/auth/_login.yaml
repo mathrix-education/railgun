@@ -1,0 +1,46 @@
+post:
+  summary: Login
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            grant_type:
+              descriptipn: The grant method. Will always be `grant_type`.
+              type: string
+              enum: [grant_type]
+            client_id:
+              description: The client id.
+              type: integer
+              example: 1
+            client_secret:
+              description: The client secret key.
+              type: string
+              example: ezyfcoemlsjqsdmzepzezk
+            username:
+              description: The user __email__.
+              type: string
+              example: john.doe@example.com
+            password:
+              description: The user password.
+              type: string
+              example: MyExtreme$Pwd
+  responses:
+    200:
+      $ref: ../../responses/Bearer.yaml
+    401:
+      description: Invalid credentials.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                description: The error message.
+                type: string
+                enum: [invalid_credentials]
+              message:
+                description: The error detailed message.
+                type: string
+                enum: [The user credentials were incorrect.]

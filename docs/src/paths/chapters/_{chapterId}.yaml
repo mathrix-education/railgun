@@ -1,0 +1,77 @@
+get:
+  summary: Get a chapter
+  parameters:
+    - name: chapterId
+      in: path
+      description: The chapter id.
+      required: true
+      schema:
+        type: int
+        example: 34
+  responses:
+    200:
+      description: The requested chapter.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Chapter'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+patch:
+  summary: Patch a chapter
+  security:
+    - bearer: [admin]
+  parameters:
+    - name: chapterId
+      in: path
+      description: The chapter id.
+      required: true
+      schema:
+        type: int
+        example: 25
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../index.yaml#/components/schemas/Chapter'
+  responses:
+    200:
+      description: The patched chapter.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Chapter'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
+delete:
+  summary: Delete a chapter
+  security:
+    - bearer: [admin]
+  parameters:
+    - name: chapterId
+      in: path
+      description: The chapter id.
+      required: true
+      schema:
+        type: int
+        example: 25
+  responses:
+    200:
+      description: The deletion result.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                description: If the deletion was sucessful.
+                type: boolean
+                default: true
+              message:
+                description: The deletion message.
+                type: string
+                example: Chapter id 25 was successfully deleted.
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

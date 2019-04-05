@@ -3,10 +3,10 @@
 namespace Tests\API;
 
 use App\Models\Category;
-use Mathrix\Lumen\Tests\Standard\StandardGetTest;
-use Mathrix\Lumen\Tests\Standard\StandardIndexTest;
-use Mathrix\Lumen\Tests\Standard\StandardPatchTest;
-use Mathrix\Lumen\Tests\Standard\StandardPostTest;
+use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
+use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
+use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
+use Mathrix\Lumen\Tests\REST\Standard\StandardPostTest;
 
 /**
  * Class CategoriesTest.
@@ -31,5 +31,22 @@ class CategoriesTest extends APITestCase
         $category->posts()->update(["category_id" => $pivot->id]);
 
         $this->assertRestDeleteSuccess(["conditions" => ["id", "=", $category->id]]);
+    }
+
+
+    /**
+     * POST /categories
+     * We remove "name" field and assert that we got an error.
+     */
+    public function testPostHttp422UnprocessableEntity()
+    {
+        $data = $this->getFactoryBuilder([])->raw();
+        unset($data["name"]);
+
+        $this->mockScope("admin");
+        $this->json("post", "/categories", $data);
+
+        $this->assertResponseStatus(422);
+        $this->assertOpenAPIResponse();
     }
 }

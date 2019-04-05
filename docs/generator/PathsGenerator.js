@@ -28,7 +28,12 @@ module.exports = class PathsGenerator extends BaseGenerator {
                 ...actualFiles.filter(s => restFiles.indexOf(s) === -1)
             ];
             finalFiles.map(file => {
-                const url = `/${models}` + file.replace(/_/g, "/").replace(".yaml", "");
+                let url = `/${models}` + file.replace(/_/g, "/").replace(".yaml", "");
+
+                if (url === `/${models}/`) {
+                    url = `/${models}`;
+                }
+
                 const pathFile = `paths/${models}/${file}`;
 
                 paths[url] = {

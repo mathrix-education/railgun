@@ -6,10 +6,10 @@ use App\Models\Activity;
 use App\Models\Mark;
 use App\Models\Notion;
 use Laravel\Passport\Passport;
-use Mathrix\Lumen\Tests\Standard\StandardGetTest;
-use Mathrix\Lumen\Tests\Standard\StandardIndexTest;
-use Mathrix\Lumen\Tests\Standard\StandardPatchTest;
-use Mathrix\Lumen\Tests\Standard\StandardPostTest;
+use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
+use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
+use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
+use Mathrix\Lumen\Tests\REST\Standard\StandardPostTest;
 
 /**
  * Class ActivitiesTest.
@@ -61,14 +61,12 @@ class ActivitiesTest extends APITestCase
         ]);
 
         $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
         $this->assertInDatabase("marks", [
             "status" => $status,
             "user_id" => $this->passportUser->id,
             "markable_type" => "activity",
             "markable_id" => $activity->id
-        ]);
-        $this->assertJsonResponseMatches([
-            "mark" => $status
         ]);
     }
 
@@ -84,13 +82,11 @@ class ActivitiesTest extends APITestCase
         $this->json("patch", "/activities/{$mark->markable_id}/unmark");
 
         $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
         $this->assertNotInDatabase("marks", [
             "user_id" => $mark->user_id,
             "markable_type" => "activity",
             "markable_id" => $mark->markable_id
-        ]);
-        $this->assertJsonResponseMatches([
-            "mark" => null
         ]);
     }
 }

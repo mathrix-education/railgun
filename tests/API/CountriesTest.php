@@ -3,10 +3,10 @@
 namespace Tests\API;
 
 use App\Models\Country;
-use Mathrix\Lumen\Tests\Standard\StandardGetTest;
-use Mathrix\Lumen\Tests\Standard\StandardIndexTest;
-use Mathrix\Lumen\Tests\Standard\StandardPatchTest;
-use Mathrix\Lumen\Tests\Standard\StandardPostTest;
+use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
+use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
+use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
+use Mathrix\Lumen\Tests\REST\Standard\StandardPostTest;
 
 /**
  * Class CountriesTest.

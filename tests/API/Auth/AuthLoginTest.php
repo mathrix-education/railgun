@@ -38,7 +38,6 @@ class AuthLoginTest extends APITestCase
 
     /**
      * POST /auth/login
-     * @throws ValidationException
      */
     public function testLogin()
     {
@@ -58,12 +57,7 @@ class AuthLoginTest extends APITestCase
         ]);
 
         $this->assertResponseOk();
-        $this->assertJsonResponseMatches([
-            "token_type" => "Bearer",
-            "expires_in" => new IsType("int"),
-            "access_token" => new IsType("string"),
-            "refresh_token" => new IsType("string")
-        ]);
+        $this->assertOpenAPIResponse();
 
         // Revert password change
         DB::update("UPDATE users SET password = ? WHERE id = ?", [$oldHash, $user->id]);
@@ -86,6 +80,6 @@ class AuthLoginTest extends APITestCase
             "password" => "incorrect-password"
         ]);
 
-        $this->assertJsonErrorResponse(401, "invalid_credentials");
+        $this->assertOpenAPIResponse();
     }
 }

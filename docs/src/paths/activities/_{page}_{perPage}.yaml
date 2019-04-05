@@ -1,5 +1,5 @@
 get:
-  summary: Index activities
+  summary: Paginate activities
   description: Retrive all activities by ascending ids, paginated.
   parameters:
   - name: page
@@ -44,5 +44,5 @@ get:
                 description: The activities as an array.
                 type: array
                 items:
-                  $ref: '../../index.yaml#/components/schemas/Activity'
+                  $ref: '../../spec.yaml#/components/schemas/Activity'
                 readOnly: true

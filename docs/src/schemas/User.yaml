@@ -56,6 +56,11 @@ properties:
     description: The number of times when the user achieve his daily objective.
     type: integer
     example: 14
+  daily_points:
+    description: The number of points gathered by the users this day.
+    type: integer
+    example: 300
+    readOnly: true
   settings:
     description: The user settings.
     type: object
@@ -63,21 +68,18 @@ properties:
       sound:
         description: If the sounds should be activated on the site for this user.
         type: boolean
-  class_id:
+  grade_id:
     description: The class id which belongs to the user.
-    type: integer
-  family_pack_id_as_parent:
-    description: The family pack id wher the user is the parent.
     type: integer
     nullable: true
   stripe_id:
     description: The Stripe customer id which is linked to the user.
     type: string
+    nullable: true
   braintree_id:
     description: The Braintree customer id whick is linked to the user.
     type: string
-  braintree:
-    description: The Braintree customer object associated with the user, if `braintree_id` is not `null`.
+    nullable: true
   created_at:
     description: The date/time when the object was created.
     type: string
@@ -86,3 +88,10 @@ properties:
     description: The date/time when the object was updated.
     type: string
     format: date-time
+  grade:
+    $ref: Grade.yaml
+  purchases:
+    description: The user purchases
+    type: array
+    items:
+      $ref: Purchase.yaml

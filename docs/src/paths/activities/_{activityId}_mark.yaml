@@ -17,6 +17,6 @@ patch:
       content:
         application/json:
           schema:
-            $ref: '../../index.yaml#/components/schemas/Activity'
+            $ref: '../../spec.yaml#/components/schemas/Activity'
     404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+      $ref: '../../spec.yaml#/components/responses/404_ModelNotFound'

@@ -39,7 +39,7 @@ class Chapter extends BaseModel
     protected $rules = [
         "name" => "required|max:255",
         "slug" => "max:255",
-        "grades_id" => "required|exists:grades,id",
+        "grade_id" => "required|exists:grades,id",
         "discipline_id" => "required|exists:disciplines,id",
         "visible" => "boolean",
     ];

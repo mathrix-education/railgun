@@ -27,14 +27,16 @@
   ],
   "scripts": {
     "docs:generate": "node docs/generate.js",
-    "docs:serve": "yarn run docs:generate && yarn run redoc-cli serve docs/out/index.yaml",
-    "docs:compile": "yarn run docs:generate && yarn run redoc-cli bundle docs/out/index.yaml && mv redoc-static.html docs/out/index.html",
+    "docs:serve": "yarn run docs:generate && yarn run redoc-cli serve docs/spec.json",
+    "docs:compile": "yarn run docs:generate && yarn run redoc-cli bundle docs/spec.json -o docs/spec.html",
     "mails:compile": "node resources/views/mjml/compile.js"
   },
   "devDependencies": {
+    "json-schema-ref-parser": "^6.1.0",
     "mjml": "^3.3.5",
     "pluralize": "^7.0.0",
     "redoc-cli": "^0.8.3",
+    "rimraf": "^2.6.3",
     "yaml": "^1.4.0"
   },
   "private": true

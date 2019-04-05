@@ -18,6 +18,7 @@ use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
 use Mathrix\Lumen\Exceptions\Http\Http429TooManyRequestsException;
+use Mathrix\Lumen\Exceptions\ValidationException;
 
 /**
  * Class UsersController.
@@ -38,7 +39,7 @@ class UsersController extends BaseController
      * @param Request $request The Illuminate HTTP request.
      *
      * @return JsonResponse
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
+     * @throws ValidationException
      */
     public function post(Request $request): JsonResponse
     {
@@ -53,18 +54,18 @@ class UsersController extends BaseController
         // Build and save the user
         $user = new User();
 
-        $user->unguardAttributes(["type"]);
+        User::unguarded(function () use ($user, $request) {
+            if (!$request->user() instanceof User || !$user->tokenCan("admin")) {
+                $request->merge([
+                    "type" => "registered"
+                ]);
+            }
 
-        if (!$request->user() instanceof User || !$user->tokenCan("admin")) {
-            $request->merge([
-                "type" => "registered"
-            ]);
-        }
+            $user->fill($request->all())
+                ->save();
+        });
 
-        $user->fill($request->all())
-            ->save();
-
-        return new JsonResponse($user);
+        return new JsonResponse($user->refresh());
     }
 
 
@@ -76,6 +77,7 @@ class UsersController extends BaseController
      * @param int $id The user id.
      *
      * @return JsonResponse
+     * @throws Http401UnauthorizedException
      */
     public function get(Request $request, int $id): JsonResponse
     {
@@ -102,7 +104,7 @@ class UsersController extends BaseController
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
+     * @throws ValidationException
      */
     public function patch(Request $request, int $id): JsonResponse
     {
@@ -115,9 +117,7 @@ class UsersController extends BaseController
         $user->canOrFail("patch", $target);
 
         // Unlock fields for admin
-        if ($user->tokenCan("admin")) {
-            $target->unguardAttributes(["type"]);
-        }
+        User::unguard($user->tokenCan("admin"));
 
         // Check for current_password, skip for admins if they are editing another user
         $this->validate($request, [
@@ -175,8 +175,9 @@ class UsersController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400BadRequestException
+     * @throws Http401UnauthorizedException
      * @throws Http429TooManyRequestsException
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
+     * @throws ValidationException
      */
     public function points(Request $request)
     {
@@ -263,7 +264,7 @@ class UsersController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400BadRequestException
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
+     * @throws ValidationException
      */
     public function updatePaymentMethod(Request $request)
     {

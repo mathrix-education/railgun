@@ -1,0 +1,29 @@
+get:
+  summary: Paginate chapters
+  description: Retrive all chapters by ascending ids, paginated.
+  parameters:
+    - name: page
+      in: path
+      description: The page of chapters.
+      schema:
+        type: int
+        default: 1
+    - name: perPage
+      in: path
+      description: The number of chapters per page.
+      schema:
+        type: int
+        default: 100
+  responses:
+    200:
+      description: The chapters in a paginator.
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: ../../schemas/Paginator.yaml
+              - properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '../../index.yaml#/components/schemas/Chapter'

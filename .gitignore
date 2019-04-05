@@ -13,5 +13,6 @@
 /node_modules/
 /vendor/
 /docs/out
+/docs/spec.html
 /resources/views/mails
 /storage/code-coverage/

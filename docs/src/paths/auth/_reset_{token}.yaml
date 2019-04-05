@@ -1,0 +1,19 @@
+post:
+  summary: Reset
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            password:
+              descriptipn: The new user password.
+              type: string
+              example: My$uperNewPa$$w0rd
+  responses:
+    200:
+      description: The user.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/User'
