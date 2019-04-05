@@ -30,6 +30,7 @@ properties:
       anymore
     type: string
     format: date-time
+    nullable: true
   created_at:
     description: The country creation date-time.
     type: string

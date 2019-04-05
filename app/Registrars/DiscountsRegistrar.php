@@ -29,7 +29,7 @@ class DiscountsRegistrar extends BaseRegistrar
             "delete" => "admin"
         ]);
 
-        $this->get("discounts/code/{code:[a-zA-Z0-9\-\_]+}", [
+        $this->get("discounts/code/{code:[a-zA-Z0-9\-]+}", [
             "uses" => "$controller@getByCode",
             "middleware" => "scope:registered"
         ]);

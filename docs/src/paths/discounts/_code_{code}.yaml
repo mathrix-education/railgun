@@ -1,0 +1,20 @@
+get:
+  summary: Get a discount by code
+  description: Get the first discount which matches with the couple property, value.
+  parameters:
+    - name: code
+      in: path
+      description: The discount code.
+      required: true
+      schema:
+        type: int, string
+        example: MODEMACHINE2018
+  responses:
+    200:
+      description: The requested discount.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Discount'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

@@ -1069,8 +1069,15 @@
           },
           "expire_at": {
             "description": "The discount expiration date/time. After this date, the discount is considered as expired and cannot be used anymore",
-            "type": "string",
-            "format": "date-time"
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "format": "date-time"
+              }
+            ]
           },
           "created_at": {
             "description": "The country creation date-time.",
@@ -12930,6 +12937,877 @@
         "operationId": "get/disciplines/slug/{disciplineSlug}"
       }
     },
+    "/discounts/{page}/{perPage}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "description": "The page (starts at 0).",
+            "schema": {
+              "type": "int"
+            },
+            "example": 4,
+            "required": true
+          },
+          {
+            "name": "perPage",
+            "in": "path",
+            "description": "The number of models per page.",
+            "schema": {
+              "type": "int"
+            },
+            "example": 100,
+            "required": true
+          }
+        ],
+        "summary": "Paginate discounts",
+        "description": "Retrive all discounts by ascending ids, paginated.",
+        "responses": {
+          "200": {
+            "description": "The discounts in a paginator.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "page",
+                        "per_page",
+                        "total",
+                        "data"
+                      ],
+                      "properties": {
+                        "page": {
+                          "description": "The current page.",
+                          "type": "integer",
+                          "example": 4,
+                          "readOnly": true
+                        },
+                        "per_page": {
+                          "description": "The number of models per page.",
+                          "type": "integer",
+                          "example": 100,
+                          "readOnly": true
+                        },
+                        "total": {
+                          "description": "The total number of models processed.",
+                          "type": "integer",
+                          "example": 1845,
+                          "readOnly": true
+                        },
+                        "data": {
+                          "description": "The models as an array.",
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          },
+                          "readOnly": true
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "description": "Discount.",
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "id": {
+                                "description": "The discount id.",
+                                "type": "integer",
+                                "example": 33
+                              },
+                              "code": {
+                                "description": "The discount code.",
+                                "type": "string",
+                                "example": "MODEMACHINE2018"
+                              },
+                              "type": {
+                                "description": "The discount type.",
+                                "type": "string",
+                                "enum": [
+                                  "percentage",
+                                  "absolute"
+                                ]
+                              },
+                              "value": {
+                                "description": "The discount value is euro (€).",
+                                "type": "integer",
+                                "example": 20.5
+                              },
+                              "counter": {
+                                "description": "The discount counter (e.g. the number of time the discount can be used). `-1` means unlimited times.",
+                                "type": "integer",
+                                "example": 93
+                              },
+                              "expire_at": {
+                                "description": "The discount expiration date/time. After this date, the discount is considered as expired and cannot be used anymore",
+                                "anyOf": [
+                                  {
+                                    "type": "null"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "format": "date-time"
+                                  }
+                                ]
+                              },
+                              "created_at": {
+                                "description": "The country creation date-time.",
+                                "anyOf": [
+                                  {
+                                    "type": "null"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "format": "date-time"
+                                  }
+                                ]
+                              },
+                              "updated_at": {
+                                "description": "The country last update date-time.",
+                                "anyOf": [
+                                  {
+                                    "type": "null"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "format": "date-time"
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Discounts"
+        ],
+        "operationId": "get/discounts/{page}/{perPage}"
+      }
+    },
+    "/discounts": {
+      "post": {
+        "summary": "Post a discount",
+        "security": [
+          {
+            "bearer": [
+              "admin"
+            ]
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "Discount.",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "description": "The discount id.",
+                    "type": "integer",
+                    "example": 33
+                  },
+                  "code": {
+                    "description": "The discount code.",
+                    "type": "string",
+                    "example": "MODEMACHINE2018"
+                  },
+                  "type": {
+                    "description": "The discount type.",
+                    "type": "string",
+                    "enum": [
+                      "percentage",
+                      "absolute"
+                    ]
+                  },
+                  "value": {
+                    "description": "The discount value is euro (€).",
+                    "type": "integer",
+                    "example": 20.5
+                  },
+                  "counter": {
+                    "description": "The discount counter (e.g. the number of time the discount can be used). `-1` means unlimited times.",
+                    "type": "integer",
+                    "example": 93
+                  },
+                  "expire_at": {
+                    "description": "The discount expiration date/time. After this date, the discount is considered as expired and cannot be used anymore",
+                    "anyOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    ]
+                  },
+                  "created_at": {
+                    "description": "The country creation date-time.",
+                    "anyOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    ]
+                  },
+                  "updated_at": {
+                    "description": "The country last update date-time.",
+                    "anyOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The newly created discount.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Discount.",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "description": "The discount id.",
+                      "type": "integer",
+                      "example": 33
+                    },
+                    "code": {
+                      "description": "The discount code.",
+                      "type": "string",
+                      "example": "MODEMACHINE2018"
+                    },
+                    "type": {
+                      "description": "The discount type.",
+                      "type": "string",
+                      "enum": [
+                        "percentage",
+                        "absolute"
+                      ]
+                    },
+                    "value": {
+                      "description": "The discount value is euro (€).",
+                      "type": "integer",
+                      "example": 20.5
+                    },
+                    "counter": {
+                      "description": "The discount counter (e.g. the number of time the discount can be used). `-1` means unlimited times.",
+                      "type": "integer",
+                      "example": 93
+                    },
+                    "expire_at": {
+                      "description": "The discount expiration date/time. After this date, the discount is considered as expired and cannot be used anymore",
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      ]
+                    },
+                    "created_at": {
+                      "description": "The country creation date-time.",
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      ]
+                    },
+                    "updated_at": {
+                      "description": "The country last update date-time.",
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Model failed to pass validation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "The error description.",
+                      "type": "string",
+                      "example": "model_validation"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Discounts"
+        ],
+        "operationId": "post/discounts"
+      }
+    },
+    "/discounts/{discountId}": {
+      "get": {
+        "summary": "Get a discount",
+        "parameters": [
+          {
+            "name": "discountId",
+            "in": "path",
+            "description": "The discount id.",
+            "required": true,
+            "schema": {
+              "type": "int",
+              "example": 8
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested discount.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Discount.",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "description": "The discount id.",
+                      "type": "integer",
+                      "example": 33
+                    },
+                    "code": {
+                      "description": "The discount code.",
+                      "type": "string",
+                      "example": "MODEMACHINE2018"
+                    },
+                    "type": {
+                      "description": "The discount type.",
+                      "type": "string",
+                      "enum": [
+                        "percentage",
+                        "absolute"
+                      ]
+                    },
+                    "value": {
+                      "description": "The discount value is euro (€).",
+                      "type": "integer",
+                      "example": 20.5
+                    },
+                    "counter": {
+                      "description": "The discount counter (e.g. the number of time the discount can be used). `-1` means unlimited times.",
+                      "type": "integer",
+                      "example": 93
+                    },
+                    "expire_at": {
+                      "description": "The discount expiration date/time. After this date, the discount is considered as expired and cannot be used anymore",
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      ]
+                    },
+                    "created_at": {
+                      "description": "The country creation date-time.",
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      ]
+                    },
+                    "updated_at": {
+                      "description": "The country last update date-time.",
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Model not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "The error message.",
+                      "type": "string",
+                      "example": "model_not_found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Discounts"
+        ],
+        "operationId": "get/discounts/{discountId}"
+      },
+      "patch": {
+        "summary": "Patch a discount",
+        "security": [
+          {
+            "bearer": [
+              "admin"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "discountId",
+            "in": "path",
+            "description": "The discount id.",
+            "required": true,
+            "schema": {
+              "type": "int",
+              "example": 45
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "Discount.",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "description": "The discount id.",
+                    "type": "integer",
+                    "example": 33
+                  },
+                  "code": {
+                    "description": "The discount code.",
+                    "type": "string",
+                    "example": "MODEMACHINE2018"
+                  },
+                  "type": {
+                    "description": "The discount type.",
+                    "type": "string",
+                    "enum": [
+                      "percentage",
+                      "absolute"
+                    ]
+                  },
+                  "value": {
+                    "description": "The discount value is euro (€).",
+                    "type": "integer",
+                    "example": 20.5
+                  },
+                  "counter": {
+                    "description": "The discount counter (e.g. the number of time the discount can be used). `-1` means unlimited times.",
+                    "type": "integer",
+                    "example": 93
+                  },
+                  "expire_at": {
+                    "description": "The discount expiration date/time. After this date, the discount is considered as expired and cannot be used anymore",
+                    "anyOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    ]
+                  },
+                  "created_at": {
+                    "description": "The country creation date-time.",
+                    "anyOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    ]
+                  },
+                  "updated_at": {
+                    "description": "The country last update date-time.",
+                    "anyOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The edited discount.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Discount.",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "description": "The discount id.",
+                      "type": "integer",
+                      "example": 33
+                    },
+                    "code": {
+                      "description": "The discount code.",
+                      "type": "string",
+                      "example": "MODEMACHINE2018"
+                    },
+                    "type": {
+                      "description": "The discount type.",
+                      "type": "string",
+                      "enum": [
+                        "percentage",
+                        "absolute"
+                      ]
+                    },
+                    "value": {
+                      "description": "The discount value is euro (€).",
+                      "type": "integer",
+                      "example": 20.5
+                    },
+                    "counter": {
+                      "description": "The discount counter (e.g. the number of time the discount can be used). `-1` means unlimited times.",
+                      "type": "integer",
+                      "example": 93
+                    },
+                    "expire_at": {
+                      "description": "The discount expiration date/time. After this date, the discount is considered as expired and cannot be used anymore",
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      ]
+                    },
+                    "created_at": {
+                      "description": "The country creation date-time.",
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      ]
+                    },
+                    "updated_at": {
+                      "description": "The country last update date-time.",
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Model not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "The error message.",
+                      "type": "string",
+                      "example": "model_not_found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Model failed to pass validation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "The error description.",
+                      "type": "string",
+                      "example": "model_validation"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Discounts"
+        ],
+        "operationId": "patch/discounts/{discountId}"
+      },
+      "delete": {
+        "summary": "Delete a discount",
+        "security": [
+          {
+            "bearer": [
+              "admin"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "discountId",
+            "in": "path",
+            "description": "The discount id.",
+            "required": true,
+            "schema": {
+              "type": "int",
+              "example": 45
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The deletion result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "description": "If the deletion was sucessful.",
+                      "type": "boolean",
+                      "default": true
+                    },
+                    "message": {
+                      "description": "The deletion message.",
+                      "type": "string",
+                      "example": "Discount id 45 was successfully deleted."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Model not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "The error message.",
+                      "type": "string",
+                      "example": "model_not_found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Discounts"
+        ],
+        "operationId": "delete/discounts/{discountId}"
+      }
+    },
+    "/discounts/code/{code}": {
+      "get": {
+        "summary": "Get a discount by code",
+        "description": "Get the first discount which matches with the couple property, value.",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "description": "The discount code.",
+            "required": true,
+            "schema": {
+              "type": "int, string",
+              "example": "MODEMACHINE2018"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested discount.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Discount.",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "description": "The discount id.",
+                      "type": "integer",
+                      "example": 33
+                    },
+                    "code": {
+                      "description": "The discount code.",
+                      "type": "string",
+                      "example": "MODEMACHINE2018"
+                    },
+                    "type": {
+                      "description": "The discount type.",
+                      "type": "string",
+                      "enum": [
+                        "percentage",
+                        "absolute"
+                      ]
+                    },
+                    "value": {
+                      "description": "The discount value is euro (€).",
+                      "type": "integer",
+                      "example": 20.5
+                    },
+                    "counter": {
+                      "description": "The discount counter (e.g. the number of time the discount can be used). `-1` means unlimited times.",
+                      "type": "integer",
+                      "example": 93
+                    },
+                    "expire_at": {
+                      "description": "The discount expiration date/time. After this date, the discount is considered as expired and cannot be used anymore",
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      ]
+                    },
+                    "created_at": {
+                      "description": "The country creation date-time.",
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      ]
+                    },
+                    "updated_at": {
+                      "description": "The country last update date-time.",
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Model not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "The error message.",
+                      "type": "string",
+                      "example": "model_not_found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Discounts"
+        ],
+        "operationId": "get/discounts/code/{code}"
+      }
+    },
     "/files": {
       "post": {
         "summary": "Upload",
@@ -13473,6 +14351,10 @@
     {
       "name": "Disciplines",
       "description": "Disciplines API"
+    },
+    {
+      "name": "Discounts",
+      "description": "Discounts API"
     },
     {
       "name": "Files",
