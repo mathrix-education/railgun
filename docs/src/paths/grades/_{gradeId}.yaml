@@ -1,71 +1,63 @@
 get:
-  tags:
-    - Discounts
-  summary: Get a discount
-  operationId: discountsGet
+  summary: Get a grade
   parameters:
-    - name: discountId
+    - name: gradeId
       in: path
-      description: The discount id.
+      description: The grade id.
       required: true
       schema:
         type: int
-        example: 8
+        example: 22
   responses:
     200:
-      description: The requested discount.
+      description: The requested grade.
       content:
         application/json:
           schema:
-            $ref: '../../index.yaml#/components/schemas/Discount'
+            $ref: '../../index.yaml#/components/schemas/Grade'
     404:
       $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
 patch:
-  tags:
-    - Discounts
-  summary: Edit a discount
-  operationId: discountsPatch
+  summary: Patch a grade
   security:
-    - admin: []
+    - bearer: [admin]
   parameters:
-    - name: discountId
+    - name: gradeId
       in: path
-      description: The discount id.
+      description: The grade id.
       required: true
       schema:
         type: int
-        example: 45
+        example: 15
   requestBody:
     content:
       application/json:
         schema:
-          $ref: '../../index.yaml#/components/schemas/Discount'
+          $ref: '../../index.yaml#/components/schemas/Grade'
   responses:
     200:
-      description: The edited discount.
+      description: The edited grade.
       content:
         application/json:
           schema:
-            $ref: '../../index.yaml#/components/schemas/Discount'
+            $ref: '../../index.yaml#/components/schemas/Grade'
     404:
       $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
     422:
       $ref: '../../index.yaml#/components/responses/422_ModelValidation'
 delete:
-  tags:
-    - Discounts
-  summary: Delete a discount
-  operationId: discountsDelete
+  summary: Delete a grade
+  description: Delete a grade by its id. To be deleted a grade must not have any related grade, user or chapter.
   security:
-    - admin: []
+    - bearer: [admin]
   parameters:
-    - name: discountId
+    - name: gradeId
       in: path
-      description: The discount id.
+      description: The grade id.
       required: true
       schema:
         type: int
-        example: 45
+        example: 15
   responses:
     200:
       description: The deletion result.
@@ -81,6 +73,6 @@ delete:
               message:
                 description: The deletion message.
                 type: string
-                example: Discount id 45 was successfully deleted.
+                example: Grade id 15 was successfully deleted.
     404:
       $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

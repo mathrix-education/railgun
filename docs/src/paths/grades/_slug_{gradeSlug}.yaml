@@ -1,0 +1,20 @@
+get:
+  summary: Get a grade by slug
+  description: Get the first grade which matches with the given slug.
+  parameters:
+    - name: gradeSlug
+      in: path
+      description: The grade slug.
+      required: true
+      schema:
+        type: string
+        example: terminale-s
+  responses:
+    200:
+      description: The requested grade.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Grade'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

@@ -1,0 +1,17 @@
+get:
+  $extends: ../../fragments/pagination_params.yaml
+  summary: Paginate grades
+  description: Retrive all grades by ascending ids, paginated.
+  responses:
+    200:
+      description: The grades in a paginator.
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: ../../schemas/Paginator.yaml
+              - properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '../../index.yaml#/components/schemas/Grade'
