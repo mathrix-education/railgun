@@ -136,7 +136,8 @@ class FilesTest extends APITestCase
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse();
-        self::getDisk()->assertExists("test/avatar.jpg");
+        $this->getDisk()->assertExists("test/avatar.jpg");
+        $this->getDisk()->delete("test/avatar.jpg"); // Rollback
     }
 
 
@@ -158,9 +159,9 @@ class FilesTest extends APITestCase
         $this->assertResponseOk();
         $this->assertOpenAPIResponse();
 
-        self::getDisk()->assertMissing($source);
-        self::getDisk()->assertExists($destination);
-        self::getDisk()->move($destination, $source); // Rollback
+        $this->getDisk()->assertMissing($source);
+        $this->getDisk()->assertExists($destination);
+        $this->getDisk()->move($destination, $source); // Rollback
     }
 
 
@@ -170,7 +171,7 @@ class FilesTest extends APITestCase
     public function testDeleteFile()
     {
         $file = $this->randomFile();
-        self::getDisk()->copy($file, "$file.old"); // Make a backup to restore after
+        $this->getDisk()->copy($file, "$file.old"); // Make a backup to restore after
 
         $uri = "/files/$file";
         $this->autoMockScope("delete", $uri);
@@ -180,7 +181,7 @@ class FilesTest extends APITestCase
         $this->assertResponseOk();
         $this->assertOpenAPIResponse();
 
-        self::getDisk()->assertMissing($file);
-        self::getDisk()->move("$file.old", $file); // Rollback
+        $this->getDisk()->assertMissing($file);
+        $this->getDisk()->move("$file.old", $file); // Rollback
     }
 }
