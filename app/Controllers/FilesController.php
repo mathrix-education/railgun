@@ -150,11 +150,16 @@ class FilesController extends BaseController
      * @throws FlysystemFileNotFoundException
      * @throws Http400BadRequestException
      */
-    public function explore(Request $request, string $directory = "")
+    public function explore(Request $request, string $directory = null)
     {
         $request->user()->canOrFail("explore", FilePolicy::class);
 
         $disk = $this->getDisk();
+
+        // Root directory of the CDN
+        if ($directory === null) {
+            $directory = "/";
+        }
 
         if (!$disk->has($directory)) {
             throw new FileNotFoundException($directory);
