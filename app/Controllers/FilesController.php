@@ -32,6 +32,39 @@ class FilesController extends BaseController
 
 
     /**
+     * Transform file or directory data.
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    private function transform(array $data): array
+    {
+        if (isset($data["path"])) {
+            $data["url"] = env("APP_CDN") . "/{$data["path"]}";
+        }
+
+        if ($data["type"] === "file") {
+            if (isset($data["size"])) {
+                $data["size"] = (int)$data["size"];
+            }
+
+            if (!isset($data["extension"])) {
+                // Fix for files with no extensions
+                $data["extension"] = "";
+
+                if (!isset($data["basename"]) && isset($data["path"])) {
+                    $data["basename"] = basename($data["path"]);
+                    $data["filename"] = basename($data["path"]);
+                }
+            }
+        }
+
+        return $data;
+    }
+
+
+    /**
      * Get the storage disk
      *
      * @return Filesystem|FilesystemAdapter
@@ -55,7 +88,7 @@ class FilesController extends BaseController
         $disk = $this->getDisk();
 
         try {
-            $metadata = $disk->getMetadata($path);
+            $metadata = $this->transform($disk->getMetadata($path));
         } catch (FlysystemFileNotFoundException $e) {
             throw new FileNotFoundException($path);
         }
@@ -146,38 +179,30 @@ class FilesController extends BaseController
      * @param string $directory The directory path.
      *
      * @return JsonResponse
-     * @throws FileNotFoundException
-     * @throws FlysystemFileNotFoundException
-     * @throws Http400BadRequestException
      */
     public function explore(Request $request, string $directory = null)
     {
         $request->user()->canOrFail("explore", FilePolicy::class);
 
         $disk = $this->getDisk();
+        $content = collect($disk->listContents($directory));
 
-        // Root directory of the CDN
-        if ($directory !== null) {
-            if (!$disk->has($directory)) {
-                throw new FileNotFoundException($directory);
-            }
-
-            $meta = $disk->getMetadata($directory);
-
-            if ($meta["type"] !== "dir") {
-                throw new Http400BadRequestException(["path" => $directory], "$directory is not a directory.");
-            }
-        }
-
-        $directories = $disk->directories($directory);
-        foreach ($directories as $key => $path) {
-            $directories[$key] = $this->metadata($path);
-        }
-
-        $files = $disk->files($directory);
-        foreach ($files as $key => $path) {
-            $files[$key] = $this->metadata($path);
-        }
+        $directories = $content
+            ->filter(function ($v) {
+                return $v["type"] === "dir";
+            })
+            ->map(function ($dir) {
+                return $this->transform($dir);
+            })
+            ->values();
+        $files = $content
+            ->filter(function ($v) {
+                return $v["type"] === "file";
+            })
+            ->map(function ($file) {
+                return $this->transform($file);
+            })
+            ->values();
 
         return new JsonResponse([
             "directories" => $directories,

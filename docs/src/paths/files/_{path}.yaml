@@ -43,9 +43,7 @@ get:
       content:
         application/json:
           schema:
-            oneOf:
-              - $ref: '../../index.yaml#/components/schemas/Directory'
-              - $ref: '../../index.yaml#/components/schemas/File'
+            $ref: '../../index.yaml#/components/schemas/File'
     404:
       $ref: '../../index.yaml#/components/responses/404_FileNotFound'
 patch:

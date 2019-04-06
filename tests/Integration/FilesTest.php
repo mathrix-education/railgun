@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\API;
+namespace Tests\Integration;
 
-use Faker\Factory as FakeFactory;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Tests\API\APITestCase;
 
 /**
  * Class FilesTest.
@@ -17,45 +17,10 @@ use Illuminate\Support\Facades\Storage;
  */
 class FilesTest extends APITestCase
 {
-    protected const SEED_DIRECTORIES = [
-        "a",
-        "a/a1",
-        "a/a1/a2",
-        "b",
-        "c"
-    ];
-    protected const SEED_FILES = [
-        "root.txt",
-        "a/a.txt",
-        "a/a1/a1.txt",
-        "a/a1/a1-prime.txt",
-        "a/a1/a2/a2.txt",
-        "b/b.txt",
-        "c/c.txt"
-    ];
-
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        Storage::fake("cdn");
-        $disk = Storage::disk("cdn");
-
-        // Seed CDN
-        foreach (self::SEED_DIRECTORIES as $directory) {
-            $disk->makeDirectory($directory);
-        }
-        foreach (self::SEED_FILES as $file) {
-            $disk->put($file, FakeFactory::create()->text(500));
-        }
-    }
-
-
     /**
      * @return Filesystem|FilesystemAdapter
      */
-    public static function getDisk()
+    public function getDisk()
     {
         return Storage::disk("cdn");
     }
@@ -68,7 +33,7 @@ class FilesTest extends APITestCase
      */
     public function randomFile()
     {
-        return $this->faker->randomElement(self::getDisk()->allFiles("/"));
+        return $this->faker->randomElement($this->getDisk()->allFiles("/"));
     }
 
 
@@ -79,7 +44,7 @@ class FilesTest extends APITestCase
      */
     public function randomDirectory()
     {
-        return $this->faker->randomElement(self::getDisk()->allDirectories("/"));
+        return $this->faker->randomElement($this->getDisk()->allDirectories("/"));
     }
 
 
@@ -89,21 +54,6 @@ class FilesTest extends APITestCase
     public function testInfoFile()
     {
         $uri = "/files/{$this->randomFile()}";
-        $this->autoMockScope("get", $uri);
-
-        $this->json("get", $uri);
-
-        $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
-    }
-
-
-    /**
-     * GET /files/{path}
-     */
-    public function testInfoDirectory()
-    {
-        $uri = "/files/{$this->randomDirectory()}";
         $this->autoMockScope("get", $uri);
 
         $this->json("get", $uri);
