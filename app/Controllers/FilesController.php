@@ -4,10 +4,13 @@ namespace App\Controllers;
 
 use App\Exceptions\FileNotFoundException;
 use App\Policies\FilePolicy;
+use finfo;
+use Illuminate\Contracts\Filesystem\FileNotFoundException as IlluminateFileNotFoundException;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use League\Flysystem\FileNotFoundException as FlysystemFileNotFoundException;
@@ -59,6 +62,44 @@ class FilesController extends BaseController
         $metadata["url"] = env("APP_CDN") . "/$path";
 
         return $metadata;
+    }
+
+
+    /**
+     * GET /cdn/{path}
+     * Proxy of the CDN bucket.
+     *
+     * @param string $path
+     *
+     * @return mixed
+     * @throws FileNotFoundException
+     */
+    public function proxy(string $path)
+    {
+        $bucket = Storage::disk("cdn");
+
+        if (!$bucket->exists($path)) {
+            throw new FileNotFoundException($path);
+        } else {
+            // Get file from GCS
+            try {
+                $fileContent = $bucket->get($path);
+            } catch (IlluminateFileNotFoundException $previous) {
+                throw new FileNotFoundException($path, $previous);
+            }
+
+            $fileName = basename($path);
+            $finfo = new finfo(FILEINFO_MIME_TYPE);
+            $mimeType = $finfo->buffer($fileContent);
+
+            /** @var Response $response */
+            $response = response($fileContent);
+
+            return $response->header("Content-Type", $mimeType)
+                ->header("Pragma", "public")
+                ->header("Cache-Control", 'max-age=60, must-revalidate')
+                ->header("Content-Disposition", 'inline; filename="' . $fileName . '"');
+        }
     }
 
 

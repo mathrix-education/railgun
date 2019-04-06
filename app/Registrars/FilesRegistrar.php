@@ -19,9 +19,10 @@ class FilesRegistrar extends BaseRegistrar
      */
     public function register(): void
     {
-        $this->group(["middleware" => "scope:moderator", "prefix" => "files"], function () {
-            $controller = FilesController::class;
+        $controller = FilesController::class;
 
+        $this->get("cdn/{path:[a-zA-Z0-9\_\-\/\.]+}", "$controller@proxy");
+        $this->group(["middleware" => "scope:moderator", "prefix" => "files"], function () use ($controller) {
             $this->post("{path:[a-zA-Z0-9\_\-\/\.]+}", "$controller@upload");
             $this->get("explore/{directory:[a-zA-Z0-9\_\-\/\.]+}", "$controller@explore");
             $this->get("{path:[a-zA-Z0-9\_\-\/\.]+}", "$controller@info");
