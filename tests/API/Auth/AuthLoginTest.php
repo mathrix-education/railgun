@@ -5,9 +5,7 @@ namespace Tests\API\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\Client;
-use Mathrix\Lumen\Exceptions\ValidationException;
-use PHPUnit\Framework\Constraint\IsType;
-use Tests\API\APITestCase;
+use Tests\APITestCase;
 
 /**
  * Class AuthTest.

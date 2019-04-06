@@ -5,7 +5,7 @@ namespace Tests\API\Auth;
 use App\Models\User;
 use App\Notifications\PasswordForgottenNotification;
 use Illuminate\Support\Facades\Notification;
-use Tests\API\APITestCase;
+use Tests\APITestCase;
 
 /**
  * Class AuthRefreshTest.

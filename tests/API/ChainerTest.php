@@ -3,6 +3,7 @@
 namespace Tests\API;
 
 use App\Models\Module;
+use Tests\APITestCase;
 
 /**
  * Class ChainerTest.

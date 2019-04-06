@@ -2,6 +2,8 @@
 
 namespace Tests\API;
 
+use Tests\APITestCase;
+
 /**
  * Class SearchTest.
  *

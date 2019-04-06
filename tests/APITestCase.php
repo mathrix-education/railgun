@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\API;
+namespace Tests;
 
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Mathrix\Lumen\Bases\BaseModel;
@@ -10,7 +10,7 @@ use Tests\BaseTestCase;
 use Throwable;
 
 /**
- * Class API5TestCase.
+ * Class APITestCase.
  *
  * @author Mathieu Bour <mathieu@mathrix.fr>
  * @copyright Mathrix Education SA.

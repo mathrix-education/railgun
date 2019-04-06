@@ -3,6 +3,7 @@
 namespace Tests\API;
 
 use App\Models\User;
+use Tests\APITestCase;
 
 /**
  * Class PlansTest.

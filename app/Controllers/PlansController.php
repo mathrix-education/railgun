@@ -40,32 +40,4 @@ class PlansController extends BaseController
     {
         return new JsonResponse(Plan::findOrFail($planId));
     }
-
-
-    /**
-     * GET /{planId}/estimate
-     * Estimate the price of the trial before the regular subscription billing cycles.
-     *
-     * @param string $planId
-     *
-     * @return JsonResponse
-     * @throws Http400BadRequestException
-     */
-    public function estimate(string $planId): JsonResponse
-    {
-        if (!in_array($planId, ["v4_annually", "v4_biannually"])) {
-            throw new Http400BadRequestException([
-                "planId" => $planId
-            ], "The plan {$planId} cannot be estimated.");
-        }
-
-        $plan = Plan::findOrFail($planId);
-        $data = [
-            "planId" => $plan->id,
-            "trialPrice" => $plan->trialPrice,
-            "trialEndDate" => $plan->trialEndDate->__toString() // Hack?
-        ];
-
-        return new JsonResponse($data);
-    }
 }

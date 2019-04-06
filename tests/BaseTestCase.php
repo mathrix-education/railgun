@@ -18,8 +18,6 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  */
 abstract class BaseTestCase extends TestCase
 {
-    use JsonAssertions;
-
     /** @var Generator */
     public $faker;
 

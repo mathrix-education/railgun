@@ -6,7 +6,7 @@ use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Tests\API\APITestCase;
+use Tests\APITestCase;
 
 /**
  * Class FilesTest.

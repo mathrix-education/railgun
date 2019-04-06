@@ -4,7 +4,7 @@ namespace Tests\API\Auth;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Notification;
-use Tests\API\APITestCase;
+use Tests\APITestCase;
 
 /**
  * Class AuthReset.
