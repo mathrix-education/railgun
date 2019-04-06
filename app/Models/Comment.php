@@ -55,7 +55,6 @@ class Comment extends BaseModel
         "parent_id",
         "user_id",
         "module_id",
-        "path_id",
         "created_at",
         "updated_at",
         "deleted_at"

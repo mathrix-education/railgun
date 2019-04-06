@@ -85,6 +85,8 @@ class NotificationsTableSeeder extends BaseTableSeeder
         // Unset unwanted relations
         unset($comment->parent);
         $data = $comment->toArray();
+        $user = $comment->user->only(["id", "type", "username", "firstname", "level", "grade_id"]);
+        $data["user"] = $user;
 
         $notificationsData = [
             "id" => $this->faker->uuid,

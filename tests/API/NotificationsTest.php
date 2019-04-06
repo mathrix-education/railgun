@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Notifications\DatabaseNotification;
 use Laravel\Passport\Passport;
-use PHPUnit\Framework\Constraint\IsType;
 
 /**
  * Class NotificationsTest.
@@ -46,30 +45,7 @@ class NotificationsTest extends APITestCase
         $this->json("get", "/notifications/$type/$page/$perPage");
 
         $this->assertResponseOk();
-        $this->assertJsonResponseMatches($this->getNotificationsPageSignature($page, $perPage));
-    }
-
-
-    /**
-     * Get the notification page signature.
-     *
-     * @param int|null $page
-     * @param int|null $perPage
-     *
-     * @return array
-     */
-    private function getNotificationsPageSignature(int $page = null, int $perPage = null)
-    {
-        return [
-            "page" => $page ?? new IsType("integer"),
-            "per_page" => $perPage ?? new IsType("integer"),
-            "total" => new IsType("integer"),
-            "data.[*].id" => new IsType("string"),
-            "data.[*].type" => new IsType("string"),
-            "data.[*].notifiable_type" => "user",
-            "data.[*].notifiable_id" => new IsType("integer"),
-            "data.[*].data" => new IsType("object")
-        ];
+        $this->assertOpenAPIResponse();
     }
 
 
@@ -105,9 +81,6 @@ class NotificationsTest extends APITestCase
      */
     public function testMarkAllRead()
     {
-        $page = 0;
-        $perPage = 100;
-
         /** @var DatabaseNotification $notification */
         $notification = DatabaseNotification::query()
             ->whereNotNull("read_at")
@@ -120,7 +93,8 @@ class NotificationsTest extends APITestCase
         $this->json("patch", "/notifications/all/mark/read");
 
         $this->assertResponseOk();
-        $this->assertJsonResponseMatches($this->getNotificationsPageSignature($page, $perPage));
+        $this->assertOpenAPIResponse();
+
         $this->assertNotInDatabase("notifications", [
             "notifiable_type" => "user",
             "notifiable_id" => $user->id,
@@ -143,6 +117,9 @@ class NotificationsTest extends APITestCase
         Passport::actingAs($user, explode(" ", $user->getPassportScopes()));
 
         $this->json("patch", "/notifications/{$notification->id}/mark/read");
+
+        $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
 
         $this->assertNotInDatabase("notifications", [
             "id" => $notification->id,
@@ -167,6 +144,9 @@ class NotificationsTest extends APITestCase
         Passport::actingAs($user, explode(" ", $user->getPassportScopes()));
 
         $this->json("patch", "/notifications/{$notification->id}/mark/unread");
+
+        $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
 
         $this->assertInDatabase("notifications", [
             "id" => $notification->id,

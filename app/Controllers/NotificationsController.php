@@ -3,14 +3,16 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use App\Services\Braintree\Utils\Formatter;
 use Carbon\Carbon;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Support\Arr;
 use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
-use Mathrix\Lumen\Responses\PaginationJsonResponse;
 
 /**
  * Class NotificationsController.
@@ -29,9 +31,9 @@ class NotificationsController extends BaseController
      * @param int $page
      * @param int $perPage
      *
-     * @return PaginationJsonResponse
+     * @return JsonResponse
      */
-    private function getNotificationsJsonResponse(string $relation, Request $request, $page, $perPage)
+    private function getNotificationsJsonResponse(string $relation, Request $request, int $page, int $perPage): JsonResponse
     {
         /** @var User $user */
         $user = $request->user();
@@ -39,10 +41,23 @@ class NotificationsController extends BaseController
         /** @var Builder $query */
         $query = $user->{$relation}();
         $query = $query->orderByDesc("created_at");
+        $total = $query->count();
 
-        $response = new PaginationJsonResponse($query, $page, $perPage);
+        $models = $query->limit($perPage)
+            ->offset($page * $perPage)
+            ->get()
+            ->map(function (DatabaseNotification $notification) {
+                return Formatter::cast($notification->toArray());
+            });
 
-        return $response;
+        $data = [
+            "page" => $page,
+            "per_page" => $perPage,
+            "total" => $total,
+            "data" => $models,
+        ];
+
+        return new JsonResponse($data);
     }
 
 
@@ -54,9 +69,9 @@ class NotificationsController extends BaseController
      * @param int $page The page used for pagination.
      * @param int $perPage The notification count per page.
      *
-     * @return PaginationJsonResponse
+     * @return JsonResponse
      */
-    public function unread(Request $request, $page = 1, $perPage = 100)
+    public function unread(Request $request, int $page = 0, int $perPage = 100)
     {
         return $this->getNotificationsJsonResponse("unreadNotifications", $request, $page, $perPage);
     }
@@ -70,9 +85,9 @@ class NotificationsController extends BaseController
      * @param int $page The page used for pagination.
      * @param int $perPage The notification count per page.
      *
-     * @return PaginationJsonResponse
+     * @return JsonResponse
      */
-    public function read(Request $request, $page = 1, $perPage = 100)
+    public function read(Request $request, int $page = 0, int $perPage = 100)
     {
         return $this->getNotificationsJsonResponse("readNotifications", $request, $page, $perPage);
     }
@@ -86,9 +101,9 @@ class NotificationsController extends BaseController
      * @param int $page The page used for pagination.
      * @param int $perPage The notification count per page.
      *
-     * @return PaginationJsonResponse
+     * @return JsonResponse
      */
-    public function all(Request $request, $page = 0, $perPage = 100)
+    public function all(Request $request, int $page = 0, int $perPage = 100)
     {
         return $this->getNotificationsJsonResponse("notifications", $request, $page, $perPage);
     }
@@ -120,7 +135,9 @@ class NotificationsController extends BaseController
             $notification->markAsUnread();
         }
 
-        return new JsonResponse($notification);
+        $notificationData = Formatter::cast($notification->toArray());
+
+        return new JsonResponse(Arr::except($notificationData, ["notifiable"]));
     }
 
 
@@ -130,7 +147,7 @@ class NotificationsController extends BaseController
      *
      * @param Request $request The Illuminate HTTP request.
      *
-     * @return PaginationJsonResponse
+     * @return JsonResponse
      */
     public function markAllRead(Request $request)
     {
