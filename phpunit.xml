@@ -10,10 +10,8 @@
         </testsuite>
     </testsuites>
     <filter>
-        <whitelist>
+        <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./app</directory>
-            <directory suffix=".php">./bootstrap</directory>
-            <directory suffix=".php">./database/factories</directory>
             <exclude>
                 <directory>./app/Console</directory>
             </exclude>

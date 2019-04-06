@@ -1,7 +1,6 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Paratest Cover All" type="PhpLocalRunConfigurationType" factoryName="PHP Console" singleton="true" path="$PROJECT_DIR$/vendor/bin/paratest" scriptParameters="-p16 --runner=WrapperRunner --coverage-clover=storage/code-coverage/cover.xml --configuration=phpunit.xml">
+  <configuration default="false" name="Paratest Cover All" type="PhpLocalRunConfigurationType" factoryName="PHP Console" singleton="true" path="$PROJECT_DIR$/vendor/bin/paratest" scriptParameters="--runner=WrapperRunner --coverage-clover=artifacts/cover-clover.xml --passthru=&quot;'--prepend' 'artifacts/xdebug-filter.php'&quot; --configuration=phpunit.xml">
     <CommandLine workingDirectory="$PROJECT_DIR$" />
-    <option name="workingDirectory" value="$PROJECT_DIR$" />
     <method v="2" />
   </configuration>
 </component>

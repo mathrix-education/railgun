@@ -12,6 +12,7 @@
 
 /node_modules/
 /vendor/
+/artifacts
 /docs/out
 /docs/spec.html
 /docs/spec.json
