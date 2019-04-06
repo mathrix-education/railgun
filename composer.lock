@@ -2957,7 +2957,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:mathrix-education/lumen-zero.git",
-                "reference": "4a5ef40ece8f2517d0c9f4606427394b754e35eb"
+                "reference": "1f4b30eea3d81e85f178fce4e3bf78e9f34a3ae8"
             },
             "require": {
                 "dusterio/lumen-passport": "^0.2.9",
@@ -2998,7 +2998,7 @@
                 }
             ],
             "description": "The main library for Mathrix Lumen REST APIs.",
-            "time": "2019-04-05T17:53:08+00:00"
+            "time": "2019-04-05T22:35:26+00:00"
         },
         {
             "name": "monolog/monolog",

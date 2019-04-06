@@ -35,11 +35,6 @@ class FilesTest extends APITestCase
         "b/b.txt",
         "c/c.txt"
     ];
-    /** @var array $fileSignature The file JSON schema signature */
-    protected $fileSignature;
-    /** @var array $directorySignature The directory JSON schema signature */
-    protected $directorySignature;
-
 
     public function setUp()
     {
@@ -55,20 +50,6 @@ class FilesTest extends APITestCase
         foreach (self::SEED_FILES as $file) {
             $disk->put($file, FakeFactory::create()->text(500));
         }
-
-        $this->fileSignature = [
-            "type" => "file",
-            "path" => new RegularExpression("/^[a-zA-Z0-9\-\_\/\.]+$/"),
-            "timestamp" => new IsType("integer"),
-            "size" => new IsType("integer"),
-            "url" => new IsType("string")
-        ];
-        $this->directorySignature = [
-            "type" => "dir",
-            "path" => new RegularExpression("/^[a-zA-Z0-9\-\_\/\.]+$/"),
-            "timestamp" => new IsType("integer"),
-            "url" => new IsType("string")
-        ];
     }
 
 
@@ -114,7 +95,7 @@ class FilesTest extends APITestCase
         $this->json("get", $uri);
 
         $this->assertResponseOk();
-        $this->assertJsonResponseMatches($this->fileSignature);
+        $this->assertOpenAPIResponse();
     }
 
 
@@ -129,7 +110,7 @@ class FilesTest extends APITestCase
         $this->json("get", $uri);
 
         $this->assertResponseOk();
-        $this->assertJsonResponseMatches($this->directorySignature);
+        $this->assertOpenAPIResponse();
     }
 
 
@@ -144,12 +125,7 @@ class FilesTest extends APITestCase
         $this->json("get", $uri);
 
         $this->assertResponseOk();
-        $this->assertJsonResponseMatches([
-            "[*].type" => "file",
-            "[*].path" => new RegularExpression("/^[a-zA-Z0-9\-\_\/\.]+$/"),
-            "[*].timestamp" => new IsType("integer"),
-            "[*].url" => new IsType("string")
-        ]);
+        $this->assertOpenAPIResponse();
     }
 
 
@@ -162,8 +138,7 @@ class FilesTest extends APITestCase
         $this->autoMockScope("get", $uri);
 
         $this->json("get", $uri);
-
-        $this->assertJsonErrorResponse(404, "file_not_found");
+        $this->assertOpenAPIResponse();
     }
 
 
@@ -176,7 +151,7 @@ class FilesTest extends APITestCase
         $this->autoMockScope("get", $uri);
 
         $this->json("get", $uri);
-        $this->assertJsonErrorResponse(400);
+        $this->assertOpenAPIResponse();
     }
 
 
@@ -188,11 +163,14 @@ class FilesTest extends APITestCase
         $uri = "/files/test/avatar.jpg";
         $this->autoMockScope("post", $uri);
 
-        $this->call("post", $uri, [
-            "file" => UploadedFile::fake()->image("avatar.jpg"),
+        $this->requestMethod = "post";
+        $this->requestUri = $uri;
+        $this->call($this->requestMethod, $this->requestUri, [], [], [
+            "file" => UploadedFile::fake()->image("avatar.jpg")
         ]);
 
         $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
         self::getDisk()->assertExists("test/avatar.jpg");
     }
 
@@ -213,7 +191,7 @@ class FilesTest extends APITestCase
         ]);
 
         $this->assertResponseOk();
-        $this->assertJsonResponseMatches($this->fileSignature);
+        $this->assertOpenAPIResponse();
 
         self::getDisk()->assertMissing($source);
         self::getDisk()->assertExists($destination);
@@ -235,12 +213,9 @@ class FilesTest extends APITestCase
         $this->json("delete", "/files/$file");
 
         $this->assertResponseOk();
-        $this->assertJsonDocumentMatches($this->response->getContent(), [
-            "success" => true,
-            "message" => new IsType("string")
-        ]);
-        self::getDisk()->assertMissing($file);
+        $this->assertOpenAPIResponse();
 
+        self::getDisk()->assertMissing($file);
         self::getDisk()->move("$file.old", $file); // Rollback
     }
 }

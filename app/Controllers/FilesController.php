@@ -85,7 +85,7 @@ class FilesController extends BaseController
         $name = trim(basename($path), "/");
 
         /** @var UploadedFile $file */
-        $file = $request->file("file") ?? $request->input("file") ?? $request->json("file");
+        $file = $request->file("file");
 
         if ($this->getDisk()->exists($path)) {
             $disk->delete($destination);
@@ -135,9 +135,10 @@ class FilesController extends BaseController
             $files[$key] = $this->metadata($path);
         }
 
-        $response = new JsonResponse(array_merge($directories, $files));
-
-        return $response;
+        return new JsonResponse([
+            "directories" => $directories,
+            "files" => $files
+        ]);
     }
 
 
@@ -199,9 +200,7 @@ class FilesController extends BaseController
             ], "Unable to move $source to $destination.");
         }
 
-        $response = new JsonResponse($this->metadata($destination));
-
-        return $response;
+        return new JsonResponse($this->metadata($destination));
     }
 
 
@@ -228,11 +227,11 @@ class FilesController extends BaseController
 
         if (!$disk->delete($path)) {
             throw new Http400BadRequestException(null, "Unable to delete $path.");
-        } else {
-            return new JsonResponse([
-                "success" => true,
-                "message" => "File $path was successfully deleted."
-            ]);
         }
+
+        return new JsonResponse([
+            "success" => true,
+            "message" => "File $path was successfully deleted."
+        ]);
     }
 }

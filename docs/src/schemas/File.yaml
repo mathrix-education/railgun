@@ -1,6 +1,7 @@
 description: File
 type: object
 additionalProperties: false
+required: [type, path, timestamp, size, url]
 properties:
   type:
     description: The file type.

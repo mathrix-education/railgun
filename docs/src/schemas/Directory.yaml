@@ -1,6 +1,7 @@
 description: Directory
 type: object
 additionalProperties: false
+required: [type, path, timestamp, url]
 properties:
   type:
     description: The directory type.

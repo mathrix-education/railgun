@@ -1,3 +1,29 @@
+post:
+  summary: Upload a file
+  description: Upload a file to the CDN.
+  security:
+    - bearer: [moderator]
+  requestBody:
+    description: >-
+      The request body contains only on key, which is the file itself.
+      The filename is determined by the path in the URI. Note that the `Content-Type` is note `application/json` but
+      `application/x-www-form-urlencoded` which allow file upload.
+    content:
+      application/x-www-form-urlencoded:
+        schema:
+          type: object
+          properties:
+            file:
+              description: The file content.
+              type: object
+  responses:
+    200:
+      description: The uploaded file metadata.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/File'
+
 get:
   summary: Info
   description: Display the metadata of a file on the CDN.
@@ -13,11 +39,11 @@ get:
       example: test/foo.jpg
   responses:
     200:
-      description: A file/directory metadata.
+      description: A file or directory metadata.
       content:
         application/json:
           schema:
-            anyOf:
+            oneOf:
               - $ref: '../../index.yaml#/components/schemas/Directory'
               - $ref: '../../index.yaml#/components/schemas/File'
     404:
@@ -42,9 +68,7 @@ patch:
           type: object
           properties:
             destination:
-              description: >-
-                The file destination folder on the CDN. Cannot starts with `trash`, see
-                [Files API Delete](#operation/filesDelete) instead.
+              description: The file destination folder on the CDN.
               type: string
               example: test/foo2.jpg
   responses:
@@ -57,7 +81,7 @@ patch:
     404:
       $ref: '../../index.yaml#/components/responses/404_FileNotFound'
 delete:
-  summary: Delete
+  summary: Delete a file
   description: Delete a file on the CDN.
   security:
     - bearer: [moderator]
@@ -83,6 +107,5 @@ delete:
               description: The deletion message.
               type: string
               example: File `test/foo.jpg` was successfully deleted.
-
     404:
       $ref: '../../index.yaml#/components/responses/404_FileNotFound'
