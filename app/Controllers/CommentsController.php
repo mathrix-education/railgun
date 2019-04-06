@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Comment;
+use App\Models\Module;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -38,6 +39,36 @@ class CommentsController extends BaseController
         ]);
 
         return parent::post($request);
+    }
+
+
+    /**
+     * Get the models which satisfy a given relation.
+     *
+     * @param Request $request The request
+     * @param int $moduleId
+     * @param int $page the query page
+     * @param int $perPage the query per page
+     *
+     * @return PaginationJsonResponse
+     * @throws Http401UnauthorizedException
+     */
+    public function byModule(Request $request, int $moduleId, int $page = 0, int $perPage = 100): PaginationJsonResponse
+    {
+        /** @var Module $module */
+        $module = Module::query()->findOrFail($moduleId);
+
+        if ($request->user() !== null && $request->user()->cant("byModule", Comment::class)) {
+            throw new Http401UnauthorizedException([
+                "model_class" => Comment::class
+            ], "Failed to pass byModule policy");
+        }
+
+        $query = $module->comments()
+            ->whereNull("parent_id")
+            ->with(["children"]);
+
+        return new PaginationJsonResponse($query, $page, $perPage);
     }
 
 

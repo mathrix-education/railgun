@@ -59,7 +59,13 @@ class CommentsTest extends APITestCase
      */
     public function testByModule(): void
     {
-        $this->assertRestBySuccess(Module::class);
+        /** @var Comment $commentChild */
+        $commentChild = Comment::query()
+            ->whereNotNull("parent_id")
+            ->inRandomOrder()
+            ->firstOrFail();
+
+        $this->assertRestBySuccess(Module::class, ["conditions" => ["id", "=", $commentChild->module_id]]);
     }
 
 

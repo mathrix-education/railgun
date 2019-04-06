@@ -45,5 +45,8 @@ $factory->defineAs(Comment::class, "child", function () use ($factory) {
         ->whereNull("parent_id")
         ->firstOrFail();
 
-    return array_merge($factory->raw(Comment::class), ["parent_id" => $parent->id]);
+    return array_merge($factory->raw(Comment::class), [
+        "parent_id" => $parent->id,
+        "module_id" => $parent->module_id
+    ]);
 });

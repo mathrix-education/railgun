@@ -34,7 +34,7 @@ class CommentsRegistrar extends BaseRegistrar
             "middleware" => "scope:moderator"
         ]);
 
-        $this->get("comments/by-{what:module|post}/{id:[1-9]\d*}/{page:\d+}/{perPage:[1-9]\d*}",
-            "$controller@by");
+        $this->get("comments/by-module/{moduleId:[1-9]\d*}/{page:\d+}/{perPage:[1-9]\d*}",
+            "$controller@byModule");
     }
 }

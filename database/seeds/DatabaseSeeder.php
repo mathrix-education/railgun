@@ -34,8 +34,8 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->seedFromFactory(Country::class, 10);
         $this->seedFromFactory(Chapter::class, 30);
         $this->seedFromFactory(Notion::class, 90);
-        $this->seedFromFactory(Activity::class, 270);
-        $this->seedFromSubFactory(Module::class, "random", 500);
+        $this->seedFromFactory(Activity::class, 200);
+        $this->seedFromSubFactory(Module::class, "random", 250);
 
         // Settings
         $this->seedFromFactory(Setting::class, 50);
@@ -57,8 +57,8 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->seedFromFactory(Post::class, 20);
 
         // Comments & votes
-        $this->seedFromFactory(Comment::class, 100);
-        $this->seedFromSubFactory(Comment::class, "child", 300);
+        $this->seedFromFactory(Comment::class, 200);
+        $this->seedFromSubFactory(Comment::class, "child", 500);
         $this->seedFromFactory(Vote::class, 100);
 
         // Products & discounts
