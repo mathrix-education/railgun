@@ -63,7 +63,6 @@ class PyramidMarksActivitiesCommand extends BaseCommand
     private function makeMappings()
     {
         $this->block("Building paths <=> activities mappings...");
-        //$data = collect(DB::select(file_get_contents(__DIR__ . "/sql/get-broken-paths-activities.sql")));
         $data = DB::table("paths")
             ->join("activities", "paths.activity_id", "=", "activities.id")
             ->join("modules", "paths.activity_id", "=", "modules.activity_id")

@@ -65,8 +65,7 @@ class CommentsController extends BaseController
             "children.user:id,type,username,firstname,level,grade_id"
         ])
             ->orderBy("created_at", "desc");
-        $response = new PaginationJsonResponse($query, $page, $perPage);
 
-        return $response;
+        return new PaginationJsonResponse($query, $page, $perPage);
     }
 }

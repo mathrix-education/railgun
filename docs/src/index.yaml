@@ -8,6 +8,8 @@ info:
     email: mathieu@mathrix.fr
   x-logo:
     url: https://cdn.mathrix.fr/img/logo-redoc.png
+    href: https://mathrix.fr
+    altText: Mathrix Education Logo
 servers:
   - url: 'https://mathrix.fr/api'
     description: The production API.

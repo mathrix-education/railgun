@@ -96,10 +96,4 @@ class PyramidOrphansCommand extends BaseCommand
 
         $this->success("Fixed {$brokenModels->count()} $childPlural");
     }
-
-
-    private function makeReport()
-    {
-
-    }
 }

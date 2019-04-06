@@ -9,20 +9,19 @@ module.exports = class BaseGenerator {
         this.pluralize = require("pluralize");
         this.singularize = this.pluralize["singular"];
 
-        this.base = __dirname + "/..";
-        this.src = __dirname + "/../src";
-        this.out = __dirname + "/../out";
+        this.base = this.path.dirname(__dirname);
+        this.src = `${this.base}/src`;
+        this.out = `${this.base}/out`;
         this.config = this.readYaml("config.yaml");
     }
 
     /**
      * Read a yaml file.
      * @param {string} file The file path, relative to the src.
-     * @returns {*} The data
+     * @returns {Object} The data
      */
     readYaml(file) {
         const path = `${this.src}/${file}`;
-
         const parsed = this.yaml.parse(this.fs.readFileSync(path, {encoding: "utf8"}));
 
         return this.extendSchema(parsed, path);
@@ -31,8 +30,8 @@ module.exports = class BaseGenerator {
     /**
      * Write an object as a yaml file.
      * @param {string} file The file path, relative to the src.
-     * @param {*} data The data.
-     * @returns {*}
+     * @param {Object} data The data.
+     * @returns {Object}
      */
     writeYaml(file, data) {
         const destination = `${this.out}/${file}`;
@@ -41,14 +40,15 @@ module.exports = class BaseGenerator {
         if (!this.fs.existsSync(destinationDirectory)) {
             this.fs.mkdirSync(destinationDirectory, {recursive: true});
         }
+
         this.fs.writeFileSync(`${this.out}/${file}`, this.yaml.stringify(data));
     }
 
     /**
      * Handle $extends property
-     * @param schema
-     * @param dir
-     * @returns {Object|{$extends}|Object}
+     * @param {Object} schema
+     * @param {string} dir
+     * @returns {Object}
      */
     extendSchema(schema, dir) {
         // If the schema is not iterable, return immediately
