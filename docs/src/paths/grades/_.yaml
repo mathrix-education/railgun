@@ -1,18 +1,6 @@
+$extends:
+  ../../fragments/paths/post_.yaml:
+    model: grade
 post:
-  summary: Post a grade
   security:
     - bearer: [admin]
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: '../../index.yaml#/components/schemas/Grade'
-  responses:
-    200:
-      description: The newly created grade.
-      content:
-        application/json:
-          schema:
-            $ref: '../../index.yaml#/components/schemas/Grade'
-    422:
-      $ref: '../../index.yaml#/components/responses/422_ModelValidation'

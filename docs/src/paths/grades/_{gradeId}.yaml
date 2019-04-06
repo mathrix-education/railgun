@@ -1,78 +1,13 @@
-get:
-  summary: Get a grade
-  parameters:
-    - name: gradeId
-      in: path
-      description: The grade id.
-      required: true
-      schema:
-        type: int
-        example: 22
-  responses:
-    200:
-      description: The requested grade.
-      content:
-        application/json:
-          schema:
-            $ref: '../../index.yaml#/components/schemas/Grade'
-    404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+$extends:
+  ../../fragments/paths/get_{modelId}.yaml:
+    model: grade
+  ../../fragments/paths/patch_{modelId}.yaml:
+    model: grade
+  ../../fragments/paths/delete_{modelId}.yaml:
+    model: grade
 patch:
-  summary: Patch a grade
   security:
     - bearer: [admin]
-  parameters:
-    - name: gradeId
-      in: path
-      description: The grade id.
-      required: true
-      schema:
-        type: int
-        example: 15
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: '../../index.yaml#/components/schemas/Grade'
-  responses:
-    200:
-      description: The edited grade.
-      content:
-        application/json:
-          schema:
-            $ref: '../../index.yaml#/components/schemas/Grade'
-    404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
-    422:
-      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
 delete:
-  summary: Delete a grade
-  description: Delete a grade by its id. To be deleted a grade must not have any related grade, user or chapter.
   security:
     - bearer: [admin]
-  parameters:
-    - name: gradeId
-      in: path
-      description: The grade id.
-      required: true
-      schema:
-        type: int
-        example: 15
-  responses:
-    200:
-      description: The deletion result.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              success:
-                description: If the deletion was sucessful.
-                type: boolean
-                default: true
-              message:
-                description: The deletion message.
-                type: string
-                example: Grade id 15 was successfully deleted.
-    404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

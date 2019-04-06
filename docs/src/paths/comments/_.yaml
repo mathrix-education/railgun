@@ -1,18 +1,7 @@
+$extends:
+  ../../fragments/paths/post_.yaml:
+    model: comment
 post:
-  summary: Post a comment
+  description: Post a new comment. The comment author is determined from the Bearer authentication token.
   security:
     - bearer: [registered]
-  description: >-
-    A comment in the database. Comment author is determined from the Bearer authentication token.
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: '../../index.yaml#/components/schemas/Comment'
-  responses:
-    200:
-      description: The newly created comment.
-      content:
-        application/json:
-          schema:
-            $ref: '../../index.yaml#/components/schemas/Comment'

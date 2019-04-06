@@ -1,18 +1,6 @@
+$extends:
+  ../../fragments/paths/post_.yaml:
+    model: chapter
 post:
-  summary: Post a chapter
   security:
-    - bearer: [moderator]
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: '../../index.yaml#/components/schemas/Chapter'
-  responses:
-    200:
-      description: The newly created chapter.
-      content:
-        application/json:
-          schema:
-            $ref: '../../index.yaml#/components/schemas/Chapter'
-    422:
-      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
+    - bearer: [admin]

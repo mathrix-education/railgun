@@ -5,6 +5,7 @@ properties:
   id:
     description: The country id.
     type: integer
+    readOnly: true
     example: 33
   name:
     description: The country name.
@@ -22,9 +23,11 @@ properties:
     description: The country creation date-time.
     type: string
     format: date-time
+    readOnly: true
     nullable: true
   updated_at:
     description: The country last update date-time.
     type: string
     format: date-time
+    readOnly: true
     nullable: true

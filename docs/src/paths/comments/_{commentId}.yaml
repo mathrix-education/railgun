@@ -1,77 +1,17 @@
+$extends:
+  ../../fragments/paths/get_{modelId}.yaml:
+    model: comment
+  ../../fragments/paths/patch_{modelId}.yaml:
+    model: comment
+  ../../fragments/paths/delete_{modelId}.yaml:
+    model: comment
 get:
-  summary: Get a comment
-  parameters:
-    - name: commentId
-      in: path
-      description: The comment id.
-      required: true
-      schema:
-        type: int
-        example: 34
-  responses:
-    200:
-      description: The requested comment.
-      content:
-        application/json:
-          schema:
-            $ref: '../../index.yaml#/components/schemas/Comment'
-    404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
-patch:
-  summary: Patch a comment
-  security:
-    - bearer: [registered]
-  parameters:
-    - name: commentId
-      in: path
-      description: The comment id.
-      required: true
-      schema:
-        type: int
-        example: 5
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: '../../index.yaml#/components/schemas/Comment'
-  responses:
-    200:
-      description: The patched comment.
-      content:
-        application/json:
-          schema:
-            $ref: '../../index.yaml#/components/schemas/Comment'
-    404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
-    422:
-      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
-delete:
-  summary: Delete a comment
   security:
     - bearer: [moderator]
-  parameters:
-    - name: commentId
-      in: path
-      description: The comment id.
-      required: true
-      schema:
-        type: int
-        example: 5
-  responses:
-    200:
-      description: The deletion result.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              success:
-                description: If the deletion was sucessful.
-                type: boolean
-                default: true
-              message:
-                description: The deletion message.
-                type: string
-                example: Comment id 5 was successfully deleted.
-    404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+patch:
+  description: Patch a comment. A comment can be patched only during 3 days after it was last edited.
+  security:
+    - bearer: [registered]
+delete:
+  security:
+    - bearer: [moderator]

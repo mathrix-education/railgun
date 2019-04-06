@@ -1,17 +1,2 @@
-get:
-  $extends: ../../fragments/pagination_params.yaml
-  summary: Paginate chapters
-  description: Retrive all chapters by ascending ids, paginated.
-  responses:
-    200:
-      description: The chapters in a paginator.
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: ../../schemas/Paginator.yaml
-              - properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '../../index.yaml#/components/schemas/Chapter'
+$extends:
+  ../../fragments/paths/get_{page}_{perPage}.yaml: {model: chapter}

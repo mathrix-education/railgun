@@ -16,11 +16,8 @@ class SearchTest extends APITestCase
      */
     public function testContent()
     {
-        $this->json("get","/search/lorem");
+        $this->json("get", "/search/lorem");
 
         $this->assertResponseOk();
-        $this->assertJsonResponseMatches([
-            "data.videos.[*].type" => "video"
-        ]);
     }
 }

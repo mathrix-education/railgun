@@ -5,6 +5,7 @@ properties:
     description: The module id.
     type: integer
     example: 14
+    readOnly: true
   premium:
     description: If the module is exclusively for premium users.
     type: boolean

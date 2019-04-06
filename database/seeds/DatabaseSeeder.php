@@ -4,6 +4,7 @@ use App\Models\Activity;
 use App\Models\Category;
 use App\Models\Chapter;
 use App\Models\Comment;
+use App\Models\Country;
 use App\Models\Discount;
 use App\Models\Module;
 use App\Models\Notion;
@@ -30,6 +31,7 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->seedFromJson("countries");
         $this->seedFromJson("grades");
         $this->seedFromJson("disciplines");
+        $this->seedFromFactory(Country::class, 10);
         $this->seedFromFactory(Chapter::class, 30);
         $this->seedFromFactory(Notion::class, 90);
         $this->seedFromFactory(Activity::class, 270);

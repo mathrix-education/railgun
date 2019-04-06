@@ -1,77 +1,13 @@
-get:
-  summary: Get an activity
-  parameters:
-  - name: activityId
-    in: path
-    description: The activity id.
-    required: true
-    schema:
-      type: int
-      example: 34
-  responses:
-    200:
-      description: The requested activity.
-      content:
-        application/json:
-          schema:
-            $ref: '../../index.yaml#/components/schemas/Activity'
-    404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+$extends:
+  ../../fragments/paths/get_{modelId}.yaml:
+    model: activity
+  ../../fragments/paths/patch_{modelId}.yaml:
+    model: activity
+  ../../fragments/paths/delete_{modelId}.yaml:
+    model: activity
 patch:
-  summary: Patch an activity
   security:
     - bearer: [moderator]
-  parameters:
-    - name: activityId
-      in: path
-      description: The activity id.
-      required: true
-      schema:
-        type: int
-        example: 45
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: '../../index.yaml#/components/schemas/Activity'
-  responses:
-    200:
-      description: The edited activity.
-      content:
-        application/json:
-          schema:
-            $ref: '../../index.yaml#/components/schemas/Activity'
-    404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
-    422:
-      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
 delete:
-  summary: Delete an activity
   security:
     - bearer: [moderator]
-  parameters:
-    - name: activityId
-      in: path
-      description: The activity id.
-      required: true
-      schema:
-        type: int
-        example: 45
-  responses:
-    200:
-      description: The deletion result.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              success:
-                description: If the deletion was sucessful.
-                type: boolean
-                default: true
-              message:
-                description: The deletion message.
-                type: string
-                example: Activity id 45 was successfully deleted.
-    404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

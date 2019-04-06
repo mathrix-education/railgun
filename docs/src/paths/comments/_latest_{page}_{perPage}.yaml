@@ -1,17 +1,8 @@
+$extends:
+  ../../fragments/paths/get_{page}_{perPage}.yaml:
+    model: comment
 get:
-  $extends: ../../fragments/pagination_params.yaml
-  summary: Paginate latest
-  description: Retrive all comments by ascending ids, paginated.
-  responses:
-    200:
-      description: The comments in a paginator.
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: ../../schemas/Paginator.yaml
-              - properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '../../index.yaml#/components/schemas/Comment'
+  summary: Paginate latest comments
+  description: Retrive all comments by descending creation date, paginated.
+  security:
+    - bearer: [registered]

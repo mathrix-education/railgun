@@ -1,77 +1,13 @@
-get:
-  summary: Get a country
-  parameters:
-    - name: countryId
-      in: path
-      description: The country id.
-      required: true
-      schema:
-        type: int
-        example: 17
-  responses:
-    200:
-      description: The requested country.
-      content:
-        application/json:
-          schema:
-            $ref: '../../index.yaml#/components/schemas/Country'
-    404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+$extends:
+  ../../fragments/paths/get_{modelId}.yaml:
+    model: country
+  ../../fragments/paths/patch_{modelId}.yaml:
+    model: country
+  ../../fragments/paths/delete_{modelId}.yaml:
+    model: country
 patch:
-  summary: Patch a country
   security:
     - bearer: [admin]
-  parameters:
-    - name: countryId
-      in: path
-      description: The country id.
-      required: true
-      schema:
-        type: int
-        example: 13
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: '../../index.yaml#/components/schemas/Country'
-  responses:
-    200:
-      description: The edited country.
-      content:
-        application/json:
-          schema:
-            $ref: '../../index.yaml#/components/schemas/Country'
-    404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
-    422:
-      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
 delete:
-  summary: Delete a country
   security:
     - bearer: [admin]
-  parameters:
-    - name: countryId
-      in: path
-      description: The country id.
-      required: true
-      schema:
-        type: int
-        example: 13
-  responses:
-    200:
-      description: The deletion result.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              success:
-                description: If the deletion was sucessful.
-                type: boolean
-                default: true
-              message:
-                description: The deletion message.
-                type: string
-                example: Country id 13 was successfully deleted.
-    404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

@@ -1,77 +1,16 @@
+$extends:
+  ../../fragments/paths/get_{modelId}.yaml:
+    model: discount
+  ../../fragments/paths/patch_{modelId}.yaml:
+    model: discount
+  ../../fragments/paths/delete_{modelId}.yaml:
+    model: discount
 get:
-  summary: Get a discount
-  parameters:
-    - name: discountId
-      in: path
-      description: The discount id.
-      required: true
-      schema:
-        type: int
-        example: 8
-  responses:
-    200:
-      description: The requested discount.
-      content:
-        application/json:
-          schema:
-            $ref: '../../index.yaml#/components/schemas/Discount'
-    404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+  security:
+    - bearer: [admin]
 patch:
-  summary: Patch a discount
   security:
     - bearer: [admin]
-  parameters:
-    - name: discountId
-      in: path
-      description: The discount id.
-      required: true
-      schema:
-        type: int
-        example: 45
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: '../../index.yaml#/components/schemas/Discount'
-  responses:
-    200:
-      description: The edited discount.
-      content:
-        application/json:
-          schema:
-            $ref: '../../index.yaml#/components/schemas/Discount'
-    404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
-    422:
-      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
 delete:
-  summary: Delete a discount
   security:
     - bearer: [admin]
-  parameters:
-    - name: discountId
-      in: path
-      description: The discount id.
-      required: true
-      schema:
-        type: int
-        example: 45
-  responses:
-    200:
-      description: The deletion result.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              success:
-                description: If the deletion was sucessful.
-                type: boolean
-                default: true
-              message:
-                description: The deletion message.
-                type: string
-                example: Discount id 45 was successfully deleted.
-    404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

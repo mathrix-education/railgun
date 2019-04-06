@@ -26,7 +26,7 @@ class CountriesTest extends APITestCase
     public function testDelete(): void
     {
         /** @var Country $country */
-        $country = Country::query()->findOrFail(1); // France
+        $country = Country::random(); // France
         $pivot = Country::random(["id", "!=", $country->id]);
 
         $country->grades()->update(["country_id" => $pivot->id]);

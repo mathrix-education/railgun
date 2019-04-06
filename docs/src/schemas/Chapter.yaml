@@ -5,6 +5,7 @@ properties:
   id:
     description: The chapter id.
     type: integer
+    readOnly: true
     example: 22
   name:
     description: The chapter name.

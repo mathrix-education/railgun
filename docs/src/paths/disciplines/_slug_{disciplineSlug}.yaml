@@ -1,20 +1,5 @@
-get:
-  summary: Get a discipline by slug
-  description: Get the first discipline which matches the given slug.
-  parameters:
-    - name: disciplineSlug
-      in: path
-      description: The discipline slug.
-      required: true
-      schema:
-        type: string
-        example: maths
-  responses:
-    200:
-      description: The requested discipline.
-      content:
-        application/json:
-          schema:
-            $ref: '../../index.yaml#/components/schemas/Discipline'
-    404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+$extends:
+  ../../fragments/paths/get_key_{modelKey}.yaml:
+    model: discipline
+    key: slug
+    example: maths

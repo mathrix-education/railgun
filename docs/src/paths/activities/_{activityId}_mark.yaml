@@ -1,8 +1,8 @@
 patch:
+  summary: Mark an activity
+  description: Mark a activity as `completed`, `view`, `to-revise`...
   security:
     - bearer: [registered]
-  summary: Mark an activity
-  description: Mark a activity.
   parameters:
     - name: activityId
       in: path
@@ -10,7 +10,15 @@ patch:
       required: true
       schema:
         type: int
-        example: 1655
+        example: 5745
+  requestBody:
+    content:
+      application/json:
+        schema:
+          status:
+            description: The mark status.
+            type: string
+            enum: [completed, view, to-revise]
   responses:
     200:
       description: The marked activity.

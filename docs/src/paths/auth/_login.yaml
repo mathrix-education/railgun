@@ -7,7 +7,7 @@ post:
           type: object
           properties:
             grant_type:
-              descriptipn: The grant method. Will always be `grant_type`.
+              description: The grant method. Will always be `grant_type`.
               type: string
               enum: [grant_type]
             client_id:

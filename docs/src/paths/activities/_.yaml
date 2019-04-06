@@ -1,18 +1,6 @@
+$extends:
+  ../../fragments/paths/post_.yaml:
+    model: activity
 post:
-  summary: Post an activity
   security:
     - bearer: [moderator]
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: '../../index.yaml#/components/schemas/Activity'
-  responses:
-    200:
-      description: The newly created activity.
-      content:
-        application/json:
-          schema:
-            $ref: '../../index.yaml#/components/schemas/Activity'
-    422:
-      $ref: '../../index.yaml#/components/responses/422_ModelValidation'

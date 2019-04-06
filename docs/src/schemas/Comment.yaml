@@ -1,4 +1,5 @@
-$extends: CommentChild.yaml
+$extends:
+  CommentChild.yaml:
 properties:
   children:
     type: array

@@ -2,7 +2,7 @@ patch:
   summary: Mark a notification
   description: Mark a notification as read/unread by its id. Only notification which belong to the user may be marked.
   security:
-    - registered: []
+    - bearer: [registered]
   parameters:
     - name: notificationId
       in: path

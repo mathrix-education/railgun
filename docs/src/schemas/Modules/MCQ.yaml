@@ -1,4 +1,5 @@
-$extends: Base.yaml
+$extends:
+  Base.yaml:
 description: MCQ
 properties:
   type:

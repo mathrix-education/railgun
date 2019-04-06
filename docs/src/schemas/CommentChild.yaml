@@ -6,8 +6,8 @@ properties:
   id:
     description: The comment id.
     type: integer
-    example: 22
     readOnly: true
+    example: 22
   content:
     description: The comment content.
     type: string
@@ -20,8 +20,8 @@ properties:
   user_id:
     description: The comment user_id.
     type: integer
-    example: 10
     readOnly: true
+    example: 10
   module_id:
     description: The module id which belongs to the comment.
     type: integer
@@ -56,6 +56,7 @@ properties:
     description: The user who posted the comment.
     type: object
     readOnly: true
+    required: [id, username, firstname, level, grade_id]
     properties:
       id:
         description: The user id.

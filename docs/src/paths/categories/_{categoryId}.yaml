@@ -1,77 +1,16 @@
+$extends:
+  ../../fragments/paths/get_{modelId}.yaml:
+    model: category
+  ../../fragments/paths/patch_{modelId}.yaml:
+    model: category
+  ../../fragments/paths/delete_{modelId}.yaml:
+    model: category
 get:
-  summary: Get a category
   security:
     - bearer: [admin]
-  parameters:
-  - name: categoryId
-    in: path
-    description: The category id
-    required: true
-    schema:
-      type: int
-      example: 34
-  responses:
-    200:
-      description: The category
-      content:
-        application/json:
-          schema:
-            $ref: '../../index.yaml#/components/schemas/Category'
 patch:
-  summary: Patch a category
   security:
     - bearer: [admin]
-  parameters:
-  - name: categoryId
-    in: path
-    description: The category id.
-    required: true
-    schema:
-      type: int
-      example: 45
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: '../../index.yaml#/components/schemas/Category'
-  responses:
-    200:
-      description: The edited category.
-      content:
-        application/json:
-          schema:
-            $ref: '../../index.yaml#/components/schemas/Category'
-    404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
-    422:
-      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
 delete:
-  summary: Delete a category
   security:
     - bearer: [admin]
-  parameters:
-  - name: categoryId
-    in: path
-    description: The category id.
-    required: true
-    schema:
-      type: int
-      example: 45
-  responses:
-    200:
-      description: The deletion result.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              success:
-                description: If the deletion was sucessful.
-                type: boolean
-                default: true
-              message:
-                description: The deletion message.
-                type: string
-                example: category id 45 was successfully deleted.
-    404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'

@@ -1,5 +1,5 @@
 post:
-  summary: Reset
+  summary: Reset password
   requestBody:
     content:
       application/json:
@@ -7,8 +7,9 @@ post:
           type: object
           properties:
             password:
-              descriptipn: The new user password.
+              description: The new user password.
               type: string
+              format: password
               example: My$uperNewPa$$w0rd
   responses:
     200:

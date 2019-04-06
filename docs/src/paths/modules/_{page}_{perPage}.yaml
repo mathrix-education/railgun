@@ -1,17 +1,2 @@
-get:
-  $extends: ../../fragments/pagination_params.yaml
-  summary: Paginate modules
-  description: Retrive all modules by ascending ids, paginated.
-  responses:
-    200:
-      description: The modules in a paginator.
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: ../../schemas/Paginator.yaml
-              - properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '../../index.yaml#/components/schemas/Module'
+$extends:
+  ../../fragments/paths/get_{page}_{perPage}.yaml: {model: module}

@@ -1,17 +1,6 @@
+$extends:
+  ../../fragments/paths/get_{page}_{perPage}.yaml:
+    model: discount
 get:
-  $extends: ../../fragments/pagination_params.yaml
-  summary: Paginate discounts
-  description: Retrive all discounts by ascending ids, paginated.
-  responses:
-    200:
-      description: The discounts in a paginator.
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: ../../schemas/Paginator.yaml
-              - properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '../../index.yaml#/components/schemas/Discount'
+  security:
+    - bearer: [admin]

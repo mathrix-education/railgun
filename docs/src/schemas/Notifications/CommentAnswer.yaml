@@ -1,4 +1,5 @@
-$extends: Base.yaml
+$extends:
+  Base.yaml:
 properties:
   type:
     enum: [comment_answer]

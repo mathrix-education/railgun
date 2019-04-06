@@ -6,6 +6,7 @@ properties:
     description: The notion id.
     type: integer
     example: 14
+    readOnly: true
   name:
     description: The notion name.
     type: string
@@ -34,13 +35,13 @@ properties:
     type: integer
     example: 39
   created_at:
-    description: The activity creation date-time.
+    description: The notion creation date-time.
     type: string
     format: date-time
     nullable: true
     readOnly: true
   updated_at:
-    description: The activity last update date-time.
+    description: The notion last update date-time.
     type: string
     format: date-time
     nullable: true

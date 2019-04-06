@@ -1,20 +1,8 @@
+$extends:
+  ../../fragments/paths/get_{page}_{perPage}.yaml:
+    model: notification
 get:
-  $extends: ../../fragments/pagination_params.yaml
   summary: Unread notifications
   description: Retrieve unread notifications by descending creation date, paginated.
   security:
-    - registered: []
-  responses:
-    200:
-      description: The notifications in a paginator.
-      content:
-        application/json:
-          schema:
-            schema:
-              allOf:
-                - $ref: ../../schemas/Paginator.yaml
-                - properties:
-                    data:
-                      type: array
-                      items:
-                        $ref: '../../index.yaml#/components/schemas/Notification'
+    - bearer: [registered]

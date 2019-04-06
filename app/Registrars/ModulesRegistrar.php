@@ -22,7 +22,7 @@ class ModulesRegistrar extends BaseRegistrar
         $controller = ModulesController::class;
 
         $this->rest("modules", $controller, [
-            "index" => null,
+            "index" => "redactor",
             "get" => null,
             "post" => "moderator",
             "patch" => "redactor",

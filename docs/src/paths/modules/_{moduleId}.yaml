@@ -1,77 +1,13 @@
-get:
-  summary: Get a module
-  parameters:
-    - name: moduleId
-      in: path
-      description: The module id.
-      required: true
-      schema:
-        type: int
-        example: 14
-  responses:
-    200:
-      description: The requested module.
-      content:
-        application/json:
-          schema:
-            $ref: '../../index.yaml#/components/schemas/Module'
-    404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+$extends:
+  ../../fragments/paths/get_{modelId}.yaml:
+    model: module
+  ../../fragments/paths/patch_{modelId}.yaml:
+    model: module
+  ../../fragments/paths/delete_{modelId}.yaml:
+    model: module
 patch:
-  summary: Patch a module
   security:
     - bearer: [redactor]
-  parameters:
-    - name: moduleId
-      in: path
-      description: The module id.
-      required: true
-      schema:
-        type: int
-        example: 11
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: '../../index.yaml#/components/schemas/Module'
-  responses:
-    200:
-      description: The patched module.
-      content:
-        application/json:
-          schema:
-            $ref: '../../index.yaml#/components/schemas/Module'
-    404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
-    422:
-      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
 delete:
-  summary: Delete a module
   security:
     - bearer: [admin]
-  parameters:
-    - name: moduleId
-      in: path
-      description: The module id.
-      required: true
-      schema:
-        type: int
-        example: 11
-  responses:
-    200:
-      description: The deletion result.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              success:
-                description: If the deletion was sucessful.
-                type: boolean
-                default: true
-              message:
-                description: The deletion message.
-                type: string
-                example: Module id 11 was successfully deleted.
-    404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
