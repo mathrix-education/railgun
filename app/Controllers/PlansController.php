@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Braintree;
+namespace App\Controllers;
 
 use App\Services\Braintree\Models\Plan;
 use Illuminate\Http\JsonResponse;

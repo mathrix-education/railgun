@@ -15,6 +15,7 @@ use App\Policies\BasePolicy;
 use App\Policies\FilePolicy;
 use App\Policies\NotificationPolicy;
 use Barryvdh\Cors\ServiceProvider as CorsServiceProvider;
+use Carbon\Carbon;
 use Dusterio\LumenPassport\PassportServiceProvider as LumenPassportServiceProvider;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Filesystem\FilesystemServiceProvider;
@@ -71,10 +72,12 @@ class AppServiceProvider extends ServiceProvider
         if (app()->environment("local")) {
             $this->app->register(TinkerServiceProvider::class);
         }
-
         if (env("SENTRY_DSN") !== null) {
             $this->app->register(SentryLumenServiceProvider::class);
         }
+
+
+        Carbon::setToStringFormat("c");
 
         // MorphMap
         Relation::morphMap([

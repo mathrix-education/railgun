@@ -2,7 +2,7 @@
 
 namespace App\Registrars;
 
-use App\Controllers\Braintree\PlansController;
+use App\Controllers\PlansController;
 use Mathrix\Lumen\Bases\BaseRegistrar;
 
 /**

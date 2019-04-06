@@ -41,7 +41,7 @@ class CommentsTest extends APITestCase
         $newContent = "Edited?";
         DB::table("comments")
             ->where("id", "=", $comment->id)
-            ->update(["updated_at" => Carbon::now()->__toString()]);
+            ->update(["updated_at" => Carbon::now()]);
         Passport::actingAs($comment->user, ["registered"]);
 
         $this->json("patch", "/comments/{$comment->id}", [

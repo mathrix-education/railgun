@@ -13,6 +13,7 @@ properties:
       on every billing cycle.
     type: integer
     example: 12
+    nullable: true
   billingFrequency:
     description: Specifies the billing interval of the plan in months.
     type: integer
@@ -91,6 +92,7 @@ properties:
     description: The date/time the trial of the plan ends.
     type: string
     format: date-time
+    nullable: true
   trialPeriod:
     description: >-
       A value indicating whether a subscription should begin with a trial period. Specifying a trial period via the
@@ -101,6 +103,7 @@ properties:
     description: The date/time the trial of the plan starts.
     type: string
     format: date-time
+    nullable: true
   updatedAt:
     description: The date/time the plan was last updated.
     type: string

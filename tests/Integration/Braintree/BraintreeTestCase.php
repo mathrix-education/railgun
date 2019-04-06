@@ -8,7 +8,6 @@ use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Tests\Traits\DatabaseTrait;
 use Mathrix\Lumen\Tests\Traits\DebugTrait;
 use Mathrix\Lumen\Tests\Traits\PassportTrait;
-use Mathrix\Lumen\Tests\Traits\ResponseTrait;
 use Tests\BaseTestCase;
 use Tests\Utils\NotificationsAssertionsTrait;
 
@@ -22,7 +21,7 @@ use Tests\Utils\NotificationsAssertionsTrait;
  */
 class BraintreeTestCase extends BaseTestCase
 {
-    use NotificationsAssertionsTrait, DatabaseTrait, PassportTrait, ResponseTrait, DebugTrait;
+    use NotificationsAssertionsTrait, DatabaseTrait, PassportTrait, DebugTrait;
 
 
     /**

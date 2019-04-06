@@ -4,7 +4,6 @@ namespace Tests\API;
 
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Mathrix\Lumen\Bases\BaseModel;
-use Mathrix\Lumen\Tests\OpenAPI\OpenAPITrait;
 use Mathrix\Lumen\Tests\REST\RESTTrait;
 use Mathrix\Lumen\Tests\Traits\DebugTrait;
 use Tests\BaseTestCase;
@@ -38,6 +37,7 @@ class APITestCase extends BaseTestCase
         $this->bootOpenAPI();
         $this->initializeREST();
     }
+
 
     public function onNotSuccessfulTest(Throwable $t)
     {

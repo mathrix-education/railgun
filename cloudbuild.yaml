@@ -108,24 +108,7 @@ steps:
     args:
       - '-c'
       - |
-        echo "Skipped for now"
-  #        docker-compose up --abort-on-container-exit || exit 0
-
-
-  # Push the image API to the registry with commit tag
-  # --------------------------------------------------
-  - id: 'docker:push:api'
-    waitFor: ['docker:build:api', 'docker-compose:tests']
-    name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'eu.gcr.io/$PROJECT_ID/$_API_IMAGE:$SHORT_SHA']
-
-
-  # Push the image docs to the registry with commit tag
-  # ---------------------------------------------------
-  - id: 'docker:push:docs'
-    waitFor: ['docker:build:docs', 'docker-compose:tests']
-    name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:$SHORT_SHA']
+        docker-compose up --abort-on-container-exit || exit 0
 
 
   # Send cover results to SonarQube
@@ -138,9 +121,18 @@ steps:
       - '-Dsonar.branch.name=$BRANCH_NAME'
 
 
+  # Push the image API to the registry with commit tag
+  # --------------------------------------------------
+  - id: 'docker:push:api'
+    waitFor: ['docker:build:api', 'docker-compose:tests']
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'eu.gcr.io/$PROJECT_ID/$_API_IMAGE:$SHORT_SHA']
+
+
   # Deploy API
   # ------------------------------
   - id: 'kubectl:deploy:api'
+    waitFor: ['docker:push:api']
     name: 'gcr.io/cloud-builders/kubectl'
     args: ['set', 'image', 'deployment', '$_API_DEPLOYMENT',
            '$_API_CONTAINER=eu.gcr.io/$PROJECT_ID/$_API_IMAGE:$SHORT_SHA']
@@ -149,9 +141,18 @@ steps:
       - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLOUDSDK_CONTAINER_CLUSTER'
 
 
+  # Push the image docs to the registry with commit tag
+  # ---------------------------------------------------
+  - id: 'docker:push:docs'
+    waitFor: ['docker:build:docs', 'docker-compose:tests']
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:$SHORT_SHA']
+
+
   # Deploy docs
   # -----------
   - id: 'kubectl:deploy:docs'
+    waitFor: ['docker:push:docs']
     name: 'gcr.io/cloud-builders/kubectl'
     args: ['set', 'image', 'deployment', '$_DOCS_DEPLOYMENT',
            '$_DOCS_CONTAINER=eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:$SHORT_SHA']

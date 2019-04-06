@@ -1,4 +1,8 @@
 <?php
+
+use Mathrix\Lumen\Middleware\LoggedMiddleware;
+use Mathrix\Lumen\Middleware\ScopeMiddleware;
+
 require_once __DIR__ . "/../vendor/autoload.php";
 
 // Generate environment variables
@@ -120,8 +124,8 @@ $app->middleware([
 ]);
 
 $app->routeMiddleware([
-    "login" => \Mathrix\Lumen\Middleware\LoggedMiddleware::class,
-    "scope" => \Mathrix\Lumen\Middleware\ScopeMiddleware::class
+    "login" => LoggedMiddleware::class,
+    "scope" => ScopeMiddleware::class
 ]);
 
 /*
@@ -135,11 +139,6 @@ $app->routeMiddleware([
 |
 */
 $app->register(App\Providers\AppServiceProvider::class);
-
-if (env("SENTRY_DSN") !== null) {
-    $app->register(Sentry\SentryLaravel\SentryLumenServiceProvider::class);
-}
-
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes

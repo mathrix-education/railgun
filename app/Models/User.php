@@ -77,7 +77,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
     private const STRIPE_PLANS = ["v3_monthly", "v3_annually", "v3_biannually"];
-    private const BRAINTREE_PLANS = ["v4_monthly", "v4_annually", "v4_biannually"];
+    public const BRAINTREE_PLANS = ["v4_monthly", "v4_annually", "v4_biannually"];
 
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
