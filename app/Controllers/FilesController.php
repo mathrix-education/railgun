@@ -140,13 +140,13 @@ class FilesController extends BaseController
      * POST /files
      *
      * @param Request $request The Illuminate HTTP request.
-     * @param string $path The destination path.
+     * @param string $file The destination path.
      *
      * @return JsonResponse
      * @throws FileNotFoundException
      * @throws ValidationException
      */
-    public function upload(Request $request, string $path): JsonResponse
+    public function upload(Request $request, string $file): JsonResponse
     {
         $request->user()->canOrFail("upload", FilePolicy::class);
 
@@ -155,17 +155,17 @@ class FilesController extends BaseController
         ]);
 
         $disk = $this->getDisk();
-        $destination = trim(dirname($path), "/");
-        $name = trim(basename($path), "/");
+        $destination = trim(dirname($file), "/");
+        $name = trim(basename($file), "/");
 
         /** @var UploadedFile $file */
-        $file = $request->file("file");
+        $upload = $request->file("file");
 
-        if ($this->getDisk()->exists($path)) {
+        if ($this->getDisk()->exists($file)) {
             $disk->delete($destination);
         }
 
-        $effectivePath = $disk->putFileAs($destination, $file, $name);
+        $effectivePath = $disk->putFileAs($destination, $upload, $name);
 
         return new JsonResponse($this->metadata($effectivePath));
     }
@@ -215,16 +215,16 @@ class FilesController extends BaseController
      * GET /files/{path}/info
      *
      * @param Request $request The Illuminate HTTP request.
-     * @param string $path The file/directory path.
+     * @param string $file The file path.
      *
      * @return JsonResponse
      * @throws FileNotFoundException
      */
-    public function info(Request $request, string $path)
+    public function info(Request $request, string $file)
     {
         $request->user()->canOrFail("info", FilePolicy::class);
 
-        return new JsonResponse($this->metadata($path));
+        return new JsonResponse($this->metadata($file));
     }
 
 
@@ -233,14 +233,14 @@ class FilesController extends BaseController
      * Rename (move) a file.
      *
      * @param Request $request The Illuminate HTTP request.
-     * @param string $path The file/directory path.
+     * @param string $file The file path.
      *
      * @return JsonResponse
      * @throws FileNotFoundException
      * @throws Http400BadRequestException
      * @throws ValidationException
      */
-    public function rename(Request $request, string $path): JsonResponse
+    public function rename(Request $request, string $file): JsonResponse
     {
         $request->user()->canOrFail("rename", FilePolicy::class);
 
@@ -249,7 +249,7 @@ class FilesController extends BaseController
         ]);
 
         $disk = $this->getDisk();
-        $source = trim($path);
+        $source = trim($file);
         $destination = trim($request->input("destination"), "/");
 
         if (!$disk->exists($source)) {
@@ -260,7 +260,7 @@ class FilesController extends BaseController
             $disk->delete($destination);
         }
 
-        $result = $disk->move($path, $request->input("destination"));
+        $result = $disk->move($file, $request->input("destination"));
 
         if (!$result) {
             throw new Http400BadRequestException([
@@ -278,29 +278,29 @@ class FilesController extends BaseController
      * Delete a file/directory.
      *
      * @param Request $request The Illuminate HTTP request.
-     * @param string $path The file/directory path.
+     * @param string $file The file/directory path.
      *
      * @return JsonResponse
      * @throws FileNotFoundException
      * @throws Http400BadRequestException
      */
-    public function remove(Request $request, string $path)
+    public function remove(Request $request, string $file)
     {
         $request->user()->canOrFail("delete", FilePolicy::class);
         $disk = $this->getDisk();
 
         // Check if path exists
-        if (!$disk->has($path)) {
-            throw new FileNotFoundException($path);
+        if (!$disk->has($file)) {
+            throw new FileNotFoundException($file);
         }
 
-        if (!$disk->delete($path)) {
-            throw new Http400BadRequestException(null, "Unable to delete $path.");
+        if (!$disk->delete($file)) {
+            throw new Http400BadRequestException(null, "Unable to delete $file.");
         }
 
         return new JsonResponse([
             "success" => true,
-            "message" => "File $path was successfully deleted."
+            "message" => "File $file was successfully deleted."
         ]);
     }
 }

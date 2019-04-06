@@ -25,7 +25,7 @@ post:
             $ref: '../../index.yaml#/components/schemas/File'
 
 get:
-  summary: Info
+  summary: Get file info
   description: Display the metadata of a file on the CDN.
   security:
     - bearer: [moderator]
@@ -39,7 +39,7 @@ get:
       example: test/foo.jpg
   responses:
     200:
-      description: A file or directory metadata.
+      description: The file metadata.
       content:
         application/json:
           schema:
@@ -47,7 +47,7 @@ get:
     404:
       $ref: '../../index.yaml#/components/responses/404_FileNotFound'
 patch:
-  summary: Rename/Move
+  summary: Rename/Move file
   description: Rename or move a file on the CDN.
   security:
     - bearer: [moderator]
@@ -66,12 +66,12 @@ patch:
           type: object
           properties:
             destination:
-              description: The file destination folder on the CDN.
+              description: The file destination path on the CDN.
               type: string
               example: test/foo2.jpg
   responses:
     200:
-      description: The patched file metadata.
+      description: The moved file metadata.
       content:
         application/json:
           schema:
@@ -79,7 +79,7 @@ patch:
     404:
       $ref: '../../index.yaml#/components/responses/404_FileNotFound'
 delete:
-  summary: Delete a file
+  summary: Delete file
   description: Delete a file on the CDN.
   security:
     - bearer: [moderator]
