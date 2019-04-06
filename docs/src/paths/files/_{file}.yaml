@@ -3,6 +3,16 @@ post:
   description: Upload a file to the CDN.
   security:
     - bearer: [moderator]
+  parameters:
+    - name: path
+      in: path
+      description: >-
+        The file path on the CDN. For example, if you want to upload the file to {CDN}/img/logo.png, then the upload URI
+        will be POST https://{API}/files/img/logo.png.
+      required: true
+      schema:
+        type: string
+        example: test/foo.jpg
   requestBody:
     description: >-
       The request body contains only on key, which is the file itself.
