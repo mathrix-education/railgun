@@ -7,8 +7,6 @@ use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use PHPUnit\Framework\Constraint\IsType;
-use PHPUnit\Framework\Constraint\RegularExpression;
 
 /**
  * Class FilesTest.
@@ -35,6 +33,7 @@ class FilesTest extends APITestCase
         "b/b.txt",
         "c/c.txt"
     ];
+
 
     public function setUp()
     {
@@ -120,6 +119,22 @@ class FilesTest extends APITestCase
     public function testExplore()
     {
         $uri = "/files/explore/{$this->randomDirectory()}";
+        $this->autoMockScope("get", $uri);
+
+        $this->json("get", $uri);
+
+        $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
+    }
+
+
+    /**
+     * GET /files/explore
+     * Special test for root directory (edgy case)
+     */
+    public function testExploreRoot()
+    {
+        $uri = "/files/explore";
         $this->autoMockScope("get", $uri);
 
         $this->json("get", $uri);

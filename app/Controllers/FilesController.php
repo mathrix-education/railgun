@@ -157,18 +157,16 @@ class FilesController extends BaseController
         $disk = $this->getDisk();
 
         // Root directory of the CDN
-        if ($directory === null) {
-            $directory = "/";
-        }
+        if ($directory !== null) {
+            if (!$disk->has($directory)) {
+                throw new FileNotFoundException($directory);
+            }
 
-        if (!$disk->has($directory)) {
-            throw new FileNotFoundException($directory);
-        }
+            $meta = $disk->getMetadata($directory);
 
-        $meta = $disk->getMetadata($directory);
-
-        if ($meta["type"] !== "dir") {
-            throw new Http400BadRequestException(["path" => $directory], "$directory is not a directory.");
+            if ($meta["type"] !== "dir") {
+                throw new Http400BadRequestException(["path" => $directory], "$directory is not a directory.");
+            }
         }
 
         $directories = $disk->directories($directory);
