@@ -43,9 +43,7 @@ $factory->define(Module::class, function (Generator $faker) {
 $factory->defineAs(Module::class, "random", function (Generator $faker) use ($factory) {
     return $factory->rawOf(Module::class, $faker->randomElement([
         "course",
-        "fill",
         "mcq",
-        "mcq-table",
         "test",
         "flashcard",
     ]));

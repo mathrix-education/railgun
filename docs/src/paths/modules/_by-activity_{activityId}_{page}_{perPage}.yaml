@@ -1,0 +1,55 @@
+get:
+  summary: Paginate modules by activity
+  description: Retrieve all modules linked to a given activity id, paginated.
+  parameters:
+    - name: activityId
+      in: path
+      description: The activity id
+      schema:
+        type: int
+      example: 156
+      required: true
+    - name: page
+      in: path
+      description: The page (starts at 0).
+      schema:
+        type: int
+      example: 3
+      required: true
+    - name: perPage
+      in: path
+      description: The number of models per page.
+      schema:
+        type: int
+      example: 100
+      required: true
+  responses:
+    200:
+      description: The modules in a paginator.
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [page, per_page, total, data]
+            properties:
+              page:
+                description: The current page.
+                type: integer
+                example: 4
+                readOnly: true
+              per_page:
+                description: The number of modules per page.
+                type: integer
+                example: 100
+                readOnly: true
+              total:
+                description: The total number of modules processed.
+                type: integer
+                example: 1845
+                readOnly: true
+              data:
+                description: The disciplines as an array.
+                type: array
+                items:
+                  $ref: '../../index.yaml#/components/schemas/Module'
+                readOnly: true

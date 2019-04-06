@@ -39,8 +39,17 @@ class Product extends BaseModel
     /** @var bool Indicates if the model should be timestamped */
     public $timestamps = true;
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["name", "slug", "image", "type", "description", "price", "visible", "order", "module_id",
-        "created_at", "updated_at"];
+    protected $fillable = [
+        "name",
+        "slug",
+        "image",
+        "type",
+        "description",
+        "price",
+        "visible",
+        "order",
+        "module_id"
+    ];
     protected $rules = [
         "name" => "required|max:255",
         "slug" => "required|max:255",

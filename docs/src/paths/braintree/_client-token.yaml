@@ -1,8 +1,7 @@
 get:
-  tags:
-  - Braintree
   summary: Get the generated Client Token for Braintree
-  operationId: braintree
+  security:
+    - bearer: [registered]
   responses:
     200:
       description: The Braintree Client Token

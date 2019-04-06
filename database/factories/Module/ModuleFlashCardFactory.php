@@ -19,6 +19,9 @@ $factory->defineAs(Module::class, "flashcard", function () use ($factory) {
     $data["choices"] = null;
     $data["solutions"] = null;
 
+    foreach ($data["questions"] as $k => $v) {
+        $data["questions"][$k] = $v[0];
+    }
     foreach ($data["corrections"] as $k => $v) {
         $data["corrections"][$k] = $v[0];
     }

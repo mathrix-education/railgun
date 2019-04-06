@@ -7,6 +7,7 @@ module.exports = class SchemasGenerator extends BaseGenerator {
     process() {
         this.schemasIndex = {};
         this.addDirectoryToIndex("schemas", null);
+        this.addDirectoryToIndex("schemas/Modules", "Module");
         this.addDirectoryToIndex("schemas/Braintree", "Braintree_");
 
         //this.writeYaml("includes/schemas.yaml", this.schemasIndex);

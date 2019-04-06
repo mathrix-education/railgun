@@ -2,7 +2,8 @@
 
 namespace Tests\API;
 
-use App\Models\Notion;
+use App\Models\Activity;
+use App\Models\Module;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
@@ -21,10 +22,35 @@ class ModulesTest extends APITestCase
 
 
     /**
-     * DELETE /notions/{notionId}
+     * POST /modules
+     */
+    public function testPost(): void
+    {
+        $this->assertRestPostSuccess(null, null, ["subFactory" => "random"]);
+    }
+
+
+    /**
+     * DELETE /modules/{moduleId}
      */
     public function testDelete()
     {
-        $this->markTestIncomplete();
+        $module = Module::random();
+        $pivot = Module::random(["id", "!=", $module->id]);
+
+        $module->posts()->update(["module_id" => $pivot->id]);
+        $module->references()->update(["module_id" => $pivot->id]);
+        $module->products()->update(["module_id" => $pivot->id]);
+
+        $this->assertRestDeleteSuccess(["conditions" => ["id", "=", $module->id]]);
+    }
+
+
+    /**
+     * GET /modules/by-activity/{activityId}
+     */
+    public function testByActivity(): void
+    {
+        $this->assertRestBySuccess(Activity::class);
     }
 }

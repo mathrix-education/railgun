@@ -1,8 +1,5 @@
 get:
-  tags:
-    - Modules
   summary: Get a module
-  operationId: modulesGet
   parameters:
     - name: moduleId
       in: path
@@ -20,13 +17,38 @@ get:
             $ref: '../../index.yaml#/components/schemas/Module'
     404:
       $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
-delete:
-  tags:
-    - Modules
-  summary: Delete a module
-  operationId: ModulesDelete
+patch:
+  summary: Patch a module
   security:
-    - moderator: []
+    - bearer: [redactor]
+  parameters:
+    - name: moduleId
+      in: path
+      description: The module id.
+      required: true
+      schema:
+        type: int
+        example: 11
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../index.yaml#/components/schemas/Module'
+  responses:
+    200:
+      description: The patched module.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Module'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
+delete:
+  summary: Delete a module
+  security:
+    - bearer: [admin]
   parameters:
     - name: moduleId
       in: path
@@ -53,34 +75,3 @@ delete:
                 example: Module id 11 was successfully deleted.
     404:
       $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
-patch:
-  tags:
-    - Modules
-  summary: Edit a module
-  operationId: modulesPatch
-  security:
-    - moderator: []
-  parameters:
-    - name: moduleId
-      in: path
-      description: The module id.
-      required: true
-      schema:
-        type: int
-        example: 11
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: '../../index.yaml#/components/requestBodies/Module'
-  responses:
-    200:
-      description: The edited module.
-      content:
-        application/json:
-          schema:
-            $ref: '../../index.yaml#/components/schemas/Module'
-    404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
-    422:
-      $ref: '../../index.yaml#/components/responses/422_ModelValidation'

@@ -28,6 +28,7 @@ class Reference extends BaseModel
         "text" => "required",
         "module_id" => "required|exists:modules,id"
     ];
+    public $timestamps = false;
 
     /*
     |--------------------------------------------------------------------------

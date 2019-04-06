@@ -1,15 +1,12 @@
 post:
-  tags:
-    - Modules
-  summary: Create a module
-  operationId: modulesPost
+  summary: Post a module
   security:
-    - moderator: []
+    - bearer: [moderator]
   requestBody:
     content:
       application/json:
         schema:
-          $ref: '../../index.yaml#/components/requestBodies/Module'
+          $ref: '../../index.yaml#/components/schemas/Module'
   responses:
     200:
       description: The newly created module.
