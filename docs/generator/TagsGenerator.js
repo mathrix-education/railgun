@@ -6,7 +6,7 @@ const BaseGenerator = require("./BaseGenerator");
  */
 module.exports = class TagsGenerator extends BaseGenerator {
     process() {
-        const tags = this.fs.readdirSync(`${this.out}/paths`)
+        return this.fs.readdirSync(`${this.out}/paths`)
             .map(tagName => tagName.charAt(0).toUpperCase() + tagName.slice(1))
             .map(tagName => {
                 return {
@@ -14,8 +14,5 @@ module.exports = class TagsGenerator extends BaseGenerator {
                     description: `${tagName} API`
                 }
             });
-
-        //this.writeYaml("includes/tags.yaml", tags);
-        return tags;
     }
 };

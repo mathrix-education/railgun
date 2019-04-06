@@ -58,7 +58,7 @@ module.exports = class BaseGenerator {
 
         // If the schema has no $extends property, we need to inspect deeper
         if (!schema.hasOwnProperty("$extends")) {
-            Object.keys(schema).map(k => {
+            Object.keys(schema).forEach(k => {
                 schema[k] = this.extendSchema(schema[k], dir);
             });
 
@@ -71,7 +71,7 @@ module.exports = class BaseGenerator {
         /** @type {{$extends}|Object} It will be our merged schema. */
         let merged = schema;
 
-        Object.keys(schema["$extends"]).reverse().map(extendFile => {
+        Object.keys(schema["$extends"]).reverse().forEach(extendFile => {
             /** @type {Object} The extends file */
             const extended = this.readYaml(`${schemaDir}/${extendFile}`);
             /** @type {Object} This is the user replace map */
@@ -89,7 +89,7 @@ module.exports = class BaseGenerator {
             const replaceMap = initReplaceMap;
 
             // Prepare replace variables
-            Object.keys(initReplaceMap).map(search => {
+            Object.keys(initReplaceMap).forEach(search => {
                 const replace = initReplaceMap[search];
                 const Search = search.charAt(0).toUpperCase() + search.slice(1);
                 const Replace = replace.charAt(0).toUpperCase() + replace.slice(1);
@@ -99,7 +99,7 @@ module.exports = class BaseGenerator {
             });
 
             // Replace everything
-            Object.keys(replaceMap).map(search => {
+            Object.keys(replaceMap).forEach(search => {
                 const replace = replaceMap[search];
                 const pattern = new RegExp(`@${search}@`, "g");
                 extendedString = extendedString.replace(pattern, replace);
@@ -114,7 +114,7 @@ module.exports = class BaseGenerator {
                 results.push(match);
             }
 
-            results.map(randomIntParams => {
+            results.forEach(randomIntParams => {
                 const min = parseInt(randomIntParams[1]);
                 const max = parseInt(randomIntParams[2]);
                 const randomNumber = Math.floor(Math.random() * (max - min) + min);

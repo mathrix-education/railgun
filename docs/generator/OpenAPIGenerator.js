@@ -7,7 +7,7 @@ const BaseGenerator = require("./BaseGenerator");
 
 module.exports = class OpenAPIGenerator extends BaseGenerator {
     process() {
-        // Generate OpenAPI 3.0.1 specification
+        // Generate OpenAPI 3.0.2 specification
         const spec = this.readYaml("index.yaml");
         spec["components"]["requestBodies"] = (new RequestBodiesGenerator()).process();
         spec["components"]["responses"] = (new ResponsesGenerator()).process();
@@ -33,7 +33,7 @@ module.exports = class OpenAPIGenerator extends BaseGenerator {
                 const transfer = ["type", "format", "enum"];
                 const currentDef = {};
 
-                Object.keys(obj).filter(k => transfer.indexOf(k) !== -1).map(k => {
+                Object.keys(obj).filter(k => transfer.indexOf(k) !== -1).forEach(k => {
                     currentDef[k] = obj[k];
                     delete obj[k];
                 });
@@ -45,7 +45,7 @@ module.exports = class OpenAPIGenerator extends BaseGenerator {
                     currentDef
                 ];
             } else {
-                Object.keys(obj).map(k => {
+                Object.keys(obj).forEach(k => {
                     obj[k] = this.convert(obj[k]);
                 });
             }

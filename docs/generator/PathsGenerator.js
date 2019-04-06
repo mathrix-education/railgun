@@ -5,7 +5,7 @@ module.exports = class PathsGenerator extends BaseGenerator {
         const folders = this.fs.readdirSync(`${this.src}/paths`);
         const paths = {};
 
-        folders.map(models => {
+        folders.forEach(models => {
             /*
              * Handle default order:
              * GET /{models}/{page}/{perPage}
@@ -27,7 +27,7 @@ module.exports = class PathsGenerator extends BaseGenerator {
                 ...restFiles.filter(s => actualFiles.indexOf(s) > -1),
                 ...actualFiles.filter(s => restFiles.indexOf(s) === -1)
             ];
-            finalFiles.map(file => {
+            finalFiles.forEach(file => {
                 let url = `/${models}` + file.replace(/_/g, "/").replace(".yaml", "");
 
                 if (url === `/${models}/`) {
@@ -46,7 +46,6 @@ module.exports = class PathsGenerator extends BaseGenerator {
             });
         });
 
-        //this.writeYaml("includes/paths.yaml", paths);
         return paths;
     }
 
@@ -58,7 +57,7 @@ module.exports = class PathsGenerator extends BaseGenerator {
      * @returns {*}
      */
     pipe(data, tag, url) {
-        ["post", "put", "get", "patch", "delete"].map(method => {
+        ["post", "put", "get", "patch", "delete"].forEach(method => {
             if (data.hasOwnProperty(method)) {
                 data[method]["tags"] = [tag];
                 data[method]["operationId"] = `${method}${url}`;

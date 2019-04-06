@@ -19,7 +19,6 @@ module.exports = class ResponsesGenerator extends BaseGenerator {
                 this.writeYaml(responsePath, this.readYaml(responsePath));
             });
 
-        //this.writeYaml("includes/responses.yaml", responses);
         return responses;
     }
 };

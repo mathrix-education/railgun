@@ -19,7 +19,6 @@ module.exports = class RequestBodiesGenerator extends BaseGenerator {
                 this.writeYaml(requestBodyPath, this.readYaml(requestBodyPath));
             });
 
-        //this.writeYaml("includes/requestBodies.yaml", requestBodies);
         return requestBodies;
     }
 };

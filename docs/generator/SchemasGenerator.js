@@ -11,7 +11,6 @@ module.exports = class SchemasGenerator extends BaseGenerator {
         this.addDirectoryToIndex("schemas/Modules", "Module");
         this.addDirectoryToIndex("schemas/Notifications", "Notification");
 
-        //this.writeYaml("includes/schemas.yaml", this.schemasIndex);
         return this.schemasIndex;
     }
 
