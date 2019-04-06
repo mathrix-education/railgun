@@ -19,6 +19,6 @@ class LevelsRegistrar extends BaseRegistrar
      */
     public function register(): void
     {
-        $this->get("levels[/{page:\d+}/{perPage:[1-9]\d*}]", LevelsController::class . "@index");
+        $this->get("levels/{page:\d+}/{perPage:[1-9]\d*}", LevelsController::class . "@index");
     }
 }

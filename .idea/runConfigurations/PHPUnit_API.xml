@@ -1,6 +1,16 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="PHPUnit API" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" singleton="true">
     <TestRunner directory="$PROJECT_DIR$/tests/API" />
-    <method v="2" />
+    <method v="2">
+      <option name="NpmBeforeRunTask" enabled="true">
+        <package-json value="$PROJECT_DIR$/package.json" />
+        <command value="run" />
+        <scripts>
+          <script value="docs:generate" />
+        </scripts>
+        <node-interpreter value="project" />
+        <envs />
+      </option>
+    </method>
   </configuration>
 </component>
