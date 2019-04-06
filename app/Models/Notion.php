@@ -45,6 +45,9 @@ class Notion extends BaseModel
         "slug" => "required|max:255",
         "chapter_id" => "required|exists:chapters,id",
     ];
+    protected $casts = [
+        "visible" => "boolean"
+    ];
 
 
     public function __construct(array $attributes = [])
@@ -62,6 +65,7 @@ class Notion extends BaseModel
     */
     /**
      * The notion parent chapter.
+     *
      * @return BelongsTo
      */
     public function chapter(): BelongsTo
@@ -72,6 +76,7 @@ class Notion extends BaseModel
 
     /**
      * The notion child activities.
+     *
      * @return HasMany
      */
     public function activities(): HasMany

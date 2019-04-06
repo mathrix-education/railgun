@@ -41,7 +41,7 @@ class APITestCase extends BaseTestCase
 
     public function onNotSuccessfulTest(Throwable $t)
     {
-        $this->debug();
+        //$this->debug();
         parent::onNotSuccessfulTest($t);
     }
 }

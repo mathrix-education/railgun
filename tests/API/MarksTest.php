@@ -37,15 +37,7 @@ class MarksTest extends APITestCase
         $this->json("get", "/marks/activities/to-revise");
 
         $this->assertResponseOk();
-        $this->assertJsonResponseMatches([
-            "[*].country" => new IsType("object"),
-            "[*].discipline" => new IsType("object"),
-            "[*].grade" => new IsType("object"),
-            "[*].chapter" => new IsType("object"),
-            "[*].notion" => new IsType("object"),
-            "[*].activity" => new IsType("object"),
-            "[*].activity.mark" => "to_revise"
-        ]);
+        $this->assertOpenAPIResponse();
     }
 
 
@@ -70,14 +62,6 @@ class MarksTest extends APITestCase
         $this->json("get", "/marks/activities/view");
 
         $this->assertResponseOk();
-        $this->assertJsonResponseMatches([
-            "[*].country" => new IsType("object"),
-            "[*].discipline" => new IsType("object"),
-            "[*].grade" => new IsType("object"),
-            "[*].chapter" => new IsType("object"),
-            "[*].notion" => new IsType("object"),
-            "[*].activity" => new IsType("object"),
-            "[*].activity.mark" => "view"
-        ]);
+        $this->assertOpenAPIResponse();
     }
 }
