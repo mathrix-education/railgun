@@ -10,13 +10,15 @@ use Faker\Factory;
 use Faker\Factory as FakerFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response as IlluminateResponse;
+use Illuminate\Http\Response;
+use Laravel\Passport\Http\Controllers\ConvertsPsrResponses;
 use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Exceptions\ValidationException;
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use stdClass;
-use Zend\Diactoros\Response as ZendResponse;
+use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 
 /**
  * Class AuthController.
@@ -27,58 +29,64 @@ use Zend\Diactoros\Response as ZendResponse;
  */
 class AuthController extends BaseController
 {
+    use ConvertsPsrResponses;
+
+
     /**
      * POST /auth/login
      * Allow users to login with their privileges.
      *
-     * @param ServerRequestInterface $request The implementation of ServerRequestInterface is forced in order to match
      * the AccessTokenController::issueToken method.
+     *
+     * @param Request $request The Illuminate HTTP request
      *
      * @return JsonResponse
      *
      * @see AccessTokenController::issueToken
      */
-    public function login(ServerRequestInterface $request): JsonResponse
+    public function login(Request $request): JsonResponse
     {
-        $requestBody = $request->getParsedBody();
-
         /** @var User|null $user */
         $user = User::query()
-            ->where("email", "=", $requestBody["username"])
+            ->where("email", "=", $request->json("username"))
             ->first();
 
         // Define the allowed scopes based on user scopes
         // If we did not find the user, we do not do anything, even if we already know that the request will fail
         if ($user !== null) {
-            $requestBody["scope"] = $user->getPassportScopes();
+            $request->merge([
+                "scope" => $user->getPassportScopes()
+            ]);
         }
 
-        $request = $request->withParsedBody($requestBody);
-
+        /**
+         * Via PSR ServerRequestInterface and Response interface, we will get the user authentication token.
+         */
+        $psr17Factory = new Psr17Factory();
+        $psrHttpFactory = new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
+        /** @var ServerRequestInterface $psrRequest */
+        $psrRequest = $psrHttpFactory->createRequest($request);
         /** @var AccessTokenController $controller */
         $controller = app()->make(AccessTokenController::class);
-        /** @var IlluminateResponse $response */
-        $response = $controller->issueToken($request);
+        /** @var ResponseInterface $psrResponse */
+        $psrResponse = $controller->issueToken($psrRequest);
 
-        $body = new stdClass();
-        $status = null;
-        $headers = [];
-
-        if ($response instanceof IlluminateResponse) {
-            $body = json_decode($response->getContent());
-            $status = $response->getStatusCode();
-            $headers = $response->headers->all();
-        } else if ($response instanceof ZendResponse) {
-            $body = json_decode($response->getBody());
-            $status = $response->getStatusCode();
-            $headers = $response->getHeaders();
+        if ($psrResponse instanceof ResponseInterface) {
+            $response = $this->convertResponse($psrResponse);
+        } else {
+            $response = $psrResponse;
         }
 
-        if ($user !== null) {
-            $body->user_id = $user->id;
+        /** @var Response $response */
+        $data = json_decode($response->getContent(), true);
+        $status = $response->getStatusCode();
+        $headers = $response->headers->all();
+
+        if ($response->getStatusCode() !== 200) {
+            $data["user_id"] = $user->id;
         }
 
-        return new JsonResponse($body, $status, $headers);
+        return new JsonResponse($data, $status, $headers);
     }
 
 
