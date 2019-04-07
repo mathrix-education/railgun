@@ -40,7 +40,6 @@ class ModulesTest extends APITestCase
         $pivot = Module::random(["id", "!=", $module->id]);
 
         $module->posts()->update(["module_id" => $pivot->id]);
-        $module->references()->update(["module_id" => $pivot->id]);
         $module->products()->update(["module_id" => $pivot->id]);
 
         $this->assertRestDeleteSuccess(["conditions" => ["id", "=", $module->id]]);

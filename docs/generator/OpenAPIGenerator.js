@@ -30,7 +30,7 @@ module.exports = class OpenAPIGenerator extends BaseGenerator {
     convert(obj) {
         if (typeof obj === "object" && obj !== null) {
             if (obj.hasOwnProperty("nullable") && obj.nullable === true) {
-                const transfer = ["type", "format", "enum"];
+                const transfer = ["type", "format", "enum", "oneOf"];
                 let currentDef = {};
 
                 Object.keys(obj).filter(k => transfer.indexOf(k) !== -1).forEach(k => {

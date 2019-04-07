@@ -19,7 +19,7 @@ class ReportsRegistrar extends BaseRegistrar
      */
     public function register(): void
     {
-        $this->rest("quotes", ReportsController::class, [
+        $this->rest("reports", ReportsController::class, [
             "index" => "admin",
             "get" => "admin",
             "post" => "registered",

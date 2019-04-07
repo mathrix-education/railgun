@@ -67,6 +67,7 @@ properties:
     type: boolean
     readOnly: true
   module:
+    $extends:
+      Module.yaml:
+    readOnly: true
     nullable: true
-    allOf:
-      - $ref: '../index.yaml#/components/schemas/Module'
