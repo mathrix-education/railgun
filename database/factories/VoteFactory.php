@@ -22,16 +22,14 @@ $factory->define(Vote::class, function (Generator $faker) {
         $voteData = [
             "value" => $faker->boolean(70) ? 1 : -1,
             "user_id" => User::random()->id,
-            "votable_id" => Comment::random()->id,
-            "votable_type" => "comment",
+            "comment_id" => Comment::random()->id,
             "created_at" => $createdAt,
             "updated_at" => $faker->boolean(90) ? $createdAt : $faker->dateTimeBetween($createdAt, "now")
         ];
     } while (Vote::query()
         ->where([
             ["user_id", "=", $voteData["user_id"]],
-            ["votable_id", "=", $voteData["votable_id"]],
-            ["votable_type", "=", $voteData["votable_type"]],
+            ["comment_id", "=", $voteData["comment_id"]],
         ])
         ->exists());
 

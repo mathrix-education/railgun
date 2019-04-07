@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Validation\Rule;
 use Mathrix\Lumen\Bases\BaseModel;
 
 /**
@@ -17,13 +17,12 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @property int $id
  * @property int $value
  * @property int|null $user_id
- * @property int $votable_id
- * @property string $votable_type
+ * @property int $comment_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * ---
- * @property User|null $user
- * @property Post|Comment $votable
+ * @property User $user
+ * @property Comment $comment
  */
 class Vote extends BaseModel
 {
@@ -32,13 +31,20 @@ class Vote extends BaseModel
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "value", "user_id", "votable_id", "votable_type"];
+    protected $fillable = ["id", "value", "user_id", "comment_id"];
     /** @var array Validation rules */
     protected $rules = [
         "user_id" => "required|exists:users,id",
-        "votable_id" => "required|integer",
-        "votable_type" => "required|in:comment",
+        "comment_id" => "required|exists:comments,id"
     ];
+
+
+    public function getValidationRules()
+    {
+        return array_merge($this->rules, [
+            "value" => ["required", Rule::in([1, -1])]
+        ]);
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -57,10 +63,10 @@ class Vote extends BaseModel
 
 
     /**
-     * MorphTo.
+     * BelongsTo Comment.
      */
-    public function votable(): MorphTo
+    public function comment(): BelongsTo
     {
-        return $this->morphTo();
+        return $this->belongsTo(Comment::class);
     }
 }

@@ -40,5 +40,10 @@ class PyramidForeignKeysCommand extends BaseCommand
         $this->line("Migrating class_id => grade_id on chapters table...");
         DB::statement("UPDATE chapters SET grade_id = class_id;");
         $this->success("Migrated grade_id on chapters table");
+
+
+        $this->line("Migrating votable_id => comment_id on votes table...");
+        DB::statement("UPDATE votes SET comment_id = votable_id;");
+        $this->success("Migrated votable_id on votes table");
     }
 }

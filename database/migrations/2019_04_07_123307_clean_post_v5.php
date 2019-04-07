@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CleanPostV5 extends Migration
 {
@@ -68,11 +68,15 @@ class CleanPostV5 extends Migration
             $table->dropColumn(["activity_count"]);
         });
 
+        // Drop chapters.activity_count
+        Schema::table("votes", function (Blueprint $table) {
+            $table->dropColumn(["votable_id", "votable_type"]);
+        });
+
         Schema::dropIfExists("scores");
         Schema::dropIfExists("references");
         Schema::dropIfExists("jobs");
     }
-
 
     /**
      * Reverse the migrations.
@@ -81,6 +85,6 @@ class CleanPostV5 extends Migration
      */
     public function down()
     {
-        // We will recreate migrations anyway
+        //
     }
 }

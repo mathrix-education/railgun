@@ -226,10 +226,7 @@ class SubscriptionPipeline
             $this->user->record("braintree", "subscription_creation", "error",
                 $subscriptionCreation->jsonSerialize());
 
-            throw new Http400BadRequestException(
-                $subscriptionCreation->jsonSerialize(),
-                "Subscription creation failed."
-            );
+            BraintreeErrorHandler::report($subscriptionCreation);
         }
     }
 

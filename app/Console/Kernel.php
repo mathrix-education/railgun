@@ -19,6 +19,7 @@ use App\Console\Commands\Pyramid\PyramidResetCommand;
 use App\Console\Commands\Pyramid\PyramidSEOCommand;
 use App\Console\Commands\Sitemap\SitemapAll;
 use App\Console\Commands\Sitemap\SitemapContent;
+use App\Console\Commands\TestCommand;
 use App\Console\Commands\TestRouter;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
@@ -35,6 +36,8 @@ class Kernel extends ConsoleKernel
 {
     /** @var array The Artisan commands. */
     protected $commands = [
+        TestCommand::class,
+
         NewPayPalCheck::class,
         SitemapAll::class,
         SitemapContent::class,
@@ -54,8 +57,6 @@ class Kernel extends ConsoleKernel
         PyramidMarksActivitiesCommand::class,
         PyramidPostMigrate::class,
         PyramidCheckCommand::class,
-
-        TestRouter::class
     ];
 
 

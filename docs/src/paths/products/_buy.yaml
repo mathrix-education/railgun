@@ -1,5 +1,5 @@
 post:
-  summary: Buy products.
+  summary: Buy products
   description: Buy products. The user may also use a dscount code.
   requestBody:
     content:

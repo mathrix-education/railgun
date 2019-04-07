@@ -9,6 +9,7 @@ use App\Models\Discount;
 use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\User;
+use App\Services\Braintree\Exceptions\BraintreeErrorHandler;
 use Braintree\Result\Error;
 use Braintree\Result\Successful;
 use Braintree\Transaction;
@@ -229,7 +230,8 @@ class CartPipeline
 
         if (!$this->saleResult->success) {
             $this->customer->record("braintree", "sale", "error", $this->saleResult->jsonSerialize());
-            throw new Http400BadRequestException($this->saleResult->jsonSerialize(), "Sale failed");
+
+            BraintreeErrorHandler::report($this->saleResult);
         }
 
         $this->finalize();

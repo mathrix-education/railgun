@@ -126,9 +126,9 @@ class Comment extends BaseModel
     |--------------------------------------------------------------------------
     */
     /**
-     * Get the user vote value (null|1|-1).
+     * Get the user vote value (0|1|-1).
      *
-     * @return int|null
+     * @return int
      */
     public function getUserVoteAttribute()
     {
@@ -136,18 +136,18 @@ class Comment extends BaseModel
         $user = Auth::user();
 
         if ($user === null) {
-            return null;
+            return 0;
         }
 
-        /** @var Vote $potentialVote */
-        $potentialVote = Vote::query()
-            ->where([
-                ["user_id", $user->id],
-                ["votable_type", "comment"],
-                ["votable_id", $this->id],
-            ])
-            ->first();
+        $query = $this->votes()->where("user_id", "=", $user->id);
 
-        return $potentialVote instanceof Vote ? $potentialVote->value : null;
+        if (!$query->exists()) {
+            return 0;
+        } else {
+            /** @var Vote $vote */
+            $vote = $query->firstOrFail();
+
+            return $vote->value;
+        }
     }
 }
