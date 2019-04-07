@@ -4,9 +4,11 @@ namespace App\Controllers;
 
 use App\Models\Setting;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mathrix\Lumen\Bases\BaseController;
+use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
 use Mathrix\Lumen\Exceptions\Http\Http404NotFoundException;
 use Mathrix\Lumen\Exceptions\ValidationException;
 
@@ -68,7 +70,6 @@ class SettingsController extends BaseController
             ($user === null && !$setting->visible) ||
             ($user !== null && $user->cant("read", $setting))
         ) {
-
             throw new Http404NotFoundException(
                 ["key" => $key],
                 "Setting with key `{$key}` does not exist"
@@ -87,8 +88,7 @@ class SettingsController extends BaseController
      * @param string $key The setting key.
      *
      * @return JsonResponse
-     * @throws ValidationException
-     * @throws \Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException
+     * @throws Http401UnauthorizedException
      */
     public function write(Request $request, string $key)
     {
@@ -117,6 +117,8 @@ class SettingsController extends BaseController
      * @param string $key The setting key.
      *
      * @return JsonResponse
+     * @throws Http401UnauthorizedException
+     * @throws Exception
      */
     public function forgot(Request $request, string $key): JsonResponse
     {
@@ -129,7 +131,8 @@ class SettingsController extends BaseController
         $deleted = Setting::forgot($key);
 
         return new JsonResponse([
-            "status" => $deleted ? "success" : "error",
+            "success" => $deleted,
+            "message" => "Setting key $key was successfully deleted."
         ]);
     }
 }
