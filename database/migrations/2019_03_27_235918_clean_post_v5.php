@@ -69,6 +69,8 @@ class CleanPostV5 extends Migration
         });
 
         Schema::dropIfExists("scores");
+        Schema::dropIfExists("references");
+        Schema::dropIfExists("jobs");
     }
 
 

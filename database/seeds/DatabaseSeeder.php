@@ -11,6 +11,7 @@ use App\Models\Notion;
 use App\Models\Post;
 use App\Models\Product;
 use App\Models\Reference;
+use App\Models\Report;
 use App\Models\Setting;
 use App\Models\User;
 use App\Models\Vote;
@@ -66,8 +67,8 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->seedFromFactory(Discount::class, 30);
         $this->linkAll(Discount::class, Product::class);
 
-        // References
-        $this->seedFromFactory(Reference::class, 50);
+        // Reports
+        $this->seedFromFactory(Report::class, 500);
 
         // Logs
         $this->call(LogTableSeeder::class);

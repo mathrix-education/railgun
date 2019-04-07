@@ -28,7 +28,6 @@ class ModuleObserver extends BaseObserver
     {
         $this->handleRelationDeletion($module, "posts");
         $this->handleRelationDeletion($module, "products");
-        $this->handleRelationDeletion($module, "references");
 
         Comment::withTrashed()
             ->where("module_id", "=", $module->id)

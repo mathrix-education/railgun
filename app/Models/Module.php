@@ -176,17 +176,6 @@ class Module extends BaseModel
 
 
     /**
-     * HasMany Reference.
-     *
-     * @return HasMany
-     */
-    public function references(): HasMany
-    {
-        return $this->hasMany(Reference::class);
-    }
-
-
-    /**
      * HasMany Report.
      *
      * @return HasMany
