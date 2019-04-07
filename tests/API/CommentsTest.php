@@ -22,7 +22,7 @@ use Tests\APITestCase;
  */
 class CommentsTest extends APITestCase
 {
-    use StandardIndexTest, StandardPostTest, StandardGetTest;
+    use StandardIndexTest, StandardGetTest;
 
     public function testPost()
     {

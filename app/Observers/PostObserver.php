@@ -4,6 +4,8 @@ namespace App\Observers;
 
 use App\Models\Comment;
 use App\Models\Post;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 /**
@@ -26,6 +28,13 @@ class PostObserver extends BaseObserver
         if (empty($post->slug) ||
             ($post->isDirty("title") && !$post->isDirty("slug"))) {
             $post->slug = Str::slug($post->title);
+        }
+
+        // By default set the post user_id to the current user id.
+        if (empty($post->user_id)) {
+            /** @var User $user */
+            $user = Auth::user();
+            $post->user_id = $user->id;
         }
 
         return true;

@@ -5,6 +5,7 @@ properties:
   id:
     description: The post id.
     type: integer
+    readOnly: true
     example: 14
   title:
     description: The post title.
@@ -30,7 +31,11 @@ properties:
     description: The date/time when the object was created.
     type: string
     format: date-time
+    readOnly: true
   updated_at:
     description: The date/time when the object was updated.
     type: string
-    format: date-time
+    readOnly: true
+  module:
+    allOf:
+      - $ref: '../index.yaml#/components/schemas/Module'

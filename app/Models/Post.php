@@ -34,12 +34,11 @@ class Post extends BaseModel
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "title", "slug", "module_id", "category_id", "created_at", "updated_at"];
+    protected $fillable = ["id", "title", "slug", "module_id", "category_id", "user_id", "created_at", "updated_at"];
     /** @var array Validation rules */
     protected $rules = [
         "title" => "required|max:255",
         "slug" => "required|max:255",
-        "content" => "required",
         "category_id" => "required|exists:categories,id",
     ];
     /** @var array The default included relations */
