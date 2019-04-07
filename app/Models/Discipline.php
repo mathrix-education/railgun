@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\NoPivot;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -24,6 +25,8 @@ use Mathrix\Lumen\Bases\BaseModel;
  */
 class Discipline extends BaseModel
 {
+    use NoPivot;
+
     /** @var array The attributes that are mass assignable */
     protected $fillable = ["id", "name", "slug", "beta", "visible"];
     /** @var array Validation rules */
@@ -37,21 +40,6 @@ class Discipline extends BaseModel
         "beta" => "boolean"
     ];
 
-
-    /**
-     * Remove the pivot column. Sounds like a hack, we should be careful.
-     *
-     * @return array
-     */
-    public function toArray()
-    {
-        $data = parent::toArray();
-        if (isset($data["pivot"])) {
-            unset($data["pivot"]);
-        }
-
-        return $data;
-    }
 
     /*
     |--------------------------------------------------------------------------

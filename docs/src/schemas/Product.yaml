@@ -1,11 +1,13 @@
 description: Product
 type: object
-additionalProperties: false
+#additionalProperties: false # We cannot handle that
+required: [id, name, slug, image, description, price, visible, order, module_id, created_at, updated_at, owned]
 properties:
   id:
     description: The product id.
     type: integer
     example: 14
+    readOnly: true
   name:
     description: The product name.
     type: string
@@ -19,6 +21,7 @@ properties:
     type: string
     example: https://cdn.mathrix.fr/products/example.jpg
   type:
+    deprecated: true
     description: The product type (compatibility with the old traning system).
     type: string
     enum:
@@ -26,6 +29,7 @@ properties:
     - training
     - section
     - lesson
+    nullable: true
   description:
     description: The product description.
     type: string
@@ -35,6 +39,7 @@ properties:
     type: number
     format: float
     example: 47.90
+    nullable: true
   visible:
     description: The product visibility.
     type: boolean
@@ -46,11 +51,22 @@ properties:
     description: The module id which belongs to the product.
     type: integer
     example: 432
+    nullable: true
   created_at:
     description: The date/time when the object was created.
     type: string
     format: date-time
+    readOnly: true
   updated_at:
     description: The date/time when the object was updated.
     type: string
     format: date-time
+    readOnly: true
+  owned:
+    description: If the current user as already purchased this product.
+    type: boolean
+    readOnly: true
+  module:
+    nullable: true
+    allOf:
+      - $ref: '../index.yaml#/components/schemas/Module'

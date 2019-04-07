@@ -29,18 +29,13 @@ class ProductsRegistrar extends BaseRegistrar
             "delete" => "admin"
         ]);
 
-        $this->get("products/{id:[1-9]\d*}/recursive", "$controller@recursive");
+        $this->get("products/{productId:[1-9]\d*}/recursive", "$controller@recursive");
         $this->get("products/slug/{productSlug:[a-z0-9\-]+}", "$controller@getBySlug");
-        $this->get("products/buyable[/{type:all|training}]", "$controller@buyable");
+        $this->get("products/buyable/{page:\d+}/{perPage:[1-9]\d+}[/{type:all|training|section|lesson}]", "$controller@buyable");
 
         $this->post("products/buy", [
             "uses" => "$controller@buy",
             "middleware" => "scope:registered"
-        ]);
-
-        $this->post("products/sell", [
-            "uses" => "$controller@sell",
-            "middleware" => "scope:support"
         ]);
     }
 }

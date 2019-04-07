@@ -7,6 +7,7 @@ module.exports = class SchemasGenerator extends BaseGenerator {
     process() {
         this.schemasIndex = {};
         this.addDirectoryToIndex("schemas", null);
+        this.addDirectoryToIndex("schemas/Errors", null);
         this.addDirectoryToIndex("schemas/Braintree", "Braintree_");
         this.addDirectoryToIndex("schemas/Modules", "Module");
         this.addDirectoryToIndex("schemas/Notifications", "Notification");
@@ -17,6 +18,7 @@ module.exports = class SchemasGenerator extends BaseGenerator {
     addDirectoryToIndex(directory, schemaPrefix) {
         this.fs.readdirSync(`${this.src}/${directory}`)
             .filter(s => s.indexOf(".yaml") > -1)
+            .filter(s => s !== 'Base.yaml')
             .map(schemaFile => {
                 // Add to index
                 const schemaPath = `${directory}/${schemaFile}`;

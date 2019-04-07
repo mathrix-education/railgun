@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Traits\NoPivot;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Auth;
 use Mathrix\Lumen\Bases\BaseModel;
 
 /**
@@ -36,6 +38,8 @@ use Mathrix\Lumen\Bases\BaseModel;
  */
 class Product extends BaseModel
 {
+    use NoPivot;
+
     /** @var bool Indicates if the model should be timestamped */
     public $timestamps = true;
     /** @var array The attributes that are mass assignable */
@@ -64,6 +68,7 @@ class Product extends BaseModel
     protected $casts = [
         "visible" => "boolean",
     ];
+    protected $appends = ["owned"];
 
 
     /**
@@ -107,6 +112,23 @@ class Product extends BaseModel
     public function discounts()
     {
         return $this->belongsToMany(Discount::class);
+    }
+
+
+    /**
+     * Product::owned attribute
+     *
+     * @return bool
+     */
+    public function getOwnedAttribute()
+    {
+        $user = Auth::user();
+
+        if ($user !== null && $user instanceof User) {
+            return $user->hasPurchased($this);
+        }
+
+        return false;
     }
 
 

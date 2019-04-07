@@ -8,7 +8,7 @@ use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Tests\Traits\DatabaseTrait;
 use Mathrix\Lumen\Tests\Traits\DebugTrait;
 use Mathrix\Lumen\Tests\Traits\PassportTrait;
-use Tests\BaseTestCase;
+use Tests\APITestCase;
 use Tests\Utils\NotificationsAssertionsTrait;
 
 /**
@@ -19,11 +19,8 @@ use Tests\Utils\NotificationsAssertionsTrait;
  * @copyright Mathrix Education SA.
  * @since 4.1.0
  */
-class BraintreeTestCase extends BaseTestCase
+abstract class BraintreeTestCase extends APITestCase
 {
-    use NotificationsAssertionsTrait, DatabaseTrait, PassportTrait, DebugTrait;
-
-
     /**
      * Set the current user.
      *
@@ -63,11 +60,13 @@ class BraintreeTestCase extends BaseTestCase
         /** @var User $user */
         $user = User::query()
             ->where("type", "=", "registered")
-            ->whereNull("braintree_id")
-            ->whereNull("stripe_id")
             ->inRandomOrder()
             ->firstOrFail();
 
-        return $user;
+        $user->braintree_id = null;
+        $user->stripe_id = null;
+        $user->save();
+
+        return $user->refresh();
     }
 }

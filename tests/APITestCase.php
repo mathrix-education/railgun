@@ -6,7 +6,6 @@ use Laravel\Lumen\Testing\DatabaseTransactions;
 use Mathrix\Lumen\Bases\BaseModel;
 use Mathrix\Lumen\Tests\REST\RESTTrait;
 use Mathrix\Lumen\Tests\Traits\DebugTrait;
-use Tests\BaseTestCase;
 use Throwable;
 
 /**
@@ -41,7 +40,10 @@ class APITestCase extends BaseTestCase
 
     public function onNotSuccessfulTest(Throwable $t)
     {
-        $this->debug();
+        if ($this->response !== null) {
+            $this->debug();
+        }
+
         parent::onNotSuccessfulTest($t);
     }
 }

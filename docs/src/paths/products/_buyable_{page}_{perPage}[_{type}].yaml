@@ -1,0 +1,11 @@
+$extends:
+  ../../fragments/paths/get_{page}_{perPage}.yaml:
+    model: product
+parameters:
+  - name: type
+    in: path
+    description: The product filter.
+    schema:
+      type: string
+      enum: [all,training,section,lesson]
+    default: all
