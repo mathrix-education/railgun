@@ -47,6 +47,11 @@ properties:
     description: The product order (only used to sort non-child product).
     type: integer
     example: 2
+  parent_id:
+    description: The parent product id which belongs to the product.
+    type: integer
+    example: 17
+    nullable: true
   module_id:
     description: The module id which belongs to the product.
     type: integer
@@ -62,18 +67,6 @@ properties:
     type: string
     format: date-time
     readOnly: true
-  link:
-    type: object
-    properties:
-      children:
-        description: >
-          The sub-products to link as children to this product. The order is
-          determined by the order of ids.
-        type: array
-        items:
-          type: integer
-        example: [13, 11, 152]
-    writeOnly: true
   owned:
     description: If the current user as already purchased this product.
     type: boolean

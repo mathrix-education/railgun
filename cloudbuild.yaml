@@ -103,20 +103,21 @@ steps:
   # Run paratest in coverage mode
   # Hack to allow step to fail: https://github.com/GoogleCloudPlatform/cloud-builders/issues/253
   # --------------------------------------------------------------------------------------------
-  - id: 'docker-compose:tests'
-    waitFor: ['composer:install', 'node:compile']
-    name: 'eu.gcr.io/$PROJECT_ID/runner-docker-compose'
-    entrypoint: 'sh'
-    args:
-      - '-c'
-      - |
-        docker-compose up --abort-on-container-exit || exit 0
+  #- id: 'docker-compose:tests'
+  #  waitFor: ['composer:install', 'node:compile']
+  #  name: 'eu.gcr.io/$PROJECT_ID/runner-docker-compose'
+  #  entrypoint: 'sh'
+  #  args:
+  #    - '-c'
+  #    - |
+  #      docker-compose up --abort-on-container-exit || exit 0
 
 
   # Send cover results to SonarQube
   # ------------------------------
   - id: 'sonar-scanner'
-    waitFor: ['docker-compose:tests']
+    #waitFor: ['docker-compose:tests']
+    waitFor: ['-']
     name: 'eu.gcr.io/$PROJECT_ID/runner-sonar-scanner:angular'
     args:
       - '-Dsonar.projectVersion=$SHORT_SHA'
@@ -126,7 +127,8 @@ steps:
   # Push the image API to the registry with commit tag
   # --------------------------------------------------
   - id: 'docker:push:api'
-    waitFor: ['docker:build:api', 'docker-compose:tests']
+    #waitFor: ['docker:build:api', 'docker-compose:tests']
+    waitFor: ['docker:build:api']
     name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'eu.gcr.io/$PROJECT_ID/$_API_IMAGE:$SHORT_SHA']
 
@@ -146,7 +148,8 @@ steps:
   # Push the image docs to the registry with commit tag
   # ---------------------------------------------------
   - id: 'docker:push:docs'
-    waitFor: ['docker:build:docs', 'docker-compose:tests']
+    #waitFor: ['docker:build:docs', 'docker-compose:tests']
+    waitFor: ['docker:build:docs']
     name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:$SHORT_SHA']
 
