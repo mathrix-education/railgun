@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Exceptions\ForeignConstraintsException;
 use App\Models\Product;
 use Illuminate\Support\Str;
 
@@ -27,22 +28,6 @@ class ProductObserver extends BaseObserver
             $product->slug = Str::slug($product->name);
         }
 
-        // Sync children
-        if (isset($product->link["children"])) {
-            $toSync = [];
-            foreach ($product->link["children"] as $order => $childId) {
-                if (Product::query()->where("id", "=", $childId)->exists()) {
-                    $toSync[$childId] = ["order" => $order];
-                }
-            }
-            $product->children()
-                ->sync($toSync);
-        }
-
-        if (isset($product->link)) {
-            unset($product->link);
-        }
-
         return true;
     }
 
@@ -51,12 +36,12 @@ class ProductObserver extends BaseObserver
      * @param Product $product
      *
      * @return bool
+     * @throws ForeignConstraintsException
      */
     public function deleting($product)
     {
+        $this->handleRelationDeletion(Product::class, "children");
         $product->discounts()->detach();
-        $product->parents()->detach();
-        $product->children()->detach();
 
         return true;
     }
