@@ -74,7 +74,7 @@ class Module extends BaseModel
     protected $rules = [
         "premium" => "required|boolean",
         "visible" => "required|boolean",
-        "seo_index" => "required|seo_index",
+        "seo_index" => "required|boolean",
     ];
     /** @var array The accessors to append to the model's array form */
     protected $appends = ["mark"];
