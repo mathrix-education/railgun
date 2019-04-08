@@ -5,6 +5,7 @@ use App\Models\Level;
 use App\Models\User;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 
 /**
@@ -26,7 +27,9 @@ $factory->define(User::class, function (Generator $faker) {
         "email" => $faker->email,
         "firstname" => $names ? $faker->firstName : null,
         "lastname" => $names ? $faker->lastName : null,
-        "password" => Hash::make("123456"),
+        "password" => Cache::remember("DB_PASSWORD.hash", 30, function () {
+            return Hash::make(env("DB_PASSWORD"));
+        }),
         "token" => $faker->uuid,
         "points" => $points,
         "level" => Level::getLevelByPoints($points),
@@ -46,7 +49,7 @@ $factory->define(User::class, function (Generator $faker) {
     return $data;
 });
 
-$additionalFactories = ["registered", "redactor", "moderator", "admin", "support"];
+$additionalFactories = ["registered", "redactor", "moderator", "admin"];
 foreach ($additionalFactories as $type) {
     $factory->defineAs(User::class, $type, function (Generator $faker) use ($factory, $type) {
         $data = [

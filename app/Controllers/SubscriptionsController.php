@@ -67,7 +67,7 @@ class SubscriptionsController extends BaseController
         /** @var User $user */
         $user = $request->user();
 
-        if (!$user->tokenCan("support")) {
+        if (!$user->tokenCan("admin")) {
             throw new Http401UnauthorizedException();
         }
 
@@ -95,7 +95,7 @@ class SubscriptionsController extends BaseController
         /** @var User $user */
         $user = $request->user();
 
-        if (!$user->tokenCan("support")) {
+        if (!$user->tokenCan("admin")) {
             throw new Http401UnauthorizedException();
         }
 
@@ -142,7 +142,7 @@ class SubscriptionsController extends BaseController
         /** @var User $user */
         $user = $request->user();
 
-        if ($user->id !== $userId && !$user->tokenCan("support")) {
+        if ($user->id !== $userId && !$user->tokenCan("admin")) {
             throw new Http401UnauthorizedException();
         }
 

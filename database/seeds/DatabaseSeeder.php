@@ -49,7 +49,6 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->seedFromSubFactory(User::class, "admin", 5);
         $this->seedFromSubFactory(User::class, "moderator", 5);
         $this->seedFromSubFactory(User::class, "redactor", 5);
-        $this->seedFromSubFactory(User::class, "support", 5);
         $this->seedFromSubFactory(User::class, "registered", 50);
         User::random(["type", "=", "admin"])->update(["email" => "admin@mathrix.fr"]);
 

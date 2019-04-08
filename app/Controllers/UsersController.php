@@ -39,59 +39,26 @@ class UsersController extends BaseController
      * @param Request $request The Illuminate HTTP request.
      *
      * @return JsonResponse
-     * @throws ValidationException
      */
     public function post(Request $request): JsonResponse
     {
-        /** @var User $user */
-        $request->merge([
-            "points" => 0,
-            "settings" => [
-                "sound" => true,
-            ],
-        ]);
-
         // Build and save the user
         $user = new User();
 
         User::unguarded(function () use ($user, $request) {
-            if (!$request->user() instanceof User || !$user->tokenCan("admin")) {
-                $request->merge([
-                    "type" => "registered"
-                ]);
-            }
+            $request->merge([
+                "points" => 0,
+                "settings" => [
+                    "sound" => true,
+                ],
+                "type" => "registered"
+            ]);
 
             $user->fill($request->all())
                 ->save();
         });
 
-        return new JsonResponse($user->refresh());
-    }
-
-
-    /**
-     * GET /users/{userId}
-     * Get a user by its id.
-     *
-     * @param Request $request The Illuminate HTTP request.
-     * @param int $id The user id.
-     *
-     * @return JsonResponse
-     * @throws Http401UnauthorizedException
-     */
-    public function get(Request $request, int $id): JsonResponse
-    {
-        /** @var User $target */
-        $target = User::with(["grade", "purchases", "purchases.product"])
-            ->findOrFail($id)
-            ->append(["premium", "braintree", "stripe"]);
-        /** @var User $user */
-        $user = $request->user();
-
-        // Check permission
-        $user->canOrFail("get", $target);
-
-        return new JsonResponse($target);
+        return new JsonResponse($user->fresh());
     }
 
 
@@ -122,48 +89,27 @@ class UsersController extends BaseController
         // Check for current_password, skip for admins if they are editing another user
         $this->validate($request, [
             "current_password" => Rule::requiredIf(function () use ($request, $user, $target) {
-                return ($user->id === $target->id || !$user->tokenCan("admin")) && $request->has("password");
+                $passwordProvided = $request->has("password");
+                $targetHimself = $user->id === $target->id;
+                $isAdmin = $user->tokenCan("admin");
+
+                return $passwordProvided && ($targetHimself || !$isAdmin);
             })
         ]);
 
+        // Engage password modification
         if ($request->has("current_password") && $request->has("password")) {
             $current = $request->json("current_password");
 
             if (!Hash::check($current, $target->password)) {
-                throw new Http401UnauthorizedException([], "current_password is incorrect.");
+                throw new Http401UnauthorizedException([], "current_password is incorrect");
             }
         }
 
         $target->fill($request->except("current_password"))
             ->save();
-        $target = $target->refresh()
-            ->append(["premium", "braintree", "stripe"]);
 
-        return new JsonResponse($target);
-    }
-
-
-    /**
-     * POST /users/exists
-     * Check if a profile exists by username and email.
-     *
-     * @param Request $request The Illuminate HTTP request.
-     *
-     * @return JsonResponse
-     */
-    public function exists(Request $request)
-    {
-        $wheres = $request->only(["username", "email"]);
-        $exists = false;
-
-        foreach ($wheres as $key => $value) {
-            if (User::query()->where($key, $value)->exists()) {
-                $exists = true;
-                break;
-            }
-        }
-
-        return new JsonResponse(["exists" => $exists]);
+        return new JsonResponse($target->fresh());
     }
 
 
@@ -212,10 +158,10 @@ class UsersController extends BaseController
 
             $userHasAlreadyGatheredPointsWithThisModule = Log::query()
                 ->where([
-                    ["event", "user_gathered_points"],
-                    ["user_id", $user->id],
-                    ["loggable_type", $loggableType],
-                    ["loggable_id", $loggable->id],
+                    ["event", "=", "user_gathered_points"],
+                    ["user_id", "=", $user->id],
+                    ["loggable_type", "=", $loggableType],
+                    ["loggable_id", "=", $loggable->id],
                 ])
                 ->whereBetween("created_at", [
                     Carbon::now()->setTime(0, 0, 0), // Today midnight

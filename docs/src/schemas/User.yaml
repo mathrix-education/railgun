@@ -1,15 +1,20 @@
 description: User
 type: object
 additionalProperties: false
+required: [id, username, email, firstname, lastname, type, points, level, daily,
+           daily_achievements, settings, grade_id, created_at, updated_at,
+           daily_points]
 properties:
   id:
     description: The user id.
     type: integer
+    readOnly: true
     example: 24
   username:
     description: The user username.
     type: string
     example: john.doe
+    nullable: true
   email:
     description: The user email address.
     type: string
@@ -19,14 +24,29 @@ properties:
     description: The user first name.
     type: string
     example: John
+    nullable: true
   lastname:
     description: The user last name.
     type: string
     example: Doe
+    nullable: true
   password:
-    decription: The user password.
+    description: >
+      The user password. **Note that password is not required and must not be
+      provided if the user do not want to change his password**.
     type: string
     format: password
+    writeOnly: true
+    example: mysuperpassword
+  current_password:
+    description: >
+      The user current password. **Required if and only if a user want to change
+      his own password**. Administrators may not provide this field in their
+      requests if they want to change another user's password.
+    type: string
+    format: password
+    writeOnly: true
+    example: mysupercurrentpassword
   type:
     description: The user type.
     type: string
@@ -35,11 +55,6 @@ properties:
     - redactor
     - moderator
     - admin
-    - support
-  token:
-    description: The user hidden token, which is used for password reset.
-    type: string
-    format: uuid
   points:
     description: The user total point count.
     type: integer
@@ -47,6 +62,7 @@ properties:
   level:
     description: The user level based on its points amount.
     type: integer
+    readOnly: true
     example: 17
   daily:
     description: The user daily points objective.
@@ -56,11 +72,6 @@ properties:
     description: The number of times when the user achieve his daily objective.
     type: integer
     example: 14
-  daily_points:
-    description: The number of points gathered by the users this day.
-    type: integer
-    example: 300
-    readOnly: true
   settings:
     description: The user settings.
     type: object
@@ -71,27 +82,35 @@ properties:
   grade_id:
     description: The class id which belongs to the user.
     type: integer
-    nullable: true
-  stripe_id:
-    description: The Stripe customer id which is linked to the user.
-    type: string
-    nullable: true
-  braintree_id:
-    description: The Braintree customer id whick is linked to the user.
-    type: string
+    example: 1
     nullable: true
   created_at:
     description: The date/time when the object was created.
     type: string
     format: date-time
+    readOnly: true
   updated_at:
     description: The date/time when the object was updated.
     type: string
     format: date-time
+    readOnly: true
+  premium:
+    description: If the user has subscribed to a premium pla,.
+    type: boolean
+    example: false
+  daily_points:
+    description: The number of points gathered by the users this day.
+    type: integer
+    example: 300
+    readOnly: true
   grade:
-    $ref: Grade.yaml
+    description: The user grade.
+    allOf:
+      - $ref: '../index.yaml#/components/schemas/Grade'
+    nullable: true
   purchases:
-    description: The user purchases
+    description: The user purchases.
     type: array
     items:
-      $ref: Purchase.yaml
+      $ref: '../index.yaml#/components/schemas/Purchase'
+    nullable: true

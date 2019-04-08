@@ -21,9 +21,7 @@ class UserPolicy extends BasePolicy
      */
     public function get(User $currentUser, User $user)
     {
-        return $currentUser->id === $user->id
-            || $currentUser->tokenCan("admin")
-            || ($currentUser->tokenCan("moderator") && $user->type === "registered");
+        return $currentUser->id === $user->id || $currentUser->tokenCan("admin");
     }
 
 
@@ -35,20 +33,18 @@ class UserPolicy extends BasePolicy
      */
     public function patch(User $currentUser, User $user)
     {
-        return $currentUser->tokenCan("admin") || $currentUser->id === $user->id;
+        return  $currentUser->id === $user->id || $currentUser->tokenCan("admin");
     }
 
 
     /**
      * @param User $currentUser
-     * @param User $user
      *
      * @return bool
-     * @codeCoverageIgnore // TODO: For now #GDPR
      */
-    public function delete(User $currentUser, User $user)
+    public function delete(User $currentUser)
     {
-        return $currentUser->tokenCan("admin") || $currentUser->id === $user->id;
+        return $currentUser->tokenCan("admin");
     }
 
 
@@ -59,7 +55,7 @@ class UserPolicy extends BasePolicy
      */
     public function search(User $currentUser)
     {
-        return $currentUser->tokenCan("moderator");
+        return $currentUser->tokenCan("admin");
     }
 
 

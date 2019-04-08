@@ -96,7 +96,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     ];
 
     /** @var array The hidden attributes from the model"s JSON */
-    protected $hidden = ["password", "token", "premium_bypass"];
+    protected $hidden = ["password", "token", "premium_bypass", "stripe_id", "braintree_id", "stripe", "braintree"];
 
     /** @var array The attributes that should be cast to native types */
     protected $casts = ["settings" => "array"];
@@ -118,7 +118,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     protected $with = ["grade", "purchases"];
 
     /** @var array The virtual attributes */
-    protected $appends = ["daily_points"];
+    protected $appends = ["premium", "daily_points"];
 
 
     /**
@@ -191,9 +191,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
                 break;
             case "registered":
                 $scopes = "registered";
-                break;
-            case "support":
-                $scopes = "registered support";
                 break;
             default:
                 $scopes = "";

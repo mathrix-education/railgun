@@ -34,7 +34,6 @@ class AuthServiceProvider extends ServiceProvider
             "moderator" => "Moderator",
             "redactor" => "Redactor",
             "registered" => "Registered",
-            "support" => "Support",
         ]);
     }
 }

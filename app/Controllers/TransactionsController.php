@@ -39,7 +39,7 @@ class TransactionsController extends BaseController
     {
         $user = $request->user();
 
-        if (!$user->tokenCan("support")) {
+        if (!$user->tokenCan("admin")) {
             throw new Http401UnauthorizedException();
         }
 
@@ -66,7 +66,7 @@ class TransactionsController extends BaseController
     {
         $user = $request->user();
 
-        if (!$user->tokenCan("support")) {
+        if (!$user->tokenCan("admin")) {
             throw new Http401UnauthorizedException();
         }
 
@@ -116,7 +116,7 @@ class TransactionsController extends BaseController
     {
         $user = $request->user();
 
-        if (!$user->tokenCan("support")) {
+        if (!$user->tokenCan("admin")) {
             throw new Http401UnauthorizedException();
         }
 
@@ -162,7 +162,7 @@ class TransactionsController extends BaseController
         /** @var User $user */
         $user = $request->user();
 
-        if (!$user->tokenCan("support")) {
+        if (!$user->tokenCan("admin")) {
             throw new Http401UnauthorizedException();
         }
 
@@ -189,7 +189,7 @@ class TransactionsController extends BaseController
         /** @var User $user */
         $user = $request->user();
 
-        if (!$user->tokenCan("support")) {
+        if (!$user->tokenCan("admin")) {
             throw new Http401UnauthorizedException();
         }
 

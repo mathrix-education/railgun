@@ -26,7 +26,7 @@ class AuthResetTest extends APITestCase
         });
 
         $this->json("post", "/auth/reset/{$user->token}", [
-            "password" => "123456"
+            "password" => env("DB_PASSWORD")
         ]);
 
         $this->assertResponseOk();

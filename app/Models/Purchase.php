@@ -35,6 +35,7 @@ class Purchase extends BaseModel
         "user_id" => "exists:users,id",
         "product_id" => "exists:products,id",
     ];
+    protected $with = ["product"];
 
     /*
     |--------------------------------------------------------------------------
