@@ -18,6 +18,9 @@ abstract class MailNotification extends BaseNotification
      */
     public function via(): array
     {
+        if (env("APP_ENV") === "dev") {
+            return [];
+        }
+
         return ["mail"];
     }
-}

@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Module;
 use App\Models\User;
 use App\Services\Braintree\Exceptions\BraintreeErrorHandler;
 use App\Services\Braintree\Exceptions\BraintreeGatewayException;
-use Braintree\PaymentMethod;
 use Braintree\Subscription;
 use Mathrix\Lumen\Bases\BaseCommand;
 
@@ -22,6 +22,12 @@ class TestCommand extends BaseCommand
 
 
     public function handle()
+    {
+        $modules = Module::query()->where("content", "=", "$$");
+    }
+
+
+    public function handle2()
     {
         $user = User::random();
         $user->createBraintreeCustomer("fake-valid-visa-nonce");
