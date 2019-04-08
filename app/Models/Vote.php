@@ -26,8 +26,6 @@ use Mathrix\Lumen\Bases\BaseModel;
  */
 class Vote extends BaseModel
 {
-    public const VOTABLE_TYPES = ["comment"];
-
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
     /** @var array The attributes that are mass assignable */

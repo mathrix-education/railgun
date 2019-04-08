@@ -49,8 +49,7 @@ properties:
   user_vote:
     description: The user vote value, can be +/-1. `null` if the user has not voted for this comment.
     type: integer
-    enum: [1, -1]
-    nullable: true
+    enum: [1, 0, -1]
     readOnly: true
   user:
     description: The user who posted the comment.

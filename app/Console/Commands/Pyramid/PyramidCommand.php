@@ -21,8 +21,8 @@ class PyramidCommand extends BaseCommand
         $this->block("Pyramid Migrator by Mathieu Bour");
 
         $startTime = time();
-        /*$this->call("pyramid:fix");
-        $this->call("pyramid:pre-migrate");*/
+        $this->call("pyramid:fix");
+        $this->call("pyramid:pre-migrate");
         $this->call("migrate");
         $this->call("pyramid:migrate");
         $this->call("pyramid:orphans");

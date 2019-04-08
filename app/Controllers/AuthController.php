@@ -82,7 +82,7 @@ class AuthController extends BaseController
         $status = $response->getStatusCode();
         $headers = $response->headers->all();
 
-        if ($response->getStatusCode() !== 200) {
+        if ($response->getStatusCode() === 200) {
             $data["user_id"] = $user->id;
         }
 

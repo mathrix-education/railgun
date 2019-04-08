@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Traits\Votable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -44,7 +43,7 @@ use Mathrix\Lumen\Bases\BaseModel;
  */
 class Comment extends BaseModel
 {
-    use Votable, SoftDeletes;
+    use SoftDeletes;
 
     /** @var array The default relations included */
     public $with = ["user:id,type,username,firstname,level,grade_id"];
@@ -99,6 +98,17 @@ class Comment extends BaseModel
 
 
     /**
+     * Get the votes.
+     *
+     * @codeCoverageIgnore
+     */
+    public function votes(): HasMany
+    {
+        return $this->hasMany(Vote::class);
+    }
+
+
+    /**
      * BelongsTo Module.
      *
      * @return BelongsTo
@@ -125,6 +135,17 @@ class Comment extends BaseModel
     | Attributes
     |--------------------------------------------------------------------------
     */
+    /**
+     * Score attribute.
+     *
+     * @return int
+     */
+    public function getScoreAttribute()
+    {
+        return (int)$this->votes()->sum("value");
+    }
+
+
     /**
      * Get the user vote value (0|1|-1).
      *
