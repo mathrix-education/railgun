@@ -53,6 +53,7 @@ class Product extends BaseModel
         "price",
         "visible",
         "order",
+        "parent_id",
         "module_id"
     ];
     protected $rules = [
