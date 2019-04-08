@@ -15,6 +15,7 @@ use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Mathrix\Lumen\Exceptions\Http\HttpException as MathrixHTTPException;
+use Mathrix\Lumen\Exceptions\Http\HttpException;
 use ReflectionClass;
 use Symfony\Component\HttpKernel\Exception\HttpException as SymphonyHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -43,6 +44,7 @@ class Handler extends ExceptionHandler
         ModelNotFoundException::class,
         ValidationException::class,
         OAuthServerException::class,
+        HttpException::class
     ];
 
 
