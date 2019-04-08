@@ -1,5 +1,6 @@
 type: object
 additionalProperties: false
+required: [premium, type, visible, seo_index]
 properties:
   id:
     description: The module id.

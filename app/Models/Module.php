@@ -40,7 +40,7 @@ use Mathrix\Lumen\Bases\BaseModel;
  */
 class Module extends BaseModel
 {
-    public const TYPES = ["id", "course", "test", "mcq", "mcq-table", "match", "fill", "flashcard"];
+    public const TYPES = ["course", "test", "mcq", "flashcard"];
     /** @var array The attributes that are mass assignable */
     protected $fillable = [
         "premium",
@@ -72,23 +72,19 @@ class Module extends BaseModel
     ];
     /** @var array The validation rules */
     protected $rules = [
-        "visible" => "boolean",
+        "premium" => "required|boolean",
+        "visible" => "required|boolean",
+        "seo_index" => "required|seo_index",
     ];
     /** @var array The accessors to append to the model's array form */
     protected $appends = ["mark"];
 
 
-    /**
-     * Module constructor.
-     *
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
+    public function getValidationRules()
     {
-        parent::__construct($attributes);
-
         // Dynamic rules
         $this->rules["type"] = "required|in:" . implode(",", self::TYPES);
+        return $this->rules;
     }
 
 
