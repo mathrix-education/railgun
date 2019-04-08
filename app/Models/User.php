@@ -107,7 +107,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "firstname" => "nullable|max:60",
         "lastname" => "nullable|max:60",
         "password" => "required|min:3",
-        "type" => "required|in:registered,redactor,moderator,admin,support",
+        "type" => "required|in:registered,redactor,moderator,admin",
         "token" => "nullable|size:36",
         "points" => "required|integer",
         "daily" => "nullable|in:10,20,40",
@@ -181,7 +181,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     {
         switch ($this->type) {
             case "admin":
-                $scopes = "admin moderator redactor registered support";
+                $scopes = "admin moderator redactor registered";
                 break;
             case "moderator":
                 $scopes = "moderator redactor registered";
