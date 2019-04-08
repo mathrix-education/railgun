@@ -62,6 +62,18 @@ properties:
     type: string
     format: date-time
     readOnly: true
+  link:
+    type: object
+    properties:
+      children:
+        description: >
+          The sub-products to link as children to this product. The order is
+          determined by the order of ids.
+        type: array
+        items:
+          type: integer
+        example: [13, 11, 152]
+    writeOnly: true
   owned:
     description: If the current user as already purchased this product.
     type: boolean
