@@ -23,7 +23,6 @@ class MarksRegistrar extends BaseRegistrar
 
         $this->group(["middleware" => "scope:registered"], function () use ($controller) {
             $this->get("marks/activities/to-revise", "$controller@activitiesToRevise");
-            $this->get("marks/activities/view", "$controller@activitiesView");
         });
     }
 }

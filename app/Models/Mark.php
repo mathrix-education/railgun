@@ -29,7 +29,7 @@ use Mathrix\Lumen\Bases\BaseModel;
  */
 class Mark extends BaseModel
 {
-    public const STATUSES = ["view", "to_revise", "completed"];
+    public const STATUSES = ["to_revise", "completed"];
 
     protected $fillable = [
         "status",

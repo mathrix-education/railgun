@@ -29,7 +29,7 @@ class PyramidCommand extends BaseCommand
         $this->call("pyramid:seo");
         $this->call("pyramid:foreign-keys");
         $this->call("pyramid:marks");
-        //$this->call("pyramid:check");
+        $this->call("pyramid:check");
         $this->call("pyramid:post-migrate");
         $this->call("migrate");
 

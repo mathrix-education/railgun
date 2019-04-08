@@ -39,8 +39,6 @@ class Kernel extends ConsoleKernel
         TestCommand::class,
 
         NewPayPalCheck::class,
-        SitemapAll::class,
-        SitemapContent::class,
         CompileMails::class,
 
         // Pyramid commands

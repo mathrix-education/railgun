@@ -27,7 +27,6 @@ class ActivitiesController extends BaseController
      * @param int $id The activity id.
      *
      * @return JsonResponse
-     * @throws ValidationException
      */
     public function mark(Request $request, int $id): JsonResponse
     {

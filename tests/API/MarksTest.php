@@ -40,29 +40,4 @@ class MarksTest extends APITestCase
         $this->assertResponseOk();
         $this->assertOpenAPIResponse();
     }
-
-
-    /**
-     * GET /marks/activities/view
-     */
-    public function testView(): void
-    {
-        // We try to find a user which has view marks
-        /** @var User $user */
-        $user = User::query()
-            ->inRandomOrder()
-            ->whereHas("marks", function (Builder $query) {
-                $query->where([
-                    ["markable_type", "=", "activity"],
-                    ["status", "=", "view"]
-                ]);
-            })
-            ->firstOrFail();
-        Passport::actingAs($user, ["registered"]);
-
-        $this->json("get", "/marks/activities/view");
-
-        $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
-    }
 }
