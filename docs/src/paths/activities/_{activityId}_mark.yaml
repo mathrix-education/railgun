@@ -15,10 +15,12 @@ patch:
     content:
       application/json:
         schema:
-          status:
-            description: The mark status.
-            type: string
-            enum: [completed, view, to-revise]
+          type: object
+          properties:
+            status:
+              description: The mark status.
+              type: string
+              enum: [completed, view, to-revise]
   responses:
     200:
       description: The marked activity.
