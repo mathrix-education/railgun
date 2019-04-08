@@ -24,3 +24,4 @@ abstract class MailNotification extends BaseNotification
 
         return ["mail"];
     }
+}
