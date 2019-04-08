@@ -44,6 +44,24 @@ class ProductsController extends BaseController
 
 
     /**
+     * GET /products/{type}/{page}/{perPage}
+     * Get products of a given type.
+     *
+     * @param string $type all|training|section|lesson The product types.
+     * @param int $page The page (starts at 0).
+     * @param int $perPage The number of product per page.
+     *
+     * @return PaginationJsonResponse
+     */
+    public function paginateByType(string $type, int $page, int $perPage): PaginationJsonResponse
+    {
+        $query = Product::query()->where("type", "=", $type);
+
+        return new PaginationJsonResponse($query, $page, $perPage);
+    }
+
+
+    /**
      * GET /products/buyable/{type}/{page}/{perPage}
      * Get buyable products.
      *
@@ -53,7 +71,7 @@ class ProductsController extends BaseController
      *
      * @return PaginationJsonResponse
      */
-    public function buyable(int $page = 0, int $perPage = 100, $type = "all"): PaginationJsonResponse
+    public function buyable($type, int $page, int $perPage): PaginationJsonResponse
     {
         $query = Product::with("children")
             ->whereNotNull("price");

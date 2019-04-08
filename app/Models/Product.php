@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Auth;
 use Mathrix\Lumen\Bases\BaseModel;
 
@@ -83,24 +84,24 @@ class Product extends BaseModel
 
 
     /**
-     * BelongsToMany Products.
+     * BelongsTo parent Products.
      *
-     * @return BelongsToMany
+     * @return BelongsTo
      */
     public function parents()
     {
-        return $this->belongsToMany(self::class, "product_product", "child_id", "parent_id");
+        return $this->belongsTo(self::class, "parent_id");
     }
 
 
     /**
-     * BelongsToMany Products.
+     * HasMany child Products.
      *
-     * @return BelongsToMany
+     * @return HasMany
      */
     public function children()
     {
-        return $this->belongsToMany(self::class, "product_product", "parent_id", "child_id");
+        return $this->hasMany(self::class, "parent_id");
     }
 
 

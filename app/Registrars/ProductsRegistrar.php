@@ -31,7 +31,10 @@ class ProductsRegistrar extends BaseRegistrar
 
         $this->get("products/{productId:[1-9]\d*}/recursive", "$controller@recursive");
         $this->get("products/slug/{productSlug:[a-z0-9\-]+}", "$controller@getBySlug");
-        $this->get("products/buyable/{page:\d+}/{perPage:[1-9]\d+}[/{type:all|training|section|lesson}]", "$controller@buyable");
+
+        $type = "{type:all|training|section|lesson}";
+        $this->get("products/$type/{page:\d+}/{perPage:[1-9]\d+}", "$controller@paginateByType");
+        $this->get("products/buyable/$type/{page:\d+}/{perPage:[1-9]\d+}", "$controller@buyable");
 
         $this->post("products/buy", [
             "uses" => "$controller@buy",

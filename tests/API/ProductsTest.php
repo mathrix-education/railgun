@@ -45,12 +45,25 @@ class ProductsTest extends APITestCase
     }
 
 
+
     /**
-     * GET /products/slug/{productSlug}
+     * GET /products/{type}/{page}/{perPage}
+     */
+    public function testPaginateByType()
+    {
+        $this->json("get", "/products/all/0/100");
+
+        // Assertions
+        $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
+    }
+
+    /**
+     * GET /products/buyable/{type}/{page}/{perPage}
      */
     public function testBuyable()
     {
-        $this->json("get", "/products/buyable/0/100");
+        $this->json("get", "/products/buyable/all/0/100");
 
         // Assertions
         $this->assertResponseOk();

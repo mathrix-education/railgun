@@ -23,9 +23,10 @@ class PyramidForeignKeysCommand extends BaseCommand
         $this->line("Migrating classes table => grades table");
         $classes = DB::table("classes")->get();
         $now = Carbon::now()->format("Y-m-d H:i:s");
-        $classes = $classes->map(function($class) use ($now) {
+        $classes = $classes->map(function ($class) use ($now) {
             $class->created_at = $now;
             $class->updated_at = $now;
+
             return (array)$class;
         });
         DB::table("grades")->insert((array)$classes->toArray());
@@ -45,5 +46,18 @@ class PyramidForeignKeysCommand extends BaseCommand
         $this->line("Migrating votable_id => comment_id on votes table...");
         DB::statement("UPDATE votes SET comment_id = votable_id;");
         $this->success("Migrated votable_id on votes table");
+
+
+        $this->line("Migrating product_product.parent_id => products.parent_id...");
+        $links = DB::table("product_product")->get();
+        $this->output->progressStart($links->count());
+        foreach ($links as $link) {
+            DB::table("products")
+                ->where("id", "=", $link->child_id)
+                ->update(["parent_id" => $link->parent_id]);
+            $this->output->progressAdvance();
+        }
+        $this->output->progressFinish();
+        $this->success("Migrated products.parent_id");
     }
 }

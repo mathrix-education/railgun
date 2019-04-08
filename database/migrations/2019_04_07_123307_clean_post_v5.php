@@ -17,6 +17,7 @@ class CleanPostV5 extends Migration
         Schema::dropIfExists("activity_notion");
         Schema::dropIfExists("activity_module");
         Schema::dropIfExists("class_discipline");
+        Schema::dropIfExists("products_products");
         Schema::dropIfExists("courses");
         Schema::dropIfExists("quotes");
 

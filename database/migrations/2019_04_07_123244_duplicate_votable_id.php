@@ -19,6 +19,13 @@ class DuplicateVotableId extends Migration
             // Foreign
             $table->foreign("comment_id")->references("id")->on("comments");
         });
+
+        Schema::table("products", function(Blueprint $table) {
+            $table->unsignedInteger("parent_id")->after("order")->nullable();
+
+            // Foreign
+            $table->foreign("parent_id")->references("id")->on("products");
+        });
     }
 
     /**
@@ -28,7 +35,13 @@ class DuplicateVotableId extends Migration
      */
     public function down()
     {
+        Schema::table("products", function (Blueprint $table) {
+            $table->dropForeign("products_parent_id_foreign");
+            $table->dropColumn("product_id");
+        });
+
         Schema::table("votes", function (Blueprint $table) {
+            $table->dropForeign("votes_comment_id_foreign");
             $table->dropColumn("comment_id");
         });
     }
