@@ -59,7 +59,7 @@ class Product extends BaseModel
         "slug" => "required|max:255",
         "image" => "nullable|max:255",
         "type" => "nullable",
-        "description" => "required|min:10",
+        "description" => "nullable|max:255",
         "price" => "nullable|numeric",
         "visible" => "required|boolean",
         "module_id" => "nullable|exists:modules,id",
