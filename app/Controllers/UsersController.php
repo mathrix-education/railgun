@@ -106,7 +106,9 @@ class UsersController extends BaseController
             }
         }
 
-        $target->fill($request->except("current_password"))
+        // Allow some additional fields
+        $columns = array_merge($target->getFillable(), ["type", "premium_bypass"]);
+        $target->fill($request->only($columns))
             ->save();
 
         return new JsonResponse($target->fresh());
