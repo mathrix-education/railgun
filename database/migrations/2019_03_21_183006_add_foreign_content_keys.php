@@ -28,6 +28,7 @@ class AddForeignContentKeys extends Migration
             $table->unsignedInteger("order")->after("visible")->nullable();
             $table->string("seo_description")->after("visible")->nullable();
             $table->string("seo_keywords")->after("visible")->nullable();
+            $table->string("seo_slug")->after("visible")->nullable();
             $table->string("seo_title")->after("visible")->nullable();
             $table->boolean("seo_index")->after("visible")->default(0);
             $table->timestamps();
@@ -49,6 +50,7 @@ class AddForeignContentKeys extends Migration
             $table->dropColumn("order");
             $table->dropColumn("seo_index");
             $table->dropColumn("seo_title");
+            $table->dropColumn("seo_slug");
             $table->dropColumn("seo_keywords");
             $table->dropColumn("seo_description");
         });

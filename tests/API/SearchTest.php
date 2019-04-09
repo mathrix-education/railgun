@@ -18,8 +18,9 @@ class SearchTest extends APITestCase
      */
     public function testContent()
     {
-        $this->json("get", "/search/lorem");
+        $this->json("get", "/search/13/pythagore/0/100");
 
         $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
     }
 }

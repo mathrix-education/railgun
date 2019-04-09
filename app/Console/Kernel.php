@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Console\Commands\Braintree\NewPayPalCheck;
 use App\Console\Commands\CompileMails;
+use App\Console\Commands\DBDestroyCommand;
 use App\Console\Commands\Pyramid\PyramidCheckCommand;
 use App\Console\Commands\Pyramid\PyramidCommand;
 use App\Console\Commands\Pyramid\PyramidFixCommand;
@@ -37,6 +38,7 @@ class Kernel extends ConsoleKernel
     /** @var array The Artisan commands. */
     protected $commands = [
         TestCommand::class,
+        DBDestroyCommand::class,
 
         NewPayPalCheck::class,
         CompileMails::class,
