@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -19,7 +20,6 @@ use Mathrix\Lumen\Bases\BaseModel;
  *
  * @property int $id
  * @property bool $premium
- * @property bool $visible
  * @property string $type
  * @property string $content
  * @property array $questions
@@ -27,6 +27,15 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @property array $solutions
  * @property array $corrections
  * @property string $options
+ * @property bool $visible
+ * @property bool $seo_index
+ * @property string $seo_title
+ * @property string $seo_keywords
+ * @property string $seo_description
+ * @property int $order
+ * @property int $activity_id
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  * ---
  * @property string|null $status
  * @property string|null $mark

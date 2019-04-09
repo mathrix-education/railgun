@@ -135,7 +135,5 @@ properties:
           $ref: '../index.yaml#/components/schemas/Chapter'
         activity:
           $ref: '../index.yaml#/components/schemas/Activity'
-        module_id:
-          description: The module id.
-          type: integer
-          example: 1856
+        module:
+          $ref: '../index.yaml#/components/schemas/Module'

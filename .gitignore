@@ -13,8 +13,8 @@
 /node_modules/
 /vendor/
 /artifacts
+/docs/json-schema
 /docs/out
 /docs/spec.html
-/docs/spec.json
 /resources/views/mails
 /storage/code-coverage/

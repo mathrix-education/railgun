@@ -371,7 +371,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
                 "discipline" => $discipline,
                 "chapter" => $chapter,
                 "activity" => $activity,
-                "module_id" => $moduleId,
+                "module" => $module,
             ];
         }
 
