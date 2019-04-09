@@ -364,7 +364,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
             /** @var Discipline $discipline */
             $discipline = Discipline::query()->findOrFail($chapter->discipline_id);
             /** @var Grade $grade */
-            $grade = Chapter::query()->findOrFail($chapter->grade_id);
+            $grade = Grade::query()->findOrFail($chapter->grade_id);
 
             $body[] = [
                 "grade_slug" => $grade->slug,
