@@ -34,6 +34,7 @@
   "devDependencies": {
     "json-schema-ref-parser": "^6.1.0",
     "mjml": "^3.3.5",
+    "openapi-schema-to-json-schema": "^2.2.0",
     "pluralize": "^7.0.0",
     "redoc-cli": "^0.8.3",
     "rimraf": "^2.6.3",

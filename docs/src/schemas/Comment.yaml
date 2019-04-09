@@ -4,5 +4,5 @@ properties:
   children:
     type: array
     items:
-      $ref: CommentChild.yaml
+      $ref: '../index.yaml#/components/schemas/CommentChild'
     readOnly: true

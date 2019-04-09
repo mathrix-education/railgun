@@ -2,6 +2,7 @@
 
 namespace Tests\API;
 
+use App\Models\Module;
 use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
@@ -46,11 +47,11 @@ class UsersTest extends APITestCase
     {
         $user = User::random(["type", "=", "registered"]);
         Passport::actingAs($user, ["registered"]);
-
         $this->json("get", "/users/{$user->id}");
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse();
+        $this->debug();
     }
 
 
@@ -129,5 +130,27 @@ class UsersTest extends APITestCase
 
         $hashed = $user->refresh()->password;
         $this->assertTrue(Hash::check(env("DB_PASSWORD"), $hashed), "Hash does not match the old password.");
+    }
+
+
+    /**
+     * PATCH /users/{userId}
+     * Test while patching settings for last session.
+     */
+    public function testPatchLastSession()
+    {
+        $this->mockScope(["registered"]);
+        /** @var User $user */
+        $user = $this->passportUser;
+
+        $module = Module::random(["visible", "=", true]);
+        $settings = array_merge($user->settings, ["last_session" => [
+            "{$module->activity->notion->chapter->discipline->id}" => $module->id
+        ]]);
+
+        $this->json("patch", "/users/{$user->id}", ["settings" => $settings]);
+
+        $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
     }
 }

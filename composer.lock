@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "005d4e9c50795e6a996f62ddabe8cf2f",
+    "content-hash": "81873420f589851d944b8cd44a38ce9c",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2957,7 +2957,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:mathrix-education/lumen-zero.git",
-                "reference": "1f4b30eea3d81e85f178fce4e3bf78e9f34a3ae8"
+                "reference": "8bcf58321b21d56b4a0f78584931ef25e6986788"
             },
             "require": {
                 "dusterio/lumen-passport": "^0.2.9",
@@ -2998,7 +2998,7 @@
                 }
             ],
             "description": "The main library for Mathrix Lumen REST APIs.",
-            "time": "2019-04-05T22:35:26+00:00"
+            "time": "2019-04-09T09:51:07+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -6545,20 +6545,20 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.8.1",
+            "version": "1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8"
+                "reference": "78af75148f9fdd34ea727c8b529a9b4a8f7b740c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8",
-                "reference": "3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/78af75148f9fdd34ea727c8b529a9b4a8f7b740c",
+                "reference": "78af75148f9fdd34ea727c8b529a9b4a8f7b740c",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1"
+                "php": "^7.2"
             },
             "replace": {
                 "myclabs/deep-copy": "self.version"
@@ -6566,6 +6566,8 @@
             "require-dev": {
                 "doctrine/collections": "^1.0",
                 "doctrine/common": "^2.6",
+                "phpstan/phpstan": "^0.9.2",
+                "phpstan/phpstan-phpunit": "^0.9.4",
                 "phpunit/phpunit": "^7.1"
             },
             "type": "library",
@@ -6589,7 +6591,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2018-06-11T23:09:50+00:00"
+            "time": "2018-10-30T00:14:44+00:00"
         },
         {
             "name": "nikic/php-parser",

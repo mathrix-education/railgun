@@ -118,7 +118,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     protected $with = ["grade", "purchases"];
 
     /** @var array The virtual attributes */
-    protected $appends = ["premium", "daily_points"];
+    protected $appends = ["premium", "daily_points", "last_session"];
 
 
     /**
@@ -340,5 +340,41 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         return $this->premium_bypass
             || $this->hasBraintreeSubscription(self::BRAINTREE_PLANS)
             || $this->hasStripeSubscription(self::STRIPE_PLANS);
+    }
+
+
+    public function getLastSessionAttribute()
+    {
+        if (empty($this->settings["last_session"])) {
+            return [];
+        }
+
+        $body = [];
+        $lastSession = $this->settings["last_session"];
+
+        foreach ($lastSession as $disciplineId => $moduleId) {
+            /** @var Module $module */
+            $module = Module::query()->findOrFail($moduleId);
+            /** @var Activity $activity */
+            $activity = Activity::query()->findOrFail($module->activity_id);
+            /** @var Notion $notion */
+            $notion = Notion::query()->findOrFail($activity->notion_id);
+            /** @var Chapter $chapter */
+            $chapter = Chapter::query()->findOrFail($notion->chapter_id);
+            /** @var Discipline $discipline */
+            $discipline = Discipline::query()->findOrFail($chapter->discipline_id);
+            /** @var Grade $grade */
+            $grade = Chapter::query()->findOrFail($chapter->grade_id);
+
+            $body[] = [
+                "grade_slug" => $grade->slug,
+                "discipline" => $discipline,
+                "chapter" => $chapter,
+                "activity" => $activity,
+                "module_id" => $moduleId,
+            ];
+        }
+
+        return $body;
     }
 }

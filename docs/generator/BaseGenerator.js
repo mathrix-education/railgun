@@ -8,10 +8,12 @@ module.exports = class BaseGenerator {
         this.yaml = require("yaml");
         this.pluralize = require("pluralize");
         this.singularize = this.pluralize["singular"];
+        this.toJsonSchema = require('openapi-schema-to-json-schema');
 
         this.base = this.path.dirname(__dirname);
         this.src = `${this.base}/src`;
         this.out = `${this.base}/out`;
+        this.jsonSchema = `${this.base}/json-schema`;
         this.config = this.readYaml("config.yaml");
     }
 
@@ -42,6 +44,40 @@ module.exports = class BaseGenerator {
         }
 
         this.fs.writeFileSync(`${this.out}/${file}`, this.yaml.stringify(data));
+
+        // We will also silently write the jsonSchema equivalent
+        const destinationJson = `${this.jsonSchema}/${file.replace(".yaml", ".json")}`;
+        const destinationDirectoryJson = this.path.dirname(destinationJson);
+
+        if (!this.fs.existsSync(destinationDirectoryJson)) {
+            this.fs.mkdirSync(destinationDirectoryJson, {recursive: true});
+        }
+
+        data = this.walkRecursive(data, (key, value) => {
+            if (key === "$ref") {
+                return value.replace(".yaml", ".json");
+            } else {
+                return value;
+            }
+        });
+
+        data = this.toJsonSchema(data);
+
+        this.fs.writeFileSync(destinationJson, JSON.stringify(data, null, 2));
+    }
+
+    walkRecursive(obj, callback) {
+        if (obj === null) {
+            return obj;
+        } else if (Array.isArray(obj)) {
+            obj = obj.map(val => this.walkRecursive(val, callback));
+        } else if (typeof obj === "object") {
+            Object.keys(obj).forEach(key => {
+                obj[key] = this.walkRecursive(callback(key, obj[key]), callback);
+            });
+        }
+
+        return obj;
     }
 
     /**

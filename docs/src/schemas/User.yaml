@@ -79,6 +79,11 @@ properties:
       sound:
         description: If the sounds should be activated on the site for this user.
         type: boolean
+      last_session:
+        description: >
+          The user last session (key: discipline id, value: module id).
+        type: object
+        example: {1: 1475, 2: 754, 5: 156}
   grade_id:
     description: The class id which belongs to the user.
     type: integer
@@ -114,3 +119,23 @@ properties:
     items:
       $ref: '../index.yaml#/components/schemas/Purchase'
     nullable: true
+  last_session:
+    description: The user last session.
+    type: array
+    items:
+      type: object
+      properties:
+        grade_slug:
+          description: The grade slug.
+          type: string
+          example: terminale-s
+        discipline:
+          $ref: '../index.yaml#/components/schemas/Discipline'
+        chapter:
+          $ref: '../index.yaml#/components/schemas/Chapter'
+        activity:
+          $ref: '../index.yaml#/components/schemas/Activity'
+        module_id:
+          description: The module id.
+          type: integer
+          example: 1856
