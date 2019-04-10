@@ -30,6 +30,7 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @property bool $visible
  * @property bool $seo_index
  * @property string $seo_title
+ * @property string $seo_slug
  * @property string $seo_keywords
  * @property string $seo_description
  * @property int $order
@@ -63,6 +64,7 @@ class Module extends BaseModel
         "visible",
         "seo_index",
         "seo_title",
+        "seo_slug",
         "seo_keywords",
         "seo_description",
         "order",

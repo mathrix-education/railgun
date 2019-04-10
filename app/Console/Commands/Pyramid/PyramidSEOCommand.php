@@ -3,6 +3,7 @@
 namespace App\Console\Commands\Pyramid;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Mathrix\Lumen\Bases\BaseCommand;
 
 /**
@@ -35,37 +36,88 @@ class PyramidSEOCommand extends BaseCommand
 
         $this->success("Paths migrated.");
 
-        // Activities SEO
-        $ignored = 0;
-        $this->block("Migrate seo_title, seo_description, seo_keywords from activities");
-        $modulesSEO = DB::table("modules")
-            ->select("id", "activity_id")
-            ->where("type", "=", "course")
-            ->get();
 
-        $this->output->progressStart($modulesSEO->count());
-        foreach ($modulesSEO as $moduleSEO) {
-            $results = DB::table("activities")
-                ->select(["seo_title", "seo_description", "seo_keywords"])
-                ->where("id", "=", $moduleSEO->activity_id)
-                ->get();
+        $this->makeSeoTitles();
+    }
 
-            if ($results->count() > 0) {
-                $seoFields = ((array)$results->first());
+
+    public function makeSeoTitles()
+    {
+        $activityIds = DB::table("modules")
+            ->select("activity_id")
+            ->whereNotNull("activity_id")
+            ->orderBy("activity_id")
+            ->groupBy("activity_id")
+            ->get()
+            ->pluck("activity_id");
+        $arrow = "← Mathrix";
+        $typeMappings = [
+            "mcq" => "Exercice",
+            "test" => "Interrogation",
+            "flashcard" => "Flashcard"
+        ];
+
+        $this->block("Generating seo_title and seo_slug");
+
+        $this->output->progressStart($activityIds->count());
+
+        foreach ($activityIds as $activityId) {
+            $activity = DB::table("activities")
+                ->select(["name", "seo_title"])
+                ->where("id", "=", $activityId)
+                ->get()
+                ->first();
+            $seoTitle = trim(str_replace($arrow, "", $activity->seo_title));
+
+            $modules = DB::table("modules")
+                ->select(["id", "type"])
+                ->where("activity_id", "=", $activityId)
+                ->orderBy("order")
+                ->get()
+                ->values();
+
+            if ($modules->isEmpty()) {
+                continue;
+            } else if ($modules->count() === 1 && $modules->first()->type === "course") {
+                $module = $modules->first();
+
                 DB::table("modules")
-                    ->where("id", "=", $moduleSEO->id)
-                    ->update($seoFields);
+                    ->where("id", "=", $module->id)
+                    ->update([
+                        "order" => 0,
+                        "seo_title" => $seoTitle,
+                        "seo_slug" => Str::slug($seoTitle)
+                    ]);
             } else {
-                $ignored++;
+                $indices = [
+                    "mcq" => 1,
+                    "test" => 1,
+                    "flashcard" => 1
+                ];
+
+                foreach ($modules as $order => $module) {
+                    $mapped = isset($typeMappings[$module->type]) ? $typeMappings[$module->type] : null;
+                    $index = isset($indices[$module->type]) ? $indices[$module->type] : null;
+
+                    if ($mapped !== null && $index !== null) {
+                        $moduleSeoTitle = "$seoTitle - $mapped $index";
+                        $indices[$module->type]++;
+                    } else {
+                        $moduleSeoTitle = $seoTitle;
+                    }
+
+                    DB::table("modules")
+                        ->where("id", "=", $module->id)
+                        ->update([
+                            "order" => $order,
+                            "seo_title" => $moduleSeoTitle,
+                            "seo_slug" => Str::slug($moduleSeoTitle)
+                        ]);
+                }
             }
+
             $this->output->progressAdvance();
         }
         $this->output->progressFinish();
-
-        $successLine = "SEO fields migrated.";
-        if ($ignored > 0) {
-            $successLine .= " $ignored modules ignored";
-        }
-        $this->success($successLine);
     }
 }
