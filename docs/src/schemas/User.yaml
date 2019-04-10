@@ -110,9 +110,9 @@ properties:
     readOnly: true
   grade:
     description: The user grade.
-    oneOf:
+    allOf:
       - $ref: '../index.yaml#/components/schemas/Grade'
-      - nullable: true
+    nullable: true
   purchases:
     description: The user purchases.
     type: array

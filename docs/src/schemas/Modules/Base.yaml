@@ -55,6 +55,11 @@ properties:
     type: string
     example: My super module SEO title
     nullable: true
+  seo_slug:
+    description: The module SEO title slug.
+    type: string
+    example: my-super-module-seo-title
+    nullable: true
   seo_keywords:
     description: The module SEO keywords, comma-separated.
     type: string

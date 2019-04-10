@@ -4,6 +4,8 @@ namespace App\Observers;
 
 use App\Events\CommentAnswerEvent;
 use App\Models\Comment;
+use App\Models\Vote;
+use Exception;
 
 /**
  * Class CommentObserver.
@@ -29,13 +31,19 @@ class CommentObserver extends BaseObserver
      * @param Comment $comment
      *
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public function deleting($comment)
     {
         $children = Comment::withTrashed()
             ->where("parent_id", "=", $comment->id)
             ->get();
+
+        if ($comment->isForceDeleting()) {
+            $comment->votes()->each(function (Vote $vote) {
+                $vote->delete();
+            });
+        }
 
         /** @var Comment $child */
         foreach ($children as $child) {
