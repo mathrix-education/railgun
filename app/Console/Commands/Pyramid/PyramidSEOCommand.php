@@ -68,6 +68,9 @@ class PyramidSEOCommand extends BaseCommand
                 ->get()
                 ->first();
             $seoTitle = trim(str_replace($arrow, "", $activity->seo_title));
+            if (empty($seoTitle)) {
+                $seoTitle = trim(str_replace($arrow, "", $activity->name));
+            }
 
             $modules = DB::table("modules")
                 ->select(["id", "type"])

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Exceptions\FileNotFoundException;
 use App\Policies\FilePolicy;
+use Carbon\Carbon;
 use finfo;
 use Illuminate\Contracts\Filesystem\FileNotFoundException as IlluminateFileNotFoundException;
 use Illuminate\Contracts\Filesystem\Filesystem;
@@ -12,6 +13,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use League\Flysystem\FileNotFoundException as FlysystemFileNotFoundException;
 use Mathrix\Lumen\Bases\BaseController;
@@ -302,5 +304,37 @@ class FilesController extends BaseController
             "success" => true,
             "message" => "File $file was successfully deleted."
         ]);
+    }
+
+
+    /**
+     * POST /system/sitemap
+     * Regenerate sitemap.
+     *
+     * @return JsonResponse
+     * @throws FileNotFoundException
+     */
+    public function sitemap()
+    {
+        /** @var Filesystem|FilesystemAdapter $bucket */
+        $bucket = Storage::disk("cdn");
+        $sitemap = "sitemap.xml";
+        $exists = $bucket->exists($sitemap);
+        $shouldRegenerate = !$exists;
+
+        if ($exists) {
+            $metadata = $this->metadata($sitemap);
+            $createdAt = Carbon::createFromTimestamp($metadata["timestamp"]);
+
+            if ($createdAt->addMinutes(5)->isPast()) {
+                $shouldRegenerate = true;
+            }
+        }
+
+        if ($shouldRegenerate) {
+            Artisan::call("sitemap");
+        }
+
+        return $this->proxy("sitemap.xml");
     }
 }

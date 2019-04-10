@@ -11,13 +11,14 @@ ssh root@web01.mathrix.fr rm ${WEB01}/storage/backups/database/*
 ssh root@web01.mathrix.fr php ${WEB01}/artisan backup:mysql-dump --no-compress
 ssh root@web01.mathrix.fr mv ${WEB01}/storage/backups/database/* ${WEB01}/storage/backups/database/dump.sql
 ssh root@web01.mathrix.fr gzip ${WEB01}/storage/backups/database/dump.sql
-scp root@web01.mathrix.fr:/var/www/master/api/current/storage/backups/database/dump.sql.gz ${PROJECT}/storage/dump.sql.gz
-gzip -d -f ${PROJECT}/storage/dump.sql.gz
+scp root@web01.mathrix.fr:/var/www/master/api/current/storage/backups/database/dump.sql.gz \
+    ${PROJECT}/storage/framework/cache/dump.sql.gz
+gzip -d -f ${PROJECT}/storage/framework/cache/dump.sql.gz
 
 php ${PROJECT}/artisan db:destroy
 
 /usr/bin/mysql -u'root' -p'salome3004' --host=127.0.0.1 --port=3306 \
-    --database="mathrix_fr_dev" < ${PROJECT}/storage/dump.sql
+    --database="mathrix_fr_dev" < ${PROJECT}/storage/framework/cache/dump.sql
 
 php ${PROJECT}/artisan pyramid
 

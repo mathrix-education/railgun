@@ -18,10 +18,7 @@ use App\Console\Commands\Pyramid\PyramidPostMigrate;
 use App\Console\Commands\Pyramid\PyramidPreMigrateCommand;
 use App\Console\Commands\Pyramid\PyramidResetCommand;
 use App\Console\Commands\Pyramid\PyramidSEOCommand;
-use App\Console\Commands\Sitemap\SitemapAll;
-use App\Console\Commands\Sitemap\SitemapContent;
 use App\Console\Commands\TestCommand;
-use App\Console\Commands\TestRouter;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
@@ -39,7 +36,6 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         TestCommand::class,
         DBDestroyCommand::class,
-
         NewPayPalCheck::class,
         CompileMails::class,
 
