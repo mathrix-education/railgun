@@ -32,6 +32,7 @@ class PyramidSEOCommand extends BaseCommand
 
         DB::table("modules")
             ->whereIn("id", $moduleIds)
+            ->where("type", "=", "course")
             ->update(["seo_index" => 1]);
 
         $this->success("Paths migrated.");
