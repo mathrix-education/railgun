@@ -9,48 +9,28 @@ use Carbon\Carbon;
 /**
  * Class CommentPolicy.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
- * @package   App\Policies
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  */
 class CommentPolicy extends BasePolicy
 {
-    /**
-     * @param User $currentUser
-     *
-     * @return bool
-     */
-    public function index(User $currentUser)
-    {
-        return $currentUser->isModerator();
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function add()
-    {
-        return true;
-    }
-
-
     /**
      * @param User $currentUser
      * @param Comment $comment
      *
      * @return bool
      */
-    public function edit(User $currentUser, Comment $comment)
+    public function patch(User $currentUser, Comment $comment)
     {
-        if ($currentUser->isModerator()) {
+        if ($currentUser->tokenCan("moderator")) {
             return true;
         }
 
-        if ($currentUser->id === $comment->user_id && $comment->updated_at > Carbon::now()
-                ->subDays(3)) {
+        if (
+            $currentUser->id === $comment->user_id
+            && $comment->updated_at > Carbon::now()->subDays(3)
+        ) {
             return true;
         }
 
@@ -59,42 +39,9 @@ class CommentPolicy extends BasePolicy
 
 
     /**
-     * @param User $currentUser
-     *
      * @return bool
      */
-    public function delete(User $currentUser)
-    {
-        return $currentUser->isModerator();
-    }
-
-
-    /**
-     * @param User $currentUser
-     *
-     * @return bool
-     */
-    public function search(User $currentUser)
-    {
-        return $currentUser->isModerator();
-    }
-
-
-    /**
-     * @param User $currentUser
-     *
-     * @return bool
-     */
-    public function latest(User $currentUser)
-    {
-        return $currentUser->isModerator();
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function byModule()
+    public function latest(): bool
     {
         return true;
     }

@@ -29,6 +29,6 @@ class CountriesRegistrar extends BaseRegistrar
             "delete" => "admin"
         ]);
 
-        $this->get("countries/slug/{countrySlug:[a-z\_]+}", "$controller@getBySlug");
+        $this->get("countries/slug/{countrySlug:[a-z\-]+}", "$controller@getBySlug");
     }
 }

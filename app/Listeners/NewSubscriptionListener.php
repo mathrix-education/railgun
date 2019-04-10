@@ -6,15 +6,14 @@ use App\Events\NewSubscriptionEvent;
 use App\Notifications\NewSubscriptionNotification;
 use App\Notifications\TransactionSuccessNotification;
 use Illuminate\Support\Facades\Notification;
+use Mathrix\Lumen\Bases\BaseListener;
 
 /**
  * Class NewSubscriptionListener.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.0
- * @copyright Mathrix Education SA
- * @package   App\Listeners
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.1.0
  */
 class NewSubscriptionListener extends BaseListener
 {

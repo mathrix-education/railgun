@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -17,9 +18,12 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @property int $id
  * @property string $name
  * @property string $slug
- * @property bool $premium
- * @property bool $visible
  * @property string $type
+ * @property bool $visible
+ * @property int $order
+ * @property int $chapter_id
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  * ---
  * @property Collection|Chapter $chapter
  * @property Collection|Activity[] $activities
@@ -30,12 +34,23 @@ class Notion extends BaseModel
     public const TYPES = ["normal", "premium", "reminder", "further"];
 
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "name", "slug", "type", "visible", "link"];
+    protected $fillable = [
+        "id",
+        "name",
+        "slug",
+        "type",
+        "visible",
+        "order",
+        "chapter_id"
+    ];
     /** @var array The validation rules */
     protected $rules = [
         "name" => "required|max:255",
         "slug" => "required|max:255",
         "chapter_id" => "required|exists:chapters,id",
+    ];
+    protected $casts = [
+        "visible" => "boolean"
     ];
 
 
@@ -54,6 +69,7 @@ class Notion extends BaseModel
     */
     /**
      * The notion parent chapter.
+     *
      * @return BelongsTo
      */
     public function chapter(): BelongsTo
@@ -64,6 +80,7 @@ class Notion extends BaseModel
 
     /**
      * The notion child activities.
+     *
      * @return HasMany
      */
     public function activities(): HasMany

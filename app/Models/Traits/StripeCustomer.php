@@ -116,8 +116,8 @@ trait StripeCustomer
             /** @var Subscription $subscription */
             foreach ($this->getStripeSubscriptions() as $subscription) {
                 if (
-                    \in_array($subscription->plan->id, $plans, true) &&
-                    \in_array($subscription->status, ["trialing", "active"], true)
+                    in_array($subscription->plan->id, $plans, true) &&
+                    in_array($subscription->status, ["trialing", "active"], true)
                 ) {
                     return true;
                 }
@@ -152,7 +152,7 @@ trait StripeCustomer
     public function requireStripeCustomer(bool $strict = false)
     {
         if (!$this->isStripeCustomer($strict)) {
-            throw new Http400BadRequestException([], "User with id `{$this->id}` is not a Stripe customer");
+            throw new Http400BadRequestException(null, "User with id `{$this->id}` is not a Stripe customer");
         }
     }
 }

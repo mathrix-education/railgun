@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Traits\Votable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -44,16 +43,10 @@ use Mathrix\Lumen\Bases\BaseModel;
  */
 class Comment extends BaseModel
 {
-    use Votable, SoftDeletes;
+    use SoftDeletes;
 
-    /** @var bool If timestamps (created_at and updated_at) should be used */
-    public $timestamps = true;
     /** @var array The default relations included */
-    public $with = [
-        "user:id,type,username,firstname,level,grade_id",
-        "children",
-        "children.user:id,type,username,firstname,level,grade_id",
-    ];
+    public $with = ["user:id,type,username,firstname,level,grade_id"];
     /** @var array The attributes that are mass assignable */
     protected $fillable = [
         "content",
@@ -61,7 +54,6 @@ class Comment extends BaseModel
         "parent_id",
         "user_id",
         "module_id",
-        "path_id",
         "created_at",
         "updated_at",
         "deleted_at"
@@ -106,6 +98,17 @@ class Comment extends BaseModel
 
 
     /**
+     * Get the votes.
+     *
+     * @codeCoverageIgnore
+     */
+    public function votes(): HasMany
+    {
+        return $this->hasMany(Vote::class);
+    }
+
+
+    /**
      * BelongsTo Module.
      *
      * @return BelongsTo
@@ -133,9 +136,20 @@ class Comment extends BaseModel
     |--------------------------------------------------------------------------
     */
     /**
-     * Get the user vote value (null|1|-1).
+     * Score attribute.
      *
-     * @return int|null
+     * @return int
+     */
+    public function getScoreAttribute()
+    {
+        return (int)$this->votes()->sum("value");
+    }
+
+
+    /**
+     * Get the user vote value (0|1|-1).
+     *
+     * @return int
      */
     public function getUserVoteAttribute()
     {
@@ -143,18 +157,18 @@ class Comment extends BaseModel
         $user = Auth::user();
 
         if ($user === null) {
-            return null;
+            return 0;
         }
 
-        /** @var Vote $potentialVote */
-        $potentialVote = Vote::query()
-            ->where([
-                ["user_id", $user->id],
-                ["votable_type", "comment"],
-                ["votable_id", $this->id],
-            ])
-            ->first();
+        $query = $this->votes()->where("user_id", "=", $user->id);
 
-        return $potentialVote instanceof Vote ? $potentialVote->value : null;
+        if (!$query->exists()) {
+            return 0;
+        } else {
+            /** @var Vote $vote */
+            $vote = $query->firstOrFail();
+
+            return $vote->value;
+        }
     }
 }

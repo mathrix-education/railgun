@@ -8,7 +8,6 @@ USER root
 WORKDIR /var/www/
 
 EXPOSE 80
-EXPOSE 9000
 
 RUN apk -U add \
     nginx \
@@ -25,6 +24,7 @@ RUN apk -U add \
     php7-pdo_mysql \
     php7-phar \
     php7-redis \
+    php7-tokenizer \
     php7-xdebug \
     php7-xml \
     php7-xmlwriter \
@@ -41,8 +41,7 @@ ADD . .
 RUN echo "${COMMIT_SHORT_SHA}" >> build.txt
 
 # Clean
-RUN rm -rf \
-    /var/cache/apk/*
+RUN rm -rf /var/cache/apk/*
 
 HEALTHCHECK CMD curl -f http://localhost
 

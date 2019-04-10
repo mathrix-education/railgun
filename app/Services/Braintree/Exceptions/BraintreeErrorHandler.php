@@ -16,8 +16,11 @@ use Braintree\Transaction;
 class BraintreeErrorHandler
 {
     /**
+     * Handle an unsuccessful Braintree request result.
+     *
      * @param Error $error
      *
+     * @throws BraintreeGatewayException
      * @throws BraintreeProcessorException
      */
     public static function report(Error $error)
@@ -39,24 +42,27 @@ class BraintreeErrorHandler
      */
     private static function wrapper(string $type, Error $error)
     {
-        /** @var Subscription|Transaction $transaction */
+        /** @var Subscription|Transaction $object */
         $object = $error->{$type};
 
         if ($object->status === "gateway_rejected") {
+            // Handle dateway rejection
             $exceptionPayload = [
                 "reason" => $object->gatewayRejectionReason
             ];
+
             throw new BraintreeGatewayException($exceptionPayload, $error->message);
+        } else {
+            // Handle processor rejection
+            $exceptionPayload = [
+                "processor" => [
+                    "code" => (int)$object->processorResponseCode,
+                    "text" => $object->processorResponseText,
+                    "type" => $object->processorResponseType
+                ]
+            ];
+
+            throw new BraintreeProcessorException($exceptionPayload, $object->processorResponseText);
         }
-
-        $exceptionPayload = [
-            "processor" => [
-                "code" => (int)$object->processorResponseCode,
-                "text" => $object->processorResponseText,
-                "type" => $object->processorResponseType
-            ]
-        ];
-
-        throw new BraintreeProcessorException($exceptionPayload, $object->processorResponseText);
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class AddTimestampsFieldsToContentTable extends Migration
 {
+    private const TABLES = ["countries", "grades", "chapters", "disciplines", "categories", "discounts"];
     /**
      * Run the migrations.
      *
@@ -13,9 +14,11 @@ class AddTimestampsFieldsToContentTable extends Migration
      */
     public function up()
     {
-        Schema::table("chapters", function (Blueprint $table) {
-            $table->timestamps();
-        });
+        foreach (self::TABLES as $table) {
+            Schema::table($table, function (Blueprint $table) {
+                $table->timestamps();
+            });
+        }
     }
 
 
@@ -26,8 +29,10 @@ class AddTimestampsFieldsToContentTable extends Migration
      */
     public function down()
     {
-        Schema::table("chapters", function (Blueprint $table) {
-            $table->dropColumn(["created_at", "updated_at"]);
-        });
+        foreach (array_reverse(self::TABLES) as $table) {
+            Schema::table($table, function (Blueprint $table) {
+                $table->dropColumn(["created_at", "updated_at"]);
+            });
+        }
     }
 }

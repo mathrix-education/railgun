@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -23,9 +25,12 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @property array $link
  * @property int|null $parent_id
  * @property int $country_id
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  * ---
  * @property Grade|null $parent
  * @property Country $country
+ * @property Collection|Grade[] $children
  * @property Collection|Chapter[] $chapters
  * @property Collection|Discipline[] $disciplines
  * @property Collection|User[] $users
@@ -33,7 +38,7 @@ use Mathrix\Lumen\Bases\BaseModel;
 class Grade extends BaseModel
 {
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "name", "slug", "order", "visible", "parent_id", "country_id", "link"];
+    protected $fillable = ["id", "name", "slug", "order", "visible", "parent_id", "country_id"];
     /** @var array Validation rules */
     protected $rules = [
         "name" => "required|max:255",
@@ -42,7 +47,9 @@ class Grade extends BaseModel
         "visible" => "boolean",
         "country_id" => "required|exists:countries,id",
     ];
-
+    protected $casts = [
+        "visible" => "boolean"
+    ];
 
     /**
      * Get the cursus (ie. the grade itself and all its previous).
@@ -71,13 +78,20 @@ class Grade extends BaseModel
     |--------------------------------------------------------------------------
     */
     /**
-     * BelongsTo Class_.
-     *
      * @return BelongsTo
      */
     public function parent(): BelongsTo
     {
         return $this->belongsTo(self::class, "parent_id");
+    }
+
+
+    /**
+     * @return HasMany
+     */
+    public function children(): HasMany
+    {
+        return $this->hasMany(self::class, "parent_id");
     }
 
 
@@ -110,9 +124,8 @@ class Grade extends BaseModel
      */
     public function disciplines(): BelongsToMany
     {
-        return $this->belongsToMany(Discipline::class)
-            ->withPivot("visible")
-            ->orderBy("discipline_grade.order");
+        return $this->belongsToMany(Discipline::class, "chapters")
+            ->groupBy(["grade_id", "discipline_id"]);
     }
 
 

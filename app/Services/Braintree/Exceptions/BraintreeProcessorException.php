@@ -3,7 +3,6 @@
 namespace App\Services\Braintree\Exceptions;
 
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
-use Throwable;
 
 /**
  * Class ProcessorException.
@@ -14,4 +13,5 @@ use Throwable;
  */
 class BraintreeProcessorException extends Http400BadRequestException
 {
+    protected const ERROR = "processor_declined";
 }

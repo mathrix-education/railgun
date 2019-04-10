@@ -3,7 +3,6 @@
 namespace App\Exceptions;
 
 use App\Models\User;
-use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -16,6 +15,7 @@ use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Mathrix\Lumen\Exceptions\Http\HttpException as MathrixHTTPException;
+use Mathrix\Lumen\Exceptions\Http\HttpException;
 use ReflectionClass;
 use Symfony\Component\HttpKernel\Exception\HttpException as SymphonyHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -24,11 +24,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * Class Handler.
  * Handle exceptions and display them in json as response. Also handle Sentry's behavior.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
- * @package   App\Exceptions
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  */
 class Handler extends ExceptionHandler
 {
@@ -46,19 +44,19 @@ class Handler extends ExceptionHandler
         ModelNotFoundException::class,
         ValidationException::class,
         OAuthServerException::class,
+        HttpException::class
     ];
 
 
     /**
      * Sentry integration.
      *
-     * @param Exception $e
-     *
-     * @throws Exception
+     * @param \Exception $e
+     * @throws \Exception
      *
      * @codeCoverageIgnore
      */
-    public function report(Exception $e)
+    public function report(\Exception $e)
     {
         $sentryDSN = env("SENTRY_DSN");
 
@@ -90,7 +88,7 @@ class Handler extends ExceptionHandler
      *
      * @return JsonResponse|Response
      */
-    public function render($request, Exception $e)
+    public function render($request, \Exception $e)
     {
         if ($e instanceof MathrixHTTPException) {
             return $e->toJsonResponse();

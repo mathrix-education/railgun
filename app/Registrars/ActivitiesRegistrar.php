@@ -29,14 +29,12 @@ class ActivitiesRegistrar extends BaseRegistrar
             "delete" => "admin"
         ]);
 
-        $this->get("activities/by-{what:notion}/{id:[1-9]\d*}[/{page:[0-9]+}/{perPage:[1-9]\d*}]",
+        $this->get("activities/by-{what:notion}/{id:[1-9]\d*}/{page:\d+}/{perPage:[1-9]\d*}",
             "$controller@by");
 
         $this->group(["middleware" => "scope:registered"], function () use ($controller) {
-            $this->get("activities/view", "$controller@view");
-            $this->get("activities/to-revise", "$controller@to_revise");
-            $this->patch("activities/{id:[1-9]\d*}/mark", "$controller@mark");
-            $this->patch("activities/{id:[1-9]\d*}/unmark", "$controller@unmark");
+            $this->patch("activities/{activityId:[1-9]\d*}/mark", "$controller@mark");
+            $this->patch("activities/{activityId:[1-9]\d*}/unmark", "$controller@unmark");
         });
     }
 }

@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Validation\Rule;
 use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\Client;
 use Laravel\Passport\HasApiTokens;
@@ -76,7 +77,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
     private const STRIPE_PLANS = ["v3_monthly", "v3_annually", "v3_biannually"];
-    private const BRAINTREE_PLANS = ["v4_monthly", "v4_annually", "v4_biannually"];
+    public const BRAINTREE_PLANS = ["v4_monthly", "v4_annually", "v4_biannually"];
 
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
@@ -95,19 +96,18 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     ];
 
     /** @var array The hidden attributes from the model"s JSON */
-    protected $hidden = ["password", "token", "premium_bypass"];
+    protected $hidden = ["password", "token", "premium_bypass", "stripe_id", "braintree_id", "stripe", "braintree"];
 
     /** @var array The attributes that should be cast to native types */
     protected $casts = ["settings" => "array"];
 
     /** @var array The validation rules on create */
     protected $rules = [
-        "email" => "required|email|unique:users,email|max:60",
         "username" => "nullable|max:60",
         "firstname" => "nullable|max:60",
         "lastname" => "nullable|max:60",
         "password" => "required|min:3",
-        "type" => "required|in:registered,redactor,moderator,admin,support",
+        "type" => "required|in:registered,redactor,moderator,admin",
         "token" => "nullable|size:36",
         "points" => "required|integer",
         "daily" => "nullable|in:10,20,40",
@@ -118,7 +118,20 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     protected $with = ["grade", "purchases"];
 
     /** @var array The virtual attributes */
-    protected $appends = ["daily_points"];
+    protected $appends = ["premium", "daily_points", "last_session"];
+
+
+    /**
+     * Custom validation rules
+     *
+     * @return array
+     */
+    public function getValidationRules()
+    {
+        return array_merge($this->rules, [
+            "email" => ["required", "email", "max:60", Rule::unique("users", "email")->ignore($this->id)],
+        ]);
+    }
 
 
     /*
@@ -161,13 +174,14 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     /**
      * Get users scopes, space-separated.
+     *
      * @return string
      */
     public function getPassportScopes()
     {
         switch ($this->type) {
             case "admin":
-                $scopes = "admin moderator redactor registered support";
+                $scopes = "admin moderator redactor registered";
                 break;
             case "moderator":
                 $scopes = "moderator redactor registered";
@@ -177,9 +191,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
                 break;
             case "registered":
                 $scopes = "registered";
-                break;
-            case "support":
-                $scopes = "registered support";
                 break;
             default:
                 $scopes = "";
@@ -236,17 +247,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function marks(): HasMany
     {
         return $this->hasMany(Mark::class);
-    }
-
-
-    /**
-     * HasMany Activity.
-     *
-     * @return HasMany
-     */
-    public function meta(): HasMany
-    {
-        return $this->hasMany(Activity::class);
     }
 
 
@@ -331,14 +331,50 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     /**
      * premium attribute.
      *
+     * @return bool
      * @throws Http400BadRequestException
      *
-     * @return bool
      */
     public function getPremiumAttribute()
     {
         return $this->premium_bypass
             || $this->hasBraintreeSubscription(self::BRAINTREE_PLANS)
             || $this->hasStripeSubscription(self::STRIPE_PLANS);
+    }
+
+
+    public function getLastSessionAttribute()
+    {
+        if (empty($this->settings["last_session"])) {
+            return [];
+        }
+
+        $body = [];
+        $lastSession = $this->settings["last_session"];
+
+        foreach ($lastSession as $disciplineId => $moduleId) {
+            /** @var Module $module */
+            $module = Module::query()->findOrFail($moduleId);
+            /** @var Activity $activity */
+            $activity = Activity::query()->findOrFail($module->activity_id);
+            /** @var Notion $notion */
+            $notion = Notion::query()->findOrFail($activity->notion_id);
+            /** @var Chapter $chapter */
+            $chapter = Chapter::query()->findOrFail($notion->chapter_id);
+            /** @var Discipline $discipline */
+            $discipline = Discipline::query()->findOrFail($chapter->discipline_id);
+            /** @var Grade $grade */
+            $grade = Grade::query()->findOrFail($chapter->grade_id);
+
+            $body[] = [
+                "grade_slug" => $grade->slug,
+                "discipline" => $discipline,
+                "chapter" => $chapter,
+                "activity" => $activity,
+                "module" => $module,
+            ];
+        }
+
+        return $body;
     }
 }

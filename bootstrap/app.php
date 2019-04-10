@@ -1,8 +1,36 @@
 <?php
+
+use Mathrix\Lumen\Middleware\LoggedMiddleware;
+use Mathrix\Lumen\Middleware\ScopeMiddleware;
+
 require_once __DIR__ . "/../vendor/autoload.php";
 
 // Generate environment variables
-require_once __DIR__ . "/environment.php";
+// Load DotEnv
+try {
+    (new Dotenv\Dotenv(__DIR__ . "/../"))->load();
+} catch (Dotenv\Exception\InvalidPathException $e) {
+}
+
+// APP_VERSION
+$version = "unknown";
+$composerData = json_decode(file_get_contents(__DIR__ . "/../composer.json"));
+putenv("APP_VERSION={$composerData->version}");
+
+
+// APP_BUILD
+$build = "unknown";
+
+if (file_exists(__DIR__ . "/../build.txt")) {
+    $build = trim(file_get_contents(__DIR__ . "/../build.txt"));
+} elseif (`which git`) {
+    $base = realpath(dirname(__DIR__));
+    $gitSha1 = exec("cd $base && git log --pretty=format:'%H' -n 1");
+    $build = substr($gitSha1, 0, 7);
+}
+
+putenv("APP_BUILD=$build");
+
 
 /*
 |--------------------------------------------------------------------------
@@ -97,8 +125,8 @@ $app->middleware([
 ]);
 
 $app->routeMiddleware([
-    "login" => \Mathrix\Lumen\Middleware\LoggedMiddleware::class,
-    "scope" => \Mathrix\Lumen\Middleware\ScopeMiddleware::class
+    "login" => LoggedMiddleware::class,
+    "scope" => ScopeMiddleware::class
 ]);
 
 /*
@@ -112,11 +140,6 @@ $app->routeMiddleware([
 |
 */
 $app->register(App\Providers\AppServiceProvider::class);
-
-if (env("SENTRY_DSN") !== null) {
-    $app->register(Sentry\SentryLaravel\SentryLumenServiceProvider::class);
-}
-
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes

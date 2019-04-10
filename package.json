@@ -1,18 +1,44 @@
 {
-  "name": "mathrix-api",
-  "version": "4.3.0",
-  "description": "[![pipeline status](https://gitlab.com/mathrix/mathrix-api/badges/master/pipeline.svg)](https://gitlab.com/mathrix/mathrix-api/commits/master)",
+  "name": "@mathrix/education-api",
+  "version": "5.0.0",
+  "description": "The Mathrix Education Lumen API.",
+  "keywords": [
+    "education",
+    "mathrix",
+    "php",
+    "lumen"
+  ],
+  "homepage": "https://mathrix.fr/api",
+  "bugs": {
+    "url": "https://github.com/mathrix-education/education-api/issues",
+    "email": "mathieu@mathrix.fr"
+  },
+  "license": "UNLICENSED",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@gitlab.com/mathrix/mathrix-api.git"
+    "url": "https://git@github.com:mathrix-education/education-api.git"
   },
-  "author": "Mathrix Back-End Team",
-  "license": "SEE LICENSE IN LICENSE.md",
-  "bugs": {
-    "url": "https://gitlab.com/mathrix/mathrix-api/issues"
+  "contributors": [
+    {
+      "name": "Mathieu Bour",
+      "email": "mathieu@mathrix.fr",
+      "url": "https://www.linkedin.com/in/mathieu-bour"
+    }
+  ],
+  "scripts": {
+    "docs:generate": "node docs/generate.js",
+    "docs:serve": "yarn run docs:generate && yarn run redoc-cli serve docs/out/index.yaml",
+    "docs:compile": "yarn run docs:generate && yarn run redoc-cli bundle docs/out/index.yaml -o docs/spec.html",
+    "mails:compile": "node resources/views/mjml/compile.js"
   },
-  "homepage": "https://gitlab.com/mathrix/mathrix-api#README",
-  "dependencies": {
-    "mjml": "^3.3.5"
-  }
+  "devDependencies": {
+    "json-schema-ref-parser": "^6.1.0",
+    "mjml": "^3.3.5",
+    "openapi-schema-to-json-schema": "^2.2.0",
+    "pluralize": "^7.0.0",
+    "redoc-cli": "^0.8.3",
+    "rimraf": "^2.6.3",
+    "yaml": "^1.4.0"
+  },
+  "private": true
 }

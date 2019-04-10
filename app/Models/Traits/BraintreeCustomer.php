@@ -159,7 +159,7 @@ trait BraintreeCustomer
     public function requireBraintreeCustomer(bool $strict = false)
     {
         if (!$this->isBraintreeCustomer($strict)) {
-            throw new Http400BadRequestException([], "User with id `{$this->id}` is not a Braintree customer");
+            throw new Http400BadRequestException(null, "User with id `{$this->id}` is not a Braintree customer");
         }
     }
 

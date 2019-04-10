@@ -18,6 +18,7 @@ use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
 use Mathrix\Lumen\Exceptions\Http\Http429TooManyRequestsException;
+use Mathrix\Lumen\Exceptions\ValidationException;
 
 /**
  * Class UsersController.
@@ -30,6 +31,7 @@ class UsersController extends BaseController
 {
     use SearchTrait;
 
+
     /**
      * POST /users
      * Create a new user.
@@ -37,54 +39,26 @@ class UsersController extends BaseController
      * @param Request $request The Illuminate HTTP request.
      *
      * @return JsonResponse
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
      */
     public function post(Request $request): JsonResponse
     {
-        /** @var User $user */
-        $request->merge([
-            "points" => 0,
-            "settings" => [
-                "sound" => true,
-            ],
-        ]);
-
         // Build and save the user
         $user = new User();
 
-        if ($request->user() instanceof User && $user->isAdmin()) {
-            $user->unguardAttributes(["type"]);
-        }
+        User::unguarded(function () use ($user, $request) {
+            $request->merge([
+                "points" => 0,
+                "settings" => [
+                    "sound" => true,
+                ],
+                "type" => "registered"
+            ]);
 
-        $user->fill($request->all())
-            ->save();
+            $user->fill($request->all())
+                ->save();
+        });
 
-        return new JsonResponse($user);
-    }
-
-
-    /**
-     * GET /users/{userId}
-     * Get a user by its id.
-     *
-     * @param Request $request The Illuminate HTTP request.
-     * @param int $id The user id.
-     *
-     * @return JsonResponse
-     */
-    public function get(Request $request, int $id): JsonResponse
-    {
-        /** @var User $target */
-        $target = User::with(["grade", "purchases", "purchases.product"])
-            ->findOrFail($id)
-            ->append(["premium", "braintree", "stripe"]);
-        /** @var User $user */
-        $user = $request->user();
-
-        // Check permission
-        $user->canOrFail("get", $target);
-
-        return new JsonResponse($target);
+        return new JsonResponse($user->fresh());
     }
 
 
@@ -97,8 +71,7 @@ class UsersController extends BaseController
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
-     * @throws \Illuminate\Validation\ValidationException
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
+     * @throws ValidationException
      */
     public function patch(Request $request, int $id): JsonResponse
     {
@@ -108,58 +81,37 @@ class UsersController extends BaseController
         $user = $request->user();
 
         // Check permission
-        $user->canOrFail("edit", $target);
+        $user->canOrFail("patch", $target);
 
         // Unlock fields for admin
-        if ($user->tokenCan("admin")) {
-            $target->unguardAttributes(["type"]);
-        }
+        User::unguard($user->tokenCan("admin"));
 
         // Check for current_password, skip for admins if they are editing another user
         $this->validate($request, [
             "current_password" => Rule::requiredIf(function () use ($request, $user, $target) {
-                return ($user->id === $target->id || !$user->isAdmin()) && $request->has("password");
+                $passwordProvided = $request->has("password");
+                $targetHimself = $user->id === $target->id;
+                $isAdmin = $user->tokenCan("admin");
+
+                return $passwordProvided && ($targetHimself || !$isAdmin);
             })
         ]);
 
+        // Engage password modification
         if ($request->has("current_password") && $request->has("password")) {
             $current = $request->json("current_password");
 
             if (!Hash::check($current, $target->password)) {
-                throw new Http401UnauthorizedException([], "current_password is incorrect.");
+                throw new Http401UnauthorizedException([], "current_password is incorrect");
             }
         }
 
-        $target->fill($request->except("current_password"))
+        // Allow some additional fields
+        $columns = array_merge($target->getFillable(), ["type", "premium_bypass"]);
+        $target->fill($request->only($columns))
             ->save();
-        $target = $target->refresh()
-            ->append(["premium", "braintree", "stripe"]);
 
-        return new JsonResponse($target);
-    }
-
-
-    /**
-     * POST /users/exists
-     * Check if a profile exists by username and email.
-     *
-     * @param Request $request The Illuminate HTTP request.
-     *
-     * @return JsonResponse
-     */
-    public function exists(Request $request)
-    {
-        $wheres = $request->only(["username", "email"]);
-        $exists = false;
-
-        foreach ($wheres as $key => $value) {
-            if (User::query()->where($key, $value)->exists()) {
-                $exists = true;
-                break;
-            }
-        }
-
-        return new JsonResponse(["exists" => $exists]);
+        return new JsonResponse($target->fresh());
     }
 
 
@@ -171,9 +123,9 @@ class UsersController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400BadRequestException
+     * @throws Http401UnauthorizedException
      * @throws Http429TooManyRequestsException
-     * @throws \Illuminate\Validation\ValidationException
-     * @throws \Exception
+     * @throws ValidationException
      */
     public function points(Request $request)
     {
@@ -208,10 +160,10 @@ class UsersController extends BaseController
 
             $userHasAlreadyGatheredPointsWithThisModule = Log::query()
                 ->where([
-                    ["event", "user_gathered_points"],
-                    ["user_id", $user->id],
-                    ["loggable_type", $loggableType],
-                    ["loggable_id", $loggable->id],
+                    ["event", "=", "user_gathered_points"],
+                    ["user_id", "=", $user->id],
+                    ["loggable_type", "=", $loggableType],
+                    ["loggable_id", "=", $loggable->id],
                 ])
                 ->whereBetween("created_at", [
                     Carbon::now()->setTime(0, 0, 0), // Today midnight
@@ -260,8 +212,7 @@ class UsersController extends BaseController
      *
      * @return JsonResponse
      * @throws Http400BadRequestException
-     * @throws \Illuminate\Validation\ValidationException
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
+     * @throws ValidationException
      */
     public function updatePaymentMethod(Request $request)
     {

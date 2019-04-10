@@ -23,7 +23,7 @@ use Mathrix\Lumen\Bases\BaseModel;
 class Category extends BaseModel
 {
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "name", "slug"];
+    protected $fillable = ["id", "name", "slug", "image"];
     /** @var array Validation rules */
     protected $rules = [
         "name" => "required|max:255",

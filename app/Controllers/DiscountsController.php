@@ -6,6 +6,7 @@ use App\Models\Discount;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mathrix\Lumen\Bases\BaseController;
+use Mathrix\Lumen\Exceptions\ValidationException;
 
 /**
  * Class DiscountsController.
@@ -17,21 +18,15 @@ use Mathrix\Lumen\Bases\BaseController;
 class DiscountsController extends BaseController
 {
     /**
-     * POST /discounts/check
+     * GET /discounts/code/{discountCode}
      * Check if a discount is valid.
      *
-     * @param Request $request The Illuminate HTTP request.
+     * @param string $code The discount code.
      *
      * @return JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
      */
-    public function check(Request $request)
+    public function getByCode(string $code)
     {
-        $this->validate($request, [
-            "code" => "required"
-        ]);
-        $code = $request->input("code");
-
         $discount = Discount::query()
             ->where("code", "=", $code)
             ->firstOrFail();

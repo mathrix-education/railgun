@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Mathrix\Lumen\Bases\BaseModel;
@@ -19,7 +20,6 @@ use Mathrix\Lumen\Bases\BaseModel;
  *
  * @property int $id
  * @property bool $premium
- * @property bool $visible
  * @property string $type
  * @property string $content
  * @property array $questions
@@ -27,22 +27,47 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @property array $solutions
  * @property array $corrections
  * @property string $options
+ * @property bool $visible
+ * @property bool $seo_index
+ * @property string $seo_title
+ * @property string $seo_keywords
+ * @property string $seo_description
+ * @property int $order
+ * @property int $activity_id
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  * ---
  * @property string|null $status
  * @property string|null $mark
  * ---
  * @property Activity $activity
  * @property Collection|Comment[] $comments
- * @property Collection|Mark[] $marks
  * @property Collection|Log[] $logs
+ * @property Collection|Mark[] $marks
  * @property Collection|Product[] $products
+ * @property Collection|Report[] $reports
  */
 class Module extends BaseModel
 {
-    public const TYPES = ["id", "course", "test", "mcq", "mcq-table", "match", "fill", "flashcard"];
+    public const TYPES = ["course", "test", "mcq", "flashcard"];
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["premium", "type", "content", "questions", "choices", "solutions", "corrections", "options",
-        "visible"];
+    protected $fillable = [
+        "premium",
+        "type",
+        "content",
+        "questions",
+        "choices",
+        "solutions",
+        "corrections",
+        "options",
+        "visible",
+        "seo_index",
+        "seo_title",
+        "seo_keywords",
+        "seo_description",
+        "order",
+        "activity_id"
+    ];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
         "premium" => "boolean",
@@ -52,26 +77,23 @@ class Module extends BaseModel
         "solutions" => "array",
         "corrections" => "array",
         "options" => "array",
+        "seo_index" => "boolean"
     ];
     /** @var array The validation rules */
     protected $rules = [
-        "visible" => "boolean",
+        "premium" => "required|boolean",
+        "visible" => "required|boolean",
+        "seo_index" => "required|boolean",
     ];
     /** @var array The accessors to append to the model's array form */
     protected $appends = ["mark"];
 
 
-    /**
-     * Module constructor.
-     *
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
+    public function getValidationRules()
     {
-        parent::__construct($attributes);
-
         // Dynamic rules
         $this->rules["type"] = "required|in:" . implode(",", self::TYPES);
+        return $this->rules;
     }
 
 
@@ -86,7 +108,9 @@ class Module extends BaseModel
 
         /** @var User $user */
         $user = Auth::user();
-        $strip = !app()->runningInConsole() && $this->premium && ($user === null || !$user->premium && !$user->isModerator());
+        $strip = !app()->runningInConsole()
+            && $this->premium
+            && ($user === null || !$user->premium && !$user->tokenCan("moderator"));
         $keep = ["premium", "visible", "comments"];
 
         if ($strip) {
@@ -112,22 +136,25 @@ class Module extends BaseModel
 
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function marks()
-    {
-        return $this->morphMany(Mark::class, "markable");
-    }
-
-
-    /**
      * HasMany Comment.
      *
      * @return HasMany
      */
     public function comments(): HasMany
     {
-        return $this->hasMany(Comment::class)->orderBy("created_at");
+        return $this->hasMany(Comment::class)
+            ->orderBy("created_at");
+    }
+
+
+    /**
+     * MorphMany Mark.
+     *
+     * @return MorphMany
+     */
+    public function marks(): MorphMany
+    {
+        return $this->morphMany(Mark::class, "markable");
     }
 
 
@@ -140,6 +167,29 @@ class Module extends BaseModel
     {
         return $this->hasMany(Product::class);
     }
+
+
+    /**
+     * HasMany Post.
+     *
+     * @return HasMany
+     */
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
+
+
+    /**
+     * HasMany Report.
+     *
+     * @return HasMany
+     */
+    public function reports(): HasMany
+    {
+        return $this->hasMany(Report::class);
+    }
+
 
 
     /*

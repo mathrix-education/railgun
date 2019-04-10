@@ -1,7 +1,16 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Paratest API" type="PhpLocalRunConfigurationType" factoryName="PHP Console" singleton="true" path="$PROJECT_DIR$/vendor/bin/paratest" scriptParameters="-p16 --runner=WrapperRunner --configuration=phpunit.xml $PROJECT_DIR$/tests/API">
+  <configuration default="false" name="Paratest API" type="PhpLocalRunConfigurationType" factoryName="PHP Console" singleton="true" path="$PROJECT_DIR$/vendor/bin/paratest" scriptParameters="--runner=WrapperRunner --configuration=phpunit.xml --prepend artifacts/xdebug-filter.php $PROJECT_DIR$/tests/API">
     <CommandLine workingDirectory="$PROJECT_DIR$" />
-    <option name="workingDirectory" value="$PROJECT_DIR$" />
-    <method v="2" />
+    <method v="2">
+      <option name="NpmBeforeRunTask" enabled="true">
+        <package-json value="$PROJECT_DIR$/package.json" />
+        <command value="run" />
+        <scripts>
+          <script value="docs:generate" />
+        </scripts>
+        <node-interpreter value="project" />
+        <envs />
+      </option>
+    </method>
   </configuration>
 </component>

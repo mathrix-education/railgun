@@ -5,9 +5,7 @@ namespace Tests\API\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\Client;
-use Mathrix\Lumen\Exceptions\ValidationException;
-use PHPUnit\Framework\Constraint\IsType;
-use Tests\API\APITestCase;
+use Tests\APITestCase;
 
 /**
  * Class AuthTest.
@@ -38,7 +36,6 @@ class AuthLoginTest extends APITestCase
 
     /**
      * POST /auth/login
-     * @throws ValidationException
      */
     public function testLogin()
     {
@@ -58,14 +55,29 @@ class AuthLoginTest extends APITestCase
         ]);
 
         $this->assertResponseOk();
-        $this->assertJsonResponseMatches([
-            "token_type" => "Bearer",
-            "expires_in" => new IsType("int"),
-            "access_token" => new IsType("string"),
-            "refresh_token" => new IsType("string")
-        ]);
+        $this->assertOpenAPIResponse();
 
         // Revert password change
         DB::update("UPDATE users SET password = ? WHERE id = ?", [$oldHash, $user->id]);
+    }
+
+
+    /**
+     * POST /auth/login
+     */
+    public function testLoginFailed()
+    {
+        $client = $this->getValidPassportClient();
+        $user = User::random();
+
+        $this->json("post", "/auth/login", [
+            "grant_type" => "password",
+            "client_id" => $client->getAttribute("id"),
+            "client_secret" => $client->getAttribute("secret"),
+            "username" => $user->email,
+            "password" => "incorrect-password"
+        ]);
+
+        $this->assertOpenAPIResponse();
     }
 }

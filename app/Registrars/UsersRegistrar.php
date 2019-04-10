@@ -34,6 +34,6 @@ class UsersRegistrar extends BaseRegistrar
             $this->patch("users/{id:[1-9]\d*}/payment-method", "$controller@updatePaymentMethod");
         });
 
-        $this->post("users/search[/{page:[0-9]+}/{perPage:[1-9]\d*}]", "$controller@search");
+        $this->post("users/search[/{page:\d+}/{perPage:[1-9]\d*}]", "$controller@search");
     }
 }

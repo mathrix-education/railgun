@@ -29,7 +29,7 @@ class NotionsRegistrar extends BaseRegistrar
             "delete" => "admin"
         ]);
 
-        $this->get("notions/by-{what:chapter}/{id:[1-9]\d*}[/{page:[0-9]+}/{perPage:[1-9]\d*}]",
+        $this->get("notions/by-{what:chapter}/{id:[1-9]\d*}/{page:\d+}/{perPage:[1-9]\d*}",
             "$controller@by");
     }
 }

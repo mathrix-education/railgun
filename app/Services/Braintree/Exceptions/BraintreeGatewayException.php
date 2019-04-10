@@ -13,5 +13,5 @@ use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
  */
 class BraintreeGatewayException extends Http400BadRequestException
 {
-
+    protected const ERROR = "gateway_rejection";
 }

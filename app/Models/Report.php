@@ -28,28 +28,23 @@ class Report extends BaseModel
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "name", "type", "context", "content", "status", "module_id"];
+    protected $fillable = ["context", "type",  "content", "status", "module_id"];
     /** @var array The validation rules */
     protected $rules = [
-        "name" => "required|max:255",
         "context" => "max:255",
-        "type" => "required",
-        "content" => "required",
+        "type" => "required|max:255",
+        "content" => "required|max:255",
         "module_id" => "exists:modules,id",
-        "visible" => "boolean",
-        "slug" => "required|max:255",
     ];
 
     /** @var array Relation included by default */
     protected $with = ["module"];
 
 
-    public function __construct(array $attributes = [])
+    public function getValidationRules()
     {
-        // Dynamic rules
         $this->rules["status"] = "required|in:" . implode(",", self::STATUSES);
-
-        parent::__construct($attributes);
+        return parent::getValidationRules();
     }
 
     /*

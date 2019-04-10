@@ -15,7 +15,6 @@ use Mathrix\Lumen\Bases\BaseController;
  */
 class GradesController extends BaseController
 {
-
     /**
      * GET /grades/slug/{gradeSlug}
      *

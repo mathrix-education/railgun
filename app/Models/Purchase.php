@@ -29,12 +29,13 @@ class Purchase extends BaseModel
     /** @var bool Indicates if the model should be timestamped */
     public $timestamps = true;
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "user_id", "product_id", "created_at", "updated_at"];
+    protected $fillable = ["id", "user_id", "product_id"];
     /** @var array The validation rules */
     protected $rules = [
-        "price" => "required|numeric",
         "user_id" => "exists:users,id",
+        "product_id" => "exists:products,id",
     ];
+    protected $with = ["product"];
 
     /*
     |--------------------------------------------------------------------------

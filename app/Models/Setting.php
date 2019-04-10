@@ -2,16 +2,15 @@
 
 namespace App\Models;
 
+use Exception;
 use Mathrix\Lumen\Bases\BaseModel;
 
 /**
  * Class Setting.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.1
- * @copyright Mathrix Education SA
- * @package   App\Models
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.1
  *
  * @property int $id
  * @property string $key
@@ -24,7 +23,6 @@ class Setting extends BaseModel
     protected $fillable = ["id", "key", "value", "visible"];
     /** @var array The validation rules on create */
     protected $rules = [
-        "name" => "required|max:255",
         "value" => "required",
         "visible" => "required|boolean",
     ];
@@ -32,6 +30,7 @@ class Setting extends BaseModel
     protected $casts = [
         "visible" => "boolean",
     ];
+    public $timestamps = false;
 
 
     /**
@@ -60,7 +59,6 @@ class Setting extends BaseModel
      * @param bool $visible the setting visibility (true for public visibility, 0 for admin-only)
      *
      * @return mixed
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
      */
     public static function write(string $key, $value, bool $visible = true)
     {
@@ -84,7 +82,7 @@ class Setting extends BaseModel
      * @param string $key the setting key
      *
      * @return bool|null
-     * @throws \Exception
+     * @throws Exception
      */
     public static function forgot(string $key)
     {

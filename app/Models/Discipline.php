@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\NoPivot;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -18,28 +19,45 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @property string $name
  * @property string $slug
  * @property bool $beta
- * @property array $link
  * ---
  * @property Collection|Grade[] $grades
  * @property Collection|Chapter[] $chapters
  */
 class Discipline extends BaseModel
 {
+    use NoPivot;
+
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "name", "slug", "beta", "visible", "link"];
+    protected $fillable = ["id", "name", "slug", "beta", "visible"];
     /** @var array Validation rules */
     protected $rules = [
         "name" => "required|max:255",
         "slug" => "required|max:255",
         "beta" => "boolean"
     ];
-    protected $appends = ["visible"];
+    protected $casts = [
+        "visible" => "boolean",
+        "beta" => "boolean"
+    ];
+
 
     /*
     |--------------------------------------------------------------------------
     | Relations
     |--------------------------------------------------------------------------
     */
+    /**
+     * BelongsToMany Grade.
+     *
+     * @return BelongsToMany
+     */
+    public function grades(): BelongsToMany
+    {
+        return $this->belongsToMany(Grade::class, "chapters")
+            ->groupBy(["grade_id", "discipline_id"]);
+    }
+
+
     /**
      * HasMany Chapter.
      *
@@ -48,35 +66,5 @@ class Discipline extends BaseModel
     public function chapters(): HasMany
     {
         return $this->hasMany(Chapter::class);
-    }
-
-
-    /**
-     * BelongsToMany Grade.
-     *
-     * @return BelongsToMany
-     */
-    public function grades(): BelongsToMany
-    {
-        return $this->belongsToMany(Grade::class);
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Attributes
-    |--------------------------------------------------------------------------
-    */
-    /**
-     * @return bool
-     * @deprecated
-     */
-    public function getVisibleAttribute()
-    {
-        if (isset($this->pivot->attributes["visible"])) {
-            return !empty((bool)$this->pivot->attributes["visible"]);
-        } else {
-            return null;
-        }
     }
 }

@@ -29,8 +29,7 @@ class DisciplinesRegistrar extends BaseRegistrar
             "delete" => "admin"
         ]);
 
-        $this->get("disciplines/slug/{disciplineSlug:[a-z\_]+}", "$controller@getBySlug");
-        $this->get("disciplines/by-{what:grade}/{id:[1-9]\d*}[/{page:[0-9]+}/{perPage:[1-9]\d*}]",
-            "$controller@by");
+        $this->get("disciplines/slug/{disciplineSlug:[a-z\-]+}", "$controller@getBySlug");
+        $this->get("disciplines/by-{what:grade}/{id:[1-9]\d*}/{page:\d+}/{perPage:[1-9]\d*}", "$controller@by");
     }
 }

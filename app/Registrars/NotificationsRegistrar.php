@@ -23,9 +23,9 @@ class NotificationsRegistrar extends BaseRegistrar
 
         $this->group(["prefix" => "notifications", "middleware" => "scope:registered"], function () use ($controller) {
             $this->patch("all/mark/read", "$controller@markAllRead");
-            $this->get("all[/{page}[/{perPage}]]", "$controller@all");
-            $this->get("unread[/{page}[/{perPage}]]", "$controller@unread");
-            $this->get("read[/{page}[/{perPage}]]", "$controller@read");
+            $this->get("all/{page}/{perPage}", "$controller@all");
+            $this->get("unread/{page}/{perPage}", "$controller@unread");
+            $this->get("read/{page}/{perPage}", "$controller@read");
             $this->patch("{notificationId}/mark/{type}", "$controller@mark");
         });
     }

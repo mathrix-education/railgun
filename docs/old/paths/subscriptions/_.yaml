@@ -1,0 +1,76 @@
+post:
+  tags:
+  - Braintree Subscriptions
+  summary: Subscribe user to plan
+  operationId: subscriptionsAdd
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            planId:
+              type: string
+              enum:
+              - v4_monthly
+              - v4_annually
+              - v4_biannually
+            paymentMethodNonce:
+              type: string
+              description: The payment method method nonce from the Braintree Client SDK
+              example: 7acb98s
+            error_code:
+              type: integer
+              description: >-
+                # __!!!!! SANDBOX ONLY !!!!__
+
+                # __DO NOT PASS IT IN PRODUCTION__
+
+                The mock the processor error from Braintree Gateway. Check https://developers.braintreepayments.com/reference/general/processor-responses/authorization-responses#decline-codes.
+              example: 2001
+          required:
+          - planId
+          - paymentMethodNonce
+  responses:
+    200:
+      description: The new Braintree subscription
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Braintree_Subscription'
+    400:
+      description: Bad request (Processor declined).
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                description: The error type.
+                type: string
+                example: bad_request
+              message:
+                description: The processor response text.
+                type: string
+                example: Insufficient Funds
+              processor:
+                description: The processor details.
+                type: object
+                properties:
+                  code:
+                    description: The processor response code.
+                    type: number
+                    example: 2001
+                  text:
+                    description: The processor response text.
+                    type: number
+                    example: Insufficient Funds
+                  type:
+                    description: The processor response type.
+                    type: string
+                    enum:
+                      - soft_declined
+                      - hard_declined
+                    example: soft_declined
+    422:
+      $ref: '../../index.yaml#/components/responses/422_Validation'

@@ -49,7 +49,7 @@ class AsMiddleware
 
                 /** @var User $target */
                 $target = User::query()->findOrFail($targetId);
-                Passport::actingAs($target, [$target->type]);
+                Passport::actingAs($target, [$target->getPassportScopes()]);
             }
         }
 

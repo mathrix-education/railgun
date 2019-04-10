@@ -28,7 +28,7 @@ class CopyClassesTable extends Migration
             $table->foreign("country_id")->references("id")->on("countries");
         });
 
-        Schema::create("discipline_grade", function (Blueprint $table) {
+        /*Schema::create("discipline_grade", function (Blueprint $table) {
             $table->increments("id");
             $table->integer("discipline_id")->unsigned();
             $table->integer("grade_id")->unsigned();
@@ -38,7 +38,7 @@ class CopyClassesTable extends Migration
             // Foreign keys
             $table->foreign("discipline_id")->references("id")->on("disciplines");
             $table->foreign("grade_id")->references("id")->on("grades");
-        });
+        });*/
     }
 
 
@@ -50,6 +50,6 @@ class CopyClassesTable extends Migration
     public function down()
     {
         Schema::dropIfExists("grades");
-        Schema::dropIfExists("discipline_grade");
+        //Schema::dropIfExists("discipline_grade");
     }
 }

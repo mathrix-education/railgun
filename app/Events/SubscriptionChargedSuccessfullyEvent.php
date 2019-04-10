@@ -8,11 +8,9 @@ use Braintree\Transaction;
 /**
  * Class SubscriptionChargedSuccessfullyEvent.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.2.0
- * @copyright Mathrix Education SA
- * @package   App\Events
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.2.0
  */
 class SubscriptionChargedSuccessfullyEvent
 {

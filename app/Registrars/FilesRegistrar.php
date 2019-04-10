@@ -19,14 +19,17 @@ class FilesRegistrar extends BaseRegistrar
      */
     public function register(): void
     {
-        $this->group(["middleware" => "scope:moderator", "prefix" => "files"], function () {
-            $controller = FilesController::class;
+        $controller = FilesController::class;
 
-            $this->post("", "$controller@upload");
-            $this->get("explore/[{directory:[a-zA-Z0-9\_\-\/\.]+}]", "$controller@explore");
-            $this->get("[{path:[a-zA-Z0-9\_\-\/\.]+}]", "$controller@info");
-            $this->patch("[{path:[a-zA-Z0-9\_\-\/\.]+}]", "$controller@rename");
-            $this->delete("[{path:[a-zA-Z0-9\_\-\/\.]+}]", "$controller@delete");
+        $this->get("files/proxy/{path:[a-zA-Z0-9\_\-\/\.]+}", "$controller@proxy");
+
+        $this->group(["middleware" => "scope:moderator", "prefix" => "files"], function () use ($controller) {
+            $this->get("explore[/{directory:[a-zA-Z0-9\_\-\/\.]+}]", "$controller@explore");
+
+            $this->post("{file:[a-zA-Z0-9\_\-\/\.]+}", "$controller@upload");
+            $this->get("{file:[a-zA-Z0-9\_\-\/\.]+}", "$controller@info");
+            $this->patch("{file:[a-zA-Z0-9\_\-\/\.]+}", "$controller@rename");
+            $this->delete("{file:[a-zA-Z0-9\_\-\/\.]+}", "$controller@remove");
         });
 
     }

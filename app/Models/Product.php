@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Traits\NoPivot;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Auth;
 use Mathrix\Lumen\Bases\BaseModel;
 
 /**
@@ -36,17 +39,29 @@ use Mathrix\Lumen\Bases\BaseModel;
  */
 class Product extends BaseModel
 {
+    use NoPivot;
+
     /** @var bool Indicates if the model should be timestamped */
     public $timestamps = true;
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["name", "slug", "image", "type", "description", "price", "visible", "order", "module_id",
-        "created_at", "updated_at"];
+    protected $fillable = [
+        "name",
+        "slug",
+        "image",
+        "type",
+        "description",
+        "price",
+        "visible",
+        "order",
+        "parent_id",
+        "module_id"
+    ];
     protected $rules = [
         "name" => "required|max:255",
         "slug" => "required|max:255",
         "image" => "nullable|max:255",
         "type" => "nullable",
-        "description" => "required|min:10",
+        "description" => "nullable|max:255",
         "price" => "nullable|numeric",
         "visible" => "required|boolean",
         "module_id" => "nullable|exists:modules,id",
@@ -55,6 +70,7 @@ class Product extends BaseModel
     protected $casts = [
         "visible" => "boolean",
     ];
+    protected $appends = ["owned"];
 
 
     /**
@@ -69,24 +85,24 @@ class Product extends BaseModel
 
 
     /**
-     * BelongsToMany Products.
+     * BelongsTo parent Products.
      *
-     * @return BelongsToMany
+     * @return BelongsTo
      */
     public function parents()
     {
-        return $this->belongsToMany(self::class, "product_product", "child_id", "parent_id");
+        return $this->belongsTo(self::class, "parent_id");
     }
 
 
     /**
-     * BelongsToMany Products.
+     * HasMany child Products.
      *
-     * @return BelongsToMany
+     * @return HasMany
      */
     public function children()
     {
-        return $this->belongsToMany(self::class, "product_product", "parent_id", "child_id");
+        return $this->hasMany(self::class, "parent_id");
     }
 
 
@@ -98,6 +114,23 @@ class Product extends BaseModel
     public function discounts()
     {
         return $this->belongsToMany(Discount::class);
+    }
+
+
+    /**
+     * Product::owned attribute
+     *
+     * @return bool
+     */
+    public function getOwnedAttribute()
+    {
+        $user = Auth::user();
+
+        if ($user !== null && $user instanceof User) {
+            return $user->hasPurchased($this);
+        }
+
+        return false;
     }
 
 

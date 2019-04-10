@@ -4,17 +4,19 @@ namespace App\Controllers;
 
 use App\Exceptions\FileNotFoundException;
 use App\Policies\FilePolicy;
+use finfo;
+use Illuminate\Contracts\Filesystem\FileNotFoundException as IlluminateFileNotFoundException;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
 use League\Flysystem\FileNotFoundException as FlysystemFileNotFoundException;
 use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Exceptions\ValidationException;
 
 
 /**
@@ -27,7 +29,39 @@ use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 class FilesController extends BaseController
 {
     public const DISK = "cdn";
-    public const TRASH_DIR = "trash";
+
+
+    /**
+     * Transform file or directory data.
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    private function transform(array $data): array
+    {
+        if (isset($data["path"])) {
+            $data["url"] = env("APP_CDN") . "/{$data["path"]}";
+        }
+
+        if ($data["type"] === "file") {
+            if (isset($data["size"])) {
+                $data["size"] = (int)$data["size"];
+            }
+
+            if (!isset($data["extension"])) {
+                // Fix for files with no extensions
+                $data["extension"] = "";
+
+                if (!isset($data["basename"]) && isset($data["path"])) {
+                    $data["basename"] = basename($data["path"]);
+                    $data["filename"] = basename($data["path"]);
+                }
+            }
+        }
+
+        return $data;
+    }
 
 
     /**
@@ -54,7 +88,7 @@ class FilesController extends BaseController
         $disk = $this->getDisk();
 
         try {
-            $metadata = $disk->getMetadata($path);
+            $metadata = $this->transform($disk->getMetadata($path));
         } catch (FlysystemFileNotFoundException $e) {
             throw new FileNotFoundException($path);
         }
@@ -65,52 +99,75 @@ class FilesController extends BaseController
 
 
     /**
+     * GET /cdn/{path}
+     * Proxy of the CDN bucket.
+     *
+     * @param string $path
+     *
+     * @return mixed
+     * @throws FileNotFoundException
+     */
+    public function proxy(string $path)
+    {
+        $bucket = Storage::disk("cdn");
+
+        if (!$bucket->exists($path)) {
+            throw new FileNotFoundException($path);
+        } else {
+            // Get file from GCS
+            try {
+                $fileContent = $bucket->get($path);
+            } catch (IlluminateFileNotFoundException $previous) {
+                throw new FileNotFoundException($path, $previous);
+            }
+
+            $fileName = basename($path);
+            $finfo = new finfo(FILEINFO_MIME_TYPE);
+            $mimeType = $finfo->buffer($fileContent);
+
+            /** @var Response $response */
+            $response = response($fileContent);
+
+            return $response->header("Content-Type", $mimeType)
+                ->header("Pragma", "public")
+                ->header("Cache-Control", 'max-age=60, must-revalidate')
+                ->header("Content-Disposition", 'inline; filename="' . $fileName . '"');
+        }
+    }
+
+
+    /**
      * POST /files
      *
      * @param Request $request The Illuminate HTTP request.
+     * @param string $file The destination path.
      *
      * @return JsonResponse
-     * @throws ValidationException
-     * @throws Http400BadRequestException
      * @throws FileNotFoundException
+     * @throws ValidationException
      */
-    public function upload(Request $request): JsonResponse
+    public function upload(Request $request, string $file): JsonResponse
     {
         $request->user()->canOrFail("upload", FilePolicy::class);
 
         $this->validate($request, [
             "file" => "required|file|max:15360|mimes:jpeg,jpg,png,gif,pdf,mp3,mp4",
-            "destination" => "required",
-            "name" => "required",
-            "force" => "boolean"
         ]);
 
         $disk = $this->getDisk();
+        $destination = trim(dirname($file), "/");
+        $name = trim(basename($file), "/");
 
         /** @var UploadedFile $file */
-        $file = $request->file("file") ?? $request->input("file");
+        $upload = $request->file("file");
 
-        $destination = trim($request->input("destination"), "/");
-        $name = trim($request->input("name"), "/");
-        $force = $request->input("force", false);
-
-        $path = "$destination/$name";
-
-        if ($this->getDisk()->exists($path)) {
-            if (!$force) {
-                throw new Http400BadRequestException("$path already exists. Set `force` to true to override it.");
-            } else {
-                // Force, delete the destination file first
-                $request->user()->canOrFail("forceUpload", FilePolicy::class);
-                $disk->delete($destination);
-            }
+        if ($this->getDisk()->exists($file)) {
+            $disk->delete($destination);
         }
 
-        $file->storeAs($destination, $name, ["disk" => self::DISK]);
+        $effectivePath = $disk->putFileAs($destination, $upload, $name);
 
-        $response = new JsonResponse($this->metadata($path));
-
-        return $response;
+        return new JsonResponse($this->metadata($effectivePath));
     }
 
 
@@ -122,39 +179,35 @@ class FilesController extends BaseController
      * @param string $directory The directory path.
      *
      * @return JsonResponse
-     * @throws FileNotFoundException
-     * @throws FlysystemFileNotFoundException
-     * @throws Http400BadRequestException
      */
-    public function explore(Request $request, string $directory = "")
+    public function explore(Request $request, string $directory = null)
     {
         $request->user()->canOrFail("explore", FilePolicy::class);
 
         $disk = $this->getDisk();
+        $content = collect($disk->listContents($directory));
 
-        if (!$disk->has($directory)) {
-            throw new FileNotFoundException($directory);
-        }
+        $directories = $content
+            ->filter(function ($v) {
+                return $v["type"] === "dir";
+            })
+            ->map(function ($dir) {
+                return $this->transform($dir);
+            })
+            ->values();
+        $files = $content
+            ->filter(function ($v) {
+                return $v["type"] === "file";
+            })
+            ->map(function ($file) {
+                return $this->transform($file);
+            })
+            ->values();
 
-        $meta = $disk->getMetadata($directory);
-
-        if ($meta["type"] !== "dir") {
-            throw new Http400BadRequestException(["path" => $directory], "$directory is not a directory.");
-        }
-
-        $directories = $disk->directories($directory);
-        foreach ($directories as $key => $path) {
-            $directories[$key] = $this->metadata($path);
-        }
-
-        $files = $disk->files($directory);
-        foreach ($files as $key => $path) {
-            $files[$key] = $this->metadata($path);
-        }
-
-        $response = new JsonResponse(array_merge($directories, $files));
-
-        return $response;
+        return new JsonResponse([
+            "directories" => $directories,
+            "files" => $files
+        ]);
     }
 
 
@@ -162,16 +215,16 @@ class FilesController extends BaseController
      * GET /files/{path}/info
      *
      * @param Request $request The Illuminate HTTP request.
-     * @param string $path The file/directory path.
+     * @param string $file The file path.
      *
      * @return JsonResponse
      * @throws FileNotFoundException
      */
-    public function info(Request $request, string $path)
+    public function info(Request $request, string $file)
     {
         $request->user()->canOrFail("info", FilePolicy::class);
 
-        return new JsonResponse($this->metadata($path));
+        return new JsonResponse($this->metadata($file));
     }
 
 
@@ -180,50 +233,34 @@ class FilesController extends BaseController
      * Rename (move) a file.
      *
      * @param Request $request The Illuminate HTTP request.
-     * @param string $path The file/directory path.
+     * @param string $file The file path.
      *
      * @return JsonResponse
      * @throws FileNotFoundException
      * @throws Http400BadRequestException
      * @throws ValidationException
      */
-    public function rename(Request $request, string $path): JsonResponse
+    public function rename(Request $request, string $file): JsonResponse
     {
         $request->user()->canOrFail("rename", FilePolicy::class);
 
         $this->validate($request, [
-            "destination" => "required",
-            "force" => "boolean"
+            "destination" => "required"
         ]);
 
         $disk = $this->getDisk();
-
-        $source = trim($path);
+        $source = trim($file);
         $destination = trim($request->input("destination"), "/");
-        $force = $request->input("force", false);
-
-        // Check destination does not start with "trash"
-        if (Str::startsWith($destination, "trash")) {
-            throw new Http400BadRequestException(
-                "`destination` cannot starts with \"trash\". Use DELETE /files/{path} instead"
-            );
-        }
 
         if (!$disk->exists($source)) {
             throw new FileNotFoundException($source);
         }
 
         if ($disk->exists($destination)) {
-            if (!$force) {
-                throw new Http400BadRequestException("$path already exists. Set `force` to true to override it.");
-            } else {
-                // Force, delete the destination file first
-                $request->user()->canOrFail("forceRename", FilePolicy::class);
-                $disk->delete($destination);
-            }
+            $disk->delete($destination);
         }
 
-        $result = $disk->move($path, $request->input("destination"));
+        $result = $disk->move($file, $request->input("destination"));
 
         if (!$result) {
             throw new Http400BadRequestException([
@@ -232,9 +269,7 @@ class FilesController extends BaseController
             ], "Unable to move $source to $destination.");
         }
 
-        $response = new JsonResponse($this->metadata($destination));
-
-        return $response;
+        return new JsonResponse($this->metadata($destination));
     }
 
 
@@ -243,57 +278,29 @@ class FilesController extends BaseController
      * Delete a file/directory.
      *
      * @param Request $request The Illuminate HTTP request.
-     * @param string $path The file/directory path.
+     * @param string $file The file/directory path.
      *
      * @return JsonResponse
      * @throws FileNotFoundException
      * @throws Http400BadRequestException
-     * @throws ValidationException
      */
-    public function remove(Request $request, string $path)
+    public function remove(Request $request, string $file)
     {
         $request->user()->canOrFail("delete", FilePolicy::class);
-
-        $this->validate($request, [
-            "force" => "boolean"
-        ]);
-
         $disk = $this->getDisk();
 
-        $force = $request->input("force", false);
-
-        // Check if we are not trying to delete something from the trash
-        if (Str::startsWith($path, self::TRASH_DIR)) {
-            throw new Http400BadRequestException([], self::TRASH_DIR . " is the trash directory.");
-        }
-
         // Check if path exists
-        if (!$disk->has($path)) {
-            throw new FileNotFoundException($path);
+        if (!$disk->has($file)) {
+            throw new FileNotFoundException($file);
         }
 
-        if (!$force) {
-            // Delete by moving to the trash
-            if ($disk->has(self::TRASH_DIR)) {
-                $disk->makeDirectory(self::TRASH_DIR);
-            }
-
-            $trashPath = self::TRASH_DIR . "/$path";
-            $disk->move($path, $trashPath);
-
-            return new JsonResponse($this->metadata($trashPath));
-        } else {
-            // Force delete file
-            $request->user()->canOrFail("forceDelete", FilePolicy::class);
-
-            if (!$disk->delete($path)) {
-                throw new Http400BadRequestException([], "Unable to delete $path.");
-            } else {
-                return new JsonResponse([
-                    "status" => "success",
-                    "message" => "File $path successfully deleted."
-                ]);
-            }
+        if (!$disk->delete($file)) {
+            throw new Http400BadRequestException(null, "Unable to delete $file.");
         }
+
+        return new JsonResponse([
+            "success" => true,
+            "message" => "File $file was successfully deleted."
+        ]);
     }
 }

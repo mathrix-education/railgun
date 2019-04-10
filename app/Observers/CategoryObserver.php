@@ -2,17 +2,16 @@
 
 namespace App\Observers;
 
-use App\Exceptions\Http400InvalidRequestException;
 use App\Models\Category;
+use Illuminate\Support\Str;
+use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 
 /**
  * Class CategoryObserver.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.3.0
- * @copyright Mathrix Education SA
- * @package   App\Observers
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.3.0
  */
 class CategoryObserver extends BaseObserver
 {
@@ -23,10 +22,10 @@ class CategoryObserver extends BaseObserver
      */
     public function saving($category)
     {
-        // Sluggify if needed
+        // Set the slug if needed
         if (empty($category->slug) ||
             ($category->isDirty("name") && !$category->isDirty("slug"))) {
-            $category->slug = str_slug($category->name);
+            $category->slug = Str::slug($category->name);
         }
 
         return true;
@@ -36,17 +35,12 @@ class CategoryObserver extends BaseObserver
     /**
      * @param Category $category
      *
-     * @throws Http400InvalidRequestException
-     * @throws \Exception
-     *
      * @return bool
+     * @throws Http400BadRequestException
      */
     public function deleting($category)
     {
-        if (!$category->posts->isEmpty()) {
-            throw new Http400InvalidRequestException("Cannot delete category {$category->id} be cause it has " .
-                "attached posts");
-        }
+        $this->handleRelationDeletion($category, "posts");
 
         return true;
     }

@@ -2,18 +2,16 @@
 
 namespace App\Observers;
 
-use App\Exceptions\Http400InvalidRequestException;
-use App\Models\Grade;
 use App\Models\Discipline;
+use App\Models\Grade;
+use Illuminate\Support\Str;
 
 /**
  * Class DisciplineObserver.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.3.0
- * @copyright Mathrix Education SA
- * @package   App\Observers
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.3.0
  */
 class DisciplineObserver extends BaseObserver
 {
@@ -24,10 +22,10 @@ class DisciplineObserver extends BaseObserver
      */
     public function saving($discipline)
     {
-        // Sluggify if needed
+        // Set the slug if needed
         if (empty($discipline->slug) ||
             ($discipline->isDirty("name") && !$discipline->isDirty("slug"))) {
-            $discipline->slug = str_slug($discipline->name);
+            $discipline->slug = Str::slug($discipline->name);
         }
 
         // Sync classes
@@ -37,7 +35,7 @@ class DisciplineObserver extends BaseObserver
             foreach ($discipline->link["classes"] as $order => $classData) {
                 [$id, $visible] = [$classData["id"], $classData["visible"]];
 
-                if (Grade::where("id", "=", $id)->exists()) {
+                if (Grade::query()->where("id", "=", $id)->exists()) {
                     $toSync[$id] = [
                         "order" => $order,
                         "visible" => $visible
@@ -45,7 +43,7 @@ class DisciplineObserver extends BaseObserver
                 }
             }
 
-            $discipline->classes()->sync($toSync);
+            $discipline->grades()->sync($toSync);
         }
 
         if (isset($discipline->link) || !empty($discipline->link)) {
@@ -59,14 +57,12 @@ class DisciplineObserver extends BaseObserver
     /**
      * @param Discipline $discipline
      *
-     * @throws Http400InvalidRequestException
+     * @throws \App\Exceptions\ForeignConstraintsException
      */
-    public function deleting($discipline)
+    public function deleting(Discipline $discipline)
     {
-        if ($discipline->has("chapters")) {
-            throw new Http400InvalidRequestException("Discipline id `{$discipline->id}` still has chapters.");
-        } else if ($discipline->has("classes")) {
-            throw new Http400InvalidRequestException("Discipline id `{$discipline->id}` still has classes.");
-        }
+        $this->handleRelationDeletion($discipline, "chapters");
+
+        $discipline->grades()->detach();
     }
 }

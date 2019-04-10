@@ -3,10 +3,12 @@
 namespace App\Controllers;
 
 use App\Models\Comment;
+use App\Models\Module;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mathrix\Lumen\Bases\BaseController;
+use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
 use Mathrix\Lumen\Responses\PaginationJsonResponse;
 
 /**
@@ -19,6 +21,51 @@ use Mathrix\Lumen\Responses\PaginationJsonResponse;
 class CommentsController extends BaseController
 {
     /**
+     * POST /comments
+     * Post a new comment as logged user.
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     * @throws Http401UnauthorizedException
+     */
+    public function post(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        $request->merge([
+            "user_id" => $user->id,
+        ]);
+
+        return parent::post($request);
+    }
+
+
+    /**
+     * Get the models which satisfy a given relation.
+     *
+     * @param Request $request The request
+     * @param int $moduleId
+     * @param int $page the query page
+     * @param int $perPage the query per page
+     *
+     * @return PaginationJsonResponse
+     */
+    public function byModule(Request $request, int $moduleId, int $page = 0, int $perPage = 100): PaginationJsonResponse
+    {
+        /** @var Module $module */
+        $module = Module::query()->findOrFail($moduleId);
+
+        $query = $module->comments()
+            ->whereNull("parent_id")
+            ->with(["children"]);
+
+        return new PaginationJsonResponse($query, $page, $perPage);
+    }
+
+
+    /**
      * GET /comments/latest/{page}/{perPage}
      * Get the latest comments, ordered by desc created_at field.
      *
@@ -27,6 +74,7 @@ class CommentsController extends BaseController
      * @param int $perPage The number of comments per page.
      *
      * @return JsonResponse
+     * @throws Http401UnauthorizedException
      */
     public function latest(Request $request, $page = 0, $perPage = 100): JsonResponse
     {
@@ -35,10 +83,13 @@ class CommentsController extends BaseController
 
         $user->canOrFail("latest", Comment::class);
 
-        $query = Comment::query()
+        $query = Comment::with([
+            "user:id,type,username,firstname,level,grade_id",
+            "children",
+            "children.user:id,type,username,firstname,level,grade_id"
+        ])
             ->orderBy("created_at", "desc");
-        $response = new PaginationJsonResponse($query, $page, $perPage);
 
-        return $response;
+        return new PaginationJsonResponse($query, $page, $perPage);
     }
 }

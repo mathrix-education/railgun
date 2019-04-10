@@ -2,19 +2,15 @@
 
 namespace App\Observers;
 
-use App\Models\Activity;
-use App\Models\Chapter;
 use App\Models\Notion;
-use App\Models\Path;
+use Illuminate\Support\Str;
 
 /**
  * Class NotionObserver.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.3.0
- * @copyright Mathrix Education SA
- * @package   App\Observers
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.3.0
  */
 class NotionObserver extends BaseObserver
 {
@@ -25,44 +21,12 @@ class NotionObserver extends BaseObserver
      */
     public function saving($notion)
     {
-        // Sluggify if needed
+        // Set the slug if needed
         if (
             empty($notion->slug) ||
             ($notion->isDirty('name') && !$notion->isDirty('slug'))
         ) {
-            $notion->slug = str_slug($notion->name);
-        }
-
-        // Sync chapters
-        if (isset($notion->link["chapters"])) {
-            $toSync = [];
-            foreach ($notion->link["chapters"] as $order => $chapterId) {
-                if (Chapter::whereId($chapterId)
-                    ->exists()) {
-                    $toSync[$chapterId] = ["order" => $order];
-                }
-            }
-
-            $notion->chapters()
-                ->sync($toSync);
-        }
-
-        // Sync activities
-        if (isset($notion->link["activities"])) {
-            $toSync = [];
-            foreach ($notion->link["activities"] as $order => $activityId) {
-                if (Activity::whereId($activityId)
-                    ->exists()) {
-                    $toSync[$activityId] = ["order" => $order];
-                }
-            }
-
-            $notion->activities()
-                ->sync($toSync);
-        }
-
-        if (isset($notion->link)) {
-            unset($notion->link);
+            $notion->slug = Str::slug($notion->name);
         }
 
         return true;
@@ -70,23 +34,14 @@ class NotionObserver extends BaseObserver
 
 
     /**
-     * Detach all activities link with the deleting notion.
-     *
      * @param Notion $notion
      *
      * @return bool
+     * @throws \App\Exceptions\ForeignConstraintsException
      */
     public function deleting($notion)
     {
-        $notion->chapters()
-            ->detach();
-        $notion->activities()
-            ->detach();
-        Path::where("notion_id", "=", $notion->id)
-            ->get()
-            ->each(function (Path $path) {
-                $path->delete();
-            });
+        $this->handleRelationDeletion($notion, "activities");
 
         return true;
     }

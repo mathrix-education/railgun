@@ -29,9 +29,12 @@ class CommentsRegistrar extends BaseRegistrar
             "delete" => "moderator"
         ]);
 
-        $this->get("comments/latest[/{page:[0-9]+}/{perPage:[1-9]\d*}]", "$controller@latest");
+        $this->get("comments/by-module/{moduleId:[1-9]\d*}/{page:\d+}/{perPage:[1-9]\d*}",
+            "$controller@byModule");
 
-        $this->get("comments/by-{what:module|comment}/{id:[1-9]\d*}[/{page:[1-9]\d*}/{perPage:[1-9]\d*}]",
-            "$controller@by");
+        $this->get("comments/latest/{page:\d+}/{perPage:[1-9]\d*}", [
+            "uses" => "$controller@latest",
+            "middleware" => "scope:moderator"
+        ]);
     }
 }

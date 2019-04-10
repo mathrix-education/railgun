@@ -22,8 +22,8 @@ class VotesRegistrar extends BaseRegistrar
         $this->group(["middleware" => "scope:registered"], function () {
             $controller = VotesController::class;
 
-            $this->post("votes/{votable_type:comment}/{votable_id:[1-9]\d*}/up", "$controller@up");
-            $this->post("votes/{votable_type:comment}/{votable_id:[1-9]\d*}/down", "$controller@down");
+            $this->post("votes/comment/{commentId:[1-9]\d*}", "$controller@vote");
+            $this->delete("votes/comment/{commentId:[1-9]\d*}", "$controller@unVote");
         });
     }
 }

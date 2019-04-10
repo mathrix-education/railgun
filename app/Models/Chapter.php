@@ -39,9 +39,12 @@ class Chapter extends BaseModel
     protected $rules = [
         "name" => "required|max:255",
         "slug" => "max:255",
-        "grades_id" => "required|exists:grades,id",
+        "grade_id" => "required|exists:grades,id",
         "discipline_id" => "required|exists:disciplines,id",
         "visible" => "boolean",
+    ];
+    protected $casts = [
+        "visible" => "boolean"
     ];
     /** @var array Virtual fields */
     protected $appends = ["activity_count", "activity_to_revise", "activity_completed"];
@@ -107,7 +110,9 @@ class Chapter extends BaseModel
     public function getActivityCountAttribute()
     {
         $count = 0;
-        $notions = $this->notions()->where("visible", "=", true)->get();
+        $notions = $this->notions()
+            ->where("visible", "=", true)
+            ->get();
 
         foreach ($notions as $notion) {
             $notion->activities()

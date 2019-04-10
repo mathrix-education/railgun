@@ -2,49 +2,41 @@
 
 namespace Tests\Integration\Braintree;
 
-use App\Exceptions\Http400InvalidRequestException;
 use App\Models\User;
-use Laravel\Lumen\Testing\TestCase;
+use Laravel\Passport\Passport;
+use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Tests\Traits\DatabaseTrait;
 use Mathrix\Lumen\Tests\Traits\DebugTrait;
-use Mathrix\Lumen\Tests\Traits\ResponseTrait;
-use Tests\Utils\Traits\Assertions\DatabaseAssertionsTrait;
-use Tests\Utils\Traits\Assertions\NotificationsAssertionsTrait;
-use Tests\Utils\Traits\PassportTrait;
+use Mathrix\Lumen\Tests\Traits\PassportTrait;
+use Tests\APITestCase;
+use Tests\Utils\NotificationsAssertionsTrait;
 
 /**
  * Class BraintreeTestCase.
  * Base class for Braintree tests.
  *
- * @author    Mathieu Bour <mathieu@mathrix.fr>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.0
- * @copyright Mathrix Education SA
- * @package   Tests\Braintree
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.1.0
  */
-class BraintreeTestCase extends TestCase
+abstract class BraintreeTestCase extends APITestCase
 {
-    use DatabaseAssertionsTrait, NotificationsAssertionsTrait, PassportTrait, ResponseTrait, DebugTrait;
-
-
     /**
-     * Creates the application.
+     * Set the current user.
      *
-     * Needs to be implemented by subclasses.
-     *
-     * @return \Symfony\Component\HttpKernel\HttpKernelInterface
+     * @param User $user
      */
-    public function createApplication()
+    public function setUser(User $user)
     {
-        return require __DIR__ . "/../../../bootstrap/app.php";
+        Passport::actingAs($user, explode(" ", $user->getPassportScopes()));
     }
 
 
     /**
      * Get a Braintree customer.
      *
-     * @throws Http400InvalidRequestException
-     *
      * @return User
+     * @throws Http400BadRequestException
      */
     public function getBraintreeCustomer(): User
     {
@@ -68,11 +60,13 @@ class BraintreeTestCase extends TestCase
         /** @var User $user */
         $user = User::query()
             ->where("type", "=", "registered")
-            ->whereNull("braintree_id")
-            ->whereNull("stripe_id")
             ->inRandomOrder()
             ->firstOrFail();
 
-        return $user;
+        $user->braintree_id = null;
+        $user->stripe_id = null;
+        $user->save();
+
+        return $user->refresh();
     }
 }

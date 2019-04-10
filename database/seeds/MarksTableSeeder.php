@@ -1,91 +1,72 @@
 <?php
 
 use App\Models\Activity;
-use App\Models\Chapter;
-use App\Models\Grade;
-use App\Models\Discipline;
-use App\Models\Notion;
+use App\Models\Mark;
+use App\Models\Module;
 use App\Models\User;
-use Carbon\Carbon;
+use Faker\Factory as FakerFactory;
+use Illuminate\Support\Collection;
+use Mathrix\Lumen\Bases\BaseTableSeeder;
 
 /**
  * Class MarksTableSeeder.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.2.0
- * @copyright Mathrix Education SA
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.2.0
  */
 class MarksTableSeeder extends BaseTableSeeder
 {
-
-    /**
-     * @throws \Exception
-     */
     public function run()
     {
-        $registered = User::where(["type" => "registered"])
+        $faker = FakerFactory::create();
+        $registered = User::query()
+            ->where("type", "=", "registered")
             ->get();
-        $marks = [];
-        $marksSignatures = [];
+        $marks = new Collection();
+
+        $this->output->writeln("<comment>Generating:</comment> marks");
+        $progressBar = $this->output->createProgressBar($registered->count());
+        $progressBar->setFormat("verbose");
+        $progressBar->start();
 
         /** @var User $user */
         foreach ($registered as $user) {
-            $metaCount = random_int(30, 50);
+            $marksCount = $faker->numberBetween(30, 50);
+            for ($i = 0; $i < $marksCount; ++$i) {
+                $markData = [
+                    "markable_type" => $faker->boolean ? "module" : "activity",
+                ];
 
-            for ($i = 0; $i < $metaCount; ++$i) {
-                /** @var Grade $class_ */
-                $class_ = $user->class_;
-                /** @var Discipline $discipline */
-                $discipline = $user->class_->disciplines()
-                    ->has("chapters")
-                    ->inRandomOrder()
-                    ->firstOrFail();
-                /** @var Chapter $chapter */
-                $chapter = $discipline->chapters()
-                    ->inRandomOrder()
-                    ->firstOrFail();
-                /** @var Notion $notion */
-                $notion = $chapter->notions()
-                    ->inRandomOrder()
-                    ->firstOrFail();
-                /** @var Activity $activity */
-                $activity = $notion->activities()
-                    ->inRandomOrder()
-                    ->firstOrFail();
-
-                // Register mark in signatures to avoid marks duplicates
-                $marksSignature = "{$user->id},{$activity->id}";
-
-                if (in_array($marksSignature, $marksSignatures)) {
-                    continue;
+                if ($markData["markable_type"] === "activity") {
+                    /** @var Activity $model */
+                    $model = Activity::random(["visible", "=", true]);
+                } else {
+                    /** @var Module $model */
+                    $model = Module::random(["visible", "=", true]);
                 }
 
-                $marksSignatures[] = $marksSignature;
-
-                $statusId = random_int(0, 2);
-                $statuses = ["view", "to_revise", "completed"];
-
-                $path = \App\Models\Path::retrieve([
-                    "country_id" => $user->class_->country->id,
-                    "class_id" => $class_->id,
-                    "discipline_id" => $discipline->id,
-                    "chapter_id" => $chapter->id,
-                    "notion_id" => $notion->id,
-                    "activity_id" => $activity->id,
-                    "module_id" => null
-                ]);
-
-                $marks[] = [
-                    "path_id" => $path->id,
+                [$createdAt, $updatedAt] = timestamps($model->created_at->__toString());
+                $markData = array_merge($markData, [
+                    "status" => $faker->randomElement(Mark::STATUSES),
+                    "markable_id" => $model->id,
                     "user_id" => $user->id,
-                    "status" => $statuses[$statusId],
-                    "created_at" => Carbon::now(),
-                    "updated_at" => Carbon::now()
-                ];
+                    "created_at" => $createdAt,
+                    "updated_at" => $updatedAt
+                ]);
+                $marks->push($markData);
             }
+
+            $progressBar->advance();
         }
 
-        $this->seedFromArray($marks, "marks");
+        $progressBar->finish();
+        $this->output->writeln("");
+        $this->output->writeln("<info>Generated:</info>  marks");
+
+        // See generated array
+        $this->output->writeln("<comment>Seeding:</comment> marks");
+        $this->seedFromArray($marks->toArray(), "marks");
+        $this->output->writeln("<info>Seeded:</info>  marks");
     }
 }
