@@ -23,6 +23,8 @@ abstract class BasePipeline
     private $request;
     /** @var User $customer The customer. */
     private $customer;
+    /** @var string $paymentMethodNonce The payment method nonce. */
+    private $paymentMethodNonce;
     /** @var MessageBag $validationErrors The validation errors */
     private $validationErrors;
 

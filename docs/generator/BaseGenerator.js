@@ -61,7 +61,10 @@ module.exports = class BaseGenerator {
             }
         });
 
-        data = this.toJsonSchema(data);
+        data = this.toJsonSchema(data, {keepNotSupported: ['nullable']});
+
+        data = this.handleNullable(data);
+
 
         this.fs.writeFileSync(destinationJson, JSON.stringify(data, null, 2));
     }
@@ -78,6 +81,31 @@ module.exports = class BaseGenerator {
         }
 
         return obj;
+    }
+
+    handleNullable(obj) {
+        if (obj === null) {
+            return obj;
+        } else if (Array.isArray(obj)) {
+            obj = obj.map(val => this.handleNullable(val));
+        } else if (typeof obj === "object") {
+            if (obj.hasOwnProperty("nullable") && obj.hasOwnProperty("allOf")) {
+                obj.oneOf = obj.allOf;
+                obj.oneOf[obj.allOf.length] = {type: "null"};
+                delete obj.allOf;
+            }
+
+            if (obj.hasOwnProperty("nullable")) {
+                delete obj.nullable;
+            }
+
+            Object.keys(obj).forEach(key => {
+                obj[key] = this.handleNullable(obj[key]);
+            });
+        }
+
+        return obj;
+
     }
 
     /**

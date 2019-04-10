@@ -10,6 +10,8 @@ use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\User;
 use App\Services\Braintree\Exceptions\BraintreeErrorHandler;
+use App\Services\Braintree\Exceptions\BraintreeGatewayException;
+use App\Services\Braintree\Exceptions\BraintreeProcessorException;
 use Braintree\Result\Error;
 use Braintree\Result\Successful;
 use Braintree\Transaction;
@@ -37,6 +39,8 @@ class CartPipeline
     private $request;
     /** @var User $customer The customer. */
     private $customer;
+    /** @var string $paymentMethodNonce The payment method nonce. */
+    private $paymentMethodNonce;
     /** @var Collection|Product[] The products. */
     private $products;
     /** @var Discount|null $discount The discount, if any. */
@@ -62,6 +66,7 @@ class CartPipeline
         $validator = ValidatorFacade::make($this->request->all(), [
             "cart" => "required",
             "cart.*" => "exists:products,id",
+            "payment_method_nonce" => "required"
         ]);
 
         if ($validator->fails()) {
@@ -214,8 +219,11 @@ class CartPipeline
     /**
      * Process the Braintree Transaction.
      *
+     * @return JsonResponse
      * @throws Http400BadRequestException
      * @throws ValidationException
+     * @throws BraintreeGatewayException
+     * @throws BraintreeProcessorException
      */
     public function process()
     {

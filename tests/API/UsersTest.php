@@ -51,7 +51,6 @@ class UsersTest extends APITestCase
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse();
-        $this->debug();
     }
 
 

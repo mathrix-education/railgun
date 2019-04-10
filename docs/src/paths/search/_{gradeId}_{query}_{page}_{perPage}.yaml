@@ -39,8 +39,7 @@ get:
           schema:
             type: object
             additionalProperties: false
-            required: [page, per_page, chapters_total, chapters, videos_total,
-                       videos]
+            required: [page, per_page, total, data]
             properties:
               page:
                 description: The current page.
@@ -52,28 +51,29 @@ get:
                 type: integer
                 example: 100
                 readOnly: true
-              chapters_total:
-                description: The total number of chapters processed.
+              total:
+                description: The total number of videos processed.
                 type: integer
                 example: 3
                 readOnly: true
-              chapters:
-                description: The chapters as an array.
-                type: array
-                items:
-                  $ref: '../../index.yaml#/components/schemas/Chapter'
-                readOnly: true
-              videos_total:
-                description: The total number of chapters processed.
-                type: integer
-                example: 3
-                readOnly: true
-              videos:
+              data:
                 description: The videos as an array.
                 type: array
                 items:
                   type: object
                   properties:
+                    discipline_slug:
+                      description: The related discipline slug.
+                      type: string
+                      example: maths
+                    chapter_slug:
+                      description: The related chapter slug.
+                      type: string
+                      example: chapter-slug-lorem
+                    module_seo_slug:
+                      description: The related module seo_slug id.
+                      type: string
+                      example: my-super-module-seo-slug
                     module_id:
                       description: The related module id.
                       type: integer

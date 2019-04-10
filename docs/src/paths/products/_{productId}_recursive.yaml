@@ -15,18 +15,21 @@ get:
       content:
         application/json:
           schema:
+            nullable: true
             allOf:
               - $ref: '../../index.yaml#/components/schemas/Product'
               - properties:
                   children:
                     type: array
                     items:
+                      nullable: true
                       allOf:
                         - $ref: '../../index.yaml#/components/schemas/Product'
                         - properties:
                             children:
                               type: array
                               items:
+                                nullable: true
                                 allOf:
                                   - $ref: '../../index.yaml#/components/schemas/Product'
     404:

@@ -2,13 +2,10 @@
 
 namespace App\Controllers;
 
-use App\Models\Activity;
-use App\Models\Chapter;
 use App\Models\Module;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Mathrix\Lumen\Bases\BaseController;
-use stdClass;
 
 /**
  * Class SearchController.
@@ -32,57 +29,49 @@ class SearchController extends BaseController
      */
     public function content(int $gradeId, string $query, int $page = 0, int $perPage = 100)
     {
-        $query = trim(mb_strtolower(urldecode($query))); // Trim and decode query
+        // Trim, decode query
+        $query = trim(mb_strtolower(urldecode($query)));
         $query = implode("%%", explode(" ", $query));
         $query = "%$query%";
 
-        $chaptersQuery = Chapter::query()
-            ->where("grade_id", "=", $gradeId)
-            ->where("name", "LIKE", $query)
-            ->where("visible", "=", true);
-
-        $chapters = $chaptersQuery->limit($perPage)
-            ->offset($page * $perPage)
-            ->get();
-
-        $activities = Activity::query()
-            ->whereHas("notion.chapter", function (Builder $query) use ($gradeId) {
-                $query->where("grade_id", "=", $gradeId);
-            })
-            ->where("name", "LIKE", $query)
-            ->where("visible", "=", true)
-            ->get(["id", "name"]);
-
-        $activitiesMappings = [];
-        foreach ($activities as $k => $v) {
-            $activitiesMappings[$v->id] = $v->name;
-        }
 
         $videosQuery = Module::query()
-            ->whereIn("activity_id", $activities->pluck("id")->toArray())
+            ->select(["id", "content", "seo_slug", "activity_id"])
+            ->with([
+                "activity:id,name,notion_id",
+                "activity.notion:id,chapter_id",
+                "activity.notion.chapter:id,slug,discipline_id",
+                "activity.notion.chapter.discipline:id,slug"
+            ])
+            ->whereHas("activity", function (Builder $q) use ($query) {
+                $q->where("name", "LIKE", $query);
+            })
+            ->whereHas("activity.notion.chapter", function (Builder $q) use ($gradeId) {
+                $q->where("grade_id", "=", $gradeId);
+            })
             ->where("content", "REGEXP", "\\[video(.*)\\[/video\\]");
-        $videos = $videosQuery
-            ->limit($perPage)
+
+        $videos = $videosQuery->limit($perPage)
             ->offset($page * $perPage)
-            ->get(["id", "content", "activity_id"])
-            ->map(function (Module $module) use ($activitiesMappings) {
-                preg_match("/\[video(.*)\](.*)\[\/video\]/", $module->content, $matches);
+            ->get()
+            ->map(function (Module $data) {
+                preg_match("/\[video.*\](.*)\[\/video\]/", $data->content, $matches);
 
-                $data = new stdClass();
-                $data->module_id = $module->id;
-                $data->activity_name = $activitiesMappings[$module->activity_id];
-                $data->youtube_id = isset($matches[2]) ? $matches[2] : null;
-
-                return $data;
+                return (object)[
+                    "discipline_slug" => $data->activity->notion->chapter->discipline->slug,
+                    "chapter_slug" => $data->activity->notion->chapter->slug,
+                    "module_seo_slug" => $data->seo_slug,
+                    "module_id" => $data->id,
+                    "activity_name" => $data->activity->name,
+                    "youtube_id" => !empty($matches[1]) ? $matches[1] : null
+                ];
             });
 
         return new JsonResponse([
             "page" => $page,
             "per_page" => $perPage,
-            "chapters_total" => $chaptersQuery->count(),
-            "videos_total" => $videosQuery->count(),
-            "chapters" => $chapters,
-            "videos" => $videos
+            "total" => $videosQuery->count(),
+            "data" => $videos
         ]);
     }
 }

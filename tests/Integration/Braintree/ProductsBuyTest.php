@@ -35,7 +35,10 @@ class ProductsBuyTest extends BraintreeTestCase
             $productIds = $products->pluck("id");
         }
 
-        $payload = ["cart" => $productIds];
+        $payload = [
+            "cart" => $productIds,
+            "payment_method_nonce" => "fake-valid-no-billing-address-nonce"
+        ];
 
         if ($discount != null) {
             $payload["discount"] = $discount->code;

@@ -4,7 +4,7 @@ PROJECT=/home/mathieu/Projects/mathrix/education-api
 
 SQL_SERVICE_ACCOUNT=kta7sdbqmveq7fnv4em5tjhzee@speckle-umbrella-20.iam.gserviceaccount.com
 BUCKET=cdn.mathrix.fr
-DATABASE_TARGET=dev_mathrix_education
+DATABASE_TARGET=dev.cdn.mathrix.fr
 
 #./maintenance_on.sh
 ssh root@web01.mathrix.fr rm ${WEB01}/storage/backups/database/*
