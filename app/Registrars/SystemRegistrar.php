@@ -20,6 +20,6 @@ class SystemRegistrar extends BaseRegistrar
     public function register(): void
     {
         $this->get("/", SystemController::class . "@base");
-        $this->post("system/sitemaps", SystemController::class . "@sitemaps");
+        $this->get("system/sitemap", SystemController::class . "@sitemap");
     }
 }
