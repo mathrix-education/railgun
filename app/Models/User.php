@@ -2,12 +2,9 @@
 
 namespace App\Models;
 
-use App\Exceptions\Http400InvalidRequestException;
-use App\Exceptions\Http422ModelSaveException;
-use App\Exceptions\Http422ModelValidationException;
 use App\Models\Traits\BraintreeCustomer;
+use App\Models\Traits\PermissionsTrait;
 use App\Models\Traits\StripeCustomer;
-use App\Models\UserTraits\PermissionsTrait;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -16,23 +13,22 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Validation\Rule;
 use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\Client;
 use Laravel\Passport\HasApiTokens;
 use Laravel\Passport\Token;
+use Mathrix\Lumen\Bases\BaseModel;
+use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 
 /**
  * Class User.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
- * @package   App\Models
- *
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  * @property int $id
  * @property string|null $username
  * @property string $email
@@ -47,19 +43,18 @@ use Laravel\Passport\Token;
  * @property int $daily_achievements
  * @property array $settings
  * @property bool $premium_bypass
- * @property int|null $class_id
- * @property int|null $family_pack_id
+ * @property int|null $grade_id
  * @property string|null $braintree_id
  * @property string|null $stripe_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
- * @property \Braintree\Customer|null $braintree
+ * ---
+ * @property Grade $grade
  * @property bool $premium
  * @property int $daily_points
- * @property Class_ $class_
- * @property FamilyPack $familyPackAsParent
- * @property FamilyPack $familyPackAsChild
+ * ---
  * @property Collection|Client[] $clients
+ * @property Collection|Token[] $tokens
  * @property Collection|Comment[] $comments
  * @property Collection|DatabaseNotification[] $notifications
  * @property Collection|DatabaseNotification[] $unreadNotifications
@@ -67,7 +62,6 @@ use Laravel\Passport\Token;
  * @property Collection|Log[] $logs
  * @property Collection|Product[] $products
  * @property Collection|Purchase[] $purchases
- * @property Collection|Token[] $tokens
  * @property Collection|Vote[] $votes
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
@@ -83,40 +77,129 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
     private const STRIPE_PLANS = ["v3_monthly", "v3_annually", "v3_biannually"];
-    private const BRAINTREE_PLANS = ["v4_monthly", "v4_annually", "v4_biannually"];
+    public const BRAINTREE_PLANS = ["v4_monthly", "v4_annually", "v4_biannually"];
 
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
 
     /** @var array The guarded attributes */
-    protected $fillable = ["email", "username", "firstname", "lastname", "password", "points", "daily", "settings",
-        "class_id"];
+    protected $fillable = [
+        "email",
+        "username",
+        "firstname",
+        "lastname",
+        "password",
+        "points",
+        "daily",
+        "settings",
+        "grade_id"
+    ];
 
     /** @var array The hidden attributes from the model"s JSON */
-    protected $hidden = ["password", "token", "premium_bypass"];
+    protected $hidden = ["password", "token", "premium_bypass", "stripe_id", "braintree_id", "stripe", "braintree"];
 
     /** @var array The attributes that should be cast to native types */
     protected $casts = ["settings" => "array"];
 
     /** @var array The validation rules on create */
     protected $rules = [
-        "email" => "required|email|unique:users,email|max:60",
         "username" => "nullable|max:60",
         "firstname" => "nullable|max:60",
         "lastname" => "nullable|max:60",
         "password" => "required|min:3",
-        "type" => "required|in:registered,redactor,moderator,admin,support",
-        "token" => "required|size:36",
+        "type" => "required|in:registered,redactor,moderator,admin",
+        "token" => "nullable|size:36",
         "points" => "required|integer",
         "daily" => "nullable|in:10,20,40",
-        "class_id" => "nullable|exists:classes,id",
+        "grade_id" => "nullable|exists:grades,id",
     ];
 
     /** @var array The relations to include by default */
-    protected $with = ["class_", "purchases"];
+    protected $with = ["grade", "purchases"];
 
     /** @var array The virtual attributes */
-    protected $appends = ["daily_points"];
+    protected $appends = ["premium", "daily_points", "last_session"];
+
+
+    /**
+     * Custom validation rules
+     *
+     * @return array
+     */
+    public function getValidationRules()
+    {
+        return array_merge($this->rules, [
+            "email" => ["required", "email", "max:60", Rule::unique("users", "email")->ignore($this->id)],
+        ]);
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Methods
+    |--------------------------------------------------------------------------
+    */
+    /**
+     * Record an event linked to this user.
+     *
+     * @param string $service The service.
+     * @param string $event The event key.
+     * @param string $status The status.
+     * @param array $payload The record payload.
+     *
+     * @return Record
+     * @throws Http400BadRequestException
+     * @throws \Mathrix\Lumen\Exceptions\ValidationException
+     */
+    public function record(string $service, string $event, string $status, array $payload)
+    {
+        return Record::record($this, $service, $event, $status, $payload);
+    }
+
+
+    /**
+     * Check if user has purchased the given product.
+     *
+     * @param Product $product
+     *
+     * @return bool
+     */
+    public function hasPurchased(Product $product): bool
+    {
+        return $this->products()
+            ->where("product_id", "=", $product->id)
+            ->exists();
+    }
+
+
+    /**
+     * Get users scopes, space-separated.
+     *
+     * @return string
+     */
+    public function getPassportScopes()
+    {
+        switch ($this->type) {
+            case "admin":
+                $scopes = "admin moderator redactor registered";
+                break;
+            case "moderator":
+                $scopes = "moderator redactor registered";
+                break;
+            case "redactor":
+                $scopes = "redactor registered";
+                break;
+            case "registered":
+                $scopes = "registered";
+                break;
+            default:
+                $scopes = "";
+                break;
+        }
+
+        return $scopes;
+    }
+
 
     /*
     |--------------------------------------------------------------------------
@@ -124,13 +207,13 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     |--------------------------------------------------------------------------
     */
     /**
-     * BelongsTo Class_.
+     * BelongsTo Grade.
      *
      * @return BelongsTo
      */
-    public function class_(): BelongsTo
+    public function grade(): BelongsTo
     {
-        return $this->belongsTo(Class_::class, "class_id");
+        return $this->belongsTo(Grade::class);
     }
 
 
@@ -142,28 +225,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
-    }
-
-
-    /**
-     * HasOne FamilyPack (as parent).
-     *
-     * @return HasOne
-     */
-    public function familyPackAsParent()
-    {
-        return $this->hasOne(FamilyPack::class, "parent_id");
-    }
-
-
-    /**
-     * BelongsTo FamilyPack (as child).
-     *
-     * @return BelongsTo
-     */
-    public function familyPackAsChild()
-    {
-        return $this->belongsTo(FamilyPack::class, "family_pack_id");
     }
 
 
@@ -190,17 +251,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
 
     /**
-     * HasMany Activity.
-     *
-     * @return HasMany
-     */
-    public function meta(): HasMany
-    {
-        return $this->hasMany(Activity::class);
-    }
-
-
-    /**
      * HasMany Purchase.
      *
      * @return HasMany
@@ -208,6 +258,17 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function purchases(): HasMany
     {
         return $this->hasMany(Purchase::class);
+    }
+
+
+    /**
+     * BelongsToMany Product.
+     *
+     * @return BelongsToMany
+     */
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, "purchases");
     }
 
 
@@ -233,6 +294,11 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | Attributes
+    |--------------------------------------------------------------------------
+    */
     /**
      * daily_points attribute.
      *
@@ -240,10 +306,11 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function getDailyPointsAttribute()
     {
-        $logs = Log::where([
-            ["event", "user_gathered_points"],
-            ["user_id", $this->id]
-        ])
+        $logs = Log::query()
+            ->where([
+                ["event", "user_gathered_points"],
+                ["user_id", $this->id]
+            ])
             ->whereBetween("created_at", [
                 Carbon::now()->setTime(0, 0, 0),
                 Carbon::now()
@@ -261,111 +328,53 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Attributes
-    |--------------------------------------------------------------------------
-    */
-
-
     /**
      * premium attribute.
      *
-     * @throws Http400InvalidRequestException
-     *
      * @return bool
+     * @throws Http400BadRequestException
+     *
      */
     public function getPremiumAttribute()
     {
         return $this->premium_bypass
-            || $this->isChildOfAFamilyPack()
             || $this->hasBraintreeSubscription(self::BRAINTREE_PLANS)
             || $this->hasStripeSubscription(self::STRIPE_PLANS);
     }
 
 
-    /**
-     * Check if the user is a child of a family pack (allow to grant premium membership).
-     *
-     * @return bool
-     */
-    public function isChildOfAFamilyPack(): bool
+    public function getLastSessionAttribute()
     {
-        return $this->familyPackAsChild !== null ? $this->familyPackAsChild->isActive() : false;
-    }
-
-
-    /**
-     * Get the family pack id as parent.
-     *
-     * @return int
-     */
-    public function getFamilyPackIdAsParentAttribute(): ?int
-    {
-        if ($this->has("family_pack_as_parent")) {
-
-        } else {
-            return null;
+        if (empty($this->settings["last_session"])) {
+            return [];
         }
 
-        return $this->familyPackAsParent !== null ? $this->familyPackAsParent->id : null;
-    }
+        $body = [];
+        $lastSession = $this->settings["last_session"];
 
+        foreach ($lastSession as $disciplineId => $moduleId) {
+            /** @var Module $module */
+            $module = Module::query()->findOrFail($moduleId);
+            /** @var Activity $activity */
+            $activity = Activity::query()->findOrFail($module->activity_id);
+            /** @var Notion $notion */
+            $notion = Notion::query()->findOrFail($activity->notion_id);
+            /** @var Chapter $chapter */
+            $chapter = Chapter::query()->findOrFail($notion->chapter_id);
+            /** @var Discipline $discipline */
+            $discipline = Discipline::query()->findOrFail($chapter->discipline_id);
+            /** @var Grade $grade */
+            $grade = Grade::query()->findOrFail($chapter->grade_id);
 
-    /**
-     * Append all required premium attributes
-     */
-    public function appendPremiumAttributes()
-    {
-        $this->append(["premium", "braintree", "stripe", "family_pack_id_as_parent"]);
-    }
+            $body[] = [
+                "grade_slug" => $grade->slug,
+                "discipline" => $discipline,
+                "chapter" => $chapter,
+                "activity" => $activity,
+                "module" => $module,
+            ];
+        }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Methods
-    |--------------------------------------------------------------------------
-    */
-
-
-    /**
-     * Check if user has purchased the given product.
-     *
-     * @param Product $product
-     *
-     * @return bool
-     */
-    public function hasPurchased(Product $product): bool
-    {
-        return $this->products()
-            ->where("product_id", "=", $product->id)
-            ->exists();
-    }
-
-
-    /**
-     * BelongsToMany Product.
-     *
-     * @return BelongsToMany
-     */
-    public function products()
-    {
-        return $this->belongsToMany(Product::class, "purchases");
-    }
-
-
-    /**
-     * @param string $service
-     * @param string $event
-     * @param string $status
-     * @param array $payload
-     *
-     * @return Record
-     * @throws Http400InvalidRequestException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
-     */
-    public function record(string $service, string $event, string $status, array $payload)
-    {
-        return Record::record($this, $service, $event, $status, $payload);
+        return $body;
     }
 }

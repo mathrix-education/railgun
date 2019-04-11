@@ -10,11 +10,9 @@ use Braintree\Transaction\LineItem;
 /**
  * Class TransactionSuccessNotification.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.0
- * @copyright Mathrix Education SA
- * @package   App\Notifications
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.1.0
  */
 class TransactionSuccessNotification extends MailNotification
 {

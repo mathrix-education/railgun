@@ -4,15 +4,16 @@ namespace App\Observers;
 
 use App\Models\Comment;
 use App\Models\Post;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 /**
  * Class PostObserver.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.3.0
- * @copyright Mathrix Education SA
- * @package   App\Observers
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.3.0
  */
 class PostObserver extends BaseObserver
 {
@@ -23,10 +24,17 @@ class PostObserver extends BaseObserver
      */
     public function saving($post)
     {
-        // Sluggify if needed
+        // Set the slug if needed
         if (empty($post->slug) ||
             ($post->isDirty("title") && !$post->isDirty("slug"))) {
-            $post->slug = str_slug($post->title);
+            $post->slug = Str::slug($post->title);
+        }
+
+        // By default set the post user_id to the current user id.
+        if (empty($post->user_id)) {
+            /** @var User $user */
+            $user = Auth::user();
+            $post->user_id = $user->id;
         }
 
         return true;
@@ -41,10 +49,9 @@ class PostObserver extends BaseObserver
     public function deleting($post)
     {
         // Force delete linked comments and their children
-        /** @var Comment $comment */
-        foreach ($post->comments as $comment) {
+        $post->comments()->each(function (Comment $comment) {
             $comment->forceDelete();
-        }
+        });
 
         return true;
     }

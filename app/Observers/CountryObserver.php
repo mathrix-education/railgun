@@ -2,17 +2,16 @@
 
 namespace App\Observers;
 
+use App\Exceptions\ForeignConstraintsException;
 use App\Models\Country;
+use Illuminate\Support\Str;
 
 /**
- * Class UserObserver.
+ * Class CountryObserver.
  *
- * @author    Mathrix Back-End Team
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.3.0
- * @copyright Mathrix Education SA
- * @package   App\Observers
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.3.0
  */
 class CountryObserver extends BaseObserver
 {
@@ -23,11 +22,25 @@ class CountryObserver extends BaseObserver
      */
     public function saving($country)
     {
-        // Sluggify if needed
+        // Set the slug if needed
         if (empty($country->slug) ||
             ($country->isDirty("name") && !$country->isDirty("slug"))) {
-            $country->slug = str_slug($country->name);
+            $country->slug = Str::slug($country->name);
         }
+
+        return true;
+    }
+
+
+    /**
+     * @param Country $country
+     *
+     * @return bool
+     * @throws ForeignConstraintsException
+     */
+    public function deleting(Country $country)
+    {
+        $this->handleRelationDeletion($country, "grades");
 
         return true;
     }

@@ -1,13 +1,36 @@
 <?php
 
-use Carbon\Carbon;
+use Mathrix\Lumen\Middleware\LoggedMiddleware;
+use Mathrix\Lumen\Middleware\ScopeMiddleware;
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
+// Generate environment variables
+// Load DotEnv
 try {
     (new Dotenv\Dotenv(__DIR__ . "/../"))->load();
 } catch (Dotenv\Exception\InvalidPathException $e) {
 }
+
+// APP_VERSION
+$version = "unknown";
+$composerData = json_decode(file_get_contents(__DIR__ . "/../composer.json"));
+putenv("APP_VERSION={$composerData->version}");
+
+
+// APP_BUILD
+$build = "unknown";
+
+if (file_exists(__DIR__ . "/../build.txt")) {
+    $build = trim(file_get_contents(__DIR__ . "/../build.txt"));
+} elseif (`which git`) {
+    $base = realpath(dirname(__DIR__));
+    $gitSha1 = exec("cd $base && git log --pretty=format:'%H' -n 1");
+    $build = substr($gitSha1, 0, 7);
+}
+
+putenv("APP_BUILD=$build");
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +42,6 @@ try {
 | application as an "IoC" container and router for this framework.
 |
 */
-
 $app = new Laravel\Lumen\Application(realpath(__DIR__ . "/../"));
 $app->withFacades();
 $app->withEloquent();
@@ -34,7 +56,6 @@ $app->withEloquent();
 | your own bindings here if you like or you can make another file.
 |
 */
-
 $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
     App\Exceptions\Handler::class
@@ -87,9 +108,6 @@ $app->configure("mail");
 $app->configure("queue");
 $app->configure("services");
 
-if ($app->environment("dev", "local")) {
-    $app->configure("ide-helper");
-}
 
 /*
 |--------------------------------------------------------------------------
@@ -107,7 +125,8 @@ $app->middleware([
 ]);
 
 $app->routeMiddleware([
-    "auth" => App\Middleware\Authenticate::class,
+    "login" => LoggedMiddleware::class,
+    "scope" => ScopeMiddleware::class
 ]);
 
 /*
@@ -120,21 +139,7 @@ $app->routeMiddleware([
 | totally optional, so you are not required to uncomment this line.
 |
 */
-
-if ($app->environment("local", "dev")) {
-    $app->register(Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
-    $app->bind(
-        Illuminate\Database\ConnectionResolverInterface::class,
-        Illuminate\Database\ConnectionResolver::class
-    );
-}
-
 $app->register(App\Providers\AppServiceProvider::class);
-
-if (env("SENTRY_DSN") !== null) {
-    $app->register(Sentry\SentryLaravel\SentryLumenServiceProvider::class);
-}
-
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes
@@ -146,28 +151,5 @@ if (env("SENTRY_DSN") !== null) {
 |
 */
 Dusterio\LumenPassport\LumenPassport::routes($app->router);
-
-$app->router->group(["namespace" => "App\\Controllers"], function ($router) {
-    /* @var Laravel\Lumen\Routing\Router $router */
-    $router->get("/", function () {
-        $build = basename(dirname(__DIR__, 1));
-
-        try {
-            $build = Carbon::createFromFormat("Y-m-d_H-i-s", $build)
-                ->toIso8601String();
-        } catch (InvalidArgumentException $e) {
-        }
-
-        return response()->json([
-            "message" => "Welcome to Mathrix API version " . env("APP_VERSION") . " by Mathieu Bour",
-            "build" => $build,
-        ]);
-    });
-
-    foreach (glob(__DIR__ . "/../app/Routes/*.php") as $routeFile) {
-        /** @noinspection PhpIncludeInspection */
-        require $routeFile;
-    }
-});
 
 return $app;

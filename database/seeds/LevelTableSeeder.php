@@ -1,22 +1,19 @@
 <?php
 
+use Mathrix\Lumen\Bases\BaseTableSeeder;
+
 /**
  * Class LevelTableSeeder.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  */
 class LevelTableSeeder extends BaseTableSeeder
 {
     private const COUNT = 100;
     private const POWER = 1.2;
 
-
-    /**
-     * @throws \Exception
-     */
     public function run()
     {
         $this->output->writeln("<comment>Seeding:</comment> levels from generation");

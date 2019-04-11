@@ -3,67 +3,94 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Mathrix\Lumen\Bases\BaseModel;
 
 /**
  * Class Mark.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.2.0
- * @copyright Mathrix Education SA
- * @package   App\Models
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.2.0
  *
  * @property int $id
  * @property string $status
  * @property int $user_id
- * @property int $path_id
+ * @property int $markable_id
+ * @property int $markable_type
  * @property Carbon $created_at
  * @property Carbon $updated_at
- *
- * @property Path $path
+ * ---
  * @property User $user
+ * @property Activity|Module $markable
  */
 class Mark extends BaseModel
 {
-    public $timestamps = true;
-    protected $fillable = ["status", "user_id", "path_id"];
+    public const STATUSES = ["to_revise", "completed"];
+
+    protected $fillable = [
+        "status",
+        "user_id",
+        "markable_type",
+        "markable_id"
+    ];
 
 
     /**
-     * @param array $conditions The array containing the key/value
+     * Retrieve all models linked with a given user.
      *
-     * @return Mark
+     * @param Activity|Module $model The markable model
+     * @param User|int $user The user
+     *
+     * @return Mark[]|Collection
      */
-    public static function retrieve(array $conditions)
+    public static function retrieveAll($model, $user)
     {
+        $modelClass = get_class($model);
+        $userId = is_int($user) ? $user : $user->id;
+
+        $conditions = [
+            "markable_type" => array_search($modelClass, Relation::$morphMap),
+            "markable_id" => $model->id,
+            "user_id" => $userId
+        ];
+
         $wheres = [];
         foreach ($conditions as $k => $v) {
             $wheres[] = [$k, "=", $v];
         }
 
         /** @var Mark $path */
-        $mark = self::where($wheres)->first();
+        $marks = self::query()->where($wheres)->get();
 
-        if ($mark === null) {
-            $mark = new Mark($conditions);
+        if ($marks->isEmpty()) {
+            $marks = new Collection([new Mark($conditions)]);
         }
 
-        return $mark;
+        return $marks;
     }
 
 
     /**
-     * BelongsTo Path.
+     * @param Activity|Module $model The markable model
+     * @param User|int $user The user
      *
-     * @return BelongsTo
+     * @return Mark
      */
-    public function path(): BelongsTo
+    public static function retrieve($model, $user)
     {
-        return $this->belongsTo(Path::class);
+        return self::retrieveAll($model, $user)->first();
     }
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
     /**
      * BelongsTo User.
      *
@@ -72,5 +99,14 @@ class Mark extends BaseModel
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+
+    /**
+     * @return MorphTo
+     */
+    public function markable()
+    {
+        return $this->morphTo();
     }
 }

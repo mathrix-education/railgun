@@ -2,22 +2,25 @@
 
 use App\Models\Country;
 use Faker\Generator;
+use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Support\Str;
 
 /**
- * CountryFactory
+ * CountryFactory.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 5.0.0
  *
- * @var Illuminate\Database\Eloquent\Factory $factory
+ * @var Factory $factory
  */
 $factory->define(Country::class, function (Generator $faker) {
     $name = $faker->firstName;
-    $slug = str_slug(mb_substr($name, 0, random_int(2, 3)));
+    $slug = Str::slug(mb_substr($name, 0, random_int(2, 3)));
 
     return [
         "name" => $name,
-        "slug" => str_slug($slug),
+        "slug" => Str::slug($slug),
         "visible" => $faker->boolean(95),
     ];
 });

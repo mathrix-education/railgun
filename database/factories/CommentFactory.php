@@ -1,45 +1,52 @@
 <?php
 
 use App\Models\Comment;
-use App\Models\Path;
+use App\Models\Module;
 use App\Models\User;
-use App\Utils\Tree;
 use Faker\Generator;
+use Illuminate\Database\Eloquent\Factory;
 
 /**
- * CommentFactory
+ * CommentFactory.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 5.0.0
  *
- * @var Illuminate\Database\Eloquent\Factory $factory
+ * @var Factory $factory
  */
 $factory->define(Comment::class, function (Generator $faker) {
-    $created = $faker->dateTimeBetween("-1 month");
-    $tree = new Tree();
-    $path = Path::retrieve($tree->flatIds());
+    [$createdAt, $updatedAt] = timestamps();
 
     return [
         "content" => $faker->text(),
         "parent_id" => null,
         "user_id" => User::random()->id,
-        "module_id" => $path->module->id,
-        "path_id" => $path->id,
-        "created_at" => $created,
-        "updated_at" => $faker->boolean(90) ? $created : $faker->dateTimeBetween($created, "now"),
+        "module_id" => Module::random(["visible", "=", true]),
+        "created_at" => $createdAt,
+        "updated_at" => $updatedAt,
     ];
 });
 
+
 /**
- * CommentChildFactory
+ * CommentChildFactory.
  *
- * @author Mathrix Team
- * @var Illuminate\Database\Eloquent\Factory $factory
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 5.0.0
+ *
+ * @var Factory $factory
  */
 $factory->defineAs(Comment::class, "child", function () use ($factory) {
-    $parent = Comment::inRandomOrder()
+    /** @var Comment $parent */
+    $parent = Comment::query()
+        ->inRandomOrder()
         ->whereNull("parent_id")
         ->firstOrFail();
 
-    return array_merge($factory->raw(Comment::class), ["parent_id" => $parent->id]);
+    return array_merge($factory->raw(Comment::class), [
+        "parent_id" => $parent->id,
+        "module_id" => $parent->module_id
+    ]);
 });

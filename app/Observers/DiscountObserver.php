@@ -8,11 +8,9 @@ use App\Models\Product;
 /**
  * Class DiscountObserver.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.3.0
- * @copyright Mathrix Education SA
- * @package   App\Observers
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.3.0
  */
 class DiscountObserver extends BaseObserver
 {
@@ -21,23 +19,20 @@ class DiscountObserver extends BaseObserver
      *
      * @return bool
      */
-    public function saving($discount)
+    public function saving(Discount $discount)
     {
         // Sync notions
-        if (isset($discount->link["products"])) {
+        if ($discount->exists && isset($discount->link["products"])) {
             $toSync = [];
             foreach ($discount->link["products"] as $productId) {
-                if (Product::whereId($productId)
-                    ->exists()) {
-                    /** @var Product $product */
-                    $product = Product::find($productId);
-                    if ($product->price !== null) {
-                        $toSync[] = $productId;
-                    }
+                /** @var Product $product */
+                $product = Product::query()->find($productId);
+
+                if ($product && $product->price !== null) {
+                    $toSync[] = $product->id;
                 }
             }
-            $discount->products()
-                ->sync($toSync);
+            $discount->products()->sync($toSync);
         }
 
         if (isset($discount->link)) {
@@ -55,8 +50,7 @@ class DiscountObserver extends BaseObserver
      */
     public function deleting($discount)
     {
-        $discount->products()
-            ->detach();
+        $discount->products()->detach();
 
         return true;
     }

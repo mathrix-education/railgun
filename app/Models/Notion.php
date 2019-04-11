@@ -2,28 +2,31 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Mathrix\Lumen\Bases\BaseModel;
 
 /**
  * Class Notion.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
- * @package   App\Models
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  *
  * @property int $id
  * @property string $name
  * @property string $slug
- * @property bool $premium
- * @property bool $visible
- * @property array $link
  * @property string $type
+ * @property bool $visible
+ * @property int $order
+ * @property int $chapter_id
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * ---
+ * @property Collection|Chapter $chapter
  * @property Collection|Activity[] $activities
- * @property Collection|Chapter[] $chapters
  * @property Collection|Comment[] $comments
  */
 class Notion extends BaseModel
@@ -31,12 +34,23 @@ class Notion extends BaseModel
     public const TYPES = ["normal", "premium", "reminder", "further"];
 
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "name", "slug", "type", "visible", "link"];
+    protected $fillable = [
+        "id",
+        "name",
+        "slug",
+        "type",
+        "visible",
+        "order",
+        "chapter_id"
+    ];
     /** @var array The validation rules */
     protected $rules = [
         "name" => "required|max:255",
         "slug" => "required|max:255",
         "chapter_id" => "required|exists:chapters,id",
+    ];
+    protected $casts = [
+        "visible" => "boolean"
     ];
 
 
@@ -53,41 +67,24 @@ class Notion extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
-
     /**
-     * BelongsToMany Activity.
+     * The notion parent chapter.
      *
-     * @return BelongsToMany
+     * @return BelongsTo
      */
-    public function activities(): BelongsToMany
+    public function chapter(): BelongsTo
     {
-        return $this->belongsToMany(Activity::class)
-            ->withPivot(["order"])
-            ->orderBy("pivot_order");
+        return $this->belongsTo(Chapter::class);
     }
 
 
     /**
-     * BelongsToMany Chapter.
+     * The notion child activities.
      *
-     * @return BelongsToMany
+     * @return HasMany
      */
-    public function chapters(): BelongsToMany
+    public function activities(): HasMany
     {
-        return $this->belongsToMany(Chapter::class)
-            ->withPivot(["order"])
-            ->orderBy("pivot_order");
+        return $this->hasMany(Activity::class)->orderBy("order");
     }
-
-
-    /**
-     * HasMany Marks.
-     *
-     * @return HasManyThrough
-     */
-    public function marks(): HasManyThrough
-    {
-        return $this->hasManyThrough(Mark::class, Path::class);
-    }
-
 }

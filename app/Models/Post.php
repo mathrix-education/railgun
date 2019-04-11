@@ -6,27 +6,27 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Mathrix\Lumen\Bases\BaseModel;
 
 /**
  * Class Post.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
- * @package   App\Models
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  *
  * @property int $id
  * @property string $title
  * @property string $slug
  * @property int $module_id
- * @property int $user_id
  * @property int $category_id
+ * @property int $user_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * ---
  * @property Module $module
  * @property Category $category
- * @property User $user
+ * @property User $user The post author.
  * @property Collection|Comment[] $comments
  */
 class Post extends BaseModel
@@ -34,12 +34,11 @@ class Post extends BaseModel
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "title", "slug", "module_id", "category_id", "created_at", "updated_at"];
+    protected $fillable = ["id", "title", "slug", "module_id", "category_id", "user_id"];
     /** @var array Validation rules */
     protected $rules = [
         "title" => "required|max:255",
         "slug" => "required|max:255",
-        "content" => "required",
         "category_id" => "required|exists:categories,id",
     ];
     /** @var array The default included relations */
@@ -50,7 +49,6 @@ class Post extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
-
     /**
      * BelongsTo Module.
      *

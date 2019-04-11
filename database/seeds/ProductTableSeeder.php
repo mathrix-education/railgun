@@ -1,68 +1,36 @@
 <?php
 
 use App\Models\Product;
+use Faker\Factory;
+use Mathrix\Lumen\Bases\BaseTableSeeder;
 
 /**
  * Class ProductTableSeeder.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.0
- * @copyright Mathrix Education SA
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.1.0
  */
 class ProductTableSeeder extends BaseTableSeeder
 {
     public function run()
     {
-        $this->seedFromFactory(Product::class, 300);
+        $products = factory(Product::class, 300)->raw();
+        $faker = Factory::create();
 
-        $faker = \Faker\Factory::create();
+        foreach ($products as $key => $product) {
+            $id = $key + 1;
+            $products[$key]["id"] = $id;
 
-        $products1 = Product::where("id", "<", 50)
-            ->get();
-        $products2 = Product::where([["id", ">", 51], ["id", "<", 150]])
-            ->get();
-        $products3 = Product::where("id", ">", 151)
-            ->get();
-
-        $this->output->writeln("<comment>Linking:</comment> products <=> products");
-        $linkData = [];
-
-        // Link products 1 => products 2
-        foreach ($products1 as $product1) {
-            $product2IdsToLinkWithProduct1 = $faker->randomElements(
-                $products2->pluck("id")
-                    ->toArray(),
-                $faker->numberBetween(2, 3)
-            );
-
-            foreach ($product2IdsToLinkWithProduct1 as $product2Id) {
-                $linkData[] = [
-                    "parent_id" => $product1->id,
-                    "child_id" => $product2Id,
-                    "order" => 0
-                ];
+            if (50 < $id && $id <= 150) {
+                $products[$key]["parent_id"] = $faker->numberBetween(1, 50);
+            } else if (150 < $id) {
+                $products[$key]["parent_id"] = $faker->numberBetween(51, 150);
             }
         }
 
-        // Link products 2 => products 3
-        foreach ($products2 as $product2) {
-            $product3IdsToLinkWithProduct2 = $faker->randomElements(
-                $products3->pluck("id")
-                    ->toArray(),
-                $faker->numberBetween(2, 3)
-            );
-
-            foreach ($product3IdsToLinkWithProduct2 as $product3Id) {
-                $linkData[] = [
-                    "parent_id" => $product2->id,
-                    "child_id" => $product3Id,
-                    "order" => 0
-                ];
-            }
-        }
-        $this->seedFromArray($linkData, "product_product");
-
-        $this->output->writeln("<info>Linked:</info>  products <=> products");
+        $this->output->writeln("<comment>Seeding:</comment> products from factory");
+        $this->seedFromArray($products, "products");
+        $this->output->writeln("<info>Seeded:</info>  products from factory");
     }
 }

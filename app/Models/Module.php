@@ -2,24 +2,24 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Mathrix\Lumen\Bases\BaseModel;
 
 /**
  * Class Module.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
- * @package   App\Models
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  *
  * @property int $id
  * @property bool $premium
- * @property bool $visible
  * @property string $type
  * @property string $content
  * @property array $questions
@@ -27,23 +27,49 @@ use Illuminate\Support\Facades\Auth;
  * @property array $solutions
  * @property array $corrections
  * @property string $options
- * @property array $link
- * @property mixed $status
- * @property Collection|Activity[] $activities
- * @property Collection|Comment[] $comments
- * @property Collection|Mark[] $marks
- * @property Collection|Log[] $logs
- * @property Collection|Product[] $products
+ * @property bool $visible
+ * @property bool $seo_index
+ * @property string $seo_title
+ * @property string $seo_slug
+ * @property string $seo_keywords
+ * @property string $seo_description
+ * @property int $order
+ * @property int $activity_id
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * ---
+ * @property string|null $status
  * @property string|null $mark
- * @property string $uri_type
+ * ---
+ * @property Activity $activity
+ * @property Collection|Comment[] $comments
+ * @property Collection|Log[] $logs
+ * @property Collection|Mark[] $marks
+ * @property Collection|Product[] $products
+ * @property Collection|Report[] $reports
  */
 class Module extends BaseModel
 {
-    public const TYPES = ["id", "course", "test", "mcq", "mcq-table", "match", "fill", "flashcard"];
-
+    public const TYPES = ["course", "test", "mcq", "flashcard"];
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["premium", "type", "content", "questions", "choices", "solutions", "corrections", "options",
-        "visible", "link"];
+    protected $fillable = [
+        "premium",
+        "type",
+        "content",
+        "questions",
+        "choices",
+        "solutions",
+        "corrections",
+        "options",
+        "visible",
+        "seo_index",
+        "seo_title",
+        "seo_slug",
+        "seo_keywords",
+        "seo_description",
+        "order",
+        "activity_id"
+    ];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
         "premium" => "boolean",
@@ -53,31 +79,28 @@ class Module extends BaseModel
         "solutions" => "array",
         "corrections" => "array",
         "options" => "array",
+        "seo_index" => "boolean"
     ];
     /** @var array The validation rules */
     protected $rules = [
-        "visible" => "boolean",
+        "premium" => "required|boolean",
+        "visible" => "required|boolean",
+        "seo_index" => "required|boolean",
     ];
     /** @var array The accessors to append to the model's array form */
     protected $appends = ["mark"];
 
 
-    /**
-     * Module constructor.
-     *
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
+    public function getValidationRules()
     {
-        parent::__construct($attributes);
-
         // Dynamic rules
         $this->rules["type"] = "required|in:" . implode(",", self::TYPES);
+        return $this->rules;
     }
 
 
     /**
-     * Handle too array strips if user is not premium.
+     * Allow module data striping if the user is not premium.
      *
      * @return array
      */
@@ -87,25 +110,93 @@ class Module extends BaseModel
 
         /** @var User $user */
         $user = Auth::user();
-        $strip = $this->premium && ($user === null || !$user->premium && !$user->isModerator());
-
-        $keep = ["visible"];
+        $strip = !app()->runningInConsole()
+            && $this->premium
+            && ($user === null || !$user->premium && !$user->tokenCan("moderator"));
+        $keep = ["premium", "visible", "comments"];
 
         if ($strip) {
-            foreach (array_merge($this->with, $this->appends, $this->fillable, ["comments"]) as $field) {
-                if (array_key_exists($field, $array) && !\in_array($field, $keep, true)) {
-                    unset($array[$field]);
-                }
-            }
-            $array["premium"] = true;
+            $array = Arr::only($array, $keep);
         }
 
         return $array;
     }
 
+
     /*
     |--------------------------------------------------------------------------
-    | Appends
+    | Relations
+    |--------------------------------------------------------------------------
+    */
+    /**
+     * @return BelongsTo
+     */
+    public function activity(): BelongsTo
+    {
+        return $this->belongsTo(Activity::class);
+    }
+
+
+    /**
+     * HasMany Comment.
+     *
+     * @return HasMany
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class)
+            ->orderBy("created_at");
+    }
+
+
+    /**
+     * MorphMany Mark.
+     *
+     * @return MorphMany
+     */
+    public function marks(): MorphMany
+    {
+        return $this->morphMany(Mark::class, "markable");
+    }
+
+
+    /**
+     * HasMany Product.
+     *
+     * @return HasMany
+     */
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
+    }
+
+
+    /**
+     * HasMany Post.
+     *
+     * @return HasMany
+     */
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
+
+
+    /**
+     * HasMany Report.
+     *
+     * @return HasMany
+     */
+    public function reports(): HasMany
+    {
+        return $this->hasMany(Report::class);
+    }
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Attributes
     |--------------------------------------------------------------------------
     */
     /**
@@ -126,86 +217,5 @@ class Module extends BaseModel
 
             return $mark !== null ? $mark->status : null;
         }
-    }
-
-
-    /**
-     * HasMany Marks.
-     *
-     * @return HasManyThrough
-     */
-    public function marks(): HasManyThrough
-    {
-        return $this->hasManyThrough(Mark::class, Path::class);
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Relations
-    |--------------------------------------------------------------------------
-    */
-
-
-    /**
-     * Get the url-friendly module type
-     *
-     * @return string
-     */
-    public function getUriTypeAttribute(): ?string
-    {
-        switch ($this->type) {
-            case "mcq":
-                return "exercice";
-            case "mcq-table":
-                return "exercice-qcm";
-            case "match":
-                return "correspondance";
-            case "test":
-                return "interro";
-            case "fill":
-                return "texte-trou";
-            case "flashcard":
-                return "flashcard";
-            case "course":
-                return preg_match("/\[video\]([0-9A-Za-z]+)\[\/video\]/", $this->content) === 1 ? "video" : "cours";
-            default:
-                return null;
-
-        }
-    }
-
-
-    /**
-     * BelongsToMany Activity.
-     *
-     * @return BelongsToMany
-     */
-    public function activities(): BelongsToMany
-    {
-        return $this->belongsToMany(Activity::class)
-            ->withPivot(["order"])
-            ->orderBy("pivot_order");
-    }
-
-
-    /**
-     * HasMany Comment.
-     *
-     * @return HasMany
-     */
-    public function comments(): HasMany
-    {
-        return $this->hasMany(Comment::class)->orderBy("created_at");
-    }
-
-
-    /**
-     * HasMany Product.
-     *
-     * @return HasMany
-     */
-    public function products(): HasMany
-    {
-        return $this->hasMany(Product::class);
     }
 }

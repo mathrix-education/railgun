@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
+use Mathrix\Lumen\Bases\BaseModel;
+
 /**
  * Class Level.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
- * @package   App\Models
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  *
  * @property int $id
  * @property int $level
@@ -37,7 +37,8 @@ class Level extends BaseModel
     public static function getLevelByPoints(int $points): self
     {
         /** @var Level $level */
-        $level = self::where("objective", "<=", $points)
+        $level = self::query()
+            ->where("objective", "<=", $points)
             ->orderByDesc("objective")
             ->firstOrFail();
 

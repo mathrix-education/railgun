@@ -1,31 +1,33 @@
 <?php
 
 use App\Models\Chapter;
-use App\Models\Class_;
 use App\Models\Discipline;
+use App\Models\Grade;
 use Faker\Generator;
+use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Support\Str;
 
 /**
- * ChapterFactory
+ * ChapterFactory.
  *
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @copyright Mathrix Education SA
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 5.0.0
  *
- * @var Illuminate\Database\Eloquent\Factory $factory
+ * @var Factory $factory
  */
 $factory->define(Chapter::class, function (Generator $faker) {
     $name = mb_substr($faker->sentence($faker->numberBetween(1, 3)), 0, -1);
-    /** @var Class_ $class */
-    $class = Class_::inRandomOrder()
-        ->firstOrFail();
-    /** @var Discipline $discipline */
-    $discipline = $class->disciplines()->firstOrFail();
+    [$createdAt, $updatedAt] = timestamps();
 
     return [
         "name" => $name,
-        "slug" => str_slug($name),
-        "class_id" => $class->id,
-        "discipline_id" => $discipline->id,
+        "slug" => Str::slug($name),
+        "order" => $faker->numberBetween(0, 100),
         "visible" => $faker->boolean(95),
+        "grade_id" => Grade::random()->id,
+        "discipline_id" => Discipline::random()->id,
+        "created_at" => $createdAt,
+        "updated_at" => $updatedAt
     ];
 });

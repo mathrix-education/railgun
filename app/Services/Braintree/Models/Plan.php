@@ -12,12 +12,9 @@ use Illuminate\Support\Str;
  * Class Plan.
  * Implements the Braintree Plan object and add a few more details.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.0
- * @copyright Mathrix Education SA
- * @package   App\Services\Braintree\Models
- * @mixin     \Braintree\Plan
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.1.0
  *
  * @property int $billingDayOfMonth
  * @property int $billingFrequency
@@ -38,8 +35,9 @@ use Illuminate\Support\Str;
  * @property float|null $trialPrice
  * @property Carbon|null $trialStartDate
  * @property Carbon|null $trialEndDate
- * @property AddOn[] $addOns
  * @property Discount[] $discounts
+ *
+ * @mixin \Braintree\Plan
  */
 class Plan extends BraintreeModel
 {
@@ -89,16 +87,6 @@ class Plan extends BraintreeModel
         } else {
             $this->discount = null;
         }
-
-        $addOns = [];
-        foreach (["_child_30", "_child_50"] as $addOnSuffix) {
-            $addOn = AddOn::find($this->id . $addOnSuffix);
-
-            if ($addOn !== null) {
-                $addOns[] = $addOn;
-            }
-        }
-        $this->addOns = $addOns;
     }
 
 

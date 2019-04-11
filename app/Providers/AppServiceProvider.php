@@ -9,18 +9,37 @@ use App\Models\Notion;
 use App\Models\Post;
 use App\Models\User;
 use App\Notifications\CommentAnswerNotification;
+use App\Observers\BaseObserver;
+use App\Observers\NotificationObserver;
+use App\Policies\BasePolicy;
+use App\Policies\FilePolicy;
+use App\Policies\NotificationPolicy;
+use Barryvdh\Cors\ServiceProvider as CorsServiceProvider;
+use Carbon\Carbon;
+use Dusterio\LumenPassport\PassportServiceProvider as LumenPassportServiceProvider;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Filesystem\FilesystemServiceProvider;
+use Illuminate\Mail\MailServiceProvider;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\NotificationServiceProvider;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Passport\PassportServiceProvider;
+use Laravelium\Sitemap\SitemapServiceProvider;
+use Mathrix\Lumen\Providers\ObserverServiceProvider;
+use Mathrix\Lumen\Providers\PolicyServiceProvider;
+use Mathrix\Lumen\Providers\RegistrarServiceProvider;
+use Sentry\SentryLaravel\SentryLumenServiceProvider;
+use Superbalist\LaravelGoogleCloudStorage\GoogleCloudStorageServiceProvider;
+use Vluzrmos\Tinker\TinkerServiceProvider;
 
 /**
  * Class AppServiceProvider.
  * Register all application service providers.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.0
- * @copyright Mathrix Education SA
- * @package   App\Providers
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.1.0
  */
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,30 +51,33 @@ class AppServiceProvider extends ServiceProvider
         // App service providers
         $this->app->register(AuthServiceProvider::class);
         $this->app->register(EventServiceProvider::class);
-        $this->app->register(NewsletterServiceProvider::class);
-        $this->app->register(ObserverServiceProvider::class);
-        $this->app->register(PolicyServiceProvider::class);
         $this->app->register(BraintreeGatewayServiceProvider::class);
         $this->app->register(StripeServiceProvider::class);
 
         // Vendor service providers
-        $this->app->register(\Backup\BackupServiceProvider::class);
-        $this->app->register(\Barryvdh\Cors\ServiceProvider::class);
-        $this->app->register(\Dusterio\LumenPassport\PassportServiceProvider::class);
-        $this->app->register(\Illuminate\Filesystem\FilesystemServiceProvider::class);
-        $this->app->register(\Illuminate\Mail\MailServiceProvider::class);
-        $this->app->register(\Illuminate\Notifications\NotificationServiceProvider::class);
-        $this->app->register(\Illuminate\Redis\RedisServiceProvider::class);
-        $this->app->register(\Laravel\Passport\PassportServiceProvider::class);
-        $this->app->register(\Laravelium\Sitemap\SitemapServiceProvider::class);
+        $this->app->register(CorsServiceProvider::class);
+        $this->app->register(FilesystemServiceProvider::class);
+        $this->app->register(MailServiceProvider::class);
+        $this->app->register(NotificationServiceProvider::class);
+        $this->app->register(PassportServiceProvider::class);
+        $this->app->register(LumenPassportServiceProvider::class);
+        $this->app->register(SitemapServiceProvider::class);
+        $this->app->register(GoogleCloudStorageServiceProvider::class);
 
-        $this->app->register(GoogleDriveServiceProvider::class);
+        // Mathrix Lumen Zero Providers
+        $this->registerObservers();
+        $this->registerPolicies();
+        $this->app->register(RegistrarServiceProvider::class);
 
-        $this->app->register(\Mathrix\Lumen\Providers\RegistrarServiceProvider::class);
-
-        if (app()->environment("dev", "local")) {
-            $this->app->register(\Vluzrmos\Tinker\TinkerServiceProvider::class);
+        if (app()->environment("local")) {
+            $this->app->register(TinkerServiceProvider::class);
         }
+        if (env("SENTRY_DSN") !== null) {
+            $this->app->register(SentryLumenServiceProvider::class);
+        }
+
+
+        Carbon::setToStringFormat("c");
 
         // MorphMap
         Relation::morphMap([
@@ -70,5 +92,39 @@ class AppServiceProvider extends ServiceProvider
             // Notifications
             "comment_answer" => CommentAnswerNotification::class
         ]);
+    }
+
+
+    /**
+     * Register observers.
+     */
+    private function registerObservers(): void
+    {
+        ObserverServiceProvider::$IgnoredObservers = [
+            BaseObserver::class,
+            NotificationObserver::class
+        ];
+
+        $this->app->register(ObserverServiceProvider::class);
+
+        DatabaseNotification::observe(NotificationObserver::class);
+    }
+
+
+    /**
+     * Register policies.
+     */
+    private function registerPolicies(): void
+    {
+        PolicyServiceProvider::$IgnoredPolicies = [
+            BasePolicy::class,
+            NotificationPolicy::class,
+            FilePolicy::class,
+        ];
+
+        $this->app->register(PolicyServiceProvider::class);
+
+        Gate::policy(FilePolicy::class, FilePolicy::class);
+        Gate::policy(DatabaseNotification::class, NotificationPolicy::class);
     }
 }

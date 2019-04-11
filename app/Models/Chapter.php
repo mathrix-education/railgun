@@ -4,43 +4,47 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Facades\Auth;
+use Mathrix\Lumen\Bases\BaseModel;
 
 /**
  * Class Chapter.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
- * @package   App\Models
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  *
  * @property int $id
  * @property string $name
  * @property string $slug
  * @property int $order
  * @property bool $visible
- * @property int $class_id
+ * @property int $grade_id
  * @property int $discipline_id
  * @property int $activity_count
  * @property array $link
- * @property Class_ $class_
+ * ---
+ * @property Grade $grade
  * @property Discipline $discipline
  * @property Collection|Notion[] $notions
+ * @property Collection|Activity[] $activities
  */
 class Chapter extends BaseModel
 {
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "name", "slug", "order", "visible", "class_id", "discipline_id", "link"];
+    protected $fillable = ["id", "name", "slug", "order", "visible", "grade_id", "discipline_id", "link"];
     /** @var array Validation rules */
     protected $rules = [
         "name" => "required|max:255",
         "slug" => "max:255",
-        "class_id" => "required|exists:classes,id",
+        "grade_id" => "required|exists:grades,id",
         "discipline_id" => "required|exists:disciplines,id",
         "visible" => "boolean",
+    ];
+    protected $casts = [
+        "visible" => "boolean"
     ];
     /** @var array Virtual fields */
     protected $appends = ["activity_count", "activity_to_revise", "activity_completed"];
@@ -51,13 +55,13 @@ class Chapter extends BaseModel
     |--------------------------------------------------------------------------
     */
     /**
-     * BelongsTo Class_.
+     * BelongsTo Grade.
      *
      * @return BelongsTo
      */
-    public function class_(): BelongsTo
+    public function grade(): BelongsTo
     {
-        return $this->belongsTo(Class_::class, "class_id");
+        return $this->belongsTo(Grade::class);
     }
 
 
@@ -73,6 +77,32 @@ class Chapter extends BaseModel
 
 
     /**
+     * The chapter notions.
+     *
+     * @return HasMany
+     */
+    public function notions(): HasMany
+    {
+        return $this->hasMany(Notion::class)->orderBy("order");
+    }
+
+
+    /**
+     * HasMany Marks.
+     *
+     * @return HasManyThrough
+     */
+    public function activities(): HasManyThrough
+    {
+        return $this->hasManyThrough(Activity::class, Notion::class);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Attributes
+    |--------------------------------------------------------------------------
+    */
+    /**
      * activity_count
      *
      * @return int
@@ -80,7 +110,9 @@ class Chapter extends BaseModel
     public function getActivityCountAttribute()
     {
         $count = 0;
-        $notions = $this->notions()->where("visible", "=", true)->get();
+        $notions = $this->notions()
+            ->where("visible", "=", true)
+            ->get();
 
         foreach ($notions as $notion) {
             $notion->activities()
@@ -98,19 +130,6 @@ class Chapter extends BaseModel
 
 
     /**
-     * HasMany Notion.
-     *
-     * @return BelongsToMany
-     */
-    public function notions(): BelongsToMany
-    {
-        return $this->belongsToMany(Notion::class)
-            ->withPivot(["order"])
-            ->orderBy("pivot_order");
-    }
-
-
-    /**
      * activity_to_revise
      *
      * @return int
@@ -124,26 +143,16 @@ class Chapter extends BaseModel
             return null;
         }
 
-        $count = $this->marks()
+        $activityIds = $this->activities()->get()->pluck("id");
+        $count = $user->marks()
             ->where([
-                ["user_id", "=", $user->id],
-                ["status", "=", "to_revise"]
+                ["status", "=", "to_revise"],
+                ["markable_type", "=", "activity"]
             ])
-            ->whereNull("module_id")
+            ->whereIn("markable_id", $activityIds->toArray())
             ->count();
 
         return $count;
-    }
-
-
-    /**
-     * HasMany Marks.
-     *
-     * @return HasManyThrough
-     */
-    public function marks(): HasManyThrough
-    {
-        return $this->hasManyThrough(Mark::class, Path::class);
     }
 
 
@@ -161,12 +170,13 @@ class Chapter extends BaseModel
             return null;
         }
 
-        $count = $this->marks()
+        $activityIds = $this->activities()->get()->pluck("id");
+        $count = $user->marks()
             ->where([
-                ["user_id", "=", $user->id],
-                ["status", "=", "completed"]
+                ["status", "=", "completed"],
+                ["markable_type", "=", "activity"]
             ])
-            ->whereNull("module_id")
+            ->whereIn("markable_id", $activityIds->toArray())
             ->count();
 
         return $count;

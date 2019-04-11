@@ -2,112 +2,81 @@
 
 namespace App\Services\Braintree\Pipelines;
 
-use App\Exceptions\Http400InvalidRequestException;
+use App\Events\TransactionSuccessEvent;
+use App\Exceptions\DiscountExpiredException;
+use App\Exceptions\DiscountNotApplicableException;
 use App\Models\Discount;
 use App\Models\Product;
+use App\Models\Purchase;
 use App\Models\User;
+use App\Services\Braintree\Exceptions\BraintreeErrorHandler;
+use App\Services\Braintree\Exceptions\BraintreeGatewayException;
+use App\Services\Braintree\Exceptions\BraintreeProcessorException;
+use Braintree\Result\Error;
+use Braintree\Result\Successful;
+use Braintree\Transaction;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator as ValidatorFacade;
+use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Exceptions\ValidationException;
 
 /**
- * Class Cart.
+ * Class CartPipeline.
  * Used to generate \Braintree\Transaction::sale() request data.
  *
- * @see       \Braintree\Transaction::sale()
- * @see       https://developers.braintreepayments.com/reference/request/transaction/sale/php
+ * @see \Braintree\Transaction::sale()
+ * @link https://developers.braintreepayments.com/reference/request/transaction/sale/php
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.0
- * @copyright Mathrix Education SA
- * @package   App\Services\Braintree
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 5.0.0
  */
 class CartPipeline
 {
-    /** @var User $customer */
+    /** @var $request Request The Illuminate HTTP request */
+    private $request;
+    /** @var User $customer The customer. */
     private $customer;
-    /** @var Collection|Product[] */
+    /** @var string $paymentMethodNonce The payment method nonce. */
+    private $paymentMethodNonce;
+    /** @var Collection|Product[] The products. */
     private $products;
-    /** @var Discount|null $discount */
+    /** @var Discount|null $discount The discount, if any. */
     private $discount;
+
+    /** @var Error|Successful $saleResult The Braintree sale result. */
+    private $saleResult;
 
 
     /**
      * Cart constructor.
+     *
+     * @param Request $request
+     *
+     * @throws Http400BadRequestException
+     * @throws ValidationException
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $this->products = new Collection();
-    }
+        $this->request = $request;
 
+        // Validate cart content
+        $validator = ValidatorFacade::make($this->request->all(), [
+            "cart" => "required",
+            "cart.*" => "exists:products,id",
+            "payment_method_nonce" => "required"
+        ]);
 
-    /**
-     * Set the cart customer.
-     *
-     * @param User $customer
-     *
-     * @return CartPipeline
-     */
-    public function setCustomer(User $customer)
-    {
-        $this->customer = $customer;
-
-        return $this;
-    }
-
-
-    /**
-     * Get the cart products.
-     *
-     * @return Product[]|Collection
-     */
-    public function getProducts()
-    {
-        return $this->products;
-    }
-
-
-    /**
-     * Set the cart products.
-     *
-     * @param int[] $productIds
-     *
-     * @throws Http400InvalidRequestException
-     *
-     * @return CartPipeline
-     */
-    public function setProducts(array $productIds)
-    {
-        $productIds = array_unique($productIds); // Remove double ids
-
-        foreach ($productIds as $productId) {
-            $product = Product::where("id", "=", $productId)
-                ->firstOrFail();
-
-            if ($product->price === null) {
-                throw new Http400InvalidRequestException("Product `id` {$this->customer->id} cannot be "
-                    . "purchased");
-            }
-
-            if ($this->customer->hasPurchased($product)) {
-                throw new Http400InvalidRequestException("User `id` {$this->customer->id} has already "
-                    . "purchased product `id` {$product->id}");
-            }
-
-            $this->products->add($product);
+        if ($validator->fails()) {
+            $errors = $validator->errors()->getMessages();
+            throw new ValidationException($errors, "Model data failed to pass validation.");
         }
 
-        return $this;
-    }
-
-
-    /**
-     * Get the discount.
-     *
-     * @return Discount|null
-     */
-    public function getDiscount(): ?Discount
-    {
-        return $this->discount;
+        $this->setCustomer($this->request->user());
+        $this->setProducts($this->request->json("cart"));
+        $this->setDiscount($this->request->json("discount"));
     }
 
 
@@ -117,12 +86,24 @@ class CartPipeline
      * @param string $discountCode
      *
      * @return CartPipeline
+     * @throws Http400BadRequestException
      */
     public function setDiscount(string $discountCode = null)
     {
         if ($discountCode !== null) {
-            $this->discount = Discount::where("code", "=", $discountCode)
+            $this->discount = Discount::query()
+                ->where("code", "=", $discountCode)
                 ->firstOrFail();
+
+            // Check for discount request expiration
+            if ($this->discount->isExpired()) {
+                throw new DiscountExpiredException($this->discount);
+            }
+
+            // Check discount application
+            if (!$this->discount->isApplicableBleOnAtLeastOneOf($this->products)) {
+                throw new DiscountNotApplicableException($this->discount);
+            }
         }
 
         return $this;
@@ -130,19 +111,71 @@ class CartPipeline
 
 
     /**
-     * Get the \Braintree\Transaction::sale() request data.
+     * Set the cart products.
      *
-     * @see \Braintree\Transaction::sale()
-     * @see https://developers.braintreepayments.com/reference/request/transaction/sale/php
+     * @param int[] $productIds
      *
-     * @throws Http400InvalidRequestException
+     * @return $this
+     */
+    public function setProducts(array $productIds)
+    {
+        $this->products = collect(array_unique($productIds))
+            ->map(function ($productId) {
+                /** @var Product $product */
+                $product = Product::query()->findOrFail($productId);
+
+                // Product price is null
+                if ($product->price === null) {
+                    throw new Http400BadRequestException(
+                        ["product" => $product],
+                        "Product `id` {$this->customer->id} cannot be purchased"
+                    );
+                }
+
+                // Customer has already purchased the product
+                if ($this->customer->hasPurchased($product)) {
+                    throw new Http400BadRequestException(
+                        ["product" => $product],
+                        "User `id` {$this->customer->id} has already purchased product `id` {$product->id}"
+                    );
+                }
+
+                return $product;
+            });
+
+        return $this;
+    }
+
+
+    /**
+     * Set the cart customer.
+     *
+     * @param User $customer
+     *
+     * @return CartPipeline
+     * @throws Http400BadRequestException
+     */
+    public function setCustomer(User $customer)
+    {
+        $this->customer = $customer;
+
+        // Create customer if needed
+        if ($this->request->has("payment_method_nonce") && !$this->customer->isBraintreeCustomer()) {
+            $paymentMethodNonce = $this->request->input("payment_method_nonce");
+            $this->customer->createBraintreeCustomer($paymentMethodNonce);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * Get the Braintree Transaction payload for this cart.
      *
      * @return array
      */
-    public function getBraintreeSaleRequest()
+    public function getTransactionPayload()
     {
-        $this->validate();
-
         $lineItems = new Collection();
 
         /** @var Product $product */
@@ -152,7 +185,7 @@ class CartPipeline
                 "kind" => "debit",
                 "name" => $product->name,
                 "productCode" => $product->id,
-                "quantity" => 1,
+                "quantity" => 1, // We only sell digital products
                 "totalAmount" => $product->getNewPrice($this->discount),
                 "unitAmount" => $product->price,
                 "unitOfMeasure" => "eur",
@@ -184,31 +217,64 @@ class CartPipeline
 
 
     /**
-     * Validate all properties before engaging the Braintree request data.
+     * Process the Braintree Transaction.
      *
-     * @throws Http400InvalidRequestException
+     * @return JsonResponse
+     * @throws Http400BadRequestException
+     * @throws ValidationException
+     * @throws BraintreeGatewayException
+     * @throws BraintreeProcessorException
      */
-    private function validate()
+    public function process()
     {
-        // Check customer existence
+        // Check customer existence and validity
         if ($this->customer === null) {
-            throw new Http400InvalidRequestException("Not customer set in the cart");
+            throw new Http400BadRequestException(null, "No customer set.");
         }
-
-        // Check customer validity
         $this->customer->requireBraintreeCustomer();
 
-        if ($this->discount !== null) {
-            // Check for discount expiration
-            if ($this->discount->isExpired()) {
-                throw new Http400InvalidRequestException("Discount with code `{$this->discount->code}` has expired");
-            }
+        // Process the cart in a Braintree transaction
+        $this->saleResult = Transaction::sale($this->getTransactionPayload());
 
-            // Check discount application
-            if (!$this->discount->isApplicableBleOnAtLeastOneOf($this->products)) {
-                throw new Http400InvalidRequestException("Discount with code `{$this->discount->code}` is not"
-                    . " applicable on current cart");
-            }
+        if (!$this->saleResult->success) {
+            $this->customer->record("braintree", "sale", "error", $this->saleResult->jsonSerialize());
+
+            BraintreeErrorHandler::report($this->saleResult);
         }
+
+        $this->finalize();
+
+        $products = Product::query()
+            ->whereIn("id", $this->products->pluck("id"))
+            ->get();
+
+        return new JsonResponse($products);
+    }
+
+
+    /**
+     * Finalize the transaction
+     * - Unlock the products for the user
+     * - Decrement the discount counter if needed
+     * - Emit the TransactionSuccessEvent
+     */
+    private function finalize()
+    {
+        // Insert new purchase records
+        $this->products->each(function ($product) {
+            $purchase = new Purchase([
+                "user_id" => $this->customer->id,
+                "product_id" => $product->id,
+            ]);
+            $purchase->save();
+        });
+
+        // Decrement discount counter if necessary
+        if ($this->discount !== null && !in_array($this->discount->counter, [null, -1])) {
+            $this->discount->counter--;
+            $this->discount->save();
+        }
+
+        event(new TransactionSuccessEvent($this->saleResult->transaction));
     }
 }
