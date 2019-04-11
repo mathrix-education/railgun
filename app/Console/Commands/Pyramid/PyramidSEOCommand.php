@@ -68,6 +68,7 @@ class PyramidSEOCommand extends BaseCommand
                 ->where("id", "=", $activityId)
                 ->get()
                 ->first();
+
             $seoTitle = trim(str_replace($arrow, "", $activity->seo_title));
             if (empty($seoTitle)) {
                 $seoTitle = trim(str_replace($arrow, "", $activity->name));
@@ -104,7 +105,8 @@ class PyramidSEOCommand extends BaseCommand
                     $index = isset($indices[$module->type]) ? $indices[$module->type] : null;
 
                     if ($mapped !== null && $index !== null) {
-                        $moduleSeoTitle = "$seoTitle - $mapped $index";
+                        //$moduleSeoTitle = "$seoTitle - $mapped $index";
+                        $moduleSeoTitle = $seoTitle;
                         $indices[$module->type]++;
                     } else {
                         $moduleSeoTitle = $seoTitle;

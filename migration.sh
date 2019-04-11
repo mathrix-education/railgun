@@ -4,16 +4,17 @@ PROJECT=/home/mathieu/Projects/mathrix/education-api
 
 SQL_SERVICE_ACCOUNT=kta7sdbqmveq7fnv4em5tjhzee@speckle-umbrella-20.iam.gserviceaccount.com
 BUCKET=cdn.mathrix.fr
-DATABASE_TARGET=master_mathrix_education
+#DATABASE_TARGET=master_mathrix_education
+DATABASE_TARGET=dev_mathrix_education
 
-#./maintenance_on.sh
-#ssh root@web01.mathrix.fr rm ${WEB01}/storage/backups/database/*
-#ssh root@web01.mathrix.fr php ${WEB01}/artisan backup:mysql-dump --no-compress
-#ssh root@web01.mathrix.fr mv ${WEB01}/storage/backups/database/* ${WEB01}/storage/backups/database/dump.sql
-#ssh root@web01.mathrix.fr gzip ${WEB01}/storage/backups/database/dump.sql
-#scp root@web01.mathrix.fr:/var/www/master/api/current/storage/backups/database/dump.sql.gz \
-#    ${PROJECT}/storage/framework/cache/dump.sql.gz
-#gzip -d -f ${PROJECT}/storage/framework/cache/dump.sql.gz
+./maintenance_on.sh
+ssh root@web01.mathrix.fr rm ${WEB01}/storage/backups/database/*
+ssh root@web01.mathrix.fr php ${WEB01}/artisan backup:mysql-dump --no-compress
+ssh root@web01.mathrix.fr mv ${WEB01}/storage/backups/database/* ${WEB01}/storage/backups/database/dump.sql
+ssh root@web01.mathrix.fr gzip ${WEB01}/storage/backups/database/dump.sql
+scp root@web01.mathrix.fr:/var/www/master/api/current/storage/backups/database/dump.sql.gz \
+    ${PROJECT}/storage/framework/cache/dump.sql.gz
+gzip -d -f ${PROJECT}/storage/framework/cache/dump.sql.gz
 
 php ${PROJECT}/artisan db:destroy
 
