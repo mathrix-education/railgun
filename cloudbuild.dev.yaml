@@ -77,29 +77,6 @@ steps:
         yarn run mails:compile
 
 
-  # Build API image
-  # ---------------
-  - id: 'docker:build:api'
-    waitFor: ['composer:install', 'node:compile']
-    name: 'gcr.io/cloud-builders/docker'
-    args: ['build',
-           '--build-arg', 'COMMIT_SHORT_SHA=$SHORT_SHA',
-           '-t', 'eu.gcr.io/$PROJECT_ID/$_API_IMAGE:$SHORT_SHA',
-           '.']
-
-
-  # Build docs image
-  # ----------------
-  - id: 'docker:build:docs'
-    waitFor: ['composer:install', 'node:compile']
-    name: 'gcr.io/cloud-builders/docker'
-    args: ['build',
-           '-f', 'docs/Dockerfile',
-           '--build-arg', 'COMMIT_SHORT_SHA=$SHORT_SHA',
-           '-t', 'eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:$SHORT_SHA',
-           '.']
-
-
   # Run paratest in coverage mode
   # Hack to allow step to fail: https://github.com/GoogleCloudPlatform/cloud-builders/issues/253
   # --------------------------------------------------------------------------------------------
@@ -123,16 +100,19 @@ steps:
       - '-Dsonar.branch.name=$BRANCH_NAME'
 
 
-  # Push the image API to the registry with commit tag
-  # --------------------------------------------------
+  # Build, push and deploy API image
+  # --------------------------------
+  - id: 'docker:build:api'
+    waitFor: ['docker-compose:tests']
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['build',
+           '--build-arg', 'COMMIT_SHORT_SHA=$SHORT_SHA',
+           '-t', 'eu.gcr.io/$PROJECT_ID/$_API_IMAGE:$SHORT_SHA',
+           '.']
   - id: 'docker:push:api'
-    waitFor: ['docker:build:api', 'docker-compose:tests']
+    waitFor: ['docker:build:api']
     name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'eu.gcr.io/$PROJECT_ID/$_API_IMAGE:$SHORT_SHA']
-
-
-  # Deploy API
-  # ------------------------------
   - id: 'kubectl:deploy:api'
     waitFor: ['docker:push:api']
     name: 'gcr.io/cloud-builders/kubectl'
@@ -143,16 +123,20 @@ steps:
       - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLOUDSDK_CONTAINER_CLUSTER'
 
 
-  # Push the image docs to the registry with commit tag
-  # ---------------------------------------------------
+  # Build, push and deploy docs image
+  # ---------------------------------
+  - id: 'docker:build:docs'
+    waitFor: ['docker-compose:tests']
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['build',
+           '-f', 'docs/Dockerfile',
+           '--build-arg', 'COMMIT_SHORT_SHA=$SHORT_SHA',
+           '-t', 'eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:$SHORT_SHA',
+           '.']
   - id: 'docker:push:docs'
     waitFor: ['docker:build:docs', 'docker-compose:tests']
     name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:$SHORT_SHA']
-
-
-  # Deploy docs
-  # -----------
   - id: 'kubectl:deploy:docs'
     waitFor: ['docker:push:docs']
     name: 'gcr.io/cloud-builders/kubectl'

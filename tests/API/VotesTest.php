@@ -12,7 +12,7 @@ use Tests\APITestCase;
  *
  * @author Mathieu Bour <mathieu@mathrix.fr>
  * @copyright Mathrix Education SA.
- * @since 5.0.0
+ * @since 5.0.0-rc1
  */
 class VotesTest extends APITestCase
 {
@@ -47,7 +47,7 @@ class VotesTest extends APITestCase
     public function testVoteOverride()
     {
         $vote = Vote::random();
-        Passport::actingAs($vote->user, explode(",", $vote->user->getPassportScopes()));
+        Passport::actingAs($vote->user, explode(" ", $vote->user->getPassportScopes()));
         $value = $vote->value * -1;
 
         $this->json("post", "/votes/comment/{$vote->comment->id}", [
@@ -72,7 +72,7 @@ class VotesTest extends APITestCase
     public function testUnVote()
     {
         $vote = Vote::random();
-        Passport::actingAs($vote->user, explode(",", $vote->user->getPassportScopes()));
+        Passport::actingAs($vote->user, explode(" ", $vote->user->getPassportScopes()));
         $this->json("delete", "/votes/comment/{$vote->comment->id}");
 
         $this->assertResponseOk();

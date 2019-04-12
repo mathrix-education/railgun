@@ -9,7 +9,7 @@ use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
  *
  * @author Mathieu Bour <mathieu@mathrix.fr>
  * @copyright Mathrix Education SA.
- * @since 5.0.0
+ * @since 5.0.0-rc1
  */
 class BraintreeProcessorException extends Http400BadRequestException
 {

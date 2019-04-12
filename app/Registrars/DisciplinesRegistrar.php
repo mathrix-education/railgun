@@ -10,7 +10,7 @@ use Mathrix\Lumen\Bases\BaseRegistrar;
  *
  * @author Mathieu Bour <mathieu@mathrix.fr>
  * @copyright Mathrix Education SA.
- * @since 5.0.0
+ * @since 5.0.0-rc1
  */
 class DisciplinesRegistrar extends BaseRegistrar
 {
@@ -30,6 +30,6 @@ class DisciplinesRegistrar extends BaseRegistrar
         ]);
 
         $this->get("disciplines/slug/{disciplineSlug:[a-z\-]+}", "$controller@getBySlug");
-        $this->get("disciplines/by-{what:grade}/{id:[1-9]\d*}/{page:\d+}/{perPage:[1-9]\d*}", "$controller@by");
+        $this->get("disciplines/by-grade/{gradeId:[1-9]\d*}/{page:\d+}/{perPage:[1-9]\d*}", "$controller@byGrade");
     }
 }
