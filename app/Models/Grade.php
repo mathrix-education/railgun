@@ -125,7 +125,8 @@ class Grade extends BaseModel
     public function disciplines(): BelongsToMany
     {
         return $this->belongsToMany(Discipline::class, "chapters")
-            ->groupBy(["grade_id", "discipline_id"]);
+            ->groupBy(["grade_id", "discipline_id"])
+            ->wherePivot("visible", "=", true);
     }
 
 
