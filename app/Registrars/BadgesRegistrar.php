@@ -21,6 +21,7 @@ class BadgesRegistrar extends BaseRegistrar
     {
         $controller = BadgesController::class;
 
+        $this->get("badges/version", "$controller@version");
         $this->get("badges/coverage", "$controller@coverage");
     }
 }

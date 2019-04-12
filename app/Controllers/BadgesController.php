@@ -42,6 +42,23 @@ class BadgesController extends BaseController
      *
      * @return JsonResponse
      */
+    public function version()
+    {
+        return new JsonResponse([
+            "schemaVersion" => 1,
+            "label" => "Coverage",
+            "color" => "blue",
+            "message" => env("APP_VERSION")
+        ]);
+    }
+
+
+    /**
+     * GET /badges/coverage
+     * Get the application version results.
+     *
+     * @return JsonResponse
+     */
     public function coverage()
     {
         $textReport = app()->basePath("artifacts/coverage.txt");
