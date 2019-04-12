@@ -2,3 +2,12 @@ $extends:
   ../../fragments/paths/get_by-model_{modelId}_{page}_{perPage}.yaml:
     model: discipline
     related: grade
+get:
+  parameters:
+    - name: X-Scope
+      in: header
+      description: The desired scope. Authorized users may want to see all
+        disciplines linked to a given grade, ignoring default visibility.
+      schema:
+        type: string
+        enum: [all]
