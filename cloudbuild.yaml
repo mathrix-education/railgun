@@ -97,7 +97,7 @@ steps:
     args:
       - '-c'
       - |
-        if [[ "$BRANCH_NAME" == "dev" ]]; then
+        if [ "$BRANCH_NAME" = "dev" ]; then
           docker build -f docs/Dockerfile \
             --build-arg COMMIT_SHORT_SHA=$SHORT_SHA \
             --tag eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:$SHORT_SHA \
@@ -159,7 +159,7 @@ steps:
     args:
       - '-c'
       - |
-        if [[ "$BRANCH_NAME" == "dev" ]]; then
+        if [ "$BRANCH_NAME" = "dev" ]; then
           docker push eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:$SHORT_SHA
         else
           echo "Ignored."
@@ -175,7 +175,7 @@ steps:
     args:
       - '-c'
       - |
-        if [[ "$BRANCH_NAME" == "dev" ]]; then
+        if [ "$BRANCH_NAME" = "dev" ]; then
           kubectl set image deployment $_DOCS_DEPLOYMENT \
             $_DOCS_CONTAINER=eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:$SHORT_SHA
         else
