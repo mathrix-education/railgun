@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Providers;
 
 use Carbon\Carbon;
@@ -10,11 +11,9 @@ use Laravel\Passport\Passport;
  * Class AuthServiceProvider.
  * Provide Laravel Passport configuration.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
- * @package   App\Providers
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  */
 class AuthServiceProvider extends ServiceProvider
 {
@@ -24,10 +23,8 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         // Passport configuration
-        Passport::tokensExpireIn(Carbon::now()
-            ->addMonth());
-        Passport::refreshTokensExpireIn(Carbon::now()
-            ->addMonths(2));
+        Passport::tokensExpireIn(Carbon::now()->addMonth());
+        Passport::refreshTokensExpireIn(Carbon::now()->addMonths(2));
 
         LumenPassport::allowMultipleTokens();
 
@@ -37,7 +34,6 @@ class AuthServiceProvider extends ServiceProvider
             "moderator" => "Moderator",
             "redactor" => "Redactor",
             "registered" => "Registered",
-            "support" => "Support",
         ]);
     }
 }

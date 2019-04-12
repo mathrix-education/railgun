@@ -1,22 +1,21 @@
 <?php
+
 namespace App\Models;
 
-use App\Exceptions\Http422ModelSaveException;
-use Illuminate\Database\Eloquent\Builder;
+use Exception;
+use Mathrix\Lumen\Bases\BaseModel;
 
 /**
  * Class Setting.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.1
- * @copyright Mathrix Education SA
- * @package   App\Models
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.1
  *
- * @property int    $id
+ * @property int $id
  * @property string $key
  * @property string $value
- * @property bool   $visible
+ * @property bool $visible
  */
 class Setting extends BaseModel
 {
@@ -24,7 +23,6 @@ class Setting extends BaseModel
     protected $fillable = ["id", "key", "value", "visible"];
     /** @var array The validation rules on create */
     protected $rules = [
-        "name" => "required|max:255",
         "value" => "required",
         "visible" => "required|boolean",
     ];
@@ -32,6 +30,8 @@ class Setting extends BaseModel
     protected $casts = [
         "visible" => "boolean",
     ];
+    public $timestamps = false;
+
 
     /**
      * Read a setting.
@@ -43,48 +43,55 @@ class Setting extends BaseModel
     public static function read(string $key)
     {
         /** @var Setting $setting */
-        $setting = self::where("key", "=", $key)
+        $setting = self::query()
+            ->where("key", "=", $key)
             ->firstOrFail();
 
         return $setting->value;
     }
 
+
     /**
      * Write a setting.
      *
-     * @param string $key     the setting key
-     * @param mixed  $value   the setting value
-     * @param bool   $visible the setting visibility (true for public visibility, 0 for admin-only)
+     * @param string $key the setting key
+     * @param mixed $value the setting value
+     * @param bool $visible the setting visibility (true for public visibility, 0 for admin-only)
      *
-     * @return bool
+     * @return mixed
      */
     public static function write(string $key, $value, bool $visible = true)
     {
-        $setting = self::where("key", "=", $key)
-            ->firstOrCreate([
-                "key" => $key,
-                "value" => $value,
-                "visible" => $visible,
-            ]);
+        /** @var Setting $setting */
+        $setting = self::query()
+            ->where("key", "=", $key)
+            ->firstOrNew(["key" => $key]);
+        $setting->fill([
+            "value" => $value,
+            "visible" => $visible
+        ]);
+        $setting->save();
 
-        return $setting instanceof self;
+        return $setting->value;
     }
+
 
     /**
      * Delete a setting.
      *
      * @param string $key the setting key
      *
-     * @throws Http422ModelSaveException
-     *
      * @return bool|null
+     * @throws Exception
      */
     public static function forgot(string $key)
     {
-        return self::where("key", "=", $key)
+        return self::query()
+            ->where("key", "=", $key)
             ->firstOrFail()
             ->delete();
     }
+
 
     /**
      * Un-serialize value attribute.
@@ -97,6 +104,7 @@ class Setting extends BaseModel
     {
         return unserialize($value);
     }
+
 
     /**
      * Serialize value attribute.

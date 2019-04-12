@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\User;
@@ -6,11 +7,9 @@ use App\Models\User;
 /**
  * Class FilePolicy.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.3.0
- * @copyright Mathrix Education SA
- * @package   App\Policies
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.3.0
  */
 class FilePolicy extends BasePolicy
 {
@@ -21,8 +20,9 @@ class FilePolicy extends BasePolicy
      */
     public function info(User $currentUser)
     {
-        return $currentUser->isModerator();
+        return $currentUser->tokenCan("moderator");
     }
+
 
     /**
      * @param User $currentUser
@@ -31,8 +31,9 @@ class FilePolicy extends BasePolicy
      */
     public function explore(User $currentUser)
     {
-        return $currentUser->isModerator();
+        return $currentUser->tokenCan("moderator");
     }
+
 
     /**
      * @param User $currentUser
@@ -41,8 +42,9 @@ class FilePolicy extends BasePolicy
      */
     public function upload(User $currentUser)
     {
-        return $currentUser->isModerator();
+        return $currentUser->tokenCan("moderator");
     }
+
 
     /**
      * @param User $currentUser
@@ -51,8 +53,9 @@ class FilePolicy extends BasePolicy
      */
     public function forceUpload(User $currentUser)
     {
-        return $currentUser->isAdmin();
+        return $currentUser->tokenCan("admin");
     }
+
 
     /**
      * @param User $currentUser
@@ -61,8 +64,9 @@ class FilePolicy extends BasePolicy
      */
     public function rename(User $currentUser)
     {
-        return $currentUser->isModerator();
+        return $currentUser->tokenCan("moderator");
     }
+
 
     /**
      * @param User $currentUser
@@ -71,8 +75,9 @@ class FilePolicy extends BasePolicy
      */
     public function forceRename(User $currentUser)
     {
-        return $currentUser->isAdmin();
+        return $currentUser->tokenCan("admin");
     }
+
 
     /**
      * @param User $currentUser
@@ -81,8 +86,9 @@ class FilePolicy extends BasePolicy
      */
     public function delete(User $currentUser)
     {
-        return $currentUser->isModerator();
+        return $currentUser->tokenCan("moderator");
     }
+
 
     /**
      * @param User $currentUser
@@ -91,6 +97,6 @@ class FilePolicy extends BasePolicy
      */
     public function forceDelete(User $currentUser)
     {
-        return $currentUser->isAdmin();
+        return $currentUser->tokenCan("admin");
     }
 }

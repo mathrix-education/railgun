@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Observers;
 
 use Illuminate\Notifications\DatabaseNotification;
@@ -7,11 +8,9 @@ use Illuminate\Support\Str;
 /**
  * Class NotificationObserver.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.2.0
- * @copyright Mathrix Education SA
- * @package   App\Observers
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.2.0
  */
 class NotificationObserver extends BaseObserver
 {

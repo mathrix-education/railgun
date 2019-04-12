@@ -22,6 +22,7 @@ class AddReviewToActivitiesTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      *

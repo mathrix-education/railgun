@@ -1,20 +1,18 @@
 <?php
+
 namespace App\Notifications;
 
 use App\Mails\TransactionSuccessMail;
 use App\Models\User;
 use Braintree\Transaction;
 use Braintree\Transaction\LineItem;
-use GuzzleHttp\Client;
 
 /**
  * Class TransactionSuccessNotification.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.0
- * @copyright Mathrix Education SA
- * @package   App\Notifications
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.1.0
  */
 class TransactionSuccessNotification extends MailNotification
 {
@@ -25,10 +23,11 @@ class TransactionSuccessNotification extends MailNotification
     /** @var LineItem[] $lineItems */
     private $lineItems;
 
+
     /**
      * TransactionSuccessNotification constructor.
      *
-     * @param User        $user
+     * @param User $user
      * @param Transaction $transaction
      */
     public function __construct(User $user, Transaction $transaction)
@@ -37,6 +36,7 @@ class TransactionSuccessNotification extends MailNotification
         $this->transaction = $transaction;
         $this->lineItems = LineItem::findAll($transaction->id);
     }
+
 
     /**
      * Get the mail representation of the notification.

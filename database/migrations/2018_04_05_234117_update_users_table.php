@@ -25,6 +25,7 @@ class UpdateUsersTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

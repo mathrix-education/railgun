@@ -23,6 +23,7 @@ class AddSEOLastModOnPathsTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      *

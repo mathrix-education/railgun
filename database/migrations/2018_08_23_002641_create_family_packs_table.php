@@ -38,6 +38,7 @@ class CreateFamilyPacksTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

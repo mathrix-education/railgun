@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\User;
@@ -7,24 +8,22 @@ use Illuminate\Notifications\DatabaseNotification;
 /**
  * Class NotificationPolicy.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.2.0
- * @copyright Mathrix Education SA
- * @package   App\Policies
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.2.0
  */
 class NotificationPolicy extends BasePolicy
 {
     /**
      * Check if user can mark a notification
      *
-     * @param User                 $currentUser
+     * @param User $currentUser
      * @param DatabaseNotification $notification
      *
      * @return bool
      */
     public function mark(User $currentUser, DatabaseNotification $notification)
     {
-        return $currentUser->isAdmin() || $notification->notifiable->id === $currentUser->id;
+        return $currentUser->tokenCan("admin") || $notification->notifiable->id === $currentUser->id;
     }
 }

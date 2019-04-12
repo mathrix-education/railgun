@@ -27,6 +27,7 @@ class UpdateTrancateCommentsTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

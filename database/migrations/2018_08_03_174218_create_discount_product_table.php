@@ -38,6 +38,7 @@ class CreateDiscountProductTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

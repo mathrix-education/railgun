@@ -29,6 +29,7 @@ class CreateSettingsTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

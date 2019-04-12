@@ -1,0 +1,163 @@
+# Mathrix Education API
+# =====================
+# Cloud Build Recipe
+# Author: Mathieu Bour
+# ====================
+substitutions:
+  # SonarQube
+  _SONARQUBE_PARENT_BRANCH:
+  # API
+  _API_IMAGE: 'education-api'
+  _API_DEPLOYMENT:
+  _API_CONTAINER:
+  # Docs
+  _DOCS_IMAGE: 'education-api-docs'
+  _DOCS_DEPLOYMENT:
+  _DOCS_CONTAINER:
+  # CLOUDSDK
+  _CLOUDSDK_COMPUTE_ZONE: 'europe-west1-b'
+  _CLOUDSDK_CONTAINER_CLUSTER: 'mathrix-education-cluster'
+options:
+  machineType: 'N1_HIGHCPU_8'
+steps:
+  # Decrypt the SSH private key for composer git clone
+  # --------------------------------------------------
+  - id: 'gcloud:kms:decrypt'
+    name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - kms
+      - decrypt
+      - --ciphertext-file=deploy/id_rsa.enc
+      - --plaintext-file=/root/.ssh/id_rsa
+      - --location=global
+      - --keyring=mathrix-education-keyring
+      - --key=github-key
+    volumes:
+      - name: 'ssh'
+        path: /root/.ssh
+
+
+  # Install PHP dependencies using composer
+  # ---------------------------------------
+  - id: 'composer:install'
+    waitFor: ['gcloud:kms:decrypt']
+    name: 'eu.gcr.io/$PROJECT_ID/runner-composer-prestissimo'
+    entrypoint: 'ash'
+    args:
+      - '-c'
+      - |
+        chmod 600 /root/.ssh/id_rsa
+        cat <<EOF >/root/.ssh/config
+        Hostname github.com
+        IdentityFile /root/.ssh/id_rsa
+        EOF
+        cp deploy/known_hosts /root/.ssh/known_hosts
+        composer install \
+          --optimize-autoloader \
+          --no-interaction \
+          --no-suggest \
+          --no-progress \
+          --no-ansi
+    volumes:
+      - name: 'ssh'
+        path: '/root/.ssh'
+
+
+  # Install Node dependencies using yarn
+  # ------------------------------------
+  - id: 'node:compile'
+    waitFor: ['-']
+    name: 'node:11-alpine'
+    entrypoint: 'ash'
+    args:
+      - '-c'
+      - |
+        yarn install
+        yarn run docs:compile
+        yarn run mails:compile
+
+
+  # Build API image
+  # ---------------
+  - id: 'docker:build:api'
+    waitFor: ['composer:install', 'node:compile']
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['build',
+           '--build-arg', 'COMMIT_SHORT_SHA=$SHORT_SHA',
+           '-t', 'eu.gcr.io/$PROJECT_ID/$_API_IMAGE:$SHORT_SHA',
+           '.']
+
+
+  # Build docs image
+  # ----------------
+  - id: 'docker:build:docs'
+    waitFor: ['composer:install', 'node:compile']
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['build',
+           '-f', 'docs/Dockerfile',
+           '--build-arg', 'COMMIT_SHORT_SHA=$SHORT_SHA',
+           '-t', 'eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:$SHORT_SHA',
+           '.']
+
+
+  # Run paratest in coverage mode
+  # Hack to allow step to fail: https://github.com/GoogleCloudPlatform/cloud-builders/issues/253
+  # --------------------------------------------------------------------------------------------
+  - id: 'docker-compose:tests'
+    waitFor: ['composer:install', 'node:compile']
+    name: 'eu.gcr.io/$PROJECT_ID/runner-docker-compose'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        docker-compose up --abort-on-container-exit || exit 0
+
+
+  # Send cover results to SonarQube
+  # ------------------------------
+  - id: 'sonar-scanner'
+    waitFor: ['docker-compose:tests']
+    name: 'eu.gcr.io/$PROJECT_ID/runner-sonar-scanner:angular'
+    args:
+      - '-Dsonar.projectVersion=$SHORT_SHA'
+      - '-Dsonar.branch.name=$BRANCH_NAME'
+
+
+  # Push the image API to the registry with commit tag
+  # --------------------------------------------------
+  - id: 'docker:push:api'
+    waitFor: ['docker:build:api', 'docker-compose:tests']
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'eu.gcr.io/$PROJECT_ID/$_API_IMAGE:$SHORT_SHA']
+
+
+  # Deploy API
+  # ------------------------------
+  - id: 'kubectl:deploy:api'
+    waitFor: ['docker:push:api']
+    name: 'gcr.io/cloud-builders/kubectl'
+    args: ['set', 'image', 'deployment', '$_API_DEPLOYMENT',
+           '$_API_CONTAINER=eu.gcr.io/$PROJECT_ID/$_API_IMAGE:$SHORT_SHA']
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=$_CLOUDSDK_COMPUTE_ZONE'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLOUDSDK_CONTAINER_CLUSTER'
+
+
+  # Push the image docs to the registry with commit tag
+  # ---------------------------------------------------
+  - id: 'docker:push:docs'
+    waitFor: ['docker:build:docs', 'docker-compose:tests']
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:$SHORT_SHA']
+
+
+  # Deploy docs
+  # -----------
+  - id: 'kubectl:deploy:docs'
+    waitFor: ['docker:push:docs']
+    name: 'gcr.io/cloud-builders/kubectl'
+    args: ['set', 'image', 'deployment', '$_DOCS_DEPLOYMENT',
+           '$_DOCS_CONTAINER=eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:$SHORT_SHA']
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=$_CLOUDSDK_COMPUTE_ZONE'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLOUDSDK_CONTAINER_CLUSTER'

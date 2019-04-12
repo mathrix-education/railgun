@@ -17,6 +17,7 @@ class DropStripeTables extends Migration
         Schema::dropIfExists("subscriptions");
     }
 
+
     /**
      * Reverse the migrations.
      */

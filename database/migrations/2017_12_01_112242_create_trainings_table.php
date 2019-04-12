@@ -28,6 +28,7 @@ class CreateTrainingsTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

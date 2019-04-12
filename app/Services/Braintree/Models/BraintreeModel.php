@@ -1,22 +1,21 @@
 <?php
+
 namespace App\Services\Braintree\Models;
 
-use App\Exceptions\Http404ModelNotFoundException;
 use ArrayAccess;
 use Braintree\Base;
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use JsonSerializable;
+use Mathrix\Lumen\Exceptions\Http\Http404NotFoundException;
 
 /**
  * Class BraintreeModel.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.0
- * @copyright Mathrix Education SA
- * @package   App\Services\Braintree\Models
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.1.0
  */
 abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 {
@@ -24,6 +23,7 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
     protected $model;
     /** @var array $attributes The custom model attributes */
     protected $attributes;
+
 
     public function __construct(Base $model)
     {
@@ -46,6 +46,7 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
         }
     }
 
+
     /**
      * Find a plan by its id or return null.
      *
@@ -59,15 +60,17 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
         });
     }
 
+
     /**
      * The findOr function, must be reimplemented.
      *
-     * @param string   $id
+     * @param string $id
      * @param callable $callback
      *
      * @return mixed
      */
     abstract public static function findOr(string $id, callable $callback);
+
 
     /**
      * Find a plan by its id.
@@ -79,9 +82,10 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
     public static function findOrFail(string $id)
     {
         return static::findOr($id, function () {
-            throw new Http404ModelNotFoundException();
+            throw new Http404NotFoundException();
         });
     }
+
 
     /**
      * Check if key exists in attributes, else check in the Braintree model.
@@ -95,29 +99,32 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
         return $this->attributes[$key] ?? $this->model->{$key};
     }
 
+
     /**
      * Set the attribute.
      *
      * @param string $key
-     * @param mixed  $value
+     * @param mixed $value
      */
     public function __set($key, $value)
     {
         $this->attributes[$key] = $value;
     }
 
+
     /**
      * Magic call.
      *
      * @param string $name
-     * @param array  $arguments
+     * @param array $arguments
      *
      * @return mixed
      */
     public function __call($name, $arguments)
     {
-        return \call_user_func_array([$this->model, $name], $arguments);
+        return call_user_func_array([$this->model, $name], $arguments);
     }
+
 
     /**
      * Whether a offset exists.
@@ -134,6 +141,7 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
         return isset($this->attributes[$offset]);
     }
 
+
     /**
      * Offset to retrieve.
      *
@@ -148,13 +156,14 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
         return $this->attributes[$offset] ?? null;
     }
 
+
     /**
      * Offset to set.
      *
      * @see http://php.net/manual/en/arrayaccess.offsetset.php
      *
      * @param mixed $offset the offset to assign the value to
-     * @param mixed $value  the value to set
+     * @param mixed $value the value to set
      */
     public function offsetSet($offset, $value): void
     {
@@ -164,6 +173,7 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
             $this->attributes[$offset] = $value;
         }
     }
+
 
     /**
      * Offset to unset.
@@ -179,6 +189,7 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
         }
     }
 
+
     /**
      * Convert the object to its JSON representation.
      *
@@ -190,6 +201,7 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
     {
         return json_encode($this->toArray(), $options);
     }
+
 
     /**
      * Get the array representation of the Plan.
@@ -210,6 +222,7 @@ abstract class BraintreeModel implements ArrayAccess, Arrayable, Jsonable, JsonS
 
         return $rawModelAttributes;
     }
+
 
     /**
      * Specify data which should be serialized to JSON.

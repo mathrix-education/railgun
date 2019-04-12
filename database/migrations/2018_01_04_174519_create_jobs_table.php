@@ -32,6 +32,7 @@ class CreateJobsTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

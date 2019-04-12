@@ -1,19 +1,19 @@
 <?php
+
 namespace App\Listeners;
 
 use App\Events\TransactionRefundSuccessEvent;
 use App\Models\User;
 use App\Notifications\TransactionRefundSuccessNotification;
 use Braintree\Transaction;
+use Mathrix\Lumen\Bases\BaseListener;
 
 /**
  * Class TransactionRefundSuccessListener.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.0
- * @copyright Mathrix Education SA
- * @package   App\Listeners
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.1.0
  */
 class TransactionRefundSuccessListener extends BaseListener
 {
@@ -27,7 +27,8 @@ class TransactionRefundSuccessListener extends BaseListener
         /** @var \Braintree\Transaction\CustomerDetails $customerDetails */
         $customerDetails = $transaction->customerDetails;
         /** @var User $user */
-        $user = User::where("braintree_id", "=", $customerDetails->id)
+        $user = User::query()
+            ->where("braintree_id", "=", $customerDetails->id)
             ->firstOrFail();
 
         $user->notify(new TransactionRefundSuccessNotification($user, $transaction));

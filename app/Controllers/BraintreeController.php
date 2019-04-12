@@ -1,32 +1,35 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Events\SubscriptionChargedSuccessfullyEvent;
 use App\Events\TransactionSuccessEvent;
 use App\Models\User;
+use Braintree\ClientToken;
+use Braintree\WebhookNotification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Laravel\Lumen\Routing\Controller;
+use Mathrix\Lumen\Bases\BaseController;
+use Mathrix\Lumen\Exceptions\ValidationException;
 
 /**
  * Class BraintreeController.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.3.0
- * @copyright Mathrix Education SA
- * @package   App\Controllers
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.3.0
  */
-class BraintreeController extends Controller
+class BraintreeController extends BaseController
 {
     /**
+     * GET /braintree/client-token.
      * Generate the Braintree Client Token.
      *
-     * @param Request $request The request
+     * @param Request $request The Illuminate HTTP request.
      *
-     * @return string
+     * @return JsonResponse
      */
-    public function clientToken(Request $request)
+    public function clientToken(Request $request): JsonResponse
     {
         /** @var User $user */
         $user = $request->user();
@@ -36,21 +39,22 @@ class BraintreeController extends Controller
             $payload["customerId"] = $user->braintree_id;
         }
 
-        $token = \Braintree_ClientToken::generate($payload);
+        $token = ClientToken::generate($payload);
 
         return new JsonResponse([
             "token" => $token,
         ]);
     }
 
+
     /**
+     * POST /braintree/webhook
      * Handle Braintree webhooks.
      *
-     * @param Request $request The request
-     *
-     * @throws \Illuminate\Validation\ValidationException
+     * @param Request $request The Illuminate HTTP request.
      *
      * @return JsonResponse
+     * @throws ValidationException
      */
     public function webhook(Request $request): JsonResponse
     {
@@ -59,13 +63,14 @@ class BraintreeController extends Controller
             "bt_payload" => "required",
         ]);
 
-        /** @var \Braintree_WebhookNotification $webhook */
-        $webhook = \Braintree_WebhookNotification::parse(
+        /** @var WebhookNotification $webhook */
+        $webhook = WebhookNotification::parse(
             $request->input("bt_signature"),
             $request->input("bt_payload")
         );
 
-        if ($webhook->kind === \Braintree_WebhookNotification::SUBSCRIPTION_CHARGED_SUCCESSFULLY) {
+        // TODO(2019-03-22): Check that is still functioning
+        if ($webhook->kind === WebhookNotification::SUBSCRIPTION_CHARGED_SUCCESSFULLY) {
             event(new TransactionSuccessEvent($webhook->subscription->transactions[0]));
             event(new SubscriptionChargedSuccessfullyEvent($webhook->subscription));
         }

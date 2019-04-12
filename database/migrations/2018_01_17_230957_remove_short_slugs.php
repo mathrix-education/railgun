@@ -32,6 +32,7 @@ class RemoveShortSlugs extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

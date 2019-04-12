@@ -8,7 +8,6 @@ USER root
 WORKDIR /var/www/
 
 EXPOSE 80
-EXPOSE 9000
 
 RUN apk -U add \
     nginx \
@@ -17,6 +16,7 @@ RUN apk -U add \
     php7-fileinfo \
     php7-fpm \
     php7-curl \
+    php7-dom \
     php7-gd \
     php7-intl \
     php7-json \
@@ -24,8 +24,10 @@ RUN apk -U add \
     php7-pdo_mysql \
     php7-phar \
     php7-redis \
+    php7-tokenizer \
     php7-xdebug \
     php7-xml \
+    php7-xmlwriter \
     php7-zip
 
 COPY deploy/nginx/nginx.conf /etc/nginx/nginx.conf
@@ -36,11 +38,10 @@ COPY deploy/php7/www.conf /etc/php7/php-fpm.d/www.conf
 
 ADD . .
 
-RUN echo "${COMMIT_SHORT_SHA}" >> version.txt
+RUN echo "${COMMIT_SHORT_SHA}" >> build.txt
 
 # Clean
-RUN rm -rf \
-    /var/cache/apk/*
+RUN rm -rf /var/cache/apk/*
 
 HEALTHCHECK CMD curl -f http://localhost
 

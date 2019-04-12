@@ -1,20 +1,17 @@
 <?php
+
 namespace App\Observers;
 
-use App\Exceptions\Http422ModelSaveException;
 use App\Models\Chapter;
-use App\Models\Notion;
-use App\Models\Path;
+use Illuminate\Support\Str;
+use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 
 /**
  * Class ChapterObserver.
  *
- * @author    Mathrix Back-End Team
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.3.0
- * @copyright Mathrix Education SA
- * @package   App\Observers
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.3.0
  */
 class ChapterObserver extends BaseObserver
 {
@@ -25,50 +22,24 @@ class ChapterObserver extends BaseObserver
      */
     public function saving($chapter)
     {
-        // Sluggify if needed
-        if (empty($chapter->slug) ||
-            ($chapter->isDirty("name") && !$chapter->isDirty("slug"))
-        ) {
-            $chapter->slug = str_slug($chapter->name);
-        }
-        $chapter->slug = str_slug($chapter->name);
-
-        // Sync notions
-        if (isset($chapter->link["notions"])) {
-            $toSync = [];
-            foreach ($chapter->link["notions"] as $order => $notionId) {
-                if (Notion::whereId($notionId)
-                    ->exists()) {
-                    $toSync[$notionId] = ["order" => $order];
-                }
-            }
-            $chapter->notions()
-                ->sync($toSync);
-        }
-
-        if (isset($chapter->link)) {
-            unset($chapter->link);
+        // Set the slug if needed
+        if (empty($chapter->slug) || ($chapter->isDirty("name") && !$chapter->isDirty("slug"))) {
+            $chapter->slug = Str::slug($chapter->name);
         }
 
         return true;
     }
 
+
     /**
-     * Delete all notions linked with the deleting chapter.
-     *
      * @param Chapter $chapter
      *
      * @return bool
+     * @throws Http400BadRequestException
      */
     public function deleting($chapter)
     {
-        $chapter->notions()
-            ->detach();
-        Path::where("chapter_id", "=", $chapter->id)
-            ->get()
-            ->each(function (Path $path) {
-                $path->delete();
-            });
+        $this->handleRelationDeletion($chapter, "notions");
 
         return true;
     }

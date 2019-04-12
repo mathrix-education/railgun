@@ -1,5 +1,7 @@
 <?php
 
+use Faker\Factory as FakerFactory;
+
 if (!function_exists("config_path")) {
     /**
      * Get the configuration path.
@@ -28,35 +30,23 @@ if (!function_exists("public_path")) {
     }
 }
 
-if (!function_exists('glob_recursive')) {
-    // Does not support flag GLOB_BRACE
-    function glob_recursive($pattern, $flags = 0)
-    {
-        $files = glob($pattern, $flags);
-        foreach (glob(dirname($pattern) . '/*', GLOB_ONLYDIR | GLOB_NOSORT) as $dir) {
-            $files = array_merge($files, glob_recursive($dir . '/' . basename($pattern), $flags));
-        }
-
-        return $files;
-    }
-}
-
-if (!function_exists('build_date')) {
+if (!function_exists("timestamps")) {
     /**
-     * Get the build date.
+     * Get two coherent timestamps.
      *
-     * @return string
+     * @param string $start
+     * @param int $bias
+     *
+     * @return array
      */
-    function build_date()
+    function timestamps($start = "-1 month", int $bias = 90): array
     {
-        $build = basename(dirname(__DIR__, 1));
+        $format = "Y-m-d H:i:s";
+        $faker = FakerFactory::create();
 
-        try {
-            $build = \Carbon\Carbon::createFromFormat("Y-m-d_H-i-s", $build)
-                ->toIso8601String();
-        } catch (InvalidArgumentException $e) {
-        }
+        $createdAt = $faker->dateTimeBetween($start);
+        $updatedAt = $faker->boolean($bias) ? $createdAt : $faker->dateTimeBetween($createdAt);
 
-        return $build;
+        return [$createdAt->format($format), $updatedAt->format($format)];
     }
 }

@@ -34,6 +34,7 @@ class DropTrainingsSectionsLessonsTable extends Migration
         Schema::dropIfExists("trainings");
     }
 
+
     /**
      * Reverse the migrations.
      */

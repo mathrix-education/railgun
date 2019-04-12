@@ -5,33 +5,41 @@ use App\Models\Log;
 use App\Models\Module;
 use App\Models\User;
 use Carbon\Carbon;
+use Faker\Factory as FakerFactory;
+use Illuminate\Support\Collection;
+use Mathrix\Lumen\Bases\BaseTableSeeder;
+use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 
 /**
  * Class LogTableSeeder.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.0.3
- * @copyright Mathrix Education SA
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.0.3
  */
 class LogTableSeeder extends BaseTableSeeder
 {
     /**
-     * @throws Http400InvalidRequestException
-     * @throws \Exception
+     * @throws Http400BadRequestException
      */
     public function run()
     {
-        $users = User::whereNotNull("class_id")
+        $faker = FakerFactory::create();
+        $users = User::query()
+            ->whereNotNull("grade_id")
             ->get();
+
         $today = Carbon::now();
-        $logs = [];
-        $counter = 0;
+        $logs = new Collection();
 
-        $this->output->writeln("<comment>Generating:</comment> logs");
+        $this->output->writeln("<comment>Generating:</comment> logs from {$users->count()} users");
 
+        $progressBar = $this->output->createProgressBar($users->count());
+        $progressBar->setFormat("verbose");
+        $progressBar->start();
+
+        /** @var User $user */
         foreach ($users as $user) {
-            /** @var User $user */
             /** @var Carbon $dateIterator */
             $dateIterator = $user->created_at->lessThan(Carbon::now()
                 ->subMonth()) ? Carbon::now()
@@ -39,45 +47,41 @@ class LogTableSeeder extends BaseTableSeeder
                 $user->created_at;
 
             while ($dateIterator->lessThan($today)) {
-                $dateIterator->setTime(random_int(0, 23), random_int(0, 59), random_int(0, 59));
+                $dateIterator->setTime(
+                    $faker->numberBetween(0, 23),
+                    $faker->numberBetween(0, 59),
+                    $faker->numberBetween(0, 59)
+                );
 
                 // 70% chance to gather points on the given day
-                if (random_int(0, 10) < 5) {
-                    $points = 10 * random_int(1, 9);
+                if ($faker->numberBetween(0, 10) < 5) {
+                    $points = 10 * $faker->numberBetween(1, 9);
 
                     for ($i = 0; $i < $points; $i += 10) {
-                        /** @var Module $module */
-                        $module = null;
-
-                        do {
-                            $module = Module::random();
-                        } while ($module->activities()
-                            ->get()
-                            ->isEmpty());
-
-                        $logs[] = Log::build("user_gathered_points", $user, [
-                            "points" => $points,
-                            "loggable_type" => "module",
-                            "loggable_id" => $module->id,
-                            "created_at" => $dateIterator,
-                        ])
-                            ->getAttributes();
-                        ++$counter;
-
-                        if ($counter % 100 === 0) {
-                            $this->output->write(".");
-                        }
+                        $logs->push(
+                            Log::build("user_gathered_points", $user, [
+                                "points" => $points,
+                                "loggable_type" => "module",
+                                "loggable_id" => Module::random()->id,
+                                "created_at" => $dateIterator,
+                            ])->getAttributes()
+                        );
                     }
                 }
 
                 $dateIterator->addDay(1);
             }
-        }
-        $this->output->writeln("");
-        $this->output->writeln("<info>Generated:</info> {$counter} logs");
 
+            $progressBar->advance();
+        }
+
+        $progressBar->finish();
+        $this->output->writeln("");
+        $this->output->writeln("<info>Generated:</info> {$logs->count()} logs");
+
+        // Seed generated array
         $this->output->writeln("<comment>Seeding:</comment> logs");
-        $this->seedFromArray($logs, "logs");
+        $this->seedFromArray($logs->toArray(), "logs");
         $this->output->writeln("<info>Seeded:</info> logs");
     }
 }

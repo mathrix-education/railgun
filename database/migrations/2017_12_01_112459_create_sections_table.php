@@ -35,6 +35,7 @@ class CreateSectionsTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

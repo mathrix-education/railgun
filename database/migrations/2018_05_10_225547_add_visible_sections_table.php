@@ -26,6 +26,7 @@ class AddVisibleSectionsTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

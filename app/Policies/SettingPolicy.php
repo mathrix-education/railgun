@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\Setting;
@@ -7,24 +8,23 @@ use App\Models\User;
 /**
  * Class SettingPolicy.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.0.3
- * @copyright Mathrix Education SA
- * @package   App\Policies
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.0.3
  */
 class SettingPolicy extends BasePolicy
 {
     /**
-     * @param User    $currentUser
+     * @param User $currentUser
      * @param Setting $setting
      *
      * @return bool
      */
     public function read(User $currentUser, Setting $setting)
     {
-        return $currentUser->isAdmin() || $setting->visible;
+        return $currentUser->tokenCan("admin") || $setting->visible;
     }
+
 
     /**
      * @param User $currentUser
@@ -33,8 +33,9 @@ class SettingPolicy extends BasePolicy
      */
     public function write(User $currentUser)
     {
-        return $currentUser->isAdmin();
+        return $currentUser->tokenCan("admin");
     }
+
 
     /**
      * @param User $currentUser
@@ -43,6 +44,6 @@ class SettingPolicy extends BasePolicy
      */
     public function forgot(User $currentUser)
     {
-        return $currentUser->isAdmin();
+        return $currentUser->tokenCan("admin");
     }
 }

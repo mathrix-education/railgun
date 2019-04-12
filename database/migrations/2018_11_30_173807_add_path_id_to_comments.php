@@ -32,7 +32,7 @@ class AddPathIdToComments extends Migration
             if ($comment->commentable_type == "post") {
                 $post = \App\Models\Post::findOrFail($comment->commentable_id);
                 $comment->module_id = $post->module->id;
-            } elseif ($comment->commentable_type == "activity") {
+            } else if ($comment->commentable_type == "activity") {
                 $activity = \App\Models\Activity::findOrFail($comment->commentable_id);
 
                 if ($activity->modules()->get()->isEmpty()) {
@@ -41,7 +41,7 @@ class AddPathIdToComments extends Migration
                 }
 
                 $comment->module_id = $activity->modules[0]->id;
-            } elseif ($comment->commentable_type == "module") {
+            } else if ($comment->commentable_type == "module") {
                 $comment->module_id = $comment->commentable_id;
             } else {
                 $comment->forceDelete();
@@ -58,6 +58,7 @@ class AddPathIdToComments extends Migration
             $table->dropColumn("commentable_type");
         });
     }
+
 
     /**
      * Reverse the migrations.

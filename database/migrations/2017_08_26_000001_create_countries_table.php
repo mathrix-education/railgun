@@ -30,6 +30,7 @@ class CreateCountriesTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

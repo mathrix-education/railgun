@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\User;
@@ -6,11 +7,9 @@ use App\Models\User;
 /**
  * Class UserPolicy.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
- * @package   App\Policies
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  */
 class UserPolicy extends BasePolicy
 {
@@ -22,10 +21,32 @@ class UserPolicy extends BasePolicy
      */
     public function get(User $currentUser, User $user)
     {
-        return $currentUser->id === $user->id
-            || $currentUser->isAdmin()
-            || ($currentUser->isModerator() && $user->type === "registered");
+        return $currentUser->id === $user->id || $currentUser->tokenCan("admin");
     }
+
+
+    /**
+     * @param User $currentUser
+     * @param User $user
+     *
+     * @return bool
+     */
+    public function patch(User $currentUser, User $user)
+    {
+        return  $currentUser->id === $user->id || $currentUser->tokenCan("admin");
+    }
+
+
+    /**
+     * @param User $currentUser
+     *
+     * @return bool
+     */
+    public function delete(User $currentUser)
+    {
+        return $currentUser->tokenCan("admin");
+    }
+
 
     /**
      * @param User $currentUser
@@ -34,19 +55,9 @@ class UserPolicy extends BasePolicy
      */
     public function search(User $currentUser)
     {
-        return $currentUser->isModerator();
+        return $currentUser->tokenCan("admin");
     }
 
-    /**
-     * @param User $currentUser
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function edit(User $currentUser, User $user)
-    {
-        return $currentUser->isAdmin() || $currentUser->id === $user->id;
-    }
 
     /**
      * @param User $currentUser
@@ -56,18 +67,6 @@ class UserPolicy extends BasePolicy
      */
     public function points(User $currentUser, User $user)
     {
-        return $currentUser->isAdmin() || $currentUser->id === $user->id;
-    }
-
-    /**
-     * @param User $currentUser
-     * @param User $user
-     *
-     * @return bool
-     * @codeCoverageIgnore // TODO: For now #GDPR
-     */
-    public function delete(User $currentUser, User $user)
-    {
-        return $currentUser->isAdmin() || $currentUser->id === $user->id;
+        return $currentUser->tokenCan("admin") || $currentUser->id === $user->id;
     }
 }

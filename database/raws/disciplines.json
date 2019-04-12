@@ -3,66 +3,88 @@
     "id": 1,
     "name": "Mathématiques",
     "slug": "maths",
-    "beta": 0
+    "beta": 0,
+    "created_at": "2019-03-29 09:28:39",
+    "updated_at": "2019-03-29 09:28:39"
   },
   {
     "id": 2,
     "name": "Physique",
     "slug": "physique",
-    "beta": 0
+    "beta": 0,
+    "created_at": "2019-03-29 09:28:39",
+    "updated_at": "2019-03-29 09:28:39"
   },
   {
     "id": 3,
     "name": "SVT",
     "slug": "svt",
-    "beta": 0
+    "beta": 0,
+    "created_at": "2019-03-29 09:28:39",
+    "updated_at": "2019-03-29 09:28:39"
   },
   {
     "id": 4,
     "name": "Sciences de l'Ingénieur",
     "slug": "science-ingenieur",
-    "beta": 0
+    "beta": 0,
+    "created_at": "2019-03-29 09:28:39",
+    "updated_at": "2019-03-29 09:28:39"
   },
   {
     "id": 5,
     "name": "Sciences Economiques et Sociales",
     "slug": "sciences-economiques-et-sociales",
-    "beta": 0
+    "beta": 0,
+    "created_at": "2019-03-29 09:28:39",
+    "updated_at": "2019-03-29 09:28:39"
   },
   {
     "id": 6,
     "name": "Philosophie",
     "slug": "philosophie",
-    "beta": 0
+    "beta": 0,
+    "created_at": "2019-03-29 09:28:39",
+    "updated_at": "2019-03-29 09:28:39"
   },
   {
     "id": 7,
     "name": "Histoire",
     "slug": "histoire",
-    "beta": 0
+    "beta": 0,
+    "created_at": "2019-03-29 09:28:39",
+    "updated_at": "2019-03-29 09:28:39"
   },
   {
     "id": 8,
     "name": "Géographie",
     "slug": "geographie",
-    "beta": 0
+    "beta": 0,
+    "created_at": "2019-03-29 09:28:39",
+    "updated_at": "2019-03-29 09:28:39"
   },
   {
     "id": 9,
     "name": "Français",
     "slug": "francais",
-    "beta": 1
+    "beta": 1,
+    "created_at": "2019-03-29 09:28:39",
+    "updated_at": "2019-03-29 09:28:39"
   },
   {
     "id": 10,
     "name": "Anglais",
     "slug": "anglais",
-    "beta": 1
+    "beta": 1,
+    "created_at": "2019-03-29 09:28:39",
+    "updated_at": "2019-03-29 09:28:39"
   },
   {
     "id": 11,
     "name": "Chimie",
     "slug": "chimie",
-    "beta": 0
+    "beta": 0,
+    "created_at": "2019-03-29 09:28:39",
+    "updated_at": "2019-03-29 09:28:39"
   }
 ]

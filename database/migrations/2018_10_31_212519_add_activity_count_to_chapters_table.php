@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddActivityCountToChaptersTable extends Migration
 {
@@ -17,6 +17,7 @@ class AddActivityCountToChaptersTable extends Migration
             $table->integer("activity_count")->unsigned()->default(0);
         });
     }
+
 
     /**
      * Reverse the migrations.

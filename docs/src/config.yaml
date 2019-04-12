@@ -1,0 +1,4 @@
+schemas:
+  dirs:
+    - source: "Braintree"
+      prefix: "Braintree_"

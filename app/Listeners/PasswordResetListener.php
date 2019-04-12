@@ -1,17 +1,17 @@
 <?php
+
 namespace App\Listeners;
 
 use App\Events\PasswordResetEvent;
 use App\Notifications\PasswordResetNotification;
+use Mathrix\Lumen\Bases\BaseListener;
 
 /**
  * Class PasswordResetListener.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.0
- * @copyright Mathrix Education SA
- * @package   App\Listeners
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.1.0
  */
 class PasswordResetListener extends BaseListener
 {

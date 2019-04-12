@@ -1,7 +1,7 @@
 <?php
+
 namespace App\Models;
 
-use App\Models\Traits\Votable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,33 +9,31 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Facades\Auth;
+use Mathrix\Lumen\Bases\BaseModel;
 
 /**
  * Class Comment.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
- * @package   App\Models
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  *
- * @property int                  $id
- * @property string|null          $content
- * @property int|null             $parent_id
- * @property int|null             $user_id
- * @property int                  $path_id
- * @property int                  $module_id
- * @property int                  $score
- * @property int|null             $user_vote
- * @property Carbon               $created_at
- * @property Carbon               $updated_at
- * @property Carbon|null          $deleted_at
- * @property User|null            $user
- * @property Path                 $path
- * @property Module               $module
- * @property Comment|null         $parent
+ * @property int $id
+ * @property string|null $content
+ * @property int|null $parent_id
+ * @property int|null $user_id
+ * @property int $path_id
+ * @property int $module_id
+ * @property int $score
+ * @property int|null $user_vote
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property Carbon|null $deleted_at
+ * @property User|null $user
+ * @property Module $module
+ * @property Comment|null $parent
  * @property Collection|Comment[] $children
- * @property Collection|Vote[]    $votes
+ * @property Collection|Vote[] $votes
  *
  * @method static QueryBuilder|Comment onlyTrashed()
  * @method static QueryBuilder|Comment withTrashed()
@@ -45,16 +43,10 @@ use Illuminate\Support\Facades\Auth;
  */
 class Comment extends BaseModel
 {
-    use Votable, SoftDeletes;
+    use SoftDeletes;
 
-    /** @var bool If timestamps (created_at and updated_at) should be used */
-    public $timestamps = true;
     /** @var array The default relations included */
-    public $with = [
-        "user:id,type,username,firstname,level,class_id",
-        "children",
-        "children.user:id,type,username,firstname,level,class_id",
-    ];
+    public $with = ["user:id,type,username,firstname,level,grade_id"];
     /** @var array The attributes that are mass assignable */
     protected $fillable = [
         "content",
@@ -62,7 +54,6 @@ class Comment extends BaseModel
         "parent_id",
         "user_id",
         "module_id",
-        "path_id",
         "created_at",
         "updated_at",
         "deleted_at"
@@ -77,35 +68,6 @@ class Comment extends BaseModel
     protected $dates = ["deleted_at"];
     /** @var array Virtual fields */
     protected $appends = ["score", "user_vote"];
-
-    /**
-     * Get the user vote value (null|1|-1).
-     *
-     * @return int|null
-     */
-    public function getUserVoteAttribute()
-    {
-        /** @var User $user */
-        $user = Auth::user();
-
-        if ($user === null) {
-            return null;
-        }
-
-        /** @var Vote $potentialVote */
-        $potentialVote = Vote::where([
-            ["user_id", $user->id],
-            ["votable_type", "comment"],
-            ["votable_id", $this->id],
-        ])
-            ->first();
-
-        if ($potentialVote === null) {
-            return null;
-        }
-
-        return $potentialVote->value;
-    }
 
     /*
     |--------------------------------------------------------------------------
@@ -122,6 +84,7 @@ class Comment extends BaseModel
         return $this->belongsTo(self::class, "parent_id");
     }
 
+
     /**
      * HasMany Comment.
      *
@@ -133,15 +96,17 @@ class Comment extends BaseModel
             ->orderBy("created_at");
     }
 
+
     /**
-     * BelongsTo Path.
+     * Get the votes.
      *
-     * @return BelongsTo
+     * @codeCoverageIgnore
      */
-    public function path(): BelongsTo
+    public function votes(): HasMany
     {
-        return $this->belongsTo(Path::class);
+        return $this->hasMany(Vote::class);
     }
+
 
     /**
      * BelongsTo Module.
@@ -153,6 +118,7 @@ class Comment extends BaseModel
         return $this->belongsTo(Module::class);
     }
 
+
     /**
      * BelongsTo Comment.
      *
@@ -161,5 +127,48 @@ class Comment extends BaseModel
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Attributes
+    |--------------------------------------------------------------------------
+    */
+    /**
+     * Score attribute.
+     *
+     * @return int
+     */
+    public function getScoreAttribute()
+    {
+        return (int)$this->votes()->sum("value");
+    }
+
+
+    /**
+     * Get the user vote value (0|1|-1).
+     *
+     * @return int
+     */
+    public function getUserVoteAttribute()
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        if ($user === null) {
+            return 0;
+        }
+
+        $query = $this->votes()->where("user_id", "=", $user->id);
+
+        if (!$query->exists()) {
+            return 0;
+        } else {
+            /** @var Vote $vote */
+            $vote = $query->firstOrFail();
+
+            return $vote->value;
+        }
     }
 }

@@ -26,6 +26,7 @@ class AddVisibleLessonsTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

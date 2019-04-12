@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services\Braintree\Models;
 
 use Braintree\Discount;
@@ -11,44 +12,43 @@ use Illuminate\Support\Str;
  * Class Plan.
  * Implements the Braintree Plan object and add a few more details.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.0
- * @copyright Mathrix Education SA
- * @package   App\Services\Braintree\Models
- * @mixin     \Braintree\Plan
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.1.0
  *
- * @property int         $billingDayOfMonth
- * @property int         $billingFrequency
- * @property string      $currencyIsoCode
- * @property string      $description
- * @property string      $id
- * @property string      $name
- * @property float       $price
- * @property string      $trialDuration
- * @property string      $trialDurationUnit
- * @property bool        $trialPeriod
- * @property Carbon      $createdAt
- * @property Carbon      $updatedAt
- * @property string      $pricingDetails
- * @property int         $pricePerMonth
- * @property int         $discount
- * @property bool        $freeHolidays
- * @property float|null  $trialPrice
+ * @property int $billingDayOfMonth
+ * @property int $billingFrequency
+ * @property string $currencyIsoCode
+ * @property string $description
+ * @property string $id
+ * @property string $name
+ * @property float $price
+ * @property string $trialDuration
+ * @property string $trialDurationUnit
+ * @property bool $trialPeriod
+ * @property Carbon $createdAt
+ * @property Carbon $updatedAt
+ * @property string $pricingDetails
+ * @property int $pricePerMonth
+ * @property int $discount
+ * @property bool $freeHolidays
+ * @property float|null $trialPrice
  * @property Carbon|null $trialStartDate
  * @property Carbon|null $trialEndDate
- * @property AddOn[]     $addOns
- * @property Discount[]  $discounts
+ * @property Discount[] $discounts
+ *
+ * @mixin \Braintree\Plan
  */
 class Plan extends BraintreeModel
 {
     public static $highestPricePerMonth = null;
 
+
     public function __construct(\Braintree\Plan $plan)
     {
         parent::__construct($plan);
 
-        $this->price = (float) ($this->price);
+        $this->price = (float)($this->price);
         $this->trialPeriod = Str::contains($this->id, "annually");
 
         $this->freeHolidays = $this->trialPeriod;
@@ -87,22 +87,76 @@ class Plan extends BraintreeModel
         } else {
             $this->discount = null;
         }
-
-        $addOns = [];
-        foreach (["_child_30", "_child_50"] as $addOnSuffix) {
-            $addOn = AddOn::find($this->id . $addOnSuffix);
-
-            if ($addOn !== null) {
-                $addOns[] = $addOn;
-            }
-        }
-        $this->addOns = $addOns;
     }
+
+
+    /**
+     * Get the trial price in euros.
+     *
+     * @return float
+     */
+    public function getTrialPrice()
+    {
+        $now = Carbon::now();
+        $trialEndDate = $this->getTrialEndDate();
+
+        $diffInMonths = $trialEndDate->diffInMonths($now);
+        $diffInDays = $trialEndDate->diffInDays($now->addMonths($diffInMonths));
+
+        return round($diffInMonths * $this->pricePerMonth + $diffInDays * ($this->pricePerMonth / 30), 2);
+    }
+
+
+    /**
+     * Get the plan trial end date.
+     *
+     * @return Carbon|null The plan trial en date, null if the plan has no trial
+     */
+    public function getTrialEndDate(): Carbon
+    {
+        $nextThirtyFirstJuly = new Carbon("31st July");
+
+        if ($nextThirtyFirstJuly->isPast()) {
+            $nextThirtyFirstJuly->addYear();
+        } else if ((new Carbon("1st May"))->isPast()) {
+            $nextThirtyFirstJuly->addYear();
+        }
+
+        switch ($this->id) {
+            case "v4_annually":
+                break;
+            case "v4_biannually":
+                $nextThirtyFirstJuly->addYear();
+                break;
+            default:
+                return null;
+        }
+
+        return $nextThirtyFirstJuly;
+    }
+
+
+    /**
+     * Convert a float to a well-formatted price.
+     *
+     * @param float $price
+     * @param string $currencySymbol
+     *
+     * @return string
+     */
+    public function formatPrice($price, $currencySymbol = "€")
+    {
+        $price *= 100;
+        $priceStr = "$price";
+
+        return mb_substr($priceStr, 0, -2) . "." . mb_substr($priceStr, -2) . " $currencySymbol";
+    }
+
 
     /**
      * Find a plan by its id or execute a callback.
      *
-     * @param string   $id
+     * @param string $id
      * @param callable $callback
      *
      * @return Plan
@@ -121,10 +175,11 @@ class Plan extends BraintreeModel
         return $callback($id);
     }
 
+
     /**
      * Get all plans.
      *
-     * @return Collection
+     * @return Plan[]|Collection
      */
     public static function all()
     {
@@ -150,6 +205,7 @@ class Plan extends BraintreeModel
         });
     }
 
+
     /**
      * Get the equivalent of a the old Striple plan using Braintree
      *
@@ -161,72 +217,12 @@ class Plan extends BraintreeModel
     {
         if (Str::contains($stripePlanId, "monthly")) {
             return "v4_monthly";
-        } elseif (Str::contains($stripePlanId, "annually")) {
+        } else if (Str::contains($stripePlanId, "annually")) {
             return "v4_annually";
-        } elseif (Str::contains($stripePlanId, "biannually")) {
+        } else if (Str::contains($stripePlanId, "biannually")) {
             return "v4_biannually";
         } else {
             return false;
         }
-    }
-
-    /**
-     * Get the trial price in euros.
-     *
-     * @return float
-     */
-    public function getTrialPrice()
-    {
-        $now = Carbon::now();
-        $trialEndDate = $this->getTrialEndDate();
-
-        $diffInMonths = $trialEndDate->diffInMonths($now);
-        $diffInDays = $trialEndDate->diffInDays($now->addMonths($diffInMonths));
-
-        return round($diffInMonths * $this->pricePerMonth + $diffInDays * ($this->pricePerMonth / 30), 2);
-    }
-
-    /**
-     * Get the plan trial end date.
-     *
-     * @return Carbon|null The plan trial en date, null if the plan has no trial
-     */
-    public function getTrialEndDate(): Carbon
-    {
-        $nextThirtyFirstJuly = new Carbon("31st July");
-
-        if ($nextThirtyFirstJuly->isPast()) {
-            $nextThirtyFirstJuly->addYear();
-        } elseif ((new Carbon("1st May"))->isPast()) {
-            $nextThirtyFirstJuly->addYear();
-        }
-
-        switch ($this->id) {
-            case "v4_annually":
-                break;
-            case "v4_biannually":
-                $nextThirtyFirstJuly->addYear();
-                break;
-            default:
-                return null;
-        }
-
-        return $nextThirtyFirstJuly;
-    }
-
-    /**
-     * Convert a float to a well-formatted price.
-     *
-     * @param float  $price
-     * @param string $currencySymbol
-     *
-     * @return string
-     */
-    public function formatPrice($price, $currencySymbol = "€")
-    {
-        $price *= 100;
-        $priceStr = "$price";
-
-        return mb_substr($priceStr, 0, -2) . "." . mb_substr($priceStr, -2) . " $currencySymbol";
     }
 }

@@ -42,6 +42,7 @@ class CreateUserPurchaseTable extends Migration
             ->update(["purchasable_type" => "training"]);
     }
 
+
     /**
      * Reverse the migrations.
      */

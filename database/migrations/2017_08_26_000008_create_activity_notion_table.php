@@ -38,6 +38,7 @@ class CreateActivityNotionTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

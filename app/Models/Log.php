@@ -1,31 +1,29 @@
 <?php
+
 namespace App\Models;
 
-use App\Exceptions\Http400InvalidRequestException;
-use App\Exceptions\Http422ModelSaveException;
-use App\Exceptions\Http422ModelValidationException;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Mathrix\Lumen\Bases\BaseModel;
+use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 
 /**
  * Class Log.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
- * @package   App\Models
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  *
- * @property int             $id
- * @property string          $event
- * @property int|null        $user_id
- * @property string|null     $value
- * @property Carbon          $created_at
- * @property string|null     $loggable_type
- * @property int|null        $loggable_id
- * @property User|null       $user
+ * @property int $id
+ * @property string $event
+ * @property int|null $user_id
+ * @property string|null $value
+ * @property Carbon $created_at
+ * @property string|null $loggable_type
+ * @property int|null $loggable_id
+ * ---
+ * @property User|null $user
  * @property Activity|Module $loggable
  */
 class Log extends BaseModel
@@ -59,6 +57,8 @@ class Log extends BaseModel
         // Sections-related
         "user_payment_succeed_for_section",
         "user_payment_failed_for_section",
+        // Braintree
+        "braintree_user_customer_creation_failed",
     ];
 
     /** @var bool If timestamps (created_at and updated_at) should be used */
@@ -68,42 +68,38 @@ class Log extends BaseModel
     /** @var array The attributes that should be cast to native types */
     protected $casts = ["value" => "array"];
 
+
     /**
      * Add a log line the the database.
      *
-     * @param string        $event the event name
-     * @param User|int|null $user  the user as model, its id or njull for system log
-     * @param array         $data  the optional data to associate with the log, such as the loggable type and id
-     *
-     * @throws Http400InvalidRequestException
-     * @throws Http422ModelSaveException
-     * @throws Http422ModelValidationException
-     * @throws \Exception
+     * @param string $event the event name
+     * @param User|int|null $user the user as model, its id or njull for system log
+     * @param array $data the optional data to associate with the log, such as the loggable type and id
      *
      * @return bool
+     * @throws Http400BadRequestException
+     * @throws \Mathrix\Lumen\Exceptions\ValidationException
      */
     public static function log(string $event, $user = null, $data = [])
     {
-        return self::build($event, $user, $data)
-            ->save();
+        return self::build($event, $user, $data)->save();
     }
+
 
     /**
      * Build a log line.
      *
-     * @param string        $event the event name
-     * @param User|int|null $user  the user as model, its id or njull for system log
-     * @param array         $data  the optional data to associate with the log, such as the loggable type and id
-     *
-     * @throws Http400InvalidRequestException
-     * @throws \Exception
+     * @param string $event the event name
+     * @param User|int|null $user the user as model, its id or null for system log
+     * @param array $data the optional data to associate with the log, such as the loggable type and id
      *
      * @return Log
+     * @throws Http400BadRequestException
      */
     public static function build(string $event, $user = null, $data = []): self
     {
-        if (!\in_array($event, self::EVENTS, true)) {
-            throw new Http400InvalidRequestException("`$event` is not a valid event");
+        if (!in_array($event, self::EVENTS, true)) {
+            throw new Http400BadRequestException(["event" => $event], "`$event` is not a valid event");
         }
 
         $logData = [
@@ -127,6 +123,7 @@ class Log extends BaseModel
         return new self($logData);
     }
 
+
     /**
      * Disable updated_at field update; seems to be a hack.
      *
@@ -144,7 +141,6 @@ class Log extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
-
     /**
      * BelongsTo User.
      *
@@ -154,6 +150,7 @@ class Log extends BaseModel
     {
         return $this->belongsTo(User::class);
     }
+
 
     /**
      * MorphTo Loggable.

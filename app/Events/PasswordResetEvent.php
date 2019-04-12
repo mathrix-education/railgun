@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Events;
 
 use App\Models\User;
@@ -7,16 +8,15 @@ use App\Models\User;
  * Class PasswordResetEvent.
  * Fired when a user successfully reset his password.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.1
- * @copyright Mathrix Education SA
- * @package   App\Events
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.1
  */
 class PasswordResetEvent extends BaseEvent
 {
     /** @var User */
     public $user;
+
 
     /**
      * PasswordResetEvent constructor.

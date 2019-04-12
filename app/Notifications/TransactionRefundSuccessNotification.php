@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Notifications;
 
 use App\Mails\TransactionRefundMail;
@@ -9,11 +10,9 @@ use Braintree\Transaction\LineItem;
 /**
  * Class TransactionRefundSuccessNotification.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.3.0
- * @copyright Mathrix Education SA
- * @package   App\Notifications
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.3.0
  */
 class TransactionRefundSuccessNotification extends MailNotification
 {
@@ -26,10 +25,11 @@ class TransactionRefundSuccessNotification extends MailNotification
     /** @var Transaction $refund */
     private $refund;
 
+
     /**
      * TransactionRefundSuccessNotification constructor.
      *
-     * @param User        $user
+     * @param User $user
      * @param Transaction $transaction
      */
     public function __construct(User $user, Transaction $transaction)
@@ -39,6 +39,7 @@ class TransactionRefundSuccessNotification extends MailNotification
         $this->transaction = Transaction::find($transaction->refundedTransactionId);
         $this->lineItems = LineItem::findAll($transaction->id);
     }
+
 
     /**
      * Get the mail representation of the notification.

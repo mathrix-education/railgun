@@ -1,19 +1,18 @@
 <?php
+
 namespace App\Mails;
 
 use App\Models\User;
 use Braintree\Transaction;
 use Braintree\Transaction\LineItem;
-use Cache;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * Class TransactionSuccessMail.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.0
- * @copyright Mathrix Education SA
- * @package   App\Mails
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.1.0
  */
 class TransactionSuccessMail extends BaseMail
 {
@@ -24,6 +23,7 @@ class TransactionSuccessMail extends BaseMail
     /** @var User $user */
     private $user;
 
+
     public function __construct(User $user, Transaction $transaction, array $lineItems)
     {
         $this->user = $user;
@@ -32,6 +32,7 @@ class TransactionSuccessMail extends BaseMail
 
         parent::__construct();
     }
+
 
     /**
      * Mock the Mail.
@@ -42,8 +43,7 @@ class TransactionSuccessMail extends BaseMail
      */
     public static function mock(string $transactionId = null): self
     {
-        $user = User::inRandomOrder()
-            ->first();
+        $user = User::random();
 
         if ($transactionId === null) {
             $transaction = Cache::remember("TransactionSuccessMail_transaction", 1, function () {
@@ -62,6 +62,7 @@ class TransactionSuccessMail extends BaseMail
         return new self($user, $transaction, $transactionLineItems);
     }
 
+
     /**
      * Build the mail.
      *
@@ -71,7 +72,7 @@ class TransactionSuccessMail extends BaseMail
     {
         $this->subject("Votre reçu de Mathrix");
 
-        return $this->view("emails.transactions.success", [
+        return $this->view("mails.transactions.success", [
             "title" => "Reçu de Mathrix",
             "user" => $this->user,
             "transaction" => $this->transaction,

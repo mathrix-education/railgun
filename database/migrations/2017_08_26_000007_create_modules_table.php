@@ -41,6 +41,7 @@ class CreateModulesTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

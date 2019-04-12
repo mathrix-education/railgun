@@ -13,4 +13,7 @@
   <component name="JavaScriptSettings">
     <option name="languageLevel" value="ES6" />
   </component>
+  <component name="ProjectPlainTextFileTypeManager">
+    <file url="file://$PROJECT_DIR$/app/Policies/SubscriptionPolicy.php" />
+  </component>
 </project>

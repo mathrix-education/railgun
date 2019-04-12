@@ -27,6 +27,7 @@ class UpdateCommentsTableChangeTypeFromEnumToString extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      */

@@ -1,0 +1,275 @@
+[
+  {
+    "id": 1,
+    "grade_id": 5,
+    "discipline_id": 1,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 2,
+    "grade_id": 6,
+    "discipline_id": 1,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 3,
+    "grade_id": 7,
+    "discipline_id": 1,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 4,
+    "grade_id": 8,
+    "discipline_id": 1,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 5,
+    "grade_id": 8,
+    "discipline_id": 2,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 6,
+    "grade_id": 9,
+    "discipline_id": 1,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 7,
+    "grade_id": 10,
+    "discipline_id": 1,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 8,
+    "grade_id": 11,
+    "discipline_id": 1,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 9,
+    "grade_id": 11,
+    "discipline_id": 3,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 10,
+    "grade_id": 11,
+    "discipline_id": 2,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 11,
+    "grade_id": 12,
+    "discipline_id": 1,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 12,
+    "grade_id": 13,
+    "discipline_id": 1,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 13,
+    "grade_id": 14,
+    "discipline_id": 1,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 14,
+    "grade_id": 11,
+    "discipline_id": 4,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 15,
+    "grade_id": 8,
+    "discipline_id": 4,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 22,
+    "grade_id": 9,
+    "discipline_id": 6,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 23,
+    "grade_id": 10,
+    "discipline_id": 6,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 24,
+    "grade_id": 11,
+    "discipline_id": 6,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 25,
+    "grade_id": 5,
+    "discipline_id": 2,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 26,
+    "grade_id": 6,
+    "discipline_id": 2,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 27,
+    "grade_id": 7,
+    "discipline_id": 2,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 28,
+    "grade_id": 5,
+    "discipline_id": 11,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 29,
+    "grade_id": 8,
+    "discipline_id": 11,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 30,
+    "grade_id": 10,
+    "discipline_id": 5,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 32,
+    "grade_id": 11,
+    "discipline_id": 7,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 33,
+    "grade_id": 11,
+    "discipline_id": 8,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 34,
+    "grade_id": 10,
+    "discipline_id": 7,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 35,
+    "grade_id": 10,
+    "discipline_id": 8,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 36,
+    "grade_id": 9,
+    "discipline_id": 7,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 37,
+    "grade_id": 9,
+    "discipline_id": 8,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 38,
+    "grade_id": 7,
+    "discipline_id": 7,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 39,
+    "grade_id": 7,
+    "discipline_id": 8,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 40,
+    "grade_id": 5,
+    "discipline_id": 7,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 41,
+    "grade_id": 5,
+    "discipline_id": 8,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 42,
+    "grade_id": 14,
+    "discipline_id": 7,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 43,
+    "grade_id": 14,
+    "discipline_id": 8,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 44,
+    "grade_id": 14,
+    "discipline_id": 3,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 45,
+    "grade_id": 5,
+    "discipline_id": 3,
+    "visible": 1,
+    "order": 0
+  },
+  {
+    "id": 46,
+    "grade_id": 11,
+    "discipline_id": 11,
+    "visible": 1,
+    "order": 0
+  }
+]

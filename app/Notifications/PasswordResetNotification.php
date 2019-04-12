@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Notifications;
 
 use App\Mails\PasswordResetMail;
@@ -7,16 +8,15 @@ use App\Models\User;
 /**
  * Class PasswordResetNotification.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.1.0
- * @copyright Mathrix Education SA
- * @package   App\Notifications
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.1.0
  */
 class PasswordResetNotification extends MailNotification
 {
     /** @var User $user */
     public $user;
+
 
     /**
      * PasswordResetNotification constructor.
@@ -27,6 +27,7 @@ class PasswordResetNotification extends MailNotification
     {
         $this->user = $user;
     }
+
 
     /**
      * Get the mail representation of the notification.

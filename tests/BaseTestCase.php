@@ -1,28 +1,26 @@
 <?php
+
 namespace Tests;
 
-use Faker\Factory;
+use Faker\Factory as FakerFactory;
 use Faker\Generator;
 use Helmich\JsonAssert\JsonAssertions;
 use Laravel\Lumen\Testing\TestCase;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
+
 /**
  * Class BaseTestCase.
- * Base class for every test.
  *
- * @author    Mathieu Bour <mathieu@mathrix.fr>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.3.0
- * @copyright Mathrix Education SA
- * @package   Tests
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.3.0
  */
 abstract class BaseTestCase extends TestCase
 {
-    use JsonAssertions;
-
     /** @var Generator */
     public $faker;
+
 
     /**
      * Setup the test environment.
@@ -30,9 +28,11 @@ abstract class BaseTestCase extends TestCase
      */
     public function setUp()
     {
-        $this->faker = Factory::create();
+
+        $this->faker = FakerFactory::create();
         parent::setUp();
     }
+
 
     /**
      * Destroy database connection after each test to avoid the Too Many Connections error.
@@ -53,7 +53,6 @@ abstract class BaseTestCase extends TestCase
     | Hooks
     |--------------------------------------------------------------------------
     */
-
     /**
      * Creates the application.
      * Needs to be implemented by subclasses.

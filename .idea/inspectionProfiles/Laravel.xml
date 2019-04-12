@@ -35,5 +35,7 @@
       <option name="CUSTOM_RULESET_PATH" value="$PROJECT_DIR$/.php_cs.dist" />
     </inspection_tool>
     <inspection_tool class="PhpDynamicAsStaticMethodCallInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="YamlReference" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="YamlSchema" enabled="false" level="ERROR" enabled_by_default="false" />
   </profile>
 </component>

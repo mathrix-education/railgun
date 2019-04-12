@@ -1,43 +1,21 @@
 <?php
+
 namespace App\Observers;
 
 use App\Events\CommentAnswerEvent;
-use App\Exceptions\Http422ModelSaveException;
 use App\Models\Comment;
+use App\Models\Vote;
 use Exception;
 
 /**
  * Class CommentObserver.
  *
- * @author    Mathrix Back-End Team
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     4.3.0
- * @copyright Mathrix Education SA
- * @package   App\Observers
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 4.3.0
  */
 class CommentObserver extends BaseObserver
 {
-    /**
-     * @param Comment $comment
-     *
-     * @throws Http422ModelSaveException
-     * @throws Exception
-     *
-     * @return bool
-     */
-    public function saving($comment)
-    {
-        if ($comment->isDirty("deleted_at")) {
-            /** @var Comment $child */
-            foreach ($comment->children as $child) {
-                $child->delete();
-            }
-        }
-
-        return true;
-    }
-
     /**
      * @param Comment $comment
      */
@@ -48,18 +26,24 @@ class CommentObserver extends BaseObserver
         }
     }
 
+
     /**
      * @param Comment $comment
      *
-     * @throws Http422ModelSaveException
-     *
      * @return bool
+     * @throws Exception
      */
     public function deleting($comment)
     {
         $children = Comment::withTrashed()
             ->where("parent_id", "=", $comment->id)
             ->get();
+
+        if ($comment->isForceDeleting()) {
+            $comment->votes()->each(function (Vote $vote) {
+                $vote->delete();
+            });
+        }
 
         /** @var Comment $child */
         foreach ($children as $child) {

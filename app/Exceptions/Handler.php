@@ -1,9 +1,8 @@
 <?php
+
 namespace App\Exceptions;
 
 use App\Models\User;
-use Exception;
-use Google\Cloud\ErrorReporting\Bootstrap;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -15,6 +14,8 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use League\OAuth2\Server\Exception\OAuthServerException;
+use Mathrix\Lumen\Exceptions\Http\HttpException as MathrixHTTPException;
+use Mathrix\Lumen\Exceptions\Http\HttpException;
 use ReflectionClass;
 use Symfony\Component\HttpKernel\Exception\HttpException as SymphonyHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -23,11 +24,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * Class Handler.
  * Handle exceptions and display them in json as response. Also handle Sentry's behavior.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.0
- * @copyright Mathrix Education SA
- * @package   App\Exceptions
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.0
  */
 class Handler extends ExceptionHandler
 {
@@ -45,27 +44,23 @@ class Handler extends ExceptionHandler
         ModelNotFoundException::class,
         ValidationException::class,
         OAuthServerException::class,
-        Http401UnauthorizedException::class,
-        Http404ModelNotFoundException::class,
-        Http422ModelValidationException::class,
-        Http429TooManyRequestsException::class,
-        Http501NotImplementedException::class,
+        HttpException::class
     ];
+
 
     /**
      * Sentry integration.
      *
-     * @param Exception $e
-     *
-     * @throws Exception
+     * @param \Exception $e
+     * @throws \Exception
      *
      * @codeCoverageIgnore
      */
-    public function report(Exception $e)
+    public function report(\Exception $e)
     {
         $sentryDSN = env("SENTRY_DSN");
 
-        if ($sentryDSN !== "none" && app()->bound("sentry") && $this->shouldReport($e)) {
+        if ($sentryDSN !== null && app()->bound("sentry") && $this->shouldReport($e)) {
             /** @var \Raven_Client $sentry */
             $sentry = app("sentry");
 
@@ -79,32 +74,28 @@ class Handler extends ExceptionHandler
             $sentry->captureException($e);
         }
 
-        // GCP Stackdriver
-        if (isset($_SERVER['GAE_SERVICE'])) {
-            Bootstrap::exceptionHandler($e);
-        }
-
         parent::report($e);
     }
+
 
     /**
      * Render an exception into an HTTP response.
      *
-     * @param Request    $request
+     * @param Request $request
      * @param \Exception $e
      *
      * @throws \ReflectionException
      *
      * @return JsonResponse|Response
      */
-    public function render($request, Exception $e)
+    public function render($request, \Exception $e)
     {
+        if ($e instanceof MathrixHTTPException) {
+            return $e->toJsonResponse();
+        }
+
         $overriddenStatusCode = false;
 
-        if ($e instanceof HttpException) {
-            /* @var $e HttpException */
-            return $e->getResponse();
-        }
         $exceptionClass = (new ReflectionClass($e))->getShortName(); // Get the Exception class name
 
         // Default exception handler
@@ -126,7 +117,7 @@ class Handler extends ExceptionHandler
                     "column" => $matches[2],
                     "sql" => $matches[3],
                 ]);
-            } elseif (preg_match(self::REGEX_MYSQL_GENERIC, $e->getMessage(), $matches)) {
+            } else if (preg_match(self::REGEX_MYSQL_GENERIC, $e->getMessage(), $matches)) {
                 $json = array_merge($json, [
                     "type" => "generic",
                     "sqlstate" => $matches[1],
@@ -144,7 +135,7 @@ class Handler extends ExceptionHandler
         }
 
         // Include trace in debug mode
-        if (app()->environment("testing", "local", "dev", "pipelines", "next")) {
+        if (app()->environment("testing", "local", "dev")) {
             $json["trace"] = explode("\n", $e->getTraceAsString());
         }
 

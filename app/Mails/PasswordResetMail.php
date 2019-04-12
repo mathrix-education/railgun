@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Mails;
 
 use App\Models\User;
@@ -6,16 +7,15 @@ use App\Models\User;
 /**
  * Class PasswordResetMail.
  *
- * @author    Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @author    Jérémie Levain <munezero999@live.fr>
- * @since     1.0.1
- * @copyright Mathrix Education SA
- * @package   App\Mails
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 1.0.1
  */
 class PasswordResetMail extends BaseMail
 {
     /** @var User The mail user */
     private $user;
+
 
     /**
      * PasswordResetMail constructor.
@@ -29,6 +29,7 @@ class PasswordResetMail extends BaseMail
         parent::__construct();
     }
 
+
     /**
      * Mock the Mail.
      *
@@ -41,6 +42,7 @@ class PasswordResetMail extends BaseMail
         return new self($user);
     }
 
+
     /**
      * Build the Mail.
      *
@@ -50,7 +52,7 @@ class PasswordResetMail extends BaseMail
     {
         $this->subject("Mot de passe réinitialisé");
 
-        return $this->view("emails.users.passwordReset", [
+        return $this->view("mails.users.passwordReset", [
             "title" => "Mot de passe réinitialisé",
             "firstname" => $this->user->firstname ?? $this->user->username,
         ]);
