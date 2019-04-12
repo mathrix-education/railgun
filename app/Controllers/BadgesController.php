@@ -44,7 +44,7 @@ class BadgesController extends BaseController
      */
     public function coverage()
     {
-        $textReport = app()->basePath("artifacts/cover-text.txt");
+        $textReport = app()->basePath("artifacts/coverage.txt");
         $message = "Unknown";
         $color = "lightgrey";
 

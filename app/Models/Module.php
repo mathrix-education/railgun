@@ -95,6 +95,7 @@ class Module extends BaseModel
     {
         // Dynamic rules
         $this->rules["type"] = "required|in:" . implode(",", self::TYPES);
+
         return $this->rules;
     }
 
@@ -117,6 +118,10 @@ class Module extends BaseModel
 
         if ($strip) {
             $array = Arr::only($array, $keep);
+
+            if ($this->type === "flashcard") {
+                $array["questions"] = array_fill(0, count($this->questions), "");
+            }
         }
 
         return $array;
