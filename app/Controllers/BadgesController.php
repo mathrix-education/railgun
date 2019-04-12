@@ -46,9 +46,9 @@ class BadgesController extends BaseController
     {
         return new JsonResponse([
             "schemaVersion" => 1,
-            "label" => "Coverage",
+            "label" => "Version",
             "color" => "blue",
-            "message" => env("APP_VERSION")
+            "message" => env("APP_VERSION") . " - " . env("APP_BUILD")
         ]);
     }
 
