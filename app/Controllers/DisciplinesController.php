@@ -59,7 +59,7 @@ class DisciplinesController extends BaseController
         $query = $grade->disciplines();
 
         if (!$allowedToSeeAll || !$wantsToSeeAll) {
-            $query = $query->wherePivot("visible", "=", true);
+            $query = $query->where("chapters.visible", "=", true);
         }
 
 

@@ -18,4 +18,9 @@
             </exclude>
         </whitelist>
     </filter>
+    <logging>
+        <log type="coverage-clover" target="artifacts/cover-clover.xml"/>
+        <log type="coverage-text" target="artifacts/cover-text.txt"/>
+        <log type="junit" target="artifacts/junit.xml"/>
+    </logging>
 </phpunit>

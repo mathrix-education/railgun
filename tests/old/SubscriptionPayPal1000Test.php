@@ -22,7 +22,7 @@ use Laravel\Passport\Passport;
  *
  * @author Mathieu Bour <mathieu@mathrix.fr>
  * @copyright Mathrix Education SA.
- * @since 5.0.0
+ * @since 5.0.0-rc1
  */
 class SubscriptionPayPal1000Test extends BraintreeTestCase
 {

@@ -10,7 +10,7 @@ use Mathrix\Lumen\Bases\BaseCommand;
  *
  * @author Mathieu Bour <mathieu@mathrix.fr>
  * @copyright Mathrix Education SA.
- * @since 5.0.0
+ * @since 5.0.0-rc1
  */
 class PyramidFixCommand extends BaseCommand
 {

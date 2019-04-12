@@ -34,7 +34,7 @@ use PHPUnit\Framework\Constraint\StringStartsWith;
  *
  * @author Mathieu Bour <mathieu@mathrix.fr>
  * @copyright Mathrix Education SA.
- * @since 5.0.0
+ * @since 5.0.0-rc1
  */
 class SubscriptionVisa2001ThenPayPal1000Test extends BraintreeTestCase
 {

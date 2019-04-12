@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
  *
  * @author Mathieu Bour <mathieu@mathrix.fr>
  * @copyright Mathrix Education SA.
- * @since 5.0.0
+ * @since 5.0.0-rc1
  *
  * @var Factory $factory
  */
@@ -39,7 +39,7 @@ $factory->define(Module::class, function (Generator $faker) {
  *
  * @author Mathieu Bour <mathieu@mathrix.fr>
  * @copyright Mathrix Education SA.
- * @since 5.0.0
+ * @since 5.0.0-rc1
  *
  * @var Factory $factory
  */
