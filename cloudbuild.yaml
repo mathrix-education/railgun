@@ -156,8 +156,16 @@ steps:
   - id: 'kubectl:deploy:docs'
     waitFor: ['docker:push:docs']
     name: 'gcr.io/cloud-builders/kubectl'
-    args: ['set', 'image', 'deployment', '$_DOCS_DEPLOYMENT',
-           '$_DOCS_CONTAINER=eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:$SHORT_SHA']
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        if [[ "$BRANCH_NAME" == "dev" ]]; then
+          kubectl set image deployment $_DOCS_DEPLOYMENT \
+            $_DOCS_CONTAINER=eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:$SHORT_SHA
+        else
+          echo "Ignored."
+        fi
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=$_CLOUDSDK_COMPUTE_ZONE'
       - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLOUDSDK_CONTAINER_CLUSTER'

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "81873420f589851d944b8cd44a38ce9c",
+    "content-hash": "31643afcfd71529886e4752a81470d7f",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2922,15 +2922,15 @@
         },
         {
             "name": "mathrix/lumen-chainer",
-            "version": "dev-master",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:mathrix-education/lumen-chainer.git",
-                "reference": "a71578b981c8b35a82a7ae193011cfdcdf153003"
+                "reference": "46acff8fbb3b17ca936ab245796c0ca58492225a"
             },
             "require": {
                 "ext-json": "*",
-                "mathrix/lumen-zero": "dev-master",
+                "mathrix/lumen-zero": "^1.0.0",
                 "php": ">=7.2"
             },
             "type": "library",
@@ -2949,21 +2949,21 @@
                 }
             ],
             "description": "A small util which be used to make multiple API request at once.",
-            "time": "2019-04-01T09:19:29+00:00"
+            "time": "2019-04-11T23:55:28+00:00"
         },
         {
             "name": "mathrix/lumen-zero",
-            "version": "dev-master",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:mathrix-education/lumen-zero.git",
-                "reference": "caf6d9cba7fe589afc580eb3ce940a436b3bb530"
+                "reference": "e95aabff46dd221566bea00e51306b2440ad7545"
             },
             "require": {
                 "dusterio/lumen-passport": "^0.2.9",
                 "ext-json": "*",
                 "ext-pdo": "*",
-                "illuminate/mail": "^5.7|^5.8",
+                "illuminate/mail": "^5.7",
                 "illuminate/notifications": "^5.7",
                 "laravel/lumen-framework": "5.7.*",
                 "php": ">=7.2",
@@ -2998,7 +2998,7 @@
                 }
             ],
             "description": "The main library for Mathrix Lumen REST APIs.",
-            "time": "2019-04-10T19:45:39+00:00"
+            "time": "2019-04-11T23:46:19+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -8302,10 +8302,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "mathrix/lumen-chainer": 20,
-        "mathrix/lumen-zero": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
