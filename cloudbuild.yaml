@@ -93,11 +93,18 @@ steps:
   - id: 'docker:build:docs'
     waitFor: ['composer:install', 'node:compile']
     name: 'gcr.io/cloud-builders/docker'
-    args: ['build',
-           '-f', 'docs/Dockerfile',
-           '--build-arg', 'COMMIT_SHORT_SHA=$SHORT_SHA',
-           '-t', 'eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:$SHORT_SHA',
-           '.']
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        if [[ "$BRANCH_NAME" == "dev" ]]; then
+          docker build -f docs/Dockerfile \
+            --build-arg COMMIT_SHORT_SHA=$SHORT_SHA \
+            --tag eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:$SHORT_SHA \
+            .
+        else
+          echo "Ignored."
+        fi
 
 
   # Run paratest in coverage mode
@@ -148,7 +155,15 @@ steps:
   - id: 'docker:push:docs'
     waitFor: ['docker:build:docs', 'docker-compose:tests']
     name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:$SHORT_SHA']
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        if [[ "$BRANCH_NAME" == "dev" ]]; then
+          docker push eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:$SHORT_SHA
+        else
+          echo "Ignored."
+        fi
 
 
   # Deploy docs
