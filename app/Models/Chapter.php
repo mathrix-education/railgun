@@ -110,23 +110,25 @@ class Chapter extends BaseModel
      */
     public function getActivityCountAttribute()
     {
-        $count = 0;
-        $notions = $this->notions()
-            ->where("visible", "=", true)
-            ->get();
-
-        foreach ($notions as $notion) {
-            $notion->activities()
+        return Cache::remember("chapter.{$this->id}.activity_count", 5, function () {
+            $count = 0;
+            $notions = $this->notions()
                 ->where("visible", "=", true)
-                ->get()
-                ->each(function (Activity $activity) use (&$count) {
-                    if ($activity->modules()->where("visible", "=", true)->count() > 0) {
-                        $count++;
-                    }
-                });
-        }
+                ->get();
 
-        return $count;
+            foreach ($notions as $notion) {
+                $notion->activities()
+                    ->where("visible", "=", true)
+                    ->get()
+                    ->each(function (Activity $activity) use (&$count) {
+                        if ($activity->modules()->where("visible", "=", true)->count() > 0) {
+                            $count++;
+                        }
+                    });
+            }
+
+            return $count;
+        });
     }
 
 
@@ -147,6 +149,7 @@ class Chapter extends BaseModel
         return Cache::rememberForever("user.{$user->id}.chapter.{$this->id}.activities.to-revise",
             function () use ($user) {
                 $activityIds = $this->activities()->get()->pluck("id");
+
                 return $user->marks()
                     ->where([
                         ["status", "=", "to_revise"],
