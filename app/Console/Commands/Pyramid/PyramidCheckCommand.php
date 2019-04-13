@@ -26,9 +26,7 @@ class PyramidCheckCommand extends BaseCommand
     {
         // Generating dataset
         $this->block("Generating dataset...");
-        $dataset = Cache::remember("pyramid.dataset", 60, function () {
-            return $this->makeDataset();
-        });
+        $dataset = $this->makeDataset();
 
         // Check existence of every route
         $this->block("Checking integrity...");

@@ -24,7 +24,7 @@ class PyramidCommand extends BaseCommand
         $this->call("pyramid:fix");
         $this->call("pyramid:pre-migrate");
         $this->call("migrate");
-        $this->call("pyramid:migrate");
+        $this->call("pyramid2:migrate");
         $this->call("pyramid:orphans");
         $this->call("pyramid:seo");
         $this->call("pyramid:foreign-keys");
