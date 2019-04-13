@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Chapter;
 use App\Models\Grade;
+use App\Models\Module;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -42,6 +43,22 @@ class ChaptersController extends BaseController
             ->findOrFail($id);
 
         return new JsonResponse($chapter);
+    }
+
+
+    /**
+     * GET /chapters/by-module/{moduleId}/recursive
+     *
+     * @param int $moduleId The module id.
+     *
+     * @return JsonResponse
+     */
+    public function byModuleRecursive(int $moduleId)
+    {
+        /** @var Module $module */
+        $module = Module::query()->findOrFail($moduleId);
+
+        return $this->recursive($module->activity->notion->chapter_id);
     }
 
 
