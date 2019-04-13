@@ -3,6 +3,9 @@
 namespace Tests\API;
 
 use App\Models\Chapter;
+use App\Models\Mark;
+use App\Models\User;
+use Laravel\Passport\Passport;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
@@ -47,6 +50,32 @@ class ChaptersTest extends APITestCase
         $this->json("get", $uri);
 
         $this->assertResponseOk();
+    }
+
+
+    /**
+     * GET /chapters/recursive with cache counters
+     */
+    public function testChapterRecursiveWithCache()
+    {
+        /** @var Mark $mark */
+        $mark = Mark::query()
+            ->where("markable_type", "=", "activity")
+            ->inRandomOrder()
+            ->firstOrFail();
+
+        $chapterId = $mark->markable->notion->chapter_id;
+
+        $user = User::random(["type", "=", "registered"]);
+        Passport::actingAs($user, ["registered"]);
+
+        $uri = "/chapters/{$chapterId}/recursive";
+        $this->autoMockScope("get", $uri);
+        $this->json("get", $uri);
+
+        $this->assertResponseOk();
+        $this->assertInDatabase("cache", ["key" => "user.{$user->id}.chapter.{$chapterId}.activities.completed"]);
+        $this->assertInDatabase("cache", ["key" => "user.{$user->id}.chapter.{$chapterId}.activities.to-revise"]);
     }
 
 

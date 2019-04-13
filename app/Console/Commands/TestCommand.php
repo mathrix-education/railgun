@@ -23,19 +23,6 @@ class TestCommand extends BaseCommand
 
     public function handle()
     {
-        $progress = $this->output->createProgressBar();
-        $progress->setEmptyBarCharacter(" ");
-        $progress->setBarCharacter("═");
-        $progress->setFormat("╠%bar%╣");
-        $progress->setBarWidth(58);
-
-        $progress->start(500);
-        for($i = 0; $i < 500; $i += 100) {
-            $progress->advance(100);
-            sleep(1);
-        }
-        $progress->finish();
-        $this->output->newLine();
     }
 
 
