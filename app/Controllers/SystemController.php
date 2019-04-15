@@ -42,6 +42,11 @@ class SystemController extends BaseController
      */
     public function health(): JsonResponse
     {
+        return new JsonResponse([
+            "db" => benchmark(function ($tryNumber) {
+                DB::select("SELECT * FROM users WHERE id = $tryNumber");
+            }),
+        ]);
     }
 
 
