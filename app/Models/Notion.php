@@ -22,6 +22,7 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @property bool $visible
  * @property int $order
  * @property int $chapter_id
+ * @property int $activity_count
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * ---
@@ -60,6 +61,19 @@ class Notion extends BaseModel
         $this->rules["type"] = "required|in:" . implode(",", self::TYPES);
 
         parent::__construct($attributes);
+    }
+
+
+    /**
+     * Update counters.
+     */
+    public function updateCounters()
+    {
+        $this->activity_count = Activity::query()
+            ->where("notion_id", "=", $this->id)
+            ->where("visible", "=", true)
+            ->count();
+        $this->save();
     }
 
     /*

@@ -60,7 +60,7 @@ class Pyramid04OrphansCommand extends BaseCommand
             return;
         }
 
-        $this->line("Found {$orphanModels->count()} orphan $childPlural");
+        $this->cell("Found {$orphanModels->count()} orphan $childPlural", false);
 
         $brokenModels = DB::table($table)
             ->selectRaw("$childKey, MIN($parentKey)")

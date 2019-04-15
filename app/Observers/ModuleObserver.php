@@ -17,6 +17,24 @@ use App\Models\Report;
 class ModuleObserver extends BaseObserver
 {
     /**
+     * After save.
+     * Update parent notion's activity counter.
+     *
+     * @param Module $module
+     *
+     * @return bool
+     */
+    public function saved(Module $module)
+    {
+        if ($module->wasChanged("visible")) {
+            $module->activity->updateCounters();
+        }
+
+        return true;
+    }
+
+
+    /**
      * Detach all activities linked with the deleting module.
      *
      * @param Module $module The Module which will be deleted.
@@ -37,7 +55,7 @@ class ModuleObserver extends BaseObserver
             });
         $module->reports()
             ->get()
-            ->each(function(Report $report) {
+            ->each(function (Report $report) {
                 $report->delete();
             });
 

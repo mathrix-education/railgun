@@ -28,6 +28,17 @@ class Pyramid02PreMigrateCommand extends BaseCommand
         $postMigrationDir = database_path("post_migrations");
         $migrationStopBefore = database_path("migrations/" . self::MIGRATE_STOP_BEFORE . ".php");
 
+        if (file_exists($postMigrationDir)) {
+            $existingPostMigrations = glob($postMigrationDir . "/*.php");
+
+            foreach ($existingPostMigrations as $migrationFile) {
+                $filename = basename($migrationFile);
+                rename(database_path("post_migrations/$filename"), database_path("migrations/$filename"));
+            }
+
+            rmdir($postMigrationDir);
+        }
+
         if (!file_exists($postMigrationDir)) {
             mkdir($postMigrationDir);
         }

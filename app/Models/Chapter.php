@@ -24,6 +24,7 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @property bool $visible
  * @property int $grade_id
  * @property int $discipline_id
+ * @property int $notion_count
  * @property int $activity_count
  * @property array $link
  * ---
@@ -48,7 +49,23 @@ class Chapter extends BaseModel
         "visible" => "boolean"
     ];
     /** @var array Virtual fields */
-    protected $appends = ["activity_count", "activity_to_revise", "activity_completed"];
+    protected $appends = ["activity_to_revise", "activity_completed"];
+
+
+    /**
+     * Update counters.
+     */
+    public function updateCounters()
+    {
+        $this->notion_count = $this->notions()
+            ->where("visible", "=", true)
+            ->count();
+        $this->activity_count = $this->notions()
+            ->where("visible", "=", true)
+            ->sum("activity_count");
+        $this->save();
+    }
+
 
     /*
     |--------------------------------------------------------------------------
@@ -103,35 +120,6 @@ class Chapter extends BaseModel
     | Attributes
     |--------------------------------------------------------------------------
     */
-    /**
-     * activity_count
-     *
-     * @return int
-     */
-    public function getActivityCountAttribute()
-    {
-        return Cache::remember("chapter.{$this->id}.activity_count", 5, function () {
-            $count = 0;
-            $notions = $this->notions()
-                ->where("visible", "=", true)
-                ->get();
-
-            foreach ($notions as $notion) {
-                $notion->activities()
-                    ->where("visible", "=", true)
-                    ->get()
-                    ->each(function (Activity $activity) use (&$count) {
-                        if ($activity->modules()->where("visible", "=", true)->count() > 0) {
-                            $count++;
-                        }
-                    });
-            }
-
-            return $count;
-        });
-    }
-
-
     /**
      * activity_to_revise
      *

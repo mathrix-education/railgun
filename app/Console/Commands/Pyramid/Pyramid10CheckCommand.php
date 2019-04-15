@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Pyramid;
 
+use App\Console\Commands\BoxStyle;
 use App\Models\Chapter;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -19,17 +20,19 @@ use Symfony\Component\VarDumper\VarDumper;
  */
 class Pyramid10CheckCommand extends BaseCommand
 {
+    use BoxStyle;
+
     protected $signature = "pyramid:check";
 
 
     public function handle()
     {
         // Generating dataset
-        $this->block("Generating dataset...");
+        $this->cell("Generating dataset...");
         $dataset = $this->makeDataset();
 
         // Check existence of every route
-        $this->block("Checking integrity...");
+        $this->cell("Checking integrity...");
 
         $this->output->progressStart($dataset->count());
         foreach ($dataset as $line) {
@@ -55,18 +58,18 @@ class Pyramid10CheckCommand extends BaseCommand
         $dataset = new Collection();
 
         // Load content models
-        $this->line("Loading data...");
+        $this->cell("Loading data...");
         $chapters = Chapter::all();
         $this->success("Data loaded");
 
         // Load linking tables
-        $this->line("Loading mappings...");
+        $this->cell("Loading mappings...", false);
         $this->success("Mappings loaded");
 
         $counter = 0;
 
         // Generate dataset
-        $this->line("Generating dataset (this might take a while)...");
+        $this->cell("Generating dataset (this might take a while)...");
         /** @var Chapter $chapter */
         foreach ($chapters as $chapter) {
             $chapterNotionMappings = DB::table("chapter_notion")

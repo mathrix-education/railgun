@@ -33,6 +33,26 @@ class ActivityObserver extends BaseObserver
 
 
     /**
+     * After save.
+     * Update parent notion's activity counter.
+     * Update parent chapter's activity counter.
+     *
+     * @param Activity $activity
+     *
+     * @return bool
+     */
+    public function saved(Activity $activity)
+    {
+        if ($activity->wasChanged("visible")) {
+            $activity->notion->updateCounters();
+            $activity->notion->chapter->updateCounters();
+        }
+
+        return true;
+    }
+
+
+    /**
      * @param Activity $activity
      *
      * @return bool

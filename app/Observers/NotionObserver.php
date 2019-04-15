@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Exceptions\ForeignConstraintsException;
 use App\Models\Notion;
 use Illuminate\Support\Str;
 
@@ -19,7 +20,7 @@ class NotionObserver extends BaseObserver
      *
      * @return bool
      */
-    public function saving($notion)
+    public function saving(Notion $notion)
     {
         // Set the slug if needed
         if (
@@ -34,10 +35,24 @@ class NotionObserver extends BaseObserver
 
 
     /**
+     * After save.
+     * Update parent chapters's notion counter.
+     *
+     * @param Notion $notion
+     */
+    public function saved(Notion $notion)
+    {
+        if ($notion->wasChanged("visible")) {
+            $notion->chapter->updateCounters();
+        }
+    }
+
+
+    /**
      * @param Notion $notion
      *
      * @return bool
-     * @throws \App\Exceptions\ForeignConstraintsException
+     * @throws ForeignConstraintsException
      */
     public function deleting($notion)
     {

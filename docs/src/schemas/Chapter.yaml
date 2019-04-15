@@ -41,10 +41,14 @@ properties:
     type: string
     format: date-time
     nullable: true
-  activity_count:
-    description: The chapter activities count.
+  notion_count:
+    description: The number of **visible** notions linked with the chapter.
     type: integer
     example: 10
+  activity_count:
+    description: The number of **visible** activities linked with the chapter.
+    type: integer
+    example: 12
   activity_to_revise:
     description: The chapter activities `to_revise` count. `null` for not-logged users.
     type: integer

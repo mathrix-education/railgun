@@ -17,8 +17,6 @@ DATABASE_TARGET=dev_mathrix_education
 #gzip -df ${PROJECT}/storage/framework/cache/dump.sql.gz
 
 php ${PROJECT}/artisan db:destroy
-
-gzip -df ${PROJECT}/storage/framework/cache/dump.sql.gz
 pv ${PROJECT}/storage/framework/cache/dump.sql \
     | mysql -u'root' -p'salome3004' --host=127.0.0.1 --port=3306 --database="mathrix_fr_dev"
 

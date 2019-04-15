@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Laravel\Lumen\Auth\Authorizable;
@@ -120,6 +121,18 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     /** @var array The virtual attributes */
     protected $appends = ["premium", "daily_points", "last_session"];
+
+
+    /**
+     * @return bool
+     */
+    public static function isPremium()
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        return $user === null || !$user->premium && !$user->tokenCan("moderator");
+    }
 
 
     /**

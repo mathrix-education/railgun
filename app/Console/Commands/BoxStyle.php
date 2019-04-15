@@ -62,15 +62,16 @@ trait BoxStyle
         $words = explode(" ", $message);
 
         foreach ($words as $word) {
-            if (strlen($lines[$line]) + 3 <= self::$globalWidth) {
+            if (strlen($lines[$line]) + strlen($word) + 3 <= self::$globalWidth) {
                 // We can add on more word
                 $lines[$line] .= " $word";
             } else {
                 // We need to create a new line
-                $lines[$line] .= str_repeat(" ", strlen(static::$globalWidth - $lines[$line]));
+                $lines[$line] .= str_repeat(" ", static::$globalWidth - strlen($lines[$line]));
                 $lines[$line] .= " ║";
                 $line++;
                 $lines[$line] = "║ ";
+                $lines[$line] .= " $word";
             }
         }
 

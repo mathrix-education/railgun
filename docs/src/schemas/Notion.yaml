@@ -34,6 +34,10 @@ properties:
     description: The notion linked chapter id.
     type: integer
     example: 39
+  activity_count:
+    description: The number of **visible** activities linked with the notion.
+    type: integer
+    example: 12
   created_at:
     description: The notion creation date-time.
     type: string
