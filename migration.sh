@@ -22,14 +22,14 @@ pv ${PROJECT}/storage/framework/cache/dump.sql \
 
 php ${PROJECT}/artisan pyramid
 #
-#mysqldump mathrix_fr_dev -u'root' -p'salome3004' --host=127.0.0.1 --port=3306 \
-#    --result-file=${PROJECT}/storage/framework/cache/converted.sql
-#
-#gzip -f ${PROJECT}/storage/framework/cache/converted.sql
+mysqldump mathrix_fr_dev -u'root' -p'salome3004' --host=127.0.0.1 --port=3306 \
+    --result-file=${PROJECT}/storage/framework/cache/converted.sql
 
-#gsutil cp ${PROJECT}/storage/framework/cache/converted.sql.gz gs://cdn.mathrix.fr/converted.sql
-#gsutil acl ch -u ${SQL_SERVICE_ACCOUNT}:W gs://${BUCKET}
-#gsutil acl ch -u ${SQL_SERVICE_ACCOUNT}:R gs://${BUCKET}/converted.sql
-#gcloud sql import sql mysql gs://${BUCKET}/converted.sql --database=${DATABASE_TARGET}
-#gsutil acl ch -d ${SQL_SERVICE_ACCOUNT} gs://${BUCKET}/converted.sql
-#gsutil acl ch -d ${SQL_SERVICE_ACCOUNT} gs://${BUCKET}
+gzip -f ${PROJECT}/storage/framework/cache/converted.sql
+
+gsutil cp ${PROJECT}/storage/framework/cache/converted.sql.gz gs://cdn.mathrix.fr/converted.sql
+gsutil acl ch -u ${SQL_SERVICE_ACCOUNT}:W gs://${BUCKET}
+gsutil acl ch -u ${SQL_SERVICE_ACCOUNT}:R gs://${BUCKET}/converted.sql
+gcloud sql import sql mysql gs://${BUCKET}/converted.sql --database=${DATABASE_TARGET}
+gsutil acl ch -d ${SQL_SERVICE_ACCOUNT} gs://${BUCKET}/converted.sql
+gsutil acl ch -d ${SQL_SERVICE_ACCOUNT} gs://${BUCKET}

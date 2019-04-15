@@ -12,7 +12,7 @@ use Mathrix\Lumen\Bases\BaseCommand;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class Pyramid11PostMigrate extends BaseCommand
+class Pyramid99PostMigrate extends BaseCommand
 {
     use BoxStyle;
 
@@ -21,7 +21,7 @@ class Pyramid11PostMigrate extends BaseCommand
 
     public function handle()
     {
-        $this->cell("Preparing post-migration files...");
+        $this->line("Preparing post-migration files...");
 
         $postMigrationFiles = glob(database_path("post_migrations/*.php"));
 
@@ -32,6 +32,6 @@ class Pyramid11PostMigrate extends BaseCommand
 
         rmdir(database_path("post_migrations"));
 
-        $this->cell(count($postMigrationFiles) . " files moved", false);
+        $this->line(count($postMigrationFiles) . " files moved");
     }
 }

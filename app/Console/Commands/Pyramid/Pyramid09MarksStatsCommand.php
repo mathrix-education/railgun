@@ -26,6 +26,6 @@ class Pyramid09MarksStatsCommand extends BaseCommand
         $broken = DB::table("marks")->where("markable_id", "=", 0)->count();
         $percentage = round(($broken / $total) * 100, 2);
 
-        $this->cell("Broken marks: $percentage%");
+        $this->line("Broken marks: $percentage%");
     }
 }

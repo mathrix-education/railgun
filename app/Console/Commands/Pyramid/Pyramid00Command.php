@@ -22,13 +22,13 @@ class Pyramid00Command extends BaseCommand
 
     public function handle()
     {
-        $this->cell("Pyramid Migrator by Mathieu Bour");
+        $this->line("Pyramid Migrator by Mathieu Bour");
 
         $startTime = time();
         $this->call("pyramid:fix");
         $this->call("pyramid:pre-migrate");
 
-        $this->cell("Migrating...");
+        $this->line("Migrating...");
         Artisan::call("migrate", ["--quiet" => ""]);
 
         $this->call("pyramid:migrate");
@@ -39,21 +39,20 @@ class Pyramid00Command extends BaseCommand
         $this->call("pyramid:marks:modules");
         $this->call("pyramid:marks:stats");
         $this->call("pyramid:check");
+        $this->call("pyramid:change-notion-types");
         $this->call("pyramid:post-migrate");
 
-        $this->cell("Cleaning old tables");
+        $this->line("Cleaning old tables");
         Artisan::call("migrate", ["--quiet" => ""]);
 
-        $this->cell("Calculating counters...");
+        $this->line("Calculating counters...");
         Artisan::call("db:seed", ["--class" => "CountersTableSeeder"]);
 
-        $this->cell("Done !");
-        $this->sep();
+        $this->line("Done !");
 
         $duration = time() - $startTime;
         $seconds = $duration % 60;
         $minutes = (int)($duration - $seconds) / 60;
-        $this->cell("Migration successful. Time elapsed: $minutes minutes and $seconds seconds");
-        $this->sep();
+        $this->line("Migration successful. Time elapsed: $minutes minutes and $seconds seconds");
     }
 }

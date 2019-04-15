@@ -23,7 +23,7 @@ class Pyramid02PreMigrateCommand extends BaseCommand
 
     public function handle()
     {
-        $this->cell("Preparing migration files...");
+        $this->line("Preparing migration files...");
         $migrationsGlob = database_path("migrations/*.php");
         $postMigrationDir = database_path("post_migrations");
         $migrationStopBefore = database_path("migrations/" . self::MIGRATE_STOP_BEFORE . ".php");
@@ -53,6 +53,6 @@ class Pyramid02PreMigrateCommand extends BaseCommand
             rename(database_path("migrations/$filename"), database_path("post_migrations/$filename"));
         }
 
-        $this->cell(count($migrationFiles) . " files moved", false);
+        $this->line(count($migrationFiles) . " files moved");
     }
 }

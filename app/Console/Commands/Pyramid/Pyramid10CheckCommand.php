@@ -5,7 +5,6 @@ namespace App\Console\Commands\Pyramid;
 use App\Console\Commands\BoxStyle;
 use App\Models\Chapter;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Mathrix\Lumen\Bases\BaseCommand;
 use Symfony\Component\VarDumper\VarDumper;
@@ -24,26 +23,39 @@ class Pyramid10CheckCommand extends BaseCommand
 
     protected $signature = "pyramid:check";
 
+    private const ASCII_ART = [
+        "........................███.......................",
+        "......................██▀.▀██.....................",
+        "....................██▀.....▀██...................",
+        "..................██▀..▄▄▄▄▄..▀██.................",
+        "................██▀..▄▀.....▀▄..▀██...............",
+        "..............██▀..▄▀...███...▀▄..▀██.............",
+        "............██▀....▀▄...▀▀▀...▄▀....▀██...........",
+        "..........██▀........▀▄▄▄▄▄▄▄▀........▀██.........",
+        ".........█▀.............................▀█........",
+        "........███████████████████████████████████.......",
+    ];
+
 
     public function handle()
     {
         // Generating dataset
-        $this->cell("Generating dataset...");
+        $this->line("Generating dataset...");
         $dataset = $this->makeDataset();
 
         // Check existence of every route
-        $this->cell("Checking integrity...");
+        $this->line("Checking integrity...");
 
-        $this->output->progressStart($dataset->count());
+        $this->progressStart($dataset->count());
         foreach ($dataset as $line) {
             if ($this->search($line)) {
-                $this->output->progressAdvance();
+                $this->progressAdvance();
             } else {
                 VarDumper::dump($line);
                 $this->fatal("Error found.");
             }
         }
-        $this->output->progressFinish();
+        $this->progressFinish();
 
         $this->success("Everything is correct. Well played Mr. Bour!");
     }
@@ -51,6 +63,7 @@ class Pyramid10CheckCommand extends BaseCommand
 
     /**
      * Create the verification dataset.
+     *
      * @return Collection
      */
     private function makeDataset(): Collection
@@ -58,18 +71,20 @@ class Pyramid10CheckCommand extends BaseCommand
         $dataset = new Collection();
 
         // Load content models
-        $this->cell("Loading data...");
+        $this->line("Loading data...");
         $chapters = Chapter::all();
         $this->success("Data loaded");
 
         // Load linking tables
-        $this->cell("Loading mappings...", false);
+        $this->line("Loading mappings...");
         $this->success("Mappings loaded");
 
         $counter = 0;
+        $char = 0;
+        $line = 0;
 
         // Generate dataset
-        $this->cell("Generating dataset (this might take a while)...");
+        $this->line("Generating dataset (this might take a while)...");
         /** @var Chapter $chapter */
         foreach ($chapters as $chapter) {
             $chapterNotionMappings = DB::table("chapter_notion")
@@ -112,9 +127,15 @@ class Pyramid10CheckCommand extends BaseCommand
 
                         $counter++;
                         if ($counter % 10 === 0) {
-                            $this->output->write(".");
+                            if (isset(self::ASCII_ART[$line])) {
+                                $this->output->write(self::ASCII_ART[$line][$char]);
+                            } else {
+                                $this->output->write(".");
+                            }
                         }
                         if ($counter % 500 === 0) {
+                            $char = 0;
+                            $line++;
                             $this->output->write(" $counter\n");
                         }
 

@@ -24,7 +24,7 @@ class Pyramid05SEOCommand extends BaseCommand
     public function handle()
     {
         // Migrate paths
-        $this->cell("Migrate paths seo_index");
+        $this->line("Migrate paths seo_index");
         $moduleIds = DB::table("paths")
             ->join("activity_module", "paths.activity_id", "=", "activity_module.activity_id")
             ->selectRaw("paths.activity_id, MIN(activity_module.module_id) as module_min_id")
@@ -38,7 +38,7 @@ class Pyramid05SEOCommand extends BaseCommand
             ->where("type", "=", "course")
             ->update(["seo_index" => 1]);
 
-        $this->cell("Paths migrated.", false);
+        $this->line("Paths migrated.");
 
 
         $this->makeSeoTitles();
@@ -61,7 +61,7 @@ class Pyramid05SEOCommand extends BaseCommand
             "flashcard" => "Flashcard"
         ];
 
-        $this->cell("Generating seo_title and seo_slug", false);
+        $this->line("Generating seo_title and seo_slug");
 
         $this->progressStart($activityIds->count());
 

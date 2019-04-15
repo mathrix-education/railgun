@@ -84,7 +84,7 @@ class Pyramid03MigrateCommand extends BaseCommand
         /** @var Collection $mappings The activity mappings; key is the activity id, value its parent id. */
         $mappings = new Collection();
 
-        $this->cell("Cloning $children");
+        $this->line("Cloning $children");
         $this->progressStart($groups->count());
         foreach ($groups as $childId => $group) {
             // Set first group data, copy the others
@@ -128,7 +128,7 @@ class Pyramid03MigrateCommand extends BaseCommand
     {
         $data = new Collection();
 
-        $this->cell("Analysing activity mappings");
+        $this->line("Analysing activity mappings");
         $this->progressStart($activityMappings->count());
         foreach ($activityMappings as $activityId => $sourceId) {
             $modules = DB::table("modules")
@@ -145,7 +145,7 @@ class Pyramid03MigrateCommand extends BaseCommand
 
         $chunks = $data->chunk(100);
 
-        $this->cell("Saving chunks");
+        $this->line("Saving chunks");
         $this->progressStart($data->count());
         /** @var Collection $chunk */
         foreach ($chunks as $chunk) {

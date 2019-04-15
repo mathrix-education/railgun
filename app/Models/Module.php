@@ -72,7 +72,6 @@ class Module extends BaseModel
     ];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
-        "premium" => "boolean",
         "visible" => "boolean",
         "questions" => "array",
         "choices" => "array",
@@ -83,7 +82,6 @@ class Module extends BaseModel
     ];
     /** @var array The validation rules */
     protected $rules = [
-        "premium" => "required|boolean",
         "visible" => "required|boolean",
         "seo_index" => "required|boolean",
     ];

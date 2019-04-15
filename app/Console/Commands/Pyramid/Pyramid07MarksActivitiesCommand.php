@@ -65,7 +65,7 @@ class Pyramid07MarksActivitiesCommand extends BaseCommand
 
     private function makeMappings()
     {
-        $this->cell("Building paths <=> activities mappings");
+        $this->line("Building paths <=> activities mappings");
         $data = DB::table("paths")
             ->join("activities", "paths.activity_id", "=", "activities.id")
             ->join("modules", "paths.activity_id", "=", "modules.activity_id")
@@ -88,27 +88,27 @@ class Pyramid07MarksActivitiesCommand extends BaseCommand
             ->count();
         $failCount = 0;
 
-        $this->output->progressStart($data->count());
+        $this->progressStart($data->count());
         $data->each(function ($path) use (&$failCount) {
             if (!$this->resolveActivity($path)) {
                 $failCount++;
             }
-            $this->output->progressAdvance();
+            $this->progressAdvance();
         });
-        $this->output->progressFinish();
+        $this->progressFinish();
 
         if ($failCount > 0) {
             $percentage = round(($failCount / $total) * 100, 1);
-            $this->cell("Unable to fix $failCount ($percentage%) path activities", false);
+            $this->line("Unable to fix $failCount ($percentage%) path activities");
         } else {
-            $this->cell("Resolved all paths <=> activities mappings", false);
+            $this->line("Resolved all paths <=> activities mappings");
         }
     }
 
 
     private function applyMappings()
     {
-        $this->cell("Setting marks activity_id");
+        $this->line("Setting marks activity_id");
 
         $this->progressStart($this->mappings->count());
         foreach ($this->mappings as $pathId => $activityId) {

@@ -22,7 +22,7 @@ class Pyramid04OrphansCommand extends BaseCommand
 
     public function handle()
     {
-        $this->cell("Searching for orphans");
+        $this->line("Searching for orphans");
         $this->orphans("activity", "module");
         $this->orphans("notion", "activity");
         $this->orphans("chapter", "notion");
@@ -55,12 +55,12 @@ class Pyramid04OrphansCommand extends BaseCommand
             ->get();
 
         if ($orphanModels->count() === 0) {
-            $this->cell("No orphan $childPlural found.", false);
+            $this->line("No orphan $childPlural found.");
 
             return;
         }
 
-        $this->cell("Found {$orphanModels->count()} orphan $childPlural", false);
+        $this->line("Found {$orphanModels->count()} orphan $childPlural");
 
         $brokenModels = DB::table($table)
             ->selectRaw("$childKey, MIN($parentKey)")
@@ -69,12 +69,12 @@ class Pyramid04OrphansCommand extends BaseCommand
             ->get();
 
         if ($brokenModels->count() === 0) {
-            $this->cell("No $childPlural need to be fixed.", false);
+            $this->line("No $childPlural need to be fixed.");
 
             return;
         }
 
-        $this->cell("Need to fix {$brokenModels->count()} $childPlural", false);
+        $this->line("Need to fix {$brokenModels->count()} $childPlural");
 
         $this->progressStart($brokenModels->count());
         foreach ($brokenModels as $brokenModel) {
@@ -97,6 +97,6 @@ class Pyramid04OrphansCommand extends BaseCommand
         }
         $this->progressFinish();
 
-        $this->cell("Fixed {$brokenModels->count()} $childPlural", false);
+        $this->line("Fixed {$brokenModels->count()} $childPlural");
     }
 }

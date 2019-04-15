@@ -23,7 +23,7 @@ class Pyramid06ForeignKeysCommand extends BaseCommand
 
     public function handle()
     {
-        $this->cell("Migrating classes table => grades table");
+        $this->line("Migrating classes table => grades table");
         $classes = DB::table("classes")->get();
         $now = Carbon::now()->format("Y-m-d H:i:s");
         $classes = $classes->map(function ($class) use ($now) {
@@ -35,19 +35,19 @@ class Pyramid06ForeignKeysCommand extends BaseCommand
         DB::table("grades")->insert((array)$classes->toArray());
 
 
-        $this->cell("Migrating class_id => grade_id on users table");
+        $this->line("Migrating class_id => grade_id on users table");
         DB::statement("UPDATE users SET grade_id = class_id;");
 
 
-        $this->cell("Migrating class_id => grade_id on chapters table...");
+        $this->line("Migrating class_id => grade_id on chapters table...");
         DB::statement("UPDATE chapters SET grade_id = class_id;");
 
 
-        $this->cell("Migrating votable_id => comment_id on votes table...");
+        $this->line("Migrating votable_id => comment_id on votes table...");
         DB::statement("UPDATE votes SET comment_id = votable_id;");
 
 
-        $this->cell("Migrating product_product.parent_id => products.parent_id...");
+        $this->line("Migrating product_product.parent_id => products.parent_id...");
         $links = DB::table("product_product")->get();
         $this->progressStart($links->count());
         foreach ($links as $link) {
