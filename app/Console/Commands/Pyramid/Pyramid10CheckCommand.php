@@ -17,7 +17,7 @@ use Symfony\Component\VarDumper\VarDumper;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class PyramidCheckCommand extends BaseCommand
+class Pyramid10CheckCommand extends BaseCommand
 {
     protected $signature = "pyramid:check";
 

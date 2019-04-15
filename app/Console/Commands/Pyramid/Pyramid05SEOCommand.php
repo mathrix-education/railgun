@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Pyramid;
 
+use App\Console\Commands\BoxStyle;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Mathrix\Lumen\Bases\BaseCommand;
@@ -13,15 +14,17 @@ use Mathrix\Lumen\Bases\BaseCommand;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class PyramidSEOCommand extends BaseCommand
+class Pyramid05SEOCommand extends BaseCommand
 {
+    use BoxStyle;
+
     protected $signature = "pyramid:seo";
 
 
     public function handle()
     {
         // Migrate paths
-        $this->block("Migrate paths seo_index");
+        $this->cell("Migrate paths seo_index");
         $moduleIds = DB::table("paths")
             ->join("activity_module", "paths.activity_id", "=", "activity_module.activity_id")
             ->selectRaw("paths.activity_id, MIN(activity_module.module_id) as module_min_id")
@@ -35,7 +38,7 @@ class PyramidSEOCommand extends BaseCommand
             ->where("type", "=", "course")
             ->update(["seo_index" => 1]);
 
-        $this->success("Paths migrated.");
+        $this->cell("Paths migrated.", false);
 
 
         $this->makeSeoTitles();
@@ -58,9 +61,9 @@ class PyramidSEOCommand extends BaseCommand
             "flashcard" => "Flashcard"
         ];
 
-        $this->block("Generating seo_title and seo_slug");
+        $this->cell("Generating seo_title and seo_slug", false);
 
-        $this->output->progressStart($activityIds->count());
+        $this->progressStart($activityIds->count());
 
         foreach ($activityIds as $activityId) {
             $activity = DB::table("activities")
@@ -122,8 +125,8 @@ class PyramidSEOCommand extends BaseCommand
                 }
             }
 
-            $this->output->progressAdvance();
+            $this->progressAdvance();
         }
-        $this->output->progressFinish();
+        $this->progressFinish();
     }
 }

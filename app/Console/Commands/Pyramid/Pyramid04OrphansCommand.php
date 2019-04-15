@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Pyramid;
 
+use App\Console\Commands\BoxStyle;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Mathrix\Lumen\Bases\BaseCommand;
@@ -13,13 +14,15 @@ use Mathrix\Lumen\Bases\BaseCommand;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class PyramidOrphansCommand extends BaseCommand
+class Pyramid04OrphansCommand extends BaseCommand
 {
-    protected $signature = "pyramid:orphans";
+    use BoxStyle;
 
+    protected $signature = "pyramid:orphans";
 
     public function handle()
     {
+        $this->cell("Searching for orphans");
         $this->orphans("activity", "module");
         $this->orphans("notion", "activity");
         $this->orphans("chapter", "notion");
@@ -52,7 +55,7 @@ class PyramidOrphansCommand extends BaseCommand
             ->get();
 
         if ($orphanModels->count() === 0) {
-            $this->success("No orphan $childPlural found.");
+            $this->cell("No orphan $childPlural found.", false);
 
             return;
         }
@@ -66,14 +69,14 @@ class PyramidOrphansCommand extends BaseCommand
             ->get();
 
         if ($brokenModels->count() === 0) {
-            $this->success("No $childPlural need to be fixed.");
+            $this->cell("No $childPlural need to be fixed.", false);
 
             return;
         }
 
-        $this->line("Need to fix {$brokenModels->count()} $childPlural");
+        $this->cell("Need to fix {$brokenModels->count()} $childPlural", false);
 
-        $this->output->progressStart($brokenModels->count());
+        $this->progressStart($brokenModels->count());
         foreach ($brokenModels as $brokenModel) {
             $childId = $brokenModel->{$childKey};
 
@@ -90,10 +93,10 @@ class PyramidOrphansCommand extends BaseCommand
                 ->where("id", "=", $childId)
                 ->update([$parentKey => $parentId]);
 
-            $this->output->progressAdvance();
+            $this->progressAdvance();
         }
-        $this->output->progressFinish();
+        $this->progressFinish();
 
-        $this->success("Fixed {$brokenModels->count()} $childPlural");
+        $this->cell("Fixed {$brokenModels->count()} $childPlural", false);
     }
 }

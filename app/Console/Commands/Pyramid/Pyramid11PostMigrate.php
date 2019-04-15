@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Pyramid;
 
+use App\Console\Commands\BoxStyle;
 use Mathrix\Lumen\Bases\BaseCommand;
 
 /**
@@ -11,14 +12,16 @@ use Mathrix\Lumen\Bases\BaseCommand;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class PyramidPostMigrate extends BaseCommand
+class Pyramid11PostMigrate extends BaseCommand
 {
+    use BoxStyle;
+
     protected $signature = "pyramid:post-migrate";
 
 
     public function handle()
     {
-        $this->block("Preparing post-migration files...");
+        $this->cell("Preparing post-migration files...");
 
         $postMigrationFiles = glob(database_path("post_migrations/*.php"));
 
@@ -29,6 +32,6 @@ class PyramidPostMigrate extends BaseCommand
 
         rmdir(database_path("post_migrations"));
 
-        $this->success(count($postMigrationFiles) . " files moved");
+        $this->cell(count($postMigrationFiles) . " files moved", false);
     }
 }

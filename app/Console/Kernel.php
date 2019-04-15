@@ -5,20 +5,20 @@ namespace App\Console;
 use App\Console\Commands\Braintree\NewPayPalCheck;
 use App\Console\Commands\CompileMails;
 use App\Console\Commands\DBDestroyCommand;
-use App\Console\Commands\Pyramid\Pyramid2MigrateCommand;
-use App\Console\Commands\Pyramid\PyramidCheckCommand;
-use App\Console\Commands\Pyramid\PyramidCommand;
-use App\Console\Commands\Pyramid\PyramidFixCommand;
-use App\Console\Commands\Pyramid\PyramidForeignKeysCommand;
-use App\Console\Commands\Pyramid\PyramidMarksActivitiesCommand;
-use App\Console\Commands\Pyramid\PyramidMarksCommand;
-use App\Console\Commands\Pyramid\PyramidMarksModuleCommand;
+use App\Console\Commands\Pyramid\Pyramid03MigrateCommand;
+use App\Console\Commands\Pyramid\Pyramid10CheckCommand;
+use App\Console\Commands\Pyramid\Pyramid00Command;
+use App\Console\Commands\Pyramid\Pyramid01FixCommand;
+use App\Console\Commands\Pyramid\Pyramid06ForeignKeysCommand;
+use App\Console\Commands\Pyramid\Pyramid07MarksActivitiesCommand;
+use App\Console\Commands\Pyramid\Pyramid09MarksStatsCommand;
+use App\Console\Commands\Pyramid\Pyramid08MarksModuleCommand;
 use App\Console\Commands\Pyramid\PyramidMigrateCommand;
-use App\Console\Commands\Pyramid\PyramidOrphansCommand;
-use App\Console\Commands\Pyramid\PyramidPostMigrate;
-use App\Console\Commands\Pyramid\PyramidPreMigrateCommand;
+use App\Console\Commands\Pyramid\Pyramid04OrphansCommand;
+use App\Console\Commands\Pyramid\Pyramid11PostMigrate;
+use App\Console\Commands\Pyramid\Pyramid02PreMigrateCommand;
 use App\Console\Commands\Pyramid\PyramidResetCommand;
-use App\Console\Commands\Pyramid\PyramidSEOCommand;
+use App\Console\Commands\Pyramid\Pyramid05SEOCommand;
 use App\Console\Commands\TestCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
@@ -40,22 +40,20 @@ class Kernel extends ConsoleKernel
         NewPayPalCheck::class,
         CompileMails::class,
 
-        Pyramid2MigrateCommand::class,
 
         // Pyramid commands
-        PyramidCommand::class,
-        PyramidFixCommand::class,
-        PyramidPreMigrateCommand::class,
-        PyramidResetCommand::class,
-        PyramidMigrateCommand::class,
-        PyramidOrphansCommand::class,
-        PyramidSEOCommand::class,
-        PyramidForeignKeysCommand::class,
-        PyramidMarksCommand::class,
-        PyramidMarksModuleCommand::class,
-        PyramidMarksActivitiesCommand::class,
-        PyramidPostMigrate::class,
-        PyramidCheckCommand::class,
+        Pyramid00Command::class,
+        Pyramid01FixCommand::class,
+        Pyramid02PreMigrateCommand::class,
+        Pyramid03MigrateCommand::class,
+        Pyramid04OrphansCommand::class,
+        Pyramid05SEOCommand::class,
+        Pyramid06ForeignKeysCommand::class,
+        Pyramid09MarksStatsCommand::class,
+        Pyramid08MarksModuleCommand::class,
+        Pyramid07MarksActivitiesCommand::class,
+        Pyramid11PostMigrate::class,
+        Pyramid10CheckCommand::class,
     ];
 
 

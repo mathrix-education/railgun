@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Pyramid;
 
+use App\Console\Commands\BoxStyle;
 use Mathrix\Lumen\Bases\BaseCommand;
 
 /**
@@ -11,27 +12,37 @@ use Mathrix\Lumen\Bases\BaseCommand;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class PyramidCommand extends BaseCommand
+class Pyramid00Command extends BaseCommand
 {
-    protected $signature = "pyramid";
+    use BoxStyle;
 
+    protected $signature = "pyramid";
 
     public function handle()
     {
-        $this->block("Pyramid Migrator by Mathieu Bour");
+        $this->cell("Pyramid Migrator by Mathieu Bour");
 
         $startTime = time();
         $this->call("pyramid:fix");
         $this->call("pyramid:pre-migrate");
-        $this->call("migrate");
-        $this->call("pyramid2:migrate");
+
+        $this->cell("Migrating...");
+        $this->call("migrate", ["--quiet"]);
+
+        $this->call("pyramid:migrate");
         $this->call("pyramid:orphans");
         $this->call("pyramid:seo");
         $this->call("pyramid:foreign-keys");
-        $this->call("pyramid:marks");
+        $this->call("pyramid:marks:activities");
+        $this->call("pyramid:marks:modules");
+        $this->call("pyramid:marks:stats");
         $this->call("pyramid:check");
         $this->call("pyramid:post-migrate");
-        $this->call("migrate");
+
+        $this->cell("Cleaning old tables");
+        $this->call("migrate", ["--quiet"]);
+        $this->cell("Done !");
+        $this->sep();
 
         $duration = time() - $startTime;
         $seconds = $duration % 60;

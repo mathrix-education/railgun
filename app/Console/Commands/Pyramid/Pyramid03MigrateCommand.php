@@ -16,11 +16,11 @@ use Mathrix\Lumen\Bases\BaseCommand;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc3
  */
-class Pyramid2MigrateCommand extends BaseCommand
+class Pyramid03MigrateCommand extends BaseCommand
 {
     use BoxStyle;
 
-    protected $signature = "pyramid2:migrate";
+    protected $signature = "pyramid:migrate";
 
 
     public function handle()
