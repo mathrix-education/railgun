@@ -30,7 +30,6 @@ trait BraintreeCustomer
      * braintree attribute.
      *
      * @return Customer|null
-     * @throws BraintreeNotFound
      */
     public function getBraintreeAttribute(): ?Customer
     {
@@ -55,14 +54,8 @@ trait BraintreeCustomer
             return false;
         } else if (!$strict) {
             return true;
-        }
-
-        try {
-            Customer::find($this->braintree_id);
-
-            return true;
-        } catch (BraintreeNotFound $e) {
-            return false;
+        } else {
+            return $this->getBraintreeCustomer() instanceof Customer;
         }
     }
 
@@ -106,7 +99,6 @@ trait BraintreeCustomer
      * @param string|null $paymentMethodNonce a payment nonce to attach
      *
      * @return Customer
-     * @throws BraintreeNotFound
      * @throws Http400BadRequestException
      */
     public function createBraintreeCustomer(string $paymentMethodNonce = null): Customer
@@ -145,7 +137,6 @@ trait BraintreeCustomer
      * Get user's Braintree payment methods.
      *
      * @return array
-     * @throws BraintreeNotFound
      * @throws Http400BadRequestException
      */
     public function getBraintreePaymentMethods()
@@ -161,7 +152,6 @@ trait BraintreeCustomer
      *
      * @param bool $strict
      *
-     * @throws BraintreeNotFound
      * @throws Http400BadRequestException
      */
     public function requireBraintreeCustomer(bool $strict = false)
@@ -176,7 +166,6 @@ trait BraintreeCustomer
      * Get the user's default payment method token.
      *
      * @return string
-     * @throws BraintreeNotFound
      * @throws Http400BadRequestException
      */
     public function getBraintreeDefaultPaymentMethodToken()
@@ -195,7 +184,6 @@ trait BraintreeCustomer
      * @param string $paymentMethodNonce
      *
      * @return Successful|Error
-     * @throws BraintreeNotFound
      * @throws Http400BadRequestException
      */
     public function addBraintreePaymentMethod(string $paymentMethodNonce)
@@ -273,7 +261,6 @@ trait BraintreeCustomer
      * Get the user subscriptions.
      *
      * @return Collection|Subscription[]
-     * @throws BraintreeNotFound
      * @throws Http400BadRequestException
      */
     public function getBraintreeSubscriptions(): Collection
