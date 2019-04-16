@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Mathrix\Lumen\Bases\BaseModel;
 
 /**
@@ -50,6 +49,30 @@ class Chapter extends BaseModel
     ];
     /** @var array Virtual fields */
     protected $appends = ["activity_to_revise", "activity_completed"];
+
+
+    /**
+     * Ga chapter and its nested notions, activities and modules recursively. Return value is user-depend.
+     *
+     * @param int $id The chapter id
+     *
+     * @return Chapter
+     */
+    public static function recursive(int $id)
+    {
+        return Chapter::with([
+            "notions" => function (HasMany $q) {
+                $q->where("visible", "=", true);
+            },
+            "notions.activities" => function (HasMany $q) {
+                $q->where("visible", "=", true);
+            },
+            "notions.activities.modules" => function (HasMany $q) {
+                $q->where("visible", "=", true);
+            }
+        ])
+            ->findOrFail($id);
+    }
 
 
     /**
@@ -134,18 +157,15 @@ class Chapter extends BaseModel
             return null;
         }
 
-        return Cache::rememberForever("user.{$user->id}.chapter.{$this->id}.activities.to-revise",
-            function () use ($user) {
-                $activityIds = $this->activities()->get()->pluck("id");
+        $activityIds = $this->activities()->get()->pluck("id");
 
-                return $user->marks()
-                    ->where([
-                        ["status", "=", "to_revise"],
-                        ["markable_type", "=", "activity"]
-                    ])
-                    ->whereIn("markable_id", $activityIds->toArray())
-                    ->count();
-            });
+        return $user->marks()
+            ->where([
+                ["status", "=", "to_revise"],
+                ["markable_type", "=", "activity"]
+            ])
+            ->whereIn("markable_id", $activityIds->toArray())
+            ->count();
     }
 
 
@@ -163,17 +183,14 @@ class Chapter extends BaseModel
             return null;
         }
 
-        return Cache::rememberForever("user.{$user->id}.chapter.{$this->id}.activities.completed",
-            function () use ($user) {
-                $activityIds = $this->activities()->get()->pluck("id");
+        $activityIds = $this->activities()->get()->pluck("id");
 
-                return $user->marks()
-                    ->where([
-                        ["status", "=", "completed"],
-                        ["markable_type", "=", "activity"]
-                    ])
-                    ->whereIn("markable_id", $activityIds->toArray())
-                    ->count();
-            });
+        return $user->marks()
+            ->where([
+                ["status", "=", "completed"],
+                ["markable_type", "=", "activity"]
+            ])
+            ->whereIn("markable_id", $activityIds->toArray())
+            ->count();
     }
 }

@@ -5,9 +5,10 @@ namespace App\Controllers;
 use App\Models\Chapter;
 use App\Models\Grade;
 use App\Models\Module;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Mathrix\Lumen\Bases\BaseController;
 
 /**
@@ -20,29 +21,28 @@ use Mathrix\Lumen\Bases\BaseController;
 class ChaptersController extends BaseController
 {
     /**
-     * GET /chapters/{id}/recursive
+     * GET /chapters/{chapterId}/recursive
      * Get a chapter and all its visible children (notions, activities, modules).
      *
-     * @param int $id The chapter id
+     * @param Request $request
+     * @param int $chapterId The chapter id
      *
      * @return JsonResponse
      */
-    public function recursive(int $id)
+    public function recursive(Request $request, int $chapterId)
     {
-        $chapter = Chapter::with([
-            "notions" => function (HasMany $q) {
-                $q->where("visible", "=", true);
-            },
-            "notions.activities" => function (HasMany $q) {
-                $q->where("visible", "=", true);
-            },
-            "notions.activities.modules" => function (HasMany $q) {
-                $q->where("visible", "=", true);
-            }
-        ])
-            ->findOrFail($id);
+        /** @var User $user */
+        $user = $request->user();
 
-        return new JsonResponse($chapter);
+        if ($user === null) {
+            return new JsonResponse(Chapter::recursive($chapterId));
+        }
+
+        return Cache::remember(
+            "user.{$user->id}.chapter.{$chapterId}.recursive", 60,
+            function () use ($chapterId) {
+                return new JsonResponse(Chapter::recursive($chapterId));
+            });
     }
 
 
@@ -53,12 +53,12 @@ class ChaptersController extends BaseController
      *
      * @return JsonResponse
      */
-    public function byModuleRecursive(int $moduleId)
+    public function byModuleRecursive(Request $request, int $moduleId)
     {
         /** @var Module $module */
         $module = Module::query()->findOrFail($moduleId);
 
-        return $this->recursive($module->activity->notion->chapter_id);
+        return $this->recursive($request, $module->activity->notion->chapter_id);
     }
 
 

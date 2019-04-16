@@ -61,13 +61,16 @@ class SystemController extends BaseController
      * GET /system/health
      * Health check for Docker
      *
+     * @param int $count
+     *
      * @return JsonResponse
      */
-    public function health(int $count): JsonResponse
+    public function health(int $count = 1): JsonResponse
     {
+        $userId = User::random()->id;
         $chapterId = Chapter::random()->id;
 
-        $userQuery = User::query()->inRandomOrder();
+        $userQuery = User::query()->where("id", "=", $userId);
         $chapterRecursive = Chapter::with([
             "notions" => function (HasMany $q) {
                 $q->where("visible", "=", true);
@@ -78,18 +81,19 @@ class SystemController extends BaseController
             "notions.activities.modules" => function (HasMany $q) {
                 $q->where("visible", "=", true);
             }
-        ]);
+        ])
+            ->where("id", "=", $chapterId);
 
         return new JsonResponse([
             "user_random" => [
                 "query" => $userQuery->toSql(),
-                "mean($count)" => $this->benchmark(function ($tryNumber) use ($userQuery) {
+                "mean($count)" => $this->benchmark(function () use ($userQuery) {
                     $userQuery->firstOrFail();
                 }, $count),
             ],
             "chapter_recursive" => [
                 "query" => $chapterRecursive->toSql(),
-                "mean($count)" => $this->benchmark(function ($tryNumber) use ($chapterRecursive) {
+                "mean($count)" => $this->benchmark(function () use ($chapterRecursive) {
                     $chapterRecursive->firstOrFail();
                 }, $count)
             ]

@@ -41,8 +41,8 @@ class ActivitiesController extends BaseController
         $mark->status = $status;
         $mark->save();
 
-        $like = "user.{$user->id}.chapter.{$activity->notion->chapter->id}.activities.%";
-        DB::table("cache")->where("key", "LIKE", $like)->delete();
+        $cacheKey = "user.{$user->id}.chapter.{$activity->notion->chapter->id}.recursive";
+        DB::table("cache")->where("key", "=", $cacheKey)->delete();
 
         return new JsonResponse($activity->fresh());
     }
@@ -69,8 +69,8 @@ class ActivitiesController extends BaseController
                 $mark->delete();
             });
 
-        $like = "user.{$user->id}.chapter.{$activity->notion->chapter->id}.activities.%";
-        DB::table("cache")->where("key", "LIKE", $like)->delete();
+        $cacheKey = "user.{$user->id}.chapter.{$activity->notion->chapter->id}.recursive";
+        DB::table("cache")->where("key", "=", $cacheKey)->delete();
 
         return new JsonResponse($activity->fresh());
     }
