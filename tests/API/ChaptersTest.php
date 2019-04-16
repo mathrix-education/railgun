@@ -5,6 +5,7 @@ namespace Tests\API;
 use App\Models\Chapter;
 use App\Models\Mark;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 use Laravel\Passport\Passport;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
@@ -74,8 +75,6 @@ class ChaptersTest extends APITestCase
         $this->json("get", $uri);
 
         $this->assertResponseOk();
-        $this->assertInDatabase("cache", ["key" => "user.{$user->id}.chapter.{$chapterId}.activities.completed"]);
-        $this->assertInDatabase("cache", ["key" => "user.{$user->id}.chapter.{$chapterId}.activities.to-revise"]);
     }
 
 

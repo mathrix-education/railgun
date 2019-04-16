@@ -38,13 +38,15 @@ class ChaptersController extends BaseController
             return new JsonResponse(Chapter::recursive($chapterId));
         }
 
-        $chapter = Cache::remember(
-            "user.{$user->id}.chapter.{$chapterId}.recursive", 60,
+        /** @var array $chapterData */
+        $chapterData = Cache::remember(
+            "user.{$user->id}.chapter.{$chapterId}.recursive",
+            60,
             function () use ($chapterId) {
-                return Chapter::recursive($chapterId);
+                return Chapter::recursive($chapterId)->toArray();
             });
 
-        return new JsonResponse($chapter);
+        return new JsonResponse($chapterData);
     }
 
 
