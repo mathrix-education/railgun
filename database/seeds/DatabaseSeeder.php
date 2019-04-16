@@ -77,5 +77,8 @@ class DatabaseSeeder extends BaseTableSeeder
 
         // Notifications
         $this->call(NotificationsTableSeeder::class);
+
+        // Notifications
+        $this->call(CountersTableSeeder::class);
     }
 }

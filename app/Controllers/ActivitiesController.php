@@ -7,6 +7,7 @@ use App\Models\Mark;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\ValidationException;
 
@@ -40,7 +41,10 @@ class ActivitiesController extends BaseController
         $mark->status = $status;
         $mark->save();
 
-        return new JsonResponse($activity->refresh());
+        $cacheKey = "user.{$user->id}.chapter.{$activity->notion->chapter->id}.recursive";
+        DB::table("cache")->where("key", "=", $cacheKey)->delete();
+
+        return new JsonResponse($activity->fresh());
     }
 
 
@@ -65,6 +69,9 @@ class ActivitiesController extends BaseController
                 $mark->delete();
             });
 
-        return new JsonResponse($activity->refresh());
+        $cacheKey = "user.{$user->id}.chapter.{$activity->notion->chapter->id}.recursive";
+        DB::table("cache")->where("key", "=", $cacheKey)->delete();
+
+        return new JsonResponse($activity->fresh());
     }
 }

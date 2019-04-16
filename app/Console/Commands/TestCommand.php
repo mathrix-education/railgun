@@ -23,7 +23,6 @@ class TestCommand extends BaseCommand
 
     public function handle()
     {
-        $modules = Module::query()->where("content", "=", "$$");
     }
 
 

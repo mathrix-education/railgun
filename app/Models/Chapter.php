@@ -23,6 +23,7 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @property bool $visible
  * @property int $grade_id
  * @property int $discipline_id
+ * @property int $notion_count
  * @property int $activity_count
  * @property array $link
  * ---
@@ -47,7 +48,47 @@ class Chapter extends BaseModel
         "visible" => "boolean"
     ];
     /** @var array Virtual fields */
-    protected $appends = ["activity_count", "activity_to_revise", "activity_completed"];
+    protected $appends = ["activity_to_revise", "activity_completed"];
+
+
+    /**
+     * Ga chapter and its nested notions, activities and modules recursively. Return value is user-depend.
+     *
+     * @param int $id The chapter id
+     *
+     * @return Chapter
+     */
+    public static function recursive(int $id)
+    {
+        return Chapter::with([
+            "notions" => function (HasMany $q) {
+                $q->where("visible", "=", true);
+            },
+            "notions.activities" => function (HasMany $q) {
+                $q->where("visible", "=", true);
+            },
+            "notions.activities.modules" => function (HasMany $q) {
+                $q->where("visible", "=", true);
+            }
+        ])
+            ->findOrFail($id);
+    }
+
+
+    /**
+     * Update counters.
+     */
+    public function updateCounters()
+    {
+        $this->notion_count = $this->notions()
+            ->where("visible", "=", true)
+            ->count();
+        $this->activity_count = $this->notions()
+            ->where("visible", "=", true)
+            ->sum("activity_count");
+        $this->save();
+    }
+
 
     /*
     |--------------------------------------------------------------------------
@@ -103,33 +144,6 @@ class Chapter extends BaseModel
     |--------------------------------------------------------------------------
     */
     /**
-     * activity_count
-     *
-     * @return int
-     */
-    public function getActivityCountAttribute()
-    {
-        $count = 0;
-        $notions = $this->notions()
-            ->where("visible", "=", true)
-            ->get();
-
-        foreach ($notions as $notion) {
-            $notion->activities()
-                ->where("visible", "=", true)
-                ->get()
-                ->each(function (Activity $activity) use (&$count) {
-                    if ($activity->modules()->where("visible", "=", true)->count() > 0) {
-                        $count++;
-                    }
-                });
-        }
-
-        return $count;
-    }
-
-
-    /**
      * activity_to_revise
      *
      * @return int
@@ -144,15 +158,14 @@ class Chapter extends BaseModel
         }
 
         $activityIds = $this->activities()->get()->pluck("id");
-        $count = $user->marks()
+
+        return $user->marks()
             ->where([
                 ["status", "=", "to_revise"],
                 ["markable_type", "=", "activity"]
             ])
             ->whereIn("markable_id", $activityIds->toArray())
             ->count();
-
-        return $count;
     }
 
 
@@ -171,14 +184,13 @@ class Chapter extends BaseModel
         }
 
         $activityIds = $this->activities()->get()->pluck("id");
-        $count = $user->marks()
+
+        return $user->marks()
             ->where([
                 ["status", "=", "completed"],
                 ["markable_type", "=", "activity"]
             ])
             ->whereIn("markable_id", $activityIds->toArray())
             ->count();
-
-        return $count;
     }
 }

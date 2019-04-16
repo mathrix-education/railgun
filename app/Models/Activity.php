@@ -26,6 +26,7 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @property bool $premium
  * @property bool $reviewed
  * @property int $notion_id
+ * @property int $module_count
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * ---
@@ -86,6 +87,19 @@ class Activity extends BaseModel
         parent::__construct($attributes);
     }
 
+
+    /**
+     * Update counters.
+     */
+    public function updateCounters()
+    {
+        $this->module_count = Module::query()
+            ->where("activity_id", "=", $this->id)
+            ->where("visible", "=", true)
+            ->count();
+        $this->save();
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Relations
@@ -93,6 +107,7 @@ class Activity extends BaseModel
     */
     /**
      * The activity's notion.
+     *
      * @return BelongsTo
      */
     public function notion(): BelongsTo

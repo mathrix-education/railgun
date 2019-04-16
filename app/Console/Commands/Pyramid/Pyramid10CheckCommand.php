@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands\Pyramid;
 
+use App\Console\Commands\BoxStyle;
 use App\Models\Chapter;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Mathrix\Lumen\Bases\BaseCommand;
 use Symfony\Component\VarDumper\VarDumper;
@@ -17,32 +17,44 @@ use Symfony\Component\VarDumper\VarDumper;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class PyramidCheckCommand extends BaseCommand
+class Pyramid10CheckCommand extends BaseCommand
 {
+    use BoxStyle;
+
     protected $signature = "pyramid:check";
+
+    private const ASCII_ART =
+        "........................███......................." .
+        "......................██▀.▀██....................." .
+        "....................██▀.....▀██..................." .
+        "..................██▀..▄▄▄▄▄..▀██................." .
+        "................██▀..▄▀.....▀▄..▀██..............." .
+        "..............██▀..▄▀...███...▀▄..▀██............." .
+        "............██▀....▀▄...▀▀▀...▄▀....▀██..........." .
+        "..........██▀........▀▄▄▄▄▄▄▄▀........▀██........." .
+        ".........█▀.............................▀█........" .
+        "........███████████████████████████████████.......";
 
 
     public function handle()
     {
         // Generating dataset
-        $this->block("Generating dataset...");
-        $dataset = Cache::remember("pyramid.dataset", 60, function () {
-            return $this->makeDataset();
-        });
+        $this->line("Generating dataset...");
+        $dataset = $this->makeDataset();
 
         // Check existence of every route
-        $this->block("Checking integrity...");
+        $this->line("Checking integrity...");
 
-        $this->output->progressStart($dataset->count());
+        $this->progressStart($dataset->count());
         foreach ($dataset as $line) {
             if ($this->search($line)) {
-                $this->output->progressAdvance();
+                $this->progressAdvance();
             } else {
                 VarDumper::dump($line);
                 $this->fatal("Error found.");
             }
         }
-        $this->output->progressFinish();
+        $this->progressFinish();
 
         $this->success("Everything is correct. Well played Mr. Bour!");
     }
@@ -50,6 +62,7 @@ class PyramidCheckCommand extends BaseCommand
 
     /**
      * Create the verification dataset.
+     *
      * @return Collection
      */
     private function makeDataset(): Collection
@@ -66,6 +79,7 @@ class PyramidCheckCommand extends BaseCommand
         $this->success("Mappings loaded");
 
         $counter = 0;
+        $written = 0;
 
         // Generate dataset
         $this->line("Generating dataset (this might take a while)...");
@@ -111,7 +125,12 @@ class PyramidCheckCommand extends BaseCommand
 
                         $counter++;
                         if ($counter % 10 === 0) {
-                            $this->output->write(".");
+                            if (isset(self::ASCII_ART[$written])) {
+                                $this->output->write(self::ASCII_ART[$written]);
+                                $written++;
+                            } else {
+                                $this->output->write(".");
+                            }
                         }
                         if ($counter % 500 === 0) {
                             $this->output->write(" $counter\n");

@@ -72,11 +72,7 @@ steps:
   - id: 'docker-compose:tests'
     waitFor: ['composer:install', 'node:compile']
     name: 'eu.gcr.io/$PROJECT_ID/runner-docker-compose'
-    entrypoint: 'sh'
-    args:
-      - '-c'
-      - |
-        docker-compose up --abort-on-container-exit || exit 0
+    args: ['up', '--abort-on-container-exit']
 
 
   # Send cover results to SonarQube

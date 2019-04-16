@@ -19,6 +19,7 @@ properties:
     description: The category image url.
     type: string
     example: https://cdn.mathrix.fr/categories/lorem-ipsum.png
+    nullable: true
   created_at:
     description: The activity creation date-time.
     type: string

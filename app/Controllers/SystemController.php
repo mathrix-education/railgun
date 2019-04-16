@@ -2,6 +2,9 @@
 
 namespace App\Controllers;
 
+use App\Models\Chapter;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Laravelium\Sitemap\Sitemap;
@@ -17,6 +20,26 @@ use Mathrix\Lumen\Bases\BaseController;
  */
 class SystemController extends BaseController
 {
+    private function benchmark(callable $test, int $count = 100, $unit = "ms")
+    {
+        $start = microtime(true);
+        for ($i = 0; $i < $count; $i++) {
+            $test($count);
+        }
+        $duration = microtime(true) - $start; // In seconds
+        $mean = $duration / $count;
+
+        switch ($unit) {
+            case "ms":
+            case "msec":
+            case "milliseconds":
+                return $mean * 1000;
+            default:
+                return $mean;
+        }
+    }
+
+
     /**
      * GET /
      * The base application route.
@@ -38,10 +61,43 @@ class SystemController extends BaseController
      * GET /system/health
      * Health check for Docker
      *
+     * @param int $count
+     *
      * @return JsonResponse
      */
-    public function health(): JsonResponse
+    public function health(int $count = 1): JsonResponse
     {
+        $userId = User::random()->id;
+        $chapterId = Chapter::random()->id;
+
+        $userQuery = User::query()->where("id", "=", $userId);
+        $chapterRecursive = Chapter::with([
+            "notions" => function (HasMany $q) {
+                $q->where("visible", "=", true);
+            },
+            "notions.activities" => function (HasMany $q) {
+                $q->where("visible", "=", true);
+            },
+            "notions.activities.modules" => function (HasMany $q) {
+                $q->where("visible", "=", true);
+            }
+        ])
+            ->where("id", "=", $chapterId);
+
+        return new JsonResponse([
+            "user_random" => [
+                "query" => $userQuery->toSql(),
+                "mean($count)" => $this->benchmark(function () use ($userQuery) {
+                    $userQuery->firstOrFail();
+                }, $count),
+            ],
+            "chapter_recursive" => [
+                "query" => $chapterRecursive->toSql(),
+                "mean($count)" => $this->benchmark(function () use ($chapterRecursive) {
+                    $chapterRecursive->firstOrFail();
+                }, $count)
+            ]
+        ]);
     }
 
 

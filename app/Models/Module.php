@@ -72,7 +72,6 @@ class Module extends BaseModel
     ];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
-        "premium" => "boolean",
         "visible" => "boolean",
         "questions" => "array",
         "choices" => "array",
@@ -83,7 +82,6 @@ class Module extends BaseModel
     ];
     /** @var array The validation rules */
     protected $rules = [
-        "premium" => "required|boolean",
         "visible" => "required|boolean",
         "seo_index" => "required|boolean",
     ];
@@ -107,14 +105,12 @@ class Module extends BaseModel
      */
     public function toArray()
     {
-        $array = parent::toArray();
-
-        /** @var User $user */
-        $user = Auth::user();
         $strip = !app()->runningInConsole()
-            && $this->premium
-            && ($user === null || !$user->premium && !$user->tokenCan("moderator"));
+            && $this->activity !== null && $this->activity->premium
+            && !User::isPremium();
+
         $keep = ["premium", "visible", "comments"];
+        $array = parent::toArray();
 
         if ($strip) {
             $array = Arr::only($array, $keep);

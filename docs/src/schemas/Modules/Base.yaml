@@ -7,9 +7,6 @@ properties:
     type: integer
     example: 14
     readOnly: true
-  premium:
-    description: If the module is exclusively for premium users.
-    type: boolean
   type:
     description: The module content type.
     type: string

@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Pyramid;
 
+use App\Console\Commands\BoxStyle;
 use App\Models\Module;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
@@ -15,8 +16,10 @@ use Mathrix\Lumen\Bases\BaseCommand;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class PyramidMarksModuleCommand extends BaseCommand
+class Pyramid08MarksModuleCommand extends BaseCommand
 {
+    use BoxStyle;
+
     protected $signature = "pyramid:marks:modules";
     /** @var Collection */
     private $mappingsModules;
@@ -60,7 +63,7 @@ class PyramidMarksModuleCommand extends BaseCommand
 
     private function makeMappings()
     {
-        $this->block("Building paths <=> modules mappings...");
+        $this->line("Building paths <=> modules mappings...");
         $data = DB::table("paths")
             ->join("activities", "paths.activity_id", "=", "activities.id")
             ->join("modules", "paths.activity_id", "=", "modules.activity_id")
@@ -80,29 +83,29 @@ class PyramidMarksModuleCommand extends BaseCommand
             ->count();
         $failCount = 0;
 
-        $this->output->progressStart($data->count());
+        $this->progressStart($data->count());
         $data->each(function ($path) use (&$failCount) {
             if (!$this->resolveModule($path)) {
                 $failCount++;
             }
-            $this->output->progressAdvance();
+            $this->progressAdvance();
         });
-        $this->output->progressFinish();
+        $this->progressFinish();
 
         if ($failCount > 0) {
             $percentage = round(($failCount / $total) * 100, 1);
             $this->line("Unable to fix $failCount ($percentage%) path modules");
         } else {
-            $this->success("Resolved all paths <=> modules mappings");
+            $this->line("Resolved all paths <=> modules mappings");
         }
     }
 
 
     private function applyMappings()
     {
-        $this->block("Setting marks module_id...");
+        $this->line("Setting marks module_id...");
 
-        $this->output->progressStart($this->mappingsModules->count());
+        $this->progressStart($this->mappingsModules->count());
         foreach ($this->mappingsModules as $pathId => $moduleId) {
             DB::update("UPDATE marks
               SET markable_type = 'module', markable_id = :module_id
@@ -110,8 +113,8 @@ class PyramidMarksModuleCommand extends BaseCommand
                 "module_id" => $moduleId,
                 "path_id" => $pathId
             ]);
-            $this->output->progressAdvance();
+            $this->progressAdvance();
         }
-        $this->output->progressFinish();
+        $this->progressFinish();
     }
 }

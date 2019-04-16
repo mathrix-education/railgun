@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands\Pyramid;
 
+use App\Console\Commands\BoxStyle;
 use App\Models\Activity;
-use App\Models\Module;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -16,8 +16,10 @@ use Mathrix\Lumen\Bases\BaseCommand;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class PyramidMarksActivitiesCommand extends BaseCommand
+class Pyramid07MarksActivitiesCommand extends BaseCommand
 {
+    use BoxStyle;
+
     protected $signature = "pyramid:marks:activities";
     /** @var Collection */
     private $mappings;
@@ -53,6 +55,7 @@ class PyramidMarksActivitiesCommand extends BaseCommand
 
         if ($resolved instanceof Activity) {
             $this->mappings->offsetSet($path->id, $resolved->id);
+
             return true;
         } else {
             return false;
@@ -62,7 +65,7 @@ class PyramidMarksActivitiesCommand extends BaseCommand
 
     private function makeMappings()
     {
-        $this->block("Building paths <=> activities mappings...");
+        $this->line("Building paths <=> activities mappings");
         $data = DB::table("paths")
             ->join("activities", "paths.activity_id", "=", "activities.id")
             ->join("modules", "paths.activity_id", "=", "modules.activity_id")
@@ -85,29 +88,29 @@ class PyramidMarksActivitiesCommand extends BaseCommand
             ->count();
         $failCount = 0;
 
-        $this->output->progressStart($data->count());
+        $this->progressStart($data->count());
         $data->each(function ($path) use (&$failCount) {
             if (!$this->resolveActivity($path)) {
                 $failCount++;
             }
-            $this->output->progressAdvance();
+            $this->progressAdvance();
         });
-        $this->output->progressFinish();
+        $this->progressFinish();
 
         if ($failCount > 0) {
             $percentage = round(($failCount / $total) * 100, 1);
             $this->line("Unable to fix $failCount ($percentage%) path activities");
         } else {
-            $this->success("Resolved all paths <=> activities mappings");
+            $this->line("Resolved all paths <=> activities mappings");
         }
     }
 
 
     private function applyMappings()
     {
-        $this->block("Setting marks activity_id...");
+        $this->line("Setting marks activity_id");
 
-        $this->output->progressStart($this->mappings->count());
+        $this->progressStart($this->mappings->count());
         foreach ($this->mappings as $pathId => $activityId) {
             DB::update("UPDATE marks
               SET markable_type = 'activity', markable_id = :activity_id
@@ -115,8 +118,8 @@ class PyramidMarksActivitiesCommand extends BaseCommand
                 "activity_id" => $activityId,
                 "path_id" => $pathId
             ]);
-            $this->output->progressAdvance();
+            $this->progressAdvance();
         }
-        $this->output->progressFinish();
+        $this->progressFinish();
     }
 }

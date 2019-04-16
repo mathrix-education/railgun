@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\Client;
@@ -122,6 +124,18 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
 
     /**
+     * @return bool
+     */
+    public static function isPremium()
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        return $user === null || !$user->premium && !$user->tokenCan("moderator");
+    }
+
+
+    /**
      * Custom validation rules
      *
      * @return array
@@ -131,6 +145,17 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         return array_merge($this->rules, [
             "email" => ["required", "email", "max:60", Rule::unique("users", "email")->ignore($this->id)],
         ]);
+    }
+
+
+    /**
+     * Invalidate user cache.
+     */
+    public function invalidate()
+    {
+        DB::table("cache")
+            ->where("key", "LIKE", "user.{$this->id}%")
+            ->delete();
     }
 
 

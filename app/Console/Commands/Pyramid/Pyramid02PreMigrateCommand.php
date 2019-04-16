@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Pyramid;
 
+use App\Console\Commands\BoxStyle;
 use Mathrix\Lumen\Bases\BaseCommand;
 
 /**
@@ -11,18 +12,32 @@ use Mathrix\Lumen\Bases\BaseCommand;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class PyramidPreMigrateCommand extends BaseCommand
+class Pyramid02PreMigrateCommand extends BaseCommand
 {
-    protected $signature = "pyramid:pre-migrate";
+    use BoxStyle;
+
     public const MIGRATE_STOP_BEFORE = "2019_04_07_123307_clean_post_v5";
+
+    protected $signature = "pyramid:pre-migrate";
 
 
     public function handle()
     {
-        $this->block("Preparing migration files...");
+        $this->line("Preparing migration files...");
         $migrationsGlob = database_path("migrations/*.php");
         $postMigrationDir = database_path("post_migrations");
         $migrationStopBefore = database_path("migrations/" . self::MIGRATE_STOP_BEFORE . ".php");
+
+        if (file_exists($postMigrationDir)) {
+            $existingPostMigrations = glob($postMigrationDir . "/*.php");
+
+            foreach ($existingPostMigrations as $migrationFile) {
+                $filename = basename($migrationFile);
+                rename(database_path("post_migrations/$filename"), database_path("migrations/$filename"));
+            }
+
+            rmdir($postMigrationDir);
+        }
 
         if (!file_exists($postMigrationDir)) {
             mkdir($postMigrationDir);
@@ -38,6 +53,6 @@ class PyramidPreMigrateCommand extends BaseCommand
             rename(database_path("migrations/$filename"), database_path("post_migrations/$filename"));
         }
 
-        $this->success(count($migrationFiles) . " files moved");
+        $this->line(count($migrationFiles) . " files moved");
     }
 }
