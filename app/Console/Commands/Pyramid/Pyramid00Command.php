@@ -4,6 +4,7 @@ namespace App\Console\Commands\Pyramid;
 
 use App\Console\Commands\BoxStyle;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Mathrix\Lumen\Bases\BaseCommand;
 
 /**
@@ -22,6 +23,7 @@ class Pyramid00Command extends BaseCommand
 
     public function handle()
     {
+        DB::statement("SET FOREIGN_KEY_CHECKS=0;");
         $this->line("Pyramid Migrator by Mathieu Bour");
 
         $startTime = time();
@@ -48,6 +50,7 @@ class Pyramid00Command extends BaseCommand
         $this->line("Calculating counters...");
         Artisan::call("db:seed", ["--class" => "CountersTableSeeder"]);
 
+        DB::statement("SET FOREIGN_KEY_CHECKS=1;");
         $this->line("Done !");
 
         $duration = time() - $startTime;
