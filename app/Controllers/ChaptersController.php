@@ -83,7 +83,8 @@ class ChaptersController extends BaseController
         $query = Chapter::query()->where([
             ["grade_id", "=", $gradeId],
             ["discipline_id", "=", $disciplineId],
-        ]);
+        ])
+            ->orderBy("order");
 
         // Check if all chapters should be returned.
         $restrictToVisible = $scope !== "all" || !($request->user() !== null && $request->user()->tokenCan("redactor"));
@@ -92,7 +93,9 @@ class ChaptersController extends BaseController
             $query = $query->where("visible", "=", true);
         }
 
-        $chapters = $query->orderBy("order")->get();
+        $chapters = Cache::remember("sql.{$query->toSql()}", 15, function () use ($query) {
+            return $query->get();
+        });
 
         return new JsonResponse($chapters);
     }
