@@ -47,7 +47,7 @@ properties:
     example: 17
     readOnly: true
   user_vote:
-    description: The user vote value, can be +/-1. `null` if the user has not voted for this comment.
+    description: The user vote value, can be +/-1. `0` if the user has not voted for this comment.
     type: integer
     enum: [1, 0, -1]
     readOnly: true
@@ -65,10 +65,12 @@ properties:
         description: The user username.
         type: string
         example: john.doe
+        nullable: true
       firstname:
         description: The user first name.
         type: string
         example: John
+        nullable: true
       level:
         description: The user level based on its points amount.
         type: integer

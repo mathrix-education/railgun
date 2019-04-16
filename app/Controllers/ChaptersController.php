@@ -53,6 +53,7 @@ class ChaptersController extends BaseController
     /**
      * GET /chapters/by-module/{moduleId}/recursive
      *
+     * @param Request $request
      * @param int $moduleId The module id.
      *
      * @return JsonResponse

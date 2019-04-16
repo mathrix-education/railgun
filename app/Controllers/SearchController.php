@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Grade;
 use App\Models\Module;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
@@ -29,6 +30,10 @@ class SearchController extends BaseController
      */
     public function content(int $gradeId, string $query, int $page = 0, int $perPage = 100)
     {
+        /** @var Grade $grade */
+        $grade = Grade::query()->find($gradeId);
+        $gradeIds = $grade->cursus()->pluck("id")->toArray();
+
         // Trim, decode query
         $query = trim(mb_strtolower(urldecode($query)));
         $query = implode("%%", explode(" ", $query));
@@ -46,8 +51,8 @@ class SearchController extends BaseController
             ->whereHas("activity", function (Builder $q) use ($query) {
                 $q->where("name", "LIKE", $query);
             })
-            ->whereHas("activity.notion.chapter", function (Builder $q) use ($gradeId) {
-                $q->where("grade_id", "=", $gradeId);
+            ->whereHas("activity.notion.chapter", function (Builder $q) use ($gradeIds) {
+                $q->whereIn("grade_id", $gradeIds);
             })
             ->where("content", "REGEXP", "\\[video(.*)\\[/video\\]");
 
