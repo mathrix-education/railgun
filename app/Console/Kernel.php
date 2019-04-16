@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\Braintree\NewPayPalCheck;
+use App\Console\Commands\Cache\RebuildCacheCommand;
 use App\Console\Commands\CompileMails;
 use App\Console\Commands\DBDestroyCommand;
 use App\Console\Commands\Pyramid\Pyramid00Command;
@@ -40,6 +41,8 @@ class Kernel extends ConsoleKernel
         DBDestroyCommand::class,
         NewPayPalCheck::class,
         CompileMails::class,
+
+        RebuildCacheCommand::class,
 
 
         // Pyramid commands

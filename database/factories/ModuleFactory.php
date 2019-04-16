@@ -20,7 +20,6 @@ $factory->define(Module::class, function (Generator $faker) {
     $seoTitle = substr($faker->sentence, 0, -1);
 
     return [
-        "premium" => $faker->boolean(70),
         "visible" => $faker->boolean(95),
         "seo_index" => $faker->boolean(30),
         "seo_title" => $seoTitle,

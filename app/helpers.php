@@ -50,24 +50,3 @@ if (!function_exists("timestamps")) {
         return [$createdAt->format($format), $updatedAt->format($format)];
     }
 }
-
-if (!function_exists("benchmark")) {
-    function benchmark(callable $test, int $count = 100, $unit = "ms")
-    {
-        $start = microtime(true);
-        for ($i = 0; $i < $count; $i++) {
-            $test($count);
-        }
-        $duration = microtime(true) - $start; // In seconds
-        $mean = $duration / $count;
-
-        switch ($unit) {
-            case "ms":
-            case "msec":
-            case "milliseconds":
-                return $mean * 1000;
-            default:
-                return $mean;
-        }
-    }
-}

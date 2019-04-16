@@ -3,11 +3,15 @@
 namespace App\Models\Traits;
 
 use App\Services\Braintree\Utils\Formatter;
+use Braintree\CreditCard;
 use Braintree\Customer;
+use Braintree\Exception\NotFound as BraintreeNotFound;
 use Braintree\PaymentMethod;
+use Braintree\PayPalAccount;
 use Braintree\Result\Error;
 use Braintree\Result\Successful;
 use Braintree\Subscription;
+use Faker\Factory as FakerFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
@@ -26,8 +30,9 @@ trait BraintreeCustomer
      * braintree attribute.
      *
      * @return Customer|null
+     * @throws BraintreeNotFound
      */
-    public function getBraintreeAttribute(): ?\Braintree_Customer
+    public function getBraintreeAttribute(): ?Customer
     {
         return $this->isBraintreeCustomer() ? $this->getBraintreeCustomer() : null;
     }
@@ -56,14 +61,14 @@ trait BraintreeCustomer
             Customer::find($this->braintree_id);
 
             return true;
-        } catch (\Braintree\Exception\NotFound $e) {
+        } catch (BraintreeNotFound $e) {
             return false;
         }
     }
 
 
     /**
-     * @return \Braintree_Customer
+     * @return Customer
      */
     public function getBraintreeCustomer(): ?Customer
     {
@@ -71,10 +76,10 @@ trait BraintreeCustomer
             return Customer::factory([]);
         }
 
-        return Cache::remember(self::getBraintreeCustomerCacheKey(), 5, function () {
+        return Cache::remember(self::getBraintreeCustomerCacheKey(), 60 * 24 * 7, function () {
             try {
                 return Customer::find($this->braintree_id);
-            } catch (\Braintree\Exception\NotFound $e) {
+            } catch (BraintreeNotFound $e) {
                 $this->braintree_id = null;
                 $this->save();
 
@@ -101,12 +106,13 @@ trait BraintreeCustomer
      * @param string|null $paymentMethodNonce a payment nonce to attach
      *
      * @return Customer
+     * @throws BraintreeNotFound
      * @throws Http400BadRequestException
      */
     public function createBraintreeCustomer(string $paymentMethodNonce = null): Customer
     {
         if (!$this->isBraintreeCustomer(true)) {
-            $braintreeId = "cus_" . str_replace("-", "", \Faker\Factory::create()->uuid);
+            $braintreeId = "cus_" . str_replace("-", "", FakerFactory::create()->uuid);
 
             /** @var Successful|Error $result */
             $result = Customer::create([
@@ -139,6 +145,7 @@ trait BraintreeCustomer
      * Get user's Braintree payment methods.
      *
      * @return array
+     * @throws BraintreeNotFound
      * @throws Http400BadRequestException
      */
     public function getBraintreePaymentMethods()
@@ -154,6 +161,7 @@ trait BraintreeCustomer
      *
      * @param bool $strict
      *
+     * @throws BraintreeNotFound
      * @throws Http400BadRequestException
      */
     public function requireBraintreeCustomer(bool $strict = false)
@@ -168,6 +176,7 @@ trait BraintreeCustomer
      * Get the user's default payment method token.
      *
      * @return string
+     * @throws BraintreeNotFound
      * @throws Http400BadRequestException
      */
     public function getBraintreeDefaultPaymentMethodToken()
@@ -186,6 +195,7 @@ trait BraintreeCustomer
      * @param string $paymentMethodNonce
      *
      * @return Successful|Error
+     * @throws BraintreeNotFound
      * @throws Http400BadRequestException
      */
     public function addBraintreePaymentMethod(string $paymentMethodNonce)
@@ -216,6 +226,7 @@ trait BraintreeCustomer
      *
      * @return Successful|Error
      * @throws Http400BadRequestException
+     * @throws BraintreeNotFound
      */
     public function deleteBraintreePaymentMethod(string $paymentMethodToken)
     {
@@ -231,6 +242,7 @@ trait BraintreeCustomer
      * @param string|array $plans
      *
      * @return bool
+     * @throws BraintreeNotFound
      * @throws Http400BadRequestException
      */
     public function hasBraintreeSubscription($plans)
@@ -240,12 +252,12 @@ trait BraintreeCustomer
             return $this->braintree_id === null;
         }
 
-        if (\is_string($plans)) {
+        if (is_string($plans)) {
             $plans = [$plans];
         }
 
         if ($this->isBraintreeCustomer(true)) {
-            /** @var \Braintree_Subscription $subscription */
+            /** @var Subscription $subscription */
             foreach ($this->getBraintreeSubscriptions() as $subscription) {
                 if (in_array($subscription->planId, $plans, true) && $subscription->status === "Active") {
                     return true;
@@ -261,6 +273,7 @@ trait BraintreeCustomer
      * Get the user subscriptions.
      *
      * @return Collection|Subscription[]
+     * @throws BraintreeNotFound
      * @throws Http400BadRequestException
      */
     public function getBraintreeSubscriptions(): Collection
@@ -270,17 +283,17 @@ trait BraintreeCustomer
         $subscriptions = new Collection();
 
         if ($this->isBraintreeCustomer()) {
-            /** @var \Braintree_CreditCard $creditCard */
+            /** @var CreditCard $creditCard */
             foreach ($this->getBraintreeCustomer()->creditCards as $creditCard) {
-                /** @var \Braintree_Subscription $subscription */
+                /** @var Subscription $subscription */
                 foreach ($creditCard->subscriptions as $subscription) {
                     $subscriptions->add($subscription);
                 }
             }
 
-            /** @var \Braintree_PayPalAccount $paypalAccount */
+            /** @var PayPalAccount $paypalAccount */
             foreach ($this->getBraintreeCustomer()->paypalAccounts as $paypalAccount) {
-                /** @var \Braintree_Subscription $subscription */
+                /** @var Subscription $subscription */
                 foreach ($paypalAccount->subscriptions as $subscription) {
                     $subscriptions->add($subscription);
                 }
