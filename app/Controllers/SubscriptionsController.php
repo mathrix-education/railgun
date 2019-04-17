@@ -4,15 +4,22 @@ namespace App\Controllers;
 
 use App\Exceptions\UserAlreadyPremiumException;
 use App\Models\User;
+use App\Services\Braintree\Exceptions\BraintreeErrorHandler;
 use App\Services\Braintree\Exceptions\BraintreeProcessorException;
 use App\Services\Braintree\Pipelines\SubscriptionPipeline;
 use App\Services\Braintree\Utils\Formatter;
+use Braintree\Customer;
+use Braintree\CustomerSearch;
+use Braintree\PaymentMethod;
+use Braintree\Subscription;
+use Braintree_Subscription;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
+use Mathrix\Lumen\Exceptions\Http\Http429TooManyRequestsException;
+use Mathrix\Lumen\Exceptions\ValidationException;
 
 /**
  * Class SubscriptionsController.
@@ -41,7 +48,7 @@ class SubscriptionsController extends BaseController
      * @throws Http400BadRequestException
      * @throws UserAlreadyPremiumException
      * @throws ValidationException
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
+     * @throws Http429TooManyRequestsException
      */
     public function create(Request $request): JsonResponse
     {
@@ -58,9 +65,9 @@ class SubscriptionsController extends BaseController
      * @param Request $request The Illuminate HTTP request.
      * @param string $subscriptionId The Braintree subscription id.
      *
+     * @return JsonResponse
      * @throws Http401UnauthorizedException
      *
-     * @return JsonResponse
      */
     public function find(Request $request, string $subscriptionId)
     {
@@ -71,7 +78,7 @@ class SubscriptionsController extends BaseController
             throw new Http401UnauthorizedException();
         }
 
-        $subscription = \Braintree\Subscription::find($subscriptionId);
+        $subscription = Subscription::find($subscriptionId);
 
         return new JsonResponse(
             Formatter::cast($subscription->jsonSerialize())
@@ -99,14 +106,14 @@ class SubscriptionsController extends BaseController
             throw new Http401UnauthorizedException();
         }
 
-        $subscriptionResult = \Braintree\Subscription::cancel($subscriptionId);
+        $subscriptionResult = Subscription::cancel($subscriptionId);
 
         if ($subscriptionResult->success) {
-            /** @var \Braintree_Subscription $subscription */
+            /** @var Braintree_Subscription $subscription */
             $subscription = $subscriptionResult->subscription;
 
-            $customerResultSearch = \Braintree\Customer::search([
-                \Braintree\CustomerSearch::paymentMethodToken()
+            $customerResultSearch = Customer::search([
+                CustomerSearch::paymentMethodToken()
                     ->is($subscription->paymentMethodToken),
             ]);
 
@@ -133,9 +140,9 @@ class SubscriptionsController extends BaseController
      * @param Request $request The Illuminate HTTP request.
      * @param int $userId The user id.
      *
-     * @throws Http401UnauthorizedException
-     *
      * @return JsonResponse
+     * @throws Http400BadRequestException
+     * @throws Http401UnauthorizedException
      */
     public function byUser(Request $request, int $userId)
     {
@@ -153,5 +160,59 @@ class SubscriptionsController extends BaseController
         return new JsonResponse(
             Formatter::cast($customer->getBraintreeSubscriptions())
         );
+    }
+
+
+    /**
+     * Update a subscription. At the moment, it use to change the payment method of a subscription.
+     *
+     * @param Request $request The Illuminate HTTP request.
+     * @param string $subscriptionId The Braintree subscription id.
+     *
+     * @return JsonResponse
+     * @throws Http400BadRequestException
+     * @throws Http401UnauthorizedException
+     * @throws ValidationException
+     */
+    public function update(Request $request, string $subscriptionId): JsonResponse
+    {
+        // Stage 1: validate the request
+        /** @var User $user */
+        $user = $request->user();
+        $this->validate($request, [
+            "payment_method_nonce" => "required",
+            "make_default" => "boolean"
+        ]);
+        $user->requireBraintreeCustomer();
+
+
+        // Stage 2: Check that the user is the owner of the targeted subscription.
+        if (!$user->ownsBraintreeSubscriptionId($subscriptionId) || $user->tokenCan("admin")) {
+            throw new Http401UnauthorizedException(["subscription_id" => $subscriptionId]);
+        }
+
+        $payload = [];
+
+        // Stage 3: Add the payment method
+        if ($request->has("payment_method_nonce")) {
+            /** @var PaymentMethod $paymentMethod */
+            $paymentMethod = $user->addBraintreePaymentMethod(
+                $request->json("payment_method_nonce"),
+                $request->json("make_default", true)
+            );
+            $payload["paymentMethodToken"] = $paymentMethod->token;
+        }
+
+        // Stage 4: Update the subscription
+        $subscriptionResult = Subscription::update($subscriptionId, $payload);
+
+        if (!$subscriptionResult->success) {
+            BraintreeErrorHandler::report($subscriptionResult);
+        }
+
+        /** @var Subscription $subscription */
+        $subscription = $subscriptionResult->subscription;
+
+        return new JsonResponse(Formatter::cast($subscription->jsonSerialize()));
     }
 }

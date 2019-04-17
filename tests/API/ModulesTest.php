@@ -73,8 +73,6 @@ class ModulesTest extends APITestCase
         Passport::actingAs($user, ["registered"]);
         $this->json("get", "/modules/by-activity/{$activity->id}/0/1000");
 
-        $this->debug();
-
         $this->assertOpenAPIResponse("/modules/by-activity/{activityId}/{page}/{perPage}");
     }
 }

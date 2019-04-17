@@ -7,6 +7,7 @@ use App\Events\TransactionSuccessEvent;
 use App\Exceptions\UserAlreadyPremiumException;
 use App\Models\User;
 use App\Services\Braintree\Exceptions\BraintreeErrorHandler;
+use App\Services\Braintree\Exceptions\BraintreeGatewayException;
 use App\Services\Braintree\Exceptions\BraintreeProcessorException;
 use App\Services\Braintree\Models\Plan;
 use App\Services\Braintree\Utils\Formatter;
@@ -19,12 +20,14 @@ use Braintree\Result\Successful;
 use Braintree\Subscription;
 use Braintree\Transaction;
 use Carbon\Carbon;
+use Exception;
 use Faker\Provider\Uuid;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Exceptions\Http\Http429TooManyRequestsException;
 use Mathrix\Lumen\Exceptions\ValidationException;
 
 /**
@@ -68,20 +71,30 @@ class SubscriptionPipeline
 
     /**
      * @return JsonResponse
-     * @throws BraintreeProcessorException
-     * @throws Http400BadRequestException
-     * @throws UserAlreadyPremiumException
-     * @throws ValidationException
+     * @throws Http429TooManyRequestsException
+     * @throws Exception
      */
     public function run()
     {
-        $this->validationCheck();
-        $this->premiumCheck();
+        if ($this->user->isBraintreeLocked()) {
+            throw new Http429TooManyRequestsException([], "Braintree locked");
+        }
 
-        $this->selectPaymentMethod();
-        $this->createSubscription();
-        $this->createInitialTransaction();
-        $this->finalize();
+        $this->user->braintreeLock();
+
+        try {
+            $this->validationCheck();
+            $this->premiumCheck();
+            $this->selectPaymentMethod();
+            $this->createSubscription();
+            $this->createInitialTransaction();
+            $this->finalize();
+        } catch (Exception $e) {
+            $this->user->braintreeUnlock();
+            throw $e;
+        }
+
+        $this->user->braintreeUnlock();
 
         return $this->response;
     }
@@ -90,6 +103,7 @@ class SubscriptionPipeline
     /**
      * Check that the request payload is valid.
      * We do not record the exception.
+     *
      * @throws Http400BadRequestException
      * @throws ValidationException
      */
@@ -125,6 +139,7 @@ class SubscriptionPipeline
     /**
      * Check that the user is not already premium.
      * We do not record the exception.
+     *
      * @throws UserAlreadyPremiumException
      */
     private function premiumCheck(): void
@@ -188,6 +203,7 @@ class SubscriptionPipeline
     /**
      * Now we assume that the user is valid Braintree customer with an attached payment method. We will now create the
      * subscription.
+     *
      * @throws Http400BadRequestException
      * @throws ValidationException
      */
@@ -234,6 +250,7 @@ class SubscriptionPipeline
     /**
      * We now assume that the transaction succeeded. If the subscription requires a forced trial period, we create the
      * initial transaction.
+     *
      * @throws BraintreeProcessorException
      * @throws Http400BadRequestException
      * @throws ValidationException

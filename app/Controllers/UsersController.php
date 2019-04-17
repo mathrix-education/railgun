@@ -7,7 +7,6 @@ use App\Models\Activity;
 use App\Models\Log;
 use App\Models\Module;
 use App\Models\User;
-use App\Services\Braintree\Models\Plan;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -30,6 +29,23 @@ use Mathrix\Lumen\Exceptions\ValidationException;
 class UsersController extends BaseController
 {
     use SearchTrait;
+
+
+    public function get(Request $request, int $id): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (!$user->tokenCan("admin")) {
+            return parent::get($request, $id);
+        }
+
+        $target = User::query()->findOrFail($id);
+        $target->makeVisible(["premium_bypass", "stripe_id", "braintree_id", "stripe", "braintree"]);
+        $target->append(["stripe", "braintree"]);
+
+        return new JsonResponse($target);
+    }
 
 
     /**
@@ -199,117 +215,6 @@ class UsersController extends BaseController
 
         // Then log the information
         Log::log("user_gathered_points", $user, $logData);
-
-        return new JsonResponse($user);
-    }
-
-
-    /**
-     * PATCH /users/payment-method
-     * Update a profile payment method.
-     *
-     * @param Request $request The Illuminate HTTP request.
-     *
-     * @return JsonResponse
-     * @throws Http400BadRequestException
-     * @throws ValidationException
-     */
-    public function updatePaymentMethod(Request $request)
-    {
-        $this->validate($request, [
-            "paymentMethodNonce" => "required",
-        ]);
-
-        /** @var User $user */
-        $user = $request->user();
-
-        if (!$user->isBraintreeCustomer()) {
-            $user->createBraintreeCustomer();
-        }
-
-        $paymentMethodAdditionResult = $user->addBraintreePaymentMethod($request->json("paymentMethodNonce"));
-
-        if (!$paymentMethodAdditionResult->success) {
-            throw new Http400BadRequestException(
-                $paymentMethodAdditionResult->jsonSerialize(),
-                $paymentMethodAdditionResult->message
-            );
-        }
-        $newPaymentMethod = $paymentMethodAdditionResult->paymentMethod;
-
-        // If user is already a Stripe customer, begin the migration process
-        if ($user->isStripeCustomer()) {
-            /** @var \Stripe\Customer $customer */
-            $stripeCustomer = $user->getStripeCustomer();
-
-            /** @var \Stripe\Subscription $stripeSubscription */
-            foreach ($stripeCustomer->subscriptions->data as $stripeSubscription) {
-                // Get new subscription params
-                $braintreeSubscriptionShouldStart = Carbon::createFromTimestamp($stripeSubscription->current_period_end);
-                $braintreeTrialDays = Carbon::now()->diffInDays($braintreeSubscriptionShouldStart);
-                $newBraintreePlanId = Plan::getStripeEquivalentPlanId($stripeSubscription->plan->id);
-
-                if ($newBraintreePlanId !== false) {
-                    $subscriptionCreationResult = \Braintree\Subscription::create([
-                        "id" => "sub_" . str_replace("-", "", \Faker\Factory::create()->uuid),
-                        "planId" => $newBraintreePlanId,
-                        "paymentMethodToken" => $newPaymentMethod->token,
-                        "trialPeriod" => true,
-                        "trialDuration" => $braintreeTrialDays,
-                        "trialDurationUnit" => "day"
-                    ]);
-
-                    if (!$subscriptionCreationResult->success) {
-                        throw new Http400BadRequestException(
-                            $subscriptionCreationResult->jsonSerialize(),
-                            $subscriptionCreationResult->message
-                        );
-                    }
-
-                    $stripeSubscription->cancel();
-                }
-            }
-
-            $user->stripe_id = null;
-            $user->save();
-        } else {
-            // Else, user is only a Braintree customer
-            // Now, change all subscriptions to the new payment method
-            $braintreeSubscriptions = $user->getBraintreeSubscriptions();
-
-            foreach ($braintreeSubscriptions as $braintreeSubscription) {
-                $subscriptionUpdateResult = \Braintree\Subscription::update($braintreeSubscription->id, [
-                    "paymentMethodToken" => $newPaymentMethod->token
-                ]);
-
-                if (!$subscriptionUpdateResult->success) {
-                    throw new Http400BadRequestException(
-                        $subscriptionUpdateResult->jsonSerialize(),
-                        $subscriptionUpdateResult->message
-                    );
-                }
-            }
-
-            // Now, delete all the other payment methods
-            $user->forgetBraintreeCustomerCache();
-            $braintreeCustomer = $user->getBraintreeCustomer();
-
-            foreach ($braintreeCustomer->paymentMethods as $paymentMethod) {
-                if ($paymentMethod->token !== $newPaymentMethod->token) {
-                    $paymentMethodDeletionResult = \Braintree\PaymentMethod::delete($paymentMethod->token);
-
-                    if (!$paymentMethodDeletionResult) {
-                        throw new Http400BadRequestException(
-                            $paymentMethodDeletionResult->jsonSerialize(),
-                            $paymentMethodDeletionResult->message
-                        );
-                    }
-                }
-            }
-        }
-
-        $user = $user->refresh();
-        $user->append(["premium", "braintree", "stripe"]);
 
         return new JsonResponse($user);
     }

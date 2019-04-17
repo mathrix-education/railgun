@@ -2,23 +2,25 @@
 
 namespace App\Models\Traits;
 
+use App\Services\Braintree\Exceptions\BraintreeErrorHandler;
+use App\Services\Braintree\Exceptions\BraintreeGatewayException;
+use App\Services\Braintree\Exceptions\BraintreeProcessorException;
 use App\Services\Braintree\Utils\Formatter;
-use Braintree\CreditCard;
 use Braintree\Customer;
 use Braintree\Exception\NotFound as BraintreeNotFound;
 use Braintree\PaymentMethod;
-use Braintree\PayPalAccount;
 use Braintree\Result\Error;
 use Braintree\Result\Successful;
 use Braintree\Subscription;
 use Faker\Factory as FakerFactory;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 
 /**
  * Trait BraintreeCustomer.
- * Contains all functions to access user's Braintree customer profile.
+ * Contains all functions to access user"s Braintree customer profile.
  *
  * @author Mathieu Bour <mathieu@mathrix.fr>
  * @copyright Mathrix Education SA.
@@ -134,7 +136,7 @@ trait BraintreeCustomer
 
 
     /**
-     * Get user's Braintree payment methods.
+     * Get user"s Braintree payment methods.
      *
      * @return array
      * @throws Http400BadRequestException
@@ -163,7 +165,7 @@ trait BraintreeCustomer
 
 
     /**
-     * Get the user's default payment method token.
+     * Get the user"s default payment method token.
      *
      * @return string
      * @throws Http400BadRequestException
@@ -181,20 +183,33 @@ trait BraintreeCustomer
     /**
      * Attach a new payment method to the current user.
      *
-     * @param string $paymentMethodNonce
+     * @param string $paymentMethodNonce The payment method nonce.
+     * @param bool $makeDefault If the new payment method should be the default payment method.
      *
-     * @return Successful|Error
+     * @return PaymentMethod
      * @throws Http400BadRequestException
+     * @throws BraintreeGatewayException
+     * @throws BraintreeProcessorException
      */
-    public function addBraintreePaymentMethod(string $paymentMethodNonce)
+    public function addBraintreePaymentMethod(string $paymentMethodNonce, bool $makeDefault = true)
     {
         $this->requireBraintreeCustomer();
         $this->forgetBraintreeCustomerCache();
 
-        return PaymentMethod::create([
+        /** @var Successful|Error $result */
+        $result = PaymentMethod::create([
             "customerId" => $this->braintree_id,
             "paymentMethodNonce" => $paymentMethodNonce,
+            "options" => [
+                "makeDefault" => $makeDefault
+            ]
         ]);
+
+        if (!$result->success) {
+            BraintreeErrorHandler::report($result);
+        }
+
+        return $result->paymentMethod;
     }
 
 
@@ -208,29 +223,11 @@ trait BraintreeCustomer
 
 
     /**
-     * Delete a payment method with a token from the vault.
-     *
-     * @param string $paymentMethodToken
-     *
-     * @return Successful|Error
-     * @throws Http400BadRequestException
-     * @throws BraintreeNotFound
-     */
-    public function deleteBraintreePaymentMethod(string $paymentMethodToken)
-    {
-        $this->requireBraintreeCustomer();
-
-        return PaymentMethod::delete($paymentMethodToken);
-    }
-
-
-    /**
      * Check if the user has subscribed to the given plan.
      *
      * @param string|array $plans
      *
      * @return bool
-     * @throws BraintreeNotFound
      * @throws Http400BadRequestException
      */
     public function hasBraintreeSubscription($plans)
@@ -269,28 +266,81 @@ trait BraintreeCustomer
 
         $subscriptions = new Collection();
 
-        if ($this->isBraintreeCustomer()) {
-            /** @var CreditCard $creditCard */
-            foreach ($this->getBraintreeCustomer()->creditCards as $creditCard) {
-                /** @var Subscription $subscription */
-                foreach ($creditCard->subscriptions as $subscription) {
-                    $subscriptions->add($subscription);
-                }
-            }
+        if (!$this->isBraintreeCustomer()) {
+            return $subscriptions;
+        }
 
-            /** @var PayPalAccount $paypalAccount */
-            foreach ($this->getBraintreeCustomer()->paypalAccounts as $paypalAccount) {
-                /** @var Subscription $subscription */
-                foreach ($paypalAccount->subscriptions as $subscription) {
-                    $subscriptions->add($subscription);
-                }
+        /** @var PaymentMethod $paymentMethod */
+        foreach ($this->getBraintreeCustomer()->paymentMethods as $paymentMethod) {
+            /** @var Subscription $subscription */
+            foreach ($paymentMethod->subscriptions as $subscription) {
+                $subscriptions->push($subscription);
             }
         }
 
-        $subscriptions->map(function ($subscription) {
-            return Formatter::cast($subscription);
+        return $subscriptions;
+    }
+
+
+    /**
+     * Check if the user owns the given subscription id.
+     *
+     * @param string $subscriptionId The Braintree subscriptionId.
+     *
+     * @return bool
+     * @throws Http400BadRequestException
+     */
+    public function ownsBraintreeSubscriptionId(string $subscriptionId)
+    {
+        $subscriptionIds = $this->getBraintreeSubscriptions()->map(function (Subscription $subscription) {
+            return $subscription->id;
         });
 
-        return $subscriptions;
+        return $subscriptionIds->search($subscriptionId) !== false;
+    }
+
+
+    /**
+     * Braintree lock.
+     *
+     * @return $this
+     */
+    public function braintreeLock()
+    {
+        $this->forgetBraintreeCustomerCache();
+        $this->settings = array_merge($this->settings, ["braintree_lock" => true]);
+        $this->save();
+        $this->refresh();
+
+        return $this;
+    }
+
+
+    /**
+     * Braintree unlock.
+     *
+     * @return $this
+     */
+    public function braintreeUnlock()
+    {
+        $this->forgetBraintreeCustomerCache();
+        $this->settings = array_merge($this->settings, ["braintree_lock" => false]);
+        //$this->settings = Arr::except($this->settings, ["braintree_lock"]);
+        $this->save();
+        $this->refresh();
+
+        return $this;
+    }
+
+
+    /**
+     * Braintree unlock.
+     *
+     * @return bool
+     */
+    public function isBraintreeLocked(): bool
+    {
+        return isset($this->settings["braintree_lock"])
+            && $this->settings["braintree_lock"] === true;
     }
 }
