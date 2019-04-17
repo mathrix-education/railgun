@@ -13,6 +13,7 @@ use Braintree\Result\Error;
 use Braintree\Result\Successful;
 use Braintree\Subscription;
 use Faker\Factory as FakerFactory;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
@@ -296,5 +297,47 @@ trait BraintreeCustomer
         });
 
         return $subscriptionIds->search($subscriptionId) !== false;
+    }
+
+
+    /**
+     * Braintree lock.
+     *
+     * @return $this
+     */
+    public function braintreeLock()
+    {
+        $this->settings = array_merge($this->settings, ["braintree_lock" => true]);
+        $this->save();
+        $this->refresh();
+
+        return $this;
+    }
+
+
+    /**
+     * Braintree unlock.
+     *
+     * @return $this
+     */
+    public function braintreeUnlock()
+    {
+        $this->settings = Arr::except($this->settings, ["braintree_lock"]);
+        $this->save();
+        $this->refresh();
+
+        return $this;
+    }
+
+
+    /**
+     * Braintree unlock.
+     *
+     * @return bool
+     */
+    public function isBraintreeLocked(): bool
+    {
+        return isset($this->settings["braintree_lock"])
+            && $this->settings["braintree_lock"] === true;
     }
 }

@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
+use Mathrix\Lumen\Exceptions\Http\Http429TooManyRequestsException;
 use Mathrix\Lumen\Exceptions\ValidationException;
 
 /**
@@ -47,7 +48,7 @@ class SubscriptionsController extends BaseController
      * @throws Http400BadRequestException
      * @throws UserAlreadyPremiumException
      * @throws ValidationException
-     * @throws ValidationException
+     * @throws Http429TooManyRequestsException
      */
     public function create(Request $request): JsonResponse
     {
