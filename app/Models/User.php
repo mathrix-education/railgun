@@ -132,7 +132,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         /** @var User $user */
         $user = Auth::user();
 
-        return $user === null || !$user->premium && !$user->tokenCan("moderator");
+        return $user !== null && ($user->premium || $user->tokenCan("moderator"));
     }
 
 
