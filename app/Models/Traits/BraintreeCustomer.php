@@ -13,7 +13,6 @@ use Braintree\Result\Error;
 use Braintree\Result\Successful;
 use Braintree\Subscription;
 use Faker\Factory as FakerFactory;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
@@ -244,7 +243,10 @@ trait BraintreeCustomer
         if ($this->isBraintreeCustomer(true)) {
             /** @var Subscription $subscription */
             foreach ($this->getBraintreeSubscriptions() as $subscription) {
-                if (in_array($subscription->planId, $plans, true) && $subscription->status === "Active") {
+                $validPlan = in_array($subscription->planId, $plans, true);
+                $validStatus = in_array($subscription->status, [Subscription::ACTIVE, Subscription::PAST_DUE]);
+
+                if ($validPlan && $validStatus) {
                     return true;
                 }
             }

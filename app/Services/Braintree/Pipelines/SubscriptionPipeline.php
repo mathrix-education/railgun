@@ -187,6 +187,7 @@ class SubscriptionPipeline
             if (!$paymentMethodCreation->success) {
                 $this->user->record("braintree", "payment_method_creation", "error",
                     $paymentMethodCreation->jsonSerialize());
+                BraintreeErrorHandler::report($paymentMethodCreation);
             }
 
             $this->paymentMethod = $paymentMethodCreation->paymentMethod;
