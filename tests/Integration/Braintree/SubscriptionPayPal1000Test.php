@@ -8,6 +8,8 @@ use Braintree\Exception\NotFound;
 use Braintree\Subscription;
 use Illuminate\Support\Facades\Notification;
 use Laravel\Passport\Passport;
+use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Tests\Utils\NotificationsAssertionsTrait;
 
 /**
  * Class SubscriptionPayPal1000Test.
@@ -26,8 +28,12 @@ use Laravel\Passport\Passport;
  */
 class SubscriptionPayPal1000Test extends BraintreeTestCase
 {
+    use NotificationsAssertionsTrait;
+
+
     /**
      * @throws NotFound
+     * @throws Http400BadRequestException
      */
     public function testPayWithPayPal1000(): void
     {
@@ -44,17 +50,12 @@ class SubscriptionPayPal1000Test extends BraintreeTestCase
         $this->assertResponseOk();
 
         // Subscription assertions
-        $subId = $this->getJsonResponseValue("id");
-        $subscription = Subscription::find($subId);
-        $this->assertJsonDocumentMatches($subscription->jsonSerialize(), [
-            "id" => $this->getJsonResponseValue("id"),
-            "trialPeriod" => true,
-            "status" => "Active",
-            "planId" => "v4_biannually"
-        ]);
+        $user = $user->refresh();
+        $subscription = Subscription::find($this->getJsonResponseValue("id"));
+
+        $this->assertTrue($user->ownsBraintreeSubscriptionId($subscription->id));
 
         // Check that the customer is premium
-        $user = $user->refresh();
         $customer = Customer::find($user->braintree_id);
         $this->assertEquals($customer->id, $user->braintree_id);
         $this->assertNotEmpty($customer->paypalAccounts);
@@ -68,5 +69,25 @@ class SubscriptionPayPal1000Test extends BraintreeTestCase
 
         // Check that a mail notification was sent
         $this->assertNotificationSentToVia(TransactionSuccessNotification::class, $user, "mail");
+    }
+
+
+    /**
+     * POST /subscriptions assert that user cannot subscribe while being locked.
+     */
+    public function testLocked()
+    {
+        $user = $this->getPristineCustomer();
+        $user->braintreeLock();
+        Passport::actingAs($user, ["registered"]);
+        Notification::fake();
+
+        $this->json("post", "/subscriptions", [
+            "planId" => "v4_biannually",
+            "paymentMethodNonce" => "fake-paypal-billing-agreement-nonce"
+        ]);
+
+        // Response assertions
+        $this->assertResponseStatus(429);
     }
 }

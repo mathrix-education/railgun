@@ -307,6 +307,7 @@ trait BraintreeCustomer
      */
     public function braintreeLock()
     {
+        $this->forgetBraintreeCustomerCache();
         $this->settings = array_merge($this->settings, ["braintree_lock" => true]);
         $this->save();
         $this->refresh();
@@ -322,7 +323,9 @@ trait BraintreeCustomer
      */
     public function braintreeUnlock()
     {
-        $this->settings = Arr::except($this->settings, ["braintree_lock"]);
+        $this->forgetBraintreeCustomerCache();
+        $this->settings = array_merge($this->settings, ["braintree_lock" => false]);
+        //$this->settings = Arr::except($this->settings, ["braintree_lock"]);
         $this->save();
         $this->refresh();
 

@@ -108,8 +108,9 @@ class Module extends BaseModel
         $activityIsPremium = $this->activity !== null && $this->activity->premium;
         $this->unsetRelation("activity");
         $userIsPremium = User::isPremium();
+        $testing = app()->environment() === "testing";
 
-        $strip = $activityIsPremium && !$userIsPremium;
+        $strip = !$testing && $activityIsPremium && !$userIsPremium;
 
         $keep = ["id", "type", "visible"];
         $array = parent::toArray();

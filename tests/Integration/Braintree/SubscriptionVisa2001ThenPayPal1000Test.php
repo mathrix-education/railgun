@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Notification;
 use Laravel\Passport\Passport;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use PHPUnit\Framework\Constraint\StringStartsWith;
+use Tests\Utils\NotificationsAssertionsTrait;
 
 /**
  * Class Visa2001ThenPayPalScenarioTest.
@@ -38,6 +39,8 @@ use PHPUnit\Framework\Constraint\StringStartsWith;
  */
 class SubscriptionVisa2001ThenPayPal1000Test extends BraintreeTestCase
 {
+    use NotificationsAssertionsTrait;
+
     private const PLAN = "v4_biannually";
 
 
@@ -48,7 +51,7 @@ class SubscriptionVisa2001ThenPayPal1000Test extends BraintreeTestCase
     public function testPayWithVisa2001()
     {
         // Configuration
-        $processorCode = 2000;
+        $processorCode = 2001;
         $processorType = "soft_declined";
 
         // Setup mocks
@@ -64,12 +67,10 @@ class SubscriptionVisa2001ThenPayPal1000Test extends BraintreeTestCase
         ]);
 
         // Check response
-        $this->assertJsonErrorResponse(400, "bad_request");
-        $this->assertJsonResponseMatches([
-            "data.processor.code" => $processorCode,
-            //"data.processor.text" => $processorText,
-            "data.processor.type" => $processorType
-        ]);
+        $this->assertResponseStatus(400);
+        $response = $this->getJsonResponseContent();
+        $this->assertEquals($processorCode, $response->data->processor->code);
+        $this->assertEquals($processorType, $response->data->processor->type);
 
         // Check that user is not premium
         $user->forgetBraintreeCustomerCache();
@@ -79,10 +80,8 @@ class SubscriptionVisa2001ThenPayPal1000Test extends BraintreeTestCase
         // Check that the payment method used is the user defaults
         /** @var PaymentMethod $paymentMethod */
         $paymentMethod = $user->getBraintreeCustomer()->paymentMethods[0];
-        $this->assertJsonDocumentMatches($paymentMethod->jsonSerialize(), [
-            "cardType" => "Visa",
-            "default" => true
-        ]);
+        $this->assertEquals("Visa", $paymentMethod->cardType);
+        $this->assertTrue($paymentMethod->default);
 
         // Check that the created subscription was cancelled
         /** @var Subscription $subscription */
@@ -90,75 +89,11 @@ class SubscriptionVisa2001ThenPayPal1000Test extends BraintreeTestCase
         $this->assertEquals("Canceled", $subscription->status);
 
         // Check that the initial transaction failed
+        /** @var Transaction $initialTransaction */
         $initialTransaction = Transaction::search([
             TransactionSearch::paymentMethodToken()->is($user->getBraintreeDefaultPaymentMethodToken())
         ])->firstItem();
-        $this->assertJsonDocumentMatches($initialTransaction->jsonSerialize(), [
-            "amount" => $processorCode . ".00",
-            "status" => "processor_declined"
-        ]);
-
-        return $user;
-    }
-
-
-    /**
-     * @depends testPayWithVisa2001
-     *
-     * @param User $user The user from the previous test.
-     *
-     * @throws Exception
-     */
-    public function testPayWithPayPal1000(User $user)
-    {
-        // Setup mocks
-        Notification::fake();
-        SubscriptionUtils::fake(false);
-        Passport::actingAs($user, ["registered"]);
-
-        $this->json("post", "/subscriptions", [
-            "planId" => self::PLAN,
-            "paymentMethodNonce" => "fake-paypal-billing-agreement-nonce"
-        ]);
-
-        // Check the response
-        $startDateFormatted = SubscriptionUtils::getRegularPlanStartDate(self::PLAN)->format("c");
-        $this->assertJsonResponseMatches([
-            "id" => new StringStartsWith("sub_"),
-            "status" => "Active",
-            "firstBillingDate" => $startDateFormatted,
-            "nextBillingDate" => $startDateFormatted,
-            "planId" => self::PLAN,
-            "transactions" => []
-        ]);
-
-        // Check the payment methods
-        $paymentMethods = collect($user->braintree->paymentMethods);
-        $payPalToken = $this->getJsonResponseValue("paymentMethodToken");
-
-        /** @var PayPalAccount $payPal */
-        $payPal = $paymentMethods
-            ->filter(function ($p) use ($payPalToken) {
-                return $p->token === $payPalToken;
-            })
-            ->first();
-        $this->assertInstanceOf(PayPalAccount::class, $payPal);
-        $this->assertTrue($payPal->isDefault());
-
-        /** @var CreditCard $visa */
-        $visa = $paymentMethods
-            ->filter(function ($p) use ($payPalToken) {
-                return $p->token !== $payPalToken;
-            })
-            ->first();
-        $this->assertInstanceOf(CreditCard::class, $visa);
-        $this->assertFalse($visa->isDefault());
-
-        // Check that user is premium
-        $user->refresh();
-        $this->assertTrue($user->premium);
-
-        // Check that a mail was sent
-        $this->assertNotificationSentToVia(TransactionSuccessNotification::class, $user, "mail");
+        $this->assertEquals($processorCode . ".00", $initialTransaction->amount);
+        $this->assertEquals("processor_declined", $initialTransaction->status);
     }
 }

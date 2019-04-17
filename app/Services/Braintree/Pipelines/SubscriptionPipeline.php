@@ -77,7 +77,7 @@ class SubscriptionPipeline
     public function run()
     {
         if ($this->user->isBraintreeLocked()) {
-            throw new Http429TooManyRequestsException();
+            throw new Http429TooManyRequestsException([], "Braintree locked");
         }
 
         $this->user->braintreeLock();
