@@ -6,21 +6,6 @@ use App\Console\Commands\Braintree\NewPayPalCheck;
 use App\Console\Commands\Cache\RebuildCacheCommand;
 use App\Console\Commands\CompileMails;
 use App\Console\Commands\DBDestroyCommand;
-use App\Console\Commands\Pyramid\Pyramid00Command;
-use App\Console\Commands\Pyramid\Pyramid01FixCommand;
-use App\Console\Commands\Pyramid\Pyramid02PreMigrateCommand;
-use App\Console\Commands\Pyramid\Pyramid03MigrateCommand;
-use App\Console\Commands\Pyramid\Pyramid04OrphansCommand;
-use App\Console\Commands\Pyramid\Pyramid05SEOCommand;
-use App\Console\Commands\Pyramid\Pyramid06ForeignKeysCommand;
-use App\Console\Commands\Pyramid\Pyramid07MarksActivitiesCommand;
-use App\Console\Commands\Pyramid\Pyramid08MarksModuleCommand;
-use App\Console\Commands\Pyramid\Pyramid09MarksStatsCommand;
-use App\Console\Commands\Pyramid\Pyramid10CheckCommand;
-use App\Console\Commands\Pyramid\Pyramid11ChangeNotionTypes;
-use App\Console\Commands\Pyramid\Pyramid99PostMigrate;
-use App\Console\Commands\Pyramid\PyramidMigrateCommand;
-use App\Console\Commands\Pyramid\PyramidResetCommand;
 use App\Console\Commands\TestCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
@@ -42,23 +27,7 @@ class Kernel extends ConsoleKernel
         NewPayPalCheck::class,
         CompileMails::class,
 
-        RebuildCacheCommand::class,
-
-
-        // Pyramid commands
-        Pyramid00Command::class,
-        Pyramid01FixCommand::class,
-        Pyramid02PreMigrateCommand::class,
-        Pyramid03MigrateCommand::class,
-        Pyramid04OrphansCommand::class,
-        Pyramid05SEOCommand::class,
-        Pyramid06ForeignKeysCommand::class,
-        Pyramid07MarksActivitiesCommand::class,
-        Pyramid08MarksModuleCommand::class,
-        Pyramid09MarksStatsCommand::class,
-        Pyramid10CheckCommand::class,
-        Pyramid11ChangeNotionTypes::class,
-        Pyramid99PostMigrate::class
+        RebuildCacheCommand::class
     ];
 
 
