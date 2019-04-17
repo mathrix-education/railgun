@@ -70,7 +70,10 @@ class BraintreeController extends BaseController
         );
 
         if ($webhook->kind === WebhookNotification::SUBSCRIPTION_CHARGED_SUCCESSFULLY) {
-            event(new TransactionSuccessEvent($webhook->subscription->transactions[0]));
+            if (isset($webhook->subscription->transactions[0])) {
+                event(new TransactionSuccessEvent($webhook->subscription->transactions[0]));
+            }
+
             event(new SubscriptionChargedSuccessfullyEvent($webhook->subscription));
         }
 

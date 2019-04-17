@@ -121,7 +121,12 @@ steps:
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=$_CLOUDSDK_COMPUTE_ZONE'
       - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLOUDSDK_CONTAINER_CLUSTER'
-
+  - id: 'gcloud:tag:api'
+    waitFor: ['docker:build:api']
+    name: 'gcr.io/cloud-builders/gcloud'
+    args: ['container', 'images', 'add-tag',
+           'eu.gcr.io/$PROJECT_ID/$_API_IMAGE:$SHORT_SHA',
+           'eu.gcr.io/$PROJECT_ID/$_API_IMAGE:latest-$BRANCH_NAME']
 
   # Build, push and deploy docs image
   # ---------------------------------
@@ -145,3 +150,9 @@ steps:
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=$_CLOUDSDK_COMPUTE_ZONE'
       - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLOUDSDK_CONTAINER_CLUSTER'
+  - id: 'gcloud:tag:docs'
+    waitFor: ['docker:build:api']
+    name: 'gcr.io/cloud-builders/gcloud'
+    args: ['container', 'images', 'add-tag',
+           'eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:$SHORT_SHA',
+           'eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:latest-$BRANCH_NAME']

@@ -15,6 +15,7 @@ use Braintree\Subscription;
 use Braintree_Subscription;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
@@ -212,6 +213,11 @@ class SubscriptionsController extends BaseController
 
         /** @var Subscription $subscription */
         $subscription = $subscriptionResult->subscription;
+
+        if ($user->settings["need_paypal_refresh"] === true) {
+            $user->settings = Arr::only($user->settings, ["need_paypal_refresh"]);
+            $user->save();
+        }
 
         return new JsonResponse(Formatter::cast($subscription->jsonSerialize()));
     }

@@ -8,6 +8,10 @@
             <mj-section background-color="#ffffff">
                 <mj-column>
                     <mj-text>
+                        Salut {{ $user->username }} !
+                    </mj-text>
+
+                    <mj-text>
                         Comme tu le remarques, Mathrix.fr grandit avec de nouvelles matières. De notre côté, nous
                         devons adapter notre structure juridique. Pour faire simple, on change tout simplement de
                         structure. On s’appelle à présent Mathrix Education SA.

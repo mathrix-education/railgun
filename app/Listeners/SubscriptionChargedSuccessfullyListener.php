@@ -5,6 +5,8 @@ namespace App\Listeners;
 use App\Events\SubscriptionChargedSuccessfullyEvent;
 use App\Models\User;
 use App\Services\Braintree\Models\Plan;
+use Braintree\Customer;
+use Faker\Factory as FakerFactory;
 use GuzzleHttp\Client;
 use Mathrix\Lumen\Bases\BaseListener;
 
@@ -22,13 +24,14 @@ class SubscriptionChargedSuccessfullyListener extends BaseListener
 
     public function handle(SubscriptionChargedSuccessfullyEvent $event)
     {
-        $customerResultSearch = \Braintree\Customer::search([
+        $customerResultSearch = Customer::search([
             \Braintree_CustomerSearch::paymentMethodToken()
                 ->is($event->subscription->paymentMethodToken),
         ]);
 
         /** @var User $customer */
-        $customer = User::where("braintree_id", "=", $customerResultSearch->firstItem()->id)
+        $customer = User::query()
+            ->where("braintree_id", "=", $customerResultSearch->firstItem()->id)
             ->firstOrFail();
         $plan = Plan::find($event->subscription->planId);
 
@@ -36,7 +39,7 @@ class SubscriptionChargedSuccessfullyListener extends BaseListener
             "v" => "1",
             "t" => "event",
             "tid" => env("ANALYTICS_ID"),
-            "cid" => \Faker\Factory::create()->uuid,
+            "cid" => FakerFactory::create()->uuid,
             "ec" => "Ecommerce",
             "ea" => "Purchase",
             "ni" => "1",
