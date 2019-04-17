@@ -84,6 +84,10 @@ properties:
           The user last session (key: discipline id, value: module id).
         type: object
         example: {1: 1475, 2: 754, 5: 156}
+      need_paypal_refresh:
+        description: >
+          If the user has an active PayPal subscription and subsequently need
+          a payment method refresh.
   grade_id:
     description: The class id which belongs to the user.
     type: integer

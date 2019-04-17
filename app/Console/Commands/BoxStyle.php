@@ -25,7 +25,7 @@ trait BoxStyle
     public function progressStart(int $max)
     {
         $this->progress = $this->output->createProgressBar($max);
-        $this->progress->setFormat("[%bar%] %percent:3s%% (%current%/%max%) ETA: %estimated:-6s%");
+        $this->progress->setFormat("%bar% %percent:3s%% (%current%/%max%) ETA: %remaining%");
     }
 
 

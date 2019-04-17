@@ -105,11 +105,13 @@ class Module extends BaseModel
      */
     public function toArray()
     {
-        $strip = !app()->runningInConsole()
-            && $this->activity !== null && $this->activity->premium
-            && !User::isPremium();
+        $activityIsPremium = $this->activity !== null && $this->activity->premium;
+        $this->unsetRelation("activity");
+        $userIsPremium = User::isPremium();
 
-        $keep = ["premium", "visible", "comments"];
+        $strip = $activityIsPremium && !$userIsPremium;
+
+        $keep = ["id", "type", "visible"];
         $array = parent::toArray();
 
         if ($strip) {

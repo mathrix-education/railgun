@@ -55,7 +55,7 @@ class SubscriptionChargedSuccessfullyListener extends BaseListener
         ];
 
         $http = new Client();
-        $response = $http->post(self::BASE_URL, [
+        $http->post(self::BASE_URL, [
             "query" => $payload
         ]);
     }

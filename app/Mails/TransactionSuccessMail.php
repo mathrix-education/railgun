@@ -70,13 +70,13 @@ class TransactionSuccessMail extends BaseMail
      */
     public function build()
     {
-        $this->subject("Votre reçu de Mathrix");
-
-        return $this->view("mails.transactions.success", [
-            "title" => "Reçu de Mathrix",
-            "user" => $this->user,
-            "transaction" => $this->transaction,
-            "lineItems" => $this->lineItems,
-        ]);
+        return $this->subject("Votre reçu de Mathrix")
+            ->from("support@mathrix.fr")
+            ->view("mails.transactions.success", [
+                "title" => "Reçu de Mathrix",
+                "user" => $this->user,
+                "transaction" => $this->transaction,
+                "lineItems" => $this->lineItems,
+            ]);
     }
 }

@@ -69,7 +69,6 @@ class BraintreeController extends BaseController
             $request->input("bt_payload")
         );
 
-        // TODO(2019-03-22): Check that is still functioning
         if ($webhook->kind === WebhookNotification::SUBSCRIPTION_CHARGED_SUCCESSFULLY) {
             event(new TransactionSuccessEvent($webhook->subscription->transactions[0]));
             event(new SubscriptionChargedSuccessfullyEvent($webhook->subscription));

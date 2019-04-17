@@ -4,6 +4,8 @@ namespace Tests\API;
 
 use App\Models\Activity;
 use App\Models\Module;
+use App\Models\User;
+use Laravel\Passport\Passport;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
@@ -52,5 +54,27 @@ class ModulesTest extends APITestCase
     public function testByActivity(): void
     {
         $this->assertRestBySuccess(Activity::class);
+    }
+
+
+    /**
+     * GET /modules/by-activity/{activityId} with premium activity as premium user
+     */
+    public function testByActivityPremium(): void
+    {
+        $user = User::random();
+        $user->premium_bypass = true;
+        $user->save();
+        $module = Module::random(["visible", "=", 1]);
+        $activity = $module->activity;
+        $activity->premium = true;
+        $activity->save();
+
+        Passport::actingAs($user, ["registered"]);
+        $this->json("get", "/modules/by-activity/{$activity->id}/0/1000");
+
+        $this->debug();
+
+        $this->assertOpenAPIResponse("/modules/by-activity/{activityId}/{page}/{perPage}");
     }
 }

@@ -10,12 +10,18 @@ class MailCompiler {
             .filter(d => ["common", "compile.js"].indexOf(d) === -1)
             .filter(d => d !== "common")
             .map(dir => this.fs.readdirSync(`${__dirname}/${dir}`)
-                .map(file => this.compile(`${__dirname}/${dir}/${file}`)))
+                .map(file => this.compile(`${__dirname}/${dir}/${file}`))
+            )
     }
 
     compile(src) {
         const content = this.fs.readFileSync(src);
-        const mjmlResult = this.mjml.mjml2html(content.toString());
+        const mjmlResult = this.mjml.mjml2html(content.toString(), {
+            beautify: true,
+            validationLevel: "strict",
+            filePath: src
+        });
+        console.log(this.path.dirname(src));
 
         if (mjmlResult.errors.length > 0) {
             mjmlResult.errors.map(error => {
