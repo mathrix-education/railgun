@@ -1,5 +1,5 @@
 <mj-section background-color="#3c8d80">
     <mj-column padding-bottom="0">
-        <mj-image src="{{ $cdn }}/img/logo-white-mode-machine.png" align="center" width="250"></mj-image>
+        <mj-image src="{{ env("APP_CDN") }}/img/logo-white-mode-machine.png" align="center" width="250"></mj-image>
     </mj-column>
 </mj-section>

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\BraintreeCustomer;
 use App\Models\Traits\PermissionsTrait;
 use App\Models\Traits\StripeCustomer;
+use Braintree\Exception\NotFound as BraintreeNotFound;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -358,7 +359,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      *
      * @return bool
      * @throws Http400BadRequestException
-     *
+     * @throws BraintreeNotFound
      */
     public function getPremiumAttribute()
     {
@@ -377,7 +378,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         $body = [];
         $lastSession = $this->settings["last_session"];
 
-        foreach ($lastSession as $disciplineId => $moduleId) {
+        foreach ($lastSession as $moduleId) {
             /** @var Module $module */
             $module = Module::query()->findOrFail($moduleId);
             /** @var Activity $activity */

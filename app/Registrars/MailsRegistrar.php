@@ -2,6 +2,7 @@
 
 namespace App\Registrars;
 
+use Illuminate\Support\Str;
 use Mathrix\Lumen\Bases\BaseRegistrar;
 
 /**
@@ -25,7 +26,7 @@ class MailsRegistrar extends BaseRegistrar
                 $mailsDir = app()->basePath() . "/app/Mails";
                 $mails = glob("$mailsDir/*Mail.php");
                 $mails = array_filter($mails, function ($file) {
-                    return !\Illuminate\Support\Str::contains($file, "BaseMail");
+                    return !Str::contains($file, "BaseMail");
                 });
 
                 // Build Mail classes
@@ -37,7 +38,7 @@ class MailsRegistrar extends BaseRegistrar
                 $mailsUrl = array_map(function ($file) use ($mailClasses, $mailsDir) {
                     $mailClasses[] = "App\\Mails\\" . str_replace(["$mailsDir/", ".php"], "", $file);
 
-                    return \Illuminate\Support\Str::snake(str_replace(["$mailsDir/", "Mail.php"], "", $file), "-");
+                    return Str::snake(str_replace(["$mailsDir/", "Mail.php"], "", $file), "-");
                 }, $mails);
 
                 $mails = array_combine($mailsUrl, $mailClasses);

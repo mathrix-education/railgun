@@ -46,11 +46,9 @@ class CommentAnswerNotification extends BaseNotification
         unset($this->comment->user);
         unset($this->comment->parent);
 
-        $data = [
+        return [
             "comment" => $this->comment->toArray(),
             "user" => $this->user->makeHidden(["email"])->toArray()
         ];
-
-        return $data;
     }
 }
