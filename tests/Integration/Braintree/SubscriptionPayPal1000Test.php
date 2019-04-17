@@ -70,24 +70,4 @@ class SubscriptionPayPal1000Test extends BraintreeTestCase
         // Check that a mail notification was sent
         $this->assertNotificationSentToVia(TransactionSuccessNotification::class, $user, "mail");
     }
-
-
-    /**
-     * POST /subscriptions assert that user cannot subscribe while being locked.
-     */
-    public function testLocked()
-    {
-        $user = $this->getPristineCustomer();
-        $user->braintreeLock();
-        Passport::actingAs($user, ["registered"]);
-        Notification::fake();
-
-        $this->json("post", "/subscriptions", [
-            "planId" => "v4_biannually",
-            "paymentMethodNonce" => "fake-paypal-billing-agreement-nonce"
-        ]);
-
-        // Response assertions
-        $this->assertResponseStatus(429);
-    }
 }

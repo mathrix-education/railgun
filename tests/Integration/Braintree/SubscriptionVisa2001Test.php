@@ -2,20 +2,14 @@
 
 namespace Tests\Integration\Braintree;
 
-use App\Models\User;
-use App\Notifications\TransactionSuccessNotification;
 use App\Services\Braintree\Models\Subscription;
 use App\Services\Braintree\Utils\SubscriptionUtils;
-use Braintree\CreditCard;
 use Braintree\PaymentMethod;
-use Braintree\PayPalAccount;
 use Braintree\Transaction;
 use Braintree\TransactionSearch;
-use Exception;
 use Illuminate\Support\Facades\Notification;
 use Laravel\Passport\Passport;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
-use PHPUnit\Framework\Constraint\StringStartsWith;
 use Tests\Utils\NotificationsAssertionsTrait;
 
 /**
@@ -29,15 +23,11 @@ use Tests\Utils\NotificationsAssertionsTrait;
  * A user who is not already a Braintree customer will attempt to subscribe to the v4_biannually plan firstly use a
  * VISA credit card, but the process will fail during the initial transaction with code 2001 (Insufficient Funds).
  *
- * testPayWithPayPal1000:
- * ------------------
- * The previous user will then use his PayPal account and everything will work like a charm.
- *
  * @author Mathieu Bour <mathieu@mathrix.fr>
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class SubscriptionVisa2001ThenPayPal1000Test extends BraintreeTestCase
+class SubscriptionVisa2001Test extends BraintreeTestCase
 {
     use NotificationsAssertionsTrait;
 
@@ -45,10 +35,9 @@ class SubscriptionVisa2001ThenPayPal1000Test extends BraintreeTestCase
 
 
     /**
-     * @return User
      * @throws Http400BadRequestException
      */
-    public function testPayWithVisa2001()
+    public function testPayWithVisa2001(): void
     {
         // Configuration
         $processorCode = 2001;

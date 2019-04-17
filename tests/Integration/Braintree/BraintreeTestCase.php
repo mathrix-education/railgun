@@ -5,11 +5,7 @@ namespace Tests\Integration\Braintree;
 use App\Models\User;
 use Laravel\Passport\Passport;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
-use Mathrix\Lumen\Tests\Traits\DatabaseTrait;
-use Mathrix\Lumen\Tests\Traits\DebugTrait;
-use Mathrix\Lumen\Tests\Traits\PassportTrait;
 use Tests\APITestCase;
-use Tests\Utils\NotificationsAssertionsTrait;
 
 /**
  * Class BraintreeTestCase.
