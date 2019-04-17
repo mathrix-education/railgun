@@ -42,7 +42,6 @@ class MailsRegistrar extends BaseRegistrar
                 }, $mails);
 
                 $mails = array_combine($mailsUrl, $mailClasses);
-
                 /**
                  * @var string
                  * @var \App\Mails\BaseMail $class
