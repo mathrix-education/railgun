@@ -215,7 +215,7 @@ class SubscriptionsController extends BaseController
         $subscription = $subscriptionResult->subscription;
 
         if ($user->settings["need_paypal_refresh"] === true) {
-            $user->settings = Arr::only($user->settings, ["need_paypal_refresh"]);
+            $user->settings = Arr::except($user->settings, ["need_paypal_refresh"]);
             $user->save();
         }
 
