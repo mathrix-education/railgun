@@ -22,6 +22,7 @@ class BraintreeErrorHandler
      *
      * @throws BraintreeGatewayException
      * @throws BraintreeProcessorException
+     * @throws DuplicatePaymentMethodNonceException
      */
     public static function report(Error $error)
     {
@@ -29,6 +30,10 @@ class BraintreeErrorHandler
             self::wrapper("transaction", $error);
         } else if ($error->subscription instanceof Subscription) {
             self::wrapper("subscription", $error);
+        } else {
+            if ($error->message === "Cannot use a payment_method_nonce more than once.") {
+                throw new DuplicatePaymentMethodNonceException([], $error->message);
+            }
         }
     }
 
@@ -46,7 +51,7 @@ class BraintreeErrorHandler
         $object = $error->{$type};
 
         if ($object->status === "gateway_rejected") {
-            // Handle dateway rejection
+            // Handle gateway rejection
             $exceptionPayload = [
                 "reason" => $object->gatewayRejectionReason
             ];
