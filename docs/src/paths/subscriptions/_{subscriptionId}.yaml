@@ -1,0 +1,41 @@
+patch:
+  summary: Patch subscription
+  parameters:
+    - name: subscriptionId
+      in: path
+      description: The subscription id.
+      required: true
+      schema:
+        type: int
+        example: sub_vfbdhbjsdkkek2s4df5s4d
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            required: [payment_method_nonce]
+            payment_method_nonce:
+              description: >
+                If set, change the payment method associated with the
+                subscription.
+              type: string
+              example: fake-valid-visa-nonce
+            make_default:
+              description: >
+                Make the new payment method the default customer payment method.
+                Must be used with `payment_method_nonce`.
+              type: boolean
+              example: true
+              default: false
+  responses:
+    200:
+      description: The patched subscription.
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yaml#/components/schemas/Braintree_Subscription'
+    404:
+      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
