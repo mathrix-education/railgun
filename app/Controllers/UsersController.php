@@ -43,6 +43,8 @@ class UsersController extends BaseController
         $target = User::query()->findOrFail($id);
         $target->makeVisible(["premium_bypass", "stripe_id", "braintree_id", "stripe", "braintree"]);
         $target->append(["stripe", "braintree"]);
+
+        return new JsonResponse($target);
     }
 
 
