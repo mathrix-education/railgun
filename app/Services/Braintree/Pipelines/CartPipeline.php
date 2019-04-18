@@ -7,7 +7,6 @@ use App\Exceptions\DiscountExpiredException;
 use App\Exceptions\DiscountNotApplicableException;
 use App\Models\Discount;
 use App\Models\Product;
-use App\Models\Purchase;
 use App\Models\User;
 use App\Services\Braintree\Exceptions\BraintreeErrorHandler;
 use App\Services\Braintree\Exceptions\BraintreeGatewayException;
@@ -15,6 +14,7 @@ use App\Services\Braintree\Exceptions\BraintreeProcessorException;
 use Braintree\Result\Error;
 use Braintree\Result\Successful;
 use Braintree\Transaction;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -35,6 +35,8 @@ use Mathrix\Lumen\Exceptions\ValidationException;
  */
 class CartPipeline
 {
+    public const MODE_MACHINE_2019_END = "2019-07-31 00:00:00";
+
     /** @var $request Request The Illuminate HTTP request */
     private $request;
     /** @var User $customer The customer. */
@@ -253,6 +255,25 @@ class CartPipeline
 
 
     /**
+     * Deliver pack products.
+     *
+     * @param Product $pack
+     */
+    private function deliverPackProducts(Product $pack)
+    {
+        $pack->items->each(function (Product $item) {
+            if ($item->type === "premium") {
+                // Premium product
+                $this->customer->premium_bypass_expires_at = new Carbon(self::MODE_MACHINE_2019_END);
+                $this->customer->save();
+            } else {
+                $item->deliver($this->customer);
+            }
+        });
+    }
+
+
+    /**
      * Finalize the transaction
      * - Unlock the products for the user
      * - Decrement the discount counter if needed
@@ -261,12 +282,13 @@ class CartPipeline
     private function finalize()
     {
         // Insert new purchase records
-        $this->products->each(function ($product) {
-            $purchase = new Purchase([
-                "user_id" => $this->customer->id,
-                "product_id" => $product->id,
-            ]);
-            $purchase->save();
+        $this->products->each(function (Product $product) {
+            // Handle packs items dispatching
+            if ($product->type === "pack") {
+                $this->deliverPackProducts($product);
+            }
+
+            $product->deliver($this->customer);
         });
 
         // Decrement discount counter if necessary

@@ -12,22 +12,27 @@
                     </mj-text>
 
                     <mj-text>
-                        Comme tu le remarques, Mathrix.fr grandit avec de nouvelles matières. De notre côté, nous
-                        devons adapter notre structure juridique. Pour faire simple, on change tout simplement de
-                        structure. On s’appelle à présent Mathrix Education SA.
+                        Comme tu as pu le remarquer, Mathrix.fr s’agrandit de jour en jour avec de nouvelles matières et
+                        de nouvelles formations.
                     </mj-text>
 
                     <mj-text>
-                        Concrètement rien ne change : tu continues à payer le même prix pour l’abonnement
-                        “Mode Machine”. Les conditions de ventes sont également inchangées.
+                        De notre côté, nous avons changé de structure juridique, nous sommes maintenant Mathrix
+                        Education SA.<br>
+                        Concrêtement, c’est seulement le nom qui change. C’est toujours la même équipe qui travaille de
+                        pied ferme pour t’aider dans ton parcours scolaire !
                     </mj-text>
 
                     <mj-text>
-                        Il nous faut juste ton autorisation pour déplacer ta souscription vers notre nouvelle
-                        structure. Tu peux le faire en cliquant sur le lien ci-dessous, cela te prendra 30 secondes !
+                        <strong>Ce que cela change pour toi :</strong><br>
+                        Nous avons besoin que tu actualises ton mode de paiement pour continuer à bénéficier de
+                        l'abonnement Mode Machine. C’est fait en 30 secondes et cela ne changera pas le prix de
+                        l'abonnement.
                     </mj-text>
 
-                    <mj-divider border-width="1px" border-style="dashed" border-color="lightgrey"></mj-divider>
+                    <mj-text>
+                        Attention : si tu ne le fais pas, ton abonnement prendra fin le mois prochain.
+                    </mj-text>
 
                     <mj-button href="{{ $link }}"
                                font-size="18px"
@@ -42,6 +47,15 @@
                             Si le bouton ne fonctionne pas, tu peux copier-coller ce lien dans la barre d’adresse de ton
                             navigateur : <a href="{{ $link }}">{{ $link }}</a>
                         </p>
+                    </mj-text>
+
+                    <mj-text>
+                        Si tu as une question, n’hésite-pas à nous écrire à support@mathrix.fr.
+                    </mj-text>
+
+                    <mj-text>
+                        Bon travail et à bientôt !
+                        La team Mathrix
                     </mj-text>
                 </mj-column>
             </mj-section>

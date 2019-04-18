@@ -45,7 +45,6 @@ class ProductsTest extends APITestCase
     }
 
 
-
     /**
      * GET /products/{type}/{page}/{perPage}
      */
@@ -58,6 +57,7 @@ class ProductsTest extends APITestCase
         $this->assertOpenAPIResponse();
     }
 
+
     /**
      * GET /products/buyable/{type}/{page}/{perPage}
      */
@@ -68,5 +68,33 @@ class ProductsTest extends APITestCase
         // Assertions
         $this->assertResponseOk();
         $this->assertOpenAPIResponse();
+    }
+
+
+    /**
+     * PATCH /products/{packId}/items
+     */
+    public function testItems()
+    {
+        $pack = Product::random(["type", "=", "pack"]);
+        $trainingIds = Product::query()
+            ->inRandomOrder()
+            ->where("type", "=", "training")
+            ->limit(5)
+            ->get(["id"])
+            ->pluck("id");
+
+        $this->mockScope("admin");
+
+        $this->json("patch", "/products/{$pack->id}/items", $trainingIds->toArray());
+
+        $this->assertResponseOk();
+        foreach ($trainingIds as $order => $trainingId) {
+            $this->assertInDatabase("product_product", [
+                "parent_id" => $pack->id,
+                "child_id" => $trainingId,
+                "order" => $order
+            ]);
+        }
     }
 }

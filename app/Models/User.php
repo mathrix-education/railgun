@@ -46,6 +46,7 @@ use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
  * @property int $daily_achievements
  * @property array $settings
  * @property bool $premium_bypass
+ * @property Carbon $premium_bypass_expires_at
  * @property int|null $grade_id
  * @property string|null $braintree_id
  * @property string|null $stripe_id
@@ -99,10 +100,22 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     ];
 
     /** @var array The hidden attributes from the model"s JSON */
-    protected $hidden = ["password", "token", "premium_bypass", "stripe_id", "braintree_id", "stripe", "braintree"];
+    protected $hidden = [
+        "password",
+        "token",
+        "premium_bypass",
+        "premium_bypass_expires_at",
+        "stripe_id",
+        "braintree_id",
+        "stripe",
+        "braintree"
+    ];
 
     /** @var array The attributes that should be cast to native types */
-    protected $casts = ["settings" => "array"];
+    protected $casts = [
+        "settings" => "array",
+        "premium_bypass_expires_at" => "date"
+    ];
 
     /** @var array The validation rules on create */
     protected $rules = [
@@ -115,6 +128,8 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "points" => "required|integer",
         "daily" => "nullable|in:10,20,40",
         "grade_id" => "nullable|exists:grades,id",
+        "premium_bypass" => "boolean",
+        "premium_bypass_expires_at" => "nullable|date",
     ];
 
     /** @var array The relations to include by default */
@@ -359,11 +374,11 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      *
      * @return bool
      * @throws Http400BadRequestException
-     * @throws BraintreeNotFound
      */
     public function getPremiumAttribute()
     {
         return $this->premium_bypass
+            || ($this->premium_bypass_expires_at !== null && $this->premium_bypass_expires_at->isFuture())
             || $this->hasBraintreeSubscription(self::BRAINTREE_PLANS)
             || $this->hasStripeSubscription(self::STRIPE_PLANS);
     }

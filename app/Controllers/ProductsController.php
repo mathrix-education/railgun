@@ -2,18 +2,12 @@
 
 namespace App\Controllers;
 
-use App\Events\TransactionSuccessEvent;
 use App\Models\Product;
-use App\Models\Purchase;
-use App\Models\User;
 use App\Services\Braintree\Pipelines\CartPipeline;
-use Braintree\Result\Successful;
-use Braintree\Transaction;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
-use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
 use Mathrix\Lumen\Exceptions\ValidationException;
 use Mathrix\Lumen\Responses\PaginationJsonResponse;
 
@@ -26,6 +20,33 @@ use Mathrix\Lumen\Responses\PaginationJsonResponse;
  */
 class ProductsController extends BaseController
 {
+    /**
+     * PATCH /products/{packId}/items
+     *
+     * @param Request $request The Illuminate HTTP request.
+     * @param int $packId The pack id.
+     *
+     * @return JsonResponse
+     */
+    public function items(Request $request, int $packId)
+    {
+        /** @var Product $pack */
+        $pack = Product::query()
+            ->where("id", "=", $packId)
+            ->where("type", "=", "pack")
+            ->firstOrFail();
+
+        $itemsSync = collect($request->all())
+            ->mapWithKeys(function (int $itemId, int $order) {
+                return [$itemId => ["order" => $order]];
+            });
+
+        $pack->items()->sync($itemsSync);
+
+        return new JsonResponse($pack->load("items"));
+    }
+
+
     /**
      * GET /products/slug/{productSlug}
      *
@@ -99,6 +120,10 @@ class ProductsController extends BaseController
 
         for ($i = 1; $i <= $maxDepth; $i++) {
             $with[] = $with[$i - 1] . ".children";
+        }
+
+        foreach ($with as $relation) {
+            $with[] = "items.$relation";
         }
 
         $withModules = [];

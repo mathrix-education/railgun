@@ -105,12 +105,26 @@ class Module extends BaseModel
      */
     public function toArray()
     {
-        $activityIsPremium = $this->activity !== null && $this->activity->premium;
-        $this->unsetRelation("activity");
-        $userIsPremium = User::isPremium();
-        $testing = app()->environment() === "testing";
+        /** @var User $user */
+        $user = Auth::user();
 
-        $strip = !$testing && $activityIsPremium && !$userIsPremium;
+        $activityIsPremium = $this->activity !== null && $this->activity->premium;;
+        $this->unsetRelation("activity");
+
+        $testing = app()->environment() === "testing";
+        $userIsPremium = $user !== null && ($user->premium || $user->tokenCan("moderator"));
+
+        if ($user === null) {
+            $isPartOfUserPurchases = false;
+        } else {
+            $isPartOfUserPurchases = $this->products()
+                ->get(["id"])
+                ->reduce(function (bool $current, Product $product) use ($user) {
+                    return $current || $user->hasPurchased($product);
+                }, false);
+        }
+
+        $strip = !$testing && (($activityIsPremium && !$userIsPremium) || !$isPartOfUserPurchases);
 
         $keep = ["id", "type", "visible"];
         $array = parent::toArray();

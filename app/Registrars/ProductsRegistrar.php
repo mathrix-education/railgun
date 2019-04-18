@@ -29,10 +29,15 @@ class ProductsRegistrar extends BaseRegistrar
             "delete" => "admin"
         ]);
 
+        $this->patch("products/{packId:[1-9]\d*}/items", [
+            "middleware" => "scope:admin",
+            "uses" => "$controller@items"
+        ]);
+
         $this->get("products/{productId:[1-9]\d*}/recursive", "$controller@recursive");
         $this->get("products/slug/{productSlug:[a-z0-9\-]+}", "$controller@getBySlug");
 
-        $type = "{type:all|training|section|lesson}";
+        $type = "{type:all|packs|training|section|lesson}";
         $this->get("products/$type/{page:\d+}/{perPage:[1-9]\d+}", "$controller@paginateByType");
         $this->get("products/buyable/$type/{page:\d+}/{perPage:[1-9]\d+}", "$controller@buyable");
 

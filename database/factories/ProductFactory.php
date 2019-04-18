@@ -23,7 +23,7 @@ $factory->define(Product::class, function (Generator $faker) {
         "name" => $name,
         "slug" => Str::slug($name),
         "image" => "img/products/{$faker->uuid}.jpg",
-        "type" => null,
+        "type" => $faker->randomElement(["pack", "training", "section", "lesson"]),
         "description" => $faker->sentence,
         "price" => $faker->boolean ? random_int(5, 40) * 10 : null,
         "visible" => $faker->boolean,

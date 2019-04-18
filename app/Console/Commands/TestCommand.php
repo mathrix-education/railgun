@@ -2,11 +2,13 @@
 
 namespace App\Console\Commands;
 
+use App\Mails\NewPayPalMail;
 use App\Models\Module;
 use App\Models\User;
 use App\Services\Braintree\Exceptions\BraintreeErrorHandler;
 use App\Services\Braintree\Exceptions\BraintreeGatewayException;
 use Braintree\Subscription;
+use Illuminate\Support\Facades\Mail;
 use Mathrix\Lumen\Bases\BaseCommand;
 
 /**
@@ -23,6 +25,8 @@ class TestCommand extends BaseCommand
 
     public function handle()
     {
+        $user = User::random();
+        Mail::to("mathieu@mathrix.fr")->send(new NewPayPalMail($user));
     }
 
 

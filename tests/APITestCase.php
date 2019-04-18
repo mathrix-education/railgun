@@ -29,6 +29,7 @@ class APITestCase extends BaseTestCase
     /** @var string The test main model plural (used to build request URLs) */
     protected $baseUri = null;
 
+
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
@@ -47,7 +48,13 @@ class APITestCase extends BaseTestCase
     public function onNotSuccessfulTest(Throwable $t)
     {
         if ($this->response !== null) {
-            $this->debug();
+            $status = $this->response->getStatusCode();
+            $method = strtoupper($this->requestMethod);
+            $uri = $this->requestUri;
+            $content = json_encode(json_decode($this->response->getContent()), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+
+            echo "HTTP/$status $method $uri\n$content";
+
         }
 
         parent::onNotSuccessfulTest($t);

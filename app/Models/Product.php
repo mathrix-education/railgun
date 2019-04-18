@@ -27,14 +27,16 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @property float|null $price
  * @property bool $visible
  * @property int|null $order
+ * @property int|null $parent_id
  * @property int|null $module_id
+ * @property int[]|null $pack_product_ids
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property array $link
  * ---
  * @property Module|null $module
+ * @property Product|null $parent
  * @property Collection|Product[] $children
- * @property Collection|Product[] $parents
+ * @property Collection|Product[] $items
  * @property Collection|Discount[] $discounts
  */
 class Product extends BaseModel
@@ -68,9 +70,28 @@ class Product extends BaseModel
     ];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
-        "visible" => "boolean",
+        "visible" => "boolean"
     ];
     protected $appends = ["owned"];
+
+
+    /**
+     * Deliver a product to a customer.
+     *
+     * @param User $customer The customer.
+     *
+     * @return Purchase
+     */
+    public function deliver(User $customer): Purchase
+    {
+        $purchase = new Purchase([
+            "user_id" => $customer->id,
+            "product_id" => $this->id,
+        ]);
+        $purchase->save();
+
+        return $purchase;
+    }
 
 
     /**
@@ -89,7 +110,7 @@ class Product extends BaseModel
      *
      * @return BelongsTo
      */
-    public function parents()
+    public function parent()
     {
         return $this->belongsTo(self::class, "parent_id");
     }
@@ -98,11 +119,27 @@ class Product extends BaseModel
     /**
      * HasMany child Products.
      *
-     * @return HasMany
+     * @return HasMany|BelongsToMany
      */
     public function children()
     {
         return $this->hasMany(self::class, "parent_id");
+    }
+
+
+    /**
+     * BelongsToMany products
+     *
+     * @return BelongsToMany
+     */
+    public function items()
+    {
+        return $this->belongsToMany(
+            self::class,
+            "product_product",
+            "parent_id",
+            "child_id"
+        );
     }
 
 
