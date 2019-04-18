@@ -99,45 +99,61 @@ class Module extends BaseModel
 
 
     /**
+     * Determine if the module should be striped.
+     *
+     * @return bool
+     */
+    public function shouldStrip(): bool
+    {
+        /** @var User $user */
+        $user = Auth::user();
+        $testing = app()->environment() === "testing";
+
+        $activityIsPremium = $this->activity !== null && $this->activity->premium;;
+        $moduleBelongsToProduct = $this->products()->get()->isNotEmpty();
+
+        $this->unsetRelation("activity");
+
+        if ($testing) {
+            return false;
+        } else if ($activityIsPremium) {
+            $userIsPremium = $user !== null && ($user->premium || $user->tokenCan("moderator"));
+
+            return !$userIsPremium;
+        } else if ($moduleBelongsToProduct) {
+            $userHasPurchasedOneOfTheRelatedProducts = $this->products()
+                ->get(["id"])
+                ->reduce(function (bool $current, Product $product) use ($user) {
+                    return $current || $user->hasPurchased($product);
+                }, false);
+
+            return $userHasPurchasedOneOfTheRelatedProducts;
+        } else {
+            return false;
+        }
+    }
+
+
+    /**
      * Allow module data striping if the user is not premium.
      *
      * @return array
      */
     public function toArray()
     {
-        /** @var User $user */
-        $user = Auth::user();
-
-        $activityIsPremium = $this->activity !== null && $this->activity->premium;;
-        $this->unsetRelation("activity");
-
-        $testing = app()->environment() === "testing";
-        $userIsPremium = $user !== null && ($user->premium || $user->tokenCan("moderator"));
-
-        if ($user === null) {
-            $isPartOfUserPurchases = false;
-        } else {
-            $isPartOfUserPurchases = $this->products()
-                ->get(["id"])
-                ->reduce(function (bool $current, Product $product) use ($user) {
-                    return $current || $user->hasPurchased($product);
-                }, false);
+        if (!$this->shouldStrip()) {
+            return parent::toArray();
         }
-
-        $strip = !$testing && (($activityIsPremium && !$userIsPremium) || !$isPartOfUserPurchases);
 
         $keep = ["id", "type", "visible"];
-        $array = parent::toArray();
+        $data = parent::toArray();
+        $data = Arr::only($data, $keep);
 
-        if ($strip) {
-            $array = Arr::only($array, $keep);
-
-            if ($this->type === "flashcard") {
-                $array["questions"] = array_fill(0, count($this->questions), "");
-            }
+        if ($this->type === "flashcard") {
+            $data["questions"] = array_fill(0, count($this->questions), "");
         }
 
-        return $array;
+        return $data;
     }
 
 
