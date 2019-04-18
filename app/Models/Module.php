@@ -107,30 +107,24 @@ class Module extends BaseModel
     {
         /** @var User $user */
         $user = Auth::user();
-        $testing = app()->environment() === "testing";
 
-        $activityIsPremium = $this->activity !== null && $this->activity->premium;;
-        $moduleBelongsToProduct = $this->products()->get()->isNotEmpty();
-
-        $this->unsetRelation("activity");
-
-        if ($testing) {
-            return false;
-        } else if ($activityIsPremium) {
-            $userIsPremium = $user !== null && ($user->premium || $user->tokenCan("moderator"));
-
-            return !$userIsPremium;
-        } else if ($moduleBelongsToProduct) {
-            $userHasPurchasedOneOfTheRelatedProducts = $this->products()
+        /** @var bool $isPremium If the module's parent activity is premium */
+        $isPremium = $this->activity !== null && $this->activity->premium;;
+        /** @var bool $isProduct If the module is linked to a product */
+        $isProduct = $this->products->isNotEmpty();
+        /** @var bool $userIsPremium If the user is premium */
+        $userIsPremium = $user !== null && ($user->premium || $user->tokenCan("moderator"));
+        /** @var bool $userHasPurchased If the user has purchased one of the related products */
+        $userHasPurchased = $user !== null && $this->products()
                 ->get(["id"])
                 ->reduce(function (bool $current, Product $product) use ($user) {
                     return $current || $user->hasPurchased($product);
                 }, false);
 
-            return $userHasPurchasedOneOfTheRelatedProducts;
-        } else {
-            return false;
-        }
+        $this->unsetRelation("activity");
+        $this->unsetRelation("products");
+
+        return ($isPremium && !$userIsPremium) || ($isProduct && !$userHasPurchased);
     }
 
 
@@ -141,7 +135,7 @@ class Module extends BaseModel
      */
     public function toArray()
     {
-        if (!$this->shouldStrip()) {
+        if (!$this->shouldStrip() || app()->environment() === "testing") {
             return parent::toArray();
         }
 
