@@ -37,17 +37,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        if (app()->environment("master")) {
-            $schedule->command("backup:mysql-dump")
-                ->dailyAt("02:00");
-            $schedule->command("backup:mysql-dump")
-                ->dailyAt("12:00");
-            $schedule->command("backup:mysql-dump")
-                ->dailyAt("17:00");
-            $schedule->command("backup:cdn")
-                ->dailyAt("02:20");
-            $schedule->command("sitemap:all")
-                ->dailyAt("02:10");
-        }
+
     }
 }
