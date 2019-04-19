@@ -33,6 +33,8 @@ class APITestCase extends BaseTestCase
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
+
+        // Include OpenAPI once
         OpenAPITrait::$SpecPath = __DIR__ . "/../docs/json-schema/index.json";
         self::bootOpenAPI();
     }
@@ -47,15 +49,7 @@ class APITestCase extends BaseTestCase
 
     public function onNotSuccessfulTest(Throwable $t)
     {
-        if ($this->response !== null) {
-            $status = $this->response->getStatusCode();
-            $method = strtoupper($this->requestMethod);
-            $uri = $this->requestUri;
-            $content = json_encode(json_decode($this->response->getContent()), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-
-            echo "HTTP/$status $method $uri\n$content";
-        }
-
+        $this->debug();
         parent::onNotSuccessfulTest($t);
     }
 }

@@ -60,6 +60,7 @@ class SubscriptionPayPal1000Test extends BraintreeTestCase
         $this->assertEquals($customer->id, $user->braintree_id);
         $this->assertNotEmpty($customer->paypalAccounts);
         $this->assertTrue($user->premium);
+        $this->assertNotNull($user->braintree_id);
 
         // Check that the PayPal account got the newly created subscription
         $payPalSubscription = $customer->paypalAccounts[0]->subscriptions[0];

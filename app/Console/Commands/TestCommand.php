@@ -26,6 +26,8 @@ class TestCommand extends BaseCommand
 
     public function handle()
     {
+        $sub = Subscription::find("sub_1ae3cebce9f63c288eb6beb36ee47ad2");
+        dd($sub->jsonSerialize());
         dd(MailsRegistrar::getMails());
     }
 

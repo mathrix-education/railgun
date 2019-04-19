@@ -3,6 +3,7 @@
 namespace Tests\Integration\Braintree;
 
 use App\Models\Product;
+use App\Models\User;
 use Braintree\Test\Nonces;
 use Illuminate\Support\Facades\Mail;
 

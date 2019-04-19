@@ -230,6 +230,17 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
 
+    /**
+     * Get users scopes as an array.
+     *
+     * @return array
+     */
+    public function getPassportScopesArray(): array
+    {
+        return explode(" ", $this->getPassportScopes());
+    }
+
+
     /*
     |--------------------------------------------------------------------------
     | Relations
