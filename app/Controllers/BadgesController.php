@@ -55,9 +55,10 @@ class BadgesController extends BaseController
 
     /**
      * GET /badges/coverage
-     * Get the application version results.
+     * Get the application version results. This method is ignored by the tests since it display information about them.
      *
      * @return JsonResponse
+     * @codeCoverageIgnore
      */
     public function coverage()
     {
