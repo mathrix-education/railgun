@@ -35,7 +35,8 @@ use Mathrix\Lumen\Bases\BaseModel;
 class Chapter extends BaseModel
 {
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "name", "slug", "order", "visible", "grade_id", "discipline_id", "link"];
+    protected $fillable = ["name", "slug", "order", "visible", "grade_id", "discipline_id"];
+
     /** @var array Validation rules */
     protected $rules = [
         "name" => "required|max:255",
