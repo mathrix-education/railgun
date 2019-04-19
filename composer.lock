@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0d8c95a9651a7db42fbcc75ef8aaa06b",
+    "content-hash": "24ad820f467f2a51f6ad33975e8e60da",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2957,11 +2957,11 @@
         },
         {
             "name": "mathrix/lumen-zero",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:mathrix-education/lumen-zero.git",
-                "reference": "e95aabff46dd221566bea00e51306b2440ad7545"
+                "reference": "37f4dbbd5e90cb445b5154d8d94799b2a0ab4c6f"
             },
             "require": {
                 "dusterio/lumen-passport": "^0.2.9",
@@ -2998,11 +2998,25 @@
             "authors": [
                 {
                     "name": "Mathieu Bour",
-                    "email": "mathieu@mathrix.fr"
+                    "email": "mathieu@mathrix.fr",
+                    "homepage": "https://www.linkedin.com/in/mathieu-bour",
+                    "role": "Developer"
                 }
             ],
             "description": "The main library for Mathrix Lumen REST APIs.",
-            "time": "2019-04-11T23:46:19+00:00"
+            "homepage": "https://github.com/mathrix-education/lumen-zero",
+            "keywords": [
+                "lumen",
+                "php"
+            ],
+            "support": {
+                "email": "mathieu@mathrix.fr",
+                "issues": "https://github.com/mathrix-education/lumen-zero/issues",
+                "wiki": "https://github.com/mathrix-education/lumen-zero/wiki",
+                "source": "https://github.com/mathrix-education/lumen-zero",
+                "docs": "https://github.com/mathrix-education/lumen-zero"
+            },
+            "time": "2019-04-19T00:53:10+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -4133,16 +4147,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v6.31.5",
+            "version": "v6.32.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "93393b090f7b98f47e7477e8dada4fdab8fcc394"
+                "reference": "f3991b50321372a7ea03d0b90ca64ce29c91ceb4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/93393b090f7b98f47e7477e8dada4fdab8fcc394",
-                "reference": "93393b090f7b98f47e7477e8dada4fdab8fcc394",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/f3991b50321372a7ea03d0b90ca64ce29c91ceb4",
+                "reference": "f3991b50321372a7ea03d0b90ca64ce29c91ceb4",
                 "shasum": ""
             },
             "require": {
@@ -4185,7 +4199,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2019-04-12T17:10:19+00:00"
+            "time": "2019-04-18T19:25:56+00:00"
         },
         {
             "name": "superbalist/flysystem-google-storage",
@@ -4236,16 +4250,16 @@
         },
         {
             "name": "superbalist/laravel-google-cloud-storage",
-            "version": "2.2.0",
+            "version": "2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Superbalist/laravel-google-cloud-storage.git",
-                "reference": "81da22a21f44d561d1e2c29f1942e1b741a77679"
+                "reference": "249a7de0e7316f4604c9010a44abb8d19a0c7c8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Superbalist/laravel-google-cloud-storage/zipball/81da22a21f44d561d1e2c29f1942e1b741a77679",
-                "reference": "81da22a21f44d561d1e2c29f1942e1b741a77679",
+                "url": "https://api.github.com/repos/Superbalist/laravel-google-cloud-storage/zipball/249a7de0e7316f4604c9010a44abb8d19a0c7c8a",
+                "reference": "249a7de0e7316f4604c9010a44abb8d19a0c7c8a",
                 "shasum": ""
             },
             "require": {
@@ -4285,7 +4299,7 @@
                 }
             ],
             "description": "A Google Cloud Storage filesystem for Laravel",
-            "time": "2019-04-15T10:46:22+00:00"
+            "time": "2019-04-18T14:23:16+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",

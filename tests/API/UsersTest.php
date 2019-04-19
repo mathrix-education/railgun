@@ -55,6 +55,20 @@ class UsersTest extends APITestCase
 
 
     /**
+     * GET /users/{userId}
+     */
+    public function testGetAdmin()
+    {
+        $user = User::random(["type", "=", "admin"]);
+        Passport::actingAs($user, explode(" ", $user->getPassportScopes()));
+        $this->json("get", "/users/{$user->id}");
+
+        $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
+    }
+
+
+    /**
      * GET /users/{userId} as a simple registered user
      */
     public function testGetSomeoneElse()

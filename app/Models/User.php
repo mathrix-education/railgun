@@ -112,6 +112,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
         "settings" => "array",
+        "premium_bypass" => "boolean",
         "premium_bypass_expires_at" => "date"
     ];
 

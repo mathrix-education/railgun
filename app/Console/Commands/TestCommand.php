@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Mails\NewPayPalMail;
 use App\Models\Module;
 use App\Models\User;
+use App\Registrars\MailsRegistrar;
 use App\Services\Braintree\Exceptions\BraintreeErrorHandler;
 use App\Services\Braintree\Exceptions\BraintreeGatewayException;
 use Braintree\Subscription;
@@ -25,8 +26,7 @@ class TestCommand extends BaseCommand
 
     public function handle()
     {
-        $user = User::random();
-        Mail::to("mathieu@mathrix.fr")->send(new NewPayPalMail($user));
+        dd(MailsRegistrar::getMails());
     }
 
 

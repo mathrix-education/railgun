@@ -54,7 +54,6 @@ class APITestCase extends BaseTestCase
             $content = json_encode(json_decode($this->response->getContent()), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
             echo "HTTP/$status $method $uri\n$content";
-
         }
 
         parent::onNotSuccessfulTest($t);

@@ -46,9 +46,9 @@ class TransactionSuccessMail extends BaseMail
         $user = User::random();
 
         if ($transactionId === null) {
+            // No specific transaction was given: get the first one
             $transaction = Cache::remember("TransactionSuccessMail_transaction", 1, function () {
-                return Transaction::search([])
-                    ->firstItem();
+                return Transaction::search([])->firstItem();
             });
         } else {
             $transaction = Cache::remember("TransactionSuccessMail_transaction_$transactionId", 1, function () use ($transactionId) {

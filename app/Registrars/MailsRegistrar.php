@@ -2,6 +2,9 @@
 
 namespace App\Registrars;
 
+use App\Mails\BaseMail;
+use App\Mails\TransactionSuccessMail;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Mathrix\Lumen\Bases\BaseRegistrar;
 
@@ -17,46 +20,46 @@ use Mathrix\Lumen\Bases\BaseRegistrar;
 class MailsRegistrar extends BaseRegistrar
 {
     /**
+     * Make mails routes and classes. The returned collection has uri as keys and Mailable class as values.
+     *
+     * @return Collection
+     */
+    public static function getMails(): Collection
+    {
+        $mailsDirectory = app()->basePath("app/Mails");
+
+        return Collection::make(glob("$mailsDirectory/*Mail.php"))
+            ->filter(function (string $mailFile) {
+                return !Str::contains($mailFile, "BaseMail"); // Exclude BaseMail
+            })
+            ->map(function (string $mailFile) use ($mailsDirectory) {
+                return str_replace(["$mailsDirectory/", ".php"], "", $mailFile);
+            })
+            ->mapWithKeys(function ($mailName) {
+                $uri = "mails/" . Str::replaceLast("-mail", "", Str::snake($mailName, "-"));
+                $class = "App\\Mails\\$mailName";
+
+                return [$uri => $class];
+            });
+    }
+
+
+    /**
      * Register the routes.
      */
     public function register(): void
     {
-        if (app()->environment("local")) {
-            $this->group(["prefix" => "mails"], function () {
-                $mailsDir = app()->basePath() . "/app/Mails";
-                $mails = glob("$mailsDir/*Mail.php");
-                $mails = array_filter($mails, function ($file) {
-                    return !Str::contains($file, "BaseMail");
+        if (app()->environment("local", "dev", "testing")) {
+            self::getMails()->map(function($mailableClass, string $uri) {
+                /** @var BaseMail|string $mailableClass */
+                $this->get($uri, function () use ($mailableClass) {
+                    $mailableClass::mock();
                 });
-
-                // Build Mail classes
-                $mailClasses = array_map(function ($file) use ($mailsDir) {
-                    return "App\\Mails\\" . str_replace(["$mailsDir/", ".php"], "", $file);
-                }, $mails);
-
-                // Build Mail urls
-                $mailsUrl = array_map(function ($file) use ($mailClasses, $mailsDir) {
-                    $mailClasses[] = "App\\Mails\\" . str_replace(["$mailsDir/", ".php"], "", $file);
-
-                    return Str::snake(str_replace(["$mailsDir/", "Mail.php"], "", $file), "-");
-                }, $mails);
-
-                $mails = array_combine($mailsUrl, $mailClasses);
-                /**
-                 * @var string
-                 * @var \App\Mails\BaseMail $class
-                 *
-                 * // TODO: improve this by getting arguments?
-                 */
-                foreach ($mails as $url => $class) {
-                    $this->get($url, function () use ($class) {
-                        return $class::mock();
-                    });
-                }
             });
 
+            // Custom mails routes
             $this->get("mails/transaction-success/{transactionId}", function ($transactionId) {
-                return \App\Mails\TransactionSuccessMail::mock($transactionId);
+                return TransactionSuccessMail::mock($transactionId);
             });
         }
     }

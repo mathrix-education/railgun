@@ -88,10 +88,56 @@ properties:
         description: >
           If the user has an active PayPal subscription and subsequently need
           a payment method refresh.
+  premium_bypass:
+    description: >
+      **Visible only for admins.**
+      If the user is allowed to bypass premium subscription check **forever**.
+    type: boolean
+    example: true
+  premium_bypass_expires_at:
+    description: >
+      **Visible only for admins.**
+      If the user is allowed to bypass premium subscription check until this
+      date. This field is used by the "pack" functionality.
+    type: string
+    format: date-time
   grade_id:
     description: The class id which belongs to the user.
     type: integer
     example: 1
+    nullable: true
+  stripe_id:
+    description: >
+      **Visible only for admins.**
+      The user Stripe customer id.
+    type: string
+    readOnly: true
+    nullable: true
+    example: cus_sd4sq54
+  braintree_id:
+    description: >
+      **Visible only for admins.**
+      The user Stripe customer id.
+    type: string
+    pattern: cus_[0-9a-f]{32}
+    readOnly: true
+    nullable: true
+    example: cus_sd4sq54
+  stripe:
+    description: >
+      **Visible only for admins.**
+      The user's Stripe profile.
+    type: object
+    readOnly: true
+    nullable: true
+  braintree:
+    allOf:
+      - $ref: Braintree/Customer.yaml
+    description: >
+      **Visible only for admins.**
+      The user's Braintree profile.
+    type: object
+    readOnly: true
     nullable: true
   created_at:
     description: The date/time when the object was created.
