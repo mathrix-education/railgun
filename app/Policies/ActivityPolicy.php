@@ -2,8 +2,6 @@
 
 namespace App\Policies;
 
-use App\Policies\Traits\StandardRESTPolicyTrait;
-
 /**
  * Class ActivityPolicy.
  *

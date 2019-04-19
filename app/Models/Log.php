@@ -78,7 +78,6 @@ class Log extends BaseModel
      *
      * @return bool
      * @throws Http400BadRequestException
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
      */
     public static function log(string $event, $user = null, $data = [])
     {
@@ -104,7 +103,7 @@ class Log extends BaseModel
 
         $logData = [
             "event" => $event,
-            "user_id" => $user === null || \is_int($user) ? $user : $user->id,
+            "user_id" => $user === null || is_int($user) ? $user : $user->id,
         ];
 
         if (!empty($data["loggable_id"]) && !empty($data["loggable_type"])) {

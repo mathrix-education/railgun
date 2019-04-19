@@ -16,6 +16,8 @@ use Mathrix\Lumen\Bases\BaseListener;
 class PasswordResetListener extends BaseListener
 {
     /**
+     * Handle PasswordResetEvent.
+     *
      * @param PasswordResetEvent $event
      */
     public function handle(PasswordResetEvent $event)

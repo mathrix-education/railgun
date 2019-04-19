@@ -1,5 +1,9 @@
 <?php
 
+use App\Middleware\AsMiddleware;
+use App\Providers\AppServiceProvider;
+use Barryvdh\Cors\HandleCors;
+use Illuminate\Contracts\Mail\Mailer;
 use Mathrix\Lumen\Middleware\LoggedMiddleware;
 use Mathrix\Lumen\Middleware\ScopeMiddleware;
 
@@ -88,7 +92,7 @@ $app->singleton(
     Illuminate\Contracts\Cache\Repository::class
 );
 
-$app->alias("mailer", \Illuminate\Contracts\Mail\Mailer::class);
+$app->alias("mailer", Mailer::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -121,7 +125,8 @@ $app->configure("services");
 */
 
 $app->middleware([
-    Barryvdh\Cors\HandleCors::class,
+    HandleCors::class,
+    AsMiddleware::class
 ]);
 
 $app->routeMiddleware([
@@ -139,17 +144,6 @@ $app->routeMiddleware([
 | totally optional, so you are not required to uncomment this line.
 |
 */
-$app->register(App\Providers\AppServiceProvider::class);
-/*
-|--------------------------------------------------------------------------
-| Load The Application Routes
-|--------------------------------------------------------------------------
-|
-| Next we will include the routes file so that they can all be added to
-| the application. This will provide all of the URLs the application
-| can respond to, as well as the controllers that may handle them.
-|
-*/
-Dusterio\LumenPassport\LumenPassport::routes($app->router);
+$app->register(AppServiceProvider::class);
 
 return $app;

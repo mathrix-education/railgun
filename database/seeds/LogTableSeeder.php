@@ -1,6 +1,5 @@
 <?php
 
-use App\Exceptions\Http400InvalidRequestException;
 use App\Models\Log;
 use App\Models\Module;
 use App\Models\User;

@@ -9,7 +9,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Mathrix\Lumen\Bases\BaseController;
-use Mathrix\Lumen\Exceptions\ValidationException;
 
 /**
  * Class ActivitiesController.

@@ -59,11 +59,26 @@ class ProductsTest extends APITestCase
 
 
     /**
-     * GET /products/buyable/{type}/{page}/{perPage}
+     * GET /products/buyable/{type=all}/{page}/{perPage}
+     * Get all buyable products.
      */
     public function testBuyable()
     {
         $this->json("get", "/products/buyable/all/0/100");
+
+        // Assertions
+        $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
+    }
+
+
+    /**
+     * GET /products/buyable/{type=training}/{page}/{perPage}
+     * Get buyable trainings.
+     */
+    public function testBuyableTrainings()
+    {
+        $this->json("get", "/products/buyable/training/0/100");
 
         // Assertions
         $this->assertResponseOk();

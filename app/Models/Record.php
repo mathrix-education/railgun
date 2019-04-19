@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Mathrix\Lumen\Bases\BaseModel;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Exceptions\ValidationException;
 
 /**
  * Class Record.
@@ -37,7 +38,6 @@ class Record extends BaseModel
      *
      * @return Record
      * @throws Http400BadRequestException
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
      */
     public static function record(User $user, string $service, string $event, string $status, array $payload)
     {
@@ -61,7 +61,6 @@ class Record extends BaseModel
      *
      * @return bool
      * @throws Http400BadRequestException
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
      */
     public function save(array $options = [])
     {

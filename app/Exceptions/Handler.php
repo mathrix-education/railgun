@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use App\Models\User;
+use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -14,9 +15,11 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use League\OAuth2\Server\Exception\OAuthServerException;
-use Mathrix\Lumen\Exceptions\Http\HttpException as MathrixHTTPException;
 use Mathrix\Lumen\Exceptions\Http\HttpException;
+use Mathrix\Lumen\Exceptions\Http\HttpException as MathrixHTTPException;
+use Raven_Client;
 use ReflectionClass;
+use ReflectionException;
 use Symfony\Component\HttpKernel\Exception\HttpException as SymphonyHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -51,17 +54,17 @@ class Handler extends ExceptionHandler
     /**
      * Sentry integration.
      *
-     * @param \Exception $e
-     * @throws \Exception
+     * @param Exception $e
+     * @throws Exception
      *
      * @codeCoverageIgnore
      */
-    public function report(\Exception $e)
+    public function report(Exception $e)
     {
         $sentryDSN = env("SENTRY_DSN");
 
         if ($sentryDSN !== null && app()->bound("sentry") && $this->shouldReport($e)) {
-            /** @var \Raven_Client $sentry */
+            /** @var Raven_Client $sentry */
             $sentry = app("sentry");
 
             /** @var User $user */
@@ -82,13 +85,13 @@ class Handler extends ExceptionHandler
      * Render an exception into an HTTP response.
      *
      * @param Request $request
-     * @param \Exception $e
+     * @param Exception $e
      *
-     * @throws \ReflectionException
+     * @throws ReflectionException
      *
      * @return JsonResponse|Response
      */
-    public function render($request, \Exception $e)
+    public function render($request, Exception $e)
     {
         if ($e instanceof MathrixHTTPException) {
             return $e->toJsonResponse();

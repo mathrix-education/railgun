@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Grade;
 use App\Models\Country;
+use App\Models\Grade;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Str;

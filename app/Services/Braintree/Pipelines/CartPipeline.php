@@ -41,8 +41,6 @@ class CartPipeline
     private $request;
     /** @var User $customer The customer. */
     private $customer;
-    /** @var string $paymentMethodNonce The payment method nonce. */
-    private $paymentMethodNonce;
     /** @var Collection|Product[] The products. */
     private $products;
     /** @var Discount|null $discount The discount, if any. */

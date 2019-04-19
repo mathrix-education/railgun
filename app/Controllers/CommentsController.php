@@ -45,14 +45,13 @@ class CommentsController extends BaseController
     /**
      * Get the models which satisfy a given relation.
      *
-     * @param Request $request The request
      * @param int $moduleId
      * @param int $page the query page
      * @param int $perPage the query per page
      *
      * @return PaginationJsonResponse
      */
-    public function byModule(Request $request, int $moduleId, int $page = 0, int $perPage = 100): PaginationJsonResponse
+    public function byModule(int $moduleId, int $page = 0, int $perPage = 100): PaginationJsonResponse
     {
         /** @var Module $module */
         $module = Module::query()->findOrFail($moduleId);

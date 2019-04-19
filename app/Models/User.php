@@ -23,6 +23,7 @@ use Laravel\Passport\HasApiTokens;
 use Laravel\Passport\Token;
 use Mathrix\Lumen\Bases\BaseModel;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Exceptions\ValidationException;
 
 /**
  * Class User.
@@ -177,7 +178,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      *
      * @return Record
      * @throws Http400BadRequestException
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
+     * @throws ValidationException
      */
     public function record(string $service, string $event, string $status, array $payload)
     {

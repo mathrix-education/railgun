@@ -5,7 +5,6 @@ namespace Tests\API;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Passport\Passport;
-use PHPUnit\Framework\Constraint\IsType;
 use Tests\APITestCase;
 
 /**

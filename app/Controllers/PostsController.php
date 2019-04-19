@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Models\Post;
-use Illuminate\Http\Request;
 use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Responses\PaginationJsonResponse;
 

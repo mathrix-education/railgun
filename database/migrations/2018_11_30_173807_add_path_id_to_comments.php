@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Activity;
+use App\Models\Comment;
+use App\Models\Post;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -26,14 +29,14 @@ class AddPathIdToComments extends Migration
             $table->foreign("path_id")->references("id")->on("paths");
         });
 
-        $comments = \App\Models\Comment::withTrashed()->get();
+        $comments = Comment::withTrashed()->get();
 
         foreach ($comments as $comment) {
             if ($comment->commentable_type == "post") {
-                $post = \App\Models\Post::findOrFail($comment->commentable_id);
+                $post = Post::findOrFail($comment->commentable_id);
                 $comment->module_id = $post->module->id;
             } else if ($comment->commentable_type == "activity") {
-                $activity = \App\Models\Activity::findOrFail($comment->commentable_id);
+                $activity = Activity::findOrFail($comment->commentable_id);
 
                 if ($activity->modules()->get()->isEmpty()) {
                     $comment->forceDelete();

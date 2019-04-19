@@ -6,28 +6,38 @@ use App\Events\SubscriptionChargedSuccessfullyEvent;
 use App\Models\User;
 use App\Services\Braintree\Models\Plan;
 use Braintree\Customer;
+use Braintree\CustomerSearch;
 use Faker\Factory as FakerFactory;
 use GuzzleHttp\Client;
 use Mathrix\Lumen\Bases\BaseListener;
 
 /**
  * Class SubscriptionChargedSuccessfullyListener.
+ * Not tested, since we do not want to interfere with existing statistics.
  *
  * @author Mathieu Bour <mathieu@mathrix.fr>
  * @copyright Mathrix Education SA.
  * @since 4.3.0
+ *
+ * @codeCoverageIgnore
  */
 class SubscriptionChargedSuccessfullyListener extends BaseListener
 {
     const BASE_URL = "https://www.google-analytics.com/collect";
 
 
+    /**
+     * Handle SubscriptionChargedSuccessfullyEvent.
+     *
+     * @param SubscriptionChargedSuccessfullyEvent $event
+     */
     public function handle(SubscriptionChargedSuccessfullyEvent $event)
     {
-        $customerResultSearch = Customer::search([
-            \Braintree_CustomerSearch::paymentMethodToken()
-                ->is($event->subscription->paymentMethodToken),
-        ]);
+        /** @var array|string $query */
+        $query = [
+            CustomerSearch::paymentMethodToken()->is($event->subscription->paymentMethodToken),
+        ];
+        $customerResultSearch = Customer::search($query);
 
         /** @var User $customer */
         $customer = User::query()

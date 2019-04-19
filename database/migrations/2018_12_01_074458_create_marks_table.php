@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Path;
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
@@ -53,8 +54,8 @@ class CreateMarksTable extends Migration
 
             $status = $meta->completed ? "completed" : ($meta->to_revise ? "to_revise" : "view");
 
-            $createdAt = $meta->created_at !== "0000-00-00 00:00:00" ? $meta->created_at : \Carbon\Carbon::now();
-            $updatedAt = $meta->created_at !== "0000-00-00 00:00:00" ? $meta->updated_at : \Carbon\Carbon::now();
+            $createdAt = $meta->created_at !== "0000-00-00 00:00:00" ? $meta->created_at : Carbon::now();
+            $updatedAt = $meta->created_at !== "0000-00-00 00:00:00" ? $meta->updated_at : Carbon::now();
 
             $buffer[] = [
                 "user_id" => $meta->user_id,

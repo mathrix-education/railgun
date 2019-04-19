@@ -4,6 +4,7 @@ namespace App\Mails;
 
 use App\Models\User;
 use Braintree\Transaction;
+use Braintree\Transaction\LineItem;
 use Braintree\TransactionSearch;
 use Illuminate\Support\Facades\Cache;
 
@@ -20,7 +21,7 @@ class TransactionRefundMail extends BaseMail
     private $user;
     /** @var Transaction $transaction */
     private $transaction;
-    /** @var \Braintree\Transaction\LineItem[] $lineItems */
+    /** @var LineItem[] $lineItems */
     private $lineItems;
     /** @var Transaction $transaction */
     private $refund;

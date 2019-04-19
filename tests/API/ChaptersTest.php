@@ -5,7 +5,6 @@ namespace Tests\API;
 use App\Models\Chapter;
 use App\Models\Mark;
 use App\Models\User;
-use Illuminate\Support\Facades\Cache;
 use Laravel\Passport\Passport;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;

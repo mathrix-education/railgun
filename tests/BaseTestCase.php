@@ -4,7 +4,6 @@ namespace Tests;
 
 use Faker\Factory as FakerFactory;
 use Faker\Generator;
-use Helmich\JsonAssert\JsonAssertions;
 use Laravel\Lumen\Testing\TestCase;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 

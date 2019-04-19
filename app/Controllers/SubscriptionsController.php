@@ -2,10 +2,8 @@
 
 namespace App\Controllers;
 
-use App\Exceptions\UserAlreadyPremiumException;
 use App\Models\User;
 use App\Services\Braintree\Exceptions\BraintreeErrorHandler;
-use App\Services\Braintree\Exceptions\BraintreeProcessorException;
 use App\Services\Braintree\Pipelines\SubscriptionPipeline;
 use App\Services\Braintree\Utils\Formatter;
 use Braintree\Customer;
@@ -45,10 +43,6 @@ class SubscriptionsController extends BaseController
      * @param Request $request The Illuminate HTTP request.
      *
      * @return JsonResponse
-     * @throws BraintreeProcessorException
-     * @throws Http400BadRequestException
-     * @throws UserAlreadyPremiumException
-     * @throws ValidationException
      * @throws Http429TooManyRequestsException
      */
     public function create(Request $request): JsonResponse
@@ -113,10 +107,11 @@ class SubscriptionsController extends BaseController
             /** @var Braintree_Subscription $subscription */
             $subscription = $subscriptionResult->subscription;
 
-            $customerResultSearch = Customer::search([
-                CustomerSearch::paymentMethodToken()
-                    ->is($subscription->paymentMethodToken),
-            ]);
+            /** @var array|string $query */
+            $query = [
+                CustomerSearch::paymentMethodToken()->is($subscription->paymentMethodToken),
+            ];
+            $customerResultSearch = Customer::search($query);
 
             /** @var User $customer */
             $customer = User::query()

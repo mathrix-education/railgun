@@ -7,7 +7,6 @@ use App\Events\TransactionSuccessEvent;
 use App\Exceptions\UserAlreadyPremiumException;
 use App\Models\User;
 use App\Services\Braintree\Exceptions\BraintreeErrorHandler;
-use App\Services\Braintree\Exceptions\BraintreeGatewayException;
 use App\Services\Braintree\Exceptions\BraintreeProcessorException;
 use App\Services\Braintree\Models\Plan;
 use App\Services\Braintree\Utils\Formatter;

@@ -8,7 +8,6 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mathrix\Lumen\Bases\BaseController;
-use Mathrix\Lumen\Exceptions\ValidationException;
 
 /**
  * Class ModulesController.

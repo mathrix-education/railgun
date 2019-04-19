@@ -23,7 +23,7 @@ class SubscriptionChargedSuccessfullyEvent
     /**
      * TransactionSuccessEvent constructor.
      *
-     * @param Transaction $transaction
+     * @param Subscription $subscription
      */
     public function __construct(Subscription $subscription)
     {

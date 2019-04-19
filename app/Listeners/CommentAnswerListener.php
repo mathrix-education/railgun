@@ -16,6 +16,11 @@ use Mathrix\Lumen\Bases\BaseListener;
  */
 class CommentAnswerListener extends BaseListener
 {
+    /**
+     * Handle CommentAnswerEvent.
+     *
+     * @param CommentAnswerEvent $event
+     */
     public function handle(CommentAnswerEvent $event)
     {
         $childComment = $event->comment;
