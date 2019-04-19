@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "24ad820f467f2a51f6ad33975e8e60da",
+    "content-hash": "2b73358144fc08d35c14d6915a714d95",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -5890,6 +5890,57 @@
                 "versioning"
             ],
             "time": "2019-03-19T17:25:45+00:00"
+        },
+        {
+            "name": "damianopetrungaro/php-commitizen",
+            "version": "v0.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/damianopetrungaro/php-commitizen.git",
+                "reference": "3cdaefe8cfe30134f120231de277d36b93c144ba"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/damianopetrungaro/php-commitizen/zipball/3cdaefe8cfe30134f120231de277d36b93c144ba",
+                "reference": "3cdaefe8cfe30134f120231de277d36b93c144ba",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/console": "^4.0"
+            },
+            "require-dev": {
+                "php-mock/php-mock-prophecy": "^0.0.2",
+                "phpunit/phpunit": "^7.0"
+            },
+            "bin": [
+                "php-commitizen"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Damianopetrungaro\\PHPCommitizen\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Damiano Petrungaro",
+                    "email": "damianopetrungaro@gmail.com"
+                }
+            ],
+            "description": "Help writing Git commit following conventional commit specs",
+            "keywords": [
+                "atomic",
+                "atomic commit",
+                "commit",
+                "conventional commit",
+                "conventionalcommit",
+                "git"
+            ],
+            "time": "2018-02-21T15:59:13+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",

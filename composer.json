@@ -54,6 +54,7 @@
   },
   "require-dev": {
     "brianium/paratest": "^2.0",
+    "damianopetrungaro/php-commitizen": "^0.1.2",
     "doctrine/dbal": "^2.5",
     "helmich/phpunit-json-assert": "^2.0",
     "mockery/mockery": "~1.0",
