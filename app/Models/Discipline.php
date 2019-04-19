@@ -28,7 +28,7 @@ class Discipline extends BaseModel
     use NoPivot;
 
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "name", "slug", "beta", "visible"];
+    protected $fillable = ["id", "name", "slug", "beta"];
     /** @var array Validation rules */
     protected $rules = [
         "name" => "required|max:255",

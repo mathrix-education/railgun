@@ -13,7 +13,7 @@ return [
     ],
     "scope" => [
         "lengthMin" => 0,
-        "lengthMax" => 10,
+        "lengthMax" => 15,
         "acceptExtra" => true,
         "values" => ["meta", "braintree", "cloudbuild"]
     ],
