@@ -15,14 +15,14 @@ return [
         "lengthMin" => 0,
         "lengthMax" => 10,
         "acceptExtra" => true,
-        "values" => ["meta", "braintree"]
+        "values" => ["meta", "braintree", "cloudbuild"]
     ],
     "description" => [
         "lengthMin" => 1,
         "lengthMax" => 44
     ],
     "subject" => [
-        "lengthMin" => 1, // Min length of the subject
+        "lengthMin" => 1,
         "lengthMax" => 50
     ],
     "body" => [

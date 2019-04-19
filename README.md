@@ -13,3 +13,4 @@ Proudly written by Mathieu Bour <mathieu@mathrix.fr>.
 
 ## Contributing
 We try tu use the [Conventional Commits Specification](https://www.conventionalcommits.org).
+Therefore, you may use the executable `bin/commit` to create commit messages.
