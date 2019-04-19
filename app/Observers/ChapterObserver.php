@@ -30,7 +30,7 @@ class ChapterObserver extends BaseObserver
             ->where("discipline_id", "=", $chapter->discipline_id)
             ->where("grade_id", "=", $chapter->grade_id)
             ->get()
-            ->pluck("MAX(order)")
+            ->pluck("max_order")
             ->first();
         $chapter->order = $order !== null ? $order + 1 : 0;
 
@@ -67,7 +67,7 @@ class ChapterObserver extends BaseObserver
             ->delete();
         DB::table("cache")
             ->where("key", "LIKE", "user.%.chapter.{$chapter->id}.recursive")
-            ->delete();;
+            ->delete();
     }
 
 
