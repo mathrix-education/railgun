@@ -17,6 +17,28 @@ use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 class ChapterObserver extends BaseObserver
 {
     /**
+     * Before creating the chapter, put it at the end of the related chapters (same grade an discipline).
+     *
+     * @param Chapter $chapter
+     *
+     * @return bool
+     */
+    public function creating(Chapter $chapter)
+    {
+        $order = DB::table("chapters")
+            ->selectRaw("MAX(`order`) as max_order")
+            ->where("discipline_id", "=", $chapter->discipline_id)
+            ->where("grade_id", "=", $chapter->grade_id)
+            ->get()
+            ->pluck("MAX(order)")
+            ->first();
+        $chapter->order = $order !== null ? $order + 1 : 0;
+
+        return true;
+    }
+
+
+    /**
      * @param Chapter $chapter
      *
      * @return bool
