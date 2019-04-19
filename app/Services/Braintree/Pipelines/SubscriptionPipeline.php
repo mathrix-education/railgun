@@ -15,7 +15,6 @@ use Braintree\CreditCard;
 use Braintree\PaymentMethod;
 use Braintree\PayPalAccount;
 use Braintree\Result\Error;
-use Braintree\Result\Successful;
 use Braintree\Subscription;
 use Braintree\Transaction;
 use Carbon\Carbon;
@@ -224,7 +223,8 @@ class SubscriptionPipeline
             $subscriptionPayload = array_merge($subscriptionPayload, [
                 "trialPeriod" => true,
                 "trialDurationUnit" => "day",
-                "trialDuration" => SubscriptionUtils::getRegularPlanStartDate($this->planId)->diffInDays(Carbon::now()) + 1
+                "trialDuration" => SubscriptionUtils::getRegularPlanStartDate($this->planId)
+                        ->diffInDays(Carbon::now()) + 1
             ]);
         }
 
@@ -262,8 +262,8 @@ class SubscriptionPipeline
             return;
         }
 
-        $description = "Abonnement premium du " . Carbon::now()->format("d/m/Y") . " au " .
-            SubscriptionUtils::getRegularPlanStartDate($this->planId)->format("d/m/Y");
+        $description = "Abonnement premium du " . Carbon::now()->format("d/m/Y") . " au "
+            . SubscriptionUtils::getRegularPlanStartDate($this->planId)->format("d/m/Y");
         $trialPrice = SubscriptionUtils::getTrialPeriodPrice($this->planId);
 
         /**
@@ -299,7 +299,7 @@ class SubscriptionPipeline
             $this->transaction = $initialTransactionSale->transaction;
         } else {
             // Initial transaction failed. We will now cancel the subscription.
-            /** @var Successful|Error $subscriptionResult $subscriptionCancellationResult */
+            /** @var BraintreeResponse $subscriptionCancellationResult */
             $subscriptionCancellation = Subscription::cancel($this->subscription->id);
 
             if ($subscriptionCancellation->success) {

@@ -122,7 +122,7 @@ properties:
     pattern: cus_[0-9a-f]{32}
     readOnly: true
     nullable: true
-    example: cus_sd4sq54
+    example: cus_01e06898a710f3ef8c9f6e93518fd668
   stripe:
     description: >
       **Visible only for admins.**

@@ -166,4 +166,25 @@ class UsersTest extends APITestCase
         $this->assertResponseOk();
         $this->assertOpenAPIResponse();
     }
+
+
+    /**
+     * POST /users/{userId}/points
+     */
+    public function testPointsWithModule()
+    {
+        $this->mockScope("registered");
+        $pointsBefore = $this->passportUser->points;
+        $module = Module::random(["visible", "=", true]);
+
+        $this->json("post", "users/{$this->passportUser->id}/points", [
+            "loggable_type" => "module",
+            "loggable_id" => $module->id,
+            "points" => 100
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
+        $this->assertEquals($pointsBefore + 100, $this->getJsonResponseValue("points"));
+    }
 }
