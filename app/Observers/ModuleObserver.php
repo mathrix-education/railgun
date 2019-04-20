@@ -26,8 +26,9 @@ class ModuleObserver extends BaseObserver
      */
     public function saved(Module $module)
     {
-        if ($module->wasChanged("visible")) {
+        if ($module->wasChanged(["activity_id", "visible"])) {
             $module->activity->updateCounters();
+            $module->unsetRelation("activity");
         }
 
         return true;

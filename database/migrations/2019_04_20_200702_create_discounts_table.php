@@ -17,8 +17,8 @@ class CreateDiscountsTable extends Migration
             $table->bigIncrements("id");
             $table->string("code");
             $table->string("type");
-            $table->string("value");
-            $table->unsignedInteger("counter");
+            $table->smallInteger("value");
+            $table->integer("counter");
             $table->timestamp("expire_at")->nullable();
             $table->timestamps();
         });

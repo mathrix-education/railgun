@@ -108,7 +108,7 @@ class UsersTest extends APITestCase
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse();
-        $this->assertInDatabase("users", Arr::except($payload, ["current_password", "password"]));
+        $this->assertInDatabase("users", Arr::except($payload, ["current_password", "password"," settings"]));
 
         $new = $payload["password"];
         $hashed = $user->refresh()->password;

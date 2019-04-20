@@ -26,6 +26,7 @@ class NotionObserver extends BaseObserver
     {
         if ($notion->wasChanged("chapter_id", "visible")) {
             $notion->chapter->updateCounters();
+            $notion->unsetRelation("chapter");
         }
 
         return true;

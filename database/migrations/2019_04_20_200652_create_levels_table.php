@@ -18,7 +18,6 @@ class CreateLevelsTable extends Migration
             $table->unsignedInteger("level");
             $table->unsignedInteger("objective");
             $table->string("youtube_id")->nullable();
-            $table->timestamps();
         });
     }
 

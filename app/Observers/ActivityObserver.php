@@ -29,6 +29,7 @@ class ActivityObserver extends BaseObserver
         if ($activity->wasChanged(["notion_id", "visible"])) {
             $activity->notion->updateCounters();
             $activity->notion->chapter->updateCounters();
+            $activity->unsetRelation("notion");
         }
 
         return true;

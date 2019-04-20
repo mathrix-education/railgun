@@ -23,8 +23,8 @@ class CreateProductsTable extends Migration
             $table->float("price")->nullable();
             $table->boolean("visible");
             $table->unsignedSmallInteger("order");
-            $table->unsignedBigInteger("parent_id");
-            $table->unsignedBigInteger("module_id");
+            $table->unsignedBigInteger("parent_id")->nullable();
+            $table->unsignedBigInteger("module_id")->nullable();
             $table->timestamps();
 
             // Foreign keys

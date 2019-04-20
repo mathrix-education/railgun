@@ -33,7 +33,7 @@ class UserObserver extends BaseObserver
             $user->password = Hash::make($user->password);
         }
 
-        if ($user->isDirty("points")) {
+        if ($user->isDirty("points") && $user->exists) {
             /** @var int $pointsAdded the points added during the current request */
             $pointsAdded = $user->points - $user->getOriginal("points");
 

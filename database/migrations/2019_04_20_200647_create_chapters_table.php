@@ -21,8 +21,8 @@ class CreateChaptersTable extends Migration
             $table->boolean("visible");
             $table->unsignedBigInteger("discipline_id");
             $table->unsignedBigInteger("grade_id");
-            $table->unsignedBigInteger("notion_count");
-            $table->unsignedBigInteger("activity_count");
+            $table->unsignedBigInteger("notion_count")->default(0);
+            $table->unsignedBigInteger("activity_count")->default(0);
             $table->timestamps();
 
             // Foreign keys

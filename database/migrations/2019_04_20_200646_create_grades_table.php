@@ -19,7 +19,7 @@ class CreateGradesTable extends Migration
             $table->string("slug");
             $table->unsignedSmallInteger("order");
             $table->boolean("visible");
-            $table->unsignedBigInteger("parent_id");
+            $table->unsignedBigInteger("parent_id")->nullable();
             $table->unsignedBigInteger("country_id");
             $table->timestamps();
 
