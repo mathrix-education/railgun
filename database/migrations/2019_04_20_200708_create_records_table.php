@@ -14,7 +14,7 @@ class CreateRecordsTable extends Migration
     public function up()
     {
         Schema::create("records", function (Blueprint $table) {
-            $table->increments("id");
+            $table->bigIncrements("id");
             $table->timestamps();
         });
     }

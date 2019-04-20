@@ -14,7 +14,7 @@ class CreateNotionsTable extends Migration
     public function up()
     {
         Schema::create("notions", function (Blueprint $table) {
-            $table->increments("id");
+            $table->bigIncrements("id");
             $table->timestamps();
         });
     }

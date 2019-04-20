@@ -14,7 +14,7 @@ class CreateCacheTable extends Migration
     public function up()
     {
         Schema::create("cache", function (Blueprint $table) {
-            $table->increments("id");
+            $table->bigIncrements("id");
             $table->timestamps();
         });
     }
