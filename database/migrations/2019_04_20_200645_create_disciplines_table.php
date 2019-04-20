@@ -15,6 +15,9 @@ class CreateDisciplinesTable extends Migration
     {
         Schema::create("disciplines", function (Blueprint $table) {
             $table->bigIncrements("id");
+            $table->string("name");
+            $table->string("slug");
+            $table->boolean("beta");
             $table->timestamps();
         });
     }
