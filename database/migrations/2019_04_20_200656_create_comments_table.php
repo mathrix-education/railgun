@@ -23,7 +23,6 @@ class CreateCommentsTable extends Migration
             $table->timestamps();
 
             // Foreign keys
-
             $table->foreign("module_id")->reference("id")->on("module");
             $table->foreign("parent_id")->reference("id")->on("parents");
             $table->foreign("user_id")->reference("id")->on("users");

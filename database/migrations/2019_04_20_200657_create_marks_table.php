@@ -20,9 +20,9 @@ class CreateMarksTable extends Migration
             $table->unsignedBigInteger("user_id");
             $table->timestamps();
 
-            //Foreign keys
+            // Foreign keys
 
-            $table->foreign("user_id")->reference("id")->on("users")
+            $table->foreign("user_id")->reference("id")->on("users");
         });
     }
 
