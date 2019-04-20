@@ -20,7 +20,7 @@ class CreateNotionsTable extends Migration
             $table->boolean("visible");
             $table->unsignedSmallInteger("order");
             $table->unsignedBigInteger("chapter_id");
-            $table->unsignedBigInteger("activity_count");
+            $table->unsignedSmallInteger("activity_count");
             $table->timestamps();
 
             // Foreign keys

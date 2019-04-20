@@ -19,8 +19,8 @@ class CreateChaptersTable extends Migration
             $table->string("slug");
             $table->unsignedSmallInteger("order");
             $table->boolean("visible");
-            $table->unsignedBigInteger("grade_id");
             $table->unsignedBigInteger("discipline_id");
+            $table->unsignedBigInteger("grade_id");
             $table->unsignedBigInteger("notion_count");
             $table->unsignedBigInteger("activity_count");
             $table->timestamps();

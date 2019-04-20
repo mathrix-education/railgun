@@ -24,7 +24,7 @@ class CreateCommentsTable extends Migration
 
             // Foreign keys
             $table->foreign("module_id")->reference("id")->on("module");
-            $table->foreign("parent_id")->reference("id")->on("parents");
+            $table->foreign("parent_id")->reference("id")->on("comments");
             $table->foreign("user_id")->reference("id")->on("users");
 
         });
