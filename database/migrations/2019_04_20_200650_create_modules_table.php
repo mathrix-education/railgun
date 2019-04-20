@@ -33,7 +33,7 @@ class CreateModulesTable extends Migration
             $table->timestamps();
 
             // Foreign keys
-            $table->foreign("activity_id")->reference("id")->on("activities");
+            $table->foreign("activity_id")->references("id")->on("activities");
         });
     }
 

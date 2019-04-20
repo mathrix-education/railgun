@@ -24,7 +24,7 @@ class CreateNotionsTable extends Migration
             $table->timestamps();
 
             // Foreign keys
-            $table->foreign("chapter_id")->reference("id")->on("chapters");
+            $table->foreign("chapter_id")->references("id")->on("chapters");
         });
     }
 

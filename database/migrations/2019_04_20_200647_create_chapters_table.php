@@ -26,8 +26,8 @@ class CreateChaptersTable extends Migration
             $table->timestamps();
 
             // Foreign keys
-            $table->foreign("discipline_id")->reference("id")->on("disciplines");
-            $table->foreign("grade_id")->reference("id")->on("grades");
+            $table->foreign("discipline_id")->references("id")->on("disciplines");
+            $table->foreign("grade_id")->references("id")->on("grades");
         });
     }
 

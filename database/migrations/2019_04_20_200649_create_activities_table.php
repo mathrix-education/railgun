@@ -26,7 +26,7 @@ class CreateActivitiesTable extends Migration
             $table->timestamps();
 
             // Foreign keys
-            $table->foreign("notion_id")->reference("id")->on("notions");
+            $table->foreign("notion_id")->references("id")->on("notions");
         });
     }
 

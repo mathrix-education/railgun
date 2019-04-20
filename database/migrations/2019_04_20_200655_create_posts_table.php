@@ -23,9 +23,9 @@ class CreatePostsTable extends Migration
             $table->timestamps();
 
             // Foreign keys
-            $table->foreign("category_id")->reference("id")->on("categories");
-            $table->foreign("module_id")->reference("id")->on("modules");
-            $table->foreign("user_id")->reference("id")->on("users");
+            $table->foreign("category_id")->references("id")->on("categories");
+            $table->foreign("module_id")->references("id")->on("modules");
+            $table->foreign("user_id")->references("id")->on("users");
         });
     }
 

@@ -35,7 +35,7 @@ class CreateUsersTable extends Migration
             $table->timestamps();
 
             // Foreign keys
-            $table->foreign("grade_id")->reference("id")->on("grades");
+            $table->foreign("grade_id")->references("id")->on("grades");
         });
     }
 
