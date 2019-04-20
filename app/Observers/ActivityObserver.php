@@ -16,23 +16,6 @@ use Illuminate\Support\Str;
 class ActivityObserver extends BaseObserver
 {
     /**
-     * @param Activity $activity
-     *
-     * @return bool
-     */
-    public function saving(Activity $activity)
-    {
-        // Set the slug if needed
-        if (empty($activity->slug) ||
-            ($activity->isDirty("name") && !$activity->isDirty("slug"))) {
-            $activity->slug = Str::slug($activity->name);
-        }
-
-        return true;
-    }
-
-
-    /**
      * After save.
      * Update parent notion's activity counter.
      * Update parent chapter's activity counter.
@@ -43,7 +26,7 @@ class ActivityObserver extends BaseObserver
      */
     public function saved(Activity $activity)
     {
-        if ($activity->wasChanged("visible")) {
+        if ($activity->wasChanged(["notion_id", "visible"])) {
             $activity->notion->updateCounters();
             $activity->notion->chapter->updateCounters();
         }

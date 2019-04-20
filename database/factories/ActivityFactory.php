@@ -16,12 +16,10 @@ use Illuminate\Support\Str;
  * @var Factory $factory
  */
 $factory->define(Activity::class, function (Generator $faker) {
-    $name = mb_substr($faker->sentence(), 0, -1);
     [$createdAt, $updatedAt] = timestamps();
 
     return [
-        "name" => $name,
-        "slug" => Str::slug($name),
+        "name" => mb_substr($faker->sentence(), 0, -1),
         "type" => $faker->randomElement(Activity::TYPES),
         "visible" => $faker->boolean(95),
         "order" => $faker->numberBetween(0, 100),

@@ -17,7 +17,6 @@ use Mathrix\Lumen\Bases\BaseModel;
  *
  * @property int $id
  * @property string $name
- * @property string $slug
  * @property string $type
  * @property bool $visible
  * @property int $order
@@ -38,7 +37,6 @@ class Notion extends BaseModel
     protected $fillable = [
         "id",
         "name",
-        "slug",
         "type",
         "visible",
         "order",
@@ -47,7 +45,6 @@ class Notion extends BaseModel
     /** @var array The validation rules */
     protected $rules = [
         "name" => "required|max:255",
-        "slug" => "required|max:255",
         "chapter_id" => "required|exists:chapters,id",
     ];
     protected $casts = [
