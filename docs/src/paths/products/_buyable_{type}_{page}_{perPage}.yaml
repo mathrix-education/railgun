@@ -10,5 +10,5 @@ get:
       required: true
       schema:
         type: string
-        enum: [all,training,section,lesson]
+        enum: [all,pack,training,section,lesson]
       default: all
