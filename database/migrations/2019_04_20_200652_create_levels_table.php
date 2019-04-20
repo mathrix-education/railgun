@@ -15,6 +15,9 @@ class CreateLevelsTable extends Migration
     {
         Schema::create("levels", function (Blueprint $table) {
             $table->bigIncrements("id");
+            $table->unsignedInteger("level");
+            $table->unsignedInteger("objective");
+            $table->string("youtube_id");
             $table->timestamps();
         });
     }

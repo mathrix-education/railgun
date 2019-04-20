@@ -15,7 +15,19 @@ class CreateActivitiesTable extends Migration
     {
         Schema::create("activities", function (Blueprint $table) {
             $table->bigIncrements("id");
+            $table->string("name");
+            $table->string("type");
+            $table->boolean("visible");
+            $table->unsignedSmallInteger("order");
+            $table->boolean("premium");
+            $table->boolean("reviewed");
+            $table->unsignedBigInteger("notion_id");
+            $table->unsignedInteger("module_count");
             $table->timestamps();
+
+            // Foreign keys
+
+            $table->foreign("notion_id")->reference("id")->on("notions");
         });
     }
 

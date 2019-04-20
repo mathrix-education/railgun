@@ -15,7 +15,18 @@ class CreatePostsTable extends Migration
     {
         Schema::create("posts", function (Blueprint $table) {
             $table->bigIncrements("id");
+            $table->string("title");
+            $table->string("slug");
+            $table->unsignedBigInteger("module_id");
+            $table->unsignedBigInteger("category_id");
+            $table->unsignedBigInteger("user_id");
             $table->timestamps();
+
+            // Foreign keys
+
+            $table->foreign("category_id")->reference("id")->on("categories");
+            $table->foreign("module_id")->reference("id")->on("modules");
+            $table->foreign("user_id")->reference("id")->on("users");
         });
     }
 

@@ -15,7 +15,14 @@ class CreateMarksTable extends Migration
     {
         Schema::create("marks", function (Blueprint $table) {
             $table->bigIncrements("id");
+            $table->string("status");
+            $table->morphs("markable");
+            $table->unsignedBigInteger("user_id");
             $table->timestamps();
+
+            //Foreign keys
+
+            $table->foreign("user_id")->reference("id")->on("users")
         });
     }
 
