@@ -15,7 +15,14 @@ class CreateRecordsTable extends Migration
     {
         Schema::create("records", function (Blueprint $table) {
             $table->bigIncrements("id");
+            $table->string("service");
+            $table->string("status");
+            $table->json("payload");
+            $table->unsignedBigInteger("user_id");
             $table->timestamps();
+
+            // Foreign keys
+            $table->foreign("user_id")->references("id")->on("users");
         });
     }
 

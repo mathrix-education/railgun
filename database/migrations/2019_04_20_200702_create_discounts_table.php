@@ -15,6 +15,11 @@ class CreateDiscountsTable extends Migration
     {
         Schema::create("discounts", function (Blueprint $table) {
             $table->bigIncrements("id");
+            $table->string("code");
+            $table->string("type");
+            $table->string("value");
+            $table->unsignedInteger("counter");
+            $table->timestamp("expire_at")->nullable();
             $table->timestamps();
         });
     }

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateLogsTable extends Migration
 {
@@ -15,9 +15,17 @@ class CreateLogsTable extends Migration
     {
         Schema::create("logs", function (Blueprint $table) {
             $table->bigIncrements("id");
-            $table->timestamps();
+            $table->string("event");
+            $table->text("value");
+            $table->nullableMorphs("loggable");
+            $table->unsignedBigInteger("user_id");
+            $table->timestamp("created_at")->nullable();
+
+            // Foreign keys
+            $table->foreign("user_id")->references("id")->on("users");
         });
     }
+
 
     /**
      * Reverse the migrations.
