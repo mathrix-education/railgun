@@ -13,8 +13,8 @@ class CreateMarksTable extends Migration
      */
     public function up()
     {
-        Schema::create('marks', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create("marks", function (Blueprint $table) {
+            $table->increments("id");
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ class CreateMarksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('marks');
+        Schema::dropIfExists("marks");
     }
 }

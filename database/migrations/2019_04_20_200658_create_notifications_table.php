@@ -13,8 +13,8 @@ class CreateNotificationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('notifications', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create("notifications", function (Blueprint $table) {
+            $table->increments("id");
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ class CreateNotificationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('notifications');
+        Schema::dropIfExists("notifications");
     }
 }

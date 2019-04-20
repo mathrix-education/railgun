@@ -13,8 +13,8 @@ class CreateRecordsTable extends Migration
      */
     public function up()
     {
-        Schema::create('records', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create("records", function (Blueprint $table) {
+            $table->increments("id");
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ class CreateRecordsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('records');
+        Schema::dropIfExists("records");
     }
 }

@@ -13,8 +13,8 @@ class CreateDiscountsTable extends Migration
      */
     public function up()
     {
-        Schema::create('discounts', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create("discounts", function (Blueprint $table) {
+            $table->increments("id");
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ class CreateDiscountsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('discounts');
+        Schema::dropIfExists("discounts");
     }
 }

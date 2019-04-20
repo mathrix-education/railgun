@@ -13,8 +13,8 @@ class CreateDiscountProductTable extends Migration
      */
     public function up()
     {
-        Schema::create('discount_product', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create("discount_product", function (Blueprint $table) {
+            $table->increments("id");
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ class CreateDiscountProductTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('discount_product');
+        Schema::dropIfExists("discount_product");
     }
 }

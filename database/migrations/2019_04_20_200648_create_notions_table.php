@@ -13,8 +13,8 @@ class CreateNotionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('notions', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create("notions", function (Blueprint $table) {
+            $table->increments("id");
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ class CreateNotionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('notions');
+        Schema::dropIfExists("notions");
     }
 }
