@@ -115,11 +115,11 @@ class Module extends BaseModel
         /** @var bool $userIsPremium If the user is premium */
         $userIsPremium = $user !== null && ($user->premium || $user->tokenCan("moderator"));
         /** @var bool $userHasPurchased If the user has purchased one of the related products */
-        $userHasPurchased = $user !== null && $this->products()
+        $userHasPurchased = $user !== null && ($user->tokenCan("moderator") || $this->products()
                 ->get(["id"])
                 ->reduce(function (bool $current, Product $product) use ($user) {
                     return $current || $user->hasPurchased($product);
-                }, false);
+                }, false));
 
         $this->unsetRelation("activity");
         $this->unsetRelation("products");
