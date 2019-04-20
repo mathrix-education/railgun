@@ -83,4 +83,18 @@ class ChapterObserver extends BaseObserver
 
         return true;
     }
+
+
+    /**
+     * After deletion, purge chapter-related cache.
+     *
+     * @param Chapter $chapter
+     */
+    public function deleted(Chapter $chapter)
+    {
+        // Purge cache
+        DB::table("cache")
+            ->where("key", "LIKE", "chapters.grade.{$chapter->grade_id}.discipline.{$chapter->discipline_id}.%")
+            ->delete();
+    }
 }
