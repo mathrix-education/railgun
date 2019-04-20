@@ -2,14 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Mails\NewPayPalMail;
-use App\Models\Module;
-use App\Models\User;
-use App\Registrars\MailsRegistrar;
-use App\Services\Braintree\Exceptions\BraintreeErrorHandler;
-use App\Services\Braintree\Exceptions\BraintreeGatewayException;
-use Braintree\Subscription;
-use Illuminate\Support\Facades\Mail;
 use Mathrix\Lumen\Bases\BaseCommand;
 
 /**
@@ -26,43 +18,5 @@ class TestCommand extends BaseCommand
 
     public function handle()
     {
-        $sub = Subscription::find("sub_1ae3cebce9f63c288eb6beb36ee47ad2");
-        dd($sub->jsonSerialize());
-        dd(MailsRegistrar::getMails());
-    }
-
-
-    public function handle2()
-    {
-        $user = User::random();
-        $user->createBraintreeCustomer("fake-valid-visa-nonce");
-
-        $result = Subscription::create([
-            "planId" => "v4_monthly",
-            "paymentMethodToken" => $user->getBraintreeDefaultPaymentMethodToken()
-        ]);
-        $result = Subscription::create([
-            "planId" => "v4_monthly",
-            "paymentMethodToken" => $user->getBraintreeDefaultPaymentMethodToken()
-        ]);
-        try {
-            BraintreeErrorHandler::report($result);
-        } catch (BraintreeGatewayException $e) {
-            dd(json_decode($e->toJsonResponse()->getContent()));
-        }
-    }
-
-
-    public function removeNull($array)
-    {
-        foreach ($array as $k => $v) {
-            if (is_array($v) && $v !== []) {
-                $array[$k] = $this->removeNull($v);
-            } else if ($v === null || $v === "Unknown" || $v === []) {
-                unset($array[$k]);
-            }
-        }
-
-        return $array;
     }
 }

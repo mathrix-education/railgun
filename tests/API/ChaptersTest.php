@@ -5,11 +5,11 @@ namespace Tests\API;
 use App\Models\Chapter;
 use App\Models\Mark;
 use App\Models\User;
+use Illuminate\Support\Arr;
 use Laravel\Passport\Passport;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
-use Mathrix\Lumen\Tests\REST\Standard\StandardPostTest;
 use Tests\APITestCase;
 
 /**
@@ -21,7 +21,19 @@ use Tests\APITestCase;
  */
 class ChaptersTest extends APITestCase
 {
-    use StandardIndexTest, StandardPostTest, StandardGetTest, StandardPatchTest;
+    use StandardIndexTest, StandardGetTest, StandardPatchTest;
+
+
+    /**
+     * POST /chapters
+     * Standard post test.
+     */
+    public function testPost()
+    {
+        $this->assertRestPostSuccess(null, function ($data) {
+            return Arr::except($data, ["order"]);
+        });
+    }
 
 
     /**

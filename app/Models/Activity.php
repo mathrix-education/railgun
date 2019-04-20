@@ -20,7 +20,6 @@ use Mathrix\Lumen\Bases\BaseModel;
  *
  * @property int $id
  * @property string $name
- * @property string $slug
  * @property string $type
  * @property bool $visible
  * @property bool $premium
@@ -48,7 +47,6 @@ class Activity extends BaseModel
     protected $fillable = [
         "id",
         "name",
-        "slug",
         "type",
         "visible",
         "order",
@@ -65,7 +63,6 @@ class Activity extends BaseModel
     /** @var array The validation rules */
     protected $rules = [
         "name" => "required|max:255",
-        "slug" => "required|max:255",
         "visible" => "boolean",
         "premium" => "boolean",
         "reviewed" => "boolean"

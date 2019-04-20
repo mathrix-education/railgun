@@ -41,6 +41,7 @@ class ProductTableSeeder extends BaseTableSeeder
 
             if ($id <= 50) {
                 $products[$key]["type"] = "training";
+                $products[$key]["price"] = $faker->numberBetween(5, 40) * 10;
             } else if (50 < $id && $id <= 150) {
                 $products[$key]["type"] = "section";
                 $products[$key]["parent_id"] = !empty($range1_50)
@@ -54,6 +55,7 @@ class ProductTableSeeder extends BaseTableSeeder
                 $products[$key]["module_id"] = $moduleIds->shift();
             } else {
                 $products[$key]["type"] = "pack";
+                $products[$key]["price"] = $faker->numberBetween(5, 40) * 10;
                 $childIds = $faker->randomElements($range, $faker->numberBetween(2, 5));
 
                 foreach ($childIds as $order => $childId) {
