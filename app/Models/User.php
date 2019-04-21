@@ -127,7 +127,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "type" => "required|in:registered,redactor,moderator,admin",
         "token" => "nullable|size:36",
         "points" => "required|integer",
-        "daily" => "nullable|in:10,20,40",
         "grade_id" => "nullable|exists:grades,id",
         "premium_bypass" => "boolean",
         "premium_bypass_expires_at" => "nullable|date",
