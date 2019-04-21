@@ -1,5 +1,5 @@
 post:
-  summary: Get cart
+  summary: Validate cart
   description: >
     Given a sponsor email, check if the current user can benefits of an
     affiliate discount.
@@ -31,7 +31,7 @@ post:
               example: sponsor@example.com
   responses:
     200:
-      description: The affiliation discount amount
+      description: The validated cart
       content:
         application/json:
           schema:
@@ -71,7 +71,7 @@ post:
               sub_total:
                 description: >
                   The total cart price, **before** discount application if any.
-                  It is the sum of the lines[*].price_after_discount.
+                  It is the sum of the lines[*].price.
                 type: number
                 example: 39.70
               total:
