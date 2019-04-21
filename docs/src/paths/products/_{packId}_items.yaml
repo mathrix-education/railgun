@@ -1,7 +1,7 @@
 patch:
   summary: Set pack items
   description: >
-    Add items to an existing pack. This method will only work if the targeted
+    Set items to an existing pack. This method will only work if the targeted
     product has `type` equals to `"pack"`. Also, the payload order matters, and
     is used to determine the order of the items inside the pack.
   security:
