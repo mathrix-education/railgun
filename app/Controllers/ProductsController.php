@@ -2,12 +2,21 @@
 
 namespace App\Controllers;
 
+use App\Exceptions\DiscountExpiredException;
+use App\Exceptions\DiscountNotApplicableException;
+use App\Exceptions\InvalidBraintreeCustomerException;
+use App\Exceptions\InvalidSponsorException;
+use App\Exceptions\ProductAlreadyBoughtException;
+use App\Exceptions\ProductNotBuyableException;
+use App\Exceptions\SponsorNotFoundException;
 use App\Models\Product;
+use App\Services\Braintree\Exceptions\BraintreeGatewayException;
+use App\Services\Braintree\Exceptions\BraintreeProcessorException;
+use App\Services\Braintree\Exceptions\DuplicatePaymentMethodNonceException;
 use App\Services\Braintree\Pipelines\CartPipeline;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mathrix\Lumen\Bases\BaseController;
-use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Exceptions\ValidationException;
 use Mathrix\Lumen\Responses\PaginationJsonResponse;
 
@@ -145,7 +154,16 @@ class ProductsController extends BaseController
      * @param Request $request The Illuminate HTTP request.
      *
      * @return JsonResponse
-     * @throws Http400BadRequestException
+     * @throws BraintreeGatewayException
+     * @throws BraintreeProcessorException
+     * @throws DiscountExpiredException
+     * @throws DiscountNotApplicableException
+     * @throws DuplicatePaymentMethodNonceException
+     * @throws InvalidBraintreeCustomerException
+     * @throws InvalidSponsorException
+     * @throws ProductAlreadyBoughtException
+     * @throws ProductNotBuyableException
+     * @throws SponsorNotFoundException
      * @throws ValidationException
      */
     public function buy(Request $request): JsonResponse

@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Exceptions;
+
+use App\Models\User;
+use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Throwable;
+
+/**
+ * Class InvalidBraintreeCustomerException.
+ *
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 5.0.1-rc
+ */
+class InvalidBraintreeCustomerException extends Http400BadRequestException
+{
+    protected const ERROR = "invalid_braintree_customer";
+
+
+    public function __construct(User $user, Throwable $previous = null)
+    {
+        parent::__construct(
+            ["user_id" => $user->id],
+            "User id `{$user->id}` is not a Braintree customer",
+            $previous
+        );
+    }
+}
