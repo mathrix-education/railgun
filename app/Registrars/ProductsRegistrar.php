@@ -41,9 +41,9 @@ class ProductsRegistrar extends BaseRegistrar
         $this->get("products/$type/{page:\d+}/{perPage:[1-9]\d+}", "$controller@paginateByType");
         $this->get("products/buyable/$type/{page:\d+}/{perPage:[1-9]\d+}", "$controller@buyable");
 
-        $this->post("products/buy", [
-            "uses" => "$controller@buy",
-            "middleware" => "scope:registered"
-        ]);
+        $this->group(["middleware" => "scope:registered"], function () use ($controller) {
+            $this->post("products/sponsor", "$controller@sponsor");
+            $this->post("products/buy", "$controller@buy");
+        });
     }
 }

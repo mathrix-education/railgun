@@ -1,0 +1,48 @@
+post:
+  summary: Check sponsor validity
+  description: >
+    Given a sponsor email, check if the current user can benefits of an
+    affiliate discount.
+  security:
+    - bearer: [registered]
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required: [sponsor_email]
+          properties:
+            sponsor_email:
+              description: The sponsor email to check
+              type: string
+              format: email
+              example: sponsor@example.com
+  responses:
+    200:
+      description: The affiliation discount amount
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [discount]
+            properties:
+              discount:
+                description: The discount amount, in euros
+                type: integer
+                enum: [5, 10, 15]
+    400:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: '../../index.yaml#/components/schemas/InvalidSponsor'
+    404:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: '../../index.yaml#/components/schemas/SponsorNotFound'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'

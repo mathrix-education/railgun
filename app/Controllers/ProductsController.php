@@ -14,6 +14,7 @@ use App\Services\Braintree\Exceptions\BraintreeGatewayException;
 use App\Services\Braintree\Exceptions\BraintreeProcessorException;
 use App\Services\Braintree\Exceptions\DuplicatePaymentMethodNonceException;
 use App\Services\Braintree\Pipelines\CartPipeline;
+use App\Services\Braintree\Utils\AffiliateProcess;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mathrix\Lumen\Bases\BaseController;
@@ -169,5 +170,34 @@ class ProductsController extends BaseController
     public function buy(Request $request): JsonResponse
     {
         return (new CartPipeline($request))->process();
+    }
+
+
+    /**
+     * POST /products/sponsor
+     * Check sponsor email validity.
+     *
+     * @param Request $request The Illuminate HTTP request.
+     *
+     * @return JsonResponse
+     * @throws ValidationException
+     * @throws SponsorNotFoundException
+     * @throws InvalidSponsorException
+     */
+    public function sponsor(Request $request): JsonResponse
+    {
+        $this->validate($request, [
+            "sponsor_email" => "required"
+        ]);
+
+        $user = $request->user();
+        $sponsorEmail = $request->json("sponsor_email");
+
+        $affiliateProcess = new AffiliateProcess($user, $sponsorEmail);
+        $affiliateProcess->canBeAffiliatedOrFail();
+
+        return new JsonResponse([
+            "discount" => $affiliateProcess->getDiscountAmount()
+        ]);
     }
 }
