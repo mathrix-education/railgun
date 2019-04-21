@@ -1,14 +1,17 @@
 #!/bin/bash
 rm -rf storage/framework/cache/dump-before.sql
-mysqldump -u'datastudio' \
-    -p'salome3004' \
-    --host=127.0.0.1 \
-    --port=3307 \
+mysqldump \
+    -u$(printenv DB_USERNAME) \
+    -p$(printenv DB_PASSWORD) \
+    --host=$(printenv DB_HOST) \
+    --port=$(printenv DB_PORT) \
     --complete-insert \
     --no-create-info \
     --set-gtid-purged=OFF \
-    dev_mathrix_education > storage/framework/cache/dump-before.sql
+    $(printenv DB_DATABASE) > storage/framework/cache/dump-before.sql
 php artisan migrate:fresh
-pv storage/framework/cache/dump-before.sql | mysql --database=mathrix_fr_dev \
-    -u'root' -p'salome3004' \
-    --host=127.0.0.1 --port=3306
+pv storage/framework/cache/dump-before.sql | mysql --database=$(printenv DB_DATABASE) \
+    -u$(printenv DB_USERNAME) \
+    -p$(printenv DB_PASSWORD) \
+    --host=$(printenv DB_HOST) \
+    --port=$(printenv DB_PORT) \
