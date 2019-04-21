@@ -15,7 +15,7 @@ use Mathrix\Lumen\Bases\BaseModel;
  *
  * @property int $id
  * @property int $price
- * @property int $refund
+ * @property string $transaction_id
  * @property int $user_id
  * @property int $product_id
  * @property Carbon|null $created_at
@@ -29,7 +29,7 @@ class Purchase extends BaseModel
     /** @var bool Indicates if the model should be timestamped */
     public $timestamps = true;
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "user_id", "product_id"];
+    protected $fillable = ["id", "transaction_id", "user_id", "product_id"];
     /** @var array The validation rules */
     protected $rules = [
         "user_id" => "exists:users,id",

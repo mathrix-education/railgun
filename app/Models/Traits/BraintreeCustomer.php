@@ -2,16 +2,20 @@
 
 namespace App\Models\Traits;
 
+use App\Exceptions\InvalidBraintreeCustomerException;
+use App\Models\User;
 use App\Services\Braintree\Exceptions\BraintreeErrorHandler;
 use App\Services\Braintree\Exceptions\BraintreeGatewayException;
 use App\Services\Braintree\Exceptions\BraintreeProcessorException;
-use App\Services\Braintree\Utils\Formatter;
+use App\Services\Braintree\Exceptions\DuplicatePaymentMethodNonceException;
 use Braintree\Customer;
 use Braintree\Exception\NotFound as BraintreeNotFound;
 use Braintree\PaymentMethod;
 use Braintree\Result\Error;
 use Braintree\Result\Successful;
 use Braintree\Subscription;
+use Braintree\Transaction;
+use Braintree\TransactionSearch;
 use Faker\Factory as FakerFactory;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -100,7 +104,9 @@ trait BraintreeCustomer
      * @param string|null $paymentMethodNonce a payment nonce to attach
      *
      * @return Customer
-     * @throws Http400BadRequestException
+     * @throws BraintreeGatewayException
+     * @throws BraintreeProcessorException
+     * @throws DuplicatePaymentMethodNonceException
      */
     public function createBraintreeCustomer(string $paymentMethodNonce = null): Customer
     {
@@ -123,10 +129,7 @@ trait BraintreeCustomer
                 /** @var Error $result */
                 $this->record("braintree", "customer_creation", "error", $result->jsonSerialize());
 
-                throw new Http400BadRequestException(
-                    Formatter::cast($result),
-                    "Unable to create Braintree customer"
-                );
+                BraintreeErrorHandler::report($result);
             }
         }
 
@@ -149,16 +152,17 @@ trait BraintreeCustomer
 
 
     /**
-     * Throw an Http400InvalidRequestException if the user is not a Braintree customer.
+     * Throws an InvalidBraintreeCustomerException if the user is not a Braintree customer.
      *
      * @param bool $strict
      *
-     * @throws Http400BadRequestException
+     * @throws InvalidBraintreeCustomerException
      */
     public function requireBraintreeCustomer(bool $strict = false)
     {
         if (!$this->isBraintreeCustomer($strict)) {
-            throw new Http400BadRequestException(null, "User with id `{$this->id}` is not a Braintree customer");
+            /** @var User $this */
+            throw new InvalidBraintreeCustomerException($this);
         }
     }
 
@@ -344,5 +348,26 @@ trait BraintreeCustomer
     {
         return isset($this->settings["braintree_lock"])
             && $this->settings["braintree_lock"] === true;
+    }
+
+
+    /**
+     * Get customer's Braintree transactions
+     *
+     * @throws Http400BadRequestException
+     */
+    public function getBraintreeTransactions()
+    {
+        $this->requireBraintreeCustomer();
+        $transactionResults = Transaction::search([
+            TransactionSearch::customerId()->is($this->braintree_id),
+        ]);
+        $transactions = new Collection();
+
+        foreach ($transactionResults as $transaction) {
+            $transactions->push($transaction);
+        }
+
+        return $transactions;
     }
 }

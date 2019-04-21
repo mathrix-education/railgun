@@ -95,7 +95,7 @@ class UsersTest extends APITestCase
         $payload = array_merge(
             Arr::except(
                 $this->getFactoryBuilder([])->raw(),
-                ["password", "token", "points", "level", "created_at", "updated_at"]
+                ["password", "token", "points", "level", "settings", "created_at", "updated_at"]
             ), [
                 "current_password" => env("DB_PASSWORD"),
                 "password" => $newPassword

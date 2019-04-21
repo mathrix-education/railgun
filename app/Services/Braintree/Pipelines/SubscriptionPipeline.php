@@ -145,7 +145,7 @@ class SubscriptionPipeline
 
         // Check if user is already premium
         if ($this->user->premium) {
-            throw new UserAlreadyPremiumException();
+            throw new UserAlreadyPremiumException($this->user);
         }
     }
 

@@ -46,6 +46,7 @@ use Mathrix\Lumen\Exceptions\ValidationException;
  * @property array $settings
  * @property bool $premium_bypass
  * @property Carbon $premium_bypass_expires_at
+ * @property int $affiliate_factor
  * @property int|null $grade_id
  * @property string|null $braintree_id
  * @property string|null $stripe_id
@@ -177,7 +178,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * @param array $payload The record payload.
      *
      * @return Record
-     * @throws Http400BadRequestException
      * @throws ValidationException
      */
     public function record(string $service, string $event, string $status, array $payload)

@@ -30,8 +30,8 @@ class ForeignConstraintsException extends Http400BadRequestException
         $modelName = class_basename($model);
 
         parent::__construct([
-            "model" => $model,
+            "model_id" => $model->id,
             "relation" => $relation
-        ], "$modelName id {$model->id} cannot be delete because it has related $relation", $previous);
+        ], "$modelName id `{$model->id}` cannot be delete because it has related `$relation`", $previous);
     }
 }

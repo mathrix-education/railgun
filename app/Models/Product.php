@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\NoPivot;
+use Braintree\Transaction;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -79,12 +80,14 @@ class Product extends BaseModel
      * Deliver a product to a customer.
      *
      * @param User $customer The customer.
+     * @param Transaction $transaction The Braintree transaction.
      *
      * @return Purchase
      */
-    public function deliver(User $customer): Purchase
+    public function deliver(User $customer, Transaction $transaction): Purchase
     {
         $purchase = new Purchase([
+            "transaction_id" => $transaction->id,
             "user_id" => $customer->id,
             "product_id" => $this->id,
         ]);

@@ -10,13 +10,8 @@ use Braintree\Subscription;
 use Braintree\Test\Nonces;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
-use Laravel\Passport\Passport;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
-use Mathrix\Lumen\Tests\OpenAPI\OpenAPITrait;
-use Mathrix\Lumen\Tests\Traits\JsonResponseTrait;
 use stdClass;
-use Tests\BaseTestCase;
-use Tests\Utils\NotificationsAssertionsTrait;
 
 /**
  * Class SubscriptionLifecycleTest.
@@ -34,17 +29,8 @@ use Tests\Utils\NotificationsAssertionsTrait;
  * @copyright Mathrix Education SA.
  * @since 5.0.1-rc1
  */
-class SubscriptionLifecycleTest extends BaseTestCase
+class SubscriptionLifecycleTest extends BraintreeTestCase
 {
-    use JsonResponseTrait, NotificationsAssertionsTrait, OpenAPITrait;
-
-
-    private function setUser(User $user)
-    {
-        Passport::actingAs($user, $user->getPassportScopesArray());
-    }
-
-
     /**
      * POST /subscription
      * Create a new v4_monthly subscription.

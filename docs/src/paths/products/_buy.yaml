@@ -6,7 +6,7 @@ post:
       application/sjson:
         schema:
           type: object
-          required: [cart]
+          required: [cart, payment_method_nonce]
           properties:
             cart:
               description: The user cart, which is an array of the product ids he wants to buy.
@@ -14,15 +14,21 @@ post:
               items:
                 type: integer
               example: [127, 15, 14]
+            payment_method_nonce:
+              description: The payment nonce if the user is not already a Braintree customer.
+              type: string
+              example: 4qs54za5
             discount:
               description: A optional discount code.
               type: string
               nullable: true
               example: MODEMACHINE2018
-            payment_method_nonce:
-              description: The payment nonce if the user is not already a Braintree customer.
+            sponsor_email:
+              description: The sponsor email.
               type: string
-              example: 4qs54za5
+              nullable: true
+              format: email
+              example: sponsor@example.com
   responses:
     200:
       description: The cart products.
@@ -38,5 +44,19 @@ post:
         application/json:
           schema:
             oneOf:
+              - $ref: '../../index.yaml#/components/schemas/GatewayRejection'
               - $ref: '../../index.yaml#/components/schemas/DiscountExpired'
               - $ref: '../../index.yaml#/components/schemas/DiscountNotApplicable'
+              - $ref: '../../index.yaml#/components/schemas/InvalidBraintreeCustomer'
+              - $ref: '../../index.yaml#/components/schemas/InvalidSponsor'
+              - $ref: '../../index.yaml#/components/schemas/ProductAlreadyBought'
+              - $ref: '../../index.yaml#/components/schemas/ProductNotBuyable'
+    404:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: '../../index.yaml#/components/schemas/SponsorNotFound'
+    422:
+      $ref: '../../index.yaml#/components/responses/422_ModelValidation'

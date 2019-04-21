@@ -5,19 +5,26 @@ namespace App\Services\Braintree\Pipelines;
 use App\Events\TransactionSuccessEvent;
 use App\Exceptions\DiscountExpiredException;
 use App\Exceptions\DiscountNotApplicableException;
+use App\Exceptions\InvalidBraintreeCustomerException;
+use App\Exceptions\InvalidSponsorException;
+use App\Exceptions\ProductAlreadyBoughtException;
+use App\Exceptions\ProductNotBuyableException;
+use App\Exceptions\SponsorNotFoundException;
 use App\Models\Discount;
 use App\Models\Product;
 use App\Models\User;
+use App\Services\Braintree\BraintreeResponse;
 use App\Services\Braintree\Exceptions\BraintreeErrorHandler;
 use App\Services\Braintree\Exceptions\BraintreeGatewayException;
 use App\Services\Braintree\Exceptions\BraintreeProcessorException;
-use Braintree\Result\Error;
-use Braintree\Result\Successful;
+use App\Services\Braintree\Exceptions\DuplicatePaymentMethodNonceException;
+use App\Services\Braintree\Utils\AffiliateProcess;
 use Braintree\Transaction;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator as ValidatorFacade;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Exceptions\ValidationException;
@@ -41,12 +48,14 @@ class CartPipeline
     private $request;
     /** @var User $customer The customer. */
     private $customer;
-    /** @var Collection|Product[] The products. */
+    /** @var EloquentCollection|Product[] The products. */
     private $products;
     /** @var Discount|null $discount The discount, if any. */
     private $discount;
+    /** @var AffiliateProcess|null $affiliateProcess The affiliate process, if any. */
+    private $affiliateProcess;
 
-    /** @var Error|Successful $saleResult The Braintree sale result. */
+    /** @var BraintreeResponse $saleResult The Braintree sale result. */
     private $saleResult;
 
 
@@ -55,7 +64,15 @@ class CartPipeline
      *
      * @param Request $request
      *
-     * @throws Http400BadRequestException
+     * @throws BraintreeGatewayException
+     * @throws BraintreeProcessorException
+     * @throws DiscountExpiredException
+     * @throws DiscountNotApplicableException
+     * @throws DuplicatePaymentMethodNonceException
+     * @throws InvalidSponsorException
+     * @throws ProductAlreadyBoughtException
+     * @throws ProductNotBuyableException
+     * @throws SponsorNotFoundException
      * @throws ValidationException
      */
     public function __construct(Request $request)
@@ -77,6 +94,7 @@ class CartPipeline
         $this->setCustomer($this->request->user());
         $this->setProducts($this->request->json("cart"));
         $this->setDiscount($this->request->json("discount"));
+        $this->setAffiliate($this->request->json("sponsor_email"));
     }
 
 
@@ -86,7 +104,8 @@ class CartPipeline
      * @param string $discountCode
      *
      * @return CartPipeline
-     * @throws Http400BadRequestException
+     * @throws DiscountExpiredException
+     * @throws DiscountNotApplicableException
      */
     public function setDiscount(string $discountCode = null)
     {
@@ -111,37 +130,51 @@ class CartPipeline
 
 
     /**
+     * @param string|null $sponsorEmail
+     *
+     * @throws SponsorNotFoundException
+     * @throws InvalidSponsorException
+     */
+    public function setAffiliate(string $sponsorEmail = null)
+    {
+        if ($sponsorEmail !== null) {
+            $this->affiliateProcess = new AffiliateProcess($this->customer, $sponsorEmail);
+            $this->affiliateProcess->canBeAffiliatedOrFail();
+        }
+    }
+
+
+    /**
      * Set the cart products.
      *
      * @param int[] $productIds
      *
      * @return $this
+     *
+     * @throws ProductAlreadyBoughtException
+     * @throws ProductNotBuyableException
      */
     public function setProducts(array $productIds)
     {
-        $this->products = collect(array_unique($productIds))
-            ->map(function ($productId) {
-                /** @var Product $product */
-                $product = Product::query()->findOrFail($productId);
+        $productIds = array_unique($productIds);
+        $this->products = new Collection();
 
-                // Product price is null
-                if ($product->price === null) {
-                    throw new Http400BadRequestException(
-                        ["product" => $product],
-                        "Product `id` {$this->customer->id} cannot be purchased"
-                    );
-                }
+        foreach ($productIds as $productId) {
+            /** @var Product $product */
+            $product = Product::query()->findOrFail($productId);
 
-                // Customer has already purchased the product
-                if ($this->customer->hasPurchased($product)) {
-                    throw new Http400BadRequestException(
-                        ["product" => $product],
-                        "User `id` {$this->customer->id} has already purchased product `id` {$product->id}"
-                    );
-                }
+            // Product price is null
+            if ($product->price === null) {
+                throw new ProductNotBuyableException($product);
+            }
 
-                return $product;
-            });
+            // Customer has already purchased the product
+            if ($this->customer->hasPurchased($product)) {
+                throw new ProductAlreadyBoughtException($this->customer, $product);
+            }
+
+            $this->products->push($product);
+        }
 
         return $this;
     }
@@ -153,7 +186,9 @@ class CartPipeline
      * @param User $customer
      *
      * @return CartPipeline
-     * @throws Http400BadRequestException
+     * @throws BraintreeGatewayException
+     * @throws BraintreeProcessorException
+     * @throws DuplicatePaymentMethodNonceException
      */
     public function setCustomer(User $customer)
     {
@@ -176,7 +211,7 @@ class CartPipeline
      */
     public function getTransactionPayload()
     {
-        $lineItems = new Collection();
+        $lineItems = new EloquentCollection();
 
         /** @var Product $product */
         foreach ($this->products as $product) {
@@ -198,14 +233,24 @@ class CartPipeline
             $lineItems->add($lineItem);
         }
 
+        $amount = $lineItems->sum(function ($lineItem) {
+            return $lineItem["totalAmount"];
+        });
+        $discountAmount = $lineItems->sum(function ($lineItem) {
+            return $lineItem["discountAmount"] ?? 0;
+        });
+
+        // Add affiliate line item
+        if ($this->affiliateProcess !== null && $this->affiliateProcess->canBeAffiliated()) {
+            $lineItems->add($this->affiliateProcess->getDiscountLineItem());
+            $amount -= $this->affiliateProcess->getDiscountAmount(); // Reduce the cart amount
+            $discountAmount += $this->affiliateProcess->getDiscountAmount(); // Increase discount amount
+        }
+
         $saleData = [
-            "amount" => $lineItems->sum(function ($lineItem) {
-                return $lineItem["totalAmount"];
-            }),
+            "amount" => $amount,
             "customerId" => $this->customer->braintree_id,
-            "discountAmount" => $lineItems->sum(function ($lineItem) {
-                return $lineItem["discountAmount"] ?? 0;
-            }),
+            "discountAmount" => $discountAmount,
             "lineItems" => $lineItems->toArray(),
             "options" => [
                 "submitForSettlement" => true,
@@ -220,17 +265,14 @@ class CartPipeline
      * Process the Braintree Transaction.
      *
      * @return JsonResponse
-     * @throws Http400BadRequestException
-     * @throws ValidationException
      * @throws BraintreeGatewayException
      * @throws BraintreeProcessorException
+     * @throws DuplicatePaymentMethodNonceException
+     * @throws ValidationException
+     * @throws InvalidBraintreeCustomerException
      */
     public function process()
     {
-        // Check customer existence and validity
-        if ($this->customer === null) {
-            throw new Http400BadRequestException(null, "No customer set.");
-        }
         $this->customer->requireBraintreeCustomer();
 
         // Process the cart in a Braintree transaction
@@ -256,16 +298,17 @@ class CartPipeline
      * Deliver pack products.
      *
      * @param Product $pack
+     * @param Transaction $transaction
      */
-    private function deliverPackProducts(Product $pack)
+    private function deliverPackProducts(Product $pack, Transaction $transaction)
     {
-        $pack->items->each(function (Product $item) {
+        $pack->items->each(function (Product $item) use ($transaction) {
             if ($item->type === "premium") {
                 // Premium product
                 $this->customer->premium_bypass_expires_at = new Carbon(self::MODE_MACHINE_2019_END);
                 $this->customer->save();
             } else {
-                $item->deliver($this->customer);
+                $item->deliver($this->customer, $transaction);
             }
         });
     }
@@ -276,6 +319,10 @@ class CartPipeline
      * - Unlock the products for the user
      * - Decrement the discount counter if needed
      * - Emit the TransactionSuccessEvent
+     *
+     * @throws BraintreeGatewayException
+     * @throws BraintreeProcessorException
+     * @throws DuplicatePaymentMethodNonceException
      */
     private function finalize()
     {
@@ -283,10 +330,10 @@ class CartPipeline
         $this->products->each(function (Product $product) {
             // Handle packs items dispatching
             if ($product->type === "pack") {
-                $this->deliverPackProducts($product);
+                $this->deliverPackProducts($product, $this->saleResult->transaction);
             }
 
-            $product->deliver($this->customer);
+            $product->deliver($this->customer, $this->saleResult->transaction);
         });
 
         // Decrement discount counter if necessary
@@ -294,6 +341,23 @@ class CartPipeline
             $this->discount->counter--;
             $this->discount->save();
         }
+
+        // Refund sponsor if necessary
+        if ($this->affiliateProcess !== null && $this->affiliateProcess->canBeAffiliated()) {
+            $this->affiliateProcess->refundSponsor();
+
+            // If the user is a brand new customer and was affiliated, we set his factor directly to 2
+            if ($this->customer->affiliate_factor === 0) {
+                $this->customer->affiliate_factor = 2;
+            }
+        } else {
+            // The customer become a potential sponsor
+            if ($this->customer->affiliate_factor === 0) {
+                $this->customer->affiliate_factor = 1;
+            }
+        }
+
+        $this->customer->save();
 
         event(new TransactionSuccessEvent($this->saleResult->transaction));
     }
