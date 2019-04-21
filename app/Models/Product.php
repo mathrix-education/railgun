@@ -67,6 +67,7 @@ class Product extends BaseModel
         "description" => "nullable|max:255",
         "price" => "nullable|numeric",
         "visible" => "required|boolean",
+        "order" => "required|integer",
         "module_id" => "nullable|exists:modules,id",
     ];
     /** @var array The attributes that should be cast to native types */
