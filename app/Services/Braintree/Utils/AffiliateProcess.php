@@ -90,7 +90,7 @@ class AffiliateProcess
      */
     public function getDiscountAmount(): int
     {
-        return $this->sponsor->affiliate_factor * self::AFFILIATES_FACTOR;
+        return self::AFFILIATES_FACTOR;
     }
 
 
@@ -105,7 +105,7 @@ class AffiliateProcess
     {
         return [
             "kind" => "credit",
-            "name" => "Parrainage de niveau {$this->sponsor->affiliate_factor}",
+            "name" => "Parrainage",
             "quantity" => 1,
             "totalAmount" => $this->getDiscountAmount(),
             "unitAmount" => $this->getDiscountAmount()
@@ -132,7 +132,7 @@ class AffiliateProcess
          * (15€) is greater the cheapest product (>30€). Therefore, no check is present.
          */
         /** @var BraintreeResponse $refundResult */
-        $refundResult = Transaction::refund($purchase->transaction_id, self::AFFILIATES_FACTOR);
+        $refundResult = Transaction::refund($purchase->transaction_id, $this->sponsor->affiliate_factor * self::AFFILIATES_FACTOR);
 
         if (!$refundResult->success) {
             BraintreeErrorHandler::report($refundResult);

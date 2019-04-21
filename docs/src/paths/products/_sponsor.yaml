@@ -29,7 +29,7 @@ post:
               discount:
                 description: The discount amount, in euros
                 type: integer
-                enum: [5, 10, 15]
+                enum: [5]
     400:
       description: Bad request
       content:
