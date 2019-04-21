@@ -31,7 +31,7 @@ class AffiliateProcess
 
     /** @var User The user who is currently engaging a payment process */
     private $affiliate;
-    /** @var User The user who sponsors the affiliated user*/
+    /** @var User The user who sponsors the affiliated user */
     private $sponsor;
 
 
@@ -63,7 +63,10 @@ class AffiliateProcess
      */
     public function canBeAffiliated(): bool
     {
-        return 1 <= $this->sponsor->affiliate_factor && $this->sponsor->affiliate_factor <= self::AFFILIATES_MAX;
+        $validFactor = 1 <= $this->sponsor->affiliate_factor && $this->sponsor->affiliate_factor <= self::AFFILIATES_MAX;
+        $notHimself = $this->sponsor->email !== $this->affiliate->email;
+
+        return $notHimself && $validFactor;
     }
 
 
@@ -97,9 +100,9 @@ class AffiliateProcess
     /**
      * Get the discount line item for Braintree Transaction sale request.
      *
-     * @see Transaction::sale()
-     * @link https://developers.braintreepayments.com/reference/request/transaction/sale/php#line_items
      * @return array
+     * @link https://developers.braintreepayments.com/reference/request/transaction/sale/php#line_items
+     * @see Transaction::sale()
      */
     public function getDiscountLineItem(): array
     {
