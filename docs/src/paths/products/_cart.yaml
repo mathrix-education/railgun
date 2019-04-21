@@ -10,7 +10,7 @@ post:
       application/json:
         schema:
           type: object
-          required: [sponsor_email]
+          required: [cart]
           properties:
             cart:
               description: The cart product ids.
