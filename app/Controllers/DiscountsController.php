@@ -2,9 +2,13 @@
 
 namespace App\Controllers;
 
+use App\Exceptions\DiscountExpiredException;
+use App\Exceptions\DiscountNotApplicableException;
 use App\Models\Discount;
+use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\ValidationException;
 use Mathrix\Lumen\Responses\PaginationJsonResponse;
@@ -18,24 +22,6 @@ use Mathrix\Lumen\Responses\PaginationJsonResponse;
  */
 class DiscountsController extends BaseController
 {
-    /**
-     * GET /discounts/code/{discountCode}
-     * Check if a discount is valid.
-     *
-     * @param string $code The discount code.
-     *
-     * @return JsonResponse
-     */
-    public function getByCode(string $code)
-    {
-        $discount = Discount::query()
-            ->where("code", "=", $code)
-            ->firstOrFail();
-
-        return new JsonResponse($discount);
-    }
-
-
     /**
      * GET /discounts/{discountId}/products/{page}/{perPage}
      *

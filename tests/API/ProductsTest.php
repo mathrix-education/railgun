@@ -2,7 +2,11 @@
 
 namespace Tests\API;
 
+use App\Models\Discount;
 use App\Models\Product;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
@@ -111,5 +115,42 @@ class ProductsTest extends APITestCase
                 "order" => $order
             ]);
         }
+    }
+
+
+    /**
+     *
+     */
+    public function testCart(): void
+    {
+        /** @var Discount $discount */
+        $discount = Discount::query()
+            ->whereHas("products", function (Builder $query) {
+                $query->whereNotNull("price");
+            })
+            ->where("counter", ">", "0")
+            ->whereNull("expire_at")
+            ->inRandomOrder()
+            ->firstOrFail();
+        /** @var Collection|Product[] $products */
+        $products = $discount->products()
+            ->inRandomOrder()
+            ->whereNotNull("price")
+            ->limit($this->faker->numberBetween(1, 3))
+            ->get();
+
+        $sponsor = User::random();
+        $sponsor->affiliate_factor = 2;
+        $sponsor->save();
+
+        $this->autoMockScope("post", "/products/cart");
+        $this->json("post", "/products/cart", [
+            "cart" => $products->pluck("id"),
+            "discount_code" => $discount->code,
+            "sponsor_email" => $sponsor->email
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
     }
 }

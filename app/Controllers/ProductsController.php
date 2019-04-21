@@ -9,7 +9,9 @@ use App\Exceptions\InvalidSponsorException;
 use App\Exceptions\ProductAlreadyBoughtException;
 use App\Exceptions\ProductNotBuyableException;
 use App\Exceptions\SponsorNotFoundException;
+use App\Models\Discount;
 use App\Models\Product;
+use App\Models\User;
 use App\Services\Braintree\Exceptions\BraintreeGatewayException;
 use App\Services\Braintree\Exceptions\BraintreeProcessorException;
 use App\Services\Braintree\Exceptions\DuplicatePaymentMethodNonceException;
@@ -17,6 +19,7 @@ use App\Services\Braintree\Pipelines\CartPipeline;
 use App\Services\Braintree\Utils\AffiliateProcess;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\ValidationException;
 use Mathrix\Lumen\Responses\PaginationJsonResponse;
@@ -175,30 +178,97 @@ class ProductsController extends BaseController
 
 
     /**
-     * POST /products/sponsor
-     * Check sponsor email validity.
+     * GET /discounts/code/{discountCode}
+     * Check if a discount is valid.
      *
-     * @param Request $request The Illuminate HTTP request.
+     * @param Request $request
      *
      * @return JsonResponse
-     * @throws ValidationException
-     * @throws SponsorNotFoundException
+     * @throws DiscountExpiredException
+     * @throws DiscountNotApplicableException
      * @throws InvalidSponsorException
+     * @throws ProductAlreadyBoughtException
+     * @throws ProductNotBuyableException
+     * @throws SponsorNotFoundException
+     * @throws ValidationException
      */
-    public function sponsor(Request $request): JsonResponse
+    public function cart(Request $request)
     {
+        // We not ne check id existence here since we got specialized exceptions
         $this->validate($request, [
-            "sponsor_email" => "required"
+            "cart" => "required",
+            "cart.*" => "distinct|integer|exists:products,id",
+            "discount_code" => "nullable|exists:discounts,code",
+            "sponsor_email" => "nullable|string"
         ]);
 
-        $user = $request->user();
-        $sponsorEmail = $request->json("sponsor_email");
+        /** @var User $customer */
+        $customer = $request->user();
+        /** @var int[] $productIds */
+        $productIds = $request->json("cart");
+        /** @var Collection|Product[] $products */
+        $products = Product::query()->whereIn("id", $productIds)->get()->unique();
+        /** @var Discount|null $discount */
+        $discount = null;
 
-        $affiliateProcess = new AffiliateProcess($user, $sponsorEmail);
-        $affiliateProcess->canBeAffiliatedOrFail();
+        // Check discount code if any
+        if ($request->json("discount_code") !== null) {
+            $discount = Discount::query()
+                ->where("code", "=", $request->json("discount_code"))
+                ->firstOrFail();
 
-        return new JsonResponse([
-            "discount" => $affiliateProcess->getDiscountAmount()
-        ]);
+            if (!$discount->isApplicableBleOnAtLeastOneOf($products)) {
+                throw new DiscountNotApplicableException($discount);
+            } else if ($discount->isExpired()) {
+                throw new DiscountExpiredException($discount);
+            }
+        }
+
+        // Check products integrity
+        foreach ($products as $product) {
+            if ($customer->hasPurchased($product)) {
+                throw new ProductAlreadyBoughtException($customer, $product);
+            } else if ($product->price === null) {
+                throw  new ProductNotBuyableException($product);
+            }
+        }
+
+        $lines = $products->map(function (Product $product) use ($customer, $discount) {
+            return [
+                "name" => $product->name,
+                "price" => $product->price,
+                "price_after_discount" => $product->getNewPrice($discount)
+            ];
+        });
+
+        // Check sponsor email if any
+        if ($request->json("sponsor_email") !== null) {
+            $affiliateProcess = new AffiliateProcess($customer, $request->json("sponsor_email"));
+            $affiliateProcess->canBeAffiliatedOrFail();
+
+            $lines->push([
+                "name" => "Parrainage",
+                "price" => -AffiliateProcess::AFFILIATES_FACTOR,
+                "price_after_discount" => -AffiliateProcess::AFFILIATES_FACTOR
+            ]);
+        }
+
+        $subTotal = $lines->sum(function ($line) {
+            return $line["price"];
+        });
+
+        $total = $lines->sum(function ($line) {
+            return $line["price_after_discount"];
+        });
+
+        $cartPayload = [
+            "discount_code" => $request->json("discount_code"),
+            "sponsor_email" => $request->json("sponsor_email"),
+            "lines" => $lines,
+            "sub_total" => $subTotal,
+            "total" => $total
+        ];
+
+        return new JsonResponse($cartPayload);
     }
 }
