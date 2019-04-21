@@ -29,6 +29,13 @@ class DiscountsRegistrar extends BaseRegistrar
             "delete" => "admin"
         ]);
 
+        $this->group(["middleware" => "scope:admin"], function () use ($controller) {
+            $this->get("discounts/{discountId:[1-9]\d*}/products/{page:\d+}/{perPage:[1-9]\d*}",
+                "$controller@getProducts");
+            $this->patch("discounts/{discountId:[1-9]\d*}/products/{page:\d+}/{perPage:[1-9]\d*}",
+                "$controller@patchProducts");
+        });
+
         $this->get("discounts/code/{code:[a-zA-Z0-9\-]+}", [
             "uses" => "$controller@getByCode",
             "middleware" => "scope:registered"

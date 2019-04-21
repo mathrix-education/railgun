@@ -4,7 +4,10 @@ namespace App\Controllers;
 
 use App\Models\Discount;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Mathrix\Lumen\Bases\BaseController;
+use Mathrix\Lumen\Exceptions\ValidationException;
+use Mathrix\Lumen\Responses\PaginationJsonResponse;
 
 /**
  * Class DiscountsController.
@@ -30,5 +33,48 @@ class DiscountsController extends BaseController
             ->firstOrFail();
 
         return new JsonResponse($discount);
+    }
+
+
+    /**
+     * GET /discounts/{discountId}/products/{page}/{perPage}
+     *
+     * @param int $discountId The discount id.
+     * @param int $page The page.
+     * @param int $perPage The number of products per page.
+     *
+     * @return PaginationJsonResponse
+     */
+    public function getProducts(int $discountId, int $page, int $perPage): PaginationJsonResponse
+    {
+        /** @var Discount $discount */
+        $discount = Discount::query()->findOrFail($discountId);
+
+        return new PaginationJsonResponse($discount->products(), $page, $perPage);
+    }
+
+
+    /**
+     * PATCH /discount/{discountId}/products
+     *
+     * @param Request $request The Illuminate HTTP request.
+     * @param int $discountId The discount id.
+     * @param int $page The page.
+     * @param int $perPage The number of products per page.
+     *
+     * @return JsonResponse
+     * @throws ValidationException
+     */
+    public function patchProducts(Request $request, int $discountId, int $page, int $perPage): JsonResponse
+    {
+        $this->validate($request, [
+            "*" => "distinct|integer|exists:products,id"
+        ]);
+
+        /** @var Discount $discount */
+        $discount = Discount::query()->findOrFail($discountId);
+        $discount->products()->sync($request->all());
+
+        return new PaginationJsonResponse($discount->products(), $page, $perPage);
     }
 }
