@@ -41,6 +41,7 @@ class ProductObserver extends BaseObserver
     public function deleting($product)
     {
         $this->handleRelationDeletion($product, "children");
+        $product->items()->detach();
         $product->discounts()->detach();
 
         return true;

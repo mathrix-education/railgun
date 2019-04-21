@@ -40,6 +40,7 @@ class ProductsController extends BaseController
      */
     public function items(Request $request, int $packId)
     {
+        // TODO: Add validator
         /** @var Product $pack */
         $pack = Product::query()
             ->where("id", "=", $packId)
