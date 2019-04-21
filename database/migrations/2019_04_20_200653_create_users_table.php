@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
             $table->uuid("token")->nullable();
             $table->unsignedInteger("points")->default(0);
             $table->unsignedInteger("level")->default(1);
-            $table->unsignedInteger("daily")->default(0);
+            $table->unsignedInteger("daily")->default(10);
             $table->unsignedInteger("daily_achievements")->default(0);
             $table->boolean("premium_bypass")->default(0);
             $table->timestamp("premium_bypass_expires_at")->nullable();
