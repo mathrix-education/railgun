@@ -2,6 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Mails\PasswordForgottenMail;
+use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 use Mathrix\Lumen\Bases\BaseCommand;
 
 /**
@@ -18,5 +21,7 @@ class TestCommand extends BaseCommand
 
     public function handle()
     {
+        Mail::to(["mathieu@mathrix.fr"])
+            ->queue(new PasswordForgottenMail(User::random()));
     }
 }

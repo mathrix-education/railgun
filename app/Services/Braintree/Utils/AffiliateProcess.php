@@ -27,7 +27,7 @@ class AffiliateProcess
     /** @var int The maximum affiliates a user can have */
     public const AFFILIATES_MAX = 3;
     /** @var int The refunded amount in euros and the incrementing discount amount */
-    public const AFFILIATES_FACTOR = 5;
+    public const AFFILIATES_FACTOR = 10;
 
     /** @var User The user who is currently engaging a payment process */
     private $affiliate;
@@ -135,7 +135,7 @@ class AffiliateProcess
          * (15€) is greater the cheapest product (>30€). Therefore, no check is present.
          */
         /** @var BraintreeResponse $refundResult */
-        $refundResult = Transaction::refund($purchase->transaction_id, $this->sponsor->affiliate_factor * self::AFFILIATES_FACTOR);
+        $refundResult = Transaction::refund($purchase->transaction_id, self::AFFILIATES_FACTOR);
 
         if (!$refundResult->success) {
             BraintreeErrorHandler::report($refundResult);
