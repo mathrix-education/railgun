@@ -67,7 +67,7 @@ class RefundSponsorJob extends BaseJob
         $this->refundResult = BraintreeTransaction::refund($transaction->id, AffiliateProcess::AFFILIATE_DISCOUNT);
 
         if ($this->refundResult->success) {
-            $transaction->refund_amount += self::SPONSOR_REFUND;
+            $transaction->refunded_amount += self::SPONSOR_REFUND;
             $transaction->save();
         } else {
             Mail::queue(new TransactionRefundFailedMail(

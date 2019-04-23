@@ -14,8 +14,11 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @since 5.0.1-rc1
  *
  * @property string $id
- * @property string $amount
- * @property string $refund_amount
+ * @property string $type
+ * @property string|null $plan_id
+ * @property float $amount
+ * @property float $refunded_amount
+ * @property string|null $refunded_transaction_id
  * @property string $customer_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
