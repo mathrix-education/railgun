@@ -37,6 +37,10 @@ properties:
   visible:
     description: The product visibility.
     type: boolean
+  buyable:
+    description: If the product can be bought.
+    type: boolean
+    default: false
   order:
     description: The product order (only used to sort non-child product).
     type: integer

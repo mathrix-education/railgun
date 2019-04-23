@@ -27,6 +27,7 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @property string|null $description
  * @property float|null $price
  * @property bool $visible
+ * @property bool $buyable
  * @property int|null $order
  * @property int|null $parent_id
  * @property int|null $module_id
@@ -55,6 +56,7 @@ class Product extends BaseModel
         "description",
         "price",
         "visible",
+        "buyable",
         "order",
         "parent_id",
         "module_id"
@@ -72,7 +74,8 @@ class Product extends BaseModel
     ];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
-        "visible" => "boolean"
+        "visible" => "boolean",
+        "buyable" => "boolean"
     ];
     protected $appends = ["owned"];
 

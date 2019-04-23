@@ -109,7 +109,7 @@ class ProductsController extends BaseController
     public function buyable(string $type, int $page, int $perPage): PaginationJsonResponse
     {
         $query = Product::with("children")
-            ->whereNotNull("price");
+            ->where("buyable", "=", true);
 
         if ($type !== "all") {
             $query = $query->where("type", "=", $type)
