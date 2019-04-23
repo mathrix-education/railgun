@@ -323,6 +323,17 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
 
     /**
+     * HasMany Records.
+     *
+     * @return HasMany
+     */
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class, "customer_id", "braintree_id");
+    }
+
+
+    /**
      * HasMany Vote.
      *
      * @return HasMany

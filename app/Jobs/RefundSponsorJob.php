@@ -3,12 +3,14 @@
 namespace App\Jobs;
 
 use App\Mails\TransactionRefundFailedMail;
-use App\Models\Purchase;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Services\Braintree\BraintreeResponse;
 use App\Services\Braintree\Utils\AffiliateProcess;
-use Braintree\Transaction;
+use Braintree\Transaction as BraintreeTransaction;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Queue;
 
 /**
  * Class RefundSponsorJob.
@@ -45,28 +47,33 @@ class RefundSponsorJob extends BaseJob
 
     public function handle()
     {
-        /** @var Purchase $purchase */
-        $purchase = $this->sponsor->purchases()
+        /** @var Transaction $transaction */
+        $transaction = $this->sponsor->transactions()
+            ->whereRaw("amount > refunded_amount + " . self::SPONSOR_REFUND)
             ->orderByDesc("created_at")
             ->firstOrFail();
 
-        if ($purchase->transaction_id === null) {
+        $braintreeTransaction = BraintreeTransaction::find($transaction->id);
+
+        if (in_array($braintreeTransaction->status, [BraintreeTransaction::AUTHORIZING, BraintreeTransaction::AUTHORIZED,
+            BraintreeTransaction::SUBMITTED_FOR_SETTLEMENT])) {
+            // Re-schedule jop
+            Queue::later(Carbon::now()->addHour(), new self($this->affiliate, $this->sponsor));
+
             return;
         }
 
-        /**
-         * For now, we do not have to check if the transaction has been totally refunded since or maximum total refund
-         * (15€) is greater the cheapest product (>30€). Therefore, no check is present.
-         *
-         * @var BraintreeResponse $refundResult
-         */
-        $this->refundResult = Transaction::refund($purchase->transaction_id, AffiliateProcess::AFFILIATE_DISCOUNT);
+        /** @var BraintreeResponse $refundResult */
+        $this->refundResult = BraintreeTransaction::refund($transaction->id, AffiliateProcess::AFFILIATE_DISCOUNT);
 
-        if (!$this->refundResult->success) {
+        if ($this->refundResult->success) {
+            $transaction->refund_amount += self::SPONSOR_REFUND;
+            $transaction->save();
+        } else {
             Mail::queue(new TransactionRefundFailedMail(
                 $this->affiliate,
                 $this->sponsor,
-                $purchase->transaction_id
+                $transaction->id
             ));
             // BraintreeErrorHandler::report($refundResult);
         }
