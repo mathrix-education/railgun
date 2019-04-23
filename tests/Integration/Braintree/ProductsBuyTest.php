@@ -2,6 +2,7 @@
 
 namespace Tests\Integration\Braintree;
 
+use App\Jobs\RefundSponsorJob;
 use App\Models\Discount;
 use App\Models\Product;
 use App\Models\Purchase;
@@ -14,7 +15,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Notification;
-use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Illuminate\Support\Facades\Queue;
 
 /**
  * Class ProductsBuyTest.
@@ -95,6 +96,7 @@ class ProductsBuyTest extends BraintreeTestCase
             ->where("user_id", "=", $customer->id)
             ->where("product_id", "=", $productIds->first())
             ->firstOrFail();
+
         return [$customer, $purchase->transaction_id];
     }
 
@@ -106,22 +108,23 @@ class ProductsBuyTest extends BraintreeTestCase
      *
      * @param array $payload
      *
+     * @return array
      * @throws Exception
      */
     public function testProductsBuyAffiliated(array $payload)
     {
+        Queue::fake();
+        Notification::fake();
+
         /**
          * @var User $sponsor
          * @var string $transactionId
          */
         [$sponsor, $transactionId] = $payload;
-        Notification::fake();
-        TransactionTest::settle($transactionId); // Settle previous transaction immediately
-        $sponsor->affiliate_factor = 2;
+        TransactionTest::settle($transactionId); // Settle previous transaction immediately otherwise we cannot refund
         $sponsor->save();
 
         $customer = $this->getPristineCustomer();
-        $customer->affiliate_factor = 0; // Check that user is a brand new customer with no existing affiliation
         $customer->save();
 
         $products = Product::query()
@@ -151,9 +154,25 @@ class ProductsBuyTest extends BraintreeTestCase
 
         $sponsor->refresh();
         $customer->refresh();
-        $this->assertEquals(3, $sponsor->affiliate_factor);
-        $this->assertEquals(2, $customer->affiliate_factor);
         Notification::assertSentTo($customer, TransactionSuccessNotification::class);
+        Queue::assertPushed(RefundSponsorJob::class);
+
+        return [$customer, $sponsor];
+    }
+
+
+    /**
+     * @depends testProductsBuyAffiliated
+     * Test the refund job.
+     *
+     * @param array $payload
+     */
+    public function testSponsorRefundJob(array $payload)
+    {
+        [$affiliate, $sponsor] = $payload;
+        $refundJob = new RefundSponsorJob($affiliate, $sponsor);
+        $refundJob->handle();
+        $this->assertTrue($refundJob->refundResult->success);
     }
 
 

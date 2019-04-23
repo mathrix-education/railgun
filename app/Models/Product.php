@@ -62,11 +62,11 @@ class Product extends BaseModel
         "module_id"
     ];
     protected $rules = [
-        "name" => "required|max:255",
-        "slug" => "required|max:255",
-        "image" => "nullable|max:255",
+        "name" => "required|max:35",
+        "slug" => "required|max:35",
+        "image" => "nullable",
         "type" => "nullable",
-        "description" => "nullable|max:255",
+        "description" => "nullable|max:127",
         "price" => "nullable|numeric",
         "visible" => "required|boolean",
         "order" => "required|integer",

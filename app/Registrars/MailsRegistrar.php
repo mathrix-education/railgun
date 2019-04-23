@@ -53,7 +53,7 @@ class MailsRegistrar extends BaseRegistrar
             self::getMails()->map(function($mailableClass, string $uri) {
                 /** @var BaseMail|string $mailableClass */
                 $this->get($uri, function () use ($mailableClass) {
-                    $mailableClass::mock();
+                    return $mailableClass::mock();
                 });
             });
 

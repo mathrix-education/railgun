@@ -101,18 +101,6 @@ properties:
       date. This field is used by the "pack" functionality.
     type: string
     format: date-time
-  affiliate_factor:
-    description: >
-      The factor for the potential discount in case of this user sponsors
-      another customer. For example, if `affiliate_factor` is `2` is means that
-      the discount for the affiliated user will be 2*5 = 10€. If this value is
-      equal to 0, it means that the user has never purchased a product on our
-      website. The maximum value is 4 because a user can have a maximum of 3
-      affiliated users.
-    type: integer
-    minimum: 0
-    maximum: 4
-    example: 2
   grade_id:
     description: The class id which belongs to the user.
     type: integer

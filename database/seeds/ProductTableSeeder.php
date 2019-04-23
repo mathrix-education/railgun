@@ -84,6 +84,7 @@ class ProductTableSeeder extends BaseTableSeeder
             "price" => null,
             "visible" => true,
             "order" => 0,
+            "buyable" => 1,
             "parent_id" => null,
             "module_id" => null,
             "created_at" => Carbon::now(),

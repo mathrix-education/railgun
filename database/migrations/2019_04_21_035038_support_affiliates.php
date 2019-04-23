@@ -13,9 +13,6 @@ class SupportAffiliates extends Migration
      */
     public function up()
     {
-        Schema::table("users", function (Blueprint $table) {
-            $table->tinyInteger("affiliate_factor")->default(0)->after("premium_bypass_expires_at");
-        });
         Schema::table("purchases", function (Blueprint $table) {
             $table->string("transaction_id")->nullable()->after("id");
         });
@@ -30,9 +27,6 @@ class SupportAffiliates extends Migration
     {
         Schema::table("purchases", function (Blueprint $table) {
             $table->dropColumn("transaction_id");
-        });
-        Schema::table("users", function (Blueprint $table) {
-            $table->dropColumn("affiliate_factor");
         });
     }
 }

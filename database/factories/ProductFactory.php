@@ -16,7 +16,7 @@ use Illuminate\Support\Str;
  * @var Factory $factory
  */
 $factory->define(Product::class, function (Generator $faker) {
-    $name = mb_substr($faker->sentence($faker->numberBetween(1, 3)), 0, -1);
+    $name = mb_substr($faker->sentence($faker->numberBetween(1, 2)), 0, -1);
     [$createdAt, $updatedAt] = timestamps();
 
     return [

@@ -12,6 +12,7 @@ use App\Exceptions\ProductNotBuyableException;
 use App\Exceptions\SponsorNotFoundException;
 use App\Models\Discount;
 use App\Models\Product;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Services\Braintree\BraintreeResponse;
 use App\Services\Braintree\Exceptions\BraintreeErrorHandler;
@@ -19,14 +20,13 @@ use App\Services\Braintree\Exceptions\BraintreeGatewayException;
 use App\Services\Braintree\Exceptions\BraintreeProcessorException;
 use App\Services\Braintree\Exceptions\DuplicatePaymentMethodNonceException;
 use App\Services\Braintree\Utils\AffiliateProcess;
-use Braintree\Transaction;
+use Braintree\Transaction as BraintreeTransaction;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator as ValidatorFacade;
-use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Exceptions\ValidationException;
 
 /**
@@ -276,7 +276,7 @@ class CartPipeline
         $this->customer->requireBraintreeCustomer();
 
         // Process the cart in a Braintree transaction
-        $this->saleResult = Transaction::sale($this->getTransactionPayload());
+        $this->saleResult = BraintreeTransaction::sale($this->getTransactionPayload());
 
         if (!$this->saleResult->success) {
             $this->customer->record("braintree", "sale", "error", $this->saleResult->jsonSerialize());
@@ -298,9 +298,9 @@ class CartPipeline
      * Deliver pack products.
      *
      * @param Product $pack
-     * @param Transaction $transaction
+     * @param BraintreeTransaction $transaction
      */
-    private function deliverPackProducts(Product $pack, Transaction $transaction)
+    private function deliverPackProducts(Product $pack, BraintreeTransaction $transaction)
     {
         $pack->items->each(function (Product $item) use ($transaction) {
             if ($item->type === "premium") {
@@ -319,13 +319,11 @@ class CartPipeline
      * - Unlock the products for the user
      * - Decrement the discount counter if needed
      * - Emit the TransactionSuccessEvent
-     *
-     * @throws BraintreeGatewayException
-     * @throws BraintreeProcessorException
-     * @throws DuplicatePaymentMethodNonceException
      */
     private function finalize()
     {
+        Transaction::createFromBraintreeTransaction($this->saleResult->transaction);
+
         // Insert new purchase records
         $this->products->each(function (Product $product) {
             // Handle packs items dispatching
@@ -345,16 +343,6 @@ class CartPipeline
         // Refund sponsor if necessary
         if ($this->affiliateProcess !== null && $this->affiliateProcess->canBeAffiliated()) {
             $this->affiliateProcess->refundSponsor();
-
-            // If the user is a brand new customer and was affiliated, we set his factor directly to 2
-            if ($this->customer->affiliate_factor === 0) {
-                $this->customer->affiliate_factor = 2;
-            }
-        } else {
-            // The customer become a potential sponsor
-            if ($this->customer->affiliate_factor === 0) {
-                $this->customer->affiliate_factor = 1;
-            }
         }
 
         $this->customer->save();

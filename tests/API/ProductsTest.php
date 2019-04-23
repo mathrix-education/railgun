@@ -4,6 +4,7 @@ namespace Tests\API;
 
 use App\Models\Discount;
 use App\Models\Product;
+use App\Models\Purchase;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
@@ -140,8 +141,12 @@ class ProductsTest extends APITestCase
             ->get();
 
         $sponsor = User::random();
-        $sponsor->affiliate_factor = 2;
-        $sponsor->save();
+        $purchase = new Purchase([
+            "transaction_id" => "fake-transaction-id",
+            "user_id" => $sponsor->id,
+            "product_id" => Product::random(["buyable", "=", true])->id
+        ]);
+        $purchase->save();
 
         $this->autoMockScope("post", "/products/cart");
         $this->json("post", "/products/cart", [

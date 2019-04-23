@@ -46,7 +46,6 @@ use Mathrix\Lumen\Exceptions\ValidationException;
  * @property array $settings
  * @property bool $premium_bypass
  * @property Carbon $premium_bypass_expires_at
- * @property int $affiliate_factor
  * @property int|null $grade_id
  * @property string|null $braintree_id
  * @property string|null $stripe_id

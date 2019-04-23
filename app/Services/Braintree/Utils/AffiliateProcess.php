@@ -4,14 +4,11 @@ namespace App\Services\Braintree\Utils;
 
 use App\Exceptions\InvalidSponsorException;
 use App\Exceptions\SponsorNotFoundException;
-use App\Models\Purchase;
+use App\Jobs\RefundSponsorJob;
 use App\Models\User;
-use App\Services\Braintree\BraintreeResponse;
-use App\Services\Braintree\Exceptions\BraintreeErrorHandler;
-use App\Services\Braintree\Exceptions\BraintreeGatewayException;
-use App\Services\Braintree\Exceptions\BraintreeProcessorException;
-use App\Services\Braintree\Exceptions\DuplicatePaymentMethodNonceException;
 use Braintree\Transaction;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Queue;
 
 /**
  * Class Affiliates.
@@ -24,10 +21,8 @@ use Braintree\Transaction;
  */
 class AffiliateProcess
 {
-    /** @var int The maximum affiliates a user can have */
-    public const AFFILIATES_MAX = 3;
-    /** @var int The refunded amount in euros and the incrementing discount amount */
-    public const AFFILIATES_FACTOR = 10;
+    /** @var int The discount amount */
+    public const AFFILIATE_DISCOUNT = 10;
 
     /** @var User The user who is currently engaging a payment process */
     private $affiliate;
@@ -63,10 +58,16 @@ class AffiliateProcess
      */
     public function canBeAffiliated(): bool
     {
-        $validFactor = 1 <= $this->sponsor->affiliate_factor && $this->sponsor->affiliate_factor <= self::AFFILIATES_MAX;
+        $validSponsor = $this->sponsor->purchases()
+            ->whereBetween("created_at", [
+                Carbon::createFromDate(2019, 1, 1),
+                Carbon::now()
+            ])
+            ->get()
+            ->isNotEmpty();
         $notHimself = $this->sponsor->email !== $this->affiliate->email;
 
-        return $notHimself && $validFactor;
+        return $notHimself && $validSponsor;
     }
 
 
@@ -93,7 +94,7 @@ class AffiliateProcess
      */
     public function getDiscountAmount(): int
     {
-        return self::AFFILIATES_FACTOR;
+        return self::AFFILIATE_DISCOUNT;
     }
 
 
@@ -118,33 +119,9 @@ class AffiliateProcess
 
     /**
      * Refund the sponsor after the transaction process.
-     *
-     * @throws BraintreeGatewayException
-     * @throws BraintreeProcessorException
-     * @throws DuplicatePaymentMethodNonceException
      */
-    public function refundSponsor(): Transaction
+    public function refundSponsor()
     {
-        /** @var Purchase $purchase */
-        $purchase = $this->sponsor->purchases()
-            ->orderByDesc("created_at")
-            ->firstOrFail();
-
-        /**
-         * For now, we do not have to check if the transaction has been totally refunded since or maximum total refund
-         * (15€) is greater the cheapest product (>30€). Therefore, no check is present.
-         */
-        /** @var BraintreeResponse $refundResult */
-        $refundResult = Transaction::refund($purchase->transaction_id, self::AFFILIATES_FACTOR);
-
-        if (!$refundResult->success) {
-            BraintreeErrorHandler::report($refundResult);
-        }
-
-        // Increment sponsor affiliate_factor
-        $this->sponsor->affiliate_factor++;
-        $this->sponsor->save();
-
-        return $refundResult->transaction;
+        Queue::later(Carbon::now()->addHours(3), new RefundSponsorJob($this->affiliate, $this->sponsor));
     }
 }

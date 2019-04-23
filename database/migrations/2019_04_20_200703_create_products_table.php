@@ -19,7 +19,7 @@ class CreateProductsTable extends Migration
             $table->string("slug");
             $table->string("image")->nullable();
             $table->string("type");
-            $table->text("description");
+            $table->text("description")->nullable();
             $table->float("price")->nullable();
             $table->boolean("visible");
             $table->unsignedSmallInteger("order");

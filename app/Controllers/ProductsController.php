@@ -252,8 +252,8 @@ class ProductsController extends BaseController
             $lines->push([
                 "name" => "Parrainage",
                 "description" => "Email du parrain: {$sponsorEmail}",
-                "price" => -AffiliateProcess::AFFILIATES_FACTOR,
-                "price_after_discount" => -AffiliateProcess::AFFILIATES_FACTOR
+                "price" => -AffiliateProcess::AFFILIATE_DISCOUNT,
+                "price_after_discount" => -AffiliateProcess::AFFILIATE_DISCOUNT
             ]);
         }
 
