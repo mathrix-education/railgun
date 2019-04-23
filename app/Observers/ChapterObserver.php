@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Chapter;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 
@@ -32,6 +33,23 @@ class ChapterObserver extends BaseObserver
 
 
     /**
+     * After save, purge chapter-related cache.
+     *
+     * @param Chapter $chapter
+     */
+    public function saved(Chapter $chapter)
+    {
+        // Purge cache
+        DB::table("cache")
+            ->where("key", "LIKE", "chapters.grade.{$chapter->grade_id}.discipline.{$chapter->discipline_id}.%")
+            ->delete();
+        DB::table("cache")
+            ->where("key", "LIKE", "user.%.chapter.{$chapter->id}.recursive")
+            ->delete();
+    }
+
+
+    /**
      * @param Chapter $chapter
      *
      * @return bool
@@ -42,5 +60,19 @@ class ChapterObserver extends BaseObserver
         $this->handleRelationDeletion($chapter, "notions");
 
         return true;
+    }
+
+
+    /**
+     * After deletion, purge chapter-related cache.
+     *
+     * @param Chapter $chapter
+     */
+    public function deleted(Chapter $chapter)
+    {
+        // Purge cache
+        DB::table("cache")
+            ->where("key", "LIKE", "chapters.grade.{$chapter->grade_id}.discipline.{$chapter->discipline_id}.%")
+            ->delete();
     }
 }

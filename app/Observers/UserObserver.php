@@ -6,8 +6,10 @@ use App\Models\Level;
 use App\Models\Log;
 use App\Models\User;
 use Carbon\Carbon;
+use Exception;
 use Faker\Factory;
 use Illuminate\Support\Facades\Hash;
+use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 
 /**
  * Class UserObserver.
@@ -22,8 +24,7 @@ class UserObserver extends BaseObserver
      * @param User $user
      *
      * @return bool
-     * @throws \Mathrix\Lumen\Exceptions\Http\Http400BadRequestException
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
+     * @throws Http400BadRequestException
      */
     public function saving($user)
     {
@@ -32,7 +33,7 @@ class UserObserver extends BaseObserver
             $user->password = Hash::make($user->password);
         }
 
-        if ($user->isDirty("points")) {
+        if ($user->isDirty("points") && $user->exists) {
             /** @var int $pointsAdded the points added during the current request */
             $pointsAdded = $user->points - $user->getOriginal("points");
 
@@ -91,7 +92,7 @@ class UserObserver extends BaseObserver
     /**
      * @param User $user
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function created($user)
     {
@@ -102,8 +103,7 @@ class UserObserver extends BaseObserver
     /**
      * @param User $user
      *
-     * @throws \Mathrix\Lumen\Exceptions\Http\Http400BadRequestException
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
+     * @throws Http400BadRequestException
      */
     public function updated($user)
     {

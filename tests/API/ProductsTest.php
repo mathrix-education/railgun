@@ -2,7 +2,12 @@
 
 namespace Tests\API;
 
+use App\Models\Discount;
 use App\Models\Product;
+use App\Models\Purchase;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
@@ -45,7 +50,6 @@ class ProductsTest extends APITestCase
     }
 
 
-
     /**
      * GET /products/{type}/{page}/{perPage}
      */
@@ -58,14 +62,99 @@ class ProductsTest extends APITestCase
         $this->assertOpenAPIResponse();
     }
 
+
     /**
-     * GET /products/buyable/{type}/{page}/{perPage}
+     * GET /products/buyable/{type=all}/{page}/{perPage}
+     * Get all buyable products.
      */
     public function testBuyable()
     {
         $this->json("get", "/products/buyable/all/0/100");
 
         // Assertions
+        $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
+    }
+
+
+    /**
+     * GET /products/buyable/{type=training}/{page}/{perPage}
+     * Get buyable trainings.
+     */
+    public function testBuyableTrainings()
+    {
+        $this->json("get", "/products/buyable/training/0/100");
+
+        // Assertions
+        $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
+    }
+
+
+    /**
+     * PATCH /products/{packId}/items
+     */
+    public function testItems()
+    {
+        $pack = Product::random(["type", "=", "pack"]);
+        $trainingIds = Product::query()
+            ->inRandomOrder()
+            ->where("type", "=", "training")
+            ->limit(5)
+            ->get(["id"])
+            ->pluck("id");
+
+        $this->mockScope("admin");
+
+        $this->json("patch", "/products/{$pack->id}/items", $trainingIds->toArray());
+
+        $this->assertResponseOk();
+        foreach ($trainingIds as $order => $trainingId) {
+            $this->assertInDatabase("product_product", [
+                "parent_id" => $pack->id,
+                "child_id" => $trainingId,
+                "order" => $order
+            ]);
+        }
+    }
+
+
+    /**
+     *
+     */
+    public function testCart(): void
+    {
+        /** @var Discount $discount */
+        $discount = Discount::query()
+            ->whereHas("products", function (Builder $query) {
+                $query->whereNotNull("price");
+            })
+            ->where("counter", ">", "0")
+            ->whereNull("expire_at")
+            ->inRandomOrder()
+            ->firstOrFail();
+        /** @var Collection|Product[] $products */
+        $products = $discount->products()
+            ->inRandomOrder()
+            ->whereNotNull("price")
+            ->limit($this->faker->numberBetween(1, 3))
+            ->get();
+
+        $sponsor = User::random();
+        $purchase = new Purchase([
+            "transaction_id" => "fake-transaction-id",
+            "user_id" => $sponsor->id,
+            "product_id" => Product::random(["buyable", "=", true])->id
+        ]);
+        $purchase->save();
+
+        $this->autoMockScope("post", "/products/cart");
+        $this->json("post", "/products/cart", [
+            "cart" => $products->pluck("id"),
+            "discount_code" => $discount->code,
+            "sponsor_email" => $sponsor->email
+        ]);
+
         $this->assertResponseOk();
         $this->assertOpenAPIResponse();
     }

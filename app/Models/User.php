@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Models\Traits\BraintreeCustomer;
 use App\Models\Traits\PermissionsTrait;
 use App\Models\Traits\StripeCustomer;
-use Braintree\Exception\NotFound as BraintreeNotFound;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -16,7 +15,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Laravel\Lumen\Auth\Authorizable;
@@ -25,6 +23,7 @@ use Laravel\Passport\HasApiTokens;
 use Laravel\Passport\Token;
 use Mathrix\Lumen\Bases\BaseModel;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Exceptions\ValidationException;
 
 /**
  * Class User.
@@ -46,6 +45,7 @@ use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
  * @property int $daily_achievements
  * @property array $settings
  * @property bool $premium_bypass
+ * @property Carbon $premium_bypass_expires_at
  * @property int|null $grade_id
  * @property string|null $braintree_id
  * @property string|null $stripe_id
@@ -99,10 +99,23 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     ];
 
     /** @var array The hidden attributes from the model"s JSON */
-    protected $hidden = ["password", "token", "premium_bypass", "stripe_id", "braintree_id", "stripe", "braintree"];
+    protected $hidden = [
+        "password",
+        "token",
+        "premium_bypass",
+        "premium_bypass_expires_at",
+        "stripe_id",
+        "braintree_id",
+        "stripe",
+        "braintree"
+    ];
 
     /** @var array The attributes that should be cast to native types */
-    protected $casts = ["settings" => "array"];
+    protected $casts = [
+        "settings" => "array",
+        "premium_bypass" => "boolean",
+        "premium_bypass_expires_at" => "date"
+    ];
 
     /** @var array The validation rules on create */
     protected $rules = [
@@ -115,6 +128,8 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "points" => "required|integer",
         "daily" => "nullable|in:10,20,40",
         "grade_id" => "nullable|exists:grades,id",
+        "premium_bypass" => "boolean",
+        "premium_bypass_expires_at" => "nullable|date",
     ];
 
     /** @var array The relations to include by default */
@@ -122,18 +137,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     /** @var array The virtual attributes */
     protected $appends = ["premium", "daily_points", "last_session"];
-
-
-    /**
-     * @return bool
-     */
-    public static function isPremium()
-    {
-        /** @var User $user */
-        $user = Auth::user();
-
-        return $user !== null && ($user->premium || $user->tokenCan("moderator"));
-    }
 
 
     /**
@@ -174,8 +177,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * @param array $payload The record payload.
      *
      * @return Record
-     * @throws Http400BadRequestException
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
+     * @throws ValidationException
      */
     public function record(string $service, string $event, string $status, array $payload)
     {
@@ -224,6 +226,17 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         }
 
         return $scopes;
+    }
+
+
+    /**
+     * Get users scopes as an array.
+     *
+     * @return array
+     */
+    public function getPassportScopesArray(): array
+    {
+        return explode(" ", $this->getPassportScopes());
     }
 
 
@@ -310,6 +323,17 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
 
     /**
+     * HasMany Records.
+     *
+     * @return HasMany
+     */
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class, "customer_id", "braintree_id");
+    }
+
+
+    /**
      * HasMany Vote.
      *
      * @return HasMany
@@ -359,11 +383,11 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      *
      * @return bool
      * @throws Http400BadRequestException
-     * @throws BraintreeNotFound
      */
     public function getPremiumAttribute()
     {
         return $this->premium_bypass
+            || ($this->premium_bypass_expires_at !== null && $this->premium_bypass_expires_at->isFuture())
             || $this->hasBraintreeSubscription(self::BRAINTREE_PLANS)
             || $this->hasStripeSubscription(self::STRIPE_PLANS);
     }

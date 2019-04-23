@@ -5,7 +5,6 @@ namespace App\Controllers;
 use App\Services\Braintree\Models\Plan;
 use Illuminate\Http\JsonResponse;
 use Mathrix\Lumen\Bases\BaseController;
-use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 
 /**
  * Class PlansController.

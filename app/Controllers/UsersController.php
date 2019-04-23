@@ -3,11 +3,9 @@
 namespace App\Controllers;
 
 use App\Controllers\Traits\SearchTrait;
-use App\Models\Activity;
 use App\Models\Log;
 use App\Models\Module;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -151,28 +149,19 @@ class UsersController extends BaseController
         // Check permission
         $user->canOrFail("points", $user);
 
-        $loggableType = $request->input("loggable_type");
-        $loggableId = $request->input("loggable_id");
-        $useLoggable = $loggableType !== null && $loggableId !== null;
+        $useLoggable = $request->has(["loggable_type", "loggable_id"]);
+        $loggableType = $request->json("loggable_type");
+        $loggableId = $request->json("loggable_id");
 
         // Valid loggable data were passed
         if ($useLoggable) {
-            /** @var Activity|Module $loggableModelClass */
-            $loggableModelClass = Relation::getMorphedModel($loggableType); // Retrieve morphed loggable model class
+            $this->validate($request, [
+                "loggable_id" => "required",
+                "loggable_type" => "required|in:module"
+            ]);
 
-            // If null, abort
-            if ($loggableModelClass === null) {
-                throw new Http400BadRequestException(
-                    array_merge(
-                        $request->only(["loggable_type", "loggable_id"]), [
-                            "model" => $loggableModelClass
-                        ]
-                    ), "Invalid loggable model");
-            }
-
-            // Else, try to find the loggable model
-            /** @var Activity|Module $loggable */
-            $loggable = $loggableModelClass::query()->findOrFail($loggableId);
+            /** @var Module $loggable */
+            $loggable = Module::query()->findOrFail($loggableId);
 
             $userHasAlreadyGatheredPointsWithThisModule = Log::query()
                 ->where([
@@ -201,7 +190,6 @@ class UsersController extends BaseController
 
         // Update the user points count
         $user->update(["points" => $user->points + $pointsToAdd]);
-        $user->append(["premium", "braintree", "stripe"]);
 
         // Log the points update
         $logData = ["points" => $pointsToAdd];

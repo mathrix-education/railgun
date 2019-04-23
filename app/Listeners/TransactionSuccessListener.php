@@ -19,6 +19,8 @@ use Mathrix\Lumen\Bases\BaseListener;
 class TransactionSuccessListener extends BaseListener
 {
     /**
+     * Handle TransactionSuccessEvent.
+     *
      * @param TransactionSuccessEvent $event
      */
     public function handle(TransactionSuccessEvent $event)

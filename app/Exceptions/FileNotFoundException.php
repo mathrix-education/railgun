@@ -17,8 +17,8 @@ class FileNotFoundException extends Http404NotFoundException
     protected const ERROR = "file_not_found";
 
 
-    public function __construct(string $file, ?Throwable $previous = null)
+    public function __construct(string $file, Throwable $previous = null)
     {
-        parent::__construct(["file" => $file], "Unable to find file $file", $previous);
+        parent::__construct(["file" => $file], "Unable to find file `$file`", $previous);
     }
 }

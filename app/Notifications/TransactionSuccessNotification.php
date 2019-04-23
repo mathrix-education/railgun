@@ -42,7 +42,6 @@ class TransactionSuccessNotification extends MailNotification
      * Get the mail representation of the notification.
      *
      * @return TransactionSuccessMail
-     * @throws \Exception
      */
     public function toMail()
     {

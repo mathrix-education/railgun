@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\DB;
 use Laravel\Passport\Passport;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
-use Mathrix\Lumen\Tests\REST\Standard\StandardPostTest;
 use Tests\APITestCase;
 
 /**

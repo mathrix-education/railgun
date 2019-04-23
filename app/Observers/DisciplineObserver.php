@@ -2,8 +2,8 @@
 
 namespace App\Observers;
 
+use App\Exceptions\ForeignConstraintsException;
 use App\Models\Discipline;
-use App\Models\Grade;
 use Illuminate\Support\Str;
 
 /**
@@ -28,28 +28,6 @@ class DisciplineObserver extends BaseObserver
             $discipline->slug = Str::slug($discipline->name);
         }
 
-        // Sync classes
-        if (!empty($discipline->link["classes"])) {
-            $toSync = [];
-
-            foreach ($discipline->link["classes"] as $order => $classData) {
-                [$id, $visible] = [$classData["id"], $classData["visible"]];
-
-                if (Grade::query()->where("id", "=", $id)->exists()) {
-                    $toSync[$id] = [
-                        "order" => $order,
-                        "visible" => $visible
-                    ];
-                }
-            }
-
-            $discipline->grades()->sync($toSync);
-        }
-
-        if (isset($discipline->link) || !empty($discipline->link)) {
-            unset($discipline->link);
-        }
-
         return true;
     }
 
@@ -57,7 +35,7 @@ class DisciplineObserver extends BaseObserver
     /**
      * @param Discipline $discipline
      *
-     * @throws \App\Exceptions\ForeignConstraintsException
+     * @throws ForeignConstraintsException
      */
     public function deleting(Discipline $discipline)
     {

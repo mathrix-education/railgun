@@ -65,6 +65,8 @@ class CompileMails extends BaseCommand
             $bladeContent = str_replace("&#36;", "\$", $bladeContent);
 
             return file_put_contents($bladeFile, $bladeContent);
+        } else {
+            return 0;
         }
     }
 }

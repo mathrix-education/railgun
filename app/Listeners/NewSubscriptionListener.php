@@ -5,7 +5,6 @@ namespace App\Listeners;
 use App\Events\NewSubscriptionEvent;
 use App\Notifications\NewSubscriptionNotification;
 use App\Notifications\TransactionSuccessNotification;
-use Illuminate\Support\Facades\Notification;
 use Mathrix\Lumen\Bases\BaseListener;
 
 /**
@@ -18,12 +17,13 @@ use Mathrix\Lumen\Bases\BaseListener;
 class NewSubscriptionListener extends BaseListener
 {
     /**
+     * Handle NewSubscriptionEvent
+     *
      * @param NewSubscriptionEvent $event
      */
     public function handle(NewSubscriptionEvent $event)
     {
-        Notification::route("slack", env("SLACK_WEBHOOK_PREMIUM"))
-            ->notify(new NewSubscriptionNotification($event->user, $event->subscription));
+        $event->user->notify(new NewSubscriptionNotification($event->user, $event->subscription));
 
         // Send mail to user
         if ($event->initialTransaction === null && !empty($event->subscription->transactions)) {
@@ -37,8 +37,5 @@ class NewSubscriptionListener extends BaseListener
                 $event->initialTransaction
             ));
         }
-
-        // Send to Google Analytics
-
     }
 }

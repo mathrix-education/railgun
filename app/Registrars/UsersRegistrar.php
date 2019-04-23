@@ -30,10 +30,11 @@ class UsersRegistrar extends BaseRegistrar
         ]);
 
         $this->group(["middleware" => "scope:registered"], function () use ($controller) {
-            $this->post("users/{id:[1-9]\d*}/points", "$controller@points");
-            $this->patch("users/{id:[1-9]\d*}/payment-method", "$controller@updatePaymentMethod");
+            $this->post("users/{userId:[1-9]\d*}/points", "$controller@points");
         });
 
-        $this->post("users/search[/{page:\d+}/{perPage:[1-9]\d*}]", "$controller@search");
+        $this->group(["middleware" => "scope:admin"], function () use ($controller) {
+            $this->post("users/search[/{page:\d+}/{perPage:[1-9]\d*}]", "$controller@search");
+        });
     }
 }

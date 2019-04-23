@@ -2,9 +2,9 @@
 
 namespace Tests\Integration\Braintree;
 
-use App\Services\Braintree\Models\Subscription;
 use App\Services\Braintree\Utils\SubscriptionUtils;
 use Braintree\PaymentMethod;
+use Braintree\Subscription;
 use Braintree\Transaction;
 use Braintree\TransactionSearch;
 use Illuminate\Support\Facades\Notification;

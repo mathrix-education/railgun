@@ -3,7 +3,10 @@
 namespace App\Models\Traits;
 
 use Illuminate\Support\Facades\Cache;
+use function is_string;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Stripe\Customer;
+use Stripe\Error\InvalidRequest;
 use Stripe\Subscription;
 
 /**
@@ -14,16 +17,16 @@ use Stripe\Subscription;
  * @copyright Mathrix Education SA.
  * @since 4.1.0
  *
- * @property \Stripe\Customer $stripe
+ * @property Customer $stripe
  */
 trait StripeCustomer
 {
     /**
      * stripe attribute.
      *
-     * @return \Stripe\Customer|null
+     * @return Customer|null
      */
-    public function getStripeAttribute(): ?\Stripe\Customer
+    public function getStripeAttribute(): ?Customer
     {
         return $this->isStripeCustomer() ? $this->getStripeCustomer() : null;
     }
@@ -53,18 +56,18 @@ trait StripeCustomer
 
 
     /**
-     * @return \Stripe\Customer
+     * @return Customer
      */
-    public function getStripeCustomer(): ?\Stripe\Customer
+    public function getStripeCustomer(): ?Customer
     {
         if (app()->environment() === "offline") {
-            return new \Stripe\Customer();
+            return new Customer();
         }
 
         return Cache::remember($this->getStripeCustomerCacheKey(), 5, function () {
             try {
-                return \Stripe\Customer::retrieve($this->stripe_id);
-            } catch (\Stripe\Error\InvalidRequest $e) {
+                return Customer::retrieve($this->stripe_id);
+            } catch (InvalidRequest $e) {
                 $this->stripe_id = null;
                 $this->save();
                 return null;
@@ -108,7 +111,7 @@ trait StripeCustomer
             return $this->stripe_id === null;
         }
 
-        if (\is_string($plans)) {
+        if (is_string($plans)) {
             $plans = [$plans];
         }
 

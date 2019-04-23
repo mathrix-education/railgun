@@ -2,11 +2,16 @@
 
 namespace App\Controllers;
 
+use App\Exceptions\DiscountExpiredException;
+use App\Exceptions\DiscountNotApplicableException;
 use App\Models\Discount;
+use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\ValidationException;
+use Mathrix\Lumen\Responses\PaginationJsonResponse;
 
 /**
  * Class DiscountsController.
@@ -18,19 +23,44 @@ use Mathrix\Lumen\Exceptions\ValidationException;
 class DiscountsController extends BaseController
 {
     /**
-     * GET /discounts/code/{discountCode}
-     * Check if a discount is valid.
+     * GET /discounts/{discountId}/products/{page}/{perPage}
      *
-     * @param string $code The discount code.
+     * @param int $discountId The discount id.
+     * @param int $page The page.
+     * @param int $perPage The number of products per page.
+     *
+     * @return PaginationJsonResponse
+     */
+    public function getProducts(int $discountId, int $page, int $perPage): PaginationJsonResponse
+    {
+        /** @var Discount $discount */
+        $discount = Discount::query()->findOrFail($discountId);
+
+        return new PaginationJsonResponse($discount->products(), $page, $perPage);
+    }
+
+
+    /**
+     * PATCH /discount/{discountId}/products
+     *
+     * @param Request $request The Illuminate HTTP request.
+     * @param int $discountId The discount id.
+     * @param int $page The page.
+     * @param int $perPage The number of products per page.
      *
      * @return JsonResponse
+     * @throws ValidationException
      */
-    public function getByCode(string $code)
+    public function patchProducts(Request $request, int $discountId, int $page, int $perPage): JsonResponse
     {
-        $discount = Discount::query()
-            ->where("code", "=", $code)
-            ->firstOrFail();
+        $this->validate($request, [
+            "*" => "distinct|integer|exists:products,id"
+        ]);
 
-        return new JsonResponse($discount);
+        /** @var Discount $discount */
+        $discount = Discount::query()->findOrFail($discountId);
+        $discount->products()->sync($request->all());
+
+        return new PaginationJsonResponse($discount->products(), $page, $perPage);
     }
 }

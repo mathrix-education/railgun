@@ -3,11 +3,10 @@
 namespace App\Services\Braintree\Pipelines;
 
 use App\Events\NewSubscriptionEvent;
-use App\Events\TransactionSuccessEvent;
 use App\Exceptions\UserAlreadyPremiumException;
 use App\Models\User;
+use App\Services\Braintree\BraintreeResponse;
 use App\Services\Braintree\Exceptions\BraintreeErrorHandler;
-use App\Services\Braintree\Exceptions\BraintreeGatewayException;
 use App\Services\Braintree\Exceptions\BraintreeProcessorException;
 use App\Services\Braintree\Models\Plan;
 use App\Services\Braintree\Utils\Formatter;
@@ -16,7 +15,6 @@ use Braintree\CreditCard;
 use Braintree\PaymentMethod;
 use Braintree\PayPalAccount;
 use Braintree\Result\Error;
-use Braintree\Result\Successful;
 use Braintree\Subscription;
 use Braintree\Transaction;
 use Carbon\Carbon;
@@ -49,7 +47,6 @@ class SubscriptionPipeline
      * transaction for the trial period.
      */
     private $hasTrialPeriod;
-
     /** @var JsonResponse The response. */
     private $response;
     /** @var User $user */
@@ -148,7 +145,7 @@ class SubscriptionPipeline
 
         // Check if user is already premium
         if ($this->user->premium) {
-            throw new UserAlreadyPremiumException();
+            throw new UserAlreadyPremiumException($this->user);
         }
     }
 
@@ -164,7 +161,9 @@ class SubscriptionPipeline
              * User is not a Braintree customer. A valid payment method nonce is required in order to define the new
              * customer's default payment method.
              */
-            Validator::make($this->request->all(), ["paymentMethodNonce" => "required"]);
+            Validator::make($this->request->all(), [
+                "paymentMethodNonce" => "required",
+            ]);
 
             $this->user->createBraintreeCustomer($this->request->input("paymentMethodNonce"));
 
@@ -175,7 +174,7 @@ class SubscriptionPipeline
              * use another payment method. We will automatically set this new payment method as default for future
              * payments.
              */
-            /** @var Successful|Error $paymentMethodCreation */
+            /** @var BraintreeResponse $paymentMethodCreation */
             $paymentMethodCreation = PaymentMethod::create([
                 "customerId" => $this->user->braintree->id,
                 "paymentMethodNonce" => $this->request->input("paymentMethodNonce"),
@@ -224,19 +223,19 @@ class SubscriptionPipeline
             $subscriptionPayload = array_merge($subscriptionPayload, [
                 "trialPeriod" => true,
                 "trialDurationUnit" => "day",
-                "trialDuration" => SubscriptionUtils::getRegularPlanStartDate($this->planId)->diffInDays(Carbon::now()) + 1
+                "trialDuration" => SubscriptionUtils::getRegularPlanStartDate($this->planId)
+                        ->diffInDays(Carbon::now()) + 1
             ]);
         }
 
 
         /**
-         * @var Successful|Error $subscriptionCreation The subscription creation result. If the creation succeeded, we
+         * @var BraintreeResponse $subscriptionCreation The subscription creation result. If the creation succeeded, we
          * can continue the process.
          */
         $subscriptionCreation = Subscription::create($subscriptionPayload);
 
         if ($subscriptionCreation->success) {
-            /** @var Successful $subscriptionCreation */
             $this->subscription = $subscriptionCreation->subscription;
         } else {
             /** @var Error $subscriptionCreation */
@@ -263,8 +262,8 @@ class SubscriptionPipeline
             return;
         }
 
-        $description = "Abonnement premium du " . Carbon::now()->format("d/m/Y") . " au " .
-            SubscriptionUtils::getRegularPlanStartDate($this->planId)->format("d/m/Y");
+        $description = "Abonnement premium du " . Carbon::now()->format("d/m/Y") . " au "
+            . SubscriptionUtils::getRegularPlanStartDate($this->planId)->format("d/m/Y");
         $trialPrice = SubscriptionUtils::getTrialPeriodPrice($this->planId);
 
         /**
@@ -300,7 +299,7 @@ class SubscriptionPipeline
             $this->transaction = $initialTransactionSale->transaction;
         } else {
             // Initial transaction failed. We will now cancel the subscription.
-            /** @var Successful|Error $subscriptionResult $subscriptionCancellationResult */
+            /** @var BraintreeResponse $subscriptionCancellationResult */
             $subscriptionCancellation = Subscription::cancel($this->subscription->id);
 
             if ($subscriptionCancellation->success) {
@@ -329,13 +328,7 @@ class SubscriptionPipeline
      */
     private function finalize()
     {
-        // If we have an init
-        if ($this->transaction instanceof Transaction) {
-            // Send the success event for the initial transaction
-            event(new TransactionSuccessEvent($this->transaction));
-        }
-
-        event(new NewSubscriptionEvent($this->user, $this->subscription));
+        event(new NewSubscriptionEvent($this->user, $this->subscription, $this->transaction));
 
         $this->user->forgetBraintreeCustomerCache(); // Forget cache about the user, as we updated his subscriptions
 

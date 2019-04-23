@@ -16,17 +16,18 @@ use Illuminate\Support\Str;
  * @var Factory $factory
  */
 $factory->define(Product::class, function (Generator $faker) {
-    $name = mb_substr($faker->sentence($faker->numberBetween(1, 3)), 0, -1);
+    $name = mb_substr($faker->sentence($faker->numberBetween(1, 2)), 0, -1);
     [$createdAt, $updatedAt] = timestamps();
 
     return [
         "name" => $name,
         "slug" => Str::slug($name),
         "image" => "img/products/{$faker->uuid}.jpg",
-        "type" => null,
+        "type" => $faker->randomElement(["pack", "training", "section", "lesson"]),
         "description" => $faker->sentence,
         "price" => $faker->boolean ? random_int(5, 40) * 10 : null,
         "visible" => $faker->boolean,
+        "buyable" => $faker->boolean,
         "order" => $faker->numberBetween(0, 100),
         "module_id" => $faker->boolean(30) ? Module::random()->id : null,
         "created_at" => $createdAt,

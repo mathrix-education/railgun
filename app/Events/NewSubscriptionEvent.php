@@ -18,7 +18,7 @@ class NewSubscriptionEvent extends BaseEvent
 {
     /** @var User $user */
     public $user;
-    /** @var \Braintree_Subscription $subscription */
+    /** @var Subscription $subscription */
     public $subscription;
     /** @var Transaction $initialTransaction */
     public $initialTransaction;

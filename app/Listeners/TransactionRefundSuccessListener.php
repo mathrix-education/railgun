@@ -6,6 +6,7 @@ use App\Events\TransactionRefundSuccessEvent;
 use App\Models\User;
 use App\Notifications\TransactionRefundSuccessNotification;
 use Braintree\Transaction;
+use Braintree\Transaction\CustomerDetails;
 use Mathrix\Lumen\Bases\BaseListener;
 
 /**
@@ -18,14 +19,18 @@ use Mathrix\Lumen\Bases\BaseListener;
 class TransactionRefundSuccessListener extends BaseListener
 {
     /**
+     * Handle TransactionRefundSuccessEvent.
+     *
      * @param TransactionRefundSuccessEvent $event
      */
     public function handle(TransactionRefundSuccessEvent $event)
     {
         /** @var Transaction $transaction */
         $transaction = $event->transaction;
-        /** @var \Braintree\Transaction\CustomerDetails $customerDetails */
+
+        /** @var CustomerDetails $customerDetails */
         $customerDetails = $transaction->customerDetails;
+
         /** @var User $user */
         $user = User::query()
             ->where("braintree_id", "=", $customerDetails->id)

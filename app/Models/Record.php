@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Exceptions\ImmutableException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Mathrix\Lumen\Bases\BaseModel;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Exceptions\ValidationException;
 
 /**
  * Class Record.
@@ -36,8 +38,7 @@ class Record extends BaseModel
      * @param array $payload
      *
      * @return Record
-     * @throws Http400BadRequestException
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
+     * @throws ImmutableException
      */
     public static function record(User $user, string $service, string $event, string $status, array $payload)
     {
@@ -60,15 +61,14 @@ class Record extends BaseModel
      * @param array $options
      *
      * @return bool
-     * @throws Http400BadRequestException
-     * @throws \Mathrix\Lumen\Exceptions\ValidationException
+     * @throws ImmutableException
      */
     public function save(array $options = [])
     {
         if (!$this->exists) {
             return parent::save($options);
         } else {
-            throw new Http400BadRequestException(null, "Records are immutable by definition.");
+            throw new ImmutableException(null, "Records are immutable by definition.");
         }
     }
 

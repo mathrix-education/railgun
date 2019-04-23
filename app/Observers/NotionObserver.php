@@ -4,7 +4,6 @@ namespace App\Observers;
 
 use App\Exceptions\ForeignConstraintsException;
 use App\Models\Notion;
-use Illuminate\Support\Str;
 
 /**
  * Class NotionObserver.
@@ -16,35 +15,21 @@ use Illuminate\Support\Str;
 class NotionObserver extends BaseObserver
 {
     /**
-     * @param Notion $notion
-     *
-     * @return bool
-     */
-    public function saving(Notion $notion)
-    {
-        // Set the slug if needed
-        if (
-            empty($notion->slug) ||
-            ($notion->isDirty('name') && !$notion->isDirty('slug'))
-        ) {
-            $notion->slug = Str::slug($notion->name);
-        }
-
-        return true;
-    }
-
-
-    /**
      * After save.
      * Update parent chapters's notion counter.
      *
      * @param Notion $notion
+     *
+     * @return bool
      */
     public function saved(Notion $notion)
     {
-        if ($notion->wasChanged("visible")) {
+        if ($notion->wasChanged("chapter_id", "visible")) {
             $notion->chapter->updateCounters();
+            $notion->unsetRelation("chapter");
         }
+
+        return true;
     }
 
 

@@ -2,11 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Module;
+use App\Mails\PasswordForgottenMail;
 use App\Models\User;
-use App\Services\Braintree\Exceptions\BraintreeErrorHandler;
-use App\Services\Braintree\Exceptions\BraintreeGatewayException;
-use Braintree\Subscription;
+use Illuminate\Support\Facades\Mail;
 use Mathrix\Lumen\Bases\BaseCommand;
 
 /**
@@ -23,40 +21,7 @@ class TestCommand extends BaseCommand
 
     public function handle()
     {
-    }
-
-
-    public function handle2()
-    {
-        $user = User::random();
-        $user->createBraintreeCustomer("fake-valid-visa-nonce");
-
-        $result = Subscription::create([
-            "planId" => "v4_monthly",
-            "paymentMethodToken" => $user->getBraintreeDefaultPaymentMethodToken()
-        ]);
-        $result = Subscription::create([
-            "planId" => "v4_monthly",
-            "paymentMethodToken" => $user->getBraintreeDefaultPaymentMethodToken()
-        ]);
-        try {
-            BraintreeErrorHandler::report($result);
-        } catch (BraintreeGatewayException $e) {
-            dd(json_decode($e->toJsonResponse()->getContent()));
-        }
-    }
-
-
-    public function removeNull($array)
-    {
-        foreach ($array as $k => $v) {
-            if (is_array($v) && $v !== []) {
-                $array[$k] = $this->removeNull($v);
-            } else if ($v === null || $v === "Unknown" || $v === []) {
-                unset($array[$k]);
-            }
-        }
-
-        return $array;
+        Mail::to(["mathieu@mathrix.fr"])
+            ->queue(new PasswordForgottenMail(User::random()));
     }
 }

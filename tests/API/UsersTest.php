@@ -55,6 +55,20 @@ class UsersTest extends APITestCase
 
 
     /**
+     * GET /users/{userId}
+     */
+    public function testGetAdmin()
+    {
+        $user = User::random(["type", "=", "admin"]);
+        Passport::actingAs($user, explode(" ", $user->getPassportScopes()));
+        $this->json("get", "/users/{$user->id}");
+
+        $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
+    }
+
+
+    /**
      * GET /users/{userId} as a simple registered user
      */
     public function testGetSomeoneElse()
@@ -81,7 +95,7 @@ class UsersTest extends APITestCase
         $payload = array_merge(
             Arr::except(
                 $this->getFactoryBuilder([])->raw(),
-                ["password", "token", "points", "level", "created_at", "updated_at"]
+                ["password", "token", "points", "level", "settings", "created_at", "updated_at"]
             ), [
                 "current_password" => env("DB_PASSWORD"),
                 "password" => $newPassword
@@ -94,7 +108,7 @@ class UsersTest extends APITestCase
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse();
-        $this->assertInDatabase("users", Arr::except($payload, ["current_password", "password"]));
+        $this->assertInDatabase("users", Arr::except($payload, ["current_password", "password"," settings"]));
 
         $new = $payload["password"];
         $hashed = $user->refresh()->password;
@@ -151,5 +165,26 @@ class UsersTest extends APITestCase
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse();
+    }
+
+
+    /**
+     * POST /users/{userId}/points
+     */
+    public function testPointsWithModule()
+    {
+        $this->mockScope("registered");
+        $pointsBefore = $this->passportUser->points;
+        $module = Module::random(["visible", "=", true]);
+
+        $this->json("post", "users/{$this->passportUser->id}/points", [
+            "loggable_type" => "module",
+            "loggable_id" => $module->id,
+            "points" => 100
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
+        $this->assertEquals($pointsBefore + 100, $this->getJsonResponseValue("points"));
     }
 }

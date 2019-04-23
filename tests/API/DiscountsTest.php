@@ -2,6 +2,7 @@
 
 namespace Tests\API;
 
+use App\Models\Discount;
 use App\Models\Product;
 use Mathrix\Lumen\Tests\REST\Standard\StandardDeleteTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
@@ -58,10 +59,42 @@ class DiscountsTest extends APITestCase
 
 
     /**
-     * GET /discounts/code/{discountCode}
+     * GET /discounts/{discountId}/products/{page}/{perPage}
      */
-    public function testGetByCode(): void
+    public function testGetProducts(): void
     {
-        $this->assertRestGetBySuccess("code");
+        /** @var Discount $discount */
+        $discount = Discount::query()->has("products")->firstOrFail();
+
+        $uri = "/discounts/{$discount->id}/products/0/100";
+        $this->autoMockScope("get", $uri);
+        $this->json("get", $uri);
+
+        $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
+    }
+
+
+    /**
+     * PATCH /discounts/{discountId}/products
+     */
+    public function testPatchProducts(): void
+    {
+        /** @var Discount $discount */
+        $discount = Discount::random();
+        $productIds = Product::query()->inRandomOrder()->limit(5)->get()->pluck("id");
+
+        $uri = "/discounts/{$discount->id}/products/0/100";
+        $this->autoMockScope("patch", $uri);
+        $this->json("patch", $uri, $productIds->toArray());
+
+        $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
+        $productIds->each(function (int $productId) use ($discount) {
+            $this->assertInDatabase("discount_product", [
+                "discount_id" => $discount->id,
+                "product_id" => $productId
+            ]);
+        });
     }
 }

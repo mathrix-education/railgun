@@ -1,7 +1,7 @@
 {
   "name": "mathrix/education-api",
   "description": "The Mathrix Education Lumen API.",
-  "version": "5.0.0",
+  "version": "5.0.1-rc1",
   "type": "project",
   "keywords": [
     "education",
@@ -43,8 +43,8 @@
     "laravel/passport": "^7.0",
     "laravelium/sitemap": "^3.0",
     "league/flysystem": " ~1.0",
-    "mathrix/lumen-chainer": "^1.0.0",
-    "mathrix/lumen-zero": "^1.0.0",
+    "mathrix/lumen-chainer": "^1.0",
+    "mathrix/lumen-zero": "^1.0",
     "ramsey/uuid": "^3.8",
     "sentry/sentry-laravel": "^0.8.0",
     "stripe/stripe-php": "^6.15",
@@ -54,6 +54,7 @@
   },
   "require-dev": {
     "brianium/paratest": "^2.0",
+    "damianopetrungaro/php-commitizen": "^0.1.2",
     "doctrine/dbal": "^2.5",
     "helmich/phpunit-json-assert": "^2.0",
     "mockery/mockery": "~1.0",
@@ -93,6 +94,8 @@
     }
   ],
   "config": {
-    "sort-packages": true
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "optimize-autoloader": true
   }
 }

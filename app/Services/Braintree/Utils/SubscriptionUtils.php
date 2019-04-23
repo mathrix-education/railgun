@@ -34,8 +34,9 @@ class SubscriptionUtils
 
 
     /**
+     * Get the plan start date (after trial).
      *
-     * @param string $plan
+     * @param string $plan The Braintree plan.
      *
      * @return Carbon
      */
@@ -43,19 +44,12 @@ class SubscriptionUtils
     {
         $nextThirtyFirstJuly = new Carbon("31st July");
 
-        if ($nextThirtyFirstJuly->isPast()) {
-            $nextThirtyFirstJuly->addYear();
-        } else if ((new Carbon("1st May"))->isPast()) {
+        if ($nextThirtyFirstJuly->isPast() || (new Carbon("1st May"))->isPast()) {
             $nextThirtyFirstJuly->addYear();
         }
 
-        switch ($plan) {
-            case "v4_annually":
-                break;
-            case "v4_biannually":
-                $nextThirtyFirstJuly->addYear();
-                break;
-            default:
+        if ($plan === "v4_biannually") {
+            $nextThirtyFirstJuly->addYear();
         }
 
         return $nextThirtyFirstJuly;
@@ -63,12 +57,15 @@ class SubscriptionUtils
 
 
     /**
-     * @param string $plan
+     * Get the trial period price, which is the price for the period between now and the regular plan start date.
      *
-     * @return float|int
+     * @param string $plan The Braintree plan.
+     *
+     * @return float|int The price in euros (€).
      */
     public static function getTrialPeriodPrice(string $plan)
     {
+        // Used to mock trial price
         if (env("BRAINTREE_ENVIRONMENT") === "sandbox" && self::$EnableFake && is_numeric(self::$ForceTrialPrice)) {
             return self::$ForceTrialPrice;
         }

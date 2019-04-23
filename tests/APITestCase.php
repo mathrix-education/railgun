@@ -29,9 +29,12 @@ class APITestCase extends BaseTestCase
     /** @var string The test main model plural (used to build request URLs) */
     protected $baseUri = null;
 
+
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
+
+        // Include OpenAPI once
         OpenAPITrait::$SpecPath = __DIR__ . "/../docs/json-schema/index.json";
         self::bootOpenAPI();
     }
@@ -46,10 +49,7 @@ class APITestCase extends BaseTestCase
 
     public function onNotSuccessfulTest(Throwable $t)
     {
-        if ($this->response !== null) {
-            $this->debug();
-        }
-
+        $this->debug();
         parent::onNotSuccessfulTest($t);
     }
 }

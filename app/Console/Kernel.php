@@ -2,10 +2,10 @@
 
 namespace App\Console;
 
-use App\Console\Commands\Braintree\NewPayPalCheck;
 use App\Console\Commands\Cache\RebuildCacheCommand;
 use App\Console\Commands\CompileMails;
 use App\Console\Commands\DBDestroyCommand;
+use App\Console\Commands\PayPalMigrate;
 use App\Console\Commands\TestCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
@@ -24,9 +24,8 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         TestCommand::class,
         DBDestroyCommand::class,
-        NewPayPalCheck::class,
+        PayPalMigrate::class,
         CompileMails::class,
-
         RebuildCacheCommand::class
     ];
 
@@ -38,17 +37,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        if (app()->environment("master")) {
-            $schedule->command("backup:mysql-dump")
-                ->dailyAt("02:00");
-            $schedule->command("backup:mysql-dump")
-                ->dailyAt("12:00");
-            $schedule->command("backup:mysql-dump")
-                ->dailyAt("17:00");
-            $schedule->command("backup:cdn")
-                ->dailyAt("02:20");
-            $schedule->command("sitemap:all")
-                ->dailyAt("02:10");
-        }
+
     }
 }

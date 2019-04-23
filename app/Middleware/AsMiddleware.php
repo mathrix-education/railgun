@@ -3,6 +3,7 @@
 namespace App\Middleware;
 
 use App\Models\User;
+use Closure;
 use Illuminate\Contracts\Auth\Factory as AuthFactory;
 use Illuminate\Http\Request;
 use Laravel\Passport\Passport;
@@ -33,12 +34,12 @@ class AsMiddleware
      * Handle request with X-As-User-Id header.
      *
      * @param Request $request
-     * @param \Closure $next
+     * @param Closure $next
      * @param null $guard
      *
      * @return mixed
      */
-    public function handle(Request $request, \Closure $next, $guard = null)
+    public function handle(Request $request, Closure $next, $guard = null)
     {
         if (!$this->auth->guard($guard)->guest() && $request->hasHeader("X-As-User-Id")) {
             /** @var User $requester */

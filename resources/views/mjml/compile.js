@@ -16,7 +16,7 @@ class MailCompiler {
 
     compile(src) {
         const content = this.fs.readFileSync(src);
-        const mjmlResult = this.mjml.mjml2html(content.toString(), {
+        const mjmlResult = this.mjml["mjml2html"](content.toString(), {
             beautify: true,
             validationLevel: "strict",
             filePath: src
@@ -29,8 +29,8 @@ class MailCompiler {
             });
         }
 
-        if (mjmlResult.html.length > 0) {
-            const content = mjmlResult.html.replace(/&#36;/g, "$");
+        if (mjmlResult["html"].length > 0) {
+            const content = mjmlResult["html"].replace(/&#36;/g, "$");
             const destFile = src.replace("/mjml/", "/mails/").replace(".mjml", ".blade.php");
             const destDir = this.path.dirname(destFile);
 

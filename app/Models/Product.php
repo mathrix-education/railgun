@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\NoPivot;
+use Braintree\Transaction;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,15 +27,18 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @property string|null $description
  * @property float|null $price
  * @property bool $visible
+ * @property bool $buyable
  * @property int|null $order
+ * @property int|null $parent_id
  * @property int|null $module_id
+ * @property int[]|null $pack_product_ids
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property array $link
  * ---
  * @property Module|null $module
+ * @property Product|null $parent
  * @property Collection|Product[] $children
- * @property Collection|Product[] $parents
+ * @property Collection|Product[] $items
  * @property Collection|Discount[] $discounts
  */
 class Product extends BaseModel
@@ -52,25 +56,49 @@ class Product extends BaseModel
         "description",
         "price",
         "visible",
+        "buyable",
         "order",
         "parent_id",
         "module_id"
     ];
     protected $rules = [
-        "name" => "required|max:255",
-        "slug" => "required|max:255",
-        "image" => "nullable|max:255",
+        "name" => "required|max:35",
+        "slug" => "required|max:35",
+        "image" => "nullable",
         "type" => "nullable",
-        "description" => "nullable|max:255",
+        "description" => "nullable|max:127",
         "price" => "nullable|numeric",
         "visible" => "required|boolean",
+        "order" => "required|integer",
         "module_id" => "nullable|exists:modules,id",
     ];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
         "visible" => "boolean",
+        "buyable" => "boolean"
     ];
     protected $appends = ["owned"];
+
+
+    /**
+     * Deliver a product to a customer.
+     *
+     * @param User $customer The customer.
+     * @param Transaction $transaction The Braintree transaction.
+     *
+     * @return Purchase
+     */
+    public function deliver(User $customer, Transaction $transaction): Purchase
+    {
+        $purchase = new Purchase([
+            "transaction_id" => $transaction->id,
+            "user_id" => $customer->id,
+            "product_id" => $this->id,
+        ]);
+        $purchase->save();
+
+        return $purchase;
+    }
 
 
     /**
@@ -89,7 +117,7 @@ class Product extends BaseModel
      *
      * @return BelongsTo
      */
-    public function parents()
+    public function parent()
     {
         return $this->belongsTo(self::class, "parent_id");
     }
@@ -98,11 +126,27 @@ class Product extends BaseModel
     /**
      * HasMany child Products.
      *
-     * @return HasMany
+     * @return HasMany|BelongsToMany
      */
     public function children()
     {
         return $this->hasMany(self::class, "parent_id");
+    }
+
+
+    /**
+     * BelongsToMany products
+     *
+     * @return BelongsToMany
+     */
+    public function items()
+    {
+        return $this->belongsToMany(
+            self::class,
+            "product_product",
+            "parent_id",
+            "child_id"
+        );
     }
 
 

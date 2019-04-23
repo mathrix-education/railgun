@@ -15,6 +15,11 @@ use Mathrix\Lumen\Bases\BaseListener;
  */
 class PasswordForgottenListener extends BaseListener
 {
+    /**
+     * Handle PasswordForgottenEvent.
+     *
+     * @param PasswordForgottenEvent $event
+     */
     public function handle(PasswordForgottenEvent $event)
     {
         $event->user->notify(new PasswordForgottenNotification($event->user));

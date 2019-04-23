@@ -2,6 +2,8 @@
 
 namespace App\Notifications;
 
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Mathrix\Lumen\Bases\BaseNotification;
 
 /**
@@ -11,8 +13,11 @@ use Mathrix\Lumen\Bases\BaseNotification;
  * @copyright Mathrix Education SA.
  * @since 4.3.0
  */
-abstract class MailNotification extends BaseNotification
+abstract class MailNotification extends BaseNotification implements ShouldQueue
 {
+    use Queueable;
+
+
     /**
      * @return array
      */

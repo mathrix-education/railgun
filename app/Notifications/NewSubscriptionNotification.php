@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\User;
+use Braintree\Subscription;
 use Mathrix\Lumen\Bases\BaseNotification;
 
 /**
@@ -16,7 +17,7 @@ class NewSubscriptionNotification extends BaseNotification
 {
     /** @var User $user */
     public $user;
-    /** @var \Braintree_Subscription $subscription */
+    /** @var Subscription $subscription */
     public $subscription;
 
 
@@ -24,9 +25,9 @@ class NewSubscriptionNotification extends BaseNotification
      * NewSubscriptionEvent constructor.
      *
      * @param User $user
-     * @param \Braintree_Subscription $subscription
+     * @param Subscription $subscription
      */
-    public function __construct(User $user, \Braintree_Subscription $subscription)
+    public function __construct(User $user, Subscription $subscription)
     {
         $this->user = $user;
         $this->subscription = $subscription;
@@ -38,6 +39,6 @@ class NewSubscriptionNotification extends BaseNotification
      */
     public function via(): array
     {
-        return [];
+        return []; // Currently no channel is configured to handle this event.
     }
 }

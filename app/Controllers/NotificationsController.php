@@ -5,7 +5,6 @@ namespace App\Controllers;
 use App\Models\User;
 use App\Services\Braintree\Utils\Formatter;
 use Carbon\Carbon;
-use DateTimeInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

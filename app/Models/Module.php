@@ -99,31 +99,55 @@ class Module extends BaseModel
 
 
     /**
+     * Determine if the module should be striped.
+     *
+     * @return bool
+     */
+    public function shouldStrip(): bool
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        /** @var bool $isPremium If the module's parent activity is premium */
+        $isPremium = $this->activity !== null && $this->activity->premium;;
+        /** @var bool $isProduct If the module is linked to a product */
+        $isProduct = $this->products->isNotEmpty();
+        /** @var bool $userIsPremium If the user is premium */
+        $userIsPremium = $user !== null && ($user->premium || $user->tokenCan("moderator"));
+        /** @var bool $userHasPurchased If the user has purchased one of the related products */
+        $userHasPurchased = $user !== null && ($user->tokenCan("moderator") || $this->products()
+                ->get(["id"])
+                ->reduce(function (bool $current, Product $product) use ($user) {
+                    return $current || $user->hasPurchased($product);
+                }, false));
+
+        $this->unsetRelation("activity");
+        $this->unsetRelation("products");
+
+        return ($isPremium && !$userIsPremium) || ($isProduct && !$userHasPurchased);
+    }
+
+
+    /**
      * Allow module data striping if the user is not premium.
      *
      * @return array
      */
     public function toArray()
     {
-        $activityIsPremium = $this->activity !== null && $this->activity->premium;
-        $this->unsetRelation("activity");
-        $userIsPremium = User::isPremium();
-        $testing = app()->environment() === "testing";
-
-        $strip = !$testing && $activityIsPremium && !$userIsPremium;
-
-        $keep = ["id", "type", "visible"];
-        $array = parent::toArray();
-
-        if ($strip) {
-            $array = Arr::only($array, $keep);
-
-            if ($this->type === "flashcard") {
-                $array["questions"] = array_fill(0, count($this->questions), "");
-            }
+        if (!$this->shouldStrip() || app()->environment() === "testing") {
+            return parent::toArray();
         }
 
-        return $array;
+        $keep = ["id", "type", "visible"];
+        $data = parent::toArray();
+        $data = Arr::only($data, $keep);
+
+        if ($this->type === "flashcard") {
+            $data["questions"] = array_fill(0, count($this->questions), "");
+        }
+
+        return $data;
     }
 
 

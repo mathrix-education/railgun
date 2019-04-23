@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
 use Mathrix\Lumen\Exceptions\Http\Http404NotFoundException;
-use Mathrix\Lumen\Exceptions\ValidationException;
 
 /**
  * Class SettingsController.

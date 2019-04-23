@@ -3,9 +3,6 @@
 namespace App\Mails;
 
 use App\Models\User;
-use Braintree\Subscription;
-use Braintree\SubscriptionSearch;
-use Illuminate\Support\Facades\Cache;
 
 /**
  * Class NewPayPalMail.
@@ -18,20 +15,16 @@ class NewPayPalMail extends BaseMail
 {
     /** @var User The mail user */
     private $user;
-    /** @var Subscription The PayPal subscription */
-    private $subscription;
 
 
     /**
      * PasswordResetMail constructor.
      *
      * @param User $user the mail user
-     * @param Subscription $subscription
      */
-    public function __construct(User $user, Subscription $subscription)
+    public function __construct(User $user)
     {
         $this->user = $user;
-        $this->subscription = $subscription;
 
         parent::__construct();
     }
@@ -44,22 +37,10 @@ class NewPayPalMail extends BaseMail
      */
     public static function mock()
     {
-        /** @var Subscription $subscription */
-        $subscription = Cache::remember("dev.subscripion.paypal", 15, function () {
-            return Subscription::search([
-                SubscriptionSearch::inTrialPeriod()->is(false),
-                SubscriptionSearch::planId()->is("v4_monthly"),
-                SubscriptionSearch::status()->is(Subscription::ACTIVE)
-            ])->firstItem();
-        });
-
         /** @var User $user */
-        $user = User::query()
-            ->where("braintree_id", "=", $subscription->transactions[0]->customerDetails->id)
-            ->firstOrFail();
+        $user = User::random();
 
-
-        return new self($user, $subscription);
+        return new self($user);
     }
 
 
@@ -72,11 +53,11 @@ class NewPayPalMail extends BaseMail
     {
         return $this->subject("ACTION REQUISE - Abonnement au mode machine")
             ->from("support@mathrix.fr")
+            ->priority(1)
             ->view("mails.subscriptions.new-paypal", [
                 "title" => "ACTION REQUISE - Abonnement au mode machine",
-                "link" => env("APP_WEBROOT") . "/changement-paypal",
-                "user" => $this->user,
-                "subscription" => $this->subscription
+                "link" => env("APP_WEBROOT") . "/paiement/mise-a-jour",
+                "user" => $this->user
             ]);
     }
 }

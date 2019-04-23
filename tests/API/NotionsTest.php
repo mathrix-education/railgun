@@ -2,7 +2,6 @@
 
 namespace Tests\API;
 
-use App\Models\Chapter;
 use App\Models\Notion;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;

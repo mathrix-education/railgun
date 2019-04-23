@@ -11,10 +11,6 @@ properties:
     description: The activity name.
     type: string
     example: lorem ipsum
-  slug:
-    description: The activity slug.
-    type: string
-    example: lorem-ipsum
   type:
     description: The activity type.
     type: string

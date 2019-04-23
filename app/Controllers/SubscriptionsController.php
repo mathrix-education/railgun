@@ -2,19 +2,18 @@
 
 namespace App\Controllers;
 
-use App\Exceptions\UserAlreadyPremiumException;
 use App\Models\User;
+use App\Services\Braintree\BraintreeResponse;
 use App\Services\Braintree\Exceptions\BraintreeErrorHandler;
-use App\Services\Braintree\Exceptions\BraintreeProcessorException;
 use App\Services\Braintree\Pipelines\SubscriptionPipeline;
 use App\Services\Braintree\Utils\Formatter;
 use Braintree\Customer;
 use Braintree\CustomerSearch;
 use Braintree\PaymentMethod;
 use Braintree\Subscription;
-use Braintree_Subscription;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
@@ -44,10 +43,6 @@ class SubscriptionsController extends BaseController
      * @param Request $request The Illuminate HTTP request.
      *
      * @return JsonResponse
-     * @throws BraintreeProcessorException
-     * @throws Http400BadRequestException
-     * @throws UserAlreadyPremiumException
-     * @throws ValidationException
      * @throws Http429TooManyRequestsException
      */
     public function create(Request $request): JsonResponse
@@ -60,111 +55,24 @@ class SubscriptionsController extends BaseController
 
     /**
      * GET /subscriptions/{subscriptionId}
+     * Allowed scopes: admin, handled by registrar.
      * Get a subscription by its id.
      *
-     * @param Request $request The Illuminate HTTP request.
      * @param string $subscriptionId The Braintree subscription id.
      *
      * @return JsonResponse
-     * @throws Http401UnauthorizedException
-     *
      */
-    public function find(Request $request, string $subscriptionId)
+    public function find(string $subscriptionId)
     {
-        /** @var User $user */
-        $user = $request->user();
-
-        if (!$user->tokenCan("admin")) {
-            throw new Http401UnauthorizedException();
-        }
-
         $subscription = Subscription::find($subscriptionId);
 
-        return new JsonResponse(
-            Formatter::cast($subscription->jsonSerialize())
-        );
+        return new JsonResponse(Formatter::cast($subscription->jsonSerialize()));
     }
 
 
     /**
-     * POST /subscriptions/{subscriptionId}/cancel
-     * Cancel a subscription for a user.
-     *
-     * @param Request $request The Illuminate HTTP request.
-     * @param string $subscriptionId The Braintree subscription id.
-     *
-     * @return JsonResponse
-     * @throws Http400BadRequestException
-     * @throws Http401UnauthorizedException
-     */
-    public function cancel(Request $request, string $subscriptionId)
-    {
-        /** @var User $user */
-        $user = $request->user();
-
-        if (!$user->tokenCan("admin")) {
-            throw new Http401UnauthorizedException();
-        }
-
-        $subscriptionResult = Subscription::cancel($subscriptionId);
-
-        if ($subscriptionResult->success) {
-            /** @var Braintree_Subscription $subscription */
-            $subscription = $subscriptionResult->subscription;
-
-            $customerResultSearch = Customer::search([
-                CustomerSearch::paymentMethodToken()
-                    ->is($subscription->paymentMethodToken),
-            ]);
-
-            /** @var User $customer */
-            $customer = User::query()
-                ->where("braintree_id", "=", $customerResultSearch->firstItem()->id)
-                ->firstOrFail();
-            $customer->forgetBraintreeCustomerCache();
-
-            return new JsonResponse(
-                Formatter::cast($subscription->jsonSerialize())
-            );
-        }
-        throw new Http400BadRequestException(
-            $subscriptionResult->jsonSerialize(),
-            "Unable to cancel subscription."
-        );
-    }
-
-
-    /**
-     * Get the user subscriptions.
-     *
-     * @param Request $request The Illuminate HTTP request.
-     * @param int $userId The user id.
-     *
-     * @return JsonResponse
-     * @throws Http400BadRequestException
-     * @throws Http401UnauthorizedException
-     */
-    public function byUser(Request $request, int $userId)
-    {
-        /** @var User $user */
-        $user = $request->user();
-
-        if ($user->id !== $userId && !$user->tokenCan("admin")) {
-            throw new Http401UnauthorizedException();
-        }
-
-        /** @var User $customer */
-        $customer = User::query()->findOrFail($userId);
-        $customer->requireBraintreeCustomer();
-
-        return new JsonResponse(
-            Formatter::cast($customer->getBraintreeSubscriptions())
-        );
-    }
-
-
-    /**
-     * Update a subscription. At the moment, it use to change the payment method of a subscription.
+     * PATCH /subscriptions/{subscriptionId}
+     * Update a subscription. At the moment, it used to change the payment method of a subscription.
      *
      * @param Request $request The Illuminate HTTP request.
      * @param string $subscriptionId The Braintree subscription id.
@@ -213,6 +121,97 @@ class SubscriptionsController extends BaseController
         /** @var Subscription $subscription */
         $subscription = $subscriptionResult->subscription;
 
+        if (
+            isset($user->settings["need_paypal_refresh"])
+            && $user->settings["need_paypal_refresh"] === true
+        ) {
+            $user->settings = Arr::except($user->settings, ["need_paypal_refresh"]);
+            $user->save();
+        }
+
         return new JsonResponse(Formatter::cast($subscription->jsonSerialize()));
+    }
+
+
+    /**
+     * POST /subscriptions/{subscriptionId}/cancel
+     * Allowed scopes: admin, handled by registrar.
+     * Cancel a subscription for a user.
+     *
+     * @param Request $request The Illuminate HTTP request.
+     * @param string $subscriptionId The Braintree subscription id.
+     *
+     * @return JsonResponse
+     * @throws Http400BadRequestException
+     */
+    public function cancel(Request $request, string $subscriptionId)
+    {
+        $cancelNow = $request->json("now", false);
+
+        if ($cancelNow) {
+            // Cancel subscription immediately
+            /** @var BraintreeResponse $subscriptionResult */
+            $subscriptionResult = Subscription::cancel($subscriptionId);
+        } else {
+            /** @var Subscription $subscription */
+            $subscription = Subscription::find($subscriptionId);
+            /** @var BraintreeResponse $subscriptionResult */
+            $subscriptionResult = Subscription::update($subscriptionId, [
+                "numberOfBillingCycles" => $subscription->currentBillingCycle
+            ]);
+        }
+
+
+        if (!$subscriptionResult->success) {
+            throw new Http400BadRequestException(
+                $subscriptionResult->jsonSerialize(),
+                "Unable to cancel subscription."
+            );
+        }
+
+        /** @var Subscription $subscription */
+        $subscription = $subscriptionResult->subscription;
+
+        /** @var array|string $query */
+        $query = [
+            CustomerSearch::paymentMethodToken()->is($subscription->paymentMethodToken),
+        ];
+        $customerResultSearch = Customer::search($query);
+
+        /** @var User $customer */
+        $customer = User::query()
+            ->where("braintree_id", "=", $customerResultSearch->firstItem()->id)
+            ->firstOrFail();
+        $customer->forgetBraintreeCustomerCache();
+
+        return new JsonResponse(Formatter::cast($subscription->jsonSerialize()));
+    }
+
+
+    /**
+     * GET /subscriptions/by-user/{userId}
+     * Get the user subscriptions.
+     *
+     * @param Request $request The Illuminate HTTP request.
+     * @param int $userId The user id.
+     *
+     * @return JsonResponse
+     * @throws Http400BadRequestException
+     * @throws Http401UnauthorizedException
+     */
+    public function byUser(Request $request, int $userId)
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if ($user->id !== $userId && !$user->tokenCan("admin")) {
+            throw new Http401UnauthorizedException();
+        }
+
+        /** @var User $customer */
+        $customer = User::query()->findOrFail($userId);
+        $customer->requireBraintreeCustomer();
+
+        return new JsonResponse(Formatter::cast($customer->getBraintreeSubscriptions()));
     }
 }

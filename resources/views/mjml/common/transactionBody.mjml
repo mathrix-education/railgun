@@ -64,10 +64,19 @@
                 </td>
                 <td style="padding: 5px 15px;">
                     {{ $lineItem->quantity }} &times;
-                    {{ $lineItem->unitAmount }} €
+
+                    @if($lineItem->kind == "debit")
+                        {{ $lineItem->unitAmount }} €
+                    @else
+                        -{{ $lineItem->unitAmount }} €
+                    @endif
                 </td>
                 <td style="padding: 5px 15px; text-align: right">
-                    {{ $lineItem->totalAmount }} €
+                    @if($lineItem->kind == "debit")
+                        {{ $lineItem->totalAmount }} €
+                    @else
+                        -{{ $lineItem->totalAmount }} €
+                    @endif
                 </td>
             </tr>
         </mj-table>
@@ -76,8 +85,7 @@
         <mj-table padding="1px 25px">
             <tr style="background-color: #e5e5e5">
                 <td style="padding: 10px 15px; font-weight: 700">Total</td>
-                <td style="padding: 10px 15px; font-weight: 700; text-align: right">{{
-                $transaction->amount }} €
+                <td style="padding: 10px 15px; font-weight: 700; text-align: right">{{$transaction->amount}} €
                 </td>
             </tr>
         </mj-table>

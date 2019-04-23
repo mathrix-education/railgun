@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 use Mathrix\Lumen\Exceptions\Http\Http500InternalServerErrorException;
 use Mathrix\Lumen\Exceptions\ValidationException;
+use Throwable;
 
 /**
  * Class BasePipeline.
@@ -51,7 +52,7 @@ abstract class BasePipeline
      * Process the pipeline after validation.
      *
      * @throws ValidationException
-     * @throws \Throwable
+     * @throws Throwable
      */
     public final function process()
     {

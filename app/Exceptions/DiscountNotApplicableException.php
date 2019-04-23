@@ -32,7 +32,7 @@ class DiscountNotApplicableException extends Http400BadRequestException
 
         parent::__construct(
             ["discount" => $discount],
-            "Discount `MODEMACHINE2018` is not applicable on those products.",
+            "Discount `{$discount}` is not applicable on those products.",
             $previous
         );
     }
