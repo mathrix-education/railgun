@@ -235,20 +235,23 @@ class ProductsController extends BaseController
         }
 
         $lines = $products->map(function (Product $product) use ($customer, $discount) {
-            return [
+            return array_merge([
                 "name" => $product->name,
+                "description" => $product->description,
                 "price" => $product->price,
                 "price_after_discount" => $product->getNewPrice($discount)
-            ];
+            ]);
         });
 
         // Check sponsor email if any
         if ($request->json("sponsor_email") !== null) {
-            $affiliateProcess = new AffiliateProcess($customer, $request->json("sponsor_email"));
+            $sponsorEmail = $request->json("sponsor_email");
+            $affiliateProcess = new AffiliateProcess($customer, $sponsorEmail);
             $affiliateProcess->canBeAffiliatedOrFail();
 
             $lines->push([
                 "name" => "Parrainage",
+                "description" => "Email du parrain: {$sponsorEmail}",
                 "price" => -AffiliateProcess::AFFILIATES_FACTOR,
                 "price_after_discount" => -AffiliateProcess::AFFILIATES_FACTOR
             ]);

@@ -58,8 +58,12 @@ post:
                       description: The product name or `"Parrainage"`.
                       type: string
                       example: Error ad ipsum ut
+                    description:
+                      description: The product description.
+                      type: string
+                      example: Error ad ipsum ut dolor sit amet consectur imit.
                     price:
-                      description: The line price. This line maybe be negative.
+                      description: The product price. May be be negative.
                       type: number
                       example: 39.70
                     price_after_discount:

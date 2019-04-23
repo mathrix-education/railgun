@@ -59,15 +59,6 @@ class DiscountsTest extends APITestCase
 
 
     /**
-     * GET /discounts/code/{discountCode}
-     */
-    public function testGetByCode(): void
-    {
-        $this->assertRestGetBySuccess("code");
-    }
-
-
-    /**
      * GET /discounts/{discountId}/products/{page}/{perPage}
      */
     public function testGetProducts(): void
