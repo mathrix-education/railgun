@@ -23,6 +23,7 @@ class AffiliateProcess
 {
     /** @var int The discount amount */
     public const AFFILIATE_DISCOUNT = 10;
+    public const DEFAULT_SPONSOR = "contact@mathrix.fr";
 
     /** @var User The user who is currently engaging a payment process */
     private $affiliate;
@@ -58,6 +59,10 @@ class AffiliateProcess
      */
     public function canBeAffiliated(): bool
     {
+        if ($this->sponsor->email === self::DEFAULT_SPONSOR) {
+            return true;
+        }
+
         $validSponsor = $this->sponsor->purchases()
             ->whereBetween("created_at", [
                 Carbon::createFromDate(2019, 1, 1),
@@ -122,6 +127,11 @@ class AffiliateProcess
      */
     public function refundSponsor()
     {
-        Queue::later(Carbon::now()->addHours(3), new RefundSponsorJob($this->affiliate, $this->sponsor));
+        if ($this->sponsor->email !== self::DEFAULT_SPONSOR) {
+            Queue::later(
+                Carbon::now()->addHours(3),
+                new RefundSponsorJob($this->affiliate, $this->sponsor)
+            );
+        }
     }
 }
