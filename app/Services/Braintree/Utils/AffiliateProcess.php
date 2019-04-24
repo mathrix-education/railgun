@@ -23,7 +23,10 @@ class AffiliateProcess
 {
     /** @var int The discount amount */
     public const AFFILIATE_DISCOUNT = 10;
+    /** @var string The default sponsor email (which always works) */
     public const DEFAULT_SPONSOR = "contact@mathrix.fr";
+    /** @var int The delay (in hours) before trying to refund the sponsor */
+    public const SPONSOR_REFUND_DELAY = 3;
 
     /** @var User The user who is currently engaging a payment process */
     private $affiliate;
@@ -129,7 +132,7 @@ class AffiliateProcess
     {
         if ($this->sponsor->email !== self::DEFAULT_SPONSOR) {
             Queue::later(
-                Carbon::now()->addHours(3),
+                Carbon::now()->addHours(self::SPONSOR_REFUND_DELAY),
                 new RefundSponsorJob($this->affiliate, $this->sponsor)
             );
         }

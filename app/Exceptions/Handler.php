@@ -55,6 +55,7 @@ class Handler extends ExceptionHandler
      * Sentry integration.
      *
      * @param Exception $e
+     *
      * @throws Exception
      *
      * @codeCoverageIgnore
@@ -87,9 +88,9 @@ class Handler extends ExceptionHandler
      * @param Request $request
      * @param Exception $e
      *
+     * @return JsonResponse|Response
      * @throws ReflectionException
      *
-     * @return JsonResponse|Response
      */
     public function render($request, Exception $e)
     {
@@ -132,9 +133,17 @@ class Handler extends ExceptionHandler
         }
         // @codeCoverageIgnoreEnd
 
+        if ($e instanceof ModelNotFoundException) {
+            $overriddenStatusCode = 404;
+        }
+
         // Handle validation exceptions
         if ($e instanceof ValidationException) {
             $json["errors"] = $e->errors(); // @codeCoverageIgnore
+        }
+
+        if ($e instanceof NotFoundHttpException) {
+            $json["data"] = $request->url();
         }
 
         // Include trace in debug mode
@@ -142,12 +151,8 @@ class Handler extends ExceptionHandler
             $json["trace"] = explode("\n", $e->getTraceAsString());
         }
 
-        if ($e instanceof NotFoundHttpException) {
-            $json["data"] = $request->url();
-        }
-
         $rendered = parent::render($request, $e);
 
-        return response()->json($json, $overriddenStatusCode ? $overriddenStatusCode : $rendered->getStatusCode());
+        return new JsonResponse($json, $overriddenStatusCode ? $overriddenStatusCode : $rendered->getStatusCode());
     }
 }
