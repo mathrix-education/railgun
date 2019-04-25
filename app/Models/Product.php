@@ -43,6 +43,7 @@ use Mathrix\Lumen\Bases\BaseModel;
  */
 class Product extends BaseModel
 {
+    public const MODE_MACHINE_2019_END = "2019-07-31 00:00:00";
     use NoPivot;
 
     /** @var bool Indicates if the model should be timestamped */
@@ -90,6 +91,16 @@ class Product extends BaseModel
      */
     public function deliver(User $customer, Transaction $transaction): Purchase
     {
+        if ($this->type === "pack") {
+            $this->items->each(function (Product $item) use ($customer, $transaction) {
+                $item->deliver($customer, $transaction);
+            });
+        } else if ($this->type === "premium") {
+            // Premium product
+            $customer->premium_bypass_expires_at = new Carbon(self::MODE_MACHINE_2019_END);
+            $customer->save();
+        }
+
         $purchase = new Purchase([
             "transaction_id" => $transaction->id,
             "user_id" => $customer->id,
