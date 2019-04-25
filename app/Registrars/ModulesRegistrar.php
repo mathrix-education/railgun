@@ -22,11 +22,11 @@ class ModulesRegistrar extends BaseRegistrar
         $controller = ModulesController::class;
 
         $this->rest("modules", $controller, [
-            "index" => "redactor",
+            "index" => "moderator",
             "get" => null,
             "post" => "moderator",
-            "patch" => "redactor",
-            "delete" => "admin"
+            "patch" => "moderator",
+            "delete" => "moderator"
         ]);
 
         $this->get("modules/by-{what:activity}/{id:[1-9]\d*}/{page:\d+}/{perPage:[1-9]\d*}",
