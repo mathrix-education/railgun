@@ -7,7 +7,7 @@ mysqldump \
     --port=$(printenv DB_PORT) \
     --complete-insert \
     --no-create-info \
-    $(printenv DB_DATABASE) > storage/framework/cache/dump-before.sql
+    master_mathrix_education > storage/framework/cache/dump-before.sql
 php artisan migrate:fresh
 pv storage/framework/cache/dump-before.sql | mysql --database=$(printenv DB_DATABASE) \
     -u$(printenv DB_USERNAME) \
