@@ -8,7 +8,7 @@ use App\Models\Purchase;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
-use Laravel\Passport\Passport;
+use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
@@ -105,9 +105,9 @@ class ProductsTest extends APITestCase
             ->get(["id"])
             ->pluck("id");
 
-        $this->mockScope("admin");
-
-        $this->json("patch", "/products/{$pack->id}/items", $trainingIds->toArray());
+        $uri = "/products/{$pack->id}/items";
+        JWT::autoScope("patch", $uri);
+        $this->json("patch", $uri, $trainingIds->toArray());
 
         $this->assertResponseOk();
         foreach ($trainingIds as $order => $trainingId) {
@@ -149,7 +149,7 @@ class ProductsTest extends APITestCase
         ]);
         $purchase->save();
 
-        $this->autoMockScope("post", "/products/cart");
+        JWT::autoScope("post", "/products/cart");
         $this->json("post", "/products/cart", [
             "cart" => $products->pluck("id"),
             "discount_code" => $discount->code,
@@ -158,21 +158,5 @@ class ProductsTest extends APITestCase
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse();
-    }
-
-
-    public function testProductsRecursiveNotStriped()
-    {
-        $training = Product::random(["type", "=", "training"]);
-        $user = User::random(["type", "=", "registered"]);
-        $user->premium_bypass = true;
-        $user->save();
-
-        $training->deliver($user, null);
-
-        Passport::actingAs($user, $user->getPassportScopesArray());
-        $this->json("get", "/products/{$training->id}/recursive");
-
-        $this->debug();
     }
 }

@@ -3,6 +3,7 @@
 namespace Tests\API;
 
 use App\Models\Category;
+use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
@@ -44,7 +45,7 @@ class CategoriesTest extends APITestCase
         $data = $this->getFactoryBuilder([])->raw();
         unset($data["name"]);
 
-        $this->mockScope("admin");
+        JWT::withScopes("admin");
         $this->json("post", "/categories", $data);
 
         $this->assertResponseStatus(422);

@@ -3,9 +3,9 @@
 namespace Tests\Integration\Braintree;
 
 use App\Models\User;
-use Laravel\Passport\Passport;
 use Mathrix\Lumen\Bases\BaseModel;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Tests\OpenAPI\OpenAPITrait;
 use Mathrix\Lumen\Tests\REST\RESTTrait;
 use Mathrix\Lumen\Tests\Traits\DebugTrait;
@@ -59,7 +59,7 @@ abstract class BraintreeTestCase extends BaseTestCase
      */
     public function setUser(User $user)
     {
-        Passport::actingAs($user, explode(" ", $user->getPassportScopes()));
+        JWT::actingAs($user);
     }
 
 

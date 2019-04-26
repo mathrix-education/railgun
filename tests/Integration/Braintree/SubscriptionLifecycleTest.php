@@ -11,6 +11,7 @@ use Braintree\Test\Nonces;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\JWT\Auth\JWT;
 use stdClass;
 
 /**
@@ -47,7 +48,7 @@ class SubscriptionLifecycleTest extends BraintreeTestCase
         $userId = DB::table("users")->insertGetId($userData);
         /** @var User $user */
         $user = User::query()->findOrFail($userId);
-        $this->setUser($user);
+        JWT::actingAs($user);
 
         $this->json("post", "/subscriptions", [
             "planId" => "v4_monthly",
@@ -98,7 +99,7 @@ class SubscriptionLifecycleTest extends BraintreeTestCase
          * @var Subscription $subscription
          */
         [$user, $subscription] = $payload;
-        $this->setUser($admin);
+        JWT::actingAs($admin);
 
         $this->json("get", "/subscriptions/{$subscription->id}");
 
@@ -127,7 +128,7 @@ class SubscriptionLifecycleTest extends BraintreeTestCase
          * @var Subscription $subscription
          */
         [$user, $subscription] = $payload;
-        $this->setUser($user);
+        JWT::actingAs($user);
 
         $this->json("get", "/subscriptions/by-user/{$user->id}");
 
@@ -156,7 +157,7 @@ class SubscriptionLifecycleTest extends BraintreeTestCase
          * @var Subscription $subscription
          */
         [$user, $subscription] = $payload;
-        $this->setUser($user);
+        JWT::actingAs($user);
 
         $this->json("patch", "/subscriptions/{$subscription->id}", [
             "payment_method_nonce" => Nonces::$paypalBillingAgreement,
@@ -189,7 +190,7 @@ class SubscriptionLifecycleTest extends BraintreeTestCase
          * @var Subscription $subscription
          */
         [$user, $subscription] = $payload;
-        $this->setUser($admin);
+        JWT::actingAs($admin);
 
 
         $this->json("post", "/subscriptions/{$subscription->id}/cancel");
@@ -225,7 +226,7 @@ class SubscriptionLifecycleTest extends BraintreeTestCase
          * @var Subscription $subscription
          */
         [$user, $subscription] = $payload;
-        $this->setUser($admin);
+        JWT::actingAs($admin);
 
         $this->json("post", "/subscriptions/{$subscription->id}/cancel", [
             "now" => true

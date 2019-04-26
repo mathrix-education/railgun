@@ -2,11 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Mails\PasswordForgottenMail;
-use App\Models\User;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 use Mathrix\Lumen\Bases\BaseCommand;
+use Mathrix\Lumen\JWT\Auth\ScopesLoader;
 
 /**
  * Class TestCommand.
@@ -22,5 +19,6 @@ class TestCommand extends BaseCommand
 
     public function handle()
     {
+        ScopesLoader::getRegisteredScopes();
     }
 }

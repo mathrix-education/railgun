@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\Passport;
+use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
 use Tests\APITestCase;
@@ -26,7 +27,7 @@ class CommentsTest extends APITestCase
     public function testPost()
     {
         $this->assertRestPostSuccess(null, function($data) {
-            $data["user_id"] = $this->passportUser->id;
+            $data["user_id"] = $this->requester->id;
             return Arr::except($data, []);
         });
     }
@@ -42,8 +43,8 @@ class CommentsTest extends APITestCase
         DB::table("comments")
             ->where("id", "=", $comment->id)
             ->update(["updated_at" => Carbon::now()]);
-        Passport::actingAs($comment->user, ["registered"]);
 
+        JWT::actingAs($comment->user);
         $this->json("patch", "/comments/{$comment->id}", [
             "content" => $newContent
         ]);
@@ -76,7 +77,7 @@ class CommentsTest extends APITestCase
     {
         $uri = "/comments/latest/1/10";
 
-        $this->autoMockScope("get", $uri);
+        $this->event("before.request", "get", $uri);
         $this->json("get", $uri);
 
         $this->assertResponseOk();

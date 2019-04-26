@@ -23,7 +23,7 @@ class CountersTableSeeder extends BaseTableSeeder
         $total = $activities->count() + $notions->count() + $chapters->count();
 
         $progressBar = $this->output->createProgressBar($total);
-        $progressBar->setFormat("[%bar%] %percent:3s%% (%current%/%max%) ETA: %estimated:-6s%");
+        $progressBar->setFormat("%bar% %percent:3s%% (%current%/%max%) ETA: %estimated:-6s%");
 
         foreach ($activities as $activity) {
             $activity->updateCounters();

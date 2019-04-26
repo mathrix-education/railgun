@@ -2,8 +2,10 @@
 
 namespace Tests;
 
+use App\Models\User;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Mathrix\Lumen\Bases\BaseModel;
+use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Tests\OpenAPI\OpenAPITrait;
 use Mathrix\Lumen\Tests\REST\RESTTrait;
 use Mathrix\Lumen\Tests\Traits\DebugTrait;
@@ -29,6 +31,9 @@ class APITestCase extends BaseTestCase
     /** @var string The test main model plural (used to build request URLs) */
     protected $baseUri = null;
 
+    /** @var User $requester The request user */
+    protected $requester;
+
 
     public static function setUpBeforeClass()
     {
@@ -44,6 +49,9 @@ class APITestCase extends BaseTestCase
     {
         parent::setUp();
         $this->initializeREST();
+        $this->handler("before.request", function (string $method, string $uri) {
+            $this->requester = JWT::autoScope($method, $uri);
+        });
     }
 
 

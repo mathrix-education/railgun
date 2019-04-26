@@ -24,7 +24,7 @@ class VotesTest extends APITestCase
         $comment = Comment::random();
         $value = $this->faker->boolean ? 1 : -1;
         $uri = "/votes/comment/{$comment->id}";
-        $this->autoMockScope("post", $uri);
+        JWT::autoScope("post", $uri);
 
         $this->json("post", "/votes/comment/{$comment->id}", [
             "value" => $value
@@ -34,7 +34,7 @@ class VotesTest extends APITestCase
         $this->assertOpenAPIResponse();
 
         $this->assertInDatabase("votes", [
-            "user_id" => $this->passportUser->id,
+            "user_id" => $this->requester->id,
             "comment_id" => $comment->id,
             "value" => $value
         ]);

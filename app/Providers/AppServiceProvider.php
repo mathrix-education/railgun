@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\PassportServiceProvider;
 use Laravelium\Sitemap\SitemapServiceProvider;
+use Mathrix\Lumen\JWT\Auth\JWTServiceProvider;
 use Mathrix\Lumen\Providers\ObserverServiceProvider;
 use Mathrix\Lumen\Providers\PolicyServiceProvider;
 use Mathrix\Lumen\Providers\RegistrarServiceProvider;
@@ -49,7 +50,6 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         // App service providers
-        $this->app->register(AuthServiceProvider::class);
         $this->app->register(EventServiceProvider::class);
         $this->app->register(BraintreeGatewayServiceProvider::class);
         $this->app->register(StripeServiceProvider::class);
@@ -60,9 +60,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(MailServiceProvider::class);
         $this->app->register(NotificationServiceProvider::class);
         $this->app->register(PassportServiceProvider::class);
-        $this->app->register(LumenPassportServiceProvider::class);
         $this->app->register(SitemapServiceProvider::class);
         $this->app->register(GoogleCloudStorageServiceProvider::class);
+        $this->app->register(JWTServiceProvider::class);
 
         // Mathrix Lumen Zero Providers
         $this->registerObservers();

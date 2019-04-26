@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\Passport;
+use Mathrix\Lumen\JWT\Auth\JWT;
+use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
 use Tests\APITestCase;
 
@@ -19,7 +21,7 @@ use Tests\APITestCase;
  */
 class UsersTest extends APITestCase
 {
-    use StandardIndexTest;
+    use StandardIndexTest, StandardGetTest;
 
 
     /**
@@ -43,24 +45,11 @@ class UsersTest extends APITestCase
     /**
      * GET /users/{userId}
      */
-    public function testGet()
-    {
-        $user = User::random(["type", "=", "registered"]);
-        Passport::actingAs($user, ["registered"]);
-        $this->json("get", "/users/{$user->id}");
-
-        $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
-    }
-
-
-    /**
-     * GET /users/{userId}
-     */
     public function testGetAdmin()
     {
-        $user = User::random(["type", "=", "admin"]);
-        Passport::actingAs($user, explode(" ", $user->getPassportScopes()));
+        /** @var User $user */
+        $user = User::scope("admin")->inRandomOrder()->firstOrFail();
+        JWT::actingAs($user);
         $this->json("get", "/users/{$user->id}");
 
         $this->assertResponseOk();
@@ -73,8 +62,9 @@ class UsersTest extends APITestCase
      */
     public function testGetSomeoneElse()
     {
-        $user = User::random(["type", "=", "registered"]);
-        Passport::actingAs($user, ["registered"]);
+        /** @var User $user */
+        $user = User::scope("registered")->inRandomOrder()->firstOrFail();
+        JWT::actingAs($user);
         $someone = User::random(["id", "!=", $user->id]);
 
         $this->json("get", "/users/{$someone->id}");
@@ -89,8 +79,6 @@ class UsersTest extends APITestCase
      */
     public function testPatch()
     {
-        $this->mockScope(["registered"]);
-
         $newPassword = $this->faker->password(20, 20);
         $payload = array_merge(
             Arr::except(
@@ -101,8 +89,9 @@ class UsersTest extends APITestCase
                 "password" => $newPassword
             ]
         );
+
         /** @var User $user */
-        $user = $this->passportUser;
+        $user = JWT::withScopes("registered");
 
         $this->json("patch", "/users/{$user->id}", $payload);
 
@@ -131,9 +120,9 @@ class UsersTest extends APITestCase
             ]
         );
 
-        $this->mockScope(["registered"]);
+        ;
         /** @var User $user */
-        $user = $this->passportUser;
+        $user = JWT::withScopes("registered");
 
         $this->json("patch", "/users/{$user->id}", $payload);
 
@@ -152,9 +141,8 @@ class UsersTest extends APITestCase
      */
     public function testPatchLastSession()
     {
-        $this->mockScope(["registered"]);
         /** @var User $user */
-        $user = $this->passportUser;
+        $user = JWT::withScopes("registered");;
 
         $module = Module::random(["visible", "=", true]);
         $settings = array_merge($user->settings, ["last_session" => [
@@ -173,11 +161,11 @@ class UsersTest extends APITestCase
      */
     public function testPointsWithModule()
     {
-        $this->mockScope("registered");
-        $pointsBefore = $this->passportUser->points;
+        $user = JWT::withScopes("registered");
+        $pointsBefore = $this->requester->points;
         $module = Module::random(["visible", "=", true]);
 
-        $this->json("post", "users/{$this->passportUser->id}/points", [
+        $this->json("post", "users/{$user->id}/points", [
             "loggable_type" => "module",
             "loggable_id" => $module->id,
             "points" => 100

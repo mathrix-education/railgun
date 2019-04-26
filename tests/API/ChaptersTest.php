@@ -7,6 +7,7 @@ use App\Models\Mark;
 use App\Models\User;
 use Illuminate\Support\Arr;
 use Laravel\Passport\Passport;
+use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
@@ -58,7 +59,7 @@ class ChaptersTest extends APITestCase
         $chapter = Chapter::random();
         $uri = "/chapters/{$chapter->id}/recursive";
 
-        $this->autoMockScope("get", $uri);
+        JWT::autoScope("get", $uri);
         $this->json("get", $uri);
 
         $this->assertResponseOk();
@@ -77,12 +78,9 @@ class ChaptersTest extends APITestCase
             ->firstOrFail();
 
         $chapterId = $mark->markable->notion->chapter_id;
-
-        $user = User::random(["type", "=", "registered"]);
-        Passport::actingAs($user, ["registered"]);
-
         $uri = "/chapters/{$chapterId}/recursive";
-        $this->autoMockScope("get", $uri);
+        JWT::autoScope("get", $uri);
+
         $this->json("get", $uri);
 
         $this->assertResponseOk();
@@ -97,7 +95,7 @@ class ChaptersTest extends APITestCase
         $chapter = Chapter::random(["visible", "=", true]);
         $uri = "/chapters/by-grade-discipline/{$chapter->grade_id}/{$chapter->discipline_id}";
 
-        $this->autoMockScope("get", $uri);
+        JWT::autoScope("get", $uri);
         $this->json("get", $uri);
 
         $this->assertResponseOk();
@@ -113,7 +111,7 @@ class ChaptersTest extends APITestCase
         $chapter = Chapter::random();
         $uri = "/chapters/slug/{$chapter->slug}/by-grade-slug/{$chapter->grade->slug}";
 
-        $this->autoMockScope("get", $uri);
+        JWT::autoScope("get", $uri);
         $this->json("get", $uri);
 
         $this->assertResponseOk();

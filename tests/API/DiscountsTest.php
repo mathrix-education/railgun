@@ -4,6 +4,7 @@ namespace Tests\API;
 
 use App\Models\Discount;
 use App\Models\Product;
+use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Tests\REST\Standard\StandardDeleteTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
@@ -67,7 +68,7 @@ class DiscountsTest extends APITestCase
         $discount = Discount::query()->has("products")->firstOrFail();
 
         $uri = "/discounts/{$discount->id}/products/0/100";
-        $this->autoMockScope("get", $uri);
+        JWT::autoScope("get", $uri);
         $this->json("get", $uri);
 
         $this->assertResponseOk();
@@ -85,7 +86,7 @@ class DiscountsTest extends APITestCase
         $productIds = Product::query()->inRandomOrder()->limit(5)->get()->pluck("id");
 
         $uri = "/discounts/{$discount->id}/products/0/100";
-        $this->autoMockScope("patch", $uri);
+        JWT::autoScope("patch", $uri);
         $this->json("patch", $uri, $productIds->toArray());
 
         $this->assertResponseOk();
