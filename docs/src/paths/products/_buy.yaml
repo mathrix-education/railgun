@@ -35,9 +35,7 @@ post:
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: '../../index.yaml#/components/schemas/Braintree_Transaction'
+            $ref: '../../index.yaml#/components/schemas/Braintree_Transaction'
     400:
       description: Bad request
       content:

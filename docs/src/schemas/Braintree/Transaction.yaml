@@ -51,6 +51,7 @@ properties:
       invoice numbers are unique in your PayPal business account.
     type: string
     example: sd54zsa
+    nullable: true
   paymentInstrumentType:
     type: string
     enum:
@@ -70,6 +71,7 @@ properties:
     - v4_monthly
     - v4_annually
     - v4_biannually
+    nullable: true
   refundIds:
     description: The transaction refund ID(s) associated with a sale transaction.
     type: array
@@ -79,7 +81,8 @@ properties:
   refundedTransactionId:
     description: The sale transaction ID associated with a refund transaction.
     type: string
-    exmaple: '5sd6vsz'
+    example: '5sd6vsz'
+    nullable: true
   status:
     $ref: '../../index.yaml#/components/schemas/Braintree_TransactionStatus'
   status:History:
@@ -107,6 +110,7 @@ properties:
     description: The value used to identify a specific subscription.
     type: string
     example: 'sub_ds5qsd7z5e4qza85zs64e'
+    nullable: true
   updatedAt:
     description: The date/time the object was last updated.
     type: string

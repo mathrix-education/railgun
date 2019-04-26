@@ -21,6 +21,7 @@ use App\Services\Braintree\Exceptions\BraintreeGatewayException;
 use App\Services\Braintree\Exceptions\BraintreeProcessorException;
 use App\Services\Braintree\Exceptions\DuplicatePaymentMethodNonceException;
 use App\Services\Braintree\Utils\AffiliateProcess;
+use App\Services\Braintree\Utils\Formatter;
 use Braintree\Transaction as BraintreeTransaction;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Http\JsonResponse;
@@ -287,7 +288,7 @@ class CartPipeline
 
         $this->finalize();
 
-        return new JsonResponse($this->saleResult->transaction);
+        return new JsonResponse(Formatter::cast($this->saleResult->transaction->jsonSerialize()));
     }
 
 
