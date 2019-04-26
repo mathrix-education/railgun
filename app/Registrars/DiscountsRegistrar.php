@@ -36,9 +36,6 @@ class DiscountsRegistrar extends BaseRegistrar
                 "$controller@patchProducts");
         });
 
-        $this->get("discounts/code/{code:[a-zA-Z0-9\-]+}", [
-            "uses" => "$controller@getByCode",
-            "middleware" => "scope:registered"
-        ]);
+        $this->get("discounts/code/{code:[a-zA-Z0-9\-]+}", "$controller@getByCode");
     }
 }
