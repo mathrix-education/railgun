@@ -1,6 +1,6 @@
 type: object
 additionalProperties: false
-required: [premium, type, visible, seo_index]
+required: [premium, type, visible]
 properties:
   id:
     description: The module id.
@@ -8,7 +8,7 @@ properties:
     example: 14
     readOnly: true
   type:
-    description: The module content type.
+    description: The module type.
     type: string
     enum: []
   content:

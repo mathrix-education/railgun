@@ -19,23 +19,6 @@ class CountryObserver extends BaseObserver
      * @param Country $country
      *
      * @return bool
-     */
-    public function saving($country)
-    {
-        // Set the slug if needed
-        if (empty($country->slug) ||
-            ($country->isDirty("name") && !$country->isDirty("slug"))) {
-            $country->slug = Str::slug($country->name);
-        }
-
-        return true;
-    }
-
-
-    /**
-     * @param Country $country
-     *
-     * @return bool
      * @throws ForeignConstraintsException
      */
     public function deleting(Country $country)

@@ -17,22 +17,6 @@ use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 class ChapterObserver extends BaseObserver
 {
     /**
-     * @param Chapter $chapter
-     *
-     * @return bool
-     */
-    public function saving($chapter)
-    {
-        // Set the slug if needed
-        if (empty($chapter->slug) || ($chapter->isDirty("name") && !$chapter->isDirty("slug"))) {
-            $chapter->slug = Str::slug($chapter->name);
-        }
-
-        return true;
-    }
-
-
-    /**
      * After save, purge chapter-related cache.
      *
      * @param Chapter $chapter
@@ -44,7 +28,7 @@ class ChapterObserver extends BaseObserver
             ->where("key", "LIKE", "chapters.grade.{$chapter->grade_id}.discipline.{$chapter->discipline_id}.%")
             ->delete();
         DB::table("cache")
-            ->where("key", "LIKE", "user.%.chapter.{$chapter->id}.recursive")
+            ->where("key", "REGEXP", "^user\.[0-9]+\.chapter\.{$chapter->id}\.recursive$")
             ->delete();
     }
 

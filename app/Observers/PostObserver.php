@@ -24,12 +24,6 @@ class PostObserver extends BaseObserver
      */
     public function saving($post)
     {
-        // Set the slug if needed
-        if (empty($post->slug) ||
-            ($post->isDirty("title") && !$post->isDirty("slug"))) {
-            $post->slug = Str::slug($post->title);
-        }
-
         // By default set the post user_id to the current user id.
         if (empty($post->user_id)) {
             /** @var User $user */

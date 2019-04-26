@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Exceptions\DiscountExpiredException;
 use App\Exceptions\DiscountNotApplicableException;
+use App\Exceptions\ImmutableException;
 use App\Exceptions\InvalidBraintreeCustomerException;
 use App\Exceptions\InvalidSponsorException;
 use App\Exceptions\ProductAlreadyBoughtException;
@@ -21,6 +22,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Mathrix\Lumen\Bases\BaseController;
+use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
 use Mathrix\Lumen\Exceptions\ValidationException;
 use Mathrix\Lumen\Responses\PaginationJsonResponse;
 
@@ -171,6 +173,7 @@ class ProductsController extends BaseController
      * @throws ProductNotBuyableException
      * @throws SponsorNotFoundException
      * @throws ValidationException
+     * @throws ImmutableException
      */
     public function buy(Request $request): JsonResponse
     {
@@ -192,6 +195,7 @@ class ProductsController extends BaseController
      * @throws ProductNotBuyableException
      * @throws SponsorNotFoundException
      * @throws ValidationException
+     * @throws Http401UnauthorizedException
      */
     public function cart(Request $request)
     {
@@ -203,7 +207,7 @@ class ProductsController extends BaseController
             "sponsor_email" => "nullable|string"
         ]);
 
-        /** @var User $customer */
+        /** @var User|null $customer */
         $customer = $request->user();
         /** @var int[] $productIds */
         $productIds = $request->json("cart");
@@ -227,7 +231,7 @@ class ProductsController extends BaseController
 
         // Check products integrity
         foreach ($products as $product) {
-            if ($customer->hasPurchased($product)) {
+            if ($customer !== null && $customer->hasPurchased($product)) {
                 throw new ProductAlreadyBoughtException($customer, $product);
             } else if ($product->price === null) {
                 throw  new ProductNotBuyableException($product);
@@ -246,6 +250,10 @@ class ProductsController extends BaseController
 
         // Check sponsor email if any
         if ($request->json("sponsor_email") !== null) {
+            if ($customer === null) {
+                throw new Http401UnauthorizedException();
+            }
+
             $sponsorEmail = $request->json("sponsor_email");
             $affiliateProcess = new AffiliateProcess($customer, $sponsorEmail);
             $affiliateProcess->canBeAffiliatedOrFail();

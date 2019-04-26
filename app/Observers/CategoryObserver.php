@@ -19,23 +19,6 @@ class CategoryObserver extends BaseObserver
      * @param Category $category
      *
      * @return bool
-     */
-    public function saving($category)
-    {
-        // Set the slug if needed
-        if (empty($category->slug) ||
-            ($category->isDirty("name") && !$category->isDirty("slug"))) {
-            $category->slug = Str::slug($category->name);
-        }
-
-        return true;
-    }
-
-
-    /**
-     * @param Category $category
-     *
-     * @return bool
      * @throws Http400BadRequestException
      */
     public function deleting($category)
