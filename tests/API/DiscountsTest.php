@@ -97,4 +97,13 @@ class DiscountsTest extends APITestCase
             ]);
         });
     }
+
+
+    /**
+     * GET /discounts/code/{discountCode}
+     */
+    public function testByCode(): void
+    {
+        $this->assertRestGetBySuccess("code");
+    }
 }

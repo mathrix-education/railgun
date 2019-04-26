@@ -21,7 +21,6 @@ use App\Services\Braintree\Exceptions\BraintreeProcessorException;
 use App\Services\Braintree\Exceptions\DuplicatePaymentMethodNonceException;
 use App\Services\Braintree\Utils\AffiliateProcess;
 use Braintree\Transaction as BraintreeTransaction;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -42,7 +41,6 @@ use Mathrix\Lumen\Exceptions\ValidationException;
  */
 class CartPipeline
 {
-    public const MODE_MACHINE_2019_END = "2019-07-31 00:00:00";
 
     /** @var $request Request The Illuminate HTTP request */
     private $request;
@@ -295,26 +293,6 @@ class CartPipeline
 
 
     /**
-     * Deliver pack products.
-     *
-     * @param Product $pack
-     * @param BraintreeTransaction $transaction
-     */
-    private function deliverPackProducts(Product $pack, BraintreeTransaction $transaction)
-    {
-        $pack->items->each(function (Product $item) use ($transaction) {
-            if ($item->type === "premium") {
-                // Premium product
-                $this->customer->premium_bypass_expires_at = new Carbon(self::MODE_MACHINE_2019_END);
-                $this->customer->save();
-            } else {
-                $item->deliver($this->customer, $transaction);
-            }
-        });
-    }
-
-
-    /**
      * Finalize the transaction
      * - Unlock the products for the user
      * - Decrement the discount counter if needed
@@ -326,11 +304,6 @@ class CartPipeline
 
         // Insert new purchase records
         $this->products->each(function (Product $product) {
-            // Handle packs items dispatching
-            if ($product->type === "pack") {
-                $this->deliverPackProducts($product, $this->saleResult->transaction);
-            }
-
             $product->deliver($this->customer, $this->saleResult->transaction);
         });
 

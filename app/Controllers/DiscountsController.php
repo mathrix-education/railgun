@@ -63,4 +63,23 @@ class DiscountsController extends BaseController
 
         return new PaginationJsonResponse($discount->products(), $page, $perPage);
     }
+
+
+    /**
+     * GET /discounts/code/{discountCode}
+     * Check if a discount is valid.
+     *
+     * @param string $code The discount code.
+     *
+     * @return JsonResponse
+     */
+    public function getByCode(string $code)
+    {
+        $discount = Discount::query()
+            ->where("code", "=", $code)
+            ->firstOrFail();
+
+        return new JsonResponse($discount);
+    }
 }
+

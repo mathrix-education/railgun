@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Exceptions\ImmutableException;
 use App\Models\Traits\BraintreeCustomer;
 use App\Models\Traits\PermissionsTrait;
 use App\Models\Traits\StripeCustomer;
@@ -177,7 +178,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * @param array $payload The record payload.
      *
      * @return Record
-     * @throws ValidationException
+     * @throws ImmutableException
      */
     public function record(string $service, string $event, string $status, array $payload)
     {
@@ -195,7 +196,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function hasPurchased(Product $product): bool
     {
         return $this->products()
-            ->where("product_id", "=", $product->id)
+            ->wherePivot("product_id", "=", $product->id)
             ->exists();
     }
 

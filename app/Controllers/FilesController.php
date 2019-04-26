@@ -182,7 +182,7 @@ class FilesController extends BaseController
      *
      * @return JsonResponse
      */
-    public function explore(Request $request, string $directory = null)
+    public function explore(Request $request, string $directory = "/")
     {
         $request->user()->canOrFail("explore", FilePolicy::class);
 

@@ -237,6 +237,7 @@ class ProductsController extends BaseController
         $lines = $products->map(function (Product $product) use ($customer, $discount) {
             return array_merge([
                 "name" => $product->name,
+                "type" => $product->type,
                 "description" => $product->description,
                 "price" => $product->price,
                 "price_after_discount" => $product->getNewPrice($discount)
@@ -251,6 +252,7 @@ class ProductsController extends BaseController
 
             $lines->push([
                 "name" => "Parrainage",
+                "type" => "sponsorship",
                 "description" => "Email du parrain: {$sponsorEmail}",
                 "price" => -AffiliateProcess::AFFILIATE_DISCOUNT,
                 "price_after_discount" => -AffiliateProcess::AFFILIATE_DISCOUNT
