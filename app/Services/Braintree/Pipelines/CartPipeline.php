@@ -5,6 +5,7 @@ namespace App\Services\Braintree\Pipelines;
 use App\Events\TransactionSuccessEvent;
 use App\Exceptions\DiscountExpiredException;
 use App\Exceptions\DiscountNotApplicableException;
+use App\Exceptions\ImmutableException;
 use App\Exceptions\InvalidBraintreeCustomerException;
 use App\Exceptions\InvalidSponsorException;
 use App\Exceptions\ProductAlreadyBoughtException;
@@ -266,14 +267,16 @@ class CartPipeline
      * @throws BraintreeGatewayException
      * @throws BraintreeProcessorException
      * @throws DuplicatePaymentMethodNonceException
-     * @throws ValidationException
+     * @throws DuplicatePaymentMethodNonceException
      * @throws InvalidBraintreeCustomerException
+     * @throws ImmutableException
      */
     public function process()
     {
         $this->customer->requireBraintreeCustomer();
 
         // Process the cart in a Braintree transaction
+        /** @var BraintreeResponse $saleResult */
         $this->saleResult = BraintreeTransaction::sale($this->getTransactionPayload());
 
         if (!$this->saleResult->success) {
@@ -284,11 +287,7 @@ class CartPipeline
 
         $this->finalize();
 
-        $products = Product::query()
-            ->whereIn("id", $this->products->pluck("id"))
-            ->get();
-
-        return new JsonResponse($products);
+        return new JsonResponse($this->saleResult->transaction);
     }
 
 
