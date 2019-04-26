@@ -208,7 +208,7 @@ trait BraintreeCustomer
             ]
         ]);
 
-        if (!$result->success) {
+        if (!$result->success || $result instanceof Error) {
             BraintreeErrorHandler::report($result);
         }
 
