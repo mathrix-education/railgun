@@ -89,7 +89,7 @@ class Product extends BaseModel
      *
      * @return Purchase
      */
-    public function deliver(User $customer, Transaction $transaction): Purchase
+    public function deliver(User $customer, ?Transaction $transaction): Purchase
     {
         if ($this->type === "pack") {
             $this->items->each(function (Product $item) use ($customer, $transaction) {
@@ -101,8 +101,12 @@ class Product extends BaseModel
             $customer->save();
         }
 
+        $this->children->each(function (Product $child) use ($customer, $transaction) {
+            $child->deliver($customer, $transaction);
+        });
+
         $purchase = new Purchase([
-            "transaction_id" => $transaction->id,
+            "transaction_id" => $transaction !== null ? $transaction->id : null,
             "user_id" => $customer->id,
             "product_id" => $this->id,
         ]);

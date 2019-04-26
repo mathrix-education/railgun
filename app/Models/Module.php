@@ -108,23 +108,37 @@ class Module extends BaseModel
         /** @var User $user */
         $user = Auth::user();
 
-        /** @var bool $isPremium If the module's parent activity is premium */
-        $isPremium = $this->activity !== null && $this->activity->premium;;
-        /** @var bool $isProduct If the module is linked to a product */
-        $isProduct = $this->products->isNotEmpty();
+        /** @var bool $belongsToPremiumActivity If the module's parent activity is premium */
+        $belongsToPremiumActivity = $this->activity !== null && $this->activity->premium;;
+        /** @var bool $belongsToProduct If the module is linked to a product */
+        $belongsToProduct = $this->products->isNotEmpty();
         /** @var bool $userIsPremium If the user is premium */
         $userIsPremium = $user !== null && ($user->premium || $user->tokenCan("moderator"));
-        /** @var bool $userHasPurchased If the user has purchased one of the related products */
-        $userHasPurchased = $user !== null && ($user->tokenCan("moderator") || $this->products()
-                ->get(["id"])
-                ->reduce(function (bool $current, Product $product) use ($user) {
-                    return $current || $user->hasPurchased($product);
-                }, false));
+        /** @var bool $userOwnsProduct If the user has purchased one of the related products */
+        $userOwnsProduct = $user !== null && ($user->tokenCan("moderator") || $this->products()
+                    ->get(["id"])
+                    ->reduce(function (bool $current, Product $product) use ($user) {
+                        return $current || $user->hasPurchased($product);
+                    }, false));
 
         $this->unsetRelation("activity");
         $this->unsetRelation("products");
 
-        return ($isPremium && !$userIsPremium) || ($isProduct && !$userHasPurchased);
+        if ($belongsToProduct) {
+            if ($userOwnsProduct || ($belongsToPremiumActivity && $userIsPremium)) {
+                return false;
+            }
+
+            return true;
+        } else if ($belongsToPremiumActivity) {
+            if ($userIsPremium) {
+                return false;
+            }
+
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
@@ -135,7 +149,7 @@ class Module extends BaseModel
      */
     public function toArray()
     {
-        if (!$this->shouldStrip() || app()->environment() === "testing") {
+        if (!$this->shouldStrip()) {
             return parent::toArray();
         }
 
