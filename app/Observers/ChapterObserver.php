@@ -28,7 +28,7 @@ class ChapterObserver extends BaseObserver
             ->where("key", "LIKE", "chapters.grade.{$chapter->grade_id}.discipline.{$chapter->discipline_id}.%")
             ->delete();
         DB::table("cache")
-            ->where("key", "LIKE", "user.%.chapter.{$chapter->id}.recursive")
+            ->where("key", "REGEXP", "^user\.[0-9]+\.chapter\.{$chapter->id}\.recursive$")
             ->delete();
     }
 
