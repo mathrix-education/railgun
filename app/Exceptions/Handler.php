@@ -67,6 +67,7 @@ class Handler extends ExceptionHandler
         if ($sentryDSN !== null && app()->bound("sentry") && $this->shouldReport($e)) {
             /** @var Raven_Client $sentry */
             $sentry = app("sentry");
+            $sentry->environment = env("APP_ENV");
 
             /** @var User $user */
             $user = Auth::user();

@@ -194,8 +194,14 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function hasPurchased(Product $product): bool
     {
+        $products = new \Illuminate\Support\Collection([$product->id]);
+
+        while ($product->parent !== null && $products->search($product->parent->id) === false) {
+            $products->push($product->parent->id);
+        }
+
         return $this->products()
-            ->where("product_id", "=", $product->id)
+            ->whereIn("product_id", $products->toArray())
             ->exists();
     }
 
