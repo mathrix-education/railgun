@@ -252,6 +252,7 @@ class CartPipeline
             "customerId" => $this->customer->braintree_id,
             "discountAmount" => $discountAmount,
             "lineItems" => $lineItems->toArray(),
+            "merchantAccountId" => env("BRAINTREE_MERCHANT_ACCOUNT"),
             "options" => [
                 "submitForSettlement" => true,
             ],
