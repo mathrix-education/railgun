@@ -212,16 +212,19 @@ class CartPipeline
     public function getTransactionPayload()
     {
         $lineItems = new EloquentCollection();
+        $amount = 0;
 
         /** @var Product $product */
         foreach ($this->products as $product) {
+            $amount += $product->getNewPrice($this->discount);
+
             $lineItem = [
                 "description" => $product->description,
                 "kind" => "debit",
                 "name" => $product->name,
                 "productCode" => $product->id,
                 "quantity" => 1, // We only sell digital products
-                "totalAmount" => $product->getNewPrice($this->discount),
+                "totalAmount" => $product->price,
                 "unitAmount" => $product->price,
                 "unitOfMeasure" => "eur",
             ];
@@ -233,12 +236,22 @@ class CartPipeline
             $lineItems->add($lineItem);
         }
 
-        $amount = $lineItems->sum(function ($lineItem) {
-            return $lineItem["totalAmount"];
-        });
         $discountAmount = $lineItems->sum(function ($lineItem) {
             return $lineItem["discountAmount"] ?? 0;
         });
+
+        if ($discountAmount > 0) {
+            $lineItems->add([
+                "description" => "Code promo: {$this->discount->code}",
+                "kind" => "credit",
+                "name" => $this->discount->code,
+                "productCode" => $this->discount->id,
+                "quantity" => 1, // We only sell digital products
+                "totalAmount" => $discountAmount,
+                "unitAmount" => $discountAmount,
+                "unitOfMeasure" => "eur",
+            ]);
+        }
 
         // Add affiliate line item
         if ($this->affiliateProcess !== null && $this->affiliateProcess->canBeAffiliated()) {
