@@ -54,8 +54,6 @@ class Comment extends BaseModel
         "parent_id",
         "user_id",
         "module_id",
-        "created_at",
-        "updated_at",
         "deleted_at"
     ];
     /** @var array Validation rules */
