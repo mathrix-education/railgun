@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Product;
 use Mathrix\Lumen\Bases\BaseCommand;
 
 /**
@@ -20,5 +21,6 @@ class TestCommand extends BaseCommand
 
     public function handle()
     {
+        dd(Product::query()->findOrFail(288)->lineage()->toArray());
     }
 }

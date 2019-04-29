@@ -130,6 +130,26 @@ class UsersController extends BaseController
 
 
     /**
+     * DELETE /users/{userId}/cache
+     *
+     * @param int $userId
+     *
+     * @return JsonResponse
+     */
+    public function cache(int $userId): JsonResponse
+    {
+        /** @var User $user */
+        $user = User::query()->findOrFail($userId);
+        $user->invalidate();
+
+        return new JsonResponse([
+            "success" => true,
+            "message" => "User with id `$userId` cache was successfully cleared.",
+        ]);
+    }
+
+
+    /**
      * POST /users/points
      * Add points to the current user.
      *

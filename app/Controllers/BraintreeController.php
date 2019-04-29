@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Events\SubscriptionCancelledEvent;
 use App\Events\SubscriptionChargedSuccessfullyEvent;
 use App\Events\TransactionSuccessEvent;
 use App\Models\User;
@@ -70,11 +71,17 @@ class BraintreeController extends BaseController
         );
 
         if ($webhook->kind === WebhookNotification::SUBSCRIPTION_CHARGED_SUCCESSFULLY) {
-            if (isset($webhook->subscription->transactions[0])) {
-                event(new TransactionSuccessEvent($webhook->subscription->transactions[0]));
-            }
+            if (isset($webhook->subscription)) {
+                if (isset($webhook->subscription->transactions[0])) {
+                    event(new TransactionSuccessEvent($webhook->subscription->transactions[0]));
+                }
 
-            event(new SubscriptionChargedSuccessfullyEvent($webhook->subscription));
+                event(new SubscriptionChargedSuccessfullyEvent($webhook->subscription));
+            }
+        } else if ($webhook->kind === WebhookNotification::SUBSCRIPTION_CANCELED) {
+            if (isset($webhook->subscription)) {
+                event(new SubscriptionCancelledEvent($webhook->subscription));
+            }
         }
 
         return new JsonResponse([
