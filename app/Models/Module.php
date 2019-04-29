@@ -116,7 +116,7 @@ class Module extends BaseModel
         $userIsPremium = $user !== null && ($user->premium || $user->tokenCan("moderator"));
         /** @var bool $userOwnsProduct If the user has purchased one of the related products */
         $userOwnsProduct = $user !== null && ($user->tokenCan("moderator") || $this->products()
-                    ->get(["id"])
+                    ->get()
                     ->reduce(function (bool $current, Product $product) use ($user) {
                         return $current || $user->hasPurchased($product);
                     }, false));
