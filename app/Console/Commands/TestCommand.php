@@ -2,7 +2,12 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Product;
+use App\Jobs\RefundSponsorJob;
+use App\Models\Module;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Queue;
+use Laravel\Passport\Passport;
 use Mathrix\Lumen\Bases\BaseCommand;
 
 /**
@@ -21,6 +26,11 @@ class TestCommand extends BaseCommand
 
     public function handle()
     {
-        dd(Product::query()->findOrFail(288)->lineage()->toArray());
+        /** @var User $user */
+        $user = User::query()->findOrFail(106817);
+        $module = Module::query()->findOrFail(6664);
+
+        Passport::actingAs($user, $user->getPassportScopesArray());
+        dd($module->toArray());
     }
 }
