@@ -163,20 +163,4 @@ class ProductsTest extends APITestCase
         $this->assertResponseOk();
         $this->assertOpenAPIResponse();
     }
-
-
-    public function testProductsRecursiveNotStriped()
-    {
-        $training = Product::random(["type", "=", "training"]);
-        $user = User::random(["type", "=", "registered"]);
-        $user->premium_bypass = true;
-        $user->save();
-
-        $training->deliver($user, null);
-
-        Passport::actingAs($user, $user->getPassportScopesArray());
-        $this->json("get", "/products/{$training->id}/recursive");
-
-        $this->debug();
-    }
 }

@@ -5,6 +5,7 @@ namespace Tests\API;
 use App\Models\Module;
 use App\Models\User;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\Passport;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
@@ -108,7 +109,7 @@ class UsersTest extends APITestCase
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse();
-        $this->assertInDatabase("users", Arr::except($payload, ["current_password", "password"," settings"]));
+        $this->assertInDatabase("users", Arr::except($payload, ["current_password", "password", " settings"]));
 
         $new = $payload["password"];
         $hashed = $user->refresh()->password;
@@ -165,6 +166,27 @@ class UsersTest extends APITestCase
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse();
+    }
+
+
+    /**
+     * DELETE /users/{userId}/cache
+     * Test user cache clear.
+     */
+    public function testCache()
+    {
+        $this->mockScope(["admin"]);
+        $user = User::random();
+
+        $this->json("delete", "/users/{$user->id}/cache");
+
+        $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
+        $this->assertEquals(0,
+            DB::table("cache")
+                ->where("key", "LIKE", "user.{$user->id}.%")
+                ->count()
+        );
     }
 
 

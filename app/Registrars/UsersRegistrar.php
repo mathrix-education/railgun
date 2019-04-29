@@ -34,6 +34,7 @@ class UsersRegistrar extends BaseRegistrar
         });
 
         $this->group(["middleware" => "scope:admin"], function () use ($controller) {
+            $this->delete("users/{userId:[1-9]\d*}/cache", "$controller@cache");
             $this->post("users/search[/{page:\d+}/{perPage:[1-9]\d*}]", "$controller@search");
         });
     }
