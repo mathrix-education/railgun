@@ -1,7 +1,7 @@
 {
   "name": "mathrix/education-api",
   "description": "The Mathrix Education Lumen API.",
-  "version": "5.0.2-rc1",
+  "version": "5.0.3",
   "type": "project",
   "keywords": [
     "education",
@@ -54,7 +54,6 @@
   },
   "require-dev": {
     "brianium/paratest": "^2.0",
-    "damianopetrungaro/php-commitizen": "^0.1.2",
     "doctrine/dbal": "^2.5",
     "helmich/phpunit-json-assert": "^2.0",
     "mockery/mockery": "~1.0",
@@ -62,8 +61,7 @@
     "phpunit/phpunit": "^7.0",
     "rebilly/openapi-php": "^0.6.0",
     "symfony/psr-http-message-bridge": "^1.2",
-    "symfony/yaml": "^4.2",
-    "vluzrmos/tinker": "^1.4"
+    "symfony/yaml": "^4.2"
   },
   "autoload": {
     "psr-4": {

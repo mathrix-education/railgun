@@ -98,6 +98,19 @@ trait BraintreeCustomer
     }
 
 
+    public function getBraintreeCustomerCreationPayload()
+    {
+        $braintreeId = "cus_" . str_replace("-", "", FakerFactory::create()->uuid);
+
+        return [
+            "id" => $braintreeId,
+            "email" => $this->email,
+            "firstName" => $this->firstname,
+            "lastName" => $this->lastname
+        ];
+    }
+
+
     /**
      * Create a Braintree customer associated with this user account.
      *
