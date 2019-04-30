@@ -53,7 +53,7 @@ class SubscriptionChargedSuccessfullyListener extends BaseListener
             "ec" => "Ecommerce",
             "ea" => "Purchase",
             "ni" => "1",
-            "ti" => $event->subscription->id,
+            "ti" => $event->transaction->id,
             "pa" => "purchase",
             "uid" => $customer->id,
             "tr" => $event->transaction->amount,
