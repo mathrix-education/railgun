@@ -99,7 +99,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "grade_id"
     ];
 
-    /** @var array The hidden attributes from the model"s JSON */
+    /** @var array The hidden attributes from the model's JSON */
     protected $hidden = [
         "password",
         "token",

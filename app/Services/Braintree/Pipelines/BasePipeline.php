@@ -3,12 +3,13 @@
 namespace App\Services\Braintree\Pipelines;
 
 use App\Models\User;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\MessageBag;
-use Mathrix\Lumen\Exceptions\Http\Http500InternalServerErrorException;
+use Illuminate\Support\Facades\Validator as ValidatorFacade;
+use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
+use Mathrix\Lumen\Exceptions\Http\Http429TooManyRequestsException;
 use Mathrix\Lumen\Exceptions\ValidationException;
-use Throwable;
 
 /**
  * Class BasePipeline.
@@ -21,69 +22,95 @@ use Throwable;
 abstract class BasePipeline
 {
     /** @var Request The Illuminate HTTP request. */
-    private $request;
+    protected $request;
     /** @var User $customer The customer. */
-    private $customer;
+    protected $customer;
     /** @var string $paymentMethodNonce The payment method nonce. */
-    private $paymentMethodNonce;
-    /** @var MessageBag $validationErrors The validation errors */
-    private $validationErrors;
-
-
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
-        $this->customer = $this->request->user(); // By default, the user is the requester.
-    }
+    protected $paymentMethodNonce;
 
 
     /**
-     * Override the pipeline customer.
+     * BasePipeline constructor.
      *
-     * @param User $newCustomer
+     * @param Request $request
+     *
+     * @throws Http401UnauthorizedException
      */
-    public function setCustomer(User $newCustomer)
+    public function __construct(Request $request)
     {
-        $this->customer = $newCustomer;
+        $this->request = $request;
+        /** @var User $user */
+        $user = $this->request->user();
+
+        if (!$user instanceof User) {
+            throw new Http401UnauthorizedException();
+        }
+
+        $this->customer = $user; // By default, the user is the requester.
     }
 
 
     /**
      * Process the pipeline after validation.
      *
-     * @throws ValidationException
-     * @throws Throwable
+     * @return JsonResponse
+     * @throws Exception
      */
-    public final function process()
+    public final function process(): JsonResponse
     {
-        if (!$this->validate()) {
-            throw new ValidationException($this->validationErrors->jsonSerialize());
+        if ($this->customer->isBraintreeLocked()) {
+            throw new Http429TooManyRequestsException([], "Braintree locked");
         }
 
-        throw_if(!$this->work(), new Http500InternalServerErrorException([
-            "pipeline" => get_class($this)
-        ]));
+        try {
+            $this->customer->braintreeLock();
+            $this->validatePaymentMethodNonce();
+            $this->validate();
+            $this->work();
+            $response = $this->finalize();
+            $this->customer->braintreeUnlock();
 
-        if (!$this->work()) {
-            // Do stuff
+            return $response;
+        } catch (Exception $e) {
+            $this->customer->braintreeUnlock();
+            throw $e;
         }
+    }
 
-        return $this->finalize();
+
+    /**
+     * Validate payment method nonce presence.
+     *
+     * @throws ValidationException
+     */
+    public final function validatePaymentMethodNonce(): void
+    {
+        $validator = ValidatorFacade::make($this->request->all(), [
+            "payment_method_nonce" => "required"
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->getMessages();
+            throw new ValidationException($errors, "Model data failed to pass validation.");
+        }
+        $this->paymentMethodNonce = $this->request->json("payment_method_nonce");
     }
 
 
     /**
      * Do the validation.
+     *
+     * @return void
      */
-    abstract public function validate(): bool;
+    abstract protected function validate(): void;
 
 
     /**
      * Do the pipeline work.
      *
-     * @return bool
+     * @return void
      */
-    abstract protected function work(): bool;
+    abstract protected function work(): void;
 
 
     /**
