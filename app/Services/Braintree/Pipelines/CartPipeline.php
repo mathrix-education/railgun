@@ -254,6 +254,8 @@ class CartPipeline
         } else {
             $saleData["customer"] = $this->customer->getBraintreeCustomerCreationPayload();
             $this->customer->braintree_id = $saleData["customer"]["id"]; // Save the generated braintree_id
+            $this->customer->save();
+            $this->customer->forgetBraintreeCustomerCache();
         }
 
         return $saleData;
