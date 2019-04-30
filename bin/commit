@@ -1,2 +1,0 @@
-#!/bin/bash
-php vendor/bin/php-commitizen commit config/php-commitizen.php --all

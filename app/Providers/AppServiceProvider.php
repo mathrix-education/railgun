@@ -69,9 +69,6 @@ class AppServiceProvider extends ServiceProvider
         $this->registerPolicies();
         $this->app->register(RegistrarServiceProvider::class);
 
-        if (app()->environment("local")) {
-            $this->app->register(TinkerServiceProvider::class);
-        }
         if (env("SENTRY_DSN") !== null) {
             $this->app->register(SentryLumenServiceProvider::class);
         }
