@@ -65,7 +65,7 @@ class UsersController extends BaseController
                 "settings" => [
                     "sound" => true,
                 ],
-                "type" => "registered"
+                "scopes" => ["registered"],
             ]);
 
             $user->fill($request->all())
@@ -126,6 +126,26 @@ class UsersController extends BaseController
             ->save();
 
         return new JsonResponse($target->fresh());
+    }
+
+
+    /**
+     * DELETE /users/{userId}/cache
+     *
+     * @param int $userId
+     *
+     * @return JsonResponse
+     */
+    public function cache(int $userId): JsonResponse
+    {
+        /** @var User $user */
+        $user = User::query()->findOrFail($userId);
+        $user->invalidate();
+
+        return new JsonResponse([
+            "success" => true,
+            "message" => "User with id `$userId` cache was successfully cleared.",
+        ]);
     }
 
 

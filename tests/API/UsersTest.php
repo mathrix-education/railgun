@@ -5,8 +5,8 @@ namespace Tests\API;
 use App\Models\Module;
 use App\Models\User;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Passport\Passport;
 use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
@@ -21,7 +21,7 @@ use Tests\APITestCase;
  */
 class UsersTest extends APITestCase
 {
-    use StandardIndexTest, StandardGetTest;
+    use StandardIndexTest;
 
 
     /**
@@ -39,6 +39,20 @@ class UsersTest extends APITestCase
         $this->assertResponseOk();
         $this->assertOpenAPIResponse();
         $this->assertInDatabase("users", ["email" => $payload["email"]]);
+    }
+
+
+    /**
+     * GET /users/{userId}
+     */
+    public function testGetSelf()
+    {
+        /** @var User $user */
+        $user = JWT::withScopes("registered");
+        $this->json("get", "/users/{$user->id}");
+
+        $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
     }
 
 
@@ -97,7 +111,7 @@ class UsersTest extends APITestCase
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse();
-        $this->assertInDatabase("users", Arr::except($payload, ["current_password", "password"," settings"]));
+        $this->assertInDatabase("users", Arr::except($payload, ["current_password", "password", " settings"]));
 
         $new = $payload["password"];
         $hashed = $user->refresh()->password;
@@ -118,9 +132,7 @@ class UsersTest extends APITestCase
             ), [
                 "password" => $newPassword
             ]
-        );
-
-        ;
+        );;
         /** @var User $user */
         $user = JWT::withScopes("registered");
 
@@ -157,12 +169,34 @@ class UsersTest extends APITestCase
 
 
     /**
+     * DELETE /users/{userId}/cache
+     * Test user cache clear.
+     */
+    public function testCache()
+    {
+        JWT::withScopes("admin");
+        $user = User::random();
+
+        $this->json("delete", "/users/{$user->id}/cache");
+
+        $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
+        $this->assertEquals(0,
+            DB::table("cache")
+                ->where("key", "LIKE", "user.{$user->id}.%")
+                ->count()
+        );
+    }
+
+
+    /**
      * POST /users/{userId}/points
      */
     public function testPointsWithModule()
     {
+        /** @var User $user */
         $user = JWT::withScopes("registered");
-        $pointsBefore = $this->requester->points;
+        $pointsBefore = $user->points;
         $module = Module::random(["visible", "=", true]);
 
         $this->json("post", "users/{$user->id}/points", [

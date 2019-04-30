@@ -90,7 +90,7 @@ class NotificationsTest extends APITestCase
             ->firstOrFail();
         /** @var User $user */
         $user = $notification->notifiable;
-        Passport::actingAs($user, explode(" ", $user->getPassportScopes()));
+        JWT::actingAs($user);
 
         $this->json("patch", "/notifications/all/mark/read");
 
@@ -116,7 +116,7 @@ class NotificationsTest extends APITestCase
             ->firstOrFail();
         /** @var User $user */
         $user = $notification->notifiable;
-        Passport::actingAs($user, explode(" ", $user->getPassportScopes()));
+        JWT::actingAs($user);
 
         $this->json("patch", "/notifications/{$notification->id}/mark/read");
 
@@ -143,7 +143,7 @@ class NotificationsTest extends APITestCase
             ->firstOrFail();
         /** @var User $user */
         $user = $notification->notifiable;
-        Passport::actingAs($user, explode(" ", $user->getPassportScopes()));
+        JWT::actingAs($user);
 
         $this->json("patch", "/notifications/{$notification->id}/mark/unread");
 

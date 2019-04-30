@@ -2,6 +2,10 @@
 
 namespace App\Services\Braintree\Utils;
 
+use Braintree\Configuration;
+use Braintree\Customer;
+use Braintree\CustomerSearch;
+use Braintree\Subscription;
 use Carbon\Carbon;
 
 /**
@@ -80,5 +84,27 @@ class SubscriptionUtils
             $diffInMonths * self::PRICE_PER_MONTH[$plan]
             + $diffInDays * (self::PRICE_PER_MONTH[$plan] / 30),
             2);
+    }
+
+
+    /**
+     * Get the customer associated with a given subscription.
+     *
+     * @param string|Subscription $subscription
+     *
+     * @return Customer|null
+     */
+    public static function getSubscriptionCustomer($subscription): ?Customer
+    {
+        if (is_string($subscription)) {
+            // This a subscription id, fetch the subscription
+            $subscription = Subscription::find($subscription);
+        }
+
+        $customerResultSearch = Configuration::gateway()->customer()->search([
+            CustomerSearch::paymentMethodToken()->is($subscription->paymentMethodToken)
+        ]);
+
+        return $customerResultSearch->firstItem() ?? null;
     }
 }

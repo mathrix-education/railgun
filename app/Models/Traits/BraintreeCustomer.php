@@ -94,7 +94,7 @@ trait BraintreeCustomer
      */
     private function getBraintreeCustomerCacheKey()
     {
-        return "braintree-customer-" . $this->braintree_id;
+        return "user.{$this->id}.braintree.{$this->braintree_id}";
     }
 
 

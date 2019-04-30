@@ -8,7 +8,6 @@ use Braintree\Customer;
 use Braintree\Exception\NotFound;
 use Braintree\Subscription;
 use Braintree\Test\Nonces;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\JWT\Auth\JWT;
@@ -43,12 +42,8 @@ class SubscriptionLifecycleTest extends BraintreeTestCase
     public function testSubscriptionCreation()
     {
         Notification::fake();
-
-        $userData = factory(User::class, "registered")->raw(["settings" => "{}"]);
-        $userId = DB::table("users")->insertGetId($userData);
         /** @var User $user */
-        $user = User::query()->findOrFail($userId);
-        JWT::actingAs($user);
+        $user = JWT::withScopes("registered");
 
         $this->json("post", "/subscriptions", [
             "planId" => "v4_monthly",
@@ -93,13 +88,13 @@ class SubscriptionLifecycleTest extends BraintreeTestCase
      */
     public function testSubscriptionFind(array $payload)
     {
-        $admin = User::random(["type", "=", "admin"]);
+        JWT::withScopes("admin");
+
         /**
          * @var User $user
          * @var Subscription $subscription
          */
         [$user, $subscription] = $payload;
-        JWT::actingAs($admin);
 
         $this->json("get", "/subscriptions/{$subscription->id}");
 
@@ -184,14 +179,12 @@ class SubscriptionLifecycleTest extends BraintreeTestCase
      */
     public function testSubscriptionCancellationAtTheEndOfCurrentPeriod(array $payload)
     {
-        $admin = User::random(["type", "=", "admin"]);
         /**
          * @var User $user
          * @var Subscription $subscription
          */
         [$user, $subscription] = $payload;
-        JWT::actingAs($admin);
-
+        JWT::withScopes("admin");
 
         $this->json("post", "/subscriptions/{$subscription->id}/cancel");
 
@@ -220,13 +213,12 @@ class SubscriptionLifecycleTest extends BraintreeTestCase
      */
     public function testSubscriptionCancelNow(array $payload)
     {
-        $admin = User::random(["type", "=", "admin"]);
         /**
          * @var User $user
          * @var Subscription $subscription
          */
         [$user, $subscription] = $payload;
-        JWT::actingAs($admin);
+        JWT::withScopes("admin");
 
         $this->json("post", "/subscriptions/{$subscription->id}/cancel", [
             "now" => true

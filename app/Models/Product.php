@@ -5,10 +5,11 @@ namespace App\Models;
 use App\Models\Traits\NoPivot;
 use Braintree\Transaction;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Mathrix\Lumen\Bases\BaseModel;
 
@@ -37,9 +38,9 @@ use Mathrix\Lumen\Bases\BaseModel;
  * ---
  * @property Module|null $module
  * @property Product|null $parent
- * @property Collection|Product[] $children
- * @property Collection|Product[] $items
- * @property Collection|Discount[] $discounts
+ * @property EloquentCollection|Product[] $children
+ * @property EloquentCollection|Product[] $items
+ * @property EloquentCollection|Discount[] $discounts
  */
 class Product extends BaseModel
 {
@@ -87,9 +88,9 @@ class Product extends BaseModel
      * @param User $customer The customer.
      * @param Transaction $transaction The Braintree transaction.
      *
-     * @return Purchase
+     * @return Purchase|null
      */
-    public function deliver(User $customer, ?Transaction $transaction): Purchase
+    public function deliver(User $customer, ?Transaction $transaction = null): ?Purchase
     {
         if ($this->type === "pack") {
             $this->items->each(function (Product $item) use ($customer, $transaction) {
@@ -99,11 +100,8 @@ class Product extends BaseModel
             // Premium product
             $customer->premium_bypass_expires_at = new Carbon(self::MODE_MACHINE_2019_END);
             $customer->save();
+            return null;
         }
-
-        $this->children->each(function (Product $child) use ($customer, $transaction) {
-            $child->deliver($customer, $transaction);
-        });
 
         $purchase = new Purchase([
             "transaction_id" => $transaction !== null ? $transaction->id : null,
@@ -116,6 +114,36 @@ class Product extends BaseModel
     }
 
 
+    /**
+     * Get the parent products of this product.
+     *
+     * @return Collection|Product[]
+     */
+    public function lineage(): Collection
+    {
+        $lineage = new Collection([$this]);
+
+        $iterator = $this;
+
+        while (
+            $iterator->parent_id !== null
+            && $lineage->pluck("id")->search($iterator->parent_id) === false
+        ) {
+            $iterator = $iterator->parent;
+            $lineage->push($iterator);
+        }
+
+        return $lineage->map(function (Product $product) {
+            return $product->unsetRelation("parent");
+        });
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
     /**
      * BelongsTo Module.
      *
@@ -145,7 +173,8 @@ class Product extends BaseModel
      */
     public function children()
     {
-        return $this->hasMany(self::class, "parent_id");
+        return $this->hasMany(self::class, "parent_id")
+            ->orderBy("order");
     }
 
 

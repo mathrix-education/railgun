@@ -20,6 +20,7 @@ properties:
     description: The product image url.
     type: string
     example: https://cdn.mathrix.fr/products/example.jpg
+    nullable: true
   type:
     description: The product type (compatibility with the old traning system).
     type: string

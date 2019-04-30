@@ -217,8 +217,8 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function hasPurchased(Product $product): bool
     {
-        return $this->products()
-            ->wherePivot("product_id", "=", $product->id)
+        return $this->purchases()
+            ->whereIn("product_id", $product->lineage()->pluck("id"))
             ->exists();
     }
 

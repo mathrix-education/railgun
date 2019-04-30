@@ -45,6 +45,17 @@ abstract class BraintreeTestCase extends BaseTestCase
     }
 
 
+    public function setup()
+    {
+        parent::setUp();
+
+        $this->handler("before.json", function (string $method, string $uri) {
+            $this->requestMethod = $method;
+            $this->requestUri = "/" . trim($uri, "/");
+        });
+    }
+
+
     public function onNotSuccessfulTest(Throwable $t)
     {
         $this->debug();
@@ -89,8 +100,7 @@ abstract class BraintreeTestCase extends BaseTestCase
     public function getPristineCustomer(): User
     {
         /** @var User $user */
-        $user = User::query()
-            ->where("type", "=", "registered")
+        $user = User::scope("registered")
             ->inRandomOrder()
             ->firstOrFail();
 

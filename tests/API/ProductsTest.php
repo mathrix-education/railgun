@@ -125,6 +125,10 @@ class ProductsTest extends APITestCase
      */
     public function testCart(): void
     {
+        $user = User::random();
+        JWT::actingAs($user);
+
+
         /** @var Discount $discount */
         $discount = Discount::query()
             ->whereHas("products", function (Builder $query) {

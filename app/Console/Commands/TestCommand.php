@@ -14,6 +14,8 @@ use Mathrix\Lumen\JWT\Auth\ScopesLoader;
  */
 class TestCommand extends BaseCommand
 {
+    use BoxStyle;
+
     protected $signature = "test";
 
 

@@ -48,6 +48,7 @@ class APITestCase extends BaseTestCase
     public function setUp()
     {
         parent::setUp();
+
         $this->initializeREST();
         $this->handler("before.request", function (string $method, string $uri) {
             $this->requester = JWT::autoScope($method, $uri);
