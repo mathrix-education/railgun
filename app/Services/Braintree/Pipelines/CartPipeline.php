@@ -249,8 +249,8 @@ class CartPipeline
         ];
 
         // Handle customer creation on the fly
-        if ($this->customer->isBraintreeCustomer()) {
-            $saleData["customer_id"] = $this->customer->braintree_id;
+        if ($this->customer->isBraintreeCustomer(true)) {
+            $saleData["customerId"] = $this->customer->braintree_id;
         } else {
             $saleData["customer"] = $this->customer->getBraintreeCustomerCreationPayload();
             $this->customer->braintree_id = $saleData["customer"]["id"]; // Save the generated braintree_id
