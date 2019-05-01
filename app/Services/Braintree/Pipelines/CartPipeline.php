@@ -279,6 +279,9 @@ class CartPipeline extends BasePipeline
             $this->customer->save();
         }
 
+        if (!$this->saleResult->transaction instanceof BraintreeTransaction) {
+            BraintreeErrorHandler::report($this->saleResult);
+        }
         Transaction::createFromBraintreeTransaction($this->saleResult->transaction);
 
         // Insert new purchase records
