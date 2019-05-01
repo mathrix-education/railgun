@@ -5,6 +5,7 @@ namespace App\Services\Braintree\Utils;
 use Braintree\Configuration;
 use Braintree\Customer;
 use Braintree\CustomerSearch;
+use Braintree\Exception\NotFound;
 use Braintree\Subscription;
 use Carbon\Carbon;
 
@@ -101,10 +102,28 @@ class SubscriptionUtils
             $subscription = Subscription::find($subscription);
         }
 
-        $customerResultSearch = Configuration::gateway()->customer()->search([
-            CustomerSearch::paymentMethodToken()->is($subscription->paymentMethodToken)
-        ]);
+        if (isset($subscription->transactions[0])) {
+            // Subscription has a transaction, we can use it to find our customer
+            try {
+                $customer = Customer::find($subscription->transactions[0]->customerDetails->id);
+            } catch (NotFound $e) {
+                return null;
+            }
 
-        return $customerResultSearch->firstItem() ?? null;
+            return $customer;
+        } else {
+            // Subscription has not transaction, we will try to use the payment method token instead
+            $customerResultSearch = Configuration::gateway()
+                ->customer()
+                ->search([
+                    CustomerSearch::paymentMethodToken()->is($subscription->paymentMethodToken)
+                ]);
+
+            if ($customerResultSearch->maximumCount() === 0) {
+                return null;
+            }
+
+            return $customerResultSearch->firstItem();
+        }
     }
 }
