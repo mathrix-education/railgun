@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Mathrix\Lumen\Bases\BaseController;
+use Mathrix\Lumen\Exceptions\Models\Models\ModelNotFoundException;
 
 /**
  * Class ChaptersController.
@@ -57,11 +58,16 @@ class ChaptersController extends BaseController
      * @param int $moduleId The module id.
      *
      * @return JsonResponse
+     * @throws ModelNotFoundException
      */
     public function byModuleRecursive(Request $request, int $moduleId)
     {
         /** @var Module $module */
         $module = Module::query()->findOrFail($moduleId);
+
+        if (!isset($module->activity->notion->chapter_id)) {
+            throw new ModelNotFoundException(["module_id" => $module->id]);
+        }
 
         return $this->recursive($request, $module->activity->notion->chapter_id);
     }

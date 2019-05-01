@@ -6,7 +6,6 @@ use App\Events\TransactionSuccessEvent;
 use App\Exceptions\DiscountExpiredException;
 use App\Exceptions\DiscountNotApplicableException;
 use App\Exceptions\ImmutableException;
-use App\Exceptions\InvalidBraintreeCustomerException;
 use App\Exceptions\InvalidSponsorException;
 use App\Exceptions\ProductAlreadyBoughtException;
 use App\Exceptions\ProductNotBuyableException;
@@ -14,7 +13,6 @@ use App\Exceptions\SponsorNotFoundException;
 use App\Models\Discount;
 use App\Models\Product;
 use App\Models\Transaction;
-use App\Models\User;
 use App\Services\Braintree\BraintreeResponse;
 use App\Services\Braintree\Exceptions\BraintreeErrorHandler;
 use App\Services\Braintree\Exceptions\BraintreeGatewayException;
@@ -23,9 +21,9 @@ use App\Services\Braintree\Exceptions\DuplicatePaymentMethodNonceException;
 use App\Services\Braintree\Utils\AffiliateProcess;
 use App\Services\Braintree\Utils\Formatter;
 use Braintree\Transaction as BraintreeTransaction;
+use Faker\Provider\Uuid;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator as ValidatorFacade;
 use Mathrix\Lumen\Exceptions\ValidationException;
@@ -41,49 +39,33 @@ use Mathrix\Lumen\Exceptions\ValidationException;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class CartPipeline
+class CartPipeline extends BasePipeline
 {
-
-    /** @var $request Request The Illuminate HTTP request */
-    private $request;
-    /** @var User $customer The customer. */
-    private $customer;
     /** @var EloquentCollection|Product[] The products. */
     private $products;
     /** @var Discount|null $discount The discount, if any. */
     private $discount;
     /** @var AffiliateProcess|null $affiliateProcess The affiliate process, if any. */
     private $affiliateProcess;
-
     /** @var BraintreeResponse $saleResult The Braintree sale result. */
     private $saleResult;
 
 
     /**
-     * Cart constructor.
-     *
-     * @param Request $request
-     *
-     * @throws BraintreeGatewayException
-     * @throws BraintreeProcessorException
      * @throws DiscountExpiredException
      * @throws DiscountNotApplicableException
-     * @throws DuplicatePaymentMethodNonceException
      * @throws InvalidSponsorException
      * @throws ProductAlreadyBoughtException
      * @throws ProductNotBuyableException
      * @throws SponsorNotFoundException
      * @throws ValidationException
      */
-    public function __construct(Request $request)
+    protected function validate(): void
     {
-        $this->request = $request;
-
         // Validate cart content
         $validator = ValidatorFacade::make($this->request->all(), [
             "cart" => "required",
-            "cart.*" => "exists:products,id",
-            "payment_method_nonce" => "required"
+            "cart.*" => "exists:products,id"
         ]);
 
         if ($validator->fails()) {
@@ -91,7 +73,7 @@ class CartPipeline
             throw new ValidationException($errors, "Model data failed to pass validation.");
         }
 
-        $this->setCustomer($this->request->user());
+        $this->customer = $this->request->user()->fresh();
         $this->setProducts($this->request->json("cart"));
         $this->setDiscount($this->request->json("discount"));
         $this->setAffiliate($this->request->json("sponsor_email"));
@@ -107,7 +89,7 @@ class CartPipeline
      * @throws DiscountExpiredException
      * @throws DiscountNotApplicableException
      */
-    public function setDiscount(string $discountCode = null)
+    private function setDiscount(string $discountCode = null)
     {
         if ($discountCode !== null) {
             $this->discount = Discount::query()
@@ -135,7 +117,7 @@ class CartPipeline
      * @throws SponsorNotFoundException
      * @throws InvalidSponsorException
      */
-    public function setAffiliate(string $sponsorEmail = null)
+    private function setAffiliate(string $sponsorEmail = null)
     {
         if ($sponsorEmail !== null) {
             $this->affiliateProcess = new AffiliateProcess($this->customer, $sponsorEmail);
@@ -154,7 +136,7 @@ class CartPipeline
      * @throws ProductAlreadyBoughtException
      * @throws ProductNotBuyableException
      */
-    public function setProducts(array $productIds)
+    private function setProducts(array $productIds)
     {
         $productIds = array_unique($productIds);
         $this->products = new Collection();
@@ -181,35 +163,11 @@ class CartPipeline
 
 
     /**
-     * Set the cart customer.
-     *
-     * @param User $customer
-     *
-     * @return CartPipeline
-     * @throws BraintreeGatewayException
-     * @throws BraintreeProcessorException
-     * @throws DuplicatePaymentMethodNonceException
-     */
-    public function setCustomer(User $customer)
-    {
-        $this->customer = $customer;
-
-        // Create customer if needed
-        if ($this->request->has("payment_method_nonce") && !$this->customer->isBraintreeCustomer()) {
-            $paymentMethodNonce = $this->request->input("payment_method_nonce");
-            $this->customer->createBraintreeCustomer($paymentMethodNonce);
-        }
-
-        return $this;
-    }
-
-
-    /**
      * Get the Braintree Transaction payload for this cart.
      *
      * @return array
      */
-    public function getTransactionPayload()
+    protected function getTransactionPayload()
     {
         $lineItems = new EloquentCollection();
         $amount = 0;
@@ -261,15 +219,25 @@ class CartPipeline
         }
 
         $saleData = [
+            "orderId" => Uuid::uuid(),
             "amount" => $amount,
+            "paymentMethodNonce" => $this->request->json("payment_method_nonce"),
             "customerId" => $this->customer->braintree_id,
             "discountAmount" => $discountAmount,
             "lineItems" => $lineItems->toArray(),
             "merchantAccountId" => env("BRAINTREE_MERCHANT_ACCOUNT"),
             "options" => [
+                "storeInVaultOnSuccess" => true,
                 "submitForSettlement" => true,
             ],
         ];
+
+        // Handle customer creation on the fly
+        if ($this->customer->isBraintreeCustomer()) {
+            $saleData["customerId"] = $this->customer->braintree_id;
+        } else {
+            $saleData["customer"] = $this->customer->getBraintreeCustomerCreationPayload(); // Save the generated braintree_id
+        }
 
         return $saleData;
     }
@@ -278,18 +246,14 @@ class CartPipeline
     /**
      * Process the Braintree Transaction.
      *
-     * @return JsonResponse
      * @throws BraintreeGatewayException
      * @throws BraintreeProcessorException
      * @throws DuplicatePaymentMethodNonceException
      * @throws DuplicatePaymentMethodNonceException
-     * @throws InvalidBraintreeCustomerException
      * @throws ImmutableException
      */
-    public function process()
+    protected function work(): void
     {
-        $this->customer->requireBraintreeCustomer();
-
         // Process the cart in a Braintree transaction
         /** @var BraintreeResponse $saleResult */
         $this->saleResult = BraintreeTransaction::sale($this->getTransactionPayload());
@@ -299,10 +263,6 @@ class CartPipeline
 
             BraintreeErrorHandler::report($this->saleResult);
         }
-
-        $this->finalize();
-
-        return new JsonResponse(Formatter::cast($this->saleResult->transaction->jsonSerialize()));
     }
 
 
@@ -312,8 +272,16 @@ class CartPipeline
      * - Decrement the discount counter if needed
      * - Emit the TransactionSuccessEvent
      */
-    private function finalize()
+    protected function finalize(): JsonResponse
     {
+        if (isset($this->saleResult->transaction->customerDetails->id) && !$this->customer->isBraintreeCustomer()) {
+            $this->customer->braintree_id = $this->saleResult->transaction->customerDetails->id;
+            $this->customer->save();
+        }
+
+        if (!$this->saleResult->transaction instanceof BraintreeTransaction) {
+            BraintreeErrorHandler::report($this->saleResult);
+        }
         Transaction::createFromBraintreeTransaction($this->saleResult->transaction);
 
         // Insert new purchase records
@@ -333,7 +301,8 @@ class CartPipeline
         }
 
         $this->customer->save();
-
         event(new TransactionSuccessEvent($this->saleResult->transaction));
+
+        return new JsonResponse(Formatter::cast($this->saleResult->transaction->jsonSerialize()));
     }
 }

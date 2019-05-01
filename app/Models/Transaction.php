@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Braintree\Transaction as BraintreeTransaction;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Mathrix\Lumen\Bases\BaseModel;
 
 /**
@@ -22,6 +23,9 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @property string $customer_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * ---
+ * @property User $customer
+ * @property Collection|Purchase[] $purchases
  */
 class Transaction extends BaseModel
 {

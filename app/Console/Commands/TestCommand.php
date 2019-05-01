@@ -21,6 +21,5 @@ class TestCommand extends BaseCommand
 
     public function handle()
     {
-        ScopesLoader::getRegisteredScopes();
     }
 }
