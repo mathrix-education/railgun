@@ -4,7 +4,6 @@ namespace App\Exceptions;
 
 use App\Models\User;
 use Exception;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
@@ -14,13 +13,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
-use League\OAuth2\Server\Exception\OAuthServerException;
-use Mathrix\Lumen\Exceptions\Http\HttpException;
 use Mathrix\Lumen\Exceptions\Http\HttpException as MathrixHTTPException;
 use Raven_Client;
 use ReflectionClass;
 use ReflectionException;
-use Symfony\Component\HttpKernel\Exception\HttpException as SymphonyHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -41,14 +37,7 @@ class Handler extends ExceptionHandler
      *
      * @var array
      */
-    protected $dontReport = [
-        AuthorizationException::class,
-        SymphonyHttpException::class,
-        ModelNotFoundException::class,
-        ValidationException::class,
-        OAuthServerException::class,
-        HttpException::class
-    ];
+    protected $dontReport = [];
 
 
     /**
