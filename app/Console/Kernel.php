@@ -6,6 +6,8 @@ use App\Console\Commands\Cache\RebuildCacheCommand;
 use App\Console\Commands\CompileMails;
 use App\Console\Commands\DBDestroyCommand;
 use App\Console\Commands\GCloud\CloneProductionDatabaseCommand;
+use App\Console\Commands\PackFixCommand;
+use App\Console\Commands\ResendTransactionSuccessMailCommand;
 use App\Console\Commands\TestCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
@@ -25,7 +27,8 @@ class Kernel extends ConsoleKernel
         TestCommand::class,
         DBDestroyCommand::class,
         CompileMails::class,
-
+        PackFixCommand::class,
+        ResendTransactionSuccessMailCommand::class,
         RebuildCacheCommand::class,
         CloneProductionDatabaseCommand::class
     ];
