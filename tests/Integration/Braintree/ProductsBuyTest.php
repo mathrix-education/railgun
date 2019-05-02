@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
+use Mathrix\Lumen\JWT\Auth\JWT;
 
 /**
  * Class ProductsBuyTest.
@@ -28,7 +29,7 @@ class ProductsBuyTest extends BraintreeTestCase
 {
     private function makeRequest(User $user, ?Collection $products, Discount $discount)
     {
-        $this->setUser($user);
+        JWT::actingAs($user);
 
         if ($products === null) {
             $productIds = $discount->products()
@@ -133,7 +134,7 @@ class ProductsBuyTest extends BraintreeTestCase
             ->limit($this->faker->numberBetween(1, 5))
             ->get();
 
-        $this->setUser($customer);
+        JWT::actingAs($customer);
 
         $this->json("post", "/products/buy", [
             "cart" => $products->pluck("id"),

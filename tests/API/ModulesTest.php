@@ -6,6 +6,7 @@ use App\Models\Activity;
 use App\Models\Module;
 use App\Models\User;
 use Laravel\Passport\Passport;
+use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
@@ -70,7 +71,7 @@ class ModulesTest extends APITestCase
         $activity->premium = true;
         $activity->save();
 
-        Passport::actingAs($user, ["registered"]);
+        JWT::actingAs($user);
         $this->json("get", "/modules/by-activity/{$activity->id}/0/1000");
 
         $this->assertOpenAPIResponse("/modules/by-activity/{activityId}/{page}/{perPage}");

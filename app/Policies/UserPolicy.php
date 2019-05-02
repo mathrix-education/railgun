@@ -21,7 +21,10 @@ class UserPolicy extends BasePolicy
      */
     public function get(User $currentUser, User $user)
     {
-        return $currentUser->id === $user->id || $currentUser->tokenCan("admin");
+        $a = $currentUser->id === $user->id;
+        $b = $currentUser->tokenCan("admin");
+
+        return $a || $b;
     }
 
 

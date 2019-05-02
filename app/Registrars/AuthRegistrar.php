@@ -22,6 +22,8 @@ class AuthRegistrar extends BaseRegistrar
         $controller = AuthController::class;
 
         $this->post("auth/login", "$controller@login");
+        $this->post("auth/login2", "$controller@login2");
+        $this->get("auth/public", "$controller@publicKey");
         $this->post("auth/forgot", "$controller@forgot");
         $this->post(
             "auth/reset/{token:[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}}",

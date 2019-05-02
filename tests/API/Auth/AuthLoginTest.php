@@ -5,6 +5,8 @@ namespace Tests\API\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\Client;
+use Mathrix\Lumen\JWT\Auth\JWT;
+use Mathrix\Lumen\JWT\Auth\JWT\JWTIssuer;
 use Tests\APITestCase;
 
 /**
@@ -17,29 +19,10 @@ use Tests\APITestCase;
 class AuthLoginTest extends APITestCase
 {
     /**
-     * Get a valid passport client
-     * @return Client
-     */
-    private function getValidPassportClient()
-    {
-        /** @var Client $client */
-        $client = Client::query()
-            ->where([
-                ["password_client", "=", true],
-                ["revoked", "=", false]
-            ])
-            ->firstOrFail();
-
-        return $client;
-    }
-
-
-    /**
      * POST /auth/login
      */
     public function testLogin()
     {
-        $client = $this->getValidPassportClient();
         $user = User::random();
         $oldHash = $user->password; // Save the current hash for revert after the test
         $newPassword = $this->faker->password;
@@ -47,15 +30,14 @@ class AuthLoginTest extends APITestCase
         $user->save();
 
         $this->json("post", "/auth/login", [
-            "grant_type" => "password",
-            "client_id" => $client->getAttribute("id"),
-            "client_secret" => $client->getAttribute("secret"),
-            "username" => $user->email,
+            "email" => $user->email,
             "password" => $newPassword
         ]);
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse();
+
+        $this->debug();
 
         // Revert password change
         DB::update("UPDATE users SET password = ? WHERE id = ?", [$oldHash, $user->id]);
@@ -67,14 +49,10 @@ class AuthLoginTest extends APITestCase
      */
     public function testLoginFailed()
     {
-        $client = $this->getValidPassportClient();
         $user = User::random();
 
         $this->json("post", "/auth/login", [
-            "grant_type" => "password",
-            "client_id" => $client->getAttribute("id"),
-            "client_secret" => $client->getAttribute("secret"),
-            "username" => $user->email,
+            "email" => $user->email,
             "password" => "incorrect-password"
         ]);
 

@@ -65,7 +65,7 @@ class UsersController extends BaseController
                 "settings" => [
                     "sound" => true,
                 ],
-                "type" => "registered"
+                "scopes" => ["registered"],
             ]);
 
             $user->fill($request->all())

@@ -83,9 +83,9 @@ class CommentsController extends BaseController
         $user->canOrFail("latest", Comment::class);
 
         $query = Comment::with([
-            "user:id,type,username,firstname,level,grade_id",
+            "user:id,username,firstname,level,grade_id",
             "children",
-            "children.user:id,type,username,firstname,level,grade_id"
+            "children.user:id,username,firstname,level,grade_id"
         ])
             ->orderBy("created_at", "desc");
 

@@ -8,9 +8,9 @@ use Braintree\Customer;
 use Braintree\Exception\NotFound;
 use Braintree\Subscription;
 use Braintree\Test\Nonces;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\JWT\Auth\JWT;
 use stdClass;
 
 /**
@@ -42,12 +42,8 @@ class SubscriptionLifecycleTest extends BraintreeTestCase
     public function testSubscriptionCreation()
     {
         Notification::fake();
-
-        $userData = factory(User::class, "registered")->raw(["settings" => "{}"]);
-        $userId = DB::table("users")->insertGetId($userData);
         /** @var User $user */
-        $user = User::query()->findOrFail($userId);
-        $this->setUser($user);
+        $user = JWT::withScopes("registered");
 
         $this->json("post", "/subscriptions", [
             "planId" => "v4_monthly",
@@ -92,13 +88,13 @@ class SubscriptionLifecycleTest extends BraintreeTestCase
      */
     public function testSubscriptionFind(array $payload)
     {
-        $admin = User::random(["type", "=", "admin"]);
+        JWT::withScopes("admin");
+
         /**
          * @var User $user
          * @var Subscription $subscription
          */
         [$user, $subscription] = $payload;
-        $this->setUser($admin);
 
         $this->json("get", "/subscriptions/{$subscription->id}");
 
@@ -127,7 +123,7 @@ class SubscriptionLifecycleTest extends BraintreeTestCase
          * @var Subscription $subscription
          */
         [$user, $subscription] = $payload;
-        $this->setUser($user);
+        JWT::actingAs($user);
 
         $this->json("get", "/subscriptions/by-user/{$user->id}");
 
@@ -156,7 +152,7 @@ class SubscriptionLifecycleTest extends BraintreeTestCase
          * @var Subscription $subscription
          */
         [$user, $subscription] = $payload;
-        $this->setUser($user);
+        JWT::actingAs($user);
 
         $this->json("patch", "/subscriptions/{$subscription->id}", [
             "payment_method_nonce" => Nonces::$paypalBillingAgreement,
@@ -183,14 +179,12 @@ class SubscriptionLifecycleTest extends BraintreeTestCase
      */
     public function testSubscriptionCancellationAtTheEndOfCurrentPeriod(array $payload)
     {
-        $admin = User::random(["type", "=", "admin"]);
         /**
          * @var User $user
          * @var Subscription $subscription
          */
         [$user, $subscription] = $payload;
-        $this->setUser($admin);
-
+        JWT::withScopes("admin");
 
         $this->json("post", "/subscriptions/{$subscription->id}/cancel");
 
@@ -219,13 +213,12 @@ class SubscriptionLifecycleTest extends BraintreeTestCase
      */
     public function testSubscriptionCancelNow(array $payload)
     {
-        $admin = User::random(["type", "=", "admin"]);
         /**
          * @var User $user
          * @var Subscription $subscription
          */
         [$user, $subscription] = $payload;
-        $this->setUser($admin);
+        JWT::withScopes("admin");
 
         $this->json("post", "/subscriptions/{$subscription->id}/cancel", [
             "now" => true

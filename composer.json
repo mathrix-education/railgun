@@ -28,34 +28,31 @@
   },
   "require": {
     "php": ">=7.2",
+    "ext-fileinfo": "*",
     "ext-json": "*",
     "ext-zip": "*",
-    "ext-fileinfo": "*",
     "barryvdh/laravel-cors": "^0.11",
     "braintree/braintree_php": "^3.37",
-    "dusterio/lumen-passport": "^0.2.0",
     "fzaninotto/faker": "~1.4",
     "guzzlehttp/guzzle": "^6.3",
     "illuminate/mail": "^5.7",
     "illuminate/notifications": "^5.7",
     "illuminate/routing": "^5.7",
     "laravel/lumen-framework": "5.7.*",
-    "laravel/passport": "^7.0",
     "laravelium/sitemap": "^3.0",
     "league/flysystem": " ~1.0",
-    "mathrix/lumen-chainer": "^1.0",
-    "mathrix/lumen-zero": "^1.0",
+    "mathrix/lumen-chainer": "^1.1",
+    "mathrix/lumen-jwt-auth": "^1.1",
+    "mathrix/lumen-zero": "^1.1",
     "ramsey/uuid": "^3.8",
-    "sentry/sentry-laravel": "^0.8.0",
+    "sentry/sentry-laravel": "^1.0",
     "stripe/stripe-php": "^6.15",
     "superbalist/laravel-google-cloud-storage": "^2.1",
-    "vlucas/phpdotenv": "~2.2",
-    "zendframework/zend-diactoros": "~1.0"
+    "vlucas/phpdotenv": "~2.2"
   },
   "require-dev": {
     "brianium/paratest": "^2.0",
     "doctrine/dbal": "^2.5",
-    "helmich/phpunit-json-assert": "^2.0",
     "mockery/mockery": "~1.0",
     "nyholm/psr7": "^1.1",
     "phpunit/phpunit": "^7.0",
@@ -83,12 +80,16 @@
   "prefer-stable": true,
   "repositories": [
     {
-      "type": "git",
-      "url": "git@github.com:mathrix-education/lumen-zero.git"
+      "type": "vcs",
+      "url": "git@github.com:mathrix-education/lumen-chainer.git"
     },
     {
-      "type": "git",
-      "url": "git@github.com:mathrix-education/lumen-chainer.git"
+      "type": "vcs",
+      "url": "git@github.com:mathrix-education/lumen-jwt-auth.git"
+    },
+    {
+      "type": "vcs",
+      "url": "git@github.com:mathrix-education/lumen-zero.git"
     }
   ],
   "config": {

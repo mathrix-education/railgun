@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Mathrix\Lumen\Bases\BaseCommand;
+use Mathrix\Lumen\JWT\Auth\ScopesLoader;
 
 /**
  * Class TestCommand.

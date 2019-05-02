@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Notifications\DatabaseNotification;
 use Laravel\Passport\Passport;
+use Mathrix\Lumen\JWT\Auth\JWT;
 use Tests\APITestCase;
 
 /**
@@ -42,7 +43,7 @@ class NotificationsTest extends APITestCase
         /** @var User $user */
         $user = $notification->notifiable;
 
-        Passport::actingAs($user, explode(" ", $user->getPassportScopes()));
+        JWT::actingAs($user);
         $this->json("get", "/notifications/$type/$page/$perPage");
 
         $this->assertResponseOk();
@@ -89,7 +90,7 @@ class NotificationsTest extends APITestCase
             ->firstOrFail();
         /** @var User $user */
         $user = $notification->notifiable;
-        Passport::actingAs($user, explode(" ", $user->getPassportScopes()));
+        JWT::actingAs($user);
 
         $this->json("patch", "/notifications/all/mark/read");
 
@@ -115,7 +116,7 @@ class NotificationsTest extends APITestCase
             ->firstOrFail();
         /** @var User $user */
         $user = $notification->notifiable;
-        Passport::actingAs($user, explode(" ", $user->getPassportScopes()));
+        JWT::actingAs($user);
 
         $this->json("patch", "/notifications/{$notification->id}/mark/read");
 
@@ -142,7 +143,7 @@ class NotificationsTest extends APITestCase
             ->firstOrFail();
         /** @var User $user */
         $user = $notification->notifiable;
-        Passport::actingAs($user, explode(" ", $user->getPassportScopes()));
+        JWT::actingAs($user);
 
         $this->json("patch", "/notifications/{$notification->id}/mark/unread");
 

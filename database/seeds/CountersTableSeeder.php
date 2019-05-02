@@ -22,8 +22,9 @@ class CountersTableSeeder extends BaseTableSeeder
         $chapters = Chapter::all();
         $total = $activities->count() + $notions->count() + $chapters->count();
 
+        $this->output->writeln("<comment>Seeding:</comment> chapter, notion and activity counters");
         $progressBar = $this->output->createProgressBar($total);
-        $progressBar->setFormat("[%bar%] %percent:3s%% (%current%/%max%) ETA: %estimated:-6s%");
+        $progressBar->setFormat(BaseTableSeeder::DEFAULT_PROGRESS_BAR_FORMAT);
 
         foreach ($activities as $activity) {
             $activity->updateCounters();

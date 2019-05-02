@@ -28,6 +28,5 @@ class LevelTableSeeder extends BaseTableSeeder
         }
 
         $this->seedFromArray($levels, "levels");
-        $this->output->writeln("<info>Seeded:</info>  levels from generation");
     }
 }

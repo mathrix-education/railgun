@@ -20,14 +20,12 @@ class MarksTableSeeder extends BaseTableSeeder
     public function run()
     {
         $faker = FakerFactory::create();
-        $registered = User::query()
-            ->where("type", "=", "registered")
-            ->get();
+        $registered = User::scope("registered")->get();
         $marks = new Collection();
 
         $this->output->writeln("<comment>Generating:</comment> marks");
         $progressBar = $this->output->createProgressBar($registered->count());
-        $progressBar->setFormat("verbose");
+        $progressBar->setFormat(BaseTableSeeder::DEFAULT_PROGRESS_BAR_FORMAT);
         $progressBar->start();
 
         /** @var User $user */
@@ -62,11 +60,9 @@ class MarksTableSeeder extends BaseTableSeeder
 
         $progressBar->finish();
         $this->output->writeln("");
-        $this->output->writeln("<info>Generated:</info>  marks");
 
         // See generated array
         $this->output->writeln("<comment>Seeding:</comment> marks");
         $this->seedFromArray($marks->toArray(), "marks");
-        $this->output->writeln("<info>Seeded:</info>  marks");
     }
 }

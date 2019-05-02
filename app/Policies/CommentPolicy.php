@@ -23,18 +23,11 @@ class CommentPolicy extends BasePolicy
      */
     public function patch(User $currentUser, Comment $comment)
     {
-        if ($currentUser->tokenCan("moderator")) {
-            return true;
-        }
+        $isModerator = $currentUser->tokenCan("moderator");
+        $ownsComment = $currentUser->id === $comment->user_id;
+        $isTooLate = $comment->updated_at->addDays(3)->isPast();
 
-        if (
-            $currentUser->id === $comment->user_id
-            && $comment->updated_at > Carbon::now()->subDays(3)
-        ) {
-            return true;
-        }
-
-        return false;
+        return $isModerator || ($ownsComment && !$isTooLate);
     }
 
 

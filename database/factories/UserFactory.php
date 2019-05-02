@@ -49,14 +49,26 @@ $factory->define(User::class, function (Generator $faker) {
     return $data;
 });
 
-$additionalFactories = ["registered", "redactor", "moderator", "admin"];
+$additionalFactories = ["registered", "moderator", "admin"];
 foreach ($additionalFactories as $type) {
     $factory->defineAs(User::class, $type, function (Generator $faker) use ($factory, $type) {
+        switch ($type) {
+            case "admin":
+                $scopes = ["*"];
+                break;
+            case "moderator":
+                $scopes = ["moderator", "registered"];
+                break;
+            default:
+                $scopes = [$type];
+                break;
+        }
+
         $data = [
             "username" => $faker->userName,
             "firstname" => $faker->firstName,
             "lastname" => $faker->lastName,
-            "type" => $type
+            "scopes" => $scopes
         ];
 
         if ($type != "registered") {
