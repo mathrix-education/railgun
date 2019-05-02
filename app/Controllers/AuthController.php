@@ -46,7 +46,7 @@ class AuthController extends BaseController
         /** @var User $user */
         $user = User::query()
             ->where("email", "=", $request->json("email"))
-            ->get(["id", "password"])
+            ->get(["id", "password", "scopes"])
             ->first();
 
         if ($user === null) {

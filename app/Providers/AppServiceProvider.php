@@ -16,7 +16,6 @@ use App\Policies\FilePolicy;
 use App\Policies\NotificationPolicy;
 use Barryvdh\Cors\ServiceProvider as CorsServiceProvider;
 use Carbon\Carbon;
-use Dusterio\LumenPassport\PassportServiceProvider as LumenPassportServiceProvider;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Filesystem\FilesystemServiceProvider;
 use Illuminate\Mail\MailServiceProvider;
@@ -24,15 +23,13 @@ use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\NotificationServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Passport\PassportServiceProvider;
 use Laravelium\Sitemap\SitemapServiceProvider;
 use Mathrix\Lumen\JWT\Auth\JWTServiceProvider;
 use Mathrix\Lumen\Providers\ObserverServiceProvider;
 use Mathrix\Lumen\Providers\PolicyServiceProvider;
 use Mathrix\Lumen\Providers\RegistrarServiceProvider;
-use Sentry\SentryLaravel\SentryLumenServiceProvider;
+use Sentry\Laravel\ServiceProvider as SentryServiceProvider;
 use Superbalist\LaravelGoogleCloudStorage\GoogleCloudStorageServiceProvider;
-use Vluzrmos\Tinker\TinkerServiceProvider;
 
 /**
  * Class AppServiceProvider.
@@ -59,7 +56,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(FilesystemServiceProvider::class);
         $this->app->register(MailServiceProvider::class);
         $this->app->register(NotificationServiceProvider::class);
-        $this->app->register(PassportServiceProvider::class);
         $this->app->register(SitemapServiceProvider::class);
         $this->app->register(GoogleCloudStorageServiceProvider::class);
         $this->app->register(JWTServiceProvider::class);
@@ -70,7 +66,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(RegistrarServiceProvider::class);
 
         if (env("SENTRY_DSN") !== null) {
-            $this->app->register(SentryLumenServiceProvider::class);
+            $this->app->register(SentryServiceProvider::class);
         }
 
 

@@ -44,7 +44,6 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->call(LevelTableSeeder::class);
 
         // Users
-        $this->seedFromJson("oauth_clients");
         $this->seedFromSubFactory(User::class, "admin", 5);
         $this->seedFromSubFactory(User::class, "moderator", 5);
         $this->seedFromSubFactory(User::class, "registered", 50);
