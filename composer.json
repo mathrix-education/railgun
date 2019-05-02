@@ -42,8 +42,8 @@
     "laravel/passport": "^7.0",
     "laravelium/sitemap": "^3.0",
     "league/flysystem": " ~1.0",
-    "mathrix/lumen-chainer": "dev-master",
-    "mathrix/lumen-zero": "dev-master",
+    "mathrix/lumen-chainer": "^1.0",
+    "mathrix/lumen-zero": "^1.1",
     "ramsey/uuid": "^3.8",
     "sentry/sentry-laravel": "^0.8.0",
     "stripe/stripe-php": "^6.15",
@@ -67,8 +67,7 @@
   },
   "autoload": {
     "psr-4": {
-      "App\\": "app/",
-      "Mathrix\\Lumen\\JWT\\Auth\\": "lumen-jwt-auth/src/"
+      "App\\": "app/"
     },
     "files": [
       "app/helpers.php"
@@ -87,11 +86,15 @@
   "repositories": [
     {
       "type": "git",
-      "url": "git@github.com:mathrix-education/lumen-zero.git"
+      "url": "git@github.com:mathrix-education/lumen-chainer.git"
     },
     {
       "type": "git",
-      "url": "git@github.com:mathrix-education/lumen-chainer.git"
+      "url": "git@github.com:mathrix-education/lumen-jwt-auth.git"
+    },
+    {
+      "type": "git",
+      "url": "git@github.com:mathrix-education/lumen-zero.git"
     }
   ],
   "config": {
