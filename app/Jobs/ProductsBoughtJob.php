@@ -26,11 +26,13 @@ class ProductsBoughtJob extends BaseJob
 
     public function handle()
     {
-        $http = new Client();
-        $http->post(self::ZAPIER_WEBHOOK, [
-            "form_params" => [
-                "email" => $this->email
-            ]
-        ]);
+        if (app()->environment("master")) {
+            $http = new Client();
+            $http->post(self::ZAPIER_WEBHOOK, [
+                "form_params" => [
+                    "email" => $this->email
+                ]
+            ]);
+        }
     }
 }
