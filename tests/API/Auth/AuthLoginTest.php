@@ -37,8 +37,6 @@ class AuthLoginTest extends APITestCase
         $this->assertResponseOk();
         $this->assertOpenAPIResponse();
 
-        $this->debug();
-
         // Revert password change
         DB::update("UPDATE users SET password = ? WHERE id = ?", [$oldHash, $user->id]);
     }

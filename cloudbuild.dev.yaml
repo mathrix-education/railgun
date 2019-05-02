@@ -54,6 +54,7 @@ steps:
         cp deploy/known_hosts /root/.ssh/known_hosts
         composer install \
           --optimize-autoloader \
+          --ignore-platform-reqs \
           --no-interaction \
           --no-suggest \
           --no-progress \
