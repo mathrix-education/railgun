@@ -10,6 +10,7 @@ use App\Exceptions\InvalidSponsorException;
 use App\Exceptions\ProductAlreadyBoughtException;
 use App\Exceptions\ProductNotBuyableException;
 use App\Exceptions\SponsorNotFoundException;
+use App\Jobs\ProductsBoughtJob;
 use App\Models\Discount;
 use App\Models\Product;
 use App\Models\Transaction;
@@ -21,10 +22,12 @@ use App\Services\Braintree\Exceptions\DuplicatePaymentMethodNonceException;
 use App\Services\Braintree\Utils\AffiliateProcess;
 use App\Services\Braintree\Utils\Formatter;
 use Braintree\Transaction as BraintreeTransaction;
+use Carbon\Carbon;
 use Faker\Provider\Uuid;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Validator as ValidatorFacade;
 use Mathrix\Lumen\Exceptions\ValidationException;
 
@@ -283,6 +286,13 @@ class CartPipeline extends BasePipeline
             BraintreeErrorHandler::report($this->saleResult);
         }
         Transaction::createFromBraintreeTransaction($this->saleResult->transaction);
+
+        if (!$this->customer->refresh()->products()->exists()) {
+            Queue::later(
+                Carbon::now()->addMinute(),
+                new ProductsBoughtJob($this->customer->email)
+            );
+        }
 
         // Insert new purchase records
         $this->products->each(function (Product $product) {
