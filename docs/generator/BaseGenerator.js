@@ -8,7 +8,7 @@ module.exports = class BaseGenerator {
         this.yaml = require("yaml");
         this.pluralize = require("pluralize");
         this.singularize = this.pluralize["singular"];
-        this.toJsonSchema = require('openapi-schema-to-json-schema');
+        this.toJsonSchema = require("openapi-schema-to-json-schema");
 
         this.base = this.path.dirname(__dirname);
         this.src = `${this.base}/src`;

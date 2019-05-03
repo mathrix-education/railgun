@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Mathrix\Lumen\Exceptions\Http\HttpException as MathrixHTTPException;
+use Mathrix\Lumen\JWT\Auth\Exceptions\InvalidCredentialsException;
 use Raven_Client;
 use ReflectionClass;
 use ReflectionException;
@@ -39,7 +40,9 @@ class Handler extends ExceptionHandler
      *
      * @var array
      */
-    protected $dontReport = [];
+    protected $dontReport = [
+        InvalidCredentialsException::class
+    ];
 
 
     /**
@@ -55,7 +58,7 @@ class Handler extends ExceptionHandler
     {
         $sentryDSN = env("SENTRY_DSN");
 
-        if ($sentryDSN !== null && app()->bound("sentry") && $this->shouldReport($e)) {
+        if (!empty($sentryDSN) && app()->bound("sentry") && $this->shouldReport($e)) {
             /** @var Sentry $sentry */
             $sentry = app("sentry");
 

@@ -14,6 +14,14 @@ module.exports = class OpenAPIGenerator extends BaseGenerator {
         spec["components"]["schemas"] = (new SchemasGenerator()).process();
         spec["paths"] = (new PathsGenerator()).process();
         spec["tags"] = (new TagsGenerator()).process();
+
+
+        const composerPath = this.path.normalize(this.base  + "/../composer.json");
+        const composer = JSON.parse(
+            this.fs.readFileSync(composerPath).toString()
+        );
+        spec["info"]["version"] = composer["version"];
+
         this.writeYaml("index.yaml", spec);
     }
 };
