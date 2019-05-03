@@ -82,7 +82,7 @@ class AuthController extends BaseController
         // Try to find the user with the given email
         /** @var User $user */
         $user = User::query()
-            ->where("email", "=", $request->input("email"))
+            ->where("email", "=", $request->json("email"))
             ->firstOrFail();
 
         if (!empty($user->settings["facebook_id"])) {

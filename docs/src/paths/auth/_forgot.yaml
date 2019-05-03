@@ -13,7 +13,14 @@ post:
               example: john.doe@example.org
   responses:
     200:
-      $ref: ../../responses/Bearer.yaml
+      $extends:
+        ../../responses/200_SuccessMessage.yaml:
+      content:
+        application/json:
+          schema:
+            properties:
+              message:
+                example: Reset email sent successfully
     400:
       description: Bad request.
       content:
@@ -29,4 +36,3 @@ post:
                 description: The error detailed message.
                 type: string
                 enum: ['Cannot reset password of a facebook account']
-
