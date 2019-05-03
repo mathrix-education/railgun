@@ -3,7 +3,9 @@
 namespace App\Registrars;
 
 use App\Mails\BaseMail;
+use App\Mails\TransactionRefundMail;
 use App\Mails\TransactionSuccessMail;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Mathrix\Lumen\Bases\BaseRegistrar;
@@ -50,7 +52,11 @@ class MailsRegistrar extends BaseRegistrar
     public function register(): void
     {
         if (app()->environment("local", "dev", "testing")) {
-            self::getMails()->map(function($mailableClass, string $uri) {
+            $this->get("mails", function () {
+                return new JsonResponse(self::getMails());
+            });
+
+            self::getMails()->map(function ($mailableClass, string $uri) {
                 /** @var BaseMail|string $mailableClass */
                 $this->get($uri, function () use ($mailableClass) {
                     return $mailableClass::mock();
