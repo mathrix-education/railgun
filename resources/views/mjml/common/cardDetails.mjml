@@ -1,0 +1,33 @@
+<mj-section padding="0 0 20px 0">
+    <mj-column>
+        <mj-text height="16"
+                 padding="0 25px"
+                 font-size="14px">
+            Type de carte
+        </mj-text>
+        <mj-text>{{ $transaction->creditCardDetails->cardType }}</mj-text>
+    </mj-column>
+
+
+    <mj-column>
+        <mj-text height="16" padding="0 25px" font-size="14px">Détenteur de la carte</mj-text>
+        <mj-text>{{$transaction->creditCardDetails->cardholderName }}</mj-text>
+    </mj-column>
+
+    <mj-column>
+        <mj-text height="16"
+                 padding="0 25px"
+                 font-size="14px">
+            Carte n°
+        </mj-text>
+        <mj-text>
+            {{
+                str_replace(
+                    $transaction->creditCardDetails->bin,
+                    str_repeat("*", strlen($transaction->creditCardDetails->bin)),
+                    $transaction->creditCardDetails->maskedNumber
+                )
+            }}
+        </mj-text>
+    </mj-column>
+</mj-section>

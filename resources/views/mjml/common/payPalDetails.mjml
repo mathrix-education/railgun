@@ -1,0 +1,30 @@
+<mj-section padding="0 0 20px 0">
+    <mj-column>
+        <mj-text height="16"
+                 padding="0 25px"
+                 font-size="14px">
+            Moyen de paiement
+        </mj-text>
+        <mj-text>PayPal</mj-text>
+    </mj-column>
+
+
+    <mj-column>
+        <mj-text height="16" padding="0 25px" font-size="14px">Détenteur du compte</mj-text>
+        <mj-text>
+            {{$transaction->paypalDetails->payerFirstName }}
+            {{$transaction->paypalDetails->payerLastName }}
+        </mj-text>
+    </mj-column>
+
+    <mj-column>
+        <mj-text height="16"
+                 padding="0 25px"
+                 font-size="14px">
+            Compte PayPal
+        </mj-text>
+        <mj-text>
+            {{$transaction->paypalDetails->payerEmail }}
+        </mj-text>
+    </mj-column>
+</mj-section>
