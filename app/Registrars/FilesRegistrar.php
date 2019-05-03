@@ -21,8 +21,6 @@ class FilesRegistrar extends BaseRegistrar
     {
         $controller = FilesController::class;
 
-        $this->get("files/proxy/{path:[a-zA-Z0-9\_\-\/\.]+}", "$controller@proxy");
-
         $this->group(["middleware" => "scope:moderator", "prefix" => "files"], function () use ($controller) {
             $this->get("explore[/{directory:[a-zA-Z0-9\_\-\/\.]+}]", "$controller@explore");
 
