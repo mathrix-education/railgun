@@ -19,6 +19,7 @@ class MigrateToScopesOnUsersTable extends Migration
         });
 
         DB::update("UPDATE users SET scopes = CONCAT('[\"', type, '\"]')");
+        DB::update("UPDATE users SET scopes = '[\"*\"]' WHERE scopes like '%admin%'");
 
         Schema::table("users", function (Blueprint $table) {
             $table->dropColumn("type");
