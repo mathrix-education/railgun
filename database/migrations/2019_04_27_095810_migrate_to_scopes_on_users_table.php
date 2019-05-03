@@ -18,7 +18,7 @@ class MigrateToScopesOnUsersTable extends Migration
             $table->json("scopes")->nullable()->after("type");
         });
 
-        DB::update("UPDATE users SET scopes = CONCAT('[', type, ']')");
+        DB::update("UPDATE users SET scopes = CONCAT('[\"', type, '\"]')");
 
         Schema::table("users", function (Blueprint $table) {
             $table->dropColumn("type");

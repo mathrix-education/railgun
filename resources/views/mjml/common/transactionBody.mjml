@@ -80,8 +80,8 @@
                 </td>
             </tr>
         </mj-table>
-        <mj-raw>@endforeach</mj-raw>
 
+        <mj-raw>@endforeach</mj-raw>
         <mj-table padding="1px 25px">
             <tr style="background-color: #e5e5e5">
                 <td style="padding: 10px 15px; font-weight: 700">Total</td>
