@@ -27,23 +27,23 @@
     @switch($transaction->paymentInstrumentType)
         @case("credit_card")
 </mj-raw>
-            <mj-include path="cardDetails"></mj-include>
+<mj-include path="cardDetails"></mj-include>
 <mj-raw>
-            @break
-        @case("paypal_account")
+    @break
+    @case("paypal_account")
 </mj-raw>
-            <mj-include path="payPalDetails"></mj-include>
+<mj-include path="payPalDetails"></mj-include>
 <mj-raw>
-            @break
+    @break
     @endswitch
 </mj-raw>
 
 
 <mj-section padding="0">
     <mj-column padding="0">
-        <mj-raw>@if(!empty($lineItems))</mj-raw>
         <mj-divider border-width="1px" border-style="dashed" border-color="lightgrey"></mj-divider>
 
+        <mj-raw>@if(!empty($lineItems))</mj-raw>
         <mj-text>Détails</mj-text>
 
         <mj-raw>@foreach($lineItems as $lineItem)</mj-raw>
@@ -70,7 +70,10 @@
                 </td>
             </tr>
         </mj-table>
-        <mj-raw>@endforeach</mj-raw>
+        <mj-raw>
+            @endforeach
+            @endif
+        </mj-raw>
 
         <mj-table padding="1px 25px">
             <tr style="background-color: #e5e5e5">
@@ -79,6 +82,5 @@
                 </td>
             </tr>
         </mj-table>
-        <mj-raw>@endif</mj-raw>
     </mj-column>
 </mj-section>
