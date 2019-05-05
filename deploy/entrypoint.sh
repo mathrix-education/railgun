@@ -1,5 +1,4 @@
 #!/bin/bash
-
 case "$1" in
     server)
         /usr/sbin/nginx && /usr/sbin/php-fpm7 --allow-to-run-as-root

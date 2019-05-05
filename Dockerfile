@@ -42,6 +42,7 @@ COPY deploy/entrypoint.sh /entrypoint.sh
 ADD . .
 
 RUN echo "${COMMIT_SHORT_SHA}" >> build.txt
+RUN chmod +x /entrypoint.sh
 
 # Clean
 RUN rm -rf /var/cache/apk/*
