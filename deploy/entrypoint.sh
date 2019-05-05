@@ -1,19 +1,19 @@
 #!/bin/bash
 
 case "$1" in
-    serve)
+    server)
         nginx && /usr/bin/php-fpm7 --allow-to-run-as-root
         ;;
-    queue)
+    worker)
         /usr/bin/php /var/www/artisan queue:work --sleep=3 --tries=3
         ;;
-    schedule)
+    scheduler)
         while true; do
             sleep 60
             /usr/bin/php /var/www/artisan schedule:run
         done
         ;;
     *)
-        echo "Usage: serve|queue|schedule"
+        echo "Usage: server|worker|scheduler"
         exit 1
 esac
