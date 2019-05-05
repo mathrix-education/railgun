@@ -2,7 +2,7 @@
 
 case "$1" in
     server)
-        nginx && /usr/bin/php-fpm7 --allow-to-run-as-root
+        /usr/sbin/nginx && /usr/sbin/php-fpm7 --allow-to-run-as-root
         ;;
     worker)
         /usr/bin/php /var/www/artisan queue:work --sleep=3 --tries=3
