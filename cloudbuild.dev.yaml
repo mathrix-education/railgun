@@ -81,30 +81,31 @@ steps:
   # Run paratest in coverage mode
   # Hack to allow step to fail: https://github.com/GoogleCloudPlatform/cloud-builders/issues/253
   # --------------------------------------------------------------------------------------------
-  - id: 'docker-compose:tests'
-    waitFor: ['composer:install', 'node:compile']
-    name: 'eu.gcr.io/$PROJECT_ID/runner-docker-compose'
-    entrypoint: 'sh'
-    args:
-      - '-c'
-      - |
-        docker-compose up --abort-on-container-exit || exit 0
+#  - id: 'docker-compose:tests'
+#    waitFor: ['composer:install', 'node:compile']
+#    name: 'eu.gcr.io/$PROJECT_ID/runner-docker-compose'
+#    entrypoint: 'sh'
+#    args:
+#      - '-c'
+#      - |
+#        docker-compose up --abort-on-container-exit || exit 0
 
 
   # Send cover results to SonarQube
   # ------------------------------
-  - id: 'sonar-scanner'
-    waitFor: ['docker-compose:tests']
-    name: 'eu.gcr.io/$PROJECT_ID/runner-sonar-scanner:angular'
-    args:
-      - '-Dsonar.projectVersion=$SHORT_SHA'
-      - '-Dsonar.branch.name=$BRANCH_NAME'
+#  - id: 'sonar-scanner'
+#    waitFor: ['docker-compose:tests']
+#    name: 'eu.gcr.io/$PROJECT_ID/runner-sonar-scanner:angular'
+#    args:
+#      - '-Dsonar.projectVersion=$SHORT_SHA'
+#      - '-Dsonar.branch.name=$BRANCH_NAME'
 
 
   # Build, push and deploy API image
   # --------------------------------
   - id: 'docker:build:api'
-    waitFor: ['docker-compose:tests']
+    #waitFor: ['docker-compose:tests']
+    waitFor: ['composer:install']
     name: 'gcr.io/cloud-builders/docker'
     args: ['build',
            '--build-arg', 'COMMIT_SHORT_SHA=$SHORT_SHA',
@@ -140,7 +141,8 @@ steps:
   # Build, push and deploy docs image
   # ---------------------------------
   - id: 'docker:build:docs'
-    waitFor: ['docker-compose:tests']
+    #waitFor: ['docker-compose:tests']
+    waitFor: ['node:compile']
     name: 'gcr.io/cloud-builders/docker'
     args: ['build',
            '-f', 'docs/Dockerfile',
@@ -148,7 +150,7 @@ steps:
            '-t', 'eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:$SHORT_SHA',
            '.']
   - id: 'docker:push:docs'
-    waitFor: ['docker:build:docs', 'docker-compose:tests']
+    waitFor: ['docker:build:docs']
     name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:$SHORT_SHA']
   - id: 'kubectl:deploy:docs'
