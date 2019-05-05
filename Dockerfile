@@ -9,7 +9,7 @@ WORKDIR /var/www/
 
 EXPOSE 80
 
-RUN apk -U add
+RUN apk -U add \
     bash \
     nginx \
     curl \
