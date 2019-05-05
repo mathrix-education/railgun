@@ -212,13 +212,9 @@ class Product extends BaseModel
      */
     public function getOwnedAttribute()
     {
+        /** @var User $user */
         $user = Auth::user();
-
-        if ($user !== null && $user instanceof User) {
-            return $user->hasPurchased($this);
-        }
-
-        return false;
+        return $user && $user->hasPurchased($this);
     }
 
 

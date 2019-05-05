@@ -113,9 +113,9 @@ class Module extends BaseModel
         /** @var bool $belongsToProduct If the module is linked to a product */
         $belongsToProduct = $this->products->isNotEmpty();
         /** @var bool $userIsPremium If the user is premium */
-        $userIsPremium = $user !== null && ($user->premium || $user->tokenCan("moderator"));
+        $userIsPremium = $user && ($user->premium || $user->hasScope("modules:read"));
         /** @var bool $userOwnsProduct If the user has purchased one of the related products */
-        $userOwnsProduct = $user !== null && ($user->tokenCan("moderator") || $this->products()
+        $userOwnsProduct = $user && ($user->hasScope("modules:read") || $this->products()
                     ->get()
                     ->reduce(function (bool $current, Product $product) use ($user) {
                         return $current || $user->hasPurchased($product);

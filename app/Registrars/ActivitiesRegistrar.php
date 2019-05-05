@@ -22,11 +22,11 @@ class ActivitiesRegistrar extends BaseRegistrar
         $controller = ActivitiesController::class;
 
         $this->rest("activities", $controller, [
-            "index" => "moderator",
+            "index" => "activities:read",
             "get" => null,
-            "post" => "moderator",
-            "patch" => "moderator",
-            "delete" => "moderator"
+            "post" => "activities:write",
+            "patch" => "activities:write",
+            "delete" => "activities:delete"
         ]);
 
         $this->get("activities/by-{what:notion}/{id:[1-9]\d*}/{page:\d+}/{perPage:[1-9]\d*}",

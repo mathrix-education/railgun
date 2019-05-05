@@ -20,11 +20,11 @@ class CategoriesRegistrar extends BaseRegistrar
     public function register(): void
     {
         $this->rest("categories", CategoriesController::class, [
-            "index" => "admin",
-            "get" => "admin",
-            "post" => "admin",
-            "patch" => "admin",
-            "delete" => "admin"
+            "index" => "categories:read",
+            "get" => "categories:read",
+            "post" => "categories:write",
+            "patch" => "categories:delete",
+            "delete" => "categories:delete"
         ]);
     }
 }

@@ -8,8 +8,6 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mathrix\Lumen\Bases\BaseController;
-use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
-use Mathrix\Lumen\Exceptions\Http\Http404NotFoundException;
 
 /**
  * Class SettingsController.
@@ -30,8 +28,9 @@ class SettingsController extends BaseController
      */
     public function all(Request $request)
     {
+        /** @var User $user */
         $user = $request->user();
-        $canSeeHiddenSettings = $user !== null && $user->isAdmin();
+        $canSeeHiddenSettings = $user && $user->hasScope("settings:read");
 
         if (!$canSeeHiddenSettings) {
             $settings = Setting::query()
@@ -53,27 +52,13 @@ class SettingsController extends BaseController
      * @param string $key The setting key.
      *
      * @return JsonResponse
-     * @throws Http404NotFoundException
      */
     public function read(Request $request, string $key): JsonResponse
     {
         /** @var Setting $setting */
         $setting = Setting::query()
             ->where("key", "=", $key)
-            ->first();
-        /** @var User $user */
-        $user = $request->user();
-
-        if (
-            $setting === null ||
-            ($user === null && !$setting->visible) ||
-            ($user !== null && $user->cant("read", $setting))
-        ) {
-            throw new Http404NotFoundException(
-                ["key" => $key],
-                "Setting with key `{$key}` does not exist"
-            );
-        }
+            ->firstOrFail();
 
         return new JsonResponse($setting);
     }
@@ -81,20 +66,15 @@ class SettingsController extends BaseController
 
     /**
      * PATCH /settings/{key}
-     * Write a new setting; crete it it does not exist.
+     * Write a new setting; create it it does not exist.
      *
      * @param Request $request The Illuminate HTTP request.
      * @param string $key The setting key.
      *
      * @return JsonResponse
-     * @throws Http401UnauthorizedException
      */
     public function write(Request $request, string $key)
     {
-        /** @var User $user */
-        $user = $request->user();
-        $user->canOrFail("write", Setting::class);
-
         /** @var Setting $setting */
         $setting = Setting::query()
             ->where("key", "=", $key)
@@ -112,20 +92,13 @@ class SettingsController extends BaseController
      * DELETE /settings/{key}
      * Forgot (delete) a setting by its key.
      *
-     * @param Request $request The Illuminate HTTP request.
      * @param string $key The setting key.
      *
      * @return JsonResponse
-     * @throws Http401UnauthorizedException
      * @throws Exception
      */
-    public function forgot(Request $request, string $key): JsonResponse
+    public function forgot(string $key): JsonResponse
     {
-        /** @var User $user */
-        $user = $request->user();
-
-        $user->canOrFail("forgot", Setting::class);
-
         /** @var Setting $setting */
         $deleted = Setting::forgot($key);
 

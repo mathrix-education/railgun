@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Laravelium\Sitemap\SitemapServiceProvider;
 use Mathrix\Lumen\JWT\Auth\JWTServiceProvider;
+use Mathrix\Lumen\JWT\Auth\ScopesLoader;
 use Mathrix\Lumen\Providers\ObserverServiceProvider;
 use Mathrix\Lumen\Providers\PolicyServiceProvider;
 use Mathrix\Lumen\Providers\RegistrarServiceProvider;
@@ -68,6 +69,8 @@ class AppServiceProvider extends ServiceProvider
         if (env("SENTRY_DSN") !== null) {
             $this->app->register(SentryServiceProvider::class);
         }
+
+        ScopesLoader::registerAdditionalScopes(["users:as"]);
 
 
         Carbon::setToStringFormat("c");

@@ -24,9 +24,9 @@ class DisciplinesRegistrar extends BaseRegistrar
         $this->rest("disciplines", $controller, [
             "index" => null,
             "get" => null,
-            "post" => "admin",
-            "patch" => "admin",
-            "delete" => "admin"
+            "post" => "disciplines:write",
+            "patch" => "disciplines:write",
+            "delete" => "disciplines:delete"
         ]);
 
         $this->get("disciplines/slug/{disciplineSlug:[a-z\-]+}", "$controller@getBySlug");

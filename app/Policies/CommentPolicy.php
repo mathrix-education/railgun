@@ -23,19 +23,10 @@ class CommentPolicy extends BasePolicy
      */
     public function patch(User $currentUser, Comment $comment)
     {
-        $isModerator = $currentUser->tokenCan("moderator");
+        $hasScope = scope($currentUser, "comments:read");
         $ownsComment = $currentUser->id === $comment->user_id;
         $isTooLate = $comment->updated_at->addDays(3)->isPast();
 
-        return $isModerator || ($ownsComment && !$isTooLate);
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function latest(): bool
-    {
-        return true;
+        return $hasScope || ($ownsComment && !$isTooLate);
     }
 }

@@ -21,11 +21,11 @@ class ChaptersRegistrar extends BaseRegistrar
     {
         $controller = ChaptersController::class;
         $this->rest("chapters", $controller, [
-            "index" => "moderator",
+            "index" => "chapters:read",
             "get" => null,
-            "post" => "moderator",
-            "patch" => "moderator",
-            "delete" => "moderator"
+            "post" => "chapters:write",
+            "patch" => "chapters:write",
+            "delete" => "chapters:delete"
         ]);
 
         $this->get("chapters/{id:[1-9]\d*}/recursive", "$controller@recursive");

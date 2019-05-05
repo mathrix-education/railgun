@@ -22,19 +22,18 @@ class ModulesRegistrar extends BaseRegistrar
         $controller = ModulesController::class;
 
         $this->rest("modules", $controller, [
-            "index" => "moderator",
+            "index" => "modules:read",
             "get" => null,
-            "post" => "moderator",
-            "patch" => "moderator",
-            "delete" => "moderator"
+            "post" => "modules:write",
+            "patch" => "modules:write",
+            "delete" => "modules:delete"
         ]);
 
-        $this->get("modules/by-{what:activity}/{id:[1-9]\d*}/{page:\d+}/{perPage:[1-9]\d*}",
-            "$controller@by");
+        $this->get("modules/by-{what:activity}/{id:[1-9]\d*}/{page:\d+}/{perPage:[1-9]\d*}", "$controller@by");
 
         $this->patch("modules/{moduleId:[1-9]\d*}/mark", [
             "uses" => "$controller@mark",
-            "middleware" => "scope:registered"
+            "middleware" => "scope:logged"
         ]);
     }
 }

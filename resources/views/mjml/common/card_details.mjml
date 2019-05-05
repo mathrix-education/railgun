@@ -1,17 +1,17 @@
-<mj-section padding="0 0 20px 0">
+<mj-section padding="0">
     <mj-column>
         <mj-text height="16"
                  padding="0 25px"
                  font-size="14px">
             Type de carte
         </mj-text>
-        <mj-text>{{ $transaction->creditCardDetails->cardType }}</mj-text>
+        <mj-text>{{ $card->cardType }}</mj-text>
     </mj-column>
 
 
     <mj-column>
         <mj-text height="16" padding="0 25px" font-size="14px">Détenteur de la carte</mj-text>
-        <mj-text>{{$transaction->creditCardDetails->cardholderName }}</mj-text>
+        <mj-text>{{ $card->cardholderName }}</mj-text>
     </mj-column>
 
     <mj-column>
@@ -23,11 +23,17 @@
         <mj-text>
             {{
                 str_replace(
-                    $transaction->creditCardDetails->bin,
-                    str_repeat("*", strlen($transaction->creditCardDetails->bin)),
-                    $transaction->creditCardDetails->maskedNumber
+                    $card->bin,
+                    str_repeat("*", strlen($card->bin)),
+                    $card->maskedNumber
                 )
             }}
         </mj-text>
+    </mj-column>
+</mj-section>
+
+<mj-section padding="0">
+    <mj-column>
+        <mj-divider border-width="1px" border-style="dashed" border-color="lightgrey"></mj-divider>
     </mj-column>
 </mj-section>

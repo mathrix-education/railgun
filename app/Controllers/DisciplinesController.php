@@ -51,9 +51,10 @@ class DisciplinesController extends BaseController
     {
         /** @var User $user */
         $user = $request->user();
+
         /** @var Grade $grade */
         $grade = Grade::query()->findOrFail($gradeId);
-        $allowedToSeeAll = $user !== null && $user->tokenCan("moderator");
+        $allowedToSeeAll = scope($user, "disciplines:read");
         $wantsToSeeAll = $request->hasHeader("X-Scope") && $request->header("X-Scope") === "all";
 
         $query = $grade->disciplines();

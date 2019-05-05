@@ -86,8 +86,11 @@ class ChaptersController extends BaseController
      */
     public function byGradeIdDisciplineId(Request $request, int $gradeId, int $disciplineId, string $scope = null)
     {
+        /** @var User $user */
+        $user = $request->user();
+
         // Check if all chapters should be returned.
-        $restrictToVisible = $scope !== "all" || !($request->user() !== null && $request->user()->tokenCan("redactor"));
+        $restrictToVisible = $scope !== "all" || !scope($user, "chapters:read");
         $key = "chapters.grade.$gradeId.discipline.$disciplineId." . ($restrictToVisible ? "visible" : "all");
 
         $chapters = Cache::remember($key, 15, function () use ($gradeId, $disciplineId, $restrictToVisible) {

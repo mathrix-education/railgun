@@ -4,9 +4,8 @@ namespace App\Middleware;
 
 use App\Models\User;
 use Closure;
-use Illuminate\Contracts\Auth\Factory as AuthFactory;
 use Illuminate\Http\Request;
-use Laravel\Passport\Passport;
+use Mathrix\Lumen\JWT\Auth\JWT;
 
 /**
  * Class AsMiddleware.
@@ -19,39 +18,21 @@ use Laravel\Passport\Passport;
 class AsMiddleware
 {
     /**
-     * @var AuthFactory The authentication guard factory instance.
-     */
-    protected $auth;
-
-
-    public function __construct(AuthFactory $auth)
-    {
-        $this->auth = $auth;
-    }
-
-
-    /**
      * Handle request with X-As-User-Id header.
      *
      * @param Request $request
      * @param Closure $next
-     * @param null $guard
      *
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, $guard = null)
+    public function handle(Request $request, Closure $next)
     {
-        if (!$this->auth->guard($guard)->guest() && $request->hasHeader("X-As-User-Id")) {
-            /** @var User $requester */
-            $requester = $request->user();
+        if ($request->hasHeader("X-As-User-Id") && scope($request->user(), "users:as")) {
+            $targetId = $request->header("X-As-User-Id");
 
-            if ($requester->tokenCan("admin")) {
-                $targetId = $request->header("X-As-User-Id");
-
-                /** @var User $target */
-                $target = User::query()->findOrFail($targetId);
-                Passport::actingAs($target, $target->getPassportScopesArray());
-            }
+            /** @var User $target */
+            $target = User::query()->findOrFail($targetId);
+            JWT::actingAs($target);
         }
 
         return $next($request);

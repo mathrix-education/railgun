@@ -20,11 +20,11 @@ class ReportsRegistrar extends BaseRegistrar
     public function register(): void
     {
         $this->rest("reports", ReportsController::class, [
-            "index" => "admin",
-            "get" => "admin",
-            "post" => "registered",
-            "patch" => "admin",
-            "delete" => "admin"
+            "index" => "reports:read",
+            "get" => "reports:read",
+            "post" => "logged",
+            "patch" => "reports:write",
+            "delete" => "reports:delete"
         ]);
     }
 }

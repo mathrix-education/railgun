@@ -21,10 +21,13 @@ class SettingsRegistrar extends BaseRegistrar
     {
         $controller = SettingsController::class;
 
-        $this->get("settings", "$controller@all");
+        $this->group(["middleware" => "scope:settings:read"], function () use ($controller) {
+            $this->get("settings", "$controller@all");
+        });
+
         $this->get("settings/{key:[a-z0-9\-\_]+}", "$controller@read");
 
-        $this->group(["middleware" => "scope:admin"], function () use ($controller) {
+        $this->group(["middleware" => "scope:settings:write"], function () use ($controller) {
             $this->patch("settings/{key:[a-z0-9\-\_]+}", "$controller@write");
             $this->delete("settings/{key:[a-z0-9\-\_]+}", "$controller@forgot");
         });
