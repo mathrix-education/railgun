@@ -30,6 +30,7 @@ $factory->define(User::class, function (Generator $faker) {
         "password" => Cache::remember("DB_PASSWORD.hash", 30, function () {
             return Hash::make(env("DB_PASSWORD"));
         }),
+        "scopes" => ["logged"],
         "token" => $faker->uuid,
         "points" => $points,
         "level" => Level::getLevelByPoints($points),
@@ -48,36 +49,3 @@ $factory->define(User::class, function (Generator $faker) {
 
     return $data;
 });
-
-$additionalFactories = ["registered", "moderator", "admin"];
-foreach ($additionalFactories as $type) {
-    $factory->defineAs(User::class, $type, function (Generator $faker) use ($factory, $type) {
-        switch ($type) {
-            case "admin":
-                $scopes = ["*"];
-                break;
-            case "moderator":
-                $scopes = ["moderator", "registered"];
-                break;
-            default:
-                $scopes = [$type];
-                break;
-        }
-
-        $data = [
-            "username" => $faker->userName,
-            "firstname" => $faker->firstName,
-            "lastname" => $faker->lastName,
-            "scopes" => $scopes
-        ];
-
-        if ($type != "registered") {
-            $data = array_merge($data, [
-                "grade_id" => null,
-                "stripe_id" => null
-            ]);
-        }
-
-        return array_merge($factory->raw(User::class), $data);
-    });
-}

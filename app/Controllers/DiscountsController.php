@@ -2,13 +2,9 @@
 
 namespace App\Controllers;
 
-use App\Exceptions\DiscountExpiredException;
-use App\Exceptions\DiscountNotApplicableException;
 use App\Models\Discount;
-use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\ValidationException;
 use Mathrix\Lumen\Responses\PaginationJsonResponse;
@@ -45,13 +41,11 @@ class DiscountsController extends BaseController
      *
      * @param Request $request The Illuminate HTTP request.
      * @param int $discountId The discount id.
-     * @param int $page The page.
-     * @param int $perPage The number of products per page.
      *
      * @return JsonResponse
      * @throws ValidationException
      */
-    public function patchProducts(Request $request, int $discountId, int $page, int $perPage): JsonResponse
+    public function patchProducts(Request $request, int $discountId): JsonResponse
     {
         $this->validate($request, [
             "*" => "distinct|integer|exists:products,id"
@@ -61,7 +55,7 @@ class DiscountsController extends BaseController
         $discount = Discount::query()->findOrFail($discountId);
         $discount->products()->sync($request->all());
 
-        return new PaginationJsonResponse($discount->products(), $page, $perPage);
+        return new PaginationJsonResponse($discount->products(), 1, 1000);
     }
 
 

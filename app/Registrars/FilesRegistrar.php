@@ -31,7 +31,7 @@ class FilesRegistrar extends BaseRegistrar
             $this->patch("{file:[a-zA-Z0-9\_\-\/\.]+}", "$controller@rename");
         });
 
-        $this->delete("{file:[a-zA-Z0-9\_\-\/\.]+}", [
+        $this->delete("files/{file:[a-zA-Z0-9\_\-\/\.]+}", [
             "uses" => "$controller@remove",
             "middleware" => "scope:files:delete"
         ]);

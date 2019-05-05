@@ -82,7 +82,8 @@ abstract class BraintreeTestCase extends BaseTestCase
      */
     public function getBraintreeCustomer(): User
     {
-        $user = User::random(["type", "=", "registered"]);
+        /** @var User $user */
+        $user = User::random();
 
         if (!$user->isBraintreeCustomer()) {
             $user->createBraintreeCustomer("fake-valid-visa-nonce");
@@ -100,9 +101,7 @@ abstract class BraintreeTestCase extends BaseTestCase
     public function getPristineCustomer(): User
     {
         /** @var User $user */
-        $user = User::scope("registered")
-            ->inRandomOrder()
-            ->firstOrFail();
+        $user = User::random();
 
         $user->braintree_id = null;
         $user->stripe_id = null;

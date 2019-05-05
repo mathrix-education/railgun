@@ -85,7 +85,7 @@ class DiscountsTest extends APITestCase
         $discount = Discount::random();
         $productIds = Product::query()->inRandomOrder()->limit(5)->get()->pluck("id");
 
-        $uri = "/discounts/{$discount->id}/products/0/100";
+        $uri = "/discounts/{$discount->id}/products";
         JWT::autoScope("patch", $uri);
         $this->json("patch", $uri, $productIds->toArray());
 

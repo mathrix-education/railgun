@@ -43,7 +43,7 @@ class SubscriptionLifecycleTest extends BraintreeTestCase
     {
         Notification::fake();
         /** @var User $user */
-        $user = JWT::withScopes("registered");
+        $user = JWT::withScopes("logged");
 
         $this->json("post", "/subscriptions", [
             "planId" => "v4_monthly",
@@ -88,7 +88,6 @@ class SubscriptionLifecycleTest extends BraintreeTestCase
      */
     public function testSubscriptionFind(array $payload)
     {
-        JWT::withScopes("admin");
 
         /**
          * @var User $user
@@ -96,6 +95,7 @@ class SubscriptionLifecycleTest extends BraintreeTestCase
          */
         [$user, $subscription] = $payload;
 
+        JWT::withScopes("subscriptions:read");
         $this->json("get", "/subscriptions/{$subscription->id}");
 
         $this->assertResponseOk();
@@ -184,8 +184,8 @@ class SubscriptionLifecycleTest extends BraintreeTestCase
          * @var Subscription $subscription
          */
         [$user, $subscription] = $payload;
-        JWT::withScopes("admin");
 
+        JWT::withScopes("subscriptions:write");
         $this->json("post", "/subscriptions/{$subscription->id}/cancel");
 
         /** @var stdClass|Subscription $subscriptionData */
@@ -218,7 +218,7 @@ class SubscriptionLifecycleTest extends BraintreeTestCase
          * @var Subscription $subscription
          */
         [$user, $subscription] = $payload;
-        JWT::withScopes("admin");
+        JWT::withScopes("subscriptions:write");
 
         $this->json("post", "/subscriptions/{$subscription->id}/cancel", [
             "now" => true

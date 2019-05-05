@@ -31,12 +31,12 @@ class DiscountsRegistrar extends BaseRegistrar
 
         $this->get("discounts/{discountId:[1-9]\d*}/products/{page:\d+}/{perPage:[1-9]\d*}", [
             "uses" => "$controller@getProducts",
-            "middleware" => "discounts:read"
+            "middleware" => "scope:discounts:read"
         ]);
 
         $this->patch("discounts/{discountId:[1-9]\d*}/products", [
             "uses" => "$controller@patchProducts",
-            "middleware" => "discounts:write"
+            "middleware" => "scope:discounts:write"
         ]);
 
         $this->get("discounts/code/{code:[a-zA-Z0-9\-]+}", "$controller@getByCode");

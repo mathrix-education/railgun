@@ -26,8 +26,10 @@ class SubscriptionsRegistrar extends BaseRegistrar
             $this->get("subscriptions/by-user/{userId:[1-9]\d*}", "$controller@byUser");
             $this->patch("subscriptions/{subscriptionId:[a-z0-9\_]+}", "$controller@update");
         });
-        $this->group(["middleware" => "scope:subscriptions:write"], function () use ($controller) {
+        $this->group(["middleware" => "scope:subscriptions:read"], function () use ($controller) {
             $this->get("subscriptions/{subscriptionId:[a-z0-9\_]+}", "$controller@find");
+        });
+        $this->group(["middleware" => "scope:subscriptions:write"], function () use ($controller) {
             $this->post("subscriptions/{subscriptionId:[a-z0-9\_]+}/cancel", "$controller@cancel");
         });
     }

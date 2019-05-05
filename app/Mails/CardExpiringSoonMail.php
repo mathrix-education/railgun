@@ -7,7 +7,9 @@ use App\Models\User;
 use App\Services\Braintree\Models\Plan;
 use Braintree\CreditCard;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Support\Facades\Cache;
+use stdClass;
 
 /**
  * Class CardExpiringSoonMail.
@@ -22,7 +24,13 @@ class CardExpiringSoonMail extends BaseMail
     private $card;
 
 
-    public function __construct(User $customer, CreditCard $card)
+    /**
+     * CardExpiringSoonMail constructor.
+     *
+     * @param User $customer
+     * @param CreditCard|stdClass $card
+     */
+    public function __construct(User $customer, $card)
     {
         parent::__construct();
         $this->customer = $customer;
@@ -32,15 +40,20 @@ class CardExpiringSoonMail extends BaseMail
 
     public static function mock()
     {
-        $currentMonth = Carbon::now()->month;
-        $start = Carbon::create(2019, $currentMonth + 1, 1);
-        $end = Carbon::create(2019, $currentMonth + 3, 1);
+        $card = new stdClass();
+        $card->cardType = "Visa";
+        $card->cardholderName = "John Doe";
+        $card->bin = "123456";
+        $card->maskedNumber = "123456******1234";
 
-        $cards = Cache::remember(self::class . "_creditCards", 60, function () use ($start, $end) {
-            return CardExpiringSoonJob::getCardsWithSubscriptionExpiringBetween($start, $end);
-        });
+        $subscription = new stdClass();
+        $subscription->planId = "v4_monthly";
+        $subscription->nextBillingDate = new DateTime();
+        $subscription->nextBillingPeriodAmount = "17.90";
 
-        return new self(User::random(), $cards->random());
+        $card->subscriptions = [$subscription];
+
+        return new self(User::random(), $card);
     }
 
 

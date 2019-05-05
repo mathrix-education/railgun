@@ -30,7 +30,7 @@ class ProductsRegistrar extends BaseRegistrar
         ]);
 
         $this->patch("products/{packId:[1-9]\d*}/items", [
-            "middleware" => "products:write",
+            "middleware" => "scope:products:write",
             "uses" => "$controller@items"
         ]);
 

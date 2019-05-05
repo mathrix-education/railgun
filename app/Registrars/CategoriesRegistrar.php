@@ -23,7 +23,7 @@ class CategoriesRegistrar extends BaseRegistrar
             "index" => "categories:read",
             "get" => "categories:read",
             "post" => "categories:write",
-            "patch" => "categories:delete",
+            "patch" => "categories:write",
             "delete" => "categories:delete"
         ]);
     }

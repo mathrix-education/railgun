@@ -74,24 +74,4 @@ class AuthLoginTest extends APITestCase
 
         $this->assertOpenAPIResponse();
     }
-
-
-    public function testLoginOldToken()
-    {
-        $user = User::random();
-        $oldHash = $user->password; // Save the current hash for revert after the test
-        $newPassword = $this->faker->password;
-        $user->password = $newPassword;
-        $user->save();
-
-        $this->json("post", "/auth/login", [
-            "email" => $user->email,
-            "password" => $newPassword
-        ], ["Authorization" => self::OLD_TOKEN]);
-
-        $this->assertResponseStatus(401);
-
-        // Revert password change
-        DB::update("UPDATE users SET password = ? WHERE id = ?", [$oldHash, $user->id]);
-    }
 }

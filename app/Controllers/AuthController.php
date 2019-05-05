@@ -62,8 +62,7 @@ class AuthController extends BaseController
         $jws = JWTIssuer::issueJWS($user);
 
         return new JsonResponse([
-            "token" => JWTIssuer::serializeJWS($jws),
-            "payload" => json_decode($jws->getPayload())
+            "token" => JWTIssuer::serializeJWS($jws)
         ]);
     }
 
@@ -98,6 +97,7 @@ class AuthController extends BaseController
         event(new PasswordForgottenEvent($user));
 
         return new JsonResponse([
+            "success" => true,
             "message" => "Reset email sent successfully"
         ]);
     }
