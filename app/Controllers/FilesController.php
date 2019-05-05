@@ -3,14 +3,11 @@
 namespace App\Controllers;
 
 use App\Exceptions\FileNotFoundException;
-use App\Policies\FilePolicy;
-use Carbon\Carbon;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use League\Flysystem\FileNotFoundException as FlysystemFileNotFoundException;
 use Mathrix\Lumen\Bases\BaseController;
@@ -109,8 +106,6 @@ class FilesController extends BaseController
      */
     public function upload(Request $request, string $file): JsonResponse
     {
-        $request->user()->canOrFail("upload", FilePolicy::class);
-
         $this->validate($request, [
             "file" => "required|file|max:15360|mimes:jpeg,jpg,png,gif,pdf,mp3,mp4",
         ]);
@@ -136,15 +131,12 @@ class FilesController extends BaseController
      * GET /files/explore/{directory}
      * Explore a directory.
      *
-     * @param Request $request The Illuminate HTTP request.
      * @param string $directory The directory path.
      *
      * @return JsonResponse
      */
-    public function explore(Request $request, string $directory = "/")
+    public function explore(string $directory = "/")
     {
-        $request->user()->canOrFail("explore", FilePolicy::class);
-
         $disk = $this->getDisk();
         $content = collect($disk->listContents($directory));
 
@@ -175,16 +167,13 @@ class FilesController extends BaseController
     /**
      * GET /files/{path}/info
      *
-     * @param Request $request The Illuminate HTTP request.
      * @param string $file The file path.
      *
      * @return JsonResponse
      * @throws FileNotFoundException
      */
-    public function info(Request $request, string $file)
+    public function info(string $file)
     {
-        $request->user()->canOrFail("info", FilePolicy::class);
-
         return new JsonResponse($this->metadata($file));
     }
 
@@ -203,8 +192,6 @@ class FilesController extends BaseController
      */
     public function rename(Request $request, string $file): JsonResponse
     {
-        $request->user()->canOrFail("rename", FilePolicy::class);
-
         $this->validate($request, [
             "destination" => "required"
         ]);
@@ -238,16 +225,14 @@ class FilesController extends BaseController
      * DELETE /files/{path}
      * Delete a file/directory.
      *
-     * @param Request $request The Illuminate HTTP request.
      * @param string $file The file/directory path.
      *
      * @return JsonResponse
      * @throws FileNotFoundException
      * @throws Http400BadRequestException
      */
-    public function remove(Request $request, string $file)
+    public function remove(string $file)
     {
-        $request->user()->canOrFail("delete", FilePolicy::class);
         $disk = $this->getDisk();
 
         // Check if path exists
@@ -263,37 +248,5 @@ class FilesController extends BaseController
             "success" => true,
             "message" => "File $file was successfully deleted."
         ]);
-    }
-
-
-    /**
-     * POST /system/sitemap
-     * Regenerate sitemap.
-     *
-     * @return JsonResponse
-     * @throws FileNotFoundException
-     */
-    public function sitemap()
-    {
-        /** @var Filesystem|FilesystemAdapter $bucket */
-        $bucket = Storage::disk("cdn");
-        $sitemap = "sitemap.xml";
-        $exists = $bucket->exists($sitemap);
-        $shouldRegenerate = !$exists;
-
-        if ($exists) {
-            $metadata = $this->metadata($sitemap);
-            $createdAt = Carbon::createFromTimestamp($metadata["timestamp"]);
-
-            if ($createdAt->addMinutes(5)->isPast()) {
-                $shouldRegenerate = true;
-            }
-        }
-
-        if ($shouldRegenerate) {
-            Artisan::call("sitemap");
-        }
-
-        return $this->proxy("sitemap.xml");
     }
 }

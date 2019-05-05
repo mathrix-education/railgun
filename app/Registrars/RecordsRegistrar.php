@@ -20,7 +20,7 @@ class RecordsRegistrar extends BaseRegistrar
     public function register(): void
     {
         $this->get("records/{userId:[1-9]\d*}/{page:\d+}/{perPage:\d+}", [
-            "middleware" => "scope:admin",
+            "middleware" => "scope:records:read",
             "uses" => RecordsController::class . "@byUser"
         ]);
     }

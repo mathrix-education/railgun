@@ -34,7 +34,7 @@ class UsersController extends BaseController
         /** @var User $user */
         $user = $request->user();
 
-        if (!$user->tokenCan("admin")) {
+        if (!scope($user, "users:read")) {
             return parent::get($request, $id);
         }
 
@@ -97,17 +97,17 @@ class UsersController extends BaseController
         // Check permission
         $user->canOrFail("patch", $target);
 
-        // Unlock fields for admin
-        User::unguard($user->tokenCan("admin"));
+        // Unlock fields for privileged user
+        User::unguard($user->hasScope("users:write"));
 
         // Check for current_password, skip for admins if they are editing another user
         $this->validate($request, [
             "current_password" => Rule::requiredIf(function () use ($request, $user, $target) {
                 $passwordProvided = $request->has("password");
                 $targetHimself = $user->id === $target->id;
-                $isAdmin = $user->tokenCan("admin");
+                $hasScope = $user->hasScope("users:write");
 
-                return $passwordProvided && ($targetHimself || !$isAdmin);
+                return $passwordProvided && ($targetHimself || !$hasScope);
             })
         ]);
 

@@ -22,15 +22,15 @@ class ProductsRegistrar extends BaseRegistrar
         $controller = ProductsController::class;
 
         $this->rest("products", $controller, [
-            "index" => "admin",
-            "get" => "admin",
-            "post" => "admin",
-            "patch" => "admin",
-            "delete" => "admin"
+            "index" => "products:read",
+            "get" => "products:read",
+            "post" => "products:write",
+            "patch" => "products:write",
+            "delete" => "products:delete"
         ]);
 
         $this->patch("products/{packId:[1-9]\d*}/items", [
-            "middleware" => "scope:admin",
+            "middleware" => "scope:products:write",
             "uses" => "$controller@items"
         ]);
 
@@ -42,7 +42,7 @@ class ProductsRegistrar extends BaseRegistrar
         $this->get("products/buyable/$type/{page:\d+}/{perPage:[1-9]\d+}", "$controller@buyable");
         $this->post("products/cart", "$controller@cart");
 
-        $this->group(["middleware" => "scope:registered"], function () use ($controller) {
+        $this->group(["middleware" => "scope:logged"], function () use ($controller) {
             $this->post("products/buy", "$controller@buy");
         });
     }

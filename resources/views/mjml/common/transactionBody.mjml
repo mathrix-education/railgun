@@ -17,7 +17,7 @@
 </mj-section>
 
 <mj-section padding="0">
-    <mj-column padding="0">
+    <mj-column>
         <mj-divider border-width="1px" border-style="dashed" border-color="lightgrey"></mj-divider>
     </mj-column>
 </mj-section>
@@ -27,7 +27,7 @@
     @switch($transaction->paymentInstrumentType)
         @case("credit_card")
 </mj-raw>
-<mj-include path="cardDetails"></mj-include>
+<mj-include path="card_details"></mj-include>
 <mj-raw>
     @break
     @case("paypal_account")
@@ -40,7 +40,7 @@
 
 
 <mj-section padding="0">
-    <mj-column padding="0">
+    <mj-column>
         <mj-divider border-width="1px" border-style="dashed" border-color="lightgrey"></mj-divider>
 
         <mj-raw>@if(!empty($lineItems))</mj-raw>

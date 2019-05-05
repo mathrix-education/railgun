@@ -18,8 +18,11 @@ class MigrateToScopesOnUsersTable extends Migration
             $table->json("scopes")->nullable()->after("type");
         });
 
-        DB::update("UPDATE users SET scopes = CONCAT('[\"', type, '\"]')");
-        DB::update("UPDATE users SET scopes = '[\"*\"]' WHERE scopes like '%admin%'");
+        $users = DB::table("users");
+        $users->where("type", "=", "admin")
+            ->update(["scopes" => json_encode(["*"])]);
+        $users->where("type", "!=", "admin")
+            ->update(["scopes" => json_encode(["logged"])]);
 
         Schema::table("users", function (Blueprint $table) {
             $table->dropColumn("type");

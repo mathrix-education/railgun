@@ -20,6 +20,7 @@ class SettingsTest extends APITestCase
      */
     public function testAll()
     {
+        JWT::autoScope("get", "/settings");
         $this->json("get", "/settings");
 
         $this->assertResponseOk();

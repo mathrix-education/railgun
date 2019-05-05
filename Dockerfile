@@ -9,7 +9,8 @@ WORKDIR /var/www/
 
 EXPOSE 80
 
-RUN apk -U add \
+RUN apk -U add
+    bash \
     nginx \
     curl \
     php7 \
@@ -36,6 +37,7 @@ COPY deploy/nginx/vhost.conf /etc/nginx/conf.d/default.conf
 COPY deploy/php7/php.ini /etc/php7/php.ini
 COPY deploy/php7/php-fpm.conf /etc/php7/php-fpm.conf
 COPY deploy/php7/www.conf /etc/php7/php-fpm.d/www.conf
+COPY deploy/entrypoint.sh /entrypoint.sh
 
 ADD . .
 
@@ -48,4 +50,4 @@ HEALTHCHECK CMD curl -f http://localhost
 
 STOPSIGNAL SIGTERM
 
-CMD nginx && php-fpm7 --allow-to-run-as-root && tail -f /dev/null
+ENTRYPOINT ["/entrypoint.sh"]

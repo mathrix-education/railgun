@@ -128,13 +128,12 @@ class ProductsTest extends APITestCase
         $user = User::random();
         JWT::actingAs($user);
 
-
         /** @var Discount $discount */
         $discount = Discount::query()
             ->whereHas("products", function (Builder $query) {
                 $query->whereNotNull("price");
             })
-            ->where("counter", ">", "0")
+            ->where("counter", ">", 0)
             ->whereNull("expire_at")
             ->inRandomOrder()
             ->firstOrFail();

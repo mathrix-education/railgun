@@ -68,20 +68,13 @@ class CommentsController extends BaseController
      * GET /comments/latest/{page}/{perPage}
      * Get the latest comments, ordered by desc created_at field.
      *
-     * @param Request $request The Illuminate HTTP request.
      * @param int $page The page (starts at 0).
      * @param int $perPage The number of comments per page.
      *
      * @return JsonResponse
-     * @throws Http401UnauthorizedException
      */
-    public function latest(Request $request, $page = 0, $perPage = 100): JsonResponse
+    public function latest(int $page = 0, int $perPage = 100): JsonResponse
     {
-        /** @var User $user */
-        $user = $request->user();
-
-        $user->canOrFail("latest", Comment::class);
-
         $query = Comment::with([
             "user:id,username,firstname,level,grade_id",
             "children",

@@ -21,14 +21,20 @@ class FilesRegistrar extends BaseRegistrar
     {
         $controller = FilesController::class;
 
-        $this->group(["middleware" => "scope:moderator", "prefix" => "files"], function () use ($controller) {
+        $this->group(["middleware" => "scope:files:read", "prefix" => "files"], function () use ($controller) {
             $this->get("explore[/{directory:[a-zA-Z0-9\_\-\/\.]+}]", "$controller@explore");
-
-            $this->post("{file:[a-zA-Z0-9\_\-\/\.]+}", "$controller@upload");
             $this->get("{file:[a-zA-Z0-9\_\-\/\.]+}", "$controller@info");
-            $this->patch("{file:[a-zA-Z0-9\_\-\/\.]+}", "$controller@rename");
-            $this->delete("{file:[a-zA-Z0-9\_\-\/\.]+}", "$controller@remove");
         });
+
+        $this->group(["middleware" => "scope:files:write", "prefix" => "files"], function () use ($controller) {
+            $this->post("{file:[a-zA-Z0-9\_\-\/\.]+}", "$controller@upload");
+            $this->patch("{file:[a-zA-Z0-9\_\-\/\.]+}", "$controller@rename");
+        });
+
+        $this->delete("files/{file:[a-zA-Z0-9\_\-\/\.]+}", [
+            "uses" => "$controller@remove",
+            "middleware" => "scope:files:delete"
+        ]);
 
     }
 }

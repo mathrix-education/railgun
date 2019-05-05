@@ -95,6 +95,8 @@ class TransactionSuccessMail extends BaseMail
                 "user" => $this->user,
                 "transaction" => $this->transaction,
                 "lineItems" => $this->lineItems,
+                "card" => $this->transaction->creditCardDetails ?? null,
+                "paypal" => $this->transaction->paypalDetails ?? null
             ]);
     }
 }

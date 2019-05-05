@@ -55,7 +55,6 @@ class SubscriptionsController extends BaseController
 
     /**
      * GET /subscriptions/{subscriptionId}
-     * Allowed scopes: admin, handled by registrar.
      * Get a subscription by its id.
      *
      * @param string $subscriptionId The Braintree subscription id.
@@ -95,7 +94,7 @@ class SubscriptionsController extends BaseController
 
 
         // Stage 2: Check that the user is the owner of the targeted subscription.
-        if (!$user->ownsBraintreeSubscriptionId($subscriptionId) || $user->tokenCan("admin")) {
+        if (!$user->ownsBraintreeSubscriptionId($subscriptionId) || $user->hasScope("subscriptions:read")) {
             throw new Http401UnauthorizedException(["subscription_id" => $subscriptionId]);
         }
 
@@ -135,7 +134,6 @@ class SubscriptionsController extends BaseController
 
     /**
      * POST /subscriptions/{subscriptionId}/cancel
-     * Allowed scopes: admin, handled by registrar.
      * Cancel a subscription for a user.
      *
      * @param Request $request The Illuminate HTTP request.
@@ -204,7 +202,7 @@ class SubscriptionsController extends BaseController
         /** @var User $user */
         $user = $request->user();
 
-        if ($user->id !== $userId && !$user->tokenCan("admin")) {
+        if ($user->id !== $userId && !$user->hasScope("subscriptions:read")) {
             throw new Http401UnauthorizedException();
         }
 

@@ -8,7 +8,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Mathrix\Lumen\JWT\Auth\JWT;
-use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
 use Tests\APITestCase;
 
@@ -48,7 +47,7 @@ class UsersTest extends APITestCase
     public function testGetSelf()
     {
         /** @var User $user */
-        $user = JWT::withScopes("registered");
+        $user = JWT::withScopes("logged");
         $this->json("get", "/users/{$user->id}");
 
         $this->assertResponseOk();
@@ -62,7 +61,7 @@ class UsersTest extends APITestCase
     public function testGetAdmin()
     {
         /** @var User $user */
-        $user = User::scope("admin")->inRandomOrder()->firstOrFail();
+        $user = User::scope("*")->inRandomOrder()->firstOrFail();
         JWT::actingAs($user);
         $this->json("get", "/users/{$user->id}");
 
@@ -77,8 +76,7 @@ class UsersTest extends APITestCase
     public function testGetSomeoneElse()
     {
         /** @var User $user */
-        $user = User::scope("registered")->inRandomOrder()->firstOrFail();
-        JWT::actingAs($user);
+        $user = JWT::withScopes("logged");
         $someone = User::random(["id", "!=", $user->id]);
 
         $this->json("get", "/users/{$someone->id}");
@@ -105,13 +103,16 @@ class UsersTest extends APITestCase
         );
 
         /** @var User $user */
-        $user = JWT::withScopes("registered");
+        $user = JWT::withScopes("logged");
 
         $this->json("patch", "/users/{$user->id}", $payload);
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse();
-        $this->assertInDatabase("users", Arr::except($payload, ["current_password", "password", " settings"]));
+        $this->assertInDatabase(
+            "users",
+            Arr::except($payload, ["current_password", "password", "scopes", "settings"])
+        );
 
         $new = $payload["password"];
         $hashed = $user->refresh()->password;
@@ -134,13 +135,16 @@ class UsersTest extends APITestCase
             ]
         );;
         /** @var User $user */
-        $user = JWT::withScopes("registered");
+        $user = JWT::withScopes("logged");
 
         $this->json("patch", "/users/{$user->id}", $payload);
 
         $this->assertResponseStatus(422);
         $this->assertOpenAPIResponse();
-        $this->assertNotInDatabase("users", Arr::except($payload, ["current_password", "password"]));
+        $this->assertNotInDatabase(
+            "users",
+            Arr::except($payload, ["current_password", "password", "scopes", "settings"])
+        );
 
         $hashed = $user->refresh()->password;
         $this->assertTrue(Hash::check(env("DB_PASSWORD"), $hashed), "Hash does not match the old password.");
@@ -154,7 +158,7 @@ class UsersTest extends APITestCase
     public function testPatchLastSession()
     {
         /** @var User $user */
-        $user = JWT::withScopes("registered");;
+        $user = JWT::withScopes("logged");
 
         $module = Module::random(["visible", "=", true]);
         $settings = array_merge($user->settings, ["last_session" => [
@@ -177,7 +181,9 @@ class UsersTest extends APITestCase
         JWT::withScopes("admin");
         $user = User::random();
 
-        $this->json("delete", "/users/{$user->id}/cache");
+        $uri = "/users/{$user->id}/cache";
+        JWT::autoScope("delete", $uri);
+        $this->json("delete", $uri);
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse();
@@ -195,7 +201,7 @@ class UsersTest extends APITestCase
     public function testPointsWithModule()
     {
         /** @var User $user */
-        $user = JWT::withScopes("registered");
+        $user = JWT::withScopes("logged");
         $pointsBefore = $user->points;
         $module = Module::random(["visible", "=", true]);
 

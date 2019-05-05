@@ -19,7 +19,7 @@ class VotesRegistrar extends BaseRegistrar
      */
     public function register(): void
     {
-        $this->group(["middleware" => "scope:registered"], function () {
+        $this->group(["middleware" => "scope:logged"], function () {
             $controller = VotesController::class;
 
             $this->post("votes/comment/{commentId:[1-9]\d*}", "$controller@vote");
