@@ -46,7 +46,7 @@ RUN echo "${COMMIT_SHORT_SHA}" >> build.txt
 # Clean
 RUN rm -rf /var/cache/apk/*
 
-HEALTHCHECK CMD curl -f http://localhost
+HEALTHCHECK CMD echo "test"
 
 STOPSIGNAL SIGTERM
 
