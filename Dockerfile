@@ -47,7 +47,7 @@ RUN chmod +x /entrypoint.sh
 # Clean
 RUN rm -rf /var/cache/apk/*
 
-HEALTHCHECK CMD curl -f http://localhost/system/health
+HEALTHCHECK CMD exit 0
 
 STOPSIGNAL SIGTERM
 
