@@ -1,7 +1,7 @@
 #!/bin/bash
 case "$1" in
     server)
-        /usr/sbin/nginx && /usr/sbin/php-fpm7 --allow-to-run-as-root
+        /usr/sbin/php-fpm7 --allow-to-run-as-root && /usr/sbin/nginx -g 'daemon off;'
         ;;
     worker)
         /usr/bin/php /var/www/artisan queue:work --sleep=3 --tries=3
