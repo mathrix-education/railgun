@@ -35,7 +35,6 @@ steps:
   - id: 'kubectl:keychain'
     waitFor: ['-']
     name: 'gcr.io/cloud-builders/kubectl'
-    entrypoint: 'bash'
     args: ['get', 'deployments']
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=$_CLOUDSDK_COMPUTE_ZONE'
