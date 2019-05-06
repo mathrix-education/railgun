@@ -55,7 +55,7 @@ steps:
       - '-c'
       - |
         cat storage/keychain/composer.github-oauth.github.com
-        composer config -g github-oauth.github.com < $(cat storage/keychain/composer.github-oauth.github.com)
+        composer config -g github-oauth.github.com $(cat storage/keychain/composer.github-oauth.github.com)
         composer install \
           --optimize-autoloader \
           --ignore-platform-reqs \
