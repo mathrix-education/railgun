@@ -5,7 +5,7 @@ patch:
     association between the discount and the products so be sure to always pass
     the product ids that are supposed to stay attached to the discount.
   security:
-    - bearer: [admin]
+    - bearer: [discounts:write]
   parameters:
     - name: discountId
       in: path

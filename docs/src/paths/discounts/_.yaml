@@ -3,4 +3,4 @@ $extends:
     model: discount
 post:
   security:
-    - bearer: [admin]
+    - bearer: [discounts:write]

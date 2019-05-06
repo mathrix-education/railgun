@@ -1,7 +1,7 @@
 get:
   summary: Get discount products
   security:
-    - bearer: [admin]
+    - bearer: [discounts:read]
   parameters:
     - name: discountId
       in: path
