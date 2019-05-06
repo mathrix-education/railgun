@@ -125,7 +125,7 @@ class SubscriptionLifecycleTest extends BraintreeTestCase
         [$user, $subscription] = $payload;
         JWT::actingAs($user);
 
-        $this->json("get", "/subscriptions/by-user/{$user->id}");
+        $this->json("get", "/users/{$user->id}/subscriptions/0/100");
 
         $this->assertResponseOk();
         $responseData = json_decode($this->response->getContent());
