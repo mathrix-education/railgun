@@ -3,4 +3,4 @@ $extends:
     model: discipline
 post:
   security:
-    - bearer: [admin]
+    - bearer: [disciplines:write]

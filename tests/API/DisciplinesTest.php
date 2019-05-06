@@ -40,36 +40,6 @@ class DisciplinesTest extends APITestCase
 
 
     /**
-     * GET /disciplines/by-grade/{gradeId}
-     */
-    public function testByGrade()
-    {
-        $this->assertRestBySuccess(Grade::class);
-    }
-
-
-    /**
-     * GET /disciplines/by-grade/{gradeId}
-     * Test that only visible disciplines are visible for a given grade
-     */
-    public function testByGradeOnlyVisible()
-    {
-        $chapter = Chapter::random();
-        Chapter::query()
-            ->where("discipline_id", "=", $chapter->discipline_id)
-            ->where("grade_id", "=", $chapter->grade_id)
-            ->update(["visible" => false]);
-
-        $this->json("get", "/disciplines/by-grade/{$chapter->grade_id}/0/100");
-
-        $this->assertOpenAPIResponse("/disciplines/by-grade/{gradeId}/{page}/{perPage}");
-        $disciplineIds = array_values(Arr::pluck($this->getJsonResponseContent()->data, "id"));
-        $this->assertTrue(!in_array($chapter->discipline_id, $disciplineIds),
-            "Found discipline id {$chapter->discipline_id} in [" . implode(", ", $disciplineIds) . "]");
-    }
-
-
-    /**
      * GET /disciplines/slug/{disciplineSlug}
      */
     public function testBySlug(): void
