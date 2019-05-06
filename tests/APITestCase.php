@@ -22,6 +22,8 @@ class APITestCase extends BaseTestCase
 {
     use DatabaseTransactions, RESTTrait, DebugTrait;
 
+    public const SECURITY = "bearer";
+
     /** @var BaseModel The test main model class */
     protected $modelClass = null;
     /** @var string The model table */
@@ -45,13 +47,48 @@ class APITestCase extends BaseTestCase
     }
 
 
+    /**
+     * Automatically mock the scope according to the OpenAPI documentation. This ensure that the documentation is up to
+     * date with the current implementation.
+     *
+     * @param string $method
+     * @param string $uri
+     * @param string $security
+     *
+     * @return mixed
+     */
+    public function getOpenAPIScopes(string $method, string $uri, string $security = "bearer")
+    {
+        $method = strtolower($method);
+        $openAPIUri = $this->getOpenAPIUri($method, $uri);
+
+        $path = self::$schema->getPathSchema($openAPIUri);
+        $allowedMethods = self::$schema->getAllowedMethods($openAPIUri);
+
+        if (!in_array(strtoupper($method), $allowedMethods)) {
+            $this->fail("$method is not allowed for uri $openAPIUri");
+        } else if (!$this->requester && isset($path->{$method}->security[0]->{self::SECURITY})) {
+            return $path->{$method}->security[0]->{self::SECURITY};
+        } else {
+            return null;
+        }
+    }
+
+
     public function setUp()
     {
         parent::setUp();
 
         $this->initializeREST();
         $this->handler("before.request", function (string $method, string $uri) {
-            $this->requester = JWT::autoScope($method, $uri);
+            $scopes = $this->getOpenAPIScopes($method, $uri);
+
+            if (empty($scopes)) {
+                $this->requester = User::random();
+                JWT::actingAs($this->requester);
+            } else {
+                $this->requester = JWT::withScopes($scopes[0]);
+            }
         });
     }
 

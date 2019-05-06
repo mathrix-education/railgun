@@ -20,8 +20,6 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Laravel\Lumen\Auth\Authorizable;
-use Laravel\Passport\Client;
-use Laravel\Passport\Token;
 use Mathrix\Lumen\Bases\BaseModel;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\JWT\Auth\HasJWT;
@@ -93,6 +91,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "firstname",
         "lastname",
         "password",
+        "scopes",
         "points",
         "daily",
         "settings",
@@ -376,6 +375,9 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
 
+    /**
+     * @return array
+     */
     public function getLastSessionAttribute()
     {
         if (empty($this->settings["last_session"])) {

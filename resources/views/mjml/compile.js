@@ -30,6 +30,7 @@ class MailCompiler {
         }
 
         if (mjmlResult["html"].length > 0) {
+            // Fix dollar escape
             const content = mjmlResult["html"].replace(/&#36;/g, "$");
             const destFile = src.replace("/mjml/", "/mails/").replace(".mjml", ".blade.php");
             const destDir = this.path.dirname(destFile);

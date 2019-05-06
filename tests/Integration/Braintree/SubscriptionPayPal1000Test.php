@@ -7,7 +7,6 @@ use Braintree\Customer;
 use Braintree\Exception\NotFound;
 use Braintree\Subscription;
 use Illuminate\Support\Facades\Notification;
-use Laravel\Passport\Passport;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\JWT\Auth\JWT;
 use Tests\Utils\NotificationsAssertionsTrait;

@@ -4,7 +4,6 @@ namespace Tests\API;
 
 use App\Models\Comment;
 use App\Models\Vote;
-use Laravel\Passport\Passport;
 use Mathrix\Lumen\JWT\Auth\JWT;
 use Tests\APITestCase;
 

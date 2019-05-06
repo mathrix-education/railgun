@@ -4,8 +4,6 @@ namespace App\Controllers;
 
 use App\Exceptions\DiscountExpiredException;
 use App\Exceptions\DiscountNotApplicableException;
-use App\Exceptions\ImmutableException;
-use App\Exceptions\InvalidBraintreeCustomerException;
 use App\Exceptions\InvalidSponsorException;
 use App\Exceptions\ProductAlreadyBoughtException;
 use App\Exceptions\ProductNotBuyableException;
@@ -13,9 +11,6 @@ use App\Exceptions\SponsorNotFoundException;
 use App\Models\Discount;
 use App\Models\Product;
 use App\Models\User;
-use App\Services\Braintree\Exceptions\BraintreeGatewayException;
-use App\Services\Braintree\Exceptions\BraintreeProcessorException;
-use App\Services\Braintree\Exceptions\DuplicatePaymentMethodNonceException;
 use App\Services\Braintree\Pipelines\CartPipeline;
 use App\Services\Braintree\Utils\AffiliateProcess;
 use Illuminate\Http\JsonResponse;
@@ -23,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
+use Mathrix\Lumen\Exceptions\Http\Http429TooManyRequestsException;
 use Mathrix\Lumen\Exceptions\ValidationException;
 use Mathrix\Lumen\Responses\PaginationJsonResponse;
 
@@ -162,18 +158,8 @@ class ProductsController extends BaseController
      * @param Request $request The Illuminate HTTP request.
      *
      * @return JsonResponse
-     * @throws BraintreeGatewayException
-     * @throws BraintreeProcessorException
-     * @throws DiscountExpiredException
-     * @throws DiscountNotApplicableException
-     * @throws DuplicatePaymentMethodNonceException
-     * @throws InvalidBraintreeCustomerException
-     * @throws InvalidSponsorException
-     * @throws ProductAlreadyBoughtException
-     * @throws ProductNotBuyableException
-     * @throws SponsorNotFoundException
-     * @throws ValidationException
-     * @throws ImmutableException
+     * @throws Http401UnauthorizedException
+     * @throws Http429TooManyRequestsException
      */
     public function buy(Request $request): JsonResponse
     {

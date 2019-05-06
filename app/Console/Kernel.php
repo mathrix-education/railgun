@@ -25,12 +25,10 @@ class Kernel extends ConsoleKernel
     /** @var array The Artisan commands. */
     protected $commands = [
         TestCommand::class,
-        DBDestroyCommand::class,
         CompileMails::class,
         PackFixCommand::class,
         ResendTransactionSuccessMailCommand::class,
         RebuildCacheCommand::class,
-        CloneProductionDatabaseCommand::class
     ];
 
 

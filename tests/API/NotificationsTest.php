@@ -5,7 +5,6 @@ namespace Tests\API;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Notifications\DatabaseNotification;
-use Laravel\Passport\Passport;
 use Mathrix\Lumen\JWT\Auth\JWT;
 use Tests\APITestCase;
 

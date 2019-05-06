@@ -4,9 +4,7 @@ namespace Tests\API;
 
 use App\Models\Chapter;
 use App\Models\Mark;
-use App\Models\User;
 use Illuminate\Support\Arr;
-use Laravel\Passport\Passport;
 use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;

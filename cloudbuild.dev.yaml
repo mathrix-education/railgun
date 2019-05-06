@@ -18,16 +18,14 @@ options:
 steps:
   # Decrypt the SSH private key for composer git clone
   # --------------------------------------------------
-  - id: 'gcloud:kms:decrypt'
-    name: 'gcr.io/cloud-builders/gcloud'
+  - id: 'kubectl:keychain'
+    name: 'gcr.io/cloud-builders/kubectl'
+    entrypoint: 'bash'
     args:
-      - kms
-      - decrypt
-      - --ciphertext-file=deploy/id_rsa.enc
-      - --plaintext-file=/root/.ssh/id_rsa
-      - --location=global
-      - --keyring=mathrix-education-keyring
-      - --key=github-key
+      - -c
+      - |
+        kubectl get secret dev-education-keychain -o=jsonpath='{.data.gcs\.json}' | base64 -d > storage/keychain/gcs.json
+        kubectl get secret dev-education-keychain -o=jsonpath='{.data.jwt_auth\.json}' | base64 -d > storage/keychain/jwt_auth.json
     volumes:
       - name: 'ssh'
         path: /root/.ssh

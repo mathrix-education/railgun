@@ -68,8 +68,7 @@ class UsersController extends BaseController
                 "scopes" => ["registered"],
             ]);
 
-            $user->fill($request->all())
-                ->save();
+            $user->fill($request->all())->save();
         });
 
         return new JsonResponse($user->fresh());
