@@ -3,4 +3,4 @@ $extends:
     model: notion
 get:
   security:
-    - bearer: [admin]
+    - bearer: [notions:read]
