@@ -3,4 +3,4 @@ $extends:
     model: country
 post:
   security:
-    - bearer: [admin]
+    - bearer: [countries:write]
