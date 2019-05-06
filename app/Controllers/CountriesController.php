@@ -4,7 +4,9 @@ namespace App\Controllers;
 
 use App\Models\Country;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Mathrix\Lumen\Bases\BaseController;
+use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
 use Mathrix\Lumen\Responses\PaginationJsonResponse;
 
 /**
@@ -36,17 +38,16 @@ class CountriesController extends BaseController
     /**
      * GET /countries/{countryId}/grades/{page}/{perPage}
      *
+     * @param Request $request The Illuminate HTTP request.
      * @param int $countryId The country id
      * @param int $page The results page.
      * @param int $perPage The number of grades per page.
      *
      * @return PaginationJsonResponse
+     * @throws Http401UnauthorizedException
      */
-    public function grades(int $countryId, int $page, int $perPage): PaginationJsonResponse
+    public function grades(Request $request, int $countryId, int $page, int $perPage): PaginationJsonResponse
     {
-        /** @var Country $country */
-        $country = Country::query()->findOrFail($countryId);
-
-        return new PaginationJsonResponse($country->grades(), $page, $perPage);
+        return $this->relation($request, "grades", $countryId, $page, $perPage);
     }
 }
