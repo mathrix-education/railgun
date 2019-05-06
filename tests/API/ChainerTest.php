@@ -70,7 +70,7 @@ class ChainerTest extends APITestCase
                 [
                     "name" => "comments",
                     "method" => "get",
-                    "url" => "/comments/by-module/{$moduleId}"
+                    "url" => "/modules/{$moduleId}/comments/0/1000"
                 ],
                 [
                     "name" => "chapter_recursive",
@@ -80,6 +80,7 @@ class ChainerTest extends APITestCase
             ],
         ]);
 
+        $this->debug();
         $this->assertResponseOk();
     }
 }

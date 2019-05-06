@@ -3,14 +3,13 @@
 namespace App\Controllers;
 
 use App\Models\Chapter;
-use App\Models\Grade;
-use App\Models\Module;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Mathrix\Lumen\Bases\BaseController;
-use Mathrix\Lumen\Exceptions\Models\Models\ModelNotFoundException;
+use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
+use Mathrix\Lumen\Responses\PaginationJsonResponse;
 
 /**
  * Class ChaptersController.
@@ -21,6 +20,23 @@ use Mathrix\Lumen\Exceptions\Models\Models\ModelNotFoundException;
  */
 class ChaptersController extends BaseController
 {
+    /**
+     * GET /chapters/{chapterId}/notions/{page}/{perPage}
+     *
+     * @param Request $request The Illuminate HTTP request.
+     * @param int $chapterId The chapter id.
+     * @param int $page The results page.int
+     * @param int $perPage The number of notions per page.
+     *
+     * @return PaginationJsonResponse
+     * @throws Http401UnauthorizedException
+     */
+    public function notions(Request $request, int $chapterId, int $page, int $perPage): PaginationJsonResponse
+    {
+        return $this->relation($request, "notions", $chapterId, $page, $perPage);
+    }
+
+
     /**
      * GET /chapters/{chapterId}/recursive
      * Get a chapter and all its visible children (notions, activities, modules).

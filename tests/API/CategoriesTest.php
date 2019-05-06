@@ -3,7 +3,6 @@
 namespace Tests\API;
 
 use App\Models\Category;
-use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
@@ -33,6 +32,15 @@ class CategoriesTest extends APITestCase
         $category->posts()->update(["category_id" => $pivot->id]);
 
         $this->assertRestDeleteSuccess(["conditions" => ["id", "=", $category->id]]);
+    }
+
+
+    /**
+     * GET /categories/{categoryId}/posts/{page}/{perPage}
+     */
+    public function testPosts(): void
+    {
+        $this->assertRestRelationSuccess("posts");
     }
 
 

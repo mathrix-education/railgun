@@ -38,6 +38,9 @@ class ActivitiesTest extends APITestCase
     }
 
 
+    /**
+     * GET /activities/{activityId}/modules/{page}/{perPage}
+     */
     public function testModules(): void
     {
         $this->assertRestRelationSuccess("modules");

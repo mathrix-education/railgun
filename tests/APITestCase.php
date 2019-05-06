@@ -3,7 +3,6 @@
 namespace Tests;
 
 use App\Models\User;
-use ErrorException;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Mathrix\Lumen\Bases\BaseModel;
 use Mathrix\Lumen\JWT\Auth\JWT;
@@ -60,12 +59,7 @@ class APITestCase extends BaseTestCase
     {
         $method = strtolower($method);
 
-        try {
-            $openAPIUri = $this->getOpenAPIUri($method, $uri);
-        } catch (ErrorException $e) {
-            return null;
-        }
-
+        $openAPIUri = $this->getOpenAPIUri($method, $uri);
         $path = self::$schema->getPathSchema($openAPIUri);
         $allowedMethods = self::$schema->getAllowedMethods($openAPIUri);
 

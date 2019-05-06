@@ -1,4 +1,4 @@
 $extends:
-  ../../fragments/paths/get_by-model_{modelId}_{page}_{perPage}.yaml:
+  ../../fragments/paths/get_{modelId}_{related}_{page}_{perPage}.yaml:
     model: post
     related: module

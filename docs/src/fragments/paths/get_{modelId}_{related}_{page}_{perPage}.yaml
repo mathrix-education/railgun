@@ -1,10 +1,10 @@
 get:
-  summary: Paginate @modelPlural@ by @related@
+  summary: Get @model@ related @relatedPlural@
   description: Retrieve all @modelPlural@ linked to a given @related@ id, paginated.
   parameters:
-    - name: @related@Id
+    - name: @model@Id
       in: path
-      description: The @related@ id
+      description: The @model@ id
       schema:
         type: int
       example: @randomInt(1,1000)@
@@ -18,14 +18,14 @@ get:
       required: true
     - name: perPage
       in: path
-      description: The number of @modelPlural@ per page.
+      description: The number of @relatedPlural@ per page.
       schema:
         type: int
       example: 100
       required: true
   responses:
     200:
-      description: The @modelPlural@ in a paginator.
+      description: The @relatedPlural@ in a paginator.
       content:
         application/json:
           schema:
@@ -38,18 +38,18 @@ get:
                 example: 4
                 readOnly: true
               per_page:
-                description: The number of @modelPlural@ per page.
+                description: The number of @relatedPlural@ per page.
                 type: integer
                 example: 100
                 readOnly: true
               total:
-                description: The total number of @modelPlural@ processed.
+                description: The total number of @relatedPlural@ processed.
                 type: integer
                 example: 1845
                 readOnly: true
               data:
-                description: The @modelPlural@ as an array.
+                description: The @relatedPlural@ as an array.
                 type: array
                 items:
-                  $ref: '../../index.yaml#/components/schemas/@Model@'
+                  $ref: '../../index.yaml#/components/schemas/@Related@'
                 readOnly: true

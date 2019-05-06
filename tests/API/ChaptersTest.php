@@ -27,7 +27,7 @@ class ChaptersTest extends APITestCase
      * POST /chapters
      * Standard post test.
      */
-    public function testPost()
+    public function testPost(): void
     {
         $this->assertRestPostSuccess(null, function ($data) {
             return Arr::except($data, ["order"]);
@@ -38,7 +38,7 @@ class ChaptersTest extends APITestCase
     /**
      * DELETE /chapters/{chapterId}
      */
-    public function testDelete()
+    public function testDelete(): void
     {
         $chapter = Chapter::random();
         $pivot = Chapter::random(["id", "!=", $chapter->id]);
@@ -46,6 +46,15 @@ class ChaptersTest extends APITestCase
         $chapter->notions()->update(["chapter_id" => $pivot->id]);
 
         $this->assertRestDeleteSuccess(["conditions" => ["id", "=", $chapter->id]]);
+    }
+
+
+    /**
+     * GET /chapters/{chapterId}/notions/{page}/{perPage}
+     */
+    public function testNotions(): void
+    {
+        $this->assertRestRelationSuccess("notions");
     }
 
 
