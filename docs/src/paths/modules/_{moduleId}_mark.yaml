@@ -1,7 +1,7 @@
 patch:
   summary: Mark a module.
   security:
-    - bearer: [registered]
+    - bearer: [logged]
   parameters:
     - name: moduleId
       in: path

@@ -3,4 +3,4 @@ $extends:
     model: module
 post:
   security:
-    - bearer: [moderator]
+    - bearer: [modules:write]

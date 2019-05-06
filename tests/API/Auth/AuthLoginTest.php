@@ -50,8 +50,6 @@ class AuthLoginTest extends APITestCase
             "password" => $newPassword
         ]);
 
-        $this->debug();
-
         $this->assertResponseOk();
         $this->assertOpenAPIResponse();
 

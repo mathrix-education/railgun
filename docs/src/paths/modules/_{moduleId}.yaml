@@ -7,7 +7,7 @@ $extends:
     model: module
 patch:
   security:
-    - bearer: [redactor]
+    - bearer: [modules:write]
 delete:
   security:
-    - bearer: [admin]
+    - bearer: [modules:delete]

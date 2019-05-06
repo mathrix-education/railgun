@@ -80,7 +80,6 @@ class ChainerTest extends APITestCase
             ],
         ]);
 
-        $this->debug();
         $this->assertResponseOk();
     }
 }

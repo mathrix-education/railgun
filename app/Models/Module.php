@@ -83,7 +83,7 @@ class Module extends BaseModel
     /** @var array The validation rules */
     protected $rules = [
         "visible" => "required|boolean",
-        "seo_index" => "required|boolean",
+        "seo_index" => "boolean",
     ];
     /** @var array The accessors to append to the model's array form */
     protected $appends = ["mark"];

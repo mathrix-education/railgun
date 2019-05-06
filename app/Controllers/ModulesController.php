@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mathrix\Lumen\Bases\BaseController;
+use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
 use Mathrix\Lumen\Exceptions\Models\Models\ModelNotFoundException;
 use Mathrix\Lumen\Responses\PaginationJsonResponse;
 
@@ -20,6 +21,44 @@ use Mathrix\Lumen\Responses\PaginationJsonResponse;
  */
 class ModulesController extends BaseController
 {
+    /**
+     * GET /modules/{moduleId}/comments/{page}/{perPage}
+     *
+     * @param int $moduleId The module id.
+     * @param int $page The results page (starts at 0).
+     * @param int $perPage The number of comments per page.
+     *
+     * @return PaginationJsonResponse
+     */
+    public function comments(int $moduleId, int $page, int $perPage): PaginationJsonResponse
+    {
+        /** @var Module $module */
+        $module = Module::query()->findOrFail($moduleId);
+        $query = $module->comments()
+            ->whereNull("parent_id")
+            ->with(["children"]);
+
+        return new PaginationJsonResponse($query, $page, $perPage);
+    }
+
+
+    /**
+     * GET /modules/{moduleId}/reports/{page}/{perPage}
+     *
+     * @param Request $request The Illuminate HTTP request.
+     * @param int $moduleId The module id.
+     * @param int $page The results page (starts at 0).
+     * @param int $perPage The number of reports per page.
+     *
+     * @return PaginationJsonResponse
+     * @throws Http401UnauthorizedException
+     */
+    public function reports(Request $request, int $moduleId, int $page, int $perPage): PaginationJsonResponse
+    {
+        return $this->relation($request, "reports", $moduleId, $page, $perPage);
+    }
+
+
     /**
      * GET /modules/{moduleId}/chapter/recursive
      *
@@ -40,27 +79,6 @@ class ModulesController extends BaseController
         }
 
         return $chaptersController->recursive($request, $module->activity->notion->chapter_id);
-    }
-
-
-    /**
-     * GET /modules/{moduleId}/chapter/recursive
-     *
-     * @param int $moduleId The module id.
-     * @param int $page The results page (starts at 0).
-     * @param int $perPage The number of comments per page.
-     *
-     * @return PaginationJsonResponse
-     */
-    public function comments(int $moduleId, int $page, int $perPage): PaginationJsonResponse
-    {
-        /** @var Module $module */
-        $module = Module::query()->findOrFail($moduleId);
-        $query = $module->comments()
-            ->whereNull("parent_id")
-            ->with(["children"]);
-
-        return new PaginationJsonResponse($query, $page, $perPage);
     }
 
 

@@ -2,10 +2,7 @@
 
 namespace Tests\API;
 
-use App\Models\Activity;
 use App\Models\Module;
-use App\Models\User;
-use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
@@ -36,7 +33,7 @@ class ModulesTest extends APITestCase
     /**
      * DELETE /modules/{moduleId}
      */
-    public function testDelete()
+    public function testDelete(): void
     {
         $module = Module::random();
         $pivot = Module::random(["id", "!=", $module->id]);
@@ -49,30 +46,18 @@ class ModulesTest extends APITestCase
 
 
     /**
-     * GET /modules/by-activity/{activityId}
+     * GET /modules/{moduleId}/comments/{page}/{perPage}
      */
-    public function testByActivity(): void
+    public function testComments(): void
     {
-        $this->assertRestBySuccess(Activity::class);
+        $this->assertRestRelationSuccess("comments");
     }
 
-
     /**
-     * GET /modules/by-activity/{activityId} with premium activity as premium user
+     * GET /modules/{moduleId}/reports/{page}/{perPage}
      */
-    public function testByActivityPremium(): void
+    public function testReports(): void
     {
-        $user = User::random();
-        $user->premium_bypass = true;
-        $user->save();
-        $module = Module::random(["visible", "=", 1]);
-        $activity = $module->activity;
-        $activity->premium = true;
-        $activity->save();
-
-        JWT::actingAs($user);
-        $this->json("get", "/modules/by-activity/{$activity->id}/0/1000");
-
-        $this->assertOpenAPIResponse("/modules/by-activity/{activityId}/{page}/{perPage}");
+        $this->assertRestRelationSuccess("reports");
     }
 }
