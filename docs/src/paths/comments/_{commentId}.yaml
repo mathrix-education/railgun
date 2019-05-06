@@ -7,11 +7,11 @@ $extends:
     model: comment
 get:
   security:
-    - bearer: [moderator]
+    - bearer: [comments:read]
 patch:
   description: Patch a comment. A comment can be patched only during 3 days after it was last edited.
   security:
-    - bearer: [registered]
+    - bearer: [logged]
 delete:
   security:
-    - bearer: [moderator]
+    - bearer: [comments:delete]

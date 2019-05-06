@@ -3,6 +3,7 @@
 namespace Tests;
 
 use App\Models\User;
+use ErrorException;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Mathrix\Lumen\Bases\BaseModel;
 use Mathrix\Lumen\JWT\Auth\JWT;
@@ -21,8 +22,6 @@ use Throwable;
 class APITestCase extends BaseTestCase
 {
     use DatabaseTransactions, RESTTrait, DebugTrait;
-
-    public const SECURITY = "bearer";
 
     /** @var BaseModel The test main model class */
     protected $modelClass = null;
@@ -60,18 +59,23 @@ class APITestCase extends BaseTestCase
     public function getOpenAPIScopes(string $method, string $uri, string $security = "bearer")
     {
         $method = strtolower($method);
-        $openAPIUri = $this->getOpenAPIUri($method, $uri);
+
+        try {
+            $openAPIUri = $this->getOpenAPIUri($method, $uri);
+        } catch (ErrorException $e) {
+            return null;
+        }
 
         $path = self::$schema->getPathSchema($openAPIUri);
         $allowedMethods = self::$schema->getAllowedMethods($openAPIUri);
 
         if (!in_array(strtoupper($method), $allowedMethods)) {
             $this->fail("$method is not allowed for uri $openAPIUri");
-        } else if (!$this->requester && isset($path->{$method}->security[0]->{self::SECURITY})) {
-            return $path->{$method}->security[0]->{self::SECURITY};
-        } else {
-            return null;
+        } else if (!$this->requester && isset($path->{$method}->security[0]->{$security})) {
+            return $path->{$method}->security[0]->{$security};
         }
+
+        return null;
     }
 
 

@@ -4,7 +4,6 @@ namespace Tests\API;
 
 use App\Models\Activity;
 use App\Models\Mark;
-use App\Models\Notion;
 use App\Models\User;
 use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
@@ -39,12 +38,9 @@ class ActivitiesTest extends APITestCase
     }
 
 
-    /**
-     * GET /activities/by-notions/{notionId}
-     */
-    public function testByNotion(): void
+    public function testModules(): void
     {
-        $this->assertRestBySuccess(Notion::class);
+        $this->assertRestRelationSuccess("modules");
     }
 
 

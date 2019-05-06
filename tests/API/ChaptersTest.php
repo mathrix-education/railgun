@@ -83,36 +83,4 @@ class ChaptersTest extends APITestCase
 
         $this->assertResponseOk();
     }
-
-
-    /**
-     * GET /chapters/by-grade-discipline/{gradeId}/{disciplineId}[/{scope}]
-     */
-    public function testByGradeIdDisciplineId(): void
-    {
-        $chapter = Chapter::random(["visible", "=", true]);
-        $uri = "/chapters/by-grade-discipline/{$chapter->grade_id}/{$chapter->discipline_id}";
-
-        JWT::autoScope("get", $uri);
-        $this->json("get", $uri);
-
-        $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
-    }
-
-
-    /**
-     * GET /chapters/slug/{chapterSlug}/by-grade-slug/{gradeSlug}
-     */
-    public function testGetBySlugGradeSlug(): void
-    {
-        $chapter = Chapter::random();
-        $uri = "/chapters/slug/{$chapter->slug}/by-grade-slug/{$chapter->grade->slug}";
-
-        JWT::autoScope("get", $uri);
-        $this->json("get", $uri);
-
-        $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
-    }
 }

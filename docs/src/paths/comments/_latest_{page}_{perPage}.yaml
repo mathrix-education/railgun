@@ -5,4 +5,4 @@ get:
   summary: Paginate latest comments
   description: Retrive all comments by descending creation date, paginated.
   security:
-    - bearer: [registered]
+    - bearer: [comments:read]

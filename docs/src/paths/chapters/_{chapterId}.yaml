@@ -7,7 +7,7 @@ $extends:
     model: chapter
 patch:
   security:
-    - bearer: [admin]
+    - bearer: [chapters:write]
 delete:
   security:
-    - bearer: [admin]
+    - bearer: [chapters:delete]

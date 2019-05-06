@@ -3,7 +3,6 @@
 namespace Tests\API;
 
 use App\Models\Comment;
-use App\Models\Module;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -23,10 +22,12 @@ class CommentsTest extends APITestCase
 {
     use StandardIndexTest, StandardGetTest;
 
+
     public function testPost()
     {
-        $this->assertRestPostSuccess(null, function($data) {
+        $this->assertRestPostSuccess(null, function ($data) {
             $data["user_id"] = $this->requester->id;
+
             return Arr::except($data, []);
         });
     }
@@ -51,21 +52,6 @@ class CommentsTest extends APITestCase
         $this->assertResponseOk();
         $this->assertOpenAPIResponse();
         $this->assertInDatabase("comments", ["id" => $comment->id, "content" => $newContent]);
-    }
-
-
-    /**
-     * GET /comments/by-module/{moduleId}
-     */
-    public function testByModule(): void
-    {
-        /** @var Comment $commentChild */
-        $commentChild = Comment::query()
-            ->whereNotNull("parent_id")
-            ->inRandomOrder()
-            ->firstOrFail();
-
-        $this->assertRestBySuccess(Module::class, ["conditions" => ["id", "=", $commentChild->module_id]]);
     }
 
 

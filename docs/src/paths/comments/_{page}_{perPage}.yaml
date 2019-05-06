@@ -3,4 +3,4 @@ $extends:
     model: comment
 get:
   security:
-    - bearer: [admin]
+    - bearer: [comments:read]

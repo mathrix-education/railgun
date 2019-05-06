@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "254f195fb2bdd6d4bc22bcc14135bc6a",
+    "content-hash": "9dfc9d981cf1ff26e4453ae5cb7dc2d9",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3277,16 +3277,16 @@
         },
         {
             "name": "mathrix/lumen-zero",
-            "version": "1.1.3",
+            "version": "1.1.6",
             "source": {
                 "type": "git",
                 "url": "git@github.com:mathrix-education/lumen-zero.git",
-                "reference": "954d15aee11c4712646b2dc4b802ab565a8008b0"
+                "reference": "85fc095bfba122588d0a2c833149466f89b207d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mathrix-education/lumen-zero/zipball/954d15aee11c4712646b2dc4b802ab565a8008b0",
-                "reference": "954d15aee11c4712646b2dc4b802ab565a8008b0",
+                "url": "https://api.github.com/repos/mathrix-education/lumen-zero/zipball/85fc095bfba122588d0a2c833149466f89b207d9",
+                "reference": "85fc095bfba122588d0a2c833149466f89b207d9",
                 "shasum": ""
             },
             "require": {
@@ -3341,7 +3341,7 @@
                 "source": "https://github.com/mathrix-education/lumen-zero",
                 "docs": "https://github.com/mathrix-education/lumen-zero"
             },
-            "time": "2019-05-06T14:41:11+00:00"
+            "time": "2019-05-06T17:12:38+00:00"
         },
         {
             "name": "monolog/monolog",

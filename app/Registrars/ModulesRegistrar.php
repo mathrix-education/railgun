@@ -37,6 +37,5 @@ class ModulesRegistrar extends BaseRegistrar
             "uses" => "$controller@mark",
             "middleware" => "scope:logged"
         ]);
-
     }
 }
