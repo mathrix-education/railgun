@@ -26,12 +26,13 @@ class ProductsRegistrar extends BaseRegistrar
             "get" => "scope:products:read",
             "post" => "scope:products:write",
             "patch" => "scope:products:write",
-            "delete" => "scope:products:delete"
+            "delete" => "scope:products:delete",
+            "related:items" => null
         ]);
 
         $this->patch("products/{packId:[1-9]\d*}/items", [
             "middleware" => "scope:products:write",
-            "uses" => "$controller@items"
+            "uses" => "$controller@patchItems"
         ]);
 
         $this->get("products/{productId:[1-9]\d*}/recursive", "$controller@recursive");

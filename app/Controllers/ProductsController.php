@@ -32,6 +32,23 @@ use Mathrix\Lumen\Responses\PaginationJsonResponse;
 class ProductsController extends BaseController
 {
     /**
+     * GET /products/{packId}/items/{page}/{perPage}
+     *
+     * @param Request $request The Illuminate HTTP request.
+     * @param int $productId The product id.
+     * @param int $page The results page.
+     * @param int $perPage The number of products page.
+     *
+     * @return PaginationJsonResponse
+     * @throws Http401UnauthorizedException
+     */
+    public function items(Request $request, int $productId, int $page, int $perPage): PaginationJsonResponse
+    {
+        return $this->relation($request, "items", $productId, $page, $perPage);
+    }
+
+
+    /**
      * PATCH /products/{packId}/items
      *
      * @param Request $request The Illuminate HTTP request.
@@ -39,9 +56,10 @@ class ProductsController extends BaseController
      *
      * @return JsonResponse
      */
-    public function items(Request $request, int $packId)
+    public function patchItems(Request $request, int $packId)
     {
         // TODO: Add validator
+
         /** @var Product $pack */
         $pack = Product::query()
             ->where("id", "=", $packId)

@@ -28,74 +28,9 @@ class ProductsTest extends APITestCase
 
 
     /**
-     * GET /products/{productId}/recursive
+     * GET /products/{productId}/items/{page}/{perPage}
      */
-    public function testGetRecursive()
-    {
-        /** @var Product $product */
-        $product = Product::query()->has("children")->inRandomOrder()->firstOrFail();
-
-        $this->json("get", "/products/{$product->id}/recursive");
-
-        $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
-    }
-
-
-    /**
-     * GET /products/slug/{productSlug}
-     */
-    public function testGetBySlug()
-    {
-        $this->assertRestGetBySuccess("slug");
-    }
-
-
-    /**
-     * GET /products/{type}/{page}/{perPage}
-     */
-    public function testPaginateByType()
-    {
-        $this->json("get", "/products/all/0/100");
-
-        // Assertions
-        $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
-    }
-
-
-    /**
-     * GET /products/buyable/{type=all}/{page}/{perPage}
-     * Get all buyable products.
-     */
-    public function testBuyable()
-    {
-        $this->json("get", "/products/buyable/all/0/100");
-
-        // Assertions
-        $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
-    }
-
-
-    /**
-     * GET /products/buyable/{type=training}/{page}/{perPage}
-     * Get buyable trainings.
-     */
-    public function testBuyableTrainings()
-    {
-        $this->json("get", "/products/buyable/training/0/100");
-
-        // Assertions
-        $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
-    }
-
-
-    /**
-     * PATCH /products/{packId}/items
-     */
-    public function testItems()
+    public function testItems(): void
     {
         $pack = Product::random(["type", "=", "pack"]);
         $trainingIds = Product::query()
@@ -121,7 +56,72 @@ class ProductsTest extends APITestCase
 
 
     /**
-     *
+     * GET /products/{productId}/recursive
+     */
+    public function testGetRecursive(): void
+    {
+        /** @var Product $product */
+        $product = Product::query()->has("children")->inRandomOrder()->firstOrFail();
+
+        $this->json("get", "/products/{$product->id}/recursive");
+
+        $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
+    }
+
+
+    /**
+     * GET /products/slug/{productSlug}
+     */
+    public function testGetBySlug(): void
+    {
+        $this->assertRestGetBySuccess("slug");
+    }
+
+
+    /**
+     * GET /products/{type}/{page}/{perPage}
+     */
+    public function testPaginateByType(): void
+    {
+        $this->json("get", "/products/all/0/100");
+
+        // Assertions
+        $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
+    }
+
+
+    /**
+     * GET /products/buyable/{type=all}/{page}/{perPage}
+     * Get all buyable products.
+     */
+    public function testBuyable(): void
+    {
+        $this->json("get", "/products/buyable/all/0/100");
+
+        // Assertions
+        $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
+    }
+
+
+    /**
+     * GET /products/buyable/{type=training}/{page}/{perPage}
+     * Get buyable trainings.
+     */
+    public function testBuyableTrainings(): void
+    {
+        $this->json("get", "/products/buyable/training/0/100");
+
+        // Assertions
+        $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
+    }
+
+
+    /**
+     * POST /products/cart
      */
     public function testCart(): void
     {

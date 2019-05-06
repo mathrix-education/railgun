@@ -5,7 +5,7 @@ patch:
     product has `type` equals to `"pack"`. Also, the payload order matters, and
     is used to determine the order of the items inside the pack.
   security:
-    - bearer: [admin]
+    - bearer: [products:write]
   parameters:
     - name: productId
       in: path

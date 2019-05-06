@@ -3,4 +3,4 @@ $extends:
     model: product
 post:
   security:
-    - bearer: [admin]
+    - bearer: [products:write]
