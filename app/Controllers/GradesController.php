@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Models\Chapter;
 use App\Models\Grade;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -66,7 +65,7 @@ class GradesController extends BaseController
 
 
     /**
-     * GET /grades/{gradeId}/disciplines/{page}/{perPage}
+     * GET /grades/{gradeId}/disciplines/{page}/{perPage}[?scope=visible]
      *
      * @param Request $request The Illuminate HTTP request.
      * @param int $gradeId The grade id.
@@ -80,11 +79,12 @@ class GradesController extends BaseController
         /** @var Grade $grade */
         $grade = Grade::query()->findOrFail($gradeId);
         $allowedToSeeAll = scope($request->user(), "disciplines:read");
-        $wantsToSeeAll = $request->hasHeader("X-Scope") && $request->header("X-Scope") === "all";
+        $wantsToSeeAll = $request->query("scope", "all") === "all";
+        $restrictToVisible = !$allowedToSeeAll || !$wantsToSeeAll;
 
         $query = $grade->disciplines();
 
-        if (!$allowedToSeeAll || !$wantsToSeeAll) {
+        if ($restrictToVisible) {
             $query = $query->where("chapters.visible", "=", true);
         }
 
@@ -93,41 +93,40 @@ class GradesController extends BaseController
 
 
     /**
-     * GET /chapters/by-grade-discipline/{gradeId}/{disciplineId}[/{scope}]
+     * GET /grades/{gradeId}/disciplines/{disciplineId}/chapters/{page}/{perPage}[?scope=visible]
      * Get chapters by class and discipline ids
      *
      * @param Request $request The Illuminate HTTP request.
      * @param int $gradeId The class id.
      * @param int $disciplineId The discipline id.
-     * @param string|null $scope The scope, use 'all' to display invisible chapters.
+     * @param int $page
+     * @param int $perPage
      *
      * @return JsonResponse
-     *
-     * TODO: Use the X-Scope Header
      */
-    public function chaptersByDiscipline(Request $request, int $gradeId, int $disciplineId, string $scope = null)
+    public function chaptersByDiscipline(Request $request, int $gradeId, int $disciplineId, int $page, int $perPage)
     {
-        /** @var User $user */
-        $user = $request->user();
+        $scope = $request->query("scope", "all");
+        $allowedToSeeAll = scope($request->user(), "chapters:read");
+        $wantsToSeeAll = $scope === "all";
+        $restrictToVisible = !$allowedToSeeAll || !$wantsToSeeAll;
 
         // Check if all chapters should be returned.
-        $restrictToVisible = $scope !== "all" || !scope($user, "chapters:read");
-        $key = "grade.$gradeId.discipline.$disciplineId.chapters." . ($restrictToVisible ? "visible" : "all");
+        $key = "grade.$gradeId.discipline.$disciplineId.chapters.$scope.$page.$perPage";
 
-        $chapters = Cache::remember($key, 15, function () use ($gradeId, $disciplineId, $restrictToVisible) {
-            $query = Chapter::query()->where([
-                ["grade_id", "=", $gradeId],
-                ["discipline_id", "=", $disciplineId],
-            ])
-                ->orderBy("order");
+        return Cache::remember($key, 15,
+            function () use ($gradeId, $disciplineId, $restrictToVisible, $page, $perPage) {
+                $query = Chapter::query()->where([
+                    ["grade_id", "=", $gradeId],
+                    ["discipline_id", "=", $disciplineId],
+                ])
+                    ->orderBy("order");
 
-            if ($restrictToVisible) {
-                $query = $query->where("visible", "=", true);
-            }
+                if ($restrictToVisible) {
+                    $query = $query->where("visible", "=", true);
+                }
 
-            return $query->get();
-        });
-
-        return new JsonResponse($chapters);
+                return new PaginationJsonResponse($query, $page, $perPage);
+            });
     }
 }
