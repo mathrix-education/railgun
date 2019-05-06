@@ -2,7 +2,7 @@ patch:
   summary: Mark all notifications as read
   description: Mark all notifications as read.
   security:
-    - bearer: [registered]
+    - bearer: [logged]
   responses:
     200:
       description: The notifications in a paginator.

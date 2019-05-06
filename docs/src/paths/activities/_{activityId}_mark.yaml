@@ -2,7 +2,7 @@ patch:
   summary: Mark an activity
   description: Mark a activity as `completed`, `view`, `to-revise`...
   security:
-    - bearer: [registered]
+    - bearer: [logged]
   parameters:
     - name: activityId
       in: path

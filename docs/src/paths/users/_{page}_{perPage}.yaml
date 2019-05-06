@@ -3,4 +3,4 @@ $extends:
     model: user
 get:
   security:
-    - bearer: [admin]
+    - bearer: [users:read]

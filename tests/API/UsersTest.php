@@ -61,8 +61,8 @@ class UsersTest extends APITestCase
     public function testGetAdmin()
     {
         /** @var User $user */
-        $user = User::scope("*")->inRandomOrder()->firstOrFail();
-        JWT::actingAs($user);
+        $user = JWT::withScopes("*");
+
         $this->json("get", "/users/{$user->id}");
 
         $this->assertResponseOk();

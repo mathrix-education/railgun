@@ -5,4 +5,4 @@ get:
   summary: All notifications
   description: Retrieve all notifications by descending creation date, paginated.
   security:
-    - bearer: [registered]
+    - bearer: [logged]
