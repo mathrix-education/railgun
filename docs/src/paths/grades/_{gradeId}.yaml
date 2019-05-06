@@ -7,7 +7,7 @@ $extends:
     model: grade
 patch:
   security:
-    - bearer: [admin]
+    - bearer: [grades:write]
 delete:
   security:
-    - bearer: [admin]
+    - bearer: [grades:delete]

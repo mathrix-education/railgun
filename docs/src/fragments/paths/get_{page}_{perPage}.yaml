@@ -1,6 +1,6 @@
 get:
   summary: Paginate @modelPlural@
-  description: Retrive all @modelPlural@ by ascending ids, paginated.
+  description: Retrieve all @modelPlural@ by ascending ids, paginated.
   parameters:
     - name: page
       in: path

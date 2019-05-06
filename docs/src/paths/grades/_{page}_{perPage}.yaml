@@ -3,4 +3,4 @@ $extends:
     model: grade
 get:
   security:
-    - bearer: [admin]
+    - bearer: [grades:read]

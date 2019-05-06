@@ -1,5 +1,5 @@
 get:
-  summary: Get @model@ related @relatedPlural@
+  summary: Get related @relatedPlural@
   description: Retrieve all @modelPlural@ linked to a given @related@ id, paginated.
   parameters:
     - name: @model@Id
