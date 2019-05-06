@@ -24,15 +24,6 @@ class PostsTest extends APITestCase
 
 
     /**
-     * GET /posts/by-module/{moduleId}
-     */
-    public function testByCategory(): void
-    {
-        $this->assertRestBySuccess(Category::class);
-    }
-
-
-    /**
      * GET /posts/latest/{page}/{perPage}
      */
     public function testLatest(): void

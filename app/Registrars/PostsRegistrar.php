@@ -23,7 +23,7 @@ class PostsRegistrar extends BaseRegistrar
 
         $this->rest("posts", $controller, [
             "index" => null,
-            "get" => "scope:posts:get",
+            "get" => "scope:posts:read",
             "post" => "scope:posts:write",
             "patch" => "scope:posts:write",
             "delete" => "scope:posts:delete"

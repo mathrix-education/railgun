@@ -7,10 +7,10 @@ $extends:
     model: post
 get:
   security:
-    - bearer: [admin]
+    - bearer: [posts:read]
 patch:
   security:
-    - bearer: [admin]
+    - bearer: [posts:write]
 delete:
   security:
-    - bearer: [admin]
+    - bearer: [posts:delete]
