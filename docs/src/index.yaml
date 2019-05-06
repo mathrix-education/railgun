@@ -1,7 +1,6 @@
 openapi: 3.0.2
 info:
   title: Mathrix Education SA API
-  version: 5.0.0
   description: This is the official documentation of Mathrix Education SA API.
   contact:
     name: Mathieu Bour
@@ -22,3 +21,39 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+x-tagGroups:
+  - name: Users
+    tags:
+      - Auth
+      - Users
+  - name: Content
+    tags:
+      - Countries
+      - Grades
+      - Disciplines
+      - Chapters
+      - Notions
+      - Activities
+      - Modules
+      - Search
+      - Files
+  - name: Blog
+    tags:
+      - Posts
+      - Categories
+  - name: Interactions
+    tags:
+      - Levels
+      - Comments
+      - Marks
+      - Notifications
+      - Votes
+      - Reports
+      - Settings
+  - name: Billing
+    tags:
+      - Braintree
+      - Plans
+      - Subscriptions
+      - Discounts
+      - Products
