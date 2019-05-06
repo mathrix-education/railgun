@@ -19,6 +19,7 @@ steps:
   # Decrypt the SSH private key for composer git clone
   # --------------------------------------------------
   - id: 'gcloud:kms:decrypt'
+    waitFor: ['-']
     name: 'gcr.io/cloud-builders/gcloud'
     args:
       - kms
@@ -31,8 +32,8 @@ steps:
     volumes:
       - name: 'ssh'
         path: /root/.ssh
-
   - id: 'kubectl:keychain'
+    waitFor: ['-']
     name: 'gcr.io/cloud-builders/kubectl'
     entrypoint: 'bash'
     args:
@@ -45,6 +46,7 @@ steps:
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=$_CLOUDSDK_COMPUTE_ZONE'
       - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLOUDSDK_CONTAINER_CLUSTER'
+
 
   # Install PHP dependencies using composer
   # ---------------------------------------
@@ -90,31 +92,30 @@ steps:
   # Run paratest in coverage mode
   # Hack to allow step to fail: https://github.com/GoogleCloudPlatform/cloud-builders/issues/253
   # --------------------------------------------------------------------------------------------
-#  - id: 'docker-compose:tests'
-#    waitFor: ['composer:install', 'node:compile']
-#    name: 'eu.gcr.io/$PROJECT_ID/runner-docker-compose'
-#    entrypoint: 'sh'
-#    args:
-#      - '-c'
-#      - |
-#        docker-compose up --abort-on-container-exit || exit 0
+  - id: 'docker-compose:tests'
+    waitFor: ['composer:install', 'node:compile']
+    name: 'eu.gcr.io/$PROJECT_ID/runner-docker-compose'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        docker-compose up --abort-on-container-exit || exit 0
 
 
   # Send cover results to SonarQube
   # ------------------------------
-#  - id: 'sonar-scanner'
-#    waitFor: ['docker-compose:tests']
-#    name: 'eu.gcr.io/$PROJECT_ID/runner-sonar-scanner:angular'
-#    args:
-#      - '-Dsonar.projectVersion=$SHORT_SHA'
-#      - '-Dsonar.branch.name=$BRANCH_NAME'
+  - id: 'sonar-scanner'
+    waitFor: ['docker-compose:tests']
+    name: 'eu.gcr.io/$PROJECT_ID/runner-sonar-scanner:angular'
+    args:
+      - '-Dsonar.projectVersion=$SHORT_SHA'
+      - '-Dsonar.branch.name=$BRANCH_NAME'
 
 
   # Build, push and deploy API image
   # --------------------------------
   - id: 'docker:build:api'
-    #waitFor: ['docker-compose:tests']
-    waitFor: ['composer:install']
+    waitFor: ['docker-compose:tests']
     name: 'gcr.io/cloud-builders/docker'
     args: ['build',
            '--build-arg', 'COMMIT_SHORT_SHA=$SHORT_SHA',
@@ -140,11 +141,11 @@ steps:
            'eu.gcr.io/$PROJECT_ID/education-api:$SHORT_SHA',
            'eu.gcr.io/$PROJECT_ID/education-api:latest-$BRANCH_NAME']
 
+
   # Build, push and deploy docs image
   # ---------------------------------
   - id: 'docker:build:docs'
-    #waitFor: ['docker-compose:tests']
-    waitFor: ['node:compile']
+    waitFor: ['docker-compose:tests']
     name: 'gcr.io/cloud-builders/docker'
     args: ['build',
            '-f', 'docs/Dockerfile',
