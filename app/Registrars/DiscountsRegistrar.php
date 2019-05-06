@@ -22,16 +22,12 @@ class DiscountsRegistrar extends BaseRegistrar
         $controller = DiscountsController::class;
 
         $this->rest("discounts", $controller, [
-            "index" => "discounts:read",
-            "get" => "discounts:read",
-            "post" => "discounts:write",
-            "patch" => "discounts:write",
-            "delete" => "discounts:delete"
-        ]);
-
-        $this->get("discounts/{discountId:[1-9]\d*}/products/{page:\d+}/{perPage:[1-9]\d*}", [
-            "uses" => "$controller@getProducts",
-            "middleware" => "scope:discounts:read"
+            "index" => "scope:discounts:read",
+            "get" => "scope:discounts:read",
+            "post" => "scope:discounts:write",
+            "patch" => "scope:discounts:write",
+            "delete" => "scope:discounts:delete",
+            "related:products" => "scope:discounts:read"
         ]);
 
         $this->patch("discounts/{discountId:[1-9]\d*}/products", [

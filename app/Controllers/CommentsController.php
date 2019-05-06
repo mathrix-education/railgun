@@ -43,28 +43,6 @@ class CommentsController extends BaseController
 
 
     /**
-     * Get the models which satisfy a given relation.
-     *
-     * @param int $moduleId
-     * @param int $page the query page
-     * @param int $perPage the query per page
-     *
-     * @return PaginationJsonResponse
-     */
-    public function byModule(int $moduleId, int $page = 0, int $perPage = 100): PaginationJsonResponse
-    {
-        /** @var Module $module */
-        $module = Module::query()->findOrFail($moduleId);
-
-        $query = $module->comments()
-            ->whereNull("parent_id")
-            ->with(["children"]);
-
-        return new PaginationJsonResponse($query, $page, $perPage);
-    }
-
-
-    /**
      * GET /comments/latest/{page}/{perPage}
      * Get the latest comments, ordered by desc created_at field.
      *

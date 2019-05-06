@@ -20,11 +20,11 @@ class ReportsRegistrar extends BaseRegistrar
     public function register(): void
     {
         $this->rest("reports", ReportsController::class, [
-            "index" => "reports:read",
-            "get" => "reports:read",
-            "post" => "logged",
-            "patch" => "reports:write",
-            "delete" => "reports:delete"
+            "index" => "scope:reports:read",
+            "get" => "scope:reports:read",
+            "post" => "scope:logged",
+            "patch" => "scope:reports:write",
+            "delete" => "scope:reports:delete"
         ]);
     }
 }

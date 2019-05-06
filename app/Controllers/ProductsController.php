@@ -168,7 +168,7 @@ class ProductsController extends BaseController
 
 
     /**
-     * GET /discounts/code/{discountCode}
+     * GET /products/cart
      * Check if a discount is valid.
      *
      * @param Request $request

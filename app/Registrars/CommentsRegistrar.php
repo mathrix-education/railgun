@@ -22,15 +22,12 @@ class CommentsRegistrar extends BaseRegistrar
         $controller = CommentsController::class;
 
         $this->rest("comments", $controller, [
-            "index" => "comments:read",
-            "get" => "comments:read",
-            "post" => "logged",
-            "patch" => "logged",
-            "delete" => "comments:delete"
+            "index" => "scope:comments:read",
+            "get" => "scope:comments:read",
+            "post" => "scope:logged",
+            "patch" => "scope:logged",
+            "delete" => "scope:comments:delete"
         ]);
-
-        $this->get("comments/by-module/{moduleId:[1-9]\d*}/{page:\d+}/{perPage:[1-9]\d*}",
-            "$controller@byModule");
 
         $this->get("comments/latest/{page:\d+}/{perPage:[1-9]\d*}", [
             "uses" => "$controller@latest",

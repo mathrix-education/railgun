@@ -20,7 +20,7 @@ class MarksTableSeeder extends BaseTableSeeder
     public function run()
     {
         $faker = FakerFactory::create();
-        $registered = User::scope("registered")->get();
+        $registered = User::scope("logged")->get();
         $marks = new Collection();
 
         $this->output->writeln("<comment>Generating:</comment> marks");

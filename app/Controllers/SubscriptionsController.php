@@ -133,6 +133,30 @@ class SubscriptionsController extends BaseController
 
 
     /**
+     * GET /subscription/{subscriptionId}/transaction
+     * Get transactions linked with a subscription.
+     *
+     * @param string $subscriptionId The Braintree subscription id.
+     * @param int $page The results page.
+     * @param int $perPage The number of transactions per page.
+     *
+     * @return JsonResponse
+     */
+    public function transactions(string $subscriptionId, int $page, int $perPage)
+    {
+        $subscription = Subscription::find($subscriptionId);
+        $transactions = $subscription->jsonSerialize()["transactions"];
+
+        return new JsonResponse([
+            "page" => $page,
+            "perPage" => $perPage,
+            "total" => count($transactions),
+            "data" => Formatter::cast($transactions)
+        ]);
+    }
+
+
+    /**
      * POST /subscriptions/{subscriptionId}/cancel
      * Cancel a subscription for a user.
      *
@@ -183,33 +207,5 @@ class SubscriptionsController extends BaseController
         $customer->forgetBraintreeCustomerCache();
 
         return new JsonResponse(Formatter::cast($subscription->jsonSerialize()));
-    }
-
-
-    /**
-     * GET /subscriptions/by-user/{userId}
-     * Get the user subscriptions.
-     *
-     * @param Request $request The Illuminate HTTP request.
-     * @param int $userId The user id.
-     *
-     * @return JsonResponse
-     * @throws Http400BadRequestException
-     * @throws Http401UnauthorizedException
-     */
-    public function byUser(Request $request, int $userId)
-    {
-        /** @var User $user */
-        $user = $request->user();
-
-        if ($user->id !== $userId && !$user->hasScope("subscriptions:read")) {
-            throw new Http401UnauthorizedException();
-        }
-
-        /** @var User $customer */
-        $customer = User::query()->findOrFail($userId);
-        $customer->requireBraintreeCustomer();
-
-        return new JsonResponse(Formatter::cast($customer->getBraintreeSubscriptions()));
     }
 }

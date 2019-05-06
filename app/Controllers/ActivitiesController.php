@@ -9,6 +9,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Mathrix\Lumen\Bases\BaseController;
+use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
+use Mathrix\Lumen\Responses\PaginationJsonResponse;
 
 /**
  * Class ActivitiesController.
@@ -19,6 +21,23 @@ use Mathrix\Lumen\Bases\BaseController;
  */
 class ActivitiesController extends BaseController
 {
+    /**
+     * GET /activities/{activityId}/modules/{page}/{perPage}
+     *
+     * @param Request $request The Illuminate HTTP request.
+     * @param int $activityId The activity id.
+     * @param int $page The results page (starts at 0).
+     * @param int $perPage The number of modules per page.
+     *
+     * @return PaginationJsonResponse
+     * @throws Http401UnauthorizedException
+     */
+    public function modules(Request $request, int $activityId, int $page, int $perPage): PaginationJsonResponse
+    {
+        return $this->relation($request, "modules", $activityId, $page, $perPage);
+    }
+
+
     /**
      * PATCH /activities/{activityId}/mark
      * Mark an activity.

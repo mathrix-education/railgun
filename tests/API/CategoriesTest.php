@@ -45,7 +45,7 @@ class CategoriesTest extends APITestCase
         $data = $this->getFactoryBuilder([])->raw();
         unset($data["name"]);
 
-        JWT::autoScope("post", "/categories");
+        $this->event("before.request", "post", "/categories");
         $this->json("post", "/categories", $data);
 
         $this->assertResponseStatus(422);

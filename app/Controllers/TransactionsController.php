@@ -119,49 +119,4 @@ class TransactionsController extends BaseController
 
         throw new Http400BadRequestException($result->transaction->jsonSerialize(), $result->message);
     }
-
-
-    /**
-     * GET /transactions/by-subscription/{subscriptionId}
-     * Get transactions linked with a subscription.
-     *
-     * @param string $subscriptionId The Braintree subscription id.
-     *
-     * @return JsonResponse
-     */
-    public function bySubscription(string $subscriptionId)
-    {
-        $subscription = Subscription::find($subscriptionId);
-        $transactions = $subscription->jsonSerialize()["transactions"];
-
-        return new JsonResponse(Formatter::cast($transactions));
-    }
-
-
-    /**
-     * GET /transactions/by-user/{userId}
-     * Get transactions linked with an user.
-     *
-     * @param string $userId The user id.
-     *
-     * @return JsonResponse
-     * @throws Http400BadRequestException
-     */
-    public function byUser(string $userId)
-    {
-        /** @var User $customer */
-        $customer = User::query()->findOrFail($userId);
-        $customer->requireBraintreeCustomer();
-        $transactionResults = Transaction::search([
-            TransactionSearch::customerId()
-                ->is($customer->braintree_id),
-        ]);
-        $transactions = new Collection();
-
-        foreach ($transactionResults as $transaction) {
-            $transactions->add(Formatter::cast($transaction));
-        }
-
-        return new JsonResponse($transactions);
-    }
 }

@@ -3,4 +3,4 @@ $extends:
     model: activity
 post:
   security:
-    - bearer: [moderator]
+    - bearer: [activities:write]

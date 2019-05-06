@@ -3,4 +3,4 @@ $extends:
     model: category
 get:
   security:
-    - bearer: [admin]
+    - bearer: [categories:read]

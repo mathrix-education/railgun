@@ -22,11 +22,14 @@ class UsersRegistrar extends BaseRegistrar
         $controller = UsersController::class;
 
         $this->rest("users", $controller, [
-            "index" => "users:read",
-            "get" => "logged",
+            "index" => "scope:users:read",
+            "get" => "scope:logged",
             "post" => null,
-            "patch" => "logged",
-            "delete" => "users:delete"
+            "patch" => "scope:logged",
+            "delete" => "scope:users:delete",
+            "related:records" => "scope:records:read",
+            "related:subscriptions" => "scope:logged",
+            "related:transactions" => "scope:logged"
         ]);
 
         $this->group(["middleware" => "scope:logged"], function () use ($controller) {

@@ -22,11 +22,11 @@ class ProductsRegistrar extends BaseRegistrar
         $controller = ProductsController::class;
 
         $this->rest("products", $controller, [
-            "index" => "products:read",
-            "get" => "products:read",
-            "post" => "products:write",
-            "patch" => "products:write",
-            "delete" => "products:delete"
+            "index" => "scope:products:read",
+            "get" => "scope:products:read",
+            "post" => "scope:products:write",
+            "patch" => "scope:products:write",
+            "delete" => "scope:products:delete"
         ]);
 
         $this->patch("products/{packId:[1-9]\d*}/items", [
