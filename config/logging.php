@@ -23,7 +23,7 @@ return [
             "via" => CreateStackdriverLogger::class,
             "logName" => env("APP_ENV") . ".education-api",
             "loggingClientOptions" => [
-                "keyFilePath" => storage_path("keychain/stackdriver.json"),
+                "keyFilePath" => storage_path("keychain/google-cloud.json"),
             ],
             // "loggerOptions" => [],
             // "lineFormat" => "%message%",

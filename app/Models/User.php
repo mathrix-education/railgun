@@ -124,6 +124,8 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "firstname" => "nullable|max:60",
         "lastname" => "nullable|max:60",
         "password" => "required|min:3",
+        "scopes" => "required",
+        "scopes.*" => "distinct",
         "token" => "nullable|size:36",
         "points" => "required|integer",
         "daily" => "nullable|in:10,20,40",

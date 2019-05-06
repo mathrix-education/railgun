@@ -21,17 +21,28 @@ steps:
   - id: 'gcloud:kms:decrypt'
     waitFor: ['-']
     name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: '/bin/bash'
     args:
-      - kms
-      - decrypt
-      - --ciphertext-file=deploy/id_rsa.enc
-      - --plaintext-file=/root/.ssh/id_rsa
-      - --location=global
-      - --keyring=mathrix-education-keyring
-      - --key=github-key
-    volumes:
-      - name: 'ssh'
-        path: /root/.ssh
+      - '-c'
+      - |
+        gcloud kms decrypt \
+          --location global \
+          --keyring mathrix-education-keyring \
+          --key education-api-key \
+          --ciphertext-file storage/keychain/composer.github-oauth.github.com.enc \
+          --plaintext-file storage/keychain/composer.github-oauth.github.com
+        gcloud kms decrypt \
+          --location global \
+          --keyring mathrix-education-keyring \
+          --key education-api-key \
+          --ciphertext-file storage/keychain/google-cloud.json.enc \
+          --plaintext-file storage/keychain/google-cloud.json
+        gcloud kms decrypt \
+          --location global \
+          --keyring mathrix-education-keyring \
+          --key education-api-key \
+          --ciphertext-file storage/keychain/jwt_auth.json.enc \
+          --plaintext-file storage/keychain/jwt_auth.json
   - id: 'kubectl:keychain'
     waitFor: ['-']
     name: 'gcr.io/cloud-builders/kubectl'
@@ -50,12 +61,7 @@ steps:
     args:
       - '-c'
       - |
-        chmod 600 /root/.ssh/id_rsa
-        cat <<EOF >/root/.ssh/config
-        Hostname github.com
-        IdentityFile /root/.ssh/id_rsa
-        EOF
-        cp deploy/known_hosts /root/.ssh/known_hosts
+        composer config -g github-oauth.github.com < storage/keychain/composer.github-oauth.github.com
         composer install \
           --optimize-autoloader \
           --ignore-platform-reqs \
@@ -63,9 +69,6 @@ steps:
           --no-suggest \
           --no-progress \
           --no-ansi
-    volumes:
-      - name: 'ssh'
-        path: '/root/.ssh'
 
 
   # Install Node dependencies using yarn
