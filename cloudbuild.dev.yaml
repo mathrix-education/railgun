@@ -43,13 +43,6 @@ steps:
           --key education-api-key \
           --ciphertext-file storage/keychain/jwt_auth.json.enc \
           --plaintext-file storage/keychain/jwt_auth.json
-  - id: 'kubectl:keychain'
-    waitFor: ['-']
-    name: 'gcr.io/cloud-builders/kubectl'
-    args: ['get', 'deployments']
-    env:
-      - 'CLOUDSDK_COMPUTE_ZONE=$_CLOUDSDK_COMPUTE_ZONE'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLOUDSDK_CONTAINER_CLUSTER'
 
 
   # Install PHP dependencies using composer
@@ -61,7 +54,8 @@ steps:
     args:
       - '-c'
       - |
-        composer config -g github-oauth.github.com < storage/keychain/composer.github-oauth.github.com
+        cat storage/keychain/composer.github-oauth.github.com
+        composer config -g github-oauth.github.com < $(cat storage/keychain/composer.github-oauth.github.com)
         composer install \
           --optimize-autoloader \
           --ignore-platform-reqs \
