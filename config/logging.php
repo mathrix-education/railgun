@@ -17,6 +17,7 @@ return [
             "level" => "debug",
             "days" => 7,
         ],
+
         "stackdriver" => [
             "driver" => "custom",
             "via" => CreateStackdriverLogger::class,

@@ -42,7 +42,9 @@ steps:
         kubectl get secret dev-education-keychain -o=jsonpath='{.data.jwt_auth\.json}' | base64 -d > storage/keychain/jwt_auth.json
         cat storage/keychain/gcs.json
         cat storage/keychain/jwt_auth.json
-
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=$_CLOUDSDK_COMPUTE_ZONE'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLOUDSDK_CONTAINER_CLUSTER'
 
   # Install PHP dependencies using composer
   # ---------------------------------------
