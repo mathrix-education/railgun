@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Mathrix\Lumen\Bases\BaseModel;
 
 /**
@@ -32,16 +34,13 @@ class Level extends BaseModel
      *
      * @param int $points
      *
-     * @return Level
+     * @return Level|Builder|Model
      */
-    public static function getLevelByPoints(int $points): self
+    public static function getLevelByPoints(int $points)
     {
-        /** @var Level $level */
-        $level = self::query()
+        return self::query()
             ->where("objective", "<=", $points)
             ->orderByDesc("objective")
             ->firstOrFail();
-
-        return $level;
     }
 }

@@ -109,7 +109,7 @@ class Module extends BaseModel
         $user = Auth::user();
 
         /** @var bool $belongsToPremiumActivity If the module's parent activity is premium */
-        $belongsToPremiumActivity = $this->activity !== null && $this->activity->premium;;
+        $belongsToPremiumActivity = $this->activity !== null && $this->activity->premium;
         /** @var bool $belongsToProduct If the module is linked to a product */
         $belongsToProduct = $this->products->isNotEmpty();
         /** @var bool $userIsPremium If the user is premium */

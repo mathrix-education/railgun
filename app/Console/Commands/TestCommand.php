@@ -25,8 +25,5 @@ class TestCommand extends BaseCommand
 
     public function handle()
     {
-        $routes = collect(app()->router->getRoutes())->each(function($d, $e) {
-            $this->line("$e");
-        });
     }
 }

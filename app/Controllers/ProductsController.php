@@ -242,7 +242,7 @@ class ProductsController extends BaseController
             }
         }
 
-        $lines = $products->map(function (Product $product) use ($customer, $discount) {
+        $lines = $products->map(function (Product $product) use ($discount) {
             return array_merge([
                 "name" => $product->name,
                 "type" => $product->type,

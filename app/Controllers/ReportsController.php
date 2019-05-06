@@ -23,16 +23,9 @@ class ReportsController extends BaseController
      * @param Request $request The Illuminate HTTP request.
      *
      * @return JsonResponse
-     * @throws Http401UnauthorizedException
      */
     public function post(Request $request): JsonResponse
     {
-        if ($request->user() !== null && $request->user()->cant("post", Report::class)) {
-            throw new Http401UnauthorizedException([
-                "model_class" => Report::class
-            ], "Failed to pass post policy");
-        }
-
         /** @var Report $report */
         $report = new Report($request->all());
         $report->save();
