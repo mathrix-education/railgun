@@ -1,4 +1,4 @@
-#!/bin/ash
+#!/bin/bash
 # Authenticate using OAuth to GitHub
 pattern="(\"@mathrix\/[a-z\-]+\": \")git\+ssh:\/\/git(@github\.com\/mathrix-education\/[a-z\-]+\.git\")"
 token=$(cat storage/keychain/github-oauth.github.com)

@@ -38,8 +38,8 @@ steps:
   # ------------------------------------
   - id: 'node:compile'
     waitFor: ['-']
-    name: 'node:11-alpine'
-    entrypoint: '/bin/ash'
+    name: 'eu.gcr.io/$PROJECT_ID/runner-node:11-alpine'
+    entrypoint: '/bin/bash'
     args: ['deploy/steps/2_yarn.sh']
 
 
