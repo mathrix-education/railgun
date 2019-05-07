@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@mathrix/openapi-compiler": "git+ssh://git@github.com/mathrix-education/openapi-compiler.git",
-    "mjml": "^4.4.0-beta.1",
+    "mjml": "^3.3.5",
     "redoc-cli": "^0.8.3"
   },
   "private": true
