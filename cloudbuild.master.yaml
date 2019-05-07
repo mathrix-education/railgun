@@ -7,7 +7,7 @@ substitutions:
   _CLOUDSDK_COMPUTE_ZONE: 'europe-west1-b'
   _CLOUDSDK_CONTAINER_CLUSTER: 'mathrix-education-cluster'
 options:
-  machineType: 'N1_HIGHCPU_8'
+  machineType: 'N1_HIGHCPU_32'
 steps:
   # Decrypt the SSH private key for composer git clone
   # --------------------------------------------------
