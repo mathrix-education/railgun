@@ -13,8 +13,8 @@ substitutions:
   # CLOUDSDK
   _CLOUDSDK_COMPUTE_ZONE: 'europe-west1-b'
   _CLOUDSDK_CONTAINER_CLUSTER: 'mathrix-education-cluster'
-options:
-  machineType: 'N1_HIGHCPU_8'
+#options:
+#  machineType: 'N1_HIGHCPU_8'
 steps:
   # Decrypt the SSH private key for composer git clone
   # --------------------------------------------------
@@ -39,7 +39,7 @@ steps:
   - id: 'node:compile'
     waitFor: ['-']
     name: 'node:11-alpine'
-    entrypoint: '/bin/bash'
+    entrypoint: '/bin/ash'
     args: ['deploy/steps/2_yarn.sh']
 
 
