@@ -6,6 +6,7 @@ function decrypt() {
     --key education-api-key \
     --ciphertext-file ${1}.enc \
     --plaintext-file ${1}
+   echo "Decrypted: ${1}"
 }
 
 decrypt storage/keychain/github-oauth.github.com

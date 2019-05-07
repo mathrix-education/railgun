@@ -30,7 +30,7 @@ steps:
   # Install Node dependencies using yarn
   # ------------------------------------
   - id: 'node:compile'
-    waitFor: ['-']
+    waitFor: ['gcloud:kms:decrypt']
     name: 'eu.gcr.io/$PROJECT_ID/runner-node:11-alpine'
     entrypoint: '/bin/bash'
     args: ['deploy/steps/2_yarn.sh']
