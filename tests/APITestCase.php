@@ -86,6 +86,11 @@ class APITestCase extends BaseTestCase
                 JWT::actingAs($this->requester);
             } else {
                 $this->requester = JWT::withScopes($scopes[0]);
+
+                if (!in_array("logged", $this->requester->scopes)) {
+                    $this->requester->scopes = array_merge($this->requester->scopes, ["logged"]);
+                    $this->requester->save();
+                }
             }
         });
     }

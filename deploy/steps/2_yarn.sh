@@ -5,8 +5,6 @@ token=$(cat storage/keychain/github-oauth.github.com)
 replace="git\+https:\/\/${token}:x-oauth-basic"
 sed -i -E "s/${pattern}/\1${replace}\2/g" package.json
 
-cat package.json
-
 yarn install
 yarn run docs:compile
 yarn run mails:compile

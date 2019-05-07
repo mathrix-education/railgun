@@ -23,13 +23,14 @@ class PackBuyTest extends BraintreeTestCase
     public function testPackBuy()
     {
         Mail::fake();
-        $customer = $this->getPristineCustomer();
-        JWT::actingAs($customer);
 
         /** @var Product $pack */
         $pack = Product::query()
             ->where("type", "=", "pack")
             ->firstOrFail();
+
+        $customer = $this->getPristineCustomer();
+        JWT::actingAs($customer);
 
         $this->json("post", "/products/buy", [
             "cart" => [$pack->id],

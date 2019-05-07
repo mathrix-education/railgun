@@ -44,6 +44,10 @@ class SubscriptionLifecycleTest extends BraintreeTestCase
         Notification::fake();
         /** @var User $user */
         $user = JWT::withScopes("logged");
+        $user->premium_bypass = false;
+        $user->premium_bypass_expires_at = null;
+        $user->braintree_id = null;
+        $user->save();
 
         $this->json("post", "/subscriptions", [
             "planId" => "v4_monthly",
@@ -126,11 +130,11 @@ class SubscriptionLifecycleTest extends BraintreeTestCase
         JWT::actingAs($user);
 
         $this->json("get", "/users/{$user->id}/subscriptions/0/100");
+        $responseData = $this->getJsonResponseContent();
 
         $this->assertResponseOk();
-        $responseData = json_decode($this->response->getContent());
-        $this->assertArrayHasKey(0, $responseData);
-        $this->assertEquals($subscription->id, $responseData[0]->id);
+        $this->assertTrue(isset($responseData->data));
+        $this->assertEquals($subscription->id, $responseData->data[0]->id);
 
         return [$user, $subscription];
     }

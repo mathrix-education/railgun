@@ -101,12 +101,9 @@ abstract class BraintreeTestCase extends BaseTestCase
     public function getPristineCustomer(): User
     {
         /** @var User $user */
-        $user = User::random();
-
-        $user->braintree_id = null;
-        $user->stripe_id = null;
+        $user = factory(User::class)->make();
         $user->save();
 
-        return $user->refresh();
+        return $user;
     }
 }

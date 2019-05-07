@@ -26,7 +26,7 @@ $factory->define(Post::class, function (Generator $faker) {
         "slug" => Str::slug($title),
         "module_id" => Module::random(["type", "=", "course"])->id,
         "category_id" => Category::random()->id,
-        "user_id" => User::scope("admin")->inRandomOrder()->firstOrFail()->id,
+        "user_id" => User::random()->id,
         "created_at" => $createdAt,
         "updated_at" => $updatedAt,
     ];

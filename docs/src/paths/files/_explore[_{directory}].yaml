@@ -2,7 +2,7 @@ get:
   summary: Explore a directory.
   description: Display the content of a **directory** on the CDN.
   security:
-    - bearer: [moderator]
+    - bearer: [files:read]
   parameters:
     - name: directory
       in: path

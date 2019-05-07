@@ -56,7 +56,6 @@ class FilesTest extends APITestCase
     {
         $uri = "/files/{$this->randomFile()}";
         $this->event("before.request", "get", $uri);
-
         $this->json("get", $uri);
 
         $this->assertResponseOk();
@@ -71,7 +70,6 @@ class FilesTest extends APITestCase
     {
         $uri = "/files/explore/{$this->randomDirectory()}";
         $this->event("before.request", "get", $uri);
-
         $this->json("get", $uri);
 
         $this->assertResponseOk();
@@ -87,7 +85,6 @@ class FilesTest extends APITestCase
     {
         $uri = "/files/explore";
         $this->event("before.request", "get", $uri);
-
         $this->json("get", $uri);
 
         $this->assertResponseOk();
@@ -102,8 +99,8 @@ class FilesTest extends APITestCase
     {
         $uri = "/files/explore/idontexists";
         $this->event("before.request", "get", $uri);
-
         $this->json("get", $uri);
+
         $this->assertOpenAPIResponse();
     }
 
@@ -115,8 +112,8 @@ class FilesTest extends APITestCase
     {
         $uri = "/files/explore/{$this->randomFile()}";
         $this->event("before.request", "get", $uri);
-
         $this->json("get", $uri);
+
         $this->assertOpenAPIResponse();
     }
 
@@ -127,10 +124,10 @@ class FilesTest extends APITestCase
     public function testUpload()
     {
         $uri = "/files/test/avatar.jpg";
-        $this->event("before.request", "post", $uri);
-
         $this->requestMethod = "post";
         $this->requestUri = $uri;
+
+        $this->event("before.request", "post", $uri);
         $this->call($this->requestMethod, $this->requestUri, [], [], [
             "file" => UploadedFile::fake()->image("avatar.jpg")
         ]);
@@ -149,10 +146,9 @@ class FilesTest extends APITestCase
     {
         $source = $this->randomFile();
         $destination = "$source.new";
-
         $uri = "/files/$source";
-        $this->event("before.request", "patch", $uri);
 
+        $this->event("before.request", "patch", $uri);
         $this->json("patch", $uri, [
             "destination" => $destination
         ]);
@@ -173,10 +169,9 @@ class FilesTest extends APITestCase
     {
         $file = $this->randomFile();
         $this->getDisk()->copy($file, "$file.old"); // Make a backup to restore after
-
         $uri = "/files/$file";
-        $this->event("before.request", "delete", $uri);
 
+        $this->event("before.request", "delete", $uri);
         $this->json("delete", "/files/$file");
 
         $this->assertResponseOk();
