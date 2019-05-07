@@ -4,7 +4,6 @@ namespace App\Observers;
 
 use App\Models\Chapter;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 
 /**
@@ -25,7 +24,7 @@ class ChapterObserver extends BaseObserver
     {
         // Purge cache
         DB::table("cache")
-            ->where("key", "LIKE", "chapters.grade.{$chapter->grade_id}.discipline.{$chapter->discipline_id}.%")
+            ->where("key", "LIKE", "grade.$chapter->grade_id.discipline.$chapter->discipline_id.chapters.%")
             ->delete();
         DB::table("cache")
             ->where("key", "REGEXP", "^user\.[0-9]+\.chapter\.{$chapter->id}\.recursive$")

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Chapter;
 use App\Models\Grade;
+use App\Services\CacheHelper;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;

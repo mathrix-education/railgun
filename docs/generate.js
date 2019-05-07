@@ -1,2 +1,2 @@
-const OpenAPIGenerator = require("./generator/OpenAPIGenerator");
-(new OpenAPIGenerator()).process();
+const OpenAPIGenerator = require("@mathrix/openapi-compiler");
+(new OpenAPIGenerator(__dirname)).process();

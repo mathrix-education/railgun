@@ -3,3 +3,4 @@ oneOf:
   - $ref: '../index.yaml#/components/schemas/ModuleMCQ'
   - $ref: '../index.yaml#/components/schemas/ModuleFlashcard'
   - $ref: '../index.yaml#/components/schemas/ModuleTest'
+  - $ref: '../index.yaml#/components/schemas/ModuleStriped'

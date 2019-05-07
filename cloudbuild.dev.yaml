@@ -47,7 +47,8 @@ steps:
     args:
       - '-c'
       - |
-        composer config -g github-oauth.github.com $(cat storage/keychain/github-oauth.github.com)
+        composer config -g github-oauth.github.com \
+          $(cat storage/keychain/github-oauth.github.com)
         composer install \
           --optimize-autoloader \
           --ignore-platform-reqs \
@@ -66,7 +67,7 @@ steps:
     args:
       - '-c'
       - |
-
+        sed -i -e 's/git\+ssh\:\/\/git\@github.com\/mathrix-education/git\+https\:\/\/azerazer\:x-oauth-basic\@github.com\/mathrix-education/g'
         yarn install
         yarn run docs:compile
         yarn run mails:compile
