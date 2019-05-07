@@ -1,0 +1,4 @@
+*
+!*.enc
+!*.pub
+!.gitignore

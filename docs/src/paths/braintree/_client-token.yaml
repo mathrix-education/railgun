@@ -1,7 +1,7 @@
 get:
   summary: Get the generated Client Token for Braintree
   security:
-    - bearer: [registered]
+    - bearer: [logged]
   responses:
     200:
       description: The Braintree Client Token

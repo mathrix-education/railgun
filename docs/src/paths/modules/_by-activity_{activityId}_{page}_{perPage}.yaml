@@ -1,4 +1,0 @@
-$extends:
-  ../../fragments/paths/get_by-model_{modelId}_{page}_{perPage}.yaml:
-    model: module
-    related: activity

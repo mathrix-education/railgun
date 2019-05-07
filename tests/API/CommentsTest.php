@@ -3,11 +3,10 @@
 namespace Tests\API;
 
 use App\Models\Comment;
-use App\Models\Module;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use Laravel\Passport\Passport;
+use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
 use Tests\APITestCase;
@@ -23,10 +22,12 @@ class CommentsTest extends APITestCase
 {
     use StandardIndexTest, StandardGetTest;
 
+
     public function testPost()
     {
-        $this->assertRestPostSuccess(null, function($data) {
-            $data["user_id"] = $this->passportUser->id;
+        $this->assertRestPostSuccess(null, function ($data) {
+            $data["user_id"] = $this->requester->id;
+
             return Arr::except($data, []);
         });
     }
@@ -42,8 +43,8 @@ class CommentsTest extends APITestCase
         DB::table("comments")
             ->where("id", "=", $comment->id)
             ->update(["updated_at" => Carbon::now()]);
-        Passport::actingAs($comment->user, ["registered"]);
 
+        JWT::actingAs($comment->user);
         $this->json("patch", "/comments/{$comment->id}", [
             "content" => $newContent
         ]);
@@ -55,28 +56,13 @@ class CommentsTest extends APITestCase
 
 
     /**
-     * GET /comments/by-module/{moduleId}
-     */
-    public function testByModule(): void
-    {
-        /** @var Comment $commentChild */
-        $commentChild = Comment::query()
-            ->whereNotNull("parent_id")
-            ->inRandomOrder()
-            ->firstOrFail();
-
-        $this->assertRestBySuccess(Module::class, ["conditions" => ["id", "=", $commentChild->module_id]]);
-    }
-
-
-    /**
      * GET /comments/latest/{page}/{perPage}
      */
     public function testLatest(): void
     {
         $uri = "/comments/latest/1/10";
 
-        $this->autoMockScope("get", $uri);
+        $this->event("before.request", "get", $uri);
         $this->json("get", $uri);
 
         $this->assertResponseOk();

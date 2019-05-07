@@ -14,9 +14,12 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Mathrix\Lumen\Exceptions\Http\HttpException as MathrixHTTPException;
+use Mathrix\Lumen\JWT\Auth\Exceptions\InvalidCredentialsException;
 use Raven_Client;
 use ReflectionClass;
 use ReflectionException;
+use Sentry\State\Hub as Sentry;
+use Sentry\State\Scope;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -37,7 +40,9 @@ class Handler extends ExceptionHandler
      *
      * @var array
      */
-    protected $dontReport = [];
+    protected $dontReport = [
+        InvalidCredentialsException::class
+    ];
 
 
     /**
@@ -53,17 +58,17 @@ class Handler extends ExceptionHandler
     {
         $sentryDSN = env("SENTRY_DSN");
 
-        if ($sentryDSN !== null && app()->bound("sentry") && $this->shouldReport($e)) {
-            /** @var Raven_Client $sentry */
+        if (!empty($sentryDSN) && app()->bound("sentry") && $this->shouldReport($e)) {
+            /** @var Sentry $sentry */
             $sentry = app("sentry");
-            $sentry->environment = env("APP_ENV");
 
-            /** @var User $user */
-            $user = Auth::user();
-
-            if ($user !== null) {
-                $sentry->user_context($user->toArray());
-            }
+            $sentry->configureScope(function (Scope $scope) {
+                /** @var User $user */
+                $user = Auth::user();
+                if ($user !== null) {
+                    $scope->setUser($user->toArray());
+                }
+            });
 
             $sentry->captureException($e);
         }

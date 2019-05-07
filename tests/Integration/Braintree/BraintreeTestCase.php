@@ -3,9 +3,9 @@
 namespace Tests\Integration\Braintree;
 
 use App\Models\User;
-use Laravel\Passport\Passport;
 use Mathrix\Lumen\Bases\BaseModel;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Tests\OpenAPI\OpenAPITrait;
 use Mathrix\Lumen\Tests\REST\RESTTrait;
 use Mathrix\Lumen\Tests\Traits\DebugTrait;
@@ -45,6 +45,17 @@ abstract class BraintreeTestCase extends BaseTestCase
     }
 
 
+    public function setup()
+    {
+        parent::setUp();
+
+        $this->handler("before.json", function (string $method, string $uri) {
+            $this->requestMethod = $method;
+            $this->requestUri = "/" . trim($uri, "/");
+        });
+    }
+
+
     public function onNotSuccessfulTest(Throwable $t)
     {
         $this->debug();
@@ -59,7 +70,7 @@ abstract class BraintreeTestCase extends BaseTestCase
      */
     public function setUser(User $user)
     {
-        Passport::actingAs($user, explode(" ", $user->getPassportScopes()));
+        JWT::actingAs($user);
     }
 
 
@@ -71,7 +82,8 @@ abstract class BraintreeTestCase extends BaseTestCase
      */
     public function getBraintreeCustomer(): User
     {
-        $user = User::random(["type", "=", "registered"]);
+        /** @var User $user */
+        $user = User::random();
 
         if (!$user->isBraintreeCustomer()) {
             $user->createBraintreeCustomer("fake-valid-visa-nonce");
@@ -89,15 +101,9 @@ abstract class BraintreeTestCase extends BaseTestCase
     public function getPristineCustomer(): User
     {
         /** @var User $user */
-        $user = User::query()
-            ->where("type", "=", "registered")
-            ->inRandomOrder()
-            ->firstOrFail();
-
-        $user->braintree_id = null;
-        $user->stripe_id = null;
+        $user = factory(User::class)->make();
         $user->save();
 
-        return $user->refresh();
+        return $user;
     }
 }

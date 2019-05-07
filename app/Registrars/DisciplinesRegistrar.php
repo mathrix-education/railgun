@@ -24,12 +24,11 @@ class DisciplinesRegistrar extends BaseRegistrar
         $this->rest("disciplines", $controller, [
             "index" => null,
             "get" => null,
-            "post" => "admin",
-            "patch" => "admin",
-            "delete" => "admin"
+            "post" => "scope:disciplines:write",
+            "patch" => "scope:disciplines:write",
+            "delete" => "scope:disciplines:delete"
         ]);
 
         $this->get("disciplines/slug/{disciplineSlug:[a-z\-]+}", "$controller@getBySlug");
-        $this->get("disciplines/by-grade/{gradeId:[1-9]\d*}/{page:\d+}/{perPage:[1-9]\d*}", "$controller@byGrade");
     }
 }

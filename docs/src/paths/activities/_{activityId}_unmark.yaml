@@ -2,7 +2,7 @@ patch:
   summary: Unmark an activity
   description: Unmark an activity.
   security:
-    - bearer: [registered]
+    - bearer: [logged]
   parameters:
     - name: activityId
       in: path

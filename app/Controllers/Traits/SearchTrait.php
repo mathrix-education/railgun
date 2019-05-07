@@ -27,7 +27,6 @@ trait SearchTrait
      */
     public function search(Request $request, $page = 1, $perPage = 100): PaginationJsonResponse
     {
-        $request->user()->canOrFail("search", $this->modelClass);
         $inputs = $request->except(["order", "having"]);
 
         foreach ($inputs as $key => $value) {

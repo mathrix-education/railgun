@@ -75,7 +75,6 @@ class RefundSponsorJob extends BaseJob
                 $this->sponsor,
                 $transaction->id
             ));
-            // BraintreeErrorHandler::report($refundResult);
         }
     }
 }

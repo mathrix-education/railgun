@@ -8,8 +8,8 @@ use Braintree\Subscription;
 use Braintree\Transaction;
 use Braintree\TransactionSearch;
 use Illuminate\Support\Facades\Notification;
-use Laravel\Passport\Passport;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\JWT\Auth\JWT;
 use Tests\Utils\NotificationsAssertionsTrait;
 
 /**
@@ -44,10 +44,10 @@ class SubscriptionVisa2001Test extends BraintreeTestCase
         $processorType = "soft_declined";
 
         // Setup mocks
-        $user = $this->getPristineCustomer();
-        Passport::actingAs($user, ["registered"]);
         Notification::fake();
         SubscriptionUtils::fake();
+        $user = $this->getPristineCustomer();
+        JWT::actingAs($user);
         SubscriptionUtils::$ForceTrialPrice = $processorCode;
 
         $this->json("post", "/subscriptions", [

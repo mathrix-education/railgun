@@ -3,4 +3,4 @@ $extends:
     model: notion
 post:
   security:
-    - bearer: [admin]
+    - bearer: [notions:write]

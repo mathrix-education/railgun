@@ -47,14 +47,12 @@ properties:
     format: password
     writeOnly: true
     example: mysupercurrentpassword
-  type:
-    description: The user type.
-    type: string
-    enum:
-      - registered
-      - redactor
-      - moderator
-      - admin
+  scopes:
+    description: >
+      The user scopes (permissions). The scope `*` matches all. **Do not forgot
+      to keep `logged` scope!**
+    type: array
+    example: [logged, users:read, posts:write]
   points:
     description: The user total point count.
     type: integer

@@ -6,10 +6,6 @@
 substitutions:
   # SonarQube
   _SONARQUBE_PARENT_BRANCH:
-  # API
-  _API_IMAGE: 'education-api'
-  _API_DEPLOYMENT:
-  _API_CONTAINER:
   # Docs
   _DOCS_IMAGE: 'education-api-docs'
   _DOCS_DEPLOYMENT:
@@ -23,18 +19,10 @@ steps:
   # Decrypt the SSH private key for composer git clone
   # --------------------------------------------------
   - id: 'gcloud:kms:decrypt'
+    waitFor: ['-']
     name: 'gcr.io/cloud-builders/gcloud'
-    args:
-      - kms
-      - decrypt
-      - --ciphertext-file=deploy/id_rsa.enc
-      - --plaintext-file=/root/.ssh/id_rsa
-      - --location=global
-      - --keyring=mathrix-education-keyring
-      - --key=github-key
-    volumes:
-      - name: 'ssh'
-        path: /root/.ssh
+    entrypoint: '/bin/bash'
+    args: ['deploy/steps/0_decrypt.sh']
 
 
   # Install PHP dependencies using composer
@@ -42,39 +30,17 @@ steps:
   - id: 'composer:install'
     waitFor: ['gcloud:kms:decrypt']
     name: 'eu.gcr.io/$PROJECT_ID/runner-composer-prestissimo'
-    entrypoint: 'ash'
-    args:
-      - '-c'
-      - |
-        chmod 600 /root/.ssh/id_rsa
-        cat <<EOF >/root/.ssh/config
-        Hostname github.com
-        IdentityFile /root/.ssh/id_rsa
-        EOF
-        cp deploy/known_hosts /root/.ssh/known_hosts
-        composer install \
-          --optimize-autoloader \
-          --no-interaction \
-          --no-suggest \
-          --no-progress \
-          --no-ansi
-    volumes:
-      - name: 'ssh'
-        path: '/root/.ssh'
+    entrypoint: '/bin/bash'
+    args: ['deploy/steps/1_composer.sh']
 
 
   # Install Node dependencies using yarn
   # ------------------------------------
   - id: 'node:compile'
     waitFor: ['-']
-    name: 'node:11-alpine'
-    entrypoint: 'ash'
-    args:
-      - '-c'
-      - |
-        yarn install
-        yarn run docs:compile
-        yarn run mails:compile
+    name: 'eu.gcr.io/$PROJECT_ID/runner-node:11-alpine'
+    entrypoint: '/bin/bash'
+    args: ['deploy/steps/2_yarn.sh']
 
 
   # Run paratest in coverage mode
@@ -107,25 +73,18 @@ steps:
     name: 'gcr.io/cloud-builders/docker'
     args: ['build',
            '--build-arg', 'COMMIT_SHORT_SHA=$SHORT_SHA',
-           '-t', 'eu.gcr.io/$PROJECT_ID/$_API_IMAGE:$SHORT_SHA',
+           '-t', 'eu.gcr.io/$PROJECT_ID/education-api:$SHORT_SHA',
            '.']
   - id: 'docker:push:api'
     waitFor: ['docker:build:api']
     name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'eu.gcr.io/$PROJECT_ID/$_API_IMAGE:$SHORT_SHA']
-  - id: 'kubectl:deploy:api'
+    args: ['push', 'eu.gcr.io/$PROJECT_ID/education-api:$SHORT_SHA']
+  - id: 'kubectl:deploy:server,scheduler,worker'
     waitFor: ['docker:push:api']
     name: 'gcr.io/cloud-builders/kubectl'
-    args: ['set', 'image', 'deployment', '$_API_DEPLOYMENT',
-           '$_API_CONTAINER=eu.gcr.io/$PROJECT_ID/$_API_IMAGE:$SHORT_SHA']
-    env:
-      - 'CLOUDSDK_COMPUTE_ZONE=$_CLOUDSDK_COMPUTE_ZONE'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLOUDSDK_CONTAINER_CLUSTER'
-  - id: 'kubectl:deploy:worker'
-    waitFor: ['docker:push:api']
-    name: 'gcr.io/cloud-builders/kubectl'
-    args: ['set', 'image', 'deployment', 'dev-education-api-worker-deployment',
-           'dev-education-api-worker=eu.gcr.io/$PROJECT_ID/$_API_IMAGE:$SHORT_SHA']
+    args: ['set', 'image', 'deployments',
+           '*=eu.gcr.io/$PROJECT_ID/education-api:$SHORT_SHA',
+           '-l', 'app=education-api,environment=dev,tier=backend']
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=$_CLOUDSDK_COMPUTE_ZONE'
       - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLOUDSDK_CONTAINER_CLUSTER'
@@ -133,8 +92,9 @@ steps:
     waitFor: ['docker:push:api']
     name: 'gcr.io/cloud-builders/gcloud'
     args: ['container', 'images', 'add-tag',
-           'eu.gcr.io/$PROJECT_ID/$_API_IMAGE:$SHORT_SHA',
-           'eu.gcr.io/$PROJECT_ID/$_API_IMAGE:latest-$BRANCH_NAME']
+           'eu.gcr.io/$PROJECT_ID/education-api:$SHORT_SHA',
+           'eu.gcr.io/$PROJECT_ID/education-api:latest-$BRANCH_NAME']
+
 
   # Build, push and deploy docs image
   # ---------------------------------
@@ -147,7 +107,7 @@ steps:
            '-t', 'eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:$SHORT_SHA',
            '.']
   - id: 'docker:push:docs'
-    waitFor: ['docker:build:docs', 'docker-compose:tests']
+    waitFor: ['docker:build:docs']
     name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'eu.gcr.io/$PROJECT_ID/$_DOCS_IMAGE:$SHORT_SHA']
   - id: 'kubectl:deploy:docs'

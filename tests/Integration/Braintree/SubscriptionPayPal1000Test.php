@@ -7,8 +7,8 @@ use Braintree\Customer;
 use Braintree\Exception\NotFound;
 use Braintree\Subscription;
 use Illuminate\Support\Facades\Notification;
-use Laravel\Passport\Passport;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\JWT\Auth\JWT;
 use Tests\Utils\NotificationsAssertionsTrait;
 
 /**
@@ -37,9 +37,10 @@ class SubscriptionPayPal1000Test extends BraintreeTestCase
      */
     public function testPayWithPayPal1000(): void
     {
-        $user = $this->getPristineCustomer();
-        Passport::actingAs($user, ["registered"]);
         Notification::fake();
+
+        $user = $this->getPristineCustomer();
+        JWT::actingAs($user);
 
         $this->json("post", "/subscriptions", [
             "planId" => "v4_biannually",

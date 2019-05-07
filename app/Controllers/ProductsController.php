@@ -4,8 +4,6 @@ namespace App\Controllers;
 
 use App\Exceptions\DiscountExpiredException;
 use App\Exceptions\DiscountNotApplicableException;
-use App\Exceptions\ImmutableException;
-use App\Exceptions\InvalidBraintreeCustomerException;
 use App\Exceptions\InvalidSponsorException;
 use App\Exceptions\ProductAlreadyBoughtException;
 use App\Exceptions\ProductNotBuyableException;
@@ -13,9 +11,6 @@ use App\Exceptions\SponsorNotFoundException;
 use App\Models\Discount;
 use App\Models\Product;
 use App\Models\User;
-use App\Services\Braintree\Exceptions\BraintreeGatewayException;
-use App\Services\Braintree\Exceptions\BraintreeProcessorException;
-use App\Services\Braintree\Exceptions\DuplicatePaymentMethodNonceException;
 use App\Services\Braintree\Pipelines\CartPipeline;
 use App\Services\Braintree\Utils\AffiliateProcess;
 use Illuminate\Http\JsonResponse;
@@ -23,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
+use Mathrix\Lumen\Exceptions\Http\Http429TooManyRequestsException;
 use Mathrix\Lumen\Exceptions\ValidationException;
 use Mathrix\Lumen\Responses\PaginationJsonResponse;
 
@@ -36,6 +32,23 @@ use Mathrix\Lumen\Responses\PaginationJsonResponse;
 class ProductsController extends BaseController
 {
     /**
+     * GET /products/{packId}/items/{page}/{perPage}
+     *
+     * @param Request $request The Illuminate HTTP request.
+     * @param int $productId The product id.
+     * @param int $page The results page.
+     * @param int $perPage The number of products page.
+     *
+     * @return PaginationJsonResponse
+     * @throws Http401UnauthorizedException
+     */
+    public function items(Request $request, int $productId, int $page, int $perPage): PaginationJsonResponse
+    {
+        return $this->relation($request, "items", $productId, $page, $perPage);
+    }
+
+
+    /**
      * PATCH /products/{packId}/items
      *
      * @param Request $request The Illuminate HTTP request.
@@ -43,9 +56,10 @@ class ProductsController extends BaseController
      *
      * @return JsonResponse
      */
-    public function items(Request $request, int $packId)
+    public function patchItems(Request $request, int $packId)
     {
         // TODO: Add validator
+
         /** @var Product $pack */
         $pack = Product::query()
             ->where("id", "=", $packId)
@@ -162,18 +176,8 @@ class ProductsController extends BaseController
      * @param Request $request The Illuminate HTTP request.
      *
      * @return JsonResponse
-     * @throws BraintreeGatewayException
-     * @throws BraintreeProcessorException
-     * @throws DiscountExpiredException
-     * @throws DiscountNotApplicableException
-     * @throws DuplicatePaymentMethodNonceException
-     * @throws InvalidBraintreeCustomerException
-     * @throws InvalidSponsorException
-     * @throws ProductAlreadyBoughtException
-     * @throws ProductNotBuyableException
-     * @throws SponsorNotFoundException
-     * @throws ValidationException
-     * @throws ImmutableException
+     * @throws Http401UnauthorizedException
+     * @throws Http429TooManyRequestsException
      */
     public function buy(Request $request): JsonResponse
     {
@@ -182,7 +186,7 @@ class ProductsController extends BaseController
 
 
     /**
-     * GET /discounts/code/{discountCode}
+     * GET /products/cart
      * Check if a discount is valid.
      *
      * @param Request $request
@@ -238,7 +242,7 @@ class ProductsController extends BaseController
             }
         }
 
-        $lines = $products->map(function (Product $product) use ($customer, $discount) {
+        $lines = $products->map(function (Product $product) use ($discount) {
             return array_merge([
                 "name" => $product->name,
                 "type" => $product->type,

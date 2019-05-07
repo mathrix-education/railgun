@@ -24,9 +24,10 @@ class CountriesRegistrar extends BaseRegistrar
         $this->rest("countries", CountriesController::class, [
             "index" => null,
             "get" => null,
-            "post" => "admin",
-            "patch" => "admin",
-            "delete" => "admin"
+            "post" => "scope:countries:write",
+            "patch" => "scope:countries:write",
+            "delete" => "scope:countries:delete",
+            "related:grades" => null
         ]);
 
         $this->get("countries/slug/{countrySlug:[a-z\-]+}", "$controller@getBySlug");

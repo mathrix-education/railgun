@@ -24,7 +24,6 @@ class InvalidSponsorException extends Http400BadRequestException
         parent::__construct(
             [
                 "email" => $sponsor->email,
-                "affiliate_count" => $sponsor->affiliate_factor
             ],
             "User email `{$sponsor->email}` is not a valid sponsor",
             $previous

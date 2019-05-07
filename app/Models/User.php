@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -19,12 +20,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Laravel\Lumen\Auth\Authorizable;
-use Laravel\Passport\Client;
-use Laravel\Passport\HasApiTokens;
-use Laravel\Passport\Token;
 use Mathrix\Lumen\Bases\BaseModel;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
-use Mathrix\Lumen\Exceptions\ValidationException;
+use Mathrix\Lumen\JWT\Auth\HasJWT;
 
 /**
  * Class User.
@@ -67,18 +65,18 @@ use Mathrix\Lumen\Exceptions\ValidationException;
  * @property Collection|Product[] $products
  * @property Collection|Purchase[] $purchases
  * @property Collection|Vote[] $votes
+ * ---
+ * @method static Builder scope(string $scope)
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
-    use Authenticatable,
-        Authorizable,
-        HasApiTokens,
+    use Authorizable,
+        Authenticatable,
         Notifiable,
         BraintreeCustomer,
         StripeCustomer,
-        PermissionsTrait {
-        HasApiTokens::tokenCan as passportTokenCan;
-    }
+        PermissionsTrait,
+        HasJWT;
 
     private const STRIPE_PLANS = ["v3_monthly", "v3_annually", "v3_biannually"];
     public const BRAINTREE_PLANS = ["v4_monthly", "v4_annually", "v4_biannually"];
@@ -93,6 +91,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "firstname",
         "lastname",
         "password",
+        "scopes",
         "points",
         "daily",
         "settings",
@@ -113,6 +112,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
+        "scopes" => "array",
         "settings" => "array",
         "premium_bypass" => "boolean",
         "premium_bypass_expires_at" => "date"
@@ -124,7 +124,8 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "firstname" => "nullable|max:60",
         "lastname" => "nullable|max:60",
         "password" => "required|min:3",
-        "type" => "required|in:registered,redactor,moderator,admin",
+        "scopes" => "required",
+        "scopes.*" => "distinct",
         "token" => "nullable|size:36",
         "points" => "required|integer",
         "daily" => "nullable|in:10,20,40",
@@ -170,6 +171,28 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     |--------------------------------------------------------------------------
     */
     /**
+     * Laravel "dynamic scope" to query users with a specific scope (permission).
+     *
+     * @link https://laravel.com/docs/5.8/eloquent
+     *
+     * @param Builder $query
+     * @param string $scope
+     *
+     * @return Builder|\Illuminate\Database\Query\Builder
+     */
+    public function scopeScope(Builder $query, string $scope)
+    {
+        return $query->whereRaw("JSON_SEARCH(scopes, 'one', ?) IS NOT NULL", [$scope])
+            ->orWhereRaw("JSON_SEARCH(scopes, 'one', '*') IS NOT NULL");
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Methods
+    |--------------------------------------------------------------------------
+    */
+    /**
      * Record an event linked to this user.
      *
      * @param string $service The service.
@@ -198,46 +221,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         return $this->purchases()
             ->whereIn("product_id", $product->lineage()->pluck("id"))
             ->exists();
-    }
-
-
-    /**
-     * Get users scopes, space-separated.
-     *
-     * @return string
-     */
-    public function getPassportScopes()
-    {
-        switch ($this->type) {
-            case "admin":
-                $scopes = "admin moderator redactor registered";
-                break;
-            case "moderator":
-                $scopes = "moderator redactor registered";
-                break;
-            case "redactor":
-                $scopes = "redactor registered";
-                break;
-            case "registered":
-                $scopes = "registered";
-                break;
-            default:
-                $scopes = "";
-                break;
-        }
-
-        return $scopes;
-    }
-
-
-    /**
-     * Get users scopes as an array.
-     *
-     * @return array
-     */
-    public function getPassportScopesArray(): array
-    {
-        return explode(" ", $this->getPassportScopes());
     }
 
 
@@ -394,6 +377,9 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
 
+    /**
+     * @return array
+     */
     public function getLastSessionAttribute()
     {
         if (empty($this->settings["last_session"])) {

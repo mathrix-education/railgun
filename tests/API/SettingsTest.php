@@ -3,6 +3,7 @@
 namespace Tests\API;
 
 use App\Models\Setting;
+use Mathrix\Lumen\JWT\Auth\JWT;
 use Tests\APITestCase;
 
 /**
@@ -19,6 +20,7 @@ class SettingsTest extends APITestCase
      */
     public function testAll()
     {
+        JWT::autoScope("get", "/settings");
         $this->json("get", "/settings");
 
         $this->assertResponseOk();
@@ -52,7 +54,7 @@ class SettingsTest extends APITestCase
         ];
 
         $uri = "/settings/{$setting->key}";
-        $this->autoMockScope("patch", $uri);
+        JWT::autoScope("patch", $uri);
         $this->json("patch", $uri, [
             "value" => $payload,
             "visible" => true
@@ -72,7 +74,7 @@ class SettingsTest extends APITestCase
         $setting = Setting::random(["visible", "=", true]);
 
         $uri = "/settings/{$setting->key}";
-        $this->autoMockScope("delete", $uri);
+        JWT::autoScope("delete", $uri);
         $this->json("delete", $uri);
 
         $this->assertResponseOk();

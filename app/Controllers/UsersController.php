@@ -3,9 +3,14 @@
 namespace App\Controllers;
 
 use App\Controllers\Traits\SearchTrait;
+use App\Exceptions\InvalidBraintreeCustomerException;
 use App\Models\Log;
 use App\Models\Module;
 use App\Models\User;
+use App\Services\Braintree\Utils\Formatter;
+use Braintree\Transaction;
+use Braintree\TransactionSearch;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -16,6 +21,7 @@ use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
 use Mathrix\Lumen\Exceptions\Http\Http429TooManyRequestsException;
 use Mathrix\Lumen\Exceptions\ValidationException;
+use Mathrix\Lumen\Responses\PaginationJsonResponse;
 
 /**
  * Class UsersController.
@@ -27,23 +33,6 @@ use Mathrix\Lumen\Exceptions\ValidationException;
 class UsersController extends BaseController
 {
     use SearchTrait;
-
-
-    public function get(Request $request, int $id): JsonResponse
-    {
-        /** @var User $user */
-        $user = $request->user();
-
-        if (!$user->tokenCan("admin")) {
-            return parent::get($request, $id);
-        }
-
-        $target = User::query()->findOrFail($id);
-        $target->makeVisible(["premium_bypass", "stripe_id", "braintree_id", "stripe", "braintree"]);
-        $target->append(["stripe", "braintree"]);
-
-        return new JsonResponse($target);
-    }
 
 
     /**
@@ -65,14 +54,39 @@ class UsersController extends BaseController
                 "settings" => [
                     "sound" => true,
                 ],
-                "type" => "registered"
+                "scopes" => ["logged"],
             ]);
 
-            $user->fill($request->all())
-                ->save();
+            $user->fill($request->all())->save();
         });
 
         return new JsonResponse($user->fresh());
+    }
+
+
+    /**
+     * GET /users/{userId}
+     *
+     * @param Request $request The Illuminate HTTP request.
+     * @param int $id The user id.
+     *
+     * @return JsonResponse
+     * @throws Http401UnauthorizedException
+     */
+    public function get(Request $request, int $id): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (!scope($user, "users:read")) {
+            return parent::get($request, $id);
+        }
+
+        $target = User::query()->findOrFail($id);
+        $target->makeVisible(["premium_bypass", "stripe_id", "braintree_id", "stripe", "braintree"]);
+        $target->append(["stripe", "braintree"]);
+
+        return new JsonResponse($target);
     }
 
 
@@ -97,17 +111,17 @@ class UsersController extends BaseController
         // Check permission
         $user->canOrFail("patch", $target);
 
-        // Unlock fields for admin
-        User::unguard($user->tokenCan("admin"));
+        // Unlock fields for privileged user
+        User::unguard($user->hasScope("users:write"));
 
         // Check for current_password, skip for admins if they are editing another user
         $this->validate($request, [
             "current_password" => Rule::requiredIf(function () use ($request, $user, $target) {
                 $passwordProvided = $request->has("password");
                 $targetHimself = $user->id === $target->id;
-                $isAdmin = $user->tokenCan("admin");
+                $hasScope = $user->hasScope("users:write");
 
-                return $passwordProvided && ($targetHimself || !$isAdmin);
+                return $passwordProvided && ($targetHimself || !$hasScope);
             })
         ]);
 
@@ -126,6 +140,97 @@ class UsersController extends BaseController
             ->save();
 
         return new JsonResponse($target->fresh());
+    }
+
+
+    /**
+     * GET /users/{userId}/records/{page}/{perPage}
+     * Get the user records.
+     *
+     * @param Request $request The Illuminate HTTP request.
+     * @param int $userId The user id.
+     * @param int $page The results page.
+     * @param int $perPage The number of records per page.
+     *
+     * @return PaginationJsonResponse
+     * @throws Http401UnauthorizedException
+     */
+    public function records(Request $request, int $userId, int $page, int $perPage)
+    {
+        return $this->relation($request, "records", $userId, $page, $perPage);
+    }
+
+
+    /**
+     * GET /users/{userId}/subscriptions/{page}/{perPage}
+     * Get the user subscriptions.
+     *
+     * @param Request $request The Illuminate HTTP request.
+     * @param int $userId The user id.
+     * @param int $page The results page.
+     * @param int $perPage The number of subscriptions per page.
+     *
+     * @return JsonResponse
+     * @throws Http400BadRequestException
+     * @throws Http401UnauthorizedException
+     * @throws InvalidBraintreeCustomerException
+     */
+    public function subscriptions(Request $request, int $userId, int $page, int $perPage)
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if ($user->id !== $userId && !$user->hasScope("subscriptions:read")) {
+            throw new Http401UnauthorizedException();
+        }
+
+        /** @var User $customer */
+        $customer = User::query()->findOrFail($userId);
+        $customer->requireBraintreeCustomer();
+
+        $subscriptions = Formatter::cast($customer->getBraintreeSubscriptions());
+
+        return new JsonResponse([
+            "page" => $page,
+            "perPage" => $perPage,
+            "total" => count($subscriptions),
+            "data" => $subscriptions
+        ]);
+    }
+
+
+    /**
+     * GET /users/{userId}/transactions/{page}/{perPage}
+     * Get user transactions.
+     *
+     * @param int $userId
+     * @param int $page
+     * @param int $perPage
+     *
+     * @return JsonResponse
+     * @throws InvalidBraintreeCustomerException
+     */
+    public function transactions(int $userId, int $page, int $perPage)
+    {
+        /** @var User $customer */
+        $customer = User::query()->findOrFail($userId);
+        $customer->requireBraintreeCustomer();
+        $transactionResults = Transaction::search([
+            TransactionSearch::customerId()
+                ->is($customer->braintree_id),
+        ]);
+        $transactions = new Collection();
+
+        foreach ($transactionResults as $transaction) {
+            $transactions->add(Formatter::cast($transaction));
+        }
+
+        return new JsonResponse([
+            "page" => $page,
+            "per_page" => $perPage,
+            "total" => $transactions->count(),
+            "data" => $transactions
+        ]);
     }
 
 

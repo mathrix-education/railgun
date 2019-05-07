@@ -4,9 +4,11 @@ namespace Tests\API;
 
 use App\Models\Discount;
 use App\Models\Product;
+use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Tests\REST\Standard\StandardDeleteTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
+use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardPostTest;
 use Tests\APITestCase;
 
@@ -19,59 +21,15 @@ use Tests\APITestCase;
  */
 class DiscountsTest extends APITestCase
 {
-    use StandardIndexTest, StandardPostTest, StandardGetTest, StandardDeleteTest;
-
-
-    /**
-     * PATCH /discounts/{discountId}
-     */
-    public function testPatch(): void
-    {
-        $productIds = Product::query()
-            ->inRandomOrder()
-            ->whereNotNull("price")
-            ->limit(3)
-            ->get(["id"])
-            ->pluck("id")
-            ->toArray();
-
-        $this->assertRestPatchSuccess(
-            function ($data) use ($productIds) {
-                $data["link"]["products"] = $productIds;
-
-                return $data;
-            },
-            function ($data) {
-                unset($data["link"]);
-
-                return $data;
-            }
-        );
-
-        $discountId = $this->getJsonResponseValue("id");
-        foreach ($productIds as $productId) {
-            $this->assertInDatabase("discount_product", [
-                "discount_id" => $discountId,
-                "product_id" => $productId
-            ]);
-        }
-    }
+    use StandardIndexTest, StandardPostTest, StandardGetTest, StandardPatchTest, StandardDeleteTest;
 
 
     /**
      * GET /discounts/{discountId}/products/{page}/{perPage}
      */
-    public function testGetProducts(): void
+    public function testProducts(): void
     {
-        /** @var Discount $discount */
-        $discount = Discount::query()->has("products")->firstOrFail();
-
-        $uri = "/discounts/{$discount->id}/products/0/100";
-        $this->autoMockScope("get", $uri);
-        $this->json("get", $uri);
-
-        $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
+        $this->assertRestRelationSuccess("products");
     }
 
 
@@ -84,8 +42,8 @@ class DiscountsTest extends APITestCase
         $discount = Discount::random();
         $productIds = Product::query()->inRandomOrder()->limit(5)->get()->pluck("id");
 
-        $uri = "/discounts/{$discount->id}/products/0/100";
-        $this->autoMockScope("patch", $uri);
+        $uri = "/discounts/{$discount->id}/products";
+        JWT::autoScope("patch", $uri);
         $this->json("patch", $uri, $productIds->toArray());
 
         $this->assertResponseOk();

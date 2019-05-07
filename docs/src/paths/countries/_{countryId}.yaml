@@ -7,7 +7,7 @@ $extends:
     model: country
 patch:
   security:
-    - bearer: [admin]
+    - bearer: [countries:write]
 delete:
   security:
-    - bearer: [admin]
+    - bearer: [countries:delete]

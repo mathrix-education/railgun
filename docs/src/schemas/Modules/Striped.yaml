@@ -10,6 +10,7 @@ properties:
   type:
     description: The module type.
     type: string
+    enum: [course, flashcard, mcq, test]
   visible:
     description: The module visibility.
     type: boolean

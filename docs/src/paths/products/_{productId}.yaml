@@ -5,9 +5,12 @@ $extends:
     model: product
   ../../fragments/paths/delete_{modelId}.yaml:
     model: product
+get:
+  security:
+    - bearer: [products:read]
 patch:
   security:
-    - bearer: [admin]
+    - bearer: [products:write]
 delete:
   security:
-    - bearer: [admin]
+    - bearer: [products:delete]

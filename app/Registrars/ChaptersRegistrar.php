@@ -21,18 +21,14 @@ class ChaptersRegistrar extends BaseRegistrar
     {
         $controller = ChaptersController::class;
         $this->rest("chapters", $controller, [
-            "index" => "moderator",
+            "index" => "scope:chapters:read",
             "get" => null,
-            "post" => "moderator",
-            "patch" => "moderator",
-            "delete" => "moderator"
+            "post" => "scope:chapters:write",
+            "patch" => "scope:chapters:write",
+            "delete" => "scope:chapters:delete",
+            "related:notions" => null
         ]);
 
-        $this->get("chapters/{id:[1-9]\d*}/recursive", "$controller@recursive");
-        $this->get("chapters/by-module/{moduleId:[1-9]\d*}/recursive", "$controller@byModuleRecursive");
-        $this->get("chapters/by-grade-discipline/{gradeId:[1-9]\d*}/{disciplineId:[1-9]\d*}[/{scope:all}]",
-            "$controller@byGradeIdDisciplineId");
-        $this->get("chapters/slug/{chapterSlug:[a-z\-]+}/by-grade-slug/{gradeSlug:[a-z0-9\-]+}",
-            "$controller@getBySlugGradeSlug");
+        $this->get("chapters/{chapterId:[1-9]\d*}/recursive", "$controller@recursive");
     }
 }

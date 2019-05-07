@@ -36,6 +36,15 @@ class CategoriesTest extends APITestCase
 
 
     /**
+     * GET /categories/{categoryId}/posts/{page}/{perPage}
+     */
+    public function testPosts(): void
+    {
+        $this->assertRestRelationSuccess("posts");
+    }
+
+
+    /**
      * POST /categories
      * We remove "name" field and assert that we got an error.
      */
@@ -44,7 +53,7 @@ class CategoriesTest extends APITestCase
         $data = $this->getFactoryBuilder([])->raw();
         unset($data["name"]);
 
-        $this->mockScope("admin");
+        $this->event("before.request", "post", "/categories");
         $this->json("post", "/categories", $data);
 
         $this->assertResponseStatus(422);

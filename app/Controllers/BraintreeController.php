@@ -70,18 +70,21 @@ class BraintreeController extends BaseController
             $request->input("bt_payload")
         );
 
-        if ($webhook->kind === WebhookNotification::SUBSCRIPTION_CHARGED_SUCCESSFULLY) {
-            if (isset($webhook->subscription)) {
-                if (isset($webhook->subscription->transactions[0])) {
-                    event(new TransactionSuccessEvent($webhook->subscription->transactions[0]));
-                }
+        switch ($webhook->kind) {
+            case WebhookNotification::SUBSCRIPTION_CHARGED_SUCCESSFULLY:
+                if (isset($webhook->subscription)) {
+                    if (isset($webhook->subscription->transactions[0])) {
+                        event(new TransactionSuccessEvent($webhook->subscription->transactions[0]));
+                    }
 
-                event(new SubscriptionChargedSuccessfullyEvent($webhook->subscription));
-            }
-        } else if ($webhook->kind === WebhookNotification::SUBSCRIPTION_CANCELED) {
-            if (isset($webhook->subscription)) {
-                event(new SubscriptionCancelledEvent($webhook->subscription));
-            }
+                    event(new SubscriptionChargedSuccessfullyEvent($webhook->subscription));
+                }
+                break;
+            case WebhookNotification::SUBSCRIPTION_CANCELED:
+                if (isset($webhook->subscription)) {
+                    event(new SubscriptionCancelledEvent($webhook->subscription));
+                }
+                break;
         }
 
         return new JsonResponse([

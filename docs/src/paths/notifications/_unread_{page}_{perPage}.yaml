@@ -5,4 +5,4 @@ get:
   summary: Unread notifications
   description: Retrieve unread notifications by descending creation date, paginated.
   security:
-    - bearer: [registered]
+    - bearer: [logged]

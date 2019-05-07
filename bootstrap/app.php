@@ -129,11 +129,6 @@ $app->middleware([
     AsMiddleware::class
 ]);
 
-$app->routeMiddleware([
-    "login" => LoggedMiddleware::class,
-    "scope" => ScopeMiddleware::class
-]);
-
 /*
 |--------------------------------------------------------------------------
 | Register Service Providers

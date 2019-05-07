@@ -23,14 +23,11 @@ class PostsRegistrar extends BaseRegistrar
 
         $this->rest("posts", $controller, [
             "index" => null,
-            "get" => "admin",
-            "post" => "admin",
-            "patch" => "admin",
-            "delete" => "admin"
+            "get" => "scope:posts:read",
+            "post" => "scope:posts:write",
+            "patch" => "scope:posts:write",
+            "delete" => "scope:posts:delete"
         ]);
-
-        $this->get("posts/by-{what:category}/{id:[1-9]\d*}/{page:\d+}/{perPage:[1-9]\d*}",
-            "$controller@by");
 
         $this->get("posts/latest/{page:\d+}/{perPage:[1-9]\d*}", "$controller@latest");
     }

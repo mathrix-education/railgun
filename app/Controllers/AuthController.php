@@ -5,20 +5,17 @@ namespace App\Controllers;
 use App\Events\PasswordForgottenEvent;
 use App\Events\PasswordResetEvent;
 use App\Models\User;
-use Dusterio\LumenPassport\Http\Controllers\AccessTokenController;
+use Exception;
 use Faker\Factory;
 use Faker\Factory as FakerFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Laravel\Passport\Http\Controllers\ConvertsPsrResponses;
+use Illuminate\Support\Facades\Hash;
 use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Exceptions\ValidationException;
-use Nyholm\Psr7\Factory\Psr17Factory;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
+use Mathrix\Lumen\JWT\Auth\Exceptions\InvalidCredentialsException;
+use Mathrix\Lumen\JWT\Auth\JWT\JWTIssuer;
 
 /**
  * Class AuthController.
@@ -29,64 +26,44 @@ use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
  */
 class AuthController extends BaseController
 {
-    use ConvertsPsrResponses;
-
-
     /**
-     * POST /auth/login
-     * Allow users to login with their privileges.
+     * POST /users/login
      *
-     * the AccessTokenController::issueToken method.
-     *
-     * @param Request $request The Illuminate HTTP request
+     * @param Request $request
      *
      * @return JsonResponse
-     *
-     * @see AccessTokenController::issueToken
+     * @throws InvalidCredentialsException
+     * @throws ValidationException
+     * @throws Exception
      */
-    public function login(Request $request): JsonResponse
+    public function login(Request $request)
     {
-        /** @var User|null $user */
+        $this->validate($request, [
+            "email" => "required|email",
+            "password" => "required"
+        ]);
+
+        /** @var User $user */
         $user = User::query()
-            ->where("email", "=", $request->json("username"))
+            ->where("email", "=", $request->json("email"))
+            ->get(["id", "password", "scopes"])
             ->first();
 
-        // Define the allowed scopes based on user scopes
-        // If we did not find the user, we do not do anything, even if we already know that the request will fail
-        if ($user !== null) {
-            $request->merge([
-                "scope" => $user->getPassportScopes()
-            ]);
+        if ($user === null) {
+            throw new InvalidCredentialsException();
         }
 
-        /**
-         * Via PSR ServerRequestInterface and Response interface, we will get the user authentication token.
-         */
-        $psr17Factory = new Psr17Factory();
-        $psrHttpFactory = new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
-        /** @var ServerRequestInterface $psrRequest */
-        $psrRequest = $psrHttpFactory->createRequest($request);
-        /** @var AccessTokenController $controller */
-        $controller = app()->make(AccessTokenController::class);
-        /** @var ResponseInterface $psrResponse */
-        $psrResponse = $controller->issueToken($psrRequest);
+        $logged = Hash::check($request->json("password"), $user->password);
 
-        if ($psrResponse instanceof ResponseInterface) {
-            $response = $this->convertResponse($psrResponse);
-        } else {
-            $response = $psrResponse;
+        if (!$logged) {
+            throw new InvalidCredentialsException();
         }
 
-        /** @var Response $response */
-        $data = json_decode($response->getContent(), true);
-        $status = $response->getStatusCode();
-        $headers = $response->headers->all();
+        $jws = JWTIssuer::issueJWS($user);
 
-        if ($response->getStatusCode() === 200) {
-            $data["user_id"] = $user->id;
-        }
-
-        return new JsonResponse($data, $status, $headers);
+        return new JsonResponse([
+            "token" => JWTIssuer::serializeJWS($jws)
+        ]);
     }
 
 
@@ -104,7 +81,7 @@ class AuthController extends BaseController
         // Try to find the user with the given email
         /** @var User $user */
         $user = User::query()
-            ->where("email", "=", $request->input("email"))
+            ->where("email", "=", $request->json("email"))
             ->firstOrFail();
 
         if (!empty($user->settings["facebook_id"])) {
@@ -120,6 +97,7 @@ class AuthController extends BaseController
         event(new PasswordForgottenEvent($user));
 
         return new JsonResponse([
+            "success" => true,
             "message" => "Reset email sent successfully"
         ]);
     }

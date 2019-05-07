@@ -3,7 +3,7 @@
 namespace Tests\Integration\Braintree;
 
 use Illuminate\Support\Facades\Notification;
-use Laravel\Passport\Passport;
+use Mathrix\Lumen\JWT\Auth\JWT;
 
 /**
  * Class SubscriptionLockedTest.
@@ -21,7 +21,7 @@ class SubscriptionLockedTest extends BraintreeTestCase
     {
         $user = $this->getPristineCustomer();
         $user->braintreeLock();
-        Passport::actingAs($user, ["registered"]);
+        JWT::actingAs($user);
         Notification::fake();
 
         $this->json("post", "/subscriptions", [

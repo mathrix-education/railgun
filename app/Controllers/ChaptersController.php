@@ -3,14 +3,13 @@
 namespace App\Controllers;
 
 use App\Models\Chapter;
-use App\Models\Grade;
-use App\Models\Module;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Mathrix\Lumen\Bases\BaseController;
-use Mathrix\Lumen\Exceptions\Models\Models\ModelNotFoundException;
+use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
+use Mathrix\Lumen\Responses\PaginationJsonResponse;
 
 /**
  * Class ChaptersController.
@@ -21,6 +20,23 @@ use Mathrix\Lumen\Exceptions\Models\Models\ModelNotFoundException;
  */
 class ChaptersController extends BaseController
 {
+    /**
+     * GET /chapters/{chapterId}/notions/{page}/{perPage}
+     *
+     * @param Request $request The Illuminate HTTP request.
+     * @param int $chapterId The chapter id.
+     * @param int $page The results page.int
+     * @param int $perPage The number of notions per page.
+     *
+     * @return PaginationJsonResponse
+     * @throws Http401UnauthorizedException
+     */
+    public function notions(Request $request, int $chapterId, int $page, int $perPage): PaginationJsonResponse
+    {
+        return $this->relation($request, "notions", $chapterId, $page, $perPage);
+    }
+
+
     /**
      * GET /chapters/{chapterId}/recursive
      * Get a chapter and all its visible children (notions, activities, modules).
@@ -48,91 +64,5 @@ class ChaptersController extends BaseController
             });
 
         return new JsonResponse($chapterData);
-    }
-
-
-    /**
-     * GET /chapters/by-module/{moduleId}/recursive
-     *
-     * @param Request $request
-     * @param int $moduleId The module id.
-     *
-     * @return JsonResponse
-     * @throws ModelNotFoundException
-     */
-    public function byModuleRecursive(Request $request, int $moduleId)
-    {
-        /** @var Module $module */
-        $module = Module::query()->findOrFail($moduleId);
-
-        if (!isset($module->activity->notion->chapter_id)) {
-            throw new ModelNotFoundException(["module_id" => $module->id]);
-        }
-
-        return $this->recursive($request, $module->activity->notion->chapter_id);
-    }
-
-
-    /**
-     * GET /chapters/by-grade-discipline/{gradeId}/{disciplineId}[/{scope}]
-     * Get chapters by class and discipline ids
-     *
-     * @param Request $request The Illuminate HTTP request.
-     * @param int $gradeId The class id.
-     * @param int $disciplineId The discipline id.
-     * @param string|null $scope The scope, use 'all' to display invisible chapters.
-     *
-     * @return JsonResponse
-     */
-    public function byGradeIdDisciplineId(Request $request, int $gradeId, int $disciplineId, string $scope = null)
-    {
-        // Check if all chapters should be returned.
-        $restrictToVisible = $scope !== "all" || !($request->user() !== null && $request->user()->tokenCan("redactor"));
-        $key = "chapters.grade.$gradeId.discipline.$disciplineId." . ($restrictToVisible ? "visible" : "all");
-
-        $chapters = Cache::remember($key, 15, function () use ($gradeId, $disciplineId, $restrictToVisible) {
-            $query = Chapter::query()->where([
-                ["grade_id", "=", $gradeId],
-                ["discipline_id", "=", $disciplineId],
-            ])
-                ->orderBy("order");
-
-
-            if ($restrictToVisible) {
-                $query = $query->where("visible", "=", true);
-            }
-
-            return $query->get();
-        });
-
-        return new JsonResponse($chapters);
-    }
-
-
-    /**
-     * GET /chapters/slug/{chapterSlug}/by-grade-slug/{gradeSlug}
-     * Get a chapter by its slug and grade slug.
-     *
-     * @param string $chapterSlug The chapter slug.
-     * @param string $gradeSlug The grade slug.
-     *
-     * @return JsonResponse
-     */
-    public function getBySlugGradeSlug(string $chapterSlug, string $gradeSlug): JsonResponse
-    {
-        /** @var Grade $grade */
-        $grade = Grade::query()
-            ->where("slug", "=", $gradeSlug)
-            ->firstOrFail();
-
-        /** @var Chapter $chapter */
-        $chapter = Chapter::query()
-            ->where([
-                ["grade_id", "=", $grade->id],
-                ["slug", "=", $chapterSlug],
-            ])
-            ->firstOrFail();
-
-        return new JsonResponse($chapter);
     }
 }

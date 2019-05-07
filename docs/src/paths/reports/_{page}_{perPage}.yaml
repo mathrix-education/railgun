@@ -3,4 +3,4 @@ $extends:
     model: report
 get:
   security:
-    - bearer: [admin]
+    - bearer: [reports:read]

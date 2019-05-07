@@ -7,7 +7,7 @@ $extends:
     model: discipline
 patch:
   security:
-    - bearer: [admin]
+    - bearer: [disciplines:write]
 delete:
   security:
-    - bearer: [admin]
+    - bearer: [disciplines:delete]

@@ -24,14 +24,18 @@ class GradesRegistrar extends BaseRegistrar
         $this->rest("grades", $controller, [
             "index" => null,
             "get" => null,
-            "post" => "admin",
-            "patch" => "admin",
-            "delete" => "admin"
+            "post" => "scope:grades:write",
+            "patch" => "scope:grades:write",
+            "delete" => "scope:grades:delete",
+            "related:disciplines" => null
         ]);
 
         $this->get("grades/slug/{gradeSlug:[a-z0-9\-]+}", "$controller@getBySlug");
 
-        $this->get("grades/by-{what:country}/{id:[1-9]\d*}[/{page:\d+}/{perPage:[1-9]\d*}]",
-            "$controller@by");
+        $this->get("grades/slug/{gradeSlug:[a-z0-9\-]+}/chapters/slug/{chapterSlug:[a-z0-9\-]+}",
+            "$controller@getBySlugChapterSlug");
+
+        $this->get("grades/{gradeId:[1-9]\d*}/disciplines/{disciplineId:[1-9]\d*}/chapters/{page:\d+}/{perPage:[1-9]\d*}",
+            "$controller@chaptersByDiscipline");
     }
 }

@@ -4,7 +4,7 @@ post:
     Given a sponsor email, check if the current user can benefits of an
     affiliate discount.
   security:
-    - bearer: [registered]
+    - bearer: [logged]
   requestBody:
     content:
       application/json:

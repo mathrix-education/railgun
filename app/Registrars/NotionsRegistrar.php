@@ -22,14 +22,12 @@ class NotionsRegistrar extends BaseRegistrar
         $controller = NotionsController::class;
 
         $this->rest("notions", $controller, [
-            "index" => "moderator",
+            "index" => "scope:notions:read",
             "get" => null,
-            "post" => "moderator",
-            "patch" => "moderator",
-            "delete" => "moderator"
+            "post" => "scope:notions:write",
+            "patch" => "scope:notions:write",
+            "delete" => "scope:notions:delete",
+            "related:activities" => null
         ]);
-
-        $this->get("notions/by-{what:chapter}/{id:[1-9]\d*}/{page:\d+}/{perPage:[1-9]\d*}",
-            "$controller@by");
     }
 }

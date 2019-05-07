@@ -73,6 +73,7 @@ class TransactionRefundMail extends BaseMail
                 "title" => "Reçu de Mathrix",
                 "user" => $this->user,
                 "transaction" => $this->transaction,
+                "card" => $this->transaction->creditCardDetails,
                 "lineItems" => $this->lineItems,
                 "refund" => $this->refund,
             ]);

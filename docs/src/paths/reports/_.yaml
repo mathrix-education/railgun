@@ -3,4 +3,4 @@ $extends:
     model: report
 post:
   security:
-    - bearer: [registered]
+    - bearer: [logged]

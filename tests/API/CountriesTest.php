@@ -43,4 +43,13 @@ class CountriesTest extends APITestCase
     {
         $this->assertRestGetBySuccess("slug");
     }
+
+
+    /**
+     * GET /countries/{countryId}/grades/{page}/{perPage}
+     */
+    public function testGrades(): void
+    {
+        $this->assertRestRelationSuccess("grades");
+    }
 }

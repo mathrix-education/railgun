@@ -4,8 +4,8 @@ namespace Tests\API;
 
 use App\Models\Activity;
 use App\Models\Mark;
-use App\Models\Notion;
-use Laravel\Passport\Passport;
+use App\Models\User;
+use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
@@ -39,11 +39,11 @@ class ActivitiesTest extends APITestCase
 
 
     /**
-     * GET /activities/by-notions/{notionId}
+     * GET /activities/{activityId}/modules/{page}/{perPage}
      */
-    public function testByNotion(): void
+    public function testModules(): void
     {
-        $this->assertRestBySuccess(Notion::class);
+        $this->assertRestRelationSuccess("modules");
     }
 
 
@@ -56,7 +56,8 @@ class ActivitiesTest extends APITestCase
         $uri = "/activities/{$activity->id}/mark";
         $status = $this->faker->randomElement(Mark::STATUSES);
 
-        $this->autoMockScope("patch", $uri);
+        /** @var User $user */
+        $user = JWT::autoScope("patch", $uri);
         $this->json("patch", $uri, [
             "status" => $status
         ]);
@@ -65,7 +66,7 @@ class ActivitiesTest extends APITestCase
         $this->assertOpenAPIResponse();
         $this->assertInDatabase("marks", [
             "status" => $status,
-            "user_id" => $this->passportUser->id,
+            "user_id" => $user->id,
             "markable_type" => "activity",
             "markable_id" => $activity->id
         ]);
@@ -78,7 +79,7 @@ class ActivitiesTest extends APITestCase
     public function testUnmark(): void
     {
         $mark = Mark::random(["markable_type", "=", "activity"]);
-        Passport::actingAs($mark->user, ["registered"]);
+        JWT::actingAs($mark->user);
 
         $this->json("patch", "/activities/{$mark->markable_id}/unmark");
 

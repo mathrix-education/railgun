@@ -4,7 +4,7 @@ namespace Tests\API;
 
 use App\Models\Comment;
 use App\Models\Vote;
-use Laravel\Passport\Passport;
+use Mathrix\Lumen\JWT\Auth\JWT;
 use Tests\APITestCase;
 
 /**
@@ -24,7 +24,7 @@ class VotesTest extends APITestCase
         $comment = Comment::random();
         $value = $this->faker->boolean ? 1 : -1;
         $uri = "/votes/comment/{$comment->id}";
-        $this->autoMockScope("post", $uri);
+        $user = JWT::autoScope("post", $uri);
 
         $this->json("post", "/votes/comment/{$comment->id}", [
             "value" => $value
@@ -34,7 +34,7 @@ class VotesTest extends APITestCase
         $this->assertOpenAPIResponse();
 
         $this->assertInDatabase("votes", [
-            "user_id" => $this->passportUser->id,
+            "user_id" => $user->id,
             "comment_id" => $comment->id,
             "value" => $value
         ]);
@@ -47,7 +47,7 @@ class VotesTest extends APITestCase
     public function testVoteOverride()
     {
         $vote = Vote::random();
-        Passport::actingAs($vote->user, explode(" ", $vote->user->getPassportScopes()));
+        JWT::actingAs($vote->user);
         $value = $vote->value * -1;
 
         $this->json("post", "/votes/comment/{$vote->comment->id}", [
@@ -72,7 +72,7 @@ class VotesTest extends APITestCase
     public function testUnVote()
     {
         $vote = Vote::random();
-        Passport::actingAs($vote->user, explode(" ", $vote->user->getPassportScopes()));
+        JWT::actingAs($vote->user);
         $this->json("delete", "/votes/comment/{$vote->comment->id}");
 
         $this->assertResponseOk();

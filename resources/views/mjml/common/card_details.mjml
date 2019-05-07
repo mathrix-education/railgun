@@ -1,0 +1,39 @@
+<mj-section padding="0">
+    <mj-column>
+        <mj-text height="16"
+                 padding="0 25px"
+                 font-size="14px">
+            Type de carte
+        </mj-text>
+        <mj-text>{{ $card->cardType }}</mj-text>
+    </mj-column>
+
+
+    <mj-column>
+        <mj-text height="16" padding="0 25px" font-size="14px">Détenteur de la carte</mj-text>
+        <mj-text>{{ $card->cardholderName }}</mj-text>
+    </mj-column>
+
+    <mj-column>
+        <mj-text height="16"
+                 padding="0 25px"
+                 font-size="14px">
+            Carte n°
+        </mj-text>
+        <mj-text>
+            {{
+                str_replace(
+                    $card->bin,
+                    str_repeat("*", strlen($card->bin)),
+                    $card->maskedNumber
+                )
+            }}
+        </mj-text>
+    </mj-column>
+</mj-section>
+
+<mj-section padding="0">
+    <mj-column>
+        <mj-divider border-width="1px" border-style="dashed" border-color="lightgrey"></mj-divider>
+    </mj-column>
+</mj-section>

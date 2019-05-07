@@ -6,6 +6,7 @@ use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Mathrix\Lumen\JWT\Auth\JWT;
 use Tests\APITestCase;
 
 /**
@@ -54,8 +55,7 @@ class FilesTest extends APITestCase
     public function testInfoFile()
     {
         $uri = "/files/{$this->randomFile()}";
-        $this->autoMockScope("get", $uri);
-
+        $this->event("before.request", "get", $uri);
         $this->json("get", $uri);
 
         $this->assertResponseOk();
@@ -69,8 +69,7 @@ class FilesTest extends APITestCase
     public function testExplore()
     {
         $uri = "/files/explore/{$this->randomDirectory()}";
-        $this->autoMockScope("get", $uri);
-
+        $this->event("before.request", "get", $uri);
         $this->json("get", $uri);
 
         $this->assertResponseOk();
@@ -85,8 +84,7 @@ class FilesTest extends APITestCase
     public function testExploreRoot()
     {
         $uri = "/files/explore";
-        $this->autoMockScope("get", $uri);
-
+        $this->event("before.request", "get", $uri);
         $this->json("get", $uri);
 
         $this->assertResponseOk();
@@ -100,9 +98,9 @@ class FilesTest extends APITestCase
     public function testExploreNonExistingDirectory()
     {
         $uri = "/files/explore/idontexists";
-        $this->autoMockScope("get", $uri);
-
+        $this->event("before.request", "get", $uri);
         $this->json("get", $uri);
+
         $this->assertOpenAPIResponse();
     }
 
@@ -113,9 +111,9 @@ class FilesTest extends APITestCase
     public function testExploreFile()
     {
         $uri = "/files/explore/{$this->randomFile()}";
-        $this->autoMockScope("get", $uri);
-
+        $this->event("before.request", "get", $uri);
         $this->json("get", $uri);
+
         $this->assertOpenAPIResponse();
     }
 
@@ -126,10 +124,10 @@ class FilesTest extends APITestCase
     public function testUpload()
     {
         $uri = "/files/test/avatar.jpg";
-        $this->autoMockScope("post", $uri);
-
         $this->requestMethod = "post";
         $this->requestUri = $uri;
+
+        $this->event("before.request", "post", $uri);
         $this->call($this->requestMethod, $this->requestUri, [], [], [
             "file" => UploadedFile::fake()->image("avatar.jpg")
         ]);
@@ -148,10 +146,9 @@ class FilesTest extends APITestCase
     {
         $source = $this->randomFile();
         $destination = "$source.new";
-
         $uri = "/files/$source";
-        $this->autoMockScope("patch", $uri);
 
+        $this->event("before.request", "patch", $uri);
         $this->json("patch", $uri, [
             "destination" => $destination
         ]);
@@ -172,10 +169,9 @@ class FilesTest extends APITestCase
     {
         $file = $this->randomFile();
         $this->getDisk()->copy($file, "$file.old"); // Make a backup to restore after
-
         $uri = "/files/$file";
-        $this->autoMockScope("delete", $uri);
 
+        $this->event("before.request", "delete", $uri);
         $this->json("delete", "/files/$file");
 
         $this->assertResponseOk();

@@ -7,10 +7,10 @@ $extends:
     model: report
 get:
   security:
-    - bearer: [admin]
+    - bearer: [reports:read]
 patch:
   security:
-    - bearer: [admin]
+    - bearer: [reports:write]
 delete:
   security:
-    - bearer: [admin]
+    - bearer: [reports:delete]

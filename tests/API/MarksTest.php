@@ -4,7 +4,7 @@ namespace Tests\API;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
-use Laravel\Passport\Passport;
+use Mathrix\Lumen\JWT\Auth\JWT;
 use Tests\APITestCase;
 
 /**
@@ -32,7 +32,7 @@ class MarksTest extends APITestCase
                 ]);
             })
             ->firstOrFail();
-        Passport::actingAs($user, ["registered"]);
+        JWT::actingAs($user);
 
         $this->json("get", "/marks/activities/to-revise");
 

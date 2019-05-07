@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Faker\Factory as FakerFactory;
 
 if (!function_exists("config_path")) {
@@ -48,5 +49,20 @@ if (!function_exists("timestamps")) {
         $updatedAt = $faker->boolean($bias) ? $createdAt : $faker->dateTimeBetween($createdAt);
 
         return [$createdAt->format($format), $updatedAt->format($format)];
+    }
+}
+
+if (!function_exists("scope")) {
+    /**
+     * Check if a user has the given scope.
+     *
+     * @param User|null $user
+     * @param string $scope The scope to check
+     *
+     * @return bool
+     */
+    function scope($user, string $scope): bool
+    {
+        return $user instanceof User && $user->hasScope($scope);
     }
 }

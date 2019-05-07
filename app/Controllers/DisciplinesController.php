@@ -35,34 +35,4 @@ class DisciplinesController extends BaseController
 
         return new JsonResponse($discipline);
     }
-
-
-    /**
-     * GET /disciplines/by-grade/{gradeId}/{page}/{perPage}
-     *
-     * @param Request $request The Illuminate HTTP request.
-     * @param int $gradeId
-     * @param int $page
-     * @param int $perPage
-     *
-     * @return PaginationJsonResponse
-     */
-    public function byGrade(Request $request, int $gradeId, int $page, int $perPage)
-    {
-        /** @var User $user */
-        $user = $request->user();
-        /** @var Grade $grade */
-        $grade = Grade::query()->findOrFail($gradeId);
-        $allowedToSeeAll = $user !== null && $user->tokenCan("moderator");
-        $wantsToSeeAll = $request->hasHeader("X-Scope") && $request->header("X-Scope") === "all";
-
-        $query = $grade->disciplines();
-
-        if (!$allowedToSeeAll || !$wantsToSeeAll) {
-            $query = $query->where("chapters.visible", "=", true);
-        }
-
-
-        return new PaginationJsonResponse($query, $page, $perPage);
-    }
 }

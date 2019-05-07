@@ -1,5 +1,7 @@
 delete:
   summary: Clear cache
+  security:
+    - bearer: [users:write]
   parameters:
     - name: userId
       in: path

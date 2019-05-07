@@ -34,7 +34,7 @@ class LogTableSeeder extends BaseTableSeeder
         $this->output->writeln("<comment>Generating:</comment> logs from {$users->count()} users");
 
         $progressBar = $this->output->createProgressBar($users->count());
-        $progressBar->setFormat("verbose");
+        $progressBar->setFormat(BaseTableSeeder::DEFAULT_PROGRESS_BAR_FORMAT);
         $progressBar->start();
 
         /** @var User $user */
@@ -76,11 +76,9 @@ class LogTableSeeder extends BaseTableSeeder
 
         $progressBar->finish();
         $this->output->writeln("");
-        $this->output->writeln("<info>Generated:</info> {$logs->count()} logs");
 
         // Seed generated array
         $this->output->writeln("<comment>Seeding:</comment> logs");
         $this->seedFromArray($logs->toArray(), "logs");
-        $this->output->writeln("<info>Seeded:</info> logs");
     }
 }

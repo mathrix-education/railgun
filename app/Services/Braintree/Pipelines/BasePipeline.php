@@ -54,7 +54,7 @@ abstract class BasePipeline
      * Process the pipeline after validation.
      *
      * @return JsonResponse
-     * @throws Exception
+     * @throws Http429TooManyRequestsException
      */
     public final function process(): JsonResponse
     {

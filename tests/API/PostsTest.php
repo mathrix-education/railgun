@@ -3,6 +3,7 @@
 namespace Tests\API;
 
 use App\Models\Category;
+use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Tests\REST\Standard\StandardDeleteTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
@@ -23,22 +24,12 @@ class PostsTest extends APITestCase
 
 
     /**
-     * GET /posts/by-module/{moduleId}
-     */
-    public function testByCategory(): void
-    {
-        $this->assertRestBySuccess(Category::class);
-    }
-
-
-    /**
      * GET /posts/latest/{page}/{perPage}
      */
     public function testLatest(): void
     {
         $uri = "/posts/latest/1/10";
 
-        $this->autoMockScope("get", $uri);
         $this->json("get", $uri);
 
         $this->assertResponseOk();

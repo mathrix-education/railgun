@@ -2,7 +2,7 @@ post:
   summary: Upload a file
   description: Upload a file to the CDN.
   security:
-    - bearer: [moderator]
+    - bearer: [files:write]
   parameters:
     - name: path
       in: path
@@ -38,7 +38,7 @@ get:
   summary: Get file info
   description: Display the metadata of a file on the CDN.
   security:
-    - bearer: [moderator]
+    - bearer: [files:read]
   parameters:
   - name: path
     in: path
@@ -60,7 +60,7 @@ patch:
   summary: Rename/Move file
   description: Rename or move a file on the CDN.
   security:
-    - bearer: [moderator]
+    - bearer: [files:write]
   parameters:
   - name: path
     in: path
@@ -92,7 +92,7 @@ delete:
   summary: Delete file
   description: Delete a file on the CDN.
   security:
-    - bearer: [moderator]
+    - bearer: [files:delete]
   parameters:
   - name: path
     in: path

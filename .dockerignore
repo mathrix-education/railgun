@@ -1,4 +1,4 @@
 .idea/
 .sonarwork/
-dist/
 node_modules/
+storage/keychain/

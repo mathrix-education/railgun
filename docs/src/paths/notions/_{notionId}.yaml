@@ -7,7 +7,7 @@ $extends:
     model: notion
 patch:
   security:
-    - bearer: [admin]
+    - bearer: [notions:write]
 delete:
   security:
-    - bearer: [admin]
+    - bearer: [notions:delete]

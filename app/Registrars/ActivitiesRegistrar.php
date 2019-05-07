@@ -22,17 +22,15 @@ class ActivitiesRegistrar extends BaseRegistrar
         $controller = ActivitiesController::class;
 
         $this->rest("activities", $controller, [
-            "index" => "moderator",
+            "index" => "scope:activities:read",
             "get" => null,
-            "post" => "moderator",
-            "patch" => "moderator",
-            "delete" => "moderator"
+            "post" => "scope:activities:write",
+            "patch" => "scope:activities:write",
+            "delete" => "scope:activities:delete",
+            "related:modules" => null
         ]);
 
-        $this->get("activities/by-{what:notion}/{id:[1-9]\d*}/{page:\d+}/{perPage:[1-9]\d*}",
-            "$controller@by");
-
-        $this->group(["middleware" => "scope:registered"], function () use ($controller) {
+        $this->group(["middleware" => "scope:logged"], function () use ($controller) {
             $this->patch("activities/{activityId:[1-9]\d*}/mark", "$controller@mark");
             $this->patch("activities/{activityId:[1-9]\d*}/unmark", "$controller@unmark");
         });

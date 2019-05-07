@@ -7,10 +7,10 @@ $extends:
     model: category
 get:
   security:
-    - bearer: [admin]
+    - bearer: [categories:read]
 patch:
   security:
-    - bearer: [admin]
+    - bearer: [categories:write]
 delete:
   security:
-    - bearer: [admin]
+    - bearer: [categories:delete]

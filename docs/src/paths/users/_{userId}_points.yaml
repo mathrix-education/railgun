@@ -4,6 +4,8 @@ post:
     Add an arbitrary amount of points to the target user. Passing a loggable
     model prevents multiple points addition for the same resource. **This
     limitation everyday, at midnight (Paris time)**.
+  security:
+    - bearer: [logged]
   parameters:
     - name: userId
       in: path

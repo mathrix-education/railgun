@@ -93,10 +93,8 @@ class ProductTableSeeder extends BaseTableSeeder
 
         $this->output->writeln("<comment>Seeding:</comment> products from factory");
         $this->seedFromArray($products, "products");
-        $this->output->writeln("<info>Seeded:</info>  products from factory");
 
         $this->output->writeln("<comment>Seeding:</comment> products_products from factory");
         $this->seedFromArray($productProduct, "product_product");
-        $this->output->writeln("<info>Seeded:</info>  products_products from factory");
     }
 }

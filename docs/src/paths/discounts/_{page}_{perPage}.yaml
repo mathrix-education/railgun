@@ -3,4 +3,4 @@ $extends:
     model: discount
 get:
   security:
-    - bearer: [admin]
+    - bearer: [discounts:read]

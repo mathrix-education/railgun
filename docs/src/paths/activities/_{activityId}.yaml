@@ -7,7 +7,7 @@ $extends:
     model: activity
 patch:
   security:
-    - bearer: [moderator]
+    - bearer: [activities:write]
 delete:
   security:
-    - bearer: [moderator]
+    - bearer: [activities:delete]

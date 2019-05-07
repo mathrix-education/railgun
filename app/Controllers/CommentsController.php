@@ -43,49 +43,20 @@ class CommentsController extends BaseController
 
 
     /**
-     * Get the models which satisfy a given relation.
-     *
-     * @param int $moduleId
-     * @param int $page the query page
-     * @param int $perPage the query per page
-     *
-     * @return PaginationJsonResponse
-     */
-    public function byModule(int $moduleId, int $page = 0, int $perPage = 100): PaginationJsonResponse
-    {
-        /** @var Module $module */
-        $module = Module::query()->findOrFail($moduleId);
-
-        $query = $module->comments()
-            ->whereNull("parent_id")
-            ->with(["children"]);
-
-        return new PaginationJsonResponse($query, $page, $perPage);
-    }
-
-
-    /**
      * GET /comments/latest/{page}/{perPage}
      * Get the latest comments, ordered by desc created_at field.
      *
-     * @param Request $request The Illuminate HTTP request.
      * @param int $page The page (starts at 0).
      * @param int $perPage The number of comments per page.
      *
      * @return JsonResponse
-     * @throws Http401UnauthorizedException
      */
-    public function latest(Request $request, $page = 0, $perPage = 100): JsonResponse
+    public function latest(int $page = 0, int $perPage = 100): JsonResponse
     {
-        /** @var User $user */
-        $user = $request->user();
-
-        $user->canOrFail("latest", Comment::class);
-
         $query = Comment::with([
-            "user:id,type,username,firstname,level,grade_id",
+            "user:id,username,firstname,level,grade_id",
             "children",
-            "children.user:id,type,username,firstname,level,grade_id"
+            "children.user:id,username,firstname,level,grade_id"
         ])
             ->orderBy("created_at", "desc");
 

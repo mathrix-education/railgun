@@ -12,7 +12,15 @@
       <table-pattern>collation:-(.*)</table-pattern>
     </data-source>
     <data-source name="1 - dev_mathrix_education@35.240.13.165" uuid="4105dbbf-0de7-488a-b511-6ddb015a1426">
-      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="MYSQL" exact-version="0" />
+      <database-info product="MySQL" version="5.7.14-google-log" jdbc-version="4.2" driver-name="MySQL Connector/J" driver-version="mysql-connector-java-8.0.15 (Revision: 79a4336f140499bd22dd07f02b708e163844e3d5)" dbms="MYSQL" exact-version="5.7.14" exact-driver-version="8.0">
+        <extra-name-characters>#@</extra-name-characters>
+        <identifier-quote-string>`</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>datastudio</user-name>
+      <introspection-schemas>*:dev_mathrix_education</introspection-schemas>
+      <table-pattern>collation:-.*</table-pattern>
     </data-source>
     <data-source name="2 - master_mathrix_education@35.240.13.165" uuid="efa50c8c-a5d6-4951-a10a-7ed07e180975">
       <database-info product="MySQL" version="5.7.14-google-log" jdbc-version="4.2" driver-name="MySQL Connector/J" driver-version="mysql-connector-java-8.0.15 (Revision: 79a4336f140499bd22dd07f02b708e163844e3d5)" dbms="MYSQL" exact-version="5.7.14" exact-driver-version="8.0">
@@ -22,7 +30,8 @@
       <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact" />
       <secret-storage>master_key</secret-storage>
       <user-name>datastudio</user-name>
-      <introspection-schemas>*:@</introspection-schemas>
+      <introspection-schemas>*:master_mathrix_education</introspection-schemas>
+      <table-pattern>collation:-.*</table-pattern>
     </data-source>
   </component>
 </project>

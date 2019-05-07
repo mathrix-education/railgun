@@ -7,10 +7,10 @@ $extends:
     model: discount
 get:
   security:
-    - bearer: [admin]
+    - bearer: [discounts:read]
 patch:
   security:
-    - bearer: [admin]
+    - bearer: [discounts:write]
 delete:
   security:
-    - bearer: [admin]
+    - bearer: [discounts:delete]

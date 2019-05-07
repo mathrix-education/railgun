@@ -10,6 +10,7 @@ WORKDIR /var/www/
 EXPOSE 80
 
 RUN apk -U add \
+    bash \
     nginx \
     curl \
     php7 \
@@ -18,6 +19,7 @@ RUN apk -U add \
     php7-curl \
     php7-dom \
     php7-gd \
+    php7-gmp \
     php7-intl \
     php7-json \
     php7-mbstring \
@@ -30,21 +32,24 @@ RUN apk -U add \
     php7-xmlwriter \
     php7-zip
 
-COPY deploy/nginx/nginx.conf /etc/nginx/nginx.conf
-COPY deploy/nginx/vhost.conf /etc/nginx/conf.d/default.conf
-COPY deploy/php7/php.ini /etc/php7/php.ini
-COPY deploy/php7/php-fpm.conf /etc/php7/php-fpm.conf
-COPY deploy/php7/www.conf /etc/php7/php-fpm.d/www.conf
-
 ADD . .
 
-RUN echo "${COMMIT_SHORT_SHA}" >> build.txt
+COPY ./deploy/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY ./deploy/nginx/vhost.conf /etc/nginx/conf.d/default.conf
+COPY ./deploy/php7/php.ini /etc/php7/php.ini
+COPY ./deploy/php7/php-fpm.conf /etc/php7/php-fpm.conf
+COPY ./deploy/php7/www.conf /etc/php7/php-fpm.d/www.conf
+COPY ./deploy/entrypoint.sh /entrypoint.sh
+
+RUN echo "${COMMIT_SHORT_SHA}" >> build.txt && \
+    chmod +x /entrypoint.sh && \
+    rm -rf storage/keychain/ deploy/
 
 # Clean
 RUN rm -rf /var/cache/apk/*
 
-HEALTHCHECK CMD curl -f http://localhost
+HEALTHCHECK CMD exit 0
 
 STOPSIGNAL SIGTERM
 
-CMD nginx && php-fpm7 --allow-to-run-as-root && tail -f /dev/null
+ENTRYPOINT ["/entrypoint.sh"]

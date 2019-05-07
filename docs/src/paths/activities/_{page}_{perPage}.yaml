@@ -3,4 +3,4 @@ $extends:
     model: activity
 get:
   security:
-    - bearer: [redactor]
+    - bearer: [activities:read]

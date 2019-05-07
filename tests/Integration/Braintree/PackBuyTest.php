@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\User;
 use Braintree\Test\Nonces;
 use Illuminate\Support\Facades\Mail;
+use Mathrix\Lumen\JWT\Auth\JWT;
 
 /**
  * Class PackBuyTest.
@@ -22,13 +23,14 @@ class PackBuyTest extends BraintreeTestCase
     public function testPackBuy()
     {
         Mail::fake();
-        $customer = $this->getPristineCustomer();
-        $this->setUser($customer);
 
         /** @var Product $pack */
         $pack = Product::query()
             ->where("type", "=", "pack")
             ->firstOrFail();
+
+        $customer = $this->getPristineCustomer();
+        JWT::actingAs($customer);
 
         $this->json("post", "/products/buy", [
             "cart" => [$pack->id],

@@ -109,7 +109,6 @@ class SystemController extends BaseController
         $sitemap = app()->make("sitemap");
         $sitemap->add("$webroot");
 
-        // /{gradeSlug}
         DB::table("grades")
             ->select(["slug"])
             ->get()
@@ -118,7 +117,6 @@ class SystemController extends BaseController
                 $sitemap->add("$webroot/$gradeSlug");
             });
 
-        // /{gradeSlug}
         DB::table("modules")
             ->selectRaw("
                 disciplines.slug AS discipline_slug,

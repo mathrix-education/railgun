@@ -19,12 +19,15 @@ class CategoriesRegistrar extends BaseRegistrar
      */
     public function register(): void
     {
-        $this->rest("categories", CategoriesController::class, [
-            "index" => "admin",
-            "get" => "admin",
-            "post" => "admin",
-            "patch" => "admin",
-            "delete" => "admin"
+        $controller = CategoriesController::class;
+
+        $this->rest("categories", $controller, [
+            "index" => "scope:categories:read",
+            "get" => "scope:categories:read",
+            "post" => "scope:categories:write",
+            "patch" => "scope:categories:write",
+            "delete" => "scope:categories:delete",
+            "related:posts" => "scope:posts:read"
         ]);
     }
 }

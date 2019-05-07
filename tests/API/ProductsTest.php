@@ -8,7 +8,7 @@ use App\Models\Purchase;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
-use Laravel\Passport\Passport;
+use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
@@ -28,9 +28,37 @@ class ProductsTest extends APITestCase
 
 
     /**
+     * GET /products/{productId}/items/{page}/{perPage}
+     */
+    public function testItems(): void
+    {
+        $pack = Product::random(["type", "=", "pack"]);
+        $trainingIds = Product::query()
+            ->inRandomOrder()
+            ->where("type", "=", "training")
+            ->limit(5)
+            ->get(["id"])
+            ->pluck("id");
+
+        $uri = "/products/{$pack->id}/items";
+        JWT::autoScope("patch", $uri);
+        $this->json("patch", $uri, $trainingIds->toArray());
+
+        $this->assertResponseOk();
+        foreach ($trainingIds as $order => $trainingId) {
+            $this->assertInDatabase("product_product", [
+                "parent_id" => $pack->id,
+                "child_id" => $trainingId,
+                "order" => $order
+            ]);
+        }
+    }
+
+
+    /**
      * GET /products/{productId}/recursive
      */
-    public function testGetRecursive()
+    public function testGetRecursive(): void
     {
         /** @var Product $product */
         $product = Product::query()->has("children")->inRandomOrder()->firstOrFail();
@@ -45,7 +73,7 @@ class ProductsTest extends APITestCase
     /**
      * GET /products/slug/{productSlug}
      */
-    public function testGetBySlug()
+    public function testGetBySlug(): void
     {
         $this->assertRestGetBySuccess("slug");
     }
@@ -54,7 +82,7 @@ class ProductsTest extends APITestCase
     /**
      * GET /products/{type}/{page}/{perPage}
      */
-    public function testPaginateByType()
+    public function testPaginateByType(): void
     {
         $this->json("get", "/products/all/0/100");
 
@@ -68,7 +96,7 @@ class ProductsTest extends APITestCase
      * GET /products/buyable/{type=all}/{page}/{perPage}
      * Get all buyable products.
      */
-    public function testBuyable()
+    public function testBuyable(): void
     {
         $this->json("get", "/products/buyable/all/0/100");
 
@@ -82,7 +110,7 @@ class ProductsTest extends APITestCase
      * GET /products/buyable/{type=training}/{page}/{perPage}
      * Get buyable trainings.
      */
-    public function testBuyableTrainings()
+    public function testBuyableTrainings(): void
     {
         $this->json("get", "/products/buyable/training/0/100");
 
@@ -93,48 +121,19 @@ class ProductsTest extends APITestCase
 
 
     /**
-     * PATCH /products/{packId}/items
-     */
-    public function testItems()
-    {
-        $pack = Product::random(["type", "=", "pack"]);
-        $trainingIds = Product::query()
-            ->inRandomOrder()
-            ->where("type", "=", "training")
-            ->limit(5)
-            ->get(["id"])
-            ->pluck("id");
-
-        $this->mockScope("admin");
-
-        $this->json("patch", "/products/{$pack->id}/items", $trainingIds->toArray());
-
-        $this->assertResponseOk();
-        foreach ($trainingIds as $order => $trainingId) {
-            $this->assertInDatabase("product_product", [
-                "parent_id" => $pack->id,
-                "child_id" => $trainingId,
-                "order" => $order
-            ]);
-        }
-    }
-
-
-    /**
-     *
+     * POST /products/cart
      */
     public function testCart(): void
     {
         $user = User::random();
-        Passport::actingAs($user, $user->getPassportScopesArray());
-
+        JWT::actingAs($user);
 
         /** @var Discount $discount */
         $discount = Discount::query()
             ->whereHas("products", function (Builder $query) {
                 $query->whereNotNull("price");
             })
-            ->where("counter", ">", "0")
+            ->where("counter", ">", 0)
             ->whereNull("expire_at")
             ->inRandomOrder()
             ->firstOrFail();
@@ -153,7 +152,6 @@ class ProductsTest extends APITestCase
         ]);
         $purchase->save();
 
-        $this->autoMockScope("post", "/products/cart");
         $this->json("post", "/products/cart", [
             "cart" => $products->pluck("id"),
             "discount_code" => $discount->code,

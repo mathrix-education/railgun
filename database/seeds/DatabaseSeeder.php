@@ -44,12 +44,11 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->call(LevelTableSeeder::class);
 
         // Users
-        $this->seedFromJson("oauth_clients");
-        $this->seedFromSubFactory(User::class, "admin", 5);
-        $this->seedFromSubFactory(User::class, "moderator", 5);
-        $this->seedFromSubFactory(User::class, "redactor", 5);
-        $this->seedFromSubFactory(User::class, "registered", 50);
-        User::random(["type", "=", "admin"])->update(["email" => "admin@mathrix.fr"]);
+        $this->seedFromFactory(User::class, 100);
+        User::query()->firstOrFail()->update([
+            "scopes" => ["*"],
+            "email" => "admin@mathrix.fr"
+        ]);
 
         // Categories & Posts
         $this->seedFromFactory(Category::class, 10);

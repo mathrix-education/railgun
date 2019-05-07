@@ -3,4 +3,4 @@ $extends:
     model: chapter
 post:
   security:
-    - bearer: [admin]
+    - bearer: [chapters:write]
