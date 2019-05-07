@@ -1,4 +1,4 @@
-oneOf:
+anyOf:
   - $ref: '../index.yaml#/components/schemas/ModuleCourse'
   - $ref: '../index.yaml#/components/schemas/ModuleMCQ'
   - $ref: '../index.yaml#/components/schemas/ModuleFlashcard'

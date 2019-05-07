@@ -30,7 +30,6 @@ class PostsTest extends APITestCase
     {
         $uri = "/posts/latest/1/10";
 
-        JWT::autoScope("get", $uri);
         $this->json("get", $uri);
 
         $this->assertResponseOk();

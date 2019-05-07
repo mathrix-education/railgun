@@ -30,6 +30,6 @@ class DiscountExpiredException extends Http400BadRequestException
             $discount = $discount->code;
         }
 
-        parent::__construct(["discount" => $discount], "Discount `MODEMACHINE2018` has expired.", $previous);
+        parent::__construct(["discount" => $discount], "Discount `$discount->code` has expired.", $previous);
     }
 }

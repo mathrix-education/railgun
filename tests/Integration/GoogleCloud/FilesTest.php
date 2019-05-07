@@ -55,7 +55,7 @@ class FilesTest extends APITestCase
     public function testInfoFile()
     {
         $uri = "/files/{$this->randomFile()}";
-        JWT::autoScope("get", $uri);
+        $this->event("before.request", "get", $uri);
 
         $this->json("get", $uri);
 
@@ -70,7 +70,7 @@ class FilesTest extends APITestCase
     public function testExplore()
     {
         $uri = "/files/explore/{$this->randomDirectory()}";
-        JWT::autoScope("get", $uri);
+        $this->event("before.request", "get", $uri);
 
         $this->json("get", $uri);
 
@@ -86,7 +86,7 @@ class FilesTest extends APITestCase
     public function testExploreRoot()
     {
         $uri = "/files/explore";
-        JWT::autoScope("get", $uri);
+        $this->event("before.request", "get", $uri);
 
         $this->json("get", $uri);
 
@@ -101,7 +101,7 @@ class FilesTest extends APITestCase
     public function testExploreNonExistingDirectory()
     {
         $uri = "/files/explore/idontexists";
-        JWT::autoScope("get", $uri);
+        $this->event("before.request", "get", $uri);
 
         $this->json("get", $uri);
         $this->assertOpenAPIResponse();
@@ -114,7 +114,7 @@ class FilesTest extends APITestCase
     public function testExploreFile()
     {
         $uri = "/files/explore/{$this->randomFile()}";
-        JWT::autoScope("get", $uri);
+        $this->event("before.request", "get", $uri);
 
         $this->json("get", $uri);
         $this->assertOpenAPIResponse();
@@ -127,7 +127,7 @@ class FilesTest extends APITestCase
     public function testUpload()
     {
         $uri = "/files/test/avatar.jpg";
-        JWT::autoScope("post", $uri);
+        $this->event("before.request", "post", $uri);
 
         $this->requestMethod = "post";
         $this->requestUri = $uri;
@@ -151,7 +151,7 @@ class FilesTest extends APITestCase
         $destination = "$source.new";
 
         $uri = "/files/$source";
-        JWT::autoScope("patch", $uri);
+        $this->event("before.request", "patch", $uri);
 
         $this->json("patch", $uri, [
             "destination" => $destination
@@ -175,7 +175,7 @@ class FilesTest extends APITestCase
         $this->getDisk()->copy($file, "$file.old"); // Make a backup to restore after
 
         $uri = "/files/$file";
-        JWT::autoScope("delete", $uri);
+        $this->event("before.request", "delete", $uri);
 
         $this->json("delete", "/files/$file");
 

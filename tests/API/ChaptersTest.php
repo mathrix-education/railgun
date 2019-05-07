@@ -66,7 +66,6 @@ class ChaptersTest extends APITestCase
         $chapter = Chapter::random();
         $uri = "/chapters/{$chapter->id}/recursive";
 
-        JWT::autoScope("get", $uri);
         $this->json("get", $uri);
 
         $this->assertResponseOk();
@@ -86,7 +85,6 @@ class ChaptersTest extends APITestCase
 
         $chapterId = $mark->markable->notion->chapter_id;
         $uri = "/chapters/{$chapterId}/recursive";
-        JWT::autoScope("get", $uri);
 
         $this->json("get", $uri);
 

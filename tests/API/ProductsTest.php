@@ -152,7 +152,6 @@ class ProductsTest extends APITestCase
         ]);
         $purchase->save();
 
-        JWT::autoScope("post", "/products/cart");
         $this->json("post", "/products/cart", [
             "cart" => $products->pluck("id"),
             "discount_code" => $discount->code,
