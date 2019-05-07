@@ -25,24 +25,17 @@ steps:
     args:
       - '-c'
       - |
-        gcloud kms decrypt \
-          --location global \
-          --keyring mathrix-education-keyring \
-          --key education-api-key \
-          --ciphertext-file storage/keychain/composer.github-oauth.github.com.enc \
-          --plaintext-file storage/keychain/composer.github-oauth.github.com
-        gcloud kms decrypt \
-          --location global \
-          --keyring mathrix-education-keyring \
-          --key education-api-key \
-          --ciphertext-file storage/keychain/google-cloud.json.enc \
-          --plaintext-file storage/keychain/google-cloud.json
-        gcloud kms decrypt \
-          --location global \
-          --keyring mathrix-education-keyring \
-          --key education-api-key \
-          --ciphertext-file storage/keychain/jwt_auth.json.enc \
-          --plaintext-file storage/keychain/jwt_auth.json
+        function decrypt() {
+          gcloud kms decrypt \
+            --location global \
+            --keyring mathrix-education-keyring \
+            --key education-api-key \
+            --ciphertext-file ${1}.enc \
+            --plaintext-file ${1}
+        }
+
+        decrypt storage/keychain/github-oauth.github.com
+        decrypt storage/keychain/google-cloud.json
 
 
   # Install PHP dependencies using composer
@@ -54,8 +47,7 @@ steps:
     args:
       - '-c'
       - |
-        cat storage/keychain/composer.github-oauth.github.com
-        composer config -g github-oauth.github.com $(cat storage/keychain/composer.github-oauth.github.com)
+        composer config -g github-oauth.github.com $(cat storage/keychain/github-oauth.github.com)
         composer install \
           --optimize-autoloader \
           --ignore-platform-reqs \
@@ -74,6 +66,7 @@ steps:
     args:
       - '-c'
       - |
+
         yarn install
         yarn run docs:compile
         yarn run mails:compile

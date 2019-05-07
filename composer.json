@@ -44,7 +44,7 @@
     "league/flysystem": " 1.0.51",
     "mathrix/lumen-chainer": "1.1.0",
     "mathrix/lumen-jwt-auth": "1.1.8",
-    "mathrix/lumen-zero": "1.1.6",
+    "mathrix/lumen-zero": "1.1.7",
     "ramsey/uuid": "3.8.0",
     "sentry/sentry-laravel": "1.0.2",
     "stripe/stripe-php": "6.34.3",
