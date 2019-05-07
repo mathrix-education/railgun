@@ -10,3 +10,4 @@ function decrypt() {
 
 decrypt storage/keychain/github-oauth.github.com
 decrypt storage/keychain/google-cloud.json
+decrypt storage/keychain/jwt_auth.json
