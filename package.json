@@ -33,7 +33,7 @@
     "mails:compile": "node resources/views/mjml/compile.js"
   },
   "devDependencies": {
-    "@mathrix/openapi-compiler": "git+https://c67bd47f2704382d086e82eec565658180000a30:x-oauth-basic@github.com/mathrix-education/openapi-compiler.git",
+    "@mathrix/openapi-compiler": "git+ssh://git@github.com/mathrix-education/openapi-compiler.git",
     "mjml": "^4.4.0-beta.1",
     "redoc-cli": "^0.8.3"
   },
