@@ -32,12 +32,12 @@ RUN apk -U add \
     php7-xmlwriter \
     php7-zip
 
-COPY deploy/nginx/nginx.conf /etc/nginx/nginx.conf
-COPY deploy/nginx/vhost.conf /etc/nginx/conf.d/default.conf
-COPY deploy/php7/php.ini /etc/php7/php.ini
-COPY deploy/php7/php-fpm.conf /etc/php7/php-fpm.conf
-COPY deploy/php7/www.conf /etc/php7/php-fpm.d/www.conf
-COPY deploy/entrypoint.sh /entrypoint.sh
+COPY ./deploy/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY ./deploy/nginx/vhost.conf /etc/nginx/conf.d/default.conf
+COPY ./deploy/php7/php.ini /etc/php7/php.ini
+COPY ./deploy/php7/php-fpm.conf /etc/php7/php-fpm.conf
+COPY ./deploy/php7/www.conf /etc/php7/php-fpm.d/www.conf
+COPY ./deploy/entrypoint.sh /entrypoint.sh
 
 ADD . .
 
