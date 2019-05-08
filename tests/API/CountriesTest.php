@@ -16,7 +16,7 @@ use Tests\APIStatelessTestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class CountriesStatelessTest extends APIStatelessTestCase
+class CountriesTest extends APIStatelessTestCase
 {
     use StandardIndexTest, StandardPostTest, StandardGetTest, StandardPatchTest;
 

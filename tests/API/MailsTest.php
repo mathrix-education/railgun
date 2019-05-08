@@ -13,7 +13,7 @@ use Tests\APIStatelessTestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.1-rc1
  */
-class MailsStatelessTest extends APIStatelessTestCase
+class MailsTest extends APIStatelessTestCase
 {
     /**
      * Test that all emails produce valid views i.e. that there is no syntax errors.

@@ -19,7 +19,7 @@ use Tests\APIStatelessTestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class DiscountsStatelessTest extends APIStatelessTestCase
+class DiscountsTest extends APIStatelessTestCase
 {
     use StandardIndexTest, StandardPostTest, StandardGetTest, StandardPatchTest, StandardDeleteTest;
 

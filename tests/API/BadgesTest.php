@@ -11,7 +11,7 @@ use Tests\APIStatelessTestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.1-rc1
  */
-class BadgesStatelessTest extends APIStatelessTestCase
+class BadgesTest extends APIStatelessTestCase
 {
     /**
      * GET /badges/version

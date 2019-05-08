@@ -13,7 +13,7 @@ use Tests\APIStatelessTestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class SettingsStatelessTest extends APIStatelessTestCase
+class SettingsTest extends APIStatelessTestCase
 {
     /**
      * GET /settings

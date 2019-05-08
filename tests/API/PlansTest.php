@@ -12,7 +12,7 @@ use Tests\APIStatelessTestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class PlansStatelessTest extends APIStatelessTestCase
+class PlansTest extends APIStatelessTestCase
 {
     /**
      * GET /plans

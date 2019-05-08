@@ -14,25 +14,6 @@ post:
                 59jVwBNh4gzC414iCrQthwWnBTPu3Et0JhSVau3NAaQ0VHaaZCIHzjDYnjLlgZAr
                 RmxKaGB1JkSZCOoE8MZC74alTHHRruZBZBAayy6k5ifS5NM7L6ZC4ZA8NkyAD5gE
                 XIRYGPsLB0QAAomCJ9nfiouMw
-            expires_in:
-              description: The Facebook access token expiration timestamp.
-              type: integer
-              example: 1557345541
   responses:
     200:
       $ref: ../../index.yaml#/components/responses/200_Token
-    401:
-      description: Invalid credentials.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                description: The error message.
-                type: string
-                enum: [invalid_credentials]
-              message:
-                description: The error detailed message.
-                type: string
-                enum: [The given credentials were invalid.]

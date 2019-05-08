@@ -11,7 +11,7 @@ use Tests\APIStatelessTestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.1-rc1
  */
-class SystemStatelessTest extends APIStatelessTestCase
+class SystemTest extends APIStatelessTestCase
 {
     /**
      * GET /

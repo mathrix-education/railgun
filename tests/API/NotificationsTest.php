@@ -15,7 +15,7 @@ use Tests\APIStatelessTestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class NotificationsStatelessTest extends APIStatelessTestCase
+class NotificationsTest extends APIStatelessTestCase
 {
     /**
      * Generically test notifications.

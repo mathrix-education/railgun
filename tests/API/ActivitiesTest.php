@@ -19,7 +19,7 @@ use Tests\APIStatelessTestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class ActivitiesStatelessTest extends APIStatelessTestCase
+class ActivitiesTest extends APIStatelessTestCase
 {
     use StandardIndexTest, StandardPostTest, StandardGetTest, StandardPatchTest;
 

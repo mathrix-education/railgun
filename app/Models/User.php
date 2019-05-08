@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Exceptions\ImmutableException;
 use App\Models\Traits\BraintreeCustomer;
+use App\Models\Traits\FacebookUser;
 use App\Models\Traits\PermissionsTrait;
 use App\Models\Traits\StripeCustomer;
 use Carbon\Carbon;
@@ -52,10 +53,11 @@ use Mathrix\Lumen\JWT\Auth\HasJWT;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * ---
- * @property Grade $grade
- * @property bool $premium
- * @property int $daily_points
+ * @property-read bool $premium
+ * @property-read string $provider
+ * @property-read int $daily_points
  * ---
+ * @property Grade $grade
  * @property Collection|Client[] $clients
  * @property Collection|Token[] $tokens
  * @property Collection|Comment[] $comments
@@ -77,6 +79,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         BraintreeCustomer,
         StripeCustomer,
         PermissionsTrait,
+        FacebookUser,
         HasJWT;
 
     private const STRIPE_PLANS = ["v3_monthly", "v3_annually", "v3_biannually"];
@@ -141,7 +144,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     protected $with = ["grade", "purchases"];
 
     /** @var array The virtual attributes */
-    protected $appends = ["premium", "daily_points", "last_session"];
+    protected $appends = ["provider", "daily_points", "last_session", "premium"];
 
 
     public function __construct(array $attributes = [])
@@ -387,6 +390,23 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
             || ($this->premium_bypass_expires_at !== null && $this->premium_bypass_expires_at->isFuture())
             || $this->hasBraintreeSubscription(self::BRAINTREE_PLANS)
             || $this->hasStripeSubscription(self::STRIPE_PLANS);
+    }
+
+
+    /**
+     * The login provider.
+     *
+     * @return string
+     */
+    public function getProviderAttribute(): string
+    {
+        $provider = "api";
+
+        if (isset($this->metadata["facebook"]["id"])) {
+            $provider = "facebook";
+        }
+
+        return $provider;
     }
 
 

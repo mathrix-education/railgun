@@ -18,7 +18,7 @@ use Tests\APIStatelessTestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class PostsStatelessTest extends APIStatelessTestCase
+class PostsTest extends APIStatelessTestCase
 {
     use StandardIndexTest, StandardGetTest, StandardPostTest, StandardPatchTest, StandardDeleteTest;
 

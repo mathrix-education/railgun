@@ -11,7 +11,7 @@ use Tests\APIStatelessTestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class SearchStatelessTest extends APIStatelessTestCase
+class SearchTest extends APIStatelessTestCase
 {
     /**
      * GET /search/{query}

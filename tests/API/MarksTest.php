@@ -14,7 +14,7 @@ use Tests\APIStatelessTestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class MarksStatelessTest extends APIStatelessTestCase
+class MarksTest extends APIStatelessTestCase
 {
     /**
      * GET /marks/activities/to-revise

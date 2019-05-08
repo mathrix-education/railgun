@@ -22,7 +22,7 @@ use Tests\APIStatelessTestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class ProductsStatelessTest extends APIStatelessTestCase
+class ProductsTest extends APIStatelessTestCase
 {
     use StandardIndexTest, StandardPostTest, StandardGetTest, StandardPatchTest;
 

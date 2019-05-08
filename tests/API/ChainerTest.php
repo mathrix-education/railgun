@@ -13,7 +13,7 @@ use Tests\APIStatelessTestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class ChainerStatelessTest extends APIStatelessTestCase
+class ChainerTest extends APIStatelessTestCase
 {
     /**
      * POST /chain

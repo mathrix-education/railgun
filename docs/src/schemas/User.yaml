@@ -3,7 +3,7 @@ type: object
 additionalProperties: false
 required: [id, username, email, firstname, lastname, type, points, level, daily,
            daily_achievements, settings, grade_id, created_at, updated_at,
-           daily_points]
+           provider, premium, daily_points]
 properties:
   id:
     description: The user id.
@@ -121,6 +121,31 @@ properties:
     readOnly: true
     nullable: true
     example: cus_01e06898a710f3ef8c9f6e93518fd668
+  created_at:
+    description: The date/time when the object was created.
+    type: string
+    format: date-time
+    readOnly: true
+  updated_at:
+    description: The date/time when the object was updated.
+    type: string
+    format: date-time
+    readOnly: true
+  provider:
+    description: The login provider.
+    type: string
+    enum: [api, facebook]
+    readOnly: true
+  premium:
+    description: If the user has subscribed to a premium pla,.
+    type: boolean
+    example: false
+    readOnly: true
+  daily_points:
+    description: The number of points gathered by the users this day.
+    type: integer
+    example: 300
+    readOnly: true
   stripe:
     description: >
       **Visible only for admins.**
@@ -136,36 +161,6 @@ properties:
       The user's Braintree profile.
     type: object
     readOnly: true
-    nullable: true
-  created_at:
-    description: The date/time when the object was created.
-    type: string
-    format: date-time
-    readOnly: true
-  updated_at:
-    description: The date/time when the object was updated.
-    type: string
-    format: date-time
-    readOnly: true
-  premium:
-    description: If the user has subscribed to a premium pla,.
-    type: boolean
-    example: false
-  daily_points:
-    description: The number of points gathered by the users this day.
-    type: integer
-    example: 300
-    readOnly: true
-  grade:
-    description: The user grade.
-    allOf:
-      - $ref: '../index.yaml#/components/schemas/Grade'
-    nullable: true
-  purchases:
-    description: The user purchases.
-    type: array
-    items:
-      $ref: '../index.yaml#/components/schemas/Purchase'
     nullable: true
   last_session:
     description: The user last session.
@@ -185,3 +180,16 @@ properties:
           $ref: '../index.yaml#/components/schemas/Activity'
         module:
           $ref: '../index.yaml#/components/schemas/Module'
+  grade:
+    description: The user grade.
+    allOf:
+      - $ref: '../index.yaml#/components/schemas/Grade'
+    nullable: true
+    readOnly: true
+  purchases:
+    description: The user purchases.
+    type: array
+    items:
+      $ref: '../index.yaml#/components/schemas/Purchase'
+    nullable: true
+    readOnly: true

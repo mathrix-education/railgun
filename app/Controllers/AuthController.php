@@ -12,7 +12,6 @@ use Faker\Factory;
 use Faker\Factory as FakerFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
@@ -85,7 +84,6 @@ class AuthController extends BaseController
     {
         $this->validate($request, [
             "access_token" => "required",
-            "expires_in" => "required|integer"
         ]);
 
         $facebook->setDefaultAccessToken($request->json("access_token"));
@@ -100,27 +98,19 @@ class AuthController extends BaseController
             ->first();
 
         if ($user === null) {
+            // User does not exist
             $user = new User([
-                "email" => $body->email,
-                "username" => $body->first_name,
-                "firstname" => $body->first_name,
-                "lastname" => $body->last_name,
                 "password" => null
             ]);
         }
 
-        User::unguarded(function () use (&$user, $request, $body) {
-            $user->metadata = array_merge($user->metadata ?? [], [
-                "facebook" => [
-                    "id" => $body->id,
-                    "access_token" => Crypt::encrypt($request->json("access_token"), false),
-                    "expires_in" => $request->json("expires_in")
-                ]
-            ]);
-            $user->save();
+        User::unguarded(function () use (&$user, &$request, &$response) {
+            $user->setFacebookAccessToken($request->json("access_token"))
+                ->syncFacebookProfile($response)
+                ->save();
         });
 
-        $jws = JWTIssuer::issueJWS($user, ["exp" => $request->json("expires_in")]);
+        $jws = $user->getFacebookJWS();
 
         return new JsonResponse([
             "token" => JWTIssuer::serializeJWS($jws)

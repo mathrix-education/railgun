@@ -16,7 +16,7 @@ use Tests\APIStatelessTestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class NotionsStatelessTest extends APIStatelessTestCase
+class NotionsTest extends APIStatelessTestCase
 {
     use StandardIndexTest, StandardGetTest, StandardPostTest, StandardPatchTest;
 
