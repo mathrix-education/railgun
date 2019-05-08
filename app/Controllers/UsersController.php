@@ -49,14 +49,6 @@ class UsersController extends BaseController
         $user = new User();
 
         User::unguarded(function () use ($user, $request) {
-            $request->merge([
-                "points" => 0,
-                "settings" => [
-                    "sound" => true,
-                ],
-                "scopes" => ["logged"],
-            ]);
-
             $user->fill($request->all())->save();
         });
 

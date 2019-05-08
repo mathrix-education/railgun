@@ -15,7 +15,6 @@ use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Mathrix\Lumen\Exceptions\Http\HttpException as MathrixHTTPException;
 use Mathrix\Lumen\JWT\Auth\Exceptions\InvalidCredentialsException;
-use Raven_Client;
 use ReflectionClass;
 use ReflectionException;
 use Sentry\State\Hub as Sentry;

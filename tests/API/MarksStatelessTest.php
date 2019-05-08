@@ -1,0 +1,42 @@
+<?php
+
+namespace Tests\API;
+
+use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
+use Mathrix\Lumen\JWT\Auth\JWT;
+use Tests\APIStatelessTestCase;
+
+/**
+ * Class MarksTest.
+ *
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA.
+ * @since 5.0.0-rc1
+ */
+class MarksStatelessTest extends APIStatelessTestCase
+{
+    /**
+     * GET /marks/activities/to-revise
+     */
+    public function testToRevise(): void
+    {
+        // We try to find a user which has to-revise marks
+        /** @var User $user */
+        $user = User::query()
+            ->inRandomOrder()
+            ->whereHas("marks", function (Builder $query) {
+                $query->where([
+                    ["markable_type", "=", "activity"],
+                    ["status", "=", "to_revise"]
+                ]);
+            })
+            ->firstOrFail();
+        JWT::actingAs($user);
+
+        $this->json("get", "/marks/activities/to-revise");
+
+        $this->assertResponseOk();
+        $this->assertOpenAPIResponse();
+    }
+}

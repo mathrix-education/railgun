@@ -6,10 +6,13 @@ use App\Events\PasswordForgottenEvent;
 use App\Events\PasswordResetEvent;
 use App\Models\User;
 use Exception;
+use Facebook\Exceptions\FacebookSDKException;
+use Facebook\Facebook;
 use Faker\Factory;
 use Faker\Factory as FakerFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
@@ -60,6 +63,64 @@ class AuthController extends BaseController
         }
 
         $jws = JWTIssuer::issueJWS($user);
+
+        return new JsonResponse([
+            "token" => JWTIssuer::serializeJWS($jws)
+        ]);
+    }
+
+
+    /**
+     * POST /auth/login/facebook
+     *
+     * @param Request $request The Illuminate HTTP request.
+     * @param Facebook $facebook The Facebook SDK.
+     *
+     * @return JsonResponse
+     * @throws ValidationException
+     * @throws FacebookSDKException
+     * @throws Exception
+     */
+    public function facebook(Request $request, Facebook $facebook): JsonResponse
+    {
+        $this->validate($request, [
+            "access_token" => "required",
+            "expires_in" => "required|integer"
+        ]);
+
+        $facebook->setDefaultAccessToken($request->json("access_token"));
+        $response = $facebook->get("/me?fields=id,first_name,last_name,email");
+        $body = json_decode($response->getBody());
+
+        // First, attempt to find user by its facebook_id
+        /** @var User $user */
+        $user = User::query()
+            ->where("metadata->facebook->id", "=", $body->id)
+            ->orWhere("email", "=", $body->email)
+            ->first();
+
+        if ($user === null) {
+            $user = new User([
+                "email" => $body->email,
+                "username" => $body->first_name,
+                "firstname" => $body->first_name,
+                "lastname" => $body->last_name,
+                "password" => null
+            ]);
+        }
+
+        User::unguarded(function () use (&$user, $request, $body) {
+            $user->metadata = array_merge($user->metadata ?? [], [
+                "facebook" => [
+                    "id" => $body->id,
+                    "access_token" => Crypt::encrypt($request->json("access_token"), false),
+                    "expires_in" => $request->json("expires_in")
+                ]
+            ]);
+            $user->save();
+        });
+
+        $jws = JWTIssuer::issueJWS($user, ["exp" => $request->json("expires_in")]);
 
         return new JsonResponse([
             "token" => JWTIssuer::serializeJWS($jws)

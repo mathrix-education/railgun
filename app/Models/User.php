@@ -43,6 +43,7 @@ use Mathrix\Lumen\JWT\Auth\HasJWT;
  * @property int $daily
  * @property int $daily_achievements
  * @property array $settings
+ * @property array $metadata
  * @property bool $premium_bypass
  * @property Carbon $premium_bypass_expires_at
  * @property int|null $grade_id
@@ -106,6 +107,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "premium_bypass_expires_at",
         "stripe_id",
         "braintree_id",
+        "metadata",
         "stripe",
         "braintree"
     ];
@@ -113,9 +115,10 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
         "scopes" => "array",
-        "settings" => "array",
         "premium_bypass" => "boolean",
-        "premium_bypass_expires_at" => "date"
+        "premium_bypass_expires_at" => "date",
+        "settings" => "array",
+        "metadata" => "array"
     ];
 
     /** @var array The validation rules on create */
@@ -123,7 +126,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "username" => "nullable|max:60",
         "firstname" => "nullable|max:60",
         "lastname" => "nullable|max:60",
-        "password" => "required|min:3",
+        "password" => "nullable|min:3",
         "scopes" => "required",
         "scopes.*" => "distinct",
         "token" => "nullable|size:36",
@@ -139,6 +142,16 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     /** @var array The virtual attributes */
     protected $appends = ["premium", "daily_points", "last_session"];
+
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        $this->points = 0;
+        $this->settings = ["sound" => true];
+        $this->scopes = ["logged"];
+    }
 
 
     /**

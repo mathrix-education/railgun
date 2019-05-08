@@ -23,6 +23,7 @@ class AuthRegistrar extends BaseRegistrar
         $uuidRegex = "[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}";
 
         $this->post("auth/login", "$controller@login");
+        $this->post("auth/login/facebook", "$controller@facebook");
         $this->get("auth/public-key", "$controller@publicKey");
         $this->post("auth/forgot", "$controller@forgot");
         $this->post("auth/reset/{token:$uuidRegex}", "$controller@reset");
