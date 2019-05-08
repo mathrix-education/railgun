@@ -1,5 +1,5 @@
 post:
-  summary: Login
+  summary: Login with Facebook
   requestBody:
     content:
       application/json:
