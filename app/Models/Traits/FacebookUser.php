@@ -3,6 +3,7 @@
 namespace App\Models\Traits;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook;
 use Facebook\FacebookResponse;
@@ -44,7 +45,7 @@ trait FacebookUser
 
         $metadata = $this->metadata ?? [];
         $metadata["facebook"]["access_token"] = $body->access_token;
-        $metadata["facebook"]["expires_in"] = $body->expires_in;
+        $metadata["facebook"]["expires_in"] = Carbon::now()->timestamp + $body->expires_in;
         $this->metadata = $metadata;
 
         return $this;
