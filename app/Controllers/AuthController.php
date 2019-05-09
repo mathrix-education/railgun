@@ -135,7 +135,7 @@ class AuthController extends BaseController
             ->where("email", "=", $request->json("email"))
             ->firstOrFail();
 
-        if (!empty($user->settings["facebook_id"])) {
+        if ($user->provider === "facebook") {
             throw new Http400BadRequestException(null, "Cannot reset password of a facebook account");
         }
 
