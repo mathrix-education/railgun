@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Services\Braintree\Utils\Formatter;
 use Braintree\CreditCard;
 use Braintree\Subscription;
 use Carbon\Carbon;
@@ -25,5 +26,8 @@ class TestCommand extends BaseCommand
 
     public function handle()
     {
+        $sub = Subscription::find("sub_dd781c6c3578366796631806deda06fd");
+
+        dd(Formatter::cast($sub->jsonSerialize()));
     }
 }

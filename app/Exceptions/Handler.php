@@ -10,8 +10,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Mathrix\Lumen\Exceptions\Http\HttpException as MathrixHTTPException;
 use Mathrix\Lumen\JWT\Auth\Exceptions\InvalidCredentialsException;
@@ -55,9 +55,14 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
+        if ($this->shouldntReport($e)) {
+            return;
+        }
+
+
         $sentryDSN = env("SENTRY_DSN");
 
-        if (!empty($sentryDSN) && app()->bound("sentry") && $this->shouldReport($e)) {
+        if (!empty($sentryDSN) && app()->bound("sentry")) {
             /** @var Sentry $sentry */
             $sentry = app("sentry");
 
@@ -70,6 +75,10 @@ class Handler extends ExceptionHandler
             });
 
             $sentry->captureException($e);
+        }
+
+        if ($e instanceof MathrixHTTPException) {
+            Log::error($e->getMessage());
         }
 
         parent::report($e);
@@ -129,11 +138,6 @@ class Handler extends ExceptionHandler
 
         if ($e instanceof ModelNotFoundException) {
             $overriddenStatusCode = 404;
-        }
-
-        // Handle validation exceptions
-        if ($e instanceof ValidationException) {
-            $json["errors"] = $e->errors(); // @codeCoverageIgnore
         }
 
         if ($e instanceof NotFoundHttpException) {
