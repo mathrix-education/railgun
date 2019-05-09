@@ -12,7 +12,6 @@ use App\Notifications\CommentAnswerNotification;
 use App\Observers\BaseObserver;
 use App\Observers\NotificationObserver;
 use App\Policies\BasePolicy;
-use App\Policies\FilePolicy;
 use App\Policies\NotificationPolicy;
 use Barryvdh\Cors\ServiceProvider as CorsServiceProvider;
 use Carbon\Carbon;
@@ -60,6 +59,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(SitemapServiceProvider::class);
         $this->app->register(GoogleCloudStorageServiceProvider::class);
         $this->app->register(JWTServiceProvider::class);
+        $this->app->register(FacebookServiceProvider::class);
 
         // Mathrix Lumen Zero Providers
         $this->registerObservers();
@@ -115,12 +115,10 @@ class AppServiceProvider extends ServiceProvider
         PolicyServiceProvider::$IgnoredPolicies = [
             BasePolicy::class,
             NotificationPolicy::class,
-            FilePolicy::class,
         ];
 
         $this->app->register(PolicyServiceProvider::class);
 
-        Gate::policy(FilePolicy::class, FilePolicy::class);
         Gate::policy(DatabaseNotification::class, NotificationPolicy::class);
     }
 }

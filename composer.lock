@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "626c399efd274d483ffbd68085ef4b1f",
+    "content-hash": "88a065253b76547dab06567426e210df",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -551,6 +551,64 @@
                 "parser"
             ],
             "time": "2019-03-17T18:48:37+00:00"
+        },
+        {
+            "name": "facebook/graph-sdk",
+            "version": "5.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/facebook/php-graph-sdk.git",
+                "reference": "2d8250638b33d73e7a87add65f47fabf91f8ad9b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/facebook/php-graph-sdk/zipball/2d8250638b33d73e7a87add65f47fabf91f8ad9b",
+                "reference": "2d8250638b33d73e7a87add65f47fabf91f8ad9b",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.4|^7.0"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "~5.0",
+                "mockery/mockery": "~0.8",
+                "phpunit/phpunit": "~4.0"
+            },
+            "suggest": {
+                "guzzlehttp/guzzle": "Allows for implementation of the Guzzle HTTP client",
+                "paragonie/random_compat": "Provides a better CSPRNG option in PHP 5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Facebook\\": "src/Facebook/"
+                },
+                "files": [
+                    "src/Facebook/polyfills.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Facebook Platform"
+            ],
+            "authors": [
+                {
+                    "name": "Facebook",
+                    "homepage": "https://github.com/facebook/php-graph-sdk/contributors"
+                }
+            ],
+            "description": "Facebook SDK for PHP",
+            "homepage": "https://github.com/facebook/php-graph-sdk",
+            "keywords": [
+                "facebook",
+                "sdk"
+            ],
+            "time": "2018-12-11T22:56:31+00:00"
         },
         {
             "name": "fgrosse/phpasn1",
@@ -3209,16 +3267,16 @@
         },
         {
             "name": "mathrix/lumen-jwt-auth",
-            "version": "1.1.8",
+            "version": "1.1.10",
             "source": {
                 "type": "git",
                 "url": "git@github.com:mathrix-education/lumen-jwt-auth.git",
-                "reference": "c585e06a5ecc8b9a3733141b6240d8610664c0fe"
+                "reference": "8af7b75066d7d580be3caa67e99d36bc6ebb7e62"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mathrix-education/lumen-jwt-auth/zipball/c585e06a5ecc8b9a3733141b6240d8610664c0fe",
-                "reference": "c585e06a5ecc8b9a3733141b6240d8610664c0fe",
+                "url": "https://api.github.com/repos/mathrix-education/lumen-jwt-auth/zipball/8af7b75066d7d580be3caa67e99d36bc6ebb7e62",
+                "reference": "8af7b75066d7d580be3caa67e99d36bc6ebb7e62",
                 "shasum": ""
             },
             "require": {
@@ -3273,7 +3331,7 @@
                 "source": "https://github.com/mathrix-education/lumen-jwt-auth",
                 "docs": "https://github.com/mathrix-education/lumen-jwt-auth/wiki"
             },
-            "time": "2019-05-05T17:37:02+00:00"
+            "time": "2019-05-08T18:36:37+00:00"
         },
         {
             "name": "mathrix/lumen-zero",
@@ -3481,16 +3539,16 @@
         },
         {
             "name": "nexmo/client",
-            "version": "1.7.0",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nexmo/nexmo-php.git",
-                "reference": "f8582d2361382e2b02352b1cb96c69ce2a2c7360"
+                "reference": "f74df3e6d3df5edf0474142a99644317e6fd21e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nexmo/nexmo-php/zipball/f8582d2361382e2b02352b1cb96c69ce2a2c7360",
-                "reference": "f8582d2361382e2b02352b1cb96c69ce2a2c7360",
+                "url": "https://api.github.com/repos/Nexmo/nexmo-php/zipball/f74df3e6d3df5edf0474142a99644317e6fd21e9",
+                "reference": "f74df3e6d3df5edf0474142a99644317e6fd21e9",
                 "shasum": ""
             },
             "require": {
@@ -3525,7 +3583,7 @@
                 }
             ],
             "description": "PHP Client for using Nexmo's API.",
-            "time": "2019-04-13T10:18:16+00:00"
+            "time": "2019-05-07T14:17:17+00:00"
         },
         {
             "name": "nikic/fast-route",

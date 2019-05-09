@@ -4,7 +4,7 @@ namespace Tests\API;
 
 use App\Models\Module;
 use Illuminate\Database\Eloquent\Builder;
-use Tests\APITestCase;
+use Tests\APIStatelessTestCase;
 
 /**
  * Class ChainerTest.
@@ -13,7 +13,7 @@ use Tests\APITestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class ChainerTest extends APITestCase
+class ChainerTest extends APIStatelessTestCase
 {
     /**
      * POST /chain

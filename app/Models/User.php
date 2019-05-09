@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Exceptions\ImmutableException;
 use App\Models\Traits\BraintreeCustomer;
+use App\Models\Traits\FacebookUser;
 use App\Models\Traits\PermissionsTrait;
 use App\Models\Traits\StripeCustomer;
 use Carbon\Carbon;
@@ -43,6 +44,7 @@ use Mathrix\Lumen\JWT\Auth\HasJWT;
  * @property int $daily
  * @property int $daily_achievements
  * @property array $settings
+ * @property array $metadata
  * @property bool $premium_bypass
  * @property Carbon $premium_bypass_expires_at
  * @property int|null $grade_id
@@ -51,10 +53,11 @@ use Mathrix\Lumen\JWT\Auth\HasJWT;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * ---
- * @property Grade $grade
- * @property bool $premium
- * @property int $daily_points
+ * @property-read bool $premium
+ * @property-read string $provider
+ * @property-read int $daily_points
  * ---
+ * @property Grade $grade
  * @property Collection|Client[] $clients
  * @property Collection|Token[] $tokens
  * @property Collection|Comment[] $comments
@@ -76,6 +79,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         BraintreeCustomer,
         StripeCustomer,
         PermissionsTrait,
+        FacebookUser,
         HasJWT;
 
     private const STRIPE_PLANS = ["v3_monthly", "v3_annually", "v3_biannually"];
@@ -106,6 +110,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "premium_bypass_expires_at",
         "stripe_id",
         "braintree_id",
+        "metadata",
         "stripe",
         "braintree"
     ];
@@ -113,9 +118,10 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
         "scopes" => "array",
-        "settings" => "array",
         "premium_bypass" => "boolean",
-        "premium_bypass_expires_at" => "date"
+        "premium_bypass_expires_at" => "date",
+        "settings" => "array",
+        "metadata" => "array"
     ];
 
     /** @var array The validation rules on create */
@@ -123,7 +129,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "username" => "nullable|max:60",
         "firstname" => "nullable|max:60",
         "lastname" => "nullable|max:60",
-        "password" => "required|min:3",
+        "password" => "nullable|min:3",
         "scopes" => "required",
         "scopes.*" => "distinct",
         "token" => "nullable|size:36",
@@ -138,7 +144,17 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     protected $with = ["grade", "purchases"];
 
     /** @var array The virtual attributes */
-    protected $appends = ["premium", "daily_points", "last_session"];
+    protected $appends = ["provider", "daily_points", "last_session", "premium"];
+
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        $this->points = 0;
+        $this->settings = ["sound" => true];
+        $this->scopes = ["logged"];
+    }
 
 
     /**
@@ -374,6 +390,23 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
             || ($this->premium_bypass_expires_at !== null && $this->premium_bypass_expires_at->isFuture())
             || $this->hasBraintreeSubscription(self::BRAINTREE_PLANS)
             || $this->hasStripeSubscription(self::STRIPE_PLANS);
+    }
+
+
+    /**
+     * The login provider.
+     *
+     * @return string
+     */
+    public function getProviderAttribute(): string
+    {
+        $provider = "api";
+
+        if (isset($this->metadata["facebook"]["id"])) {
+            $provider = "facebook";
+        }
+
+        return $provider;
     }
 
 

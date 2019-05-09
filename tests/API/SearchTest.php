@@ -2,7 +2,7 @@
 
 namespace Tests\API;
 
-use Tests\APITestCase;
+use Tests\APIStatelessTestCase;
 
 /**
  * Class SearchTest.
@@ -11,7 +11,7 @@ use Tests\APITestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class SearchTest extends APITestCase
+class SearchTest extends APIStatelessTestCase
 {
     /**
      * GET /search/{query}

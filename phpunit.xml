@@ -5,17 +5,14 @@
     bootstrap="bootstrap/app.php"
     colors="true">
     <testsuites>
-        <testsuite name="REST API Test Suite">
+        <testsuite name="API Test Suite">
             <directory>./tests/API</directory>
         </testsuite>
         <testsuite name="Unit Test Suite">
             <directory>./tests/Unit</directory>
         </testsuite>
-        <testsuite name="Braintree Test Suite">
-            <directory>./tests/Integration/Braintree</directory>
-        </testsuite>
-        <testsuite name="Google Cloud Storage Test Suite">
-            <directory>./tests/Integration/GoogleCloud</directory>
+        <testsuite name="IntegrationTest Suite">
+            <directory>./tests/Integration</directory>
         </testsuite>
     </testsuites>
     <filter>

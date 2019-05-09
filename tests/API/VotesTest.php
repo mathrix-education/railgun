@@ -5,7 +5,7 @@ namespace Tests\API;
 use App\Models\Comment;
 use App\Models\Vote;
 use Mathrix\Lumen\JWT\Auth\JWT;
-use Tests\APITestCase;
+use Tests\APIStatelessTestCase;
 
 /**
  * Class VotesTest.
@@ -14,7 +14,7 @@ use Tests\APITestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class VotesTest extends APITestCase
+class VotesTest extends APIStatelessTestCase
 {
     /**
      * POST /votes/comment/{commentId}

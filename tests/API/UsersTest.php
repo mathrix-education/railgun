@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
-use Tests\APITestCase;
+use Tests\APIStatelessTestCase;
 
 /**
  * Class UsersTest.
@@ -18,7 +18,7 @@ use Tests\APITestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class UsersTest extends APITestCase
+class UsersTest extends APIStatelessTestCase
 {
     use StandardIndexTest;
 

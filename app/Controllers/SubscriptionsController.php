@@ -7,10 +7,10 @@ use App\Services\Braintree\BraintreeResponse;
 use App\Services\Braintree\Exceptions\BraintreeErrorHandler;
 use App\Services\Braintree\Pipelines\SubscriptionPipeline;
 use App\Services\Braintree\Utils\Formatter;
-use Braintree\Customer;
-use Braintree\CustomerSearch;
+use App\Services\Braintree\Utils\SubscriptionUtils;
 use Braintree\PaymentMethod;
 use Braintree\Subscription;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -169,21 +169,30 @@ class SubscriptionsController extends BaseController
     public function cancel(Request $request, string $subscriptionId)
     {
         $cancelNow = $request->json("now", false);
+        $trialEndsAt = null;
 
         if ($cancelNow) {
             // Cancel subscription immediately
-            /** @var BraintreeResponse $subscriptionResult */
             $subscriptionResult = Subscription::cancel($subscriptionId);
         } else {
             /** @var Subscription $subscription */
             $subscription = Subscription::find($subscriptionId);
-            /** @var BraintreeResponse $subscriptionResult */
-            $subscriptionResult = Subscription::update($subscriptionId, [
-                "numberOfBillingCycles" => $subscription->currentBillingCycle
-            ]);
+
+            if ($subscription->trialPeriod && $subscription->currentBillingCycle === 0) {
+                // Subscription with trial: cancel subscription immediately,
+                // and report remaining premium to premium_bypass_expires_at.
+                $trialEndsAt = Carbon::instance($subscription->firstBillingDate);
+                $subscriptionResult = Subscription::cancel($subscriptionId);
+            } else {
+                // Regular subscription: set numberOfBillingCycles to currentBillingCycle,
+                // thus subscription will naturally expires.
+                $subscriptionResult = Subscription::update($subscriptionId, [
+                    "numberOfBillingCycles" => $subscription->currentBillingCycle
+                ]);
+            }
         }
 
-
+        /** @var BraintreeResponse $subscriptionResult */
         if (!$subscriptionResult->success) {
             throw new Http400BadRequestException(
                 $subscriptionResult->jsonSerialize(),
@@ -191,20 +200,22 @@ class SubscriptionsController extends BaseController
             );
         }
 
-        /** @var Subscription $subscription */
         $subscription = $subscriptionResult->subscription;
+        $customer = SubscriptionUtils::getSubscriptionCustomer($subscription);
 
-        /** @var array|string $query */
-        $query = [
-            CustomerSearch::paymentMethodToken()->is($subscription->paymentMethodToken),
-        ];
-        $customerResultSearch = Customer::search($query);
+        if ($customer !== null) {
+            /** @var User $user */
+            $user = User::query()
+                ->where("braintree_id", "=", $customer->id)
+                ->firstOrFail();
 
-        /** @var User $customer */
-        $customer = User::query()
-            ->where("braintree_id", "=", $customerResultSearch->firstItem()->id)
-            ->firstOrFail();
-        $customer->forgetBraintreeCustomerCache();
+            if ($trialEndsAt instanceof Carbon) {
+                $user->premium_bypass_expires_at = $trialEndsAt;
+            }
+
+            $user->forgetBraintreeCustomerCache();
+            $user->save();
+        }
 
         return new JsonResponse(Formatter::cast($subscription->jsonSerialize()));
     }

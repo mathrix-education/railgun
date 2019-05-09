@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Notifications\DatabaseNotification;
 use Mathrix\Lumen\JWT\Auth\JWT;
-use Tests\APITestCase;
+use Tests\APIStatelessTestCase;
 
 /**
  * Class NotificationsTest.
@@ -15,7 +15,7 @@ use Tests\APITestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class NotificationsTest extends APITestCase
+class NotificationsTest extends APIStatelessTestCase
 {
     /**
      * Generically test notifications.

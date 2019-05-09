@@ -2,7 +2,7 @@
 
 namespace Tests\API;
 
-use Tests\APITestCase;
+use Tests\APIStatelessTestCase;
 
 /**
  * Class SystemTest.
@@ -11,7 +11,7 @@ use Tests\APITestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.1-rc1
  */
-class SystemTest extends APITestCase
+class SystemTest extends APIStatelessTestCase
 {
     /**
      * GET /

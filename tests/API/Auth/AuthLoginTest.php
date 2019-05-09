@@ -4,7 +4,7 @@ namespace Tests\API\Auth;
 
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
-use Tests\APITestCase;
+use Tests\APIStatelessTestCase;
 
 /**
  * Class AuthTest.
@@ -13,7 +13,7 @@ use Tests\APITestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class AuthLoginTest extends APITestCase
+class AuthLoginTest extends APIStatelessTestCase
 {
     private const NEW_TOKEN = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzUxMiJ9.eyJpc3MiOiJNYXRocml4IEVkdWNhdGlvbiBBUEkiLCJz"
     . "dWIiOjM3LCJhdWQiOiJNYXRocml4IEVkdWNhdGlvbiBBUEkiLCJleHAiOjE1NjQ4NTE3MjcsIm5iZiI6MTU1NjkwMjkyNywiaWF0IjoxNTU2"

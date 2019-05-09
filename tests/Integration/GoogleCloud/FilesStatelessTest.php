@@ -7,7 +7,7 @@ use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Mathrix\Lumen\JWT\Auth\JWT;
-use Tests\APITestCase;
+use Tests\APIStatelessTestCase;
 
 /**
  * Class FilesTest.
@@ -16,7 +16,7 @@ use Tests\APITestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class FilesTest extends APITestCase
+class FilesStatelessTest extends APIStatelessTestCase
 {
     /**
      * @return Filesystem|FilesystemAdapter

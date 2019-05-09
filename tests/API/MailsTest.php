@@ -4,7 +4,7 @@ namespace Tests\API;
 
 use App\Registrars\MailsRegistrar;
 use Illuminate\Support\Facades\Facade;
-use Tests\APITestCase;
+use Tests\APIStatelessTestCase;
 
 /**
  * Class MailsTest.
@@ -13,7 +13,7 @@ use Tests\APITestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.1-rc1
  */
-class MailsTest extends APITestCase
+class MailsTest extends APIStatelessTestCase
 {
     /**
      * Test that all emails produce valid views i.e. that there is no syntax errors.

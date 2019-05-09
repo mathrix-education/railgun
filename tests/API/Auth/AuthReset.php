@@ -4,7 +4,7 @@ namespace Tests\API\Auth;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Notification;
-use Tests\APITestCase;
+use Tests\APIStatelessTestCase;
 
 /**
  * Class AuthReset.
@@ -13,7 +13,7 @@ use Tests\APITestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class AuthResetTest extends APITestCase
+class AuthResetStatelessTest extends APIStatelessTestCase
 {
     public function testReset()
     {

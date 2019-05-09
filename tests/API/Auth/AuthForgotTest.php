@@ -5,7 +5,7 @@ namespace Tests\API\Auth;
 use App\Models\User;
 use App\Notifications\PasswordForgottenNotification;
 use Illuminate\Support\Facades\Notification;
-use Tests\APITestCase;
+use Tests\APIStatelessTestCase;
 
 /**
  * Class AuthRefreshTest.
@@ -14,7 +14,7 @@ use Tests\APITestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class AuthForgotTest extends APITestCase
+class AuthForgotTest extends APIStatelessTestCase
 {
     /**
      * POST /users/forgot
@@ -30,21 +30,5 @@ class AuthForgotTest extends APITestCase
         $this->assertNotInDatabase("users", ["id" => $user->id, "token" => null]);
         $this->assertOpenAPIResponse();
         Notification::assertSentTo($user, PasswordForgottenNotification::class);
-    }
-
-
-    /**
-     * POST /users/forgot for a Facebook user
-     */
-    public function testForgotFacebookUser()
-    {
-        Notification::fake();
-
-        $user = User::random(["settings", "LIKE", "%facebook_id%"]);
-        $this->json("post", "/auth/forgot", ["email" => $user->email]);
-
-        $this->assertResponseStatus(400);
-        $this->assertOpenAPIResponse();
-        Notification::assertNotSentTo($user, PasswordForgottenNotification::class);
     }
 }

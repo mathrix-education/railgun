@@ -2,7 +2,7 @@
 
 namespace Tests\API;
 
-use Tests\APITestCase;
+use Tests\APIStatelessTestCase;
 
 /**
  * Class BadgesTest.
@@ -11,7 +11,7 @@ use Tests\APITestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.1-rc1
  */
-class BadgesTest extends APITestCase
+class BadgesTest extends APIStatelessTestCase
 {
     /**
      * GET /badges/version

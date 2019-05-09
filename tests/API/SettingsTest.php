@@ -4,7 +4,7 @@ namespace Tests\API;
 
 use App\Models\Setting;
 use Mathrix\Lumen\JWT\Auth\JWT;
-use Tests\APITestCase;
+use Tests\APIStatelessTestCase;
 
 /**
  * Class SettingsTest.
@@ -13,7 +13,7 @@ use Tests\APITestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class SettingsTest extends APITestCase
+class SettingsTest extends APIStatelessTestCase
 {
     /**
      * GET /settings

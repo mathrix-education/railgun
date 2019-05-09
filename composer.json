@@ -1,7 +1,7 @@
 {
   "name": "mathrix/education-api",
   "description": "The Mathrix Education Lumen API.",
-  "version": "5.1.0",
+  "version": "5.1.1",
   "type": "project",
   "keywords": [
     "education",
@@ -34,6 +34,7 @@
     "barryvdh/laravel-cors": "v0.11.3",
     "braintree/braintree_php": "3.40",
     "codeinternetapplications/monolog-stackdriver": "1.2.1",
+    "facebook/graph-sdk": "^5.7",
     "fzaninotto/faker": "v1.8.0",
     "guzzlehttp/guzzle": "6.3.3",
     "illuminate/mail": "5.7.28",
@@ -43,7 +44,7 @@
     "laravelium/sitemap": "3.0.1",
     "league/flysystem": " 1.0.51",
     "mathrix/lumen-chainer": "1.1.0",
-    "mathrix/lumen-jwt-auth": "1.1.8",
+    "mathrix/lumen-jwt-auth": "1.1.10",
     "mathrix/lumen-zero": "1.1.7",
     "ramsey/uuid": "3.8.0",
     "sentry/sentry-laravel": "1.0.2",

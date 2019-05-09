@@ -10,7 +10,7 @@ use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardPostTest;
-use Tests\APITestCase;
+use Tests\APIStatelessTestCase;
 
 /**
  * Class DisciplinesTest.
@@ -19,7 +19,7 @@ use Tests\APITestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class DisciplinesTest extends APITestCase
+class DisciplinesTest extends APIStatelessTestCase
 {
     use StandardIndexTest, StandardPostTest, StandardGetTest, StandardPatchTest;
 

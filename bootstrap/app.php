@@ -4,8 +4,6 @@ use App\Middleware\AsMiddleware;
 use App\Providers\AppServiceProvider;
 use Barryvdh\Cors\HandleCors;
 use Illuminate\Contracts\Mail\Mailer;
-use Mathrix\Lumen\Middleware\LoggedMiddleware;
-use Mathrix\Lumen\Middleware\ScopeMiddleware;
 
 require_once __DIR__ . "/../vendor/autoload.php";
 

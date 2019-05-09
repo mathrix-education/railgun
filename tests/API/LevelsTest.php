@@ -3,7 +3,7 @@
 namespace Tests\API;
 
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
-use Tests\APITestCase;
+use Tests\APIStatelessTestCase;
 
 /**
  * Class LevelsTest.
@@ -12,7 +12,7 @@ use Tests\APITestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class LevelsTest extends APITestCase
+class LevelsTest extends APIStatelessTestCase
 {
     use StandardIndexTest;
 }

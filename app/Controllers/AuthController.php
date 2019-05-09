@@ -6,6 +6,8 @@ use App\Events\PasswordForgottenEvent;
 use App\Events\PasswordResetEvent;
 use App\Models\User;
 use Exception;
+use Facebook\Exceptions\FacebookSDKException;
+use Facebook\Facebook;
 use Faker\Factory;
 use Faker\Factory as FakerFactory;
 use Illuminate\Http\JsonResponse;
@@ -68,6 +70,55 @@ class AuthController extends BaseController
 
 
     /**
+     * POST /auth/login/facebook
+     *
+     * @param Request $request The Illuminate HTTP request.
+     * @param Facebook $facebook The Facebook SDK.
+     *
+     * @return JsonResponse
+     * @throws ValidationException
+     * @throws FacebookSDKException
+     * @throws Exception
+     */
+    public function facebook(Request $request, Facebook $facebook): JsonResponse
+    {
+        $this->validate($request, [
+            "access_token" => "required",
+        ]);
+
+        $facebook->setDefaultAccessToken($request->json("access_token"));
+        $response = $facebook->get("/me?fields=id,first_name,last_name,email");
+        $body = json_decode($response->getBody());
+
+        // First, attempt to find user by its facebook_id
+        /** @var User $user */
+        $user = User::query()
+            ->where("metadata->facebook->id", "=", $body->id)
+            ->orWhere("email", "=", $body->email)
+            ->first();
+
+        if ($user === null) {
+            // User does not exist
+            $user = new User([
+                "password" => null
+            ]);
+        }
+
+        User::unguarded(function () use (&$user, &$request, &$response) {
+            $user->setFacebookAccessToken($request->json("access_token"))
+                ->syncFacebookProfile($response)
+                ->save();
+        });
+
+        $jws = $user->getFacebookJWS();
+
+        return new JsonResponse([
+            "token" => JWTIssuer::serializeJWS($jws)
+        ]);
+    }
+
+
+    /**
      * POST /auth/forgot
      * Ask for an new password.
      *
@@ -84,7 +135,7 @@ class AuthController extends BaseController
             ->where("email", "=", $request->json("email"))
             ->firstOrFail();
 
-        if (!empty($user->settings["facebook_id"])) {
+        if ($user->provider === "facebook") {
             throw new Http400BadRequestException(null, "Cannot reset password of a facebook account");
         }
 

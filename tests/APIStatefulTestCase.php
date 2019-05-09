@@ -18,9 +18,9 @@ use Throwable;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class APITestCase extends BaseTestCase
+class APIStatefulTestCase extends BaseTestCase
 {
-    use DatabaseTransactions, RESTTrait, DebugTrait;
+    use RESTTrait, DebugTrait;
 
     /** @var BaseModel The test main model class */
     protected $modelClass = null;

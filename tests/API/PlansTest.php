@@ -3,7 +3,7 @@
 namespace Tests\API;
 
 use App\Models\User;
-use Tests\APITestCase;
+use Tests\APIStatelessTestCase;
 
 /**
  * Class PlansTest.
@@ -12,7 +12,7 @@ use Tests\APITestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class PlansTest extends APITestCase
+class PlansTest extends APIStatelessTestCase
 {
     /**
      * GET /plans

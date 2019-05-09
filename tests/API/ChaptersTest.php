@@ -9,7 +9,7 @@ use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
-use Tests\APITestCase;
+use Tests\APIStatelessTestCase;
 
 /**
  * Class ChaptersTest.
@@ -18,7 +18,7 @@ use Tests\APITestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class ChaptersTest extends APITestCase
+class ChaptersTest extends APIStatelessTestCase
 {
     use StandardIndexTest, StandardGetTest, StandardPatchTest;
 

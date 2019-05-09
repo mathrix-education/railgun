@@ -5,7 +5,7 @@ namespace Tests\API;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Mathrix\Lumen\JWT\Auth\JWT;
-use Tests\APITestCase;
+use Tests\APIStatelessTestCase;
 
 /**
  * Class MarksTest.
@@ -14,7 +14,7 @@ use Tests\APITestCase;
  * @copyright Mathrix Education SA.
  * @since 5.0.0-rc1
  */
-class MarksTest extends APITestCase
+class MarksTest extends APIStatelessTestCase
 {
     /**
      * GET /marks/activities/to-revise
