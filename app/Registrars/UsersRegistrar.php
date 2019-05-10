@@ -37,6 +37,7 @@ class UsersRegistrar extends BaseRegistrar
         });
 
         $this->group(["middleware" => "scope:users:read"], function () use ($controller) {
+            $this->get("users/search[/{page:\d+}/{perPage:[1-9]\d*}]", "$controller@neoSearch");
             $this->post("users/search[/{page:\d+}/{perPage:[1-9]\d*}]", "$controller@search");
         });
         $this->group(["middleware" => "scope:users:write"], function () use ($controller) {

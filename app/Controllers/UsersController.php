@@ -10,10 +10,10 @@ use App\Models\User;
 use App\Services\Braintree\Utils\Formatter;
 use Braintree\Transaction;
 use Braintree\TransactionSearch;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Mathrix\Lumen\Bases\BaseController;
@@ -33,7 +33,6 @@ use Mathrix\Lumen\Responses\PaginationJsonResponse;
 class UsersController extends BaseController
 {
     use SearchTrait;
-
 
     /**
      * POST /users
@@ -136,6 +135,39 @@ class UsersController extends BaseController
 
 
     /**
+     * @param Request $request
+     * @param string $query
+     * @param int $page
+     * @param int $perPage
+     *
+     * @return PaginationJsonResponse
+     */
+    public function neoSearch(Request $request, string $query, int $page, int $perPage)
+    {
+        $order = $request->query("order", "id");
+        $dir = $request->query("dir", "asc");
+
+        $fields = Collection::make([
+            "username",
+            "email",
+            "firstname",
+            "lastname",
+            "scopes",
+            "braintree_id",
+            "stripe_id"
+        ]);
+
+        $builder = User::query()->orderBy($order, $dir);
+
+        $fields->each(function ($field) use ($query, &$builder) {
+            $builder = $builder->orWhere($field, "LIKE", "%$query%");
+        });
+
+        return new PaginationJsonResponse($builder, $page, $perPage);
+    }
+
+
+    /**
      * GET /users/{userId}/records/{page}/{perPage}
      * Get the user records.
      *
@@ -214,7 +246,7 @@ class UsersController extends BaseController
         $transactions = new Collection();
 
         foreach ($transactionResults as $transaction) {
-            $transactions->add(Formatter::cast($transaction));
+            $transactions->push(Formatter::cast($transaction));
         }
 
         return new JsonResponse([
