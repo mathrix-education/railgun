@@ -151,6 +151,14 @@ class UsersTest extends APIStatelessTestCase
     }
 
 
+    public function testSearch()
+    {
+        $uri = "/users/search/lo/0/10?order=id&dir=desc";
+        $this->event("before.request", "get", $uri);
+        $this->json("get", $uri);
+    }
+
+
     /**
      * PATCH /users/{userId}
      * Test while patching settings for last session.
@@ -178,7 +186,6 @@ class UsersTest extends APIStatelessTestCase
      */
     public function testCache()
     {
-        JWT::withScopes("admin");
         $user = User::random();
 
         $uri = "/users/{$user->id}/cache";
