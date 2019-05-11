@@ -32,8 +32,6 @@ use Mathrix\Lumen\Responses\PaginationJsonResponse;
  */
 class UsersController extends BaseController
 {
-    use SearchTrait;
-
     /**
      * POST /users
      * Create a new user.
@@ -135,6 +133,8 @@ class UsersController extends BaseController
 
 
     /**
+     * GET /users/search/{query}/{page}/{perPage}?order={order}&dir={dir}
+     *
      * @param Request $request
      * @param string $query
      * @param int $page
@@ -142,7 +142,7 @@ class UsersController extends BaseController
      *
      * @return PaginationJsonResponse
      */
-    public function neoSearch(Request $request, string $query, int $page, int $perPage)
+    public function search(Request $request, string $query, int $page, int $perPage)
     {
         $order = $request->query("order", "id");
         $dir = $request->query("dir", "asc");
