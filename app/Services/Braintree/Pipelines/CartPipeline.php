@@ -29,6 +29,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Validator as ValidatorFacade;
+use Illuminate\Support\Str;
 use Mathrix\Lumen\Exceptions\ValidationException;
 
 /**
@@ -288,9 +289,17 @@ class CartPipeline extends BasePipeline
         Transaction::createFromBraintreeTransaction($this->saleResult->transaction);
 
         if (!$this->customer->refresh()->products()->exists()) {
+            $type = "bac";
+
+            $this->products->each(function (Product $product) use (&$type) {
+                if (Str::contains($product->slug, "brevet")) {
+                    $type = "brevet";
+                }
+            });
+
             Queue::later(
                 Carbon::now()->addMinute(),
-                new ProductsBoughtJob($this->customer->email)
+                new ProductsBoughtJob($this->customer->email, $type)
             );
         }
 

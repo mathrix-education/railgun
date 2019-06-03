@@ -14,13 +14,17 @@ use GuzzleHttp\Client;
  */
 class ProductsBoughtJob extends BaseJob
 {
-    private const ZAPIER_WEBHOOK = "https://hooks.zapier.com/hooks/catch/2054816/jd0gfe/";
+    private const ZAPIER_WEBHOOK_BAC = "https://hooks.zapier.com/hooks/catch/2054816/jd0gfe/";
+    private const ZAPIER_WEBHOOK_BREVET = "https://hooks.zapier.com/hooks/catch/2054816/vzvqc1/";
+
     private $email;
+    private $type;
 
 
-    public function __construct(string $email)
+    public function __construct(string $email, string $type = "bac")
     {
         $this->email = $email;
+        $this->type = $type;
     }
 
 
@@ -28,11 +32,20 @@ class ProductsBoughtJob extends BaseJob
     {
         if (app()->environment("master")) {
             $http = new Client();
-            $http->post(self::ZAPIER_WEBHOOK, [
-                "form_params" => [
-                    "email" => $this->email
-                ]
-            ]);
+
+            if ($this->type === "bac") {
+                $http->post(self::ZAPIER_WEBHOOK_BAC, [
+                    "form_params" => [
+                        "email" => $this->email
+                    ]
+                ]);
+            } else if ($this->type === "brevet") {
+                $http->post(self::ZAPIER_WEBHOOK_BREVET, [
+                    "form_params" => [
+                        "email" => $this->email
+                    ]
+                ]);
+            }
         }
     }
 }
