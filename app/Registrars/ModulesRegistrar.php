@@ -37,5 +37,7 @@ class ModulesRegistrar extends BaseRegistrar
             "uses" => "$controller@mark",
             "middleware" => "scope:logged"
         ]);
+
+        $this->get("modules/courses/{page}/{perPage}", "$controller@courses");
     }
 }

@@ -22,6 +22,23 @@ use Mathrix\Lumen\Responses\PaginationJsonResponse;
 class ModulesController extends BaseController
 {
     /**
+     * @param int $page
+     * @param int $perPage
+     *
+     * @return PaginationJsonResponse
+     *
+     * @deprecated temporary method, to help to migrate to silicate
+     */
+    public function courses(int $page, int $perPage)
+    {
+        $courses = Module::query()
+            ->where("type", "=", "course");
+
+        return new PaginationJsonResponse($courses, $page, $perPage);
+    }
+
+
+    /**
      * GET /modules/{moduleId}/comments/{page}/{perPage}
      *
      * @param int $moduleId The module id.
