@@ -3,15 +3,17 @@
 namespace App\Models;
 
 use App\Models\Traits\NoPivot;
+use App\Services\Braintree\Models\LineItem;
 use Braintree\Transaction;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Mathrix\Lumen\Bases\BaseModel;
+use Mathrix\Lumen\Zero\Models\BaseModel;
 
 /**
  * Class Product.
@@ -41,6 +43,7 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @property EloquentCollection|Product[] $children
  * @property EloquentCollection|Product[] $items
  * @property EloquentCollection|Discount[] $discounts
+ * @property EloquentCollection|LineItem[] $lineItems
  */
 class Product extends BaseModel
 {
@@ -89,6 +92,7 @@ class Product extends BaseModel
      * @param Transaction $transaction The Braintree transaction.
      *
      * @return Purchase|null
+     * @throws \Exception
      */
     public function deliver(User $customer, ?Transaction $transaction = null): ?Purchase
     {
@@ -100,6 +104,7 @@ class Product extends BaseModel
             // Premium product
             $customer->premium_bypass_expires_at = new Carbon(self::MODE_MACHINE_2019_END);
             $customer->save();
+
             return null;
         }
 
@@ -199,9 +204,20 @@ class Product extends BaseModel
      *
      * @return BelongsToMany
      */
-    public function discounts()
+    public function discounts(): BelongsToMany
     {
         return $this->belongsToMany(Discount::class);
+    }
+
+
+    /**
+     * MorphMany LineItems
+     *
+     * @return MorphMany
+     */
+    public function lineItems(): MorphMany
+    {
+        return $this->morphMany(LineItem::class, "product");
     }
 
 
@@ -214,6 +230,7 @@ class Product extends BaseModel
     {
         /** @var User $user */
         $user = Auth::user();
+
         return $user && $user->hasPurchased($this);
     }
 

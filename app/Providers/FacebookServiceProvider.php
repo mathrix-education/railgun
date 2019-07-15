@@ -2,9 +2,7 @@
 
 namespace App\Providers;
 
-use App\Services\Facebook\FacebookGuzzle6HttpClient;
 use Facebook\Facebook;
-use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -23,7 +21,6 @@ class FacebookServiceProvider extends ServiceProvider
                 "app_id" => env("FACEBOOK_APP_ID"),
                 "app_secret" => env("FACEBOOK_APP_SECRET"),
                 "default_graph_version" => env("FACEBOOK_GRAPH_VERSION", "v3.3"),
-                //"http_client_handler" => new FacebookGuzzle6HttpClient(new Client()),
             ]);
         });
     }

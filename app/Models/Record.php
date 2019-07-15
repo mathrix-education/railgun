@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Exceptions\ImmutableException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Mathrix\Lumen\Bases\BaseModel;
+use Mathrix\Lumen\Zero\Models\BaseModel;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Exceptions\ValidationException;
 

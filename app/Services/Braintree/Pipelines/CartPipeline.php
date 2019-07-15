@@ -320,7 +320,6 @@ class CartPipeline extends BasePipeline
         }
 
         $this->customer->save();
-        event(new TransactionSuccessEvent($this->saleResult->transaction));
 
         return new JsonResponse(Formatter::cast($this->saleResult->transaction->jsonSerialize()));
     }

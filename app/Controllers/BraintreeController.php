@@ -8,10 +8,10 @@ use App\Events\TransactionSuccessEvent;
 use App\Models\User;
 use Braintree\ClientToken;
 use Braintree\WebhookNotification;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Mathrix\Lumen\Bases\BaseController;
-use Mathrix\Lumen\Exceptions\ValidationException;
+use Mathrix\Lumen\Zero\Controllers\BaseController;
+use Mathrix\Lumen\Zero\Exceptions\ValidationException;
+use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
 
 /**
  * Class BraintreeController.
@@ -28,9 +28,9 @@ class BraintreeController extends BaseController
      *
      * @param Request $request The Illuminate HTTP request.
      *
-     * @return JsonResponse
+     * @return SuccessJsonResponse
      */
-    public function clientToken(Request $request): JsonResponse
+    public function clientToken(Request $request): SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();
@@ -42,7 +42,7 @@ class BraintreeController extends BaseController
 
         $token = ClientToken::generate($payload);
 
-        return new JsonResponse([
+        return new SuccessJsonResponse([
             "token" => $token,
         ]);
     }
@@ -54,10 +54,10 @@ class BraintreeController extends BaseController
      *
      * @param Request $request The Illuminate HTTP request.
      *
-     * @return JsonResponse
+     * @return SuccessJsonResponse
      * @throws ValidationException
      */
-    public function webhook(Request $request): JsonResponse
+    public function webhook(Request $request): SuccessJsonResponse
     {
         $this->validate($request, [
             "bt_signature" => "required",
@@ -72,22 +72,12 @@ class BraintreeController extends BaseController
 
         switch ($webhook->kind) {
             case WebhookNotification::SUBSCRIPTION_CHARGED_SUCCESSFULLY:
-                if (isset($webhook->subscription)) {
-                    if (isset($webhook->subscription->transactions[0])) {
-                        event(new TransactionSuccessEvent($webhook->subscription->transactions[0]));
-                    }
-
-                    event(new SubscriptionChargedSuccessfullyEvent($webhook->subscription));
-                }
                 break;
             case WebhookNotification::SUBSCRIPTION_CANCELED:
-                if (isset($webhook->subscription)) {
-                    event(new SubscriptionCancelledEvent($webhook->subscription));
-                }
                 break;
         }
 
-        return new JsonResponse([
+        return new SuccessJsonResponse([
             "status" => "success",
             "message" => "Webhook handled",
         ]);

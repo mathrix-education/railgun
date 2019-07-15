@@ -6,7 +6,7 @@ use App\Models\Module;
 use App\Models\User;
 use Faker\Factory as FakerFactory;
 use Illuminate\Support\Collection;
-use Mathrix\Lumen\Bases\BaseTableSeeder;
+use Mathrix\Lumen\Zero\Database\BaseTableSeeder;
 
 /**
  * Class MarksTableSeeder.

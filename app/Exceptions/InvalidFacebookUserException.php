@@ -3,7 +3,7 @@
 namespace App\Exceptions;
 
 use App\Models\User;
-use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 use Throwable;
 
 /**

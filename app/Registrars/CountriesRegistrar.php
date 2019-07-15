@@ -3,7 +3,7 @@
 namespace App\Registrars;
 
 use App\Controllers\CountriesController;
-use Mathrix\Lumen\Bases\BaseRegistrar;
+use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
 /**
  * Class CountriesRegistrar.
@@ -19,17 +19,14 @@ class CountriesRegistrar extends BaseRegistrar
      */
     public function register(): void
     {
-        $controller = CountriesController::class;
-
-        $this->rest("countries", CountriesController::class, [
-            "index" => null,
-            "get" => null,
-            "post" => "scope:countries:write",
-            "patch" => "scope:countries:write",
-            "delete" => "scope:countries:delete",
-            "related:grades" => null
+        $this->rest([
+            "std:index" => null,
+            "std:get" => null,
+            "std:get:slug" => null,
+            "std:post" => "scope:countries:write",
+            "std:patch" => "scope:countries:write",
+            "std:delete" => "scope:countries:delete",
+            "rel:get:grades" => null
         ]);
-
-        $this->get("countries/slug/{countrySlug:[a-z\-]+}", "$controller@getBySlug");
     }
 }

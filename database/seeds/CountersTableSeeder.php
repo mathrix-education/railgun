@@ -3,8 +3,7 @@
 use App\Models\Activity;
 use App\Models\Chapter;
 use App\Models\Notion;
-use Mathrix\Lumen\Bases\BaseTableSeeder;
-
+use Mathrix\Lumen\Zero\Database\BaseTableSeeder;
 
 /**
  * Class CountersTableSeeder.

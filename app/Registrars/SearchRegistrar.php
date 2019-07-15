@@ -3,7 +3,7 @@
 namespace App\Registrars;
 
 use App\Controllers\SearchController;
-use Mathrix\Lumen\Bases\BaseRegistrar;
+use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
 /**
  * Class ContentRegistrar.
@@ -16,7 +16,7 @@ class SearchRegistrar extends BaseRegistrar
 {
     public function register(): void
     {
-        $this->get("search/{gradeId:[1-9]\d*}/{query:[^\/]+}/{page:\d*}/{perPage:[1-9]\d*}",
+        $this->get("search/{gradeId:[1-9]\d*}/{query:[^\/]+}",
             SearchController::class . "@content");
     }
 }

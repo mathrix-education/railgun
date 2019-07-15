@@ -68,8 +68,7 @@ class SubscriptionPipeline
 
     /**
      * @return JsonResponse
-     * @throws Http429TooManyRequestsException
-     * @throws Exception
+     * @throws BraintreeProcessorException
      */
     public function run()
     {
@@ -223,7 +222,7 @@ class SubscriptionPipeline
             $subscriptionPayload = array_merge($subscriptionPayload, [
                 "trialPeriod" => true,
                 "trialDurationUnit" => "day",
-                "trialDuration" => SubscriptionUtils::getRegularPlanStartDate($this->planId)
+                "trialDuration" => SubscriptionUtils::getTrialEndDate($this->planId)
                         ->diffInDays(Carbon::now()) + 1
             ]);
         }
@@ -263,7 +262,7 @@ class SubscriptionPipeline
         }
 
         $description = "Abonnement premium du " . Carbon::now()->format("d/m/Y") . " au "
-            . SubscriptionUtils::getRegularPlanStartDate($this->planId)->format("d/m/Y");
+            . SubscriptionUtils::getTrialEndDate($this->planId)->format("d/m/Y");
         $trialPrice = SubscriptionUtils::getTrialPeriodPrice($this->planId);
 
         /**
@@ -328,7 +327,6 @@ class SubscriptionPipeline
      */
     private function finalize()
     {
-        event(new NewSubscriptionEvent($this->user, $this->subscription, $this->transaction));
 
         $this->user->forgetBraintreeCustomerCache(); // Forget cache about the user, as we updated his subscriptions
 

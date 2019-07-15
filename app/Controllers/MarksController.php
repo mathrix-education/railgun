@@ -10,10 +10,10 @@ use App\Models\Grade;
 use App\Models\Mark;
 use App\Models\Notion;
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Mathrix\Lumen\Bases\BaseController;
+use Mathrix\Lumen\Zero\Controllers\BaseController;
+use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
 
 /**
  * Class MarksController.
@@ -31,9 +31,9 @@ class MarksController extends BaseController
      *
      * @return Collection
      */
-    private function getTreeFromMarks($marks)
+    private function getTreeFromMarks($marks): Collection
     {
-        return $marks->map(function (Mark $mark) {
+        return $marks->map(function (Mark $mark): array {
             /** @var Activity $activity */
             $activity = $mark->markable;
 
@@ -66,9 +66,9 @@ class MarksController extends BaseController
      *
      * @param Request $request The Illuminate HTTP request.
      *
-     * @return JsonResponse
+     * @return SuccessJsonResponse
      */
-    public function activitiesToRevise(Request $request): JsonResponse
+    public function activitiesToRevise(Request $request): SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();
@@ -82,6 +82,6 @@ class MarksController extends BaseController
 
         $trees = $this->getTreeFromMarks($marks);
 
-        return new JsonResponse($trees);
+        return new SuccessJsonResponse($trees);
     }
 }

@@ -3,17 +3,12 @@
 namespace App\Controllers;
 
 use App\Events\TransactionRefundSuccessEvent;
-use App\Models\User;
 use App\Services\Braintree\Utils\Formatter;
-use Braintree\Subscription;
 use Braintree\Transaction;
-use Braintree\TransactionSearch;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
+use Mathrix\Lumen\Zero\Controllers\BaseController;
 
 /**
  * Class TransactionsController.
@@ -65,8 +60,6 @@ class TransactionsController extends BaseController
             $result = Transaction::void($transactionId);
 
             if ($result->success) {
-                event(new TransactionRefundSuccessEvent($result->transaction));
-
                 return new JsonResponse(
                     Formatter::cast($result->transaction->jsonSerialize())
                 );
@@ -110,8 +103,6 @@ class TransactionsController extends BaseController
         $result = Transaction::refund($transactionId);
 
         if ($result->success) {
-            event(new TransactionRefundSuccessEvent($result->transaction));
-
             return new JsonResponse(
                 Formatter::cast($result->transaction->jsonSerialize())
             );

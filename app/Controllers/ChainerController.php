@@ -5,8 +5,8 @@ namespace App\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mathrix\Chainer\Chainer;
-use Mathrix\Lumen\Bases\BaseController;
-use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Zero\Controllers\BaseController;
+use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 
 /**
  * Class ChainerController.

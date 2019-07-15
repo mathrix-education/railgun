@@ -1,6 +1,6 @@
 <?php
 
-use Mathrix\Lumen\Bases\BaseTableSeeder;
+use Mathrix\Lumen\Zero\Database\BaseTableSeeder;
 
 /**
  * Class LevelTableSeeder.

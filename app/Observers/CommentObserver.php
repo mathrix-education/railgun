@@ -18,17 +18,6 @@ class CommentObserver extends BaseObserver
 {
     /**
      * @param Comment $comment
-     */
-    public function saved($comment)
-    {
-        if ($comment->parent_id !== null) {
-            event(new CommentAnswerEvent($comment));
-        }
-    }
-
-
-    /**
-     * @param Comment $comment
      *
      * @return bool
      * @throws Exception

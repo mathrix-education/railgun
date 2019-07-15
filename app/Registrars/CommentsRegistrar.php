@@ -3,7 +3,7 @@
 namespace App\Registrars;
 
 use App\Controllers\CommentsController;
-use Mathrix\Lumen\Bases\BaseRegistrar;
+use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
 /**
  * Class CommentsRegistrar.
@@ -19,15 +19,15 @@ class CommentsRegistrar extends BaseRegistrar
      */
     public function register(): void
     {
-        $controller = CommentsController::class;
-
-        $this->rest("comments", $controller, [
-            "index" => "scope:comments:read",
-            "get" => "scope:comments:read",
-            "post" => "scope:logged",
-            "patch" => "scope:logged",
-            "delete" => "scope:comments:delete"
+        $this->rest([
+            "std:index" => "scope:comments:read",
+            "std:get" => "scope:comments:read",
+            "std:post" => "scope:logged",
+            "std:patch" => "scope:logged",
+            "std:delete" => "scope:comments:delete"
         ]);
+
+        $controller = CommentsController::class;
 
         $this->get("comments/latest/{page:\d+}/{perPage:[1-9]\d*}", [
             "uses" => "$controller@latest",

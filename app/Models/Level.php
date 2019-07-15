@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Mathrix\Lumen\Bases\BaseModel;
+use Mathrix\Lumen\Zero\Models\BaseModel;
 
 /**
  * Class Level.

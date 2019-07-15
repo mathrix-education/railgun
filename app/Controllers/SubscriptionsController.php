@@ -2,23 +2,28 @@
 
 namespace App\Controllers;
 
+use App\Exceptions\InvalidBraintreeCustomerException;
 use App\Models\User;
 use App\Services\Braintree\BraintreeResponse;
 use App\Services\Braintree\Exceptions\BraintreeErrorHandler;
+use App\Services\Braintree\Exceptions\BraintreeGatewayException;
+use App\Services\Braintree\Exceptions\BraintreeProcessorException;
+use App\Services\Braintree\Exceptions\DuplicatePaymentMethodNonceException;
 use App\Services\Braintree\Pipelines\SubscriptionPipeline;
 use App\Services\Braintree\Utils\Formatter;
 use App\Services\Braintree\Utils\SubscriptionUtils;
 use Braintree\PaymentMethod;
 use Braintree\Subscription;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Mathrix\Lumen\Bases\BaseController;
-use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
-use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
-use Mathrix\Lumen\Exceptions\Http\Http429TooManyRequestsException;
-use Mathrix\Lumen\Exceptions\ValidationException;
+use Mathrix\Lumen\Zero\Controllers\BaseController;
+use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Zero\Exceptions\Http\Http401UnauthorizedException;
+use Mathrix\Lumen\Zero\Exceptions\ValidationException;
+use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
 
 /**
  * Class SubscriptionsController.
@@ -43,7 +48,7 @@ class SubscriptionsController extends BaseController
      * @param Request $request The Illuminate HTTP request.
      *
      * @return JsonResponse
-     * @throws Http429TooManyRequestsException
+     * @throws BraintreeProcessorException
      */
     public function create(Request $request): JsonResponse
     {
@@ -77,8 +82,11 @@ class SubscriptionsController extends BaseController
      * @param string $subscriptionId The Braintree subscription id.
      *
      * @return JsonResponse
-     * @throws Http400BadRequestException
+     * @throws BraintreeGatewayException
+     * @throws BraintreeProcessorException
+     * @throws DuplicatePaymentMethodNonceException
      * @throws Http401UnauthorizedException
+     * @throws InvalidBraintreeCustomerException
      * @throws ValidationException
      */
     public function update(Request $request, string $subscriptionId): JsonResponse
@@ -217,6 +225,6 @@ class SubscriptionsController extends BaseController
             $user->save();
         }
 
-        return new JsonResponse(Formatter::cast($subscription->jsonSerialize()));
+        return new SuccessJsonResponse(Formatter::cast($subscription->jsonSerialize()));
     }
 }

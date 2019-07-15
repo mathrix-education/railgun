@@ -2,13 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Services\Braintree\Utils\Formatter;
-use Braintree\CreditCard;
+use App\Models\User;
 use Braintree\Subscription;
-use Carbon\Carbon;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
-use Mathrix\Lumen\Bases\BaseCommand;
+use Illuminate\Support\Facades\DB;
+use Mathrix\Lumen\Zero\Console\Commands\BaseCommand;
 
 /**
  * Class TestCommand.
@@ -26,8 +23,10 @@ class TestCommand extends BaseCommand
 
     public function handle()
     {
-        $sub = Subscription::find("sub_dd781c6c3578366796631806deda06fd");
-
-        dd(Formatter::cast($sub->jsonSerialize()));
+        $result = gateway()->transaction()->sale([
+            "amount" => 0,
+            "customerId" => "cus_265bcc2af7e033ed9477340ab5ab2224"
+        ]);
+        dd($result);
     }
 }

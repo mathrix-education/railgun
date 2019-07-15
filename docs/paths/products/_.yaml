@@ -1,0 +1,11 @@
+$extends:
+  ../../fragments/paths/index.yaml:
+    model: product
+  ../../fragments/paths/post.yaml:
+    model: product
+get:
+  security:
+    - bearer: [products:read]
+post:
+  security:
+    - bearer: [products:write]

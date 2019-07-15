@@ -3,7 +3,7 @@
 namespace App\Registrars;
 
 use App\Controllers\DisciplinesController;
-use Mathrix\Lumen\Bases\BaseRegistrar;
+use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
 /**
  * Class DisciplinesRegistrar.
@@ -19,16 +19,12 @@ class DisciplinesRegistrar extends BaseRegistrar
      */
     public function register(): void
     {
-        $controller = DisciplinesController::class;
-
-        $this->rest("disciplines", $controller, [
-            "index" => null,
-            "get" => null,
-            "post" => "scope:disciplines:write",
-            "patch" => "scope:disciplines:write",
-            "delete" => "scope:disciplines:delete"
+        $this->rest([
+            "std:index" => null,
+            "std:get" => null,
+            "std:post" => "scope:disciplines:write",
+            "std:patch" => "scope:disciplines:write",
+            "std:delete" => "scope:disciplines:delete"
         ]);
-
-        $this->get("disciplines/slug/{disciplineSlug:[a-z\-]+}", "$controller@getBySlug");
     }
 }

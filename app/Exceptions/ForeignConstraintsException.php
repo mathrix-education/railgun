@@ -2,8 +2,8 @@
 
 namespace App\Exceptions;
 
-use Mathrix\Lumen\Bases\BaseModel;
-use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Zero\Models\BaseModel;
 use Throwable;
 
 /**
@@ -15,9 +15,6 @@ use Throwable;
  */
 class ForeignConstraintsException extends Http400BadRequestException
 {
-    protected const ERROR = "foreign_constraints";
-
-
     /**
      * ForeignConstraintsException constructor.
      *

@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Services\Braintree\Exceptions;
+namespace App\Exceptions;
 
+use App\Models\User;
+use App\Services\Braintree\BraintreeResponse;
 use Braintree\Result\Error;
 use Braintree\Subscription;
 use Braintree\Transaction;
-use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 
 /**
  * Class BraintreeErrorHandler.
@@ -19,23 +20,25 @@ class BraintreeErrorHandler
     /**
      * Handle an unsuccessful Braintree request result.
      *
-     * @param Error $error
+     * @param BraintreeResponse $error
+     * @param User|null $user The user (will unlock it)
      *
-     * @throws BraintreeGatewayException
-     * @throws BraintreeProcessorException
-     * @throws DuplicatePaymentMethodNonceException
-     * @throws Http400BadRequestException
+     * @throws GatewayRejectionException
+     * @throws ProcessorDeclinedException
+     * @throws UnknownBraintreeException
      */
-    public static function report($error)
+    public static function report($error, User $user = null): void
     {
+        if ($user instanceof User) {
+            $user->unlock();
+        }
+
         if ($error->transaction instanceof Transaction) {
             self::wrapper("transaction", $error);
         } else if ($error->subscription instanceof Subscription) {
             self::wrapper("subscription", $error);
-        } else if ($error->message === "Cannot use a payment_method_nonce more than once.") {
-            throw new DuplicatePaymentMethodNonceException([], $error->message);
         } else {
-            throw new Http400BadRequestException($error->jsonSerialize(), "Unknown Braintreee exception.");
+            throw new UnknownBraintreeException($error->jsonSerialize());
         }
     }
 
@@ -44,10 +47,10 @@ class BraintreeErrorHandler
      * @param string $type
      * @param Error $error
      *
-     * @throws BraintreeGatewayException
-     * @throws BraintreeProcessorException
+     * @throws GatewayRejectionException
+     * @throws ProcessorDeclinedException
      */
-    private static function wrapper(string $type, $error)
+    private static function wrapper(string $type, $error): void
     {
         /** @var Subscription|Transaction $object */
         $object = $error->{$type};
@@ -58,7 +61,7 @@ class BraintreeErrorHandler
                 "reason" => $object->gatewayRejectionReason
             ];
 
-            throw new BraintreeGatewayException($exceptionPayload, $error->message);
+            throw new GatewayRejectionException($exceptionPayload, $error->message);
         } else {
             // Handle processor rejection
             $exceptionPayload = [
@@ -69,7 +72,7 @@ class BraintreeErrorHandler
                 ]
             ];
 
-            throw new BraintreeProcessorException($exceptionPayload, $object->processorResponseText);
+            throw new ProcessorDeclinedException($exceptionPayload, $object->processorResponseText);
         }
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Registrars;
 
 use App\Controllers\VotesController;
-use Mathrix\Lumen\Bases\BaseRegistrar;
+use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
 /**
  * Class VotesRegistrar.

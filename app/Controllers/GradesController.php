@@ -4,12 +4,12 @@ namespace App\Controllers;
 
 use App\Models\Chapter;
 use App\Models\Grade;
-use App\Services\CacheHelper;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Mathrix\Lumen\Bases\BaseController;
-use Mathrix\Lumen\Responses\PaginationJsonResponse;
+use Mathrix\Lumen\Zero\Controllers\BaseController;
+use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Zero\Responses\PaginationJsonResponse;
 
 /**
  * Class GradesController.
@@ -20,23 +20,6 @@ use Mathrix\Lumen\Responses\PaginationJsonResponse;
  */
 class GradesController extends BaseController
 {
-    /**
-     * GET /grades/slug/{gradeSlug}
-     *
-     * @param string $gradeSlug The grade slug.
-     *
-     * @return JsonResponse
-     */
-    public function getBySlug(string $gradeSlug)
-    {
-        $grade = Grade::query()
-            ->where("slug", "=", $gradeSlug)
-            ->firstOrFail();
-
-        return new JsonResponse($grade);
-    }
-
-
     /**
      * GET /grades/slug/{gradeSlug:[a-z0-9\-]+}/chapters/slug/{chapterSlug:[a-z0-9\-]+}
      * Get a chapter by its slug and grade slug.
@@ -74,6 +57,7 @@ class GradesController extends BaseController
      * @param int $perPage The number of disciplines per page.
      *
      * @return PaginationJsonResponse
+     * @throws Http400BadRequestException
      */
     public function disciplines(Request $request, int $gradeId, int $page, int $perPage): PaginationJsonResponse
     {

@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use Mathrix\Lumen\Bases\BaseCommand;
+use Mathrix\Lumen\Zero\Console\Commands\BaseCommand;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 

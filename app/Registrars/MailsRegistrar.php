@@ -8,7 +8,7 @@ use App\Mails\TransactionSuccessMail;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Mathrix\Lumen\Bases\BaseRegistrar;
+use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
 /**
  * Class MailsRegistrar.
@@ -56,12 +56,12 @@ class MailsRegistrar extends BaseRegistrar
                 return new JsonResponse(self::getMails());
             });
 
-            self::getMails()->map(function ($mailableClass, string $uri) {
-                /** @var BaseMail|string $mailableClass */
-                $this->get($uri, function () use ($mailableClass) {
-                    return $mailableClass::mock();
-                });
-            });
+//            self::getMails()->map(function ($mailableClass, string $uri) {
+//                /** @var BaseMail|string $mailableClass */
+//                $this->get($uri, function () use ($mailableClass) {
+//                    return $mailableClass::mock();
+//                });
+//            });
 
             // Custom mails routes
             $this->get("mails/transaction-success/{transactionId}", function ($transactionId) {

@@ -2,12 +2,12 @@
 
 namespace App\Console;
 
+use App\Console\Commands\Braintree\BraintreeSyncCommand;
+use App\Console\Commands\Braintree\BraintreeSyncCustomersCommand;
+use App\Console\Commands\Braintree\BraintreeSyncSubscriptionsCommand;
+use App\Console\Commands\Braintree\BraintreeSyncTransactionsCommand;
 use App\Console\Commands\Cache\RebuildCacheCommand;
 use App\Console\Commands\CompileMails;
-use App\Console\Commands\DBDestroyCommand;
-use App\Console\Commands\GCloud\CloneProductionDatabaseCommand;
-use App\Console\Commands\PackFixCommand;
-use App\Console\Commands\ResendTransactionSuccessMailCommand;
 use App\Console\Commands\TestCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
@@ -26,9 +26,11 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         TestCommand::class,
         CompileMails::class,
-        PackFixCommand::class,
-        ResendTransactionSuccessMailCommand::class,
         RebuildCacheCommand::class,
+        BraintreeSyncCommand::class,
+        BraintreeSyncCustomersCommand::class,
+        BraintreeSyncSubscriptionsCommand::class,
+        BraintreeSyncTransactionsCommand::class
     ];
 
 

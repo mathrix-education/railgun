@@ -3,7 +3,7 @@
 namespace Tests\Integration\Braintree;
 
 use App\Models\User;
-use Mathrix\Lumen\Bases\BaseModel;
+use Mathrix\Lumen\Zero\Models\BaseModel;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Tests\OpenAPI\OpenAPITrait;

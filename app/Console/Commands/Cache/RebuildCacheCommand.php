@@ -4,7 +4,7 @@ namespace App\Console\Commands\Cache;
 
 use App\Console\Commands\BoxStyle;
 use App\Models\User;
-use Mathrix\Lumen\Bases\BaseCommand;
+use Mathrix\Lumen\Zero\Console\Commands\BaseCommand;
 
 /**
  * Class RebuildCacheCommand.

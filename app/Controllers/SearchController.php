@@ -6,7 +6,8 @@ use App\Models\Grade;
 use App\Models\Module;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
-use Mathrix\Lumen\Bases\BaseController;
+use Mathrix\Lumen\Zero\Controllers\BaseController;
+use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
 
 /**
  * Class SearchController.
@@ -27,6 +28,7 @@ class SearchController extends BaseController
      * @param int $perPage The number of results (videos, chapters, notions) per page.
      *
      * @return JsonResponse
+     * //TODO: update json response
      */
     public function content(int $gradeId, string $query, int $page = 0, int $perPage = 100)
     {
@@ -72,7 +74,7 @@ class SearchController extends BaseController
                 ];
             });
 
-        return new JsonResponse([
+        return new SuccessJsonResponse([
             "page" => $page,
             "per_page" => $perPage,
             "total" => $videosQuery->count(),

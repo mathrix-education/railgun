@@ -4,30 +4,24 @@ namespace App\Providers;
 
 use App\Models\Activity;
 use App\Models\Comment;
+use App\Models\Discount;
 use App\Models\Module;
 use App\Models\Notion;
 use App\Models\Post;
+use App\Models\Product;
 use App\Models\User;
-use App\Notifications\CommentAnswerNotification;
-use App\Observers\BaseObserver;
-use App\Observers\NotificationObserver;
-use App\Policies\BasePolicy;
-use App\Policies\NotificationPolicy;
+use App\Services\Braintree\BraintreeGatewayServiceProvider;
 use Barryvdh\Cors\ServiceProvider as CorsServiceProvider;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Filesystem\FilesystemServiceProvider;
 use Illuminate\Mail\MailServiceProvider;
-use Illuminate\Notifications\DatabaseNotification;
-use Illuminate\Notifications\NotificationServiceProvider;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
-use Laravelium\Sitemap\SitemapServiceProvider;
 use Mathrix\Lumen\JWT\Auth\JWTServiceProvider;
 use Mathrix\Lumen\JWT\Auth\ScopesLoader;
-use Mathrix\Lumen\Providers\ObserverServiceProvider;
-use Mathrix\Lumen\Providers\PolicyServiceProvider;
-use Mathrix\Lumen\Providers\RegistrarServiceProvider;
+use Mathrix\Lumen\Zero\Providers\ObserverServiceProvider;
+use Mathrix\Lumen\Zero\Providers\PolicyServiceProvider;
+use Mathrix\Lumen\Zero\Providers\RegistrarServiceProvider;
 use Sentry\Laravel\ServiceProvider as SentryServiceProvider;
 use Superbalist\LaravelGoogleCloudStorage\GoogleCloudStorageServiceProvider;
 
@@ -49,21 +43,19 @@ class AppServiceProvider extends ServiceProvider
         // App service providers
         $this->app->register(EventServiceProvider::class);
         $this->app->register(BraintreeGatewayServiceProvider::class);
-        $this->app->register(StripeServiceProvider::class);
 
         // Vendor service providers
         $this->app->register(CorsServiceProvider::class);
         $this->app->register(FilesystemServiceProvider::class);
         $this->app->register(MailServiceProvider::class);
-        $this->app->register(NotificationServiceProvider::class);
-        $this->app->register(SitemapServiceProvider::class);
+        // $this->app->register(SitemapServiceProvider::class);
         $this->app->register(GoogleCloudStorageServiceProvider::class);
         $this->app->register(JWTServiceProvider::class);
         $this->app->register(FacebookServiceProvider::class);
 
         // Mathrix Lumen Zero Providers
-        $this->registerObservers();
-        $this->registerPolicies();
+        $this->app->register(ObserverServiceProvider::class);
+        $this->app->register(PolicyServiceProvider::class);
         $this->app->register(RegistrarServiceProvider::class);
 
         if (env("SENTRY_DSN") !== null) {
@@ -84,41 +76,8 @@ class AppServiceProvider extends ServiceProvider
             "post" => Post::class,
             "comment" => Comment::class,
             "user" => User::class,
-
-            // Notifications
-            "comment_answer" => CommentAnswerNotification::class
+            "product" => Product::class,
+            "discount" => Discount::class
         ]);
-    }
-
-
-    /**
-     * Register observers.
-     */
-    private function registerObservers(): void
-    {
-        ObserverServiceProvider::$IgnoredObservers = [
-            BaseObserver::class,
-            NotificationObserver::class
-        ];
-
-        $this->app->register(ObserverServiceProvider::class);
-
-        DatabaseNotification::observe(NotificationObserver::class);
-    }
-
-
-    /**
-     * Register policies.
-     */
-    private function registerPolicies(): void
-    {
-        PolicyServiceProvider::$IgnoredPolicies = [
-            BasePolicy::class,
-            NotificationPolicy::class,
-        ];
-
-        $this->app->register(PolicyServiceProvider::class);
-
-        Gate::policy(DatabaseNotification::class, NotificationPolicy::class);
     }
 }

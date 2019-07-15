@@ -10,9 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use League\Flysystem\FileNotFoundException as FlysystemFileNotFoundException;
-use Mathrix\Lumen\Bases\BaseController;
-use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
-use Mathrix\Lumen\Exceptions\ValidationException;
+use Mathrix\Lumen\Zero\Controllers\BaseController;
 
 
 /**

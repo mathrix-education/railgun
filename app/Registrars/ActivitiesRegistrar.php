@@ -3,7 +3,7 @@
 namespace App\Registrars;
 
 use App\Controllers\ActivitiesController;
-use Mathrix\Lumen\Bases\BaseRegistrar;
+use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
 /**
  * Class ActivitiesRegistrar.
@@ -21,13 +21,13 @@ class ActivitiesRegistrar extends BaseRegistrar
     {
         $controller = ActivitiesController::class;
 
-        $this->rest("activities", $controller, [
-            "index" => "scope:activities:read",
-            "get" => null,
-            "post" => "scope:activities:write",
-            "patch" => "scope:activities:write",
-            "delete" => "scope:activities:delete",
-            "related:modules" => null
+        $this->rest([
+            "std:index" => "scope:activities:read",
+            "std:get" => null,
+            "std:post" => "scope:activities:write",
+            "std:patch" => "scope:activities:write",
+            "std:delete" => "scope:activities:delete",
+            "rel:get:modules" => null
         ]);
 
         $this->group(["middleware" => "scope:logged"], function () use ($controller) {

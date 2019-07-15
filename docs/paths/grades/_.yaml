@@ -1,0 +1,11 @@
+$extends:
+  ../../fragments/paths/index.yaml:
+    model: grade
+  ../../fragments/paths/post.yaml:
+    model: grade
+get:
+  security:
+    - bearer: [grades:read]
+post:
+  security:
+    - bearer: [grades:write]

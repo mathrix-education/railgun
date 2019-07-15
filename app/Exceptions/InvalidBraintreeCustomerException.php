@@ -3,7 +3,7 @@
 namespace App\Exceptions;
 
 use App\Models\User;
-use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 use Throwable;
 
 /**
@@ -15,9 +15,6 @@ use Throwable;
  */
 class InvalidBraintreeCustomerException extends Http400BadRequestException
 {
-    protected const ERROR = "invalid_braintree_customer";
-
-
     public function __construct(User $user, Throwable $previous = null)
     {
         parent::__construct(

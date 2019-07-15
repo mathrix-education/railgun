@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
-use Mathrix\Lumen\Exceptions\Http\HttpException as MathrixHTTPException;
 use Mathrix\Lumen\JWT\Auth\Exceptions\InvalidCredentialsException;
+use Mathrix\Lumen\Zero\Exceptions\Http\HttpException;
 use ReflectionClass;
 use ReflectionException;
 use Sentry\State\Hub as Sentry;
@@ -77,7 +77,7 @@ class Handler extends ExceptionHandler
             $sentry->captureException($e);
         }
 
-        if ($e instanceof MathrixHTTPException) {
+        if ($e instanceof HTTPException) {
             Log::error($e->getMessage());
         }
 
@@ -97,7 +97,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        if ($e instanceof MathrixHTTPException) {
+        if ($e instanceof HTTPException) {
             return $e->toJsonResponse();
         }
 

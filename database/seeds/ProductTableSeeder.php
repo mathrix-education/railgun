@@ -4,7 +4,7 @@ use App\Models\Module;
 use App\Models\Product;
 use Carbon\Carbon;
 use Faker\Factory;
-use Mathrix\Lumen\Bases\BaseTableSeeder;
+use Mathrix\Lumen\Zero\Database\BaseTableSeeder;
 
 /**
  * Class ProductTableSeeder.

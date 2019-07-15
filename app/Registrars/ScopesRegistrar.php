@@ -3,7 +3,7 @@
 namespace App\Registrars;
 
 use App\Controllers\ScopesController;
-use Mathrix\Lumen\Bases\BaseRegistrar;
+use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
 /**
  * Class ScopesRegistrar.

@@ -6,8 +6,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Faker\Factory as FakerFactory;
 use Illuminate\Support\Collection;
-use Mathrix\Lumen\Bases\BaseTableSeeder;
-use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Zero\Database\BaseTableSeeder;
 
 /**
  * Class LogTableSeeder.
@@ -18,9 +17,6 @@ use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
  */
 class LogTableSeeder extends BaseTableSeeder
 {
-    /**
-     * @throws Http400BadRequestException
-     */
     public function run()
     {
         $faker = FakerFactory::create();

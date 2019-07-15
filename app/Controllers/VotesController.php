@@ -7,7 +7,7 @@ use App\Models\Vote;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Mathrix\Lumen\Bases\BaseController;
+use Mathrix\Lumen\Zero\Controllers\BaseController;
 use Mathrix\Lumen\Exceptions\ValidationException;
 
 /**

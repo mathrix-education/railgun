@@ -16,11 +16,13 @@ use App\Services\Braintree\Utils\AffiliateProcess;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Mathrix\Lumen\Bases\BaseController;
-use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
-use Mathrix\Lumen\Exceptions\Http\Http429TooManyRequestsException;
-use Mathrix\Lumen\Exceptions\ValidationException;
-use Mathrix\Lumen\Responses\PaginationJsonResponse;
+use Mathrix\Lumen\Zero\Controllers\BaseController;
+use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Zero\Exceptions\Http\Http401UnauthorizedException;
+use Mathrix\Lumen\Zero\Exceptions\Http\Http429TooManyRequestsException;
+use Mathrix\Lumen\Zero\Exceptions\ValidationException;
+use Mathrix\Lumen\Zero\Responses\PaginationJsonResponse;
+use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
 
 /**
  * Class ProductsController.
@@ -31,23 +33,6 @@ use Mathrix\Lumen\Responses\PaginationJsonResponse;
  */
 class ProductsController extends BaseController
 {
-    /**
-     * GET /products/{packId}/items/{page}/{perPage}
-     *
-     * @param Request $request The Illuminate HTTP request.
-     * @param int $productId The product id.
-     * @param int $page The results page.
-     * @param int $perPage The number of products page.
-     *
-     * @return PaginationJsonResponse
-     * @throws Http401UnauthorizedException
-     */
-    public function items(Request $request, int $productId, int $page, int $perPage): PaginationJsonResponse
-    {
-        return $this->relation($request, "items", $productId, $page, $perPage);
-    }
-
-
     /**
      * PATCH /products/{packId}/items
      *
@@ -78,51 +63,32 @@ class ProductsController extends BaseController
 
 
     /**
-     * GET /products/slug/{productSlug}
-     *
-     * @param string $productSlug The products slug.
-     *
-     * @return JsonResponse
-     */
-    public function getBySlug(string $productSlug)
-    {
-        $product = Product::query()
-            ->where("slug", "=", $productSlug)
-            ->firstOrFail();
-
-        return new JsonResponse($product);
-    }
-
-
-    /**
-     * GET /products/{type}/{page}/{perPage}
+     * GET /products/{type}
      * Get products of a given type.
      *
-     * @param string $type all|training|section|lesson The product types.
-     * @param int $page The page (starts at 0).
-     * @param int $perPage The number of product per page.
+     * @param string $type pack|training|section|lesson The product types.
      *
      * @return PaginationJsonResponse
+     * @throws Http400BadRequestException
      */
-    public function paginateByType(string $type, int $page, int $perPage): PaginationJsonResponse
+    public function paginateByType(string $type): PaginationJsonResponse
     {
         $query = Product::query()->where("type", "=", $type);
 
-        return new PaginationJsonResponse($query, $page, $perPage);
+        return new PaginationJsonResponse($query);
     }
 
 
     /**
-     * GET /products/buyable/{type}/{page}/{perPage}
+     * GET /products/buyable/{type}
      * Get buyable products.
      *
      * @param string $type all|training|section|lesson The product types.
-     * @param int $page The page (starts at 0).
-     * @param int $perPage The number of product per page.
      *
      * @return PaginationJsonResponse
+     * @throws Http400BadRequestException
      */
-    public function buyable(string $type, int $page, int $perPage): PaginationJsonResponse
+    public function buyable(string $type): PaginationJsonResponse
     {
         $query = Product::with("children")
             ->where("buyable", "=", true);
@@ -132,7 +98,7 @@ class ProductsController extends BaseController
                 ->where("visible", "=", true);
         }
 
-        return new PaginationJsonResponse($query, $page, $perPage);
+        return new PaginationJsonResponse($query);
     }
 
 
@@ -165,7 +131,7 @@ class ProductsController extends BaseController
         $with = array_merge($with, $withModules);
         $product = Product::with($with)->findOrFail($productId);
 
-        return new JsonResponse($product);
+        return new SuccessJsonResponse($product);
     }
 
 
@@ -176,8 +142,6 @@ class ProductsController extends BaseController
      * @param Request $request The Illuminate HTTP request.
      *
      * @return JsonResponse
-     * @throws Http401UnauthorizedException
-     * @throws Http429TooManyRequestsException
      */
     public function buy(Request $request): JsonResponse
     {
@@ -194,12 +158,12 @@ class ProductsController extends BaseController
      * @return JsonResponse
      * @throws DiscountExpiredException
      * @throws DiscountNotApplicableException
+     * @throws Http401UnauthorizedException
      * @throws InvalidSponsorException
      * @throws ProductAlreadyBoughtException
      * @throws ProductNotBuyableException
      * @throws SponsorNotFoundException
      * @throws ValidationException
-     * @throws Http401UnauthorizedException
      */
     public function cart(Request $request)
     {
@@ -287,6 +251,6 @@ class ProductsController extends BaseController
             "total" => $total
         ];
 
-        return new JsonResponse($cartPayload);
+        return new SuccessJsonResponse($cartPayload);
     }
 }

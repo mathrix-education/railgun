@@ -3,13 +3,12 @@
 namespace App\Controllers;
 
 use App\Models\Comment;
-use App\Models\Module;
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Mathrix\Lumen\Bases\BaseController;
-use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
-use Mathrix\Lumen\Responses\PaginationJsonResponse;
+use Mathrix\Lumen\Zero\Controllers\BaseController;
+use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Zero\Responses\PaginationJsonResponse;
+use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
 
 /**
  * Class CommentsController.
@@ -26,10 +25,9 @@ class CommentsController extends BaseController
      *
      * @param Request $request
      *
-     * @return JsonResponse
-     * @throws Http401UnauthorizedException
+     * @return SuccessJsonResponse
      */
-    public function post(Request $request): JsonResponse
+    public function post(Request $request): SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();
@@ -38,20 +36,18 @@ class CommentsController extends BaseController
             "user_id" => $user->id,
         ]);
 
-        return parent::post($request);
+        return parent::standardPost($request);
     }
 
 
     /**
-     * GET /comments/latest/{page}/{perPage}
+     * GET /comments/latest
      * Get the latest comments, ordered by desc created_at field.
      *
-     * @param int $page The page (starts at 0).
-     * @param int $perPage The number of comments per page.
-     *
-     * @return JsonResponse
+     * @return SuccessJsonResponse
+     * @throws Http400BadRequestException
      */
-    public function latest(int $page = 0, int $perPage = 100): JsonResponse
+    public function latest(): SuccessJsonResponse
     {
         $query = Comment::with([
             "user:id,username,firstname,level,grade_id",
@@ -60,6 +56,6 @@ class CommentsController extends BaseController
         ])
             ->orderBy("created_at", "desc");
 
-        return new PaginationJsonResponse($query, $page, $perPage);
+        return new PaginationJsonResponse($query);
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Registrars;
 
 use App\Controllers\LevelsController;
-use Mathrix\Lumen\Bases\BaseRegistrar;
+use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
 /**
  * Class LevelsRegistrar.
@@ -19,6 +19,8 @@ class LevelsRegistrar extends BaseRegistrar
      */
     public function register(): void
     {
-        $this->get("levels/{page:\d+}/{perPage:[1-9]\d*}", LevelsController::class . "@index");
+        $this->rest([
+            "std:index" => null
+        ]);
     }
 }

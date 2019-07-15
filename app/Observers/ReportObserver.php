@@ -3,7 +3,6 @@
 namespace App\Observers;
 
 use App\Models\Report;
-use Mathrix\Lumen\Bases\BaseObserver;
 
 /**
  * Class ReportObserver.

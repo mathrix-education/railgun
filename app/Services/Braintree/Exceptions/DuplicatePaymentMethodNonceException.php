@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Services\Braintree\Exceptions;
+namespace App\Exceptions;
 
-use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
+
+use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 
 /**
  * Class DuplicatePaymentMethodNonceException.
  *
  * @author Mathieu Bour <mathieu@mathrix.fr>
  * @copyright Mathrix Education SA.
- * @since 5.0.1-dev
+ * @since 0.9.7
  */
 class DuplicatePaymentMethodNonceException extends Http400BadRequestException
 {
-    /** The HTTP error standard name */
-    protected const ERROR = "duplicate_payment_method_nonce";
 }

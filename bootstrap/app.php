@@ -7,12 +7,9 @@ use Illuminate\Contracts\Mail\Mailer;
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
-// Generate environment variables
-// Load DotEnv
-try {
-    (new Dotenv\Dotenv(__DIR__ . "/../"))->load();
-} catch (Dotenv\Exception\InvalidPathException $e) {
-}
+(new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
+    dirname(__DIR__)
+))->bootstrap();
 
 // APP_VERSION
 $version = "unknown";

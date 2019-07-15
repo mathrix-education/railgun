@@ -2,11 +2,9 @@
 
 namespace App\Controllers;
 
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\JWT\Auth\ScopesLoader;
-use Mathrix\Lumen\Responses\PaginationJsonResponse;
+use Mathrix\Lumen\Zero\Controllers\BaseController;
+use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
 
 /**
  * Class ScopesController.
@@ -17,10 +15,8 @@ use Mathrix\Lumen\Responses\PaginationJsonResponse;
  */
 class ScopesController extends BaseController
 {
-    public function all()
+    public function all(): SuccessJsonResponse
     {
-        $scopes = ScopesLoader::getRegisteredScopes();
-
-        return new JsonResponse($scopes);
+        return new SuccessJsonResponse(ScopesLoader::getRegisteredScopes());
     }
 }

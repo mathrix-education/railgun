@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Laravelium\Sitemap\Sitemap;
-use Mathrix\Lumen\Bases\BaseController;
+use Mathrix\Lumen\Zero\Controllers\BaseController;
+use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
 
 /**
  * Class SystemController.
@@ -48,7 +49,7 @@ class SystemController extends BaseController
      */
     public function base(): JsonResponse
     {
-        return new JsonResponse([
+        return new SuccessJsonResponse([
             "message" => "Welcome to the official Mathrix Education REST API!",
             "authors" => ["Mathieu Bour <mathieu@mathrix.fr>"],
             "version" => env("APP_VERSION"),
@@ -84,7 +85,7 @@ class SystemController extends BaseController
         ])
             ->where("id", "=", $chapterId);
 
-        return new JsonResponse([
+        return new SuccessJsonResponse([
             "user_random" => [
                 "query" => $userQuery->toSql(),
                 "mean($count)" => $this->benchmark(function () use ($userQuery) {

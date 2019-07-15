@@ -13,11 +13,11 @@ use Faker\Factory as FakerFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Exceptions\ValidationException;
 use Mathrix\Lumen\JWT\Auth\Exceptions\InvalidCredentialsException;
 use Mathrix\Lumen\JWT\Auth\JWT\JWTIssuer;
+use Mathrix\Lumen\Zero\Controllers\BaseController;
 
 /**
  * Class AuthController.
@@ -144,9 +144,6 @@ class AuthController extends BaseController
             $user->update(["token" => Factory::create()->uuid]);
         });
 
-        // Send PasswordForgottenMail
-        event(new PasswordForgottenEvent($user));
-
         return new JsonResponse([
             "success" => true,
             "message" => "Reset email sent successfully"
@@ -183,9 +180,6 @@ class AuthController extends BaseController
                 "token" => FakerFactory::create()->uuid, // Remove token
             ]);
         });
-
-        // Send PasswordResetMail
-        event(new PasswordResetEvent($user));
 
         return new JsonResponse($user->refresh());
     }

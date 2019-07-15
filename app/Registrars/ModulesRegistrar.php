@@ -3,7 +3,7 @@
 namespace App\Registrars;
 
 use App\Controllers\ModulesController;
-use Mathrix\Lumen\Bases\BaseRegistrar;
+use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
 /**
  * Class ModulesRegistrar.
@@ -19,17 +19,18 @@ class ModulesRegistrar extends BaseRegistrar
      */
     public function register(): void
     {
-        $controller = ModulesController::class;
 
-        $this->rest("modules", $controller, [
-            "index" => "scope:modules:read",
-            "get" => null,
-            "post" => "scope:modules:write",
-            "patch" => "scope:modules:write",
-            "delete" => "scope:modules:delete",
-            "related:comments" => null,
-            "related:reports" => "scope:reports:read"
+        $this->rest([
+            "std:index" => "scope:modules:read",
+            "std:get" => null,
+            "std:post" => "scope:modules:write",
+            "std:patch" => "scope:modules:write",
+            "std:delete" => "scope:modules:delete",
+            "rel:get:comments" => null,
+            "rel:get:reports" => "scope:reports:read"
         ]);
+
+        $controller = ModulesController::class;
 
         $this->get("modules/{moduleId:[1-9]\d*}/chapter/recursive", "$controller@chapterRecursive");
 

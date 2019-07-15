@@ -2,34 +2,36 @@
 
 use App\Models\User;
 use Faker\Factory as FakerFactory;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Ramsey\Uuid\Uuid;
 
-if (!function_exists("config_path")) {
-    /**
-     * Get the configuration path.
-     *
-     * @param string $path
-     *
-     * @return string
-     */
-    function config_path($path = "")
-    {
-        return app()->basePath() . "/config" . ($path ? "/" . $path : $path);
-    }
-}
-
-if (!function_exists("public_path")) {
-    /**
-     * Get the public path.
-     *
-     * @param string $path
-     *
-     * @return string
-     */
-    function public_path($path = "")
-    {
-        return app()->basePath() . "/public" . ($path ? "/" . $path : $path);
-    }
-}
+//if (!function_exists("config_path")) {
+//    /**
+//     * Get the configuration path.
+//     *
+//     * @param string $path
+//     *
+//     * @return string
+//     */
+//    function config_path($path = "")
+//    {
+//        return app()->basePath() . "/config" . ($path ? "/" . $path : $path);
+//    }
+//}
+//
+//if (!function_exists("public_path")) {
+//    /**
+//     * Get the public path.
+//     *
+//     * @param string $path
+//     *
+//     * @return string
+//     */
+//    function public_path($path = "")
+//    {
+//        return app()->basePath() . "/public" . ($path ? "/" . $path : $path);
+//    }
+//}
 
 if (!function_exists("timestamps")) {
     /**
@@ -64,5 +66,34 @@ if (!function_exists("scope")) {
     function scope($user, string $scope): bool
     {
         return $user instanceof User && $user->hasScope($scope);
+    }
+}
+
+if (!function_exists("gateway")) {
+    /**
+     * @return \Braintree\Gateway
+     */
+    function gateway(): \Braintree\Gateway
+    {
+        return app(\Braintree\Gateway::class);
+    }
+}
+
+
+if (!function_exists("uuid")) {
+    function uuid(): ?string
+    {
+        try {
+            return Uuid::uuid4();
+        } catch (Exception $e) {
+            return null;
+        }
+    }
+}
+
+if ((!function_exists("morph_alias"))) {
+    function morph_alias($class)
+    {
+        return array_search($class, Relation::morphMap()) ?: $class;
     }
 }

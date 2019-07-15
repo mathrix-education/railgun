@@ -3,7 +3,7 @@
 namespace App\Registrars;
 
 use App\Controllers\ProductsController;
-use Mathrix\Lumen\Bases\BaseRegistrar;
+use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
 /**
  * Class ProductsRegistrar.
@@ -21,26 +21,22 @@ class ProductsRegistrar extends BaseRegistrar
     {
         $controller = ProductsController::class;
 
-        $this->rest("products", $controller, [
-            "index" => "scope:products:read",
-            "get" => "scope:products:read",
-            "post" => "scope:products:write",
-            "patch" => "scope:products:write",
-            "delete" => "scope:products:delete",
-            "related:items" => null
-        ]);
-
-        $this->patch("products/{packId:[1-9]\d*}/items", [
-            "middleware" => "scope:products:write",
-            "uses" => "$controller@patchItems"
+        $this->rest([
+            "std:index" => "scope:products:read",
+            "std:get" => "scope:products:read",
+            "std:get:slug" => null,
+            "std:post" => "scope:products:write",
+            "std:patch" => "scope:products:write",
+            "std:delete" => "scope:products:delete",
+            "rel:get:items" => null,
+            "rel:patch:items" => "scope:products:write"
         ]);
 
         $this->get("products/{productId:[1-9]\d*}/recursive", "$controller@recursive");
-        $this->get("products/slug/{productSlug:[a-z0-9\-]+}", "$controller@getBySlug");
 
         $type = "{type:all|premium|pack|training|section|lesson}";
-        $this->get("products/$type/{page:\d+}/{perPage:[1-9]\d+}", "$controller@paginateByType");
-        $this->get("products/buyable/$type/{page:\d+}/{perPage:[1-9]\d+}", "$controller@buyable");
+        $this->get("products/$type", "$controller@paginateByType");
+        $this->get("products/buyable/$type", "$controller@buyable");
         $this->post("products/cart", "$controller@cart");
 
         $this->group(["middleware" => "scope:logged"], function () use ($controller) {

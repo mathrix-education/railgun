@@ -3,7 +3,7 @@
 namespace App\Registrars;
 
 use App\Controllers\UsersController;
-use Mathrix\Lumen\Bases\BaseRegistrar;
+use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
 /**
  * Class UsersRegistrar.
@@ -21,15 +21,15 @@ class UsersRegistrar extends BaseRegistrar
     {
         $controller = UsersController::class;
 
-        $this->rest("users", $controller, [
-            "index" => "scope:users:read",
-            "get" => "scope:logged",
-            "post" => null,
-            "patch" => "scope:logged",
-            "delete" => "scope:users:delete",
-            "related:records" => "scope:records:read",
-            "related:subscriptions" => "scope:logged",
-            "related:transactions" => "scope:logged"
+        $this->rest([
+            "std:index" => "scope:users:read",
+            "std:get" => "scope:logged",
+            "std:post" => null,
+            "std:patch" => "scope:logged",
+            "std:delete" => "scope:users:delete",
+            "rel:get:records" => "scope:records:read",
+            "rel:get:subscriptions" => "scope:logged",
+            "rel:get:transactions" => "scope:logged"
         ]);
 
         $this->group(["middleware" => "scope:logged"], function () use ($controller) {

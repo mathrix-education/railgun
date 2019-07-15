@@ -5,12 +5,10 @@ namespace App\Controllers;
 use App\Models\Activity;
 use App\Models\Mark;
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Mathrix\Lumen\Bases\BaseController;
-use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
-use Mathrix\Lumen\Responses\PaginationJsonResponse;
+use Mathrix\Lumen\Zero\Controllers\BaseController;
+use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
 
 /**
  * Class ActivitiesController.
@@ -22,32 +20,15 @@ use Mathrix\Lumen\Responses\PaginationJsonResponse;
 class ActivitiesController extends BaseController
 {
     /**
-     * GET /activities/{activityId}/modules/{page}/{perPage}
-     *
-     * @param Request $request The Illuminate HTTP request.
-     * @param int $activityId The activity id.
-     * @param int $page The results page (starts at 0).
-     * @param int $perPage The number of modules per page.
-     *
-     * @return PaginationJsonResponse
-     * @throws Http401UnauthorizedException
-     */
-    public function modules(Request $request, int $activityId, int $page, int $perPage): PaginationJsonResponse
-    {
-        return $this->relation($request, "modules", $activityId, $page, $perPage);
-    }
-
-
-    /**
      * PATCH /activities/{activityId}/mark
      * Mark an activity.
      *
      * @param Request $request The Illuminate HTTP request.
      * @param int $id The activity id.
      *
-     * @return JsonResponse
+     * @return SuccessJsonResponse
      */
-    public function mark(Request $request, int $id): JsonResponse
+    public function mark(Request $request, int $id): SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();
@@ -62,7 +43,7 @@ class ActivitiesController extends BaseController
         $cacheKey = "user.{$user->id}.chapter.{$activity->notion->chapter->id}.recursive";
         DB::table("cache")->where("key", "=", $cacheKey)->delete();
 
-        return new JsonResponse($activity->fresh());
+        return new SuccessJsonResponse($activity->fresh());
     }
 
 
@@ -73,9 +54,9 @@ class ActivitiesController extends BaseController
      * @param Request $request The Illuminate HTTP request.
      * @param int $id The activity id.
      *
-     * @return JsonResponse
+     * @return SuccessJsonResponse
      */
-    public function unmark(Request $request, int $id): JsonResponse
+    public function unmark(Request $request, int $id): SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();
@@ -90,6 +71,6 @@ class ActivitiesController extends BaseController
         $cacheKey = "user.{$user->id}.chapter.{$activity->notion->chapter->id}.recursive";
         DB::table("cache")->where("key", "=", $cacheKey)->delete();
 
-        return new JsonResponse($activity->fresh());
+        return new SuccessJsonResponse($activity->fresh());
     }
 }

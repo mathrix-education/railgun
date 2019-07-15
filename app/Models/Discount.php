@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use App\Services\Braintree\Models\LineItem;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Mathrix\Lumen\Bases\BaseModel;
+use Mathrix\Lumen\Zero\Models\BaseModel;
 
 /**
  * Class Discount.
@@ -47,6 +48,12 @@ class Discount extends BaseModel
     public function products()
     {
         return $this->belongsToMany(Product::class);
+    }
+
+
+    public function lineItems()
+    {
+        return $this->morphMany(LineItem::class, "product");
     }
 
     /*

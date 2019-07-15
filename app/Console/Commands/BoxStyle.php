@@ -3,7 +3,7 @@
 
 namespace App\Console\Commands;
 
-use Mathrix\Lumen\Bases\BaseCommand;
+use Mathrix\Lumen\Zero\Console\Commands\BaseCommand;
 use Symfony\Component\Console\Helper\ProgressBar;
 
 /**

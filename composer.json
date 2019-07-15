@@ -1,7 +1,7 @@
 {
   "name": "mathrix/education-api",
   "description": "The Mathrix Education Lumen API.",
-  "version": "5.1.2",
+  "version": "5.2.0",
   "type": "project",
   "keywords": [
     "education",
@@ -16,7 +16,7 @@
       "name": "Mathieu Bour",
       "email": "mathieu@mathrix.fr",
       "homepage": "https://www.linkedin.com/in/mathieu-bour",
-      "role": "Developer"
+      "role": "Maintainer"
     }
   ],
   "support": {
@@ -37,29 +37,31 @@
     "facebook/graph-sdk": "^5.7",
     "fzaninotto/faker": "v1.8.0",
     "guzzlehttp/guzzle": "6.3.3",
-    "illuminate/mail": "5.7.28",
-    "illuminate/notifications": "5.7.28",
-    "illuminate/routing": "5.7.28",
-    "laravel/lumen-framework": "5.7.8",
-    "laravelium/sitemap": "3.0.1",
-    "league/flysystem": " 1.0.51",
-    "mathrix/lumen-chainer": "1.1.0",
-    "mathrix/lumen-jwt-auth": "1.1.10",
-    "mathrix/lumen-zero": "1.1.7",
+    "illuminate/mail": "5.8.28",
+    "illuminate/notifications": "5.8.28",
+    "illuminate/routing": "5.8.28",
+    "laravel/lumen-framework": "5.8.10",
+    "laravelium/sitemap": "3.1.1",
+    "league/flysystem": " 1.0.53",
+    "mathrix/lumen-chainer": "1.2.0",
+    "mathrix/lumen-jwt-auth": "1.2.0",
+    "mathrix/lumen-zero": "2.2.0",
     "ramsey/uuid": "3.8.0",
-    "sentry/sentry-laravel": "1.0.2",
-    "stripe/stripe-php": "6.34.3",
+    "sentry/sentry-laravel": "1.1.0",
+    "staudenmeir/eloquent-has-many-deep": "^1.8",
+    "stripe/stripe-php": "6.40.0",
     "superbalist/laravel-google-cloud-storage": "2.2.1",
-    "vlucas/phpdotenv": "2.6.1"
+    "vlucas/phpdotenv": "v3.4.0"
   },
   "require-dev": {
-    "brianium/paratest": "2.2.0",
+    "brianium/paratest": "3.0.0",
     "doctrine/dbal": "2.9.2",
+    "mathrix/openapi-assertions": "0.9.1",
+    "mathrix/openapi-processor": "0.9.6",
     "mockery/mockery": "1.2.2",
-    "nyholm/psr7": "1.1.0",
-    "phpunit/phpunit": "7.5.9",
-    "rebilly/openapi-php": "0.6.0",
-    "symfony/psr-http-message-bridge": "1.2.0",
+    "nyholm/psr7": "^1.1",
+    "phpunit/phpunit": "8.2.4",
+    "symfony/psr-http-message-bridge": "^1.2",
     "symfony/yaml": "4.2.8"
   },
   "autoload": {
@@ -92,11 +94,22 @@
     {
       "type": "vcs",
       "url": "git@github.com:mathrix-education/lumen-zero.git"
+    },
+    {
+      "type": "vcs",
+      "url": "git@github.com:mathrix-education/openapi-assertions.git"
+    },
+    {
+      "type": "vcs",
+      "url": "git@github.com:mathrix-education/openapi-processor.git"
     }
   ],
   "config": {
     "preferred-install": "dist",
     "sort-packages": true,
     "optimize-autoloader": true
+  },
+  "scripts": {
+    "compile:docs": "openapi-processor --input=docs/index.yaml"
   }
 }

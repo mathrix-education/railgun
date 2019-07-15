@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use App\Exceptions\ImmutableException;
-use App\Models\Traits\BraintreeCustomer;
 use App\Models\Traits\FacebookUser;
 use App\Models\Traits\PermissionsTrait;
-use App\Models\Traits\StripeCustomer;
+use App\Services\Braintree\Models\Customer;
+use App\Services\Braintree\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -14,16 +14,12 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Notifications\DatabaseNotification;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Laravel\Lumen\Auth\Authorizable;
-use Mathrix\Lumen\Bases\BaseModel;
-use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\JWT\Auth\HasJWT;
+use Mathrix\Lumen\Zero\Models\BaseModel;
 
 /**
  * Class User.
@@ -58,12 +54,7 @@ use Mathrix\Lumen\JWT\Auth\HasJWT;
  * @property-read int $daily_points
  * ---
  * @property Grade $grade
- * @property Collection|Client[] $clients
- * @property Collection|Token[] $tokens
  * @property Collection|Comment[] $comments
- * @property Collection|DatabaseNotification[] $notifications
- * @property Collection|DatabaseNotification[] $unreadNotifications
- * @property Collection|DatabaseNotification[] $readNotifications
  * @property Collection|Log[] $logs
  * @property Collection|Product[] $products
  * @property Collection|Purchase[] $purchases
@@ -75,12 +66,10 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 {
     use Authorizable,
         Authenticatable,
-        Notifiable,
-        BraintreeCustomer,
-        StripeCustomer,
-        PermissionsTrait,
+        HasJWT,
         FacebookUser,
-        HasJWT;
+        PermissionsTrait,
+        Customer;
 
     private const STRIPE_PLANS = ["v3_monthly", "v3_annually", "v3_biannually"];
     public const BRAINTREE_PLANS = ["v4_monthly", "v4_annually", "v4_biannually"];
@@ -115,6 +104,17 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "braintree"
     ];
 
+    protected $attributes = [
+        "username" => null,
+        "firstname" => null,
+        "lastname" => null,
+        "scopes" => "[]",
+        "daily" => 10,
+        "premium_bypass" => false,
+        "premium_bypass_expires_at" => null,
+        "settings" => "[]",
+    ];
+
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
         "scopes" => "array",
@@ -130,8 +130,8 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "firstname" => "nullable|max:60",
         "lastname" => "nullable|max:60",
         "password" => "nullable|min:3",
-        "scopes" => "required",
-        "scopes.*" => "distinct",
+//        "scopes" => "required",
+//        "scopes.*" => "distinct",
         "token" => "nullable|size:36",
         "points" => "required|integer",
         "daily" => "nullable|in:10,20,40",
@@ -141,7 +141,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     ];
 
     /** @var array The relations to include by default */
-    protected $with = ["grade", "purchases"];
+    protected $with = ["grade"];
 
     /** @var array The virtual attributes */
     protected $appends = ["provider", "daily_points", "last_session", "premium"];
@@ -150,10 +150,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-
-        $this->points = 0;
-        $this->settings = ["sound" => true];
-        $this->scopes = ["logged"];
     }
 
 
@@ -234,9 +230,10 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function hasPurchased(Product $product): bool
     {
-        return $this->purchases()
-            ->whereIn("product_id", $product->lineage()->pluck("id"))
-            ->exists();
+        return true;
+//        return $this->purchases()
+//            ->whereIn("product_id", $product->lineage()->pluck("id"))
+//            ->exists();
     }
 
 
@@ -286,28 +283,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function marks(): HasMany
     {
         return $this->hasMany(Mark::class);
-    }
-
-
-    /**
-     * HasMany Purchase.
-     *
-     * @return HasMany
-     */
-    public function purchases(): HasMany
-    {
-        return $this->hasMany(Purchase::class);
-    }
-
-
-    /**
-     * BelongsToMany Product.
-     *
-     * @return BelongsToMany
-     */
-    public function products()
-    {
-        return $this->belongsToMany(Product::class, "purchases");
     }
 
 
@@ -382,14 +357,12 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * premium attribute.
      *
      * @return bool
-     * @throws Http400BadRequestException
      */
     public function getPremiumAttribute()
     {
         return $this->premium_bypass
             || ($this->premium_bypass_expires_at !== null && $this->premium_bypass_expires_at->isFuture())
-            || $this->hasBraintreeSubscription(self::BRAINTREE_PLANS)
-            || $this->hasStripeSubscription(self::STRIPE_PLANS);
+            || $this->getActiveSubscription() !== null;
     }
 
 

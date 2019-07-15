@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Exception;
-use Mathrix\Lumen\Bases\BaseModel;
+use Mathrix\Lumen\Zero\Models\BaseModel;
 
 /**
  * Class Setting.

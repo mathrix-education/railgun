@@ -3,7 +3,7 @@
 namespace App\Registrars;
 
 use App\Controllers\ReportsController;
-use Mathrix\Lumen\Bases\BaseRegistrar;
+use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
 /**
  * Class ReportsRegistrar.
@@ -19,12 +19,12 @@ class ReportsRegistrar extends BaseRegistrar
      */
     public function register(): void
     {
-        $this->rest("reports", ReportsController::class, [
-            "index" => "scope:reports:read",
-            "get" => "scope:reports:read",
-            "post" => "scope:logged",
-            "patch" => "scope:reports:write",
-            "delete" => "scope:reports:delete"
+        $this->rest([
+            "std:index" => "scope:reports:read",
+            "std:get" => "scope:reports:read",
+            "std:post" => "scope:logged",
+            "std:patch" => "scope:reports:write",
+            "std:delete" => "scope:reports:delete"
         ]);
     }
 }

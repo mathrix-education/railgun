@@ -4,7 +4,7 @@ namespace Tests;
 
 use App\Models\User;
 use Laravel\Lumen\Testing\DatabaseTransactions;
-use Mathrix\Lumen\Bases\BaseModel;
+use Mathrix\Lumen\Zero\Models\BaseModel;
 use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Tests\OpenAPI\OpenAPITrait;
 use Mathrix\Lumen\Tests\REST\RESTTrait;

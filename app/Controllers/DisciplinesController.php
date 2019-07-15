@@ -2,13 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Models\Discipline;
-use App\Models\Grade;
-use App\Models\User;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Mathrix\Lumen\Bases\BaseController;
-use Mathrix\Lumen\Responses\PaginationJsonResponse;
+use Mathrix\Lumen\Zero\Controllers\BaseController;
 
 /**
  * Class DisciplinesController.
@@ -19,20 +13,4 @@ use Mathrix\Lumen\Responses\PaginationJsonResponse;
  */
 class DisciplinesController extends BaseController
 {
-    /**
-     * GET /disciplines/slug/{disciplineSlug}
-     * Get a discipline by its slug.
-     *
-     * @param string $disciplineSlug The discipline slug.
-     *
-     * @return JsonResponse
-     */
-    public function getBySlug(string $disciplineSlug)
-    {
-        $discipline = Discipline::query()
-            ->where("slug", "=", $disciplineSlug)
-            ->firstOrFail();
-
-        return new JsonResponse($discipline);
-    }
 }

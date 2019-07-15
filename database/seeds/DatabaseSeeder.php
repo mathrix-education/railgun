@@ -14,7 +14,7 @@ use App\Models\Report;
 use App\Models\Setting;
 use App\Models\User;
 use App\Models\Vote;
-use Mathrix\Lumen\Bases\BaseTableSeeder;
+use Mathrix\Lumen\Zero\Database\BaseTableSeeder;
 
 /**
  * Class DatabaseSeeder.
@@ -36,9 +36,6 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->seedFromFactory(Notion::class, 90);
         $this->seedFromFactory(Activity::class, 200);
         $this->seedFromSubFactory(Module::class, "random", 250);
-
-        // Settings
-        $this->seedFromFactory(Setting::class, 50);
 
         // Levels
         $this->call(LevelTableSeeder::class);
@@ -72,9 +69,6 @@ class DatabaseSeeder extends BaseTableSeeder
 
         // Marks
         $this->call(MarksTableSeeder::class);
-
-        // Notifications
-        $this->call(NotificationsTableSeeder::class);
 
         // Notifications
         $this->call(CountersTableSeeder::class);

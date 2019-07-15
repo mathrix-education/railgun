@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use Mathrix\Lumen\Bases\BaseController;
+use Mathrix\Lumen\Zero\Controllers\BaseController;
 
 /**
  * Class LevelsController.
