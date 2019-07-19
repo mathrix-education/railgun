@@ -4,8 +4,30 @@ namespace App\Services\Braintree\Models;
 
 use App\Services\Braintree\Utils\LineItemsUtils;
 use Braintree\TransactionLineItem as BraintreeLineItem;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Mathrix\Lumen\Zero\Models\BaseModel;
 
+/**
+ * Class LineItem.
+ *
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA
+ * @since 6.0.0
+ *
+ * @property-read int $id
+ * @property string $kind
+ * @property string $name
+ * @property int $product_code
+ * @property string $product_type
+ * @property int $quantity
+ * @property float $total_amount
+ * @property float $unit_amount
+ * @property string $unit_of_measure
+ * @property string $transaction_id
+ *
+ * @property-read Transaction $transaction
+ */
 class LineItem extends BaseModel
 {
     public $timestamps = false;
@@ -22,9 +44,25 @@ class LineItem extends BaseModel
     ];
 
 
-    public function product()
+    /**
+     * MorphTo Discount|Product
+     *
+     * @return MorphTo
+     */
+    public function product(): MorphTo
     {
         return $this->morphTo();
+    }
+
+
+    /**
+     * BelongsTo Transaction
+     *
+     * @return BelongsTo
+     */
+    public function transaction(): BelongsTo
+    {
+        return $this->belongsTo(Transaction::class);
     }
 
 
@@ -36,7 +74,7 @@ class LineItem extends BaseModel
      */
     public static function toEloquent(BraintreeLineItem $lineItem, string $transactionId)
     {
-        $data = [
+        return [
             "kind" => $lineItem->kind,
             "name" => $lineItem->name,
             "product_code" => $lineItem->productCode,
@@ -47,8 +85,6 @@ class LineItem extends BaseModel
             "unit_of_measure" => $lineItem->unitOfMeasure,
             "transaction_id" => $transactionId
         ];
-
-        return $data;
     }
 
 

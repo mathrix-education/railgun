@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\Post;
+use Braintree\Gateway;
+use Illuminate\Http\Request;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Zero\Responses\PaginationJsonResponse;

@@ -7,7 +7,9 @@ use App\Models\User;
 use Braintree\Exception\NotFound as BraintreeNotFoundException;
 use Braintree\Transaction as BraintreeTransaction;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Mathrix\Lumen\Zero\Exceptions\Models\Models\ModelNotFoundException;
 use Mathrix\Lumen\Zero\Models\BaseModel;
 
@@ -20,15 +22,21 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
  *
  * @property string $id
  * @property string $type
- * @property string|null $plan_id
  * @property float $amount
  * @property float $refunded_amount
+ * @property string $currency
+ * @property string $status
+ * @property string $payment_instrument_type
+ * @property array $processor_response
+ * @property string $gateway_rejection_reason
  * @property string|null $refunded_transaction_id
  * @property string $customer_id
+ * @property string $subscription_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * ---
- * @property User $customer
+ * @property User $user
+ * @property-read Transaction[]|Collection $refunds
  */
 class Transaction extends BaseModel
 {
@@ -72,6 +80,12 @@ class Transaction extends BaseModel
     public function purchases()
     {
         return $this->hasMany(Purchase::class);
+    }
+
+
+    public function refunds(): HasMany
+    {
+        return $this->hasMany(Transaction::class, "refund_transaction_id");
     }
 
 

@@ -17,7 +17,7 @@ class AddLineItemIdToPurchasesTable extends Migration
             $table->unsignedBigInteger("line_item_id")->nullable()->after("transaction_id");
 
             // Foreign keys
-            $table->foreign("transaction_id")->references("id")->on("transactions");
+            // $table->foreign("transaction_id")->references("id")->on("transactions");
             $table->foreign("line_item_id")->references("id")->on("line_items");
         });
     }

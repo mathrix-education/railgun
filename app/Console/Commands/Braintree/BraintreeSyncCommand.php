@@ -21,7 +21,7 @@ class BraintreeSyncCommand extends BaseCommand
             $start = Carbon::now();
             $this->call("braintree:sync:customers");
             $this->call("braintree:sync:subscriptions");
-            $this->call("braintree:sync:transactions");
+//            $this->call("braintree:sync:transactions");
             $end = Carbon::now();
 
             $delta = $end->timestamp - $start->timestamp;

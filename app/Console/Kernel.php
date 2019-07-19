@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Console\Commands\Braintree\BraintreeSyncCommand;
 use App\Console\Commands\Braintree\BraintreeSyncCustomersCommand;
+use App\Console\Commands\Braintree\BraintreeSyncPurchasesCommand;
 use App\Console\Commands\Braintree\BraintreeSyncSubscriptionsCommand;
 use App\Console\Commands\Braintree\BraintreeSyncTransactionsCommand;
 use App\Console\Commands\Cache\RebuildCacheCommand;
@@ -30,7 +31,8 @@ class Kernel extends ConsoleKernel
         BraintreeSyncCommand::class,
         BraintreeSyncCustomersCommand::class,
         BraintreeSyncSubscriptionsCommand::class,
-        BraintreeSyncTransactionsCommand::class
+        BraintreeSyncTransactionsCommand::class,
+        BraintreeSyncPurchasesCommand::class
     ];
 
 

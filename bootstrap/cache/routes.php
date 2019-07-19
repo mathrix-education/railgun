@@ -143,9 +143,7 @@ return [
         '/categories/{categoryId}',
         [
             'uses' => 'App\\Controllers\\CategoriesController',
-            'middleware' => [
-                'scope:categories:read'
-            ]
+            'middleware' => null
         ]
     ],
     [
@@ -809,6 +807,13 @@ return [
     ],
     [
         'GET',
+        '/posts/latest',
+        [
+            'uses' => 'App\\Controllers\\PostsController@latest'
+        ]
+    ],
+    [
+        'GET',
         '/posts',
         [
             'uses' => 'App\\Controllers\\PostsController',
@@ -853,13 +858,6 @@ return [
             'middleware' => [
                 'scope:posts:delete'
             ]
-        ]
-    ],
-    [
-        'GET',
-        '/posts/latest',
-        [
-            'uses' => 'App\\Controllers\\PostsController@latest'
         ]
     ],
     [

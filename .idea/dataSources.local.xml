@@ -9,7 +9,7 @@
       <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact" />
       <secret-storage>master_key</secret-storage>
       <user-name>root</user-name>
-      <introspection-schemas>*:mathrix_education_dev</introspection-schemas>
+      <introspection-schemas>*:local_mathrix_education</introspection-schemas>
       <table-pattern>collation:-(.*)</table-pattern>
     </data-source>
     <data-source name="1 - dev_mathrix_education@35.240.13.165" uuid="4105dbbf-0de7-488a-b511-6ddb015a1426">
