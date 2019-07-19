@@ -1,0 +1,51 @@
+steps:
+  # Decrypt the SSH private key for composer git clone
+  # --------------------------------------------------
+  - id: 'gcloud:kms:decrypt'
+    waitFor: ['-']
+    name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: '/bin/bash'
+    args: ['deploy/steps/0_decrypt.sh']
+
+
+  # Install PHP dependencies using composer
+  # ---------------------------------------
+  - id: 'composer:install'
+    waitFor: ['gcloud:kms:decrypt']
+    name: 'eu.gcr.io/$PROJECT_ID/runner-composer-prestissimo'
+    entrypoint: '/bin/bash'
+    args: ['deploy/steps/1_composer.sh']
+
+  # Build, push and deploy API image
+  # --------------------------------
+  - id: 'docker:build'
+    waitFor: ['composer:install']
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['build',
+           '--build-arg', 'COMMIT_SHORT_SHA=$SHORT_SHA',
+           '-t', 'eu.gcr.io/$PROJECT_ID/education-api:$SHORT_SHA',
+           '.']
+  - id: 'docker:push'
+    waitFor: ['docker:build']
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'eu.gcr.io/$PROJECT_ID/education-api:$SHORT_SHA']
+  - id: 'gcloud:tag'
+    waitFor: ['docker:push']
+    name: 'gcr.io/cloud-builders/gcloud'
+    args: ['container', 'images', 'add-tag',
+           'eu.gcr.io/$PROJECT_ID/education-api:$SHORT_SHA',
+           'eu.gcr.io/$PROJECT_ID/education-api:latest-$BRANCH_NAME']
+
+  # Deploy on Cloud Run
+  # -------------------
+  - id: 'cloud-run:deploy'
+    waitFor: ['docker:push']
+    name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud beta run deploy education-api-$BRANCH_NAME \
+          --platform=managed \
+          --image eu.gcr.io/$PROJECT_ID/education-api:$SHORT_SHA \
+          --region europe-west1

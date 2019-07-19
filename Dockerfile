@@ -25,7 +25,6 @@ RUN apk -U add \
     php7-mbstring \
     php7-pdo_mysql \
     php7-phar \
-    php7-redis \
     php7-tokenizer \
     php7-xdebug \
     php7-xml \
@@ -43,10 +42,12 @@ COPY ./deploy/entrypoint.sh /entrypoint.sh
 
 RUN echo "${COMMIT_SHORT_SHA}" >> build.txt && \
     chmod +x /entrypoint.sh && \
-    rm -rf storage/keychain/ deploy/
+    rm -rf storage/keychain/*.enc deploy/
 
 # Clean
 RUN rm -rf /var/cache/apk/*
+
+RUN ls -l storage/
 
 HEALTHCHECK CMD exit 0
 
