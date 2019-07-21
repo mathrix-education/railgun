@@ -38,10 +38,10 @@ class APIStatefulTestCase extends BaseTestCase
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-
-        // Include OpenAPI once
-        OpenAPITrait::$SpecPath = __DIR__ . "/../docs/json-schema/index.json";
-        self::bootOpenAPI();
+//
+//        // Include OpenAPI once
+//        OpenAPITrait::$SpecPath = __DIR__ . "/../docs/json-schema/index.json";
+//        self::bootOpenAPI();
     }
 
 
