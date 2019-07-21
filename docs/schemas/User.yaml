@@ -104,14 +104,6 @@ properties:
     type: integer
     example: 1
     nullable: true
-  stripe_id:
-    description: >
-      **Visible only for admins.**
-      The user Stripe customer id.
-    type: string
-    readOnly: true
-    nullable: true
-    example: cus_sd4sq54
   braintree_id:
     description: >
       **Visible only for admins.**
@@ -146,13 +138,6 @@ properties:
     type: integer
     example: 300
     readOnly: true
-  stripe:
-    description: >
-      **Visible only for admins.**
-      The user's Stripe profile.
-    type: object
-    readOnly: true
-    nullable: true
   braintree:
     allOf:
       - $ref: Braintree/Customer.yaml

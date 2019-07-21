@@ -2,6 +2,11 @@
 
 namespace App\Console;
 
+use App\Console\Commands\Braintree\BraintreeRestoreCommand;
+use App\Console\Commands\Braintree\BraintreeRestoreCustomersCommand;
+use App\Console\Commands\Braintree\BraintreeRestoreLineItemsCommand;
+use App\Console\Commands\Braintree\BraintreeRestoreSubscriptionsCommand;
+use App\Console\Commands\Braintree\BraintreeRestoreTransactionsCommand;
 use App\Console\Commands\Braintree\BraintreeSyncCommand;
 use App\Console\Commands\Braintree\BraintreeSyncCustomersCommand;
 use App\Console\Commands\Braintree\BraintreeSyncPurchasesCommand;
@@ -32,7 +37,13 @@ class Kernel extends ConsoleKernel
         BraintreeSyncCustomersCommand::class,
         BraintreeSyncSubscriptionsCommand::class,
         BraintreeSyncTransactionsCommand::class,
-        BraintreeSyncPurchasesCommand::class
+        BraintreeSyncPurchasesCommand::class,
+        //
+        BraintreeRestoreCommand::class,
+        BraintreeRestoreCustomersCommand::class,
+        BraintreeRestoreSubscriptionsCommand::class,
+        BraintreeRestoreTransactionsCommand::class,
+        BraintreeRestoreLineItemsCommand::class
     ];
 
 

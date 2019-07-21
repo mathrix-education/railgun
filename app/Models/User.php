@@ -45,7 +45,6 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
  * @property Carbon $premium_bypass_expires_at
  * @property int|null $grade_id
  * @property string|null $braintree_id
- * @property string|null $stripe_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * ---
@@ -97,10 +96,8 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "token",
         "premium_bypass",
         "premium_bypass_expires_at",
-        "stripe_id",
         "braintree_id",
         "metadata",
-        "stripe",
         "braintree"
     ];
 

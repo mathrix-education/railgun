@@ -5,7 +5,6 @@ namespace App\Controllers\Processes;
 
 
 use App\Exceptions\BraintreeErrorHandler;
-use App\Exceptions\DuplicatePaymentMethodNonceException;
 use App\Exceptions\GatewayRejectionException;
 use App\Exceptions\ImmutableException;
 use App\Exceptions\InvalidCustomerException;
@@ -107,6 +106,7 @@ class SubscriptionCreationProcess extends BaseProcess
      * @throws ImmutableException
      * @throws ProcessorDeclinedException
      * @throws UnknownBraintreeException
+     * @throws InvalidCustomerException
      */
     private function selectPaymentMethod()
     {

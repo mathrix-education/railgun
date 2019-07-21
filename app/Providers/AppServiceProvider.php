@@ -41,7 +41,6 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         // App service providers
-        $this->app->register(EventServiceProvider::class);
         $this->app->register(BraintreeGatewayServiceProvider::class);
 
         // Vendor service providers

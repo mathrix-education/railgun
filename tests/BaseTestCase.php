@@ -25,7 +25,7 @@ abstract class BaseTestCase extends TestCase
      * Setup the test environment.
      * Inject a new Faker instance.
      */
-    public function setUp()
+    public function setUp(): void
     {
 
         $this->faker = FakerFactory::create();
@@ -36,7 +36,7 @@ abstract class BaseTestCase extends TestCase
     /**
      * Destroy database connection after each test to avoid the Too Many Connections error.
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->beforeApplicationDestroyed(function () {
             app()

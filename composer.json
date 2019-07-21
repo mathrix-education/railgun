@@ -49,13 +49,13 @@
     "ramsey/uuid": "3.8.0",
     "sentry/sentry-laravel": "1.1.0",
     "staudenmeir/eloquent-has-many-deep": "^1.8",
-    "stripe/stripe-php": "6.40.0",
     "superbalist/laravel-google-cloud-storage": "2.2.1",
     "vlucas/phpdotenv": "v3.4.0"
   },
   "require-dev": {
     "brianium/paratest": "3.0.0",
     "doctrine/dbal": "2.9.2",
+    "league/csv": "^9.2",
     "mathrix/openapi-assertions": "0.9.1",
     "mathrix/openapi-processor": "0.9.6",
     "mockery/mockery": "1.2.2",

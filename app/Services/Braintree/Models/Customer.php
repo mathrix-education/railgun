@@ -354,16 +354,13 @@ trait Customer
         return $this->hasManyDeep(
             Product::class,
             [
-                Transaction::class,
                 LineItem::class
             ],
             [
                 "customer_id",
-                "transaction_id",
                 "id"
             ],
             [
-                "braintree_id",
                 "id",
                 ["product_type", "product_code"]
             ]
