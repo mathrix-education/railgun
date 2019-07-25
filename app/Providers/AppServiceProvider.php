@@ -43,6 +43,7 @@ class AppServiceProvider extends ServiceProvider
         // App service providers
         $this->app->register(BraintreeGatewayServiceProvider::class);
 
+
         // Vendor service providers
         $this->app->register(CorsServiceProvider::class);
         $this->app->register(FilesystemServiceProvider::class);

@@ -24,6 +24,7 @@ class CreateLineItemsTable extends Migration
             $table->float("total_amount")->nullable();
             $table->float("unit_amount")->nullable();
             $table->string("unit_of_measure")->nullable();
+            $table->string("user_id")->nullable();
             $table->string("transaction_id")->nullable();
 
             // Foreign keys

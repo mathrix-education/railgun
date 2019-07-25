@@ -20,7 +20,6 @@ use Braintree\PayPalAccount;
 use Closure;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships as HasDeepRelationships;
 use function gateway;
 
@@ -349,21 +348,9 @@ trait Customer
      * @see LineItem
      * @see Product
      */
-    public function products(): HasManyDeep
+    public function products()
     {
-        return $this->hasManyDeep(
-            Product::class,
-            [
-                LineItem::class
-            ],
-            [
-                "customer_id",
-                "id"
-            ],
-            [
-                "id",
-                ["product_type", "product_code"]
-            ]
-        );
+        return $this->belongsToMany(Product::class, "line_items", "user_id", "product_code")
+            ->wherePivot("product_type", "=", morph_alias(Product::class));
     }
 }

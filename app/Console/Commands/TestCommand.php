@@ -2,8 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Mails\SubscriptionRenewalSoonMail;
 use App\Models\User;
-use App\Services\Braintree\Models\LineItem;
+use Illuminate\Support\Facades\Mail;
 use Mathrix\Lumen\Zero\Console\Commands\BaseCommand;
 
 /**
@@ -22,9 +23,18 @@ class TestCommand extends BaseCommand
 
     public function handle()
     {
-        LineItem::all()->each(function(LineItem $lineItem) {
-           $lineItem->touch();
-           $lineItem->save();
-        });
+        $braintreeIds = explode("\n", file_get_contents(storage_path("stripe.csv")));
+
+        $users = User::query()
+            ->select(["firstname", "username", "email"])
+            ->whereIn("stripe_id", $braintreeIds)
+            ->get();
+
+        $this->progressStart($users->count());
+        foreach ($users as $user) {
+            Mail::to($user->email)->sendNow(new SubscriptionRenewalSoonMail($user));
+            $this->progressAdvance();
+        }
+        $this->progressFinish();
     }
 }

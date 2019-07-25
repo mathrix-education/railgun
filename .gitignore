@@ -4,6 +4,7 @@
 /.idea/*.iml
 /.idea/**/workspace.xml
 /.idea/dataSources/
+/.idea/dataSources.*
 /.idea/dictionaries
 /.idea/httpRequests/
 /.idea/modules.xml
@@ -13,8 +14,9 @@
 /node_modules/
 /vendor/
 /artifacts
+/bootstrap/cache
 /docs/json-schema
 /docs/out
 /docs/spec.html
-/resources/views/mails
+/resources/mails
 /storage/code-coverage/

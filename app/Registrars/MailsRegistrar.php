@@ -2,8 +2,7 @@
 
 namespace App\Registrars;
 
-use App\Mails\BaseMail;
-use App\Mails\TransactionRefundMail;
+use App\Mails\SubscriptionRenewalSoonMail;
 use App\Mails\TransactionSuccessMail;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
@@ -62,6 +61,10 @@ class MailsRegistrar extends BaseRegistrar
 //                    return $mailableClass::mock();
 //                });
 //            });
+
+            $this->get("mails/subscriptions/subscription_renewal_soon", function () {
+                return SubscriptionRenewalSoonMail::mock();
+            });
 
             // Custom mails routes
             $this->get("mails/transaction-success/{transactionId}", function ($transactionId) {

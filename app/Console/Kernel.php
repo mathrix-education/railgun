@@ -33,12 +33,6 @@ class Kernel extends ConsoleKernel
         TestCommand::class,
         CompileMails::class,
         RebuildCacheCommand::class,
-        BraintreeSyncCommand::class,
-        BraintreeSyncCustomersCommand::class,
-        BraintreeSyncSubscriptionsCommand::class,
-        BraintreeSyncTransactionsCommand::class,
-        BraintreeSyncPurchasesCommand::class,
-        //
         BraintreeRestoreCommand::class,
         BraintreeRestoreCustomersCommand::class,
         BraintreeRestoreSubscriptionsCommand::class,
