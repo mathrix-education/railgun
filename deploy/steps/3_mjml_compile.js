@@ -3,28 +3,31 @@ class MailCompiler {
         this.fs = require("fs");
         this.path = require("path");
         this.mjml = require("mjml");
+
+        this.basePath = this.path.resolve(`${__dirname}/../..`);
+        this.mjmlPath = this.path.resolve(this.basePath + '/resources/views/mjml');
     }
 
     process() {
-        this.fs.readdirSync(__dirname)
+        this.fs.readdirSync(this.mjmlPath)
             .filter(d => ["common", "compile.js"].indexOf(d) === -1)
             .filter(d => d !== "common")
-            .map(dir => this.fs.readdirSync(`${__dirname}/${dir}`)
-                .map(file => this.compile(`${__dirname}/${dir}/${file}`))
-            )
+            .filter(s => s.endsWith('.mjml'))
+            .map(file => this.compile(`${this.mjmlPath}/${file}`));
     }
 
     compile(src) {
         const content = this.fs.readFileSync(src);
-        const mjmlResult = this.mjml["mjml2html"](content.toString(), {
+        const mjmlResult = this.mjml(content.toString(), {
             beautify: true,
             validationLevel: "strict",
             filePath: src
         });
-        console.log(this.path.dirname(src));
 
-        if (mjmlResult.errors.length > 0) {
-            mjmlResult.errors.map(error => {
+        if (mjmlResult['errors'].length === 0) {
+            console.log(`OK: ${this.path.basename(src)}`);
+        } else {
+            mjmlResult['errors'].map(error => {
                 console.error(`${src}:${error.line}:1\n\t[${error.tagName}] ${error.message}`);
             });
         }

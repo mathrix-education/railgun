@@ -1,0 +1,44 @@
+<mjml>
+    <mj-include path="common/head.mjml"></mj-include>
+
+    <mj-body>
+        <mj-include path="common/header.mjml"></mj-include>
+
+        <mj-section>
+            <mj-column>
+                <mj-text>Bonjour {{ $display_name }},</mj-text>
+
+                <mj-text>
+                    Nous vous informons que votre abonnement Mode Machine annuel va se renouveler le 31 Juillet 2019
+                    pour une durée de 1 an.
+                </mj-text>
+
+                <mj-text>
+                    Si vous ne souhaitez pas vous réengager, envoyez un email à support@mathrix.fr en indiquant votre
+                    souhait de désabonnement, ainsi que l'adresse email associée à votre compte Mathrix.
+                </mj-text>
+
+                <mj-text>
+                    Conformément à nos <a href="https://mathrix.fr/conditions-generales-de-vente">conditions générales
+                        de vente</a>, vous avez 7 jours (jusqu'au 7 août 2019 minuit) après le paiement pour demander
+                    un remboursement.
+                </mj-text>
+
+                <mj-text>Nouveautés prévues pour l'année scolaire 2019-2020 :</mj-text>
+
+                <mj-text>
+                    - Le programme de Lycée sera mis à jour pour la rentrée en accord avec les exigences du nouveau
+                    programme du lycée.<br/>
+                    - L’application mobile Mathrix est en cours de développement et arrivera au cours de l’année
+                    scolaire.
+                </mj-text>
+
+                <mj-text>À bientôt,</mj-text>
+
+                <mj-text>La team Mathrix</mj-text>
+            </mj-column>
+        </mj-section>
+
+        <mj-include path="common/footer.mjml"></mj-include>
+    </mj-body>
+</mjml>

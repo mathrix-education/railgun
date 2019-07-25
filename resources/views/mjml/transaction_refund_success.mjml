@@ -1,0 +1,53 @@
+<mjml>
+    <mj-include path="common/head.mjml"></mj-include>
+
+    <mj-body>
+        <mj-include path="common/header.mjml"></mj-include>
+
+        <mj-section background-color="#ffffff">
+            <mj-column>
+                <mj-text height="20px"
+                         padding="0"
+                         align="center"
+                         font-size="18px"
+                         line-height="20px">
+                    <p>Votre remboursement de Mathrix ({{ $refund->amount }} €)</p>
+                </mj-text>
+                <mj-text height="16px"
+                         padding="0"
+                         align="center"
+                         font-size="14px">
+                    <p>Référence {{ strtoupper($transaction->id) }}</p>
+                </mj-text>
+            </mj-column>
+        </mj-section>
+
+        <mj-section>
+            <mj-column>
+                <mj-table padding="1px 25px">
+                    <tr style="background-color: #3c8d80">
+                        <td style="color: #fff; padding: 10px 15px; font-weight: 700">Remboursement
+                            (le {{ $refund->createdAt->format("d/m/Y") }})
+                        </td>
+                        <td style="color: #fff; padding: 10px 15px; font-weight: 700; text-align:
+                            right">{{ $refund->amount }} €
+                        </td>
+                    </tr>
+                </mj-table>
+
+            </mj-column>
+        </mj-section>
+
+        <mj-wrapper border="1px solid #e5e5e5" padding="25px 10px">
+            <mj-section>
+                <mj-column>
+                    <mj-text>Pour rappel, voici le reçu de la transaction originale :</mj-text>
+                </mj-column>
+            </mj-section>
+            <mj-include path="common/transaction_body.mjml"></mj-include>
+        </mj-wrapper>
+
+        <mj-include path="common/support.mjml"></mj-include>
+        <mj-include path="common/footer.mjml"></mj-include>
+    </mj-body>
+</mjml>

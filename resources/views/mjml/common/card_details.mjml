@@ -1,6 +1,6 @@
 <mj-section padding="0">
     <mj-column>
-        <mj-text height="16"
+        <mj-text height="16px"
                  padding="0 25px"
                  font-size="14px">
             Type de carte
@@ -8,14 +8,13 @@
         <mj-text>{{ $card->cardType }}</mj-text>
     </mj-column>
 
-
     <mj-column>
-        <mj-text height="16" padding="0 25px" font-size="14px">Détenteur de la carte</mj-text>
+        <mj-text height="16px" padding="0 25px" font-size="14px">Détenteur de la carte</mj-text>
         <mj-text>{{ $card->cardholderName }}</mj-text>
     </mj-column>
 
     <mj-column>
-        <mj-text height="16"
+        <mj-text height="16px"
                  padding="0 25px"
                  font-size="14px">
             Carte n°
