@@ -2,7 +2,6 @@
 
 namespace App\Services\Braintree\Models;
 
-use App\Models\Purchase;
 use App\Models\User;
 use Braintree\Exception\NotFound as BraintreeNotFoundException;
 use Braintree\Transaction as BraintreeTransaction;
@@ -15,6 +14,7 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
 
 /**
  * Class Transaction.
+ * Transactions are immutable by definition.
  *
  * @author Mathieu Bour <mathieu@mathrix.fr>
  * @copyright Mathrix Education SA.
@@ -35,8 +35,17 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * ---
- * @property User $user
- * @property-read Transaction[]|Collection $refunds
+ * @property-read LineItem[]|Collection $lineItems The transaction line items.
+ * @property-read Transaction $parent The parent transaction. If not null, it means that the current transaction is a
+ *   refund.
+ * @property-read Transaction[]|Collection $refunds The child refund transactions. If is not an empty collection, it
+ *   means that the current transaction is a sale.
+ * @property-read User $user The user associated with the transaction.
+ * @property-read Subscription $subscription The subscription associated with this transaction, if any.
+ * ---
+ * @property-read BraintreeTransaction $transaction
+ * @property-read bool $partially_refunded
+ * @property-read bool $totally_refunded
  */
 class Transaction extends BaseModel
 {
@@ -65,35 +74,72 @@ class Transaction extends BaseModel
     private $_transaction;
 
 
-    public function user(): BelongsTo
+    /**
+     * @return BelongsTo
+     */
+    public function parent(): BelongsTo
     {
-        return $this->belongsTo(User::class, "customer_id", "braintree_id");
+        return $this->belongsTo(Transaction::class, "refund_transaction_id");
     }
 
 
-    public function subscription(): BelongsTo
-    {
-        return $this->belongsTo(Subscription::class);
-    }
-
-
-    public function purchases()
-    {
-        return $this->hasMany(Purchase::class);
-    }
-
-
+    /**
+     * @return HasMany
+     */
     public function refunds(): HasMany
     {
         return $this->hasMany(Transaction::class, "refund_transaction_id");
     }
 
 
+    /**
+     * @return HasMany
+     */
+    public function lineItems(): HasMany
+    {
+        return $this->hasMany(LineItem::class);
+    }
+
+
+    /**
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, "customer_id", "braintree_id");
+    }
+
+
+    /**
+     * @return BelongsTo
+     */
+    public function subscription(): BelongsTo
+    {
+        return $this->belongsTo(Subscription::class);
+    }
+
+
+    /**
+     * @return BraintreeTransaction
+     * @throws ModelNotFoundException
+     */
     public function getTransactionAttribute(): BraintreeTransaction
     {
         $this->_transaction = $this->asBraintreeTransaction();
 
         return $this->_transaction;
+    }
+
+
+    public function getPartiallyRefundedAttribute(): bool
+    {
+        return $this->refunds->sum("amount") > 0;
+    }
+
+
+    public function getTotallyRefundedAttribute(): bool
+    {
+        return $this->refunds->sum("amount") >= $this->amount;
     }
 
 

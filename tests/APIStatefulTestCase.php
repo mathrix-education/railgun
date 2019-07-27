@@ -3,12 +3,11 @@
 namespace Tests;
 
 use App\Models\User;
-use Laravel\Lumen\Testing\DatabaseTransactions;
-use Mathrix\Lumen\Zero\Models\BaseModel;
+use cebe\openapi\spec\Operation;
 use Mathrix\Lumen\JWT\Auth\JWT;
-use Mathrix\Lumen\Tests\OpenAPI\OpenAPITrait;
-use Mathrix\Lumen\Tests\REST\RESTTrait;
-use Mathrix\Lumen\Tests\Traits\DebugTrait;
+use Mathrix\Lumen\Zero\Testing\Traits\DebugTrait;
+use Mathrix\Lumen\Zero\Testing\Traits\RESTTrait;
+use Mathrix\OpenAPI\Assertions\Lumen\LumenOpenAPIAssertions;
 use Throwable;
 
 /**
@@ -20,64 +19,23 @@ use Throwable;
  */
 class APIStatefulTestCase extends BaseTestCase
 {
-    use RESTTrait, DebugTrait;
-
-    /** @var BaseModel The test main model class */
-    protected $modelClass = null;
-    /** @var string The model table */
-    protected $modelTable = null;
-    /** @var string The test main model singular */
-    protected $modelSingular = null;
-    /** @var string The test main model plural (used to build request URLs) */
-    protected $baseUri = null;
+    use RESTTrait, LumenOpenAPIAssertions, DebugTrait;
 
     /** @var User $requester The request user */
     protected $requester;
 
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
+        self::$openAPISpecificationPath = __DIR__ . "/../docs/output.yaml";
         parent::setUpBeforeClass();
-
-        // Include OpenAPI once
-        OpenAPITrait::$SpecPath = __DIR__ . "/../docs/json-schema/index.json";
-        self::bootOpenAPI();
     }
 
 
-    /**
-     * Automatically mock the scope according to the OpenAPI documentation. This ensure that the documentation is up to
-     * date with the current implementation.
-     *
-     * @param string $method
-     * @param string $uri
-     * @param string $security
-     *
-     * @return mixed
-     */
-    public function getOpenAPIScopes(string $method, string $uri, string $security = "bearer")
-    {
-        $method = strtolower($method);
-
-        $openAPIUri = $this->getOpenAPIUri($method, $uri);
-        $path = self::$schema->getPathSchema($openAPIUri);
-        $allowedMethods = self::$schema->getAllowedMethods($openAPIUri);
-
-        if (!in_array(strtoupper($method), $allowedMethods)) {
-            $this->fail("$method is not allowed for uri $openAPIUri");
-        } else if (!$this->requester && isset($path->{$method}->security[0]->{$security})) {
-            return $path->{$method}->security[0]->{$security};
-        }
-
-        return null;
-    }
-
-
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
-        $this->initializeREST();
         $this->handler("before.request", function (string $method, string $uri) {
             $scopes = $this->getOpenAPIScopes($method, $uri);
 
@@ -96,9 +54,48 @@ class APIStatefulTestCase extends BaseTestCase
     }
 
 
-    public function onNotSuccessfulTest(Throwable $t)
+    public function onNotSuccessfulTest(Throwable $t): void
     {
         $this->debug();
         parent::onNotSuccessfulTest($t);
+    }
+
+
+    /**
+     * Automatically mock the scope according to the OpenAPI documentation. This ensure that the documentation is up to
+     * date with the current implementation.
+     *
+     * @param string $method
+     * @param string $uri
+     * @param string $security
+     *
+     * @return string[]|null
+     */
+    public function getOpenAPIScopes(string $method, string $uri, string $security = "bearer")
+    {
+        $method = strtolower($method);
+
+        $openAPIUri = self::$reverseRouter->getUri($method, $uri);
+
+        $paths = self::$schema->paths;
+
+        if (!isset($paths[$openAPIUri])) {
+            $this->fail("$openAPIUri PathItem does not exist in the OpenAPI specification.");
+        }
+
+        $pathItem = $paths[$openAPIUri];
+
+        if (!isset($pathItem->{$method})) {
+            $this->fail("$openAPIUri does not support $method method.");
+        }
+
+        /** @var Operation $operation */
+        $operation = $pathItem->{$method};
+
+        if (!isset($operation->security[0]) || !isset($operation->security[0]->{$security})) {
+            return null;
+        } else {
+            return $operation->security[0]->{$security};
+        }
     }
 }

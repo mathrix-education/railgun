@@ -41,7 +41,10 @@
       <user-name>datastudio</user-name>
       <schema-mapping>
         <introspection-scope>
-          <node kind="schema" qname="master_mathrix_education" />
+          <node kind="schema">
+            <name qname="@" />
+            <name qname="master_mathrix_drive" />
+          </node>
         </introspection-scope>
       </schema-mapping>
       <table-pattern>collation:-.*</table-pattern>

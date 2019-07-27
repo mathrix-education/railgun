@@ -342,7 +342,7 @@ trait Customer
 
 
     /**
-     * HasManyDeep products through Transaction -> LineItem -> Product
+     * BelongsToMany through LineItem.
      *
      * @see Transaction
      * @see LineItem
@@ -351,6 +351,7 @@ trait Customer
     public function products()
     {
         return $this->belongsToMany(Product::class, "line_items", "user_id", "product_code")
-            ->wherePivot("product_type", "=", morph_alias(Product::class));
+            ->wherePivot("product_type", "=", morph_alias(Product::class))
+            ->wherePivot("negated", "=", false);
     }
 }

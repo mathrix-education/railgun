@@ -16,6 +16,7 @@ class CreateLineItemsTable extends Migration
     {
         Schema::create("line_items", function (Blueprint $table) {
             $table->bigIncrements("id");
+            $table->boolean("negated")->default(false);
             $table->enum("kind", [TransactionLineItem::DEBIT, TransactionLineItem::CREDIT]);
             $table->string("name")->nullable();
             $table->unsignedBigInteger("product_code")->nullable();
@@ -24,7 +25,7 @@ class CreateLineItemsTable extends Migration
             $table->float("total_amount")->nullable();
             $table->float("unit_amount")->nullable();
             $table->string("unit_of_measure")->nullable();
-            $table->string("user_id")->nullable();
+            $table->unsignedBigInteger("user_id")->nullable();
             $table->string("transaction_id")->nullable();
 
             // Foreign keys

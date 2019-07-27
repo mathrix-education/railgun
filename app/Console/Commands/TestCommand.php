@@ -3,7 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Mails\SubscriptionRenewalSoonMail;
+use App\Models\Product;
 use App\Models\User;
+use App\Services\Braintree\Models\LineItem;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Mathrix\Lumen\Zero\Console\Commands\BaseCommand;
 
@@ -23,18 +26,26 @@ class TestCommand extends BaseCommand
 
     public function handle()
     {
-        $braintreeIds = explode("\n", file_get_contents(storage_path("stripe.csv")));
+//        $li = LineItem::all();
+//        $this->progressStart($li->count());
+//
+//        foreach ($li as $l) {
+//            if ($l->transaction->totally_refunded) {
+//                $l->negated = true;
+//                $l->save();
+//            }
+//            $this->progressAdvance();
+//        }
+//        $this->progressFinish();
 
-        $users = User::query()
-            ->select(["firstname", "username", "email"])
-            ->whereIn("stripe_id", $braintreeIds)
-            ->get();
 
-        $this->progressStart($users->count());
-        foreach ($users as $user) {
-            Mail::to($user->email)->sendNow(new SubscriptionRenewalSoonMail($user));
-            $this->progressAdvance();
-        }
-        $this->progressFinish();
+        DB::enableQueryLog();
+
+
+//        dd(Product::query()->find(263)->lineItems()->get());
+        /** @var User $user */
+        $user = User::query()->where("id", "=", 1107)->firstOrFail();
+
+        dd($user->products()->get()->toArray(), DB::getQueryLog());
     }
 }

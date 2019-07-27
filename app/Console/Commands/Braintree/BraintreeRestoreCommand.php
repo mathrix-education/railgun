@@ -24,7 +24,7 @@ class BraintreeRestoreCommand extends BaseCommand
         $this->call("braintree:restore:customers");
         $this->call("braintree:restore:subscriptions");
         $this->call("braintree:restore:transactions");
-//        $this->call("braintree:restore:line-items");
+        $this->call("braintree:restore:line-items");
     }
 
 

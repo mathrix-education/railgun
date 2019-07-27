@@ -47,6 +47,7 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
  */
 class Product extends BaseModel
 {
+    private const MAX_CHILDREN_DEPTH = 5;
     public const MODE_MACHINE_2019_END = "2019-07-31 00:00:00";
     use NoPivot;
 
@@ -167,7 +168,7 @@ class Product extends BaseModel
      */
     public function parent()
     {
-        return $this->belongsTo(self::class, "parent_id");
+        return $this->belongsTo(Product::class, "parent_id");
     }
 
 
@@ -178,20 +179,21 @@ class Product extends BaseModel
      */
     public function children()
     {
-        return $this->hasMany(self::class, "parent_id")
+        return $this->hasMany(Product::class, "parent_id")
             ->orderBy("order");
     }
 
 
     /**
-     * BelongsToMany products
+     * BelongsToMany products.
+     * This relation is only "Pack" typed products.
      *
      * @return BelongsToMany
      */
     public function items()
     {
         return $this->belongsToMany(
-            self::class,
+            Product::class,
             "product_product",
             "parent_id",
             "child_id"
@@ -217,21 +219,21 @@ class Product extends BaseModel
      */
     public function lineItems(): MorphMany
     {
-        return $this->morphMany(LineItem::class, "product");
+        return $this->morphMany(LineItem::class, "product", "product_type", "product_code");
     }
 
 
     /**
-     * Product::owned attribute
+     * Product::$owned getter attribute
      *
      * @return bool
      */
-    public function getOwnedAttribute()
+    public function getOwnedAttribute(): bool
     {
         /** @var User $user */
         $user = Auth::user();
 
-        return $user && $user->hasPurchased($this);
+        return $user && ($user->hasScope("products:read") || $user->hasPurchased($this));
     }
 
 

@@ -2,9 +2,12 @@
 
 namespace App\Services\Braintree\Models;
 
+use App\Models\Discount;
+use App\Models\Product;
 use App\Services\Braintree\Utils\LineItemsUtils;
 use Braintree\TransactionLineItem as BraintreeLineItem;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\Concerns\AsPivot;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Mathrix\Lumen\Zero\Models\BaseModel;
 
@@ -16,6 +19,7 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
  * @since 6.0.0
  *
  * @property-read int $id
+ * @property bool $negated
  * @property string $kind
  * @property string $name
  * @property int $product_code
@@ -27,9 +31,12 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
  * @property string $transaction_id
  *
  * @property-read Transaction $transaction
+ * @property-read Product|Discount $product
  */
 class LineItem extends BaseModel
 {
+    use AsPivot;
+
     public $timestamps = false;
     protected $fillable = [
         "kind",
@@ -40,7 +47,12 @@ class LineItem extends BaseModel
         "total_amount",
         "unit_amount",
         "unit_of_measure",
+        "user_id",
         "transaction_id"
+    ];
+    protected $table = "line_items";
+    protected $casts = [
+        "negated" => "boolean"
     ];
 
 

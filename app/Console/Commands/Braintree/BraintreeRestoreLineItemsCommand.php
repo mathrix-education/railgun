@@ -20,6 +20,7 @@ class BraintreeRestoreLineItemsCommand extends BaseCommand
         $observer = new TransactionObserver();
 
         $this->line("Restoring line items");
+
         $this->progressStart($transactions->count());
         foreach ($transactions as $transaction) {
             $observer->saved($transaction);
