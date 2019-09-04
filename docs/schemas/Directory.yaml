@@ -1,6 +1,5 @@
 description: Directory
 type: object
-additionalProperties: false
 required: [type, path, dirname, basename, filename, url]
 properties:
   path:

@@ -7,6 +7,7 @@ use App\Models\Traits\FacebookUser;
 use App\Models\Traits\PermissionsTrait;
 use App\Services\Braintree\Models\Customer;
 use App\Services\Braintree\Models\Transaction;
+use App\Services\Stripe\StripeCustomer;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -20,6 +21,7 @@ use Illuminate\Validation\Rule;
 use Laravel\Lumen\Auth\Authorizable;
 use Mathrix\Lumen\JWT\Auth\HasJWT;
 use Mathrix\Lumen\Zero\Models\BaseModel;
+use Stripe\Subscription;
 
 /**
  * Class User.
@@ -48,6 +50,7 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * ---
+ * @property-read string $full_name
  * @property-read bool $premium
  * @property-read string $provider
  * @property-read int $daily_points
@@ -68,7 +71,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         HasJWT,
         FacebookUser,
         PermissionsTrait,
-        Customer;
+        StripeCustomer;
 
     private const STRIPE_PLANS = ["v3_monthly", "v3_annually", "v3_biannually"];
     public const BRAINTREE_PLANS = ["v4_monthly", "v4_annually", "v4_biannually"];
@@ -295,17 +298,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
 
     /**
-     * HasMany Records.
-     *
-     * @return HasMany
-     */
-    public function transactions(): HasMany
-    {
-        return $this->hasMany(Transaction::class, "customer_id", "braintree_id");
-    }
-
-
-    /**
      * HasMany Vote.
      *
      * @return HasMany
@@ -321,6 +313,21 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     | Attributes
     |--------------------------------------------------------------------------
     */
+    /**
+     * full_name attribute.
+     *
+     * @return string
+     */
+    public function getFullNameAttribute(): string
+    {
+        if (empty($this->firstname) && empty($this->lastname)) {
+            return $this->username;
+        } else {
+            return trim("{$this->firstname} {$this->lastname}");
+        }
+    }
+
+
     /**
      * daily_points attribute.
      *
@@ -357,9 +364,27 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function getPremiumAttribute()
     {
-        return $this->premium_bypass
-            || ($this->premium_bypass_expires_at !== null && $this->premium_bypass_expires_at->isFuture())
-            || $this->getActiveSubscription() !== null;
+        $bypass = $this->premium_bypass
+            || ($this->premium_bypass_expires_at !== null && $this->premium_bypass_expires_at->isFuture());
+
+        if ($bypass) {
+            return true;
+        }
+
+        if (!$this->isStripeCustomer(true)) {
+            return false;
+        }
+
+        $subscriptions = $this->asStripeCustomer()->subscriptions->all();
+
+        /** @var Subscription $subscription */
+        foreach ($subscriptions->data as $subscription) {
+            if (in_array($subscription->status, [Subscription::STATUS_ACTIVE, Subscription::STATUS_TRIALING])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 

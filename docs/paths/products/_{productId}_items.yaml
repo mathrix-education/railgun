@@ -34,8 +34,8 @@ patch:
       content:
         application/json:
           schema:
-            $ref: '../../index.yaml#/components/schemas/ProductPack'
+            $ref: '#/components/schemas/ProductPack'
     404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+      $ref: '#/components/responses/404_ModelNotFound'
     422:
-      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
+      $ref: '#/components/responses/422_ModelValidation'

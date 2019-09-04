@@ -15,6 +15,6 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../index.yaml#/components/schemas/Product'
+            $ref: '#/components/schemas/Product'
     404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+      $ref: '#/components/responses/404_ModelNotFound'

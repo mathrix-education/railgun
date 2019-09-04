@@ -2,28 +2,18 @@
 
 namespace App\Controllers;
 
-use App\Exceptions\InvalidBraintreeCustomerException;
 use App\Models\User;
-use App\Services\Braintree\BraintreeResponse;
-use App\Services\Braintree\Exceptions\BraintreeErrorHandler;
-use App\Services\Braintree\Exceptions\BraintreeGatewayException;
-use App\Services\Braintree\Exceptions\BraintreeProcessorException;
-use App\Services\Braintree\Exceptions\DuplicatePaymentMethodNonceException;
-use App\Services\Braintree\Pipelines\SubscriptionPipeline;
-use App\Services\Braintree\Utils\Formatter;
-use App\Services\Braintree\Utils\SubscriptionUtils;
-use Braintree\PaymentMethod;
-use Braintree\Subscription;
+use App\Services\Stripe\Exceptions\StripeHandler;
+use App\Services\Stripe\SubscriptionUtils;
 use Carbon\Carbon;
-use Exception;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
-use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
-use Mathrix\Lumen\Zero\Exceptions\Http\Http401UnauthorizedException;
 use Mathrix\Lumen\Zero\Exceptions\ValidationException;
 use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
+use Stripe\Customer;
+use Stripe\Error\Base as StripeBaseException;
+use Stripe\PaymentIntent;
+use Stripe\Subscription;
 
 /**
  * Class SubscriptionsController.
@@ -34,197 +24,142 @@ use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
  */
 class SubscriptionsController extends BaseController
 {
-    public const PRICE_PER_MONTH = [
-        "v4_monthly" => 17.90,
-        "v4_annually" => 12.90,
-        "v4_biannually" => 9.90,
-    ];
 
 
     /**
      * POST /subscriptions
-     * Create a new subscriptions for a user.
+     * Create a new subscription.
      *
-     * @param Request $request The Illuminate HTTP request.
+     * @param Request $request
      *
-     * @return JsonResponse
-     * @throws BraintreeProcessorException
-     */
-    public function create(Request $request): JsonResponse
-    {
-        $pipeline = new SubscriptionPipeline($request);
-
-        return $pipeline->run();
-    }
-
-
-    /**
-     * GET /subscriptions/{subscriptionId}
-     * Get a subscription by its id.
-     *
-     * @param string $subscriptionId The Braintree subscription id.
-     *
-     * @return JsonResponse
-     */
-    public function find(string $subscriptionId)
-    {
-        $subscription = Subscription::find($subscriptionId);
-
-        return new JsonResponse(Formatter::cast($subscription->jsonSerialize()));
-    }
-
-
-    /**
-     * PATCH /subscriptions/{subscriptionId}
-     * Update a subscription. At the moment, it used to change the payment method of a subscription.
-     *
-     * @param Request $request The Illuminate HTTP request.
-     * @param string $subscriptionId The Braintree subscription id.
-     *
-     * @return JsonResponse
-     * @throws BraintreeGatewayException
-     * @throws BraintreeProcessorException
-     * @throws DuplicatePaymentMethodNonceException
-     * @throws Http401UnauthorizedException
-     * @throws InvalidBraintreeCustomerException
+     * @return SuccessJsonResponse
      * @throws ValidationException
      */
-    public function update(Request $request, string $subscriptionId): JsonResponse
+    public function standardPost(Request $request): SuccessJsonResponse
     {
-        // Stage 1: validate the request
+        $this->validate($request, [
+            "token" => "required",
+            "plan" => "required|in:" . implode(",", array_keys(SubscriptionUtils::PLANS_DETAILS))
+        ]);
+
         /** @var User $user */
         $user = $request->user();
-        $this->validate($request, [
-            "payment_method_nonce" => "required",
-            "make_default" => "boolean"
-        ]);
-        $user->requireBraintreeCustomer();
-
-
-        // Stage 2: Check that the user is the owner of the targeted subscription.
-        if (!$user->ownsBraintreeSubscriptionId($subscriptionId) || $user->hasScope("subscriptions:read")) {
-            throw new Http401UnauthorizedException(["subscription_id" => $subscriptionId]);
+        $customer = $user->asStripeCustomer(true);
+        try {
+            $customer = Customer::update($customer->id, [
+                "source" => $request->json("token")
+            ]);
+        } catch (StripeBaseException $exception) {
+            StripeHandler::throws($exception);
         }
 
-        $payload = [];
+        $plan = $request->json("plan");
 
-        // Stage 3: Add the payment method
-        if ($request->has("payment_method_nonce")) {
-            /** @var PaymentMethod $paymentMethod */
-            $paymentMethod = $user->addBraintreePaymentMethod(
-                $request->json("payment_method_nonce"),
-                $request->json("make_default", true)
-            );
-            $payload["paymentMethodToken"] = $paymentMethod->token;
-        }
-
-        // Stage 4: Update the subscription
-        $subscriptionResult = Subscription::update($subscriptionId, $payload);
-
-        if (!$subscriptionResult->success) {
-            BraintreeErrorHandler::report($subscriptionResult);
-        }
-
-        /** @var Subscription $subscription */
-        $subscription = $subscriptionResult->subscription;
-
-        if (
-            isset($user->settings["need_paypal_refresh"])
-            && $user->settings["need_paypal_refresh"] === true
-        ) {
-            $user->settings = Arr::except($user->settings, ["need_paypal_refresh"]);
-            $user->save();
-        }
-
-        return new JsonResponse(Formatter::cast($subscription->jsonSerialize()));
-    }
-
-
-    /**
-     * GET /subscription/{subscriptionId}/transaction
-     * Get transactions linked with a subscription.
-     *
-     * @param string $subscriptionId The Braintree subscription id.
-     * @param int $page The results page.
-     * @param int $perPage The number of transactions per page.
-     *
-     * @return JsonResponse
-     */
-    public function transactions(string $subscriptionId, int $page, int $perPage)
-    {
-        $subscription = Subscription::find($subscriptionId);
-        $transactions = $subscription->jsonSerialize()["transactions"];
-
-        return new JsonResponse([
-            "page" => $page,
-            "perPage" => $perPage,
-            "total" => count($transactions),
-            "data" => Formatter::cast($transactions)
-        ]);
-    }
-
-
-    /**
-     * POST /subscriptions/{subscriptionId}/cancel
-     * Cancel a subscription for a user.
-     *
-     * @param Request $request The Illuminate HTTP request.
-     * @param string $subscriptionId The Braintree subscription id.
-     *
-     * @return JsonResponse
-     * @throws Http400BadRequestException
-     */
-    public function cancel(Request $request, string $subscriptionId)
-    {
-        $cancelNow = $request->json("now", false);
-        $trialEndsAt = null;
-
-        if ($cancelNow) {
-            // Cancel subscription immediately
-            $subscriptionResult = Subscription::cancel($subscriptionId);
+        /**
+         * @var PaymentIntent $paymentIntent
+         * @var Subscription $subscription
+         */
+        if (SubscriptionUtils::isRegularPlan($plan)) {
+            [$paymentIntent, $subscription] = $this->regular($user, $customer, $plan);
         } else {
-            /** @var Subscription $subscription */
-            $subscription = Subscription::find($subscriptionId);
-
-            if ($subscription->trialPeriod && $subscription->currentBillingCycle === 0) {
-                // Subscription with trial: cancel subscription immediately,
-                // and report remaining premium to premium_bypass_expires_at.
-                $trialEndsAt = Carbon::instance($subscription->firstBillingDate);
-                $subscriptionResult = Subscription::cancel($subscriptionId);
-            } else {
-                // Regular subscription: set numberOfBillingCycles to currentBillingCycle,
-                // thus subscription will naturally expires.
-                $subscriptionResult = Subscription::update($subscriptionId, [
-                    "numberOfBillingCycles" => $subscription->currentBillingCycle
-                ]);
-            }
+            [$paymentIntent, $subscription] = $this->trial($user, $customer, $plan);
         }
 
-        /** @var BraintreeResponse $subscriptionResult */
-        if (!$subscriptionResult->success) {
-            throw new Http400BadRequestException(
-                $subscriptionResult->jsonSerialize(),
-                "Unable to cancel subscription."
-            );
-        }
+        $data = [
+            "initial_payment_intent" => $paymentIntent === null ? null : data_filter($paymentIntent->jsonSerialize(), [
+                "client_secret",
+                "status"
+            ]),
+            "subscription" => data_filter($subscription->jsonSerialize(), [
+                "id",
+                "latest_invoice.payment_intent.client_secret",
+                "latest_invoice.payment_intent.status",
+                "plan.id",
+                "status"
+            ])
+        ];
 
-        $subscription = $subscriptionResult->subscription;
-        $customer = SubscriptionUtils::getSubscriptionCustomer($subscription);
+        return new SuccessJsonResponse($data);
+    }
 
-        if ($customer !== null) {
-            /** @var User $user */
-            $user = User::query()
-                ->where("braintree_id", "=", $customer->id)
-                ->firstOrFail();
 
-            if ($trialEndsAt instanceof Carbon) {
-                $user->premium_bypass_expires_at = $trialEndsAt;
-            }
+    /**
+     * Create a regular subscription.
+     *
+     * @param User $user
+     * @param Customer $customer
+     * @param string $plan
+     *
+     * @return array
+     */
+    private function regular(User $user, Customer $customer, string $plan): array
+    {
+        // Only create the subscription since a regular plan does not require an initial payment intent.
+        $subscription = Subscription::create([
+            "customer" => $customer->id,
+            "items" => [
+                ["plan" => $plan]
+            ],
+            "metadata" => [
+                "user_id" => $user->id,
+            ],
+            "expand" => ["latest_invoice.payment_intent"]
+        ]);
 
-            $user->forgetBraintreeCustomerCache();
-            $user->save();
-        }
+        return [null, $subscription];
+    }
 
-        return new SuccessJsonResponse(Formatter::cast($subscription->jsonSerialize()));
+
+    /**
+     * Create the initial payment intent and the subscription.
+     *
+     * @param User $user
+     * @param Customer $customer
+     * @param string $plan
+     *
+     * @return array
+     */
+    private function trial(User $user, Customer $customer, string $plan): array
+    {
+        // Create the initial payment intent
+        $paymentIntent = PaymentIntent::create([
+            "amount" => SubscriptionUtils::getTrialDuration($plan),
+            "currency" => "eur",
+            "confirm" => true,
+            "customer" => $user->stripe_id,
+            "description" => "Abonnement au Mode Machine du " . Carbon::now()->format("d/m/Y") . " au "
+                . SubscriptionUtils::getTrialEndDate($plan)->format("d/m/Y"),
+            "metadata" => [
+                "user_id" => $user->id
+            ],
+            "payment_method" => $customer->default_source,
+            "receipt_email" => $user->email,
+            "save_payment_method" => true,
+            "setup_future_usage" => "off_session"
+        ]);
+
+        // Then, create the subscription
+        $subscription = Subscription::create([
+            "customer" => $customer->id,
+            "items" => [
+                ["plan" => $plan]
+            ],
+            "metadata" => [
+                "user_id" => $user->id,
+                "initial_payment_intent" => $paymentIntent->id
+            ],
+            "trial_period_days" => SubscriptionUtils::getTrialDuration($plan),
+            "expand" => ["latest_invoice.payment_intent"]
+        ]);
+
+        // Add the subscription id to the payment intent metadata
+        $paymentIntent = PaymentIntent::update($paymentIntent->id, [
+            "metadata" => [
+                "user_id" => $user->id,
+                "subscription_id" => $subscription->id
+            ],
+        ]);
+
+        return [$paymentIntent, $subscription];
     }
 }

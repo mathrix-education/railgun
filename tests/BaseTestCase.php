@@ -4,9 +4,8 @@ namespace Tests;
 
 use Faker\Factory as FakerFactory;
 use Faker\Generator;
-use Laravel\Lumen\Testing\TestCase;
+use Mathrix\Lumen\Zero\Testing\BaseTestCase as ZeroTestCase;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-
 
 /**
  * Class BaseTestCase.
@@ -15,7 +14,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  * @copyright Mathrix Education SA.
  * @since 4.3.0
  */
-abstract class BaseTestCase extends TestCase
+abstract class BaseTestCase extends ZeroTestCase
 {
     /** @var Generator */
     public $faker;
@@ -39,9 +38,7 @@ abstract class BaseTestCase extends TestCase
     public function tearDown(): void
     {
         $this->beforeApplicationDestroyed(function () {
-            app()
-                ->make("db")
-                ->disconnect();
+            app()->make("db")->disconnect();
         });
 
         parent::tearDown();

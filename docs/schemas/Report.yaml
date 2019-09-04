@@ -1,7 +1,6 @@
 description: Report
 type: object
 required: [id, context, type, content, status, module_id, created_at, updated_at, module]
-additionalProperties: false
 properties:
   id:
     description: The report id.

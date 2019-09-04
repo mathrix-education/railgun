@@ -1,6 +1,5 @@
 description: Activity
 type: object
-additionalProperties: false
 properties:
   id:
     description: The activity id.

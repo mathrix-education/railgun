@@ -34,8 +34,6 @@ class BraintreeGatewayServiceProvider extends ServiceProvider
                 "privateKey" => env("BRAINTREE_PRIVATE_KEY")
             ]);
         });
-
-        LineItem::observe(LineItemObserver::class);
     }
 
 

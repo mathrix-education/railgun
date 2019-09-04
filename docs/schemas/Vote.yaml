@@ -1,6 +1,5 @@
 description: Vote
 type: object
-additionalProperties: false
 required: [id, value, user_id, created_at, updated_at]
 properties:
   id:

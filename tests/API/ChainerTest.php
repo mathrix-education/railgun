@@ -40,32 +40,32 @@ class ChainerTest extends APIStatelessTestCase
                 [
                     "name" => "activity",
                     "method" => "get",
-                    "url" => "/activities/{module.activity_id}"
+                    "url" => "/activities/{module.data.activity_id}"
                 ],
                 [
                     "name" => "notion",
                     "method" => "get",
-                    "url" => "/notions/{activity.notion_id}"
+                    "url" => "/notions/{activity.data.notion_id}"
                 ],
                 [
                     "name" => "chapter",
                     "method" => "get",
-                    "url" => "/chapters/{notion.chapter_id}"
+                    "url" => "/chapters/{notion.data.chapter_id}"
                 ],
                 [
                     "name" => "discipline",
                     "method" => "get",
-                    "url" => "/disciplines/{chapter.discipline_id}"
+                    "url" => "/disciplines/{chapter.data.discipline_id}"
                 ],
                 [
                     "name" => "grade",
                     "method" => "get",
-                    "url" => "/grades/{chapter.grade_id}"
+                    "url" => "/grades/{chapter.data.grade_id}"
                 ],
                 [
                     "name" => "country",
                     "method" => "get",
-                    "url" => "/countries/{grade.country_id}"
+                    "url" => "/countries/{grade.data.country_id}"
                 ],
                 [
                     "name" => "comments",
@@ -75,7 +75,7 @@ class ChainerTest extends APIStatelessTestCase
                 [
                     "name" => "chapter_recursive",
                     "method" => "get",
-                    "url" => "/chapters/{chapter.id}/recursive"
+                    "url" => "/chapters/{chapter.data.id}/recursive"
                 ],
             ],
         ]);

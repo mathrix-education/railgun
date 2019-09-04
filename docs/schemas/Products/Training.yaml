@@ -8,4 +8,4 @@ properties:
     type: array
     items:
       allOf:
-        - $ref: '../../index.yaml#/components/schemas/ProductSection'
+        - $ref: '#/components/schemas/ProductSection'

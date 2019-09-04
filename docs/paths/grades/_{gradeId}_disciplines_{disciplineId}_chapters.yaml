@@ -53,5 +53,5 @@ get:
                 description: The chapters as an array.
                 type: array
                 items:
-                  $ref: '../../index.yaml#/components/schemas/Chapter'
+                  $ref: '#/components/schemas/Chapter'
                 readOnly: true

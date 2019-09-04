@@ -1,6 +1,5 @@
 description: Category
 type: object
-additionalProperties: false
 properties:
   id:
     description: The category id.

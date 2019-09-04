@@ -6,10 +6,7 @@ use App\Models\Activity;
 use App\Models\Mark;
 use App\Models\User;
 use Mathrix\Lumen\JWT\Auth\JWT;
-use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
-use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
-use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
-use Mathrix\Lumen\Tests\REST\Standard\StandardPostTest;
+use Mathrix\Lumen\Zero\Testing\Traits\RESTAutoTestTrait;
 use Tests\APIStatelessTestCase;
 
 /**
@@ -21,7 +18,15 @@ use Tests\APIStatelessTestCase;
  */
 class ActivitiesTest extends APIStatelessTestCase
 {
-    use StandardIndexTest, StandardPostTest, StandardGetTest, StandardPatchTest;
+    use RESTAutoTestTrait;
+
+    protected $testKeys = [
+        "std:index",
+        "std:post",
+        "std:get",
+        "std:patch",
+        "rel:get:modules"
+    ];
 
 
     /**
@@ -30,20 +35,12 @@ class ActivitiesTest extends APIStatelessTestCase
     public function testDelete(): void
     {
         $activity = Activity::random();
-        $pivot = Activity::random(["id", "!=", $activity->id]);
+        $fallback = Activity::random(["id", "!=", $activity->id]);
+        $activity->modules()->update(["activity_id" => $fallback->id]);
 
-        $activity->modules()->update(["activity_id" => $pivot->id]);
-
-        $this->assertRestDeleteSuccess(["conditions" => ["id", "=", $activity->id]]);
-    }
-
-
-    /**
-     * GET /activities/{activityId}/modules/{page}/{perPage}
-     */
-    public function testModules(): void
-    {
-        $this->assertRestRelationSuccess("modules");
+        $this->makeRESTJsonRequest("std:delete", null, null, [
+            "conditions" => ["id", "=", $activity->id]
+        ]);
     }
 
 
@@ -63,7 +60,7 @@ class ActivitiesTest extends APIStatelessTestCase
         ]);
 
         $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
+        $this->assertOpenAPIResponse($this->response);
         $this->assertInDatabase("marks", [
             "status" => $status,
             "user_id" => $user->id,
@@ -84,7 +81,7 @@ class ActivitiesTest extends APIStatelessTestCase
         $this->json("patch", "/activities/{$mark->markable_id}/unmark");
 
         $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
+        $this->assertOpenAPIResponse($this->response);
         $this->assertNotInDatabase("marks", [
             "user_id" => $mark->user_id,
             "markable_type" => "activity",

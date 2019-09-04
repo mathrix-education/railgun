@@ -2,12 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Mails\SubscriptionRenewalSoonMail;
-use App\Models\Product;
 use App\Models\User;
-use App\Services\Braintree\Models\LineItem;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Mathrix\Lumen\Zero\Console\Commands\BaseCommand;
 
 /**
@@ -26,26 +23,6 @@ class TestCommand extends BaseCommand
 
     public function handle()
     {
-//        $li = LineItem::all();
-//        $this->progressStart($li->count());
-//
-//        foreach ($li as $l) {
-//            if ($l->transaction->totally_refunded) {
-//                $l->negated = true;
-//                $l->save();
-//            }
-//            $this->progressAdvance();
-//        }
-//        $this->progressFinish();
-
-
-        DB::enableQueryLog();
-
-
-//        dd(Product::query()->find(263)->lineItems()->get());
-        /** @var User $user */
-        $user = User::query()->where("id", "=", 1107)->firstOrFail();
-
-        dd($user->products()->get()->toArray(), DB::getQueryLog());
+        dd(json_encode(Carbon::now()));
     }
 }

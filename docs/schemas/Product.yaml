@@ -1,6 +1,6 @@
 oneOf:
-  - $ref: '../index.yaml#/components/schemas/ProductPack'
-  - $ref: '../index.yaml#/components/schemas/ProductTraining'
-  - $ref: '../index.yaml#/components/schemas/ProductSection'
-  - $ref: '../index.yaml#/components/schemas/ProductLesson'
-  - $ref: '../index.yaml#/components/schemas/ProductPremium'
+  - $ref: '#/components/schemas/ProductPack'
+  - $ref: '#/components/schemas/ProductTraining'
+  - $ref: '#/components/schemas/ProductSection'
+  - $ref: '#/components/schemas/ProductLesson'
+  - $ref: '#/components/schemas/ProductPremium'

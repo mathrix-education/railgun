@@ -6,6 +6,7 @@ use App\Models\Chapter;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Laravelium\Sitemap\Sitemap;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
@@ -56,6 +57,19 @@ class SystemController extends BaseController
             "build" => env("APP_BUILD")
         ]);
     }
+
+
+    /**
+     * GET /docs
+     * Only available in dev environment.
+     *
+     * @return Response
+     */
+    public function docs(): Response
+    {
+        return new Response(file_get_contents(resource_path("docs/index.html")));
+    }
+
 
 
     /**

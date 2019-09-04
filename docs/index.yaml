@@ -52,7 +52,6 @@ x-tagGroups:
       - Settings
   - name: Billing
     tags:
-      - Braintree
       - Plans
       - Subscriptions
       - Discounts

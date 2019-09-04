@@ -9,10 +9,6 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Mathrix\Lumen\JWT\Auth\JWT;
-use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
-use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
-use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
-use Mathrix\Lumen\Tests\REST\Standard\StandardPostTest;
 use Tests\APIStatelessTestCase;
 
 /**

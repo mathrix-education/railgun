@@ -3,6 +3,7 @@
 use App\Models\User;
 use Faker\Factory as FakerFactory;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Arr;
 use Ramsey\Uuid\Uuid;
 
 //if (!function_exists("config_path")) {
@@ -95,5 +96,35 @@ if ((!function_exists("morph_alias"))) {
     function morph_alias($class)
     {
         return array_search($class, Relation::morphMap()) ?: $class;
+    }
+}
+
+
+if ((!function_exists("morph_alias"))) {
+    function morph_alias($class)
+    {
+        return array_search($class, Relation::morphMap()) ?: $class;
+    }
+}
+
+if (!function_exists("data_filter")) {
+    /**
+     * @param array $source
+     * @param string[] $keys
+     *
+     * @return array
+     */
+    function data_filter(array $source, array $keys): array
+    {
+        $dot = Arr::dot($source);
+        $final = [];
+
+        foreach ($dot as $k => $v) {
+            if (in_array($k, $keys)) {
+                Arr::set($final, $k, $v);
+            }
+        }
+
+        return $final;
     }
 }

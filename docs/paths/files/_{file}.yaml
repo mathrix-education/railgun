@@ -32,7 +32,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: '../../index.yaml#/components/schemas/File'
+            $ref: '#/components/schemas/File'
 
 get:
   summary: Get file info
@@ -53,9 +53,9 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../index.yaml#/components/schemas/File'
+            $ref: '#/components/schemas/File'
     404:
-      $ref: '../../index.yaml#/components/responses/404_FileNotFound'
+      $ref: '#/components/responses/404_FileNotFound'
 patch:
   summary: Rename/Move file
   description: Rename or move a file on the CDN.
@@ -85,9 +85,9 @@ patch:
       content:
         application/json:
           schema:
-            $ref: '../../index.yaml#/components/schemas/File'
+            $ref: '#/components/schemas/File'
     404:
-      $ref: '../../index.yaml#/components/responses/404_FileNotFound'
+      $ref: '#/components/responses/404_FileNotFound'
 delete:
   summary: Delete file
   description: Delete a file on the CDN.
@@ -116,4 +116,4 @@ delete:
               type: string
               example: File `test/foo.jpg` was successfully deleted.
     404:
-      $ref: '../../index.yaml#/components/responses/404_FileNotFound'
+      $ref: '#/components/responses/404_FileNotFound'

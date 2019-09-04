@@ -5,10 +5,7 @@ namespace Tests\API;
 use App\Models\Chapter;
 use App\Models\Grade;
 use Mathrix\Lumen\JWT\Auth\JWT;
-use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
-use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
-use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
-use Mathrix\Lumen\Tests\REST\Standard\StandardPostTest;
+use Mathrix\Lumen\Zero\Testing\Traits\RESTAutoTestTrait;
 use Tests\APIStatelessTestCase;
 
 /**
@@ -20,13 +17,20 @@ use Tests\APIStatelessTestCase;
  */
 class GradesTest extends APIStatelessTestCase
 {
-    use StandardIndexTest, StandardGetTest, StandardPostTest, StandardPatchTest;
+    use RESTAutoTestTrait;
+
+    protected $testKeys = [
+        "std:index",
+        "std:post",
+        "std:get",
+        "std:patch"
+    ];
 
 
     /**
      * DELETE /grades/{gradeId}
      */
-    public function testDelete()
+    public function testDelete(): void
     {
         $grade = Grade::random();
         $pivot = Grade::random(["id", "!=", $grade->id]);
@@ -35,7 +39,9 @@ class GradesTest extends APIStatelessTestCase
         $grade->chapters()->update(["grade_id" => $pivot->id]);
         $grade->users()->update(["grade_id" => $pivot->id]);
 
-        $this->assertRestDeleteSuccess(["conditions" => ["id", "=", $grade->id]]);
+        $this->makeRESTJsonRequest("std:delete", null, null, [
+            "conditions" => ["id", "=", $grade->id]
+        ]);
     }
 
 
@@ -44,7 +50,7 @@ class GradesTest extends APIStatelessTestCase
      *
      * @param string $scope
      */
-    public function disciplines(string $scope)
+    private function disciplines(string $scope)
     {
         $this->requestModel = Grade::query()
             ->inRandomOrder()
@@ -56,12 +62,11 @@ class GradesTest extends APIStatelessTestCase
         if ($scope === "all") {
             $this->requester = JWT::withScopes("disciplines:read");
         }
-        $this->json("get", "/grades/{$this->requestModel->id}/disciplines/$page/$perPage?scope=$scope");
 
-        $uri = $this->getOpenAPIUri($this->requestMethod, str_replace("?scope=$scope", "", $this->requestUri));
+        $this->json("get", "/grades/{$this->requestModel->id}/disciplines?page=$page&perPage=$perPage&scope=$scope");
 
+        $this->assertOpenAPIResponse($this->response);
         $this->assertResponseOk();
-        $this->assertOpenAPIResponse($uri);
     }
 
 
@@ -84,15 +89,6 @@ class GradesTest extends APIStatelessTestCase
 
 
     /**
-     * GET /grades/slug/{gradeSlug}
-     */
-    public function testBySlug(): void
-    {
-        $this->assertRestGetBySuccess("slug");
-    }
-
-
-    /**
      * GET /grades/slug/{gradeSlug}/chapters/slug/{chapterSlug}
      */
     public function testBySlugChapterSlug(): void
@@ -108,7 +104,7 @@ class GradesTest extends APIStatelessTestCase
         $this->json("get", "/grades/slug/$grade->slug/chapters/slug/$chapter->slug");
 
         $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
+        $this->assertOpenAPIResponse($this->response);
     }
 
 
@@ -123,13 +119,11 @@ class GradesTest extends APIStatelessTestCase
             $this->requester = JWT::withScopes("disciplines:read");
         }
 
-        $uri = "/grades/$chapter->grade_id/disciplines/$chapter->discipline_id/chapters/$page/$perPage?scope=$scope";
+        $uri = "/grades/$chapter->grade_id/disciplines/$chapter->discipline_id/chapters?page=$page&perPage=$perPage?scope=$scope";
         $this->json("get", $uri);
 
-        $uri = $this->getOpenAPIUri($this->requestMethod, str_replace("?scope=$scope", "", $this->requestUri));
-
+        $this->assertOpenAPIResponse($this->response);
         $this->assertResponseOk();
-        $this->assertOpenAPIResponse($uri);
     }
 
 

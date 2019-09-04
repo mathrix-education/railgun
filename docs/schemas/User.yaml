@@ -1,6 +1,5 @@
 description: User
 type: object
-additionalProperties: false
 required: [id, username, email, firstname, lastname, type, points, level, daily,
            daily_achievements, settings, grade_id, created_at, updated_at,
            provider, premium, daily_points]
@@ -138,15 +137,6 @@ properties:
     type: integer
     example: 300
     readOnly: true
-  braintree:
-    allOf:
-      - $ref: Braintree/Customer.yaml
-    description: >
-      **Visible only for admins.**
-      The user's Braintree profile.
-    type: object
-    readOnly: true
-    nullable: true
   last_session:
     description: The user last session.
     type: array
@@ -158,23 +148,23 @@ properties:
           type: string
           example: terminale-s
         discipline:
-          $ref: '../index.yaml#/components/schemas/Discipline'
+          $ref: '#/components/schemas/Discipline'
         chapter:
-          $ref: '../index.yaml#/components/schemas/Chapter'
+          $ref: '#/components/schemas/Chapter'
         activity:
-          $ref: '../index.yaml#/components/schemas/Activity'
+          $ref: '#/components/schemas/Activity'
         module:
-          $ref: '../index.yaml#/components/schemas/Module'
+          $ref: '#/components/schemas/Module'
   grade:
     description: The user grade.
     allOf:
-      - $ref: '../index.yaml#/components/schemas/Grade'
+      - $ref: '#/components/schemas/Grade'
     nullable: true
     readOnly: true
   purchases:
     description: The user purchases.
     type: array
     items:
-      $ref: '../index.yaml#/components/schemas/Purchase'
+      $ref: '#/components/schemas/Purchase'
     nullable: true
     readOnly: true

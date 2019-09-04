@@ -1,0 +1,7 @@
+description: Success.
+type: object
+properties:
+  success:
+    description: If the request succeeded.
+    type: boolean
+    example: true

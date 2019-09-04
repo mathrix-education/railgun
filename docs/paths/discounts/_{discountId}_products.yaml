@@ -38,10 +38,10 @@ get:
                 description: The products as an array.
                 type: array
                 items:
-                  $ref: '../../index.yaml#/components/schemas/Product'
+                  $ref: '#/components/schemas/Product'
                 readOnly: true
     404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+      $ref: '#/components/responses/404_ModelNotFound'
 patch:
   summary: Patch discount products
   description: >
@@ -96,9 +96,9 @@ patch:
                 description: The products as an array.
                 type: array
                 items:
-                  $ref: '../../index.yaml#/components/schemas/Product'
+                  $ref: '#/components/schemas/Product'
                 readOnly: true
     404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+      $ref: '#/components/responses/404_ModelNotFound'
     422:
-      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
+      $ref: '#/components/responses/422_ModelValidation'

@@ -26,6 +26,6 @@ patch:
       content:
         application/json:
           schema:
-            $ref: '../../index.yaml#/components/schemas/Module'
+            $ref: '#/components/schemas/Module'
     404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+      $ref: '#/components/responses/404_ModelNotFound'

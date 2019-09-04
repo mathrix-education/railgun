@@ -16,4 +16,4 @@ post:
                 XIRYGPsLB0QAAomCJ9nfiouMw
   responses:
     200:
-      $ref: ../../index.yaml#/components/responses/200_Token
+      $ref: '#/components/responses/200_Token'

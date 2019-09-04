@@ -1,6 +1,5 @@
 description: Grade
 type: object
-additionalProperties: false
 required: [id, name, slug, order, visible, parent_id, country_id, created_at, updated_at]
 properties:
   id:

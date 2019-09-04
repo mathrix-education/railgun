@@ -1,6 +1,5 @@
 description: File
 type: object
-additionalProperties: false
 required: [type, path, dirname, basename, filename, extension, size, mimetype, timestamp, url]
 properties:
   type:

@@ -1,6 +1,5 @@
 description: Purchase
 type: object
-additionalProperties: false
 properties:
   id:
     description: The purchase id.
@@ -29,5 +28,5 @@ properties:
     format: date-time
   product:
     allOf:
-      - $ref: '../index.yaml#/components/schemas/Product'
+      - $ref: '#/components/schemas/Product'
     nullable: true

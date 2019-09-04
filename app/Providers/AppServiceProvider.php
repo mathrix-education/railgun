@@ -11,6 +11,7 @@ use App\Models\Post;
 use App\Models\Product;
 use App\Models\User;
 use App\Services\Braintree\BraintreeGatewayServiceProvider;
+use App\Services\Stripe\StripeServiceProvider;
 use Barryvdh\Cors\ServiceProvider as CorsServiceProvider;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -52,6 +53,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(GoogleCloudStorageServiceProvider::class);
         $this->app->register(JWTServiceProvider::class);
         $this->app->register(FacebookServiceProvider::class);
+        $this->app->register(StripeServiceProvider::class);
 
         // Mathrix Lumen Zero Providers
         $this->app->register(ObserverServiceProvider::class);
@@ -65,7 +67,7 @@ class AppServiceProvider extends ServiceProvider
         ScopesLoader::registerAdditionalScopes(["users:as"]);
 
 
-        Carbon::setToStringFormat("c");
+        // Carbon::setToStringFormat("Y-m-d\TH:i:s\Z");
 
         // MorphMap
         Relation::morphMap([

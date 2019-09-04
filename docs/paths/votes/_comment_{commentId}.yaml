@@ -14,14 +14,14 @@ post:
     content:
       application/json:
         schema:
-          $ref: '../../index.yaml#/components/schemas/Vote'
+          $ref: '#/components/schemas/Vote'
   responses:
     200:
       description: The newly created vote.
       content:
         application/json:
           schema:
-            $ref: '../../index.yaml#/components/schemas/Vote'
+            $ref: '#/components/schemas/Vote'
 delete:
   summary: Delete vote
   security:

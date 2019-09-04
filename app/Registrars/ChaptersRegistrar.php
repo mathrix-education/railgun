@@ -30,6 +30,6 @@ class ChaptersRegistrar extends BaseRegistrar
 
         $controller = ChaptersController::class;
 
-        $this->get("chapters/{chapterId:[1-9]\d*}/recursive", "$controller@recursive");
+        $this->get("chapters/{chapterId}/recursive", "$controller@recursive");
     }
 }

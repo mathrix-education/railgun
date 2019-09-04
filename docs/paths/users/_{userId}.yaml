@@ -13,7 +13,7 @@ get:
     - bearer: [logged]
   responses:
     401:
-      $ref: '../../index.yaml#/components/responses/401_Unauthorized'
+      $ref: '#/components/responses/401_Unauthorized'
 patch:
   description: >
     Patch a user by its id. Note that the scope `admin` is required in order to

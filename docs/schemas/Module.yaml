@@ -1,6 +1,6 @@
 anyOf:
-  - $ref: '../index.yaml#/components/schemas/ModuleCourse'
-  - $ref: '../index.yaml#/components/schemas/ModuleMCQ'
-  - $ref: '../index.yaml#/components/schemas/ModuleFlashcard'
-  - $ref: '../index.yaml#/components/schemas/ModuleTest'
-  - $ref: '../index.yaml#/components/schemas/ModuleStriped'
+  - $ref: '#/components/schemas/ModuleCourse'
+  - $ref: '#/components/schemas/ModuleMCQ'
+  - $ref: '#/components/schemas/ModuleFlashcard'
+  - $ref: '#/components/schemas/ModuleTest'
+  - $ref: '#/components/schemas/ModuleStriped'

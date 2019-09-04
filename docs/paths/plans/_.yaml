@@ -1,11 +1,21 @@
 get:
-  summary: Index plans
+  summary: Get all plans
   responses:
     200:
-      description: The Braintree plans
+      description: The plans.
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: '../../index.yaml#/components/schemas/Braintree_Plan'
+            type: object
+            required: [success, data]
+            additionalProperties: false
+            properties:
+              success:
+                description: The response success.
+                type: boolean
+                enum: [true]
+              data:
+                description: The response data.
+                type: array
+                items:
+                  $ref: '#/components/schemas/Plan'

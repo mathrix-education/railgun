@@ -15,9 +15,9 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../index.yaml#/components/schemas/Setting'
+            $ref: '#/components/schemas/Setting'
     404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+      $ref: '#/components/responses/404_ModelNotFound'
 patch:
   summary: Write setting
   security:
@@ -35,16 +35,16 @@ patch:
     content:
       application/json:
         schema:
-          $ref: '../../index.yaml#/components/schemas/Setting'
+          $ref: '#/components/schemas/Setting'
   responses:
     200:
       description: The requested setting.
       content:
         application/json:
           schema:
-            $ref: '../../index.yaml#/components/schemas/Setting'
+            $ref: '#/components/schemas/Setting'
     404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+      $ref: '#/components/responses/404_ModelNotFound'
 delete:
   summary: Forgot setting
   security:

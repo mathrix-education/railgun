@@ -16,7 +16,7 @@ post:
               example: MyExtreme$Pwd
   responses:
     200:
-      $ref: ../../index.yaml#/components/responses/200_Token
+      $ref: '#/components/responses/200_Token'
     401:
       description: Invalid credentials.
       content:

@@ -27,4 +27,4 @@ delete:
                 type: string
                 example: User with id `1585` cache was successfully cleared.
     404:
-      $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+      $ref: '#/components/responses/404_ModelNotFound'

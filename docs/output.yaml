@@ -54,6 +54,14 @@ components:
             type: string
             example: '%lorem%'
   responses:
+    200_Success:
+      description: Success.
+      type: object
+      properties:
+        success:
+          description: 'If the request succeeded.'
+          type: boolean
+          example: true
     200_SuccessMessage:
       description: Success.
       content:
@@ -161,7 +169,6 @@ components:
     Activity:
       description: Activity
       type: object
-      additionalProperties: false
       properties:
         id:
           description: 'The activity id.'
@@ -229,7 +236,6 @@ components:
     Category:
       description: Category
       type: object
-      additionalProperties: false
       properties:
         id:
           description: 'The category id.'
@@ -262,7 +268,6 @@ components:
     Chapter:
       description: Chapter
       type: object
-      additionalProperties: false
       properties:
         id:
           description: 'The chapter id.'
@@ -324,7 +329,6 @@ components:
     Comment:
       description: Comment.
       type: object
-      additionalProperties: false
       required:
         - id
         - content
@@ -423,12 +427,11 @@ components:
         children:
           type: array
           items:
-            $ref: '../index.yaml#/components/schemas/CommentChild'
+            $ref: '#/components/schemas/CommentChild'
           readOnly: true
     CommentChild:
       description: Comment.
       type: object
-      additionalProperties: false
       required:
         - id
         - content
@@ -527,7 +530,6 @@ components:
     Country:
       description: Country.
       type: object
-      additionalProperties: false
       properties:
         id:
           description: 'The country id.'
@@ -561,7 +563,6 @@ components:
     Directory:
       description: Directory
       type: object
-      additionalProperties: false
       required:
         - type
         - path
@@ -598,7 +599,6 @@ components:
     Discipline:
       description: Discipline
       type: object
-      additionalProperties: false
       properties:
         id:
           description: 'The discipline id.'
@@ -628,7 +628,6 @@ components:
     Discount:
       description: Discount.
       type: object
-      additionalProperties: false
       properties:
         id:
           description: 'The discount id.'
@@ -670,7 +669,6 @@ components:
     File:
       description: File
       type: object
-      additionalProperties: false
       required:
         - type
         - path
@@ -727,7 +725,6 @@ components:
     Grade:
       description: Grade
       type: object
-      additionalProperties: false
       required:
         - id
         - name
@@ -780,7 +777,6 @@ components:
     Level:
       description: File
       type: object
-      additionalProperties: false
       properties:
         id:
           description: 'The discipline id.'
@@ -803,7 +799,6 @@ components:
     Mark:
       description: Mark
       type: object
-      additionalProperties: false
       required:
         - country
         - discipline
@@ -813,37 +808,32 @@ components:
         - activity
       properties:
         country:
-          $ref: '../index.yaml#/components/schemas/Country'
+          $ref: '#/components/schemas/Country'
         discipline:
-          $ref: '../index.yaml#/components/schemas/Discipline'
+          $ref: '#/components/schemas/Discipline'
         grade:
-          $ref: '../index.yaml#/components/schemas/Grade'
+          $ref: '#/components/schemas/Grade'
         chapter:
-          $ref: '../index.yaml#/components/schemas/Chapter'
+          $ref: '#/components/schemas/Chapter'
         notion:
-          $ref: '../index.yaml#/components/schemas/Notion'
+          $ref: '#/components/schemas/Notion'
         activity:
-          $ref: '../index.yaml#/components/schemas/Activity'
+          $ref: '#/components/schemas/Activity'
     Module:
       anyOf:
         -
-          $ref: '../index.yaml#/components/schemas/ModuleCourse'
+          $ref: '#/components/schemas/ModuleCourse'
         -
-          $ref: '../index.yaml#/components/schemas/ModuleMCQ'
+          $ref: '#/components/schemas/ModuleMCQ'
         -
-          $ref: '../index.yaml#/components/schemas/ModuleFlashcard'
+          $ref: '#/components/schemas/ModuleFlashcard'
         -
-          $ref: '../index.yaml#/components/schemas/ModuleTest'
+          $ref: '#/components/schemas/ModuleTest'
         -
-          $ref: '../index.yaml#/components/schemas/ModuleStriped'
-    Notification:
-      oneOf:
-        -
-          $ref: '../index.yaml#/components/schemas/NotificationCommentAnswer'
+          $ref: '#/components/schemas/ModuleStriped'
     Notion:
       description: Notion
       type: object
-      additionalProperties: false
       properties:
         id:
           description: 'The notion id.'
@@ -918,10 +908,85 @@ components:
           items:
             type: object
           readOnly: true
+    PaymentIntent:
+      description: 'The subscription latest invoice payment intent.'
+      type: object
+      additionalProperties: false
+      properties:
+        client_secret:
+          description: 'If subscription requires 3D Secure 2 Authentication, use the `client_secret` to authenticate the used card via the Stripe.js `handleCardPayment()` function.'
+          externalDocs:
+            description: 'Stripe.js `handleCardPayment()`'
+            url: 'https://stripe.com/docs/stripe-js/reference#stripe-handle-card-payment'
+          type: string
+          example: pi_1FDZZPJ3KapFDTUE7ACor7QN_secret_Z1j93AE03EzhWB0nsCLYZlCm7
+        status:
+          description: 'The payment intent status.'
+          type: string
+          enum:
+            - requires_payment_method
+            - requires_confirmation
+            - requires_action
+            - processing
+            - canceled
+            - succeeded
+          externalDocs:
+            description: 'Payment Intent statusses on Stripe'
+            url: 'https://stripe.com/docs/payments/intents#intent-statuses'
+    Plan:
+      description: Plan
+      type: object
+      required:
+        - id
+        - regular
+        - period
+        - price_per_period
+        - price_per_month
+        - trial_days
+        - trial_ends_at
+        - trial_price
+      properties:
+        id:
+          description: 'The plan id.'
+          type: string
+          example: v5_annually
+        regular:
+          description: 'If the plan is **regular**, which means that there is no initial big payment.'
+          type: boolean
+          example: false
+        period:
+          description: 'The plan period.'
+          type: string
+          enum:
+            - month
+            - year
+          example: year
+        price_per_period:
+          description: 'The plan price per period **in cents**.'
+          type: integer
+          example: 15480
+        price_per_month:
+          description: 'The plan price per month **in cents**.'
+          type: integer
+          example: 1290
+        trial_days:
+          description: 'If the plan is not **regular**, the duration if the trial period in days, `null` otherwise.'
+          type: integer
+          nullable: true
+          example: 333
+        trial_ends_at:
+          description: 'If the plan is not **regular**, the trial end date, `null` otherwise.'
+          type: string
+          nullable: true
+          example: 1596146400
+        trial_price:
+          description: 'If the plan is not **regular**, the trial price in cents, `null` otherwise.'
+          type: integer
+          nullable: true
+          example: 14147
     Post:
       description: Post
       type: object
-      additionalProperties: false
       properties:
         id:
           description: 'The post id.'
@@ -960,23 +1025,22 @@ components:
         module:
           allOf:
             -
-              $ref: '../index.yaml#/components/schemas/Module'
+              $ref: '#/components/schemas/Module'
     Product:
       oneOf:
         -
-          $ref: '../index.yaml#/components/schemas/ProductPack'
+          $ref: '#/components/schemas/ProductPack'
         -
-          $ref: '../index.yaml#/components/schemas/ProductTraining'
+          $ref: '#/components/schemas/ProductTraining'
         -
-          $ref: '../index.yaml#/components/schemas/ProductSection'
+          $ref: '#/components/schemas/ProductSection'
         -
-          $ref: '../index.yaml#/components/schemas/ProductLesson'
+          $ref: '#/components/schemas/ProductLesson'
         -
-          $ref: '../index.yaml#/components/schemas/ProductPremium'
+          $ref: '#/components/schemas/ProductPremium'
     Purchase:
       description: Purchase
       type: object
-      additionalProperties: false
       properties:
         id:
           description: 'The purchase id.'
@@ -1006,7 +1070,7 @@ components:
         product:
           allOf:
             -
-              $ref: '../index.yaml#/components/schemas/Product'
+              $ref: '#/components/schemas/Product'
           nullable: true
     Report:
       description: Report
@@ -1021,7 +1085,6 @@ components:
         - created_at
         - updated_at
         - module
-      additionalProperties: false
       properties:
         id:
           description: 'The report id.'
@@ -1065,20 +1128,19 @@ components:
         module:
           anyOf:
             -
-              $ref: '../index.yaml#/components/schemas/ModuleCourse'
+              $ref: '#/components/schemas/ModuleCourse'
             -
-              $ref: '../index.yaml#/components/schemas/ModuleMCQ'
+              $ref: '#/components/schemas/ModuleMCQ'
             -
-              $ref: '../index.yaml#/components/schemas/ModuleFlashcard'
+              $ref: '#/components/schemas/ModuleFlashcard'
             -
-              $ref: '../index.yaml#/components/schemas/ModuleTest'
+              $ref: '#/components/schemas/ModuleTest'
             -
-              $ref: '../index.yaml#/components/schemas/ModuleStriped'
+              $ref: '#/components/schemas/ModuleStriped'
           readOnly: true
     Score:
       description: Score.
       type: object
-      additionalProperties: false
       properties:
         id:
           description: 'The score id.'
@@ -1110,11 +1172,10 @@ components:
           type: string
           format: date-time
         user:
-          $ref: '../index.yaml#/components/schemas/User'
+          $ref: '#/components/schemas/User'
     Setting:
       description: Setting
       type: object
-      additionalProperties: false
       required:
         - id
         - key
@@ -1141,7 +1202,6 @@ components:
     User:
       description: User
       type: object
-      additionalProperties: false
       required:
         - id
         - username
@@ -1251,12 +1311,6 @@ components:
           type: integer
           example: 1
           nullable: true
-        stripe_id:
-          description: "**Visible only for admins.** The user Stripe customer id.\n"
-          type: string
-          readOnly: true
-          nullable: true
-          example: cus_sd4sq54
         braintree_id:
           description: "**Visible only for admins.** The user Stripe customer id.\n"
           type: string
@@ -1291,19 +1345,6 @@ components:
           type: integer
           example: 300
           readOnly: true
-        stripe:
-          description: "**Visible only for admins.** The user's Stripe profile.\n"
-          type: object
-          readOnly: true
-          nullable: true
-        braintree:
-          allOf:
-            -
-              $ref: Braintree/Customer.yaml
-          description: "**Visible only for admins.** The user's Braintree profile.\n"
-          type: object
-          readOnly: true
-          nullable: true
         last_session:
           description: 'The user last session.'
           type: array
@@ -1315,31 +1356,30 @@ components:
                 type: string
                 example: terminale-s
               discipline:
-                $ref: '../index.yaml#/components/schemas/Discipline'
+                $ref: '#/components/schemas/Discipline'
               chapter:
-                $ref: '../index.yaml#/components/schemas/Chapter'
+                $ref: '#/components/schemas/Chapter'
               activity:
-                $ref: '../index.yaml#/components/schemas/Activity'
+                $ref: '#/components/schemas/Activity'
               module:
-                $ref: '../index.yaml#/components/schemas/Module'
+                $ref: '#/components/schemas/Module'
         grade:
           description: 'The user grade.'
           allOf:
             -
-              $ref: '../index.yaml#/components/schemas/Grade'
+              $ref: '#/components/schemas/Grade'
           nullable: true
           readOnly: true
         purchases:
           description: 'The user purchases.'
           type: array
           items:
-            $ref: '../index.yaml#/components/schemas/Purchase'
+            $ref: '#/components/schemas/Purchase'
           nullable: true
           readOnly: true
     Vote:
       description: Vote
       type: object
-      additionalProperties: false
       required:
         - id
         - value
@@ -1378,6 +1418,1453 @@ components:
           type: string
           format: date-time
           readOnly: true
+    Base:
+      description: '#NO ERROR NAME'
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          description: 'The error standardized name.'
+          type: string
+          enum: {  }
+        message:
+          description: 'The error message.'
+          type: string
+    DiscountExpired:
+      description: 'The discount has expired.'
+      type: object
+      required:
+        - data
+        - message
+      properties:
+        error:
+          description: 'The error standardized name.'
+          type: string
+          enum:
+            - discount_expired
+        message:
+          description: 'The error message.'
+          type: string
+          example: 'Discount `MODEMACHINE2018` has expired.'
+        data:
+          type: object
+          required:
+            - discount
+          properties:
+            discount:
+              description: 'The expired discount code.'
+              type: string
+              example: MODEMACHINE2018
+    DiscountNotApplicable:
+      description: 'The discount is not applicable.'
+      type: object
+      required:
+        - data
+        - message
+      properties:
+        error:
+          description: 'The error standardized name.'
+          type: string
+          enum:
+            - discount_not_applicable
+        message:
+          description: 'The error message.'
+          type: string
+          example: 'Discount `MODEMACHINE2018` is not applicable on those products.'
+        data:
+          type: object
+          required:
+            - discount
+          properties:
+            discount:
+              description: 'The discount code.'
+              type: string
+              example: MODEMACHINE2018
+    FileNotFound:
+      description: 'File not found.'
+      type: object
+      required:
+        - data
+        - message
+      properties:
+        error:
+          description: 'The error standardized name.'
+          type: string
+          enum:
+            - file_not_found
+        message:
+          description: 'The error message.'
+          type: string
+          example: 'Unable to find file `test.jpg`.'
+        data:
+          type: object
+          required:
+            - file
+          properties:
+            file:
+              description: 'The file requested.'
+              type: string
+              example: test.jpg
+    ForeignConstraints:
+      description: "The deletion was aborted because the targeted model is linked to some others. The constraints failures are in the error data.\n"
+      type: object
+      required:
+        - data
+        - message
+      properties:
+        error:
+          description: 'The error standardized name.'
+          type: string
+          enum:
+            - foreign_constraints
+        message:
+          description: 'The error message.'
+          type: string
+          example: "Module id `147` cannot be delete because it has related `posts`.\n"
+        data:
+          type: object
+          required:
+            - user_id
+          properties:
+            model_id:
+              description: 'The model id.'
+              type: integer
+              example: 147
+            relation:
+              description: 'The relation which cause the deletion failure.'
+              type: string
+              example: posts
+    GatewayRejection:
+      description: 'The Braintree Gateway rejected the transaction.'
+      type: object
+      required:
+        - data
+        - message
+      properties:
+        error:
+          description: 'The error standardized name.'
+          type: string
+          enum:
+            - gateway_rejection
+        message:
+          description: 'The error message.'
+          type: string
+          example: 'Lorem ipsmu dolor sit amet.'
+        data:
+          type: object
+          required:
+            - discount
+          properties:
+            reason:
+              description: 'The gateway rejection reason.'
+              type: string
+              enum:
+                - fraud
+    InvalidBraintreeCustomer:
+      description: "The requested user is not a Braintree customer, essentially because he got no `braintree_id` or his profile was not found on our Braintree account.\n"
+      type: object
+      required:
+        - data
+        - message
+      properties:
+        error:
+          description: 'The error standardized name.'
+          type: string
+          enum:
+            - invalid_braintree_customer
+        message:
+          description: 'The error message.'
+          type: string
+          example: 'User id `142` is not a Braintree customer.'
+        data:
+          type: object
+          required:
+            - user_id
+          properties:
+            user_id:
+              description: 'The user id.'
+              type: integer
+              example: 142
+    InvalidSponsor:
+      description: "The user with passed sponsor email is not valid sponsor, which means that the potential sponsor has not bought anything on our site or has exhausted his affiliates factor (currently the maximum is 3). This error is thrown before beginning the transaction process.\n"
+      type: object
+      required:
+        - data
+        - message
+      properties:
+        error:
+          description: 'The error standardized name.'
+          type: string
+          enum:
+            - invalid_sponsor
+        message:
+          description: 'The error message.'
+          type: string
+          example: 'User email `invalid@example.com` is not a valid sponsor.'
+        data:
+          type: object
+          required:
+            - email
+            - affiliate_count
+          properties:
+            email:
+              description: 'The sponsor email.'
+              type: integer
+              example: 142
+            affiliate_factor:
+              description: "The affiliate factor of the sponsor. The interpretation of the error is fully dependent of this number: if it is `0`, it means that the sponsor user has not bought anything on our site. If this number is `4`, it means that the sponsor has exhausted his affiliates factor (currently the maximum is 3).\n"
+              type: integer
+              example: 4
+    ProductAlreadyBought:
+      description: 'The request product has been already bought by the user.'
+      type: object
+      required:
+        - data
+        - message
+      properties:
+        error:
+          description: 'The error standardized name.'
+          type: string
+          enum:
+            - product_already_bought
+        message:
+          description: 'The error message.'
+          type: string
+          example: 'User id `752` has already bought product id `27`'
+        data:
+          type: object
+          required:
+            - user_id
+            - product_id
+          properties:
+            user_id:
+              description: 'The user id.'
+              type: integer
+              example: 752
+            product_id:
+              description: 'The product id.'
+              type: integer
+              example: 27
+    ProductNotBuyable:
+      description: 'The request product is not buyable (its price is `null`).'
+      type: object
+      required:
+        - data
+        - message
+      properties:
+        error:
+          description: 'The error standardized name.'
+          type: string
+          enum:
+            - product_not_buyable
+        message:
+          description: 'The error message.'
+          type: string
+          example: 'Product id `27` cannot be purchased'
+        data:
+          type: object
+          required:
+            - product_id
+          properties:
+            product_id:
+              description: 'The product id.'
+              type: integer
+              example: 27
+    SponsorNotFound:
+      description: 'The request sponsor email was not found.'
+      type: object
+      required:
+        - data
+        - message
+      properties:
+        error:
+          description: 'The error standardized name.'
+          type: string
+          enum:
+            - sponsor_not_found
+        message:
+          description: 'The error message.'
+          type: string
+          example: 'The sponsor with the email `notfound@example.com` cannot be found'
+        data:
+          type: object
+          required:
+            - email
+          properties:
+            product_id:
+              description: 'The sponsor email which was not found.'
+              type: integer
+              example: notfound@example.com
+    UserAlreadyPremium:
+      description: 'User already premium.'
+      type: object
+      required:
+        - data
+        - message
+      properties:
+        error:
+          description: 'The error standardized name.'
+          type: string
+          enum:
+            - user_already_premium
+        message:
+          description: 'The error message.'
+          type: string
+          example: 'User id `142` is already premium.'
+        data:
+          type: object
+          required:
+            - user_id
+          properties:
+            user_id:
+              description: 'The user id.'
+              type: integer
+              example: 142
+    ModuleBase:
+      type: object
+      additionalProperties: false
+      required:
+        - premium
+        - type
+        - visible
+      properties:
+        id:
+          description: 'The module id.'
+          type: integer
+          example: 14
+          readOnly: true
+        type:
+          description: 'The module type.'
+          type: string
+          enum: {  }
+        content:
+          description: 'The module content.'
+          type: string
+          nullable: true
+          example: null
+        questions:
+          description: 'The module questions.'
+          type: object
+          nullable: true
+          example: null
+        choices:
+          description: 'The module choices.'
+          type: object
+          nullable: true
+          example: null
+        solutions:
+          description: 'The module solutions.'
+          type: object
+          nullable: true
+          example: null
+        corrections:
+          description: 'The module corrections.'
+          type: object
+          nullable: true
+          example: null
+        options:
+          description: 'The module options.'
+          type: object
+          nullable: true
+          example: null
+        visible:
+          description: 'The module visibility.'
+          type: boolean
+        seo_index:
+          description: 'If the module should be indexed.'
+          type: boolean
+        seo_title:
+          description: 'The module SEO title.'
+          type: string
+          example: 'My super module SEO title'
+          nullable: true
+        seo_slug:
+          description: 'The module SEO title slug.'
+          type: string
+          example: my-super-module-seo-title
+          nullable: true
+        seo_keywords:
+          description: 'The module SEO keywords, comma-separated.'
+          type: string
+          example: 'super,keywords,google'
+          nullable: true
+        seo_description:
+          description: 'The module SEO description.'
+          type: string
+          example: 'My super module SEO description!'
+          nullable: true
+        order:
+          description: 'The module order.'
+          type: integer
+          example: 2
+        activity_id:
+          description: 'The module linked activity id.'
+          type: integer
+          nullable: true
+        created_at:
+          description: 'The module creation date-time.'
+          type: string
+          format: date-time
+          nullable: true
+          readOnly: true
+        updated_at:
+          description: 'The module last update date-time.'
+          type: string
+          format: date-time
+          nullable: true
+          readOnly: true
+        mark:
+          description: 'The module status __per user__.'
+          type: string
+          enum:
+            - view
+            - to_revise
+            - completed
+          nullable: true
+          readOnly: true
+    ModuleCourse:
+      type: object
+      additionalProperties: false
+      required:
+        - premium
+        - type
+        - visible
+      properties:
+        id:
+          description: 'The module id.'
+          type: integer
+          example: 14
+          readOnly: true
+        type:
+          description: 'The module type.'
+          type: string
+          enum:
+            - course
+        content:
+          description: 'The module content.'
+          type: string
+          nullable: true
+          example: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam a imperdiet neque. Quisque mattis, magna eget ornare scelerisque, risus nibh vestibulum dolor, sed facilisis libero nisi rutrum est. Vivamus vel lectus aliquam, eleifend velit sit amet, molestie est. Morbi facilisis eros vitae bibendum semper. Nulla nec vestibulum enim, vitae semper tellus. Nullam sed quam nec turpis cursus ultricies. Praesent vel ipsum placerat, lacinia dolor nec, maximus est. Quisque imperdiet magna et ligula ornare congue. Nam tincidunt turpis at quam feugiat pharetra. Curabitur bibendum metus sit amet augue porta, id commodo odio egestas. Duis at ullamcorper massa. Nunc faucibus dui nec venenatis rhoncus. Sed nisi metus, auctor sit amet tellus ut, commodo suscipit elit.'
+        questions:
+          description: 'The module questions.'
+          type: object
+          nullable: true
+          example: null
+        choices:
+          description: 'The module choices.'
+          type: object
+          nullable: true
+          example: null
+        solutions:
+          description: 'The module solutions.'
+          type: object
+          nullable: true
+          example: null
+        corrections:
+          description: 'The module corrections.'
+          type: object
+          nullable: true
+          example: null
+        options:
+          description: 'The module options.'
+          type: object
+          nullable: true
+          example: null
+        visible:
+          description: 'The module visibility.'
+          type: boolean
+        seo_index:
+          description: 'If the module should be indexed.'
+          type: boolean
+        seo_title:
+          description: 'The module SEO title.'
+          type: string
+          example: 'My super module SEO title'
+          nullable: true
+        seo_slug:
+          description: 'The module SEO title slug.'
+          type: string
+          example: my-super-module-seo-title
+          nullable: true
+        seo_keywords:
+          description: 'The module SEO keywords, comma-separated.'
+          type: string
+          example: 'super,keywords,google'
+          nullable: true
+        seo_description:
+          description: 'The module SEO description.'
+          type: string
+          example: 'My super module SEO description!'
+          nullable: true
+        order:
+          description: 'The module order.'
+          type: integer
+          example: 2
+        activity_id:
+          description: 'The module linked activity id.'
+          type: integer
+          nullable: true
+        created_at:
+          description: 'The module creation date-time.'
+          type: string
+          format: date-time
+          nullable: true
+          readOnly: true
+        updated_at:
+          description: 'The module last update date-time.'
+          type: string
+          format: date-time
+          nullable: true
+          readOnly: true
+        mark:
+          description: 'The module status __per user__.'
+          type: string
+          enum:
+            - view
+            - to_revise
+            - completed
+          nullable: true
+          readOnly: true
+      description: Course
+    ModuleFlashcard:
+      type: object
+      additionalProperties: false
+      required:
+        - premium
+        - type
+        - visible
+      properties:
+        id:
+          description: 'The module id.'
+          type: integer
+          example: 14
+          readOnly: true
+        type:
+          description: 'The module type.'
+          type: string
+          enum:
+            - flashcard
+        content:
+          description: 'The module content.'
+          type: string
+          nullable: true
+          example: null
+        questions:
+          description: 'The module questions.'
+          type: array
+          nullable: true
+          example:
+            - 'Combien font $a^1$ et $a^0$ ?'
+            - 'Définir le terme puissance négative.'
+            - 'Comment déterminer le signe de $a^n$ ?'
+            - 'Quel est l''ordre d''effectuation des calculs ?'
+          items:
+            type: string
+        choices:
+          description: 'The module choices.'
+          type: object
+          nullable: true
+          example: null
+        solutions:
+          description: 'The module solutions.'
+          type: object
+          nullable: true
+          example: null
+        corrections:
+          description: 'The module corrections.'
+          type: array
+          nullable: true
+          example:
+            - '$a^1 = a$ et $a^0 = 1$.'
+            - 'Une puissance négative est l''inverse d''une puissance positive, son exposant est négatif.'
+            - 'Soit $a$ un nombre et $n$ un entier relatif : \n+ Si $a>0$ alors $a^n$ est positif.\n+ Si $a<0$ alors $a^n$ est positif si $n$ est pair et négatif si $n$ est impair.'
+            - 'Dans un enchaînement de calculs, on effectue d’abord les calculs entre parenthèses, puis les puissances, puis les multiplications et divisions et finalement les additions et les soustractions.'
+          items:
+            type: string
+        options:
+          description: 'The module options.'
+          type: object
+          nullable: true
+          example: null
+        visible:
+          description: 'The module visibility.'
+          type: boolean
+        seo_index:
+          description: 'If the module should be indexed.'
+          type: boolean
+        seo_title:
+          description: 'The module SEO title.'
+          type: string
+          example: 'My super module SEO title'
+          nullable: true
+        seo_slug:
+          description: 'The module SEO title slug.'
+          type: string
+          example: my-super-module-seo-title
+          nullable: true
+        seo_keywords:
+          description: 'The module SEO keywords, comma-separated.'
+          type: string
+          example: 'super,keywords,google'
+          nullable: true
+        seo_description:
+          description: 'The module SEO description.'
+          type: string
+          example: 'My super module SEO description!'
+          nullable: true
+        order:
+          description: 'The module order.'
+          type: integer
+          example: 2
+        activity_id:
+          description: 'The module linked activity id.'
+          type: integer
+          nullable: true
+        created_at:
+          description: 'The module creation date-time.'
+          type: string
+          format: date-time
+          nullable: true
+          readOnly: true
+        updated_at:
+          description: 'The module last update date-time.'
+          type: string
+          format: date-time
+          nullable: true
+          readOnly: true
+        mark:
+          description: 'The module status __per user__.'
+          type: string
+          enum:
+            - view
+            - to_revise
+            - completed
+          nullable: true
+          readOnly: true
+      description: MCQ
+    ModuleMCQ:
+      type: object
+      additionalProperties: false
+      required:
+        - premium
+        - type
+        - visible
+      properties:
+        id:
+          description: 'The module id.'
+          type: integer
+          example: 14
+          readOnly: true
+        type:
+          description: 'The module type.'
+          type: string
+          enum:
+            - mcq
+        content:
+          description: 'The module content.'
+          type: string
+          nullable: true
+          example: null
+        questions:
+          description: 'The module questions.'
+          type: array
+          nullable: true
+          example:
+            - 'Calculer l''inéquation suivante :<span class=''v2_mcq_enonce''></span><BR/><BR/>$x+3<6$'
+          items:
+            type: string
+        choices:
+          description: 'The module choices.'
+          type: array
+          nullable: true
+          example:
+            -
+              - $x<-2$
+              - $x>3$
+              - $x<3$
+          items:
+            type: array
+            items:
+              type: string
+        solutions:
+          description: 'The module solutions.'
+          type: array
+          nullable: true
+          example:
+            -
+              - 2
+          items:
+            type: array
+            items:
+              type: integer
+        corrections:
+          description: 'The module corrections.'
+          type: array
+          nullable: true
+          example:
+            -
+              - 'On isole $x$ en passant les nombres à droite. Aucun changement de signe est à faire car il s''agit ...'
+          items:
+            type: array
+            items:
+              type: string
+        options:
+          description: 'The module options.'
+          type: object
+          nullable: true
+          example: null
+        visible:
+          description: 'The module visibility.'
+          type: boolean
+        seo_index:
+          description: 'If the module should be indexed.'
+          type: boolean
+        seo_title:
+          description: 'The module SEO title.'
+          type: string
+          example: 'My super module SEO title'
+          nullable: true
+        seo_slug:
+          description: 'The module SEO title slug.'
+          type: string
+          example: my-super-module-seo-title
+          nullable: true
+        seo_keywords:
+          description: 'The module SEO keywords, comma-separated.'
+          type: string
+          example: 'super,keywords,google'
+          nullable: true
+        seo_description:
+          description: 'The module SEO description.'
+          type: string
+          example: 'My super module SEO description!'
+          nullable: true
+        order:
+          description: 'The module order.'
+          type: integer
+          example: 2
+        activity_id:
+          description: 'The module linked activity id.'
+          type: integer
+          nullable: true
+        created_at:
+          description: 'The module creation date-time.'
+          type: string
+          format: date-time
+          nullable: true
+          readOnly: true
+        updated_at:
+          description: 'The module last update date-time.'
+          type: string
+          format: date-time
+          nullable: true
+          readOnly: true
+        mark:
+          description: 'The module status __per user__.'
+          type: string
+          enum:
+            - view
+            - to_revise
+            - completed
+          nullable: true
+          readOnly: true
+      description: MCQ
+    ModuleStriped:
+      description: Striped
+      type: object
+      required:
+        - id
+        - type
+        - visible
+      properties:
+        id:
+          description: 'The module id.'
+          type: integer
+          example: 14
+          readOnly: true
+        type:
+          description: 'The module type.'
+          type: string
+          enum:
+            - course
+            - flashcard
+            - mcq
+            - test
+        visible:
+          description: 'The module visibility.'
+          type: boolean
+    ModuleTest:
+      type: object
+      additionalProperties: false
+      required:
+        - premium
+        - type
+        - visible
+      properties:
+        id:
+          description: 'The module id.'
+          type: integer
+          example: 14
+          readOnly: true
+        type:
+          description: 'The module type.'
+          type: string
+          enum:
+            - test
+        content:
+          description: 'The module content.'
+          type: string
+          nullable: true
+          example: "20-- <span class='v2_test_enonce'></span><BR/><BR/>On considère la fonction.\n$$g(x)=\\frac{..."
+        questions:
+          description: 'The module questions.'
+          type: array
+          nullable: true
+          example:
+            - '1-  Déterminer l''ensemble de définition de la fonction $g.$'
+            - '2-  Calculer la limite de $g$ en $1$ par valeur inférieure et par valeur supérieure puis conclure.'
+            - '3-  Déduire de tout ce qui précède, le prolongement par continuité $G$ de la fonction $g$ en $1.$'
+          items:
+            type: string
+        choices:
+          description: 'The module choices.'
+          type: object
+          nullable: true
+          example: null
+        solutions:
+          description: 'The module solutions.'
+          type: array
+          nullable: true
+          example:
+            -
+              - 2
+              - 2
+            -
+              - 2
+              - 2
+            -
+              - 1
+              - 1
+          items:
+            type: array
+            items:
+              type: integer
+        corrections:
+          description: 'The module corrections.'
+          type: array
+          nullable: true
+          example:
+            - '- "Déterminons l''ensemble de définition de a fonction $g.$ Soit $D_{g}$ cet ensemble de définition.\n..." - "Posons\n$$ \\begin{aligned} \nx-1&=0\\\\\nx-1&=0\\Longrightarrow x=1.\\\\\n\\end{aligned} $$ \n Donc..."'
+            - '- "Comme $1$ n''appartient pas au domaine de définition de $g$ Nous allons anticiper l''indétermination et..." - "De la même manière on obtient :\n$$\\lim_{x\\rightarrow 1^+}g(x)=\\frac32.$$\nEssayons ensemble pour..."'
+            -
+              - "D'après le cours, le prolongement par continuité $G$ de $g$\nest définit par : \n$$\\left\\{..."
+              - "Et de plus, d 'après la question précédente, \n$$\\lim_{x\\rightarrow 1}g(x)=\\frac32 \\in \\mathbb{R}.$$..."
+          items:
+            type: array
+            items:
+              type: string
+        options:
+          description: 'The module options.'
+          type: object
+          nullable: true
+          example: null
+        visible:
+          description: 'The module visibility.'
+          type: boolean
+        seo_index:
+          description: 'If the module should be indexed.'
+          type: boolean
+        seo_title:
+          description: 'The module SEO title.'
+          type: string
+          example: 'My super module SEO title'
+          nullable: true
+        seo_slug:
+          description: 'The module SEO title slug.'
+          type: string
+          example: my-super-module-seo-title
+          nullable: true
+        seo_keywords:
+          description: 'The module SEO keywords, comma-separated.'
+          type: string
+          example: 'super,keywords,google'
+          nullable: true
+        seo_description:
+          description: 'The module SEO description.'
+          type: string
+          example: 'My super module SEO description!'
+          nullable: true
+        order:
+          description: 'The module order.'
+          type: integer
+          example: 2
+        activity_id:
+          description: 'The module linked activity id.'
+          type: integer
+          nullable: true
+        created_at:
+          description: 'The module creation date-time.'
+          type: string
+          format: date-time
+          nullable: true
+          readOnly: true
+        updated_at:
+          description: 'The module last update date-time.'
+          type: string
+          format: date-time
+          nullable: true
+          readOnly: true
+        mark:
+          description: 'The module status __per user__.'
+          type: string
+          enum:
+            - view
+            - to_revise
+            - completed
+          nullable: true
+          readOnly: true
+      description: Test
+    ProductBase:
+      description: Product
+      type: object
+      required:
+        - id
+        - name
+        - slug
+        - image
+        - description
+        - price
+        - visible
+        - order
+        - module_id
+        - created_at
+        - updated_at
+        - owned
+      properties:
+        id:
+          description: 'The product id.'
+          type: integer
+          example: 14
+          readOnly: true
+        name:
+          description: 'The product name.'
+          type: string
+          example: 'My super nice product'
+        slug:
+          description: 'The product slug.'
+          type: string
+          example: my-super-nice-product
+        image:
+          description: 'The product image url.'
+          type: string
+          example: 'https://cdn.mathrix.fr/products/example.jpg'
+          nullable: true
+        type:
+          description: 'The product type (compatibility with the old traning system).'
+          type: string
+          nullable: true
+        description:
+          description: 'The product description.'
+          type: string
+          example: 'The description of my super nice product.'
+        price:
+          description: 'The price of the product. If `null`, means that the product is not buyable.'
+          type: number
+          format: float
+          example: 47.9
+          nullable: true
+        visible:
+          description: 'The product visibility.'
+          type: boolean
+        buyable:
+          description: 'If the product can be bought.'
+          type: boolean
+          default: false
+        order:
+          description: 'The product order (only used to sort non-child product).'
+          type: integer
+          example: 2
+        parent_id:
+          description: 'The parent product id which belongs to the product.'
+          type: integer
+          example: 17
+          nullable: true
+        module_id:
+          description: 'The module id which belongs to the product.'
+          type: integer
+          example: 432
+          nullable: true
+        created_at:
+          description: 'The date/time when the object was created.'
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          description: 'The date/time when the object was updated.'
+          type: string
+          format: date-time
+          readOnly: true
+        owned:
+          description: 'If the current user as already purchased this product.'
+          type: boolean
+          readOnly: true
+    ProductLesson:
+      description: Product
+      type: object
+      required:
+        - id
+        - name
+        - slug
+        - image
+        - description
+        - price
+        - visible
+        - order
+        - module_id
+        - created_at
+        - updated_at
+        - owned
+      properties:
+        id:
+          description: 'The product id.'
+          type: integer
+          example: 14
+          readOnly: true
+        name:
+          description: 'The product name.'
+          type: string
+          example: 'My super nice product'
+        slug:
+          description: 'The product slug.'
+          type: string
+          example: my-super-nice-product
+        image:
+          description: 'The product image url.'
+          type: string
+          example: 'https://cdn.mathrix.fr/products/example.jpg'
+          nullable: true
+        type:
+          description: 'The product type (compatibility with the old traning system).'
+          type: string
+          nullable: true
+          enum:
+            - lesson
+        description:
+          description: 'The product description.'
+          type: string
+          example: 'The description of my super nice product.'
+        price:
+          description: 'The price of the product. If `null`, means that the product is not buyable.'
+          type: number
+          format: float
+          example: 47.9
+          nullable: true
+        visible:
+          description: 'The product visibility.'
+          type: boolean
+        buyable:
+          description: 'If the product can be bought.'
+          type: boolean
+          default: false
+        order:
+          description: 'The product order (only used to sort non-child product).'
+          type: integer
+          example: 2
+        parent_id:
+          description: 'The parent product id which belongs to the product.'
+          type: integer
+          example: 17
+          nullable: true
+        module_id:
+          description: 'The module id which belongs to the product.'
+          type: integer
+          example: 432
+          nullable: true
+        created_at:
+          description: 'The date/time when the object was created.'
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          description: 'The date/time when the object was updated.'
+          type: string
+          format: date-time
+          readOnly: true
+        owned:
+          description: 'If the current user as already purchased this product.'
+          type: boolean
+          readOnly: true
+        module:
+          allOf:
+            -
+              $ref: '#/components/schemas/Module'
+          readOnly: true
+          nullable: true
+    ProductPack:
+      description: Product
+      type: object
+      required:
+        - id
+        - name
+        - slug
+        - image
+        - description
+        - price
+        - visible
+        - order
+        - module_id
+        - created_at
+        - updated_at
+        - owned
+      properties:
+        id:
+          description: 'The product id.'
+          type: integer
+          example: 14
+          readOnly: true
+        name:
+          description: 'The product name.'
+          type: string
+          example: 'My super nice product'
+        slug:
+          description: 'The product slug.'
+          type: string
+          example: my-super-nice-product
+        image:
+          description: 'The product image url.'
+          type: string
+          example: 'https://cdn.mathrix.fr/products/example.jpg'
+          nullable: true
+        type:
+          description: 'The product type (compatibility with the old traning system).'
+          type: string
+          nullable: true
+          enum:
+            - pack
+        description:
+          description: 'The product description.'
+          type: string
+          example: 'The description of my super nice product.'
+        price:
+          description: 'The price of the product. If `null`, means that the product is not buyable.'
+          type: number
+          format: float
+          example: 47.9
+          nullable: true
+        visible:
+          description: 'The product visibility.'
+          type: boolean
+        buyable:
+          description: 'If the product can be bought.'
+          type: boolean
+          default: false
+        order:
+          description: 'The product order (only used to sort non-child product).'
+          type: integer
+          example: 2
+        parent_id:
+          description: 'The parent product id which belongs to the product.'
+          type: integer
+          example: 17
+          nullable: true
+        module_id:
+          description: 'The module id which belongs to the product.'
+          type: integer
+          example: 432
+          nullable: true
+        created_at:
+          description: 'The date/time when the object was created.'
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          description: 'The date/time when the object was updated.'
+          type: string
+          format: date-time
+          readOnly: true
+        owned:
+          description: 'If the current user as already purchased this product.'
+          type: boolean
+          readOnly: true
+        items:
+          description: 'The pack items.'
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductTraining'
+    ProductPremium:
+      description: Product
+      type: object
+      required:
+        - id
+        - name
+        - slug
+        - image
+        - description
+        - price
+        - visible
+        - order
+        - module_id
+        - created_at
+        - updated_at
+        - owned
+      properties:
+        id:
+          description: 'The product id.'
+          type: integer
+          example: 14
+          readOnly: true
+        name:
+          description: 'The product name.'
+          type: string
+          example: 'My super nice product'
+        slug:
+          description: 'The product slug.'
+          type: string
+          example: my-super-nice-product
+        image:
+          description: 'The product image url.'
+          type: string
+          example: 'https://cdn.mathrix.fr/products/example.jpg'
+          nullable: true
+        type:
+          description: 'The product type (compatibility with the old traning system).'
+          type: string
+          nullable: true
+          enum:
+            - premium
+        description:
+          description: 'The product description.'
+          type: string
+          example: 'The description of my super nice product.'
+        price:
+          description: 'The price of the product. If `null`, means that the product is not buyable.'
+          type: number
+          format: float
+          example: 47.9
+          nullable: true
+        visible:
+          description: 'The product visibility.'
+          type: boolean
+        buyable:
+          description: 'If the product can be bought.'
+          type: boolean
+          default: false
+        order:
+          description: 'The product order (only used to sort non-child product).'
+          type: integer
+          example: 2
+        parent_id:
+          description: 'The parent product id which belongs to the product.'
+          type: integer
+          example: 17
+          nullable: true
+        module_id:
+          description: 'The module id which belongs to the product.'
+          type: integer
+          example: 432
+          nullable: true
+        created_at:
+          description: 'The date/time when the object was created.'
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          description: 'The date/time when the object was updated.'
+          type: string
+          format: date-time
+          readOnly: true
+        owned:
+          description: 'If the current user as already purchased this product.'
+          type: boolean
+          readOnly: true
+    ProductSection:
+      description: Product
+      type: object
+      required:
+        - id
+        - name
+        - slug
+        - image
+        - description
+        - price
+        - visible
+        - order
+        - module_id
+        - created_at
+        - updated_at
+        - owned
+      properties:
+        id:
+          description: 'The product id.'
+          type: integer
+          example: 14
+          readOnly: true
+        name:
+          description: 'The product name.'
+          type: string
+          example: 'My super nice product'
+        slug:
+          description: 'The product slug.'
+          type: string
+          example: my-super-nice-product
+        image:
+          description: 'The product image url.'
+          type: string
+          example: 'https://cdn.mathrix.fr/products/example.jpg'
+          nullable: true
+        type:
+          description: 'The product type (compatibility with the old traning system).'
+          type: string
+          nullable: true
+          enum:
+            - section
+        description:
+          description: 'The product description.'
+          type: string
+          example: 'The description of my super nice product.'
+        price:
+          description: 'The price of the product. If `null`, means that the product is not buyable.'
+          type: number
+          format: float
+          example: 47.9
+          nullable: true
+        visible:
+          description: 'The product visibility.'
+          type: boolean
+        buyable:
+          description: 'If the product can be bought.'
+          type: boolean
+          default: false
+        order:
+          description: 'The product order (only used to sort non-child product).'
+          type: integer
+          example: 2
+        parent_id:
+          description: 'The parent product id which belongs to the product.'
+          type: integer
+          example: 17
+          nullable: true
+        module_id:
+          description: 'The module id which belongs to the product.'
+          type: integer
+          example: 432
+          nullable: true
+        created_at:
+          description: 'The date/time when the object was created.'
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          description: 'The date/time when the object was updated.'
+          type: string
+          format: date-time
+          readOnly: true
+        owned:
+          description: 'If the current user as already purchased this product.'
+          type: boolean
+          readOnly: true
+        children:
+          description: 'The training child lessons.'
+          type: array
+          items:
+            allOf:
+              -
+                $ref: '#/components/schemas/ProductLesson'
+    ProductTraining:
+      description: Product
+      type: object
+      required:
+        - id
+        - name
+        - slug
+        - image
+        - description
+        - price
+        - visible
+        - order
+        - module_id
+        - created_at
+        - updated_at
+        - owned
+      properties:
+        id:
+          description: 'The product id.'
+          type: integer
+          example: 14
+          readOnly: true
+        name:
+          description: 'The product name.'
+          type: string
+          example: 'My super nice product'
+        slug:
+          description: 'The product slug.'
+          type: string
+          example: my-super-nice-product
+        image:
+          description: 'The product image url.'
+          type: string
+          example: 'https://cdn.mathrix.fr/products/example.jpg'
+          nullable: true
+        type:
+          description: 'The product type (compatibility with the old traning system).'
+          type: string
+          nullable: true
+          enum:
+            - training
+        description:
+          description: 'The product description.'
+          type: string
+          example: 'The description of my super nice product.'
+        price:
+          description: 'The price of the product. If `null`, means that the product is not buyable.'
+          type: number
+          format: float
+          example: 47.9
+          nullable: true
+        visible:
+          description: 'The product visibility.'
+          type: boolean
+        buyable:
+          description: 'If the product can be bought.'
+          type: boolean
+          default: false
+        order:
+          description: 'The product order (only used to sort non-child product).'
+          type: integer
+          example: 2
+        parent_id:
+          description: 'The parent product id which belongs to the product.'
+          type: integer
+          example: 17
+          nullable: true
+        module_id:
+          description: 'The module id which belongs to the product.'
+          type: integer
+          example: 432
+          nullable: true
+        created_at:
+          description: 'The date/time when the object was created.'
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          description: 'The date/time when the object was updated.'
+          type: string
+          format: date-time
+          readOnly: true
+        owned:
+          description: 'If the current user as already purchased this product.'
+          type: boolean
+          readOnly: true
+        children:
+          description: 'The training child sections.'
+          type: array
+          items:
+            allOf:
+              -
+                $ref: '#/components/schemas/ProductSection'
 x-tagGroups:
   -
     name: Users
@@ -1414,7 +2901,6 @@ x-tagGroups:
   -
     name: Billing
     tags:
-      - Braintree
       - Plans
       - Subscriptions
       - Discounts
@@ -1431,7 +2917,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '7'
+          example: '1'
           required: true
           style: form
         -
@@ -1459,7 +2945,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '7'
+                    example: '1'
                     readOnly: true
                   per_page:
                     description: 'The number of activity per page.'
@@ -1469,7 +2955,7 @@ paths:
                   total:
                     description: 'The total number of activity processed.'
                     type: integer
-                    example: '2489'
+                    example: '345'
                     readOnly: true
                   data:
                     description: 'The activity as an array.'
@@ -1525,7 +3011,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '130'
+            example: '669'
       responses:
         200:
           description: 'The requested activity.'
@@ -1555,7 +3041,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '556'
+            example: '735'
       requestBody:
         content:
           application/json:
@@ -1596,7 +3082,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '411'
+            example: '629'
       responses:
         200:
           description: 'The deletion result.'
@@ -1612,7 +3098,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Activity id 411 was successfully deleted.'
+                    example: 'Activity id 629 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -1657,9 +3143,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '../../index.yaml#/components/schemas/Activity'
+                type: object
+                properties:
+                  success:
+                    description: 'If the request succeeded.'
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/Activity'
         404:
-          $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+          $ref: '#/components/responses/404_ModelNotFound'
       tags:
         - Activities
   '/activities/{activityId}/modules':
@@ -1673,7 +3166,7 @@ paths:
           description: 'The activity id'
           schema:
             type: integer
-          example: '133'
+          example: '243'
           required: true
         -
           name: page
@@ -1681,7 +3174,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '9'
+          example: '6'
           required: true
         -
           name: perPage
@@ -1750,9 +3243,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '../../index.yaml#/components/schemas/Activity'
+                type: object
+                properties:
+                  success:
+                    description: 'If the request succeeded.'
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/Activity'
         404:
-          $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+          $ref: '#/components/responses/404_ModelNotFound'
       tags:
         - Activities
   /auth/forgot:
@@ -1828,7 +3328,7 @@ paths:
                   example: MyExtreme$Pwd
       responses:
         200:
-          $ref: '../../index.yaml#/components/responses/200_Token'
+          $ref: '#/components/responses/200_Token'
         401:
           description: 'Invalid credentials.'
           content:
@@ -1863,7 +3363,7 @@ paths:
                   example: 'EAAGARIhmrOwBACBmE2OtK7C7axLkML6nvBngKH1eXf9sSUFTM6KLEckV7ohoSwl 59jVwBNh4gzC414iCrQthwWnBTPu3Et0JhSVau3NAaQ0VHaaZCIHzjDYnjLlgZAr RmxKaGB1JkSZCOoE8MZC74alTHHRruZBZBAayy6k5ifS5NM7L6ZC4ZA8NkyAD5gE XIRYGPsLB0QAAomCJ9nfiouMw'
       responses:
         200:
-          $ref: '../../index.yaml#/components/responses/200_Token'
+          $ref: '#/components/responses/200_Token'
       tags:
         - Auth
   '/auth/reset/{token}':
@@ -1886,29 +3386,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '../../index.yaml#/components/schemas/User'
+                $ref: '#/components/schemas/User'
       tags:
         - Auth
-  /braintree/client-token:
-    get:
-      summary: 'Get the generated Client Token for Braintree'
-      security:
-        -
-          bearer:
-            - logged
-      responses:
-        200:
-          description: 'The Braintree Client Token'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  token:
-                    description: 'The Braintree Client Token'
-                    type: string
-      tags:
-        - Braintree
   /categories:
     get:
       summary: 'Paginate category'
@@ -1958,7 +3438,7 @@ paths:
                   total:
                     description: 'The total number of category processed.'
                     type: integer
-                    example: '1655'
+                    example: '583'
                     readOnly: true
                   data:
                     description: 'The category as an array.'
@@ -2014,7 +3494,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '674'
+            example: '129'
       responses:
         200:
           description: 'The requested category.'
@@ -2048,7 +3528,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '308'
+            example: '736'
       requestBody:
         content:
           application/json:
@@ -2089,7 +3569,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '851'
+            example: '297'
       responses:
         200:
           description: 'The deletion result.'
@@ -2105,7 +3585,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Category id 851 was successfully deleted.'
+                    example: 'Category id 297 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -2125,7 +3605,7 @@ paths:
           description: 'The category id'
           schema:
             type: integer
-          example: '251'
+          example: '617'
           required: true
         -
           name: page
@@ -2133,7 +3613,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '9'
+          example: '11'
           required: true
         -
           name: perPage
@@ -2194,7 +3674,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '6'
+          example: '17'
           required: true
           style: form
         -
@@ -2222,7 +3702,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '6'
+                    example: '17'
                     readOnly: true
                   per_page:
                     description: 'The number of chapter per page.'
@@ -2232,7 +3712,7 @@ paths:
                   total:
                     description: 'The total number of chapter processed.'
                     type: integer
-                    example: '1595'
+                    example: '2175'
                     readOnly: true
                   data:
                     description: 'The chapter as an array.'
@@ -2303,9 +3783,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '../../index.yaml#/components/schemas/Chapter'
+                $ref: '#/components/schemas/Chapter'
         404:
-          $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+          $ref: '#/components/responses/404_ModelNotFound'
       tags:
         - Chapters
   '/chapters/{chapterId}':
@@ -2319,7 +3799,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '24'
+            example: '1000'
       responses:
         200:
           description: 'The requested chapter.'
@@ -2349,7 +3829,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '741'
+            example: '555'
       requestBody:
         content:
           application/json:
@@ -2390,7 +3870,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '213'
+            example: '955'
       responses:
         200:
           description: 'The deletion result.'
@@ -2406,7 +3886,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Chapter id 213 was successfully deleted.'
+                    example: 'Chapter id 955 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -2426,7 +3906,7 @@ paths:
           description: 'The chapter id'
           schema:
             type: integer
-          example: '271'
+          example: '987'
           required: true
         -
           name: page
@@ -2434,7 +3914,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '17'
+          example: '5'
           required: true
         -
           name: perPage
@@ -2483,6 +3963,7 @@ paths:
   '/chapters/{chapterId}/recursive':
     get:
       summary: 'Get a chapter (recursive)'
+      description: 'Get the notions, activities and modules of a chapter.'
       parameters:
         -
           name: chapterId
@@ -2491,16 +3972,21 @@ paths:
           required: true
           schema:
             type: integer
-            example: '4'
+            example: 123
       responses:
         200:
           description: 'The requested notions, activities and modules.'
           content:
             application/json:
-              schema: null
-        404:
-          $ref: '#/components/responses/404_ModelNotFound'
-      description: 'Get the notions, activities and modules of a chapter.'
+              schema:
+                allOf:
+                  -
+                    $ref: '#/components/responses/200_Success'
+                  -
+                    type: object
+                    properties:
+                      data:
+                        allOf: [{ $ref: '#/components/schemas/Chapter' }, { type: object, properties: { notions: { type: array, items: { allOf: [{ $ref: '#/components/schemas/Notion' }, { type: object, properties: { activities: { type: array, items: { allOf: [{ $ref: '#/components/schemas/Activity' }, { type: object, properties: { modules: { type: array, items: { $ref: '#/components/schemas/Module' } } } }] } } } }] } } } }]
       tags:
         - Chapters
   /comments:
@@ -2514,7 +4000,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '17'
+          example: '20'
           required: true
           style: form
         -
@@ -2542,7 +4028,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '17'
+                    example: '20'
                     readOnly: true
                   per_page:
                     description: 'The number of comment per page.'
@@ -2552,7 +4038,7 @@ paths:
                   total:
                     description: 'The total number of comment processed.'
                     type: integer
-                    example: '464'
+                    example: '528'
                     readOnly: true
                   data:
                     description: 'The comment as an array.'
@@ -2608,7 +4094,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '0'
+          example: '7'
           required: true
           style: form
         -
@@ -2636,7 +4122,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '0'
+                    example: '7'
                     readOnly: true
                   per_page:
                     description: 'The number of comment per page.'
@@ -2646,7 +4132,7 @@ paths:
                   total:
                     description: 'The total number of comment processed.'
                     type: integer
-                    example: '1383'
+                    example: '286'
                     readOnly: true
                   data:
                     description: 'The comment as an array.'
@@ -2671,7 +4157,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '483'
+            example: '350'
       responses:
         200:
           description: 'The requested comment.'
@@ -2705,7 +4191,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '458'
+            example: '86'
       requestBody:
         content:
           application/json:
@@ -2747,7 +4233,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '918'
+            example: '940'
       responses:
         200:
           description: 'The deletion result.'
@@ -2763,7 +4249,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Comment id 918 was successfully deleted.'
+                    example: 'Comment id 940 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -2783,7 +4269,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '9'
+          example: '8'
           required: true
           style: form
         -
@@ -2811,7 +4297,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '9'
+                    example: '8'
                     readOnly: true
                   per_page:
                     description: 'The number of country per page.'
@@ -2821,7 +4307,7 @@ paths:
                   total:
                     description: 'The total number of country processed.'
                     type: integer
-                    example: '112'
+                    example: '1482'
                     readOnly: true
                   data:
                     description: 'The country as an array.'
@@ -2905,7 +4391,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '311'
+            example: '764'
       responses:
         200:
           description: 'The requested country.'
@@ -2935,7 +4421,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '595'
+            example: '700'
       requestBody:
         content:
           application/json:
@@ -2976,7 +4462,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '282'
+            example: '142'
       responses:
         200:
           description: 'The deletion result.'
@@ -2992,7 +4478,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Country id 282 was successfully deleted.'
+                    example: 'Country id 142 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -3012,7 +4498,7 @@ paths:
           description: 'The country id'
           schema:
             type: integer
-          example: '757'
+          example: '94'
           required: true
         -
           name: page
@@ -3020,7 +4506,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '20'
+          example: '10'
           required: true
         -
           name: perPage
@@ -3077,7 +4563,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '15'
+          example: '4'
           required: true
           style: form
         -
@@ -3105,7 +4591,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '15'
+                    example: '4'
                     readOnly: true
                   per_page:
                     description: 'The number of discipline per page.'
@@ -3115,7 +4601,7 @@ paths:
                   total:
                     description: 'The total number of discipline processed.'
                     type: integer
-                    example: '2154'
+                    example: '2665'
                     readOnly: true
                   data:
                     description: 'The discipline as an array.'
@@ -3199,7 +4685,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '497'
+            example: '618'
       responses:
         200:
           description: 'The requested discipline.'
@@ -3229,7 +4715,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '916'
+            example: '609'
       requestBody:
         content:
           application/json:
@@ -3270,7 +4756,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '545'
+            example: '155'
       responses:
         200:
           description: 'The deletion result.'
@@ -3286,7 +4772,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Discipline id 545 was successfully deleted.'
+                    example: 'Discipline id 155 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -3306,7 +4792,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '19'
+          example: '10'
           required: true
           style: form
         -
@@ -3334,7 +4820,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '19'
+                    example: '10'
                     readOnly: true
                   per_page:
                     description: 'The number of discount per page.'
@@ -3344,7 +4830,7 @@ paths:
                   total:
                     description: 'The total number of discount processed.'
                     type: integer
-                    example: '2560'
+                    example: '2348'
                     readOnly: true
                   data:
                     description: 'The discount as an array.'
@@ -3389,7 +4875,7 @@ paths:
             - 'discounts:write'
       tags:
         - Discounts
-  '/discounts/code/{code}':
+  '/discounts/code/{discountCode}':
     get:
       summary: 'Get discount by @key@'
       description: 'Get the first discount which matches the given @key@.'
@@ -3419,6 +4905,10 @@ paths:
                     $ref: '#/components/schemas/Discount'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
+      security:
+        -
+          bearer:
+            - 'discounts:read'
       tags:
         - Discounts
   '/discounts/{discountId}':
@@ -3432,7 +4922,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '839'
+            example: '864'
       responses:
         200:
           description: 'The requested discount.'
@@ -3466,7 +4956,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '983'
+            example: '913'
       requestBody:
         content:
           application/json:
@@ -3507,7 +4997,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '768'
+            example: '865'
       responses:
         200:
           description: 'The deletion result.'
@@ -3523,7 +5013,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Discount id 768 was successfully deleted.'
+                    example: 'Discount id 865 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -3580,10 +5070,10 @@ paths:
                     description: 'The products as an array.'
                     type: array
                     items:
-                      $ref: '../../index.yaml#/components/schemas/Product'
+                      $ref: '#/components/schemas/Product'
                     readOnly: true
         404:
-          $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+          $ref: '#/components/responses/404_ModelNotFound'
       tags:
         - Discounts
     patch:
@@ -3648,12 +5138,12 @@ paths:
                     description: 'The products as an array.'
                     type: array
                     items:
-                      $ref: '../../index.yaml#/components/schemas/Product'
+                      $ref: '#/components/schemas/Product'
                     readOnly: true
         404:
-          $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+          $ref: '#/components/responses/404_ModelNotFound'
         422:
-          $ref: '../../index.yaml#/components/responses/422_ModelValidation'
+          $ref: '#/components/responses/422_ModelValidation'
       tags:
         - Discounts
   '/files/explore[/{directory}]':
@@ -3687,12 +5177,12 @@ paths:
                     description: 'The subdirectories inside the targeted directory.'
                     type: array
                     items:
-                      $ref: '../../index.yaml#/components/schemas/Directory'
+                      $ref: '#/components/schemas/Directory'
                   files:
                     description: 'The files inside the targeted directory.'
                     type: array
                     items:
-                      $ref: '../../index.yaml#/components/schemas/File'
+                      $ref: '#/components/schemas/File'
         400:
           description: 'Bad request'
           content:
@@ -3713,7 +5203,7 @@ paths:
                     type: string
                     example: 'b/b.txt is not a directory.'
         404:
-          $ref: '../../index.yaml#/components/responses/404_FileNotFound'
+          $ref: '#/components/responses/404_FileNotFound'
       tags:
         - Files
   '/files/{file}':
@@ -3749,7 +5239,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '../../index.yaml#/components/schemas/File'
+                $ref: '#/components/schemas/File'
       tags:
         - Files
     get:
@@ -3774,9 +5264,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '../../index.yaml#/components/schemas/File'
+                $ref: '#/components/schemas/File'
         404:
-          $ref: '../../index.yaml#/components/responses/404_FileNotFound'
+          $ref: '#/components/responses/404_FileNotFound'
       tags:
         - Files
     patch:
@@ -3811,9 +5301,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '../../index.yaml#/components/schemas/File'
+                $ref: '#/components/schemas/File'
         404:
-          $ref: '../../index.yaml#/components/responses/404_FileNotFound'
+          $ref: '#/components/responses/404_FileNotFound'
       tags:
         - Files
     delete:
@@ -3847,7 +5337,7 @@ paths:
                   type: string
                   example: 'File `test/foo.jpg` was successfully deleted.'
         404:
-          $ref: '../../index.yaml#/components/responses/404_FileNotFound'
+          $ref: '#/components/responses/404_FileNotFound'
       tags:
         - Files
   /grades:
@@ -3899,7 +5389,7 @@ paths:
                   total:
                     description: 'The total number of grade processed.'
                     type: integer
-                    example: '1714'
+                    example: '189'
                     readOnly: true
                   data:
                     description: 'The grade as an array.'
@@ -4002,9 +5492,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '../../index.yaml#/components/schemas/Chapter'
+                $ref: '#/components/schemas/Chapter'
         404:
-          $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+          $ref: '#/components/responses/404_ModelNotFound'
       tags:
         - Grades
   '/grades/{gradeId}':
@@ -4018,7 +5508,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '991'
+            example: '919'
       responses:
         200:
           description: 'The requested grade.'
@@ -4048,7 +5538,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '684'
+            example: '610'
       requestBody:
         content:
           application/json:
@@ -4089,7 +5579,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '875'
+            example: '963'
       responses:
         200:
           description: 'The deletion result.'
@@ -4105,7 +5595,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Grade id 875 was successfully deleted.'
+                    example: 'Grade id 963 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -4129,7 +5619,7 @@ paths:
               - all
               - visible
             default: all
-          example: '384'
+          example: '197'
           required: true
         -
           name: page
@@ -4246,7 +5736,7 @@ paths:
                     description: 'The chapters as an array.'
                     type: array
                     items:
-                      $ref: '../../index.yaml#/components/schemas/Chapter'
+                      $ref: '#/components/schemas/Chapter'
                     readOnly: true
       tags:
         - Grades
@@ -4261,7 +5751,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '20'
+          example: '13'
           required: true
           style: form
         -
@@ -4289,7 +5779,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '20'
+                    example: '13'
                     readOnly: true
                   per_page:
                     description: 'The number of level per page.'
@@ -4299,7 +5789,7 @@ paths:
                   total:
                     description: 'The total number of level processed.'
                     type: integer
-                    example: '218'
+                    example: '2344'
                     readOnly: true
                   data:
                     description: 'The level as an array.'
@@ -4320,7 +5810,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '../../index.yaml#/components/schemas/Mark'
+                  $ref: '#/components/schemas/Mark'
       tags:
         - Marks
   /modules:
@@ -4334,7 +5824,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '3'
+          example: '17'
           required: true
           style: form
         -
@@ -4362,7 +5852,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '3'
+                    example: '17'
                     readOnly: true
                   per_page:
                     description: 'The number of module per page.'
@@ -4372,7 +5862,7 @@ paths:
                   total:
                     description: 'The total number of module processed.'
                     type: integer
-                    example: '1630'
+                    example: '2997'
                     readOnly: true
                   data:
                     description: 'The module as an array.'
@@ -4428,7 +5918,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '819'
+            example: '676'
       responses:
         200:
           description: 'The requested module.'
@@ -4458,7 +5948,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '339'
+            example: '774'
       requestBody:
         content:
           application/json:
@@ -4499,7 +5989,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '589'
+            example: '621'
       responses:
         200:
           description: 'The deletion result.'
@@ -4515,7 +6005,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Module id 589 was successfully deleted.'
+                    example: 'Module id 621 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -4535,7 +6025,7 @@ paths:
           description: 'The module id'
           schema:
             type: integer
-          example: '30'
+          example: '410'
           required: true
         -
           name: page
@@ -4543,7 +6033,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '1'
+          example: '5'
           required: true
         -
           name: perPage
@@ -4624,9 +6114,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '../../index.yaml#/components/schemas/Module'
+                $ref: '#/components/schemas/Module'
         404:
-          $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+          $ref: '#/components/responses/404_ModelNotFound'
       tags:
         - Modules
   '/modules/{moduleId}/reports':
@@ -4640,7 +6130,7 @@ paths:
           description: 'The module id'
           schema:
             type: integer
-          example: '575'
+          example: '28'
           required: true
         -
           name: page
@@ -4648,7 +6138,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '18'
+          example: '0'
           required: true
         -
           name: perPage
@@ -4740,7 +6230,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '17'
+          example: '1'
           required: true
           style: form
         -
@@ -4768,7 +6258,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '17'
+                    example: '1'
                     readOnly: true
                   per_page:
                     description: 'The number of notion per page.'
@@ -4778,7 +6268,7 @@ paths:
                   total:
                     description: 'The total number of notion processed.'
                     type: integer
-                    example: '1253'
+                    example: '502'
                     readOnly: true
                   data:
                     description: 'The notion as an array.'
@@ -4803,7 +6293,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '117'
+            example: '131'
       responses:
         200:
           description: 'The requested notion.'
@@ -4833,7 +6323,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '596'
+            example: '89'
       requestBody:
         content:
           application/json:
@@ -4874,7 +6364,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '872'
+            example: '313'
       responses:
         200:
           description: 'The deletion result.'
@@ -4890,7 +6380,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Notion id 872 was successfully deleted.'
+                    example: 'Notion id 313 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -4910,7 +6400,7 @@ paths:
           description: 'The notion id'
           schema:
             type: integer
-          example: '458'
+          example: '628'
           required: true
         -
           name: page
@@ -4918,7 +6408,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '2'
+          example: '5'
           required: true
         -
           name: perPage
@@ -4966,42 +6456,29 @@ paths:
         - Notions
   /plans:
     get:
-      summary: 'Index plans'
+      summary: 'Get all plans'
       responses:
         200:
-          description: 'The Braintree plans'
+          description: 'The plans.'
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '../../index.yaml#/components/schemas/Braintree_Plan'
-      tags:
-        - Plans
-  '/plans/{planId}':
-    get:
-      summary: 'Get a plan'
-      parameters:
-        -
-          name: planId
-          in: path
-          description: 'The plan id.'
-          required: true
-          schema:
-            type: int
-            enum:
-              - v4_monthly
-              - v4_annually
-              - v4_biannually
-      responses:
-        200:
-          description: 'The requested plan.'
-          content:
-            application/json:
-              schema:
-                $ref: '../../index.yaml#/components/schemas/Braintree_Plan'
-        404:
-          $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+                type: object
+                required:
+                  - success
+                  - data
+                additionalProperties: false
+                properties:
+                  success:
+                    description: 'The response success.'
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    description: 'The response data.'
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Plan'
       tags:
         - Plans
   /posts:
@@ -5053,7 +6530,7 @@ paths:
                   total:
                     description: 'The total number of post processed.'
                     type: integer
-                    example: '707'
+                    example: '2413'
                     readOnly: true
                   data:
                     description: 'The post as an array.'
@@ -5109,7 +6586,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '6'
+          example: '3'
           required: true
           style: form
         -
@@ -5137,7 +6614,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '6'
+                    example: '3'
                     readOnly: true
                   per_page:
                     description: 'The number of post per page.'
@@ -5147,7 +6624,7 @@ paths:
                   total:
                     description: 'The total number of post processed.'
                     type: integer
-                    example: '1176'
+                    example: '936'
                     readOnly: true
                   data:
                     description: 'The post as an array.'
@@ -5168,7 +6645,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '220'
+            example: '710'
       responses:
         200:
           description: 'The requested post.'
@@ -5202,7 +6679,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '460'
+            example: '893'
       requestBody:
         content:
           application/json:
@@ -5243,7 +6720,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '926'
+            example: '377'
       responses:
         200:
           description: 'The deletion result.'
@@ -5259,7 +6736,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Post id 926 was successfully deleted.'
+                    example: 'Post id 377 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -5279,7 +6756,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '15'
+          example: '18'
           required: true
           style: form
         -
@@ -5307,7 +6784,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '15'
+                    example: '18'
                     readOnly: true
                   per_page:
                     description: 'The number of product per page.'
@@ -5317,7 +6794,7 @@ paths:
                   total:
                     description: 'The total number of product processed.'
                     type: integer
-                    example: '1197'
+                    example: '830'
                     readOnly: true
                   data:
                     description: 'The product as an array.'
@@ -5362,86 +6839,6 @@ paths:
             - 'products:write'
       tags:
         - Products
-  /products/buy:
-    post:
-      summary: 'Buy products'
-      description: 'Buy products. The user may also use a dscount code.'
-      security:
-        -
-          bearer:
-            - logged
-      requestBody:
-        content:
-          application/sjson:
-            schema:
-              type: object
-              required:
-                - cart
-                - payment_method_nonce
-              properties:
-                cart:
-                  description: 'The user cart, which is an array of the product ids he wants to buy.'
-                  type: array
-                  items:
-                    type: integer
-                  example:
-                    - 127
-                    - 15
-                    - 14
-                payment_method_nonce:
-                  description: 'The payment nonce if the user is not already a Braintree customer.'
-                  type: string
-                  example: 4qs54za5
-                discount:
-                  description: 'A optional discount code.'
-                  type: string
-                  nullable: true
-                  example: MODEMACHINE2018
-                sponsor_email:
-                  description: 'The sponsor email.'
-                  type: string
-                  nullable: true
-                  format: email
-                  example: sponsor@example.com
-      responses:
-        200:
-          description: 'The cart products.'
-          content:
-            application/json:
-              schema:
-                $ref: '../../index.yaml#/components/schemas/Braintree_Transaction'
-        400:
-          description: 'Bad request'
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  -
-                    $ref: '../../index.yaml#/components/schemas/GatewayRejection'
-                  -
-                    $ref: '../../index.yaml#/components/schemas/DiscountExpired'
-                  -
-                    $ref: '../../index.yaml#/components/schemas/DiscountNotApplicable'
-                  -
-                    $ref: '../../index.yaml#/components/schemas/InvalidBraintreeCustomer'
-                  -
-                    $ref: '../../index.yaml#/components/schemas/InvalidSponsor'
-                  -
-                    $ref: '../../index.yaml#/components/schemas/ProductAlreadyBought'
-                  -
-                    $ref: '../../index.yaml#/components/schemas/ProductNotBuyable'
-        404:
-          description: 'Not found'
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  -
-                    $ref: '../../index.yaml#/components/schemas/SponsorNotFound'
-        422:
-          $ref: '../../index.yaml#/components/responses/422_ModelValidation'
-      tags:
-        - Products
   '/products/buyable/{type}':
     get:
       summary: 'Paginate buyable products'
@@ -5459,7 +6856,7 @@ paths:
               - training
               - section
               - lesson
-          example: '0'
+          example: '6'
           required: true
           style: form
           default: all
@@ -5488,7 +6885,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '0'
+                    example: '6'
                     readOnly: true
                   per_page:
                     description: 'The number of product per page.'
@@ -5498,7 +6895,7 @@ paths:
                   total:
                     description: 'The total number of product processed.'
                     type: integer
-                    example: '1659'
+                    example: '1759'
                     readOnly: true
                   data:
                     description: 'The product as an array.'
@@ -5506,111 +6903,6 @@ paths:
                     items:
                       $ref: '#/components/schemas/Product'
                     readOnly: true
-      tags:
-        - Products
-  /products/cart:
-    post:
-      summary: 'Validate cart'
-      description: "Given a sponsor email, check if the current user can benefits of an affiliate discount.\n"
-      security:
-        -
-          bearer:
-            - logged
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - cart
-              properties:
-                cart:
-                  description: 'The cart product ids.'
-                  type: array
-                  items:
-                    type: integer
-                  example:
-                    - 17
-                    - 14
-                discount_code:
-                  description: 'The discount code, if any.'
-                  type: string
-                  nullable: true
-                  example: MODEMACHINE2019
-                sponsor_email:
-                  description: 'The sponsor email, if any.'
-                  type: string
-                  format: email
-                  nullable: true
-                  example: sponsor@example.com
-      responses:
-        200:
-          description: 'The validated cart'
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - discount_code
-                  - sponsor_email
-                  - lines
-                  - sub_total
-                  - total
-                properties:
-                  discount_code:
-                    description: 'The discount code'
-                    type: string
-                    nullable: true
-                    example: MODEMACHINE2019
-                  sponsor_email:
-                    description: 'The sponsor email'
-                    type: string
-                    nullable: true
-                    example: sponsor@example.com
-                  lines:
-                    description: 'The cart lines items'
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        name: { description: 'The product name or `"Parrainage"`.', type: string, example: 'Error ad ipsum ut' }
-                        description: { description: 'The product description.', type: string, example: 'Error ad ipsum ut dolor sit amet consectur imit.' }
-                        price: { description: 'The product price. May be be negative.', type: number, example: 39.7 }
-                        price_after_discount: { description: "The line **after** the discount application. If there is no discount, it has the same value as `price`.\n", type: number, example: 29.7 }
-                  sub_total:
-                    description: "The total cart price, **before** discount application if any. It is the sum of the lines[*].price.\n"
-                    type: number
-                    example: 39.7
-                  total:
-                    description: "The total cart price, **after** discount application if any. It is the sum of the lines[*].price_after_discount.\n"
-                    type: number
-                    example: 29.7
-        400:
-          description: 'Bad request'
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  -
-                    $ref: '../../index.yaml#/components/schemas/DiscountExpired'
-                  -
-                    $ref: '../../index.yaml#/components/schemas/DiscountNotApplicable'
-                  -
-                    $ref: '../../index.yaml#/components/schemas/InvalidSponsor'
-                  -
-                    $ref: '../../index.yaml#/components/schemas/ProductAlreadyBought'
-                  -
-                    $ref: '../../index.yaml#/components/schemas/ProductNotBuyable'
-        404:
-          description: 'Not found'
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  -
-                    $ref: '../../index.yaml#/components/schemas/SponsorNotFound'
-        422:
-          $ref: '../../index.yaml#/components/responses/422_ModelValidation'
       tags:
         - Products
   '/products/slug/{productSlug}':
@@ -5656,7 +6948,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '10'
+            example: '320'
       responses:
         200:
           description: 'The requested product.'
@@ -5690,7 +6982,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '51'
+            example: '461'
       requestBody:
         content:
           application/json:
@@ -5731,7 +7023,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '755'
+            example: '507'
       responses:
         200:
           description: 'The deletion result.'
@@ -5747,7 +7039,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Product id 755 was successfully deleted.'
+                    example: 'Product id 507 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -5767,7 +7059,7 @@ paths:
           description: 'The product id'
           schema:
             type: integer
-          example: '605'
+          example: '487'
           required: true
         -
           name: page
@@ -5775,7 +7067,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '6'
+          example: '8'
           required: true
         -
           name: perPage
@@ -5857,11 +7149,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '../../index.yaml#/components/schemas/ProductPack'
+                $ref: '#/components/schemas/ProductPack'
         404:
-          $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+          $ref: '#/components/responses/404_ModelNotFound'
         422:
-          $ref: '../../index.yaml#/components/responses/422_ModelValidation'
+          $ref: '#/components/responses/422_ModelValidation'
       tags:
         - Products
   '/products/{productId}/recursive':
@@ -5883,9 +7175,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '../../index.yaml#/components/schemas/Product'
+                $ref: '#/components/schemas/Product'
         404:
-          $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+          $ref: '#/components/responses/404_ModelNotFound'
       tags:
         - Products
   '/products/{type}':
@@ -5905,7 +7197,7 @@ paths:
               - training
               - section
               - lesson
-          example: '11'
+          example: '0'
           required: true
           style: form
         -
@@ -5933,7 +7225,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '11'
+                    example: '0'
                     readOnly: true
                   per_page:
                     description: 'The number of product per page.'
@@ -5943,7 +7235,7 @@ paths:
                   total:
                     description: 'The total number of product processed.'
                     type: integer
-                    example: '2230'
+                    example: '2079'
                     readOnly: true
                   data:
                     description: 'The product as an array.'
@@ -5964,7 +7256,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '14'
+          example: '17'
           required: true
           style: form
         -
@@ -5992,7 +7284,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '14'
+                    example: '17'
                     readOnly: true
                   per_page:
                     description: 'The number of report per page.'
@@ -6002,7 +7294,7 @@ paths:
                   total:
                     description: 'The total number of report processed.'
                     type: integer
-                    example: '1516'
+                    example: '618'
                     readOnly: true
                   data:
                     description: 'The report as an array.'
@@ -6058,7 +7350,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '780'
+            example: '893'
       responses:
         200:
           description: 'The requested report.'
@@ -6092,7 +7384,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '389'
+            example: '95'
       requestBody:
         content:
           application/json:
@@ -6133,7 +7425,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '876'
+            example: '126'
       responses:
         200:
           description: 'The deletion result.'
@@ -6149,7 +7441,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Report id 876 was successfully deleted.'
+                    example: 'Report id 126 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -6251,7 +7543,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '../../index.yaml#/components/schemas/Setting'
+                  $ref: '#/components/schemas/Setting'
       tags:
         - Settings
   '/settings/{key}':
@@ -6273,9 +7565,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '../../index.yaml#/components/schemas/Setting'
+                $ref: '#/components/schemas/Setting'
         404:
-          $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+          $ref: '#/components/responses/404_ModelNotFound'
       tags:
         - Settings
     patch:
@@ -6298,16 +7590,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '../../index.yaml#/components/schemas/Setting'
+              $ref: '#/components/schemas/Setting'
       responses:
         200:
           description: 'The requested setting.'
           content:
             application/json:
               schema:
-                $ref: '../../index.yaml#/components/schemas/Setting'
+                $ref: '#/components/schemas/Setting'
         404:
-          $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+          $ref: '#/components/responses/404_ModelNotFound'
       tags:
         - Settings
     delete:
@@ -6350,220 +7642,80 @@ paths:
       requestBody:
         content:
           application/json:
-            type: object
-            required:
-              - planId
-              - paymentMethodNonce
-            properties:
-              planId:
-                description: 'The plan id.'
-                type: string
-                enum:
-                  - v4_monthly
-                  - v4_annually
-                  - v4_biannually
-              paymentMethodNonce:
-                description: 'The payment method associated with the subscription.'
-                type: string
-                example: fake-valid-visa-nonce
+            schema:
+              type: object
+              required:
+                - plan
+                - token_id
+              properties:
+                plan:
+                  description: 'The plan.'
+                  type: string
+                  enum:
+                    - v5_monthly
+                    - v5_annually
+                    - v5_biannually
+                token_id:
+                  description: 'The payment method token associated with the subscription. It can be retrieved using the Stripe.js `createToken()` function.'
+                  externalDocs:
+                    description: 'Stripe.js `createToken()`'
+                    url: 'https://stripe.com/docs/stripe-js/reference#stripe-create-token'
+                  type: string
+                  example: tok_fr
       responses:
         200:
-          description: 'The patched subscription.'
-          content:
-            application/json:
-              schema:
-                $ref: '../../index.yaml#/components/schemas/Braintree_Subscription'
-        400:
-          oneOf:
-            -
-              $ref: '../../index.yaml#/components/schemas/GatewayRejection'
-        422:
-          $ref: '../../index.yaml#/components/responses/422_ModelValidation'
-      tags:
-        - Subscriptions
-  '/subscriptions/by-user/{userId}':
-    get:
-      summary: 'Paginate subscriptions by user'
-      description: 'Retrieve all subscriptions linked to a given user id, paginated.'
-      parameters:
-        -
-          name: userId
-          in: path
-          description: 'The user id'
-          schema:
-            type: int
-          example: 1567
-          required: true
-        -
-          name: page
-          in: path
-          description: 'The page **(starts at 0)**.'
-          schema:
-            type: int
-          example: 0
-          required: true
-        -
-          name: perPage
-          in: path
-          description: 'The number of subscriptions per page.'
-          schema:
-            type: int
-          example: 100
-          required: true
-      responses:
-        200:
-          description: 'The subscriptions in a paginator.'
+          description: 'Subscription was created and is active.'
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - page
-                  - per_page
-                  - total
+                  - success
                   - data
+                additionalProperties: false
                 properties:
-                  page:
-                    description: 'The current page.'
-                    type: integer
-                    example: 4
-                    readOnly: true
-                  per_page:
-                    description: 'The number of subscriptions per page.'
-                    type: integer
-                    example: 100
-                    readOnly: true
-                  total:
-                    description: 'The total number of subscriptions processed.'
-                    type: integer
-                    example: 1845
-                    readOnly: true
+                  success:
+                    description: 'The response success.'
+                    type: boolean
+                    enum:
+                      - true
                   data:
-                    description: 'The subscriptions as an array.'
-                    type: array
-                    items:
-                      $ref: '../../index.yaml#/components/schemas/Braintree_Subscription'
-                    readOnly: true
-      tags:
-        - Subscriptions
-  '/subscriptions/{subscriptionId}':
-    get:
-      summary: 'Get subscription'
-      description: 'Get a subscription by its it.'
-      parameters:
-        -
-          name: subscriptionId
-          in: path
-          description: 'The subscription id.'
-          required: true
-          schema:
-            type: string
-            pattern: 'sub_[0-9a-f]{32}'
-            example: sub_2a06527b38e20836c307c32e3a257736
-      responses:
-        200:
-          description: 'The subscription.'
-          content:
-            application/json:
-              schema:
-                $ref: '../../index.yaml#/components/schemas/Braintree_Subscription'
-        400:
-          description: 'Bad request.'
+                    description: 'The response data.'
+                    type: object
+                    required:
+                      - subscription
+                    additionalProperties: false
+                    properties:
+                      initial_payment_intent:
+                        nullable: true
+                        allOf: [{ $ref: '#/components/schemas/PaymentIntent' }]
+                      subscription:
+                        description: 'The newly created subscription.'
+                        type: object
+                        required: [id, plan, status]
+                        additionalProperties: false
+                        properties: { id: { description: 'The subscription id.', type: string, example: sub_Fj1cBjds5Hjv5v }, latest_invoice: { description: 'The subscription latest invoice.', type: object, required: [payment_intent], additionalProperties: false, properties: { payment_intent: { $ref: '#/components/schemas/PaymentIntent' } } }, plan: { description: 'The subscription plan.', type: object, properties: { id: { description: 'The plan id.', type: string, enum: [v5_monthly, v5_annually, v5_biannually], example: v5_monthly } } }, status: { description: 'The subscription status. `incomplete` means that the first charge of the subscription requires 3D Secure 2 Authentication.', type: string, enum: [active, incomplete, trialing] } }
+        422:
+          description: 'Card token has been refused.'
           content:
             application/json:
               schema:
                 oneOf:
                   -
-                    $ref: '../../index.yaml#/components/schemas/GatewayRejection'
-        404:
-          $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
-        422:
-          $ref: '../../index.yaml#/components/responses/422_ModelValidation'
-      tags:
-        - Subscriptions
-    patch:
-      summary: 'Patch subscription'
-      description: "Currently, this method only allow to change the payment method associated with the subscription. Therefore, only customers themselves will find interest in this method.\n"
-      parameters:
-        -
-          name: subscriptionId
-          in: path
-          description: 'The subscription id.'
-          required: true
-          schema:
-            type: string
-            pattern: 'sub_[0-9a-f]{32}'
-            example: sub_67a0745dce1b4895fae1a7183f5f9603
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - payment_method_nonce
-              properties:
-                payment_method_nonce:
-                  description: "If set, change the payment method associated with the subscription.\n"
-                  type: string
-                  example: fake-valid-visa-nonce
-                make_default:
-                  description: "Make the new payment method the default customer payment method. Must be used with `payment_method_nonce`.\n"
-                  type: boolean
-                  example: true
-                  default: false
-      responses:
-        200:
-          description: 'The patched subscription.'
-          content:
-            application/json:
-              schema:
-                $ref: '../../index.yaml#/components/schemas/Braintree_Subscription'
-        400:
-          description: 'Bad request.'
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  -
-                    $ref: '../../index.yaml#/components/schemas/GatewayRejection'
-        404:
-          $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
-        422:
-          $ref: '../../index.yaml#/components/responses/422_ModelValidation'
-      tags:
-        - Subscriptions
-  '/subscriptions/{subscriptionId}/cancel':
-    post:
-      summary: 'Cancel subscription'
-      parameters:
-        -
-          name: subscriptionId
-          in: path
-          description: 'The subscription id.'
-          required: true
-          schema:
-            type: string
-            pattern: 'sub_[0-9a-f]{32}'
-            example: sub_2a06527b38e20836c307c32e3a257736
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                now:
-                  description: 'If the subscription should be cancelled now.'
-                  type: boolean
-                  default: false
-      responses:
-        200:
-          description: 'The cancelled subscription.'
-          content:
-            application/json:
-              schema:
-                $ref: '../../index.yaml#/components/schemas/Braintree_Subscription'
-        422:
-          $ref: '../../index.yaml#/components/responses/422_ModelValidation'
+                    description: 'Incorrect CVC'
+                    type: object
+                    properties:
+                      error:
+                        description: 'The Incorrect CVC error code.'
+                        type: string
+                        enum: [incorrect_cvc]
+                      message:
+                        description: 'The Incorrect CVC error message.'
+                        type: string
+                        enum: ['Incorrect CVC']
+                      data:
+                        description: 'The Incorrect CVC error data.'
+                        type: array
       tags:
         - Subscriptions
   /users:
@@ -6577,7 +7729,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '6'
+          example: '13'
           required: true
           style: form
         -
@@ -6605,7 +7757,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '6'
+                    example: '13'
                     readOnly: true
                   per_page:
                     description: 'The number of user per page.'
@@ -6615,7 +7767,7 @@ paths:
                   total:
                     description: 'The total number of user processed.'
                     type: integer
-                    example: '325'
+                    example: '1780'
                     readOnly: true
                   data:
                     description: 'The user as an array.'
@@ -6657,7 +7809,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '../../index.yaml#/components/schemas/User'
+                $ref: '#/components/schemas/User'
       tags:
         - Users
   '/users/{userId}':
@@ -6671,7 +7823,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '954'
+            example: '282'
       responses:
         200:
           description: 'The requested user.'
@@ -6690,7 +7842,7 @@ paths:
         404:
           $ref: '#/components/responses/404_ModelNotFound'
         401:
-          $ref: '../../index.yaml#/components/responses/401_Unauthorized'
+          $ref: '#/components/responses/401_Unauthorized'
       description: "Get a user by its id. Note that the scope `admin` is required in order to get a profile which is **not** the current user.\n"
       security:
         -
@@ -6708,7 +7860,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '520'
+            example: '914'
       requestBody:
         content:
           application/json:
@@ -6750,7 +7902,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '556'
+            example: '653'
       responses:
         200:
           description: 'The deletion result.'
@@ -6766,7 +7918,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'User id 556 was successfully deleted.'
+                    example: 'User id 653 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -6808,7 +7960,7 @@ paths:
                     type: string
                     example: 'User with id `1585` cache was successfully cleared.'
         404:
-          $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+          $ref: '#/components/responses/404_ModelNotFound'
       tags:
         - Users
   '/users/{userId}/points':
@@ -6855,9 +8007,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '../../index.yaml#/components/schemas/User'
+                $ref: '#/components/schemas/User'
         404:
-          $ref: '../../index.yaml#/components/responses/404_ModelNotFound'
+          $ref: '#/components/responses/404_ModelNotFound'
       tags:
         - Users
   '/votes/comment/{commentId}':
@@ -6880,14 +8032,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '../../index.yaml#/components/schemas/Vote'
+              $ref: '#/components/schemas/Vote'
       responses:
         200:
           description: 'The newly created vote.'
           content:
             application/json:
               schema:
-                $ref: '../../index.yaml#/components/schemas/Vote'
+                $ref: '#/components/schemas/Vote'
       tags:
         - Votes
     delete:
@@ -6930,9 +8082,6 @@ tags:
   -
     name: Auth
     description: 'The Auth API, which is handled by the `/auth` root API.'
-  -
-    name: Braintree
-    description: 'The Braintree API, which is handled by the `/braintree` root API.'
   -
     name: Categories
     description: 'The Categories API, which is handled by the `/categories` root API.'

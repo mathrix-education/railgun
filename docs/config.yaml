@@ -1,8 +1,9 @@
 versionFrom: '../composer.json#version'
 defaultTagGroup: Miscellaneous
+requestBodies: []
+responses: []
 schemas:
-  schemas/Errors:
-  schemas/Braintree: Braintree_
-  schemas/Modules: Module
-  schemas/Notifications: Notification
-  schemas/Products: Product
+  Errors:
+  Modules: Module
+  Notifications: Notification
+  Products: Product

@@ -3,26 +3,101 @@ post:
   requestBody:
     content:
       application/json:
-        type: object
-        required: [planId, paymentMethodNonce]
-        properties:
-          planId:
-            description: The plan id.
-            type: string
-            enum: [v4_monthly, v4_annually, v4_biannually]
-          paymentMethodNonce:
-            description: The payment method associated with the subscription.
-            type: string
-            example: fake-valid-visa-nonce
+        schema:
+          type: object
+          required: [plan, token_id]
+          properties:
+            plan:
+              description: The plan.
+              type: string
+              enum: [v5_monthly, v5_annually, v5_biannually]
+            token_id:
+              description: >-
+                The payment method token associated with the subscription. It can
+                be retrieved using the Stripe.js `createToken()` function.
+              externalDocs:
+                description: Stripe.js `createToken()`
+                url: 'https://stripe.com/docs/stripe-js/reference#stripe-create-token'
+              type: string
+              example: tok_fr
   responses:
     200:
-      description: The patched subscription.
+      description: Subscription was created and is active.
       content:
         application/json:
           schema:
-            $ref: '../../index.yaml#/components/schemas/Braintree_Subscription'
-    400:
-      oneOf:
-        - $ref: '../../index.yaml#/components/schemas/GatewayRejection'
+            type: object
+            required: [success, data]
+            additionalProperties: false
+            properties:
+              success:
+                description: The response success.
+                type: boolean
+                enum: [true]
+              data:
+                description: The response data.
+                type: object
+                required: [subscription]
+                additionalProperties: false
+                properties:
+                  initial_payment_intent:
+                    nullable: true
+                    allOf:
+                      - $ref: '#/components/schemas/PaymentIntent'
+                  subscription:
+                    description: The newly created subscription.
+                    type: object
+                    required: [id, plan, status]
+                    additionalProperties: false
+                    properties:
+                      id:
+                        description: The subscription id.
+                        type: string
+                        example: sub_Fj1cBjds5Hjv5v
+                      latest_invoice:
+                        description: The subscription latest invoice.
+                        type: object
+                        required: [payment_intent]
+                        additionalProperties: false
+                        properties:
+                          payment_intent:
+                            $ref: '#/components/schemas/PaymentIntent'
+                      plan:
+                        description: The subscription plan.
+                        type: object
+                        properties:
+                          id:
+                            description: The plan id.
+                            type: string
+                            enum: [v5_monthly, v5_annually, v5_biannually]
+                            example: v5_monthly
+                      status:
+                        description: >-
+                          The subscription status. `incomplete` means that the first
+                          charge of the subscription requires 3D Secure 2
+                          Authentication.
+                        type: string
+                        enum:
+                          - active
+                          - incomplete
+                          - trialing
     422:
-      $ref: '../../index.yaml#/components/responses/422_ModelValidation'
+      description: Card token has been refused.
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - description: Incorrect CVC
+                type: object
+                properties:
+                  error:
+                    description: The Incorrect CVC error code.
+                    type: string
+                    enum: [incorrect_cvc]
+                  message:
+                    description: The Incorrect CVC error message.
+                    type: string
+                    enum: [Incorrect CVC]
+                  data:
+                    description: The Incorrect CVC error data.
+                    type: array

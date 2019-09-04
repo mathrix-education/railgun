@@ -1,0 +1,28 @@
+description: The subscription latest invoice payment intent.
+type: object
+additionalProperties: false
+properties:
+  client_secret:
+    description: >-
+      If subscription requires 3D Secure 2 Authentication, use the
+      `client_secret` to authenticate the used card via the Stripe.js
+      `handleCardPayment()` function.
+    externalDocs:
+      description: Stripe.js `handleCardPayment()`
+      url: 'https://stripe.com/docs/stripe-js/reference#stripe-handle-card-payment'
+    type: string
+    example: 'pi_1FDZZPJ3KapFDTUE7ACor7QN_secret_Z1j93AE03EzhWB0nsCLYZlCm7'
+  status:
+    description: The payment intent status.
+    type: string
+    enum:
+      - requires_payment_method
+      - requires_confirmation
+      - requires_action
+      - processing
+      - canceled
+      - succeeded
+    externalDocs:
+      description: Payment Intent statusses on Stripe
+      url: https://stripe.com/docs/payments/intents#intent-statuses
+

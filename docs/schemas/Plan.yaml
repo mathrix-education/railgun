@@ -1,0 +1,43 @@
+description: Plan
+type: object
+required: [id, regular, period, price_per_period, price_per_month, trial_days, trial_ends_at, trial_price]
+properties:
+  id:
+    description: The plan id.
+    type: string
+    example: v5_annually
+  regular:
+    description: If the plan is **regular**, which means that there is no initial big payment.
+    type: boolean
+    example: false
+  period:
+    description: The plan period.
+    type: string
+    enum: [month, year]
+    example: year
+  price_per_period:
+    description: The plan price per period **in cents**.
+    type: integer
+    example: 15480
+  price_per_month:
+    description: The plan price per month **in cents**.
+    type: integer
+    example: 1290
+  trial_days:
+    description: >-
+      If the plan is not **regular**, the duration if the trial period in days, `null` otherwise.
+    type: integer
+    nullable: true
+    example: 333
+  trial_ends_at:
+    description: >-
+      If the plan is not **regular**, the trial end date, `null` otherwise.
+    type: string
+    nullable: true
+    example: 2020-07-30T22:00:00.000000Z
+  trial_price:
+    description: >-
+      If the plan is not **regular**, the trial price in cents, `null` otherwise.
+    type: integer
+    nullable: true
+    example: 14147

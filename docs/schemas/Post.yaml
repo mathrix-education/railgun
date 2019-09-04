@@ -1,6 +1,5 @@
 description: Post
 type: object
-additionalProperties: false
 properties:
   id:
     description: The post id.
@@ -38,4 +37,4 @@ properties:
     readOnly: true
   module:
     allOf:
-      - $ref: '../index.yaml#/components/schemas/Module'
+      - $ref: '#/components/schemas/Module'

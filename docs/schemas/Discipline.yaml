@@ -1,6 +1,5 @@
 description: Discipline
 type: object
-additionalProperties: false
 properties:
   id:
     description: The discipline id.

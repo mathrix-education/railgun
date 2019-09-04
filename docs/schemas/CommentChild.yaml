@@ -1,6 +1,5 @@
 description: Comment.
 type: object
-additionalProperties: false
 required: [id, content, parent_id, user_id, module_id, created_at, updated_at, score, user_vote]
 properties:
   id:

@@ -8,4 +8,4 @@ get:
           schema:
             type: array
             items:
-              $ref: '../../index.yaml#/components/schemas/Setting'
+              $ref: '#/components/schemas/Setting'

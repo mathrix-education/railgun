@@ -2,8 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Events\PasswordForgottenEvent;
-use App\Events\PasswordResetEvent;
+use App\Mails\PasswordForgottenMail;
 use App\Models\User;
 use Exception;
 use Facebook\Exceptions\FacebookSDKException;
@@ -13,11 +12,12 @@ use Faker\Factory as FakerFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
-use Mathrix\Lumen\Exceptions\ValidationException;
+use Illuminate\Support\Facades\Mail;
 use Mathrix\Lumen\JWT\Auth\Exceptions\InvalidCredentialsException;
 use Mathrix\Lumen\JWT\Auth\JWT\JWTIssuer;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
+use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Zero\Exceptions\ValidationException;
 
 /**
  * Class AuthController.
@@ -143,6 +143,8 @@ class AuthController extends BaseController
             // Generate token
             $user->update(["token" => Factory::create()->uuid]);
         });
+
+        Mail::to($user->email)->send(new PasswordForgottenMail($user));
 
         return new JsonResponse([
             "success" => true,

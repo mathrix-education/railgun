@@ -5,6 +5,6 @@ properties:
     enum: [lesson]
   module:
     allOf:
-      - $ref: '../../index.yaml#/components/schemas/Module'
+      - $ref: '#/components/schemas/Module'
     readOnly: true
     nullable: true

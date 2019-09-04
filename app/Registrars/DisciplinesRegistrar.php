@@ -22,6 +22,7 @@ class DisciplinesRegistrar extends BaseRegistrar
         $this->rest([
             "std:index" => null,
             "std:get" => null,
+            "std:get:slug" => null,
             "std:post" => "scope:disciplines:write",
             "std:patch" => "scope:disciplines:write",
             "std:delete" => "scope:disciplines:delete"

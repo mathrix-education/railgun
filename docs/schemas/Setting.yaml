@@ -1,6 +1,5 @@
 description: Setting
 type: object
-additionalProperties: false
 required: [id, key, value, visible]
 properties:
   id:

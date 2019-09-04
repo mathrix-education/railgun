@@ -2,6 +2,11 @@
   "name": "education-api",
   "version": "1.0.0",
   "dependencies": {
-    "mjml": "^4.4.0"
+    "mjml": "^4.4.0",
+    "redoc-cli": "^0.8.6"
+  },
+  "scripts": {
+    "docs:serve": "redoc-cli serve docs/output.yaml",
+    "docs:bundle": "redoc-cli bundle docs/output.yaml docs/index.html && mv redoc-static.html docs/index.html"
   }
 }

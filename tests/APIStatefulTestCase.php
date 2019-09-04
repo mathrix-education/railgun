@@ -2,8 +2,10 @@
 
 namespace Tests;
 
+use App\Mails\BaseMail;
 use App\Models\User;
 use cebe\openapi\spec\Operation;
+use Illuminate\Support\Facades\Mail;
 use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Zero\Testing\Traits\DebugTrait;
 use Mathrix\Lumen\Zero\Testing\Traits\RESTTrait;
@@ -36,18 +38,16 @@ class APIStatefulTestCase extends BaseTestCase
     {
         parent::setUp();
 
-        $this->handler("before.request", function (string $method, string $uri) {
+        $this->handler("before.json", function (string $method, string $uri) {
             $scopes = $this->getOpenAPIScopes($method, $uri);
 
-            if (empty($scopes)) {
-                $this->requester = User::random();
-                JWT::actingAs($this->requester);
-            } else {
-                $this->requester = JWT::withScopes($scopes[0]);
-
-                if (!in_array("logged", $this->requester->scopes)) {
-                    $this->requester->scopes = array_merge($this->requester->scopes, ["logged"]);
-                    $this->requester->save();
+            if (!empty($scopes)) {
+                if (count($scopes) === 1 && $scopes[0] === "logged") {
+                    // Authentication needed
+                    $this->requester = User::random();
+                    JWT::actingAs($this->requester);
+                } else {
+                    $this->requester = JWT::withScopes($scopes[0]);
                 }
             }
         });
@@ -97,5 +97,20 @@ class APIStatefulTestCase extends BaseTestCase
         } else {
             return $operation->security[0]->{$security};
         }
+    }
+
+
+    /**
+     * Assert that a mailable has been sent to an user.
+     *
+     * @param string|BaseMail $mailClass
+     * @param User $user
+     */
+    public function assertMailSentTo($mailClass, User $user)
+    {
+        Mail::assertSent($mailClass, function ($mail) use ($user) {
+            /** @var BaseMail $mail */
+            return $mail->hasTo($user->email);
+        });
     }
 }

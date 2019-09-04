@@ -23,12 +23,12 @@ get:
                 description: The subdirectories inside the targeted directory.
                 type: array
                 items:
-                  $ref: '../../index.yaml#/components/schemas/Directory'
+                  $ref: '#/components/schemas/Directory'
               files:
                 description: The files inside the targeted directory.
                 type: array
                 items:
-                  $ref: '../../index.yaml#/components/schemas/File'
+                  $ref: '#/components/schemas/File'
     400:
       description: Bad request
       content:
@@ -46,4 +46,4 @@ get:
                 type: string
                 example: b/b.txt is not a directory.
     404:
-      $ref: '../../index.yaml#/components/responses/404_FileNotFound'
+      $ref: '#/components/responses/404_FileNotFound'
