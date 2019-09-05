@@ -30,10 +30,9 @@ $factory->define(User::class, function (Generator $faker) {
         "password" => Cache::remember("DB_PASSWORD.hash", 30, function () {
             return Hash::make(env("DB_PASSWORD"));
         }),
-        "scopes" => ["logged"],
+        "scopes" => [],
         "token" => $faker->uuid,
         "points" => $points,
-        "level" => Level::getLevelByPoints($points),
         "daily" => $faker->randomElement([10, 20, 40]),
         "settings" => [
             "sound" => $faker->boolean(70),

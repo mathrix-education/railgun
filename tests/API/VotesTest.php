@@ -31,7 +31,7 @@ class VotesTest extends APIStatelessTestCase
         ]);
 
         $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
+        $this->assertOpenAPIResponse($this->response);
 
         $this->assertInDatabase("votes", [
             "user_id" => $user->id,
@@ -55,7 +55,7 @@ class VotesTest extends APIStatelessTestCase
         ]);
 
         $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
+        $this->assertOpenAPIResponse($this->response);
 
         $this->assertInDatabase("votes", [
             "id" => $vote->id,
@@ -76,7 +76,7 @@ class VotesTest extends APIStatelessTestCase
         $this->json("delete", "/votes/comment/{$vote->comment->id}");
 
         $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
+        $this->assertOpenAPIResponse($this->response);
 
         $this->assertNotInDatabase("votes", ["id" => $vote->id]);
     }

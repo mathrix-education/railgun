@@ -6,6 +6,7 @@ use App\Models\User;
 use Exception;
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Jose\Component\Signature\JWS;
 use Jose\Component\Signature\Serializer\Serializer;
 use Tests\APIStatefulTestCase;
@@ -26,8 +27,9 @@ class FacebookLoginTest extends APIStatefulTestCase
      * Prepare Facebook test account
      *
      * @throws FacebookSDKException
+     * @throws BindingResolutionException
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
 
@@ -47,9 +49,9 @@ class FacebookLoginTest extends APIStatefulTestCase
      * Cleanup of test campaign.
      *
      * @throws FacebookSDKException
-     * @throws Exception
+     * @throws BindingResolutionException
      */
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         // Clean Facebook test account
         /** @var Facebook $facebook */
@@ -90,7 +92,7 @@ class FacebookLoginTest extends APIStatefulTestCase
         $user = User::query()->findOrFail($payload->sub);
 
         $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
+        $this->assertOpenAPIResponse($this->response);
         $this->assertEquals(self::$FacebookUser->id, $user->metadata["facebook"]["id"]);
         $this->assertIsString($user->metadata["facebook"]["access_token"]);
         $this->assertIsInt($user->metadata["facebook"]["expires_in"]);

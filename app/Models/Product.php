@@ -213,17 +213,6 @@ class Product extends BaseModel
 
 
     /**
-     * MorphMany LineItems
-     *
-     * @return MorphMany
-     */
-    public function lineItems(): MorphMany
-    {
-        return $this->morphMany(LineItem::class, "product", "product_type", "product_code");
-    }
-
-
-    /**
      * Product::$owned getter attribute
      *
      * @return bool

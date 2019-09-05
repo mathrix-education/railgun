@@ -19,6 +19,19 @@ class GradesRegistrar extends BaseRegistrar
      */
     public function register(): void
     {
+        $controller = GradesController::class;
+
+        $this->get("/grades/{gradeId}/disciplines/visible", "$controller@disciplinesVisible");
+        $this->get("/grades/slug/{gradeSlug}/chapters/slug/{chapterSlug}", "$controller@getBySlugChapterSlug");
+        $this->get("/grades/{gradeId}/disciplines/{disciplineId}/chapters/visible",
+            "$controller@chaptersByDisciplineVisible");
+
+        $this->group(["middleware" => "scope:chapters:read"], function () use ($controller) {
+            $this->get(
+                "/grades/{gradeId}/disciplines/{disciplineId}/chapters",
+                "$controller@chaptersByDiscipline"
+            );
+        });
 
         $this->rest([
             "std:index" => null,
@@ -27,14 +40,7 @@ class GradesRegistrar extends BaseRegistrar
             "std:post" => "scope:grades:write",
             "std:patch" => "scope:grades:write",
             "std:delete" => "scope:grades:delete",
-            "rel:get:disciplines" => null
+            "rel:get:disciplines" => "scope:disciplines:read"
         ]);
-
-        $controller = GradesController::class;
-
-        $this->get("grades/slug/{gradeSlug:[a-z0-9\-]+}/chapters/slug/{chapterSlug:[a-z0-9\-]+}",
-            "$controller@getBySlugChapterSlug");
-        $this->get("grades/{gradeId:[1-9]\d*}/disciplines/{disciplineId:[1-9]\d*}/chapters/{page:\d+}/{perPage:[1-9]\d*}",
-            "$controller@chaptersByDiscipline");
     }
 }

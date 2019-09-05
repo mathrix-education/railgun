@@ -59,7 +59,7 @@ class ChaptersTest extends APIStatelessTestCase
         $this->json("get", $uri);
 
         $this->assertResponseOk();
-        // $this->assertOpenAPIResponse($this->response); // TODO: fix schema?
+        $this->assertOpenAPIResponse($this->response);
     }
 
 

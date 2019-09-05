@@ -50,9 +50,9 @@ class CommentsController extends BaseController
     public function latest(): SuccessJsonResponse
     {
         $query = Comment::with([
-            "user:id,username,firstname,level,grade_id",
+            "user:id,username,firstname,grade_id",
             "children",
-            "children.user:id,username,firstname,level,grade_id"
+            "children.user:id,username,firstname,grade_id"
         ])
             ->orderBy("created_at", "desc");
 

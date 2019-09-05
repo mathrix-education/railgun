@@ -2,7 +2,7 @@
 
 namespace App\Models\Traits;
 
-use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
+use Mathrix\Lumen\Zero\Exceptions\Http\Http401UnauthorizedException;
 
 /**
  * Trait PermissionsTrait.

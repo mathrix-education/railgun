@@ -5,9 +5,8 @@ namespace App\Models;
 use App\Exceptions\ImmutableException;
 use App\Models\Traits\FacebookUser;
 use App\Models\Traits\PermissionsTrait;
-use App\Services\Braintree\Models\Customer;
-use App\Services\Braintree\Models\Transaction;
-use App\Services\Stripe\StripeCustomer;
+use App\Services\Braintree\Models\BraintreeCustomer;
+use App\Services\Stripe\Models\StripeCustomer;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -21,6 +20,7 @@ use Illuminate\Validation\Rule;
 use Laravel\Lumen\Auth\Authorizable;
 use Mathrix\Lumen\JWT\Auth\HasJWT;
 use Mathrix\Lumen\Zero\Models\BaseModel;
+use stdClass;
 use Stripe\Subscription;
 
 /**
@@ -38,7 +38,6 @@ use Stripe\Subscription;
  * @property string $type
  * @property string $token
  * @property int $points
- * @property int $level
  * @property int $daily
  * @property int $daily_achievements
  * @property array $settings
@@ -47,17 +46,18 @@ use Stripe\Subscription;
  * @property Carbon $premium_bypass_expires_at
  * @property int|null $grade_id
  * @property string|null $braintree_id
+ * @property string|null $stripe_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * ---
  * @property-read string $full_name
+ * @property-read int $level
  * @property-read bool $premium
  * @property-read string $provider
  * @property-read int $daily_points
  * ---
  * @property Grade $grade
  * @property Collection|Comment[] $comments
- * @property Collection|Log[] $logs
  * @property Collection|Product[] $products
  * @property Collection|Purchase[] $purchases
  * @property Collection|Vote[] $votes
@@ -71,6 +71,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         HasJWT,
         FacebookUser,
         PermissionsTrait,
+        BraintreeCustomer,
         StripeCustomer;
 
     private const STRIPE_PLANS = ["v3_monthly", "v3_annually", "v3_biannually"];
@@ -100,8 +101,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "premium_bypass",
         "premium_bypass_expires_at",
         "braintree_id",
-        "metadata",
-        "braintree"
+        "metadata"
     ];
 
     protected $attributes = [
@@ -109,7 +109,9 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "firstname" => null,
         "lastname" => null,
         "scopes" => "[]",
+        "points" => 0,
         "daily" => 10,
+        "daily_achievements" => 0,
         "premium_bypass" => false,
         "premium_bypass_expires_at" => null,
         "settings" => "[]",
@@ -130,8 +132,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "firstname" => "nullable|max:60",
         "lastname" => "nullable|max:60",
         "password" => "nullable|min:3",
-//        "scopes" => "required",
-//        "scopes.*" => "distinct",
         "token" => "nullable|size:36",
         "points" => "required|integer",
         "daily" => "nullable|in:10,20,40",
@@ -140,11 +140,8 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         "premium_bypass_expires_at" => "nullable|date",
     ];
 
-    /** @var array The relations to include by default */
-    protected $with = ["grade"];
-
     /** @var array The virtual attributes */
-    protected $appends = ["provider", "daily_points", "last_session", "premium"];
+    protected $appends = ["level", "provider", "last_session", "premium"];
 
 
     public function __construct(array $attributes = [])
@@ -265,17 +262,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
 
     /**
-     * HasMany Log.
-     *
-     * @return HasMany
-     */
-    public function logs(): HasMany
-    {
-        return $this->hasMany(Log::class);
-    }
-
-
-    /**
      * HasMany Mark.
      *
      * @return HasMany
@@ -329,31 +315,13 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
 
     /**
-     * daily_points attribute.
+     * level attribute.
      *
      * @return int
      */
-    public function getDailyPointsAttribute()
+    public function getLevelAttribute(): int
     {
-        $logs = Log::query()
-            ->where([
-                ["event", "user_gathered_points"],
-                ["user_id", $this->id]
-            ])
-            ->whereBetween("created_at", [
-                Carbon::now()->setTime(0, 0, 0),
-                Carbon::now()
-            ])
-            ->get();
-
-        $sum = 0;
-
-        /** @var Log $log */
-        foreach ($logs as $log) {
-            $sum += $log->value["points"];
-        }
-
-        return $sum;
+        return floor((pow($this->points, 1 / 1.2) / 10) + 1);
     }
 
 
@@ -406,7 +374,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
 
     /**
-     * @return array
+     * @return array|stdClass
      */
     public function getLastSessionAttribute()
     {

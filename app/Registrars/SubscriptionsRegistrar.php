@@ -21,7 +21,7 @@ class SubscriptionsRegistrar extends BaseRegistrar
     {
         $controller = SubscriptionsController::class;
 
-        $this->group(["middleware" => "scope:logged"], function () use ($controller) {
+        $this->group(["middleware" => "logged"], function () use ($controller) {
             $this->post("subscriptions", "$controller@standardPost");
             $this->patch("subscriptions/{subscriptionId:[a-z0-9\_]+}", "$controller@update");
         });

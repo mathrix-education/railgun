@@ -36,7 +36,7 @@ class ModulesRegistrar extends BaseRegistrar
 
         $this->patch("modules/{moduleId:[1-9]\d*}/mark", [
             "uses" => "$controller@mark",
-            "middleware" => "scope:logged"
+            "middleware" => "logged"
         ]);
     }
 }

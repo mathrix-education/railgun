@@ -35,7 +35,7 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->seedFromFactory(Chapter::class, 30);
         $this->seedFromFactory(Notion::class, 90);
         $this->seedFromFactory(Activity::class, 200);
-        $this->seedFromSubFactory(Module::class, "random", 250);
+        $this->seedFromFactory(Module::class, 250);
 
         // Levels
         $this->call(LevelTableSeeder::class);

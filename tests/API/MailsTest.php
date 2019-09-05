@@ -2,6 +2,7 @@
 
 namespace Tests\API;
 
+use App\Mails\BaseMail;
 use App\Registrars\MailsRegistrar;
 use Illuminate\Support\Facades\Facade;
 use Tests\APIStatelessTestCase;
@@ -15,21 +16,26 @@ use Tests\APIStatelessTestCase;
  */
 class MailsTest extends APIStatelessTestCase
 {
-    /**
-     * Test that all emails produce valid views i.e. that there is no syntax errors.
-     * This is better that nothing, but it does not guarantees that the mail is correct.
-     */
-    public function testAllMails()
+    public function mails()
     {
-        MailsRegistrar::getMails()->map(function ($mailableClass, string $uri) {
-            $this->json("get", $uri);
-            $this->assertResponseOk();
+        $mails = MailsRegistrar::getMails();
+        $data = [];
 
-            /**
-             * Needed for multiple requests in the same test.
-             * @see https://stackoverflow.com/a/38722555/3728261
-             */
-            Facade::clearResolvedInstances();
-        });
+        foreach ($mails as $mail) {
+            $data[$mail] = [$mail];
+        }
+
+        return $data;
+    }
+
+
+    /**
+     * @param string|BaseMail $mailClass
+     *
+     * @dataProvider mails
+     */
+    public function testMailsRender(string $mailClass)
+    {
+        $this->assertInstanceOf($mailClass, $mailClass::mock());
     }
 }

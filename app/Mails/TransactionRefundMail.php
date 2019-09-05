@@ -47,13 +47,13 @@ class TransactionRefundMail extends BaseMail
     {
         $user = User::random();
         $refund = Cache::remember("mail-transaction-refund_refund", 5, function () {
-            return Transaction::search([
+            return gateway()->transaction()->search([
                 TransactionSearch::type()->is("credit")
             ])
                 ->firstItem();
         });
         $transaction = Cache::remember("mail-transaction-refund_refund", 5, function () use ($refund) {
-            return Transaction::find($refund->refundedTransactionId);
+            return gateway()->transaction()->find($refund->refundedTransactionId);
         });
 
         return new self($user, $transaction, [], $refund);

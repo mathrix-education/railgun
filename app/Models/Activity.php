@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Traits\Loggable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -39,8 +38,6 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
  */
 class Activity extends BaseModel
 {
-    use Loggable;
-
     public const TYPES = ["video", "course", "test", "exercise", "summary", "flashcard"];
 
     /** @var array The attributes that are mass assignable */

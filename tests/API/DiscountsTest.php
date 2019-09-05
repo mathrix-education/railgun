@@ -30,27 +30,4 @@ class DiscountsTest extends APIStatelessTestCase
         "rel:get:products",
         "rel:patch:products"
     ];
-//
-//    /**
-//     * PATCH /discounts/{discountId}/products
-//     */
-//    public function testPatchProducts(): void
-//    {
-//        /** @var Discount $discount */
-//        $discount = Discount::random();
-//        $productIds = Product::query()->inRandomOrder()->limit(5)->get()->pluck("id");
-//
-//        $uri = "/discounts/{$discount->id}/products";
-//        JWT::autoScope("patch", $uri);
-//        $this->json("patch", $uri, $productIds->toArray());
-//
-//        $this->assertResponseOk();
-//        $this->assertOpenAPIResponse();
-//        $productIds->each(function (int $productId) use ($discount) {
-//            $this->assertInDatabase("discount_product", [
-//                "discount_id" => $discount->id,
-//                "product_id" => $productId
-//            ]);
-//        });
-//    }
 }

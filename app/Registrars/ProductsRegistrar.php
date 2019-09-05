@@ -32,15 +32,14 @@ class ProductsRegistrar extends BaseRegistrar
             "rel:patch:items" => "scope:products:write"
         ]);
 
-        $this->get("products/{productId:[1-9]\d*}/recursive", "$controller@recursive");
-
-        $type = "{type:all|premium|pack|training|section|lesson}";
-        $this->get("products/$type", "$controller@paginateByType");
-        $this->get("products/buyable/$type", "$controller@buyable");
+        $this->get("products/type/{type}", "$controller@paginateByType");
+        $this->get("products/buyable/type/{type}", "$controller@buyable");
         $this->post("products/cart", "$controller@cart");
 
-        $this->group(["middleware" => "scope:logged"], function () use ($controller) {
+        $this->group(["middleware" => "logged"], function () use ($controller) {
             $this->post("products/buy", "$controller@buy");
         });
+
+        $this->get("products/{productId}/recursive", "$controller@recursive");
     }
 }

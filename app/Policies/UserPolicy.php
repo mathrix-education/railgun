@@ -55,8 +55,20 @@ class UserPolicy extends BasePolicy
      *
      * @return bool
      */
-    public function points(User $currentUser, User $user)
+    public function points(User $currentUser, User $user): bool
     {
         return $currentUser->is($user) || scope($currentUser, "users:write");
+    }
+
+
+    /**
+     * @param User $currentUser
+     * @param User $user
+     *
+     * @return bool
+     */
+    public function subscriptions(User $currentUser, User $user): bool
+    {
+        return $currentUser->is($user) || scope($currentUser, "subscriptions:read");
     }
 }

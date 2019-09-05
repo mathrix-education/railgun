@@ -3,7 +3,7 @@
 namespace App\Mails;
 
 use App\Models\User;
-use App\Services\Braintree\Models\Plan;
+use Braintree\Plan;
 use Braintree\Transaction;
 use Braintree\Transaction\LineItem;
 use Illuminate\Support\Facades\Cache;
@@ -51,21 +51,29 @@ class TransactionSuccessMail extends BaseMail
             // No specific transaction was given: get the first one
             /** @var Transaction $transaction */
             $transaction = Cache::remember("TransactionSuccessMail_transaction", 1, function () {
-                return Transaction::search([])->firstItem();
+                return gateway()->transaction()->search([])->firstItem();
             });
         } else {
             /** @var Transaction $transaction */
             $transaction = Cache::remember("TransactionSuccessMail_transaction_$transactionId", 1, function () use ($transactionId) {
-                return Transaction::find($transactionId);
+                return gateway()->transaction()->find($transactionId);
             });
         }
 
         /** @var LineItem[] $transactionLineItems */
-        $transactionLineItems = LineItem::findAll($transaction->id);
+        $transactionLineItems = gateway()->transactionLineItem()->findAll($transaction->id);
 
         if (!empty($transaction->planId)) {
-            /** @var Plan $plans */
-            $plan = Plan::find($transaction->planId);
+            /** @var Plan[] $plans */
+            $plans = gateway()->plan()->all();
+            $plan = null;
+
+            foreach ($plans as $potentialPlan) {
+                if ($transaction->planId === $potentialPlan->id) {
+                    $plan = $potentialPlan;
+                    break;
+                }
+            }
 
             $subscriptionLine = new stdClass();
             $subscriptionLine->kind = "debit";

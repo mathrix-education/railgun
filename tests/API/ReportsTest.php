@@ -3,6 +3,7 @@
 namespace Tests\API;
 
 use Mathrix\Lumen\Tests\REST\Standard\StandardDeleteTest;
+use Mathrix\Lumen\Zero\Testing\Traits\RESTAutoTestTrait;
 use Tests\APIStatelessTestCase;
 
 /**
@@ -14,10 +15,18 @@ use Tests\APIStatelessTestCase;
  */
 class ReportsTest extends APIStatelessTestCase
 {
-    use StandardIndexTest, StandardPostTest, StandardGetTest, StandardPatchTest, StandardDeleteTest;
+    use RESTAutoTestTrait;
+
+    protected $testKeys = [
+        "std:index",
+        "std:get",
+        "std:patch",
+        "std:delete"
+    ];
+
 
     public function testPost()
     {
-        $this->assertRestPostSuccess(null, ["status" => "todo"]);
+        $this->makeRESTJsonRequest("std:post", null, ["status" => "todo"]);
     }
 }

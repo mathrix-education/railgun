@@ -2,8 +2,6 @@
 
 namespace App\Services\Braintree;
 
-use App\Observers\LineItemObserver;
-use App\Services\Braintree\Models\LineItem;
 use Braintree\Gateway;
 use Illuminate\Support\ServiceProvider;
 use UnexpectedValueException;

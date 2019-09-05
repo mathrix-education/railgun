@@ -8,7 +8,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Mathrix\Lumen\JWT\Auth\JWT;
-use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
+use Mathrix\Lumen\Zero\Testing\Traits\RESTAutoTestTrait;
 use Tests\APIStatelessTestCase;
 
 /**
@@ -20,7 +20,11 @@ use Tests\APIStatelessTestCase;
  */
 class UsersTest extends APIStatelessTestCase
 {
-    use StandardIndexTest;
+    use RESTAutoTestTrait;
+
+    protected $testKeys = [
+        "rel:get:grade"
+    ];
 
 
     /**
@@ -35,8 +39,9 @@ class UsersTest extends APIStatelessTestCase
 
         $this->json("post", "/users", $payload);
 
+        $this->debug();
         $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
+        $this->assertOpenAPIResponse($this->response);
         $this->assertInDatabase("users", ["email" => $payload["email"]]);
     }
 
@@ -47,11 +52,12 @@ class UsersTest extends APIStatelessTestCase
     public function testGetSelf()
     {
         /** @var User $user */
-        $user = JWT::withScopes("logged");
+        $user = User::random();
+        JWT::actingAs($user);
         $this->json("get", "/users/{$user->id}");
 
         $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
+        $this->assertOpenAPIResponse($this->response);
     }
 
 
@@ -66,7 +72,7 @@ class UsersTest extends APIStatelessTestCase
         $this->json("get", "/users/{$user->id}");
 
         $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
+        $this->assertOpenAPIResponse($this->response);
     }
 
 
@@ -82,7 +88,7 @@ class UsersTest extends APIStatelessTestCase
         $this->json("get", "/users/{$someone->id}");
 
         $this->assertResponseStatus(401);
-        $this->assertOpenAPIResponse();
+        $this->assertOpenAPIResponse($this->response);
     }
 
 
@@ -103,12 +109,15 @@ class UsersTest extends APIStatelessTestCase
         );
 
         /** @var User $user */
-        $user = JWT::withScopes("logged");
+        $user = User::random();
+        JWT::actingAs($user);
 
         $this->json("patch", "/users/{$user->id}", $payload);
 
+        $this->debug();
+
         $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
+        $this->assertOpenAPIResponse($this->response);
         $this->assertInDatabase(
             "users",
             Arr::except($payload, ["current_password", "password", "scopes", "settings"])
@@ -140,7 +149,7 @@ class UsersTest extends APIStatelessTestCase
         $this->json("patch", "/users/{$user->id}", $payload);
 
         $this->assertResponseStatus(422);
-        $this->assertOpenAPIResponse();
+        $this->assertOpenAPIResponse($this->response);
         $this->assertNotInDatabase(
             "users",
             Arr::except($payload, ["current_password", "password", "scopes", "settings"])
@@ -153,9 +162,13 @@ class UsersTest extends APIStatelessTestCase
 
     public function testSearch()
     {
-        $uri = "/users/search/lo/0/10?order=id&dir=desc";
-        $this->event("before.request", "get", $uri);
-        $this->json("get", $uri);
+        $method = "get";
+        $uri = "/users/search/lo?page=0&perPage=10&order=id&dir=desc";
+        JWT::autoScope($method, $uri);
+        $this->json($method, $uri);
+
+        $this->assertResponseOk();
+        $this->assertOpenAPIResponse($this->response);
     }
 
 
@@ -166,7 +179,8 @@ class UsersTest extends APIStatelessTestCase
     public function testPatchLastSession()
     {
         /** @var User $user */
-        $user = JWT::withScopes("logged");
+        $user = User::random();
+        JWT::actingAs($user);
 
         $module = Module::random(["visible", "=", true]);
         $settings = array_merge($user->settings, ["last_session" => [
@@ -176,7 +190,7 @@ class UsersTest extends APIStatelessTestCase
         $this->json("patch", "/users/{$user->id}", ["settings" => $settings]);
 
         $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
+        $this->assertOpenAPIResponse($this->response);
     }
 
 
@@ -193,33 +207,11 @@ class UsersTest extends APIStatelessTestCase
         $this->json("delete", $uri);
 
         $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
+        $this->assertOpenAPIResponse($this->response);
         $this->assertEquals(0,
             DB::table("cache")
                 ->where("key", "LIKE", "user.{$user->id}.%")
                 ->count()
         );
-    }
-
-
-    /**
-     * POST /users/{userId}/points
-     */
-    public function testPointsWithModule()
-    {
-        /** @var User $user */
-        $user = JWT::withScopes("logged");
-        $pointsBefore = $user->points;
-        $module = Module::random(["visible", "=", true]);
-
-        $this->json("post", "users/{$user->id}/points", [
-            "loggable_type" => "module",
-            "loggable_id" => $module->id,
-            "points" => 100
-        ]);
-
-        $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
-        $this->assertEquals($pointsBefore + 100, $this->getJsonResponseValue("points"));
     }
 }

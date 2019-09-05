@@ -39,5 +39,5 @@ $factory->defineAs(Module::class, "mcq", function (Generator $faker) use ($facto
         "corrections" => $corrections,
     ];
 
-    return array_merge($factory->raw(Module::class), $data);
+    return array_merge($factory->rawOf(Module::class, "base"), $data);
 });

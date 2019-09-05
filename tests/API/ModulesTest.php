@@ -3,6 +3,7 @@
 namespace Tests\API;
 
 use App\Models\Module;
+use Mathrix\Lumen\Zero\Testing\Traits\RESTAutoTestTrait;
 use Tests\APIStatelessTestCase;
 
 /**
@@ -14,16 +15,16 @@ use Tests\APIStatelessTestCase;
  */
 class ModulesTest extends APIStatelessTestCase
 {
-    use StandardIndexTest, StandardGetTest, StandardPostTest, StandardPatchTest;
+    use RESTAutoTestTrait;
 
-
-    /**
-     * POST /modules
-     */
-    public function testPost(): void
-    {
-        $this->assertRestPostSuccess(null, null, ["subFactory" => "random"]);
-    }
+    protected $testKeys = [
+        "std:index",
+        "std:post",
+        "std:get",
+        "std:patch",
+        "rel:get:comments",
+        "rel:get:reports"
+    ];
 
 
     /**
@@ -37,23 +38,8 @@ class ModulesTest extends APIStatelessTestCase
         $module->posts()->update(["module_id" => $pivot->id]);
         $module->products()->update(["module_id" => $pivot->id]);
 
-        $this->assertRestDeleteSuccess(["conditions" => ["id", "=", $module->id]]);
-    }
-
-
-    /**
-     * GET /modules/{moduleId}/comments/{page}/{perPage}
-     */
-    public function testComments(): void
-    {
-        $this->assertRestRelationSuccess("comments");
-    }
-
-    /**
-     * GET /modules/{moduleId}/reports/{page}/{perPage}
-     */
-    public function testReports(): void
-    {
-        $this->assertRestRelationSuccess("reports");
+        $this->makeRESTJsonRequest("std:delete", null, null, [
+            "conditions" => ["id", "=", $module->id]
+        ]);
     }
 }

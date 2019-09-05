@@ -6,6 +6,11 @@ get:
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/Mark'
+            $extends:
+              ../../fragments/responses/200_Success.yaml:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Mark'

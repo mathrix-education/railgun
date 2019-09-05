@@ -15,30 +15,30 @@ get:
       content:
         application/json:
           schema:
-            allOf:
-              - $ref: '#/components/responses/200_Success'
-              - type: object
-                properties:
-                  data:
-                    allOf:
-                      - $ref: '#/components/schemas/Chapter'
-                      - type: object
-                        properties:
-                          notions:
-                            type: array
-                            items:
-                              allOf:
-                                - $ref: '#/components/schemas/Notion'
-                                - type: object
-                                  properties:
-                                    activities:
-                                      type: array
-                                      items:
-                                        allOf:
-                                          - $ref: '#/components/schemas/Activity'
-                                          - type: object
-                                            properties:
-                                              modules:
-                                                type: array
-                                                items:
-                                                  $ref: '#/components/schemas/Module'
+            $extends:
+              ../../fragments/responses/200_Success.yaml:
+            type: object
+            properties:
+              data:
+                allOf:
+                  - $ref: '#/components/schemas/Chapter'
+                  - type: object
+                    properties:
+                      notions:
+                        type: array
+                        items:
+                          allOf:
+                            - $ref: '#/components/schemas/Notion'
+                            - type: object
+                              properties:
+                                activities:
+                                  type: array
+                                  items:
+                                    allOf:
+                                      - $ref: '#/components/schemas/Activity'
+                                      - type: object
+                                        properties:
+                                          modules:
+                                            type: array
+                                            items:
+                                              $ref: '#/components/schemas/Module'

@@ -2,26 +2,23 @@
 
 namespace App\Controllers;
 
-use App\Controllers\Traits\SearchTrait;
 use App\Exceptions\InvalidBraintreeCustomerException;
 use App\Models\Log;
-use App\Models\Module;
 use App\Models\User;
-use App\Services\Braintree\Utils\Formatter;
+use App\Services\Stripe\Serializers\SubscriptionSerializer;
 use Braintree\Transaction;
 use Braintree\TransactionSearch;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
-use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
-use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
-use Mathrix\Lumen\Exceptions\Http\Http429TooManyRequestsException;
-use Mathrix\Lumen\Exceptions\ValidationException;
-use Mathrix\Lumen\Responses\PaginationJsonResponse;
+use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Zero\Exceptions\Http\Http401UnauthorizedException;
+use Mathrix\Lumen\Zero\Exceptions\ValidationException;
+use Mathrix\Lumen\Zero\Responses\PaginationJsonResponse;
+use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
 
 /**
  * Class UsersController.
@@ -38,9 +35,9 @@ class UsersController extends BaseController
      *
      * @param Request $request The Illuminate HTTP request.
      *
-     * @return JsonResponse
+     * @return SuccessJsonResponse
      */
-    public function post(Request $request): JsonResponse
+    public function standardPost(Request $request): SuccessJsonResponse
     {
         // Build and save the user
         $user = new User();
@@ -49,7 +46,7 @@ class UsersController extends BaseController
             $user->fill($request->all())->save();
         });
 
-        return new JsonResponse($user->fresh());
+        return new SuccessJsonResponse($user->fresh());
     }
 
 
@@ -57,25 +54,24 @@ class UsersController extends BaseController
      * GET /users/{userId}
      *
      * @param Request $request The Illuminate HTTP request.
-     * @param int $id The user id.
+     * @param string $key
+     * @param int $identifier The user id.
      *
-     * @return JsonResponse
-     * @throws Http401UnauthorizedException
+     * @return SuccessJsonResponse
      */
-    public function get(Request $request, int $id): JsonResponse
+    public function standardGet(Request $request, string $key, $identifier): SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();
 
         if (!scope($user, "users:read")) {
-            return parent::get($request, $id);
+            return parent::standardGet($request, $key, $identifier);
         }
 
-        $target = User::query()->findOrFail($id);
+        $target = User::query()->findOrFail($identifier);
         $target->makeVisible(["premium_bypass", "braintree_id", "braintree"]);
-        $target->append(["braintree"]);
 
-        return new JsonResponse($target);
+        return new SuccessJsonResponse($target);
     }
 
 
@@ -84,16 +80,17 @@ class UsersController extends BaseController
      * Patch a user by its id.
      *
      * @param Request $request The Illuminate HTTP request.
-     * @param int $id The user id.
+     * @param string $key
+     * @param int $identifier The user id.
      *
-     * @return JsonResponse
+     * @return SuccessJsonResponse
      * @throws Http401UnauthorizedException
      * @throws ValidationException
      */
-    public function patch(Request $request, int $id): JsonResponse
+    public function standardPatch(Request $request, string $key, $identifier): SuccessJsonResponse
     {
         /** @var User $target */
-        $target = User::query()->findOrFail($id);
+        $target = User::query()->findOrFail($identifier);
         /** @var User $user */
         $user = $request->user();
 
@@ -128,7 +125,7 @@ class UsersController extends BaseController
         $target->fill($request->only($columns))
             ->save();
 
-        return new JsonResponse($target->fresh());
+        return new SuccessJsonResponse($target->fresh());
     }
 
 
@@ -137,12 +134,11 @@ class UsersController extends BaseController
      *
      * @param Request $request
      * @param string $query
-     * @param int $page
-     * @param int $perPage
      *
      * @return PaginationJsonResponse
+     * @throws Http400BadRequestException
      */
-    public function search(Request $request, string $query, int $page, int $perPage)
+    public function search(Request $request, string $query)
     {
         $order = $request->query("order", "id");
         $dir = $request->query("dir", "asc");
@@ -163,25 +159,7 @@ class UsersController extends BaseController
             $builder = $builder->orWhere($field, "LIKE", "%$query%");
         });
 
-        return new PaginationJsonResponse($builder, $page, $perPage);
-    }
-
-
-    /**
-     * GET /users/{userId}/records/{page}/{perPage}
-     * Get the user records.
-     *
-     * @param Request $request The Illuminate HTTP request.
-     * @param int $userId The user id.
-     * @param int $page The results page.
-     * @param int $perPage The number of records per page.
-     *
-     * @return PaginationJsonResponse
-     * @throws Http401UnauthorizedException
-     */
-    public function records(Request $request, int $userId, int $page, int $perPage)
-    {
-        return $this->relation($request, "records", $userId, $page, $perPage);
+        return new PaginationJsonResponse($builder);
     }
 
 
@@ -191,33 +169,46 @@ class UsersController extends BaseController
      *
      * @param Request $request The Illuminate HTTP request.
      * @param int $userId The user id.
-     * @param int $page The results page.
-     * @param int $perPage The number of subscriptions per page.
      *
      * @return JsonResponse
-     * @throws Http400BadRequestException
      * @throws Http401UnauthorizedException
      * @throws InvalidBraintreeCustomerException
      */
-    public function subscriptions(Request $request, int $userId, int $page, int $perPage)
+    public function getSubscriptions(Request $request, int $userId)
     {
         /** @var User $user */
         $user = $request->user();
-
-        if ($user->id !== $userId && !$user->hasScope("subscriptions:read")) {
-            throw new Http401UnauthorizedException();
-        }
-
         /** @var User $customer */
         $customer = User::query()->findOrFail($userId);
-        $customer->requireBraintreeCustomer();
+        $user->canOrFail("subscriptions", $customer);
 
-        $subscriptions = Formatter::cast($customer->getBraintreeSubscriptions());
+        if (!$user->isStripeCustomer() && !$user->isBraintreeCustomer()) {
+            return new  JsonResponse([
+                "page" => 0,
+                "perPage" => 1000,
+                "total" => 0,
+                "data" => []
+            ]);
+        }
+
+        $subscriptions = new Collection();
+
+        if ($customer->isBraintreeCustomer()) {
+            foreach ($customer->getBraintreeSubscriptions() as $braintreeSubscription) {
+                $subscriptions->push(SubscriptionSerializer::serialize($braintreeSubscription));
+            }
+        }
+
+        if ($customer->isStripeCustomer()) {
+            foreach ($customer->getStripeSubscriptions() as $stripeSubscription) {
+                $subscriptions->push(SubscriptionSerializer::serialize($stripeSubscription));
+            }
+        }
 
         return new JsonResponse([
-            "page" => $page,
-            "perPage" => $perPage,
-            "total" => count($subscriptions),
+            "page" => 0,
+            "perPage" => 1000,
+            "total" => $subscriptions->count(),
             "data" => $subscriptions
         ]);
     }
@@ -271,10 +262,7 @@ class UsersController extends BaseController
         $user = User::query()->findOrFail($userId);
         $user->invalidate();
 
-        return new JsonResponse([
-            "success" => true,
-            "message" => "User with id `$userId` cache was successfully cleared.",
-        ]);
+        return new SuccessJsonResponse();
     }
 
 
@@ -285,51 +273,12 @@ class UsersController extends BaseController
      * @param Request $request The Illuminate HTTP request.
      *
      * @return JsonResponse
-     * @throws Http400BadRequestException
-     * @throws Http401UnauthorizedException
-     * @throws Http429TooManyRequestsException
      * @throws ValidationException
      */
     public function points(Request $request)
     {
         /** @var User $user */
         $user = $request->user();
-
-        // Check permission
-        $user->canOrFail("points", $user);
-
-        $useLoggable = $request->has(["loggable_type", "loggable_id"]);
-        $loggableType = $request->json("loggable_type");
-        $loggableId = $request->json("loggable_id");
-
-        // Valid loggable data were passed
-        if ($useLoggable) {
-            $this->validate($request, [
-                "loggable_id" => "required",
-                "loggable_type" => "required|in:module"
-            ]);
-
-            /** @var Module $loggable */
-            $loggable = Module::query()->findOrFail($loggableId);
-
-            $userHasAlreadyGatheredPointsWithThisModule = Log::query()
-                ->where([
-                    ["event", "=", "user_gathered_points"],
-                    ["user_id", "=", $user->id],
-                    ["loggable_type", "=", $loggableType],
-                    ["loggable_id", "=", $loggable->id],
-                ])
-                ->whereBetween("created_at", [
-                    Carbon::now()->setTime(0, 0, 0), // Today midnight
-                    Carbon::now(),
-                ])
-                ->exists();
-
-            // User already gathered point from this loggable today
-            if ($userHasAlreadyGatheredPointsWithThisModule) {
-                throw new Http429TooManyRequestsException("Already gathered points today for this model");
-            }
-        }
 
         $this->validate($request, [
             "points" => "required|integer"
@@ -339,19 +288,6 @@ class UsersController extends BaseController
 
         // Update the user points count
         $user->update(["points" => $user->points + $pointsToAdd]);
-
-        // Log the points update
-        $logData = ["points" => $pointsToAdd];
-
-        if ($useLoggable) {
-            $logData = array_merge($logData, [
-                "loggable_type" => $loggableType,
-                "loggable_id" => $loggableId,
-            ]);
-        }
-
-        // Then log the information
-        Log::log("user_gathered_points", $user, $logData);
 
         return new JsonResponse($user);
     }

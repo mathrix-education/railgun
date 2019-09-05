@@ -37,6 +37,6 @@ class MarksTest extends APIStatelessTestCase
         $this->json("get", "/marks/activities/to-revise");
 
         $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
+        $this->assertOpenAPIResponse($this->response);
     }
 }

@@ -32,5 +32,5 @@ $factory->defineAs(Module::class, "course", function (Generator $faker) use ($fa
         "content" => implode("\n\n", $content),
     ];
 
-    return array_merge($factory->raw(Module::class), $data);
+    return array_merge($factory->rawOf(Module::class, "base"), $data);
 });

@@ -1199,6 +1199,129 @@ components:
         visible:
           description: 'The setting visibility.'
           type: boolean
+    Subscription:
+      description: 'A Subscription (Stripe **or** Braintree)'
+      type: object
+      properties:
+        type:
+          description: 'The subscription type.'
+          type: string
+          enum:
+            - stripe
+            - braintree
+        id:
+          description: 'The subscription id.'
+          type: string
+          example: sub_FkgEkmuI3DFejK
+        cancel_at:
+          description: 'The subscription cancel **future** date.'
+          type: string
+          format: date-time
+          nullable: true
+        cancel_at_period_end:
+          description: 'If the subscription will cancel at the end of the current billing period.'
+          type: boolean
+        canceled_at:
+          description: 'The subscription cancel **past** date.'
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          description: 'The date/time the subscription was created.'
+          type: string
+        current_period_start:
+          description: 'The date/time of the beginning of the current period.'
+          type: string
+        current_period_end:
+          description: 'The date/time of the end of the current period.'
+          type: string
+        customer:
+          description: 'The customer id who own the subscription. Refers to `stripe_id` or `braintree_id` on users.'
+          type: string
+          example: cus_FkgEYnEbkQZF6G
+        plan:
+          description: 'The subscription plan.'
+          type: object
+          properties:
+            id:
+              description: 'The plan id.'
+              type: string
+              example: v5_monthly
+            amount:
+              description: 'The plan amount **in cents**.'
+              type: integer
+              example: 1790
+        payment_method:
+          oneOf:
+            -
+              description: 'The credit card attached to the subscription.'
+              type: object
+              properties:
+                type:
+                  description: 'The subscription payment method type.'
+                  type: string
+                  enum:
+                    - card
+                brand:
+                  description: 'The credit card brand.'
+                  type: string
+                  enum:
+                    - american-express
+                    - carte-blanche
+                    - china-unionpay
+                    - diners-club
+                    - discover
+                    - elo
+                    - jcb
+                    - laser
+                    - maestro
+                    - mastercard
+                    - solo
+                    - switch
+                    - unionpay
+                    - visa
+                    - unknown
+                last4:
+                  description: 'The scredit card last four digits.'
+                  type: string
+                  min: 4
+                  max: 4
+                  example: 1234
+                expiration:
+                  description: 'The credit card expiration date/time.'
+                  type: string
+            -
+              description: 'The PayPal account linked to the subscription.'
+              type: object
+              properties:
+                type:
+                  description: 'The payment method type.'
+                  type: string
+                  enum:
+                    - paypal
+                email:
+                  description: 'The PayPal account email address.'
+                  type: string
+                  format: email
+                  example: john.doe@gmail.com
+        status:
+          description: 'The subscription status (the Braintree subscription statuses have been tropsed to Stripe statuses).'
+          type: string
+          enum:
+            - incomplete
+            - incomplete_expired
+            - trialing
+            - active
+            - past_due
+            - canceled
+            - unpaid
+          externalDocs:
+            description: 'Stripe Status'
+            url: 'https://stripe.com/docs/api/subscriptions/object#subscription_object-status'
+        trial_end:
+          description: 'The subscription trial end date, if necessary. `null` otherwise.'
+          type: string
+          nullable: true
     User:
       description: User
       type: object
@@ -1208,7 +1331,7 @@ components:
         - email
         - firstname
         - lastname
-        - type
+        - scopes
         - points
         - level
         - daily
@@ -1219,7 +1342,6 @@ components:
         - updated_at
         - provider
         - premium
-        - daily_points
       properties:
         id:
           description: 'The user id.'
@@ -1340,14 +1462,10 @@ components:
           type: boolean
           example: false
           readOnly: true
-        daily_points:
-          description: 'The number of points gathered by the users this day.'
-          type: integer
-          example: 300
-          readOnly: true
         last_session:
           description: 'The user last session.'
           type: array
+          nullable: true
           items:
             type: object
             properties:
@@ -1363,19 +1481,6 @@ components:
                 $ref: '#/components/schemas/Activity'
               module:
                 $ref: '#/components/schemas/Module'
-        grade:
-          description: 'The user grade.'
-          allOf:
-            -
-              $ref: '#/components/schemas/Grade'
-          nullable: true
-          readOnly: true
-        purchases:
-          description: 'The user purchases.'
-          type: array
-          items:
-            $ref: '#/components/schemas/Purchase'
-          nullable: true
           readOnly: true
     Vote:
       description: Vote
@@ -2917,7 +3022,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '1'
+          example: '19'
           required: true
           style: form
         -
@@ -2945,7 +3050,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '1'
+                    example: '19'
                     readOnly: true
                   per_page:
                     description: 'The number of activity per page.'
@@ -2955,7 +3060,7 @@ paths:
                   total:
                     description: 'The total number of activity processed.'
                     type: integer
-                    example: '345'
+                    example: '943'
                     readOnly: true
                   data:
                     description: 'The activity as an array.'
@@ -3011,7 +3116,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '669'
+            example: '381'
       responses:
         200:
           description: 'The requested activity.'
@@ -3041,7 +3146,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '735'
+            example: '517'
       requestBody:
         content:
           application/json:
@@ -3082,7 +3187,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '629'
+            example: '883'
       responses:
         200:
           description: 'The deletion result.'
@@ -3098,7 +3203,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Activity id 629 was successfully deleted.'
+                    example: 'Activity id 883 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -3166,7 +3271,7 @@ paths:
           description: 'The activity id'
           schema:
             type: integer
-          example: '243'
+          example: '967'
           required: true
         -
           name: page
@@ -3174,7 +3279,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '6'
+          example: '10'
           required: true
         -
           name: perPage
@@ -3400,7 +3505,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '6'
+          example: '3'
           required: true
           style: form
         -
@@ -3428,7 +3533,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '6'
+                    example: '3'
                     readOnly: true
                   per_page:
                     description: 'The number of category per page.'
@@ -3438,7 +3543,7 @@ paths:
                   total:
                     description: 'The total number of category processed.'
                     type: integer
-                    example: '583'
+                    example: '1924'
                     readOnly: true
                   data:
                     description: 'The category as an array.'
@@ -3494,7 +3599,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '129'
+            example: '363'
       responses:
         200:
           description: 'The requested category.'
@@ -3528,7 +3633,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '736'
+            example: '828'
       requestBody:
         content:
           application/json:
@@ -3569,7 +3674,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '297'
+            example: '702'
       responses:
         200:
           description: 'The deletion result.'
@@ -3585,7 +3690,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Category id 297 was successfully deleted.'
+                    example: 'Category id 702 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -3605,7 +3710,7 @@ paths:
           description: 'The category id'
           schema:
             type: integer
-          example: '617'
+          example: '126'
           required: true
         -
           name: page
@@ -3613,7 +3718,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '11'
+          example: '14'
           required: true
         -
           name: perPage
@@ -3674,7 +3779,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '17'
+          example: '10'
           required: true
           style: form
         -
@@ -3702,7 +3807,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '17'
+                    example: '10'
                     readOnly: true
                   per_page:
                     description: 'The number of chapter per page.'
@@ -3712,7 +3817,7 @@ paths:
                   total:
                     description: 'The total number of chapter processed.'
                     type: integer
-                    example: '2175'
+                    example: '1966'
                     readOnly: true
                   data:
                     description: 'The chapter as an array.'
@@ -3799,7 +3904,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '1000'
+            example: '660'
       responses:
         200:
           description: 'The requested chapter.'
@@ -3829,7 +3934,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '555'
+            example: '363'
       requestBody:
         content:
           application/json:
@@ -3870,7 +3975,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '955'
+            example: '292'
       responses:
         200:
           description: 'The deletion result.'
@@ -3886,7 +3991,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Chapter id 955 was successfully deleted.'
+                    example: 'Chapter id 292 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -3906,7 +4011,7 @@ paths:
           description: 'The chapter id'
           schema:
             type: integer
-          example: '987'
+          example: '496'
           required: true
         -
           name: page
@@ -3914,7 +4019,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '5'
+          example: '3'
           required: true
         -
           name: perPage
@@ -3979,14 +4084,19 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                  -
-                    $ref: '#/components/responses/200_Success'
-                  -
-                    type: object
-                    properties:
-                      data:
-                        allOf: [{ $ref: '#/components/schemas/Chapter' }, { type: object, properties: { notions: { type: array, items: { allOf: [{ $ref: '#/components/schemas/Notion' }, { type: object, properties: { activities: { type: array, items: { allOf: [{ $ref: '#/components/schemas/Activity' }, { type: object, properties: { modules: { type: array, items: { $ref: '#/components/schemas/Module' } } } }] } } } }] } } } }]
+                type: object
+                properties:
+                  success:
+                    description: 'If the request succeeded.'
+                    type: boolean
+                    example: true
+                  data:
+                    allOf:
+                      -
+                        $ref: '#/components/schemas/Chapter'
+                      -
+                        type: object
+                        properties: { notions: { type: array, items: { allOf: [{ $ref: '#/components/schemas/Notion' }, { type: object, properties: { activities: { type: array, items: { allOf: [{ $ref: '#/components/schemas/Activity' }, { type: object, properties: { modules: { type: array, items: { $ref: '#/components/schemas/Module' } } } }] } } } }] } } }
       tags:
         - Chapters
   /comments:
@@ -4000,7 +4110,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '20'
+          example: '17'
           required: true
           style: form
         -
@@ -4028,7 +4138,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '20'
+                    example: '17'
                     readOnly: true
                   per_page:
                     description: 'The number of comment per page.'
@@ -4038,7 +4148,7 @@ paths:
                   total:
                     description: 'The total number of comment processed.'
                     type: integer
-                    example: '528'
+                    example: '1095'
                     readOnly: true
                   data:
                     description: 'The comment as an array.'
@@ -4094,7 +4204,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '7'
+          example: '14'
           required: true
           style: form
         -
@@ -4122,7 +4232,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '7'
+                    example: '14'
                     readOnly: true
                   per_page:
                     description: 'The number of comment per page.'
@@ -4132,7 +4242,7 @@ paths:
                   total:
                     description: 'The total number of comment processed.'
                     type: integer
-                    example: '286'
+                    example: '1670'
                     readOnly: true
                   data:
                     description: 'The comment as an array.'
@@ -4157,7 +4267,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '350'
+            example: '86'
       responses:
         200:
           description: 'The requested comment.'
@@ -4191,7 +4301,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '86'
+            example: '474'
       requestBody:
         content:
           application/json:
@@ -4233,7 +4343,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '940'
+            example: '712'
       responses:
         200:
           description: 'The deletion result.'
@@ -4249,7 +4359,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Comment id 940 was successfully deleted.'
+                    example: 'Comment id 712 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -4269,7 +4379,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '8'
+          example: '18'
           required: true
           style: form
         -
@@ -4297,7 +4407,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '8'
+                    example: '18'
                     readOnly: true
                   per_page:
                     description: 'The number of country per page.'
@@ -4307,7 +4417,7 @@ paths:
                   total:
                     description: 'The total number of country processed.'
                     type: integer
-                    example: '1482'
+                    example: '1318'
                     readOnly: true
                   data:
                     description: 'The country as an array.'
@@ -4391,7 +4501,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '764'
+            example: '338'
       responses:
         200:
           description: 'The requested country.'
@@ -4421,7 +4531,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '700'
+            example: '269'
       requestBody:
         content:
           application/json:
@@ -4462,7 +4572,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '142'
+            example: '533'
       responses:
         200:
           description: 'The deletion result.'
@@ -4478,7 +4588,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Country id 142 was successfully deleted.'
+                    example: 'Country id 533 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -4498,7 +4608,7 @@ paths:
           description: 'The country id'
           schema:
             type: integer
-          example: '94'
+          example: '65'
           required: true
         -
           name: page
@@ -4506,7 +4616,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '10'
+          example: '1'
           required: true
         -
           name: perPage
@@ -4563,7 +4673,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '4'
+          example: '8'
           required: true
           style: form
         -
@@ -4591,7 +4701,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '4'
+                    example: '8'
                     readOnly: true
                   per_page:
                     description: 'The number of discipline per page.'
@@ -4601,7 +4711,7 @@ paths:
                   total:
                     description: 'The total number of discipline processed.'
                     type: integer
-                    example: '2665'
+                    example: '2170'
                     readOnly: true
                   data:
                     description: 'The discipline as an array.'
@@ -4685,7 +4795,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '618'
+            example: '580'
       responses:
         200:
           description: 'The requested discipline.'
@@ -4715,7 +4825,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '609'
+            example: '106'
       requestBody:
         content:
           application/json:
@@ -4756,7 +4866,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '155'
+            example: '527'
       responses:
         200:
           description: 'The deletion result.'
@@ -4772,7 +4882,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Discipline id 155 was successfully deleted.'
+                    example: 'Discipline id 527 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -4792,7 +4902,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '10'
+          example: '16'
           required: true
           style: form
         -
@@ -4820,7 +4930,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '10'
+                    example: '16'
                     readOnly: true
                   per_page:
                     description: 'The number of discount per page.'
@@ -4830,7 +4940,7 @@ paths:
                   total:
                     description: 'The total number of discount processed.'
                     type: integer
-                    example: '2348'
+                    example: '1848'
                     readOnly: true
                   data:
                     description: 'The discount as an array.'
@@ -4922,7 +5032,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '864'
+            example: '151'
       responses:
         200:
           description: 'The requested discount.'
@@ -4956,7 +5066,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '913'
+            example: '73'
       requestBody:
         content:
           application/json:
@@ -4997,7 +5107,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '865'
+            example: '28'
       responses:
         200:
           description: 'The deletion result.'
@@ -5013,7 +5123,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Discount id 865 was successfully deleted.'
+                    example: 'Discount id 28 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -5351,7 +5461,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '3'
+          example: '12'
           required: true
           style: form
         -
@@ -5379,7 +5489,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '3'
+                    example: '12'
                     readOnly: true
                   per_page:
                     description: 'The number of grade per page.'
@@ -5389,7 +5499,7 @@ paths:
                   total:
                     description: 'The total number of grade processed.'
                     type: integer
-                    example: '189'
+                    example: '2619'
                     readOnly: true
                   data:
                     description: 'The grade as an array.'
@@ -5508,7 +5618,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '919'
+            example: '874'
       responses:
         200:
           description: 'The requested grade.'
@@ -5538,7 +5648,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '610'
+            example: '244'
       requestBody:
         content:
           application/json:
@@ -5579,7 +5689,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '963'
+            example: '888'
       responses:
         200:
           description: 'The deletion result.'
@@ -5595,7 +5705,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Grade id 963 was successfully deleted.'
+                    example: 'Grade id 888 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -5610,16 +5720,12 @@ paths:
       description: 'Retrieve all discipline linked to a given grade id, paginated.'
       parameters:
         -
-          name: scope
-          in: query
-          description: "The scope of the request. Require the JWT scope `disciplines:read` to see all disciplines.\n"
+          name: gradeId
+          in: path
+          description: 'The grade id'
           schema:
-            type: string
-            enum:
-              - all
-              - visible
-            default: all
-          example: '197'
+            type: integer
+          example: '671'
           required: true
         -
           name: page
@@ -5627,7 +5733,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '19'
+          example: '14'
           required: true
         -
           name: perPage
@@ -5671,42 +5777,44 @@ paths:
                     items:
                       $ref: '#/components/schemas/Discipline'
                     readOnly: true
+      security:
+        -
+          bearer:
+            - 'disciplines:read'
       tags:
         - Grades
-  '/grades/{gradeId}/disciplines/{disciplineId}/chapters':
+  '/grades/{gradeId}/disciplines/visible':
     get:
-      summary: 'Get related discipline chapters'
-      description: 'Retrieve all chapters by ascending order, paginated.'
+      summary: 'Get related discipline'
+      description: 'Retrieve all discipline linked to a given grade id, paginated.'
       parameters:
+        -
+          name: gradeId
+          in: path
+          description: 'The grade id'
+          schema:
+            type: integer
+          example: '875'
+          required: true
         -
           name: page
           in: query
           description: 'The page **(starts at 0)**.'
           schema:
-            type: int
-          example: 0
+            type: integer
+          example: '7'
           required: true
         -
           name: perPage
           in: query
-          description: 'The number of chapters per page.'
+          description: 'The number of discipline per page.'
           schema:
-            type: int
+            type: integer
           example: 100
           required: true
-        -
-          name: scope
-          in: query
-          description: "The scope of the request. Require the JWT scope `chapters:read` to see all chapters.\n"
-          schema:
-            type: string
-            enum:
-              - all
-              - visible
-            default: all
       responses:
         200:
-          description: 'The chapters in a paginator.'
+          description: 'The discipline in a paginator.'
           content:
             application/json:
               schema:
@@ -5720,24 +5828,154 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: 0
+                    example: 4
                     readOnly: true
                   per_page:
-                    description: 'The number of chapters per page.'
+                    description: 'The number of discipline per page.'
                     type: integer
                     example: 100
                     readOnly: true
                   total:
-                    description: 'The total number of chapters processed.'
+                    description: 'The total number of discipline processed.'
                     type: integer
-                    example: 125
+                    example: 1845
                     readOnly: true
                   data:
-                    description: 'The chapters as an array.'
+                    description: 'The discipline as an array.'
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Discipline'
+                    readOnly: true
+      security:
+        -
+          bearer:
+            - 'disciplines:read'
+      tags:
+        - Grades
+  '/grades/{gradeId}/disciplines/{disciplineId}/chapters':
+    get:
+      summary: 'Get related discipline chapters'
+      description: 'Retrieve all chapters by ascending order, paginated.'
+      parameters:
+        -
+          name: page
+          in: query
+          description: 'The page **(starts at 0)**.'
+          schema:
+            type: integer
+          example: '2'
+          required: true
+          style: form
+        -
+          name: perPage
+          in: query
+          description: 'The number of chapter per page.'
+          schema:
+            type: integer
+          example: 100
+          required: true
+          style: form
+      responses:
+        200:
+          description: 'The chapter in a paginator.'
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - page
+                  - per_page
+                  - total
+                  - data
+                properties:
+                  page:
+                    description: 'The current page.'
+                    type: integer
+                    example: '2'
+                    readOnly: true
+                  per_page:
+                    description: 'The number of chapter per page.'
+                    type: integer
+                    example: 100
+                    readOnly: true
+                  total:
+                    description: 'The total number of chapter processed.'
+                    type: integer
+                    example: '362'
+                    readOnly: true
+                  data:
+                    description: 'The chapter as an array.'
                     type: array
                     items:
                       $ref: '#/components/schemas/Chapter'
                     readOnly: true
+      security:
+        -
+          bearer:
+            - 'chapters:read'
+      tags:
+        - Grades
+  '/grades/{gradeId}/disciplines/{disciplineId}/chapters/visible':
+    get:
+      summary: 'Get **visible** related discipline chapters'
+      description: 'Retrieve all chapters by ascending order, paginated.'
+      parameters:
+        -
+          name: page
+          in: query
+          description: 'The page **(starts at 0)**.'
+          schema:
+            type: integer
+          example: '9'
+          required: true
+          style: form
+        -
+          name: perPage
+          in: query
+          description: 'The number of chapter per page.'
+          schema:
+            type: integer
+          example: 100
+          required: true
+          style: form
+      responses:
+        200:
+          description: 'The chapter in a paginator.'
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - page
+                  - per_page
+                  - total
+                  - data
+                properties:
+                  page:
+                    description: 'The current page.'
+                    type: integer
+                    example: '9'
+                    readOnly: true
+                  per_page:
+                    description: 'The number of chapter per page.'
+                    type: integer
+                    example: 100
+                    readOnly: true
+                  total:
+                    description: 'The total number of chapter processed.'
+                    type: integer
+                    example: '687'
+                    readOnly: true
+                  data:
+                    description: 'The chapter as an array.'
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Chapter'
+                    readOnly: true
+      security:
+        -
+          bearer:
+            - 'chapters:read'
       tags:
         - Grades
   /levels:
@@ -5751,7 +5989,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '13'
+          example: '15'
           required: true
           style: form
         -
@@ -5779,7 +6017,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '13'
+                    example: '15'
                     readOnly: true
                   per_page:
                     description: 'The number of level per page.'
@@ -5789,7 +6027,7 @@ paths:
                   total:
                     description: 'The total number of level processed.'
                     type: integer
-                    example: '2344'
+                    example: '2591'
                     readOnly: true
                   data:
                     description: 'The level as an array.'
@@ -5808,9 +6046,16 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Mark'
+                type: object
+                properties:
+                  success:
+                    description: 'If the request succeeded.'
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Mark'
       tags:
         - Marks
   /modules:
@@ -5824,7 +6069,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '17'
+          example: '2'
           required: true
           style: form
         -
@@ -5852,7 +6097,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '17'
+                    example: '2'
                     readOnly: true
                   per_page:
                     description: 'The number of module per page.'
@@ -5862,7 +6107,7 @@ paths:
                   total:
                     description: 'The total number of module processed.'
                     type: integer
-                    example: '2997'
+                    example: '1153'
                     readOnly: true
                   data:
                     description: 'The module as an array.'
@@ -5918,7 +6163,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '676'
+            example: '303'
       responses:
         200:
           description: 'The requested module.'
@@ -5948,7 +6193,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '774'
+            example: '827'
       requestBody:
         content:
           application/json:
@@ -5989,7 +6234,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '621'
+            example: '74'
       responses:
         200:
           description: 'The deletion result.'
@@ -6005,7 +6250,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Module id 621 was successfully deleted.'
+                    example: 'Module id 74 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -6025,7 +6270,7 @@ paths:
           description: 'The module id'
           schema:
             type: integer
-          example: '410'
+          example: '340'
           required: true
         -
           name: page
@@ -6033,7 +6278,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '5'
+          example: '4'
           required: true
         -
           name: perPage
@@ -6130,7 +6375,7 @@ paths:
           description: 'The module id'
           schema:
             type: integer
-          example: '28'
+          example: '619'
           required: true
         -
           name: page
@@ -6138,7 +6383,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '0'
+          example: '9'
           required: true
         -
           name: perPage
@@ -6230,7 +6475,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '1'
+          example: '0'
           required: true
           style: form
         -
@@ -6258,7 +6503,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '1'
+                    example: '0'
                     readOnly: true
                   per_page:
                     description: 'The number of notion per page.'
@@ -6268,7 +6513,7 @@ paths:
                   total:
                     description: 'The total number of notion processed.'
                     type: integer
-                    example: '502'
+                    example: '152'
                     readOnly: true
                   data:
                     description: 'The notion as an array.'
@@ -6293,7 +6538,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '131'
+            example: '758'
       responses:
         200:
           description: 'The requested notion.'
@@ -6323,7 +6568,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '89'
+            example: '212'
       requestBody:
         content:
           application/json:
@@ -6364,7 +6609,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '313'
+            example: '522'
       responses:
         200:
           description: 'The deletion result.'
@@ -6380,7 +6625,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Notion id 313 was successfully deleted.'
+                    example: 'Notion id 522 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -6400,7 +6645,7 @@ paths:
           description: 'The notion id'
           schema:
             type: integer
-          example: '628'
+          example: '281'
           required: true
         -
           name: page
@@ -6408,7 +6653,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '5'
+          example: '7'
           required: true
         -
           name: perPage
@@ -6492,7 +6737,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '19'
+          example: '0'
           required: true
           style: form
         -
@@ -6520,7 +6765,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '19'
+                    example: '0'
                     readOnly: true
                   per_page:
                     description: 'The number of post per page.'
@@ -6530,7 +6775,7 @@ paths:
                   total:
                     description: 'The total number of post processed.'
                     type: integer
-                    example: '2413'
+                    example: '2902'
                     readOnly: true
                   data:
                     description: 'The post as an array.'
@@ -6586,7 +6831,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '3'
+          example: '19'
           required: true
           style: form
         -
@@ -6614,7 +6859,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '3'
+                    example: '19'
                     readOnly: true
                   per_page:
                     description: 'The number of post per page.'
@@ -6624,7 +6869,7 @@ paths:
                   total:
                     description: 'The total number of post processed.'
                     type: integer
-                    example: '936'
+                    example: '1425'
                     readOnly: true
                   data:
                     description: 'The post as an array.'
@@ -6645,7 +6890,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '710'
+            example: '55'
       responses:
         200:
           description: 'The requested post.'
@@ -6679,7 +6924,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '893'
+            example: '128'
       requestBody:
         content:
           application/json:
@@ -6720,7 +6965,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '377'
+            example: '770'
       responses:
         200:
           description: 'The deletion result.'
@@ -6736,7 +6981,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Post id 377 was successfully deleted.'
+                    example: 'Post id 770 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -6756,7 +7001,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '18'
+          example: '1'
           required: true
           style: form
         -
@@ -6784,7 +7029,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '18'
+                    example: '1'
                     readOnly: true
                   per_page:
                     description: 'The number of product per page.'
@@ -6794,7 +7039,7 @@ paths:
                   total:
                     description: 'The total number of product processed.'
                     type: integer
-                    example: '830'
+                    example: '2436'
                     readOnly: true
                   data:
                     description: 'The product as an array.'
@@ -6839,7 +7084,7 @@ paths:
             - 'products:write'
       tags:
         - Products
-  '/products/buyable/{type}':
+  '/products/buyable/type/{type}':
     get:
       summary: 'Paginate buyable products'
       description: 'Retrieve all product by ascending ids, paginated.'
@@ -6856,7 +7101,7 @@ paths:
               - training
               - section
               - lesson
-          example: '6'
+          example: '4'
           required: true
           style: form
           default: all
@@ -6885,7 +7130,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '6'
+                    example: '4'
                     readOnly: true
                   per_page:
                     description: 'The number of product per page.'
@@ -6895,7 +7140,7 @@ paths:
                   total:
                     description: 'The total number of product processed.'
                     type: integer
-                    example: '1759'
+                    example: '990'
                     readOnly: true
                   data:
                     description: 'The product as an array.'
@@ -6937,6 +7182,71 @@ paths:
           $ref: '#/components/responses/404_ModelNotFound'
       tags:
         - Products
+  '/products/type/{type}':
+    get:
+      summary: 'Paginate products by type'
+      description: 'Retrieve all product by ascending ids, paginated.'
+      parameters:
+        -
+          name: type
+          in: path
+          description: 'The product filter.'
+          schema:
+            type: string
+            enum:
+              - all
+              - pack
+              - training
+              - section
+              - lesson
+          example: '3'
+          required: true
+          style: form
+        -
+          name: perPage
+          in: query
+          description: 'The number of product per page.'
+          schema:
+            type: integer
+          example: 100
+          required: true
+          style: form
+      responses:
+        200:
+          description: 'The product in a paginator.'
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - page
+                  - per_page
+                  - total
+                  - data
+                properties:
+                  page:
+                    description: 'The current page.'
+                    type: integer
+                    example: '3'
+                    readOnly: true
+                  per_page:
+                    description: 'The number of product per page.'
+                    type: integer
+                    example: 100
+                    readOnly: true
+                  total:
+                    description: 'The total number of product processed.'
+                    type: integer
+                    example: '287'
+                    readOnly: true
+                  data:
+                    description: 'The product as an array.'
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
+                    readOnly: true
+      tags:
+        - Products
   '/products/{productId}':
     get:
       summary: 'Get product'
@@ -6948,7 +7258,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '320'
+            example: '533'
       responses:
         200:
           description: 'The requested product.'
@@ -6982,7 +7292,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '461'
+            example: '972'
       requestBody:
         content:
           application/json:
@@ -7023,7 +7333,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '507'
+            example: '567'
       responses:
         200:
           description: 'The deletion result.'
@@ -7039,7 +7349,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Product id 507 was successfully deleted.'
+                    example: 'Product id 567 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -7067,7 +7377,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '8'
+          example: '15'
           required: true
         -
           name: perPage
@@ -7175,74 +7485,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Product'
-        404:
-          $ref: '#/components/responses/404_ModelNotFound'
-      tags:
-        - Products
-  '/products/{type}':
-    get:
-      summary: 'Paginate products by type'
-      description: 'Retrieve all product by ascending ids, paginated.'
-      parameters:
-        -
-          name: type
-          in: path
-          description: 'The product filter.'
-          schema:
-            type: string
-            enum:
-              - all
-              - pack
-              - training
-              - section
-              - lesson
-          example: '0'
-          required: true
-          style: form
-        -
-          name: perPage
-          in: query
-          description: 'The number of product per page.'
-          schema:
-            type: integer
-          example: 100
-          required: true
-          style: form
-      responses:
-        200:
-          description: 'The product in a paginator.'
-          content:
-            application/json:
-              schema:
                 type: object
-                required:
-                  - page
-                  - per_page
-                  - total
-                  - data
                 properties:
-                  page:
-                    description: 'The current page.'
-                    type: integer
-                    example: '0'
-                    readOnly: true
-                  per_page:
-                    description: 'The number of product per page.'
-                    type: integer
-                    example: 100
-                    readOnly: true
-                  total:
-                    description: 'The total number of product processed.'
-                    type: integer
-                    example: '2079'
-                    readOnly: true
+                  success:
+                    description: 'If the request succeeded.'
+                    type: boolean
+                    example: true
                   data:
-                    description: 'The product as an array.'
                     type: array
                     items:
                       $ref: '#/components/schemas/Product'
-                    readOnly: true
+        404:
+          $ref: '#/components/responses/404_ModelNotFound'
       tags:
         - Products
   /reports:
@@ -7256,7 +7510,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '17'
+          example: '13'
           required: true
           style: form
         -
@@ -7284,7 +7538,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '17'
+                    example: '13'
                     readOnly: true
                   per_page:
                     description: 'The number of report per page.'
@@ -7294,7 +7548,7 @@ paths:
                   total:
                     description: 'The total number of report processed.'
                     type: integer
-                    example: '618'
+                    example: '2108'
                     readOnly: true
                   data:
                     description: 'The report as an array.'
@@ -7350,7 +7604,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '893'
+            example: '882'
       responses:
         200:
           description: 'The requested report.'
@@ -7384,7 +7638,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '95'
+            example: '282'
       requestBody:
         content:
           application/json:
@@ -7425,7 +7679,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '126'
+            example: '544'
       responses:
         200:
           description: 'The deletion result.'
@@ -7441,7 +7695,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Report id 126 was successfully deleted.'
+                    example: 'Report id 544 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -7495,13 +7749,11 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
-                required:
-                  - page
-                  - per_page
-                  - total
-                  - data
                 properties:
+                  success:
+                    description: 'If the request succeeded.'
+                    type: boolean
+                    example: true
                   page:
                     description: 'The current page.'
                     type: integer
@@ -7530,6 +7782,13 @@ paths:
                         activity_name: { description: 'The related activity name.', type: string, example: 'L''énoncé du théorème de Pythagore' }
                         youtube_id: { description: 'The YouTube video id.', type: string, example: tzOV7zcqJJs }
                     readOnly: true
+                additionalProperties: false
+                required:
+                  - success
+                  - page
+                  - per_page
+                  - total
+                  - data
       tags:
         - Search
   /settings:
@@ -7729,7 +7988,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '13'
+          example: '17'
           required: true
           style: form
         -
@@ -7757,7 +8016,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '13'
+                    example: '17'
                     readOnly: true
                   per_page:
                     description: 'The number of user per page.'
@@ -7767,7 +8026,7 @@ paths:
                   total:
                     description: 'The total number of user processed.'
                     type: integer
-                    example: '1780'
+                    example: '1712'
                     readOnly: true
                   data:
                     description: 'The user as an array.'
@@ -7809,7 +8068,121 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/User'
+      tags:
+        - Users
+  '/users/search/{query}':
+    get:
+      summary: 'Search users'
+      description: 'Retrieve all user by ascending ids, paginated.'
+      parameters:
+        -
+          name: page
+          in: query
+          description: 'The page **(starts at 0)**.'
+          schema:
+            type: integer
+          example: '17'
+          required: true
+          style: form
+        -
+          name: perPage
+          in: query
+          description: 'The number of user per page.'
+          schema:
+            type: integer
+          example: 100
+          required: true
+          style: form
+      responses:
+        200:
+          description: 'The user in a paginator.'
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - page
+                  - per_page
+                  - total
+                  - data
+                properties:
+                  page:
+                    description: 'The current page.'
+                    type: integer
+                    example: '17'
+                    readOnly: true
+                  per_page:
+                    description: 'The number of user per page.'
+                    type: integer
+                    example: 100
+                    readOnly: true
+                  total:
+                    description: 'The total number of user processed.'
+                    type: integer
+                    example: '1495'
+                    readOnly: true
+                  data:
+                    description: 'The user as an array.'
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+                    readOnly: true
+      params:
+        -
+          name: query
+          in: path
+          description: 'The search query.'
+          required: true
+          schema:
+            type: string
+            example: lorem
+        -
+          name: page
+          in: query
+          description: 'The page **(starts at 0)**.'
+          schema:
+            type: integer
+          example: 1
+          required: true
+          style: form
+        -
+          name: perPage
+          in: query
+          description: 'The number of users per page.'
+          schema:
+            type: integer
+          example: 100
+          required: true
+          style: form
+        -
+          name: order
+          in: query
+          description: 'The column reference for ordering.'
+          schema:
+            type: string
+          example: username
+          style: form
+        -
+          name: dir
+          in: query
+          description: 'The order direction.'
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+          example: asc
+          style: form
+      security:
+        -
+          bearer:
+            - 'users:read'
       tags:
         - Users
   '/users/{userId}':
@@ -7823,7 +8196,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '282'
+            example: '890'
       responses:
         200:
           description: 'The requested user.'
@@ -7860,7 +8233,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '914'
+            example: '921'
       requestBody:
         content:
           application/json:
@@ -7902,7 +8275,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '653'
+            example: '997'
       responses:
         200:
           description: 'The deletion result.'
@@ -7918,7 +8291,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'User id 653 was successfully deleted.'
+                    example: 'User id 997 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -7963,10 +8336,41 @@ paths:
           $ref: '#/components/responses/404_ModelNotFound'
       tags:
         - Users
-  '/users/{userId}/points':
-    post:
-      summary: 'Add points'
-      description: "Add an arbitrary amount of points to the target user. Passing a loggable model prevents multiple points addition for the same resource. **This limitation everyday, at midnight (Paris time)**.\n"
+  '/users/{userId}/grade':
+    get:
+      summary: 'Get user grade'
+      parameters:
+        -
+          name: userId
+          in: path
+          description: 'The user id.'
+          required: true
+          schema:
+            type: integer
+            example: 1452
+      responses:
+        200:
+          description: 'The requested user grade.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    description: 'If the request succeeded.'
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    $ref: '#/components/schemas/Grade'
+        404:
+          $ref: '#/components/responses/404_ModelNotFound'
+      tags:
+        - Users
+  '/users/{userId}/subscriptions':
+    get:
+      summary: 'Get user subscriptions'
+      description: 'Get the user subscriptions. Since we are currently using two payment processors - Stripe and Braintree, depending of the source of the subscription, the subscription schemas can be heterogeneous.'
       security:
         -
           bearer:
@@ -7980,36 +8384,36 @@ paths:
           schema:
             type: integer
             example: 1585
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - points
-              properties:
-                points:
-                  description: 'The number of points to be added.'
-                  type: integer
-                  example: 100
-                loggable_type:
-                  description: "The model type to associated with the request. Currently, only `\"module\"` is supported.\n"
-                  type: string
-                  enum:
-                    - module
-                loggable_id:
-                  description: 'The model id associated with the request.'
-                  type: integer
-                  example: 165
       responses:
         200:
-          description: 'The user with his updated points counter.'
+          description: 'The user subscriptions.'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        404:
-          $ref: '#/components/responses/404_ModelNotFound'
+                type: object
+                properties:
+                  success:
+                    description: 'If the request succeeded.'
+                    type: boolean
+                    example: true
+                  page:
+                    description: 'The current page.'
+                    type: integer
+                    example: 0
+                    readOnly: true
+                  per_page:
+                    description: 'The number of subscriptions per page'
+                    type: integer
+                    example: 100
+                    readOnly: true
+                  total:
+                    description: 'The total number of subscriptions processed.'
+                    type: integer
+                    example: 3
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Subscription'
       tags:
         - Users
   '/votes/comment/{commentId}':

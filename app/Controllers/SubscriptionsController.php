@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use App\Services\Stripe\Exceptions\IncorrectCVCException;
 use App\Services\Stripe\Exceptions\StripeHandler;
 use App\Services\Stripe\SubscriptionUtils;
 use Carbon\Carbon;
@@ -24,8 +25,6 @@ use Stripe\Subscription;
  */
 class SubscriptionsController extends BaseController
 {
-
-
     /**
      * POST /subscriptions
      * Create a new subscription.
@@ -34,6 +33,7 @@ class SubscriptionsController extends BaseController
      *
      * @return SuccessJsonResponse
      * @throws ValidationException
+     * @throws IncorrectCVCException
      */
     public function standardPost(Request $request): SuccessJsonResponse
     {

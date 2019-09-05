@@ -2,9 +2,7 @@
 
 namespace Tests\API;
 
-use App\Models\Category;
-use Mathrix\Lumen\JWT\Auth\JWT;
-use Mathrix\Lumen\Tests\REST\Standard\StandardDeleteTest;
+use Mathrix\Lumen\Zero\Testing\Traits\RESTAutoTestTrait;
 use Tests\APIStatelessTestCase;
 
 /**
@@ -16,19 +14,27 @@ use Tests\APIStatelessTestCase;
  */
 class PostsTest extends APIStatelessTestCase
 {
-    use StandardIndexTest, StandardGetTest, StandardPostTest, StandardPatchTest, StandardDeleteTest;
+    use RESTAutoTestTrait;
+
+    protected $testKeys = [
+        "std:index",
+        "std:post",
+        "std:get",
+        "std:patch",
+        "std:delete"
+    ];
 
 
     /**
-     * GET /posts/latest/{page}/{perPage}
+     * GET /posts/latest
      */
     public function testLatest(): void
     {
-        $uri = "/posts/latest/1/10";
+        $uri = "/posts/latest";
 
         $this->json("get", $uri);
 
         $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
+        $this->assertOpenAPIResponse($this->response);
     }
 }

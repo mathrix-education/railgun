@@ -25,7 +25,7 @@ class BraintreeRegistrar extends BaseRegistrar
 
         $this->get("braintree/client-token", [
             "uses" => "$controller@clientToken",
-            "middleware" => "scope:logged"
+            "middleware" => "logged"
         ]);
     }
 }

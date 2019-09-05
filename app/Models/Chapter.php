@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -50,6 +51,23 @@ class Chapter extends BaseModel
     ];
     /** @var array Virtual fields */
     protected $appends = ["activity_to_revise", "activity_completed"];
+
+
+    /**
+     * Get chapters in a given (grade, discipline).
+     *
+     * @param int $gradeId The grade id.
+     * @param int $disciplineId The discipline id.
+     *
+     * @return Builder
+     */
+    public static function byGradeAndDiscipline(int $gradeId, int $disciplineId): Builder
+    {
+        return Chapter::query()
+            ->where("grade_id", "=", $gradeId)
+            ->where("discipline_id", "=", $disciplineId)
+            ->orderBy("order");
+    }
 
 
     /**

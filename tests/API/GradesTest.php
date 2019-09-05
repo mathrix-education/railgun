@@ -21,9 +21,11 @@ class GradesTest extends APIStatelessTestCase
 
     protected $testKeys = [
         "std:index",
-        "std:post",
         "std:get",
-        "std:patch"
+        "std:get:slug",
+        "std:post",
+        "std:patch",
+        "rel:get:disciplines"
     ];
 
 
@@ -46,45 +48,15 @@ class GradesTest extends APIStatelessTestCase
 
 
     /**
-     * GET /grades/{gradeId}/disciplines/{page}/{perPage}?scope=$scope
-     *
-     * @param string $scope
+     * GET /grades/{gradeId}/disciplines/visible
      */
-    private function disciplines(string $scope)
+    public function testDisciplinesVisible(): void
     {
-        $this->requestModel = Grade::query()
-            ->inRandomOrder()
-            ->has("disciplines")
-            ->firstOrFail();
+        $grade = Grade::random();
+        $this->json("get", "/grades/{$grade->id}/disciplines/visible");
 
-        [$page, $perPage] = $this->getPaginationParameters([]);
-
-        if ($scope === "all") {
-            $this->requester = JWT::withScopes("disciplines:read");
-        }
-
-        $this->json("get", "/grades/{$this->requestModel->id}/disciplines?page=$page&perPage=$perPage&scope=$scope");
-
-        $this->assertOpenAPIResponse($this->response);
         $this->assertResponseOk();
-    }
-
-
-    /**
-     * GET /grades/{gradeId}/disciplines/{page}/{perPage}?scope=all
-     */
-    public function testDisciplinesScopeAll(): void
-    {
-        $this->disciplines("all");
-    }
-
-
-    /**
-     * GET /grades/{gradeId}/disciplines/{page}/{perPage}?scope=visible
-     */
-    public function testDisciplinesScopeVisible(): void
-    {
-        $this->disciplines("visible");
+        $this->assertOpenAPIResponse($this->response);
     }
 
 
@@ -93,15 +65,9 @@ class GradesTest extends APIStatelessTestCase
      */
     public function testBySlugChapterSlug(): void
     {
-        /** @var Grade $grade */
-        $grade = Grade::query()
-            ->has("chapters")
-            ->inRandomOrder()
-            ->firstOrFail();
-        /** @var Chapter $chapter */
-        $chapter = $grade->chapters()->inRandomOrder()->firstOrFail();
+        $chapter = Chapter::random(["visible", "=", true]);
 
-        $this->json("get", "/grades/slug/$grade->slug/chapters/slug/$chapter->slug");
+        $this->json("get", "/grades/slug/{$chapter->grade->slug}/chapters/slug/{$chapter->slug}");
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse($this->response);
@@ -110,17 +76,20 @@ class GradesTest extends APIStatelessTestCase
 
     public function disciplinesChapters(string $scope): void
     {
+    }
+
+
+    /**
+     * GET /grades/{gradeId}/disciplines/{disciplineId}/chapters
+     */
+    public function testDisciplinesChapters(): void
+    {
         $chapter = Chapter::random(["visible", "=", true]);
-        $this->requestModel = $chapter->grade;
+        $method = "get";
+        $uri = "/grades/$chapter->grade_id/disciplines/$chapter->discipline_id/chapters";
 
-        [$page, $perPage] = $this->getPaginationParameters([]);
-
-        if ($scope === "all") {
-            $this->requester = JWT::withScopes("disciplines:read");
-        }
-
-        $uri = "/grades/$chapter->grade_id/disciplines/$chapter->discipline_id/chapters?page=$page&perPage=$perPage?scope=$scope";
-        $this->json("get", $uri);
+        JWT::autoScope($method, $uri);
+        $this->json($method, $uri);
 
         $this->assertOpenAPIResponse($this->response);
         $this->assertResponseOk();
@@ -128,19 +97,18 @@ class GradesTest extends APIStatelessTestCase
 
 
     /**
-     * GET /grades/{gradeId}/disciplines/{disciplineId}/chapters/{page}/{perPage}?scope=all
-     */
-    public function testDisciplinesChaptersAll(): void
-    {
-        $this->disciplinesChapters("all");
-    }
-
-
-    /**
-     * GET /grades/{gradeId}/disciplines/{disciplineId}/chapters/{page}/{perPage}?scope=visible
+     * GET /grades/{gradeId}/disciplines/{disciplineId}/chapters/visible
      */
     public function testDisciplinesChaptersVisible(): void
     {
-        $this->disciplinesChapters("visible");
+        $chapter = Chapter::random(["visible", "=", true]);
+        $method = "get";
+        $uri = "/grades/$chapter->grade_id/disciplines/$chapter->discipline_id/chapters/visible";
+
+        JWT::autoScope($method, $uri);
+        $this->json($method, $uri);
+
+        $this->assertOpenAPIResponse($this->response);
+        $this->assertResponseOk();
     }
 }

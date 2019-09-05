@@ -41,6 +41,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->instance("path.config", app()->basePath() . DIRECTORY_SEPARATOR . "config");
+        $this->app->instance("path.public", app()->basePath() . DIRECTORY_SEPARATOR . "public");
+        $this->app->instance("cache.store", app()->basePath() . DIRECTORY_SEPARATOR . "public");
         // App service providers
         $this->app->register(BraintreeGatewayServiceProvider::class);
 
@@ -49,7 +52,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(CorsServiceProvider::class);
         $this->app->register(FilesystemServiceProvider::class);
         $this->app->register(MailServiceProvider::class);
-        // $this->app->register(SitemapServiceProvider::class);
         $this->app->register(GoogleCloudStorageServiceProvider::class);
         $this->app->register(JWTServiceProvider::class);
         $this->app->register(FacebookServiceProvider::class);
@@ -65,9 +67,6 @@ class AppServiceProvider extends ServiceProvider
         }
 
         ScopesLoader::registerAdditionalScopes(["users:as"]);
-
-
-        // Carbon::setToStringFormat("Y-m-d\TH:i:s\Z");
 
         // MorphMap
         Relation::morphMap([

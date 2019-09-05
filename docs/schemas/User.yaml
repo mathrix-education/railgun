@@ -1,8 +1,8 @@
 description: User
 type: object
-required: [id, username, email, firstname, lastname, type, points, level, daily,
+required: [id, username, email, firstname, lastname, scopes, points, level, daily,
            daily_achievements, settings, grade_id, created_at, updated_at,
-           provider, premium, daily_points]
+           provider, premium] # daily_points
 properties:
   id:
     description: The user id.
@@ -132,14 +132,15 @@ properties:
     type: boolean
     example: false
     readOnly: true
-  daily_points:
-    description: The number of points gathered by the users this day.
-    type: integer
-    example: 300
-    readOnly: true
+  #  daily_points:
+  #    description: The number of points gathered by the users this day.
+  #    type: integer
+  #    example: 300
+  #    readOnly: true
   last_session:
     description: The user last session.
     type: array
+    nullable: true
     items:
       type: object
       properties:
@@ -155,16 +156,11 @@ properties:
           $ref: '#/components/schemas/Activity'
         module:
           $ref: '#/components/schemas/Module'
-  grade:
-    description: The user grade.
-    allOf:
-      - $ref: '#/components/schemas/Grade'
-    nullable: true
     readOnly: true
-  purchases:
-    description: The user purchases.
-    type: array
-    items:
-      $ref: '#/components/schemas/Purchase'
-    nullable: true
-    readOnly: true
+#  purchases:
+#    description: The user purchases.
+#    type: array
+#    items:
+#      $ref: '#/components/schemas/Purchase'
+#    nullable: true
+#    readOnly: true

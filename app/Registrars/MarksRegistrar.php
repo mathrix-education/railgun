@@ -23,7 +23,7 @@ class MarksRegistrar extends BaseRegistrar
 
         $this->get("marks/activities/to-revise", [
             "uses" => "$controller@activitiesToRevise",
-            "middleware" => "scope:logged"
+            "middleware" => "logged"
         ]);
     }
 }

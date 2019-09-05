@@ -22,66 +22,6 @@ class UserObserver extends BaseObserver
 {
     /**
      * @param User $user
-     *
-     * @return bool
-     * @throws Http400BadRequestException
-     */
-    public function saving($user)
-    {
-        // Password hash check
-        if ($user->isDirty("password") && Hash::needsRehash($user->password)) {
-            $user->password = Hash::make($user->password);
-        }
-
-        if ($user->isDirty("points") && $user->exists) {
-            /** @var int $pointsAdded the points added during the current request */
-            $pointsAdded = $user->points - $user->getOriginal("points");
-
-            /*
-            |--------------------------------------------------------------------------
-            | Trigger the daily_achievements incrementation
-            |--------------------------------------------------------------------------
-            */
-            $alreadyAchievedDaily = Log::query()
-                ->where([
-                    "user_id" => $user->id,
-                    "event" => "user_achieved_daily",
-                ])
-                ->whereBetween("created_at", [
-                    Carbon::now()->setTime(0, 0, 0),
-                    Carbon::now(),
-                ])
-                ->exists();
-
-            if (!$alreadyAchievedDaily && $user->daily_points + $pointsAdded >= $user->daily) {
-                $user->daily_achievements++;
-                Log::log("user_achieved_daily", $user);
-            }
-
-            /*
-            |--------------------------------------------------------------------------
-            | Trigger the level achievement
-            |--------------------------------------------------------------------------
-            */
-            /** @var Level $nextLevel */
-            $nextLevel = Level::query()
-                ->where("level", $user->level + 1)
-                ->first();
-
-            while ($nextLevel !== null && $user->points >= $nextLevel->objective) {
-                ++$user->level;
-                $nextLevel = Level::query()
-                    ->where("level", $user->level + 1)
-                    ->first();
-            }
-        }
-
-        return true;
-    }
-
-
-    /**
-     * @param User $user
      */
     public function creating($user)
     {
@@ -92,34 +32,15 @@ class UserObserver extends BaseObserver
     /**
      * @param User $user
      *
-     * @throws Exception
+     * @return bool
      */
-    public function created($user)
+    public function saving($user)
     {
-        Log::log("user_registered", $user);
-    }
-
-
-    /**
-     * @param User $user
-     *
-     * @throws Http400BadRequestException
-     */
-    public function updated($user)
-    {
-        $changes = array_keys($user->getDirty());
-
-        if (in_array("password", $changes, true)) {
-            Log::log("user_changed_password", $user);
+        // Password hash check
+        if ($user->isDirty("password") && Hash::needsRehash($user->password)) {
+            $user->password = Hash::make($user->password);
         }
-        if (in_array("daily", $changes, true)) {
-            Log::log("user_set_daily", $user);
-        }
-        if (in_array("level", $changes, true)) {
-            Log::log("user_passed_level", $user, [
-                "from" => $user->level - 1,
-                "to" => $user->level,
-            ]);
-        }
+
+        return true;
     }
 }

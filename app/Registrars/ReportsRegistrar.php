@@ -22,7 +22,7 @@ class ReportsRegistrar extends BaseRegistrar
         $this->rest([
             "std:index" => "scope:reports:read",
             "std:get" => "scope:reports:read",
-            "std:post" => "scope:logged",
+            "std:post" => "logged",
             "std:patch" => "scope:reports:write",
             "std:delete" => "scope:reports:delete"
         ]);

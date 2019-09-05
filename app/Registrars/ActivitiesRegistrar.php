@@ -30,7 +30,7 @@ class ActivitiesRegistrar extends BaseRegistrar
             "rel:get:modules" => null
         ]);
 
-        $this->group(["middleware" => "scope:logged"], function () use ($controller) {
+        $this->group(["middleware" => "logged"], function () use ($controller) {
             $this->patch("activities/{activityId}/mark", "$controller@mark");
             $this->patch("activities/{activityId}/unmark", "$controller@unmark");
         });

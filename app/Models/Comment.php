@@ -46,7 +46,7 @@ class Comment extends BaseModel
     use SoftDeletes;
 
     /** @var array The default relations included */
-    public $with = ["user:id,username,firstname,level,grade_id"];
+    public $with = ["user:id,username,firstname,grade_id"];
     /** @var array The attributes that are mass assignable */
     protected $fillable = [
         "content",

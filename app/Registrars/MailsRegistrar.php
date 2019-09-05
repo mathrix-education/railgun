@@ -2,13 +2,11 @@
 
 namespace App\Registrars;
 
+use App\Mails\BaseMail;
 use App\Mails\PasswordForgottenMail;
 use App\Mails\PasswordResetMail;
-use App\Mails\SubscriptionRenewalSoonMail;
-use App\Mails\TransactionSuccessMail;
-use Illuminate\Http\JsonResponse;
+use HaydenPierce\ClassFinder\ClassFinder;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
 /**
@@ -22,6 +20,17 @@ use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
  */
 class MailsRegistrar extends BaseRegistrar
 {
+    public static function getMails()
+    {
+        return Collection::make(ClassFinder::getClassesInNamespace("App\\Mails"))
+            ->reject(function (string $mailClass) {
+                return $mailClass === BaseMail::class;
+            })
+            ->values()
+            ->toArray();
+    }
+
+
     /**
      * Register the routes.
      */

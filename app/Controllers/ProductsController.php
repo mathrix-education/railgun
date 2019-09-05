@@ -11,7 +11,6 @@ use App\Exceptions\SponsorNotFoundException;
 use App\Models\Discount;
 use App\Models\Product;
 use App\Models\User;
-use App\Services\Braintree\Pipelines\CartPipeline;
 use App\Services\Braintree\Utils\AffiliateProcess;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -19,7 +18,6 @@ use Illuminate\Support\Collection;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http401UnauthorizedException;
-use Mathrix\Lumen\Zero\Exceptions\Http\Http429TooManyRequestsException;
 use Mathrix\Lumen\Zero\Exceptions\ValidationException;
 use Mathrix\Lumen\Zero\Responses\PaginationJsonResponse;
 use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
@@ -37,17 +35,18 @@ class ProductsController extends BaseController
      * PATCH /products/{packId}/items
      *
      * @param Request $request The Illuminate HTTP request.
+     * @param string $key
      * @param int $packId The pack id.
      *
      * @return JsonResponse
      */
-    public function patchItems(Request $request, int $packId)
+    public function patchItems(Request $request, string $key, int $packId)
     {
         // TODO: Add validator
 
         /** @var Product $pack */
         $pack = Product::query()
-            ->where("id", "=", $packId)
+            ->where($key, "=", $packId)
             ->where("type", "=", "pack")
             ->firstOrFail();
 
@@ -58,7 +57,7 @@ class ProductsController extends BaseController
 
         $pack->items()->sync($itemsSync);
 
-        return new JsonResponse($pack->load("items"));
+        return new SuccessJsonResponse($pack->load("items"));
     }
 
 

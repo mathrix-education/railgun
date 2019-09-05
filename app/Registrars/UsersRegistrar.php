@@ -23,25 +23,24 @@ class UsersRegistrar extends BaseRegistrar
 
         $this->rest([
             "std:index" => "scope:users:read",
-            "std:get" => "scope:logged",
+            "std:get" => "logged",
             "std:post" => null,
-            "std:patch" => "scope:logged",
+            "std:patch" => "logged",
             "std:delete" => "scope:users:delete",
-            "rel:get:records" => "scope:records:read",
-            "rel:get:subscriptions" => "scope:logged",
-            "rel:get:transactions" => "scope:logged"
+            "rel:get:grade" => null,
+            "rel:get:transactions" => "logged"
         ]);
 
-        $this->group(["middleware" => "scope:logged"], function () use ($controller) {
-            $this->post("users/{userId:[1-9]\d*}/points", "$controller@points");
+        $this->group(["middleware" => "logged"], function () use ($controller) {
+            $this->get("/users/{userId}/subscriptions", "$controller@getSubscriptions");
         });
 
         $this->group(["middleware" => "scope:users:read"], function () use ($controller) {
-            $this->get("users/search/{query}/{page:\d+}/{perPage:[1-9]\d*}", "$controller@search");
+            $this->get("users/search/{query}", "$controller@search");
         });
 
         $this->group(["middleware" => "scope:users:write"], function () use ($controller) {
-            $this->delete("users/{userId:[1-9]\d*}/cache", "$controller@cache");
+            $this->delete("users/{userId}/cache", "$controller@cache");
         });
     }
 }

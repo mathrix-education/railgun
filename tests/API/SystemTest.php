@@ -41,6 +41,7 @@ class SystemTest extends APIStatelessTestCase
     {
         $this->json("get", "/system/sitemap");
 
+        $this->debug();
         $this->assertResponseOk();
     }
 }

@@ -16,7 +16,7 @@ class SearchRegistrar extends BaseRegistrar
 {
     public function register(): void
     {
-        $this->get("search/{gradeId:[1-9]\d*}/{query:[^\/]+}",
+        $this->get("search/{gradeId}/{query}",
             SearchController::class . "@content");
     }
 }

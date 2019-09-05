@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Carbon\Carbon;
 use Faker\Factory as FakerFactory;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
@@ -126,5 +127,22 @@ if (!function_exists("data_filter")) {
         }
 
         return $final;
+    }
+}
+
+if (!function_exists("carbon_auto")) {
+    function carbon_auto($date)
+    {
+        if ($date === null) {
+            return null;
+        } else if ($date instanceof DateTime) {
+            return Carbon::instance($date);
+        } else {
+            try {
+                return new Carbon($date);
+            } catch (Exception $e) {
+                return null;
+            }
+        }
     }
 }

@@ -3,13 +3,13 @@
 namespace App\Controllers;
 
 use App\Models\Chapter;
-use App\Models\Grade;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
+use App\Models\Discipline;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Zero\Responses\PaginationJsonResponse;
+use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
 
 /**
  * Class GradesController.
@@ -21,97 +21,83 @@ use Mathrix\Lumen\Zero\Responses\PaginationJsonResponse;
 class GradesController extends BaseController
 {
     /**
-     * GET /grades/slug/{gradeSlug:[a-z0-9\-]+}/chapters/slug/{chapterSlug:[a-z0-9\-]+}
+     * GET /grades/{gradeId}/disciplines/visible
+     *
+     * @param int $gradeId The grade id.
+     *
+     * @return PaginationJsonResponse
+     * @throws Http400BadRequestException
+     */
+    public function disciplinesVisible(int $gradeId): PaginationJsonResponse
+    {
+        $query = Discipline::query()
+            ->whereHas("chapters", function (Builder $query) use ($gradeId) {
+                $query->where("chapters.visible", "=", true);
+            })
+            ->whereHas("grades", function (Builder $query) use ($gradeId) {
+                $query->where("grades.id", "=", $gradeId);
+            });
+
+        return new PaginationJsonResponse($query);
+    }
+
+
+    /**
+     * GET /grades/slug/{gradeSlug}/chapters/slug/{chapterSlug}
      * Get a chapter by its slug and grade slug.
      *
      * @param string $chapterSlug The chapter slug.
      * @param string $gradeSlug The grade slug.
      *
-     * @return JsonResponse
+     * @return SuccessJsonResponse
      */
-    public function getBySlugChapterSlug(string $chapterSlug, string $gradeSlug): JsonResponse
+    public function getBySlugChapterSlug(string $gradeSlug, string $chapterSlug): SuccessJsonResponse
     {
-        /** @var Grade $grade */
-        $grade = Grade::query()
-            ->where("slug", "=", $gradeSlug)
-            ->firstOrFail();
-
         /** @var Chapter $chapter */
         $chapter = Chapter::query()
-            ->where([
-                ["grade_id", "=", $grade->id],
-                ["slug", "=", $chapterSlug],
-            ])
+            ->whereHas("grade", function (Builder $query) use ($gradeSlug) {
+                $query->where("slug", "=", $gradeSlug);
+            })
+            ->where("slug", "=", $chapterSlug)
             ->firstOrFail();
 
-        return new JsonResponse($chapter);
+        return new SuccessJsonResponse($chapter);
     }
 
 
     /**
-     * GET /grades/{gradeId}/disciplines/{page}/{perPage}[?scope=visible]
+     * GET /grades/{gradeId}/disciplines/{disciplineId}/chapters
+     * Get chapters by class and discipline ids.
      *
-     * @param Request $request The Illuminate HTTP request.
      * @param int $gradeId The grade id.
-     * @param int $page The results page.
-     * @param int $perPage The number of disciplines per page.
+     * @param int $disciplineId The discipline id.
      *
      * @return PaginationJsonResponse
      * @throws Http400BadRequestException
      */
-    public function disciplines(Request $request, int $gradeId, int $page, int $perPage): PaginationJsonResponse
+    public function chaptersByDiscipline(int $gradeId, int $disciplineId): PaginationJsonResponse
     {
-        /** @var Grade $grade */
-        $grade = Grade::query()->findOrFail($gradeId);
-        $allowedToSeeAll = scope($request->user(), "disciplines:read");
-        $wantsToSeeAll = $request->query("scope", "all") === "all";
-        $restrictToVisible = !$allowedToSeeAll || !$wantsToSeeAll;
+        $query = Chapter::byGradeAndDiscipline($gradeId, $disciplineId);
 
-        $query = $grade->disciplines();
-
-        if ($restrictToVisible) {
-            $query = $query->where("chapters.visible", "=", true);
-        }
-
-        return new PaginationJsonResponse($query, $page, $perPage);
+        return new PaginationJsonResponse($query);
     }
 
 
     /**
-     * GET /grades/{gradeId}/disciplines/{disciplineId}/chapters/{page}/{perPage}[?scope=visible]
-     * Get chapters by class and discipline ids
+     * GET /grades/{gradeId}/disciplines/{disciplineId}/chapters/visible
+     * Get visible chapters by class and discipline ids.
      *
-     * @param Request $request The Illuminate HTTP request.
      * @param int $gradeId The class id.
      * @param int $disciplineId The discipline id.
-     * @param int $page
-     * @param int $perPage
      *
-     * @return JsonResponse
+     * @return PaginationJsonResponse
+     * @throws Http400BadRequestException
      */
-    public function chaptersByDiscipline(Request $request, int $gradeId, int $disciplineId, int $page, int $perPage)
+    public function chaptersByDisciplineVisible(int $gradeId, int $disciplineId): PaginationJsonResponse
     {
-        $scope = $request->query("scope", "all");
-        $allowedToSeeAll = scope($request->user(), "chapters:read");
-        $wantsToSeeAll = $scope === "all";
-        $restrictToVisible = !$allowedToSeeAll || !$wantsToSeeAll;
+        $query = Chapter::byGradeAndDiscipline($gradeId, $disciplineId)
+            ->where("visible", "=", true);
 
-        // Check if all chapters should be returned.
-        $key = "grade.$gradeId.discipline.$disciplineId.chapters.$scope.$page.$perPage";
-
-        return Cache::remember($key, 15,
-            function () use ($gradeId, $disciplineId, $restrictToVisible, $page, $perPage) {
-                $query = Chapter::query()->where([
-                    ["grade_id", "=", $gradeId],
-                    ["discipline_id", "=", $disciplineId],
-                ])
-                    ->orderBy("order");
-
-                if ($restrictToVisible) {
-                    $query = $query->where("visible", "=", true);
-                }
-
-                return new PaginationJsonResponse($query, $page, $perPage);
-            });
+        return new PaginationJsonResponse($query);
     }
 }

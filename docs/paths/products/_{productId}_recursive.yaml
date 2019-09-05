@@ -15,6 +15,12 @@ get:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Product'
+            $extends:
+              ../../fragments/responses/200_Success.yaml:
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
     404:
       $ref: '#/components/responses/404_ModelNotFound'
