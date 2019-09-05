@@ -5,12 +5,30 @@ namespace Tests\Integration\Stripe;
 use App\Models\User;
 use App\Services\Stripe\SubscriptionUtils;
 use Mathrix\Lumen\JWT\Auth\JWT;
+use Stripe\Customer;
 use Stripe\SetupIntent;
 use Stripe\Subscription;
 use Tests\APIStatelessTestCase;
 
 class UsersTest extends APIStatelessTestCase
 {
+    public function testLol()
+    {
+        $customer = Customer::create([
+            "email" => $this->faker->email,
+            "source" => "tok_fr"
+        ]);
+
+        Customer::createSource($customer->id, [
+            "source" => "tok_es"
+        ]);
+
+        $customer = Customer::retrieve($customer->id);
+
+        dd($customer->sources->data);
+    }
+
+
     public function testSubscriptions()
     {
         /** @var User $user */

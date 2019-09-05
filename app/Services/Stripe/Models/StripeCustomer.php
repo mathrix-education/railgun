@@ -131,4 +131,13 @@ trait StripeCustomer
             "expand" => ["default_source"]
         ]);
     }
+
+
+    public function addSource(string $token)
+    {
+        Customer::createSource($this->stripe_id, [
+            "source" => $token
+        ]);
+        $this->forgetStripeCustomerCache();
+    }
 }

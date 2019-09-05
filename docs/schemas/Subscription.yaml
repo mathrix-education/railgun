@@ -25,15 +25,15 @@ properties:
   created_at:
     description: The date/time the subscription was created.
     type: string
-#    format: date-time
+    format: date-time
   current_period_start:
     description: The date/time of the beginning of the current period.
     type: string
-#    format: date-time
+    format: date-time
   current_period_end:
     description: The date/time of the end of the current period.
     type: string
-#    format: date-time
+    format: date-time
   customer:
     description: The customer id who own the subscription. Refers to `stripe_id` or `braintree_id` on users.
     type: string
@@ -87,7 +87,7 @@ properties:
           expiration:
             description: The credit card expiration date/time.
             type: string
-#            format: date-time
+            format: date-time
       - description: The PayPal account linked to the subscription.
         type: object
         properties:
@@ -117,5 +117,5 @@ properties:
   trial_end:
     description: The subscription trial end date, if necessary. `null` otherwise.
     type: string
-#    format: date-time
+    format: date-time
     nullable: true

@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Exceptions\InvalidBraintreeCustomerException;
 use App\Models\Log;
 use App\Models\User;
+use App\Services\Bishop\Subscription;
 use App\Services\Stripe\Serializers\SubscriptionSerializer;
 use Braintree\Transaction;
 use Braintree\TransactionSearch;
@@ -195,13 +196,13 @@ class UsersController extends BaseController
 
         if ($customer->isBraintreeCustomer()) {
             foreach ($customer->getBraintreeSubscriptions() as $braintreeSubscription) {
-                $subscriptions->push(SubscriptionSerializer::serialize($braintreeSubscription));
+                $subscriptions->push(Subscription::from($braintreeSubscription));
             }
         }
 
         if ($customer->isStripeCustomer()) {
             foreach ($customer->getStripeSubscriptions() as $stripeSubscription) {
-                $subscriptions->push(SubscriptionSerializer::serialize($stripeSubscription));
+                $subscriptions->push(Subscription::from($stripeSubscription));
             }
         }
 

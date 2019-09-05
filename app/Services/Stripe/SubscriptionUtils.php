@@ -15,81 +15,58 @@ class SubscriptionUtils
 {
     public const MONTHLY_PLAN = "v5_monthly";
     public const ANNUALLY_PLAN = "v5_annually";
-    public const BIANNUALLY_PLAN = "v5_biannually";
 
-    public const PLANS = [self::MONTHLY_PLAN, self::ANNUALLY_PLAN, self::BIANNUALLY_PLAN];
+    public const PLANS = [self::MONTHLY_PLAN, self::ANNUALLY_PLAN];
 
     public const PLANS_DETAILS = [
         self::MONTHLY_PLAN => [
             "id" => self::MONTHLY_PLAN,
-            "regular" => true,
+            "prorated" => true,
             "period" => "month",
             "price_per_period" => 1790,
             "price_per_month" => 1790
         ],
         self::ANNUALLY_PLAN => [
             "id" => self::ANNUALLY_PLAN,
-            "regular" => false,
+            "prorated" => false,
             "period" => "year",
             "price_per_period" => 15480,
             "price_per_month" => 1290
-        ],
-        self::BIANNUALLY_PLAN => [
-            "id" => self::BIANNUALLY_PLAN,
-            "regular" => false,
-            "period" => "year",
-            "price_per_period" => 11880,
-            "price_per_month" => 990
-        ],
+        ]
     ];
 
 
     /**
-     * Check if the given plan id is a "regular plan".
+     * Check if the plan is prorated.
      *
      * @param string $planId The plan id.
      *
      * @return bool
      */
-    public static function isRegularPlan(string $planId): bool
+    public static function isPlanProrated(string $planId): bool
     {
-        return self::PLANS_DETAILS[$planId]["regular"];
+        return self::PLANS_DETAILS[$planId]["prorated"];
     }
 
 
     /**
-     * Check if the given plan id is a "Trial plan".
+     * Get the plan next "summer" anchor. If the plan is not prorated, return null.
      *
-     * @param string $planId The plan id to check.
-     *
-     * @return bool
-     */
-    public static function isTrialPlan(string $planId): bool
-    {
-        return !self::isRegularPlan($planId);
-    }
-
-
-    /**
-     * Get the plan start date (after trial).
-     *
-     * @param string $planId The Braintree plan.
+     * @param string $planId The plan id.
      *
      * @return Carbon
      */
-    public static function getTrialEndDate(string $planId): ?Carbon
+    public static function getProrationAnchor(string $planId): ?Carbon
     {
-        if (self::isRegularPlan($planId)) {
+        if (!self::isPlanProrated($planId)) {
             return null;
         }
 
-        $nextThirtyFirstJuly = Carbon::now()->setMonth(7)->setDay(31)->setTime(0, 0, 0);
+        $nextThirtyFirstJuly = Carbon::now()
+            ->setMonth(7)->setDay(31)
+            ->setTime(0, 0, 0);
 
         if ($nextThirtyFirstJuly->isPast()) {
-            $nextThirtyFirstJuly->addYear();
-        }
-
-        if ($planId === self::BIANNUALLY_PLAN) {
             $nextThirtyFirstJuly->addYear();
         }
 
@@ -98,44 +75,31 @@ class SubscriptionUtils
 
 
     /**
-     * Get trial duration in days.
+     * Get the proration price. If the plan is not prorated, return null.
+     * Like Stripe, this function has be second-precise.
+     *
+     * @see https://stripe.com/docs/billing/subscriptions/prorations
      *
      * @param string $planId The plan id.
      *
      * @return int
      */
-    public static function getTrialDuration(string $planId): ?int
+    public static function getProrationPrice(string $planId): ?int
     {
-        if (self::isRegularPlan($planId)) {
+        if (!self::isPlanProrated($planId)) {
             return null;
         }
 
-        return self::getTrialEndDate($planId)->diffInDays(Carbon::now());
-    }
+        // We use anchor to avoid issues with leap years.
+        $nextAnchor = self::getProrationAnchor($planId);
+        $previous = $nextAnchor->clone()->subYear();
 
+        // Absolute
+        $periodLengthInSeconds = $nextAnchor->diffInRealSeconds($previous);
+        $secondsUntilAnchor = $nextAnchor->diffInRealSeconds(now());
 
-    /**
-     * Get the trial period price, which is the price for the period between now and the regular plan start date.
-     *
-     * @param string $planId The Braintree plan.
-     *
-     * @return int The price in cents (€).
-     */
-    public static function getTrialPeriodPrice(string $planId): ?int
-    {
-        if (self::isRegularPlan($planId)) {
-            return null;
-        }
+        $periodPrice = self::PLANS_DETAILS[self::ANNUALLY_PLAN]["price_per_period"];
 
-        $now = Carbon::now();
-        $trialEndDate = self::getTrialEndDate($planId);
-
-        $diffInMonths = $trialEndDate->diffInMonths($now);
-        $diffInDays = $trialEndDate->diffInDays($now->addMonths($diffInMonths));
-
-        return round(
-            $diffInMonths * self::PLANS_DETAILS[$planId]["price_per_month"]
-            + $diffInDays * (self::PLANS_DETAILS[$planId]["price_per_month"] / 30),
-            0);
+        return round($periodPrice * ($secondsUntilAnchor / $periodLengthInSeconds));
     }
 }

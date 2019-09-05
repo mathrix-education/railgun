@@ -35,52 +35,17 @@ post:
                 type: boolean
                 enum: [true]
               data:
-                description: The response data.
-                type: object
-                required: [subscription]
-                additionalProperties: false
-                properties:
-                  initial_payment_intent:
-                    nullable: true
-                    allOf:
-                      - $ref: '#/components/schemas/PaymentIntent'
-                  subscription:
-                    description: The newly created subscription.
-                    type: object
-                    required: [id, plan, status]
-                    additionalProperties: false
+                allOf:
+                  - $ref: '#/components/schemas/Subscription'
+                  - type: object
                     properties:
-                      id:
-                        description: The subscription id.
-                        type: string
-                        example: sub_Fj1cBjds5Hjv5v
                       latest_invoice:
-                        description: The subscription latest invoice.
-                        type: object
-                        required: [payment_intent]
-                        additionalProperties: false
-                        properties:
-                          payment_intent:
-                            $ref: '#/components/schemas/PaymentIntent'
-                      plan:
-                        description: The subscription plan.
-                        type: object
-                        properties:
-                          id:
-                            description: The plan id.
-                            type: string
-                            enum: [v5_monthly, v5_annually, v5_biannually]
-                            example: v5_monthly
-                      status:
-                        description: >-
-                          The subscription status. `incomplete` means that the first
-                          charge of the subscription requires 3D Secure 2
-                          Authentication.
-                        type: string
-                        enum:
-                          - active
-                          - incomplete
-                          - trialing
+                        allOf:
+                          - $ref: '#/components/schemas/Invoice'
+                          - type: object
+                            properties:
+                              payment_intent:
+                                $ref: '#/components/schemas/PaymentIntent'
     422:
       description: Card token has been refused.
       content:

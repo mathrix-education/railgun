@@ -2,6 +2,14 @@ description: The subscription latest invoice payment intent.
 type: object
 additionalProperties: false
 properties:
+  id:
+    description: The payment intent id.
+    type: string
+    example: pi_1FFRv2J3KapFDTUE5r8hFcIL
+  amount:
+    description: The payment intent amount (**in cents**).
+    type: integer
+    example: 1790
   client_secret:
     description: >-
       If subscription requires 3D Secure 2 Authentication, use the
@@ -12,6 +20,10 @@ properties:
       url: 'https://stripe.com/docs/stripe-js/reference#stripe-handle-card-payment'
     type: string
     example: 'pi_1FDZZPJ3KapFDTUE7ACor7QN_secret_Z1j93AE03EzhWB0nsCLYZlCm7'
+  created_at:
+    description: The date/time the payment intent was created.
+    type: string
+    format: date-time
   status:
     description: The payment intent status.
     type: string
@@ -23,6 +35,6 @@ properties:
       - canceled
       - succeeded
     externalDocs:
-      description: Payment Intent statusses on Stripe
+      description: Payment Intent statuses on Stripe
       url: https://stripe.com/docs/payments/intents#intent-statuses
 

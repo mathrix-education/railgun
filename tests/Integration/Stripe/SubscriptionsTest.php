@@ -3,8 +3,8 @@
 namespace Tests\Integration\Stripe;
 
 use App\Models\User;
+use App\Services\Stripe\SubscriptionUtils;
 use Mathrix\Lumen\JWT\Auth\JWT;
-use Mathrix\Lumen\Zero\Testing\Traits\DebugTrait;
 use Tests\APIStatelessTestCase;
 
 /**
@@ -16,97 +16,50 @@ use Tests\APIStatelessTestCase;
  */
 class SubscriptionsTest extends APIStatelessTestCase
 {
-    use DebugTrait;
-
-    /** @var User */
-    private $user;
-
-
-    public function setUp(): void
+    /**
+     * Given the test data set.
+     *
+     * @return array
+     *
+     * @see SubscriptionsTest::testPost()
+     */
+    public function postDataProvider()
     {
-        parent::setUp();
-        $this->user = factory(User::class)->create();
-        $this->user->createStripeCustomer();
-        JWT::actingAs($this->user);
+        return [
+            "monthly_cvc_fail" => ["v5_monthly", "tok_cvcCheckFail", 422, false],
+            "monthly_no_3ds2" => ["v5_monthly", "tok_fr", 200, true],
+            "monthly_3ds2" => ["v5_monthly", "tok_threeDSecure2Required", 200, false],
+            "annually_no_3ds2" => ["v5_annually", "tok_fr", 200, true],
+            "annually_3ds2" => ["v5_annually", "tok_threeDSecure2Required", 200, false]
+        ];
     }
 
 
     /**
      * POST /subscriptions
-     * Test v5_monthly with in invalid CVC.
+     * Test subscription creation in various cases.
+     *
+     * @param string $plan The plan to subscribe.
+     * @param string $token The card token.
+     * @param int $expectedStatus The HTTP expected status.
+     * @param bool $expectedPremium The user expected premium state.
+     *
+     * @dataProvider postDataProvider
      */
-    public function testPostMonthlyCVCFail(): void
+    public function testPost(string $plan, string $token, int $expectedStatus, bool $expectedPremium)
     {
+        $this->requester = factory(User::class)->create();
+        JWT::actingAs($this->requester);
+
         $this->json("post", "/subscriptions", [
-            "token" => "tok_cvcCheckFail",
-            "plan" => "v5_monthly"
+            "plan" => $plan,
+            "card" => [
+                "token" => $token,
+            ]
         ]);
 
+        $this->assertResponseStatus($expectedStatus);
         $this->assertOpenAPIResponse($this->response);
-        $this->assertFalse($this->user->premium);
-    }
-
-
-    /**
-     * POST /subscriptions
-     * Test v5_monthly with a card which does not require 3DS2.
-     */
-    public function testPostMonthlyNo3DS(): void
-    {
-        $this->json("post", "/subscriptions", [
-            "token" => "tok_fr",
-            "plan" => "v5_monthly"
-        ]);
-
-        $this->assertOpenAPIResponse($this->response);
-        $this->assertTrue($this->user->premium);
-    }
-
-
-    /**
-     * POST /subscriptions
-     * Test v5_monthly with a card which does require 3DS2.
-     */
-    public function testPostMonthly3DS2(): void
-    {
-        $this->json("post", "/subscriptions", [
-            "token" => "tok_threeDSecure2Required",
-            "plan" => "v5_monthly"
-        ]);
-
-        $this->assertOpenAPIResponse($this->response);
-        $this->assertFalse($this->user->premium);
-    }
-
-
-    /**
-     * POST /subscriptions
-     * Test v5_annually with a card which does not require 3DS2.
-     */
-    public function testPostAnnuallyNo3DS(): void
-    {
-        $this->json("post", "/subscriptions", [
-            "token" => "tok_fr",
-            "plan" => "v5_annually"
-        ]);
-
-        $this->assertOpenAPIResponse($this->response);
-        $this->assertTrue($this->user->premium);
-    }
-
-
-    /**
-     * POST /subscriptions
-     * Test v5_annually with a card which does require 3DS2.
-     */
-    public function testPostAnnually3DS2(): void
-    {
-        $this->json("post", "/subscriptions", [
-            "token" => "tok_threeDSecure2Required",
-            "plan" => "v5_annually"
-        ]);
-
-        $this->assertOpenAPIResponse($this->response);
-        $this->assertTrue($this->user->premium);
+        $this->assertEquals($expectedPremium, $this->requester->premium);
     }
 }

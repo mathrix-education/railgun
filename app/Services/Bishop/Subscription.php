@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Services\Stripe\Serializers;
+namespace App\Services\Bishop;
 
 use App\Models\User;
 use Braintree\CreditCard;
 use Braintree\PaymentMethod;
 use Braintree\PayPalAccount;
-use Braintree\Subscription;
 use Braintree\Subscription as BraintreeSubscription;
 use Braintree\Transaction\CreditCardDetails;
 use Braintree\Transaction\PayPalDetails;
@@ -15,32 +14,36 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Stripe\Card;
 use Stripe\Error\InvalidRequest;
+use Stripe\Invoice as StripeInvoice;
 use Stripe\Subscription as StripeSubscription;
 
-/**
- * Class SubscriptionSerializer.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA
- * @since 6.0.0
- */
-class SubscriptionSerializer
+class Subscription extends Bishop
 {
+    protected $dates = [
+        "cancel_at",
+        "canceled_at",
+        "created_at",
+        "current_period_start",
+        "current_period_end",
+        "payment_method.expiration"
+    ];
+
+
     /**
      * Serialize a subscription.
      *
      * @param StripeSubscription|BraintreeSubscription $subscription
      *
-     * @return array
+     * @return self
      */
-    public static function serialize($subscription): array
+    public static function from($subscription)
     {
         if ($subscription instanceof StripeSubscription) {
-            return SubscriptionSerializer::serializeStripe($subscription);
+            return new self(self::fromStripe($subscription));
         } else if ($subscription instanceof BraintreeSubscription) {
-            return SubscriptionSerializer::serializeBraintree($subscription);
+            return new self(self::fromBraintree($subscription));
         } else {
-            return $subscription->jsonSerialize();
+            return null;
         }
     }
 
@@ -52,23 +55,22 @@ class SubscriptionSerializer
      *
      * @return array
      */
-    public static function serializeStripe(StripeSubscription $subscription): array
+    public static function fromStripe(StripeSubscription $subscription): array
     {
         /** @var User $currentUser */
         $currentUser = Auth::user();
+
         /** @var Card $card */
         $card = null;
 
-        if ($currentUser->stripe_id === $subscription->customer) {
+        if ($currentUser && $currentUser->stripe_id === $subscription->customer) {
             /*
              * The current user is the same as the user who owns the subscription. We can try to iterate over its cards
              * to avoid to make an additional request to Stripe.
              */
             $customer = $currentUser->asStripeCustomer();
 
-            /**
-             * @var Card $card
-             */
+            /** @var Card $card */
             foreach ($customer->sources as $source) {
                 if ($source->id === $subscription->default_source) {
                     $card = $source;
@@ -78,6 +80,7 @@ class SubscriptionSerializer
         }
 
         if ($card === null) {
+            // If we did not found the card into the user sources, we can try to retrieve it from the Stripe API.
             try {
                 $card = Card::retrieve($subscription->default_source);
             } catch (InvalidRequest $e) {
@@ -88,13 +91,16 @@ class SubscriptionSerializer
         return [
             "type" => "stripe",
             "id" => $subscription->id,
-            "cancel_at" => carbon_auto($subscription->cancel_at),
+            "cancel_at" => $subscription->cancel_at,
             "cancel_at_period_end" => $subscription->cancel_at_period_end,
-            "canceled_at" => carbon_auto($subscription->canceled_at),
-            "created_at" => Carbon::createFromTimestamp($subscription->created),
-            "current_period_start" => carbon_auto($subscription->current_period_start),
-            "current_period_end" => carbon_auto($subscription->current_period_end),
+            "canceled_at" => $subscription->canceled_at,
+            "created_at" => $subscription->created,
+            "current_period_start" => $subscription->current_period_start,
+            "current_period_end" => $subscription->current_period_end,
             "customer" => $subscription->customer,
+            "latest_invoice" => $subscription->latest_invoice instanceof StripeInvoice
+                ? Invoice::from($subscription->latest_invoice)
+                : $subscription->latest_invoice,
             "plan" => [
                 "id" => $subscription->plan->id,
                 "amount" => $subscription->plan->amount,
@@ -103,10 +109,12 @@ class SubscriptionSerializer
                 "type" => "card",
                 "brand" => Str::slug($card->brand),
                 "last4" => $card->last4,
-                "expiration" => Carbon::create($card->exp_year, $card->exp_month, 1, 0, 0, 0)
+                "expiration" => Carbon::create(
+                    $card->exp_year, $card->exp_month, 1, 0, 0, 0
+                )->getTimestamp()
             ],
             "status" => $subscription->status,
-            "trial_end" => carbon_auto($subscription->trial_end)
+            "trial_end" => $subscription->trial_end
         ];
     }
 
@@ -118,7 +126,7 @@ class SubscriptionSerializer
      *
      * @return array
      */
-    public static function serializeBraintree(BraintreeSubscription $subscription): array
+    public static function fromBraintree(BraintreeSubscription $subscription): array
     {
         $trialEnd = null;
 
@@ -234,7 +242,7 @@ class SubscriptionSerializer
             "id" => $subscription->id,
             "cancel_at" => $cancelAt,
             "cancel_at_period_end" => $cancelAtPeriodEnd,
-            "canceled_at" => in_array($subscription->status, [Subscription::CANCELED, Subscription::EXPIRED])
+            "canceled_at" => in_array($subscription->status, [BraintreeSubscription::CANCELED, BraintreeSubscription::EXPIRED])
                 ? carbon_auto($subscription->updatedAt) : null,
             "created_at" => carbon_auto($subscription->createdAt),
             "current_period_start" => carbon_auto($subscription->billingPeriodStartDate),

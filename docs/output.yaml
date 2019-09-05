@@ -774,6 +774,54 @@ components:
           description: 'The grade last update date-time.'
           type: string
           format: date-time
+    Invoice:
+      description: Invoice
+      type: object
+      properties:
+        id:
+          description: 'The invoice id.'
+          type: string
+          example: in_1FFRv2J3KapFDTUEAg7bqbxt
+        amount_due:
+          description: 'The invoice amount due (**in cents**).'
+          type: integer
+          example: 1790
+        amount_paid:
+          description: 'The invoice amount paid (**in cents**).'
+          type: integer
+          example: 0
+        hosted_invoice_url:
+          description: 'The invoice payment page hosted by Stripe.'
+          type: string
+          example: 'https://pay.stripe.com/invoice/invst_JyuaGOzhuskhxfMgqkG3q9uWDV'
+        invoice_pdf:
+          description: 'The invoice PDF document.'
+          type: string
+          example: 'https://pay.stripe.com/invoice/invst_JyuaGOzhuskhxfMgqkG3q9uWDV/pdf'
+        period_end:
+          description: 'The invoice related period end date/time.'
+          type: string
+          format: date-time
+        period_start:
+          description: 'The invoice related period start date/time.'
+          type: string
+          format: date-time
+        status:
+          description: 'The invoice status.'
+          type: string
+          enum:
+            - draft
+            - open
+            - paid
+            - uncollectible
+            - void
+          externalDocs:
+            description: 'Stripe Invoices overview'
+            url: 'https://stripe.com/docs/billing/invoices/workflow#workflow-overview'
+        subscription:
+          description: 'The related subscription id.'
+          type: string
+          example: sub_FkxqSe4WQfbU0D
     Level:
       description: File
       type: object
@@ -913,6 +961,14 @@ components:
       type: object
       additionalProperties: false
       properties:
+        id:
+          description: 'The payment intent id.'
+          type: string
+          example: pi_1FFRv2J3KapFDTUE5r8hFcIL
+        amount:
+          description: 'The payment intent amount (**in cents**).'
+          type: integer
+          example: 1790
         client_secret:
           description: 'If subscription requires 3D Secure 2 Authentication, use the `client_secret` to authenticate the used card via the Stripe.js `handleCardPayment()` function.'
           externalDocs:
@@ -920,6 +976,10 @@ components:
             url: 'https://stripe.com/docs/stripe-js/reference#stripe-handle-card-payment'
           type: string
           example: pi_1FDZZPJ3KapFDTUE7ACor7QN_secret_Z1j93AE03EzhWB0nsCLYZlCm7
+        created_at:
+          description: 'The date/time the payment intent was created.'
+          type: string
+          format: date-time
         status:
           description: 'The payment intent status.'
           type: string
@@ -931,18 +991,17 @@ components:
             - canceled
             - succeeded
           externalDocs:
-            description: 'Payment Intent statusses on Stripe'
+            description: 'Payment Intent statuses on Stripe'
             url: 'https://stripe.com/docs/payments/intents#intent-statuses'
     Plan:
       description: Plan
       type: object
       required:
         - id
-        - regular
+        - prorated
         - period
         - price_per_period
         - price_per_month
-        - trial_days
         - trial_ends_at
         - trial_price
       properties:
@@ -950,7 +1009,7 @@ components:
           description: 'The plan id.'
           type: string
           example: v5_annually
-        regular:
+        prorated:
           description: 'If the plan is **regular**, which means that there is no initial big payment.'
           type: boolean
           example: false
@@ -969,11 +1028,6 @@ components:
           description: 'The plan price per month **in cents**.'
           type: integer
           example: 1290
-        trial_days:
-          description: 'If the plan is not **regular**, the duration if the trial period in days, `null` otherwise.'
-          type: integer
-          nullable: true
-          example: 333
         trial_ends_at:
           description: 'If the plan is not **regular**, the trial end date, `null` otherwise.'
           type: string
@@ -1229,12 +1283,15 @@ components:
         created_at:
           description: 'The date/time the subscription was created.'
           type: string
+          format: date-time
         current_period_start:
           description: 'The date/time of the beginning of the current period.'
           type: string
+          format: date-time
         current_period_end:
           description: 'The date/time of the end of the current period.'
           type: string
+          format: date-time
         customer:
           description: 'The customer id who own the subscription. Refers to `stripe_id` or `braintree_id` on users.'
           type: string
@@ -1290,6 +1347,7 @@ components:
                 expiration:
                   description: 'The credit card expiration date/time.'
                   type: string
+                  format: date-time
             -
               description: 'The PayPal account linked to the subscription.'
               type: object
@@ -1321,6 +1379,7 @@ components:
         trial_end:
           description: 'The subscription trial end date, if necessary. `null` otherwise.'
           type: string
+          format: date-time
           nullable: true
     User:
       description: User
@@ -3022,7 +3081,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '19'
+          example: '0'
           required: true
           style: form
         -
@@ -3050,7 +3109,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '19'
+                    example: '0'
                     readOnly: true
                   per_page:
                     description: 'The number of activity per page.'
@@ -3060,7 +3119,7 @@ paths:
                   total:
                     description: 'The total number of activity processed.'
                     type: integer
-                    example: '943'
+                    example: '1904'
                     readOnly: true
                   data:
                     description: 'The activity as an array.'
@@ -3116,7 +3175,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '381'
+            example: '58'
       responses:
         200:
           description: 'The requested activity.'
@@ -3146,7 +3205,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '517'
+            example: '552'
       requestBody:
         content:
           application/json:
@@ -3187,7 +3246,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '883'
+            example: '929'
       responses:
         200:
           description: 'The deletion result.'
@@ -3203,7 +3262,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Activity id 883 was successfully deleted.'
+                    example: 'Activity id 929 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -3271,7 +3330,7 @@ paths:
           description: 'The activity id'
           schema:
             type: integer
-          example: '967'
+          example: '673'
           required: true
         -
           name: page
@@ -3279,7 +3338,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '10'
+          example: '5'
           required: true
         -
           name: perPage
@@ -3505,7 +3564,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '3'
+          example: '12'
           required: true
           style: form
         -
@@ -3533,7 +3592,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '3'
+                    example: '12'
                     readOnly: true
                   per_page:
                     description: 'The number of category per page.'
@@ -3543,7 +3602,7 @@ paths:
                   total:
                     description: 'The total number of category processed.'
                     type: integer
-                    example: '1924'
+                    example: '695'
                     readOnly: true
                   data:
                     description: 'The category as an array.'
@@ -3599,7 +3658,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '363'
+            example: '908'
       responses:
         200:
           description: 'The requested category.'
@@ -3633,7 +3692,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '828'
+            example: '557'
       requestBody:
         content:
           application/json:
@@ -3674,7 +3733,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '702'
+            example: '21'
       responses:
         200:
           description: 'The deletion result.'
@@ -3690,7 +3749,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Category id 702 was successfully deleted.'
+                    example: 'Category id 21 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -3710,7 +3769,7 @@ paths:
           description: 'The category id'
           schema:
             type: integer
-          example: '126'
+          example: '528'
           required: true
         -
           name: page
@@ -3718,7 +3777,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '14'
+          example: '18'
           required: true
         -
           name: perPage
@@ -3779,7 +3838,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '10'
+          example: '13'
           required: true
           style: form
         -
@@ -3807,7 +3866,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '10'
+                    example: '13'
                     readOnly: true
                   per_page:
                     description: 'The number of chapter per page.'
@@ -3817,7 +3876,7 @@ paths:
                   total:
                     description: 'The total number of chapter processed.'
                     type: integer
-                    example: '1966'
+                    example: '2849'
                     readOnly: true
                   data:
                     description: 'The chapter as an array.'
@@ -3904,7 +3963,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '660'
+            example: '44'
       responses:
         200:
           description: 'The requested chapter.'
@@ -3934,7 +3993,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '363'
+            example: '785'
       requestBody:
         content:
           application/json:
@@ -3975,7 +4034,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '292'
+            example: '245'
       responses:
         200:
           description: 'The deletion result.'
@@ -3991,7 +4050,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Chapter id 292 was successfully deleted.'
+                    example: 'Chapter id 245 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -4011,7 +4070,7 @@ paths:
           description: 'The chapter id'
           schema:
             type: integer
-          example: '496'
+          example: '956'
           required: true
         -
           name: page
@@ -4019,7 +4078,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '3'
+          example: '4'
           required: true
         -
           name: perPage
@@ -4110,7 +4169,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '17'
+          example: '13'
           required: true
           style: form
         -
@@ -4138,7 +4197,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '17'
+                    example: '13'
                     readOnly: true
                   per_page:
                     description: 'The number of comment per page.'
@@ -4148,7 +4207,7 @@ paths:
                   total:
                     description: 'The total number of comment processed.'
                     type: integer
-                    example: '1095'
+                    example: '2574'
                     readOnly: true
                   data:
                     description: 'The comment as an array.'
@@ -4204,7 +4263,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '14'
+          example: '15'
           required: true
           style: form
         -
@@ -4232,7 +4291,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '14'
+                    example: '15'
                     readOnly: true
                   per_page:
                     description: 'The number of comment per page.'
@@ -4242,7 +4301,7 @@ paths:
                   total:
                     description: 'The total number of comment processed.'
                     type: integer
-                    example: '1670'
+                    example: '1079'
                     readOnly: true
                   data:
                     description: 'The comment as an array.'
@@ -4267,7 +4326,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '86'
+            example: '834'
       responses:
         200:
           description: 'The requested comment.'
@@ -4301,7 +4360,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '474'
+            example: '727'
       requestBody:
         content:
           application/json:
@@ -4343,7 +4402,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '712'
+            example: '358'
       responses:
         200:
           description: 'The deletion result.'
@@ -4359,7 +4418,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Comment id 712 was successfully deleted.'
+                    example: 'Comment id 358 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -4379,7 +4438,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '18'
+          example: '6'
           required: true
           style: form
         -
@@ -4407,7 +4466,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '18'
+                    example: '6'
                     readOnly: true
                   per_page:
                     description: 'The number of country per page.'
@@ -4417,7 +4476,7 @@ paths:
                   total:
                     description: 'The total number of country processed.'
                     type: integer
-                    example: '1318'
+                    example: '2963'
                     readOnly: true
                   data:
                     description: 'The country as an array.'
@@ -4501,7 +4560,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '338'
+            example: '363'
       responses:
         200:
           description: 'The requested country.'
@@ -4531,7 +4590,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '269'
+            example: '934'
       requestBody:
         content:
           application/json:
@@ -4572,7 +4631,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '533'
+            example: '586'
       responses:
         200:
           description: 'The deletion result.'
@@ -4588,7 +4647,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Country id 533 was successfully deleted.'
+                    example: 'Country id 586 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -4608,7 +4667,7 @@ paths:
           description: 'The country id'
           schema:
             type: integer
-          example: '65'
+          example: '982'
           required: true
         -
           name: page
@@ -4616,7 +4675,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '1'
+          example: '11'
           required: true
         -
           name: perPage
@@ -4673,7 +4732,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '8'
+          example: '1'
           required: true
           style: form
         -
@@ -4701,7 +4760,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '8'
+                    example: '1'
                     readOnly: true
                   per_page:
                     description: 'The number of discipline per page.'
@@ -4711,7 +4770,7 @@ paths:
                   total:
                     description: 'The total number of discipline processed.'
                     type: integer
-                    example: '2170'
+                    example: '2568'
                     readOnly: true
                   data:
                     description: 'The discipline as an array.'
@@ -4795,7 +4854,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '580'
+            example: '180'
       responses:
         200:
           description: 'The requested discipline.'
@@ -4825,7 +4884,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '106'
+            example: '544'
       requestBody:
         content:
           application/json:
@@ -4866,7 +4925,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '527'
+            example: '662'
       responses:
         200:
           description: 'The deletion result.'
@@ -4882,7 +4941,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Discipline id 527 was successfully deleted.'
+                    example: 'Discipline id 662 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -4902,7 +4961,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '16'
+          example: '11'
           required: true
           style: form
         -
@@ -4930,7 +4989,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '16'
+                    example: '11'
                     readOnly: true
                   per_page:
                     description: 'The number of discount per page.'
@@ -4940,7 +4999,7 @@ paths:
                   total:
                     description: 'The total number of discount processed.'
                     type: integer
-                    example: '1848'
+                    example: '2078'
                     readOnly: true
                   data:
                     description: 'The discount as an array.'
@@ -5032,7 +5091,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '151'
+            example: '996'
       responses:
         200:
           description: 'The requested discount.'
@@ -5066,7 +5125,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '73'
+            example: '845'
       requestBody:
         content:
           application/json:
@@ -5107,7 +5166,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '28'
+            example: '359'
       responses:
         200:
           description: 'The deletion result.'
@@ -5123,7 +5182,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Discount id 28 was successfully deleted.'
+                    example: 'Discount id 359 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -5461,7 +5520,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '12'
+          example: '18'
           required: true
           style: form
         -
@@ -5489,7 +5548,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '12'
+                    example: '18'
                     readOnly: true
                   per_page:
                     description: 'The number of grade per page.'
@@ -5499,7 +5558,7 @@ paths:
                   total:
                     description: 'The total number of grade processed.'
                     type: integer
-                    example: '2619'
+                    example: '360'
                     readOnly: true
                   data:
                     description: 'The grade as an array.'
@@ -5618,7 +5677,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '874'
+            example: '638'
       responses:
         200:
           description: 'The requested grade.'
@@ -5648,7 +5707,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '244'
+            example: '389'
       requestBody:
         content:
           application/json:
@@ -5689,7 +5748,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '888'
+            example: '106'
       responses:
         200:
           description: 'The deletion result.'
@@ -5705,7 +5764,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Grade id 888 was successfully deleted.'
+                    example: 'Grade id 106 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -5725,7 +5784,7 @@ paths:
           description: 'The grade id'
           schema:
             type: integer
-          example: '671'
+          example: '402'
           required: true
         -
           name: page
@@ -5733,7 +5792,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '14'
+          example: '12'
           required: true
         -
           name: perPage
@@ -5794,7 +5853,7 @@ paths:
           description: 'The grade id'
           schema:
             type: integer
-          example: '875'
+          example: '262'
           required: true
         -
           name: page
@@ -5802,7 +5861,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '7'
+          example: '19'
           required: true
         -
           name: perPage
@@ -5863,7 +5922,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '2'
+          example: '7'
           required: true
           style: form
         -
@@ -5891,7 +5950,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '2'
+                    example: '7'
                     readOnly: true
                   per_page:
                     description: 'The number of chapter per page.'
@@ -5901,7 +5960,7 @@ paths:
                   total:
                     description: 'The total number of chapter processed.'
                     type: integer
-                    example: '362'
+                    example: '150'
                     readOnly: true
                   data:
                     description: 'The chapter as an array.'
@@ -5926,7 +5985,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '9'
+          example: '18'
           required: true
           style: form
         -
@@ -5954,7 +6013,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '9'
+                    example: '18'
                     readOnly: true
                   per_page:
                     description: 'The number of chapter per page.'
@@ -5964,7 +6023,7 @@ paths:
                   total:
                     description: 'The total number of chapter processed.'
                     type: integer
-                    example: '687'
+                    example: '2040'
                     readOnly: true
                   data:
                     description: 'The chapter as an array.'
@@ -5989,7 +6048,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '15'
+          example: '2'
           required: true
           style: form
         -
@@ -6017,7 +6076,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '15'
+                    example: '2'
                     readOnly: true
                   per_page:
                     description: 'The number of level per page.'
@@ -6027,7 +6086,7 @@ paths:
                   total:
                     description: 'The total number of level processed.'
                     type: integer
-                    example: '2591'
+                    example: '1245'
                     readOnly: true
                   data:
                     description: 'The level as an array.'
@@ -6069,7 +6128,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '2'
+          example: '9'
           required: true
           style: form
         -
@@ -6097,7 +6156,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '2'
+                    example: '9'
                     readOnly: true
                   per_page:
                     description: 'The number of module per page.'
@@ -6107,7 +6166,7 @@ paths:
                   total:
                     description: 'The total number of module processed.'
                     type: integer
-                    example: '1153'
+                    example: '1456'
                     readOnly: true
                   data:
                     description: 'The module as an array.'
@@ -6163,7 +6222,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '303'
+            example: '538'
       responses:
         200:
           description: 'The requested module.'
@@ -6193,7 +6252,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '827'
+            example: '21'
       requestBody:
         content:
           application/json:
@@ -6234,7 +6293,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '74'
+            example: '145'
       responses:
         200:
           description: 'The deletion result.'
@@ -6250,7 +6309,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Module id 74 was successfully deleted.'
+                    example: 'Module id 145 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -6270,7 +6329,7 @@ paths:
           description: 'The module id'
           schema:
             type: integer
-          example: '340'
+          example: '833'
           required: true
         -
           name: page
@@ -6278,7 +6337,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '4'
+          example: '10'
           required: true
         -
           name: perPage
@@ -6375,7 +6434,7 @@ paths:
           description: 'The module id'
           schema:
             type: integer
-          example: '619'
+          example: '339'
           required: true
         -
           name: page
@@ -6383,7 +6442,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '9'
+          example: '12'
           required: true
         -
           name: perPage
@@ -6475,7 +6534,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '0'
+          example: '2'
           required: true
           style: form
         -
@@ -6503,7 +6562,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '0'
+                    example: '2'
                     readOnly: true
                   per_page:
                     description: 'The number of notion per page.'
@@ -6513,7 +6572,7 @@ paths:
                   total:
                     description: 'The total number of notion processed.'
                     type: integer
-                    example: '152'
+                    example: '1951'
                     readOnly: true
                   data:
                     description: 'The notion as an array.'
@@ -6538,7 +6597,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '758'
+            example: '380'
       responses:
         200:
           description: 'The requested notion.'
@@ -6568,7 +6627,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '212'
+            example: '992'
       requestBody:
         content:
           application/json:
@@ -6609,7 +6668,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '522'
+            example: '813'
       responses:
         200:
           description: 'The deletion result.'
@@ -6625,7 +6684,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Notion id 522 was successfully deleted.'
+                    example: 'Notion id 813 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -6645,7 +6704,7 @@ paths:
           description: 'The notion id'
           schema:
             type: integer
-          example: '281'
+          example: '898'
           required: true
         -
           name: page
@@ -6653,7 +6712,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '7'
+          example: '0'
           required: true
         -
           name: perPage
@@ -6737,7 +6796,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '0'
+          example: '1'
           required: true
           style: form
         -
@@ -6765,7 +6824,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '0'
+                    example: '1'
                     readOnly: true
                   per_page:
                     description: 'The number of post per page.'
@@ -6775,7 +6834,7 @@ paths:
                   total:
                     description: 'The total number of post processed.'
                     type: integer
-                    example: '2902'
+                    example: '1489'
                     readOnly: true
                   data:
                     description: 'The post as an array.'
@@ -6831,7 +6890,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '19'
+          example: '7'
           required: true
           style: form
         -
@@ -6859,7 +6918,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '19'
+                    example: '7'
                     readOnly: true
                   per_page:
                     description: 'The number of post per page.'
@@ -6869,7 +6928,7 @@ paths:
                   total:
                     description: 'The total number of post processed.'
                     type: integer
-                    example: '1425'
+                    example: '2466'
                     readOnly: true
                   data:
                     description: 'The post as an array.'
@@ -6890,7 +6949,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '55'
+            example: '129'
       responses:
         200:
           description: 'The requested post.'
@@ -6924,7 +6983,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '128'
+            example: '249'
       requestBody:
         content:
           application/json:
@@ -6965,7 +7024,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '770'
+            example: '272'
       responses:
         200:
           description: 'The deletion result.'
@@ -6981,7 +7040,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Post id 770 was successfully deleted.'
+                    example: 'Post id 272 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -7001,7 +7060,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '1'
+          example: '13'
           required: true
           style: form
         -
@@ -7029,7 +7088,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '1'
+                    example: '13'
                     readOnly: true
                   per_page:
                     description: 'The number of product per page.'
@@ -7039,7 +7098,7 @@ paths:
                   total:
                     description: 'The total number of product processed.'
                     type: integer
-                    example: '2436'
+                    example: '2496'
                     readOnly: true
                   data:
                     description: 'The product as an array.'
@@ -7101,7 +7160,7 @@ paths:
               - training
               - section
               - lesson
-          example: '4'
+          example: '20'
           required: true
           style: form
           default: all
@@ -7130,7 +7189,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '4'
+                    example: '20'
                     readOnly: true
                   per_page:
                     description: 'The number of product per page.'
@@ -7140,7 +7199,7 @@ paths:
                   total:
                     description: 'The total number of product processed.'
                     type: integer
-                    example: '990'
+                    example: '1600'
                     readOnly: true
                   data:
                     description: 'The product as an array.'
@@ -7199,7 +7258,7 @@ paths:
               - training
               - section
               - lesson
-          example: '3'
+          example: '16'
           required: true
           style: form
         -
@@ -7227,7 +7286,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '3'
+                    example: '16'
                     readOnly: true
                   per_page:
                     description: 'The number of product per page.'
@@ -7237,7 +7296,7 @@ paths:
                   total:
                     description: 'The total number of product processed.'
                     type: integer
-                    example: '287'
+                    example: '175'
                     readOnly: true
                   data:
                     description: 'The product as an array.'
@@ -7258,7 +7317,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '533'
+            example: '389'
       responses:
         200:
           description: 'The requested product.'
@@ -7292,7 +7351,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '972'
+            example: '147'
       requestBody:
         content:
           application/json:
@@ -7333,7 +7392,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '567'
+            example: '40'
       responses:
         200:
           description: 'The deletion result.'
@@ -7349,7 +7408,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Product id 567 was successfully deleted.'
+                    example: 'Product id 40 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -7369,7 +7428,7 @@ paths:
           description: 'The product id'
           schema:
             type: integer
-          example: '487'
+          example: '867'
           required: true
         -
           name: page
@@ -7377,7 +7436,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '15'
+          example: '5'
           required: true
         -
           name: perPage
@@ -7510,7 +7569,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '13'
+          example: '14'
           required: true
           style: form
         -
@@ -7538,7 +7597,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '13'
+                    example: '14'
                     readOnly: true
                   per_page:
                     description: 'The number of report per page.'
@@ -7548,7 +7607,7 @@ paths:
                   total:
                     description: 'The total number of report processed.'
                     type: integer
-                    example: '2108'
+                    example: '2615'
                     readOnly: true
                   data:
                     description: 'The report as an array.'
@@ -7604,7 +7663,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '882'
+            example: '264'
       responses:
         200:
           description: 'The requested report.'
@@ -7638,7 +7697,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '282'
+            example: '506'
       requestBody:
         content:
           application/json:
@@ -7679,7 +7738,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '544'
+            example: '83'
       responses:
         200:
           description: 'The deletion result.'
@@ -7695,7 +7754,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Report id 544 was successfully deleted.'
+                    example: 'Report id 83 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -7939,21 +7998,12 @@ paths:
                     enum:
                       - true
                   data:
-                    description: 'The response data.'
-                    type: object
-                    required:
-                      - subscription
-                    additionalProperties: false
-                    properties:
-                      initial_payment_intent:
-                        nullable: true
-                        allOf: [{ $ref: '#/components/schemas/PaymentIntent' }]
-                      subscription:
-                        description: 'The newly created subscription.'
+                    allOf:
+                      -
+                        $ref: '#/components/schemas/Subscription'
+                      -
                         type: object
-                        required: [id, plan, status]
-                        additionalProperties: false
-                        properties: { id: { description: 'The subscription id.', type: string, example: sub_Fj1cBjds5Hjv5v }, latest_invoice: { description: 'The subscription latest invoice.', type: object, required: [payment_intent], additionalProperties: false, properties: { payment_intent: { $ref: '#/components/schemas/PaymentIntent' } } }, plan: { description: 'The subscription plan.', type: object, properties: { id: { description: 'The plan id.', type: string, enum: [v5_monthly, v5_annually, v5_biannually], example: v5_monthly } } }, status: { description: 'The subscription status. `incomplete` means that the first charge of the subscription requires 3D Secure 2 Authentication.', type: string, enum: [active, incomplete, trialing] } }
+                        properties: { latest_invoice: { allOf: [{ $ref: '#/components/schemas/Invoice' }, { type: object, properties: { payment_intent: { $ref: '#/components/schemas/PaymentIntent' } } }] } }
         422:
           description: 'Card token has been refused.'
           content:
@@ -7988,7 +8038,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '17'
+          example: '1'
           required: true
           style: form
         -
@@ -8016,7 +8066,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '17'
+                    example: '1'
                     readOnly: true
                   per_page:
                     description: 'The number of user per page.'
@@ -8026,7 +8076,7 @@ paths:
                   total:
                     description: 'The total number of user processed.'
                     type: integer
-                    example: '1712'
+                    example: '1509'
                     readOnly: true
                   data:
                     description: 'The user as an array.'
@@ -8087,7 +8137,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '17'
+          example: '2'
           required: true
           style: form
         -
@@ -8115,7 +8165,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '17'
+                    example: '2'
                     readOnly: true
                   per_page:
                     description: 'The number of user per page.'
@@ -8125,7 +8175,7 @@ paths:
                   total:
                     description: 'The total number of user processed.'
                     type: integer
-                    example: '1495'
+                    example: '2922'
                     readOnly: true
                   data:
                     description: 'The user as an array.'
@@ -8196,7 +8246,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '890'
+            example: '420'
       responses:
         200:
           description: 'The requested user.'
@@ -8233,7 +8283,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '921'
+            example: '40'
       requestBody:
         content:
           application/json:
@@ -8275,7 +8325,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '997'
+            example: '563'
       responses:
         200:
           description: 'The deletion result.'
@@ -8291,7 +8341,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'User id 997 was successfully deleted.'
+                    example: 'User id 563 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:

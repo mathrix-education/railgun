@@ -71,7 +71,6 @@ class SystemController extends BaseController
     }
 
 
-
     /**
      * GET /system/health
      * Health check for Docker
@@ -117,6 +116,12 @@ class SystemController extends BaseController
 
 
     public function sitemap()
+    {
+        $response = new Response();
+    }
+
+
+    public function sitemap2()
     {
         $webroot = env("APP_WEBROOT");
 

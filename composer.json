@@ -1,7 +1,7 @@
 {
   "name": "mathrix/education-api",
   "description": "The Mathrix Education Lumen API.",
-  "version": "5.2.0",
+  "version": "6.0.0",
   "type": "project",
   "keywords": [
     "education",
@@ -9,7 +9,7 @@
     "php",
     "lumen"
   ],
-  "homepage": "https://mathrix.fr/api",
+  "homepage": "https://api.mathrix.fr",
   "license": "proprietary",
   "authors": [
     {
@@ -33,13 +33,9 @@
     "ext-zip": "*",
     "barryvdh/laravel-cors": "v0.11.3",
     "braintree/braintree_php": "3.40",
-    "codeinternetapplications/monolog-stackdriver": "1.2.1",
     "facebook/graph-sdk": "^5.7",
     "fzaninotto/faker": "v1.8.0",
     "guzzlehttp/guzzle": "6.3.3",
-    "illuminate/mail": "5.8.28",
-    "illuminate/notifications": "5.8.28",
-    "illuminate/routing": "5.8.28",
     "laravel/lumen-framework": "5.8.10",
     "league/flysystem": " 1.0.53",
     "mathrix/lumen-chainer": "1.2.0",
@@ -49,7 +45,6 @@
     "sentry/sentry-laravel": "1.1.0",
     "spatie/laravel-sitemap": "^5.4",
     "stripe/stripe-php": "^6.43",
-    "superbalist/laravel-google-cloud-storage": "2.2.1",
     "vlucas/phpdotenv": "v3.4.0"
   },
   "require-dev": {
