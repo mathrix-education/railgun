@@ -37,9 +37,6 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->seedFromFactory(Activity::class, 200);
         $this->seedFromFactory(Module::class, 250);
 
-        // Levels
-        $this->call(LevelTableSeeder::class);
-
         // Users
         $this->seedFromFactory(User::class, 100);
         User::query()->firstOrFail()->update([
