@@ -35,14 +35,14 @@ steps:
   # Build, push and deploy API image
   # --------------------------------
   - id: 'docker:build'
-    waitFor: ['docker-compose:tests']
+    waitFor: ['node:compile']
     name: 'gcr.io/cloud-builders/docker'
     args: ['build',
            '--build-arg', 'COMMIT_SHORT_SHA=$SHORT_SHA',
            '-t', 'eu.gcr.io/$PROJECT_ID/education-api:$BRANCH_NAME-$SHORT_SHA',
            '.']
   - id: 'docker:push'
-    waitFor: ['docker:build:api']
+    waitFor: ['docker:build']
     name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'eu.gcr.io/$PROJECT_ID/education-api:$BRANCH_NAME-$SHORT_SHA']
   - id: 'cloud-run:deploy'
