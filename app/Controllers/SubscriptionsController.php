@@ -4,12 +4,17 @@ namespace App\Controllers;
 
 use App\Exceptions\UserAlreadyPremiumException;
 use App\Models\User;
+use App\Services\Bishop\Invoice;
 use App\Services\Bishop\Subscription;
 use App\Services\Stripe\Pipelines\SubscriptionCreationPipeline;
 use App\Services\Stripe\Pipelines\SubscriptionMigrationPipeline;
 use Illuminate\Http\Request;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
+use Mathrix\Lumen\Zero\Exceptions\Http\Http401UnauthorizedException;
+use Mathrix\Lumen\Zero\Responses\PaginationJsonResponse;
 use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
+use Stripe\Error\Api as StripeAPIException;
+use Stripe\Invoice as StripeInvoice;
 use Stripe\SetupIntent;
 use Stripe\Subscription as StripeSubscription;
 
@@ -48,6 +53,49 @@ class SubscriptionsController extends BaseController
             [],
             $data->status === StripeSubscription::STATUS_INCOMPLETE ? 202 : 200
         );
+    }
+
+
+    /**
+     * GET /subscriptions/{subscriptionId}/invoices
+     *
+     * @param Request $request
+     *
+     * @param string $subscriptionId
+     *
+     * @return SuccessJsonResponse
+     * @throws Http401UnauthorizedException
+     * @throws StripeAPIException
+     */
+    public function invoices(Request $request, string $subscriptionId): SuccessJsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+        [$page, $perPage] = PaginationJsonResponse::getPagination();
+
+        // TODO: do collection pagination
+
+        $invoices = StripeInvoice::all([
+            "subscription" => $subscriptionId,
+            "limit" => $perPage
+        ]);
+
+        $data = [];
+
+        /** @var StripeInvoice $invoice */
+        foreach ($invoices as $invoice) {
+            if (!scope($user, "invoices:read") && $invoice->customer !== $user->stripe_id) {
+                throw new Http401UnauthorizedException([], "Failed to pass invoices policy");
+            }
+
+            $data[] = Invoice::from($invoice);
+        }
+
+        return new SuccessJsonResponse($data, [
+            "page" => $page,
+            "per_page" => $perPage,
+            "total" => count($data)
+        ]);
     }
 
 

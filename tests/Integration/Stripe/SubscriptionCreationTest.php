@@ -4,6 +4,7 @@ namespace Tests\Integration\Stripe;
 
 use App\Models\User;
 use Mathrix\Lumen\JWT\Auth\JWT;
+use Tests\APIStatefulTestCase;
 use Tests\APIStatelessTestCase;
 
 /**
@@ -64,5 +65,7 @@ class SubscriptionCreationTest extends APIStatelessTestCase
         $this->assertResponseStatus($expectedStatus);
         $this->assertOpenAPIResponse($this->response);
         $this->assertEquals($expectedPremium, $this->requester->premium);
+
+        $response = json_decode($this->response->getContent());
     }
 }
