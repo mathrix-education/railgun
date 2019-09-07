@@ -23,9 +23,12 @@ class KMSUtils
      */
     public static function keychain(string $environment): array
     {
-        $glob = base_path("environments/{$environment}/") . "{*,.[!.]*,..?*}";
+        $path = base_path("environments/{$environment}");
 
-        return glob($glob); // GLOB_BRACE
+        return array_merge(
+            glob("$path/*"),
+            glob("$path/.[!.]*")
+        );
     }
 
 

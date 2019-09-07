@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Console\Commands\GoogleCloud\KMSUtils;
 use Mathrix\Lumen\Zero\Console\Commands\BaseCommand;
 
 /**
