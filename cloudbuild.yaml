@@ -27,7 +27,7 @@ steps:
   # Install Node dependencies using yarn
   # ------------------------------------
   - id: 'node:compile'
-    waitFor: ['gcloud:kms:decrypt']
+    waitFor: ['composer:install']
     name: 'node:12-alpine'
     entrypoint: 'deploy/steps/2_yarn.sh'
 
