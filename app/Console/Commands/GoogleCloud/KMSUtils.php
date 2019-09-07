@@ -25,7 +25,7 @@ class KMSUtils
     {
         $glob = base_path("environments/{$environment}/") . "{*,.[!.]*,..?*}";
 
-        return glob($glob, GLOB_BRACE);
+        return glob($glob, 1024); // GLOB_BRACE
     }
 
 
