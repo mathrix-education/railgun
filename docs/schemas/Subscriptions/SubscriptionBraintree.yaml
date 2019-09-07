@@ -1,0 +1,11 @@
+$extends:
+  SubscriptionBase.yaml:
+description: Braintree Subscription
+type: object
+properties:
+  type:
+    enum: [braintree]
+  payment_method:
+    oneOf:
+      - $ref: '#/components/schemas/CreditCard'
+      - $ref: '#/components/schemas/PayPalAccount'

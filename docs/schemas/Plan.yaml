@@ -1,6 +1,6 @@
 description: Plan
 type: object
-required: [id, prorated, period, price_per_period, price_per_month, trial_ends_at, trial_price]
+required: [id, prorated, period, price_per_period, price_per_month, proration_ends_at, proration_price]
 properties:
   id:
     description: The plan id.
@@ -23,13 +23,13 @@ properties:
     description: The plan price per month **in cents**.
     type: integer
     example: 1290
-  trial_ends_at:
+  proration_ends_at:
     description: >-
       If the plan is not **regular**, the trial end date, `null` otherwise.
     type: string
     nullable: true
     example: 2020-07-30T22:00:00.000000Z
-  trial_price:
+  proration_price:
     description: >-
       If the plan is not **regular**, the trial price in cents, `null` otherwise.
     type: integer

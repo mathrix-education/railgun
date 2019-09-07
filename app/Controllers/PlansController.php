@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Services\Stripe\SubscriptionUtils;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
+use Mathrix\Lumen\Zero\Responses\PaginationJsonResponse;
 use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
 
 /**
@@ -33,11 +34,17 @@ class PlansController extends BaseController
             }
 
             $data[] = array_merge($plan, [
-                "trial_ends_at" => $trialEndsAt,
-                "trial_price" => SubscriptionUtils::getProrationPrice($planId)
+                "proration_ends_at" => $trialEndsAt,
+                "proration_price" => SubscriptionUtils::getProrationPrice($planId)
             ]);
         }
 
-        return new SuccessJsonResponse($data);
+        [$page, $perPage] = PaginationJsonResponse::getPagination();
+
+        return new SuccessJsonResponse($data, [
+            "page" => $page,
+            "per_page" => $perPage,
+            "total" => count($data),
+        ]);
     }
 }

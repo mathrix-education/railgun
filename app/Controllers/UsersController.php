@@ -173,7 +173,6 @@ class UsersController extends BaseController
      *
      * @return JsonResponse
      * @throws Http401UnauthorizedException
-     * @throws InvalidBraintreeCustomerException
      */
     public function getSubscriptions(Request $request, int $userId)
     {
@@ -206,9 +205,11 @@ class UsersController extends BaseController
             }
         }
 
+        [$page, $perPage] = PaginationJsonResponse::getPagination();
+
         return new JsonResponse([
-            "page" => 0,
-            "perPage" => 1000,
+            "page" => $page,
+            "perPage" => $perPage,
             "total" => $subscriptions->count(),
             "data" => $subscriptions
         ]);

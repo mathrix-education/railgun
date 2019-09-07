@@ -4,7 +4,6 @@ namespace App\Services\Bishop;
 
 use Carbon\Carbon;
 use DateTime;
-use Illuminate\Support\Str;
 
 abstract class Bishop implements \JsonSerializable
 {
@@ -38,6 +37,12 @@ abstract class Bishop implements \JsonSerializable
         } else {
             return null;
         }
+    }
+
+
+    public function getAttribute($key)
+    {
+        return $this->castAttribute($key, $this->getRawAttribute($key));
     }
 
 
@@ -139,5 +144,11 @@ abstract class Bishop implements \JsonSerializable
     public function jsonSerialize()
     {
         return $this->toArray();
+    }
+
+
+    public function __get($key)
+    {
+        return $this->getAttribute($key);
     }
 }

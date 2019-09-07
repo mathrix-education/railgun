@@ -3,6 +3,10 @@
 namespace App\Exceptions;
 
 use App\Models\User;
+use App\Services\Stripe\Exceptions\CardDeclinedException;
+use App\Services\Stripe\Exceptions\IncorrectCVCException;
+use App\Services\Stripe\Exceptions\StripeHandler;
+use App\Services\Stripe\Exceptions\UnhandledStripeException;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -19,6 +23,7 @@ use ReflectionClass;
 use ReflectionException;
 use Sentry\State\Hub as Sentry;
 use Sentry\State\Scope;
+use Stripe\Error\Base as StripeBaseException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -93,12 +98,18 @@ class Handler extends ExceptionHandler
      *
      * @return JsonResponse|Response
      * @throws ReflectionException
-     *
+     * @throws CardDeclinedException
+     * @throws IncorrectCVCException
+     * @throws UnhandledStripeException
      */
     public function render($request, Exception $e)
     {
         if ($e instanceof HTTPException) {
             return $e->toJsonResponse();
+        }
+
+        if ($e instanceof StripeBaseException) {
+            StripeHandler::rethrow($e);
         }
 
         $overriddenStatusCode = false;

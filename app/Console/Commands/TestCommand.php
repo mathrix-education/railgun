@@ -2,9 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Models\User;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Mathrix\Lumen\Zero\Console\Commands\BaseCommand;
 
 /**
@@ -20,9 +17,7 @@ class TestCommand extends BaseCommand
 
     protected $signature = "test";
 
-
     public function handle()
     {
-        dd(json_encode(Carbon::now()));
     }
 }

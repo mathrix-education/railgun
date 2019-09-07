@@ -12,6 +12,7 @@ use App\Models\Product;
 use App\Models\User;
 use App\Services\Braintree\BraintreeGatewayServiceProvider;
 use App\Services\Stripe\StripeServiceProvider;
+use Arcanedev\LaravelLang\LaravelLangServiceProvider;
 use Barryvdh\Cors\ServiceProvider as CorsServiceProvider;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -52,7 +53,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(CorsServiceProvider::class);
         $this->app->register(FilesystemServiceProvider::class);
         $this->app->register(MailServiceProvider::class);
-        $this->app->register(GoogleCloudStorageServiceProvider::class);
         $this->app->register(JWTServiceProvider::class);
         $this->app->register(FacebookServiceProvider::class);
         $this->app->register(StripeServiceProvider::class);

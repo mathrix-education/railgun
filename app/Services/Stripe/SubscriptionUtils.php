@@ -21,14 +21,14 @@ class SubscriptionUtils
     public const PLANS_DETAILS = [
         self::MONTHLY_PLAN => [
             "id" => self::MONTHLY_PLAN,
-            "prorated" => true,
+            "prorated" => false,
             "period" => "month",
             "price_per_period" => 1790,
             "price_per_month" => 1790
         ],
         self::ANNUALLY_PLAN => [
             "id" => self::ANNUALLY_PLAN,
-            "prorated" => false,
+            "prorated" => true,
             "period" => "year",
             "price_per_period" => 15480,
             "price_per_month" => 1290
@@ -96,7 +96,7 @@ class SubscriptionUtils
 
         // Absolute
         $periodLengthInSeconds = $nextAnchor->diffInRealSeconds($previous);
-        $secondsUntilAnchor = $nextAnchor->diffInRealSeconds(now());
+        $secondsUntilAnchor = $nextAnchor->diffInRealSeconds(Carbon::now());
 
         $periodPrice = self::PLANS_DETAILS[self::ANNUALLY_PLAN]["price_per_period"];
 

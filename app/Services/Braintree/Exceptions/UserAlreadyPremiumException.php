@@ -17,6 +17,10 @@ class UserAlreadyPremiumException extends Http400BadRequestException
 {
     public function __construct(User $user, Throwable $previous = null)
     {
-        parent::__construct(["user_id" => $user->id], "User id `{$user->id}` is already premium", $previous);
+        parent::__construct(
+            ["user_id" => $user->id],
+            "User id `{$user->id}` is already premium",
+            $previous
+        );
     }
 }

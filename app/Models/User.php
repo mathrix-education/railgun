@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use App\Exceptions\ImmutableException;
 use App\Models\Traits\FacebookUser;
+use App\Models\Traits\HasCache;
 use App\Models\Traits\PermissionsTrait;
+use App\Services\Bishop\Subscription;
 use App\Services\Braintree\Models\BraintreeCustomer;
 use App\Services\Stripe\Models\StripeCustomer;
 use Carbon\Carbon;
@@ -15,13 +16,15 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Laravel\Lumen\Auth\Authorizable;
 use Mathrix\Lumen\JWT\Auth\HasJWT;
 use Mathrix\Lumen\Zero\Models\BaseModel;
 use stdClass;
-use Stripe\Subscription;
+use Stripe\Error\Api as StripeAPIException;
+use Stripe\Subscription as StripeSubscription;
 
 /**
  * Class User.
@@ -68,6 +71,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 {
     use Authorizable,
         Authenticatable,
+        HasCache,
         HasJWT,
         FacebookUser,
         PermissionsTrait,
@@ -163,17 +167,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
 
-    /**
-     * Invalidate user cache.
-     */
-    public function invalidate()
-    {
-        DB::table("cache")
-            ->where("key", "LIKE", "user.{$this->id}%")
-            ->delete();
-    }
-
-
     /*
     |--------------------------------------------------------------------------
     | Methods
@@ -202,23 +195,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     |--------------------------------------------------------------------------
     */
     /**
-     * Record an event linked to this user.
-     *
-     * @param string $service The service.
-     * @param string $event The event key.
-     * @param string $status The status.
-     * @param array $payload The record payload.
-     *
-     * @return Record
-     * @throws ImmutableException
-     */
-    public function record(string $service, string $event, string $status, array $payload)
-    {
-        return Record::record($this, $service, $event, $status, $payload);
-    }
-
-
-    /**
      * Check if user has purchased the given product.
      *
      * @param Product $product
@@ -231,6 +207,30 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 //        return $this->purchases()
 //            ->whereIn("product_id", $product->lineage()->pluck("id"))
 //            ->exists();
+    }
+
+
+    /**
+     * @return Subscription|BaseCollection
+     * @throws StripeAPIException
+     */
+    public function subscriptions(): BaseCollection
+    {
+        $subscriptions = new BaseCollection();
+
+        if ($this->isBraintreeCustomer()) {
+            foreach ($this->getBraintreeSubscriptions() as $braintreeSubscription) {
+                $subscriptions->push(Subscription::from($braintreeSubscription));
+            }
+        }
+
+        if ($this->isStripeCustomer()) {
+            foreach ($this->getStripeSubscriptions() as $stripeSubscription) {
+                $subscriptions->push(Subscription::from($stripeSubscription));
+            }
+        }
+
+        return $subscriptions;
     }
 
 
@@ -329,30 +329,35 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * premium attribute.
      *
      * @return bool
+     * @throws StripeAPIException
      */
     public function getPremiumAttribute()
     {
-        $bypass = $this->premium_bypass
-            || ($this->premium_bypass_expires_at !== null && $this->premium_bypass_expires_at->isFuture());
-
-        if ($bypass) {
+        if ($this->premium_bypass) {
+            // Permanent premium bypass
             return true;
-        }
+        } else if ($this->premium_bypass_expires_at !== null && $this->premium_bypass_expires_at->isFuture()) {
+            // Temporary premium bypass
+            return true;
+        } else if (!$this->isStripeCustomer() && !$this->isBraintreeCustomer()) {
+            // Not Stripe nor Braintree customer
+            return false;
+        } else {
+            // Search in subscriptions
+            /** @var Subscription $subscription */
+            foreach ($this->subscriptions() as $subscription) {
+                $allowedStatuses = [
+                    StripeSubscription::STATUS_ACTIVE,
+                    StripeSubscription::STATUS_TRIALING
+                ];
 
-        if (!$this->isStripeCustomer(true)) {
+                if (in_array($subscription->status, $allowedStatuses)) {
+                    return true;
+                }
+            }
+
             return false;
         }
-
-        $subscriptions = $this->asStripeCustomer()->subscriptions->all();
-
-        /** @var Subscription $subscription */
-        foreach ($subscriptions->data as $subscription) {
-            if (in_array($subscription->status, [Subscription::STATUS_ACTIVE, Subscription::STATUS_TRIALING])) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
 

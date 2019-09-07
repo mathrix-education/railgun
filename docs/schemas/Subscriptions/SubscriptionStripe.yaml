@@ -1,0 +1,25 @@
+$extends:
+  SubscriptionBase.yaml:
+properties:
+  type:
+    enum: [stripe]
+  latest_invoice:
+    allOf:
+      - type: object
+        nullable: true
+      - $ref: '#/components/schemas/Invoice'
+      - type: object
+        properties:
+          payment_intent:
+            $ref: '#/components/schemas/PaymentIntent'
+  status:
+    description: The subscription status (the Braintree subscription statuses have been replaced by Stripe statuses).
+    type: string
+    enum:
+      - incomplete
+      - incomplete_expired
+      - trialing
+      - active
+      - past_due
+      - canceled
+      - unpaid

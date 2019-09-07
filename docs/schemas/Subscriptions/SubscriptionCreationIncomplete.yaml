@@ -1,0 +1,20 @@
+$extends:
+  SubscriptionBase.yaml:
+description: Subscription which has triggered 3DS2. Additional action is required.
+properties:
+  type:
+    enum: [stripe]
+  pending_setup_intent:
+    type: object
+    nullable: true
+    example: null
+  latest_invoice:
+    allOf:
+      - $ref: '#/components/schemas/Invoice'
+      - type: object
+        properties:
+          payment_intent:
+            $ref: '#/components/schemas/PaymentIntent'
+  status:
+    description: The subcription is `"incomplete"`, 3DS2 process is required.
+    enum: [incomplete]

@@ -1,0 +1,52 @@
+# Mathrix Education API
+# =====================
+# Cloud Build Recipe
+# Author: Mathieu Bour
+# Since: v6.0.0
+# ====================
+options:
+  machineType: 'N1_HIGHCPU_8'
+steps:
+  # Decrypt the SSH private key for composer git clone
+  # --------------------------------------------------
+  - id: 'gcloud:kms:decrypt'
+    waitFor: ['-']
+    name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: '/bin/bash'
+    args: ['deploy/steps/0_decrypt.sh']
+
+
+  # Install PHP dependencies using composer
+  # ---------------------------------------
+  - id: 'composer:install'
+    waitFor: ['gcloud:kms:decrypt']
+    name: 'eu.gcr.io/$PROJECT_ID/runner-composer-prestissimo'
+    entrypoint: 'deploy/steps/1_composer.sh'
+
+
+  # Install Node dependencies using yarn
+  # ------------------------------------
+  - id: 'node:compile'
+    waitFor: ['gcloud:kms:decrypt']
+    name: 'node:12-alpine'
+    entrypoint: 'deploy/steps/2_yarn.sh'
+
+
+  # Build, push and deploy API image
+  # --------------------------------
+  - id: 'docker:build'
+    waitFor: ['docker-compose:tests']
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['build',
+           '--build-arg', 'COMMIT_SHORT_SHA=$SHORT_SHA',
+           '-t', 'eu.gcr.io/$PROJECT_ID/education-api:$BRANCH_NAME-$SHORT_SHA',
+           '.']
+  - id: 'docker:push'
+    waitFor: ['docker:build:api']
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'eu.gcr.io/$PROJECT_ID/education-api:$BRANCH_NAME-$SHORT_SHA']
+  - id: 'cloud-run:deploy'
+      waitFor: ['docker:push']
+      name: 'gcr.io/cloud-builders/gcloud'
+      entrypoint: 'deploy/scripts/deploy.sh'
+      args: ['-b', '$BRANCH_NAME', '-s', '$SHORT_SHA']

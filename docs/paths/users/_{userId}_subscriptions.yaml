@@ -39,4 +39,6 @@ get:
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Subscription'
+                  oneOf:
+                    - $ref: '#/components/schemas/SubscriptionStripe'
+                    - $ref: '#/components/schemas/SubscriptionBraintree'

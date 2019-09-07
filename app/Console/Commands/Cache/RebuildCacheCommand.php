@@ -35,7 +35,7 @@ class RebuildCacheCommand extends BaseCommand
             ->get();
         $this->progressStart($customers->count());
         $customers->each(function (User $customer) {
-            $customer->getBraintreeCustomer();
+            $customer->asBraintreeCustomer();
             $this->progressAdvance();
         });
         $this->progressFinish();

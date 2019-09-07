@@ -22,9 +22,9 @@ abstract class BaseMail extends Mailable
     {
         // Push to the email view the app, cdn and webroot urls defined in the .env file
         $this->with([
-            "api" => env("APP_API"),
-            "cdn" => env("APP_CDN"),
-            "webroot" => env("APP_WEBROOT"),
+            "api" => env("APP_URL"),
+            "cdn" => env("CDN_URL"),
+            "webroot" => env("ANGULAR_URL"),
         ]);
     }
 

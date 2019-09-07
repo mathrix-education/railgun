@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 class MailCompiler {
     constructor() {
         this.fs = require("fs");

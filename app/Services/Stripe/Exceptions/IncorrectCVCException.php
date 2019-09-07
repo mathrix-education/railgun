@@ -19,6 +19,6 @@ class IncorrectCVCException extends Http422UnprocessableEntityException
 
     public function __construct(Throwable $previous = null)
     {
-        parent::__construct([], "Incorrect CVC", $previous);
+        parent::__construct([], trans("stripe.card.incorrect_cvc"), $previous);
     }
 }

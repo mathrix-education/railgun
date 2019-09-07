@@ -8,11 +8,13 @@ use Stripe\Error\Card as StripeCardException;
 class StripeHandler
 {
     /**
-     * @param $exception
+     * @param StripeBaseException $exception
      *
+     * @throws CardDeclinedException
      * @throws IncorrectCVCException
+     * @throws UnhandledStripeException
      */
-    public static function throws(StripeBaseException $exception)
+    public static function rethrow(StripeBaseException $exception)
     {
         if ($exception instanceof StripeCardException) {
             $data = $exception->getJsonBody();
@@ -20,7 +22,11 @@ class StripeHandler
             switch ($data["error"]["code"]) {
                 case "incorrect_cvc":
                     throw new IncorrectCVCException();
+                case "card_declined":
+                    throw new CardDeclinedException($exception);
             }
         }
+
+        throw new UnhandledStripeException($exception); // Fallback exception
     }
 }

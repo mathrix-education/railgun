@@ -19,6 +19,7 @@ class PlansTest extends APIStatelessTestCase
     public function testAll(): void
     {
         $this->json("get", "/plans");
+
         $this->assertOpenAPIResponse($this->response);
     }
 }

@@ -20,3 +20,9 @@
 /docs/spec.html
 /resources/mails
 /storage/code-coverage/
+
+# Secrets
+/deploy/secrets/*
+!/deploy/secrets/*.enc
+/environments/*/*
+!/environments/*/*.enc

@@ -102,6 +102,7 @@ $app->configure("auth");
 $app->configure("backup");
 $app->configure("cors");
 $app->configure("filesystems");
+$app->configure("laravel-lang");
 $app->configure("logging");
 $app->configure("mail");
 $app->configure("queue");

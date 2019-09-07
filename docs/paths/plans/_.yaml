@@ -6,16 +6,6 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            required: [success, data]
-            additionalProperties: false
-            properties:
-              success:
-                description: The response success.
-                type: boolean
-                enum: [true]
-              data:
-                description: The response data.
-                type: array
-                items:
-                  $ref: '#/components/schemas/Plan'
+            $extends:
+              ../../fragments/responses/200_Pagination.yaml:
+                model: plan

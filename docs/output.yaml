@@ -9,7 +9,7 @@ info:
     url: 'https://cdn.mathrix.fr/img/logo-redoc.png'
     href: 'https://mathrix.fr'
     altText: 'Mathrix Education Logo'
-  version: 5.2.0
+  version: 6.0.0
 servers:
   -
     url: 'https://mathrix.fr/api'
@@ -1002,8 +1002,8 @@ components:
         - period
         - price_per_period
         - price_per_month
-        - trial_ends_at
-        - trial_price
+        - proration_ends_at
+        - proration_price
       properties:
         id:
           description: 'The plan id.'
@@ -1028,12 +1028,12 @@ components:
           description: 'The plan price per month **in cents**.'
           type: integer
           example: 1290
-        trial_ends_at:
+        proration_ends_at:
           description: 'If the plan is not **regular**, the trial end date, `null` otherwise.'
           type: string
           nullable: true
           example: 1596146400
-        trial_price:
+        proration_price:
           description: 'If the plan is not **regular**, the trial price in cents, `null` otherwise.'
           type: integer
           nullable: true
@@ -3029,6 +3029,531 @@ components:
             allOf:
               -
                 $ref: '#/components/schemas/ProductSection'
+    CreditCard:
+      description: 'Credit card.'
+      type: object
+      properties:
+        type:
+          description: 'The payment method type.'
+          type: string
+          enum:
+            - card
+        brand:
+          description: 'The credit card brand.'
+          type: string
+          enum:
+            - american-express
+            - carte-blanche
+            - china-unionpay
+            - diners-club
+            - discover
+            - elo
+            - jcb
+            - laser
+            - maestro
+            - mastercard
+            - solo
+            - switch
+            - unionpay
+            - visa
+            - unknown
+        last4:
+          description: 'The credit card last four digits.'
+          type: string
+          minLength: 4
+          maxLength: 4
+          example: '1234'
+        expiration:
+          description: 'The credit card expiration date/time.'
+          type: string
+          format: date-time
+    PayPalAccount:
+      description: 'PayPal account (Braintree only).'
+      type: object
+      properties:
+        type:
+          description: 'The payment method type.'
+          type: string
+          enum:
+            - paypal
+        email:
+          description: 'The PayPal account email address.'
+          type: string
+          format: email
+          example: john.doe@gmail.com
+    SubscriptionActive:
+      type: object
+      properties:
+        type:
+          description: 'The subscription type.'
+          type: string
+          enum:
+            - stripe
+        id:
+          description: 'The subscription id.'
+          type: string
+          example: sub_FkgEkmuI3DFejK
+        cancel_at:
+          description: 'The subscription cancel **future** date.'
+          type: string
+          format: date-time
+          nullable: true
+        cancel_at_period_end:
+          description: 'If the subscription will cancel at the end of the current billing period.'
+          type: boolean
+        canceled_at:
+          description: 'The subscription cancel **past** date.'
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          description: 'The date/time the subscription was created.'
+          type: string
+          format: date-time
+        current_period_start:
+          description: 'The date/time of the beginning of the current period.'
+          type: string
+          format: date-time
+        current_period_end:
+          description: 'The date/time of the end of the current period.'
+          type: string
+          format: date-time
+        customer:
+          description: 'The customer id who own the subscription. Refers to `stripe_id` or `braintree_id` on users.'
+          type: string
+          example: cus_FkgEYnEbkQZF6G
+        plan:
+          description: 'The subscription plan.'
+          type: object
+          properties:
+            id:
+              description: 'The plan id.'
+              type: string
+              example: v5_monthly
+            amount:
+              description: 'The plan amount **in cents**.'
+              type: integer
+              example: 1790
+        status:
+          description: 'The subcription is `"active"`, no further action is required.'
+          type: string
+          externalDocs:
+            description: 'Stripe subscription statuses documentation'
+            url: 'https://stripe.com/docs/api/subscriptions/object#subscription_object-status'
+          enum:
+            - active
+        trial_end:
+          description: 'The subscription trial end date, if necessary. `null` otherwise.'
+          type: string
+          format: date-time
+          nullable: true
+        pending_setup_intent:
+          type: object
+          nullable: true
+          example: null
+        latest_invoice:
+          allOf:
+            -
+              $ref: '#/components/schemas/Invoice'
+            -
+              type: object
+              properties:
+                payment_intent:
+                  $ref: '#/components/schemas/PaymentIntent'
+      description: 'Active subscription which has not triggered 3DS2.'
+    SubscriptionBase:
+      type: object
+      properties:
+        type:
+          description: 'The subscription type.'
+          type: string
+        id:
+          description: 'The subscription id.'
+          type: string
+          example: sub_FkgEkmuI3DFejK
+        cancel_at:
+          description: 'The subscription cancel **future** date.'
+          type: string
+          format: date-time
+          nullable: true
+        cancel_at_period_end:
+          description: 'If the subscription will cancel at the end of the current billing period.'
+          type: boolean
+        canceled_at:
+          description: 'The subscription cancel **past** date.'
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          description: 'The date/time the subscription was created.'
+          type: string
+          format: date-time
+        current_period_start:
+          description: 'The date/time of the beginning of the current period.'
+          type: string
+          format: date-time
+        current_period_end:
+          description: 'The date/time of the end of the current period.'
+          type: string
+          format: date-time
+        customer:
+          description: 'The customer id who own the subscription. Refers to `stripe_id` or `braintree_id` on users.'
+          type: string
+          example: cus_FkgEYnEbkQZF6G
+        plan:
+          description: 'The subscription plan.'
+          type: object
+          properties:
+            id:
+              description: 'The plan id.'
+              type: string
+              example: v5_monthly
+            amount:
+              description: 'The plan amount **in cents**.'
+              type: integer
+              example: 1790
+        status:
+          description: 'The subscription status.'
+          type: string
+          externalDocs:
+            description: 'Stripe subscription statuses documentation'
+            url: 'https://stripe.com/docs/api/subscriptions/object#subscription_object-status'
+        trial_end:
+          description: 'The subscription trial end date, if necessary. `null` otherwise.'
+          type: string
+          format: date-time
+          nullable: true
+    SubscriptionBraintree:
+      type: object
+      properties:
+        type:
+          description: 'The subscription type.'
+          type: string
+          enum:
+            - braintree
+        id:
+          description: 'The subscription id.'
+          type: string
+          example: sub_FkgEkmuI3DFejK
+        cancel_at:
+          description: 'The subscription cancel **future** date.'
+          type: string
+          format: date-time
+          nullable: true
+        cancel_at_period_end:
+          description: 'If the subscription will cancel at the end of the current billing period.'
+          type: boolean
+        canceled_at:
+          description: 'The subscription cancel **past** date.'
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          description: 'The date/time the subscription was created.'
+          type: string
+          format: date-time
+        current_period_start:
+          description: 'The date/time of the beginning of the current period.'
+          type: string
+          format: date-time
+        current_period_end:
+          description: 'The date/time of the end of the current period.'
+          type: string
+          format: date-time
+        customer:
+          description: 'The customer id who own the subscription. Refers to `stripe_id` or `braintree_id` on users.'
+          type: string
+          example: cus_FkgEYnEbkQZF6G
+        plan:
+          description: 'The subscription plan.'
+          type: object
+          properties:
+            id:
+              description: 'The plan id.'
+              type: string
+              example: v5_monthly
+            amount:
+              description: 'The plan amount **in cents**.'
+              type: integer
+              example: 1790
+        status:
+          description: 'The subscription status.'
+          type: string
+          externalDocs:
+            description: 'Stripe subscription statuses documentation'
+            url: 'https://stripe.com/docs/api/subscriptions/object#subscription_object-status'
+        trial_end:
+          description: 'The subscription trial end date, if necessary. `null` otherwise.'
+          type: string
+          format: date-time
+          nullable: true
+        payment_method:
+          oneOf:
+            -
+              $ref: '#/components/schemas/CreditCard'
+            -
+              $ref: '#/components/schemas/PayPalAccount'
+      description: 'Braintree Subscription'
+    SubscriptionCreationIncomplete:
+      type: object
+      properties:
+        type:
+          description: 'The subscription type.'
+          type: string
+          enum:
+            - stripe
+        id:
+          description: 'The subscription id.'
+          type: string
+          example: sub_FkgEkmuI3DFejK
+        cancel_at:
+          description: 'The subscription cancel **future** date.'
+          type: string
+          format: date-time
+          nullable: true
+        cancel_at_period_end:
+          description: 'If the subscription will cancel at the end of the current billing period.'
+          type: boolean
+        canceled_at:
+          description: 'The subscription cancel **past** date.'
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          description: 'The date/time the subscription was created.'
+          type: string
+          format: date-time
+        current_period_start:
+          description: 'The date/time of the beginning of the current period.'
+          type: string
+          format: date-time
+        current_period_end:
+          description: 'The date/time of the end of the current period.'
+          type: string
+          format: date-time
+        customer:
+          description: 'The customer id who own the subscription. Refers to `stripe_id` or `braintree_id` on users.'
+          type: string
+          example: cus_FkgEYnEbkQZF6G
+        plan:
+          description: 'The subscription plan.'
+          type: object
+          properties:
+            id:
+              description: 'The plan id.'
+              type: string
+              example: v5_monthly
+            amount:
+              description: 'The plan amount **in cents**.'
+              type: integer
+              example: 1790
+        status:
+          description: 'The subcription is `"incomplete"`, 3DS2 process is required.'
+          type: string
+          externalDocs:
+            description: 'Stripe subscription statuses documentation'
+            url: 'https://stripe.com/docs/api/subscriptions/object#subscription_object-status'
+          enum:
+            - incomplete
+        trial_end:
+          description: 'The subscription trial end date, if necessary. `null` otherwise.'
+          type: string
+          format: date-time
+          nullable: true
+        pending_setup_intent:
+          type: object
+          nullable: true
+          example: null
+        latest_invoice:
+          allOf:
+            -
+              $ref: '#/components/schemas/Invoice'
+            -
+              type: object
+              properties:
+                payment_intent:
+                  $ref: '#/components/schemas/PaymentIntent'
+      description: 'Subscription which has triggered 3DS2. Additional action is required.'
+    SubscriptionMigration3DS2:
+      type: object
+      properties:
+        type:
+          description: 'The subscription type.'
+          type: string
+          enum:
+            - stripe
+        id:
+          description: 'The subscription id.'
+          type: string
+          example: sub_FkgEkmuI3DFejK
+        cancel_at:
+          description: 'The subscription cancel **future** date.'
+          type: string
+          format: date-time
+          nullable: true
+        cancel_at_period_end:
+          description: 'If the subscription will cancel at the end of the current billing period.'
+          type: boolean
+        canceled_at:
+          description: 'The subscription cancel **past** date.'
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          description: 'The date/time the subscription was created.'
+          type: string
+          format: date-time
+        current_period_start:
+          description: 'The date/time of the beginning of the current period.'
+          type: string
+          format: date-time
+        current_period_end:
+          description: 'The date/time of the end of the current period.'
+          type: string
+          format: date-time
+        customer:
+          description: 'The customer id who own the subscription. Refers to `stripe_id` or `braintree_id` on users.'
+          type: string
+          example: cus_FkgEYnEbkQZF6G
+        plan:
+          description: 'The subscription plan.'
+          type: object
+          properties:
+            id:
+              description: 'The plan id.'
+              type: string
+              example: v5_monthly
+            amount:
+              description: 'The plan amount **in cents**.'
+              type: integer
+              example: 1790
+        status:
+          description: 'The subcription is `"active"`, 3DS2 process is required.'
+          type: string
+          externalDocs:
+            description: 'Stripe subscription statuses documentation'
+            url: 'https://stripe.com/docs/api/subscriptions/object#subscription_object-status'
+          enum:
+            - active
+        trial_end:
+          description: 'The subscription trial end date, if necessary. `null` otherwise.'
+          type: string
+          format: date-time
+          nullable: true
+        pending_setup_intent:
+          description: 'The subscription setup intent. Has to be fullfilled in order to charge the customer.'
+          type: object
+          properties:
+            id:
+              description: 'The setup intent id.'
+              type: string
+            client_secret:
+              description: 'The setup intent client secret. Has to be used with the Stripe.js [handleCardSetup()](https://stripe.com/docs/stripe-js/reference#stripe-handle-card-setup) method.'
+              externalDocs:
+                description: 'Stripe.js handleCardSetup() documentation'
+                url: 'https://stripe.com/docs/stripe-js/reference#stripe-handle-card-setup'
+            created_at:
+              description: 'The setup intent creation date/time.'
+              type: string
+              format: date-time
+            status:
+              description: 'The setup intent status. In the case, it can only be `"requires_confirmation"` or `"requires_action"`.'
+              type: string
+              enum:
+                - requires_confirmation
+                - requires_action
+              externalDocs:
+                description: 'Stripe SetupIntent statuses documentation'
+                url: 'https://stripe.com/docs/payments/intents#intent-statuses'
+        latest_invoice:
+          type: object
+          nullable: true
+          example: null
+      description: 'Subscription which has triggered 3DS2. Additional action is required.'
+    SubscriptionStripe:
+      type: object
+      properties:
+        type:
+          description: 'The subscription type.'
+          type: string
+          enum:
+            - stripe
+        id:
+          description: 'The subscription id.'
+          type: string
+          example: sub_FkgEkmuI3DFejK
+        cancel_at:
+          description: 'The subscription cancel **future** date.'
+          type: string
+          format: date-time
+          nullable: true
+        cancel_at_period_end:
+          description: 'If the subscription will cancel at the end of the current billing period.'
+          type: boolean
+        canceled_at:
+          description: 'The subscription cancel **past** date.'
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          description: 'The date/time the subscription was created.'
+          type: string
+          format: date-time
+        current_period_start:
+          description: 'The date/time of the beginning of the current period.'
+          type: string
+          format: date-time
+        current_period_end:
+          description: 'The date/time of the end of the current period.'
+          type: string
+          format: date-time
+        customer:
+          description: 'The customer id who own the subscription. Refers to `stripe_id` or `braintree_id` on users.'
+          type: string
+          example: cus_FkgEYnEbkQZF6G
+        plan:
+          description: 'The subscription plan.'
+          type: object
+          properties:
+            id:
+              description: 'The plan id.'
+              type: string
+              example: v5_monthly
+            amount:
+              description: 'The plan amount **in cents**.'
+              type: integer
+              example: 1790
+        status:
+          description: 'The subscription status (the Braintree subscription statuses have been replaced by Stripe statuses).'
+          type: string
+          externalDocs:
+            description: 'Stripe subscription statuses documentation'
+            url: 'https://stripe.com/docs/api/subscriptions/object#subscription_object-status'
+          enum:
+            - incomplete
+            - incomplete_expired
+            - trialing
+            - active
+            - past_due
+            - canceled
+            - unpaid
+        trial_end:
+          description: 'The subscription trial end date, if necessary. `null` otherwise.'
+          type: string
+          format: date-time
+          nullable: true
+        latest_invoice:
+          allOf:
+            -
+              type: object
+              nullable: true
+            -
+              $ref: '#/components/schemas/Invoice'
+            -
+              type: object
+              properties:
+                payment_intent:
+                  $ref: '#/components/schemas/PaymentIntent'
 x-tagGroups:
   -
     name: Users
@@ -3081,7 +3606,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '0'
+          example: '5'
           required: true
           style: form
         -
@@ -3109,7 +3634,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '0'
+                    example: '5'
                     readOnly: true
                   per_page:
                     description: 'The number of activity per page.'
@@ -3119,7 +3644,7 @@ paths:
                   total:
                     description: 'The total number of activity processed.'
                     type: integer
-                    example: '1904'
+                    example: '858'
                     readOnly: true
                   data:
                     description: 'The activity as an array.'
@@ -3175,7 +3700,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '58'
+            example: '556'
       responses:
         200:
           description: 'The requested activity.'
@@ -3205,7 +3730,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '552'
+            example: '578'
       requestBody:
         content:
           application/json:
@@ -3246,7 +3771,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '929'
+            example: '528'
       responses:
         200:
           description: 'The deletion result.'
@@ -3262,7 +3787,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Activity id 929 was successfully deleted.'
+                    example: 'Activity id 528 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -3330,7 +3855,7 @@ paths:
           description: 'The activity id'
           schema:
             type: integer
-          example: '673'
+          example: '645'
           required: true
         -
           name: page
@@ -3338,7 +3863,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '5'
+          example: '10'
           required: true
         -
           name: perPage
@@ -3564,7 +4089,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '12'
+          example: '2'
           required: true
           style: form
         -
@@ -3592,7 +4117,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '12'
+                    example: '2'
                     readOnly: true
                   per_page:
                     description: 'The number of category per page.'
@@ -3602,7 +4127,7 @@ paths:
                   total:
                     description: 'The total number of category processed.'
                     type: integer
-                    example: '695'
+                    example: '1021'
                     readOnly: true
                   data:
                     description: 'The category as an array.'
@@ -3658,7 +4183,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '908'
+            example: '395'
       responses:
         200:
           description: 'The requested category.'
@@ -3692,7 +4217,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '557'
+            example: '878'
       requestBody:
         content:
           application/json:
@@ -3733,7 +4258,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '21'
+            example: '631'
       responses:
         200:
           description: 'The deletion result.'
@@ -3749,7 +4274,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Category id 21 was successfully deleted.'
+                    example: 'Category id 631 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -3769,7 +4294,7 @@ paths:
           description: 'The category id'
           schema:
             type: integer
-          example: '528'
+          example: '855'
           required: true
         -
           name: page
@@ -3777,7 +4302,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '18'
+          example: '2'
           required: true
         -
           name: perPage
@@ -3838,7 +4363,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '13'
+          example: '5'
           required: true
           style: form
         -
@@ -3866,7 +4391,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '13'
+                    example: '5'
                     readOnly: true
                   per_page:
                     description: 'The number of chapter per page.'
@@ -3876,7 +4401,7 @@ paths:
                   total:
                     description: 'The total number of chapter processed.'
                     type: integer
-                    example: '2849'
+                    example: '2053'
                     readOnly: true
                   data:
                     description: 'The chapter as an array.'
@@ -3963,7 +4488,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '44'
+            example: '362'
       responses:
         200:
           description: 'The requested chapter.'
@@ -3993,7 +4518,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '785'
+            example: '70'
       requestBody:
         content:
           application/json:
@@ -4034,7 +4559,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '245'
+            example: '382'
       responses:
         200:
           description: 'The deletion result.'
@@ -4050,7 +4575,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Chapter id 245 was successfully deleted.'
+                    example: 'Chapter id 382 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -4070,7 +4595,7 @@ paths:
           description: 'The chapter id'
           schema:
             type: integer
-          example: '956'
+          example: '417'
           required: true
         -
           name: page
@@ -4169,7 +4694,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '13'
+          example: '2'
           required: true
           style: form
         -
@@ -4197,7 +4722,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '13'
+                    example: '2'
                     readOnly: true
                   per_page:
                     description: 'The number of comment per page.'
@@ -4207,7 +4732,7 @@ paths:
                   total:
                     description: 'The total number of comment processed.'
                     type: integer
-                    example: '2574'
+                    example: '130'
                     readOnly: true
                   data:
                     description: 'The comment as an array.'
@@ -4301,7 +4826,7 @@ paths:
                   total:
                     description: 'The total number of comment processed.'
                     type: integer
-                    example: '1079'
+                    example: '1900'
                     readOnly: true
                   data:
                     description: 'The comment as an array.'
@@ -4326,7 +4851,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '834'
+            example: '213'
       responses:
         200:
           description: 'The requested comment.'
@@ -4360,7 +4885,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '727'
+            example: '983'
       requestBody:
         content:
           application/json:
@@ -4402,7 +4927,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '358'
+            example: '799'
       responses:
         200:
           description: 'The deletion result.'
@@ -4418,7 +4943,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Comment id 358 was successfully deleted.'
+                    example: 'Comment id 799 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -4438,7 +4963,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '6'
+          example: '11'
           required: true
           style: form
         -
@@ -4466,7 +4991,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '6'
+                    example: '11'
                     readOnly: true
                   per_page:
                     description: 'The number of country per page.'
@@ -4476,7 +5001,7 @@ paths:
                   total:
                     description: 'The total number of country processed.'
                     type: integer
-                    example: '2963'
+                    example: '177'
                     readOnly: true
                   data:
                     description: 'The country as an array.'
@@ -4560,7 +5085,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '363'
+            example: '253'
       responses:
         200:
           description: 'The requested country.'
@@ -4590,7 +5115,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '934'
+            example: '110'
       requestBody:
         content:
           application/json:
@@ -4631,7 +5156,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '586'
+            example: '79'
       responses:
         200:
           description: 'The deletion result.'
@@ -4647,7 +5172,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Country id 586 was successfully deleted.'
+                    example: 'Country id 79 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -4667,7 +5192,7 @@ paths:
           description: 'The country id'
           schema:
             type: integer
-          example: '982'
+          example: '783'
           required: true
         -
           name: page
@@ -4675,7 +5200,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '11'
+          example: '5'
           required: true
         -
           name: perPage
@@ -4732,7 +5257,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '1'
+          example: '18'
           required: true
           style: form
         -
@@ -4760,7 +5285,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '1'
+                    example: '18'
                     readOnly: true
                   per_page:
                     description: 'The number of discipline per page.'
@@ -4770,7 +5295,7 @@ paths:
                   total:
                     description: 'The total number of discipline processed.'
                     type: integer
-                    example: '2568'
+                    example: '1944'
                     readOnly: true
                   data:
                     description: 'The discipline as an array.'
@@ -4854,7 +5379,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '180'
+            example: '790'
       responses:
         200:
           description: 'The requested discipline.'
@@ -4884,7 +5409,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '544'
+            example: '626'
       requestBody:
         content:
           application/json:
@@ -4925,7 +5450,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '662'
+            example: '310'
       responses:
         200:
           description: 'The deletion result.'
@@ -4941,7 +5466,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Discipline id 662 was successfully deleted.'
+                    example: 'Discipline id 310 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -4961,7 +5486,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '11'
+          example: '5'
           required: true
           style: form
         -
@@ -4989,7 +5514,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '11'
+                    example: '5'
                     readOnly: true
                   per_page:
                     description: 'The number of discount per page.'
@@ -4999,7 +5524,7 @@ paths:
                   total:
                     description: 'The total number of discount processed.'
                     type: integer
-                    example: '2078'
+                    example: '2629'
                     readOnly: true
                   data:
                     description: 'The discount as an array.'
@@ -5091,7 +5616,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '996'
+            example: '945'
       responses:
         200:
           description: 'The requested discount.'
@@ -5125,7 +5650,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '845'
+            example: '784'
       requestBody:
         content:
           application/json:
@@ -5166,7 +5691,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '359'
+            example: '919'
       responses:
         200:
           description: 'The deletion result.'
@@ -5182,7 +5707,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Discount id 359 was successfully deleted.'
+                    example: 'Discount id 919 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -5520,7 +6045,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '18'
+          example: '6'
           required: true
           style: form
         -
@@ -5548,7 +6073,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '18'
+                    example: '6'
                     readOnly: true
                   per_page:
                     description: 'The number of grade per page.'
@@ -5558,7 +6083,7 @@ paths:
                   total:
                     description: 'The total number of grade processed.'
                     type: integer
-                    example: '360'
+                    example: '954'
                     readOnly: true
                   data:
                     description: 'The grade as an array.'
@@ -5677,7 +6202,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '638'
+            example: '848'
       responses:
         200:
           description: 'The requested grade.'
@@ -5707,7 +6232,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '389'
+            example: '712'
       requestBody:
         content:
           application/json:
@@ -5748,7 +6273,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '106'
+            example: '926'
       responses:
         200:
           description: 'The deletion result.'
@@ -5764,7 +6289,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Grade id 106 was successfully deleted.'
+                    example: 'Grade id 926 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -5784,7 +6309,7 @@ paths:
           description: 'The grade id'
           schema:
             type: integer
-          example: '402'
+          example: '752'
           required: true
         -
           name: page
@@ -5792,7 +6317,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '12'
+          example: '17'
           required: true
         -
           name: perPage
@@ -5853,7 +6378,7 @@ paths:
           description: 'The grade id'
           schema:
             type: integer
-          example: '262'
+          example: '250'
           required: true
         -
           name: page
@@ -5861,7 +6386,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '19'
+          example: '11'
           required: true
         -
           name: perPage
@@ -5922,7 +6447,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '7'
+          example: '17'
           required: true
           style: form
         -
@@ -5950,7 +6475,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '7'
+                    example: '17'
                     readOnly: true
                   per_page:
                     description: 'The number of chapter per page.'
@@ -5960,7 +6485,7 @@ paths:
                   total:
                     description: 'The total number of chapter processed.'
                     type: integer
-                    example: '150'
+                    example: '2122'
                     readOnly: true
                   data:
                     description: 'The chapter as an array.'
@@ -5985,7 +6510,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '18'
+          example: '19'
           required: true
           style: form
         -
@@ -6013,7 +6538,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '18'
+                    example: '19'
                     readOnly: true
                   per_page:
                     description: 'The number of chapter per page.'
@@ -6023,7 +6548,7 @@ paths:
                   total:
                     description: 'The total number of chapter processed.'
                     type: integer
-                    example: '2040'
+                    example: '235'
                     readOnly: true
                   data:
                     description: 'The chapter as an array.'
@@ -6048,7 +6573,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '2'
+          example: '12'
           required: true
           style: form
         -
@@ -6076,7 +6601,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '2'
+                    example: '12'
                     readOnly: true
                   per_page:
                     description: 'The number of level per page.'
@@ -6086,7 +6611,7 @@ paths:
                   total:
                     description: 'The total number of level processed.'
                     type: integer
-                    example: '1245'
+                    example: '2449'
                     readOnly: true
                   data:
                     description: 'The level as an array.'
@@ -6128,7 +6653,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '9'
+          example: '8'
           required: true
           style: form
         -
@@ -6156,7 +6681,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '9'
+                    example: '8'
                     readOnly: true
                   per_page:
                     description: 'The number of module per page.'
@@ -6166,7 +6691,7 @@ paths:
                   total:
                     description: 'The total number of module processed.'
                     type: integer
-                    example: '1456'
+                    example: '2770'
                     readOnly: true
                   data:
                     description: 'The module as an array.'
@@ -6222,7 +6747,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '538'
+            example: '633'
       responses:
         200:
           description: 'The requested module.'
@@ -6252,7 +6777,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '21'
+            example: '872'
       requestBody:
         content:
           application/json:
@@ -6293,7 +6818,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '145'
+            example: '672'
       responses:
         200:
           description: 'The deletion result.'
@@ -6309,7 +6834,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Module id 145 was successfully deleted.'
+                    example: 'Module id 672 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -6329,7 +6854,7 @@ paths:
           description: 'The module id'
           schema:
             type: integer
-          example: '833'
+          example: '587'
           required: true
         -
           name: page
@@ -6337,7 +6862,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '10'
+          example: '11'
           required: true
         -
           name: perPage
@@ -6434,7 +6959,7 @@ paths:
           description: 'The module id'
           schema:
             type: integer
-          example: '339'
+          example: '8'
           required: true
         -
           name: page
@@ -6442,7 +6967,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '12'
+          example: '16'
           required: true
         -
           name: perPage
@@ -6534,7 +7059,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '2'
+          example: '13'
           required: true
           style: form
         -
@@ -6562,7 +7087,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '2'
+                    example: '13'
                     readOnly: true
                   per_page:
                     description: 'The number of notion per page.'
@@ -6572,7 +7097,7 @@ paths:
                   total:
                     description: 'The total number of notion processed.'
                     type: integer
-                    example: '1951'
+                    example: '2839'
                     readOnly: true
                   data:
                     description: 'The notion as an array.'
@@ -6597,7 +7122,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '380'
+            example: '162'
       responses:
         200:
           description: 'The requested notion.'
@@ -6627,7 +7152,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '992'
+            example: '304'
       requestBody:
         content:
           application/json:
@@ -6668,7 +7193,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '813'
+            example: '32'
       responses:
         200:
           description: 'The deletion result.'
@@ -6684,7 +7209,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Notion id 813 was successfully deleted.'
+                    example: 'Notion id 32 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -6704,7 +7229,7 @@ paths:
           description: 'The notion id'
           schema:
             type: integer
-          example: '898'
+          example: '875'
           required: true
         -
           name: page
@@ -6712,7 +7237,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '0'
+          example: '6'
           required: true
         -
           name: perPage
@@ -6770,19 +7295,36 @@ paths:
                 type: object
                 required:
                   - success
+                  - page
+                  - per_page
+                  - total
                   - data
-                additionalProperties: false
                 properties:
                   success:
-                    description: 'The response success.'
+                    description: 'If the request succeeded.'
                     type: boolean
-                    enum:
-                      - true
+                    example: true
+                  page:
+                    description: 'The current page.'
+                    type: integer
+                    example: 0
+                    readOnly: true
+                  per_page:
+                    description: 'The number of plan per page.'
+                    type: integer
+                    example: 10
+                    readOnly: true
+                  total:
+                    description: 'The total number of plan processed.'
+                    type: integer
+                    example: 2
+                    readOnly: true
                   data:
-                    description: 'The response data.'
+                    description: 'The plan as an array.'
                     type: array
                     items:
                       $ref: '#/components/schemas/Plan'
+                    readOnly: true
       tags:
         - Plans
   /posts:
@@ -6796,7 +7338,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '1'
+          example: '12'
           required: true
           style: form
         -
@@ -6824,7 +7366,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '1'
+                    example: '12'
                     readOnly: true
                   per_page:
                     description: 'The number of post per page.'
@@ -6834,7 +7376,7 @@ paths:
                   total:
                     description: 'The total number of post processed.'
                     type: integer
-                    example: '1489'
+                    example: '1783'
                     readOnly: true
                   data:
                     description: 'The post as an array.'
@@ -6890,7 +7432,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '7'
+          example: '18'
           required: true
           style: form
         -
@@ -6918,7 +7460,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '7'
+                    example: '18'
                     readOnly: true
                   per_page:
                     description: 'The number of post per page.'
@@ -6928,7 +7470,7 @@ paths:
                   total:
                     description: 'The total number of post processed.'
                     type: integer
-                    example: '2466'
+                    example: '704'
                     readOnly: true
                   data:
                     description: 'The post as an array.'
@@ -6949,7 +7491,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '129'
+            example: '550'
       responses:
         200:
           description: 'The requested post.'
@@ -6983,7 +7525,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '249'
+            example: '54'
       requestBody:
         content:
           application/json:
@@ -7024,7 +7566,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '272'
+            example: '17'
       responses:
         200:
           description: 'The deletion result.'
@@ -7040,7 +7582,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Post id 272 was successfully deleted.'
+                    example: 'Post id 17 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -7060,7 +7602,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '13'
+          example: '15'
           required: true
           style: form
         -
@@ -7088,7 +7630,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '13'
+                    example: '15'
                     readOnly: true
                   per_page:
                     description: 'The number of product per page.'
@@ -7098,7 +7640,7 @@ paths:
                   total:
                     description: 'The total number of product processed.'
                     type: integer
-                    example: '2496'
+                    example: '1077'
                     readOnly: true
                   data:
                     description: 'The product as an array.'
@@ -7160,7 +7702,7 @@ paths:
               - training
               - section
               - lesson
-          example: '20'
+          example: '14'
           required: true
           style: form
           default: all
@@ -7189,7 +7731,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '20'
+                    example: '14'
                     readOnly: true
                   per_page:
                     description: 'The number of product per page.'
@@ -7199,7 +7741,7 @@ paths:
                   total:
                     description: 'The total number of product processed.'
                     type: integer
-                    example: '1600'
+                    example: '1661'
                     readOnly: true
                   data:
                     description: 'The product as an array.'
@@ -7258,7 +7800,7 @@ paths:
               - training
               - section
               - lesson
-          example: '16'
+          example: '18'
           required: true
           style: form
         -
@@ -7286,7 +7828,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '16'
+                    example: '18'
                     readOnly: true
                   per_page:
                     description: 'The number of product per page.'
@@ -7296,7 +7838,7 @@ paths:
                   total:
                     description: 'The total number of product processed.'
                     type: integer
-                    example: '175'
+                    example: '970'
                     readOnly: true
                   data:
                     description: 'The product as an array.'
@@ -7317,7 +7859,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '389'
+            example: '474'
       responses:
         200:
           description: 'The requested product.'
@@ -7351,7 +7893,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '147'
+            example: '880'
       requestBody:
         content:
           application/json:
@@ -7392,7 +7934,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '40'
+            example: '597'
       responses:
         200:
           description: 'The deletion result.'
@@ -7408,7 +7950,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Product id 40 was successfully deleted.'
+                    example: 'Product id 597 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -7428,7 +7970,7 @@ paths:
           description: 'The product id'
           schema:
             type: integer
-          example: '867'
+          example: '861'
           required: true
         -
           name: page
@@ -7436,7 +7978,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '5'
+          example: '17'
           required: true
         -
           name: perPage
@@ -7569,7 +8111,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '14'
+          example: '6'
           required: true
           style: form
         -
@@ -7597,7 +8139,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '14'
+                    example: '6'
                     readOnly: true
                   per_page:
                     description: 'The number of report per page.'
@@ -7607,7 +8149,7 @@ paths:
                   total:
                     description: 'The total number of report processed.'
                     type: integer
-                    example: '2615'
+                    example: '2174'
                     readOnly: true
                   data:
                     description: 'The report as an array.'
@@ -7663,7 +8205,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '264'
+            example: '704'
       responses:
         200:
           description: 'The requested report.'
@@ -7697,7 +8239,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '506'
+            example: '744'
       requestBody:
         content:
           application/json:
@@ -7738,7 +8280,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '83'
+            example: '358'
       responses:
         200:
           description: 'The deletion result.'
@@ -7754,7 +8296,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'Report id 83 was successfully deleted.'
+                    example: 'Report id 358 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -7957,6 +8499,7 @@ paths:
   /subscriptions:
     post:
       summary: 'Create subscription'
+      description: "Create new subscription for the current logged user. If the user is not a Stripe customer, his profile will be automatically created.\n### Using new payment method\nIf the user is not a Stripe customer or want to use a new payment method, Stripe Elements should be used to safely collect the user credit card details. Then, the **tokenized** credit card can be passed in the `card.token` field.\nSample payload:\n<pre>{\n  \"plan\": \"v4_monthly\",\n  \"card\": {\n    \"token\": \"tok_fr\"\n  }\n}</pre>\n### Using an existing payment method\nIf the user is already a Stripe customer **and** wants to use a saved payment method, the credit card id can be passed int the `card.id` field.\nSample payload:\n<pre>{\n  \"plan\": \"v4_monthly\",\n  \"card\": {\n    \"id\": \"tok_fr\"\n  }\n}</pre>\n### 3D Secure 2 process\n3D Secure 2 may be triggered by this request. If this occurs, it means that the customer has to agree to be debited by Stripe.<br> In this case, the `data.status` will be equal to `\"incomplete\"` and the related payment intent secret will be located in the `data.latest_invoice.payment_intent.client_secret` field.<br> To confirm the payment, the Stripe.js [handleCardPayment()](https://stripe.com/docs/stripe-js/reference#stripe-handle-card-payment) has to be used to display the 3D Secure modal.<br> After a successful payment confirmation, the subscription status will be equal to `\"active\"` and the user will have his `premium` field equal to `true`."
       requestBody:
         content:
           application/json:
@@ -7964,7 +8507,7 @@ paths:
               type: object
               required:
                 - plan
-                - token_id
+                - card
               properties:
                 plan:
                   description: 'The plan.'
@@ -7972,14 +8515,17 @@ paths:
                   enum:
                     - v5_monthly
                     - v5_annually
-                    - v5_biannually
-                token_id:
-                  description: 'The payment method token associated with the subscription. It can be retrieved using the Stripe.js `createToken()` function.'
-                  externalDocs:
-                    description: 'Stripe.js `createToken()`'
-                    url: 'https://stripe.com/docs/stripe-js/reference#stripe-create-token'
-                  type: string
-                  example: tok_fr
+                card:
+                  description: 'The user credit card token **OR** id, see above for details.'
+                  type: object
+                  properties:
+                    token:
+                      description: 'The payment method token associated with the subscription. It can be retrieved using the Stripe.js `createToken()` function.'
+                      externalDocs:
+                        description: 'Stripe.js `createToken()`'
+                        url: 'https://stripe.com/docs/stripe-js/reference#stripe-create-token'
+                      type: string
+                      example: tok_fr
       responses:
         200:
           description: 'Subscription was created and is active.'
@@ -7998,33 +8544,123 @@ paths:
                     enum:
                       - true
                   data:
-                    allOf:
-                      -
-                        $ref: '#/components/schemas/Subscription'
-                      -
-                        type: object
-                        properties: { latest_invoice: { allOf: [{ $ref: '#/components/schemas/Invoice' }, { type: object, properties: { payment_intent: { $ref: '#/components/schemas/PaymentIntent' } } }] } }
+                    $ref: '#/components/schemas/SubscriptionActive'
+        202:
+          description: 'Subscription was created but 3D Secure 2 was triggered.'
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - data
+                additionalProperties: false
+                properties:
+                  success:
+                    description: 'The response success.'
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    $ref: '#/components/schemas/SubscriptionCreationIncomplete'
         422:
           description: 'Card token has been refused.'
           content:
             application/json:
               schema:
-                oneOf:
-                  -
-                    description: 'Incorrect CVC'
-                    type: object
-                    properties:
-                      error:
-                        description: 'The Incorrect CVC error code.'
-                        type: string
-                        enum: [incorrect_cvc]
-                      message:
-                        description: 'The Incorrect CVC error message.'
-                        type: string
-                        enum: ['Incorrect CVC']
-                      data:
-                        description: 'The Incorrect CVC error data.'
-                        type: array
+                type: object
+                properties:
+                  error:
+                    description: 'The error code.'
+                    type: string
+                    enum:
+                      - incorrect_cvc
+                      - card_declined
+                  message:
+                    description: 'The error message.'
+                    type: string
+                  data:
+                    description: 'The error data.'
+      tags:
+        - Subscriptions
+  '/subscriptions/{subscriptionId}/migrate':
+    post:
+      summary: 'Migrate a Braintree subscription'
+      description: "Migrate an old Braintree subscription to a new Stripe subscription. Since the user has paid for the current Braintree billing period, we will not try to debit him until the next billing date.<br> **Note 1:** Currently, only the `v4_monthly` and `v4_annually` are supported.<br> **Note 2:** The old Braintree subscription will be immediately canceled.<br>\n### Using new payment method\nIf the user is not a Stripe customer or want to use a new payment method, Stripe Elements should be used to safely collect the user credit card details. Then, the **tokenized** credit card can be passed in the `card.token` field.\nSample payload:\n<pre>{\n  \"card\": {\n    \"token\": \"tok_fr\"\n  }\n}</pre>\n### Using an existing payment method\nIf the user is already a Stripe customer **and** wants to use a saved payment method, the credit card id can be passed int the `card.id` field.\nSample payload:\n<pre>{\n  \"card\": {\n    \"id\": \"tok_fr\"\n  }\n}</pre>\n### 3D Secure 2 process\n3D Secure 2 may be triggered by this request. If this occurs, it means that the customer has to agree to be debited by Stripe.<br> In this case, the `data.status` will be equal to `\"incomplete\"` and the related setup intent secret will be located in the `data.pending_setup_intent.client_secret` field.<br> To confirm the setup intent, the Stripe.js [handleCardSetup()](https://stripe.com/docs/stripe-js/reference#stripe-handle-card-setup) has to be used to display the 3D Secure modal.<br> After a successful payment confirmation, the subscription status will be equal to `\"active\"` and the user will have his `premium` field equal to `true`."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - card
+              properties:
+                card:
+                  description: 'The user credit card token **OR** id, see above for details.'
+                  type: object
+                  properties:
+                    token:
+                      description: 'The payment method token associated with the subscription. It can be retrieved using the Stripe.js `createToken()` function.'
+                      externalDocs:
+                        description: 'Stripe.js `createToken()`'
+                        url: 'https://stripe.com/docs/stripe-js/reference#stripe-create-token'
+                      type: string
+                      example: tok_fr
+      responses:
+        200:
+          description: 'Subscription was created and is active.'
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - data
+                additionalProperties: false
+                properties:
+                  success:
+                    description: 'The response success.'
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    $ref: '#/components/schemas/SubscriptionActive'
+        202:
+          description: 'Subscription was created but 3D Secure 2 was triggered.'
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - data
+                additionalProperties: false
+                properties:
+                  success:
+                    description: 'The response success.'
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    $ref: '#/components/schemas/SubscriptionMigration3DS2'
+        422:
+          description: 'Card token has been refused.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    description: 'The error code.'
+                    type: string
+                    enum:
+                      - incorrect_cvc
+                      - card_declined
+                  message:
+                    description: 'The error message.'
+                    type: string
+                  data:
+                    description: 'The error data.'
       tags:
         - Subscriptions
   /users:
@@ -8038,7 +8674,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '1'
+          example: '2'
           required: true
           style: form
         -
@@ -8066,7 +8702,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '1'
+                    example: '2'
                     readOnly: true
                   per_page:
                     description: 'The number of user per page.'
@@ -8076,7 +8712,7 @@ paths:
                   total:
                     description: 'The total number of user processed.'
                     type: integer
-                    example: '1509'
+                    example: '710'
                     readOnly: true
                   data:
                     description: 'The user as an array.'
@@ -8137,7 +8773,7 @@ paths:
           description: 'The page **(starts at 0)**.'
           schema:
             type: integer
-          example: '2'
+          example: '10'
           required: true
           style: form
         -
@@ -8165,7 +8801,7 @@ paths:
                   page:
                     description: 'The current page.'
                     type: integer
-                    example: '2'
+                    example: '10'
                     readOnly: true
                   per_page:
                     description: 'The number of user per page.'
@@ -8175,7 +8811,7 @@ paths:
                   total:
                     description: 'The total number of user processed.'
                     type: integer
-                    example: '2922'
+                    example: '2845'
                     readOnly: true
                   data:
                     description: 'The user as an array.'
@@ -8246,7 +8882,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '420'
+            example: '225'
       responses:
         200:
           description: 'The requested user.'
@@ -8283,7 +8919,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '40'
+            example: '405'
       requestBody:
         content:
           application/json:
@@ -8325,7 +8961,7 @@ paths:
           required: true
           schema:
             type: integer
-            example: '563'
+            example: '465'
       responses:
         200:
           description: 'The deletion result.'
@@ -8341,7 +8977,7 @@ paths:
                   message:
                     description: 'The deletion message.'
                     type: string
-                    example: 'User id 563 was successfully deleted.'
+                    example: 'User id 465 was successfully deleted.'
         404:
           $ref: '#/components/responses/404_ModelNotFound'
       security:
@@ -8463,7 +9099,9 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Subscription'
+                      oneOf:
+                        - { $ref: '#/components/schemas/SubscriptionStripe' }
+                        - { $ref: '#/components/schemas/SubscriptionBraintree' }
       tags:
         - Users
   '/votes/comment/{commentId}':

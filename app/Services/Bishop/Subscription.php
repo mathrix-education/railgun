@@ -4,7 +4,7 @@ namespace App\Services\Bishop;
 
 use App\Models\User;
 use Braintree\CreditCard;
-use Braintree\PaymentMethod;
+use Braintree\Exception\NotFound;
 use Braintree\PayPalAccount;
 use Braintree\Subscription as BraintreeSubscription;
 use Braintree\Transaction\CreditCardDetails;
@@ -15,8 +15,31 @@ use Illuminate\Support\Str;
 use Stripe\Card;
 use Stripe\Error\InvalidRequest;
 use Stripe\Invoice as StripeInvoice;
+use Stripe\SetupIntent as StripeSetupIntent;
 use Stripe\Subscription as StripeSubscription;
 
+/**
+ * Class Subscription.
+ *
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA
+ * @since 6.0.0
+ *
+ * @property-read string $id
+ * @property-read string $type
+ * @property-read Carbon $cancel_at
+ * @property-read bool $cancel_at_period_end
+ * @property-read Carbon $canceled_at
+ * @property-read Carbon $created_at
+ * @property-read Carbon $current_period_start
+ * @property-read Carbon $current_period_end
+ * @property-read string $customer
+ * @property-read SetupIntent $pending_setup_intent
+ * @property-read array $plan
+ * @property-read array $payment_method
+ * @property-read string $status
+ * @property-read Carbon $trial_end
+ */
 class Subscription extends Bishop
 {
     protected $dates = [
@@ -63,7 +86,9 @@ class Subscription extends Bishop
         /** @var Card $card */
         $card = null;
 
-        if ($currentUser && $currentUser->stripe_id === $subscription->customer) {
+        if ($subscription->default_source instanceof Card) {
+            $card = $subscription->default_source;
+        } else if ($currentUser && $currentUser->stripe_id === $subscription->customer) {
             /*
              * The current user is the same as the user who owns the subscription. We can try to iterate over its cards
              * to avoid to make an additional request to Stripe.
@@ -77,14 +102,10 @@ class Subscription extends Bishop
                     break;
                 }
             }
-        }
 
-        if ($card === null) {
-            // If we did not found the card into the user sources, we can try to retrieve it from the Stripe API.
-            try {
-                $card = Card::retrieve($subscription->default_source);
-            } catch (InvalidRequest $e) {
-                $card = null;
+            if ($card === null) {
+                // If we did not found the card into the user sources, we can try to retrieve it from the Stripe API.
+                $card = $customer->sources->retrieve($subscription->default_source);
             }
         }
 
@@ -101,6 +122,9 @@ class Subscription extends Bishop
             "latest_invoice" => $subscription->latest_invoice instanceof StripeInvoice
                 ? Invoice::from($subscription->latest_invoice)
                 : $subscription->latest_invoice,
+            "pending_setup_intent" => $subscription->pending_setup_intent instanceof StripeSetupIntent
+                ? SetupIntent::from($subscription->pending_setup_intent)
+                : $subscription->pending_setup_intent,
             "plan" => [
                 "id" => $subscription->plan->id,
                 "amount" => $subscription->plan->amount,
@@ -155,8 +179,13 @@ class Subscription extends Bishop
             $customer = $subscription->transactions[0]->customerDetails->id;
         } else {
             // If the is no transaction, we have to find the associated payment method.
-            $paymentMethodObj = PaymentMethod::find($subscription->paymentMethodToken);
-            $customer = $paymentMethodObj->customerId;
+            try {
+                $paymentMethodObj = gateway()->paymentMethod()->find($subscription->paymentMethodToken);
+                $customer = $paymentMethodObj->customerId;
+            } catch (NotFound $exception) {
+                $paymentMethodObj = null;
+                $customer = null;
+            }
         }
 
         $paymentMethod = [];
@@ -170,6 +199,7 @@ class Subscription extends Bishop
                 $cardDetails = $transaction->creditCardDetails;
 
                 $paymentMethod = [
+                    "type" => "card",
                     "brand" => Str::slug($cardDetails->cardType),
                     "last4" => $cardDetails->last4,
                     "expiration" => Carbon::create(
@@ -214,6 +244,8 @@ class Subscription extends Bishop
                     "type" => "paypal",
                     "email" => $paymentMethodObj->email
                 ];
+            } else {
+                $paymentMethod = null;
             }
         }
 
@@ -243,10 +275,10 @@ class Subscription extends Bishop
             "cancel_at" => $cancelAt,
             "cancel_at_period_end" => $cancelAtPeriodEnd,
             "canceled_at" => in_array($subscription->status, [BraintreeSubscription::CANCELED, BraintreeSubscription::EXPIRED])
-                ? carbon_auto($subscription->updatedAt) : null,
-            "created_at" => carbon_auto($subscription->createdAt),
-            "current_period_start" => carbon_auto($subscription->billingPeriodStartDate),
-            "current_period_end" => carbon_auto($subscription->billingPeriodEndDate),
+                ? $subscription->updatedAt : null,
+            "created_at" => $subscription->createdAt,
+            "current_period_start" => $subscription->billingPeriodStartDate,
+            "current_period_end" => $subscription->billingPeriodEndDate,
             "customer" => $customer,
             "plan" => [
                 "id" => $subscription->planId,

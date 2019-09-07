@@ -11,28 +11,41 @@ class MJMLCompilerTest extends BaseTestCase
     private const INCLUDE_FAIL_REGEXP = '/mj-include fails to read file : [a-zA-Z\.\/\-]+ at [a-zA-Z\.\/\-]+/';
 
 
-    public function testMJML()
+    public function MJMLDataProvider()
     {
-        $renderedMails = collect(glob(resource_path('views/mails/*')));
-        $includesFailed = [];
+        $files = $renderedMails = glob(resource_path('views/mails/*'));
+        $data = [];
 
-        $renderedMails->each(function (string $renderedEmail) use (&$includesFailed) {
-            $content = file_get_contents($renderedEmail);
-            preg_match_all(self::INCLUDE_FAIL_REGEXP, $content, $matches);
-
-            if (count($matches) > 0) {
-                $includesFailed[$renderedEmail] = $matches;
-            }
-        });
-
-        $message = [];
-
-        foreach ($includesFailed as $sourceRenderedTemplate => $matches) {
-            foreach ($matches[0] as $error) {
-                $message[] = str_replace(base_path(), '', "$sourceRenderedTemplate: $error");
-            }
+        foreach ($files as $file) {
+            $key = basename($file);
+            $data[$key] = [$file];
         }
 
-        $this->assertEmpty($message, "Some rendered files contain <mj-include> errors!\n" . implode("\n", $message));
+        return $data;
+    }
+
+
+    /**
+     * Assert the a rendered MJML file does not contain any errors.
+     *
+     * @param string $file The MJML rendered blade file.
+     *
+     * @dataProvider MJMLDataProvider
+     */
+    public function testMJML(string $file): void
+    {
+        $content = file_get_contents($file);
+        preg_match_all(self::INCLUDE_FAIL_REGEXP, $content, $matches);
+
+        $errors = [];
+
+        foreach ($matches[0] as $error) {
+            $errors[] = str_replace(base_path(), '', "$file: $error");
+        }
+
+        $this->assertEmpty(
+            $errors,
+            "Some rendered files contain <mj-include> errors!\n" . implode("\n", $errors)
+        );
     }
 }

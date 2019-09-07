@@ -179,7 +179,7 @@
                   </tr>
                   <tr>
                     <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                      <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:1.4;text-align:left;color:#000000;">Si vous ne souhaitez pas vous réengager, envoyez un email à support@mathrix.fr en indiquant votre souhait de désabonnement, ainsi que l'adresse email associé à votre compte Mathrix.</div>
+                      <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:1.4;text-align:left;color:#000000;">Si vous ne souhaitez pas vous réengager, envoyez un email à support@mathrix.fr en indiquant votre souhait de désabonnement, ainsi que l'adresse email associée à votre compte Mathrix.</div>
                     </td>
                   </tr>
                   <tr>

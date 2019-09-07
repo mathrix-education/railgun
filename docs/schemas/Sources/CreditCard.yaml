@@ -1,0 +1,36 @@
+description: Credit card.
+type: object
+properties:
+  type:
+    description: The payment method type.
+    type: string
+    enum: [card]
+  brand:
+    description: The credit card brand.
+    type: string
+    enum:
+      - american-express
+      - carte-blanche
+      - china-unionpay
+      - diners-club
+      - discover
+      - elo
+      - jcb
+      - laser
+      - maestro
+      - mastercard
+      - solo
+      - switch
+      - unionpay
+      - visa
+      - unknown
+  last4:
+    description: The credit card last four digits.
+    type: string
+    minLength: 4
+    maxLength: 4
+    example: '1234'
+  expiration:
+    description: The credit card expiration date/time.
+    type: string
+    format: date-time

@@ -2,11 +2,6 @@
 
 namespace App\Console;
 
-use App\Console\Commands\Braintree\BraintreeRestoreCommand;
-use App\Console\Commands\Braintree\BraintreeRestoreCustomersCommand;
-use App\Console\Commands\Braintree\BraintreeRestoreLineItemsCommand;
-use App\Console\Commands\Braintree\BraintreeRestoreSubscriptionsCommand;
-use App\Console\Commands\Braintree\BraintreeRestoreTransactionsCommand;
 use App\Console\Commands\Braintree\BraintreeSyncCommand;
 use App\Console\Commands\Braintree\BraintreeSyncCustomersCommand;
 use App\Console\Commands\Braintree\BraintreeSyncPurchasesCommand;
@@ -14,6 +9,9 @@ use App\Console\Commands\Braintree\BraintreeSyncSubscriptionsCommand;
 use App\Console\Commands\Braintree\BraintreeSyncTransactionsCommand;
 use App\Console\Commands\Cache\RebuildCacheCommand;
 use App\Console\Commands\CompileMails;
+use App\Console\Commands\GoogleCloud\DecryptCommand;
+use App\Console\Commands\GoogleCloud\EncryptCommand;
+use App\Console\Commands\GoogleCloud\SetupCommand;
 use App\Console\Commands\TestCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
@@ -33,11 +31,9 @@ class Kernel extends ConsoleKernel
         TestCommand::class,
         CompileMails::class,
         RebuildCacheCommand::class,
-        BraintreeRestoreCommand::class,
-        BraintreeRestoreCustomersCommand::class,
-        BraintreeRestoreSubscriptionsCommand::class,
-        BraintreeRestoreTransactionsCommand::class,
-        BraintreeRestoreLineItemsCommand::class
+        EncryptCommand::class,
+        DecryptCommand::class,
+        SetupCommand::class
     ];
 
 

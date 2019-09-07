@@ -2,9 +2,10 @@
 
 namespace App\Services\Stripe\Models;
 
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Collection;
 use Stripe\Customer;
 use Stripe\Error\Api;
+use Stripe\Source;
 use Stripe\Subscription;
 
 /**
@@ -18,6 +19,10 @@ use Stripe\Subscription;
  */
 trait StripeCustomer
 {
+    public static $StripeCustomerCacheKey = "stripe.customer";
+    public static $StripeSubscriptionsCacheKey = "stripe.subscriptions";
+
+
     /**
      * Check if the user is a Stripe Customer.
      *
@@ -32,7 +37,7 @@ trait StripeCustomer
         } else if (!$strict) {
             return true;
         } else {
-            return $this->getStripeCustomer() instanceof Customer;
+            return $this->asStripeCustomer() instanceof Customer;
         }
     }
 
@@ -40,7 +45,7 @@ trait StripeCustomer
     /**
      * Create a new Stripe Customer using the user's information.
      *
-     * @param string|null $source
+     * @param string|null $source The default customer source.
      *
      * @return Customer
      */
@@ -63,36 +68,19 @@ trait StripeCustomer
 
 
     /**
-     * Get the user's associate Stripe Customer.
-     *
-     * @param bool $createIfNeeded
+     * Get the user's associated Stripe customer.
      *
      * @return Customer|null
      */
-    public function asStripeCustomer(bool $createIfNeeded = false)
+    public function asStripeCustomer()
     {
-        $isStripeCustomer = $this->isStripeCustomer(false);
-
-        if (!$isStripeCustomer && $createIfNeeded) {
-            return $this->createStripeCustomer();
-        } else if ($isStripeCustomer) {
-            return Customer::retrieve($this->stripe_id);
-        } else {
+        if (!$this->isStripeCustomer()) {
             return null;
         }
-    }
 
-
-    /**
-     * @return Customer
-     */
-    public function getStripeCustomer(): ?Customer
-    {
-        return Cache::remember(self::getStripeCustomerCacheKey(), 24 * 3600, function () {
+        return $this->cache(StripeCustomer::$StripeCustomerCacheKey, 7 * 24 * 3600, function () {
             try {
-                $customer = Customer::retrieve($this->stripe_id);
-
-                return $customer;
+                return Customer::retrieve($this->stripe_id);
             } catch (Api $exception) {
                 $this->stripe_id = null;
                 $this->save();
@@ -104,40 +92,56 @@ trait StripeCustomer
 
 
     /**
-     * Get the Stripe Customer cache key to store customer information from the cache.
+     * Get the user's Stripe subscriptions.
      *
-     * @return string
+     * @return Collection|Subscription[]
      */
-    private function getStripeCustomerCacheKey()
+    public function getStripeSubscriptions(): Collection
     {
-        return "user.{$this->id}.stripe";
+        if (!$this->isStripeCustomer()) {
+            return new Collection();
+        }
+
+        return $this->cache(StripeCustomer::$StripeSubscriptionsCacheKey, 7 * 24 * 3600, function () {
+            $subscriptions = new Collection();
+
+            $stripeCollection = Subscription::all([
+                "customer" => $this->stripe_id,
+                "expand" => [
+                    "data.default_source",
+                    "data.latest_invoice.payment_intent",
+                    "data.pending_setup_intent",
+                ]
+            ]);
+
+            foreach ($stripeCollection as $subscription) {
+                $subscriptions->push($subscription);
+            }
+
+            return $subscriptions;
+        });
     }
 
 
     /**
-     * Delete the Braintree customer from the cache.
+     * Add a source to the user.
+     *
+     * @param string $token
+     * @param bool $makeDefault
      */
-    public function forgetStripeCustomerCache()
+    public function addSource(string $token, bool $makeDefault = false)
     {
-        Cache::forget($this->getStripeCustomerCacheKey());
-    }
-
-
-    public function getStripeSubscriptions()
-    {
-        return Subscription::all([
-            "customer" => $this->stripe_id
-        ], [
-            "expand" => ["default_source"]
-        ]);
-    }
-
-
-    public function addSource(string $token)
-    {
-        Customer::createSource($this->stripe_id, [
+        /** @var Source $source */
+        $source = Customer::createSource($this->stripe_id, [
             "source" => $token
         ]);
-        $this->forgetStripeCustomerCache();
+
+        if ($makeDefault) {
+            Customer::update($this->stripe_id, [
+                "default_source" => $source->id
+            ]);
+        }
+
+        $this->invalidate(StripeCustomer::$StripeCustomerCacheKey);
     }
 }
