@@ -2,7 +2,7 @@
 
 return [
     "supportsCredentials" => true,
-    "allowedOrigins" => ["localhost:4200", "*.mathrix.fr", "mathrix.fr"],
+    "allowedOrigins" => ["*"],
     "allowedHeaders" => ["*"],
     "allowedMethods" => ["*"],
     "exposedHeaders" => [],
