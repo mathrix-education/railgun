@@ -4,8 +4,8 @@
 # Author: Mathieu Bour
 # Since: v6.0.0
 # ====================
-options:
-  machineType: 'N1_HIGHCPU_8'
+#options:
+#  machineType: 'N1_HIGHCPU_8'
 steps:
   # Decrypt the SSH private key for composer git clone
   # --------------------------------------------------
