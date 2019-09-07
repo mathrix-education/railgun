@@ -46,7 +46,7 @@ steps:
     name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'eu.gcr.io/$PROJECT_ID/education-api:$BRANCH_NAME-$SHORT_SHA']
   - id: 'cloud-run:deploy'
-      waitFor: ['docker:push']
-      name: 'gcr.io/cloud-builders/gcloud'
-      entrypoint: 'deploy/scripts/deploy.sh'
-      args: ['-b', '$BRANCH_NAME', '-s', '$SHORT_SHA']
+    waitFor: ['docker:push']
+    name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'deploy/steps/4_deploy.sh'
+    args: ['-b', '$BRANCH_NAME', '-s', '$SHORT_SHA']
