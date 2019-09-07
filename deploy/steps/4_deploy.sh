@@ -13,12 +13,14 @@ while getopts ":b:s:" opt; do
   esac
 done
 
+ENV_VARS=$(./deploy/utils/envcat.sh "./environments/${BRANCH_NAME}/.env")
+
 gcloud beta run deploy education-api-"${BRANCH_NAME}" \
   --image eu.gcr.io/mathrix-education/education-api:"${BRANCH_NAME}-${SHORT_SHA}" \
   --platform=managed \
   --region=europe-west1 \
   --allow-unauthenticated \
-  --set-env-vars="APP_ENV=${BRANCH_NAME},SHORT_SHA=${SHORT_SHA}"
+  --set-env-vars="${ENV_VARS},SHORT_SHA=${SHORT_SHA}"
 
 # Required for the first deployment
 #SQL_INSTANCE=mathrix-education:europe-west1:mysql

@@ -21,9 +21,6 @@ function decrypt() {
 }
 
 decrypt deploy/secrets/github-oauth.github.com mathrix-education-api-cloudbuild
-
 decrypt "environments/${BRANCH_NAME}/.env" "mathrix-education-api-${BRANCH_NAME}"
-mv "environments/${BRANCH_NAME}/.env" .env
-
 decrypt "environments/${BRANCH_NAME}/jwt_auth.json" "mathrix-education-api-${BRANCH_NAME}"
 mv "environments/${BRANCH_NAME}/jwt_auth.json" storage/keychain/jwt_auth.json
