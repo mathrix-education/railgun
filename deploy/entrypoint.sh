@@ -6,6 +6,6 @@ PORT=${PORT_FROM_ENV:-"80"}
 
 sed -i -E "s/CLOUD_RUN_PORT/${PORT}/g" /etc/nginx/conf.d/default.conf
 #php artisan gcloud:setup "${APP_ENV}"
-php artisan migrate
+#php artisan migrate
 
 /usr/sbin/php-fpm7 --allow-to-run-as-root && /usr/sbin/nginx -g 'daemon off;'
