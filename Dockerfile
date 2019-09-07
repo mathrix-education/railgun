@@ -49,7 +49,8 @@ COPY ./deploy/entrypoint.sh /entrypoint.sh
 RUN php artisan providers:cache -f && \
     echo "${SHORT_SHA}" >> build.txt && \
     chmod +x /entrypoint.sh && \
-    rm -rf deploy/
+    rm -rf deploy/ && \
+    ls -l storage/keychain
 
 # Clean
 RUN rm -rf /var/cache/apk/*

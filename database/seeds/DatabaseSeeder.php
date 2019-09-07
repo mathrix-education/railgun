@@ -59,10 +59,7 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->linkAll(Discount::class, Product::class);
 
         // Reports
-        $this->seedFromFactory(Report::class, 500);
-
-        // Logs
-        $this->call(LogTableSeeder::class);
+        $this->seedFromFactory(Report::class, 50);
 
         // Marks
         $this->call(MarksTableSeeder::class);
