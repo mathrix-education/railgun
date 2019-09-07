@@ -155,7 +155,7 @@ class Subscription extends Bishop
         $trialEnd = null;
 
         if ($subscription->trialPeriod) {
-            $trialEnd = carbon_auto($subscription->createdAt);
+            $trialEnd = Carbon::instance($subscription->createdAt);
 
             if ($subscription->trialDurationUnit === "day") {
                 $trialEnd->addDays($subscription->trialDuration);
@@ -168,7 +168,7 @@ class Subscription extends Bishop
         $cancelAt = null;
 
         if ($cancelAtPeriodEnd) {
-            $cancelAt = carbon_auto($subscription->nextBillingDate);
+            $cancelAt = Carbon::instance($subscription->nextBillingDate);
         }
 
         $paymentMethodObj = null;

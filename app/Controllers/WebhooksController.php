@@ -6,8 +6,10 @@ use App\Services\Stripe\Webhooks\SetupIntentSucceededWebhook;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
+use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
 use Stripe\Error\SignatureVerification;
+use Stripe\Event;
 use Stripe\Webhook as StripeWebhook;
 
 /**
@@ -27,12 +29,17 @@ class WebhooksController extends BaseController
      *
      * @return SuccessJsonResponse
      * @throws SignatureVerification
+     * @throws Http400BadRequestException
      */
     public function stripe(Request $request): JsonResponse
     {
+        /**
+         * @var Event $event
+         * @link https://github.com/laravel/cashier/issues/437#issuecomment-388779839
+         */
         $event = StripeWebhook::constructEvent(
             $request->getContent(),
-            $request->header("STRIPE_SIGNATURE"),
+            $request->server("HTTP_STRIPE_SIGNATURE"),
             env("STRIPE_WEBHOOKS_SECRET")
         );
 
