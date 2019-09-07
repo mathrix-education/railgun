@@ -12,8 +12,8 @@ steps:
   - id: 'gcloud:kms:decrypt'
     waitFor: ['-']
     name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: '/bin/bash'
-    args: ['deploy/steps/0_decrypt.sh']
+    entrypoint: 'deploy/steps/0_decrypt.sh'
+    args: ['-b', '$BRANCH_NAME']
 
 
   # Install PHP dependencies using composer

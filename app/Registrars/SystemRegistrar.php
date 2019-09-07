@@ -3,6 +3,7 @@
 namespace App\Registrars;
 
 use App\Controllers\SystemController;
+use Illuminate\Http\Response;
 use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
 /**
@@ -20,7 +21,13 @@ class SystemRegistrar extends BaseRegistrar
     public function register(): void
     {
         $this->get("/", SystemController::class . "@base");
-        $this->get("system/health[/{count:[1-9]\d*}]", SystemController::class . "@health");
-        $this->get("system/sitemap", SystemController::class . "@sitemap");
+        $this->get("/system/health[/{count:[1-9]\d*}]", SystemController::class . "@health");
+        $this->get("/system/sitemap", SystemController::class . "@sitemap");
+
+        $this->get("/docs", function () {
+            $docs = file_get_contents(resource_path("views/docs/index.html"));
+
+            return new Response($docs);
+        });
     }
 }

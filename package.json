@@ -7,6 +7,6 @@
   },
   "scripts": {
     "docs:serve": "redoc-cli serve docs/output.yaml",
-    "docs:bundle": "redoc-cli bundle docs/output.yaml docs/index.html && mv redoc-static.html docs/index.html"
+    "docs:bundle": "redoc-cli bundle docs/output.yaml && mv redoc-static.html resources/views/docs/index.html"
   }
 }

@@ -15,9 +15,8 @@
 /vendor/
 /artifacts
 /bootstrap/cache
-/docs/json-schema
-/docs/out
-/docs/spec.html
+/docs/output.yaml
+/resources/view/docs/index.html
 /resources/mails
 /storage/code-coverage/
 
