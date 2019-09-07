@@ -4,13 +4,19 @@ namespace App\Controllers;
 
 use App\Models\Chapter;
 use App\Models\User;
+use App\Services\Sitemap\Sitemap;
+use App\Services\Sitemap\SitemapURL;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use Laravelium\Sitemap\Sitemap;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
 use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
+use Thepixeldeveloper\Sitemap\Drivers\XmlWriterDriver;
+use Thepixeldeveloper\Sitemap\Extensions\Video;
+use Thepixeldeveloper\Sitemap\Url;
+use Thepixeldeveloper\Sitemap\Urlset;
 
 /**
  * Class SystemController.
@@ -115,28 +121,31 @@ class SystemController extends BaseController
     }
 
 
-    public function sitemap()
+    /**
+     * GET /system/sitemap
+     * Dynamically generate the sitemap.
+     *
+     * @return Response
+     */
+    public function sitemap(): Response
     {
-        $response = new Response();
-    }
+        $driver = new XmlWriterDriver();
+        $sitemap = new Urlset();
 
+        // Add root url
+        $home = new Url(loc("/"));
+        $sitemap->add($home);
 
-    public function sitemap2()
-    {
-        $webroot = env("APP_WEBROOT");
-
-        /** @var Sitemap $sitemap */
-        $sitemap = app()->make("sitemap");
-        $sitemap->add("$webroot");
-
+        // Add grade urls
         DB::table("grades")
             ->select(["slug"])
             ->get()
-            ->each(function ($data) use ($webroot, &$sitemap) {
-                $gradeSlug = $data->slug;
-                $sitemap->add("$webroot/$gradeSlug");
+            ->each(function ($data) use ($sitemap) {
+                $gradeUrl = new Url(loc($data->slug));
+                $sitemap->add($gradeUrl);
             });
 
+        // Add module urls
         DB::table("modules")
             ->selectRaw("
                 disciplines.slug AS discipline_slug,
@@ -153,37 +162,42 @@ class SystemController extends BaseController
             ->join("disciplines", "chapters.discipline_id", "=", "disciplines.id")
             ->where("seo_index", "=", true)
             ->get()
-            ->map(function ($data) use ($webroot, &$sitemap) {
-                // Search for videos
+            ->map(function ($data) use ($sitemap) {
+                /*
+                 * Search for videos in the module content and if some are found, use the
+                 */
                 $videos = [];
                 if ($data->module_content !== null) {
-                    preg_match_all("/\[video.*\](.*)\[\/video\]/", $data->module_content, $matches);
+                    preg_match_all("/\[video.*](.*)\[\/video]/", $data->module_content, $matches);
 
                     foreach ($matches[1] as $youtubeId) {
-                        $videos[] = [
-                            "title" => $data->module_seo_title,
-                            "thumbnail_loc" => "http://img.youtube.com/vi/$youtubeId/sddefault.jpg",
-                            "player_loc" => [
-                                "player_loc" => "https://www.youtube.com/v/$youtubeId",
-                                "allow_embed" => "yes",
-                                "autoplay" => "ap=1"
-                            ]
-                        ];
+                        $video = new Video(
+                            "http://img.youtube.com/vi/$youtubeId/sddefault.jpg",
+                            $data->module_seo_title,
+                            null
+                        );
+                        $video->setPlayerLoc("https://www.youtube.com/v/$youtubeId");
+                        $videos[] = $video;
                     }
                 }
 
-                $sitemap->add(
-                    "$webroot/{$data->discipline_slug}/{$data->chapter_slug}/{$data->module_seo_slug}-{$data->module_id}",
-                    $data->module_lastmod,
-                    1,
-                    null,
-                    [],
-                    $data->module_seo_title,
-                    [],
-                    $videos
-                );
+                $loc = "{$data->discipline_slug}/{$data->chapter_slug}/{$data->module_seo_slug}-{$data->module_id}";
+                $moduleUrl = new Url(loc($loc));
+                $moduleUrl->setLastMod(new Carbon($data->module_lastmod));
+                $moduleUrl->setPriority(1);
+
+                foreach ($videos as $video) {
+                    $moduleUrl->addExtension($video);
+                }
+
+                $sitemap->add($moduleUrl);
             });
 
-        return $sitemap->render("xml");
+        $sitemap->accept($driver);
+        $response = new Response();
+        $response->header("Content-Type", "application/xml");
+        $response->setContent($driver->output());
+
+        return $response;
     }
 }

@@ -1,10 +1,8 @@
 <?php
 
 use App\Models\User;
-use Carbon\Carbon;
 use Faker\Factory as FakerFactory;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Support\Arr;
 use Ramsey\Uuid\Uuid;
 
 //if (!function_exists("config_path")) {
@@ -100,49 +98,9 @@ if ((!function_exists("morph_alias"))) {
     }
 }
 
-
-if ((!function_exists("morph_alias"))) {
-    function morph_alias($class)
+if ((!function_exists("loc"))) {
+    function loc($loc)
     {
-        return array_search($class, Relation::morphMap()) ?: $class;
-    }
-}
-
-if (!function_exists("data_filter")) {
-    /**
-     * @param array $source
-     * @param string[] $keys
-     *
-     * @return array
-     */
-    function data_filter(array $source, array $keys): array
-    {
-        $dot = Arr::dot($source);
-        $final = [];
-
-        foreach ($dot as $k => $v) {
-            if (in_array($k, $keys)) {
-                Arr::set($final, $k, $v);
-            }
-        }
-
-        return $final;
-    }
-}
-
-if (!function_exists("carbon_auto")) {
-    function carbon_auto($date)
-    {
-        if ($date === null) {
-            return null;
-        } else if ($date instanceof DateTime) {
-            return Carbon::instance($date);
-        } else {
-            try {
-                return new Carbon($date);
-            } catch (Exception $e) {
-                return null;
-            }
-        }
+        return rtrim(env("ANGULAR_URL"), "/") . "/" . ltrim($loc, "/");
     }
 }
