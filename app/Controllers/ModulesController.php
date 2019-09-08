@@ -29,7 +29,7 @@ class ModulesController extends BaseController
      * @return PaginationJsonResponse
      * @throws Http400BadRequestException
      */
-    public function comments(int $moduleId): PaginationJsonResponse
+    public function getComments(int $moduleId): PaginationJsonResponse
     {
         /** @var Module $module */
         $module = Module::query()->findOrFail($moduleId);
