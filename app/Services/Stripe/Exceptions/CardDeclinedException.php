@@ -2,11 +2,18 @@
 
 namespace App\Services\Stripe\Exceptions;
 
-use Illuminate\Support\Facades\App;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http422UnprocessableEntityException;
 use Stripe\Error\Card as StripeCardException;
 use Throwable;
 
+/**
+ * Class CardDeclinedException.
+ * Thrown when a card has been declined.
+ *
+ * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @copyright Mathrix Education SA
+ * @since 6.0.0
+ */
 class CardDeclinedException extends Http422UnprocessableEntityException
 {
     /**
@@ -17,8 +24,10 @@ class CardDeclinedException extends Http422UnprocessableEntityException
      */
     public function __construct(StripeCardException $exception, Throwable $previous = null)
     {
-        parent::__construct([
-            "decline_code" => $exception->declineCode
-        ], trans("stripe.card.declined"), $previous);
+        parent::__construct(
+            ["decline_code" => $exception->getDeclineCode()],
+            trans("stripe.card.declined"),
+            $previous
+        );
     }
 }

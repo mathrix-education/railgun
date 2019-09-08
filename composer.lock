@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "77e578fad6e45e3392b5904a83dc94a6",
+    "content-hash": "9b397f9a8b996b057625ad8546af14f1",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -8002,16 +8002,16 @@
         },
         {
             "name": "mathrix/openapi-assertions",
-            "version": "0.10.1",
+            "version": "0.10.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mathrix-education/openapi-assertions.git",
-                "reference": "6f9f2709fe38ab0e7852b382e16fe42cda4417a7"
+                "reference": "7c20adca90170ee848f9a8d2df07659702c187e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mathrix-education/openapi-assertions/zipball/6f9f2709fe38ab0e7852b382e16fe42cda4417a7",
-                "reference": "6f9f2709fe38ab0e7852b382e16fe42cda4417a7",
+                "url": "https://api.github.com/repos/mathrix-education/openapi-assertions/zipball/7c20adca90170ee848f9a8d2df07659702c187e5",
+                "reference": "7c20adca90170ee848f9a8d2df07659702c187e5",
                 "shasum": ""
             },
             "require": {
@@ -8059,7 +8059,7 @@
                 "wiki": "https://github.com/mathrix-education/openapi-processor/wiki",
                 "source": "https://github.com/mathrix-education/openapi-processor"
             },
-            "time": "2019-09-04T15:41:07+00:00"
+            "time": "2019-09-08T02:51:29+00:00"
         },
         {
             "name": "mathrix/openapi-processor",

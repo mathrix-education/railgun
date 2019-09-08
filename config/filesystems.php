@@ -1,8 +1,8 @@
 <?php
 return [
-    "default" => env("FILESYSTEM_DRIVER", "cdn.mathrix.fr"),
+    "default" => env("FILESYSTEM_DRIVER", "gcs"),
     "disks" => [
-        "cdn.mathrix.fr" => [
+        "gcs" => [
             "driver" => "gcs",
             "project_id" => env("GOOGLE_CLOUD_PROJECT_ID"),
             "bucket" => env("GOOGLE_CLOUD_STORAGE_BUCKET"),

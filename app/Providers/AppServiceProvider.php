@@ -12,9 +12,7 @@ use App\Models\Product;
 use App\Models\User;
 use App\Services\Braintree\BraintreeGatewayServiceProvider;
 use App\Services\Stripe\StripeServiceProvider;
-use Arcanedev\LaravelLang\LaravelLangServiceProvider;
 use Barryvdh\Cors\ServiceProvider as CorsServiceProvider;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Filesystem\FilesystemServiceProvider;
 use Illuminate\Mail\MailServiceProvider;
@@ -25,7 +23,6 @@ use Mathrix\Lumen\Zero\Providers\ObserverServiceProvider;
 use Mathrix\Lumen\Zero\Providers\PolicyServiceProvider;
 use Mathrix\Lumen\Zero\Providers\RegistrarServiceProvider;
 use Sentry\Laravel\ServiceProvider as SentryServiceProvider;
-use Superbalist\LaravelGoogleCloudStorage\GoogleCloudStorageServiceProvider;
 
 /**
  * Class AppServiceProvider.
@@ -56,6 +53,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(JWTServiceProvider::class);
         $this->app->register(FacebookServiceProvider::class);
         $this->app->register(StripeServiceProvider::class);
+        $this->app->register(GoogleCloudStorageServiceProvider::class);
 
         // Mathrix Lumen Zero Providers
         $this->app->register(ObserverServiceProvider::class);

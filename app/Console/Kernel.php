@@ -2,17 +2,13 @@
 
 namespace App\Console;
 
-use App\Console\Commands\Braintree\BraintreeSyncCommand;
-use App\Console\Commands\Braintree\BraintreeSyncCustomersCommand;
-use App\Console\Commands\Braintree\BraintreeSyncPurchasesCommand;
-use App\Console\Commands\Braintree\BraintreeSyncSubscriptionsCommand;
-use App\Console\Commands\Braintree\BraintreeSyncTransactionsCommand;
 use App\Console\Commands\Cache\RebuildCacheCommand;
+use App\Console\Commands\CleanCacheCommand;
 use App\Console\Commands\CompileMails;
-use App\Console\Commands\GoogleCloud\DecryptCommand;
-use App\Console\Commands\GoogleCloud\EncryptCommand;
-use App\Console\Commands\GoogleCloud\SetupCommand;
 use App\Console\Commands\TestCommand;
+use App\Services\GoogleCloud\KMS\Commands\DecryptCommand;
+use App\Services\GoogleCloud\KMS\Commands\EncryptCommand;
+use App\Services\GoogleCloud\KMS\Commands\SetupCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
@@ -29,8 +25,6 @@ class Kernel extends ConsoleKernel
     /** @var array The Artisan commands. */
     protected $commands = [
         TestCommand::class,
-        CompileMails::class,
-        RebuildCacheCommand::class,
         EncryptCommand::class,
         DecryptCommand::class,
         SetupCommand::class
@@ -44,6 +38,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-
+        $schedule->command(CleanCacheCommand::class)->everyTenMinutes();
+        $schedule->command("queue:work --stop-when-empty")->everyMinute();
     }
 }

@@ -4,6 +4,7 @@ requestBodies: []
 responses: []
 schemas:
   Errors:
+  Files:
   Modules: Module
   Products: Product
   Sources:

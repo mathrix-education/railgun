@@ -2,15 +2,16 @@
 
 namespace App\Controllers;
 
-use App\Exceptions\FileNotFoundException;
-use Illuminate\Contracts\Filesystem\Filesystem;
+use App\Services\GoogleCloud\Storage\Exceptions\DirectoryNotFoundException;
 use Illuminate\Filesystem\FilesystemAdapter;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use League\Flysystem\FileNotFoundException as FlysystemFileNotFoundException;
+use League\Flysystem\FileNotFoundException;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
+use Mathrix\Lumen\Zero\Exceptions\ValidationException;
+use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
 
 
 /**
@@ -22,229 +23,175 @@ use Mathrix\Lumen\Zero\Controllers\BaseController;
  */
 class FilesController extends BaseController
 {
-    public const DISK = "cdn";
+    /** @var FilesystemAdapter $disk */
+    private $disk;
 
 
     /**
-     * Transform file or directory data.
+     * FilesController constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->disk = Storage::disk(env("FILESYSTEM_DRIVER"));
+    }
+
+
+    /**
+     * Cast data returned from Google Cloud Storage.
      *
-     * @param array $data
+     * @param array $data The data which can represent a file or a directory.
+     * @param bool $multi If true, loop over the items.
      *
      * @return array
      */
-    private function transform(array $data): array
+    private function cast(array $data, bool $multi = false): array
     {
+        if ($multi) {
+            $objects = [];
+
+            foreach ($data as $object) {
+                $objects[] = $this->cast($object);
+            }
+
+            return $objects;
+        }
+
+        if (isset($data["size"])) {
+            $data["size_kb"] = intval($data["size"]);
+            unset($data["size"]);
+        }
+
         if (isset($data["path"])) {
-            $data["url"] = env("APP_CDN") . "/{$data["path"]}";
+            $prefix = trim(env("GOOGLE_CLOUD_STORAGE_PATH_PREFIX"), "/");
+            $data["url"] = trim(env("CDN_URL")) . "/" . (!empty($prefix) ? $prefix . "/" : "") . $data["path"];
         }
 
-        if ($data["type"] === "file") {
-            if (isset($data["size"])) {
-                $data["size"] = (int)$data["size"];
+        // "type" has to be the first key
+        uksort($data, function ($key1, $key2) {
+            if ($key1 === "type") {
+                return -1;
+            } else if ($key2 === "type") {
+                return 1;
+            } else {
+                return strcasecmp($key1, $key2);
             }
-
-            if (!isset($data["extension"])) {
-                // Fix for files with no extensions
-                $data["extension"] = "";
-
-                if (!isset($data["basename"]) && isset($data["path"])) {
-                    $data["basename"] = basename($data["path"]);
-                    $data["filename"] = basename($data["path"]);
-                }
-            }
-        }
+        });
 
         return $data;
     }
 
 
     /**
-     * Get the storage disk
+     * POST /files
+     * Upload a file to the CDN.
      *
-     * @return Filesystem|FilesystemAdapter
+     * @param Request $request The Illuminate HTTP request.
+     * @param string $path The file destination.
+     *
+     * @return SuccessJsonResponse
+     * @throws ValidationException
+     * @throws FileNotFoundException
      */
-    private function getDisk(): FilesystemAdapter
+    public function post(Request $request, string $path): SuccessJsonResponse
     {
-        return Storage::disk(self::DISK);
+        $this->validate($request, [
+            "file" => "required|file|max:204800|mimes:pdf,gif,jpeg,svg,png,mp4"
+        ]);
+
+        /** @var File|UploadedFile $file */
+        $file = $request->file("file");
+
+        $this->disk->putFileAs(dirname($path), $file, basename($path));
+
+        $metadata = $this->disk->getMetadata($path);
+        $data = $this->cast($metadata);
+
+        return new SuccessJsonResponse($data);
     }
 
 
     /**
-     * Get a file/directory metadata
+     * GET /files/{file}
+     * Get a file metadata.
      *
      * @param string $path
      *
-     * @return array|false
+     * @return SuccessJsonResponse
      * @throws FileNotFoundException
      */
-    private function metadata(string $path)
+    public function get(string $path): SuccessJsonResponse
     {
-        $disk = $this->getDisk();
+        $metadata = $this->disk->getMetadata($path);
+        $data = $this->cast($metadata);
 
-        try {
-            $metadata = $this->transform($disk->getMetadata($path));
-        } catch (FlysystemFileNotFoundException $e) {
-            throw new FileNotFoundException($path);
-        }
-        $metadata["url"] = env("APP_CDN") . "/$path";
-
-        return $metadata;
+        return new SuccessJsonResponse($data);
     }
 
 
     /**
-     * POST /files
+     * GET /files/{directory}
+     *
+     * @param string $directory
+     *
+     * @return SuccessJsonResponse
+     * @throws DirectoryNotFoundException
+     */
+    public function list(string $directory = "/"): SuccessJsonResponse
+    {
+        $data = $this->cast($this->disk->listContents($directory), true);
+        $data = collect($data)->sortBy("type")->values()->toArray();
+
+        if (empty($data) && !$this->disk->exists($directory)) {
+            // Directory is empty and does not exist
+            throw new DirectoryNotFoundException($directory);
+        }
+
+        return new SuccessJsonResponse($data);
+    }
+
+
+    /**
+     * PATCH /files/{file}
+     * Move a file in the CND.
      *
      * @param Request $request The Illuminate HTTP request.
-     * @param string $file The destination path.
+     * @param string $path The source file.
      *
-     * @return JsonResponse
+     * @return SuccessJsonResponse
      * @throws FileNotFoundException
      * @throws ValidationException
      */
-    public function upload(Request $request, string $file): JsonResponse
-    {
-        $this->validate($request, [
-            "file" => "required|file|max:15360|mimes:jpeg,jpg,png,gif,pdf,mp3,mp4",
-        ]);
-
-        $disk = $this->getDisk();
-        $destination = trim(dirname($file), "/");
-        $name = trim(basename($file), "/");
-
-        /** @var UploadedFile $file */
-        $upload = $request->file("file");
-
-        if ($this->getDisk()->exists($file)) {
-            $disk->delete($destination);
-        }
-
-        $effectivePath = $disk->putFileAs($destination, $upload, $name);
-
-        return new JsonResponse($this->metadata($effectivePath));
-    }
-
-
-    /**
-     * GET /files/explore/{directory}
-     * Explore a directory.
-     *
-     * @param string $directory The directory path.
-     *
-     * @return JsonResponse
-     */
-    public function explore(string $directory = "/")
-    {
-        $disk = $this->getDisk();
-        $content = collect($disk->listContents($directory));
-
-        $directories = $content
-            ->filter(function ($v) {
-                return $v["type"] === "dir";
-            })
-            ->map(function ($dir) {
-                return $this->transform($dir);
-            })
-            ->values();
-        $files = $content
-            ->filter(function ($v) {
-                return $v["type"] === "file";
-            })
-            ->map(function ($file) {
-                return $this->transform($file);
-            })
-            ->values();
-
-        return new JsonResponse([
-            "directories" => $directories,
-            "files" => $files
-        ]);
-    }
-
-
-    /**
-     * GET /files/{path}/info
-     *
-     * @param string $file The file path.
-     *
-     * @return JsonResponse
-     * @throws FileNotFoundException
-     */
-    public function info(string $file)
-    {
-        return new JsonResponse($this->metadata($file));
-    }
-
-
-    /**
-     * PATCH /files/{path}
-     * Rename (move) a file.
-     *
-     * @param Request $request The Illuminate HTTP request.
-     * @param string $file The file path.
-     *
-     * @return JsonResponse
-     * @throws FileNotFoundException
-     * @throws Http400BadRequestException
-     * @throws ValidationException
-     */
-    public function rename(Request $request, string $file): JsonResponse
+    public function patch(Request $request, string $path): SuccessJsonResponse
     {
         $this->validate($request, [
             "destination" => "required"
         ]);
+        $destination = $request->json("destination");
 
-        $disk = $this->getDisk();
-        $source = trim($file);
-        $destination = trim($request->input("destination"), "/");
+        $this->disk->delete($destination); // Force delete if file exist
+        $this->disk->move($path, $destination);
 
-        if (!$disk->exists($source)) {
-            throw new FileNotFoundException($source);
-        }
-
-        if ($disk->exists($destination)) {
-            $disk->delete($destination);
-        }
-
-        $result = $disk->move($file, $request->input("destination"));
-
-        if (!$result) {
-            throw new Http400BadRequestException([
-                "source" => $source,
-                "destination" => $destination
-            ], "Unable to move $source to $destination.");
-        }
-
-        return new JsonResponse($this->metadata($destination));
+        return $this->get($destination);
     }
 
 
     /**
-     * DELETE /files/{path}
-     * Delete a file/directory.
+     * DELETE /files/{file}
+     * Delete a file on the CDN.
      *
-     * @param string $file The file/directory path.
+     * @param string $path The file to delete.
      *
-     * @return JsonResponse
+     * @return SuccessJsonResponse
      * @throws FileNotFoundException
-     * @throws Http400BadRequestException
      */
-    public function remove(string $file)
+    public function delete(string $path): SuccessJsonResponse
     {
-        $disk = $this->getDisk();
+        $this->disk->getDriver()->delete($path); // Alternative syntax to throw FileNotFoundException
 
-        // Check if path exists
-        if (!$disk->has($file)) {
-            throw new FileNotFoundException($file);
-        }
-
-        if (!$disk->delete($file)) {
-            throw new Http400BadRequestException(null, "Unable to delete $file.");
-        }
-
-        return new JsonResponse([
-            "success" => true,
-            "message" => "File $file was successfully deleted."
-        ]);
+        return new SuccessJsonResponse(
+            ["path" => $path],
+            ["message" => trans("google-cloud.storage.file_deleted", ["file" => $path])]
+        );
     }
 }

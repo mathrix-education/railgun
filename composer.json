@@ -54,7 +54,7 @@
     "brianium/paratest": "3.0.0",
     "doctrine/dbal": "2.9.2",
     "league/csv": "^9.2",
-    "mathrix/openapi-assertions": "0.10.1",
+    "mathrix/openapi-assertions": "0.10.4",
     "mathrix/openapi-processor": "0.9.7",
     "mockery/mockery": "1.2.2",
     "nyholm/psr7": "^1.1",

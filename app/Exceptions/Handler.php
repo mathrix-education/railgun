@@ -109,7 +109,7 @@ class Handler extends ExceptionHandler
         }
 
         if ($e instanceof StripeBaseException) {
-            StripeHandler::rethrow($e);
+            StripeHandler::handle($e);
         }
 
         $overriddenStatusCode = false;

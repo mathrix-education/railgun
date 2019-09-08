@@ -20,9 +20,12 @@ class SystemRegistrar extends BaseRegistrar
      */
     public function register(): void
     {
-        $this->get("/", SystemController::class . "@base");
-        $this->get("/system/health[/{count:[1-9]\d*}]", SystemController::class . "@health");
-        $this->get("/system/sitemap", SystemController::class . "@sitemap");
+        $controller = SystemController::class;
+
+        $this->get("/", "$controller@base");
+        $this->get("/system/health[/{count:[1-9]\d*}]", "$controller@health");
+        $this->get("/system/sitemap", "$controller@sitemap");
+        $this->get("/system/work", "$controller@work");
 
         $this->get("/docs", function () {
             $docs = file_get_contents(resource_path("views/docs/index.html"));

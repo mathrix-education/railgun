@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\GoogleCloud;
+namespace App\Services\GoogleCloud\KMS\Commands;
 
 use Mathrix\Lumen\Zero\Console\Commands\BaseCommand;
 

@@ -10,9 +10,11 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
 use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Thepixeldeveloper\Sitemap\Drivers\XmlWriterDriver;
 use Thepixeldeveloper\Sitemap\Extensions\Video;
 use Thepixeldeveloper\Sitemap\Url;
@@ -28,6 +30,15 @@ use Thepixeldeveloper\Sitemap\Urlset;
  */
 class SystemController extends BaseController
 {
+    /**
+     * Run a benchmark.
+     *
+     * @param callable $test The benchmark.
+     * @param int $count The number of iteration to run.
+     * @param string $unit The unit of measure.
+     *
+     * @return float|int
+     */
     private function benchmark(callable $test, int $count = 100, $unit = "ms")
     {
         $start = microtime(true);
@@ -62,18 +73,6 @@ class SystemController extends BaseController
             "version" => env("APP_VERSION"),
             "build" => env("APP_BUILD")
         ]);
-    }
-
-
-    /**
-     * GET /docs
-     * Only available in dev environment.
-     *
-     * @return Response
-     */
-    public function docs(): Response
-    {
-        return new Response(file_get_contents(resource_path("docs/index.html")));
     }
 
 
@@ -199,5 +198,31 @@ class SystemController extends BaseController
         $response->setContent($driver->output());
 
         return $response;
+    }
+
+
+    /**
+     * GET /system/work
+     * Run schedule and queue workers.
+     *
+     * @return SuccessJsonResponse
+     */
+    public function work(): SuccessJsonResponse
+    {
+        $start = time();
+        $output = new BufferedOutput();
+        Artisan::call("schedule:run", [], $output);
+        // Artisan::call("queue:work", [], $output);
+        $end = time();
+
+        $lines = collect(explode("\n", $output->fetch()))
+            ->reject(function ($line) {
+                return empty($line);
+            });
+
+        return new SuccessJsonResponse([
+            "duration" => $end - $start,
+            "logs" => $lines
+        ]);
     }
 }

@@ -21,18 +21,18 @@ class FilesRegistrar extends BaseRegistrar
     {
         $controller = FilesController::class;
 
-        $this->group(["middleware" => "scope:files:read", "prefix" => "files"], function () use ($controller) {
-            $this->get("explore[/{directory:[a-zA-Z0-9\_\-\/\.]+}]", "$controller@explore");
-            $this->get("{file:[a-zA-Z0-9\_\-\/\.]+}", "$controller@info");
+        $this->group(["middleware" => "scope:files:read"], function () use ($controller) {
+            $this->get("/files/list[/{directory:[a-zA-Z0-9\_\-\/\.]+}]", "$controller@list");
+            $this->get("/files/{file:[a-zA-Z0-9\_\-\/\.]+}", "$controller@get");
         });
 
-        $this->group(["middleware" => "scope:files:write", "prefix" => "files"], function () use ($controller) {
-            $this->post("{file:[a-zA-Z0-9\_\-\/\.]+}", "$controller@upload");
-            $this->patch("{file:[a-zA-Z0-9\_\-\/\.]+}", "$controller@rename");
+        $this->group(["middleware" => "scope:files:write"], function () use ($controller) {
+            $this->post("/files/{file:[a-zA-Z0-9\_\-\/\.]+}", "$controller@post");
+            $this->patch("/files/{file:[a-zA-Z0-9\_\-\/\.]+}", "$controller@patch");
         });
 
-        $this->delete("files/{file:[a-zA-Z0-9\_\-\/\.]+}", [
-            "uses" => "$controller@remove",
+        $this->delete("/files/{file:[a-zA-Z0-9\_\-\/\.]+}", [
+            "uses" => "$controller@delete",
             "middleware" => "scope:files:delete"
         ]);
 

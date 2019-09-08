@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Console\Commands\GoogleCloud\KMSUtils;
 use Mathrix\Lumen\Zero\Console\Commands\BaseCommand;
 
 /**
@@ -14,9 +13,8 @@ use Mathrix\Lumen\Zero\Console\Commands\BaseCommand;
  */
 class TestCommand extends BaseCommand
 {
-    use BoxStyle;
-
     protected $signature = "test";
+
 
     public function handle()
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\GoogleCloud;
+namespace App\Services\GoogleCloud\KMS\Commands;
 
 use Google\ApiCore\ValidationException;
 use Google\Cloud\Kms\V1\KeyManagementServiceClient;
