@@ -20,14 +20,23 @@ use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
  */
 class MailsRegistrar extends BaseRegistrar
 {
+    /**
+     * Get all mails classes.
+     *
+     * @return array
+     */
     public static function getMails()
     {
-        return Collection::make(ClassFinder::getClassesInNamespace("App\\Mails"))
-            ->reject(function (string $mailClass) {
-                return $mailClass === BaseMail::class;
-            })
-            ->values()
-            ->toArray();
+        try {
+            return Collection::make(ClassFinder::getClassesInNamespace("App\\Mails"))
+                ->reject(function (string $mailClass) {
+                    return $mailClass === BaseMail::class;
+                })
+                ->values()
+                ->toArray();
+        } catch (\Exception $e) {
+            return [];
+        }
     }
 
 

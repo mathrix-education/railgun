@@ -1,0 +1,40 @@
+get:
+  summary: Get user cards
+  description: Get the user credit cards. Only Stripe card are supported.
+  security:
+    - bearer: [logged]
+  parameters:
+    - name: userId
+      in: path
+      description: The targeted user id.
+      required: true
+      schema:
+        type: integer
+        example: 1585
+  responses:
+    200:
+      description: The user credit cards.
+      content:
+        application/json:
+          schema:
+            $extends:
+              ../../fragments/responses/200_Success.yaml:
+            properties:
+              page:
+                description: The current page.
+                type: integer
+                example: 0
+                readOnly: true
+              per_page:
+                description: The number of subscriptions per page
+                type: integer
+                example: 100
+                readOnly: true
+              total:
+                description: The total number of subscriptions processed.
+                type: integer
+                example: 3
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CreditCard'

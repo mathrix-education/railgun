@@ -4,10 +4,6 @@ description: Active subscription which has not triggered 3DS2.
 properties:
   type:
     enum: [stripe]
-  pending_setup_intent:
-    type: object
-    nullable: true
-    example: null
   latest_invoice:
     allOf:
       - $ref: '#/components/schemas/Invoice'
@@ -15,6 +11,12 @@ properties:
         properties:
           payment_intent:
             $ref: '#/components/schemas/PaymentIntent'
+  pending_setup_intent:
+    type: object
+    nullable: true
+    example: null
+  payment_method:
+    $ref: '#/components/schemas/CreditCard'
   status:
     description: The subcription is `"active"`, no further action is required.
     enum: [active]

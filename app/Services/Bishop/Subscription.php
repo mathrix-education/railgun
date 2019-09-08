@@ -13,7 +13,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Stripe\Card;
-use Stripe\Error\InvalidRequest;
 use Stripe\Invoice as StripeInvoice;
 use Stripe\SetupIntent as StripeSetupIntent;
 use Stripe\Subscription as StripeSubscription;
@@ -129,14 +128,7 @@ class Subscription extends Bishop
                 "id" => $subscription->plan->id,
                 "amount" => $subscription->plan->amount,
             ],
-            "payment_method" => $card === null ? null : [
-                "type" => "card",
-                "brand" => Str::slug($card->brand),
-                "last4" => $card->last4,
-                "expiration" => Carbon::create(
-                    $card->exp_year, $card->exp_month, 1, 0, 0, 0
-                )->getTimestamp()
-            ],
+            "payment_method" => $card !== null ? \App\Services\Bishop\Card::from($card) : null,
             "status" => $subscription->status,
             "trial_end" => $subscription->trial_end
         ];

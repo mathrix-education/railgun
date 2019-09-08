@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Exceptions\InvalidBraintreeCustomerException;
 use App\Models\Log;
 use App\Models\User;
+use App\Services\Bishop\Card;
 use App\Services\Bishop\Subscription;
 use App\Services\Stripe\Serializers\SubscriptionSerializer;
 use Illuminate\Http\JsonResponse;
@@ -130,40 +131,6 @@ class UsersController extends BaseController
 
 
     /**
-     * GET /users/search/{query}/{page}/{perPage}?order={order}&dir={dir}
-     *
-     * @param Request $request
-     * @param string $query
-     *
-     * @return PaginationJsonResponse
-     * @throws Http400BadRequestException
-     */
-    public function search(Request $request, string $query)
-    {
-        $order = $request->query("order", "id");
-        $dir = $request->query("dir", "asc");
-
-        $fields = Collection::make([
-            "username",
-            "email",
-            "firstname",
-            "lastname",
-            "scopes",
-            "braintree_id",
-            "stripe_id"
-        ]);
-
-        $builder = User::query()->orderBy($order, $dir);
-
-        $fields->each(function ($field) use ($query, &$builder) {
-            $builder = $builder->orWhere($field, "LIKE", "%$query%");
-        });
-
-        return new PaginationJsonResponse($builder);
-    }
-
-
-    /**
      * GET /users/{userId}/subscriptions/{page}/{perPage}
      * Get the user subscriptions.
      *
@@ -215,20 +182,31 @@ class UsersController extends BaseController
     }
 
 
+    /**
+     * @param Request $request
+     *
+     * @return SuccessJsonResponse
+     */
     public function getCards(Request $request)
     {
         /** @var User $user */
         $user = $request->user();
 
         $cards = Customer::allSources($user->stripe_id, [
-            "limit" => 10,
+            "limit" => 100,
             "object" => "card"
         ]);
 
         $data = [];
 
         foreach ($cards as $card) {
+            $data[] = Card::from($card);
         }
+
+        return new SuccessJsonResponse($data, [
+            "page" => 0,
+            "per_page" => 100
+        ]);
     }
 
 
@@ -273,5 +251,39 @@ class UsersController extends BaseController
         $user->update(["points" => $user->points + $pointsToAdd]);
 
         return new JsonResponse($user);
+    }
+
+
+    /**
+     * GET /users/search/{query}/{page}/{perPage}?order={order}&dir={dir}
+     *
+     * @param Request $request
+     * @param string $query
+     *
+     * @return PaginationJsonResponse
+     * @throws Http400BadRequestException
+     */
+    public function search(Request $request, string $query)
+    {
+        $order = $request->query("order", "id");
+        $dir = $request->query("dir", "asc");
+
+        $fields = Collection::make([
+            "username",
+            "email",
+            "firstname",
+            "lastname",
+            "scopes",
+            "braintree_id",
+            "stripe_id"
+        ]);
+
+        $builder = User::query()->orderBy($order, $dir);
+
+        $fields->each(function ($field) use ($query, &$builder) {
+            $builder = $builder->orWhere($field, "LIKE", "%$query%");
+        });
+
+        return new PaginationJsonResponse($builder);
     }
 }

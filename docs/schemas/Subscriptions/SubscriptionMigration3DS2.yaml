@@ -4,6 +4,12 @@ description: Subscription which has triggered 3DS2. Additional action is require
 properties:
   type:
     enum: [stripe]
+  latest_invoice:
+    type: object
+    nullable: true
+    example: null
+  payment_method:
+    $ref: '#/components/schemas/CreditCard'
   pending_setup_intent:
     description: The subscription setup intent. Has to be fullfilled in order to charge the customer.
     type: object
@@ -30,10 +36,6 @@ properties:
         externalDocs:
           description: Stripe SetupIntent statuses documentation
           url: https://stripe.com/docs/payments/intents#intent-statuses
-  latest_invoice:
-    type: object
-    nullable: true
-    example: null
   status:
     description: The subcription is `"active"`, 3DS2 process is required.
     enum: [active]

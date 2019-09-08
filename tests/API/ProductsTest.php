@@ -115,48 +115,4 @@ class ProductsTest extends APIStatelessTestCase
         $this->assertResponseOk();
         $this->assertOpenAPIResponse($this->response);
     }
-
-
-    /**
-     * POST /products/cart
-     */
-    public function testCart(): void
-    {
-        $this->markTestSkipped("Waiting for new Stripe Implementation");
-        $user = User::random();
-        JWT::actingAs($user);
-
-        /** @var Discount $discount */
-        $discount = Discount::query()
-            ->whereHas("products", function (Builder $query) {
-                $query->whereNotNull("price");
-            })
-            ->where("counter", ">", 0)
-            ->whereNull("expire_at")
-            ->inRandomOrder()
-            ->firstOrFail();
-        /** @var Collection|Product[] $products */
-        $products = $discount->products()
-            ->inRandomOrder()
-            ->whereNotNull("price")
-            ->limit($this->faker->numberBetween(1, 3))
-            ->get();
-
-        $sponsor = User::random();
-        $purchase = new Purchase([
-            "transaction_id" => "fake-transaction-id",
-            "user_id" => $sponsor->id,
-            "product_id" => Product::random(["buyable", "=", true])->id
-        ]);
-        $purchase->save();
-
-        $this->json("post", "/products/cart", [
-            "cart" => $products->pluck("id"),
-            "discount_code" => $discount->code,
-            "sponsor_email" => $sponsor->email
-        ]);
-
-        $this->assertResponseOk();
-        $this->assertOpenAPIResponse($this->response);
-    }
 }
