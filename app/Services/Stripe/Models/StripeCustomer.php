@@ -3,10 +3,12 @@
 namespace App\Services\Stripe\Models;
 
 use Illuminate\Support\Collection;
+use Stripe\Card as StripeCard;
 use Stripe\Customer;
 use Stripe\Error\Api;
 use Stripe\Source;
 use Stripe\Subscription;
+use Stripe\Token;
 
 /**
  * Trait StripeCustomer.
@@ -20,6 +22,7 @@ use Stripe\Subscription;
 trait StripeCustomer
 {
     public static $StripeCustomerCacheKey = "stripe.customer";
+    public static $StripeCardsCacheKey = "stripe.cards";
     public static $StripeSubscriptionsCacheKey = "stripe.subscriptions";
 
 
@@ -92,6 +95,30 @@ trait StripeCustomer
 
 
     /**
+     * Ge the user's Stripe cards.
+     *
+     * @return Collection
+     */
+    public function getStripeCards(): Collection
+    {
+        return $this->cache(StripeCustomer::$StripeCardsCacheKey, 7 * 24 * 3600, function () {
+            $cards = new Collection();
+
+            $stripeCards = Customer::allSources($this->stripe_id, [
+                "limit" => 100,
+                "object" => "card"
+            ]);
+
+            foreach ($stripeCards as $stripeCard) {
+                $cards->push($stripeCard);
+            }
+
+            return $cards;
+        });
+    }
+
+
+    /**
      * Get the user's Stripe subscriptions.
      *
      * @return Collection|Subscription[]
@@ -126,19 +153,41 @@ trait StripeCustomer
     /**
      * Add a source to the user.
      *
-     * @param string $token
+     * @param string $cardToken
      * @param bool $makeDefault
      */
-    public function addSource(string $token, bool $makeDefault = false)
+    public function addSource(string $cardToken, bool $makeDefault = false)
     {
-        /** @var Source $source */
-        $source = Customer::createSource($this->stripe_id, [
-            "source" => $token
-        ]);
+        // Check if card already exists
+        $token = Token::retrieve($cardToken);
+        $cardId = null;
+        $cards = $this->getStripeCards();
+        $alreadyAttached = false;
+
+        /** @var StripeCard $card */
+        foreach ($cards as $card) {
+            if ($card->fingerprint === $token->card->fingerprint) {
+                // Card already attached
+                $alreadyAttached = true;
+                $cardId = $token->card->id;
+                break;
+            }
+        }
+
+        if (!$alreadyAttached) {
+            /** @var Source $source */
+            $source = Customer::createSource($this->stripe_id, [
+                "source" => $cardToken
+            ]);
+            $cardId = $source->id;
+
+            $this->invalidate(StripeCustomer::$StripeCardsCacheKey);
+        }
 
         if ($makeDefault) {
+            // $cardId will always be defined
             Customer::update($this->stripe_id, [
-                "default_source" => $source->id
+                "default_source" => $cardId
             ]);
         }
 
