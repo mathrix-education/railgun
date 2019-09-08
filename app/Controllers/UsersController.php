@@ -7,8 +7,6 @@ use App\Models\Log;
 use App\Models\User;
 use App\Services\Bishop\Subscription;
 use App\Services\Stripe\Serializers\SubscriptionSerializer;
-use Braintree\Transaction;
-use Braintree\TransactionSearch;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -20,6 +18,7 @@ use Mathrix\Lumen\Zero\Exceptions\Http\Http401UnauthorizedException;
 use Mathrix\Lumen\Zero\Exceptions\ValidationException;
 use Mathrix\Lumen\Zero\Responses\PaginationJsonResponse;
 use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
+use Stripe\Customer;
 
 /**
  * Class UsersController.
@@ -216,38 +215,20 @@ class UsersController extends BaseController
     }
 
 
-    /**
-     * GET /users/{userId}/transactions/{page}/{perPage}
-     * Get user transactions.
-     *
-     * @param int $userId
-     * @param int $page
-     * @param int $perPage
-     *
-     * @return JsonResponse
-     * @throws InvalidBraintreeCustomerException
-     */
-    public function transactions(int $userId, int $page, int $perPage)
+    public function getCards(Request $request)
     {
-        /** @var User $customer */
-        $customer = User::query()->findOrFail($userId);
-        $customer->requireBraintreeCustomer();
-        $transactionResults = Transaction::search([
-            TransactionSearch::customerId()
-                ->is($customer->braintree_id),
-        ]);
-        $transactions = new Collection();
+        /** @var User $user */
+        $user = $request->user();
 
-        foreach ($transactionResults as $transaction) {
-            $transactions->push(Formatter::cast($transaction));
+        $cards = Customer::allSources($user->stripe_id, [
+            "limit" => 10,
+            "object" => "card"
+        ]);
+
+        $data = [];
+
+        foreach ($cards as $card) {
         }
-
-        return new JsonResponse([
-            "page" => $page,
-            "per_page" => $perPage,
-            "total" => $transactions->count(),
-            "data" => $transactions
-        ]);
     }
 
 
