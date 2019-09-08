@@ -25,7 +25,7 @@ trait HasCache
      */
     protected function getCacheKey(string $key): string
     {
-        $prefix = Str::slug(class_basename($this) . "." . $this->primaryKey);
+        $prefix = Str::slug(class_basename($this) . " " . $this->{$this->primaryKey}, ".");
 
         return "$prefix.$key";
     }
