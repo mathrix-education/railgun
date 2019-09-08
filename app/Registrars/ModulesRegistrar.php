@@ -26,15 +26,15 @@ class ModulesRegistrar extends BaseRegistrar
             "std:post" => "scope:modules:write",
             "std:patch" => "scope:modules:write",
             "std:delete" => "scope:modules:delete",
-            "rel:get:comments" => null,
             "rel:get:reports" => "scope:reports:read"
         ]);
 
         $controller = ModulesController::class;
 
-        $this->get("modules/{moduleId:[1-9]\d*}/chapter/recursive", "$controller@chapterRecursive");
+        $this->get("/modules/{moduleId:[1-9]\d*}/comments", "$controller@getComments");
+        $this->get("/modules/{moduleId:[1-9]\d*}/chapter/recursive", "$controller@chapterRecursive");
 
-        $this->patch("modules/{moduleId:[1-9]\d*}/mark", [
+        $this->patch("/modules/{moduleId:[1-9]\d*}/mark", [
             "uses" => "$controller@mark",
             "middleware" => "logged"
         ]);
