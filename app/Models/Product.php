@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Mathrix\Lumen\Zero\Models\BaseModel;
@@ -136,6 +135,12 @@ class Product extends BaseModel
             && $lineage->pluck("id")->search($iterator->parent_id) === false
         ) {
             $iterator = $iterator->parent;
+
+            if ($lineage->pluck("id")->contains($iterator->id)) {
+                // Prevent endless loops
+                break;
+            }
+
             $lineage->push($iterator);
         }
 

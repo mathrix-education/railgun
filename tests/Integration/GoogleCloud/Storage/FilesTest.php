@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Storage;
 use Mathrix\Lumen\JWT\Auth\JWT;
 use OpenAPIValidation\PSR7\OperationAddress;
 use Tests\APIStatelessTestCase;
-use Tests\Utils\FileAssertions;
 
 /**
  * Class FilesTest.
@@ -19,9 +18,6 @@ use Tests\Utils\FileAssertions;
  */
 class FilesTest extends APIStatelessTestCase
 {
-    use FileAssertions;
-
-
     /**
      * Get a disk.
      *

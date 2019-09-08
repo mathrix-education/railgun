@@ -3,7 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\Cache\RebuildCacheCommand;
-use App\Console\Commands\CleanCacheCommand;
+use App\Console\Commands\CacheCleanCommand;
 use App\Console\Commands\CompileMails;
 use App\Console\Commands\TestCommand;
 use App\Services\GoogleCloud\KMS\Commands\DecryptCommand;
@@ -38,7 +38,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command(CleanCacheCommand::class)->everyTenMinutes();
+        $schedule->command(CacheCleanCommand::class)->everyTenMinutes();
         $schedule->command("queue:work --stop-when-empty")->everyMinute();
     }
 }

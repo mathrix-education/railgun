@@ -15,7 +15,7 @@ use Mathrix\Lumen\Zero\Console\Commands\BaseCommand;
  * @copyright Mathrix Education SA
  * @since 6.0.0
  */
-class CleanCacheCommand extends BaseCommand
+class CacheCleanCommand extends BaseCommand
 {
     protected $signature = "cache:clean";
     protected $description = "Purge expired cache";

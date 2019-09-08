@@ -203,10 +203,9 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function hasPurchased(Product $product): bool
     {
-        return true;
-//        return $this->purchases()
-//            ->whereIn("product_id", $product->lineage()->pluck("id"))
-//            ->exists();
+        return $this->purchases()
+            ->whereIn("product_id", $product->lineage()->pluck("id"))
+            ->exists();
     }
 
 
@@ -277,9 +276,9 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      *
      * @return HasMany
      */
-    public function records(): HasMany
+    public function purchases(): HasMany
     {
-        return $this->hasMany(Record::class);
+        return $this->hasMany(Purchase::class);
     }
 
 
