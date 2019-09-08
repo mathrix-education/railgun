@@ -10,8 +10,8 @@ properties:
       - $ref: '#/components/schemas/Invoice'
       - type: object
         properties:
-        payment_intent:
-          $ref: '#/components/schemas/PaymentIntent'
+          payment_intent:
+            $ref: '#/components/schemas/PaymentIntent'
   payment_method:
     $ref: '#/components/schemas/CreditCard'
   status:
