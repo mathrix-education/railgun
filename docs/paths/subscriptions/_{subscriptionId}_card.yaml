@@ -1,0 +1,58 @@
+patch:
+  summary: Update subscription card
+  description: Update a Stripe subscription credit card.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required: [card]
+          properties:
+            card:
+              description: The user credit card token **OR** id, see above for details.
+              type: object
+              properties:
+                id:
+                  description: An existing card id.
+                  type: string
+                  example: 'card_4x5sq4524dqs1d5qsd'
+                token:
+                  description: >-
+                    A **new** card token. It can be retrieved using the Stripe.js `createToken()` function.
+                  externalDocs:
+                    description: Stripe.js `createToken()`
+                    url: 'https://stripe.com/docs/stripe-js/reference#stripe-create-token'
+                  type: string
+                  example: tok_fr
+  responses:
+    200:
+      description: Subscription was updated.
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [success, data]
+            additionalProperties: false
+            properties:
+              success:
+                description: The response success.
+                type: boolean
+                enum: [true]
+              data:
+                $ref: '#/components/schemas/SubscriptionStripe'
+    422:
+      description: Card token has been refused.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                description: The error code.
+                type: string
+                enum: [incorrect_cvc, card_declined]
+              message:
+                description: The error message.
+                type: string
+              data:
+                description: The error data.

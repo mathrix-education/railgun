@@ -23,8 +23,9 @@ class SubscriptionsRegistrar extends BaseRegistrar
 
         $this->group(["middleware" => "logged"], function () use ($controller) {
             $this->post("subscriptions", "$controller@standardPost");
-            $this->post("subscriptions/{subscriptionId}/migrate", "$controller@migrate");
             $this->get("subscriptions/{subscriptionId}/invoices", "$controller@invoices");
+            $this->patch("subscriptions/{subscriptionId}/card", "$controller@card");
+            $this->post("subscriptions/{subscriptionId}/migrate", "$controller@migrate");
         });
     }
 }

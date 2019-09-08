@@ -6,17 +6,22 @@ namespace App\Services\Stripe\Pipelines;
 
 use App\Services\Stripe\Exceptions\InvalidStripeCustomerException;
 use Mathrix\Lumen\Zero\Exceptions\ValidationException;
+use Stripe\Card as StripeCard;
 
 /**
- * Class CustomerSourceCreationPipeline.
+ * Class CustomerCardAttachPipeline.
  * Attach an additional source to an existing Stripe customer.
  *
  * @author Mathieu Bour <mathieu@mathrix.fr>
  * @copyright Mathrix Education SA
  * @since 6.0.0
  */
-class CustomerSourceCreationPipeline extends Pipeline
+class CustomerCardAttachPipeline extends Pipeline
 {
+    /** @var StripeCard $card */
+    public $card;
+
+
     /**
      * @throws InvalidStripeCustomerException
      * @throws ValidationException
@@ -35,7 +40,7 @@ class CustomerSourceCreationPipeline extends Pipeline
 
     protected function exchange(): void
     {
-        $this->user->addSource($this->request->json("card.token"));
+        $this->card = $this->user->addSource($this->request->json("card.token"));
     }
 
 

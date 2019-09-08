@@ -6,6 +6,7 @@ use App\Exceptions\UserAlreadyPremiumException;
 use App\Models\User;
 use App\Services\Bishop\Invoice;
 use App\Services\Bishop\Subscription;
+use App\Services\Stripe\Pipelines\SubscriptionCardUpdatePipeline;
 use App\Services\Stripe\Pipelines\SubscriptionCreationPipeline;
 use App\Services\Stripe\Pipelines\SubscriptionMigrationPipeline;
 use Illuminate\Http\Request;
@@ -96,6 +97,23 @@ class SubscriptionsController extends BaseController
             "per_page" => $perPage,
             "total" => count($data)
         ]);
+    }
+
+
+    /**
+     * PATCH /subscriptions/{subscriptionId}/card
+     * Change the card associated with a Stripe subscription.
+     *
+     * @param string $subscriptionId
+     *
+     * @return SuccessJsonResponse
+     */
+    public function card(string $subscriptionId): SuccessJsonResponse
+    {
+        $pipeline = (new SubscriptionCardUpdatePipeline($subscriptionId))->flow();
+        $data = Subscription::from($pipeline->subscription);
+
+        return new SuccessJsonResponse($data);
     }
 
 

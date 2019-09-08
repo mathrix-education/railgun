@@ -6,7 +6,6 @@ use Illuminate\Support\Collection;
 use Stripe\Card as StripeCard;
 use Stripe\Customer;
 use Stripe\Error\Api;
-use Stripe\Source;
 use Stripe\Subscription;
 use Stripe\Token;
 
@@ -155,12 +154,15 @@ trait StripeCustomer
      *
      * @param string $cardToken
      * @param bool $makeDefault
+     *
+     * @return StripeCard
      */
     public function addSource(string $cardToken, bool $makeDefault = false)
     {
         // Check if card already exists
         $token = Token::retrieve($cardToken);
-        $cardId = null;
+        /** @var StripeCard $card */
+        $card = null;
         $cards = $this->getStripeCards();
         $alreadyAttached = false;
 
@@ -169,28 +171,29 @@ trait StripeCustomer
             if ($card->fingerprint === $token->card->fingerprint) {
                 // Card already attached
                 $alreadyAttached = true;
-                $cardId = $token->card->id;
+                $card = $token->card;
                 break;
             }
         }
 
         if (!$alreadyAttached) {
-            /** @var Source $source */
-            $source = Customer::createSource($this->stripe_id, [
+            /** @var StripeCard $card */
+            $card = Customer::createSource($this->stripe_id, [
                 "source" => $cardToken
             ]);
-            $cardId = $source->id;
 
             $this->invalidate(StripeCustomer::$StripeCardsCacheKey);
         }
 
         if ($makeDefault) {
-            // $cardId will always be defined
+            // $card will always be defined
             Customer::update($this->stripe_id, [
-                "default_source" => $cardId
+                "default_source" => $card->id
             ]);
         }
 
         $this->invalidate(StripeCustomer::$StripeCustomerCacheKey);
+
+        return $card;
     }
 }

@@ -1,10 +1,10 @@
 get:
-  summary: 'Get {{ model }} by @key@'
-  description: Get the first {{ model }} which matches the given @key@.
+  summary: 'Get {{ model }} by {{ key }}'
+  description: Get the first {{ model }} which matches the given {{ key }}.
   parameters:
-    - name: '{{ model }}@Key@'
+    - name: '{{ model }}{{ key | ucfirst }}'
       in: path
-      description: 'The {{ model }} @key@.'
+      description: 'The {{ model }} {{ key }}.'
       required: true
       schema:
         type: string
