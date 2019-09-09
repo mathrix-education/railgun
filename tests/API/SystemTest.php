@@ -34,6 +34,7 @@ class SystemTest extends APIStatelessTestCase
         $this->assertResponseOk();
     }
 
+
     /**
      * GET /system/sitemap
      */

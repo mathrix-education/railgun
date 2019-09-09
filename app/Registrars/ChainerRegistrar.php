@@ -1,24 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Registrars;
 
 use App\Controllers\ChainerController;
 use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
-/**
- * Class ChainerRegistrar.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class ChainerRegistrar extends BaseRegistrar
 {
     /**
      * Register the routes.
      */
-    public function register(): void
+    public function register() : void
     {
-        $this->post("chain", ChainerController::class . "@chain");
+        $this->post('chain', ChainerController::class . '@chain');
     }
 }

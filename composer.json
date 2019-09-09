@@ -110,6 +110,7 @@
     "optimize-autoloader": true
   },
   "scripts": {
-    "compile:docs": "openapi-processor --input=docs/index.yaml"
+    "compile:docs": "openapi-processor --input=docs/index.yaml",
+    "lint": "phpcs --report=source"
   }
 }

@@ -14,10 +14,10 @@ properties:
     description: The notion type.
     type: string
     enum:
-    - normal
-    - premium
-    - reminder
-    - further
+      - normal
+      - premium
+      - reminder
+      - further
   visible:
     description: The notion visibility.
     type: boolean

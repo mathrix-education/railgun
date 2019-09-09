@@ -14,8 +14,8 @@ properties:
         description: The order direction.
         type: string
         enum:
-        - asc
-        - desc
+          - asc
+          - desc
       column:
         description: The order column.
         type: string

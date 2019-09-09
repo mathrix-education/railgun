@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\Stripe\Pipelines;
 
 use App\Models\User;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\ProvidesConvenienceMethods;
 use Mathrix\Lumen\Zero\Controllers\Traits\HasRequestValidator;
+use function app;
 
 abstract class Pipeline
 {
@@ -18,15 +21,13 @@ abstract class Pipeline
     /** @var User $user */
     protected $user;
 
-
     public function __construct()
     {
         $this->request = app(Request::class);
-        $this->user = $this->request->user();
+        $this->user    = $this->request->user();
     }
 
-
-    public final function flow()
+    final public function flow()
     {
         $this->initialize();
         $this->exchange();
@@ -35,12 +36,9 @@ abstract class Pipeline
         return $this;
     }
 
+    abstract protected function initialize() : void;
 
-    protected abstract function initialize(): void;
+    abstract protected function exchange() : void;
 
-
-    protected abstract function exchange(): void;
-
-
-    protected abstract function finalize(): void;
+    abstract protected function finalize() : void;
 }

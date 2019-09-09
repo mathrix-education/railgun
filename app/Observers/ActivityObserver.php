@@ -1,50 +1,36 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Observers;
 
 use App\Exceptions\ForeignConstraintsException;
 use App\Models\Activity;
-use Illuminate\Support\Str;
 
-/**
- * Class ActivityObserver.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 4.3.0
- */
 class ActivityObserver extends BaseObserver
 {
     /**
      * After save.
      * Update parent notion's activity counter.
      * Update parent chapter's activity counter.
-     *
-     * @param Activity $activity
-     *
-     * @return bool
      */
-    public function saved(Activity $activity)
+    public function saved(Activity $activity) : bool
     {
-        if ($activity->wasChanged(["notion_id", "visible"])) {
+        if ($activity->wasChanged(['notion_id', 'visible'])) {
             $activity->notion->updateCounters();
             $activity->notion->chapter->updateCounters();
-            $activity->unsetRelation("notion");
+            $activity->unsetRelation('notion');
         }
 
         return true;
     }
 
-
     /**
-     * @param Activity $activity
-     *
-     * @return bool
      * @throws ForeignConstraintsException
      */
-    public function deleting(Activity $activity)
+    public function deleting(Activity $activity) : bool
     {
-        $this->handleRelationDeletion($activity, "modules");
+        $this->handleRelationDeletion($activity, 'modules');
 
         return true;
     }

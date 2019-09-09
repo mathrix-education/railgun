@@ -1,24 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Exceptions;
 
 use App\Models\User;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 use Throwable;
 
-/**
- * Class InvalidSponsorException.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.1-rc1
- */
 class InvalidSponsorException extends Http400BadRequestException
 {
-    public function __construct(User $sponsor, Throwable $previous = null)
+    public function __construct(User $sponsor, ?Throwable $previous = null)
     {
-        parent::__construct([
-                "email" => $sponsor->email,
+        parent::__construct(
+            [
+                'email' => $sponsor->email,
             ],
             "User email `{$sponsor->email}` is not a valid sponsor",
             $previous

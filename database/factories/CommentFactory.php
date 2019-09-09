@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Comment;
 use App\Models\Module;
 use App\Models\User;
@@ -9,22 +11,18 @@ use Illuminate\Database\Eloquent\Factory;
 /**
  * CommentFactory.
  *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- *
  * @var Factory $factory
  */
-$factory->define(Comment::class, function (Generator $faker) {
+$factory->define(Comment::class, static function (Generator $faker) {
     [$createdAt, $updatedAt] = timestamps();
 
     return [
-        "content" => $faker->text(),
-        "parent_id" => null,
-        "user_id" => User::random()->id,
-        "module_id" => Module::random(["visible", "=", true]),
-        "created_at" => $createdAt,
-        "updated_at" => $updatedAt,
+        'content' => $faker->text(),
+        'parent_id' => null,
+        'user_id' => User::random()->id,
+        'module_id' => Module::random(['visible', '=', true]),
+        'created_at' => $createdAt,
+        'updated_at' => $updatedAt,
     ];
 });
 
@@ -32,21 +30,17 @@ $factory->define(Comment::class, function (Generator $faker) {
 /**
  * CommentChildFactory.
  *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- *
  * @var Factory $factory
  */
-$factory->defineAs(Comment::class, "child", function () use ($factory) {
+$factory->defineAs(Comment::class, 'child', static function () use ($factory) {
     /** @var Comment $parent */
     $parent = Comment::query()
         ->inRandomOrder()
-        ->whereNull("parent_id")
+        ->whereNull('parent_id')
         ->firstOrFail();
 
     return array_merge($factory->raw(Comment::class), [
-        "parent_id" => $parent->id,
-        "module_id" => $parent->module_id
+        'parent_id' => $parent->id,
+        'module_id' => $parent->module_id,
     ]);
 });

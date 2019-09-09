@@ -8,7 +8,6 @@ use Braintree\Customer;
 use Braintree\Result\Error;
 use Braintree\Result\Successful;
 use Faker\Factory as Fakerfactory;
-use Throwable;
 
 /**
  * Class BraintreeUtils.

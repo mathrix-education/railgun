@@ -1,17 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\GoogleCloud\KMS\Commands;
 
 use Google\ApiCore\ValidationException;
 use Google\Cloud\Kms\V1\KeyManagementServiceClient;
+use function array_merge;
+use function base_path;
+use function glob;
 
-/**
- * Class KMSUtils.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA
- * @since 6.0.0
- */
 class KMSUtils
 {
     /**
@@ -21,7 +19,7 @@ class KMSUtils
      *
      * @return string[] The list of files in deploy/environments/{$environment}
      */
-    public static function keychain(string $environment): array
+    public static function keychain(string $environment) : array
     {
         $path = base_path("environments/{$environment}");
 
@@ -31,23 +29,21 @@ class KMSUtils
         );
     }
 
-
     /**
      * Generate the Google KMS client and key.
      *
-     * @param string $environment
-     *
      * @return array
+     *
      * @throws ValidationException
      */
-    public static function clientKey(string $environment)
+    public static function clientKey(string $environment) : array
     {
-        $projectId = "mathrix-education";
-        $location = "global";
-        $keyRingId = "mathrix-education-keyring";
-        $keyName = "mathrix-education-api-$environment";
-        $client = new KeyManagementServiceClient();
-        $key = $client::cryptoKeyName($projectId, $location, $keyRingId, $keyName);
+        $projectId = 'mathrix-education';
+        $location  = 'global';
+        $keyRingId = 'mathrix-education-keyring';
+        $keyName   = "mathrix-education-api-$environment";
+        $client    = new KeyManagementServiceClient();
+        $key       = $client::cryptoKeyName($projectId, $location, $keyRingId, $keyName);
 
         return [$client, $key];
     }

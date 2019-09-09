@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Carbon\Carbon;
@@ -10,12 +12,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Mathrix\Lumen\Zero\Models\BaseModel;
 
 /**
- * Class Grade.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 1.0.0
- *
  * @property int $id
  * @property string $name
  * @property string $slug
@@ -37,25 +33,21 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
 class Grade extends BaseModel
 {
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "name", "slug", "order", "visible", "parent_id", "country_id"];
+    protected $fillable = ['id', 'name', 'slug', 'order', 'visible', 'parent_id', 'country_id'];
     /** @var array Validation rules */
     protected $rules = [
-        "name" => "required|max:255",
-        "slug" => "required|max:255",
-        "order" => "required|integer",
-        "visible" => "boolean",
-        "country_id" => "required|exists:countries,id",
+        'name' => 'required|max:255',
+        'slug' => 'required|max:255',
+        'order' => 'required|integer',
+        'visible' => 'boolean',
+        'country_id' => 'required|exists:countries,id',
     ];
-    protected $casts = [
-        "visible" => "boolean"
-    ];
+    protected $casts = ['visible' => 'boolean'];
 
     /**
      * Get the cursus (ie. the grade itself and all its previous).
-     *
-     * @return Collection
      */
-    public function cursus()
+    public function cursus() : Collection
     {
         $grades = new Collection();
         $grades->add($this);
@@ -65,7 +57,7 @@ class Grade extends BaseModel
 
         while ($end->parent_id !== null) {
             $grades[] = self::query()->find($end->parent_id);
-            $end = $grades->last();
+            $end      = $grades->last();
         }
 
         return $grades;
@@ -76,64 +68,46 @@ class Grade extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
-    /**
-     * @return BelongsTo
-     */
-    public function parent(): BelongsTo
+
+    public function parent() : BelongsTo
     {
-        return $this->belongsTo(self::class, "parent_id");
+        return $this->belongsTo(self::class, 'parent_id');
     }
 
-
-    /**
-     * @return HasMany
-     */
-    public function children(): HasMany
+    public function children() : HasMany
     {
-        return $this->hasMany(self::class, "parent_id");
+        return $this->hasMany(self::class, 'parent_id');
     }
-
 
     /**
      * BelongsTo Country.
-     *
-     * @return BelongsTo
      */
-    public function country(): BelongsTo
+    public function country() : BelongsTo
     {
         return $this->belongsTo(Country::class);
     }
 
-
     /**
      * BelongsTo Country.
-     *
-     * @return HasMany
      */
-    public function chapters(): HasMany
+    public function chapters() : HasMany
     {
         return $this->hasMany(Chapter::class);
     }
 
-
     /**
      * BelongsToMany Discipline.
-     *
-     * @return BelongsToMany
      */
-    public function disciplines(): BelongsToMany
+    public function disciplines() : BelongsToMany
     {
-        return $this->belongsToMany(Discipline::class, "chapters")
-            ->groupBy(["grade_id", "discipline_id"]);
+        return $this->belongsToMany(Discipline::class, 'chapters')
+            ->groupBy(['grade_id', 'discipline_id']);
     }
-
 
     /**
      * HasMany User.
-     *
-     * @return HasMany
      */
-    public function users(): HasMany
+    public function users() : HasMany
     {
         return $this->hasMany(User::class);
     }

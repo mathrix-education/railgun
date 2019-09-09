@@ -54,13 +54,6 @@ class APIStatefulTestCase extends BaseTestCase
     }
 
 
-    public function onNotSuccessfulTest(Throwable $t): void
-    {
-        $this->debug();
-        parent::onNotSuccessfulTest($t);
-    }
-
-
     /**
      * Automatically mock the scope according to the OpenAPI documentation. This ensure that the documentation is up to
      * date with the current implementation.
@@ -97,6 +90,13 @@ class APIStatefulTestCase extends BaseTestCase
         } else {
             return $operation->security[0]->{$security};
         }
+    }
+
+
+    public function onNotSuccessfulTest(Throwable $t): void
+    {
+        $this->debug();
+        parent::onNotSuccessfulTest($t);
     }
 
 

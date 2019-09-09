@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Activity;
 use App\Models\Mark;
 use App\Models\Module;
@@ -8,22 +10,15 @@ use Faker\Factory as FakerFactory;
 use Illuminate\Support\Collection;
 use Mathrix\Lumen\Zero\Database\BaseTableSeeder;
 
-/**
- * Class MarksTableSeeder.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 4.2.0
- */
 class MarksTableSeeder extends BaseTableSeeder
 {
-    public function run()
+    public function run() : void
     {
-        $faker = FakerFactory::create();
-        $registered = User::scope("logged")->get();
-        $marks = new Collection();
+        $faker      = FakerFactory::create();
+        $registered = User::scope('logged')->get();
+        $marks      = new Collection();
 
-        $this->output->writeln("<comment>Generating:</comment> marks");
+        $this->output->writeln('<comment>Generating:</comment> marks');
         $progressBar = $this->output->createProgressBar($registered->count());
         $progressBar->setFormat(BaseTableSeeder::DEFAULT_PROGRESS_BAR_FORMAT);
         $progressBar->start();
@@ -33,24 +28,24 @@ class MarksTableSeeder extends BaseTableSeeder
             $marksCount = $faker->numberBetween(30, 50);
             for ($i = 0; $i < $marksCount; ++$i) {
                 $markData = [
-                    "markable_type" => $faker->boolean ? "module" : "activity",
+                    'markable_type' => $faker->boolean ? 'module' : 'activity',
                 ];
 
-                if ($markData["markable_type"] === "activity") {
+                if ($markData['markable_type'] === 'activity') {
                     /** @var Activity $model */
-                    $model = Activity::random(["visible", "=", true]);
+                    $model = Activity::random(['visible', '=', true]);
                 } else {
                     /** @var Module $model */
-                    $model = Module::random(["visible", "=", true]);
+                    $model = Module::random(['visible', '=', true]);
                 }
 
                 [$createdAt, $updatedAt] = timestamps($model->created_at->__toString());
-                $markData = array_merge($markData, [
-                    "status" => $faker->randomElement(Mark::STATUSES),
-                    "markable_id" => $model->id,
-                    "user_id" => $user->id,
-                    "created_at" => $createdAt,
-                    "updated_at" => $updatedAt
+                $markData                = array_merge($markData, [
+                    'status' => $faker->randomElement(Mark::STATUSES),
+                    'markable_id' => $model->id,
+                    'user_id' => $user->id,
+                    'created_at' => $createdAt,
+                    'updated_at' => $updatedAt,
                 ]);
                 $marks->push($markData);
             }
@@ -59,10 +54,10 @@ class MarksTableSeeder extends BaseTableSeeder
         }
 
         $progressBar->finish();
-        $this->output->writeln("");
+        $this->output->writeln('');
 
         // See generated array
-        $this->output->writeln("<comment>Seeding:</comment> marks");
-        $this->seedFromArray($marks->toArray(), "marks");
+        $this->output->writeln('<comment>Seeding:</comment> marks');
+        $this->seedFromArray($marks->toArray(), 'marks');
     }
 }

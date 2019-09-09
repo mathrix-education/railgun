@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Services\Braintree;
 
@@ -14,10 +15,6 @@ use Braintree\Transaction;
  * Interface BraintreeResponse.
  * Used to describe Braintree responses.
  *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.1-rc1
- *
  * @property-read Customer|null $customer
  * @property-read PaymentMethod|null $paymentMethod
  * @property-read Subscription|null $subscription
@@ -28,5 +25,4 @@ use Braintree\Transaction;
  */
 interface BraintreeResponse
 {
-
 }

@@ -1,30 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Registrars;
 
-use App\Controllers\ReportsController;
 use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
-/**
- * Class ReportsRegistrar.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class ReportsRegistrar extends BaseRegistrar
 {
     /**
      * Register the routes.
      */
-    public function register(): void
+    public function register() : void
     {
         $this->rest([
-            "std:index" => "scope:reports:read",
-            "std:get" => "scope:reports:read",
-            "std:post" => "logged",
-            "std:patch" => "scope:reports:write",
-            "std:delete" => "scope:reports:delete"
+            'std:index' => 'scope:reports:read',
+            'std:get' => 'scope:reports:read',
+            'std:post' => 'logged',
+            'std:patch' => 'scope:reports:write',
+            'std:delete' => 'scope:reports:delete',
         ]);
     }
 }

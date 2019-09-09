@@ -3,11 +3,9 @@
 namespace Tests\Integration\Stripe;
 
 use App\Models\User;
-use App\Services\Stripe\CollectionUtils;
 use App\Services\Stripe\Models\StripeCustomer;
 use App\Services\Stripe\SubscriptionUtils;
 use Mathrix\Lumen\JWT\Auth\JWT;
-use Stripe\Customer;
 use Stripe\Subscription;
 use Tests\APIStatelessTestCase;
 

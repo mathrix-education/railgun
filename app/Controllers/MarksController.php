@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controllers;
 
 use App\Models\Activity;
@@ -15,25 +17,39 @@ use Illuminate\Support\Collection;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
 use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
 
-/**
- * Class MarksController.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class MarksController extends BaseController
 {
+    /**
+     * GET /marks/activities/to-revise
+     * Get the activities marked as "to_revise" for the current user.
+     *
+     * @param Request $request The Illuminate HTTP request.
+     */
+    public function activitiesToRevise(Request $request) : SuccessJsonResponse
+    {
+        /** @var User $user */
+        $user  = $request->user();
+        $marks = $user->marks()
+            ->with('markable')
+            ->where([
+                ['status', '=', 'to_revise'],
+                ['markable_type', '=', 'activity'],
+            ])
+            ->get();
+
+        $trees = $this->getTreeFromMarks($marks);
+
+        return new SuccessJsonResponse($trees);
+    }
+
     /**
      * Convert a collect of Marks to a collection of Tree
      *
      * @param Collection|Mark[] $marks
-     *
-     * @return Collection
      */
-    private function getTreeFromMarks($marks): Collection
+    private function getTreeFromMarks($marks) : Collection
     {
-        return $marks->map(function (Mark $mark): array {
+        return $marks->map(static function (Mark $mark) : array {
             /** @var Activity $activity */
             $activity = $mark->markable;
 
@@ -49,39 +65,13 @@ class MarksController extends BaseController
             $country = $grade->country()->firstOrFail();
 
             return [
-                "country" => $country,
-                "discipline" => $discipline,
-                "grade" => $grade,
-                "chapter" => $chapter,
-                "notion" => $notion,
-                "activity" => $activity
+                'country' => $country,
+                'discipline' => $discipline,
+                'grade' => $grade,
+                'chapter' => $chapter,
+                'notion' => $notion,
+                'activity' => $activity,
             ];
         });
-    }
-
-
-    /**
-     * GET /marks/activities/to-revise
-     * Get the activities marked as "to_revise" for the current user.
-     *
-     * @param Request $request The Illuminate HTTP request.
-     *
-     * @return SuccessJsonResponse
-     */
-    public function activitiesToRevise(Request $request): SuccessJsonResponse
-    {
-        /** @var User $user */
-        $user = $request->user();
-        $marks = $user->marks()
-            ->with("markable")
-            ->where([
-                ["status", "=", "to_revise"],
-                ["markable_type", "=", "activity"]
-            ])
-            ->get();
-
-        $trees = $this->getTreeFromMarks($marks);
-
-        return new SuccessJsonResponse($trees);
     }
 }

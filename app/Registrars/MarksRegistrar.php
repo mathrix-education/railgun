@@ -1,29 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Registrars;
 
 use App\Controllers\MarksController;
 use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
-/**
- * Class MarksRegistrar.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class MarksRegistrar extends BaseRegistrar
 {
     /**
      * Register the routes.
      */
-    public function register(): void
+    public function register() : void
     {
         $controller = MarksController::class;
 
-        $this->get("marks/activities/to-revise", [
-            "uses" => "$controller@activitiesToRevise",
-            "middleware" => "logged"
+        $this->get('marks/activities/to-revise', [
+            'uses' => "$controller@activitiesToRevise",
+            'middleware' => 'logged',
         ]);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controllers;
 
 use App\Models\Mark;
@@ -12,13 +14,6 @@ use Mathrix\Lumen\Zero\Exceptions\Models\Models\ModelNotFoundException;
 use Mathrix\Lumen\Zero\Responses\PaginationJsonResponse;
 use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
 
-/**
- * Class ModulesController.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 1.0.0
- */
 class ModulesController extends BaseController
 {
     /**
@@ -26,62 +21,55 @@ class ModulesController extends BaseController
      *
      * @param int $moduleId The module id.
      *
-     * @return PaginationJsonResponse
      * @throws Http400BadRequestException
      */
-    public function getComments(int $moduleId): PaginationJsonResponse
+    public function getComments(int $moduleId) : PaginationJsonResponse
     {
         /** @var Module $module */
         $module = Module::query()->findOrFail($moduleId);
-        $query = $module->comments()
-            ->whereNull("parent_id")
-            ->with(["children"]);
+        $query  = $module->comments()
+            ->whereNull('parent_id')
+            ->with(['children']);
 
         return new PaginationJsonResponse($query);
     }
 
-
     /**
      * GET /modules/{moduleId}/chapter/recursive
      *
-     * @param Request $request The Illuminate HTTP request.
+     * @param Request            $request            The Illuminate HTTP request.
      * @param ChaptersController $chaptersController The Chapters Controller
-     * @param int $moduleId The module id.
+     * @param int                $moduleId           The module id.
      *
-     * @return SuccessJsonResponse
      * @throws ModelNotFoundException
      */
-    public function chapterRecursive(Request $request, ChaptersController $chaptersController, int $moduleId): SuccessJsonResponse
+    public function chapterRecursive(Request $request, ChaptersController $chaptersController, int $moduleId) : SuccessJsonResponse
     {
         /** @var Module $module */
         $module = Module::query()->findOrFail($moduleId);
 
-        if (!isset($module->activity->notion->chapter_id)) {
-            throw new ModelNotFoundException(["module_id" => $module->id]);
+        if (! isset($module->activity->notion->chapter_id)) {
+            throw new ModelNotFoundException(['module_id' => $module->id]);
         }
 
         return $chaptersController->recursive($request, $module->activity->notion->chapter_id);
     }
-
 
     /**
      * POST /modules/mark
      * Mark a module.
      *
      * @param Request $request The Illuminate HTTP request.
-     * @param int $moduleId
-     *
-     * @return SuccessJsonResponse
      */
-    public function mark(Request $request, int $moduleId): SuccessJsonResponse
+    public function mark(Request $request, int $moduleId) : SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();
         /** @var Module $module */
         $module = Module::query()->findOrFail($moduleId);
-        $status = $request->json("status");
+        $status = $request->json('status');
 
-        $mark = Mark::retrieve($module, $user);
+        $mark         = Mark::retrieve($module, $user);
         $mark->status = $status;
         $mark->save();
 

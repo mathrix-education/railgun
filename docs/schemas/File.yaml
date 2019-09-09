@@ -6,7 +6,7 @@ properties:
     description: The file type.
     type: string
     enum:
-    - file
+      - file
   path:
     description: The file path on the CDN.
     type: string

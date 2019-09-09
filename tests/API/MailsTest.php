@@ -4,7 +4,6 @@ namespace Tests\API;
 
 use App\Mails\BaseMail;
 use App\Registrars\MailsRegistrar;
-use Illuminate\Support\Facades\Facade;
 use Tests\APIStatelessTestCase;
 
 /**

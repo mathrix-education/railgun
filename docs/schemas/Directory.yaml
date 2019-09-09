@@ -22,7 +22,7 @@ properties:
     description: The directory type.
     type: string
     enum:
-    - dir
+      - dir
   url:
     description: The directory public URL, starting with the CDN root.
     type: string

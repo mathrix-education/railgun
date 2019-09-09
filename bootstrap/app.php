@@ -1,31 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Middleware\AsMiddleware;
 use App\Providers\AppServiceProvider;
 use Barryvdh\Cors\HandleCors;
 use Illuminate\Contracts\Mail\Mailer;
 
-require_once __DIR__ . "/../vendor/autoload.php";
+require_once __DIR__ . '/../vendor/autoload.php';
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
     dirname(__DIR__)
 ))->bootstrap();
 
 // APP_VERSION
-$version = "unknown";
-$composerData = json_decode(file_get_contents(__DIR__ . "/../composer.json"));
+$version      = 'unknown';
+$composerData = json_decode(file_get_contents(__DIR__ . '/../composer.json'));
 putenv("APP_VERSION={$composerData->version}");
 
 
 // APP_BUILD
-$build = "unknown";
+$build = 'unknown';
 
-if (file_exists(__DIR__ . "/../build.txt")) {
-    $build = trim(file_get_contents(__DIR__ . "/../build.txt"));
+if (file_exists(__DIR__ . '/../build.txt')) {
+    $build = trim(file_get_contents(__DIR__ . '/../build.txt'));
 } elseif (`which git`) {
-    $base = realpath(dirname(__DIR__));
+    $base    = realpath(dirname(__DIR__));
     $gitSha1 = exec("cd $base && git log --pretty=format:'%H' -n 1");
-    $build = substr($gitSha1, 0, 7);
+    $build   = substr($gitSha1, 0, 7);
 }
 
 putenv("APP_BUILD=$build");
@@ -41,7 +43,7 @@ putenv("APP_BUILD=$build");
 | application as an "IoC" container and router for this framework.
 |
 */
-$app = new Laravel\Lumen\Application(realpath(__DIR__ . "/../"));
+$app = new Laravel\Lumen\Application(realpath(__DIR__ . '/../'));
 $app->withFacades();
 $app->withEloquent();
 
@@ -67,7 +69,7 @@ $app->singleton(
 
 $app->singleton(
     Illuminate\Contracts\Filesystem\Factory::class,
-    function ($app) {
+    static function ($app) {
         return new Illuminate\Filesystem\FilesystemManager($app);
     }
 );
@@ -87,7 +89,7 @@ $app->singleton(
     Illuminate\Contracts\Cache\Repository::class
 );
 
-$app->alias("mailer", Mailer::class);
+$app->alias('mailer', Mailer::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -98,15 +100,15 @@ $app->alias("mailer", Mailer::class);
 |
 */
 
-$app->configure("auth");
-$app->configure("backup");
-$app->configure("cors");
-$app->configure("filesystems");
-$app->configure("laravel-lang");
-$app->configure("logging");
-$app->configure("mail");
-$app->configure("queue");
-$app->configure("services");
+$app->configure('auth');
+$app->configure('backup');
+$app->configure('cors');
+$app->configure('filesystems');
+$app->configure('laravel-lang');
+$app->configure('logging');
+$app->configure('mail');
+$app->configure('queue');
+$app->configure('services');
 
 
 /*
@@ -122,7 +124,7 @@ $app->configure("services");
 
 $app->middleware([
     HandleCors::class,
-    AsMiddleware::class
+    AsMiddleware::class,
 ]);
 
 /*

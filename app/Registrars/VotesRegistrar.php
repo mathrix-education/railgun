@@ -1,29 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Registrars;
 
 use App\Controllers\VotesController;
 use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
-/**
- * Class VotesRegistrar.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class VotesRegistrar extends BaseRegistrar
 {
     /**
      * Register the routes.
      */
-    public function register(): void
+    public function register() : void
     {
-        $this->group(["middleware" => "logged"], function () {
+        $this->group(['middleware' => 'logged'], function () : void {
             $controller = VotesController::class;
 
-            $this->post("votes/comment/{commentId}", "$controller@vote");
-            $this->delete("votes/comment/{commentId}", "$controller@unVote");
+            $this->post('votes/comment/{commentId}', "$controller@vote");
+            $this->delete('votes/comment/{commentId}', "$controller@unVote");
         });
     }
 }

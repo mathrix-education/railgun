@@ -1,41 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Traits;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use function class_basename;
+use function is_callable;
 
 /**
  * Trait HasCache.
  * Allow to easily cache data for models.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA
- * @since 6.0.0
  */
 trait HasCache
 {
     /**
-     * Get the current model cache full key.
-     *
-     * @param string $key The data key.
-     *
-     * @return string
-     */
-    protected function getCacheKey(string $key): string
-    {
-        $prefix = Str::slug(class_basename($this) . " " . $this->{$this->primaryKey}, ".");
-
-        return "$prefix.$key";
-    }
-
-
-    /**
      * Cache a model data.
      *
-     * @param string $key
-     * @param int $ttlSeconds
      * @param mixed|callable $value
      *
      * @return mixed
@@ -44,23 +27,34 @@ trait HasCache
     {
         if (is_callable($value)) {
             return Cache::remember($this->getCacheKey($key), $ttlSeconds, $value);
-        } else {
-            Cache::add($this->getCacheKey($key), $ttlSeconds, $value);
-
-            return $value;
         }
+
+        Cache::add($this->getCacheKey($key), $ttlSeconds, $value);
+
+        return $value;
     }
 
+    /**
+     * Get the current model cache full key.
+     *
+     * @param string $key The data key.
+     */
+    protected function getCacheKey(string $key) : string
+    {
+        $prefix = Str::slug(class_basename($this) . ' ' . $this->{$this->primaryKey}, '.');
+
+        return "$prefix.$key";
+    }
 
     /**
      * Invalidate the model cache.
      *
      * @param string|null $key The cache key to invalidate. By default, invalidate all the model cache.
      */
-    public function invalidate($key = "%"): void
+    public function invalidate(?string $key = '%') : void
     {
-        DB::table("cache")
-            ->where("key", "like", $this->getCacheKey($key))
+        DB::table('cache')
+            ->where('key', 'like', $this->getCacheKey($key))
             ->delete();
     }
 }

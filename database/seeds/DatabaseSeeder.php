@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Activity;
 use App\Models\Category;
 use App\Models\Chapter;
@@ -11,26 +13,18 @@ use App\Models\Notion;
 use App\Models\Post;
 use App\Models\Product;
 use App\Models\Report;
-use App\Models\Setting;
 use App\Models\User;
 use App\Models\Vote;
 use Mathrix\Lumen\Zero\Database\BaseTableSeeder;
 
-/**
- * Class DatabaseSeeder.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 1.0.0
- */
 class DatabaseSeeder extends BaseTableSeeder
 {
-    public function run()
+    public function run() : void
     {
         // Content
-        $this->seedFromJson("countries");
-        $this->seedFromJson("grades");
-        $this->seedFromJson("disciplines");
+        $this->seedFromJson('countries');
+        $this->seedFromJson('grades');
+        $this->seedFromJson('disciplines');
         $this->seedFromFactory(Country::class, 10);
         $this->seedFromFactory(Chapter::class, 30);
         $this->seedFromFactory(Notion::class, 90);
@@ -40,8 +34,8 @@ class DatabaseSeeder extends BaseTableSeeder
         // Users
         $this->seedFromFactory(User::class, 100);
         User::query()->firstOrFail()->update([
-            "scopes" => ["*"],
-            "email" => "admin@mathrix.fr"
+            'scopes' => ['*'],
+            'email' => 'admin@mathrix.fr',
         ]);
 
         // Categories & Posts
@@ -50,7 +44,7 @@ class DatabaseSeeder extends BaseTableSeeder
 
         // Comments & votes
         $this->seedFromFactory(Comment::class, 200);
-        $this->seedFromSubFactory(Comment::class, "child", 500);
+        $this->seedFromSubFactory(Comment::class, 'child', 500);
         $this->seedFromFactory(Vote::class, 100);
 
         // Products & discounts

@@ -73,6 +73,15 @@ class FacebookLoginTest extends APIStatefulTestCase
 
 
     /**
+     * POST /auth/facebook/login
+     */
+    public function testFacebookRegister()
+    {
+        $this->makeFacebookRequest(self::$FacebookUser->access_token);
+    }
+
+
+    /**
      * Make a Facebook login request using an access token
      *
      * @param string $accessToken
@@ -96,15 +105,6 @@ class FacebookLoginTest extends APIStatefulTestCase
         $this->assertEquals(self::$FacebookUser->id, $user->metadata["facebook"]["id"]);
         $this->assertIsString($user->metadata["facebook"]["access_token"]);
         $this->assertIsInt($user->metadata["facebook"]["expires_in"]);
-    }
-
-
-    /**
-     * POST /auth/facebook/login
-     */
-    public function testFacebookRegister()
-    {
-        $this->makeFacebookRequest(self::$FacebookUser->access_token);
     }
 
 

@@ -2,9 +2,6 @@
 
 namespace Tests\API;
 
-use App\Models\Discount;
-use App\Models\Product;
-use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Tests\REST\Standard\StandardDeleteTest;
 use Mathrix\Lumen\Zero\Testing\Traits\RESTAutoTestTrait;
 use Tests\APIStatelessTestCase;

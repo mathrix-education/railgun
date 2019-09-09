@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Carbon\Carbon;
@@ -8,14 +10,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Mathrix\Lumen\Zero\Models\BaseModel;
+use function array_search;
+use function get_class;
+use function is_int;
 
 /**
- * Class Mark.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 4.2.0
- *
  * @property int $id
  * @property string $status
  * @property int $user_id
@@ -29,38 +28,46 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
  */
 class Mark extends BaseModel
 {
-    public const STATUSES = ["to_revise", "completed"];
+    public const STATUSES = ['to_revise', 'completed'];
 
     protected $fillable = [
-        "status",
-        "user_id",
-        "markable_type",
-        "markable_id"
+        'status',
+        'user_id',
+        'markable_type',
+        'markable_id',
     ];
 
+    /**
+     * @param Activity|Module $model The markable model
+     * @param User|int        $user  The user
+     */
+    public static function retrieve($model, $user) : Mark
+    {
+        return self::retrieveAll($model, $user)->first();
+    }
 
     /**
      * Retrieve all models linked with a given user.
      *
      * @param Activity|Module $model The markable model
-     * @param User|int $user The user
+     * @param User|int        $user  The user
      *
      * @return Mark[]|Collection
      */
     public static function retrieveAll($model, $user)
     {
         $modelClass = get_class($model);
-        $userId = is_int($user) ? $user : $user->id;
+        $userId     = is_int($user) ? $user : $user->id;
 
         $conditions = [
-            "markable_type" => array_search($modelClass, Relation::$morphMap),
-            "markable_id" => $model->id,
-            "user_id" => $userId
+            'markable_type' => array_search($modelClass, Relation::$morphMap),
+            'markable_id' => $model->id,
+            'user_id' => $userId,
         ];
 
         $wheres = [];
         foreach ($conditions as $k => $v) {
-            $wheres[] = [$k, "=", $v];
+            $wheres[] = [$k, '=', $v];
         }
 
         /** @var Mark $path */
@@ -73,39 +80,21 @@ class Mark extends BaseModel
         return $marks;
     }
 
-
-    /**
-     * @param Activity|Module $model The markable model
-     * @param User|int $user The user
-     *
-     * @return Mark
-     */
-    public static function retrieve($model, $user)
-    {
-        return self::retrieveAll($model, $user)->first();
-    }
-
-
     /*
     |--------------------------------------------------------------------------
     | Relations
     |--------------------------------------------------------------------------
     */
+
     /**
      * BelongsTo User.
-     *
-     * @return BelongsTo
      */
-    public function user(): BelongsTo
+    public function user() : BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-
-    /**
-     * @return MorphTo
-     */
-    public function markable()
+    public function markable() : MorphTo
     {
         return $this->morphTo();
     }

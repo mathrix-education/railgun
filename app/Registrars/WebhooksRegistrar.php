@@ -1,26 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Registrars;
 
 use App\Controllers\WebhooksController;
 use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
-/**
- * Class WebhooksRegistrar.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA
- * @since 6.0.0
- */
 class WebhooksRegistrar extends BaseRegistrar
 {
     /**
      * Register the routes.
      */
-    public function register(): void
+    public function register() : void
     {
         $controller = WebhooksController::class;
 
-        $this->post("/webhooks/stripe", "$controller@stripe");
+        $this->post('/webhooks/stripe', "$controller@stripe");
     }
 }

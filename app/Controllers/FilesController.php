@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controllers;
 
 use App\Services\GoogleCloud\Storage\Exceptions\DirectoryNotFoundException;
@@ -12,40 +14,61 @@ use League\Flysystem\FileNotFoundException;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
 use Mathrix\Lumen\Zero\Exceptions\ValidationException;
 use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
+use function basename;
+use function collect;
+use function dirname;
+use function env;
+use function intval;
+use function strcasecmp;
+use function trans;
+use function trim;
+use function uksort;
 
-
-/**
- * Class FilesController.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 4.1.2
- */
 class FilesController extends BaseController
 {
     /** @var FilesystemAdapter $disk */
     private $disk;
 
-
-    /**
-     * FilesController constructor.
-     */
     public function __construct()
     {
         parent::__construct();
-        $this->disk = Storage::disk(env("FILESYSTEM_DRIVER"));
+        $this->disk = Storage::disk(env('FILESYSTEM_DRIVER'));
     }
 
+    /**
+     * POST /files
+     * Upload a file to the CDN.
+     *
+     * @param Request $request The Illuminate HTTP request.
+     * @param string  $path    The file destination.
+     *
+     * @throws ValidationException
+     * @throws FileNotFoundException
+     */
+    public function post(Request $request, string $path) : SuccessJsonResponse
+    {
+        $this->validate($request, ['file' => 'required|file|max:204800|mimes:pdf,gif,jpeg,svg,png,mp4']);
+
+        /** @var File|UploadedFile $file */
+        $file = $request->file('file');
+
+        $this->disk->putFileAs(dirname($path), $file, basename($path));
+
+        $metadata = $this->disk->getMetadata($path);
+        $data     = $this->cast($metadata);
+
+        return new SuccessJsonResponse($data);
+    }
 
     /**
      * Cast data returned from Google Cloud Storage.
      *
-     * @param array $data The data which can represent a file or a directory.
-     * @param bool $multi If true, loop over the items.
+     * @param array $data  The data which can represent a file or a directory.
+     * @param bool  $multi If true, loop over the items.
      *
      * @return array
      */
-    private function cast(array $data, bool $multi = false): array
+    private function cast(array $data, bool $multi = false) : array
     {
         if ($multi) {
             $objects = [];
@@ -57,92 +80,43 @@ class FilesController extends BaseController
             return $objects;
         }
 
-        if (isset($data["size"])) {
-            $data["size_kb"] = intval($data["size"]);
-            unset($data["size"]);
+        if (isset($data['size'])) {
+            $data['size_kb'] = intval($data['size']);
+            unset($data['size']);
         }
 
-        if (isset($data["path"])) {
-            $prefix = trim(env("GOOGLE_CLOUD_STORAGE_PATH_PREFIX"), "/");
-            $data["url"] = trim(env("CDN_URL")) . "/" . (!empty($prefix) ? $prefix . "/" : "") . $data["path"];
+        if (isset($data['path'])) {
+            $prefix      = trim(env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX'), '/');
+            $data['url'] = trim(env('CDN_URL')) . '/' . (! empty($prefix) ? $prefix . '/' : '') . $data['path'];
         }
 
         // "type" has to be the first key
-        uksort($data, function ($key1, $key2) {
-            if ($key1 === "type") {
+        uksort($data, static function ($key1, $key2) {
+            if ($key1 === 'type') {
                 return -1;
-            } else if ($key2 === "type") {
-                return 1;
-            } else {
-                return strcasecmp($key1, $key2);
             }
+
+            if ($key2 === 'type') {
+                return 1;
+            }
+
+            return strcasecmp($key1, $key2);
         });
 
         return $data;
     }
 
-
-    /**
-     * POST /files
-     * Upload a file to the CDN.
-     *
-     * @param Request $request The Illuminate HTTP request.
-     * @param string $path The file destination.
-     *
-     * @return SuccessJsonResponse
-     * @throws ValidationException
-     * @throws FileNotFoundException
-     */
-    public function post(Request $request, string $path): SuccessJsonResponse
-    {
-        $this->validate($request, [
-            "file" => "required|file|max:204800|mimes:pdf,gif,jpeg,svg,png,mp4"
-        ]);
-
-        /** @var File|UploadedFile $file */
-        $file = $request->file("file");
-
-        $this->disk->putFileAs(dirname($path), $file, basename($path));
-
-        $metadata = $this->disk->getMetadata($path);
-        $data = $this->cast($metadata);
-
-        return new SuccessJsonResponse($data);
-    }
-
-
-    /**
-     * GET /files/{file}
-     * Get a file metadata.
-     *
-     * @param string $path
-     *
-     * @return SuccessJsonResponse
-     * @throws FileNotFoundException
-     */
-    public function get(string $path): SuccessJsonResponse
-    {
-        $metadata = $this->disk->getMetadata($path);
-        $data = $this->cast($metadata);
-
-        return new SuccessJsonResponse($data);
-    }
-
-
     /**
      * GET /files/{directory}
      *
-     * @param string $directory
-     *
-     * @return SuccessJsonResponse
      * @throws DirectoryNotFoundException
      */
-    public function list(string $directory = "/"): SuccessJsonResponse
+    public function list(string $directory = '/') : SuccessJsonResponse
     {
         $data = $this->cast($this->disk->listContents($directory), true);
-        $data = collect($data)->sortBy("type")->values()->toArray();
+        $data = collect($data)->sortBy('type')->values()->toArray();
 
-        if (empty($data) && !$this->disk->exists($directory)) {
+        if (empty($data) && ! $this->disk->exists($directory)) {
             // Directory is empty and does not exist
             throw new DirectoryNotFoundException($directory);
         }
@@ -150,24 +124,20 @@ class FilesController extends BaseController
         return new SuccessJsonResponse($data);
     }
 
-
     /**
      * PATCH /files/{file}
      * Move a file in the CND.
      *
      * @param Request $request The Illuminate HTTP request.
-     * @param string $path The source file.
+     * @param string  $path    The source file.
      *
-     * @return SuccessJsonResponse
      * @throws FileNotFoundException
      * @throws ValidationException
      */
-    public function patch(Request $request, string $path): SuccessJsonResponse
+    public function patch(Request $request, string $path) : SuccessJsonResponse
     {
-        $this->validate($request, [
-            "destination" => "required"
-        ]);
-        $destination = $request->json("destination");
+        $this->validate($request, ['destination' => 'required']);
+        $destination = $request->json('destination');
 
         $this->disk->delete($destination); // Force delete if file exist
         $this->disk->move($path, $destination);
@@ -175,6 +145,19 @@ class FilesController extends BaseController
         return $this->get($destination);
     }
 
+    /**
+     * GET /files/{file}
+     * Get a file metadata.
+     *
+     * @throws FileNotFoundException
+     */
+    public function get(string $path) : SuccessJsonResponse
+    {
+        $metadata = $this->disk->getMetadata($path);
+        $data     = $this->cast($metadata);
+
+        return new SuccessJsonResponse($data);
+    }
 
     /**
      * DELETE /files/{file}
@@ -182,16 +165,15 @@ class FilesController extends BaseController
      *
      * @param string $path The file to delete.
      *
-     * @return SuccessJsonResponse
      * @throws FileNotFoundException
      */
-    public function delete(string $path): SuccessJsonResponse
+    public function delete(string $path) : SuccessJsonResponse
     {
         $this->disk->getDriver()->delete($path); // Alternative syntax to throw FileNotFoundException
 
         return new SuccessJsonResponse(
-            ["path" => $path],
-            ["message" => trans("google-cloud.storage.file_deleted", ["file" => $path])]
+            ['path' => $path],
+            ['message' => trans('google-cloud.storage.file_deleted', ['file' => $path])]
         );
     }
 }

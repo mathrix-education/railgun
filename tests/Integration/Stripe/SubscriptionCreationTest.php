@@ -4,7 +4,6 @@ namespace Tests\Integration\Stripe;
 
 use App\Models\User;
 use Mathrix\Lumen\JWT\Auth\JWT;
-use Tests\APIStatefulTestCase;
 use Tests\APIStatelessTestCase;
 
 /**

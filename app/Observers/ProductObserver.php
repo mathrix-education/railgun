@@ -1,29 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Observers;
 
 use App\Exceptions\ForeignConstraintsException;
 use App\Models\Product;
-use Illuminate\Support\Str;
 
-/**
- * Class ProductObserver.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 4.3.0
- */
 class ProductObserver extends BaseObserver
 {
     /**
-     * @param Product $product
-     *
-     * @return bool
      * @throws ForeignConstraintsException
      */
-    public function deleting($product)
+    public function deleting(Product $product) : bool
     {
-        $this->handleRelationDeletion($product, "children");
+        $this->handleRelationDeletion($product, 'children');
         $product->items()->detach();
         $product->discounts()->detach();
 

@@ -48,7 +48,7 @@ patch:
 delete:
   summary: Forgot setting
   security:
-      - bearer: [admin]
+    - bearer: [admin]
   parameters:
     - name: key
       in: path

@@ -1,13 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Traits;
 
 /**
  * Trait NoPivot.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
  */
 trait NoPivot
 {
@@ -16,11 +14,11 @@ trait NoPivot
      *
      * @return array
      */
-    public function toArray()
+    public function toArray() : array
     {
         $data = parent::toArray();
-        if (isset($data["pivot"])) {
-            unset($data["pivot"]);
+        if (isset($data['pivot'])) {
+            unset($data['pivot']);
         }
 
         return $data;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controllers;
 
 use App\Exceptions\UserAlreadyPremiumException;
@@ -18,26 +20,18 @@ use Stripe\Error\Api as StripeAPIException;
 use Stripe\Invoice as StripeInvoice;
 use Stripe\SetupIntent;
 use Stripe\Subscription as StripeSubscription;
+use function count;
+use function scope;
 
-/**
- * Class SubscriptionsController.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 4.1.0
- */
 class SubscriptionsController extends BaseController
 {
     /**
      * POST /subscriptions
      * Create a new subscription.
      *
-     * @param Request $request
-     *
-     * @return SuccessJsonResponse
      * @throws UserAlreadyPremiumException
      */
-    public function standardPost(Request $request): SuccessJsonResponse
+    public function standardPost(Request $request) : SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();
@@ -47,7 +41,7 @@ class SubscriptionsController extends BaseController
         }
 
         $pipeline = (new SubscriptionCreationPipeline())->flow();
-        $data = Subscription::from($pipeline->subscription);
+        $data     = Subscription::from($pipeline->subscription);
 
         return new SuccessJsonResponse(
             $data,
@@ -56,83 +50,68 @@ class SubscriptionsController extends BaseController
         );
     }
 
-
     /**
      * GET /subscriptions/{subscriptionId}/invoices
      *
-     * @param Request $request
-     *
-     * @param string $subscriptionId
-     *
-     * @return SuccessJsonResponse
      * @throws Http401UnauthorizedException
      * @throws StripeAPIException
      */
-    public function invoices(Request $request, string $subscriptionId): SuccessJsonResponse
+    public function invoices(Request $request, string $subscriptionId) : SuccessJsonResponse
     {
         /** @var User $user */
-        $user = $request->user();
+        $user             = $request->user();
         [$page, $perPage] = PaginationJsonResponse::getPagination();
 
         // TODO: do collection pagination
 
         $invoices = StripeInvoice::all([
-            "subscription" => $subscriptionId,
-            "limit" => $perPage
+            'subscription' => $subscriptionId,
+            'limit' => $perPage,
         ]);
 
         $data = [];
 
         /** @var StripeInvoice $invoice */
         foreach ($invoices as $invoice) {
-            if (!scope($user, "invoices:read") && $invoice->customer !== $user->stripe_id) {
-                throw new Http401UnauthorizedException([], "Failed to pass invoices policy");
+            if (! scope($user, 'invoices:read') && $invoice->customer !== $user->stripe_id) {
+                throw new Http401UnauthorizedException([], 'Failed to pass invoices policy');
             }
 
             $data[] = Invoice::from($invoice);
         }
 
         return new SuccessJsonResponse($data, [
-            "page" => $page,
-            "per_page" => $perPage,
-            "total" => count($data)
+            'page' => $page,
+            'per_page' => $perPage,
+            'total' => count($data),
         ]);
     }
-
 
     /**
      * PATCH /subscriptions/{subscriptionId}/card
      * Change the card associated with a Stripe subscription.
-     *
-     * @param string $subscriptionId
-     *
-     * @return SuccessJsonResponse
      */
-    public function card(string $subscriptionId): SuccessJsonResponse
+    public function card(string $subscriptionId) : SuccessJsonResponse
     {
         $pipeline = (new SubscriptionCardUpdatePipeline($subscriptionId))->flow();
-        $data = Subscription::from($pipeline->subscription);
+        $data     = Subscription::from($pipeline->subscription);
 
         return new SuccessJsonResponse($data);
     }
-
 
     /**
      * POST /subscriptions/{subscriptionId}/migrate
      *
      * @param string $braintreeSubscriptionId The Braintree Subscription id to migrate.
-     *
-     * @return SuccessJsonResponse
      */
-    public function migrate(string $braintreeSubscriptionId)
+    public function migrate(string $braintreeSubscriptionId) : SuccessJsonResponse
     {
         $pipeline = (new SubscriptionMigrationPipeline($braintreeSubscriptionId))->flow();
-        $data = Subscription::from($pipeline->subscription);
-        $status = 200;
+        $data     = Subscription::from($pipeline->subscription);
+        $status   = 200;
 
         // Subscription triggered 3DS2
-        if (
-            $data->pending_setup_intent !== null
+        if ($data->pending_setup_intent !== null
             && $data->pending_setup_intent->status !== SetupIntent::STATUS_SUCCEEDED
         ) {
             $status = 202;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use Carbon\Carbon;
@@ -8,25 +10,26 @@ use Illuminate\Support\Facades\Log;
 use Mathrix\Lumen\Zero\Console\Commands\BaseCommand;
 
 /**
- * Class CleanCacheCommand.
  * Purge outdated cache.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA
- * @since 6.0.0
  */
 class CacheCleanCommand extends BaseCommand
 {
-    protected $signature = "cache:clean";
-    protected $description = "Purge expired cache";
+    /** @var string The command signature */
+    protected $signature = 'cache:clean';
+    /** @var string The command description */
+    protected $description = 'Purge expired cache';
 
-
-    public function handle()
+    /**
+     * Clean the cache using the expiration date.
+     */
+    public function handle() : void
     {
-        Log::info("Starting cache cleaning");
-        $cacheItemCount = DB::table("cache")
-            ->where("expiration", "<", Carbon::now()->getTimestamp())
-            ->delete();
+        Log::info('Starting cache cleaning');
+        $nowTimestamp   = Carbon::now()
+                                ->getTimestamp();
+        $cacheItemCount = DB::table('cache')
+                            ->where('expiration', '<', $nowTimestamp)
+                            ->delete();
         Log::info("$cacheItemCount cache item were purged");
     }
 }

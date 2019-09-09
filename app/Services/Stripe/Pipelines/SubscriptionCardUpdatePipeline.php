@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Services\Stripe\Pipelines;
-
 
 use App\Services\Stripe\Models\StripeCustomer;
 use Stripe\Card as StripeCard;
@@ -10,17 +10,11 @@ use Stripe\Subscription as StripeSubscription;
 
 class SubscriptionCardUpdatePipeline extends Pipeline
 {
-    /** @var string The subscription id. */
-    private $subscriptionId;
     /** @var StripeSubscription The subscription. */
     public $subscription;
+    /** @var string The subscription id. */
+    private $subscriptionId;
 
-
-    /**
-     * SubscriptionCardUpdatePipeline constructor.
-     *
-     * @param string $subscriptionId
-     */
     public function __construct(string $subscriptionId)
     {
         parent::__construct();
@@ -28,24 +22,22 @@ class SubscriptionCardUpdatePipeline extends Pipeline
         $this->subscriptionId = $subscriptionId;
     }
 
-
-    protected function initialize(): void
+    protected function initialize() : void
     {
         $this->validate($this->request, [
-            "card.id" => "required_without:card.token",
-            "card.token" => "required_without:card.id"
+            'card.id' => 'required_without:card.token',
+            'card.token' => 'required_without:card.id',
         ]);
 
         $this->subscription = StripeSubscription::retrieve([
-            "id" => $this->subscriptionId,
-            "expand" => ["default_source"]
+            'id' => $this->subscriptionId,
+            'expand' => ['default_source'],
         ]);
     }
 
-
-    protected function exchange(): void
+    protected function exchange() : void
     {
-        if ($this->request->has("card.token")) {
+        if ($this->request->has('card.token')) {
             /** @var StripeCard $card */
             $card = (new CustomerCardAttachPipeline())->flow()->card;
             /** @var StripeCard $subscriptionCard */
@@ -60,13 +52,12 @@ class SubscriptionCardUpdatePipeline extends Pipeline
         }
 
         $this->subscription = StripeSubscription::update($this->subscriptionId, [
-            "default_source" => $cardId ?? $this->request->json("card.id"),
-            "expand" => ["default_source", "latest_invoice.payment_intent"]
+            'default_source' => $cardId ?? $this->request->json('card.id'),
+            'expand' => ['default_source', 'latest_invoice.payment_intent'],
         ]);
     }
 
-
-    protected function finalize(): void
+    protected function finalize() : void
     {
         $this->user->invalidate(StripeCustomer::$StripeSubscriptionsCacheKey);
     }

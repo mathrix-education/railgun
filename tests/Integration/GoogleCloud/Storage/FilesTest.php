@@ -19,22 +19,6 @@ use Tests\APIStatelessTestCase;
 class FilesTest extends APIStatelessTestCase
 {
     /**
-     * Get a disk.
-     *
-     * @param string|null $disk The disk id to get.
-     *
-     * @return FilesystemAdapter
-     */
-    private function getDisk(string $disk = null): FilesystemAdapter
-    {
-        /** @var FilesystemAdapter $disk */
-        $disk = Storage::disk($disk);
-
-        return $disk;
-    }
-
-
-    /**
      * @return array Generate the files to upload and get.
      */
     public function uploadsDataProvider(): array
@@ -94,6 +78,22 @@ class FilesTest extends APIStatelessTestCase
         $this->getDisk()->assertExists($file);
         $this->assertResponseStatus(200);
         $this->assertOpenAPI($this->response, new OperationAddress("/files/{file}", "post"));
+    }
+
+
+    /**
+     * Get a disk.
+     *
+     * @param string|null $disk The disk id to get.
+     *
+     * @return FilesystemAdapter
+     */
+    private function getDisk(string $disk = null): FilesystemAdapter
+    {
+        /** @var FilesystemAdapter $disk */
+        $disk = Storage::disk($disk);
+
+        return $disk;
     }
 
 

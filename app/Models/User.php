@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Models\Traits\FacebookUser;
@@ -17,7 +19,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection as BaseCollection;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Laravel\Lumen\Auth\Authorizable;
 use Mathrix\Lumen\JWT\Auth\HasJWT;
@@ -25,13 +26,13 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
 use stdClass;
 use Stripe\Error\Api as StripeAPIException;
 use Stripe\Subscription as StripeSubscription;
+use function array_merge;
+use function floor;
+use function in_array;
+use function pow;
+use function trim;
 
 /**
- * Class User.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 1.0.0
  * @property int $id
  * @property string|null $username
  * @property string $email
@@ -69,116 +70,111 @@ use Stripe\Subscription as StripeSubscription;
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
-    use Authorizable,
-        Authenticatable,
-        HasCache,
-        HasJWT,
-        FacebookUser,
-        PermissionsTrait,
-        BraintreeCustomer,
-        StripeCustomer;
+    use Authorizable;
+    use Authenticatable;
+    use HasCache;
+    use HasJWT;
+    use FacebookUser;
+    use PermissionsTrait;
+    use BraintreeCustomer;
+    use StripeCustomer;
 
-    private const STRIPE_PLANS = ["v3_monthly", "v3_annually", "v3_biannually"];
-    public const BRAINTREE_PLANS = ["v4_monthly", "v4_annually", "v4_biannually"];
+    private const STRIPE_PLANS   = ['v3_monthly', 'v3_annually', 'v3_biannually'];
+    public const BRAINTREE_PLANS = ['v4_monthly', 'v4_annually', 'v4_biannually'];
 
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
 
     /** @var array The guarded attributes */
     protected $fillable = [
-        "email",
-        "username",
-        "firstname",
-        "lastname",
-        "password",
-        "scopes",
-        "points",
-        "daily",
-        "settings",
-        "grade_id"
+        'email',
+        'username',
+        'firstname',
+        'lastname',
+        'password',
+        'scopes',
+        'points',
+        'daily',
+        'settings',
+        'grade_id',
     ];
 
     /** @var array The hidden attributes from the model's JSON */
     protected $hidden = [
-        "password",
-        "token",
-        "premium_bypass",
-        "premium_bypass_expires_at",
-        "braintree_id",
-        "metadata"
+        'password',
+        'token',
+        'premium_bypass',
+        'premium_bypass_expires_at',
+        'braintree_id',
+        'metadata',
     ];
 
     protected $attributes = [
-        "username" => null,
-        "firstname" => null,
-        "lastname" => null,
-        "scopes" => "[]",
-        "points" => 0,
-        "daily" => 10,
-        "daily_achievements" => 0,
-        "premium_bypass" => false,
-        "premium_bypass_expires_at" => null,
-        "settings" => "[]",
+        'username' => null,
+        'firstname' => null,
+        'lastname' => null,
+        'scopes' => '[]',
+        'points' => 0,
+        'daily' => 10,
+        'daily_achievements' => 0,
+        'premium_bypass' => false,
+        'premium_bypass_expires_at' => null,
+        'settings' => '[]',
     ];
 
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
-        "scopes" => "array",
-        "premium_bypass" => "boolean",
-        "premium_bypass_expires_at" => "date",
-        "settings" => "array",
-        "metadata" => "array"
+        'scopes' => 'array',
+        'premium_bypass' => 'boolean',
+        'premium_bypass_expires_at' => 'date',
+        'settings' => 'array',
+        'metadata' => 'array',
     ];
 
     /** @var array The validation rules on create */
     protected $rules = [
-        "username" => "nullable|max:60",
-        "firstname" => "nullable|max:60",
-        "lastname" => "nullable|max:60",
-        "password" => "nullable|min:3",
-        "token" => "nullable|size:36",
-        "points" => "required|integer",
-        "daily" => "nullable|in:10,20,40",
-        "grade_id" => "nullable|exists:grades,id",
-        "premium_bypass" => "boolean",
-        "premium_bypass_expires_at" => "nullable|date",
+        'username' => 'nullable|max:60',
+        'firstname' => 'nullable|max:60',
+        'lastname' => 'nullable|max:60',
+        'password' => 'nullable|min:3',
+        'token' => 'nullable|size:36',
+        'points' => 'required|integer',
+        'daily' => 'nullable|in:10,20,40',
+        'grade_id' => 'nullable|exists:grades,id',
+        'premium_bypass' => 'boolean',
+        'premium_bypass_expires_at' => 'nullable|date',
     ];
 
     /** @var array The virtual attributes */
-    protected $appends = ["level", "provider", "last_session", "premium"];
-
+    protected $appends = ['level', 'provider', 'last_session', 'premium'];
 
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
     }
 
-
     /**
      * Custom validation rules
      *
      * @return array
      */
-    public function getValidationRules()
+    public function getValidationRules() : array
     {
         return array_merge($this->rules, [
-            "email" => ["required", "email", "max:60", Rule::unique("users", "email")->ignore($this->id)],
+            'email' => ['required', 'email', 'max:60', Rule::unique('users', 'email')->ignore($this->id)],
         ]);
     }
-
 
     /*
     |--------------------------------------------------------------------------
     | Methods
     |--------------------------------------------------------------------------
     */
+
     /**
      * Laravel "dynamic scope" to query users with a specific scope (permission).
      *
      * @link https://laravel.com/docs/5.8/eloquent
-     *
-     * @param Builder $query
-     * @param string $scope
      *
      * @return Builder|\Illuminate\Database\Query\Builder
      */
@@ -188,32 +184,138 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
             ->orWhereRaw("JSON_SEARCH(scopes, 'one', '*') IS NOT NULL");
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | Methods
     |--------------------------------------------------------------------------
     */
+
     /**
      * Check if user has purchased the given product.
-     *
-     * @param Product $product
-     *
-     * @return bool
      */
-    public function hasPurchased(Product $product): bool
+    public function hasPurchased(Product $product) : bool
     {
         return $this->purchases()
-            ->whereIn("product_id", $product->lineage()->pluck("id"))
+            ->whereIn('product_id', $product->lineage()->pluck('id'))
             ->exists();
     }
 
+    /**
+     * HasMany Records.
+     */
+    public function purchases() : HasMany
+    {
+        return $this->hasMany(Purchase::class);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * BelongsTo Grade.
+     */
+    public function grade() : BelongsTo
+    {
+        return $this->belongsTo(Grade::class);
+    }
+
+    /**
+     * HasMany Comment.
+     */
+    public function comments() : HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * HasMany Mark.
+     */
+    public function marks() : HasMany
+    {
+        return $this->hasMany(Mark::class);
+    }
+
+    /**
+     * HasMany Vote.
+     */
+    public function votes() : HasMany
+    {
+        return $this->hasMany(Vote::class);
+    }
+
+    /**
+     * full_name attribute.
+     */
+    public function getFullNameAttribute() : string
+    {
+        if (empty($this->firstname) && empty($this->lastname)) {
+            return $this->username;
+        }
+
+        return trim("{$this->firstname} {$this->lastname}");
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Attributes
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * level attribute.
+     */
+    public function getLevelAttribute() : int
+    {
+        return floor((pow($this->points, 1 / 1.2) / 10) + 1);
+    }
+
+    /**
+     * premium attribute.
+     *
+     * @throws StripeAPIException
+     */
+    public function getPremiumAttribute() : bool
+    {
+        if ($this->premium_bypass) {
+            // Permanent premium bypass
+            return true;
+        }
+
+        if ($this->premium_bypass_expires_at !== null && $this->premium_bypass_expires_at->isFuture()) {
+            // Temporary premium bypass
+            return true;
+        }
+
+        if (! $this->isStripeCustomer() && ! $this->isBraintreeCustomer()) {
+            // Not Stripe nor Braintree customer
+            return false;
+        }
+
+        // Search in subscriptions
+        /** @var Subscription $subscription */
+        foreach ($this->subscriptions() as $subscription) {
+            $allowedStatuses = [
+                StripeSubscription::STATUS_ACTIVE,
+                StripeSubscription::STATUS_TRIALING,
+            ];
+
+            if (in_array($subscription->status, $allowedStatuses)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     /**
      * @return Subscription|BaseCollection
+     *
      * @throws StripeAPIException
      */
-    public function subscriptions(): BaseCollection
+    public function subscriptions() : BaseCollection
     {
         $subscriptions = new BaseCollection();
 
@@ -232,162 +334,31 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         return $subscriptions;
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Relations
-    |--------------------------------------------------------------------------
-    */
-    /**
-     * BelongsTo Grade.
-     *
-     * @return BelongsTo
-     */
-    public function grade(): BelongsTo
-    {
-        return $this->belongsTo(Grade::class);
-    }
-
-
-    /**
-     * HasMany Comment.
-     *
-     * @return HasMany
-     */
-    public function comments(): HasMany
-    {
-        return $this->hasMany(Comment::class);
-    }
-
-
-    /**
-     * HasMany Mark.
-     *
-     * @return HasMany
-     */
-    public function marks(): HasMany
-    {
-        return $this->hasMany(Mark::class);
-    }
-
-
-    /**
-     * HasMany Records.
-     *
-     * @return HasMany
-     */
-    public function purchases(): HasMany
-    {
-        return $this->hasMany(Purchase::class);
-    }
-
-
-    /**
-     * HasMany Vote.
-     *
-     * @return HasMany
-     */
-    public function votes(): HasMany
-    {
-        return $this->hasMany(Vote::class);
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Attributes
-    |--------------------------------------------------------------------------
-    */
-    /**
-     * full_name attribute.
-     *
-     * @return string
-     */
-    public function getFullNameAttribute(): string
-    {
-        if (empty($this->firstname) && empty($this->lastname)) {
-            return $this->username;
-        } else {
-            return trim("{$this->firstname} {$this->lastname}");
-        }
-    }
-
-
-    /**
-     * level attribute.
-     *
-     * @return int
-     */
-    public function getLevelAttribute(): int
-    {
-        return floor((pow($this->points, 1 / 1.2) / 10) + 1);
-    }
-
-
-    /**
-     * premium attribute.
-     *
-     * @return bool
-     * @throws StripeAPIException
-     */
-    public function getPremiumAttribute()
-    {
-        if ($this->premium_bypass) {
-            // Permanent premium bypass
-            return true;
-        } else if ($this->premium_bypass_expires_at !== null && $this->premium_bypass_expires_at->isFuture()) {
-            // Temporary premium bypass
-            return true;
-        } else if (!$this->isStripeCustomer() && !$this->isBraintreeCustomer()) {
-            // Not Stripe nor Braintree customer
-            return false;
-        } else {
-            // Search in subscriptions
-            /** @var Subscription $subscription */
-            foreach ($this->subscriptions() as $subscription) {
-                $allowedStatuses = [
-                    StripeSubscription::STATUS_ACTIVE,
-                    StripeSubscription::STATUS_TRIALING
-                ];
-
-                if (in_array($subscription->status, $allowedStatuses)) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-    }
-
-
     /**
      * The login provider.
-     *
-     * @return string
      */
-    public function getProviderAttribute(): string
+    public function getProviderAttribute() : string
     {
-        $provider = "api";
+        $provider = 'api';
 
-        if (isset($this->metadata["facebook"]["id"])) {
-            $provider = "facebook";
+        if (isset($this->metadata['facebook']['id'])) {
+            $provider = 'facebook';
         }
 
         return $provider;
     }
-
 
     /**
      * @return array|stdClass
      */
     public function getLastSessionAttribute()
     {
-        if (empty($this->settings["last_session"])) {
+        if (empty($this->settings['last_session'])) {
             return [];
         }
 
-        $body = [];
-        $lastSession = $this->settings["last_session"];
+        $body        = [];
+        $lastSession = $this->settings['last_session'];
 
         foreach ($lastSession as $moduleId) {
             /** @var Module $module */
@@ -404,11 +375,11 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
             $grade = Grade::query()->findOrFail($chapter->grade_id);
 
             $body[] = [
-                "grade_slug" => $grade->slug,
-                "discipline" => $discipline,
-                "chapter" => $chapter,
-                "activity" => $activity,
-                "module" => $module,
+                'grade_slug' => $grade->slug,
+                'discipline' => $discipline,
+                'chapter' => $chapter,
+                'activity' => $activity,
+                'module' => $module,
             ];
         }
 

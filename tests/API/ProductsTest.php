@@ -2,12 +2,7 @@
 
 namespace Tests\API;
 
-use App\Models\Discount;
 use App\Models\Product;
-use App\Models\Purchase;
-use App\Models\User;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
 use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Zero\Testing\Traits\RESTAutoTestTrait;
 use Tests\APIStatelessTestCase;

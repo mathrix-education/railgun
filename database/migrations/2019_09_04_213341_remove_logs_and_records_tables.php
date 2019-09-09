@@ -1,17 +1,15 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 
 class RemoveLogsAndRecordsTables extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up() : void
     {
         (new CreateRecordsTable())->down();
         (new CreateLogsTable())->down();
@@ -19,10 +17,8 @@ class RemoveLogsAndRecordsTables extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down() : void
     {
         (new CreateLogsTable())->up();
         (new CreateRecordsTable())->up();

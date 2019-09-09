@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controllers;
 
 use App\Models\Activity;
@@ -11,11 +13,7 @@ use Mathrix\Lumen\Zero\Controllers\BaseController;
 use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
 
 /**
- * Class ActivitiesController.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 1.0.0
+ * Serve routes starting by /activities.
  */
 class ActivitiesController extends BaseController
 {
@@ -24,52 +22,59 @@ class ActivitiesController extends BaseController
      * Mark an activity.
      *
      * @param Request $request The Illuminate HTTP request.
-     * @param int $id The activity id.
+     * @param int     $id      The activity id.
      *
-     * @return SuccessJsonResponse
+     * @return SuccessJsonResponse The marked activity.
      */
-    public function mark(Request $request, int $id): SuccessJsonResponse
+    public function mark(Request $request, int $id) : SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();
         /** @var Activity $activity */
-        $activity = Activity::query()->findOrFail($id);
-        $status = $request->json("status");
+        $activity = Activity::query()
+                            ->findOrFail($id);
+        $status   = $request->json('status');
 
-        $mark = Mark::retrieve($activity, $user);
+        $mark         = Mark::retrieve($activity, $user);
         $mark->status = $status;
         $mark->save();
 
         $cacheKey = "user.{$user->id}.chapter.{$activity->notion->chapter->id}.recursive";
-        DB::table("cache")->where("key", "=", $cacheKey)->delete();
+        DB::table('cache')
+          ->where('key', '=', $cacheKey)
+          ->delete();
 
         return new SuccessJsonResponse($activity->fresh());
     }
-
 
     /**
      * PATCH /activities/{activityId}/unmark
      * Unmark an activity.
      *
      * @param Request $request The Illuminate HTTP request.
-     * @param int $id The activity id.
+     * @param int     $id      The activity id.
      *
-     * @return SuccessJsonResponse
+     * @return SuccessJsonResponse The un-marked activity.
      */
-    public function unmark(Request $request, int $id): SuccessJsonResponse
+    public function unmark(Request $request, int $id) : SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();
         /** @var Activity $activity */
-        $activity = Activity::query()->findOrFail($id);
+        $activity = Activity::query()
+                            ->findOrFail($id);
 
         Mark::retrieveAll($activity, $user)
-            ->each(function (Mark $mark) {
-                $mark->delete();
-            });
+            ->each(
+                static function (Mark $mark) : void {
+                    $mark->delete();
+                }
+            );
 
         $cacheKey = "user.{$user->id}.chapter.{$activity->notion->chapter->id}.recursive";
-        DB::table("cache")->where("key", "=", $cacheKey)->delete();
+        DB::table('cache')
+          ->where('key', '=', $cacheKey)
+          ->delete();
 
         return new SuccessJsonResponse($activity->fresh());
     }

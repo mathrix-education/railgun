@@ -1,28 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controllers;
 
 use App\Services\Stripe\SubscriptionUtils;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
 use Mathrix\Lumen\Zero\Responses\PaginationJsonResponse;
 use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
+use function array_merge;
+use function count;
 
-/**
- * Class PlansController.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA
- * @since 6.0.0
- */
 class PlansController extends BaseController
 {
     /**
      * GET /plans
      * Get the available plans.
-     *
-     * @return SuccessJsonResponse
      */
-    public function all(): SuccessJsonResponse
+    public function all() : SuccessJsonResponse
     {
         $data = [];
 
@@ -30,21 +25,21 @@ class PlansController extends BaseController
             $trialEndsAt = SubscriptionUtils::getProrationAnchor($planId);
 
             if ($trialEndsAt) {
-                $trialEndsAt = $trialEndsAt->format("c");
+                $trialEndsAt = $trialEndsAt->format('c');
             }
 
             $data[] = array_merge($plan, [
-                "proration_ends_at" => $trialEndsAt,
-                "proration_price" => SubscriptionUtils::getProrationPrice($planId)
+                'proration_ends_at' => $trialEndsAt,
+                'proration_price' => SubscriptionUtils::getProrationPrice($planId),
             ]);
         }
 
         [$page, $perPage] = PaginationJsonResponse::getPagination();
 
         return new SuccessJsonResponse($data, [
-            "page" => $page,
-            "per_page" => $perPage,
-            "total" => count($data),
+            'page' => $page,
+            'per_page' => $perPage,
+            'total' => count($data),
         ]);
     }
 }

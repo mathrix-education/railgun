@@ -1,29 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use Mathrix\Lumen\Zero\Console\Commands\BaseCommand;
-use Stripe\Subscription;
 
 /**
- * Class TestCommand.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
+ * Test command which is mainly used as a sandbox during development.
+ * The content of the TestCommand::handle() may be kept empty.
  */
 class TestCommand extends BaseCommand
 {
-    protected $signature = "test";
+    /** @var string The command signature. */
+    protected $signature = 'test';
 
-
-    public function handle()
+    public function handle() : void
     {
-        $sub = Subscription::retrieve([
-            "id" => "sub_Fm6Nh0X2WkhFb9",
-            "expand" => ["default_source"]
-        ]);
-
-        $this->line(json_encode($sub, JSON_PRETTY_PRINT));
     }
 }

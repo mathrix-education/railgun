@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use App\Models\Activity;
@@ -23,28 +25,25 @@ use Mathrix\Lumen\Zero\Providers\ObserverServiceProvider;
 use Mathrix\Lumen\Zero\Providers\PolicyServiceProvider;
 use Mathrix\Lumen\Zero\Providers\RegistrarServiceProvider;
 use Sentry\Laravel\ServiceProvider as SentryServiceProvider;
+use const DIRECTORY_SEPARATOR;
+use function app;
+use function env;
 
 /**
- * Class AppServiceProvider.
  * Register all application service providers.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 4.1.0
  */
 class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
-    public function register()
+    public function register() : void
     {
-        $this->app->instance("path.config", app()->basePath() . DIRECTORY_SEPARATOR . "config");
-        $this->app->instance("path.public", app()->basePath() . DIRECTORY_SEPARATOR . "public");
-        $this->app->instance("cache.store", app()->basePath() . DIRECTORY_SEPARATOR . "public");
+        $this->app->instance('path.config', app()->basePath() . DIRECTORY_SEPARATOR . 'config');
+        $this->app->instance('path.public', app()->basePath() . DIRECTORY_SEPARATOR . 'public');
+        $this->app->instance('cache.store', app()->basePath() . DIRECTORY_SEPARATOR . 'public');
         // App service providers
         $this->app->register(BraintreeGatewayServiceProvider::class);
-
 
         // Vendor service providers
         $this->app->register(CorsServiceProvider::class);
@@ -60,23 +59,23 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(PolicyServiceProvider::class);
         $this->app->register(RegistrarServiceProvider::class);
 
-        if (env("SENTRY_DSN") !== null) {
+        if (env('SENTRY_DSN') !== null) {
             $this->app->register(SentryServiceProvider::class);
         }
 
-        ScopesLoader::registerAdditionalScopes(["users:as"]);
+        ScopesLoader::registerAdditionalScopes(['users:as']);
 
         // MorphMap
         Relation::morphMap([
             // Models
-            "activity" => Activity::class,
-            "notion" => Notion::class,
-            "module" => Module::class,
-            "post" => Post::class,
-            "comment" => Comment::class,
-            "user" => User::class,
-            "product" => Product::class,
-            "discount" => Discount::class
+            'activity' => Activity::class,
+            'notion' => Notion::class,
+            'module' => Module::class,
+            'post' => Post::class,
+            'comment' => Comment::class,
+            'user' => User::class,
+            'product' => Product::class,
+            'discount' => Discount::class,
         ]);
     }
 }

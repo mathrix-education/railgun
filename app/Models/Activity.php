@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Carbon\Carbon;
@@ -9,14 +11,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Auth;
 use Mathrix\Lumen\Zero\Models\BaseModel;
+use function implode;
 
 /**
- * Class Activity.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 1.0.0
- *
  * @property int $id
  * @property string $name
  * @property string $type
@@ -38,58 +35,54 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
  */
 class Activity extends BaseModel
 {
-    public const TYPES = ["video", "course", "test", "exercise", "summary", "flashcard"];
+    public const TYPES = ['video', 'course', 'test', 'exercise', 'summary', 'flashcard'];
 
     /** @var array The attributes that are mass assignable */
     protected $fillable = [
-        "id",
-        "name",
-        "type",
-        "visible",
-        "order",
-        "premium",
-        "reviewed",
-        "notion_id"
+        'id',
+        'name',
+        'type',
+        'visible',
+        'order',
+        'premium',
+        'reviewed',
+        'notion_id',
     ];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
-        "visible" => "boolean",
-        "premium" => "boolean",
-        "reviewed" => "boolean"
+        'visible' => 'boolean',
+        'premium' => 'boolean',
+        'reviewed' => 'boolean',
     ];
     /** @var array The validation rules */
     protected $rules = [
-        "name" => "required|max:255",
-        "visible" => "boolean",
-        "premium" => "boolean",
-        "reviewed" => "boolean"
+        'name' => 'required|max:255',
+        'visible' => 'boolean',
+        'premium' => 'boolean',
+        'reviewed' => 'boolean',
     ];
     /** @var array Appends attributes */
-    protected $appends = ["mark"];
-
+    protected $appends = ['mark'];
 
     /**
-     * Activity constructor.
-     *
      * @param array $attributes
      */
     public function __construct(array $attributes = [])
     {
         // Dynamic rules
-        $this->rules["type"] = "required|in:" . implode(",", self::TYPES);
+        $this->rules['type'] = 'required|in:' . implode(',', self::TYPES);
 
         parent::__construct($attributes);
     }
 
-
     /**
      * Update counters.
      */
-    public function updateCounters()
+    public function updateCounters() : void
     {
         $this->module_count = Module::query()
-            ->where("activity_id", "=", $this->id)
-            ->where("visible", "=", true)
+            ->where('activity_id', '=', $this->id)
+            ->where('visible', '=', true)
             ->count();
         $this->save();
     }
@@ -99,62 +92,51 @@ class Activity extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
+
     /**
      * The activity's notion.
-     *
-     * @return BelongsTo
      */
-    public function notion(): BelongsTo
+    public function notion() : BelongsTo
     {
         return $this->belongsTo(Notion::class);
     }
 
-
     /**
      * BelongsToMany Module.
-     *
-     * @return HasMany
      */
-    public function modules(): HasMany
+    public function modules() : HasMany
     {
-        return $this->hasMany(Module::class)->orderBy("order");
+        return $this->hasMany(Module::class)->orderBy('order');
     }
 
-
-    /**
-     * @return MorphMany
-     */
-    public function marks(): MorphMany
-    {
-        return $this->morphMany(Mark::class, "markable");
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Attributes
-    |--------------------------------------------------------------------------
-    */
     /**
      * Get the mark attribute (view|to_revise|completed)
-     *
-     * @return string|null
      */
-    public function getMarkAttribute()
+    public function getMarkAttribute() : ?string
     {
         /** @var User $user */
         $user = Auth::user();
 
         if ($user === null) {
             return null;
-        } else {
-            /** @var Mark $mark */
-            $mark = $this->marks()
-                ->where("user_id", "=", $user->id)
-                ->orderBy("created_at", "desc")
-                ->first();
-
-            return $mark !== null ? $mark->status : null;
         }
+
+        /** @var Mark $mark */
+        $mark = $this->marks()
+            ->where('user_id', '=', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        return $mark !== null ? $mark->status : null;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Attributes
+    |--------------------------------------------------------------------------
+    */
+    public function marks() : MorphMany
+    {
+        return $this->morphMany(Mark::class, 'markable');
     }
 }

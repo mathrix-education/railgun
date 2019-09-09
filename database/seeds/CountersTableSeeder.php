@@ -1,27 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Activity;
 use App\Models\Chapter;
 use App\Models\Notion;
 use Mathrix\Lumen\Zero\Database\BaseTableSeeder;
 
-/**
- * Class CountersTableSeeder.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc3
- */
 class CountersTableSeeder extends BaseTableSeeder
 {
-    public function run()
+    public function run() : void
     {
         $activities = Activity::all();
-        $notions = Notion::all();
-        $chapters = Chapter::all();
-        $total = $activities->count() + $notions->count() + $chapters->count();
+        $notions    = Notion::all();
+        $chapters   = Chapter::all();
+        $total      = $activities->count() + $notions->count() + $chapters->count();
 
-        $this->output->writeln("<comment>Seeding:</comment> chapter, notion and activity counters");
+        $this->output->writeln('<comment>Seeding:</comment> chapter, notion and activity counters');
         $progressBar = $this->output->createProgressBar($total);
         $progressBar->setFormat(BaseTableSeeder::DEFAULT_PROGRESS_BAR_FORMAT);
 

@@ -1,20 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\Bishop;
 
 use Carbon\Carbon;
 use DateTime;
+use JsonSerializable;
+use Throwable;
+use function in_array;
+use function is_array;
+use function is_integer;
 
-abstract class Bishop implements \JsonSerializable
+abstract class Bishop implements JsonSerializable
 {
     /** @var array The bishop attributes. */
     protected $attributes;
     /** @var array The dates */
     protected $dates = [];
     /** @var string The date format */
-    protected $dateFormat = "c";
-    protected $virtual = [];
-
+    protected $dateFormat = 'c';
+    protected $virtual    = [];
 
     public function __construct(array $attributes)
     {
@@ -23,113 +29,12 @@ abstract class Bishop implements \JsonSerializable
         }
     }
 
-
-    public function setRawAttribute(string $key, $value): void
+    public function setRawAttribute(string $key, $value) : void
     {
         $this->attributes[$key] = $value;
     }
 
-
-    public function getRawAttribute(string $key)
-    {
-        if (isset($this->attributes[$key])) {
-            return $this->attributes[$key];
-        } else {
-            return null;
-        }
-    }
-
-
-    public function getAttribute($key)
-    {
-        return $this->castAttribute($key, $this->getRawAttribute($key));
-    }
-
-
-    public function castAttribute($key, $value)
-    {
-        if ($this->isDate($key)) {
-            return $this->toCarbon($value);
-        } else if (is_array($value)) {
-            $yield = [];
-
-            foreach ($value as $subKey => $subValue) {
-                $yield[$subKey] = $this->castAttribute("$key.$subKey", $subValue);
-            }
-
-            return $yield;
-        } else {
-            return $value;
-        }
-    }
-
-
-    public function isDate($key)
-    {
-        return in_array($key, $this->dates);
-    }
-
-
-    /**
-     * Create a Carbon instance from a value
-     *
-     * @param DateTime|string|integer $value
-     *
-     * @return Carbon|null
-     */
-    public function toCarbon($value): ?Carbon
-    {
-        if ($value instanceof DateTime) {
-            return Carbon::instance($value);
-        } else if (is_integer($value)) {
-            return Carbon::createFromTimestamp($value);
-        } else {
-            try {
-                return new Carbon($value);
-            } catch (\Exception $e) {
-                return null;
-            }
-        }
-    }
-
-
-    public function serializeAttribute($key, $value)
-    {
-        $casted = $this->castAttribute($key, $value);
-
-        if ($this->isDate($key)) {
-            /** @var Carbon $casted */
-            return $this->serializeDate($casted);
-        } else if (is_array($value)) {
-            $yield = [];
-
-            foreach ($casted as $subKey => $subValue) {
-                $yield[$subKey] = $this->serializeAttribute("$key.$subKey", $subValue);
-            }
-
-            return $yield;
-        } else if ($value instanceof Bishop) {
-            return $value->jsonSerialize();
-        } else {
-            return $casted;
-        }
-    }
-
-
-    /**
-     * Prepare a date for array / JSON serialization.
-     *
-     * @param Carbon $date
-     *
-     * @return string
-     */
-    protected function serializeDate(Carbon $date)
-    {
-        return $date->format($this->dateFormat);
-    }
-
-
-    public function toArray(): array
+    public function toArray() : array
     {
         $array = [];
 
@@ -140,15 +45,107 @@ abstract class Bishop implements \JsonSerializable
         return $array;
     }
 
+    public function serializeAttribute($key, $value)
+    {
+        $casted = $this->castAttribute($key, $value);
+
+        if ($this->isDate($key)) {
+            /** @var Carbon $casted */
+            return $this->serializeDate($casted);
+        }
+
+        if (is_array($value)) {
+            $yield = [];
+
+            foreach ($casted as $subKey => $subValue) {
+                $yield[$subKey] = $this->serializeAttribute("$key.$subKey", $subValue);
+            }
+
+            return $yield;
+        }
+
+        if ($value instanceof Bishop) {
+            return $value->jsonSerialize();
+        }
+
+        return $casted;
+    }
+
+    public function castAttribute($key, $value)
+    {
+        if ($this->isDate($key)) {
+            return $this->toCarbon($value);
+        }
+
+        if (is_array($value)) {
+            $yield = [];
+
+            foreach ($value as $subKey => $subValue) {
+                $yield[$subKey] = $this->castAttribute("$key.$subKey", $subValue);
+            }
+
+            return $yield;
+        }
+
+        return $value;
+    }
+
+    public function isDate($key)
+    {
+        return in_array($key, $this->dates);
+    }
+
+    /**
+     * Create a Carbon instance from a value
+     *
+     * @param DateTime|string|int $value
+     */
+    public function toCarbon($value) : ?Carbon
+    {
+        if ($value instanceof DateTime) {
+            return Carbon::instance($value);
+        }
+
+        if (is_integer($value)) {
+            return Carbon::createFromTimestamp($value);
+        }
+
+        try {
+            return new Carbon($value);
+        } catch (Throwable $e) {
+            return null;
+        }
+    }
+
+    /**
+     * Prepare a date for array / JSON serialization.
+     */
+    protected function serializeDate(Carbon $date) : string
+    {
+        return $date->format($this->dateFormat);
+    }
 
     public function jsonSerialize()
     {
         return $this->toArray();
     }
 
-
     public function __get($key)
     {
         return $this->getAttribute($key);
+    }
+
+    public function getAttribute($key)
+    {
+        return $this->castAttribute($key, $this->getRawAttribute($key));
+    }
+
+    public function getRawAttribute(string $key)
+    {
+        if (isset($this->attributes[$key])) {
+            return $this->attributes[$key];
+        }
+
+        return null;
     }
 }

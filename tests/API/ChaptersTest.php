@@ -4,8 +4,6 @@ namespace Tests\API;
 
 use App\Models\Chapter;
 use App\Models\Mark;
-use Illuminate\Support\Arr;
-use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
 use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;

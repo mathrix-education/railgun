@@ -1,26 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Observers;
 
 use App\Models\Report;
 
-/**
- * Class ReportObserver.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class ReportObserver extends BaseObserver
 {
-    /**
-     * @param Report $report
-     *
-     * @return bool
-     */
-    public function creating(Report $report)
+    public function creating(Report $report) : bool
     {
-        $report->status = "todo";
+        $report->status = 'todo';
+
         return true;
     }
 }
