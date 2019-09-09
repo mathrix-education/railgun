@@ -11,17 +11,32 @@ use function class_basename;
 use function is_callable;
 
 /**
- * Trait HasCache.
  * Allow to easily cache data for models.
  */
 trait HasCache
 {
     /**
+     * Get the current model cache full key.
+     *
+     * @param string $key The data key.
+     *
+     * @return string The full cache key.
+     */
+    protected function getCacheKey(string $key) : string
+    {
+        $prefix = Str::slug(class_basename($this) . ' ' . $this->{$this->primaryKey}, '.');
+
+        return "$prefix.$key";
+    }
+
+    /**
      * Cache a model data.
      *
-     * @param mixed|callable $value
+     * @param string         $key        The cache key, will be prefixed by {model}.{primaryKey}
+     * @param int            $ttlSeconds The cache TTL in seconds.
+     * @param mixed|callable $value      The cache value.
      *
-     * @return mixed
+     * @return mixed The cached value.
      */
     public function cache(string $key, int $ttlSeconds, $value)
     {
@@ -32,18 +47,6 @@ trait HasCache
         Cache::add($this->getCacheKey($key), $ttlSeconds, $value);
 
         return $value;
-    }
-
-    /**
-     * Get the current model cache full key.
-     *
-     * @param string $key The data key.
-     */
-    protected function getCacheKey(string $key) : string
-    {
-        $prefix = Str::slug(class_basename($this) . ' ' . $this->{$this->primaryKey}, '.');
-
-        return "$prefix.$key";
     }
 
     /**
