@@ -8,10 +8,12 @@
     <description>The coding standard of Mathrix Education API.</description>
 
     <!-- Arguments -->
+    <arg value="p"/>
     <arg name="basepath" value="."/>
+    <arg name="cache" value="storage/framework/cache/data/phpcs.json"/>
     <arg name="colors"/>
     <arg name="parallel" value="75"/>
-    <arg value="np"/>
+    <arg name="severity" value="1"/>
 
     <!-- Inclusions -->
     <file>app</file>
@@ -23,4 +25,5 @@
     <rule ref="Doctrine">
         <exclude name="Squiz.Strings.DoubleQuoteUsage.ContainsVar"/>
     </rule>
+    <rule ref="PSR12"/>
 </ruleset>

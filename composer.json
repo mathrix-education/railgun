@@ -111,6 +111,7 @@
   },
   "scripts": {
     "compile:docs": "openapi-processor --input=docs/index.yaml",
-    "lint": "phpcs --report=source"
+    "lint": "phpcs --report=source",
+    "lint:details": "phpcs"
   }
 }
