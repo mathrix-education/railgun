@@ -6,6 +6,9 @@ namespace App\Controllers;
 
 use Mathrix\Lumen\Zero\Controllers\BaseController;
 
+/**
+ * Serve routes starting with /disciplines.
+ */
 class DisciplinesController extends BaseController
 {
 }

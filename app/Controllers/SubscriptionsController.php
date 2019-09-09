@@ -23,11 +23,18 @@ use Stripe\Subscription as StripeSubscription;
 use function count;
 use function scope;
 
+/**
+ * Serve routes starting with /subscriptions.
+ */
 class SubscriptionsController extends BaseController
 {
     /**
      * POST /subscriptions
      * Create a new subscription.
+     *
+     * @param Request $request The Illuminate HTTP request.
+     *
+     * @return SuccessJsonResponse The newly created subscription.
      *
      * @throws UserAlreadyPremiumException
      */
@@ -52,6 +59,12 @@ class SubscriptionsController extends BaseController
 
     /**
      * GET /subscriptions/{subscriptionId}/invoices
+     * Get the invoices which belong to a given subscription.
+     *
+     * @param Request $request        The Illuminate HTTP request.
+     * @param string  $subscriptionId The subscription id.
+     *
+     * @return SuccessJsonResponse The invoices list.
      *
      * @throws Http401UnauthorizedException
      * @throws StripeAPIException
@@ -66,14 +79,14 @@ class SubscriptionsController extends BaseController
 
         $invoices = StripeInvoice::all([
             'subscription' => $subscriptionId,
-            'limit' => $perPage,
+            'limit'        => $perPage,
         ]);
 
         $data = [];
 
         /** @var StripeInvoice $invoice */
         foreach ($invoices as $invoice) {
-            if (! scope($user, 'invoices:read') && $invoice->customer !== $user->stripe_id) {
+            if (!scope($user, 'invoices:read') && $invoice->customer !== $user->stripe_id) {
                 throw new Http401UnauthorizedException([], 'Failed to pass invoices policy');
             }
 
@@ -81,15 +94,19 @@ class SubscriptionsController extends BaseController
         }
 
         return new SuccessJsonResponse($data, [
-            'page' => $page,
+            'page'     => $page,
             'per_page' => $perPage,
-            'total' => count($data),
+            'total'    => count($data),
         ]);
     }
 
     /**
      * PATCH /subscriptions/{subscriptionId}/card
      * Change the card associated with a Stripe subscription.
+     *
+     * @param string $subscriptionId The Stripe subscription id.
+     *
+     * @return SuccessJsonResponse The patched subscription.
      */
     public function card(string $subscriptionId) : SuccessJsonResponse
     {
@@ -103,6 +120,8 @@ class SubscriptionsController extends BaseController
      * POST /subscriptions/{subscriptionId}/migrate
      *
      * @param string $braintreeSubscriptionId The Braintree Subscription id to migrate.
+     *
+     * @return SuccessJsonResponse The newly created Stripe subscription.
      */
     public function migrate(string $braintreeSubscriptionId) : SuccessJsonResponse
     {

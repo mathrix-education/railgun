@@ -9,6 +9,9 @@ use Mathrix\Lumen\Zero\Controllers\BaseController;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Zero\Responses\PaginationJsonResponse;
 
+/**
+ * Serve routes starting with /posts.
+ */
 class PostsController extends BaseController
 {
     /**

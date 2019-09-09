@@ -15,16 +15,21 @@ use Stripe\Event;
 use Stripe\Webhook as StripeWebhook;
 use function env;
 
+/**
+ * Serve routes starting with /webhooks.
+ */
 class WebhooksController extends BaseController
 {
     /**
      * POST /webhooks/stripe
-     * Listen for Stripe webhooks.
+     * Handle Stripe webhooks.
      *
-     * @return SuccessJsonResponse
+     * @param Request $request The Illuminate HTTP response.
      *
-     * @throws SignatureVerification
+     * @return SuccessJsonResponse The webhook result.
+     *
      * @throws Http400BadRequestException
+     * @throws SignatureVerification
      */
     public function stripe(Request $request) : JsonResponse
     {

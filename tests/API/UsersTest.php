@@ -39,7 +39,6 @@ class UsersTest extends APIStatelessTestCase
 
         $this->json("post", "/users", $payload);
 
-        $this->debug();
         $this->assertResponseOk();
         $this->assertOpenAPIResponse($this->response);
         $this->assertInDatabase("users", ["email" => $payload["email"]]);
@@ -56,6 +55,7 @@ class UsersTest extends APIStatelessTestCase
         JWT::actingAs($user);
         $this->json("get", "/users/{$user->id}");
 
+        $this->debug();
         $this->assertResponseOk();
         $this->assertOpenAPIResponse($this->response);
     }

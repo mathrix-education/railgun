@@ -28,6 +28,7 @@ use function preg_match_all;
 use function time;
 
 /**
+ * Serve routes starting with /system.
  * Allow control of system services.
  */
 class SystemController extends BaseController
@@ -42,25 +43,30 @@ class SystemController extends BaseController
             'message' => 'Welcome to the official Mathrix Education REST API!',
             'authors' => ['Mathieu Bour <mathieu@mathrix.fr>'],
             'version' => env('APP_VERSION'),
-            'build' => env('APP_BUILD'),
+            'build'   => env('APP_BUILD'),
         ]);
     }
 
     /**
      * GET /system/health
      * Health check for Docker
+     *
+     * @param int $count The number of iteration for the benchmark.
+     *
+     * @return SuccessJsonResponse The benchmarks results.
      */
-    public function health(int $count = 1) : JsonResponse
+    public function health(int $count = 1) : SuccessJsonResponse
     {
         $userId    = User::random()->id;
         $chapterId = Chapter::random()->id;
 
-        $userQuery        = User::query()->where('id', '=', $userId);
+        $userQuery        = User::query()
+            ->where('id', '=', $userId);
         $chapterRecursive = Chapter::with([
-            'notions' => static function (HasMany $q) : void {
+            'notions'                    => static function (HasMany $q) : void {
                 $q->where('visible', '=', true);
             },
-            'notions.activities' => static function (HasMany $q) : void {
+            'notions.activities'         => static function (HasMany $q) : void {
                 $q->where('visible', '=', true);
             },
             'notions.activities.modules' => static function (HasMany $q) : void {
@@ -70,17 +76,23 @@ class SystemController extends BaseController
             ->where('id', '=', $chapterId);
 
         return new SuccessJsonResponse([
-            'user_random' => [
-                'query' => $userQuery->toSql(),
-                "mean($count)" => $this->benchmark(static function () use ($userQuery) : void {
-                    $userQuery->firstOrFail();
-                }, $count),
+            'user_random'       => [
+                'query'        => $userQuery->toSql(),
+                "mean($count)" => $this->benchmark(
+                    static function () use ($userQuery) : void {
+                        $userQuery->firstOrFail();
+                    },
+                    $count
+                ),
             ],
             'chapter_recursive' => [
-                'query' => $chapterRecursive->toSql(),
-                "mean($count)" => $this->benchmark(static function () use ($chapterRecursive) : void {
-                    $chapterRecursive->firstOrFail();
-                }, $count),
+                'query'        => $chapterRecursive->toSql(),
+                "mean($count)" => $this->benchmark(
+                    static function () use ($chapterRecursive) : void {
+                        $chapterRecursive->firstOrFail();
+                    },
+                    $count
+                ),
             ],
         ]);
     }
@@ -92,7 +104,7 @@ class SystemController extends BaseController
      * @param int      $count The number of iteration to run.
      * @param string   $unit  The unit of measure.
      *
-     * @return float|int
+     * @return float|int The benchmark duration.
      */
     private function benchmark(callable $test, int $count = 100, string $unit = 'ms')
     {
@@ -171,10 +183,11 @@ class SystemController extends BaseController
                     }
                 }
 
-                $loc       = "{$data->discipline_slug}/{$data->chapter_slug}/{$data->module_seo_slug}-{$data->module_id}";
+                $loc       =
+                    "{$data->discipline_slug}/{$data->chapter_slug}/{$data->module_seo_slug}-{$data->module_id}";
                 $moduleUrl = new Url(loc($loc));
                 $moduleUrl->setLastMod(new Carbon($data->module_lastmod));
-                $moduleUrl->setPriority(1);
+                $moduleUrl->setPriority("1");
 
                 foreach ($videos as $video) {
                     $moduleUrl->addExtension($video);
@@ -210,7 +223,7 @@ class SystemController extends BaseController
 
         return new SuccessJsonResponse([
             'duration' => $end - $start,
-            'logs' => $lines,
+            'logs'     => $lines,
         ]);
     }
 }

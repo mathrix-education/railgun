@@ -11,6 +11,9 @@ use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
 use function array_merge;
 use function count;
 
+/**
+ * Serve routes starting with /plans.
+ */
 class PlansController extends BaseController
 {
     /**
@@ -28,18 +31,21 @@ class PlansController extends BaseController
                 $trialEndsAt = $trialEndsAt->format('c');
             }
 
-            $data[] = array_merge($plan, [
-                'proration_ends_at' => $trialEndsAt,
-                'proration_price' => SubscriptionUtils::getProrationPrice($planId),
-            ]);
+            $data[] = array_merge(
+                $plan,
+                [
+                    'proration_ends_at' => $trialEndsAt,
+                    'proration_price'   => SubscriptionUtils::getProrationPrice($planId),
+                ]
+            );
         }
 
         [$page, $perPage] = PaginationJsonResponse::getPagination();
 
         return new SuccessJsonResponse($data, [
-            'page' => $page,
+            'page'     => $page,
             'per_page' => $perPage,
-            'total' => count($data),
+            'total'    => count($data),
         ]);
     }
 }

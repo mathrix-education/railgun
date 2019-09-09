@@ -17,11 +17,11 @@ trait PermissionsTrait
      *
      * @see Authorizable
      *
-     * @param array $arguments
+     * @param array|mixed $arguments The policy arguments.
      *
      * @throws Http401UnauthorizedException
      */
-    public function canOrFail(string $ability, array $arguments = []) : void
+    public function canOrFail(string $ability, $arguments = []) : void
     {
         if ($this->cant($ability, $arguments)) {
             throw new Http401UnauthorizedException(null, "Failed to pass $ability policy");

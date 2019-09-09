@@ -24,9 +24,13 @@ use function trans;
 use function trim;
 use function uksort;
 
+/**
+ * Serve routes starting with /files.
+ * Relies on Google Cloud Storage.
+ */
 class FilesController extends BaseController
 {
-    /** @var FilesystemAdapter $disk */
+    /** @var FilesystemAdapter $disk The flysystem adapter. */
     private $disk;
 
     public function __construct()
@@ -41,6 +45,8 @@ class FilesController extends BaseController
      *
      * @param Request $request The Illuminate HTTP request.
      * @param string  $path    The file destination.
+     *
+     * @return SuccessJsonResponse The newly created file metadata.
      *
      * @throws ValidationException
      * @throws FileNotFoundException
@@ -63,10 +69,13 @@ class FilesController extends BaseController
     /**
      * Cast data returned from Google Cloud Storage.
      *
+     * phpcs:disable
+     *
      * @param array $data  The data which can represent a file or a directory.
      * @param bool  $multi If true, loop over the items.
      *
      * @return array
+     * phpcs:enable
      */
     private function cast(array $data, bool $multi = false) : array
     {
@@ -87,21 +96,24 @@ class FilesController extends BaseController
 
         if (isset($data['path'])) {
             $prefix      = trim(env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX'), '/');
-            $data['url'] = trim(env('CDN_URL')) . '/' . (! empty($prefix) ? $prefix . '/' : '') . $data['path'];
+            $data['url'] = trim(env('CDN_URL')) . '/' . (!empty($prefix) ? $prefix . '/' : '') . $data['path'];
         }
 
         // "type" has to be the first key
-        uksort($data, static function ($key1, $key2) {
-            if ($key1 === 'type') {
-                return -1;
-            }
+        uksort(
+            $data,
+            static function ($key1, $key2) {
+                if ($key1 === 'type') {
+                    return -1;
+                }
 
-            if ($key2 === 'type') {
-                return 1;
-            }
+                if ($key2 === 'type') {
+                    return 1;
+                }
 
-            return strcasecmp($key1, $key2);
-        });
+                return strcasecmp($key1, $key2);
+            }
+        );
 
         return $data;
     }
@@ -109,14 +121,21 @@ class FilesController extends BaseController
     /**
      * GET /files/{directory}
      *
+     * @param string $directory The directory to explore.
+     *
+     * @return SuccessJsonResponse The directory sub-directories and files.
+     *
      * @throws DirectoryNotFoundException
      */
     public function list(string $directory = '/') : SuccessJsonResponse
     {
         $data = $this->cast($this->disk->listContents($directory), true);
-        $data = collect($data)->sortBy('type')->values()->toArray();
+        $data = collect($data)
+            ->sortBy('type')
+            ->values()
+            ->toArray();
 
-        if (empty($data) && ! $this->disk->exists($directory)) {
+        if (empty($data) && !$this->disk->exists($directory)) {
             // Directory is empty and does not exist
             throw new DirectoryNotFoundException($directory);
         }
@@ -131,6 +150,8 @@ class FilesController extends BaseController
      * @param Request $request The Illuminate HTTP request.
      * @param string  $path    The source file.
      *
+     * @return SuccessJsonResponse The moved file metadata.
+     *
      * @throws FileNotFoundException
      * @throws ValidationException
      */
@@ -142,12 +163,16 @@ class FilesController extends BaseController
         $this->disk->delete($destination); // Force delete if file exist
         $this->disk->move($path, $destination);
 
-        return $this->get($destination);
+        return $this->get((string)$destination);
     }
 
     /**
      * GET /files/{file}
      * Get a file metadata.
+     *
+     * @param string $path The file path.
+     *
+     * @return SuccessJsonResponse The file metadata.
      *
      * @throws FileNotFoundException
      */
@@ -165,11 +190,14 @@ class FilesController extends BaseController
      *
      * @param string $path The file to delete.
      *
+     * @return SuccessJsonResponse The file deletion confirmation.
+     *
      * @throws FileNotFoundException
      */
     public function delete(string $path) : SuccessJsonResponse
     {
-        $this->disk->getDriver()->delete($path); // Alternative syntax to throw FileNotFoundException
+        $this->disk->getDriver()
+                   ->delete($path); // Alternative syntax to throw FileNotFoundException
 
         return new SuccessJsonResponse(
             ['path' => $path],

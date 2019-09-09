@@ -22,6 +22,9 @@ use Stripe\Customer;
 use function array_merge;
 use function scope;
 
+/**
+ * Serve routes starting with /users.
+ */
 class UsersController extends BaseController
 {
     /**
@@ -29,6 +32,8 @@ class UsersController extends BaseController
      * Create a new user.
      *
      * @param Request $request The Illuminate HTTP request.
+     *
+     * @return SuccessJsonResponse The newly created user.
      */
     public function standardPost(Request $request) : SuccessJsonResponse
     {
@@ -36,7 +41,8 @@ class UsersController extends BaseController
         $user = new User();
 
         User::unguarded(static function () use ($user, $request) : void {
-            $user->fill($request->all())->save();
+            $user->fill($request->all())
+                ->save();
         });
 
         return new SuccessJsonResponse($user->fresh());
@@ -45,19 +51,23 @@ class UsersController extends BaseController
     /**
      * GET /users/{userId}
      *
-     * @param Request $request    The Illuminate HTTP request.
-     * @param int     $identifier The user id.
+     * @param Request    $request    The Illuminate HTTP request.
+     * @param string     $key        The key.
+     * @param int|string $identifier The user identifier.
+     *
+     * @return SuccessJsonResponse The user.
      */
-    public function standardGet(Request $request, string $key, $identifier): SuccessJsonResponse
+    public function standardGet(Request $request, string $key, $identifier) : SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();
 
-        if (! scope($user, 'users:read')) {
+        if (!scope($user, 'users:read')) {
             return parent::standardGet($request, $key, $identifier);
         }
 
-        $target = User::query()->findOrFail($identifier);
+        $target = User::query()
+            ->findOrFail($identifier);
         $target->makeVisible(['premium_bypass', 'braintree_id', 'braintree']);
 
         return new SuccessJsonResponse($target);
@@ -67,16 +77,20 @@ class UsersController extends BaseController
      * PATCH /users/{userId}
      * Patch a user by its id.
      *
-     * @param Request $request    The Illuminate HTTP request.
-     * @param int     $identifier The user id.
+     * @param Request    $request    The Illuminate HTTP request.
+     * @param string     $key        The key.
+     * @param int|string $identifier The user identifier.
+     *
+     * @return SuccessJsonResponse The patched user.
      *
      * @throws Http401UnauthorizedException
      * @throws ValidationException
      */
-    public function standardPatch(Request $request, string $key, $identifier) : SuccessJsonResponse
+    public function standardPatch(Request $request, string $key, int $identifier) : SuccessJsonResponse
     {
         /** @var User $target */
-        $target = User::query()->findOrFail($identifier);
+        $target = User::query()
+            ->findOrFail($identifier);
         /** @var User $user */
         $user = $request->user();
 
@@ -87,21 +101,24 @@ class UsersController extends BaseController
         User::unguard($user->hasScope('users:write'));
 
         // Check for current_password, skip for admins if they are editing another user
-        $this->validate($request, [
-            'current_password' => Rule::requiredIf(static function () use ($request, $user, $target) {
-                $passwordProvided = $request->has('password');
-                $targetHimself    = $user->id === $target->id;
-                $hasScope         = $user->hasScope('users:write');
+        $this->validate(
+            $request,
+            [
+                'current_password' => Rule::requiredIf(static function () use ($request, $user, $target) {
+                    $passwordProvided = $request->has('password');
+                    $targetHimself    = $user->id === $target->id;
+                    $hasScope         = $user->hasScope('users:write');
 
-                return $passwordProvided && ($targetHimself || ! $hasScope);
-            }),
-        ]);
+                    return $passwordProvided && ($targetHimself || !$hasScope);
+                }),
+            ]
+        );
 
         // Engage password modification
         if ($request->has('current_password') && $request->has('password')) {
             $current = $request->json('current_password');
 
-            if (! Hash::check((string)$current, $target->password)) {
+            if (!Hash::check((string)$current, $target->password)) {
                 throw new Http401UnauthorizedException([], 'current_password is incorrect');
             }
         }
@@ -121,22 +138,25 @@ class UsersController extends BaseController
      * @param Request $request The Illuminate HTTP request.
      * @param int     $userId  The user id.
      *
+     * @return SuccessJsonResponse The user subscriptions.
+     *
      * @throws Http401UnauthorizedException
      */
-    public function getSubscriptions(Request $request, int $userId) : JsonResponse
+    public function getSubscriptions(Request $request, int $userId) : SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();
         /** @var User $customer */
-        $customer = User::query()->findOrFail($userId);
+        $customer = User::query()
+            ->findOrFail($userId);
         $user->canOrFail('subscriptions', $customer);
 
-        if (! $user->isStripeCustomer() && ! $user->isBraintreeCustomer()) {
-            return new JsonResponse([
-                'page' => 0,
+        if (!$user->isStripeCustomer() && !$user->isBraintreeCustomer()) {
+            // If the is not a Stripe nor a Braintree customer, simply return and empty array.
+            return new SuccessJsonResponse([], [
+                'page'    => 0,
                 'perPage' => 1000,
-                'total' => 0,
-                'data' => [],
+                'total'   => 0,
             ]);
         }
 
@@ -156,11 +176,10 @@ class UsersController extends BaseController
 
         [$page, $perPage] = PaginationJsonResponse::getPagination();
 
-        return new JsonResponse([
-            'page' => $page,
+        return new SuccessJsonResponse($subscriptions, [
+            'page'    => $page,
             'perPage' => $perPage,
-            'total' => $subscriptions->count(),
-            'data' => $subscriptions,
+            'total'   => $subscriptions->count(),
         ]);
     }
 
@@ -169,10 +188,13 @@ class UsersController extends BaseController
         /** @var User $user */
         $user = $request->user();
 
-        $cards = Customer::allSources($user->stripe_id, [
-            'limit' => 100,
-            'object' => 'card',
-        ]);
+        $cards = Customer::allSources(
+            $user->stripe_id,
+            [
+                'limit'  => 100,
+                'object' => 'card',
+            ]
+        );
 
         $data = [];
 
@@ -181,18 +203,24 @@ class UsersController extends BaseController
         }
 
         return new SuccessJsonResponse($data, [
-            'page' => 0,
+            'page'     => 0,
             'per_page' => 100,
         ]);
     }
 
     /**
      * DELETE /users/{userId}/cache
+     * Invalidate the cache of a user.
+     *
+     * @param int $userId The user id.
+     *
+     * @return SuccessJsonResponse An empty response.
      */
     public function cache(int $userId) : JsonResponse
     {
         /** @var User $user */
-        $user = User::query()->findOrFail($userId);
+        $user = User::query()
+            ->findOrFail($userId);
         $user->invalidate();
 
         return new SuccessJsonResponse();
@@ -204,25 +232,33 @@ class UsersController extends BaseController
      *
      * @param Request $request The Illuminate HTTP request.
      *
+     * @return SuccessJsonResponse The patched user.
+     *
      * @throws ValidationException
      */
-    public function points(Request $request) : JsonResponse
+    public function points(Request $request) : SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();
 
         $this->validate($request, ['points' => 'required|integer']);
 
-        $pointsToAdd = (int) $request->json('points');
+        $pointsToAdd = (int)$request->json('points');
 
         // Update the user points count
         $user->update(['points' => $user->points + $pointsToAdd]);
 
-        return new JsonResponse($user);
+        return new SuccessJsonResponse($user);
     }
 
     /**
      * GET /users/search/{query}/{page}/{perPage}?order={order}&dir={dir}
+     * Search for users.
+     *
+     * @param Request $request The Illuminate HTTP response.
+     * @param string  $query   The query.
+     *
+     * @return PaginationJsonResponse The user list matching the given criteria.
      *
      * @throws Http400BadRequestException
      */
@@ -241,7 +277,8 @@ class UsersController extends BaseController
             'stripe_id',
         ]);
 
-        $builder = User::query()->orderBy($order, $dir);
+        $builder = User::query()
+            ->orderBy($order, $dir);
 
         $fields->each(static function ($field) use ($query, &$builder) : void {
             $builder = $builder->orWhere($field, 'LIKE', "%$query%");
