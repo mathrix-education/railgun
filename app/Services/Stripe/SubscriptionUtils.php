@@ -15,19 +15,19 @@ class SubscriptionUtils
     public const PLANS = [self::MONTHLY_PLAN, self::ANNUALLY_PLAN];
 
     public const PLANS_DETAILS = [
-        self::MONTHLY_PLAN => [
-            'id' => self::MONTHLY_PLAN,
-            'prorated' => false,
-            'period' => 'month',
+        self::MONTHLY_PLAN  => [
+            'id'               => self::MONTHLY_PLAN,
+            'prorated'         => false,
+            'period'           => 'month',
             'price_per_period' => 1790,
-            'price_per_month' => 1790,
+            'price_per_month'  => 1790,
         ],
         self::ANNUALLY_PLAN => [
-            'id' => self::ANNUALLY_PLAN,
-            'prorated' => true,
-            'period' => 'year',
+            'id'               => self::ANNUALLY_PLAN,
+            'prorated'         => true,
+            'period'           => 'year',
             'price_per_period' => 15480,
-            'price_per_month' => 1290,
+            'price_per_month'  => 1290,
         ],
     ];
 
@@ -41,13 +41,14 @@ class SubscriptionUtils
      */
     public static function getProrationPrice(string $planId) : ?int
     {
-        if (! self::isPlanProrated($planId)) {
+        if (!self::isPlanProrated($planId)) {
             return null;
         }
 
         // We use anchor to avoid issues with leap years.
         $nextAnchor = self::getProrationAnchor($planId);
-        $previous   = $nextAnchor->clone()->subYear();
+        $previous   = $nextAnchor->clone()
+            ->subYear();
 
         // Absolute
         $periodLengthInSeconds = $nextAnchor->diffInRealSeconds($previous);
@@ -55,7 +56,7 @@ class SubscriptionUtils
 
         $periodPrice = self::PLANS_DETAILS[self::ANNUALLY_PLAN]['price_per_period'];
 
-        return round($periodPrice * ($secondsUntilAnchor / $periodLengthInSeconds));
+        return (int)round($periodPrice * ($secondsUntilAnchor / $periodLengthInSeconds));
     }
 
     /**
@@ -75,12 +76,13 @@ class SubscriptionUtils
      */
     public static function getProrationAnchor(string $planId) : ?Carbon
     {
-        if (! self::isPlanProrated($planId)) {
+        if (!self::isPlanProrated($planId)) {
             return null;
         }
 
         $nextThirtyFirstJuly = Carbon::now()
-            ->setMonth(7)->setDay(31)
+            ->setMonth(7)
+            ->setDay(31)
             ->setTime(0, 0, 0);
 
         if ($nextThirtyFirstJuly->isPast()) {
