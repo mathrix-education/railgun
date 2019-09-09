@@ -26,6 +26,7 @@
         <exclude name="Generic.Formatting.SpaceAfterNot"/>
         <exclude name="Generic.Formatting.SpaceAfterCast"/>
         <exclude name="Squiz.Strings.DoubleQuoteUsage.ContainsVar"/>
+        <exclude name="SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly"/>
     </rule>
 
     <!-- Force no whitespace after a type cast -->

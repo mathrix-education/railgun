@@ -8,10 +8,8 @@ use App\Models\User;
 use App\Services\Stripe\Exceptions\CardDeclinedException;
 use App\Services\Stripe\Exceptions\IncorrectCVCException;
 use App\Services\Stripe\Exceptions\StripeHandler;
-use App\Services\Stripe\Exceptions\UnhandledStripeException;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -27,12 +25,9 @@ use Sentry\State\Hub as Sentry;
 use Sentry\State\Scope;
 use Stripe\Error\Base as StripeBaseException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Throwable;
 use function app;
-use function array_merge;
 use function env;
 use function explode;
-use function preg_match;
 use function str_replace;
 
 /**
@@ -40,24 +35,23 @@ use function str_replace;
  */
 class Handler extends ExceptionHandler
 {
-    public const REGEX_MYSQL_GENERIC        = '/SQLSTATE\[([A-Z0-9]+)\][\s\S]+\(SQL: ([\s\S]+)\)/i';
-    public const REGEX_MYSQL_UNKNOWN_COLUMN = "/SQLSTATE\[([A-Z0-9]+)\][\s\S]+Column not found: 1054 Unknown column '([a-z0-9\_]+)'[\s\S]+\(SQL: ([\s\S]+)\)/i";
-
     /**
      * A list of the exception types that should not be reported.
      *
-     * @var array
+     * @var string[]
      */
     protected $dontReport = [InvalidCredentialsException::class];
 
     /**
      * Sentry integration.
      *
+     * @param Exception $e The exception to report.
+     *
      * @throws Exception
      *
      * @codeCoverageIgnore
      */
-    public function report(Throwable $e) : void
+    public function report(Exception $e) : void
     {
         if ($this->shouldntReport($e)) {
             return;
@@ -65,7 +59,7 @@ class Handler extends ExceptionHandler
 
         $sentryDSN = env('SENTRY_DSN');
 
-        if (! empty($sentryDSN) && app()->bound('sentry')) {
+        if (!empty($sentryDSN) && app()->bound('sentry')) {
             /** @var Sentry $sentry */
             $sentry = app('sentry');
 
@@ -82,7 +76,7 @@ class Handler extends ExceptionHandler
             $sentry->captureException($e);
         }
 
-        if ($e instanceof HTTPException) {
+        if ($e instanceof HttpException) {
             Log::error($e->getMessage());
         }
 
@@ -92,74 +86,52 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param Exception $e
+     * @param Request|mixed $request   The Illuminate HTTP request.
+     * @param Exception     $exception The exception to render.
      *
      * @return JsonResponse|Response
      *
-     * @throws ReflectionException
      * @throws CardDeclinedException
      * @throws IncorrectCVCException
-     * @throws UnhandledStripeException
+     * @throws ReflectionException
      */
-    public function render(Request $request, Throwable $e)
+    public function render($request, Exception $exception)
     {
-        if ($e instanceof HTTPException) {
-            return $e->toJsonResponse();
+        if ($exception instanceof HttpException) {
+            return $exception->toJsonResponse();
         }
 
-        if ($e instanceof StripeBaseException) {
-            StripeHandler::handle($e);
+        if ($exception instanceof StripeBaseException) {
+            StripeHandler::handle($exception);
         }
 
         $overriddenStatusCode = false;
 
-        $exceptionClass = (new ReflectionClass($e))->getShortName(); // Get the Exception class name
+        $exceptionClass = (new ReflectionClass($exception))->getShortName(); // Get the Exception class name
 
         // Default exception handler
         $error = Str::snake($exceptionClass, '_');
         $error = str_replace('_exception', '', $error);
 
         $json = [
-            'error' => $error,
-            'message' => $e->getMessage(),
+            'error'   => $error,
+            'message' => $exception->getMessage(),
         ];
 
-        // Handle MySQL query exceptions
-        // @codeCoverageIgnoreStart
-        if ($e instanceof QueryException) {
-            if (preg_match(self::REGEX_MYSQL_UNKNOWN_COLUMN, $e->getMessage(), $matches)) {
-                $json = array_merge($json, [
-                    'type' => 'unknown_column',
-                    'sqlstate' => $matches[1],
-                    'column' => $matches[2],
-                    'sql' => $matches[3],
-                ]);
-            } elseif (preg_match(self::REGEX_MYSQL_GENERIC, $e->getMessage(), $matches)) {
-                $json = array_merge($json, [
-                    'type' => 'generic',
-                    'sqlstate' => $matches[1],
-                    'sql' => $matches[2],
-                ]);
-            }
-
-            $overriddenStatusCode = 400;
-        }
-        // @codeCoverageIgnoreEnd
-
-        if ($e instanceof ModelNotFoundException) {
+        if ($exception instanceof ModelNotFoundException) {
             $overriddenStatusCode = 404;
         }
 
-        if ($e instanceof NotFoundHttpException) {
+        if ($exception instanceof NotFoundHttpException) {
             $json['data'] = $request->url();
         }
 
         // Include trace in debug mode
         if (app()->environment('testing', 'local', 'dev')) {
-            $json['trace'] = explode("\n", $e->getTraceAsString());
+            $json['trace'] = explode("\n", $exception->getTraceAsString());
         }
 
-        $rendered = parent::render($request, $e);
+        $rendered = parent::render($request, $exception);
 
         return new JsonResponse($json, $overriddenStatusCode ? $overriddenStatusCode : $rendered->getStatusCode());
     }
