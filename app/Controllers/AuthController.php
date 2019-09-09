@@ -20,6 +20,7 @@ use Mathrix\Lumen\Zero\Exceptions\ValidationException;
 use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
 use stdClass;
 use function json_decode;
+use function uuid;
 
 /**
  * Serve routes starting with /auth
@@ -32,6 +33,7 @@ class AuthController extends BaseController
      * @param Request $request The Illuminate HTTP request.
      *
      * @return SuccessJsonResponse The user serialized JWT.
+     *
      * @throws InvalidCredentialsException
      * @throws ValidationException
      * @throws Exception
@@ -74,6 +76,7 @@ class AuthController extends BaseController
      * @param Facebook $facebook The Facebook SDK.
      *
      * @return SuccessJsonResponse The user serialized JWT.
+     *
      * @throws ValidationException
      * @throws FacebookSDKException
      * @throws Exception
@@ -120,6 +123,7 @@ class AuthController extends BaseController
      * @param Request $request The Illuminate HTTP request.
      *
      * @return SuccessJsonResponse The reset email confirmation.
+     *
      * @throws Http400BadRequestException
      */
     public function forgot(Request $request) : SuccessJsonResponse
@@ -155,6 +159,7 @@ class AuthController extends BaseController
      * @param string  $token   The reset token.
      *
      * @return SuccessJsonResponse The user.
+     *
      * @throws ValidationException
      */
     public function reset(Request $request, string $token) : SuccessJsonResponse
