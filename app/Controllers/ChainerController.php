@@ -10,6 +10,9 @@ use Mathrix\Chainer\Chainer;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 
+/**
+ * Serve routes starting with /chain
+ */
 class ChainerController extends BaseController
 {
     /**
@@ -17,6 +20,8 @@ class ChainerController extends BaseController
      * Handle chained requests.
      *
      * @param Request $request The Illuminate HTTP request.
+     *
+     * @return JsonResponse The chained request.
      *
      * @throws Http400BadRequestException
      */

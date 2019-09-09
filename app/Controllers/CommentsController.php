@@ -12,11 +12,18 @@ use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Zero\Responses\PaginationJsonResponse;
 use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
 
+/**
+ * Serve routes starting with /comments.
+ */
 class CommentsController extends BaseController
 {
     /**
      * POST /comments
      * Post a new comment as logged user.
+     *
+     * @param Request $request The Illuminate HTTP.
+     *
+     * @return SuccessJsonResponse The created comment.
      */
     public function post(Request $request) : SuccessJsonResponse
     {
@@ -43,7 +50,7 @@ class CommentsController extends BaseController
             'children',
             'children.user:id,username,firstname,grade_id',
         ])
-            ->orderBy('created_at', 'desc');
+                        ->orderBy('created_at', 'desc');
 
         return new PaginationJsonResponse($query);
     }
