@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Observers;
 
-use App\Exceptions\ForeignConstraintsException;
+use App\Exceptions\ForeignConstraints;
 use App\Models\Activity;
 
 class ActivityObserver extends BaseObserver
@@ -26,7 +26,7 @@ class ActivityObserver extends BaseObserver
     }
 
     /**
-     * @throws ForeignConstraintsException
+     * @throws ForeignConstraints
      */
     public function deleting(Activity $activity) : bool
     {

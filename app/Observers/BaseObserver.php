@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Observers;
 
-use App\Exceptions\ForeignConstraintsException;
+use App\Exceptions\ForeignConstraints;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Mathrix\Lumen\Zero\Models\BaseModel;
@@ -14,7 +14,7 @@ abstract class BaseObserver
     /**
      * Handle related models.
      *
-     * @throws ForeignConstraintsException
+     * @throws ForeignConstraints
      */
     public function handleRelationDeletion(BaseModel $model, string $relationName, bool $delete = false) : void
     {
@@ -33,7 +33,7 @@ abstract class BaseObserver
         }
 
         if (! $delete) {
-            throw new ForeignConstraintsException($model, $relationName);
+            throw new ForeignConstraints($model, $relationName);
         }
 
         $collection->each(static function ($related) : void {

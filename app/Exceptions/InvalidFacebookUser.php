@@ -8,7 +8,10 @@ use App\Models\User;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 use Throwable;
 
-class InvalidFacebookUserException extends Http400BadRequestException
+/**
+ * Thrown when a user is not a valid Facebook user.
+ */
+class InvalidFacebookUser extends Http400BadRequestException
 {
     public function __construct(User $user, ?Throwable $previous = null)
     {

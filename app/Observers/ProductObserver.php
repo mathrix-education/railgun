@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Observers;
 
-use App\Exceptions\ForeignConstraintsException;
+use App\Exceptions\ForeignConstraints;
 use App\Models\Product;
 
 class ProductObserver extends BaseObserver
 {
     /**
-     * @throws ForeignConstraintsException
+     * @throws ForeignConstraints
      */
     public function deleting(Product $product) : bool
     {

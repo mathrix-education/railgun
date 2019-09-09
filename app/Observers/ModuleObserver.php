@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Observers;
 
-use App\Exceptions\ForeignConstraintsException;
+use App\Exceptions\ForeignConstraints;
 use App\Models\Comment;
 use App\Models\Module;
 use App\Models\Report;
@@ -30,7 +30,7 @@ class ModuleObserver extends BaseObserver
      *
      * @param Module $module The Module which will be deleted.
      *
-     * @throws ForeignConstraintsException
+     * @throws ForeignConstraints
      */
     public function deleting(Module $module) : bool
     {
