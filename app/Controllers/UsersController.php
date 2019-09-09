@@ -48,7 +48,7 @@ class UsersController extends BaseController
      * @param Request $request    The Illuminate HTTP request.
      * @param int     $identifier The user id.
      */
-    public function standardGet(Request $request, string $key, int $identifier) : SuccessJsonResponse
+    public function standardGet(Request $request, string $key, $identifier): SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();
@@ -73,7 +73,7 @@ class UsersController extends BaseController
      * @throws Http401UnauthorizedException
      * @throws ValidationException
      */
-    public function standardPatch(Request $request, string $key, int $identifier) : SuccessJsonResponse
+    public function standardPatch(Request $request, string $key, $identifier) : SuccessJsonResponse
     {
         /** @var User $target */
         $target = User::query()->findOrFail($identifier);
@@ -101,7 +101,7 @@ class UsersController extends BaseController
         if ($request->has('current_password') && $request->has('password')) {
             $current = $request->json('current_password');
 
-            if (! Hash::check($current, $target->password)) {
+            if (! Hash::check((string)$current, $target->password)) {
                 throw new Http401UnauthorizedException([], 'current_password is incorrect');
             }
         }

@@ -33,38 +33,38 @@ use function pow;
 use function trim;
 
 /**
- * @property int $id
- * @property string|null $username
- * @property string $email
- * @property string|null $firstname
- * @property string|null $lastname
- * @property string $password
- * @property string $type
- * @property string $token
- * @property int $points
- * @property int $daily
- * @property int $daily_achievements
- * @property array $settings
- * @property array $metadata
- * @property bool $premium_bypass
- * @property Carbon $premium_bypass_expires_at
- * @property int|null $grade_id
- * @property string|null $braintree_id
- * @property string|null $stripe_id
- * @property Carbon $created_at
- * @property Carbon $updated_at
+ * @property int                   $id
+ * @property string|null           $username
+ * @property string                $email
+ * @property string|null           $firstname
+ * @property string|null           $lastname
+ * @property string                $password
+ * @property string                $type
+ * @property string                $token
+ * @property int                   $points
+ * @property int                   $daily
+ * @property int                   $daily_achievements
+ * @property array                 $settings
+ * @property array                 $metadata
+ * @property bool                  $premium_bypass
+ * @property Carbon                $premium_bypass_expires_at
+ * @property int|null              $grade_id
+ * @property string|null           $braintree_id
+ * @property string|null           $stripe_id
+ * @property Carbon                $created_at
+ * @property Carbon                $updated_at
  * ---
- * @property-read string $full_name
- * @property-read int $level
- * @property-read bool $premium
- * @property-read string $provider
- * @property-read int $daily_points
+ * @property-read string           $full_name
+ * @property-read int              $level
+ * @property-read bool             $premium
+ * @property-read string           $provider
+ * @property-read int              $daily_points
  * ---
- * @property Grade $grade
- * @property Collection|Comment[] $comments
- * @property Collection|Product[] $products
+ * @property Grade                 $grade
+ * @property Collection|Comment[]  $comments
+ * @property Collection|Product[]  $products
  * @property Collection|Purchase[] $purchases
- * @property Collection|Vote[] $votes
+ * @property Collection|Vote[]     $votes
  * ---
  * @method static Builder scope(string $scope)
  */
@@ -79,8 +79,16 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     use BraintreeCustomer;
     use StripeCustomer;
 
-    private const STRIPE_PLANS   = ['v3_monthly', 'v3_annually', 'v3_biannually'];
-    public const BRAINTREE_PLANS = ['v4_monthly', 'v4_annually', 'v4_biannually'];
+    private const STRIPE_PLANS    = [
+        'v3_monthly',
+        'v3_annually',
+        'v3_biannually',
+    ];
+    public const  BRAINTREE_PLANS = [
+        'v4_monthly',
+        'v4_annually',
+        'v4_biannually',
+    ];
 
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
@@ -110,43 +118,48 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     ];
 
     protected $attributes = [
-        'username' => null,
-        'firstname' => null,
-        'lastname' => null,
-        'scopes' => '[]',
-        'points' => 0,
-        'daily' => 10,
-        'daily_achievements' => 0,
-        'premium_bypass' => false,
+        'username'                  => null,
+        'firstname'                 => null,
+        'lastname'                  => null,
+        'scopes'                    => '[]',
+        'points'                    => 0,
+        'daily'                     => 10,
+        'daily_achievements'        => 0,
+        'premium_bypass'            => false,
         'premium_bypass_expires_at' => null,
-        'settings' => '[]',
+        'settings'                  => '[]',
     ];
 
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
-        'scopes' => 'array',
-        'premium_bypass' => 'boolean',
+        'scopes'                    => 'array',
+        'premium_bypass'            => 'boolean',
         'premium_bypass_expires_at' => 'date',
-        'settings' => 'array',
-        'metadata' => 'array',
+        'settings'                  => 'array',
+        'metadata'                  => 'array',
     ];
 
     /** @var array The validation rules on create */
     protected $rules = [
-        'username' => 'nullable|max:60',
-        'firstname' => 'nullable|max:60',
-        'lastname' => 'nullable|max:60',
-        'password' => 'nullable|min:3',
-        'token' => 'nullable|size:36',
-        'points' => 'required|integer',
-        'daily' => 'nullable|in:10,20,40',
-        'grade_id' => 'nullable|exists:grades,id',
-        'premium_bypass' => 'boolean',
+        'username'                  => 'nullable|max:60',
+        'firstname'                 => 'nullable|max:60',
+        'lastname'                  => 'nullable|max:60',
+        'password'                  => 'nullable|min:3',
+        'token'                     => 'nullable|size:36',
+        'points'                    => 'required|integer',
+        'daily'                     => 'nullable|in:10,20,40',
+        'grade_id'                  => 'nullable|exists:grades,id',
+        'premium_bypass'            => 'boolean',
         'premium_bypass_expires_at' => 'nullable|date',
     ];
 
     /** @var array The virtual attributes */
-    protected $appends = ['level', 'provider', 'last_session', 'premium'];
+    protected $appends = [
+        'level',
+        'provider',
+        'last_session',
+        'premium',
+    ];
 
     public function __construct(array $attributes = [])
     {
@@ -160,9 +173,16 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function getValidationRules() : array
     {
-        return array_merge($this->rules, [
-            'email' => ['required', 'email', 'max:60', Rule::unique('users', 'email')->ignore($this->id)],
-        ]);
+        return array_merge($this->rules,
+            [
+                'email' => [
+                    'required',
+                    'email',
+                    'max:60',
+                    Rule::unique('users', 'email')
+                        ->ignore($this->id),
+                ],
+            ]);
     }
 
     /*
@@ -181,7 +201,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function scopeScope(Builder $query, string $scope)
     {
         return $query->whereRaw("JSON_SEARCH(scopes, 'one', ?) IS NOT NULL", [$scope])
-            ->orWhereRaw("JSON_SEARCH(scopes, 'one', '*') IS NOT NULL");
+                     ->orWhereRaw("JSON_SEARCH(scopes, 'one', '*') IS NOT NULL");
     }
 
     /*
@@ -196,8 +216,10 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function hasPurchased(Product $product) : bool
     {
         return $this->purchases()
-            ->whereIn('product_id', $product->lineage()->pluck('id'))
-            ->exists();
+                    ->whereIn('product_id',
+                        $product->lineage()
+                                ->pluck('id'))
+                    ->exists();
     }
 
     /**
@@ -269,7 +291,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function getLevelAttribute() : int
     {
-        return floor((pow($this->points, 1 / 1.2) / 10) + 1);
+        return (int)floor((pow($this->points, 1 / 1.2) / 10) + 1);
     }
 
     /**
@@ -289,7 +311,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
             return true;
         }
 
-        if (! $this->isStripeCustomer() && ! $this->isBraintreeCustomer()) {
+        if (!$this->isStripeCustomer() && !$this->isBraintreeCustomer()) {
             // Not Stripe nor Braintree customer
             return false;
         }
@@ -362,24 +384,30 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
         foreach ($lastSession as $moduleId) {
             /** @var Module $module */
-            $module = Module::query()->findOrFail($moduleId);
+            $module = Module::query()
+                            ->findOrFail($moduleId);
             /** @var Activity $activity */
-            $activity = Activity::query()->findOrFail($module->activity_id);
+            $activity = Activity::query()
+                                ->findOrFail($module->activity_id);
             /** @var Notion $notion */
-            $notion = Notion::query()->findOrFail($activity->notion_id);
+            $notion = Notion::query()
+                            ->findOrFail($activity->notion_id);
             /** @var Chapter $chapter */
-            $chapter = Chapter::query()->findOrFail($notion->chapter_id);
+            $chapter = Chapter::query()
+                              ->findOrFail($notion->chapter_id);
             /** @var Discipline $discipline */
-            $discipline = Discipline::query()->findOrFail($chapter->discipline_id);
+            $discipline = Discipline::query()
+                                    ->findOrFail($chapter->discipline_id);
             /** @var Grade $grade */
-            $grade = Grade::query()->findOrFail($chapter->grade_id);
+            $grade = Grade::query()
+                          ->findOrFail($chapter->grade_id);
 
             $body[] = [
                 'grade_slug' => $grade->slug,
                 'discipline' => $discipline,
-                'chapter' => $chapter,
-                'activity' => $activity,
-                'module' => $module,
+                'chapter'    => $chapter,
+                'activity'   => $activity,
+                'module'     => $module,
             ];
         }
 
