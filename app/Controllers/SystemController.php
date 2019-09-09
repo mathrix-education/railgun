@@ -22,9 +22,11 @@ use Thepixeldeveloper\Sitemap\Urlset;
 use function collect;
 use function env;
 use function explode;
+use function file_get_contents;
 use function loc;
 use function microtime;
 use function preg_match_all;
+use function resource_path;
 use function time;
 
 /**
@@ -45,6 +47,19 @@ class SystemController extends BaseController
             'version' => env('APP_VERSION'),
             'build'   => env('APP_BUILD'),
         ]);
+    }
+
+    /**
+     * GET /docs
+     * Display the Redoc generated documentation.
+     *
+     * @return Response The documentation.
+     */
+    public function docs() : Response
+    {
+        $docs = file_get_contents(resource_path('views/docs/index.html'));
+
+        return new Response($docs);
     }
 
     /**
