@@ -86,7 +86,7 @@ class UsersController extends BaseController
      * @throws Http401UnauthorizedException
      * @throws ValidationException
      */
-    public function standardPatch(Request $request, string $key, int $identifier) : SuccessJsonResponse
+    public function standardPatch(Request $request, string $key, $identifier) : SuccessJsonResponse
     {
         /** @var User $target */
         $target = User::query()
