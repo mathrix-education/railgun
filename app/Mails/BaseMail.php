@@ -9,6 +9,9 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use function env;
 
+/**
+ * Base class for mailables.
+ */
 abstract class BaseMail extends Mailable
 {
     use Queueable;
@@ -18,11 +21,14 @@ abstract class BaseMail extends Mailable
     {
         // Push to the email view the app, cdn and webroot urls defined in the .env file
         $this->with([
-            'api' => env('APP_URL'),
-            'cdn' => env('CDN_URL'),
+            'api'     => env('APP_URL'),
+            'cdn'     => env('CDN_URL'),
             'webroot' => env('ANGULAR_URL'),
         ]);
     }
 
-    abstract public static function mock() : void;
+    /**
+     * @return BaseMail|mixed
+     */
+    abstract public static function mock();
 }

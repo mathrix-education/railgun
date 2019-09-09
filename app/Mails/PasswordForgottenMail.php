@@ -6,6 +6,9 @@ namespace App\Mails;
 
 use App\Models\User;
 
+/**
+ * Sent when a user ask for a password reset.
+ */
 class PasswordForgottenMail extends BaseMail
 {
     /** @var User The mail user */
@@ -22,7 +25,7 @@ class PasswordForgottenMail extends BaseMail
     }
 
     /**
-     * Mock the Mail.
+     * Mock the mail.
      */
     public static function mock() : PasswordForgottenMail
     {
@@ -32,16 +35,19 @@ class PasswordForgottenMail extends BaseMail
     }
 
     /**
-     * Build the Mail.
+     * Build the mail.
      */
     public function build() : PasswordForgottenMail
     {
         $this->subject('Modification de mot de passe');
 
-        return $this->view('mails.password_forgotten', [
-            'title' => 'Modification de mot de passe',
-            'firstname' => $this->user->firstname ?? $this->user->username,
-            'token' => $this->user->token,
-        ]);
+        return $this->view(
+            'mails.password_forgotten',
+            [
+                'title'     => 'Modification de mot de passe',
+                'firstname' => $this->user->firstname ?? $this->user->username,
+                'token'     => $this->user->token,
+            ]
+        );
     }
 }

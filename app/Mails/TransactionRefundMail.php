@@ -11,6 +11,9 @@ use Braintree\TransactionSearch;
 use Illuminate\Support\Facades\Cache;
 use function gateway;
 
+/**
+ * Sent when a Braintree refund is issued.
+ */
 class TransactionRefundMail extends BaseMail
 {
     /** @var User $user */
@@ -22,6 +25,12 @@ class TransactionRefundMail extends BaseMail
     /** @var Transaction $transaction */
     private $refund;
 
+    /**
+     * @param User        $user        The Braintree user.
+     * @param Transaction $transaction The Braintree source transaction.
+     * @param LineItem[]  $lineItems   The Braintree line items.
+     * @param Transaction $refund      The Braintree refund transaction.
+     */
     public function __construct(User $user, Transaction $transaction, array $lineItems, Transaction $refund)
     {
         $this->user        = $user;
@@ -33,18 +42,32 @@ class TransactionRefundMail extends BaseMail
     }
 
     /**
-     * Mock the Mail.
+     * Mock the mail.
      */
     public static function mock() : TransactionRefundMail
     {
         $user        = User::random();
-        $refund      = Cache::remember('mail-transaction-refund_refund', 5, static function () {
-            return gateway()->transaction()->search([TransactionSearch::type()->is('credit')])
-                ->firstItem();
-        });
-        $transaction = Cache::remember('mail-transaction-refund_refund', 5, static function () use ($refund) {
-            return gateway()->transaction()->find($refund->refundedTransactionId);
-        });
+        $refund      = Cache::remember(
+            'mail-transaction-refund_refund',
+            5,
+            static function () {
+                return gateway()
+                    ->transaction()
+                    ->search([TransactionSearch::type()
+                                  ->is('credit'),
+                    ])
+                    ->firstItem();
+            }
+        );
+        $transaction = Cache::remember(
+            'mail-transaction-refund_refund',
+            5 * 60,
+            static function () use ($refund) {
+                return gateway()
+                    ->transaction()
+                    ->find($refund->refundedTransactionId);
+            }
+        );
 
         return new self($user, $transaction, [], $refund);
     }
@@ -56,13 +79,16 @@ class TransactionRefundMail extends BaseMail
     {
         return $this->subject('Votre remboursement de Mathrix')
             ->from('support@mathrix.fr')
-            ->view('mails.transactions.refund', [
-                'title' => 'Reçu de Mathrix',
-                'user' => $this->user,
-                'transaction' => $this->transaction,
-                'card' => $this->transaction->creditCardDetails,
-                'lineItems' => $this->lineItems,
-                'refund' => $this->refund,
-            ]);
+            ->view(
+                'mails.transactions.refund',
+                [
+                    'title'       => 'Reçu de Mathrix',
+                    'user'        => $this->user,
+                    'transaction' => $this->transaction,
+                    'card'        => $this->transaction->creditCardDetails,
+                    'lineItems'   => $this->lineItems,
+                    'refund'      => $this->refund,
+                ]
+            );
     }
 }

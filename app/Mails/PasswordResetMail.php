@@ -6,6 +6,9 @@ namespace App\Mails;
 
 use App\Models\User;
 
+/**
+ * Sent when a user reset his password.
+ */
 class PasswordResetMail extends BaseMail
 {
     /** @var User The mail user */
@@ -22,7 +25,7 @@ class PasswordResetMail extends BaseMail
     }
 
     /**
-     * Mock the Mail.
+     * Mock the mail.
      */
     public static function mock() : PasswordResetMail
     {
@@ -32,15 +35,18 @@ class PasswordResetMail extends BaseMail
     }
 
     /**
-     * Build the Mail.
+     * Build the mail.
      */
     public function build() : PasswordResetMail
     {
         $this->subject('Mot de passe réinitialisé');
 
-        return $this->view('mails.password_reset', [
-            'title' => 'Mot de passe réinitialisé',
-            'firstname' => $this->user->firstname ?? $this->user->username,
-        ]);
+        return $this->view(
+            'mails.password_reset',
+            [
+                'title'     => 'Mot de passe réinitialisé',
+                'firstname' => $this->user->firstname ?? $this->user->username,
+            ]
+        );
     }
 }
