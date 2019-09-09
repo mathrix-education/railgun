@@ -187,7 +187,7 @@ class SystemController extends BaseController
                     "{$data->discipline_slug}/{$data->chapter_slug}/{$data->module_seo_slug}-{$data->module_id}";
                 $moduleUrl = new Url(loc($loc));
                 $moduleUrl->setLastMod(new Carbon($data->module_lastmod));
-                $moduleUrl->setPriority("1");
+                $moduleUrl->setPriority('1');
 
                 foreach ($videos as $video) {
                     $moduleUrl->addExtension($video);
