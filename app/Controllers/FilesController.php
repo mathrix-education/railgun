@@ -131,7 +131,9 @@ class FilesController extends BaseController
     {
         $data = $this->cast($this->disk->listContents($directory), true);
         $data = collect($data)
-            ->sortBy('type')
+            ->sortBy(static function ($metadata) {
+                return "{$metadata['dir']}.{$metadata['basename']}"; // Order by type and then by name
+            })
             ->values()
             ->toArray();
 
@@ -197,7 +199,7 @@ class FilesController extends BaseController
     public function delete(string $path) : SuccessJsonResponse
     {
         $this->disk->getDriver()
-                   ->delete($path); // Alternative syntax to throw FileNotFoundException
+            ->delete($path); // Alternative syntax to throw FileNotFoundException
 
         return new SuccessJsonResponse(
             ['path' => $path],
