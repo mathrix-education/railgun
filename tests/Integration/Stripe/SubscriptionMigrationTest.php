@@ -21,12 +21,12 @@ class SubscriptionMigrationTest extends APIStatelessTestCase
     public function migrationDataProvider()
     {
         return [
-//            // Subscription is active
-//            "monthly_tok_fr" => ["v4_monthly", "tok_fr", 200],
-//            "annually_tok_fr" => ["v4_annually", "tok_fr", 200],
-//            // 3D Secure 2 has been triggered
-//            "monthly_tok_threeDSecure2Required" => ["v4_monthly", "tok_threeDSecure2Required", 202],
-//            "annually_tok_threeDSecure2Required" => ["v4_annually", "tok_threeDSecure2Required", 202],
+            // Subscription is active
+            "monthly_tok_fr" => ["v4_monthly", "tok_fr", 200],
+            "annually_tok_fr" => ["v4_annually", "tok_fr", 200],
+            // 3D Secure 2 has been triggered
+            "monthly_tok_threeDSecure2Required" => ["v4_monthly", "tok_threeDSecure2Required", 202],
+            "annually_tok_threeDSecure2Required" => ["v4_annually", "tok_threeDSecure2Required", 202],
             // Errors
             "cvc_fail" => ["v4_annually", "tok_cvcCheckFail", 422],
             "tok_chargeDeclined" => ["v4_annually", "tok_chargeDeclined", 422]
@@ -85,7 +85,7 @@ class SubscriptionMigrationTest extends APIStatelessTestCase
 
         JWT::actingAs($this->requester);
 
-        $this->json("post", "/subscriptions/{$braintreeSubscription->id}/migrate", [
+        $this->json("patch", "/subscriptions/{$braintreeSubscription->id}/card", [
             "card" => [
                 "token" => $token
             ]

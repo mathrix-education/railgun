@@ -31,7 +31,7 @@ class SubscriptionCardUpdatePipeline extends Pipeline
 
         $this->subscription = StripeSubscription::retrieve([
             'id' => $this->subscriptionId,
-            'expand' => ['default_source'],
+            'expand' => ['default_source', 'latest_invoice.payment_intent', 'pending_setup_intent'],
         ]);
     }
 
@@ -43,6 +43,7 @@ class SubscriptionCardUpdatePipeline extends Pipeline
             /** @var StripeCard $subscriptionCard */
             $subscriptionCard = $this->subscription->default_source;
 
+//            die($card->fingerprint . ' vs ' . $subscriptionCard->fingerprint);
             if ($card->fingerprint === $subscriptionCard->fingerprint) {
                 // The requested card is the same as the one attached to the subscription, aborting here.
                 return;
@@ -53,7 +54,7 @@ class SubscriptionCardUpdatePipeline extends Pipeline
 
         $this->subscription = StripeSubscription::update($this->subscriptionId, [
             'default_source' => $cardId ?? $this->request->json('card.id'),
-            'expand' => ['default_source', 'latest_invoice.payment_intent'],
+            'expand' => ['default_source', 'latest_invoice.payment_intent', 'pending_setup_intent'],
         ]);
     }
 

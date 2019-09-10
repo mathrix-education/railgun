@@ -131,7 +131,7 @@ trait StripeCustomer
             if ($card->fingerprint === $token->card->fingerprint) {
                 // Card already attached
                 $alreadyAttached = true;
-                $card            = $token->card;
+                // $card            = $token->card;
                 break;
             }
         }
@@ -141,13 +141,13 @@ trait StripeCustomer
             $card = Customer::createSource($this->stripe_id, ['source' => $cardToken]);
 
             $this->invalidate(StripeCustomer::$StripeCardsCacheKey);
-        }
 
-        if ($makeDefault) {
-            // $card will always be defined
-            Customer::update($this->stripe_id, [
-                'default_source' => $card->id,
-            ]);
+            if ($makeDefault) {
+                // $card will always be defined
+                Customer::update($this->stripe_id, [
+                    'default_source' => $card->id,
+                ]);
+            }
         }
 
         $this->invalidate(StripeCustomer::$StripeCustomerCacheKey);

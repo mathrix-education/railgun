@@ -21,6 +21,7 @@ use Stripe\Invoice as StripeInvoice;
 use Stripe\SetupIntent;
 use Stripe\Subscription as StripeSubscription;
 use function count;
+use function preg_match;
 use function scope;
 
 /**
@@ -72,7 +73,7 @@ class SubscriptionsController extends BaseController
     public function invoices(Request $request, string $subscriptionId) : SuccessJsonResponse
     {
         /** @var User $user */
-        $user             = $request->user();
+        $user = $request->user();
         [$page, $perPage] = PaginationJsonResponse::getPagination();
 
         // TODO: do collection pagination
@@ -101,33 +102,26 @@ class SubscriptionsController extends BaseController
     }
 
     /**
-     * PATCH /subscriptions/{subscriptionId}/card
-     * Change the card associated with a Stripe subscription.
+     * POST /subscriptions/{subscriptionId}/card
+     * Update the payment method of a subscription.
+     * If the subscription is a Braintree one, cancel it and create a new Stripe Subscription.
      *
-     * @param string $subscriptionId The Stripe subscription id.
+     * @param string $subscriptionId The subscription id to update.
      *
-     * @return SuccessJsonResponse The patched subscription.
+     * @return SuccessJsonResponse The Stripe subscription (created or patched).
      */
     public function card(string $subscriptionId) : SuccessJsonResponse
     {
-        $pipeline = (new SubscriptionCardUpdatePipeline($subscriptionId))->flow();
-        $data     = Subscription::from($pipeline->subscription);
+        if (preg_match('/^sub_[0-9A-Fa-f]{32}/', $subscriptionId)) {
+            // Braintree subscription
+            $pipeline = (new SubscriptionMigrationPipeline($subscriptionId))->flow();
+        } else {
+            // Stripe subscription
+            $pipeline = (new SubscriptionCardUpdatePipeline($subscriptionId))->flow();
+        }
 
-        return new SuccessJsonResponse($data);
-    }
-
-    /**
-     * POST /subscriptions/{subscriptionId}/migrate
-     *
-     * @param string $braintreeSubscriptionId The Braintree Subscription id to migrate.
-     *
-     * @return SuccessJsonResponse The newly created Stripe subscription.
-     */
-    public function migrate(string $braintreeSubscriptionId) : SuccessJsonResponse
-    {
-        $pipeline = (new SubscriptionMigrationPipeline($braintreeSubscriptionId))->flow();
-        $data     = Subscription::from($pipeline->subscription);
-        $status   = 200;
+        $data   = Subscription::from($pipeline->subscription);
+        $status = 200;
 
         // Subscription triggered 3DS2
         if ($data->pending_setup_intent !== null
