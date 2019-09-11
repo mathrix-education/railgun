@@ -20,6 +20,7 @@ class SetupIntentSucceededWebhook extends BaseWebhook
      *
      * @param Event $event The Stripe Event
      *
+     * @return SuccessJsonResponse
      * @throws Http400BadRequestException
      */
     public function handle(Event $event) : SuccessJsonResponse
