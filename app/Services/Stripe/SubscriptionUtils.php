@@ -64,7 +64,7 @@ class SubscriptionUtils
         $periodLengthInSeconds = $nextAnchor->diffInRealSeconds($previous);
         $secondsUntilAnchor    = $nextAnchor->diffInRealSeconds(Carbon::now());
 
-        $periodPrice = self::PLANS_DETAILS[self::ANNUALLY_PLAN]['price_per_period'];
+        $periodPrice = self::PLANS_DETAILS[$planId]['price_per_period'];
 
         return (int)round($periodPrice * ($secondsUntilAnchor / $periodLengthInSeconds));
     }
