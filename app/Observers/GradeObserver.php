@@ -10,6 +10,8 @@ use App\Models\Grade;
 class GradeObserver extends BaseObserver
 {
     /**
+     * @param Grade $grade
+     *
      * @throws ForeignConstraints
      */
     public function deleting(Grade $grade) : void

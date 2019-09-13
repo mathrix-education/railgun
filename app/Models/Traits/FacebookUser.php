@@ -27,6 +27,8 @@ use function json_decode;
 trait FacebookUser
 {
     /**
+     * @param string $shortAccessToken
+     * @return User
      * @throws FacebookSDKException
      */
     public function setFacebookAccessToken(string $shortAccessToken) : User

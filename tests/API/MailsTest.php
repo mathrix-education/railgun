@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\API;
 
 use App\Mails\BaseMail;
@@ -18,15 +20,13 @@ class MailsTest extends APIStatelessTestCase
     public function mails()
     {
         $mails = MailsRegistrar::getMails();
-        $data = [];
-
+        $data  = [];
         foreach ($mails as $mail) {
             $data[$mail] = [$mail];
         }
 
         return $data;
     }
-
 
     /**
      * @param string|BaseMail $mailClass

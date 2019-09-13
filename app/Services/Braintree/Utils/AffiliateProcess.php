@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services\Braintree\Utils;
 
-use App\Exceptions\InvalidSponsorException;
-use App\Exceptions\SponsorNotFoundException;
+use App\Exceptions\InvalidSponsor;
+use App\Exceptions\SponsorNotFound;
 use App\Jobs\RefundSponsorJob;
 use App\Models\User;
 use Braintree\Transaction;
@@ -28,7 +28,10 @@ class AffiliateProcess
     private $sponsor;
 
     /**
-     * @throws SponsorNotFoundException
+     * @param User   $affiliate
+     * @param string $sponsorEmail
+     *
+     * @throws SponsorNotFound
      */
     public function __construct(User $affiliate, string $sponsorEmail)
     {
@@ -38,19 +41,19 @@ class AffiliateProcess
             ->first();
 
         if ($this->sponsor === null) {
-            throw new SponsorNotFoundException($sponsorEmail);
+            throw new SponsorNotFound($sponsorEmail);
         }
     }
 
     /**
      * Check whether the sponsor can have one more affiliate and throw InvalidSponsorException if he cannot.
      *
-     * @throws InvalidSponsorException
+     * @throws InvalidSponsor
      */
     public function canBeAffiliatedOrFail() : bool
     {
         if (! $this->canBeAffiliated()) {
-            throw new InvalidSponsorException($this->sponsor);
+            throw new InvalidSponsor($this->sponsor);
         }
 
         return true;

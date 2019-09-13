@@ -26,6 +26,8 @@ trait StripeCustomer
      * Create a new Stripe Customer using the user's information.
      *
      * @param string|null $source The default customer source.
+     *
+     * @return Customer
      */
     public function createStripeCustomer(?string $source = null) : Customer
     {
@@ -79,6 +81,8 @@ trait StripeCustomer
      * Check if the user is a Stripe Customer.
      *
      * @param bool $strict Check against the Stripe API.
+     *
+     * @return bool
      */
     public function isStripeCustomer(bool $strict = false) : bool
     {
@@ -116,6 +120,11 @@ trait StripeCustomer
 
     /**
      * Add a source to the user.
+     *
+     * @param string $cardToken
+     * @param bool   $makeDefault
+     *
+     * @return StripeCard
      */
     public function addSource(string $cardToken, bool $makeDefault = false) : StripeCard
     {

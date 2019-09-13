@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\API;
 
 use App\Models\Notion;
@@ -18,25 +20,24 @@ class NotionsTest extends APIStatelessTestCase
     use RESTAutoTestTrait;
 
     protected $testKeys = [
-        "std:index",
-        "std:post",
-        "std:get",
-        "std:patch"
+        'std:index',
+        'std:post',
+        'std:get',
+        'std:patch',
     ];
-
 
     /**
      * DELETE /notions/{notionId}
      */
-    public function testDelete(): void
+    public function testDelete() : void
     {
-        $notion = Notion::random();
-        $fallback = Notion::random(["id", "!=", $notion->id]);
+        $notion   = Notion::random();
+        $fallback = Notion::random(['id', '!=', $notion->id]);
 
-        $notion->activities()->update(["notion_id" => $fallback->id]);
+        $notion->activities()->update(['notion_id' => $fallback->id]);
 
-        $this->makeRESTJsonRequest("std:delete", null, null, [
-            "conditions" => ["id", "=", $notion->id]
+        $this->makeRESTJsonRequest('std:delete', null, null, [
+            'conditions' => ['id', '=', $notion->id],
         ]);
     }
 }

@@ -43,7 +43,6 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
  */
 class Product extends BaseModel
 {
-    private const MAX_CHILDREN_DEPTH   = 5;
     public const MODE_MACHINE_2019_END = '2019-07-31 00:00:00';
     use NoPivot;
 
@@ -87,6 +86,7 @@ class Product extends BaseModel
      * @param User        $customer    The customer.
      * @param Transaction $transaction The Braintree transaction.
      *
+     * @return Purchase|null
      * @throws Exception
      */
     public function deliver(User $customer, ?Transaction $transaction = null) : ?Purchase

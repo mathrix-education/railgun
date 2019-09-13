@@ -14,6 +14,10 @@ class ModuleObserver extends BaseObserver
     /**
      * After save.
      * Update parent notion's activity counter.
+     *
+     * @param Module $module
+     *
+     * @return bool
      */
     public function saved(Module $module) : bool
     {
@@ -30,6 +34,7 @@ class ModuleObserver extends BaseObserver
      *
      * @param Module $module The Module which will be deleted.
      *
+     * @return bool
      * @throws ForeignConstraints
      */
     public function deleting(Module $module) : bool

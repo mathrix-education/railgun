@@ -6,6 +6,6 @@ namespace App\Exceptions;
 
 use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 
-class ProcessorDeclinedException extends Http400BadRequestException
+class DuplicatePaymentMethodNonce extends Http400BadRequestException
 {
 }

@@ -8,6 +8,7 @@ use App\Services\Braintree\Models\LineItem;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Mathrix\Lumen\Zero\Models\BaseModel;
 
 /**
@@ -37,7 +38,9 @@ class Discount extends BaseModel
     |--------------------------------------------------------------------------
     */
 
-
+    /**
+     * @return MorphMany
+     */
     public function lineItems()
     {
         return $this->morphMany(LineItem::class, 'product');
@@ -47,6 +50,8 @@ class Discount extends BaseModel
      * Check if the discount is applicable on at least one of the given products.
      *
      * @param Product[] $products
+     *
+     * @return bool
      */
     public function isApplicableBleOnAtLeastOneOf(array $products) : bool
     {

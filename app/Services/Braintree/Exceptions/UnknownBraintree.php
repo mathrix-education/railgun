@@ -6,6 +6,7 @@ namespace App\Exceptions;
 
 use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 
-class DuplicatePaymentMethodNonceException extends Http400BadRequestException
+class UnknownBraintree extends Http400BadRequestException
 {
+    protected $message = 'Unknown Braintree exception';
 }

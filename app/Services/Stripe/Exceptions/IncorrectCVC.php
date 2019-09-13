@@ -10,15 +10,17 @@ use Throwable;
 use function trans;
 
 /**
- * Thrown when a card has been declined.
+ * Thrown when a card CVC is incorrect.
  */
-class CardDeclinedException extends Http422UnprocessableEntityException
+class IncorrectCVC extends Http422UnprocessableEntityException
 {
+    protected $error = 'incorrect_cvc';
+
     public function __construct(StripeCardException $exception, ?Throwable $previous = null)
     {
         parent::__construct(
             ['decline_code' => $exception->getDeclineCode()],
-            trans('stripe.card.declined'),
+            trans('stripe.card.incorrect_cvc'),
             $previous
         );
     }

@@ -9,7 +9,7 @@ use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 use Throwable;
 use function trans;
 
-class InvalidBraintreeCustomerException extends Http400BadRequestException
+class InvalidBraintreeCustomer extends Http400BadRequestException
 {
     public function __construct(User $user, ?Throwable $previous = null)
     {

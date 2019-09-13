@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace App\Observers;
 
+use App\Exceptions\ForeignConstraints;
 use App\Models\Category;
-use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 
 class CategoryObserver extends BaseObserver
 {
     /**
-     * @throws Http400BadRequestException
+     * @param Category $category
+     *
+     * @return bool
+     * @throws ForeignConstraints
      */
     public function deleting(Category $category) : bool
     {

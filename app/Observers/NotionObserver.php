@@ -24,6 +24,9 @@ class NotionObserver extends BaseObserver
     }
 
     /**
+     * @param Notion $notion
+     *
+     * @return bool
      * @throws ForeignConstraints
      */
     public function deleting(Notion $notion) : bool

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\API;
 
 use App\Models\Chapter;
@@ -20,73 +22,68 @@ class GradesTest extends APIStatelessTestCase
     use RESTAutoTestTrait;
 
     protected $testKeys = [
-        "std:index",
-        "std:get",
-        "std:get:slug",
-        "std:post",
-        "std:patch",
-        "rel:get:disciplines"
+        'std:index',
+        'std:get',
+        'std:get:slug',
+        'std:post',
+        'std:patch',
+        'rel:get:disciplines',
     ];
-
 
     /**
      * DELETE /grades/{gradeId}
      */
-    public function testDelete(): void
+    public function testDelete() : void
     {
         $grade = Grade::random();
-        $pivot = Grade::random(["id", "!=", $grade->id]);
+        $pivot = Grade::random(['id', '!=', $grade->id]);
 
-        $grade->children()->update(["parent_id" => $pivot->id]);
-        $grade->chapters()->update(["grade_id" => $pivot->id]);
-        $grade->users()->update(["grade_id" => $pivot->id]);
+        $grade->children()->update(['parent_id' => $pivot->id]);
+        $grade->chapters()->update(['grade_id' => $pivot->id]);
+        $grade->users()->update(['grade_id' => $pivot->id]);
 
-        $this->makeRESTJsonRequest("std:delete", null, null, [
-            "conditions" => ["id", "=", $grade->id]
+        $this->makeRESTJsonRequest('std:delete', null, null, [
+            'conditions' => ['id', '=', $grade->id],
         ]);
     }
-
 
     /**
      * GET /grades/{gradeId}/disciplines/visible
      */
-    public function testDisciplinesVisible(): void
+    public function testDisciplinesVisible() : void
     {
         $grade = Grade::random();
-        $this->json("get", "/grades/{$grade->id}/disciplines/visible");
+        $this->json('get', '/grades/{$grade->id}/disciplines/visible');
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse($this->response);
     }
-
 
     /**
      * GET /grades/slug/{gradeSlug}/chapters/slug/{chapterSlug}
      */
-    public function testBySlugChapterSlug(): void
+    public function testBySlugChapterSlug() : void
     {
-        $chapter = Chapter::random(["visible", "=", true]);
+        $chapter = Chapter::random(['visible', '=', true]);
 
-        $this->json("get", "/grades/slug/{$chapter->grade->slug}/chapters/slug/{$chapter->slug}");
+        $this->json('get', '/grades/slug/{$chapter->grade->slug}/chapters/slug/{$chapter->slug}');
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse($this->response);
     }
 
-
-    public function disciplinesChapters(string $scope): void
+    public function disciplinesChapters(string $scope) : void
     {
     }
-
 
     /**
      * GET /grades/{gradeId}/disciplines/{disciplineId}/chapters
      */
-    public function testDisciplinesChapters(): void
+    public function testDisciplinesChapters() : void
     {
-        $chapter = Chapter::random(["visible", "=", true]);
-        $method = "get";
-        $uri = "/grades/$chapter->grade_id/disciplines/$chapter->discipline_id/chapters";
+        $chapter = Chapter::random(['visible', '=', true]);
+        $method  = 'get';
+        $uri     = '/grades/$chapter->grade_id/disciplines/$chapter->discipline_id/chapters';
 
         JWT::autoScope($method, $uri);
         $this->json($method, $uri);
@@ -95,15 +92,14 @@ class GradesTest extends APIStatelessTestCase
         $this->assertResponseOk();
     }
 
-
     /**
      * GET /grades/{gradeId}/disciplines/{disciplineId}/chapters/visible
      */
-    public function testDisciplinesChaptersVisible(): void
+    public function testDisciplinesChaptersVisible() : void
     {
-        $chapter = Chapter::random(["visible", "=", true]);
-        $method = "get";
-        $uri = "/grades/$chapter->grade_id/disciplines/$chapter->discipline_id/chapters/visible";
+        $chapter = Chapter::random(['visible', '=', true]);
+        $method  = 'get';
+        $uri     = '/grades/$chapter->grade_id/disciplines/$chapter->discipline_id/chapters/visible';
 
         JWT::autoScope($method, $uri);
         $this->json($method, $uri);

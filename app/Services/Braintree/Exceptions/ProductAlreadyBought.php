@@ -9,7 +9,7 @@ use App\Models\User;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 use Throwable;
 
-class ProductAlreadyBoughtException extends Http400BadRequestException
+class ProductAlreadyBought extends Http400BadRequestException
 {
     public function __construct(User $customer, Product $product, ?Throwable $previous = null)
     {

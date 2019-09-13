@@ -8,7 +8,7 @@ use App\Models\Product;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 use Throwable;
 
-class ProductNotBuyableException extends Http400BadRequestException
+class ProductNotBuyable extends Http400BadRequestException
 {
     public function __construct(Product $product, ?Throwable $previous = null)
     {

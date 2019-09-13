@@ -13,8 +13,10 @@ use Throwable;
 class StripeHandler
 {
     /**
-     * @throws CardDeclinedException
-     * @throws IncorrectCVCException
+     * @param Throwable $exception
+     *
+     * @throws CardDeclined
+     * @throws IncorrectCVC
      */
     public static function handle(Throwable $exception) : void
     {
@@ -26,9 +28,9 @@ class StripeHandler
 
         switch ($data['error']['code']) {
             case 'incorrect_cvc':
-                throw new IncorrectCVCException($exception);
+                throw new IncorrectCVC($exception);
             case 'card_declined':
-                throw new CardDeclinedException($exception);
+                throw new CardDeclined($exception);
         }
     }
 }

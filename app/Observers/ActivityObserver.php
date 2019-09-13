@@ -13,6 +13,10 @@ class ActivityObserver extends BaseObserver
      * After save.
      * Update parent notion's activity counter.
      * Update parent chapter's activity counter.
+     *
+     * @param Activity $activity
+     *
+     * @return bool
      */
     public function saved(Activity $activity) : bool
     {
@@ -26,6 +30,9 @@ class ActivityObserver extends BaseObserver
     }
 
     /**
+     * @param Activity $activity
+     *
+     * @return bool
      * @throws ForeignConstraints
      */
     public function deleting(Activity $activity) : bool

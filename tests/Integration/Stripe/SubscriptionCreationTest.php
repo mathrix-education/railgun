@@ -97,7 +97,5 @@ class SubscriptionCreationTest extends APIStatelessTestCase
                 'product_id' => $product->id,
             ]
         );
-
-        $this->debug();
     }
 }

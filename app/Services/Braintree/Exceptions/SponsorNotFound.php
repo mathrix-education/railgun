@@ -7,7 +7,7 @@ namespace App\Exceptions;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http404NotFoundException;
 use Throwable;
 
-class SponsorNotFoundException extends Http404NotFoundException
+class SponsorNotFound extends Http404NotFoundException
 {
     public function __construct($email, ?Throwable $previous = null)
     {

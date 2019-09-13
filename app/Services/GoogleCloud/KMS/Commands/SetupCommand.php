@@ -29,7 +29,7 @@ class SetupCommand extends BaseCommand
                 case '.env':
                     $this->move($file, base_path('.env'));
                     break;
-                case 'jwt_auth.json';
+                case 'jwt_auth.json':
                     $this->move($file, base_path('storage/keychain/jwt_auth.json'));
                     break;
             }

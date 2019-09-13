@@ -8,10 +8,10 @@ use App\Models\User;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 use Throwable;
 
-class NotPremiumException extends Http400BadRequestException
+class LockedCustomer extends Http400BadRequestException
 {
     public function __construct(User $subscription, ?Throwable $previous = null)
     {
-        parent::__construct(['id' => $subscription->id], "User {$subscription->id} is not premium", $previous);
+        parent::__construct(['id' => $subscription->id], "User {$subscription->id} is locked", $previous);
     }
 }

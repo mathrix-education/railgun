@@ -9,7 +9,7 @@ use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 use Throwable;
 use function implode;
 
-class InvalidSubscriptionStatusException extends Http400BadRequestException
+class InvalidSubscriptionStatus extends Http400BadRequestException
 {
     public function __construct(Subscription $subscription, array $allowedStatuses, ?Throwable $previous = null)
     {

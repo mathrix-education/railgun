@@ -40,6 +40,8 @@ class Mark extends BaseModel
     /**
      * @param Activity|Module $model The markable model
      * @param User|int        $user  The user
+     *
+     * @return Mark
      */
     public static function retrieve($model, $user) : Mark
     {

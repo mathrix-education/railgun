@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use Google\Cloud\Storage\StorageClient;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Filesystem\Cache;
 use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
@@ -31,6 +32,8 @@ class GoogleCloudStorageServiceProvider extends ServiceProvider
 {
     /**
      * Perform post-registration booting of services.
+     *
+     * @throws BindingResolutionException
      */
     public function boot() : void
     {
@@ -51,6 +54,8 @@ class GoogleCloudStorageServiceProvider extends ServiceProvider
      * Create a new StorageClient
      *
      * @param mixed $config
+     *
+     * @return StorageClient
      */
     private function createClient($config) : StorageClient
     {
@@ -77,6 +82,8 @@ class GoogleCloudStorageServiceProvider extends ServiceProvider
      * Create a Filesystem instance with the given adapter.
      *
      * @param array $config
+     *
+     * @return FilesystemInterface
      */
     protected function createFilesystem(AdapterInterface $adapter, array $config) : FilesystemInterface
     {
@@ -94,6 +101,7 @@ class GoogleCloudStorageServiceProvider extends ServiceProvider
      *
      * @param mixed $config
      *
+     * @return CacheInterface
      * @throws InvalidArgumentException
      */
     protected function createCacheStore($config) : CacheInterface

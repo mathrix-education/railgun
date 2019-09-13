@@ -12,10 +12,11 @@ use function trans;
 /**
  * Thrown when a user is not a valid Stripe customer.
  */
-class InvalidStripeCustomerException extends Http400BadRequestException
+class InvalidStripeCustomer extends Http400BadRequestException
 {
     /**
-     * @param User $user The faulty user.
+     * @param User           $user The faulty user.
+     * @param Throwable|null $previous
      */
     public function __construct(User $user, ?Throwable $previous = null)
     {

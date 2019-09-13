@@ -16,6 +16,10 @@ class Invoice extends Bishop
 
     /**
      * Serialize an invoice.
+     *
+     * @param StripeInvoice $invoice
+     *
+     * @return Invoice
      */
     public static function from(StripeInvoice $invoice) : self
     {

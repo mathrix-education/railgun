@@ -32,6 +32,8 @@ class KMSUtils
     /**
      * Generate the Google KMS client and key.
      *
+     * @param string $environment
+     *
      * @return array
      *
      * @throws ValidationException

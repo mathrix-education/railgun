@@ -11,6 +11,9 @@ use Exception;
 class CommentObserver extends BaseObserver
 {
     /**
+     * @param Comment $comment
+     *
+     * @return bool
      * @throws Exception
      */
     public function deleting(Comment $comment) : bool

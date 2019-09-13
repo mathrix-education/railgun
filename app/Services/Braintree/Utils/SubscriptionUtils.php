@@ -33,6 +33,8 @@ class SubscriptionUtils
 
     /**
      * Enable fake system.
+     *
+     * @param bool $enable
      */
     public static function fake(bool $enable = true) : void
     {
@@ -43,6 +45,8 @@ class SubscriptionUtils
      * Check if the given plan id is a "Trial plan".
      *
      * @param string $planId The plan id to check.
+     *
+     * @return bool
      */
     public static function isTrialPlan(string $planId) : bool
     {
@@ -53,6 +57,8 @@ class SubscriptionUtils
      * Get trial duration in days.
      *
      * @param string $planId The plan id.
+     *
+     * @return int
      */
     public static function getTrialDuration(string $planId) : int
     {
@@ -63,8 +69,10 @@ class SubscriptionUtils
      * Get the plan start date (after trial).
      *
      * @param string $planId The Braintree plan.
+     *
+     * @return Carbon
      */
-    public static function getTrialEndDate(string $planId) : Carbon
+    public static function getTrialEndDate(string $planId)
     {
         try {
             $nextThirtyFirstJuly = new Carbon('31st July');
@@ -90,7 +98,7 @@ class SubscriptionUtils
      *
      * @return float The price in euros (€).
      */
-    public static function getTrialPeriodPrice(string $planId) : float
+    public static function getTrialPeriodPrice(string $planId) : ?float
     {
         // Used to mock trial price
         if (env('BRAINTREE_ENVIRONMENT') === 'sandbox'
@@ -115,7 +123,9 @@ class SubscriptionUtils
 
     public static function getAssociatedCustomerId(Subscription $subscription) : ?string
     {
-        $results = gateway()->customer()->search([CustomerSearch::paymentMethodToken()->is($subscription->paymentMethodToken)]);
+        $results = gateway()
+            ->customer()
+            ->search([CustomerSearch::paymentMethodToken()->is($subscription->paymentMethodToken)]);
         $ids     = $results->getIds();
 
         if (! empty($ids)) {

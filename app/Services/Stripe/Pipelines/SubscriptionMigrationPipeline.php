@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Stripe\Pipelines;
 
-use App\Services\Braintree\Exceptions\InvalidBraintreeCustomerException;
+use App\Services\Braintree\Exceptions\InvalidBraintreeCustomer;
 use Braintree\Exception\NotFound;
 use Braintree\Subscription as BraintreeSubscription;
 use Carbon\Carbon;
@@ -41,12 +41,12 @@ class SubscriptionMigrationPipeline extends Pipeline
     /**
      * Check that the user is a valid Braintree customer.
      *
-     * @throws InvalidBraintreeCustomerException
+     * @throws InvalidBraintreeCustomer
      */
     protected function initialize() : void
     {
         if (! $this->user->isBraintreeCustomer()) {
-            throw new InvalidBraintreeCustomerException($this->user);
+            throw new InvalidBraintreeCustomer($this->user);
         }
 
         if ($this->user->isStripeCustomer()) {

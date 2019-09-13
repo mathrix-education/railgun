@@ -25,6 +25,8 @@ class Card extends Bishop
     }
 
     /**
+     * @param StripeCard $card
+     *
      * @return array
      */
     public static function fromStripe(StripeCard $card) : array
