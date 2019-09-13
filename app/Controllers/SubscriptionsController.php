@@ -73,7 +73,7 @@ class SubscriptionsController extends BaseController
     public function invoices(Request $request, string $subscriptionId) : SuccessJsonResponse
     {
         /** @var User $user */
-        $user = $request->user();
+        $user             = $request->user();
         [$page, $perPage] = PaginationJsonResponse::getPagination();
 
         // TODO: do collection pagination

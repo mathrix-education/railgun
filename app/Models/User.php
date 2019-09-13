@@ -173,7 +173,8 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function getValidationRules() : array
     {
-        return array_merge($this->rules,
+        return array_merge(
+            $this->rules,
             [
                 'email' => [
                     'required',
@@ -182,7 +183,8 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
                     Rule::unique('users', 'email')
                         ->ignore($this->id),
                 ],
-            ]);
+            ]
+        );
     }
 
     /*
@@ -216,9 +218,11 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function hasPurchased(Product $product) : bool
     {
         return $this->purchases()
-                    ->whereIn('product_id',
+                    ->whereIn(
+                        'product_id',
                         $product->lineage()
-                                ->pluck('id'))
+                        ->pluck('id')
+                    )
                     ->exists();
     }
 

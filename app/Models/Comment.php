@@ -106,7 +106,7 @@ class Comment extends BaseModel
      */
     public function getScoreAttribute() : int
     {
-        return (int) $this->votes()->sum('value');
+        return (int)$this->votes()->sum('value');
     }
 
     /*

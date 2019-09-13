@@ -57,7 +57,7 @@ class BraintreeErrorHandler
         // Handle processor rejection
         $exceptionPayload = [
             'processor' => [
-                'code' => (int) $object->processorResponseCode,
+                'code' => (int)$object->processorResponseCode,
                 'text' => $object->processorResponseText,
                 'type' => $object->processorResponseType,
             ],

@@ -52,7 +52,7 @@ final class RequestBodyIntegration implements IntegrationInterface
         }
 
         $requestData = [
-            'url' => (string) $request->getUri(),
+            'url' => (string)$request->getUri(),
             'method' => $request->getMethod(),
         ];
 
