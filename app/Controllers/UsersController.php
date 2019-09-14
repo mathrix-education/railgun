@@ -151,7 +151,7 @@ class UsersController extends BaseController
             ->findOrFail($userId);
         $user->canOrFail('subscriptions', $customer);
 
-        if (!$user->isStripeCustomer() && !$user->isBraintreeCustomer()) {
+        if (!$customer->isStripeCustomer() && !$customer->isBraintreeCustomer()) {
             // If the is not a Stripe nor a Braintree customer, simply return and empty array.
             return new SuccessJsonResponse([], [
                 'page'    => 0,
