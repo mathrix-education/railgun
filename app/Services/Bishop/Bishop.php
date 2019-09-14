@@ -10,7 +10,7 @@ use JsonSerializable;
 use Throwable;
 use function in_array;
 use function is_array;
-use function is_integer;
+use function is_int;
 
 abstract class Bishop implements JsonSerializable
 {
@@ -99,6 +99,8 @@ abstract class Bishop implements JsonSerializable
      * Create a Carbon instance from a value
      *
      * @param DateTime|string|int $value
+     *
+     * @return Carbon|null
      */
     public function toCarbon($value) : ?Carbon
     {
@@ -106,7 +108,7 @@ abstract class Bishop implements JsonSerializable
             return Carbon::instance($value);
         }
 
-        if (is_integer($value)) {
+        if (is_int($value)) {
             return Carbon::createFromTimestamp($value);
         }
 
@@ -119,6 +121,10 @@ abstract class Bishop implements JsonSerializable
 
     /**
      * Prepare a date for array / JSON serialization.
+     *
+     * @param Carbon $date
+     *
+     * @return string
      */
     protected function serializeDate(Carbon $date) : string
     {

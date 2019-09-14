@@ -17,9 +17,9 @@ class BraintreeErrorHandler
      *
      * @param User|null $user The user (will unlock it)
      *
-     * @throws GatewayRejectionException
-     * @throws ProcessorDeclinedException
-     * @throws UnknownBraintreeException
+     * @throws GatewayRejection
+     * @throws ProcessorDeclined
+     * @throws UnknownBraintree
      */
     public static function report(BraintreeResponse $error, ?User $user = null) : void
     {
@@ -32,13 +32,13 @@ class BraintreeErrorHandler
         } elseif ($error->subscription instanceof Subscription) {
             self::wrapper('subscription', $error);
         } else {
-            throw new UnknownBraintreeException($error->jsonSerialize());
+            throw new UnknownBraintree($error->jsonSerialize());
         }
     }
 
     /**
-     * @throws GatewayRejectionException
-     * @throws ProcessorDeclinedException
+     * @throws GatewayRejection
+     * @throws ProcessorDeclined
      */
     private static function wrapper(string $type, Error $error) : void
     {
@@ -51,7 +51,7 @@ class BraintreeErrorHandler
                 'reason' => $object->gatewayRejectionReason,
             ];
 
-            throw new GatewayRejectionException($exceptionPayload, $error->message);
+            throw new GatewayRejection($exceptionPayload, $error->message);
         }
 
         // Handle processor rejection
@@ -63,6 +63,6 @@ class BraintreeErrorHandler
             ],
         ];
 
-        throw new ProcessorDeclinedException($exceptionPayload, $object->processorResponseText);
+        throw new ProcessorDeclined($exceptionPayload, $object->processorResponseText);
     }
 }

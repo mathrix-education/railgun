@@ -44,7 +44,9 @@ final class RequestBodyIntegration implements IntegrationInterface
     public static function applyToEvent(Event $event, ?ServerRequestInterface $request = null) : void
     {
         if ($request === null) {
-            $request = isset($_SERVER['REQUEST_METHOD']) && PHP_SAPI !== 'cli' ? ServerRequestFactory::fromGlobals() : null;
+            $request = isset(
+                $_SERVER['REQUEST_METHOD']
+            ) && PHP_SAPI !== 'cli' ? ServerRequestFactory::fromGlobals() : null;
         }
 
         if ($request === null) {
@@ -66,7 +68,8 @@ final class RequestBodyIntegration implements IntegrationInterface
 
         $requestData['cookies'] = $request->getCookieParams();
         $requestData['headers'] = $request->getHeaders();
-        $requestData['data']    = $request->getParsedBody() ? $request->getParsedBody() : json_decode(file_get_contents('php://input'));
+        $requestData['data']    = $request
+            ->getParsedBody() ? $request->getParsedBody() : json_decode(file_get_contents('php://input'));
         $userContext            = $event->getUserContext();
 
         if ($userContext->getIpAddress() === null && $request->hasHeader('REMOTE_ADDR')) {

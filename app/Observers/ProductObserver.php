@@ -10,6 +10,9 @@ use App\Models\Product;
 class ProductObserver extends BaseObserver
 {
     /**
+     * @param Product $product
+     *
+     * @return bool
      * @throws ForeignConstraints
      */
     public function deleting(Product $product) : bool

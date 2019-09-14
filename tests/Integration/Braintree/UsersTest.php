@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Integration\Braintree;
 
 use App\Models\User;
@@ -10,6 +12,10 @@ use Exception;
 use Mathrix\Lumen\JWT\Auth\JWT;
 use Tests\APIStatelessTestCase;
 use Tests\Utils\BraintreeUtils;
+use function factory;
+use function gateway;
+use function str_replace;
+use function implode;
 
 /**
  * Class UsersTest.
@@ -33,19 +39,19 @@ class UsersTest extends APIStatelessTestCase
 
         /** @var Successful|Error $result */
         $result = gateway()->subscription()->create([
-            "id" => "sub_" . str_replace("-", "", $this->faker->uuid),
-            "paymentMethodToken" => $this->requester->asBraintreeCustomer()->defaultPaymentMethod()->token,
-            "planId" => "v4_monthly"
+            'id' => 'sub_' . str_replace('-', '', $this->faker->uuid),
+            'paymentMethodToken' => $this->requester->asBraintreeCustomer()->defaultPaymentMethod()->token,
+            'planId' => 'v4_monthly',
         ]);
 
-        $this->requester->invalidate("braintree.%");
+        $this->requester->invalidate('braintree.%');
 
         if (!$result->success) {
-            $this->fail(implode("\n", $result->errors->deepAll()));
+            $this->fail(implode('\n', $result->errors->deepAll()));
         }
 
         JWT::actingAs($this->requester);
-        $this->json("get", "/users/{$this->requester->id}/subscriptions");
+        $this->json('get', '/users/{$this->requester->id}/subscriptions');
 
         $this->debug();
         $this->assertResponseOk();

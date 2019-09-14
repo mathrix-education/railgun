@@ -8,7 +8,7 @@ use App\Models\Discount;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 use Throwable;
 
-class DiscountExpiredException extends Http400BadRequestException
+class DiscountNotApplicable extends Http400BadRequestException
 {
     /**
      * @param Discount|string $discount
@@ -19,6 +19,10 @@ class DiscountExpiredException extends Http400BadRequestException
             $discount = $discount->code;
         }
 
-        parent::__construct(['discount' => $discount], "Discount `$discount` has expired.", $previous);
+        parent::__construct(
+            ['discount' => $discount],
+            "Discount `{$discount}` is not applicable on those products.",
+            $previous
+        );
     }
 }

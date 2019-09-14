@@ -49,6 +49,8 @@ trait BraintreeCustomer
      * Check if the user is already a Braintree customer.
      *
      * @param bool $strict also check on the API
+     *
+     * @return bool
      */
     public function isBraintreeCustomer(bool $strict = false) : bool
     {

@@ -19,8 +19,9 @@ class CollectionUtils
      * @param array      $params  The $class::$method() $parameters.
      * @param int|null   $page    The page (automatically derived form the querystring if not provided)
      * @param int|null   $perPage The number of objects per page (automatically derived form the querystring if not
-     *       provided)
+     *                            provided)
      *
+     * @return Collection
      * @throws StripeAPIException
      */
     public static function paginate($class, array $params = [], ?int $page = null, ?int $perPage = null) : Collection

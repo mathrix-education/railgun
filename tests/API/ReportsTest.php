@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\API;
 
-use Mathrix\Lumen\Tests\REST\Standard\StandardDeleteTest;
 use Mathrix\Lumen\Zero\Testing\Traits\RESTAutoTestTrait;
 use Tests\APIStatelessTestCase;
 
@@ -18,15 +19,14 @@ class ReportsTest extends APIStatelessTestCase
     use RESTAutoTestTrait;
 
     protected $testKeys = [
-        "std:index",
-        "std:get",
-        "std:patch",
-        "std:delete"
+        'std:index',
+        'std:get',
+        'std:patch',
+        'std:delete',
     ];
-
 
     public function testPost()
     {
-        $this->makeRESTJsonRequest("std:post", null, ["status" => "todo"]);
+        $this->makeRESTJsonRequest('std:post', null, ['status' => 'todo']);
     }
 }

@@ -12,7 +12,8 @@ use function app;
 
 abstract class Pipeline
 {
-    use ProvidesConvenienceMethods, HasRequestValidator {
+    use ProvidesConvenienceMethods;
+    use HasRequestValidator {
         HasRequestValidator::validate insteadof ProvidesConvenienceMethods;
     }
 

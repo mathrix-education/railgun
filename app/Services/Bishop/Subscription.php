@@ -55,6 +55,8 @@ class Subscription extends Bishop
      * Serialize a subscription.
      *
      * @param StripeSubscription|BraintreeSubscription $subscription
+     *
+     * @return Subscription
      */
     public static function from($subscription) : self
     {
@@ -71,6 +73,8 @@ class Subscription extends Bishop
 
     /**
      * Serialize a Stripe subscription.
+     *
+     * @param StripeSubscription $subscription
      *
      * @return array
      */
@@ -133,6 +137,8 @@ class Subscription extends Bishop
 
     /**
      * Serialize a Braintree subscription.
+     *
+     * @param BraintreeSubscription $subscription
      *
      * @return array
      */
@@ -260,7 +266,10 @@ class Subscription extends Bishop
             'id' => $subscription->id,
             'cancel_at' => $cancelAt,
             'cancel_at_period_end' => $cancelAtPeriodEnd,
-            'canceled_at' => in_array($subscription->status, [BraintreeSubscription::CANCELED, BraintreeSubscription::EXPIRED])
+            'canceled_at' => in_array(
+                $subscription->status,
+                [BraintreeSubscription::CANCELED, BraintreeSubscription::EXPIRED]
+            )
                 ? $subscription->updatedAt : null,
             'created_at' => $subscription->createdAt,
             'current_period_start' => $subscription->billingPeriodStartDate,

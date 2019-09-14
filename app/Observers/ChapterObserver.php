@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace App\Observers;
 
+use App\Exceptions\ForeignConstraints;
 use App\Models\Chapter;
 use Illuminate\Support\Facades\DB;
-use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 
 class ChapterObserver extends BaseObserver
 {
     /**
      * After save, purge chapter-related cache.
+     *
+     * @param Chapter $chapter
      */
     public function saved(Chapter $chapter) : void
     {
@@ -25,7 +27,10 @@ class ChapterObserver extends BaseObserver
     }
 
     /**
-     * @throws Http400BadRequestException
+     * @param Chapter $chapter
+     *
+     * @return bool
+     * @throws ForeignConstraints
      */
     public function deleting(Chapter $chapter) : bool
     {
@@ -36,6 +41,8 @@ class ChapterObserver extends BaseObserver
 
     /**
      * After deletion, purge chapter-related cache.
+     *
+     * @param Chapter $chapter
      */
     public function deleted(Chapter $chapter) : void
     {

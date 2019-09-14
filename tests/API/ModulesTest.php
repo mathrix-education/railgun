@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\API;
 
 use App\Models\Module;
@@ -18,28 +20,27 @@ class ModulesTest extends APIStatelessTestCase
     use RESTAutoTestTrait;
 
     protected $testKeys = [
-        "std:index",
-        "std:post",
-        "std:get",
-        "std:patch",
-        "rel:get:comments",
-        "rel:get:reports"
+        'std:index',
+        'std:post',
+        'std:get',
+        'std:patch',
+        'rel:get:comments',
+        'rel:get:reports',
     ];
-
 
     /**
      * DELETE /modules/{moduleId}
      */
-    public function testDelete(): void
+    public function testDelete() : void
     {
         $module = Module::random();
-        $pivot = Module::random(["id", "!=", $module->id]);
+        $pivot  = Module::random(['id', '!=', $module->id]);
 
-        $module->posts()->update(["module_id" => $pivot->id]);
-        $module->products()->update(["module_id" => $pivot->id]);
+        $module->posts()->update(['module_id' => $pivot->id]);
+        $module->products()->update(['module_id' => $pivot->id]);
 
-        $this->makeRESTJsonRequest("std:delete", null, null, [
-            "conditions" => ["id", "=", $module->id]
+        $this->makeRESTJsonRequest('std:delete', null, null, [
+            'conditions' => ['id', '=', $module->id],
         ]);
     }
 }

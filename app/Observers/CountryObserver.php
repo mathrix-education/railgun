@@ -10,6 +10,9 @@ use App\Models\Country;
 class CountryObserver extends BaseObserver
 {
     /**
+     * @param Country $country
+     *
+     * @return bool
      * @throws ForeignConstraints
      */
     public function deleting(Country $country) : bool

@@ -14,6 +14,10 @@ abstract class BaseObserver
     /**
      * Handle related models.
      *
+     * @param BaseModel $model
+     * @param string    $relationName
+     * @param bool      $delete
+     *
      * @throws ForeignConstraints
      */
     public function handleRelationDeletion(BaseModel $model, string $relationName, bool $delete = false) : void

@@ -8,7 +8,7 @@ use App\Models\User;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 use Throwable;
 
-class InvalidSponsorException extends Http400BadRequestException
+class InvalidSponsor extends Http400BadRequestException
 {
     public function __construct(User $sponsor, ?Throwable $previous = null)
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Integration\GoogleCloud\Storage;
 
 use Illuminate\Filesystem\FilesystemAdapter;
@@ -21,42 +23,39 @@ class FilesTest extends APIStatelessTestCase
     /**
      * @return array Generate the files to upload and get.
      */
-    public function uploadsDataProvider(): array
+    public function uploadsDataProvider() : array
     {
         return [
-            "shop.png" => ["shop.png", "shop2.png"],
-            "fruits/apple.png" => ["fruits/apple.png", "apple.png"],
-            "fruits/favorites/pear.jpeg" => ["fruits/favorites/pear.jpeg", "fruits/old/pear.jpg"],
+            'shop.png' => ['shop.png', 'shop2.png'],
+            'fruits/apple.png' => ['fruits/apple.png', 'apple.png'],
+            'fruits/favorites/pear.jpeg' => ['fruits/favorites/pear.jpeg', 'fruits/old/pear.jpg'],
         ];
     }
-
 
     /**
      * @return array Generate the list files and HTTP statuses.
      */
-    public function listDataProvider(): array
+    public function listDataProvider() : array
     {
         return [
-            "/" => ["/", 200],
-            "fruits" => ["fruits", 200],
-            "fruits/favorites" => ["fruits/favorites", 200],
-            "idontexist" => ["idontexist", 404]
+            '/' => ['/', 200],
+            'fruits' => ['fruits', 200],
+            'fruits/favorites' => ['fruits/favorites', 200],
+            'idontexist' => ['idontexist', 404],
         ];
     }
-
 
     /**
      * @return array Generate the files to delete.
      */
-    public function deleteDataProvider(): array
+    public function deleteDataProvider() : array
     {
         return [
-            "shop2.png" => ["shop2.png"],
-            "apple.png" => ["apple.png"],
-            "fruits/old/pear.jpg" => ["fruits/old/pear.jpg"],
+            'shop2.png' => ['shop2.png'],
+            'apple.png' => ['apple.png'],
+            'fruits/old/pear.jpg' => ['fruits/old/pear.jpg'],
         ];
     }
-
 
     /**
      * POST /files/{files}
@@ -65,21 +64,18 @@ class FilesTest extends APIStatelessTestCase
      *
      * @dataProvider uploadsDataProvider
      */
-    public function testUpload(string $file): void
+    public function testUpload(string $file) : void
     {
-        JWT::withScopes("files:write");
+        JWT::withScopes('files:write');
 
-        $this->call("POST", "/files/$file", [], [], [
-            "file" => UploadedFile::fake()->image($this->faker->userName . ".png", 100, 100)
-        ], [
-            "CONTENT_TYPE" => "multipart/form-data"
-        ]);
+        $this->call('POST', '/files/$file', [], [], [
+            'file' => UploadedFile::fake()->image($this->faker->userName . '.png', 100, 100),
+        ], ['CONTENT_TYPE' => 'multipart/form-data']);
 
         $this->getDisk()->assertExists($file);
         $this->assertResponseStatus(200);
-        $this->assertOpenAPI($this->response, new OperationAddress("/files/{file}", "post"));
+        $this->assertOpenAPI($this->response, new OperationAddress('/files/{file}', 'post'));
     }
-
 
     /**
      * Get a disk.
@@ -88,14 +84,13 @@ class FilesTest extends APIStatelessTestCase
      *
      * @return FilesystemAdapter
      */
-    private function getDisk(string $disk = null): FilesystemAdapter
+    private function getDisk(string $disk = null) : FilesystemAdapter
     {
         /** @var FilesystemAdapter $disk */
         $disk = Storage::disk($disk);
 
         return $disk;
     }
-
 
     /**
      * GET /files/{file}
@@ -107,38 +102,36 @@ class FilesTest extends APIStatelessTestCase
      */
     public function testGet(string $file)
     {
-        JWT::withScopes("files:read");
+        JWT::withScopes('files:read');
 
-        $this->json("get", "/files/{$file}");
+        $this->json('get', '/files/{$file}');
 
         $this->assertResponseStatus(200);
-        $this->assertOpenAPI($this->response, new OperationAddress("/files/{file}", "get"));
+        $this->assertOpenAPI($this->response, new OperationAddress('/files/{file}', 'get'));
     }
-
 
     /**
      * GET /files/list/{directory}
      *
-     * @param string $directory The directory to list.
-     * @param int $expectedStatus The expected HTTP status.
+     * @param string $directory      The directory to list.
+     * @param int    $expectedStatus The expected HTTP status.
      *
      * @dataProvider listDataProvider
      */
     public function testList(string $directory, int $expectedStatus)
     {
-        JWT::withScopes("files:read");
+        JWT::withScopes('files:read');
 
-        $this->json("get", "/files/list/$directory");
+        $this->json('get', '/files/list/$directory');
 
         $this->assertResponseStatus($expectedStatus);
-        $this->assertOpenAPI($this->response, new OperationAddress("/files/list/{directory}", "get"));
+        $this->assertOpenAPI($this->response, new OperationAddress('/files/list/{directory}', 'get'));
     }
-
 
     /**
      * PATCH /files/{file}
      *
-     * @param string $file The file to move.
+     * @param string $file        The file to move.
      * @param string $destination The file destination.
      *
      * @depends      testUpload
@@ -146,17 +139,14 @@ class FilesTest extends APIStatelessTestCase
      */
     public function testPatch(string $file, string $destination)
     {
-        JWT::withScopes("files:write");
+        JWT::withScopes('files:write');
 
-        $this->json("patch", "/files/$file", [
-            "destination" => $destination
-        ]);
+        $this->json('patch', '/files/$file', ['destination' => $destination]);
 
         $this->getDisk()->assertExists($destination);
         $this->assertResponseStatus(200);
-        $this->assertOpenAPI($this->response, new OperationAddress("/files/{file}", "patch"));
+        $this->assertOpenAPI($this->response, new OperationAddress('/files/{file}', 'patch'));
     }
-
 
     /**
      * DELETE /files/{file}
@@ -166,14 +156,14 @@ class FilesTest extends APIStatelessTestCase
      * @depends      testPatch
      * @dataProvider deleteDataProvider
      */
-    public function testDelete(string $file): void
+    public function testDelete(string $file) : void
     {
-        JWT::withScopes("files:delete");
+        JWT::withScopes('files:delete');
 
-        $this->json("delete", "/files/$file");
+        $this->json('delete', '/files/$file');
 
         $this->getDisk()->assertMissing($file);
         $this->assertResponseStatus(200);
-        $this->assertOpenAPI($this->response, new OperationAddress("/files/{file}", "delete"));
+        $this->assertOpenAPI($this->response, new OperationAddress('/files/{file}', 'delete'));
     }
 }

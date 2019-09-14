@@ -10,6 +10,8 @@ use App\Models\Discipline;
 class DisciplineObserver extends BaseObserver
 {
     /**
+     * @param Discipline $discipline
+     *
      * @throws ForeignConstraints
      */
     public function deleting(Discipline $discipline) : void

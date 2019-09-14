@@ -130,11 +130,9 @@ class Activity extends BaseModel
         return $mark !== null ? $mark->status : null;
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Attributes
-    |--------------------------------------------------------------------------
-    */
+    /**
+     * @return MorphMany
+     */
     public function marks() : MorphMany
     {
         return $this->morphMany(Mark::class, 'markable');

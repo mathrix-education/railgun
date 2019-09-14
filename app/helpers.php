@@ -41,6 +41,9 @@ if (! function_exists('timestamps')) {
     /**
      * Get two coherent timestamps.
      *
+     * @param string $start
+     * @param int    $bias
+     *
      * @return array
      */
     function timestamps(string $start = '-1 month', int $bias = 90) : array
@@ -61,7 +64,10 @@ if (! function_exists('scope')) {
     /**
      * Check if a user has the given scope.
      *
-     * @param string $scope The scope to check
+     * @param User|null $user
+     * @param string    $scope The scope to check
+     *
+     * @return bool
      */
     function scope(?User $user, string $scope) : bool
     {

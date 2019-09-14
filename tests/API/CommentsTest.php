@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\API;
 
 use App\Models\Comment;
@@ -22,53 +24,45 @@ class CommentsTest extends APIStatelessTestCase
     use RESTAutoTestTrait;
 
     protected $testKeys = [
-        "std:index",
-        "std:get"
+        'std:index',
+        'std:get',
     ];
 
-
-    /**
-     *
-     */
-    public function testPost(): void
+    public function testPost() : void
     {
-        $this->makeRESTJsonRequest("std:post", null, function ($data) {
-            $data["user_id"] = $this->requester->id;
+        $this->makeRESTJsonRequest('std:post', null, function ($data) {
+            $data['user_id'] = $this->requester->id;
 
             return Arr::except($data, []);
         });
     }
 
-
     /**
      * PATCH /comments/{commentId}
      */
-    public function testPatch(): void
+    public function testPatch() : void
     {
-        $comment = Comment::random();
-        $newContent = "Edited?";
-        DB::table("comments")
-            ->where("id", "=", $comment->id)
-            ->update(["updated_at" => Carbon::now()]);
+        $comment    = Comment::random();
+        $newContent = 'Edited?';
+        DB::table('comments')
+            ->where('id', '=', $comment->id)
+            ->update(['updated_at' => Carbon::now()]);
 
         JWT::actingAs($comment->user);
-        $this->json("patch", "/comments/{$comment->id}", [
-            "content" => $newContent
-        ]);
+        $this->json('patch', '/comments/{$comment->id}', ['content' => $newContent]);
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse($this->response);
-        $this->assertInDatabase("comments", ["id" => $comment->id, "content" => $newContent]);
+        $this->assertInDatabase('comments', ['id' => $comment->id, 'content' => $newContent]);
     }
-
 
     /**
      * GET /comments/latest/{page}/{perPage}
      */
-    public function testLatest(): void
+    public function testLatest() : void
     {
-        $method = "get";
-        $uri = "/comments/latest";
+        $method = 'get';
+        $uri    = '/comments/latest';
 
         JWT::autoScope($method, $uri);
         $this->json($method, $uri);

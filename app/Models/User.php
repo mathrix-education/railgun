@@ -198,6 +198,9 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      *
      * @link https://laravel.com/docs/5.8/eloquent
      *
+     * @param Builder $query
+     * @param string  $scope
+     *
      * @return Builder|\Illuminate\Database\Query\Builder
      */
     public function scopeScope(Builder $query, string $scope)
@@ -214,6 +217,10 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     /**
      * Check if user has purchased the given product.
+     *
+     * @param Product $product
+     *
+     * @return bool
      */
     public function hasPurchased(Product $product) : bool
     {
@@ -300,8 +307,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     /**
      * premium attribute.
-     *
-     * @throws StripeAPIException
      */
     public function getPremiumAttribute() : bool
     {
@@ -338,8 +343,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     /**
      * @return Subscription|BaseCollection
-     *
-     * @throws StripeAPIException
      */
     public function subscriptions() : BaseCollection
     {

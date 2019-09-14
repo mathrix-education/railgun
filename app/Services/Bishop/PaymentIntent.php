@@ -12,6 +12,10 @@ class PaymentIntent extends Bishop
 
     /**
      * Serialize a payment intent.
+     *
+     * @param StripePaymentIntent $paymentIntent
+     *
+     * @return PaymentIntent
      */
     public static function from(StripePaymentIntent $paymentIntent) : self
     {

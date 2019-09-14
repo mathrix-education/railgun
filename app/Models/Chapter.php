@@ -51,6 +51,8 @@ class Chapter extends BaseModel
      *
      * @param int $gradeId      The grade id.
      * @param int $disciplineId The discipline id.
+     *
+     * @return Builder
      */
     public static function byGradeAndDiscipline(int $gradeId, int $disciplineId) : Builder
     {
@@ -64,6 +66,8 @@ class Chapter extends BaseModel
      * Ga chapter and its nested notions, activities and modules recursively. Return value is user-depend.
      *
      * @param int $id The chapter id
+     *
+     * @return Chapter
      */
     public static function recursive(int $id) : Chapter
     {

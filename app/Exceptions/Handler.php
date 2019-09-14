@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Exceptions;
 
 use App\Models\User;
-use App\Services\Stripe\Exceptions\CardDeclinedException;
-use App\Services\Stripe\Exceptions\IncorrectCVCException;
+use App\Services\Stripe\Exceptions\CardDeclined;
+use App\Services\Stripe\Exceptions\IncorrectCVC;
 use App\Services\Stripe\Exceptions\StripeHandler;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -91,8 +91,8 @@ class Handler extends ExceptionHandler
      *
      * @return JsonResponse|Response
      *
-     * @throws CardDeclinedException
-     * @throws IncorrectCVCException
+     * @throws CardDeclined
+     * @throws IncorrectCVC
      * @throws ReflectionException
      */
     public function render($request, Exception $exception)

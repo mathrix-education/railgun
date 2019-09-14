@@ -25,7 +25,7 @@ class CustomerCreationPipeline extends Pipeline
      */
     protected function exchange() : void
     {
-        $this->user->createStripeCustomer($this->request->json('card.token'));
+        $this->user->createStripeCustomer((string)$this->request->json('card.token'));
     }
 
     protected function finalize() : void

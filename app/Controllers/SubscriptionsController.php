@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Exceptions\UserAlreadyPremiumException;
+use App\Exceptions\UserAlreadyPremium;
 use App\Models\User;
 use App\Services\Bishop\Invoice;
 use App\Services\Bishop\Subscription;
@@ -37,7 +37,7 @@ class SubscriptionsController extends BaseController
      *
      * @return SuccessJsonResponse The newly created subscription.
      *
-     * @throws UserAlreadyPremiumException
+     * @throws UserAlreadyPremium
      */
     public function standardPost(Request $request) : SuccessJsonResponse
     {
@@ -45,7 +45,7 @@ class SubscriptionsController extends BaseController
         $user = $request->user();
 
         if ($user->premium) {
-            throw new UserAlreadyPremiumException($user);
+            throw new UserAlreadyPremium($user);
         }
 
         $pipeline = (new SubscriptionCreationPipeline())->flow();

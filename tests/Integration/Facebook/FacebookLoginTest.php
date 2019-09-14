@@ -10,6 +10,9 @@ use Illuminate\Contracts\Container\BindingResolutionException;
 use Jose\Component\Signature\JWS;
 use Jose\Component\Signature\Serializer\Serializer;
 use Tests\APIStatefulTestCase;
+use function app;
+use function env;
+use function json_decode;
 
 /**
  * Class AuthLoginFacebook.
@@ -22,24 +25,23 @@ class FacebookLoginTest extends APIStatefulTestCase
 {
     private static $FacebookUser;
 
-
     /**
      * Prepare Facebook test account
      *
      * @throws FacebookSDKException
      * @throws BindingResolutionException
      */
-    public static function setUpBeforeClass(): void
+    public static function setUpBeforeClass() : void
     {
         parent::setUpBeforeClass();
 
         /** @var Facebook $facebook */
         $facebook = app()->make(Facebook::class);
 
-        $response = $facebook->post(env("FACEBOOK_APP_ID") . "/accounts/test-users", [
-            "installed" => true,
-            "permissions" => "email",
-        ], env("FACEBOOK_APP_TOKEN"));
+        $response = $facebook->post(env('FACEBOOK_APP_ID') . '/accounts/test-users', [
+            'installed' => true,
+            'permissions' => 'email',
+        ], env('FACEBOOK_APP_TOKEN'));
 
         self::$FacebookUser = json_decode($response->getBody());
     }
@@ -56,14 +58,14 @@ class FacebookLoginTest extends APIStatefulTestCase
         // Clean Facebook test account
         /** @var Facebook $facebook */
         $facebook = app()->make(Facebook::class);
-        $response = $facebook->delete(self::$FacebookUser->id, [], env("FACEBOOK_APP_TOKEN"));
+        $response = $facebook->delete(self::$FacebookUser->id, [], env('FACEBOOK_APP_TOKEN'));
         $body = json_decode($response->getBody());
         self::assertTrue($body->success);
 
         // Delete user (does not work for now)
         /** @var User $user */
         //$user = User::query()
-        //    ->where("metadata->facebook->id", "=", self::$FacebookUser->id)
+        //    ->where('metadata->facebook->id', '=', self::$FacebookUser->id)
         //    ->firstOrFail();
         //$user->logs()->delete();
         //$user->delete();
@@ -88,8 +90,8 @@ class FacebookLoginTest extends APIStatefulTestCase
      */
     public function makeFacebookRequest(string $accessToken)
     {
-        $this->json("post", "/auth/login/facebook", [
-            "access_token" => $accessToken
+        $this->json('post', '/auth/login/facebook', [
+            'access_token' => $accessToken
         ]);
 
         $token = json_decode($this->response->getContent())->token;
@@ -102,9 +104,9 @@ class FacebookLoginTest extends APIStatefulTestCase
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse($this->response);
-        $this->assertEquals(self::$FacebookUser->id, $user->metadata["facebook"]["id"]);
-        $this->assertIsString($user->metadata["facebook"]["access_token"]);
-        $this->assertIsInt($user->metadata["facebook"]["expires_in"]);
+        $this->assertEquals(self::$FacebookUser->id, $user->metadata['facebook']['id']);
+        $this->assertIsString($user->metadata['facebook']['access_token']);
+        $this->assertIsInt($user->metadata['facebook']['expires_in']);
     }
 
 
@@ -122,7 +124,7 @@ class FacebookLoginTest extends APIStatefulTestCase
 
         /** @var User $user */
         $count = User::query()
-            ->where("metadata->facebook->id", "=", self::$FacebookUser->id)
+            ->where('metadata->facebook->id', '=', self::$FacebookUser->id)
             ->count();
 
         $this->assertEquals(1, $count);

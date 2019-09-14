@@ -74,6 +74,7 @@ class Setting extends BaseModel
      *
      * @param string $key the setting key
      *
+     * @return bool|null
      * @throws Exception
      */
     public static function forgot(string $key) : ?bool

@@ -8,7 +8,7 @@ use App\Models\User;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 use Throwable;
 
-class UserAlreadyPremiumException extends Http400BadRequestException
+class UserAlreadyPremium extends Http400BadRequestException
 {
     public function __construct(User $user, ?Throwable $previous = null)
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests;
 
 use App\Mails\BaseMail;
@@ -11,6 +13,8 @@ use Mathrix\Lumen\Zero\Testing\Traits\DebugTrait;
 use Mathrix\Lumen\Zero\Testing\Traits\RESTTrait;
 use Mathrix\OpenAPI\Assertions\Lumen\LumenOpenAPIAssertions;
 use Throwable;
+use function count;
+use function strtolower;
 
 /**
  * Class APITestCase.
@@ -21,38 +25,38 @@ use Throwable;
  */
 class APIStatefulTestCase extends BaseTestCase
 {
-    use RESTTrait, LumenOpenAPIAssertions, DebugTrait;
+    use RESTTrait;
+    use LumenOpenAPIAssertions;
+    use DebugTrait;
 
     /** @var User $requester The request user */
     protected $requester;
 
-
-    public static function setUpBeforeClass(): void
+    public static function setUpBeforeClass() : void
     {
-        self::$openAPISpecificationPath = __DIR__ . "/../docs/output.yaml";
+        self::$openAPISpecificationPath = __DIR__ . '/../docs/output.yaml';
         parent::setUpBeforeClass();
     }
 
-
-    public function setUp(): void
+    public function setUp() : void
     {
         parent::setUp();
 
-        $this->handler("before.json", function (string $method, string $uri) {
+        $this->handler('before.json', function (string $method, string $uri) {
             $scopes = $this->getOpenAPIScopes($method, $uri);
 
-            if (!empty($scopes)) {
-                if (count($scopes) === 1 && $scopes[0] === "logged") {
-                    // Authentication needed
-                    $this->requester = User::random();
-                    JWT::actingAs($this->requester);
-                } else {
-                    $this->requester = JWT::withScopes($scopes[0]);
-                }
+            if (empty($scopes)) {
+                return;
+            }
+            if (count($scopes) === 1 && $scopes[0] === 'logged') {
+                // Authentication needed
+                $this->requester = User::random();
+                JWT::actingAs($this->requester);
+            } else {
+                $this->requester = JWT::withScopes($scopes[0]);
             }
         });
     }
-
 
     /**
      * Automatically mock the scope according to the OpenAPI documentation. This ensure that the documentation is up to
@@ -64,7 +68,7 @@ class APIStatefulTestCase extends BaseTestCase
      *
      * @return string[]|null
      */
-    public function getOpenAPIScopes(string $method, string $uri, string $security = "bearer")
+    public function getOpenAPIScopes(string $method, string $uri, string $security = 'bearer')
     {
         $method = strtolower($method);
 
@@ -73,13 +77,13 @@ class APIStatefulTestCase extends BaseTestCase
         $paths = self::$schema->paths;
 
         if (!isset($paths[$openAPIUri])) {
-            $this->fail("$openAPIUri PathItem does not exist in the OpenAPI specification.");
+            $this->fail('$openAPIUri PathItem does not exist in the OpenAPI specification.');
         }
 
         $pathItem = $paths[$openAPIUri];
 
         if (!isset($pathItem->{$method})) {
-            $this->fail("$openAPIUri does not support $method method.");
+            $this->fail('$openAPIUri does not support $method method.');
         }
 
         /** @var Operation $operation */
@@ -87,28 +91,26 @@ class APIStatefulTestCase extends BaseTestCase
 
         if (!isset($operation->security[0]) || !isset($operation->security[0]->{$security})) {
             return null;
-        } else {
-            return $operation->security[0]->{$security};
         }
+
+        return $operation->security[0]->{$security};
     }
 
-
-    public function onNotSuccessfulTest(Throwable $t): void
+    public function onNotSuccessfulTest(Throwable $t) : void
     {
         $this->debug();
         parent::onNotSuccessfulTest($t);
     }
 
-
     /**
      * Assert that a mailable has been sent to an user.
      *
      * @param string|BaseMail $mailClass
-     * @param User $user
+     * @param User            $user
      */
     public function assertMailSentTo($mailClass, User $user)
     {
-        Mail::assertSent($mailClass, function ($mail) use ($user) {
+        Mail::assertSent($mailClass, static function ($mail) use ($user) {
             /** @var BaseMail $mail */
             return $mail->hasTo($user->email);
         });

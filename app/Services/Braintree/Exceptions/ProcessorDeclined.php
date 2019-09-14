@@ -6,6 +6,6 @@ namespace App\Exceptions;
 
 use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 
-class GatewayRejectionException extends Http400BadRequestException
+class ProcessorDeclined extends Http400BadRequestException
 {
 }

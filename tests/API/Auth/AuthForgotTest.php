@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\API\Auth;
 
 use App\Mails\PasswordForgottenMail;
@@ -19,15 +21,15 @@ class AuthForgotTest extends APIStatelessTestCase
     /**
      * POST /users/forgot
      */
-    public function testForgot(): void
+    public function testForgot() : void
     {
         Mail::fake();
-        $user = User::random(["settings", "NOT LIKE", "%facebook_id%"]);
+        $user = User::random(['settings', 'NOT LIKE', '%facebook_id%']);
 
-        $this->json("post", "/auth/forgot", ["email" => $user->email]);
+        $this->json('post', '/auth/forgot', ['email' => $user->email]);
 
         $this->assertResponseOk();
-        $this->assertNotInDatabase("users", ["id" => $user->id, "token" => null]);
+        $this->assertNotInDatabase('users', ['id' => $user->id, 'token' => null]);
         $this->assertOpenAPIResponse($this->response);
         $this->assertMailSentTo(PasswordForgottenMail::class, $user);
     }

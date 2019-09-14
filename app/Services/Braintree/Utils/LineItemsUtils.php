@@ -12,6 +12,8 @@ use function morph_alias;
 class LineItemsUtils
 {
     /**
+     * @param BraintreeLineItem $lineItem
+     *
      * @return mixed|null
      */
     public static function getType(BraintreeLineItem $lineItem) : ?string
