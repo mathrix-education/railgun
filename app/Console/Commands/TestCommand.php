@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Models\Product;
 use App\Models\User;
+use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Zero\Console\Commands\BaseCommand;
 
 /**
@@ -18,5 +20,15 @@ class TestCommand extends BaseCommand
 
     public function handle(): void
     {
+        $user = User::findByOrFail("id", 155);
+        JWT::actingAs($user);
+        $products = Product::query()
+            ->where([
+                ["buyable", "=", true],
+                ["type", "=", "training"]
+            ])
+            ->get()
+            ->toArray();
+        dd($products);
     }
 }

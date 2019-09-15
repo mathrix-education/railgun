@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Services\Braintree\Models\LineItem;
 use Braintree\Transaction;
 use Carbon\Carbon;
 use Exception;
@@ -36,6 +35,7 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
  * @property Module|null                  $module
  * @property Product|null                 $parent
  * @property EloquentCollection|Product[] $children
+ * @property EloquentCollection|Product[] $parents
  * @property EloquentCollection|Product[] $items
  */
 class Product extends BaseModel
@@ -113,31 +113,37 @@ class Product extends BaseModel
     /**
      * Get the parent products of this product.
      *
+     * @param null $lineage The existing lineage.
+     *
      * @return Collection|Product[]
      */
-    public function lineage(): Collection
+    public function lineage($lineage = null): Collection
     {
-        $lineage = new Collection([$this]);
+        if ($lineage === null) {
+            $lineage = new Collection();
+        }
 
-        $iterator = $this;
-
-        while ($iterator->parent_id !== null
-            && $lineage->pluck('id')
-                ->search($iterator->parent_id) === false
+        if ($lineage->pluck('id')
+                ->search($this->id) === false
         ) {
-            $iterator = $iterator->parent;
+            $lineage->push($this);
+        }
 
-            if ($lineage->pluck('id')
-                ->contains($iterator->id)) {
-                // Prevent endless loops
-                break;
-            }
+        /** @var Collection $parents The parent products */
+        $parents = $this->parents;
 
-            $lineage->push($iterator);
+        if ($this->parent !== null) {
+            $parents->push($this->parent);
+        }
+
+        foreach ($parents as $parent) {
+            $lineage = $parent->lineage($lineage);
         }
 
         return $lineage->map(static function (Product $product) {
-            return $product->unsetRelation('parent');
+            return $product
+                ->unsetRelation('parent')
+                ->unsetRelation('parents');
         });
     }
 
@@ -172,6 +178,20 @@ class Product extends BaseModel
     {
         return $this->hasMany(self::class, 'parent_id')
             ->orderBy('order');
+    }
+
+    /**
+     * BelongsToMany products.
+     * This relation is only "Pack" typed products.
+     */
+    public function parents(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            self::class,
+            'product_product',
+            'child_id',
+            'parent_id'
+        );
     }
 
     /**
