@@ -33,4 +33,14 @@ class UserPolicy extends BasePolicy
     {
         return $currentUser->is($user) || scope($currentUser, 'subscriptions:read');
     }
+
+    public function products(User $currentUser, User $user): bool
+    {
+        return $currentUser->is($user) || scope($currentUser, 'products:read');
+    }
+
+    public function purchases(User $currentUser, User $user): bool
+    {
+        return $currentUser->is($user) || scope($currentUser, 'purchases:read');
+    }
 }

@@ -26,7 +26,3 @@ properties:
     description: The date/time when the object was updated.
     type: string
     format: date-time
-  product:
-    allOf:
-      - $ref: '#/components/schemas/Product'
-    nullable: true

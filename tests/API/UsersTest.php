@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\API;
 
 use App\Models\Module;
+use App\Models\Product;
+use App\Models\Purchase;
 use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -12,15 +14,15 @@ use Illuminate\Support\Facades\Hash;
 use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Zero\Testing\Traits\RESTAutoTestTrait;
 use Tests\APIStatelessTestCase;
-use function env;
 use function array_merge;
+use function env;
 
 /**
  * Class UsersTest.
  *
- * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
  * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
+ * @since     5.0.0-rc1
  */
 class UsersTest extends APIStatelessTestCase
 {
@@ -34,7 +36,7 @@ class UsersTest extends APIStatelessTestCase
     public function testPost()
     {
         $payload = [
-            'email' => $this->faker->email,
+            'email'    => $this->faker->email,
             'password' => env('DB_PASSWORD'),
         ];
 
@@ -96,12 +98,13 @@ class UsersTest extends APIStatelessTestCase
         $newPassword = $this->faker->password(20, 20);
         $payload     = array_merge(
             Arr::except(
-                $this->getFactoryBuilder([])->raw(),
+                $this->getFactoryBuilder([])
+                    ->raw(),
                 ['password', 'token', 'points', 'level', 'settings', 'created_at', 'updated_at']
             ),
             [
                 'current_password' => env('DB_PASSWORD'),
-                'password' => $newPassword,
+                'password'         => $newPassword,
             ]
         );
 
@@ -131,7 +134,8 @@ class UsersTest extends APIStatelessTestCase
         $newPassword = $this->faker->password(20, 20);
         $payload     = array_merge(
             Arr::except(
-                $this->getFactoryBuilder([])->raw(),
+                $this->getFactoryBuilder([])
+                    ->raw(),
                 ['password', 'token', 'points', 'level', 'created_at', 'updated_at']
             ),
             ['password' => $newPassword]
@@ -174,9 +178,10 @@ class UsersTest extends APIStatelessTestCase
         JWT::actingAs($user);
 
         $module   = Module::random(['visible', '=', true]);
-        $settings = array_merge($user->settings, [
-            'last_session' => [$module->activity->notion->chapter->discipline->id => $module->id],
-        ]);
+        $settings = array_merge($user->settings,
+            [
+                'last_session' => [$module->activity->notion->chapter->discipline->id => $module->id],
+            ]);
 
         $this->json('patch', "/users/{$user->id}", ['settings' => $settings]);
 
@@ -204,5 +209,24 @@ class UsersTest extends APIStatelessTestCase
                 ->where('key', 'LIKE', 'user.{$user->id}.%')
                 ->count()
         );
+    }
+
+    public function testProducts()
+    {
+        $user     = User::random();
+        $product  = Product::random();
+        $purchase = new Purchase([
+            'user_id'    => $user->id,
+            'product_id' => $product->id,
+        ]);
+        $purchase->save();
+
+        JWT::actingAs($user);
+
+        $this->json('get', "/users/{$user->id}/products");
+
+        $this->debug();
+        $this->assertResponseOk();
+        $this->assertOpenAPIResponse($this->response);
     }
 }

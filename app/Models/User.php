@@ -255,7 +255,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class)
+        return $this->belongsToMany(Product::class, 'purchases')
             ->using(Purchase::class)
             ->withTimestamps();
     }

@@ -52,11 +52,11 @@
   },
   "require-dev": {
     "brianium/paratest": "3.0.0",
-    "doctrine/coding-standard": "^6.0",
     "doctrine/dbal": "2.9.2",
     "league/csv": "^9.2",
+    "mathrix/coding-standard": "0.9.1",
     "mathrix/openapi-assertions": "0.10.4",
-    "mathrix/openapi-processor": "0.9.7",
+    "mathrix/openapi-processor": "1.0.2",
     "mockery/mockery": "1.2.2",
     "nyholm/psr7": "^1.1",
     "phpunit/phpunit": "8.2.4",
@@ -85,6 +85,10 @@
   "repositories": [
     {
       "type": "vcs",
+      "url": "git@github.com:mathrix-education/coding-standard.git"
+    },
+    {
+      "type": "vcs",
       "url": "git@github.com:mathrix-education/lumen-chainer.git"
     },
     {
@@ -110,7 +114,7 @@
     "optimize-autoloader": true
   },
   "scripts": {
-    "compile:docs": "openapi-processor --input=docs/index.yaml",
+    "compile:docs": "openapi-processor --input=docs/index.yaml --config=docs/config.yaml",
     "lint": "phpcs --report=source",
     "lint:details": "phpcs"
   }

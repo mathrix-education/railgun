@@ -22,23 +22,7 @@
     <file>database</file>
 
     <!-- Rules inherited from Doctrine -->
-    <rule ref="Doctrine">
-        <exclude name="Generic.Formatting.SpaceAfterNot"/>
-        <exclude name="Generic.Formatting.SpaceAfterCast"/>
-        <exclude name="Squiz.Strings.DoubleQuoteUsage.ContainsVar"/>
-        <exclude name="SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly"/>
-        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration"/>
-    </rule>
-
-    <!-- Force no whitespace after a type cast -->
-    <rule ref="Generic.Formatting.NoSpaceAfterCast"/>
-
-    <!-- Require no space around colon in return types -->
-    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing">
-        <properties>
-            <property name="spacesCountBeforeColon" value="0"/>
-        </properties>
-    </rule>
+    <rule ref="Mathrix"/>
 
     <!-- Do not require a vendor namespace for migrations and DatabaseSeeder -->
     <rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">
