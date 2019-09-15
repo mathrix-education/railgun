@@ -38,18 +38,21 @@ class AuthController extends BaseController
      * @throws ValidationException
      * @throws Exception
      */
-    public function login(Request $request) : SuccessJsonResponse
+    public function login(Request $request): SuccessJsonResponse
     {
-        $this->validate($request, [
-            'email'    => 'required|email',
-            'password' => 'required',
-        ]);
+        $this->validate(
+            $request,
+            [
+                'email'    => 'required|email',
+                'password' => 'required',
+            ]
+        );
 
         /** @var User $user */
         $user = User::query()
-                    ->where('email', '=', $request->json('email'))
-                    ->get(['id', 'password', 'scopes'])
-                    ->first();
+            ->where('email', '=', $request->json('email'))
+            ->get(['id', 'password', 'scopes'])
+            ->first();
 
         if ($user === null) {
             throw new InvalidCredentialsException();
@@ -81,7 +84,7 @@ class AuthController extends BaseController
      * @throws FacebookSDKException
      * @throws Exception
      */
-    public function facebook(Request $request, Facebook $facebook) : SuccessJsonResponse
+    public function facebook(Request $request, Facebook $facebook): SuccessJsonResponse
     {
         $this->validate($request, ['access_token' => 'required']);
 
@@ -94,19 +97,19 @@ class AuthController extends BaseController
         // First, attempt to find user by its facebook_id
         /** @var User $user */
         $user = User::query()
-                    ->where('metadata->facebook->id', '=', $body->id)
-                    ->orWhere('email', '=', $body->email)
-                    ->first();
+            ->where('metadata->facebook->id', '=', $body->id)
+            ->orWhere('email', '=', $body->email)
+            ->first();
 
         if ($user === null) {
             // User does not exist
             $user = new User(['password' => null]);
         }
 
-        User::unguarded(static function () use (&$user, &$request, &$response) : void {
+        User::unguarded(static function () use (&$user, &$request, &$response): void {
             $user->setFacebookAccessToken((string)$request->json('access_token'))
-                 ->syncFacebookProfile($response)
-                 ->save();
+                ->syncFacebookProfile($response)
+                ->save();
         });
 
         $jws = $user->getFacebookJWS();
@@ -126,13 +129,13 @@ class AuthController extends BaseController
      *
      * @throws Http400BadRequestException
      */
-    public function forgot(Request $request) : SuccessJsonResponse
+    public function forgot(Request $request): SuccessJsonResponse
     {
         // Try to find the user with the given email
         /** @var User $user */
         $user = User::query()
-                    ->where('email', '=', $request->json('email'))
-                    ->firstOrFail();
+            ->where('email', '=', $request->json('email'))
+            ->firstOrFail();
 
         if ($user->provider === 'facebook') {
             throw new Http400BadRequestException(null, 'Cannot reset password of a facebook account');
@@ -145,10 +148,10 @@ class AuthController extends BaseController
         Mail::to($user->email)
             ->sendNow(new PasswordForgottenMail($user));
 
-        return new SuccessJsonResponse([
-            'success' => true,
-            'message' => 'Reset email sent successfully',
-        ]);
+        return new SuccessJsonResponse(
+            [],
+            ['message' => 'Reset email sent successfully']
+        );
     }
 
     /**
@@ -162,18 +165,18 @@ class AuthController extends BaseController
      *
      * @throws ValidationException
      */
-    public function reset(Request $request, string $token) : SuccessJsonResponse
+    public function reset(Request $request, string $token): SuccessJsonResponse
     {
         $this->validate($request, ['password' => 'required']);
 
         // Try to find with the given token
         /** @var User $user */
         $user = User::query()
-                    ->where('token', '=', $token)
-                    ->firstOrFail();
+            ->where('token', '=', $token)
+            ->firstOrFail();
 
         // Update password
-        User::unguarded(static function () use ($user, $request) : void {
+        User::unguarded(static function () use ($user, $request): void {
             $user->update([
                 'password' => $request->input('password'),
                 'token'    => null, // Remove token

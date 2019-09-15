@@ -12,7 +12,7 @@ class ProductTableSeeder extends BaseTableSeeder
 {
     private const PRODUCT_COUNT = 350;
 
-    public function run() : void
+    public function run(): void
     {
         $faker          = Factory::create();
         $products       = factory(Product::class, self::PRODUCT_COUNT)->raw([

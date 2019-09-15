@@ -18,7 +18,7 @@ class ActivityObserver extends BaseObserver
      *
      * @return bool
      */
-    public function saved(Activity $activity) : bool
+    public function saved(Activity $activity): bool
     {
         if ($activity->wasChanged(['notion_id', 'visible'])) {
             $activity->notion->updateCounters();
@@ -33,9 +33,10 @@ class ActivityObserver extends BaseObserver
      * @param Activity $activity
      *
      * @return bool
+     *
      * @throws ForeignConstraints
      */
-    public function deleting(Activity $activity) : bool
+    public function deleting(Activity $activity): bool
     {
         $this->handleRelationDeletion($activity, 'modules');
 

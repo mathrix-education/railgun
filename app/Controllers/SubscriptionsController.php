@@ -39,7 +39,7 @@ class SubscriptionsController extends BaseController
      *
      * @throws UserAlreadyPremium
      */
-    public function standardPost(Request $request) : SuccessJsonResponse
+    public function standardPost(Request $request): SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();
@@ -70,7 +70,7 @@ class SubscriptionsController extends BaseController
      * @throws Http401UnauthorizedException
      * @throws StripeAPIException
      */
-    public function invoices(Request $request, string $subscriptionId) : SuccessJsonResponse
+    public function invoices(Request $request, string $subscriptionId): SuccessJsonResponse
     {
         /** @var User $user */
         $user             = $request->user();
@@ -110,7 +110,7 @@ class SubscriptionsController extends BaseController
      *
      * @return SuccessJsonResponse The Stripe subscription (created or patched).
      */
-    public function card(string $subscriptionId) : SuccessJsonResponse
+    public function card(string $subscriptionId): SuccessJsonResponse
     {
         if (preg_match('/^sub_[0-9A-Fa-f]{32}/', $subscriptionId)) {
             // Braintree subscription

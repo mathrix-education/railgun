@@ -13,9 +13,10 @@ class CategoryObserver extends BaseObserver
      * @param Category $category
      *
      * @return bool
+     *
      * @throws ForeignConstraints
      */
-    public function deleting(Category $category) : bool
+    public function deleting(Category $category): bool
     {
         $this->handleRelationDeletion($category, 'posts');
 

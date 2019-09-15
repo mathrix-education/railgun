@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PostObserver extends BaseObserver
 {
-    public function saving(Post $post) : bool
+    public function saving(Post $post): bool
     {
         // By default set the post user_id to the current user id.
         if (empty($post->user_id)) {
@@ -23,10 +23,10 @@ class PostObserver extends BaseObserver
         return true;
     }
 
-    public function deleting(Post $post) : bool
+    public function deleting(Post $post): bool
     {
         // Force delete linked comments and their children
-        $post->comments()->each(static function (Comment $comment) : void {
+        $post->comments()->each(static function (Comment $comment): void {
             $comment->forceDelete();
         });
 

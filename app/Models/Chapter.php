@@ -54,7 +54,7 @@ class Chapter extends BaseModel
      *
      * @return Builder
      */
-    public static function byGradeAndDiscipline(int $gradeId, int $disciplineId) : Builder
+    public static function byGradeAndDiscipline(int $gradeId, int $disciplineId): Builder
     {
         return self::query()
             ->where('grade_id', '=', $gradeId)
@@ -69,16 +69,16 @@ class Chapter extends BaseModel
      *
      * @return Chapter
      */
-    public static function recursive(int $id) : Chapter
+    public static function recursive(int $id): Chapter
     {
         return self::with([
-            'notions' => static function (HasMany $q) : void {
+            'notions' => static function (HasMany $q): void {
                 $q->where('visible', '=', true);
             },
-            'notions.activities' => static function (HasMany $q) : void {
+            'notions.activities' => static function (HasMany $q): void {
                 $q->where('visible', '=', true);
             },
-            'notions.activities.modules' => static function (HasMany $q) : void {
+            'notions.activities.modules' => static function (HasMany $q): void {
                 $q->where('visible', '=', true);
             },
         ])
@@ -88,7 +88,7 @@ class Chapter extends BaseModel
     /**
      * Update counters.
      */
-    public function updateCounters() : void
+    public function updateCounters(): void
     {
         $this->notion_count   = $this->notions()
             ->where('visible', '=', true)
@@ -108,7 +108,7 @@ class Chapter extends BaseModel
     /**
      * The chapter notions.
      */
-    public function notions() : HasMany
+    public function notions(): HasMany
     {
         return $this->hasMany(Notion::class)->orderBy('order');
     }
@@ -116,7 +116,7 @@ class Chapter extends BaseModel
     /**
      * BelongsTo Grade.
      */
-    public function grade() : BelongsTo
+    public function grade(): BelongsTo
     {
         return $this->belongsTo(Grade::class);
     }
@@ -124,7 +124,7 @@ class Chapter extends BaseModel
     /**
      * BelongsTo Discipline.
      */
-    public function discipline() : BelongsTo
+    public function discipline(): BelongsTo
     {
         return $this->belongsTo(Discipline::class);
     }
@@ -132,7 +132,7 @@ class Chapter extends BaseModel
     /**
      * activity_to_revise
      */
-    public function getActivityToReviseAttribute() : ?int
+    public function getActivityToReviseAttribute(): ?int
     {
         /** @var User $user */
         $user = Auth::user();
@@ -161,7 +161,7 @@ class Chapter extends BaseModel
     /**
      * HasMany Marks.
      */
-    public function activities() : HasManyThrough
+    public function activities(): HasManyThrough
     {
         return $this->hasManyThrough(Activity::class, Notion::class);
     }
@@ -169,7 +169,7 @@ class Chapter extends BaseModel
     /**
      * activity_completed
      */
-    public function getActivityCompletedAttribute() : ?int
+    public function getActivityCompletedAttribute(): ?int
     {
         /** @var User $user */
         $user = Auth::user();

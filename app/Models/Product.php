@@ -87,12 +87,13 @@ class Product extends BaseModel
      * @param Transaction $transaction The Braintree transaction.
      *
      * @return Purchase|null
+     *
      * @throws Exception
      */
-    public function deliver(User $customer, ?Transaction $transaction = null) : ?Purchase
+    public function deliver(User $customer, ?Transaction $transaction = null): ?Purchase
     {
         if ($this->type === 'pack') {
-            $this->items->each(static function (Product $item) use ($customer, $transaction) : void {
+            $this->items->each(static function (Product $item) use ($customer, $transaction): void {
                 $item->deliver($customer, $transaction);
             });
         } elseif ($this->type === 'premium') {
@@ -118,7 +119,7 @@ class Product extends BaseModel
      *
      * @return Collection|Product[]
      */
-    public function lineage() : Collection
+    public function lineage(): Collection
     {
         $lineage = new Collection([$this]);
 
@@ -151,7 +152,7 @@ class Product extends BaseModel
     /**
      * BelongsTo Module.
      */
-    public function module() : BelongsTo
+    public function module(): BelongsTo
     {
         return $this->belongsTo(Module::class);
     }
@@ -159,7 +160,7 @@ class Product extends BaseModel
     /**
      * BelongsTo parent Products.
      */
-    public function parent() : BelongsTo
+    public function parent(): BelongsTo
     {
         return $this->belongsTo(self::class, 'parent_id');
     }
@@ -179,7 +180,7 @@ class Product extends BaseModel
      * BelongsToMany products.
      * This relation is only "Pack" typed products.
      */
-    public function items() : BelongsToMany
+    public function items(): BelongsToMany
     {
         return $this->belongsToMany(
             self::class,
@@ -192,7 +193,7 @@ class Product extends BaseModel
     /**
      * BelongsToMany Discount.
      */
-    public function discounts() : BelongsToMany
+    public function discounts(): BelongsToMany
     {
         return $this->belongsToMany(Discount::class);
     }
@@ -200,7 +201,7 @@ class Product extends BaseModel
     /**
      * Product::$owned getter attribute
      */
-    public function getOwnedAttribute() : bool
+    public function getOwnedAttribute(): bool
     {
         /** @var User $user */
         $user = Auth::user();

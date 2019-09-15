@@ -17,7 +17,6 @@ RUN apk -U add ca-certificates && \
         nginx \
         curl \
         php7 \
-        #php7-fileinfo \
         php7-fpm \
         php7-curl \
         php7-dom \
@@ -29,11 +28,7 @@ RUN apk -U add ca-certificates && \
         php7-opcache \
         php7-pdo_mysql \
         php7-phar \
-        #php7-redis \
-        #php7-tokenizer \
-        php7-xdebug \
         php7-xml \
-        #php7-xmlwriter \
         php7-zip && \
         ln -nfs /usr/bin/php7 /usr/bin/php
 

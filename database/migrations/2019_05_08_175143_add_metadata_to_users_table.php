@@ -11,9 +11,9 @@ class AddMetadataToUsersTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up() : void
+    public function up(): void
     {
-        Schema::table('users', static function (Blueprint $table) : void {
+        Schema::table('users', static function (Blueprint $table): void {
             $table->string('password')->nullable()->change();
             $table->json('metadata')->nullable()->after('settings');
         });
@@ -22,9 +22,9 @@ class AddMetadataToUsersTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down() : void
+    public function down(): void
     {
-        Schema::table('users', static function (Blueprint $table) : void {
+        Schema::table('users', static function (Blueprint $table): void {
             $table->dropColumn('metadata');
             $table->string('password')->nullable(false)->change();
         });

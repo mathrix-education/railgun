@@ -58,7 +58,7 @@ class Subscription extends Bishop
      *
      * @return Subscription
      */
-    public static function from($subscription) : self
+    public static function from($subscription): self
     {
         if ($subscription instanceof StripeSubscription) {
             return new self(self::fromStripe($subscription));
@@ -78,7 +78,7 @@ class Subscription extends Bishop
      *
      * @return array
      */
-    public static function fromStripe(StripeSubscription $subscription) : array
+    public static function fromStripe(StripeSubscription $subscription): array
     {
         /** @var User $currentUser */
         $currentUser = Auth::user();
@@ -142,7 +142,7 @@ class Subscription extends Bishop
      *
      * @return array
      */
-    public static function fromBraintree(BraintreeSubscription $subscription) : array
+    public static function fromBraintree(BraintreeSubscription $subscription): array
     {
         $trialEnd = null;
 

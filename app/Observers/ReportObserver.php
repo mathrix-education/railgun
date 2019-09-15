@@ -8,7 +8,7 @@ use App\Models\Report;
 
 class ReportObserver extends BaseObserver
 {
-    public function creating(Report $report) : bool
+    public function creating(Report $report): bool
     {
         $report->status = 'todo';
 

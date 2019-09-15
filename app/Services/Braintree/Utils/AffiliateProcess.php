@@ -50,7 +50,7 @@ class AffiliateProcess
      *
      * @throws InvalidSponsor
      */
-    public function canBeAffiliatedOrFail() : bool
+    public function canBeAffiliatedOrFail(): bool
     {
         if (! $this->canBeAffiliated()) {
             throw new InvalidSponsor($this->sponsor);
@@ -62,7 +62,7 @@ class AffiliateProcess
     /**
      * Check whether the sponsor can have one more affiliate.
      */
-    public function canBeAffiliated() : bool
+    public function canBeAffiliated(): bool
     {
         if ($this->sponsor->email === self::DEFAULT_SPONSOR) {
             return true;
@@ -88,7 +88,7 @@ class AffiliateProcess
      *
      * @return array
      */
-    public function getDiscountLineItem() : array
+    public function getDiscountLineItem(): array
     {
         return [
             'kind' => 'credit',
@@ -102,7 +102,7 @@ class AffiliateProcess
     /**
      * Get the affiliate discount price.
      */
-    public function getDiscountAmount() : int
+    public function getDiscountAmount(): int
     {
         return self::AFFILIATE_DISCOUNT;
     }
@@ -110,7 +110,7 @@ class AffiliateProcess
     /**
      * Refund the sponsor after the transaction process.
      */
-    public function refundSponsor() : void
+    public function refundSponsor(): void
     {
         if ($this->sponsor->email === self::DEFAULT_SPONSOR) {
             return;

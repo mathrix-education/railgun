@@ -34,12 +34,13 @@ class SubscriptionCreationPipeline extends Pipeline
      * @throws InvalidCoupon
      * @throws ValidationException
      */
-    protected function initialize() : void
+    protected function initialize(): void
     {
         $this->validate(
             $this->request,
             [
                 'plan' => 'required|in:' . implode(',', SubscriptionUtils::PLANS),
+                'product_id' => 'sometimes|required|exists:products,id',
             ]
         );
 
@@ -73,14 +74,14 @@ class SubscriptionCreationPipeline extends Pipeline
     /**
      * @throws Exception
      */
-    protected function exchange() : void
+    protected function exchange(): void
     {
         if ($this->product !== null) {
             // If there is a product select, create the related invoice item.
             $productInvoiceItem = InvoiceItem::create([
                 'currency'    => 'eur',
                 'customer'    => $this->user->stripe_id,
-                'description' => "{$this->product->name}",
+                'description' => $this->product->name,
                 'metadata'    => [
                     'user_id'    => $this->user->id,
                     'product_id' => $this->product->id,
@@ -96,8 +97,7 @@ class SubscriptionCreationPipeline extends Pipeline
                     'customer'    => $this->user->stripe_id,
                     'description' => trans('stripe.discount.annual_subscription'),
                     'metadata'    => [
-                        'user_id'    => $this->user->id,
-                        'product_id' => $this->product->id,
+                        'user_id' => $this->user->id,
                     ],
                     'quantity'    => 1,
                     'unit_amount' => -2000,
@@ -144,7 +144,7 @@ class SubscriptionCreationPipeline extends Pipeline
         }
     }
 
-    protected function finalize() : void
+    protected function finalize(): void
     {
         $this->user->invalidate();
     }

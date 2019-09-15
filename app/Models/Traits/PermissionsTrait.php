@@ -21,7 +21,7 @@ trait PermissionsTrait
      *
      * @throws Http401UnauthorizedException
      */
-    public function canOrFail(string $ability, $arguments = []) : void
+    public function canOrFail(string $ability, $arguments = []): void
     {
         if ($this->cant($ability, $arguments)) {
             throw new Http401UnauthorizedException(null, "Failed to pass $ability policy");

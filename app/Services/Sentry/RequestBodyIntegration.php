@@ -26,9 +26,9 @@ final class RequestBodyIntegration implements IntegrationInterface
     /**
      * {@inheritdoc}
      */
-    public function setupOnce() : void
+    public function setupOnce(): void
     {
-        Scope::addGlobalEventProcessor(static function (Event $event) : Event {
+        Scope::addGlobalEventProcessor(static function (Event $event): Event {
             self::applyToEvent($event);
 
             return $event;
@@ -41,7 +41,7 @@ final class RequestBodyIntegration implements IntegrationInterface
      * @param Event                       $event   The event that will be enriched with a request
      * @param ServerRequestInterface|null $request The Request that will be processed and added to the event
      */
-    public static function applyToEvent(Event $event, ?ServerRequestInterface $request = null) : void
+    public static function applyToEvent(Event $event, ?ServerRequestInterface $request = null): void
     {
         if ($request === null) {
             $request = isset(

@@ -10,7 +10,7 @@ use function scope;
 
 class CommentPolicy extends BasePolicy
 {
-    public function patch(User $currentUser, Comment $comment) : bool
+    public function patch(User $currentUser, Comment $comment): bool
     {
         $hasScope    = scope($currentUser, 'comments:read');
         $ownsComment = $currentUser->id === $comment->user_id;

@@ -39,7 +39,7 @@ class SystemController extends BaseController
      * GET /
      * The base application route.
      */
-    public function base() : JsonResponse
+    public function base(): JsonResponse
     {
         return new SuccessJsonResponse([
             'message' => 'Welcome to the official Mathrix Education REST API!',
@@ -55,7 +55,7 @@ class SystemController extends BaseController
      *
      * @return Response The documentation.
      */
-    public function docs() : Response
+    public function docs(): Response
     {
         $docs = file_get_contents(resource_path('views/docs/index.html'));
 
@@ -70,7 +70,7 @@ class SystemController extends BaseController
      *
      * @return SuccessJsonResponse The benchmarks results.
      */
-    public function health(int $count = 1) : SuccessJsonResponse
+    public function health(int $count = 1): SuccessJsonResponse
     {
         $userId    = User::random()->id;
         $chapterId = Chapter::random()->id;
@@ -78,13 +78,13 @@ class SystemController extends BaseController
         $userQuery        = User::query()
             ->where('id', '=', $userId);
         $chapterRecursive = Chapter::with([
-            'notions'                    => static function (HasMany $q) : void {
+            'notions'                    => static function (HasMany $q): void {
                 $q->where('visible', '=', true);
             },
-            'notions.activities'         => static function (HasMany $q) : void {
+            'notions.activities'         => static function (HasMany $q): void {
                 $q->where('visible', '=', true);
             },
-            'notions.activities.modules' => static function (HasMany $q) : void {
+            'notions.activities.modules' => static function (HasMany $q): void {
                 $q->where('visible', '=', true);
             },
         ])
@@ -94,7 +94,7 @@ class SystemController extends BaseController
             'user_random'       => [
                 'query'        => $userQuery->toSql(),
                 "mean($count)" => $this->benchmark(
-                    static function () use ($userQuery) : void {
+                    static function () use ($userQuery): void {
                         $userQuery->firstOrFail();
                     },
                     $count
@@ -103,7 +103,7 @@ class SystemController extends BaseController
             'chapter_recursive' => [
                 'query'        => $chapterRecursive->toSql(),
                 "mean($count)" => $this->benchmark(
-                    static function () use ($chapterRecursive) : void {
+                    static function () use ($chapterRecursive): void {
                         $chapterRecursive->firstOrFail();
                     },
                     $count
@@ -144,7 +144,7 @@ class SystemController extends BaseController
      * GET /system/sitemap
      * Dynamically generate the sitemap.
      */
-    public function sitemap() : Response
+    public function sitemap(): Response
     {
         $driver  = new XmlWriterDriver();
         $sitemap = new Urlset();
@@ -157,7 +157,7 @@ class SystemController extends BaseController
         DB::table('grades')
             ->select(['slug'])
             ->get()
-            ->each(static function ($data) use ($sitemap) : void {
+            ->each(static function ($data) use ($sitemap): void {
                 $gradeUrl = new Url(loc($data->slug));
                 $sitemap->add($gradeUrl);
             });
@@ -179,7 +179,7 @@ class SystemController extends BaseController
             ->join('disciplines', 'chapters.discipline_id', '=', 'disciplines.id')
             ->where('seo_index', '=', true)
             ->get()
-            ->map(static function ($data) use ($sitemap) : void {
+            ->map(static function ($data) use ($sitemap): void {
                 /*
                  * Search for videos in the module content and if some are found, use the
                  */
@@ -223,7 +223,7 @@ class SystemController extends BaseController
      * GET /system/work
      * Run schedule and queue workers.
      */
-    public function work() : SuccessJsonResponse
+    public function work(): SuccessJsonResponse
     {
         $start  = time();
         $output = new BufferedOutput();

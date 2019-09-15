@@ -22,7 +22,7 @@ class CacheCleanCommand extends BaseCommand
     /**
      * Clean the cache using the expiration date.
      */
-    public function handle() : void
+    public function handle(): void
     {
         Log::info('Starting cache cleaning');
         $nowTimestamp   = Carbon::now()

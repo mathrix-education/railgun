@@ -21,7 +21,10 @@ post:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Vote'
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/Vote'
 delete:
   summary: Delete vote
   security:

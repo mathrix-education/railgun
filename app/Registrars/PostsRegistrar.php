@@ -12,7 +12,7 @@ class PostsRegistrar extends BaseRegistrar
     /**
      * Register the routes.
      */
-    public function register() : void
+    public function register(): void
     {
         $controller = PostsController::class;
         $this->get('posts/latest', "$controller@latest");

@@ -14,7 +14,7 @@ trait NoPivot
      *
      * @return array
      */
-    public function toArray() : array
+    public function toArray(): array
     {
         $data = parent::toArray();
         if (isset($data['pivot'])) {

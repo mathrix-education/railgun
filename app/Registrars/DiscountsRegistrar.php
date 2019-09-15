@@ -11,7 +11,7 @@ class DiscountsRegistrar extends BaseRegistrar
     /**
      * Register the routes.
      */
-    public function register() : void
+    public function register(): void
     {
         $this->rest([
             'std:index' => 'scope:discounts:read',

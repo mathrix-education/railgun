@@ -11,9 +11,9 @@ class CreateDiscountProductTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up() : void
+    public function up(): void
     {
-        Schema::create('discount_product', static function (Blueprint $table) : void {
+        Schema::create('discount_product', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('discount_id');
             $table->unsignedBigInteger('product_id');
@@ -28,7 +28,7 @@ class CreateDiscountProductTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down() : void
+    public function down(): void
     {
         Schema::dropIfExists('discount_product');
     }

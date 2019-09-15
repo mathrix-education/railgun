@@ -44,7 +44,7 @@ class TransactionRefundMail extends BaseMail
     /**
      * Mock the mail.
      */
-    public static function mock() : TransactionRefundMail
+    public static function mock(): TransactionRefundMail
     {
         $user        = User::random();
         $refund      = Cache::remember(
@@ -75,7 +75,7 @@ class TransactionRefundMail extends BaseMail
     /**
      * Build the mail.
      */
-    public function build() : TransactionRefundMail
+    public function build(): TransactionRefundMail
     {
         return $this->subject('Votre remboursement de Mathrix')
             ->from('support@mathrix.fr')

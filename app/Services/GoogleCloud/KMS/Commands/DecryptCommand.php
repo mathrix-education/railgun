@@ -29,7 +29,7 @@ class DecryptCommand extends BaseCommand
      * @throws ApiException
      * @throws ValidationException
      */
-    public function handle() : void
+    public function handle(): void
     {
         putenv('SUPPRESS_GCLOUD_CREDS_WARNING=true');
         $environment = $this->argument('environment');

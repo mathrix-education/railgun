@@ -53,7 +53,7 @@ class Report extends BaseModel
     /**
      * BelongsTo Module.
      */
-    public function module() : BelongsTo
+    public function module(): BelongsTo
     {
         return $this->belongsTo(Module::class);
     }

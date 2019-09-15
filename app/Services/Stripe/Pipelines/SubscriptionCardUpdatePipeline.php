@@ -22,7 +22,7 @@ class SubscriptionCardUpdatePipeline extends Pipeline
         $this->subscriptionId = $subscriptionId;
     }
 
-    protected function initialize() : void
+    protected function initialize(): void
     {
         $this->validate($this->request, [
             'card.id' => 'required_without:card.token',
@@ -35,7 +35,7 @@ class SubscriptionCardUpdatePipeline extends Pipeline
         ]);
     }
 
-    protected function exchange() : void
+    protected function exchange(): void
     {
         if ($this->request->has('card.token')) {
             /** @var StripeCard $card */
@@ -58,7 +58,7 @@ class SubscriptionCardUpdatePipeline extends Pipeline
         ]);
     }
 
-    protected function finalize() : void
+    protected function finalize(): void
     {
         $this->user->invalidate(StripeCustomer::$StripeSubscriptionsCacheKey);
     }

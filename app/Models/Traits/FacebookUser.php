@@ -28,10 +28,12 @@ trait FacebookUser
 {
     /**
      * @param string $shortAccessToken
+     *
      * @return User
+     *
      * @throws FacebookSDKException
      */
-    public function setFacebookAccessToken(string $shortAccessToken) : User
+    public function setFacebookAccessToken(string $shortAccessToken): User
     {
         /** @var Facebook $facebook */
         $facebook = app()->make(Facebook::class);
@@ -57,7 +59,7 @@ trait FacebookUser
     /**
      * @throws FacebookSDKException
      */
-    public function syncFacebookProfile(?FacebookResponse $response = null) : User
+    public function syncFacebookProfile(?FacebookResponse $response = null): User
     {
         if ($response === null) {
             /** @var Facebook $facebook */
@@ -80,7 +82,7 @@ trait FacebookUser
     /**
      * @throws Exception
      */
-    public function getFacebookJWS() : JWS
+    public function getFacebookJWS(): JWS
     {
         $expiresIn = $this->metadata['facebook']['expires_in'];
 

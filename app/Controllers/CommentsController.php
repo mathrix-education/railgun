@@ -25,7 +25,7 @@ class CommentsController extends BaseController
      *
      * @return SuccessJsonResponse The created comment.
      */
-    public function post(Request $request) : SuccessJsonResponse
+    public function post(Request $request): SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();
@@ -43,7 +43,7 @@ class CommentsController extends BaseController
      *
      * @throws Http400BadRequestException
      */
-    public function latest() : SuccessJsonResponse
+    public function latest(): SuccessJsonResponse
     {
         $query = Comment::with([
             'user:id,username,firstname,grade_id',

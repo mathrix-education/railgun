@@ -20,7 +20,7 @@ abstract class BaseObserver
      *
      * @throws ForeignConstraints
      */
-    public function handleRelationDeletion(BaseModel $model, string $relationName, bool $delete = false) : void
+    public function handleRelationDeletion(BaseModel $model, string $relationName, bool $delete = false): void
     {
         /** @var Collection $collection */
         $relation = $model->{$relationName}();
@@ -40,7 +40,7 @@ abstract class BaseObserver
             throw new ForeignConstraints($model, $relationName);
         }
 
-        $collection->each(static function ($related) : void {
+        $collection->each(static function ($related): void {
             /** @var BaseModel $related */
             $related->delete();
         });

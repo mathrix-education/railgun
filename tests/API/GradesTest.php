@@ -53,7 +53,7 @@ class GradesTest extends APIStatelessTestCase
     public function testDisciplinesVisible() : void
     {
         $grade = Grade::random();
-        $this->json('get', '/grades/{$grade->id}/disciplines/visible');
+        $this->json('get', "/grades/{$grade->id}/disciplines/visible");
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse($this->response);
@@ -66,7 +66,7 @@ class GradesTest extends APIStatelessTestCase
     {
         $chapter = Chapter::random(['visible', '=', true]);
 
-        $this->json('get', '/grades/slug/{$chapter->grade->slug}/chapters/slug/{$chapter->slug}');
+        $this->json('get', "/grades/slug/{$chapter->grade->slug}/chapters/slug/{$chapter->slug}");
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse($this->response);
@@ -83,7 +83,7 @@ class GradesTest extends APIStatelessTestCase
     {
         $chapter = Chapter::random(['visible', '=', true]);
         $method  = 'get';
-        $uri     = '/grades/$chapter->grade_id/disciplines/$chapter->discipline_id/chapters';
+        $uri     = "/grades/$chapter->grade_id/disciplines/{$chapter->discipline_id}/chapters";
 
         JWT::autoScope($method, $uri);
         $this->json($method, $uri);
@@ -99,7 +99,7 @@ class GradesTest extends APIStatelessTestCase
     {
         $chapter = Chapter::random(['visible', '=', true]);
         $method  = 'get';
-        $uri     = '/grades/$chapter->grade_id/disciplines/$chapter->discipline_id/chapters/visible';
+        $uri     = "/grades/$chapter->grade_id/disciplines/{$chapter->discipline_id}/chapters/visible";
 
         JWT::autoScope($method, $uri);
         $this->json($method, $uri);

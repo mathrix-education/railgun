@@ -22,9 +22,10 @@ class CollectionUtils
      *                            provided)
      *
      * @return Collection
+     *
      * @throws StripeAPIException
      */
-    public static function paginate($class, array $params = [], ?int $page = null, ?int $perPage = null) : Collection
+    public static function paginate($class, array $params = [], ?int $page = null, ?int $perPage = null): Collection
     {
         if ($page === null || $perPage === null) {
             [$page, $perPage] = PaginationJsonResponse::getPagination();

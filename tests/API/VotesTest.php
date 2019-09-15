@@ -25,10 +25,10 @@ class VotesTest extends APIStatelessTestCase
     {
         $comment = Comment::random();
         $value   = $this->faker->boolean ? 1 : -1;
-        $uri     = '/votes/comment/{$comment->id}';
+        $uri     = "/votes/comment/{$comment->id}";
         $user    = JWT::autoScope('post', $uri);
 
-        $this->json('post', '/votes/comment/{$comment->id}', ['value' => $value]);
+        $this->json('post', $uri, ['value' => $value]);
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse($this->response);
@@ -49,7 +49,7 @@ class VotesTest extends APIStatelessTestCase
         JWT::actingAs($vote->user);
         $value = $vote->value * -1;
 
-        $this->json('post', '/votes/comment/{$vote->comment->id}', ['value' => $value]);
+        $this->json('post', "/votes/comment/{$vote->comment->id}", ['value' => $value]);
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse($this->response);
@@ -69,7 +69,7 @@ class VotesTest extends APIStatelessTestCase
     {
         $vote = Vote::random();
         JWT::actingAs($vote->user);
-        $this->json('delete', '/votes/comment/{$vote->comment->id}');
+        $this->json('delete', "/votes/comment/{$vote->comment->id}");
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse($this->response);

@@ -57,7 +57,7 @@ class Notion extends BaseModel
     /**
      * Update counters.
      */
-    public function updateCounters() : void
+    public function updateCounters(): void
     {
         $this->activity_count = Activity::query()
             ->where('notion_id', '=', $this->id)
@@ -75,7 +75,7 @@ class Notion extends BaseModel
     /**
      * The notion parent chapter.
      */
-    public function chapter() : BelongsTo
+    public function chapter(): BelongsTo
     {
         return $this->belongsTo(Chapter::class);
     }
@@ -83,7 +83,7 @@ class Notion extends BaseModel
     /**
      * The notion child activities.
      */
-    public function activities() : HasMany
+    public function activities(): HasMany
     {
         return $this->hasMany(Activity::class)->orderBy('order');
     }

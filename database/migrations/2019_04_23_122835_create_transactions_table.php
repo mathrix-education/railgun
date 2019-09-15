@@ -11,9 +11,9 @@ class CreateTransactionsTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up() : void
+    public function up(): void
     {
-        Schema::create('transactions', static function (Blueprint $table) : void {
+        Schema::create('transactions', static function (Blueprint $table): void {
             $table->string('id', 36)->unique();
             $table->string('type');
             $table->string('plan_id')->nullable();
@@ -28,7 +28,7 @@ class CreateTransactionsTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down() : void
+    public function down(): void
     {
         Schema::dropIfExists('transactions');
     }

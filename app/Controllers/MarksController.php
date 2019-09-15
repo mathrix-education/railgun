@@ -29,9 +29,9 @@ class MarksController extends BaseController
      *
      * @return Collection The collection of tree.
      */
-    private function getTreeFromMarks(Collection $marks) : Collection
+    private function getTreeFromMarks(Collection $marks): Collection
     {
-        return $marks->map(static function (Mark $mark) : array {
+        return $marks->map(static function (Mark $mark): array {
             /** @var Activity $activity */
             $activity = $mark->markable;
 
@@ -65,7 +65,7 @@ class MarksController extends BaseController
      *
      * @return SuccessJsonResponse The marks list.
      */
-    public function activitiesToRevise(Request $request) : SuccessJsonResponse
+    public function activitiesToRevise(Request $request): SuccessJsonResponse
     {
         /** @var User $user */
         $user  = $request->user();

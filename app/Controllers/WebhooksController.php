@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Services\Stripe\Webhooks\InvoicePaymentSucceededWebhook;
 use App\Services\Stripe\Webhooks\SetupIntentSucceededWebhook;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
@@ -31,7 +31,7 @@ class WebhooksController extends BaseController
      * @throws Http400BadRequestException
      * @throws SignatureVerification
      */
-    public function stripe(Request $request) : JsonResponse
+    public function stripe(Request $request): SuccessJsonResponse
     {
         /**
          * @link https://github.com/laravel/cashier/issues/437#issuecomment-388779839
@@ -45,8 +45,10 @@ class WebhooksController extends BaseController
         );
 
         switch ($event->type) {
-            case 'setup_intent.succeeded':
-                return (new SetupIntentSucceededWebhook())->handle($event);
+            case InvoicePaymentSucceededWebhook::EVENT:
+                return (new InvoicePaymentSucceededWebhook())->handle($event->data->object);
+            case SetupIntentSucceededWebhook::EVENT:
+                return (new SetupIntentSucceededWebhook())->handle($event->data->object);
             default:
                 return new SuccessJsonResponse([
                     'event_type' => $event->type,

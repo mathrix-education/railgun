@@ -53,7 +53,7 @@ class Discount extends BaseModel
      *
      * @return bool
      */
-    public function isApplicableBleOnAtLeastOneOf(array $products) : bool
+    public function isApplicableBleOnAtLeastOneOf(array $products): bool
     {
         /** @var Product $product */
         foreach ($products as $product) {
@@ -74,7 +74,7 @@ class Discount extends BaseModel
     /**
      * Check if the discount is applicable on the given product.
      */
-    public function isApplicableOn(Product $product) : bool
+    public function isApplicableOn(Product $product): bool
     {
         if ($this->isExpired()) {
             return false;
@@ -88,7 +88,7 @@ class Discount extends BaseModel
     /**
      * Check if the code is expired by its properties (counter and/or expiration date).
      */
-    public function isExpired() : bool
+    public function isExpired(): bool
     {
         return $this->counter === 0 || ($this->expire_at !== null && $this->expire_at->isPast());
     }
@@ -96,7 +96,7 @@ class Discount extends BaseModel
     /**
      * BelongsToMany Product.
      */
-    public function products() : BelongsToMany
+    public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class);
     }

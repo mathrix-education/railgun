@@ -29,7 +29,7 @@ class ModulesController extends BaseController
      *
      * @throws Http400BadRequestException
      */
-    public function getComments(int $moduleId) : PaginationJsonResponse
+    public function getComments(int $moduleId): PaginationJsonResponse
     {
         /** @var Module $module */
         $module = Module::query()
@@ -52,7 +52,7 @@ class ModulesController extends BaseController
      *
      * @throws ModelNotFoundException
      */
-    public function chapterRecursive(Request $request, int $moduleId) : SuccessJsonResponse
+    public function chapterRecursive(Request $request, int $moduleId): SuccessJsonResponse
     {
         /** @var Module $module */
         $module = Module::query()
@@ -76,7 +76,7 @@ class ModulesController extends BaseController
      *
      * @return SuccessJsonResponse The marked module.
      */
-    public function mark(Request $request, int $moduleId) : SuccessJsonResponse
+    public function mark(Request $request, int $moduleId): SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();

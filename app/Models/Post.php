@@ -49,7 +49,7 @@ class Post extends BaseModel
     /**
      * BelongsTo Module.
      */
-    public function module() : BelongsTo
+    public function module(): BelongsTo
     {
         return $this->belongsTo(Module::class);
     }
@@ -57,7 +57,7 @@ class Post extends BaseModel
     /**
      * BelongsTo Category.
      */
-    public function category() : BelongsTo
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
@@ -65,7 +65,7 @@ class Post extends BaseModel
     /**
      * BelongsTo User.
      */
-    public function user() : BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -73,7 +73,7 @@ class Post extends BaseModel
     /**
      * HasMany Comments
      */
-    public function comments() : HasMany
+    public function comments(): HasMany
     {
         return $this->module->comments();
     }

@@ -9,46 +9,45 @@ use Braintree\Result\Successful;
 use Braintree\Subscription as BraintreeSubscription;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
-use Stripe\Event;
 use Stripe\SetupIntent;
 use function gateway;
 
 class SetupIntentSucceededWebhook extends BaseWebhook
 {
+    public const EVENT = 'setup_intent.succeeded';
+
     /**
      * Handle setup_intent.succeeded.
      *
-     * @param Event $event The Stripe Event
+     * @param SetupIntent $setupIntent The Stripe SetupIntent object.
      *
      * @return SuccessJsonResponse
      *
      * @throws Http400BadRequestException
      */
-    public function handle(Event $event) : SuccessJsonResponse
+    public function handle($setupIntent): SuccessJsonResponse
     {
-        /** @var SetupIntent $setupIntent */
-        $setupIntent = $event->data->object;
-
         if (empty($setupIntent->metadata['braintree_subscription_id'])) {
             return new SuccessJsonResponse([
-                'event_type' => $event->type,
+                'event_type' => self::EVENT,
             ], ['message' => 'Webhook handled']);
         }
 
         $braintreeSubscriptionId = $setupIntent->metadata['braintree_subscription_id'];
 
         /** @var Successful|Error $result */
-        $result = gateway()->subscription()->cancel($braintreeSubscriptionId);
+        $result = gateway()
+            ->subscription()
+            ->cancel($braintreeSubscriptionId);
 
         if ($result->success) {
             /** @var BraintreeSubscription $subscription */
             $subscription = $result->subscription;
 
             return new SuccessJsonResponse([
-                'event_type' => $event->type,
+                'event_type' => self::EVENT,
                 'subscription' => [
-                    'id' => $subscription->id,
-                    'status' => $subscription->status,
+                    'braintree_id' => $subscription->id,
                 ],
             ]);
         }

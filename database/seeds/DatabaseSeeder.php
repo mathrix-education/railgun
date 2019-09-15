@@ -19,7 +19,7 @@ use Mathrix\Lumen\Zero\Database\BaseTableSeeder;
 
 class DatabaseSeeder extends BaseTableSeeder
 {
-    public function run() : void
+    public function run(): void
     {
         // Content
         $this->seedFromJson('countries');

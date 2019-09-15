@@ -11,9 +11,9 @@ class CreateGradesTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up() : void
+    public function up(): void
     {
-        Schema::create('grades', static function (Blueprint $table) : void {
+        Schema::create('grades', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('slug');
@@ -32,7 +32,7 @@ class CreateGradesTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down() : void
+    public function down(): void
     {
         Schema::dropIfExists('grades');
     }

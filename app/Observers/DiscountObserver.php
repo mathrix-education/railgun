@@ -9,7 +9,7 @@ use App\Models\Product;
 
 class DiscountObserver extends BaseObserver
 {
-    public function saving(Discount $discount) : bool
+    public function saving(Discount $discount): bool
     {
         // Sync notions
         if ($discount->exists && isset($discount->link['products'])) {
@@ -34,7 +34,7 @@ class DiscountObserver extends BaseObserver
         return true;
     }
 
-    public function deleting(Discount $discount) : bool
+    public function deleting(Discount $discount): bool
     {
         $discount->products()->detach();
 

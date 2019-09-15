@@ -14,7 +14,7 @@ use function env;
  */
 class BraintreeGatewayServiceProvider extends ServiceProvider
 {
-    public function boot() : void
+    public function boot(): void
     {
         $braintreeEnv = env('BRAINTREE_ENVIRONMENT', 'sandbox');
 
@@ -32,7 +32,7 @@ class BraintreeGatewayServiceProvider extends ServiceProvider
         });
     }
 
-    public function register() : void
+    public function register(): void
     {
     }
 }

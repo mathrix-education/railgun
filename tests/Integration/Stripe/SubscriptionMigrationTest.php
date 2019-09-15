@@ -90,7 +90,7 @@ class SubscriptionMigrationTest extends APIStatelessTestCase
 
         JWT::actingAs($this->requester);
 
-        $this->json('patch', '/subscriptions/{$braintreeSubscription->id}/card', [
+        $this->json('patch', "/subscriptions/{$braintreeSubscription->id}/card", [
             'card' => ['token' => $token],
         ]);
 

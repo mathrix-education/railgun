@@ -49,7 +49,7 @@ class ChaptersTest extends APIStatelessTestCase
     public function testRecursive() : void
     {
         $chapter = Chapter::random();
-        $uri     = '/chapters/{$chapter->id}/recursive';
+        $uri     = "/chapters/{$chapter->id}/recursive";
 
         $this->json('get', $uri);
 
@@ -69,7 +69,7 @@ class ChaptersTest extends APIStatelessTestCase
             ->firstOrFail();
 
         $chapterId = $mark->markable->notion->chapter_id;
-        $uri       = '/chapters/{$chapterId}/recursive';
+        $uri       = "/chapters/{$chapterId}/recursive";
 
         $this->json('get', $uri);
 

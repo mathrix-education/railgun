@@ -12,9 +12,9 @@ class VotesRegistrar extends BaseRegistrar
     /**
      * Register the routes.
      */
-    public function register() : void
+    public function register(): void
     {
-        $this->group(['middleware' => 'logged'], function () : void {
+        $this->group(['middleware' => 'logged'], function (): void {
             $controller = VotesController::class;
 
             $this->post('votes/comment/{commentId}', "$controller@vote");

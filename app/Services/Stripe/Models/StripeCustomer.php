@@ -29,7 +29,7 @@ trait StripeCustomer
      *
      * @return Customer
      */
-    public function createStripeCustomer(?string $source = null) : Customer
+    public function createStripeCustomer(?string $source = null): Customer
     {
         $customer = Customer::create([
             'email' => $this->email,
@@ -51,7 +51,7 @@ trait StripeCustomer
      *
      * @return Collection|Subscription[]
      */
-    public function getStripeSubscriptions() : Collection
+    public function getStripeSubscriptions(): Collection
     {
         if (! $this->isStripeCustomer()) {
             return new Collection();
@@ -84,7 +84,7 @@ trait StripeCustomer
      *
      * @return bool
      */
-    public function isStripeCustomer(bool $strict = false) : bool
+    public function isStripeCustomer(bool $strict = false): bool
     {
         if ($this->stripe_id === null) {
             return false;
@@ -100,7 +100,7 @@ trait StripeCustomer
     /**
      * Get the user's associated Stripe customer.
      */
-    public function asStripeCustomer() : ?Customer
+    public function asStripeCustomer(): ?Customer
     {
         if (! $this->isStripeCustomer()) {
             return null;
@@ -126,7 +126,7 @@ trait StripeCustomer
      *
      * @return StripeCard
      */
-    public function addSource(string $cardToken, bool $makeDefault = false) : StripeCard
+    public function addSource(string $cardToken, bool $makeDefault = false): StripeCard
     {
         // Check if card already exists
         $token = Token::retrieve($cardToken);
@@ -167,7 +167,7 @@ trait StripeCustomer
     /**
      * Ge the user's Stripe cards.
      */
-    public function getStripeCards() : Collection
+    public function getStripeCards(): Collection
     {
         return $this->cache(StripeCustomer::$StripeCardsCacheKey, 7 * 24 * 3600, function () {
             $cards = new Collection();

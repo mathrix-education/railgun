@@ -41,7 +41,7 @@ class ProductsTest extends APIStatelessTestCase
             ->get(['id'])
             ->pluck('id');
 
-        $uri = '/products/{$pack->id}/items';
+        $uri = "/products/{$pack->id}/items";
         JWT::autoScope('patch', $uri);
         $this->json('patch', $uri, $trainingIds->toArray());
 
@@ -63,7 +63,7 @@ class ProductsTest extends APIStatelessTestCase
         /** @var Product $product */
         $product = Product::query()->has('children')->inRandomOrder()->firstOrFail();
 
-        $this->json('get', '/products/{$product->id}/recursive');
+        $this->json('get', "/products/{$product->id}/recursive");
 
         $this->assertResponseOk();
         // $this->assertOpenAPIResponse($this->response);

@@ -12,9 +12,9 @@ class AddBuyableToProductsTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up() : void
+    public function up(): void
     {
-        Schema::table('products', static function (Blueprint $table) : void {
+        Schema::table('products', static function (Blueprint $table): void {
             $table->boolean('buyable')->default(0)->after('visible');
         });
 
@@ -24,9 +24,9 @@ class AddBuyableToProductsTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down() : void
+    public function down(): void
     {
-        Schema::table('products', static function (Blueprint $table) : void {
+        Schema::table('products', static function (Blueprint $table): void {
             $table->dropColumn('buyable');
         });
     }

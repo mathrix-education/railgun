@@ -15,7 +15,7 @@ class TestCommand extends BaseCommand
     /** @var string The command signature. */
     protected $signature = 'test';
 
-    public function handle() : void
+    public function handle(): void
     {
     }
 }

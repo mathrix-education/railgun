@@ -9,7 +9,7 @@ use Mathrix\Lumen\Zero\Database\BaseTableSeeder;
 
 class CountersTableSeeder extends BaseTableSeeder
 {
-    public function run() : void
+    public function run(): void
     {
         $activities = Activity::all();
         $notions    = Notion::all();

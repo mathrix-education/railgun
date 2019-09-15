@@ -14,7 +14,7 @@ class GradeObserver extends BaseObserver
      *
      * @throws ForeignConstraints
      */
-    public function deleting(Grade $grade) : void
+    public function deleting(Grade $grade): void
     {
         $this->handleRelationDeletion($grade, 'children');
         $this->handleRelationDeletion($grade, 'chapters');

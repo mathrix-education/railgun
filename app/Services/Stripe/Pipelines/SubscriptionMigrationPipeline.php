@@ -43,7 +43,7 @@ class SubscriptionMigrationPipeline extends Pipeline
      *
      * @throws InvalidBraintreeCustomer
      */
-    protected function initialize() : void
+    protected function initialize(): void
     {
         if (! $this->user->isBraintreeCustomer()) {
             throw new InvalidBraintreeCustomer($this->user);
@@ -62,7 +62,7 @@ class SubscriptionMigrationPipeline extends Pipeline
      * @throws Http401UnauthorizedException
      * @throws NotFound
      */
-    protected function exchange() : void
+    protected function exchange(): void
     {
         $this->braintreeSubscription = gateway()->subscription()->find($this->braintreeSubscriptionId);
 
@@ -106,7 +106,7 @@ class SubscriptionMigrationPipeline extends Pipeline
      * If the Stripe subscription requires a 3D Secure 2 confirmation, write the Braintree subscription id to the Stripe
      * setup intent metadata in order to cancel it when receiving the webhook.
      */
-    protected function finalize() : void
+    protected function finalize(): void
     {
         if ($this->subscription->pending_setup_intent === null) {
             // New subscription has an active subscription, we can cancel the Braintree one.

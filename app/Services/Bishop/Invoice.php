@@ -21,7 +21,7 @@ class Invoice extends Bishop
      *
      * @return Invoice
      */
-    public static function from(StripeInvoice $invoice) : self
+    public static function from(StripeInvoice $invoice): self
     {
         if ($invoice instanceof StripeInvoice) {
             return new self(self::fromStripe($invoice));

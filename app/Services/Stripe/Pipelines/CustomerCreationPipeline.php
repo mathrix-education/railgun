@@ -15,7 +15,7 @@ class CustomerCreationPipeline extends Pipeline
     /**
      * @throws ValidationException
      */
-    protected function initialize() : void
+    protected function initialize(): void
     {
         $this->validate($this->request, ['card.token' => 'required']);
     }
@@ -23,12 +23,12 @@ class CustomerCreationPipeline extends Pipeline
     /**
      * Create the user Stripe profile and attach a default source.
      */
-    protected function exchange() : void
+    protected function exchange(): void
     {
         $this->user->createStripeCustomer((string)$this->request->json('card.token'));
     }
 
-    protected function finalize() : void
+    protected function finalize(): void
     {
         $this->user->invalidate(StripeCustomer::$StripeCustomerCacheKey);
     }

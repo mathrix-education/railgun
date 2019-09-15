@@ -51,7 +51,7 @@ class FilesController extends BaseController
      * @throws ValidationException
      * @throws FileNotFoundException
      */
-    public function post(Request $request, string $path) : SuccessJsonResponse
+    public function post(Request $request, string $path): SuccessJsonResponse
     {
         $this->validate($request, ['file' => 'required|file|max:204800|mimes:pdf,gif,jpeg,svg,png,mp4']);
 
@@ -77,7 +77,7 @@ class FilesController extends BaseController
      * @return array
      * phpcs:enable
      */
-    private function cast(array $data, bool $multi = false) : array
+    private function cast(array $data, bool $multi = false): array
     {
         if ($multi) {
             $objects = [];
@@ -127,12 +127,12 @@ class FilesController extends BaseController
      *
      * @throws DirectoryNotFoundException
      */
-    public function list(string $directory = '/') : SuccessJsonResponse
+    public function list(string $directory = '/'): SuccessJsonResponse
     {
         $data = $this->cast($this->disk->listContents($directory), true);
         $data = collect($data)
             ->sortBy(static function ($metadata) {
-                return "{$metadata['dir']}.{$metadata['basename']}"; // Order by type and then by name
+                return "{$metadata['type']}.{$metadata['basename']}"; // Order by type and then by name
             })
             ->values()
             ->toArray();
@@ -157,7 +157,7 @@ class FilesController extends BaseController
      * @throws FileNotFoundException
      * @throws ValidationException
      */
-    public function patch(Request $request, string $path) : SuccessJsonResponse
+    public function patch(Request $request, string $path): SuccessJsonResponse
     {
         $this->validate($request, ['destination' => 'required']);
         $destination = $request->json('destination');
@@ -178,7 +178,7 @@ class FilesController extends BaseController
      *
      * @throws FileNotFoundException
      */
-    public function get(string $path) : SuccessJsonResponse
+    public function get(string $path): SuccessJsonResponse
     {
         $metadata = $this->disk->getMetadata($path);
         $data     = $this->cast($metadata);
@@ -196,7 +196,7 @@ class FilesController extends BaseController
      *
      * @throws FileNotFoundException
      */
-    public function delete(string $path) : SuccessJsonResponse
+    public function delete(string $path): SuccessJsonResponse
     {
         $this->disk->getDriver()
             ->delete($path); // Alternative syntax to throw FileNotFoundException

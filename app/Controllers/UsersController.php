@@ -35,12 +35,12 @@ class UsersController extends BaseController
      *
      * @return SuccessJsonResponse The newly created user.
      */
-    public function standardPost(Request $request) : SuccessJsonResponse
+    public function standardPost(Request $request): SuccessJsonResponse
     {
         // Build and save the user
         $user = new User();
 
-        User::unguarded(static function () use ($user, $request) : void {
+        User::unguarded(static function () use ($user, $request): void {
             $user->fill($request->all())
                 ->save();
         });
@@ -57,7 +57,7 @@ class UsersController extends BaseController
      *
      * @return SuccessJsonResponse The user.
      */
-    public function standardGet(Request $request, string $key, $identifier) : SuccessJsonResponse
+    public function standardGet(Request $request, string $key, $identifier): SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();
@@ -86,7 +86,7 @@ class UsersController extends BaseController
      * @throws Http401UnauthorizedException
      * @throws ValidationException
      */
-    public function standardPatch(Request $request, string $key, $identifier) : SuccessJsonResponse
+    public function standardPatch(Request $request, string $key, $identifier): SuccessJsonResponse
     {
         /** @var User $target */
         $target = User::query()
@@ -142,7 +142,7 @@ class UsersController extends BaseController
      *
      * @throws Http401UnauthorizedException
      */
-    public function getSubscriptions(Request $request, int $userId) : SuccessJsonResponse
+    public function getSubscriptions(Request $request, int $userId): SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();
@@ -183,7 +183,7 @@ class UsersController extends BaseController
         ]);
     }
 
-    public function getCards(Request $request) : SuccessJsonResponse
+    public function getCards(Request $request): SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();
@@ -216,7 +216,7 @@ class UsersController extends BaseController
      *
      * @return SuccessJsonResponse An empty response.
      */
-    public function cache(int $userId) : JsonResponse
+    public function cache(int $userId): JsonResponse
     {
         /** @var User $user */
         $user = User::query()
@@ -236,7 +236,7 @@ class UsersController extends BaseController
      *
      * @throws ValidationException
      */
-    public function points(Request $request) : SuccessJsonResponse
+    public function points(Request $request): SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();
@@ -262,7 +262,7 @@ class UsersController extends BaseController
      *
      * @throws Http400BadRequestException
      */
-    public function search(Request $request, string $query) : PaginationJsonResponse
+    public function search(Request $request, string $query): PaginationJsonResponse
     {
         $order = $request->query('order', 'id');
         $dir   = $request->query('dir', 'asc');
@@ -280,7 +280,7 @@ class UsersController extends BaseController
         $builder = User::query()
             ->orderBy($order, $dir);
 
-        $fields->each(static function ($field) use ($query, &$builder) : void {
+        $fields->each(static function ($field) use ($query, &$builder): void {
             $builder = $builder->orWhere($field, 'LIKE', "%$query%");
         });
 

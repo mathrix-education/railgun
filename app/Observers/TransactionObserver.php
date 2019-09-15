@@ -11,7 +11,7 @@ use function gateway;
 
 class TransactionObserver
 {
-    public function saved(Transaction $transaction) : void
+    public function saved(Transaction $transaction): void
     {
         /** @var TransactionLineItem[] $lineItems */
         $lineItems = gateway()->transactionLineItem()->findAll($transaction->id);

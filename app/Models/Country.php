@@ -39,7 +39,7 @@ class Country extends BaseModel
     /**
      * The country grades.
      */
-    public function grades() : HasMany
+    public function grades(): HasMany
     {
         return $this->hasMany(Grade::class);
     }

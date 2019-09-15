@@ -21,7 +21,7 @@ class BraintreeErrorHandler
      * @throws ProcessorDeclined
      * @throws UnknownBraintree
      */
-    public static function report(BraintreeResponse $error, ?User $user = null) : void
+    public static function report(BraintreeResponse $error, ?User $user = null): void
     {
         if ($user instanceof User) {
             $user->unlock();
@@ -40,7 +40,7 @@ class BraintreeErrorHandler
      * @throws GatewayRejection
      * @throws ProcessorDeclined
      */
-    private static function wrapper(string $type, Error $error) : void
+    private static function wrapper(string $type, Error $error): void
     {
         /** @var Subscription|Transaction $object */
         $object = $error->{$type};

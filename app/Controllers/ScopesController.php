@@ -19,7 +19,7 @@ class ScopesController extends BaseController
      *
      * @return SuccessJsonResponse The scopes list.
      */
-    public function all() : SuccessJsonResponse
+    public function all(): SuccessJsonResponse
     {
         return new SuccessJsonResponse(ScopesLoader::getRegisteredScopes());
     }

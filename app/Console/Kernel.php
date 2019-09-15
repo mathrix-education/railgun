@@ -30,7 +30,7 @@ class Kernel extends ConsoleKernel
      *
      * @param Schedule $schedule The Laravel scheduler instance.
      */
-    protected function schedule(Schedule $schedule) : void
+    protected function schedule(Schedule $schedule): void
     {
         // Cache cleaning every ten minutes
         $schedule->command(CacheCleanCommand::class)

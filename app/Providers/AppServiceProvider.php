@@ -37,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
-    public function register() : void
+    public function register(): void
     {
         $this->app->instance('path.config', app()->basePath() . DIRECTORY_SEPARATOR . 'config');
         $this->app->instance('path.public', app()->basePath() . DIRECTORY_SEPARATOR . 'public');

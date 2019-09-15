@@ -11,9 +11,9 @@ class CreateChaptersTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up() : void
+    public function up(): void
     {
-        Schema::create('chapters', static function (Blueprint $table) : void {
+        Schema::create('chapters', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('slug');
@@ -34,7 +34,7 @@ class CreateChaptersTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down() : void
+    public function down(): void
     {
         Schema::dropIfExists('chapters');
     }

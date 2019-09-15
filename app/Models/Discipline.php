@@ -46,7 +46,7 @@ class Discipline extends BaseModel
     /**
      * BelongsToMany Grade.
      */
-    public function grades() : BelongsToMany
+    public function grades(): BelongsToMany
     {
         return $this->belongsToMany(Grade::class, 'chapters')
             ->groupBy(['grade_id', 'discipline_id']);
@@ -55,7 +55,7 @@ class Discipline extends BaseModel
     /**
      * HasMany Chapter.
      */
-    public function chapters() : HasMany
+    public function chapters(): HasMany
     {
         return $this->hasMany(Chapter::class);
     }

@@ -36,7 +36,7 @@ class SubscriptionUtils
      *
      * @param bool $enable
      */
-    public static function fake(bool $enable = true) : void
+    public static function fake(bool $enable = true): void
     {
         self::$EnableFake = $enable;
     }
@@ -48,7 +48,7 @@ class SubscriptionUtils
      *
      * @return bool
      */
-    public static function isTrialPlan(string $planId) : bool
+    public static function isTrialPlan(string $planId): bool
     {
         return in_array($planId, self::TRIAL_PLANS);
     }
@@ -60,7 +60,7 @@ class SubscriptionUtils
      *
      * @return int
      */
-    public static function getTrialDuration(string $planId) : int
+    public static function getTrialDuration(string $planId): int
     {
         return self::getTrialEndDate($planId)->diffInDays(Carbon::now());
     }
@@ -98,7 +98,7 @@ class SubscriptionUtils
      *
      * @return float The price in euros (€).
      */
-    public static function getTrialPeriodPrice(string $planId) : ?float
+    public static function getTrialPeriodPrice(string $planId): ?float
     {
         // Used to mock trial price
         if (env('BRAINTREE_ENVIRONMENT') === 'sandbox'
@@ -121,7 +121,7 @@ class SubscriptionUtils
         );
     }
 
-    public static function getAssociatedCustomerId(Subscription $subscription) : ?string
+    public static function getAssociatedCustomerId(Subscription $subscription): ?string
     {
         $results = gateway()
             ->customer()

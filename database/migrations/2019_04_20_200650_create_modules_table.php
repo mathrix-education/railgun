@@ -11,9 +11,9 @@ class CreateModulesTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up() : void
+    public function up(): void
     {
-        Schema::create('modules', static function (Blueprint $table) : void {
+        Schema::create('modules', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('type');
             $table->text('content')->nullable();
@@ -40,7 +40,7 @@ class CreateModulesTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down() : void
+    public function down(): void
     {
         Schema::dropIfExists('modules');
     }

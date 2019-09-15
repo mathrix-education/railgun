@@ -27,7 +27,7 @@ class VotesController extends BaseController
      *
      * @throws ValidationException
      */
-    public function vote(Request $request, int $commentId) : SuccessJsonResponse
+    public function vote(Request $request, int $commentId): SuccessJsonResponse
     {
         $this->validate($request, ['value' => 'required|integer|in:-1,1']);
 
@@ -59,7 +59,7 @@ class VotesController extends BaseController
      *
      * @throws Exception
      */
-    public function unVote(Request $request, int $commentId) : SuccessJsonResponse
+    public function unVote(Request $request, int $commentId): SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();

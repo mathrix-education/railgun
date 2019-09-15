@@ -12,7 +12,7 @@ class CommentsRegistrar extends BaseRegistrar
     /**
      * Register the routes.
      */
-    public function register() : void
+    public function register(): void
     {
         $controller = CommentsController::class;
 

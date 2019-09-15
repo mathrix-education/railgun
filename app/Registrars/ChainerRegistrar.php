@@ -12,7 +12,7 @@ class ChainerRegistrar extends BaseRegistrar
     /**
      * Register the routes.
      */
-    public function register() : void
+    public function register(): void
     {
         $this->post('chain', ChainerController::class . '@chain');
     }

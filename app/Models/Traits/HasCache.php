@@ -22,7 +22,7 @@ trait HasCache
      *
      * @return string The full cache key.
      */
-    protected function getCacheKey(string $key) : string
+    protected function getCacheKey(string $key): string
     {
         $prefix = Str::slug(class_basename($this) . ' ' . $this->{$this->primaryKey}, '.');
 
@@ -54,7 +54,7 @@ trait HasCache
      *
      * @param string|null $key The cache key to invalidate. By default, invalidate all the model cache.
      */
-    public function invalidate(?string $key = '%') : void
+    public function invalidate(?string $key = '%'): void
     {
         DB::table('cache')
             ->where('key', 'like', $this->getCacheKey($key))

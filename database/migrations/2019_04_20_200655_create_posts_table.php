@@ -11,9 +11,9 @@ class CreatePostsTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up() : void
+    public function up(): void
     {
-        Schema::create('posts', static function (Blueprint $table) : void {
+        Schema::create('posts', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('title');
             $table->string('slug');
@@ -32,7 +32,7 @@ class CreatePostsTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down() : void
+    public function down(): void
     {
         Schema::dropIfExists('posts');
     }

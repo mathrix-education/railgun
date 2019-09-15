@@ -11,9 +11,9 @@ class CreateLevelsTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up() : void
+    public function up(): void
     {
-        Schema::create('levels', static function (Blueprint $table) : void {
+        Schema::create('levels', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->unsignedInteger('level');
             $table->unsignedInteger('objective');
@@ -24,7 +24,7 @@ class CreateLevelsTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down() : void
+    public function down(): void
     {
         Schema::dropIfExists('levels');
     }

@@ -20,7 +20,7 @@ class PostsController extends BaseController
      *
      * @throws Http400BadRequestException
      */
-    public function latest() : PaginationJsonResponse
+    public function latest(): PaginationJsonResponse
     {
         $query = Post::with('module')
             ->orderByDesc('created_at');

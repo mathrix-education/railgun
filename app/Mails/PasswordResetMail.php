@@ -27,7 +27,7 @@ class PasswordResetMail extends BaseMail
     /**
      * Mock the mail.
      */
-    public static function mock() : PasswordResetMail
+    public static function mock(): PasswordResetMail
     {
         $user = User::random();
 
@@ -37,7 +37,7 @@ class PasswordResetMail extends BaseMail
     /**
      * Build the mail.
      */
-    public function build() : PasswordResetMail
+    public function build(): PasswordResetMail
     {
         $this->subject('Mot de passe réinitialisé');
 

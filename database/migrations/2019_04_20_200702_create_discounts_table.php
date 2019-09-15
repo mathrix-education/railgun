@@ -11,9 +11,9 @@ class CreateDiscountsTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up() : void
+    public function up(): void
     {
-        Schema::create('discounts', static function (Blueprint $table) : void {
+        Schema::create('discounts', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('code');
             $table->string('type');
@@ -27,7 +27,7 @@ class CreateDiscountsTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down() : void
+    public function down(): void
     {
         Schema::dropIfExists('discounts');
     }

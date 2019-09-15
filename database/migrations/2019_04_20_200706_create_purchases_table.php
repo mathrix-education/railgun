@@ -11,9 +11,9 @@ class CreatePurchasesTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up() : void
+    public function up(): void
     {
-        Schema::create('purchases', static function (Blueprint $table) : void {
+        Schema::create('purchases', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('product_id');
@@ -28,7 +28,7 @@ class CreatePurchasesTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down() : void
+    public function down(): void
     {
         Schema::dropIfExists('purchases');
     }

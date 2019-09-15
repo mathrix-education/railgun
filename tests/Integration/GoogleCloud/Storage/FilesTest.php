@@ -68,7 +68,7 @@ class FilesTest extends APIStatelessTestCase
     {
         JWT::withScopes('files:write');
 
-        $this->call('POST', '/files/$file', [], [], [
+        $this->call('POST', "/files/$file", [], [], [
             'file' => UploadedFile::fake()->image($this->faker->userName . '.png', 100, 100),
         ], ['CONTENT_TYPE' => 'multipart/form-data']);
 
@@ -104,7 +104,7 @@ class FilesTest extends APIStatelessTestCase
     {
         JWT::withScopes('files:read');
 
-        $this->json('get', '/files/{$file}');
+        $this->json('get', "/files/{$file}");
 
         $this->assertResponseStatus(200);
         $this->assertOpenAPI($this->response, new OperationAddress('/files/{file}', 'get'));
@@ -122,8 +122,9 @@ class FilesTest extends APIStatelessTestCase
     {
         JWT::withScopes('files:read');
 
-        $this->json('get', '/files/list/$directory');
+        $this->json('get', "/files/list/$directory");
 
+        $this->debug();
         $this->assertResponseStatus($expectedStatus);
         $this->assertOpenAPI($this->response, new OperationAddress('/files/list/{directory}', 'get'));
     }
@@ -141,7 +142,7 @@ class FilesTest extends APIStatelessTestCase
     {
         JWT::withScopes('files:write');
 
-        $this->json('patch', '/files/$file', ['destination' => $destination]);
+        $this->json('patch', "/files/$file", ['destination' => $destination]);
 
         $this->getDisk()->assertExists($destination);
         $this->assertResponseStatus(200);
@@ -160,7 +161,7 @@ class FilesTest extends APIStatelessTestCase
     {
         JWT::withScopes('files:delete');
 
-        $this->json('delete', '/files/$file');
+        $this->json('delete', "/files/$file");
 
         $this->getDisk()->assertMissing($file);
         $this->assertResponseStatus(200);

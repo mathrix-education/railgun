@@ -12,7 +12,7 @@ class UsersRegistrar extends BaseRegistrar
     /**
      * Register the routes.
      */
-    public function register() : void
+    public function register(): void
     {
         $controller = UsersController::class;
 
@@ -23,19 +23,21 @@ class UsersRegistrar extends BaseRegistrar
             'std:patch' => 'logged',
             'std:delete' => 'scope:users:delete',
             'rel:get:grade' => null,
+            'rel:get:products' => 'logged',
+            'rel:get:purchases' => 'logged',
             'rel:get:transactions' => 'logged',
         ]);
 
-        $this->group(['middleware' => 'logged'], function () use ($controller) : void {
+        $this->group(['middleware' => 'logged'], function () use ($controller): void {
             $this->get('/users/{userId}/cards', "$controller@getCards");
             $this->get('/users/{userId}/subscriptions', "$controller@getSubscriptions");
         });
 
-        $this->group(['middleware' => 'scope:users:read'], function () use ($controller) : void {
+        $this->group(['middleware' => 'scope:users:read'], function () use ($controller): void {
             $this->get('users/search/{query}', "$controller@search");
         });
 
-        $this->group(['middleware' => 'scope:users:write'], function () use ($controller) : void {
+        $this->group(['middleware' => 'scope:users:write'], function () use ($controller): void {
             $this->delete('users/{userId}/cache', "$controller@cache");
         });
     }

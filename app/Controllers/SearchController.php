@@ -31,7 +31,7 @@ class SearchController extends BaseController
      *
      * @return SuccessJsonResponse The search results.
      */
-    public function content(int $gradeId, string $query) : SuccessJsonResponse
+    public function content(int $gradeId, string $query): SuccessJsonResponse
     {
         [$page, $perPage] = PaginationJsonResponse::getPagination();
 
@@ -57,13 +57,13 @@ class SearchController extends BaseController
             ])
             ->whereHas(
                 'activity',
-                static function (Builder $q) use ($query) : void {
+                static function (Builder $q) use ($query): void {
                     $q->where('name', 'LIKE', $query);
                 }
             )
             ->whereHas(
                 'activity.notion.chapter',
-                static function (Builder $q) use ($gradeIds) : void {
+                static function (Builder $q) use ($gradeIds): void {
                     $q->whereIn('grade_id', $gradeIds);
                 }
             )

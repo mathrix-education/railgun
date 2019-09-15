@@ -37,7 +37,7 @@ class ChainerTest extends APIStatelessTestCase
                 [
                     'name' => 'module',
                     'method' => 'get',
-                    'url' => '/modules/{$moduleId}',
+                    'url' => "/modules/{$moduleId}",
                 ],
                 [
                     'name' => 'activity',
@@ -72,7 +72,7 @@ class ChainerTest extends APIStatelessTestCase
                 [
                     'name' => 'comments',
                     'method' => 'get',
-                    'url' => '/modules/{$moduleId}/comments/0/1000',
+                    'url' => "/modules/{$moduleId}/comments/0/1000",
                 ],
                 [
                     'name' => 'chapter_recursive',

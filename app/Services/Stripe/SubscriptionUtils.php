@@ -49,7 +49,7 @@ class SubscriptionUtils
      *
      * @return int|null The proration price in cents.
      */
-    public static function getProrationPrice(string $planId) : ?int
+    public static function getProrationPrice(string $planId): ?int
     {
         if (!self::isPlanProrated($planId)) {
             return null;
@@ -76,7 +76,7 @@ class SubscriptionUtils
      *
      * @return bool If the plan is prorated.
      */
-    public static function isPlanProrated(string $planId) : bool
+    public static function isPlanProrated(string $planId): bool
     {
         return self::PLANS_DETAILS[$planId]['prorated'];
     }
@@ -88,7 +88,7 @@ class SubscriptionUtils
      *
      * @return Carbon|null The proration anchor.
      */
-    public static function getProrationAnchor(string $planId) : ?Carbon
+    public static function getProrationAnchor(string $planId): ?Carbon
     {
         if (!self::isPlanProrated($planId)) {
             return null;

@@ -13,9 +13,10 @@ class CountryObserver extends BaseObserver
      * @param Country $country
      *
      * @return bool
+     *
      * @throws ForeignConstraints
      */
-    public function deleting(Country $country) : bool
+    public function deleting(Country $country): bool
     {
         $this->handleRelationDeletion($country, 'grades');
 

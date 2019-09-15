@@ -11,9 +11,9 @@ class SupportAffiliates extends Migration
     /**
      * Run the migrations.
      */
-    public function up() : void
+    public function up(): void
     {
-        Schema::table('purchases', static function (Blueprint $table) : void {
+        Schema::table('purchases', static function (Blueprint $table): void {
             $table->string('transaction_id')->nullable()->after('id');
         });
     }
@@ -21,9 +21,9 @@ class SupportAffiliates extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down() : void
+    public function down(): void
     {
-        Schema::table('purchases', static function (Blueprint $table) : void {
+        Schema::table('purchases', static function (Blueprint $table): void {
             $table->dropColumn('transaction_id');
         });
     }

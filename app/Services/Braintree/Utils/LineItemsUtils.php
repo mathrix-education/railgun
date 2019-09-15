@@ -16,7 +16,7 @@ class LineItemsUtils
      *
      * @return mixed|null
      */
-    public static function getType(BraintreeLineItem $lineItem) : ?string
+    public static function getType(BraintreeLineItem $lineItem): ?string
     {
         if ($lineItem->productCode === null) {
             return null;

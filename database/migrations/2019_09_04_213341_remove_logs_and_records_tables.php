@@ -9,7 +9,7 @@ class RemoveLogsAndRecordsTables extends Migration
     /**
      * Run the migrations.
      */
-    public function up() : void
+    public function up(): void
     {
         (new CreateRecordsTable())->down();
         (new CreateLogsTable())->down();
@@ -18,7 +18,7 @@ class RemoveLogsAndRecordsTables extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down() : void
+    public function down(): void
     {
         (new CreateLogsTable())->up();
         (new CreateRecordsTable())->up();

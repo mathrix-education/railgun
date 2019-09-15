@@ -12,7 +12,7 @@ class ScopesRegistrar extends BaseRegistrar
     /**
      * Register the routes.
      */
-    public function register() : void
+    public function register(): void
     {
         $this->get('scopes', ScopesController::class . '@all');
     }

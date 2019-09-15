@@ -17,7 +17,7 @@ class PaymentIntent extends Bishop
      *
      * @return PaymentIntent
      */
-    public static function from(StripePaymentIntent $paymentIntent) : self
+    public static function from(StripePaymentIntent $paymentIntent): self
     {
         if ($paymentIntent instanceof StripePaymentIntent) {
             return new self(self::fromStripe($paymentIntent));

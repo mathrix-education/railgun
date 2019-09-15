@@ -12,11 +12,11 @@ class SubscriptionsRegistrar extends BaseRegistrar
     /**
      * Register the routes.
      */
-    public function register() : void
+    public function register(): void
     {
         $controller = SubscriptionsController::class;
 
-        $this->group(['middleware' => 'logged'], function () use ($controller) : void {
+        $this->group(['middleware' => 'logged'], function () use ($controller): void {
             $this->post('subscriptions', "$controller@standardPost");
             $this->get('subscriptions/{subscriptionId}/invoices', "$controller@invoices");
             $this->patch('subscriptions/{subscriptionId}/card', "$controller@card");

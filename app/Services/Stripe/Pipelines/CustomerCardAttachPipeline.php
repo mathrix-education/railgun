@@ -20,7 +20,7 @@ class CustomerCardAttachPipeline extends Pipeline
      * @throws InvalidStripeCustomer
      * @throws ValidationException
      */
-    protected function initialize() : void
+    protected function initialize(): void
     {
         $this->validate($this->request, ['card.token' => 'required']);
 
@@ -29,12 +29,12 @@ class CustomerCardAttachPipeline extends Pipeline
         }
     }
 
-    protected function exchange() : void
+    protected function exchange(): void
     {
         $this->card = $this->user->addSource((string)$this->request->json('card.token'));
     }
 
-    protected function finalize() : void
+    protected function finalize(): void
     {
     }
 }

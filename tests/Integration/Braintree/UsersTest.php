@@ -51,7 +51,7 @@ class UsersTest extends APIStatelessTestCase
         }
 
         JWT::actingAs($this->requester);
-        $this->json('get', '/users/{$this->requester->id}/subscriptions');
+        $this->json('get', "/users/{$this->requester->id}/subscriptions");
 
         $this->debug();
         $this->assertResponseOk();

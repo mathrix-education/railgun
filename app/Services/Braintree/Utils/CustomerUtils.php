@@ -9,7 +9,7 @@ use function uuid;
 
 class CustomerUtils
 {
-    public static function generateId() : string
+    public static function generateId(): string
     {
         return 'cus_' . str_replace('-', '', uuid());
     }

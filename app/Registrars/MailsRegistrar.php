@@ -23,7 +23,7 @@ class MailsRegistrar extends BaseRegistrar
      *
      * @return array
      */
-    public static function getMails() : array
+    public static function getMails(): array
     {
         try {
             return Collection::make(ClassFinder::getClassesInNamespace('App\\Mails'))
@@ -40,7 +40,7 @@ class MailsRegistrar extends BaseRegistrar
     /**
      * Register the routes.
      */
-    public function register() : void
+    public function register(): void
     {
         if (! app()->environment('local', 'dev', 'testing')) {
             return;

@@ -50,7 +50,7 @@ class ActivitiesTest extends APIStatelessTestCase
     public function testMark() : void
     {
         $activity = Activity::random(['visible', '=', true]);
-        $uri      = '/activities/{$activity->id}/mark';
+        $uri      = "/activities/{$activity->id}/mark";
         $status   = $this->faker->randomElement(Mark::STATUSES);
 
         /** @var User $user */
@@ -74,7 +74,7 @@ class ActivitiesTest extends APIStatelessTestCase
         $mark = Mark::random(['markable_type', '=', 'activity']);
         JWT::actingAs($mark->user);
 
-        $this->json('patch', '/activities/{$mark->markable_id}/unmark');
+        $this->json('patch', "/activities/{$mark->markable_id}/unmark");
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse($this->response);

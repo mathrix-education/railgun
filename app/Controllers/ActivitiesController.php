@@ -26,7 +26,7 @@ class ActivitiesController extends BaseController
      *
      * @return SuccessJsonResponse The marked activity.
      */
-    public function mark(Request $request, int $id) : SuccessJsonResponse
+    public function mark(Request $request, int $id): SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();
@@ -56,7 +56,7 @@ class ActivitiesController extends BaseController
      *
      * @return SuccessJsonResponse The un-marked activity.
      */
-    public function unmark(Request $request, int $id) : SuccessJsonResponse
+    public function unmark(Request $request, int $id): SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();
@@ -66,7 +66,7 @@ class ActivitiesController extends BaseController
 
         Mark::retrieveAll($activity, $user)
             ->each(
-                static function (Mark $mark) : void {
+                static function (Mark $mark): void {
                     $mark->delete();
                 }
             );

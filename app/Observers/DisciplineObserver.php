@@ -14,7 +14,7 @@ class DisciplineObserver extends BaseObserver
      *
      * @throws ForeignConstraints
      */
-    public function deleting(Discipline $discipline) : void
+    public function deleting(Discipline $discipline): void
     {
         $this->handleRelationDeletion($discipline, 'chapters');
 

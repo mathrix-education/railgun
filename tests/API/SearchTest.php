@@ -22,7 +22,7 @@ class SearchTest extends APIStatelessTestCase
     public function testContent() : void
     {
         $grade = Grade::random();
-        $this->json('get', '/search/{$grade->id}/lorem');
+        $this->json('get', "/search/{$grade->id}/lorem");
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse($this->response);

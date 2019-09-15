@@ -42,7 +42,7 @@ class Purchase extends BaseModel
     /**
      * BelongsTo User.
      */
-    public function user() : BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -50,7 +50,7 @@ class Purchase extends BaseModel
     /**
      * BelongsTo Product.
      */
-    public function product() : BelongsTo
+    public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
     }

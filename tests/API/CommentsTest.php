@@ -49,7 +49,7 @@ class CommentsTest extends APIStatelessTestCase
             ->update(['updated_at' => Carbon::now()]);
 
         JWT::actingAs($comment->user);
-        $this->json('patch', '/comments/{$comment->id}', ['content' => $newContent]);
+        $this->json('patch', "/comments/{$comment->id}", ['content' => $newContent]);
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse($this->response);

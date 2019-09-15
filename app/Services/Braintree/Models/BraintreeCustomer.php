@@ -24,7 +24,7 @@ trait BraintreeCustomer
      *
      * @return Collection|Subscription[]
      */
-    public function getBraintreeSubscriptions() : Collection
+    public function getBraintreeSubscriptions(): Collection
     {
         if (! $this->isBraintreeCustomer()) {
             return new Collection();
@@ -52,7 +52,7 @@ trait BraintreeCustomer
      *
      * @return bool
      */
-    public function isBraintreeCustomer(bool $strict = false) : bool
+    public function isBraintreeCustomer(bool $strict = false): bool
     {
         if ($this->braintree_id === null) {
             return false;
@@ -68,7 +68,7 @@ trait BraintreeCustomer
     /**
      * braintree attribute.
      */
-    public function asBraintreeCustomer() : ?Customer
+    public function asBraintreeCustomer(): ?Customer
     {
         if (! $this->isBraintreeCustomer()) {
             return null;

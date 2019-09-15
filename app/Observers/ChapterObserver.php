@@ -15,7 +15,7 @@ class ChapterObserver extends BaseObserver
      *
      * @param Chapter $chapter
      */
-    public function saved(Chapter $chapter) : void
+    public function saved(Chapter $chapter): void
     {
         // Purge cache
         DB::table('cache')
@@ -30,9 +30,10 @@ class ChapterObserver extends BaseObserver
      * @param Chapter $chapter
      *
      * @return bool
+     *
      * @throws ForeignConstraints
      */
-    public function deleting(Chapter $chapter) : bool
+    public function deleting(Chapter $chapter): bool
     {
         $this->handleRelationDeletion($chapter, 'notions');
 
@@ -44,7 +45,7 @@ class ChapterObserver extends BaseObserver
      *
      * @param Chapter $chapter
      */
-    public function deleted(Chapter $chapter) : void
+    public function deleted(Chapter $chapter): void
     {
         // Purge cache
         DB::table('cache')

@@ -11,9 +11,9 @@ class CreateNotionsTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up() : void
+    public function up(): void
     {
-        Schema::create('notions', static function (Blueprint $table) : void {
+        Schema::create('notions', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('type');
@@ -31,7 +31,7 @@ class CreateNotionsTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down() : void
+    public function down(): void
     {
         Schema::dropIfExists('notions');
     }

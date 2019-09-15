@@ -25,7 +25,7 @@ class ChainerController extends BaseController
      *
      * @throws Http400BadRequestException
      */
-    public function chain(Request $request) : JsonResponse
+    public function chain(Request $request): JsonResponse
     {
         return (new Chainer($request))->process();
     }

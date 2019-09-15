@@ -61,7 +61,7 @@ class UsersTest extends APIStatelessTestCase
         $user->invalidate(StripeCustomer::$StripeSubscriptionsCacheKey);
 
         JWT::actingAs($user);
-        $this->json('get', '/users/{$user->id}/subscriptions');
+        $this->json('get', "/users/{$user->id}/subscriptions");
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse($this->response);

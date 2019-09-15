@@ -13,9 +13,10 @@ class ProductObserver extends BaseObserver
      * @param Product $product
      *
      * @return bool
+     *
      * @throws ForeignConstraints
      */
-    public function deleting(Product $product) : bool
+    public function deleting(Product $product): bool
     {
         $this->handleRelationDeletion($product, 'children');
         $product->items()->detach();

@@ -49,7 +49,7 @@ class Vote extends BaseModel
     /**
      * BelongsTo User.
      */
-    public function user() : BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -57,7 +57,7 @@ class Vote extends BaseModel
     /**
      * BelongsTo Comment.
      */
-    public function comment() : BelongsTo
+    public function comment(): BelongsTo
     {
         return $this->belongsTo(Comment::class);
     }

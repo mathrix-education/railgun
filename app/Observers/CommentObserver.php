@@ -14,16 +14,17 @@ class CommentObserver extends BaseObserver
      * @param Comment $comment
      *
      * @return bool
+     *
      * @throws Exception
      */
-    public function deleting(Comment $comment) : bool
+    public function deleting(Comment $comment): bool
     {
         $children = Comment::withTrashed()
             ->where('parent_id', '=', $comment->id)
             ->get();
 
         if ($comment->isForceDeleting()) {
-            $comment->votes()->each(static function (Vote $vote) : void {
+            $comment->votes()->each(static function (Vote $vote): void {
                 $vote->delete();
             });
         }

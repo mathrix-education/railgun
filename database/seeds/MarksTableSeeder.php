@@ -12,7 +12,7 @@ use Mathrix\Lumen\Zero\Database\BaseTableSeeder;
 
 class MarksTableSeeder extends BaseTableSeeder
 {
-    public function run() : void
+    public function run(): void
     {
         $faker      = FakerFactory::create();
         $registered = User::scope('logged')->get();

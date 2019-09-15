@@ -15,7 +15,7 @@ class GoogleCloudStorageHandler
     /**
      * @throws FileNotFoundException
      */
-    public static function handle(Throwable $exception) : void
+    public static function handle(Throwable $exception): void
     {
         if ($exception instanceof FlysystemFileNotFoundException) {
             throw new FileNotFoundException($exception->getPath());

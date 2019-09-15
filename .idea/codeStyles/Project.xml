@@ -26,7 +26,6 @@
       <option name="ALIGN_CLASS_CONSTANTS" value="true" />
       <option name="KEEP_BLANK_LINES_AFTER_LBRACE" value="1" />
       <option name="FORCE_SHORT_DECLARATION_ARRAY_STYLE" value="true" />
-      <option name="SPACE_BEFORE_COLON_IN_RETURN_TYPE" value="true" />
     </PHPCodeStyleSettings>
     <codeStyleSettings language="PHP">
       <option name="KEEP_BLANK_LINES_IN_DECLARATIONS" value="1" />

@@ -48,7 +48,7 @@ class TransactionSuccessMail extends BaseMail
      *
      * @throws NotFound
      */
-    public static function mock(?string $transactionId = null) : self
+    public static function mock(?string $transactionId = null): self
     {
         $user = User::random();
 
@@ -113,7 +113,7 @@ class TransactionSuccessMail extends BaseMail
     /**
      * Build the mail.
      */
-    public function build() : TransactionSuccessMail
+    public function build(): TransactionSuccessMail
     {
         return $this->subject('Votre reçu de Mathrix')
             ->from('support@mathrix.fr')

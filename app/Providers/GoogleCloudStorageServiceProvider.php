@@ -35,7 +35,7 @@ class GoogleCloudStorageServiceProvider extends ServiceProvider
      *
      * @throws BindingResolutionException
      */
-    public function boot() : void
+    public function boot(): void
     {
         $factory = $this->app->make('filesystem');
         /** @var FilesystemManager $factory */
@@ -57,7 +57,7 @@ class GoogleCloudStorageServiceProvider extends ServiceProvider
      *
      * @return StorageClient
      */
-    private function createClient($config) : StorageClient
+    private function createClient($config): StorageClient
     {
         $options = [];
         if (isset($config['project_id'])) {
@@ -85,7 +85,7 @@ class GoogleCloudStorageServiceProvider extends ServiceProvider
      *
      * @return FilesystemInterface
      */
-    protected function createFilesystem(AdapterInterface $adapter, array $config) : FilesystemInterface
+    protected function createFilesystem(AdapterInterface $adapter, array $config): FilesystemInterface
     {
         $cache  = Arr::pull($config, 'cache');
         $config = Arr::only($config, ['visibility', 'disable_asserts', 'url']);
@@ -102,9 +102,10 @@ class GoogleCloudStorageServiceProvider extends ServiceProvider
      * @param mixed $config
      *
      * @return CacheInterface
+     *
      * @throws InvalidArgumentException
      */
-    protected function createCacheStore($config) : CacheInterface
+    protected function createCacheStore($config): CacheInterface
     {
         if ($config === true) {
             return new MemoryStore();
@@ -120,7 +121,7 @@ class GoogleCloudStorageServiceProvider extends ServiceProvider
     /**
      * Register bindings in the container.
      */
-    public function register() : void
+    public function register(): void
     {
     }
 }

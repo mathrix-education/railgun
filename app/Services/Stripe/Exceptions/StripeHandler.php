@@ -18,7 +18,7 @@ class StripeHandler
      * @throws CardDeclined
      * @throws IncorrectCVC
      */
-    public static function handle(Throwable $exception) : void
+    public static function handle(Throwable $exception): void
     {
         if (! ($exception instanceof StripeCardException)) {
             return;

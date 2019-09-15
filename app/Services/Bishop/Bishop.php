@@ -29,12 +29,12 @@ abstract class Bishop implements JsonSerializable
         }
     }
 
-    public function setRawAttribute(string $key, $value) : void
+    public function setRawAttribute(string $key, $value): void
     {
         $this->attributes[$key] = $value;
     }
 
-    public function toArray() : array
+    public function toArray(): array
     {
         $array = [];
 
@@ -102,7 +102,7 @@ abstract class Bishop implements JsonSerializable
      *
      * @return Carbon|null
      */
-    public function toCarbon($value) : ?Carbon
+    public function toCarbon($value): ?Carbon
     {
         if ($value instanceof DateTime) {
             return Carbon::instance($value);
@@ -126,7 +126,7 @@ abstract class Bishop implements JsonSerializable
      *
      * @return string
      */
-    protected function serializeDate(Carbon $date) : string
+    protected function serializeDate(Carbon $date): string
     {
         return $date->format($this->dateFormat);
     }

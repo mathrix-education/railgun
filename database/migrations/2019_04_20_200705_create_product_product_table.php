@@ -11,9 +11,9 @@ class CreateProductProductTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up() : void
+    public function up(): void
     {
-        Schema::create('product_product', static function (Blueprint $table) : void {
+        Schema::create('product_product', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('child_id');
             $table->unsignedBigInteger('parent_id');
@@ -28,7 +28,7 @@ class CreateProductProductTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down() : void
+    public function down(): void
     {
         Schema::dropIfExists('product_product');
     }

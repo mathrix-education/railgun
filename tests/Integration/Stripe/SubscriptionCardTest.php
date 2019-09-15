@@ -40,7 +40,7 @@ class SubscriptionCardTest extends APIStatelessTestCase
 
         JWT::actingAs($user);
 
-        $this->json('patch', '/subscriptions/{$subscription->id}/card', [
+        $this->json('patch', "/subscriptions/{$subscription->id}/card", [
             'card' => ['token' => 'tok_es'],
         ]);
 

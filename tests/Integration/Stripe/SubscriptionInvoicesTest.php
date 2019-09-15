@@ -41,7 +41,7 @@ class SubscriptionInvoicesTest extends APIStatelessTestCase
 
         JWT::actingAs($this->requester);
 
-        $this->json('get', '/subscriptions/{$subscription->id}/invoices');
+        $this->json('get', "/subscriptions/{$subscription->id}/invoices");
 
         $this->assertResponseStatus(200);
         $this->assertOpenAPIResponse($this->response);

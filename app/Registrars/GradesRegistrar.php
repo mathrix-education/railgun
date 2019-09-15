@@ -12,7 +12,7 @@ class GradesRegistrar extends BaseRegistrar
     /**
      * Register the routes.
      */
-    public function register() : void
+    public function register(): void
     {
         $controller = GradesController::class;
 
@@ -23,7 +23,7 @@ class GradesRegistrar extends BaseRegistrar
             "$controller@chaptersByDisciplineVisible"
         );
 
-        $this->group(['middleware' => 'scope:chapters:read'], function () use ($controller) : void {
+        $this->group(['middleware' => 'scope:chapters:read'], function () use ($controller): void {
             $this->get(
                 '/grades/{gradeId}/disciplines/{disciplineId}/chapters',
                 "$controller@chaptersByDiscipline"

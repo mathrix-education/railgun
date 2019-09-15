@@ -71,7 +71,7 @@ class Comment extends BaseModel
     /**
      * BelongsTo Comment.
      */
-    public function parent() : BelongsTo
+    public function parent(): BelongsTo
     {
         return $this->belongsTo(self::class, 'parent_id');
     }
@@ -79,7 +79,7 @@ class Comment extends BaseModel
     /**
      * HasMany Comment.
      */
-    public function children() : HasMany
+    public function children(): HasMany
     {
         return $this->hasMany(self::class, 'parent_id')
             ->orderBy('created_at');
@@ -88,7 +88,7 @@ class Comment extends BaseModel
     /**
      * BelongsTo Module.
      */
-    public function module() : BelongsTo
+    public function module(): BelongsTo
     {
         return $this->belongsTo(Module::class);
     }
@@ -96,7 +96,7 @@ class Comment extends BaseModel
     /**
      * BelongsTo Comment.
      */
-    public function user() : BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -104,7 +104,7 @@ class Comment extends BaseModel
     /**
      * Score attribute.
      */
-    public function getScoreAttribute() : int
+    public function getScoreAttribute(): int
     {
         return (int)$this->votes()->sum('value');
     }
@@ -120,7 +120,7 @@ class Comment extends BaseModel
      *
      * @codeCoverageIgnore
      */
-    public function votes() : HasMany
+    public function votes(): HasMany
     {
         return $this->hasMany(Vote::class);
     }
@@ -128,7 +128,7 @@ class Comment extends BaseModel
     /**
      * Get the user vote value (0|1|-1).
      */
-    public function getUserVoteAttribute() : int
+    public function getUserVoteAttribute(): int
     {
         /** @var User $user */
         $user = Auth::user();

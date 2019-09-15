@@ -19,7 +19,7 @@ class Card extends Bishop
 {
     protected $dates = ['expiration'];
 
-    public static function from(StripeCard $card) : Card
+    public static function from(StripeCard $card): Card
     {
         return new self(self::fromStripe($card));
     }
@@ -29,7 +29,7 @@ class Card extends Bishop
      *
      * @return array
      */
-    public static function fromStripe(StripeCard $card) : array
+    public static function fromStripe(StripeCard $card): array
     {
         return [
             'id' => $card->id,

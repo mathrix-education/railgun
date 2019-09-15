@@ -9,7 +9,7 @@ use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
 class PlansRegistrar extends BaseRegistrar
 {
-    public function register() : void
+    public function register(): void
     {
         $controller = PlansController::class;
         $this->get('/plans', "$controller@all");

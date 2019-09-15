@@ -12,9 +12,9 @@ class MigrateToScopesOnUsersTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up() : void
+    public function up(): void
     {
-        Schema::table('users', static function (Blueprint $table) : void {
+        Schema::table('users', static function (Blueprint $table): void {
             $table->json('scopes')->nullable()->after('type');
         });
 
@@ -24,7 +24,7 @@ class MigrateToScopesOnUsersTable extends Migration
         $users->where('type', '!=', 'admin')
             ->update(['scopes' => json_encode(['logged'])]);
 
-        Schema::table('users', static function (Blueprint $table) : void {
+        Schema::table('users', static function (Blueprint $table): void {
             $table->dropColumn('type');
         });
     }
@@ -32,9 +32,9 @@ class MigrateToScopesOnUsersTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down() : void
+    public function down(): void
     {
-        Schema::table('users', static function (Blueprint $table) : void {
+        Schema::table('users', static function (Blueprint $table): void {
             $table->string('type')->after('password');
             $table->dropColumn('scopes');
         });

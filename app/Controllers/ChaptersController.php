@@ -25,7 +25,7 @@ class ChaptersController extends BaseController
      *
      * @return SuccessJsonResponse The chapter, and its lineage (notions, activities, modules).
      */
-    public function recursive(Request $request, int $chapterId) : SuccessJsonResponse
+    public function recursive(Request $request, int $chapterId): SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();

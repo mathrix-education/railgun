@@ -11,9 +11,9 @@ class CreateRecordsTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up() : void
+    public function up(): void
     {
-        Schema::create('records', static function (Blueprint $table) : void {
+        Schema::create('records', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('service');
             $table->string('event');
@@ -30,7 +30,7 @@ class CreateRecordsTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down() : void
+    public function down(): void
     {
         Schema::dropIfExists('records');
     }

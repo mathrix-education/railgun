@@ -17,7 +17,7 @@ class SetupCommand extends BaseCommand
 {
     protected $signature = 'gcloud:setup {environment}';
 
-    public function handle() : void
+    public function handle(): void
     {
         $environment = $this->argument('environment');
         $this->call('gcloud:decrypt', ['environment' => $environment]);
@@ -42,7 +42,7 @@ class SetupCommand extends BaseCommand
      * @param string $src  The source file.
      * @param string $dest The destination file.
      */
-    public function move(string $src, string $dest) : void
+    public function move(string $src, string $dest): void
     {
         $this->line(str_replace(base_path(), '', "Moving $src => $dest"));
         rename($src, $dest);

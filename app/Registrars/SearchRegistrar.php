@@ -9,7 +9,7 @@ use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
 class SearchRegistrar extends BaseRegistrar
 {
-    public function register() : void
+    public function register(): void
     {
         $this->get(
             'search/{gradeId}/{query}',

@@ -19,7 +19,7 @@ class KMSUtils
      *
      * @return string[] The list of files in deploy/environments/{$environment}
      */
-    public static function keychain(string $environment) : array
+    public static function keychain(string $environment): array
     {
         $path = base_path("environments/{$environment}");
 
@@ -38,7 +38,7 @@ class KMSUtils
      *
      * @throws ValidationException
      */
-    public static function clientKey(string $environment) : array
+    public static function clientKey(string $environment): array
     {
         $projectId = 'mathrix-education';
         $location  = 'global';

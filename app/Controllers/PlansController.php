@@ -20,7 +20,7 @@ class PlansController extends BaseController
      * GET /plans
      * Get the available plans.
      */
-    public function all() : SuccessJsonResponse
+    public function all(): SuccessJsonResponse
     {
         $data = [];
 

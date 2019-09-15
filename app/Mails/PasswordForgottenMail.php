@@ -27,7 +27,7 @@ class PasswordForgottenMail extends BaseMail
     /**
      * Mock the mail.
      */
-    public static function mock() : PasswordForgottenMail
+    public static function mock(): PasswordForgottenMail
     {
         $user = User::random();
 
@@ -37,7 +37,7 @@ class PasswordForgottenMail extends BaseMail
     /**
      * Build the mail.
      */
-    public function build() : PasswordForgottenMail
+    public function build(): PasswordForgottenMail
     {
         $this->subject('Modification de mot de passe');
 

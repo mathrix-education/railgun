@@ -13,7 +13,7 @@ class NotionObserver extends BaseObserver
      * After save.
      * Update parent chapters's notion counter.
      */
-    public function saved(Notion $notion) : bool
+    public function saved(Notion $notion): bool
     {
         if ($notion->wasChanged('chapter_id', 'visible')) {
             $notion->chapter->updateCounters();
@@ -27,9 +27,10 @@ class NotionObserver extends BaseObserver
      * @param Notion $notion
      *
      * @return bool
+     *
      * @throws ForeignConstraints
      */
-    public function deleting(Notion $notion) : bool
+    public function deleting(Notion $notion): bool
     {
         $this->handleRelationDeletion($notion, 'activities');
 

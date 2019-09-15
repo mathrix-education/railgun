@@ -100,7 +100,7 @@ class Module extends BaseModel
      *
      * @return array
      */
-    public function toArray() : array
+    public function toArray(): array
     {
         if (! $this->shouldStrip()) {
             return parent::toArray();
@@ -120,7 +120,7 @@ class Module extends BaseModel
     /**
      * Determine if the module should be striped.
      */
-    public function shouldStrip() : bool
+    public function shouldStrip(): bool
     {
         /** @var User $user */
         $user = Auth::user();
@@ -165,12 +165,12 @@ class Module extends BaseModel
     /**
      * HasMany Product.
      */
-    public function products() : HasMany
+    public function products(): HasMany
     {
         return $this->hasMany(Product::class);
     }
 
-    public function activity() : BelongsTo
+    public function activity(): BelongsTo
     {
         return $this->belongsTo(Activity::class);
     }
@@ -178,7 +178,7 @@ class Module extends BaseModel
     /**
      * HasMany Comment.
      */
-    public function comments() : HasMany
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class)
             ->orderBy('created_at');
@@ -187,7 +187,7 @@ class Module extends BaseModel
     /**
      * HasMany Post.
      */
-    public function posts() : HasMany
+    public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
     }
@@ -195,7 +195,7 @@ class Module extends BaseModel
     /**
      * HasMany Report.
      */
-    public function reports() : HasMany
+    public function reports(): HasMany
     {
         return $this->hasMany(Report::class);
     }
@@ -203,7 +203,7 @@ class Module extends BaseModel
     /**
      * Get the mark attribute (view|to_revise|completed)
      */
-    public function getMarkAttribute() : ?string
+    public function getMarkAttribute(): ?string
     {
         /** @var User $user */
         $user = Auth::user();
@@ -227,7 +227,7 @@ class Module extends BaseModel
     /**
      * MorphMany Mark.
      */
-    public function marks() : MorphMany
+    public function marks(): MorphMany
     {
         return $this->morphMany(Mark::class, 'markable');
     }

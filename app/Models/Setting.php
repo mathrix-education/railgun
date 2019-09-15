@@ -75,9 +75,10 @@ class Setting extends BaseModel
      * @param string $key the setting key
      *
      * @return bool|null
+     *
      * @throws Exception
      */
-    public static function forgot(string $key) : ?bool
+    public static function forgot(string $key): ?bool
     {
         return self::query()
             ->where('key', '=', $key)
@@ -102,7 +103,7 @@ class Setting extends BaseModel
      *
      * @param $value
      */
-    public function setValueAttribute($value) : void
+    public function setValueAttribute($value): void
     {
         $this->attributes['value'] = serialize($value);
     }

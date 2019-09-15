@@ -78,7 +78,7 @@ class Activity extends BaseModel
     /**
      * Update counters.
      */
-    public function updateCounters() : void
+    public function updateCounters(): void
     {
         $this->module_count = Module::query()
             ->where('activity_id', '=', $this->id)
@@ -96,7 +96,7 @@ class Activity extends BaseModel
     /**
      * The activity's notion.
      */
-    public function notion() : BelongsTo
+    public function notion(): BelongsTo
     {
         return $this->belongsTo(Notion::class);
     }
@@ -104,7 +104,7 @@ class Activity extends BaseModel
     /**
      * BelongsToMany Module.
      */
-    public function modules() : HasMany
+    public function modules(): HasMany
     {
         return $this->hasMany(Module::class)->orderBy('order');
     }
@@ -112,7 +112,7 @@ class Activity extends BaseModel
     /**
      * Get the mark attribute (view|to_revise|completed)
      */
-    public function getMarkAttribute() : ?string
+    public function getMarkAttribute(): ?string
     {
         /** @var User $user */
         $user = Auth::user();
@@ -133,7 +133,7 @@ class Activity extends BaseModel
     /**
      * @return MorphMany
      */
-    public function marks() : MorphMany
+    public function marks(): MorphMany
     {
         return $this->morphMany(Mark::class, 'markable');
     }

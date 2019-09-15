@@ -43,7 +43,7 @@ class Mark extends BaseModel
      *
      * @return Mark
      */
-    public static function retrieve($model, $user) : Mark
+    public static function retrieve($model, $user): Mark
     {
         return self::retrieveAll($model, $user)->first();
     }
@@ -91,12 +91,12 @@ class Mark extends BaseModel
     /**
      * BelongsTo User.
      */
-    public function user() : BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function markable() : MorphTo
+    public function markable(): MorphTo
     {
         return $this->morphTo();
     }

@@ -18,5 +18,5 @@ abstract class BaseJob implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    abstract public function handle() : void;
+    abstract public function handle(): void;
 }

@@ -28,7 +28,7 @@ class ProductsController extends BaseController
      *
      * @throws Http400BadRequestException
      */
-    public function patchItems(Request $request, int $packId) : PaginationJsonResponse
+    public function patchItems(Request $request, int $packId): PaginationJsonResponse
     {
         // TODO: Add validator
 
@@ -59,7 +59,7 @@ class ProductsController extends BaseController
      *
      * @throws Http400BadRequestException
      */
-    public function paginateByType(string $type) : PaginationJsonResponse
+    public function paginateByType(string $type): PaginationJsonResponse
     {
         $query = Product::query()
             ->where('type', '=', $type);
@@ -77,7 +77,7 @@ class ProductsController extends BaseController
      *
      * @throws Http400BadRequestException
      */
-    public function buyable(string $type) : PaginationJsonResponse
+    public function buyable(string $type): PaginationJsonResponse
     {
         $query = Product::with('children')
             ->where('buyable', '=', true);
@@ -98,7 +98,7 @@ class ProductsController extends BaseController
      *
      * @return SuccessJsonResponse The product and items children.
      */
-    public function recursive(int $productId) : SuccessJsonResponse
+    public function recursive(int $productId): SuccessJsonResponse
     {
         $maxDepth = 3;
         $with     = ['children'];

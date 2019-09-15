@@ -12,7 +12,7 @@ class ProductsRegistrar extends BaseRegistrar
     /**
      * Register the routes.
      */
-    public function register() : void
+    public function register(): void
     {
         $controller = ProductsController::class;
 
@@ -33,7 +33,7 @@ class ProductsRegistrar extends BaseRegistrar
 
         $this->group(
             ['middleware' => 'logged'],
-            function () use ($controller) : void {
+            function () use ($controller): void {
                 $this->post('products/buy', "$controller@buy");
             }
         );

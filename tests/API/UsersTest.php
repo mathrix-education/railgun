@@ -53,7 +53,7 @@ class UsersTest extends APIStatelessTestCase
         /** @var User $user */
         $user = User::random();
         JWT::actingAs($user);
-        $this->json('get', '/users/{$user->id}');
+        $this->json('get', "/users/{$user->id}");
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse($this->response);
@@ -67,7 +67,7 @@ class UsersTest extends APIStatelessTestCase
         /** @var User $user */
         $user = JWT::withScopes('*');
 
-        $this->json('get', '/users/{$user->id}');
+        $this->json('get', "/users/{$user->id}");
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse($this->response);
@@ -82,7 +82,7 @@ class UsersTest extends APIStatelessTestCase
         $user    = JWT::withScopes('logged');
         $someone = User::random(['id', '!=', $user->id]);
 
-        $this->json('get', '/users/{$someone->id}');
+        $this->json('get', "/users/{$someone->id}");
 
         $this->assertResponseStatus(401);
         $this->assertOpenAPIResponse($this->response);
@@ -109,7 +109,7 @@ class UsersTest extends APIStatelessTestCase
         $user = User::random();
         JWT::actingAs($user);
 
-        $this->json('patch', '/users/{$user->id}', $payload);
+        $this->json('patch', "/users/{$user->id}", $payload);
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse($this->response);
@@ -139,7 +139,7 @@ class UsersTest extends APIStatelessTestCase
         /** @var User $user */
         $user = JWT::withScopes('logged');
 
-        $this->json('patch', '/users/{$user->id}', $payload);
+        $this->json('patch', "/users/{$user->id}", $payload);
 
         $this->assertResponseStatus(422);
         $this->assertOpenAPIResponse($this->response);
@@ -175,10 +175,10 @@ class UsersTest extends APIStatelessTestCase
 
         $module   = Module::random(['visible', '=', true]);
         $settings = array_merge($user->settings, [
-            'last_session' => ['{$module->activity->notion->chapter->discipline->id}' => $module->id],
+            'last_session' => [$module->activity->notion->chapter->discipline->id => $module->id],
         ]);
 
-        $this->json('patch', '/users/{$user->id}', ['settings' => $settings]);
+        $this->json('patch', "/users/{$user->id}", ['settings' => $settings]);
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse($this->response);
@@ -192,7 +192,7 @@ class UsersTest extends APIStatelessTestCase
     {
         $user = User::random();
 
-        $uri = '/users/{$user->id}/cache';
+        $uri = "/users/{$user->id}/cache";
         JWT::autoScope('delete', $uri);
         $this->json('delete', $uri);
 

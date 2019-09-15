@@ -46,7 +46,7 @@ if (! function_exists('timestamps')) {
      *
      * @return array
      */
-    function timestamps(string $start = '-1 month', int $bias = 90) : array
+    function timestamps(string $start = '-1 month', int $bias = 90): array
     {
         $format = 'Y-m-d H:i:s';
         $faker  = FakerFactory::create();
@@ -69,7 +69,7 @@ if (! function_exists('scope')) {
      *
      * @return bool
      */
-    function scope(?User $user, string $scope) : bool
+    function scope(?User $user, string $scope): bool
     {
         return $user instanceof User && $user->hasScope($scope);
     }
@@ -78,7 +78,7 @@ if (! function_exists('scope')) {
 
 if (! function_exists('gateway')) {
 
-    function gateway() : Gateway
+    function gateway(): Gateway
     {
         return app(Gateway::class);
     }
@@ -88,10 +88,10 @@ if (! function_exists('gateway')) {
 
 if (! function_exists('uuid')) {
 
-    function uuid() : ?string
+    function uuid(): ?string
     {
         try {
-            return Uuid::uuid4();
+            return Uuid::uuid4()->toString();
         } catch (Throwable $e) {
             return null;
         }

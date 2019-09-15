@@ -51,7 +51,7 @@ class Handler extends ExceptionHandler
      *
      * @codeCoverageIgnore
      */
-    public function report(Exception $e) : void
+    public function report(Exception $e): void
     {
         if ($this->shouldntReport($e)) {
             return;
@@ -63,7 +63,7 @@ class Handler extends ExceptionHandler
             /** @var Sentry $sentry */
             $sentry = app('sentry');
 
-            $sentry->configureScope(static function (Scope $scope) : void {
+            $sentry->configureScope(static function (Scope $scope): void {
                 /** @var User $user */
                 $user = Auth::user();
                 if ($user === null) {

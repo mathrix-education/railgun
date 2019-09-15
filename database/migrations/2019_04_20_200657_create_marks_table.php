@@ -11,9 +11,9 @@ class CreateMarksTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up() : void
+    public function up(): void
     {
-        Schema::create('marks', static function (Blueprint $table) : void {
+        Schema::create('marks', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('status');
             $table->morphs('markable');
@@ -28,7 +28,7 @@ class CreateMarksTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down() : void
+    public function down(): void
     {
         Schema::dropIfExists('marks');
     }

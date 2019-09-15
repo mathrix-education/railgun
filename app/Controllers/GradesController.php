@@ -27,18 +27,18 @@ class GradesController extends BaseController
      *
      * @throws Http400BadRequestException
      */
-    public function disciplinesVisible(int $gradeId) : PaginationJsonResponse
+    public function disciplinesVisible(int $gradeId): PaginationJsonResponse
     {
         $query = Discipline::query()
             ->whereHas(
                 'chapters',
-                static function (Builder $query) : void {
+                static function (Builder $query): void {
                     $query->where('chapters.visible', '=', true);
                 }
             )
             ->whereHas(
                 'grades',
-                static function (Builder $query) use ($gradeId) : void {
+                static function (Builder $query) use ($gradeId): void {
                     $query->where('grades.id', '=', $gradeId);
                 }
             );
@@ -55,13 +55,13 @@ class GradesController extends BaseController
      *
      * @return SuccessJsonResponse The chapter.
      */
-    public function getBySlugChapterSlug(string $gradeSlug, string $chapterSlug) : SuccessJsonResponse
+    public function getBySlugChapterSlug(string $gradeSlug, string $chapterSlug): SuccessJsonResponse
     {
         /** @var Chapter $chapter */
         $chapter = Chapter::query()
             ->whereHas(
                 'grade',
-                static function (Builder $query) use ($gradeSlug) : void {
+                static function (Builder $query) use ($gradeSlug): void {
                     $query->where('slug', '=', $gradeSlug);
                 }
             )
@@ -82,7 +82,7 @@ class GradesController extends BaseController
      *
      * @throws Http400BadRequestException
      */
-    public function chaptersByDiscipline(int $gradeId, int $disciplineId) : PaginationJsonResponse
+    public function chaptersByDiscipline(int $gradeId, int $disciplineId): PaginationJsonResponse
     {
         $query = Chapter::byGradeAndDiscipline($gradeId, $disciplineId);
 
@@ -100,7 +100,7 @@ class GradesController extends BaseController
      *
      * @throws Http400BadRequestException
      */
-    public function chaptersByDisciplineVisible(int $gradeId, int $disciplineId) : PaginationJsonResponse
+    public function chaptersByDisciplineVisible(int $gradeId, int $disciplineId): PaginationJsonResponse
     {
         $query = Chapter::byGradeAndDiscipline($gradeId, $disciplineId)
             ->where('visible', '=', true);

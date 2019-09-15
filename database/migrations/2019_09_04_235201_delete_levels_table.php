@@ -11,9 +11,9 @@ class DeleteLevelsTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up() : void
+    public function up(): void
     {
-        Schema::table('users', static function (Blueprint $table) : void {
+        Schema::table('users', static function (Blueprint $table): void {
             $table->dropColumn('level');
         });
 
@@ -23,11 +23,11 @@ class DeleteLevelsTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down() : void
+    public function down(): void
     {
         (new CreateLevelsTable())->up();
 
-        Schema::table('users', static function (Blueprint $table) : void {
+        Schema::table('users', static function (Blueprint $table): void {
             $table->unsignedInteger('level')->after('token');
         });
     }

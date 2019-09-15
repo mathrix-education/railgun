@@ -10,12 +10,12 @@ use Illuminate\Support\Facades\Hash;
 
 class UserObserver extends BaseObserver
 {
-    public function creating(User $user) : void
+    public function creating(User $user): void
     {
         $user->token = Factory::create()->uuid;
     }
 
-    public function saving(User $user) : bool
+    public function saving(User $user): bool
     {
         // Password hash check
         if ($user->isDirty('password') && Hash::needsRehash($user->password)) {

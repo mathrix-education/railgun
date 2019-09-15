@@ -47,7 +47,7 @@ class Grade extends BaseModel
     /**
      * Get the cursus (ie. the grade itself and all its previous).
      */
-    public function cursus() : Collection
+    public function cursus(): Collection
     {
         $grades = new Collection();
         $grades->add($this);
@@ -69,12 +69,12 @@ class Grade extends BaseModel
     |--------------------------------------------------------------------------
     */
 
-    public function parent() : BelongsTo
+    public function parent(): BelongsTo
     {
         return $this->belongsTo(self::class, 'parent_id');
     }
 
-    public function children() : HasMany
+    public function children(): HasMany
     {
         return $this->hasMany(self::class, 'parent_id');
     }
@@ -82,7 +82,7 @@ class Grade extends BaseModel
     /**
      * BelongsTo Country.
      */
-    public function country() : BelongsTo
+    public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class);
     }
@@ -90,7 +90,7 @@ class Grade extends BaseModel
     /**
      * BelongsTo Country.
      */
-    public function chapters() : HasMany
+    public function chapters(): HasMany
     {
         return $this->hasMany(Chapter::class);
     }
@@ -98,7 +98,7 @@ class Grade extends BaseModel
     /**
      * BelongsToMany Discipline.
      */
-    public function disciplines() : BelongsToMany
+    public function disciplines(): BelongsToMany
     {
         return $this->belongsToMany(Discipline::class, 'chapters')
             ->groupBy(['grade_id', 'discipline_id']);
@@ -107,7 +107,7 @@ class Grade extends BaseModel
     /**
      * HasMany User.
      */
-    public function users() : HasMany
+    public function users(): HasMany
     {
         return $this->hasMany(User::class);
     }

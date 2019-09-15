@@ -17,6 +17,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Validation\Rule;
@@ -24,7 +25,6 @@ use Laravel\Lumen\Auth\Authorizable;
 use Mathrix\Lumen\JWT\Auth\HasJWT;
 use Mathrix\Lumen\Zero\Models\BaseModel;
 use stdClass;
-use Stripe\Error\Api as StripeAPIException;
 use Stripe\Subscription as StripeSubscription;
 use function array_merge;
 use function floor;
@@ -78,17 +78,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     use PermissionsTrait;
     use BraintreeCustomer;
     use StripeCustomer;
-
-    private const STRIPE_PLANS    = [
-        'v3_monthly',
-        'v3_annually',
-        'v3_biannually',
-    ];
-    public const  BRAINTREE_PLANS = [
-        'v4_monthly',
-        'v4_annually',
-        'v4_biannually',
-    ];
 
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
@@ -161,17 +150,12 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         'premium',
     ];
 
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-    }
-
     /**
      * Custom validation rules
      *
      * @return array
      */
-    public function getValidationRules() : array
+    public function getValidationRules(): array
     {
         return array_merge(
             $this->rules,
@@ -206,7 +190,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function scopeScope(Builder $query, string $scope)
     {
         return $query->whereRaw("JSON_SEARCH(scopes, 'one', ?) IS NOT NULL", [$scope])
-                     ->orWhereRaw("JSON_SEARCH(scopes, 'one', '*') IS NOT NULL");
+            ->orWhereRaw("JSON_SEARCH(scopes, 'one', '*') IS NOT NULL");
     }
 
     /*
@@ -222,23 +206,15 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      *
      * @return bool
      */
-    public function hasPurchased(Product $product) : bool
+    public function hasPurchased(Product $product): bool
     {
         return $this->purchases()
-                    ->whereIn(
-                        'product_id',
-                        $product->lineage()
-                        ->pluck('id')
-                    )
-                    ->exists();
-    }
-
-    /**
-     * HasMany Records.
-     */
-    public function purchases() : HasMany
-    {
-        return $this->hasMany(Purchase::class);
+            ->whereIn(
+                'product_id',
+                $product->lineage()
+                    ->pluck('id')
+            )
+            ->exists();
     }
 
     /*
@@ -250,7 +226,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     /**
      * BelongsTo Grade.
      */
-    public function grade() : BelongsTo
+    public function grade(): BelongsTo
     {
         return $this->belongsTo(Grade::class);
     }
@@ -258,7 +234,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     /**
      * HasMany Comment.
      */
-    public function comments() : HasMany
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
@@ -266,29 +242,38 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     /**
      * HasMany Mark.
      */
-    public function marks() : HasMany
+    public function marks(): HasMany
     {
         return $this->hasMany(Mark::class);
     }
 
     /**
-     * HasMany Vote.
+     * BelongsToMany Products using Purchase a pivot.
+     * Reflects the products bought by the user.
+     *
+     * @return BelongsToMany
      */
-    public function votes() : HasMany
+    public function products(): BelongsToMany
     {
-        return $this->hasMany(Vote::class);
+        return $this->belongsToMany(Product::class)
+            ->using(Purchase::class)
+            ->withTimestamps();
     }
 
     /**
-     * full_name attribute.
+     * HasMany Purchase.
      */
-    public function getFullNameAttribute() : string
+    public function purchases(): HasMany
     {
-        if (empty($this->firstname) && empty($this->lastname)) {
-            return $this->username;
-        }
+        return $this->hasMany(Purchase::class);
+    }
 
-        return trim("{$this->firstname} {$this->lastname}");
+    /**
+     * HasMany Vote.
+     */
+    public function votes(): HasMany
+    {
+        return $this->hasMany(Vote::class);
     }
 
     /*
@@ -298,9 +283,21 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     */
 
     /**
+     * full_name attribute.
+     */
+    public function getFullNameAttribute(): string
+    {
+        if (empty($this->firstname) && empty($this->lastname)) {
+            return $this->username;
+        }
+
+        return trim("{$this->firstname} {$this->lastname}");
+    }
+
+    /**
      * level attribute.
      */
-    public function getLevelAttribute() : int
+    public function getLevelAttribute(): int
     {
         return (int)floor((pow($this->points, 1 / 1.2) / 10) + 1);
     }
@@ -308,7 +305,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     /**
      * premium attribute.
      */
-    public function getPremiumAttribute() : bool
+    public function getPremiumAttribute(): bool
     {
         if ($this->premium_bypass) {
             // Permanent premium bypass
@@ -344,7 +341,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     /**
      * @return Subscription|BaseCollection
      */
-    public function subscriptions() : BaseCollection
+    public function subscriptions(): BaseCollection
     {
         $subscriptions = new BaseCollection();
 
@@ -366,7 +363,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     /**
      * The login provider.
      */
-    public function getProviderAttribute() : string
+    public function getProviderAttribute(): string
     {
         $provider = 'api';
 
@@ -392,22 +389,22 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         foreach ($lastSession as $moduleId) {
             /** @var Module $module */
             $module = Module::query()
-                            ->findOrFail($moduleId);
+                ->findOrFail($moduleId);
             /** @var Activity $activity */
             $activity = Activity::query()
-                                ->findOrFail($module->activity_id);
+                ->findOrFail($module->activity_id);
             /** @var Notion $notion */
             $notion = Notion::query()
-                            ->findOrFail($activity->notion_id);
+                ->findOrFail($activity->notion_id);
             /** @var Chapter $chapter */
             $chapter = Chapter::query()
-                              ->findOrFail($notion->chapter_id);
+                ->findOrFail($notion->chapter_id);
             /** @var Discipline $discipline */
             $discipline = Discipline::query()
-                                    ->findOrFail($chapter->discipline_id);
+                ->findOrFail($chapter->discipline_id);
             /** @var Grade $grade */
             $grade = Grade::query()
-                          ->findOrFail($chapter->grade_id);
+                ->findOrFail($chapter->grade_id);
 
             $body[] = [
                 'grade_slug' => $grade->slug,

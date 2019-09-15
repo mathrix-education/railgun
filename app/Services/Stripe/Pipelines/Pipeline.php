@@ -37,9 +37,9 @@ abstract class Pipeline
         return $this;
     }
 
-    abstract protected function initialize() : void;
+    abstract protected function initialize(): void;
 
-    abstract protected function exchange() : void;
+    abstract protected function exchange(): void;
 
-    abstract protected function finalize() : void;
+    abstract protected function finalize(): void;
 }

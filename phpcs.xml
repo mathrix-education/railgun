@@ -17,7 +17,7 @@
 
     <!-- Inclusions -->
     <file>app</file>
-    <file>bootstrap</file>
+    <file>bootstrap/app.php</file>
     <file>config</file>
     <file>database</file>
 
@@ -32,4 +32,22 @@
 
     <!-- Force no whitespace after a type cast -->
     <rule ref="Generic.Formatting.NoSpaceAfterCast"/>
+
+    <!-- Require no space around colon in return types -->
+    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing">
+        <properties>
+            <property name="spacesCountBeforeColon" value="0"/>
+        </properties>
+    </rule>
+
+    <!-- Do not require a vendor namespace for migrations and DatabaseSeeder -->
+    <rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">
+        <exclude-pattern>database/migrations</exclude-pattern>
+        <exclude-pattern>database/seeds/DatabaseSeeder.php</exclude-pattern>
+    </rule>
+
+    <!-- Do not require a class to match filename for migrations -->
+    <rule ref="Squiz.Classes.ClassFileName.NoMatch">
+        <exclude-pattern>database/migrations</exclude-pattern>
+    </rule>
 </ruleset>

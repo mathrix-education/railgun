@@ -11,9 +11,9 @@ class CreateCategoriesTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up() : void
+    public function up(): void
     {
-        Schema::create('categories', static function (Blueprint $table) : void {
+        Schema::create('categories', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('slug');
@@ -25,7 +25,7 @@ class CreateCategoriesTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down() : void
+    public function down(): void
     {
         Schema::dropIfExists('categories');
     }
