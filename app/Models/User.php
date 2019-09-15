@@ -256,7 +256,9 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'purchases')
+            ->as('purchase')
             ->using(Purchase::class)
+            ->wherePivot('transaction_id')
             ->withTimestamps();
     }
 

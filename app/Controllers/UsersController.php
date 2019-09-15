@@ -183,10 +183,30 @@ class UsersController extends BaseController
         ]);
     }
 
+    /**
+     * GET /users/{userId}/cards
+     * Get the user Stripe cards.
+     *
+     * @param Request $request
+     *
+     * @return SuccessJsonResponse
+     */
     public function getCards(Request $request): SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();
+        /**
+         * @var int $page    The page.
+         * @var int $perPage The number of card per page.
+         */
+        [$page, $perPage] = PaginationJsonResponse::getPagination();
+
+        if ($user->isStripeCustomer()) {
+            return new SuccessJsonResponse([], [
+                'page'     => $page,
+                'per_page' => $perPage,
+            ]);
+        }
 
         $cards = Customer::allSources(
             $user->stripe_id,

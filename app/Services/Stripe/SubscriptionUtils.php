@@ -13,7 +13,7 @@ class SubscriptionUtils
     public const ANNUALLY_PLAN   = 'v5_annually';
     public const BIANNUALLY_PLAN = 'v5_biannually';
 
-    public const PLANS = [self::MONTHLY_PLAN, self::ANNUALLY_PLAN];
+    public const PLANS = [self::MONTHLY_PLAN, self::ANNUALLY_PLAN, self::BIANNUALLY_PLAN];
 
     public const PLANS_DETAILS = [
         self::MONTHLY_PLAN    => [

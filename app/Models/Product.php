@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Models\Traits\NoPivot;
 use App\Services\Braintree\Models\LineItem;
 use Braintree\Transaction;
 use Carbon\Carbon;
@@ -18,33 +17,30 @@ use Illuminate\Support\Facades\Auth;
 use Mathrix\Lumen\Zero\Models\BaseModel;
 
 /**
- * @property int $id
- * @property string $name
- * @property string $slug
- * @property string|null $image
- * @property string|null $type
- * @property string|null $description
- * @property float|null $price
- * @property bool $visible
- * @property bool $buyable
- * @property int|null $order
- * @property int|null $parent_id
- * @property int|null $module_id
- * @property int[]|null $pack_product_ids
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
+ * @property int                          $id
+ * @property string                       $name
+ * @property string                       $slug
+ * @property string|null                  $image
+ * @property string|null                  $type
+ * @property string|null                  $description
+ * @property float|null                   $price
+ * @property bool                         $visible
+ * @property bool                         $buyable
+ * @property int|null                     $order
+ * @property int|null                     $parent_id
+ * @property int|null                     $module_id
+ * @property int[]|null                   $pack_product_ids
+ * @property Carbon|null                  $created_at
+ * @property Carbon|null                  $updated_at
  * ---
- * @property Module|null $module
- * @property Product|null $parent
+ * @property Module|null                  $module
+ * @property Product|null                 $parent
  * @property EloquentCollection|Product[] $children
  * @property EloquentCollection|Product[] $items
- * @property EloquentCollection|Discount[] $discounts
- * @property EloquentCollection|LineItem[] $lineItems
  */
 class Product extends BaseModel
 {
     public const MODE_MACHINE_2019_END = '2019-07-31 00:00:00';
-    use NoPivot;
 
     /** @var bool Indicates if the model should be timestamped */
     public $timestamps = true;
@@ -63,15 +59,15 @@ class Product extends BaseModel
         'module_id',
     ];
     protected $rules    = [
-        'name' => 'required|max:35',
-        'slug' => 'required|max:35',
-        'image' => 'nullable',
-        'type' => 'nullable',
+        'name'        => 'required|max:35',
+        'slug'        => 'required|max:35',
+        'image'       => 'nullable',
+        'type'        => 'nullable',
         'description' => 'nullable|max:127',
-        'price' => 'nullable|numeric',
-        'visible' => 'required|boolean',
-        'order' => 'required|integer',
-        'module_id' => 'nullable|exists:modules,id',
+        'price'       => 'nullable|numeric',
+        'visible'     => 'required|boolean',
+        'order'       => 'required|integer',
+        'module_id'   => 'nullable|exists:modules,id',
     ];
     /** @var array The attributes that should be cast to native types */
     protected $casts   = [
@@ -106,8 +102,8 @@ class Product extends BaseModel
 
         $purchase = new Purchase([
             'transaction_id' => $transaction !== null ? $transaction->id : null,
-            'user_id' => $customer->id,
-            'product_id' => $this->id,
+            'user_id'        => $customer->id,
+            'product_id'     => $this->id,
         ]);
         $purchase->save();
 
@@ -126,11 +122,13 @@ class Product extends BaseModel
         $iterator = $this;
 
         while ($iterator->parent_id !== null
-            && $lineage->pluck('id')->search($iterator->parent_id) === false
+            && $lineage->pluck('id')
+                ->search($iterator->parent_id) === false
         ) {
             $iterator = $iterator->parent;
 
-            if ($lineage->pluck('id')->contains($iterator->id)) {
+            if ($lineage->pluck('id')
+                ->contains($iterator->id)) {
                 // Prevent endless loops
                 break;
             }
@@ -191,6 +189,20 @@ class Product extends BaseModel
     }
 
     /**
+     * BelongsToMany User.
+     *
+     * @return BelongsToMany
+     */
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'purchases')
+            ->as('purchase')
+            ->using(Purchase::class)
+            ->wherePivot('transaction_id')
+            ->withTimestamps();
+    }
+
+    /**
      * BelongsToMany Discount.
      */
     public function discounts(): BelongsToMany
@@ -220,7 +232,7 @@ class Product extends BaseModel
             return $this->price;
         }
 
-        if (! $discount->isApplicableOn($this)) {
+        if (!$discount->isApplicableOn($this)) {
             return $this->price;
         }
 
