@@ -22,13 +22,7 @@ class TestCommand extends BaseCommand
     {
         $user = User::findByOrFail("id", 155);
         JWT::actingAs($user);
-        $products = Product::query()
-            ->where([
-                ["buyable", "=", true],
-                ["type", "=", "training"]
-            ])
-            ->get()
-            ->toArray();
+        $products = $user->products->toArray();
         dd($products);
     }
 }
