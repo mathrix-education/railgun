@@ -201,7 +201,7 @@ class UsersController extends BaseController
          */
         [$page, $perPage] = PaginationJsonResponse::getPagination();
 
-        if ($user->isStripeCustomer()) {
+        if (!$user->isStripeCustomer()) {
             return new SuccessJsonResponse([], [
                 'page'     => $page,
                 'per_page' => $perPage,
