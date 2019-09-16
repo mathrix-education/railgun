@@ -1,16 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Registrars;
 
 use App\Controllers\ActivitiesController;
-use Mathrix\Lumen\Bases\BaseRegistrar;
+use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
 /**
- * Class ActivitiesRegistrar.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
+ * Register routes starting with /activities.
  */
 class ActivitiesRegistrar extends BaseRegistrar
 {
@@ -21,18 +19,21 @@ class ActivitiesRegistrar extends BaseRegistrar
     {
         $controller = ActivitiesController::class;
 
-        $this->rest("activities", $controller, [
-            "index" => "scope:activities:read",
-            "get" => null,
-            "post" => "scope:activities:write",
-            "patch" => "scope:activities:write",
-            "delete" => "scope:activities:delete",
-            "related:modules" => null
+        $this->rest([
+            'std:index'       => 'scope:activities:read',
+            'std:get'         => null,
+            'std:post'        => 'scope:activities:write',
+            'std:patch'       => 'scope:activities:write',
+            'std:delete'      => 'scope:activities:delete',
+            'rel:get:modules' => null,
         ]);
 
-        $this->group(["middleware" => "scope:logged"], function () use ($controller) {
-            $this->patch("activities/{activityId:[1-9]\d*}/mark", "$controller@mark");
-            $this->patch("activities/{activityId:[1-9]\d*}/unmark", "$controller@unmark");
-        });
+        $this->group(
+            ['middleware' => 'logged'],
+            function () use ($controller): void {
+                $this->patch('activities/{activityId}/mark', "$controller@mark");
+                $this->patch('activities/{activityId}/unmark', "$controller@unmark");
+            }
+        );
     }
 }

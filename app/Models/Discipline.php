@@ -1,20 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Models\Traits\NoPivot;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Mathrix\Lumen\Bases\BaseModel;
+use Mathrix\Lumen\Zero\Models\BaseModel;
 
 /**
- * Class Discipline.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 1.0.0
- *
  * @property int $id
  * @property string $name
  * @property string $slug
@@ -28,16 +24,16 @@ class Discipline extends BaseModel
     use NoPivot;
 
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "name", "slug", "beta"];
+    protected $fillable = ['id', 'name', 'slug', 'beta'];
     /** @var array Validation rules */
     protected $rules = [
-        "name" => "required|max:255",
-        "slug" => "required|max:255",
-        "beta" => "boolean"
+        'name' => 'required|max:255',
+        'slug' => 'required|max:255',
+        'beta' => 'boolean',
     ];
     protected $casts = [
-        "visible" => "boolean",
-        "beta" => "boolean"
+        'visible' => 'boolean',
+        'beta' => 'boolean',
     ];
 
 
@@ -46,22 +42,18 @@ class Discipline extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
+
     /**
      * BelongsToMany Grade.
-     *
-     * @return BelongsToMany
      */
     public function grades(): BelongsToMany
     {
-        return $this->belongsToMany(Grade::class, "chapters")
-            ->groupBy(["grade_id", "discipline_id"]);
+        return $this->belongsToMany(Grade::class, 'chapters')
+            ->groupBy(['grade_id', 'discipline_id']);
     }
-
 
     /**
      * HasMany Chapter.
-     *
-     * @return HasMany
      */
     public function chapters(): HasMany
     {

@@ -1,0 +1,117 @@
+post:
+  summary: Create subscription
+  description: >-
+    Create new subscription for the current logged user. If the user is not a Stripe customer, his profile will be
+    automatically created.
+
+    ### Using new payment method
+
+    If the user is not a Stripe customer or want to use a new payment method, Stripe Elements should be used to safely
+    collect the user credit card details.
+    Then, the **tokenized** credit card can be passed in the `card.token` field.
+
+    Sample payload:
+
+    <pre>{
+      "plan": "v4_monthly",
+      "card": {
+        "token": "tok_fr"
+      }
+    }</pre>
+
+    ### Using an existing payment method
+
+    If the user is already a Stripe customer **and** wants to use a saved payment method, the credit card id can be
+    passed int the `card.id` field.
+
+    Sample payload:
+
+    <pre>{
+      "plan": "v4_monthly",
+      "card": {
+        "id": "tok_fr"
+      }
+    }</pre>
+
+    ### 3D Secure 2 process
+
+    3D Secure 2 may be triggered by this request. If this occurs, it means that the customer has to agree to be debited
+    by Stripe.<br>
+    In this case, the `data.status` will be equal to `"incomplete"` and the related payment intent secret will be
+    located in the `data.latest_invoice.payment_intent.client_secret` field.<br>
+    To confirm the payment, the Stripe.js
+    [handleCardPayment()](https://stripe.com/docs/stripe-js/reference#stripe-handle-card-payment) has to be used to
+    display the 3D Secure modal.<br>
+    After a successful payment confirmation, the subscription status will be equal to `"active"` and the user will have
+    his `premium` field equal to `true`.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required: [plan, card]
+          properties:
+            plan:
+              description: The plan.
+              type: string
+              enum: [v5_monthly, v5_annually]
+            card:
+              description: The user credit card token **OR** id, see above for details.
+              type: object
+              properties:
+                token:
+                  description: >-
+                    The payment method token associated with the subscription. It can
+                    be retrieved using the Stripe.js `createToken()` function.
+                  externalDocs:
+                    description: Stripe.js `createToken()`
+                    url: 'https://stripe.com/docs/stripe-js/reference#stripe-create-token'
+                  type: string
+                  example: tok_fr
+  responses:
+    200:
+      description: Subscription was created and is active.
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [success, data]
+            additionalProperties: false
+            properties:
+              success:
+                description: The response success.
+                type: boolean
+                enum: [true]
+              data:
+                $ref: '#/components/schemas/SubscriptionActive'
+    202:
+      description: Subscription was created but 3D Secure 2 was triggered.
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [success, data]
+            additionalProperties: false
+            properties:
+              success:
+                description: The response success.
+                type: boolean
+                enum: [true]
+              data:
+                $ref: '#/components/schemas/SubscriptionCreationIncomplete'
+    422:
+      description: Card token has been refused.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                description: The error code.
+                type: string
+                enum: [incorrect_cvc, card_declined]
+              message:
+                description: The error message.
+                type: string
+              data:
+                description: The error data.

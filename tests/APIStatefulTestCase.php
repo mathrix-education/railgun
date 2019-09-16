@@ -1,15 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests;
 
+use App\Mails\BaseMail;
 use App\Models\User;
-use Laravel\Lumen\Testing\DatabaseTransactions;
-use Mathrix\Lumen\Bases\BaseModel;
+use cebe\openapi\spec\Operation;
+use Illuminate\Support\Facades\Mail;
 use Mathrix\Lumen\JWT\Auth\JWT;
-use Mathrix\Lumen\Tests\OpenAPI\OpenAPITrait;
-use Mathrix\Lumen\Tests\REST\RESTTrait;
-use Mathrix\Lumen\Tests\Traits\DebugTrait;
+use Mathrix\Lumen\Zero\Testing\Traits\DebugTrait;
+use Mathrix\Lumen\Zero\Testing\Traits\RESTTrait;
+use Mathrix\OpenAPI\Assertions\Lumen\LumenOpenAPIAssertions;
 use Throwable;
+use function count;
+use function strtolower;
 
 /**
  * Class APITestCase.
@@ -20,30 +25,38 @@ use Throwable;
  */
 class APIStatefulTestCase extends BaseTestCase
 {
-    use RESTTrait, DebugTrait;
-
-    /** @var BaseModel The test main model class */
-    protected $modelClass = null;
-    /** @var string The model table */
-    protected $modelTable = null;
-    /** @var string The test main model singular */
-    protected $modelSingular = null;
-    /** @var string The test main model plural (used to build request URLs) */
-    protected $baseUri = null;
+    use RESTTrait;
+    use LumenOpenAPIAssertions;
+    use DebugTrait;
 
     /** @var User $requester The request user */
     protected $requester;
 
-
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass() : void
     {
+        self::$openAPISpecificationPath = __DIR__ . '/../docs/output.yaml';
         parent::setUpBeforeClass();
-//
-//        // Include OpenAPI once
-//        OpenAPITrait::$SpecPath = __DIR__ . "/../docs/json-schema/index.json";
-//        self::bootOpenAPI();
     }
 
+    public function setUp() : void
+    {
+        parent::setUp();
+
+        $this->handler('before.json', function (string $method, string $uri) {
+            $scopes = $this->getOpenAPIScopes($method, $uri);
+
+            if (empty($scopes)) {
+                return;
+            }
+            if (count($scopes) === 1 && $scopes[0] === 'logged') {
+                // Authentication needed
+                $this->requester = User::random();
+                JWT::actingAs($this->requester);
+            } else {
+                $this->requester = JWT::withScopes($scopes[0]);
+            }
+        });
+    }
 
     /**
      * Automatically mock the scope according to the OpenAPI documentation. This ensure that the documentation is up to
@@ -53,52 +66,53 @@ class APIStatefulTestCase extends BaseTestCase
      * @param string $uri
      * @param string $security
      *
-     * @return mixed
+     * @return string[]|null
      */
-    public function getOpenAPIScopes(string $method, string $uri, string $security = "bearer")
+    public function getOpenAPIScopes(string $method, string $uri, string $security = 'bearer')
     {
         $method = strtolower($method);
 
-        $openAPIUri = $this->getOpenAPIUri($method, $uri);
-        $path = self::$schema->getPathSchema($openAPIUri);
-        $allowedMethods = self::$schema->getAllowedMethods($openAPIUri);
+        $openAPIUri = self::$reverseRouter->getUri($method, $uri);
 
-        if (!in_array(strtoupper($method), $allowedMethods)) {
-            $this->fail("$method is not allowed for uri $openAPIUri");
-        } else if (!$this->requester && isset($path->{$method}->security[0]->{$security})) {
-            return $path->{$method}->security[0]->{$security};
+        $paths = self::$schema->paths;
+
+        if (!isset($paths[$openAPIUri])) {
+            $this->fail('$openAPIUri PathItem does not exist in the OpenAPI specification.');
         }
 
-        return null;
+        $pathItem = $paths[$openAPIUri];
+
+        if (!isset($pathItem->{$method})) {
+            $this->fail('$openAPIUri does not support $method method.');
+        }
+
+        /** @var Operation $operation */
+        $operation = $pathItem->{$method};
+
+        if (!isset($operation->security[0]) || !isset($operation->security[0]->{$security})) {
+            return null;
+        }
+
+        return $operation->security[0]->{$security};
     }
 
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->initializeREST();
-        $this->handler("before.request", function (string $method, string $uri) {
-            $scopes = $this->getOpenAPIScopes($method, $uri);
-
-            if (empty($scopes)) {
-                $this->requester = User::random();
-                JWT::actingAs($this->requester);
-            } else {
-                $this->requester = JWT::withScopes($scopes[0]);
-
-                if (!in_array("logged", $this->requester->scopes)) {
-                    $this->requester->scopes = array_merge($this->requester->scopes, ["logged"]);
-                    $this->requester->save();
-                }
-            }
-        });
-    }
-
-
-    public function onNotSuccessfulTest(Throwable $t)
+    public function onNotSuccessfulTest(Throwable $t) : void
     {
         $this->debug();
         parent::onNotSuccessfulTest($t);
+    }
+
+    /**
+     * Assert that a mailable has been sent to an user.
+     *
+     * @param string|BaseMail $mailClass
+     * @param User            $user
+     */
+    public function assertMailSentTo($mailClass, User $user)
+    {
+        Mail::assertSent($mailClass, static function ($mail) use ($user) {
+            /** @var BaseMail $mail */
+            return $mail->hasTo($user->email);
+        });
     }
 }

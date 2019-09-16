@@ -1,17 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Exception;
-use Mathrix\Lumen\Bases\BaseModel;
+use Mathrix\Lumen\Zero\Models\BaseModel;
+use function serialize;
+use function unserialize;
 
 /**
- * Class Setting.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 1.0.1
- *
  * @property int $id
  * @property string $key
  * @property string $value
@@ -19,19 +17,16 @@ use Mathrix\Lumen\Bases\BaseModel;
  */
 class Setting extends BaseModel
 {
+    public $timestamps = false;
     /** @var array The guarded attributes */
-    protected $fillable = ["id", "key", "value", "visible"];
+    protected $fillable = ['id', 'key', 'value', 'visible'];
     /** @var array The validation rules on create */
     protected $rules = [
-        "value" => "required",
-        "visible" => "required|boolean",
+        'value' => 'required',
+        'visible' => 'required|boolean',
     ];
     /** @var array The attributes that should be cast to native types */
-    protected $casts = [
-        "visible" => "boolean",
-    ];
-    public $timestamps = false;
-
+    protected $casts = ['visible' => 'boolean'];
 
     /**
      * Read a setting.
@@ -44,19 +39,18 @@ class Setting extends BaseModel
     {
         /** @var Setting $setting */
         $setting = self::query()
-            ->where("key", "=", $key)
+            ->where('key', '=', $key)
             ->firstOrFail();
 
         return $setting->value;
     }
 
-
     /**
      * Write a setting.
      *
-     * @param string $key the setting key
-     * @param mixed $value the setting value
-     * @param bool $visible the setting visibility (true for public visibility, 0 for admin-only)
+     * @param string $key     the setting key
+     * @param mixed  $value   the setting value
+     * @param bool   $visible the setting visibility (true for public visibility, 0 for admin-only)
      *
      * @return mixed
      */
@@ -64,17 +58,16 @@ class Setting extends BaseModel
     {
         /** @var Setting $setting */
         $setting = self::query()
-            ->where("key", "=", $key)
-            ->firstOrNew(["key" => $key]);
+            ->where('key', '=', $key)
+            ->firstOrNew(['key' => $key]);
         $setting->fill([
-            "value" => $value,
-            "visible" => $visible
+            'value' => $value,
+            'visible' => $visible,
         ]);
         $setting->save();
 
         return $setting->value;
     }
-
 
     /**
      * Delete a setting.
@@ -82,16 +75,16 @@ class Setting extends BaseModel
      * @param string $key the setting key
      *
      * @return bool|null
+     *
      * @throws Exception
      */
-    public static function forgot(string $key)
+    public static function forgot(string $key): ?bool
     {
         return self::query()
-            ->where("key", "=", $key)
+            ->where('key', '=', $key)
             ->firstOrFail()
             ->delete();
     }
-
 
     /**
      * Un-serialize value attribute.
@@ -105,14 +98,13 @@ class Setting extends BaseModel
         return unserialize($value);
     }
 
-
     /**
      * Serialize value attribute.
      *
      * @param $value
      */
-    public function setValueAttribute($value)
+    public function setValueAttribute($value): void
     {
-        $this->attributes["value"] = serialize($value);
+        $this->attributes['value'] = serialize($value);
     }
 }

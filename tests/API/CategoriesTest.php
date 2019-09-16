@@ -1,12 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\API;
 
 use App\Models\Category;
-use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
-use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
-use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
-use Mathrix\Lumen\Tests\REST\Standard\StandardPostTest;
+use Mathrix\Lumen\Zero\Testing\Traits\RESTAutoTestTrait;
 use Tests\APIStatelessTestCase;
 
 /**
@@ -18,45 +17,28 @@ use Tests\APIStatelessTestCase;
  */
 class CategoriesTest extends APIStatelessTestCase
 {
-    use StandardIndexTest, StandardPostTest, StandardGetTest, StandardPatchTest;
+    use RESTAutoTestTrait;
 
+    protected $testKeys = [
+        'std:index',
+        'std:post',
+        'std:get',
+        'std:patch',
+        'rel:get:posts',
+    ];
 
     /**
      * DELETE /categories/{categoryId}
      */
-    public function testDelete(): void
+    public function testDelete() : void
     {
         $category = Category::random();
-        $pivot = Category::random(["id", "!=", $category->id]);
+        $fallback = Category::random(['id', '!=', $category->id]);
 
-        $category->posts()->update(["category_id" => $pivot->id]);
+        $category->posts()->update(['category_id' => $fallback->id]);
 
-        $this->assertRestDeleteSuccess(["conditions" => ["id", "=", $category->id]]);
-    }
-
-
-    /**
-     * GET /categories/{categoryId}/posts/{page}/{perPage}
-     */
-    public function testPosts(): void
-    {
-        $this->assertRestRelationSuccess("posts");
-    }
-
-
-    /**
-     * POST /categories
-     * We remove "name" field and assert that we got an error.
-     */
-    public function testPostHttp422UnprocessableEntity()
-    {
-        $data = $this->getFactoryBuilder([])->raw();
-        unset($data["name"]);
-
-        $this->event("before.request", "post", "/categories");
-        $this->json("post", "/categories", $data);
-
-        $this->assertResponseStatus(422);
-        $this->assertOpenAPIResponse();
+        $this->makeRESTJsonRequest('std:delete', null, null, [
+            'conditions' => ['id', '=', $category->id],
+        ]);
     }
 }

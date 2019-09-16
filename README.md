@@ -1,16 +1,19 @@
 # Mathrix.fr REST API
 Proudly written by Mathieu Bour <mathieu@mathrix.fr>.
 
-[Documentation](https://dev.mathrix.fr/docs)
+## Conventions
 
-## Production environment
-![Version](https://img.shields.io/endpoint.svg?style=for-the-badge&url=https%3A%2F%2Fmathrix.fr%2Fapi%2Fbadges%2Fversion)
-![Coverage](https://img.shields.io/endpoint.svg?style=for-the-badge&url=https%3A%2F%2Fmathrix.fr%2Fapi%2Fbadges%2Fcoverage)
+### Code
+This repository follows the
+[Doctrine Coding Standard](https://github.com/doctrine/coding-standard).
+The code is linted by
+[PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer).
 
-## Development environment
-![Version](https://img.shields.io/endpoint.svg?style=for-the-badge&url=https%3A%2F%2Fdev.mathrix.fr%2Fapi%2Fbadges%2Fversion)
-![Coverage](https://img.shields.io/endpoint.svg?style=for-the-badge&url=https%3A%2F%2Fdev.mathrix.fr%2Fapi%2Fbadges%2Fcoverage)
+### Commits
+This repository follows the
+[Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0-beta.4/)
+specification.
 
-## Contributing
-We try tu use the [Conventional Commits Specification](https://www.conventionalcommits.org).
-Therefore, you may use the executable `bin/commit` to create commit messages.
+The node package
+[standard-commit](https://www.npmjs.com/package/standard-commit)
+may be used to create commits.

@@ -1,0 +1,11 @@
+get:
+  summary: Get all plans
+  responses:
+    200:
+      description: The plans.
+      content:
+        application/json:
+          schema:
+            $extends:
+              ../../fragments/responses/200_Pagination.yaml:
+                model: plan

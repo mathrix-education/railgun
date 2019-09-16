@@ -1,23 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controllers;
 
 use App\Models\Mark;
 use App\Models\Module;
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Mathrix\Lumen\Bases\BaseController;
-use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
-use Mathrix\Lumen\Exceptions\Models\Models\ModelNotFoundException;
-use Mathrix\Lumen\Responses\PaginationJsonResponse;
+use Mathrix\Lumen\Zero\Controllers\BaseController;
+use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Zero\Exceptions\Models\Models\ModelNotFoundException;
+use Mathrix\Lumen\Zero\Responses\PaginationJsonResponse;
+use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
+use function app;
 
 /**
- * Class ModulesController.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 1.0.0
+ * Serve routes starting by /modules
  */
 class ModulesController extends BaseController
 {
@@ -42,84 +41,71 @@ class ModulesController extends BaseController
      * GET /modules/{moduleId}/comments/{page}/{perPage}
      *
      * @param int $moduleId The module id.
-     * @param int $page The results page (starts at 0).
-     * @param int $perPage The number of comments per page.
      *
-     * @return PaginationJsonResponse
+     * @return PaginationJsonResponse The comments list.
+     *
+     * @throws Http400BadRequestException
      */
-    public function comments(int $moduleId, int $page, int $perPage): PaginationJsonResponse
+    public function getComments(int $moduleId): PaginationJsonResponse
     {
         /** @var Module $module */
-        $module = Module::query()->findOrFail($moduleId);
-        $query = $module->comments()
-            ->whereNull("parent_id")
-            ->with(["children"]);
+        $module = Module::query()
+            ->findOrFail($moduleId);
+        $query  = $module->comments()
+            ->whereNull('parent_id')
+            ->with(['children']);
 
-        return new PaginationJsonResponse($query, $page, $perPage);
+        return new PaginationJsonResponse($query);
     }
-
-
-    /**
-     * GET /modules/{moduleId}/reports/{page}/{perPage}
-     *
-     * @param Request $request The Illuminate HTTP request.
-     * @param int $moduleId The module id.
-     * @param int $page The results page (starts at 0).
-     * @param int $perPage The number of reports per page.
-     *
-     * @return PaginationJsonResponse
-     * @throws Http401UnauthorizedException
-     */
-    public function reports(Request $request, int $moduleId, int $page, int $perPage): PaginationJsonResponse
-    {
-        return $this->relation($request, "reports", $moduleId, $page, $perPage);
-    }
-
 
     /**
      * GET /modules/{moduleId}/chapter/recursive
+     * Get the chapter (recursive) which belongs to the lineage of the given module id.
      *
-     * @param Request $request The Illuminate HTTP request.
-     * @param ChaptersController $chaptersController The Chapters Controller
-     * @param int $moduleId The module id.
+     * @param Request $request  The Illuminate HTTP request.
+     * @param int     $moduleId The module id.
      *
-     * @return JsonResponse
+     * @return SuccessJsonResponse The chapter with its notions, activities and modules.
+     *
      * @throws ModelNotFoundException
      */
-    public function chapterRecursive(Request $request, ChaptersController $chaptersController, int $moduleId): JsonResponse
+    public function chapterRecursive(Request $request, int $moduleId): SuccessJsonResponse
     {
         /** @var Module $module */
-        $module = Module::query()->findOrFail($moduleId);
+        $module = Module::query()
+            ->findOrFail($moduleId);
 
         if (!isset($module->activity->notion->chapter_id)) {
-            throw new ModelNotFoundException(["module_id" => $module->id]);
+            throw new ModelNotFoundException(['module_id' => $module->id]);
         }
 
-        return $chaptersController->recursive($request, $module->activity->notion->chapter_id);
-    }
+        $controller = app(ChaptersController::class);
 
+        return $controller->recursive($request, $module->activity->notion->chapter_id);
+    }
 
     /**
      * POST /modules/mark
      * Mark a module.
      *
-     * @param Request $request The Illuminate HTTP request.
-     * @param int $moduleId
+     * @param Request $request  The Illuminate HTTP request.
+     * @param int     $moduleId The module id.
      *
-     * @return JsonResponse
+     * @return SuccessJsonResponse The marked module.
      */
-    public function mark(Request $request, int $moduleId): JsonResponse
+    public function mark(Request $request, int $moduleId): SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();
         /** @var Module $module */
-        $module = Module::query()->findOrFail($moduleId);
-        $status = $request->json("status");
+        $module = Module::query()
+            ->findOrFail($moduleId);
+        $status = $request->json('status');
 
-        $mark = Mark::retrieve($module, $user);
+        $mark         = Mark::retrieve($module, $user);
         $mark->status = $status;
         $mark->save();
 
-        return new JsonResponse($module->refresh());
+        return new SuccessJsonResponse($module->refresh());
     }
 }

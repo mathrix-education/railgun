@@ -1,17 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Registrars;
 
-use App\Controllers\NotionsController;
-use Mathrix\Lumen\Bases\BaseRegistrar;
+use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
-/**
- * Class NotionsRegistrar.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class NotionsRegistrar extends BaseRegistrar
 {
     /**
@@ -19,15 +13,13 @@ class NotionsRegistrar extends BaseRegistrar
      */
     public function register(): void
     {
-        $controller = NotionsController::class;
-
-        $this->rest("notions", $controller, [
-            "index" => "scope:notions:read",
-            "get" => null,
-            "post" => "scope:notions:write",
-            "patch" => "scope:notions:write",
-            "delete" => "scope:notions:delete",
-            "related:activities" => null
+        $this->rest([
+            'std:index' => 'scope:notions:read',
+            'std:get' => null,
+            'std:post' => 'scope:notions:write',
+            'std:patch' => 'scope:notions:write',
+            'std:delete' => 'scope:notions:delete',
+            'rel:get:activities' => null,
         ]);
     }
 }

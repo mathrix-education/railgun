@@ -1,33 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
-use App\Services\Braintree\Utils\Formatter;
-use Braintree\CreditCard;
-use Braintree\Subscription;
-use Carbon\Carbon;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
-use Mathrix\Lumen\Bases\BaseCommand;
+use App\Models\Product;
+use App\Models\User;
+use Mathrix\Lumen\JWT\Auth\JWT;
+use Mathrix\Lumen\Zero\Console\Commands\BaseCommand;
 
 /**
- * Class TestCommand.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
+ * Test command which is mainly used as a sandbox during development.
+ * The content of the TestCommand::handle() may be kept empty.
  */
 class TestCommand extends BaseCommand
 {
-    use BoxStyle;
+    /** @var string The command signature. */
+    protected $signature = 'test';
 
-    protected $signature = "test";
-
-
-    public function handle()
+    public function handle(): void
     {
-        $sub = Subscription::find("sub_dd781c6c3578366796631806deda06fd");
-
-        dd(Formatter::cast($sub->jsonSerialize()));
+        $user = User::findByOrFail("id", 155);
+        JWT::actingAs($user);
+        $products = $user->products->toArray();
+        dd($products);
     }
 }

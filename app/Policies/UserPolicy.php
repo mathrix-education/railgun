@@ -1,62 +1,46 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Models\User;
+use function scope;
 
-/**
- * Class UserPolicy.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 1.0.0
- */
 class UserPolicy extends BasePolicy
 {
-    /**
-     * @param User $currentUser
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function get(User $currentUser, User $user)
+    public function get(User $currentUser, User $user): bool
     {
-        return $currentUser->is($user) || scope($currentUser, "users:read");
+        return $currentUser->is($user) || scope($currentUser, 'users:read');
     }
 
-
-    /**
-     * @param User $currentUser
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function patch(User $currentUser, User $user)
+    public function patch(User $currentUser, User $user): bool
     {
-        return $currentUser->is($user) || scope($currentUser, "users:write");
+        return $currentUser->is($user) || scope($currentUser, 'users:write');
     }
 
-
-    /**
-     * @param User $currentUser
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function delete(User $currentUser, User $user)
+    public function delete(User $currentUser, User $user): bool
     {
-        return $currentUser->is($user) || scope($currentUser, "users:delete");
+        return $currentUser->is($user) || scope($currentUser, 'users:delete');
     }
 
-
-    /**
-     * @param User $currentUser
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function points(User $currentUser, User $user)
+    public function points(User $currentUser, User $user): bool
     {
-        return $currentUser->is($user) || scope($currentUser, "users:write");
+        return $currentUser->is($user) || scope($currentUser, 'users:write');
+    }
+
+    public function subscriptions(User $currentUser, User $user): bool
+    {
+        return $currentUser->is($user) || scope($currentUser, 'subscriptions:read');
+    }
+
+    public function products(User $currentUser, User $user): bool
+    {
+        return $currentUser->is($user) || scope($currentUser, 'products:read');
+    }
+
+    public function purchases(User $currentUser, User $user): bool
+    {
+        return $currentUser->is($user) || scope($currentUser, 'purchases:read');
     }
 }

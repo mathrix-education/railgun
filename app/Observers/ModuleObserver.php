@@ -1,19 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Observers;
 
-use App\Exceptions\ForeignConstraintsException;
+use App\Exceptions\ForeignConstraints;
 use App\Models\Comment;
 use App\Models\Module;
 use App\Models\Report;
 
-/**
- * Class ModuleObserver.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 4.3.0
- */
 class ModuleObserver extends BaseObserver
 {
     /**
@@ -24,16 +19,15 @@ class ModuleObserver extends BaseObserver
      *
      * @return bool
      */
-    public function saved(Module $module)
+    public function saved(Module $module): bool
     {
-        if ($module->wasChanged(["activity_id", "visible"])) {
+        if ($module->wasChanged(['activity_id', 'visible'])) {
             $module->activity->updateCounters();
-            $module->unsetRelation("activity");
+            $module->unsetRelation('activity');
         }
 
         return true;
     }
-
 
     /**
      * Detach all activities linked with the deleting module.
@@ -41,25 +35,25 @@ class ModuleObserver extends BaseObserver
      * @param Module $module The Module which will be deleted.
      *
      * @return bool
-     * @throws ForeignConstraintsException
+     *
+     * @throws ForeignConstraints
      */
-    public function deleting(Module $module)
+    public function deleting(Module $module): bool
     {
-        $this->handleRelationDeletion($module, "posts");
-        $this->handleRelationDeletion($module, "products");
+        $this->handleRelationDeletion($module, 'posts');
+        $this->handleRelationDeletion($module, 'products');
 
         Comment::withTrashed()
-            ->where("module_id", "=", $module->id)
+            ->where('module_id', '=', $module->id)
             ->get()
-            ->each(function (Comment $comment) {
+            ->each(static function (Comment $comment): void {
                 $comment->forceDelete();
             });
         $module->reports()
             ->get()
-            ->each(function (Report $report) {
+            ->each(static function (Report $report): void {
                 $report->delete();
             });
-
 
         return true;
     }

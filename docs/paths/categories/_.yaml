@@ -1,0 +1,11 @@
+$extends:
+  ../../fragments/paths/index.yaml:
+    model: category
+  ../../fragments/paths/post.yaml:
+    model: category
+get:
+  security:
+    - bearer: [categories:read]
+post:
+  security:
+    - bearer: [categories:write]

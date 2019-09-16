@@ -1,0 +1,11 @@
+$extends:
+  ../../fragments/paths/post.yaml:
+    model: notion
+  ../../fragments/paths/index.yaml:
+    model: notion
+get:
+  security:
+    - bearer: [notions:read]
+post:
+  security:
+    - bearer: [notions:write]

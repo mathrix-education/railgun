@@ -1,75 +1,68 @@
 <?php
 
-namespace App\Services\Braintree\Exceptions;
+declare(strict_types=1);
 
+namespace App\Exceptions;
+
+use App\Models\User;
+use App\Services\Braintree\BraintreeResponse;
 use Braintree\Result\Error;
 use Braintree\Subscription;
 use Braintree\Transaction;
-use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
 
-/**
- * Class BraintreeErrorHandler.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class BraintreeErrorHandler
 {
     /**
      * Handle an unsuccessful Braintree request result.
      *
-     * @param Error $error
+     * @param User|null $user The user (will unlock it)
      *
-     * @throws BraintreeGatewayException
-     * @throws BraintreeProcessorException
-     * @throws DuplicatePaymentMethodNonceException
-     * @throws Http400BadRequestException
+     * @throws GatewayRejection
+     * @throws ProcessorDeclined
+     * @throws UnknownBraintree
      */
-    public static function report($error)
+    public static function report(BraintreeResponse $error, ?User $user = null): void
     {
+        if ($user instanceof User) {
+            $user->unlock();
+        }
+
         if ($error->transaction instanceof Transaction) {
-            self::wrapper("transaction", $error);
-        } else if ($error->subscription instanceof Subscription) {
-            self::wrapper("subscription", $error);
-        } else if ($error->message === "Cannot use a payment_method_nonce more than once.") {
-            throw new DuplicatePaymentMethodNonceException([], $error->message);
+            self::wrapper('transaction', $error);
+        } elseif ($error->subscription instanceof Subscription) {
+            self::wrapper('subscription', $error);
         } else {
-            throw new Http400BadRequestException($error->jsonSerialize(), "Unknown Braintreee exception.");
+            throw new UnknownBraintree($error->jsonSerialize());
         }
     }
 
-
     /**
-     * @param string $type
-     * @param Error $error
-     *
-     * @throws BraintreeGatewayException
-     * @throws BraintreeProcessorException
+     * @throws GatewayRejection
+     * @throws ProcessorDeclined
      */
-    private static function wrapper(string $type, $error)
+    private static function wrapper(string $type, Error $error): void
     {
         /** @var Subscription|Transaction $object */
         $object = $error->{$type};
 
-        if ($object->status === "gateway_rejected") {
+        if ($object->status === 'gateway_rejected') {
             // Handle gateway rejection
             $exceptionPayload = [
-                "reason" => $object->gatewayRejectionReason
+                'reason' => $object->gatewayRejectionReason,
             ];
 
-            throw new BraintreeGatewayException($exceptionPayload, $error->message);
-        } else {
-            // Handle processor rejection
-            $exceptionPayload = [
-                "processor" => [
-                    "code" => (int)$object->processorResponseCode,
-                    "text" => $object->processorResponseText,
-                    "type" => $object->processorResponseType
-                ]
-            ];
-
-            throw new BraintreeProcessorException($exceptionPayload, $object->processorResponseText);
+            throw new GatewayRejection($exceptionPayload, $error->message);
         }
+
+        // Handle processor rejection
+        $exceptionPayload = [
+            'processor' => [
+                'code' => (int)$object->processorResponseCode,
+                'text' => $object->processorResponseText,
+                'type' => $object->processorResponseType,
+            ],
+        ];
+
+        throw new ProcessorDeclined($exceptionPayload, $object->processorResponseText);
     }
 }

@@ -1,21 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Traits;
 
 use App\Models\User;
 use Carbon\Carbon;
+use Exception;
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook;
 use Facebook\FacebookResponse;
 use Jose\Component\Signature\JWS;
 use Mathrix\Lumen\JWT\Auth\JWT\JWTIssuer;
+use function app;
+use function array_replace_recursive;
+use function env;
+use function implode;
+use function json_decode;
 
 /**
  * Trait FacebookUser.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.1.1-rc1
  *
  * @property-read bool $facebook
  * @mixin User
@@ -26,6 +30,7 @@ trait FacebookUser
      * @param string $shortAccessToken
      *
      * @return User
+     *
      * @throws FacebookSDKException
      */
     public function setFacebookAccessToken(string $shortAccessToken): User
@@ -34,59 +39,53 @@ trait FacebookUser
         $facebook = app()->make(Facebook::class);
 
         // Get long-lived token
-        $params = [
-            "grant_type=fb_exchange_token",
-            "client_id=" . env("FACEBOOK_APP_ID"),
-            "client_secret=" . env("FACEBOOK_APP_SECRET"),
-            "fb_exchange_token=$shortAccessToken"
+        $params   = [
+            'grant_type=fb_exchange_token',
+            'client_id=' . env('FACEBOOK_APP_ID'),
+            'client_secret=' . env('FACEBOOK_APP_SECRET'),
+            "fb_exchange_token=$shortAccessToken",
         ];
-        $response = $facebook->get("/oauth/access_token?" . implode("&", $params));
-        $body = json_decode($response->getBody());
+        $response = $facebook->get('/oauth/access_token?' . implode('&', $params));
+        $body     = json_decode($response->getBody());
 
-        $metadata = $this->metadata ?? [];
-        $metadata["facebook"]["access_token"] = $body->access_token;
-        $metadata["facebook"]["expires_in"] = Carbon::now()->timestamp + $body->expires_in;
-        $this->metadata = $metadata;
+        $metadata                             = $this->metadata ?? [];
+        $metadata['facebook']['access_token'] = $body->access_token;
+        $metadata['facebook']['expires_in']   = Carbon::now()->timestamp + $body->expires_in;
+        $this->metadata                       = $metadata;
 
         return $this;
     }
 
-
     /**
-     * @param FacebookResponse|null $response
-     *
-     * @return User
      * @throws FacebookSDKException
      */
     public function syncFacebookProfile(?FacebookResponse $response = null): User
     {
         if ($response === null) {
             /** @var Facebook $facebook */
-            $facebook = app()->make(Facebook::class);
-            $accessToken = $this->metadata["facebook"]["access_token"];
-            $response = $facebook->get("/me?fields=id,first_name,last_name,email", $accessToken);
+            $facebook    = app()->make(Facebook::class);
+            $accessToken = $this->metadata['facebook']['access_token'];
+            $response    = $facebook->get('/me?fields=id,first_name,last_name,email', $accessToken);
         }
 
         $body = json_decode($response->getBody());
 
-        $this->metadata = array_replace_recursive($this->metadata, ["facebook" => ["id" => $body->id]]);
-        $this->email = $body->email;
-        $this->username = $body->first_name;
+        $this->metadata  = array_replace_recursive($this->metadata, ['facebook' => ['id' => $body->id]]);
+        $this->email     = $body->email;
+        $this->username  = $body->first_name;
         $this->firstname = $body->first_name;
-        $this->lastname = $body->last_name;
+        $this->lastname  = $body->last_name;
 
         return $this;
     }
 
-
     /**
-     * @return JWS
-     * @throws \Exception
+     * @throws Exception
      */
     public function getFacebookJWS(): JWS
     {
-        $expiresIn = $this->metadata["facebook"]["expires_in"];
+        $expiresIn = $this->metadata['facebook']['expires_in'];
 
-        return JWTIssuer::issueJWS($this, ["exp" => $expiresIn]);
+        return JWTIssuer::issueJWS($this, ['exp' => $expiresIn]);
     }
 }

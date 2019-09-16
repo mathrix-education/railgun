@@ -1,72 +1,56 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Registrars;
 
 use App\Mails\BaseMail;
-use App\Mails\TransactionRefundMail;
-use App\Mails\TransactionSuccessMail;
-use Illuminate\Http\JsonResponse;
+use App\Mails\PasswordForgottenMail;
+use App\Mails\PasswordResetMail;
+use HaydenPierce\ClassFinder\ClassFinder;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
-use Mathrix\Lumen\Bases\BaseRegistrar;
+use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
+use Throwable;
+use function app;
 
 /**
- * Class MailsRegistrar.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- *
  * @codeCoverageIgnore
  */
 class MailsRegistrar extends BaseRegistrar
 {
     /**
-     * Make mails routes and classes. The returned collection has uri as keys and Mailable class as values.
+     * Get all mails classes.
      *
-     * @return Collection
+     * @return array
      */
-    public static function getMails(): Collection
+    public static function getMails(): array
     {
-        $mailsDirectory = app()->basePath("app/Mails");
-
-        return Collection::make(glob("$mailsDirectory/*Mail.php"))
-            ->filter(function (string $mailFile) {
-                return !Str::contains($mailFile, "BaseMail"); // Exclude BaseMail
-            })
-            ->map(function (string $mailFile) use ($mailsDirectory) {
-                return str_replace(["$mailsDirectory/", ".php"], "", $mailFile);
-            })
-            ->mapWithKeys(function ($mailName) {
-                $uri = "mails/" . Str::replaceLast("-mail", "", Str::snake($mailName, "-"));
-                $class = "App\\Mails\\$mailName";
-
-                return [$uri => $class];
-            });
+        try {
+            return Collection::make(ClassFinder::getClassesInNamespace('App\\Mails'))
+                ->reject(static function (string $mailClass) {
+                    return $mailClass === BaseMail::class;
+                })
+                ->values()
+                ->toArray();
+        } catch (Throwable $e) {
+            return [];
+        }
     }
-
 
     /**
      * Register the routes.
      */
     public function register(): void
     {
-        if (app()->environment("local", "dev", "testing")) {
-            $this->get("mails", function () {
-                return new JsonResponse(self::getMails());
-            });
-
-            self::getMails()->map(function ($mailableClass, string $uri) {
-                /** @var BaseMail|string $mailableClass */
-                $this->get($uri, function () use ($mailableClass) {
-                    return $mailableClass::mock();
-                });
-            });
-
-            // Custom mails routes
-            $this->get("mails/transaction-success/{transactionId}", function ($transactionId) {
-                return TransactionSuccessMail::mock($transactionId);
-            });
+        if (! app()->environment('local', 'dev', 'testing')) {
+            return;
         }
+
+        $this->get('mails/password-forgotten', static function () {
+            return PasswordForgottenMail::mock();
+        });
+        $this->get('mails/password-reset', static function () {
+            return PasswordResetMail::mock();
+        });
     }
 }

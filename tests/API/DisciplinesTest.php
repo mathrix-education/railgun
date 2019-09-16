@@ -1,15 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\API;
 
-use App\Models\Chapter;
 use App\Models\Discipline;
-use App\Models\Grade;
-use Illuminate\Support\Arr;
-use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
-use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
-use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
-use Mathrix\Lumen\Tests\REST\Standard\StandardPostTest;
+use Mathrix\Lumen\Zero\Testing\Traits\RESTAutoTestTrait;
 use Tests\APIStatelessTestCase;
 
 /**
@@ -21,29 +17,29 @@ use Tests\APIStatelessTestCase;
  */
 class DisciplinesTest extends APIStatelessTestCase
 {
-    use StandardIndexTest, StandardPostTest, StandardGetTest, StandardPatchTest;
+    use RESTAutoTestTrait;
 
+    protected $testKeys = [
+        'std:index',
+        'std:post',
+        'std:get',
+        'std:get:slug',
+        'std:patch',
+    ];
 
     /**
      * DELETE /disciplines/{disciplineId}
      */
-    public function testDelete(): void
+    public function testDelete() : void
     {
         /** @var Discipline $discipline */
         $discipline = Discipline::random();
-        $pivot = Discipline::random(["id", "!=", $discipline->id]);
+        $pivot      = Discipline::random(['id', '!=', $discipline->id]);
 
-        $discipline->chapters()->update(["discipline_id" => $pivot->id]);
+        $discipline->chapters()->update(['discipline_id' => $pivot->id]);
 
-        $this->assertRestDeleteSuccess(["conditions" => ["id", "=", $discipline->id]]);
-    }
-
-
-    /**
-     * GET /disciplines/slug/{disciplineSlug}
-     */
-    public function testBySlug(): void
-    {
-        $this->assertRestGetBySuccess("slug");
+        $this->makeRESTJsonRequest('std:delete', null, null, [
+            'conditions' => ['id', '=', $discipline->id],
+        ]);
     }
 }

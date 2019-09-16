@@ -1,11 +1,19 @@
+# Mathrix Education API
+# =====================
+# Cloud Build Recipe
+# Author: Mathieu Bour
+# Since: v6.0.0
+# ====================
+#options:
+#  machineType: 'N1_HIGHCPU_8'
 steps:
   # Decrypt the SSH private key for composer git clone
   # --------------------------------------------------
   - id: 'gcloud:kms:decrypt'
     waitFor: ['-']
     name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: '/bin/bash'
-    args: ['deploy/steps/0_decrypt.sh']
+    entrypoint: 'deploy/steps/0_decrypt.sh'
+    args: ['-b', '$BRANCH_NAME']
 
 
   # Install PHP dependencies using composer
@@ -13,39 +21,33 @@ steps:
   - id: 'composer:install'
     waitFor: ['gcloud:kms:decrypt']
     name: 'eu.gcr.io/$PROJECT_ID/runner-composer-prestissimo'
-    entrypoint: '/bin/bash'
-    args: ['deploy/steps/1_composer.sh']
+    entrypoint: 'deploy/steps/1_composer.sh'
+
+
+  # Install Node dependencies using yarn
+  # ------------------------------------
+  - id: 'node:compile'
+    waitFor: ['composer:install']
+    name: 'node:12-alpine'
+    entrypoint: 'deploy/steps/2_yarn.sh'
+
 
   # Build, push and deploy API image
   # --------------------------------
   - id: 'docker:build'
-    waitFor: ['composer:install']
+    waitFor: ['node:compile']
     name: 'gcr.io/cloud-builders/docker'
     args: ['build',
-           '--build-arg', 'COMMIT_SHORT_SHA=$SHORT_SHA',
-           '-t', 'eu.gcr.io/$PROJECT_ID/education-api:$SHORT_SHA',
+           '--build-arg', 'BRANCH_NAME=$BRANCH_NAME',
+           '--build-arg', 'SHORT_SHA=$SHORT_SHA',
+           '-t', 'eu.gcr.io/$PROJECT_ID/education-api:$BRANCH_NAME-$SHORT_SHA',
            '.']
   - id: 'docker:push'
     waitFor: ['docker:build']
     name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'eu.gcr.io/$PROJECT_ID/education-api:$SHORT_SHA']
-  - id: 'gcloud:tag'
-    waitFor: ['docker:push']
-    name: 'gcr.io/cloud-builders/gcloud'
-    args: ['container', 'images', 'add-tag',
-           'eu.gcr.io/$PROJECT_ID/education-api:$SHORT_SHA',
-           'eu.gcr.io/$PROJECT_ID/education-api:latest-$BRANCH_NAME']
-
-  # Deploy on Cloud Run
-  # -------------------
+    args: ['push', 'eu.gcr.io/$PROJECT_ID/education-api:$BRANCH_NAME-$SHORT_SHA']
   - id: 'cloud-run:deploy'
     waitFor: ['docker:push']
     name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        gcloud beta run deploy education-api-$BRANCH_NAME \
-          --platform=managed \
-          --image eu.gcr.io/$PROJECT_ID/education-api:$SHORT_SHA \
-          --region europe-west1
+    entrypoint: 'deploy/steps/4_deploy.sh'
+    args: ['-b', '$BRANCH_NAME', '-s', '$SHORT_SHA']

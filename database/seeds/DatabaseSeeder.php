@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Activity;
 use App\Models\Category;
 use App\Models\Chapter;
@@ -11,43 +13,29 @@ use App\Models\Notion;
 use App\Models\Post;
 use App\Models\Product;
 use App\Models\Report;
-use App\Models\Setting;
 use App\Models\User;
 use App\Models\Vote;
-use Mathrix\Lumen\Bases\BaseTableSeeder;
+use Mathrix\Lumen\Zero\Database\BaseTableSeeder;
 
-/**
- * Class DatabaseSeeder.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 1.0.0
- */
 class DatabaseSeeder extends BaseTableSeeder
 {
-    public function run()
+    public function run(): void
     {
         // Content
-        $this->seedFromJson("countries");
-        $this->seedFromJson("grades");
-        $this->seedFromJson("disciplines");
+        $this->seedFromJson('countries');
+        $this->seedFromJson('grades');
+        $this->seedFromJson('disciplines');
         $this->seedFromFactory(Country::class, 10);
         $this->seedFromFactory(Chapter::class, 30);
         $this->seedFromFactory(Notion::class, 90);
         $this->seedFromFactory(Activity::class, 200);
-        $this->seedFromSubFactory(Module::class, "random", 250);
-
-        // Settings
-        $this->seedFromFactory(Setting::class, 50);
-
-        // Levels
-        $this->call(LevelTableSeeder::class);
+        $this->seedFromFactory(Module::class, 250);
 
         // Users
         $this->seedFromFactory(User::class, 100);
         User::query()->firstOrFail()->update([
-            "scopes" => ["*"],
-            "email" => "admin@mathrix.fr"
+            'scopes' => ['*'],
+            'email' => 'admin@mathrix.fr',
         ]);
 
         // Categories & Posts
@@ -56,7 +44,7 @@ class DatabaseSeeder extends BaseTableSeeder
 
         // Comments & votes
         $this->seedFromFactory(Comment::class, 200);
-        $this->seedFromSubFactory(Comment::class, "child", 500);
+        $this->seedFromSubFactory(Comment::class, 'child', 500);
         $this->seedFromFactory(Vote::class, 100);
 
         // Products & discounts
@@ -65,16 +53,10 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->linkAll(Discount::class, Product::class);
 
         // Reports
-        $this->seedFromFactory(Report::class, 500);
-
-        // Logs
-        $this->call(LogTableSeeder::class);
+        $this->seedFromFactory(Report::class, 50);
 
         // Marks
         $this->call(MarksTableSeeder::class);
-
-        // Notifications
-        $this->call(NotificationsTableSeeder::class);
 
         // Notifications
         $this->call(CountersTableSeeder::class);

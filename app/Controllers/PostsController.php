@@ -1,17 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controllers;
 
 use App\Models\Post;
-use Mathrix\Lumen\Bases\BaseController;
-use Mathrix\Lumen\Responses\PaginationJsonResponse;
+use Mathrix\Lumen\Zero\Controllers\BaseController;
+use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Zero\Responses\PaginationJsonResponse;
 
 /**
- * Class PostsController.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 1.0.0
+ * Serve routes starting with /posts.
  */
 class PostsController extends BaseController
 {
@@ -19,16 +18,13 @@ class PostsController extends BaseController
      * GET /posts
      * Get all the posts, in descending creation date.
      *
-     * @param int $page The page (starts at 0).
-     * @param int $perPage The number of posts per page.
-     *
-     * @return PaginationJsonResponse
+     * @throws Http400BadRequestException
      */
-    public function latest(int $page = 0, int $perPage = 10): PaginationJsonResponse
+    public function latest(): PaginationJsonResponse
     {
-        $query = Post::with("module")
-            ->orderBy("created_at", "desc");
+        $query = Post::with('module')
+            ->orderByDesc('created_at');
 
-        return new PaginationJsonResponse($query, $page, $perPage);
+        return new PaginationJsonResponse($query);
     }
 }

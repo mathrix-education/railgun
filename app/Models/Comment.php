@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Carbon\Carbon;
@@ -9,15 +11,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Facades\Auth;
-use Mathrix\Lumen\Bases\BaseModel;
+use Mathrix\Lumen\Zero\Models\BaseModel;
 
 /**
- * Class Comment.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 1.0.0
- *
  * @property int $id
  * @property string|null $content
  * @property int|null $parent_id
@@ -34,7 +30,6 @@ use Mathrix\Lumen\Bases\BaseModel;
  * @property Comment|null $parent
  * @property Collection|Comment[] $children
  * @property Collection|Vote[] $votes
- *
  * @method static QueryBuilder|Comment onlyTrashed()
  * @method static QueryBuilder|Comment withTrashed()
  * @method static QueryBuilder|Comment withoutTrashed()
@@ -46,54 +41,79 @@ class Comment extends BaseModel
     use SoftDeletes;
 
     /** @var array The default relations included */
-    public $with = ["user:id,username,firstname,level,grade_id"];
+    public $with = ['user:id,username,firstname,grade_id'];
     /** @var array The attributes that are mass assignable */
     protected $fillable = [
-        "content",
-        "score",
-        "parent_id",
-        "user_id",
-        "module_id",
-        "deleted_at"
+        'content',
+        'score',
+        'parent_id',
+        'user_id',
+        'module_id',
+        'deleted_at',
     ];
     /** @var array Validation rules */
     protected $rules = [
-        "content" => "required",
-        "parent_id" => "nullable|exists:comments,id",
-        "user_id" => "required|exists:users,id",
+        'content' => 'required',
+        'parent_id' => 'nullable|exists:comments,id',
+        'user_id' => 'required|exists:users,id',
     ];
     /** @var array The attributes that should be mutated to dates */
-    protected $dates = ["deleted_at"];
+    protected $dates = ['deleted_at'];
     /** @var array Virtual fields */
-    protected $appends = ["score", "user_vote"];
+    protected $appends = ['score', 'user_vote'];
 
     /*
     |--------------------------------------------------------------------------
     | Relations
     |--------------------------------------------------------------------------
     */
+
     /**
      * BelongsTo Comment.
-     *
-     * @return BelongsTo
      */
     public function parent(): BelongsTo
     {
-        return $this->belongsTo(self::class, "parent_id");
+        return $this->belongsTo(self::class, 'parent_id');
     }
-
 
     /**
      * HasMany Comment.
-     *
-     * @return HasMany
      */
     public function children(): HasMany
     {
-        return $this->hasMany(self::class, "parent_id")
-            ->orderBy("created_at");
+        return $this->hasMany(self::class, 'parent_id')
+            ->orderBy('created_at');
     }
 
+    /**
+     * BelongsTo Module.
+     */
+    public function module(): BelongsTo
+    {
+        return $this->belongsTo(Module::class);
+    }
+
+    /**
+     * BelongsTo Comment.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Score attribute.
+     */
+    public function getScoreAttribute(): int
+    {
+        return (int)$this->votes()->sum('value');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Attributes
+    |--------------------------------------------------------------------------
+    */
 
     /**
      * Get the votes.
@@ -105,51 +125,10 @@ class Comment extends BaseModel
         return $this->hasMany(Vote::class);
     }
 
-
-    /**
-     * BelongsTo Module.
-     *
-     * @return BelongsTo
-     */
-    public function module(): BelongsTo
-    {
-        return $this->belongsTo(Module::class);
-    }
-
-
-    /**
-     * BelongsTo Comment.
-     *
-     * @return BelongsTo
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Attributes
-    |--------------------------------------------------------------------------
-    */
-    /**
-     * Score attribute.
-     *
-     * @return int
-     */
-    public function getScoreAttribute()
-    {
-        return (int)$this->votes()->sum("value");
-    }
-
-
     /**
      * Get the user vote value (0|1|-1).
-     *
-     * @return int
      */
-    public function getUserVoteAttribute()
+    public function getUserVoteAttribute(): int
     {
         /** @var User $user */
         $user = Auth::user();
@@ -158,15 +137,15 @@ class Comment extends BaseModel
             return 0;
         }
 
-        $query = $this->votes()->where("user_id", "=", $user->id);
+        $query = $this->votes()->where('user_id', '=', $user->id);
 
-        if (!$query->exists()) {
+        if (! $query->exists()) {
             return 0;
-        } else {
-            /** @var Vote $vote */
-            $vote = $query->firstOrFail();
-
-            return $vote->value;
         }
+
+        /** @var Vote $vote */
+        $vote = $query->firstOrFail();
+
+        return $vote->value;
     }
 }

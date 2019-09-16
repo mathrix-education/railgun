@@ -1,42 +1,51 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controllers;
 
-use App\Services\Braintree\Models\Plan;
-use Illuminate\Http\JsonResponse;
-use Mathrix\Lumen\Bases\BaseController;
+use App\Services\Stripe\SubscriptionUtils;
+use Mathrix\Lumen\Zero\Controllers\BaseController;
+use Mathrix\Lumen\Zero\Responses\PaginationJsonResponse;
+use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
+use function array_merge;
+use function count;
 
 /**
- * Class PlansController.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 4.1.0
+ * Serve routes starting with /plans.
  */
 class PlansController extends BaseController
 {
     /**
      * GET /plans
-     * Get all Braintree plans.
-     *
-     * @return JsonResponse
+     * Get the available plans.
      */
-    public function all(): JsonResponse
+    public function all(): SuccessJsonResponse
     {
-        return new JsonResponse(Plan::all()->toArray());
-    }
+        $data = [];
 
+        foreach (SubscriptionUtils::PLANS_DETAILS as $planId => $plan) {
+            $trialEndsAt = SubscriptionUtils::getProrationAnchor($planId);
 
-    /**
-     * GET /plans/{planId}
-     * Find a plan by its id.
-     *
-     * @param string $planId The play id.
-     *
-     * @return JsonResponse
-     */
-    public function find(string $planId): JsonResponse
-    {
-        return new JsonResponse(Plan::findOrFail($planId));
+            if ($trialEndsAt) {
+                $trialEndsAt = $trialEndsAt->format('c');
+            }
+
+            $data[] = array_merge(
+                $plan,
+                [
+                    'proration_ends_at' => $trialEndsAt,
+                    'proration_price'   => SubscriptionUtils::getProrationPrice($planId),
+                ]
+            );
+        }
+
+        [$page, $perPage] = PaginationJsonResponse::getPagination();
+
+        return new SuccessJsonResponse($data, [
+            'page'     => $page,
+            'per_page' => $perPage,
+            'total'    => count($data),
+        ]);
     }
 }

@@ -1,222 +1,139 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controllers;
 
+use App\Exceptions\UserAlreadyPremium;
 use App\Models\User;
-use App\Services\Braintree\BraintreeResponse;
-use App\Services\Braintree\Exceptions\BraintreeErrorHandler;
-use App\Services\Braintree\Pipelines\SubscriptionPipeline;
-use App\Services\Braintree\Utils\Formatter;
-use App\Services\Braintree\Utils\SubscriptionUtils;
-use Braintree\PaymentMethod;
-use Braintree\Subscription;
-use Carbon\Carbon;
-use Illuminate\Http\JsonResponse;
+use App\Services\Bishop\Invoice;
+use App\Services\Bishop\Subscription;
+use App\Services\Stripe\Pipelines\SubscriptionCardUpdatePipeline;
+use App\Services\Stripe\Pipelines\SubscriptionCreationPipeline;
+use App\Services\Stripe\Pipelines\SubscriptionMigrationPipeline;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Mathrix\Lumen\Bases\BaseController;
-use Mathrix\Lumen\Exceptions\Http\Http400BadRequestException;
-use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
-use Mathrix\Lumen\Exceptions\Http\Http429TooManyRequestsException;
-use Mathrix\Lumen\Exceptions\ValidationException;
+use Mathrix\Lumen\Zero\Controllers\BaseController;
+use Mathrix\Lumen\Zero\Exceptions\Http\Http401UnauthorizedException;
+use Mathrix\Lumen\Zero\Responses\PaginationJsonResponse;
+use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
+use Stripe\Error\Api as StripeAPIException;
+use Stripe\Invoice as StripeInvoice;
+use Stripe\SetupIntent;
+use Stripe\Subscription as StripeSubscription;
+use function count;
+use function preg_match;
+use function scope;
 
 /**
- * Class SubscriptionsController.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 4.1.0
+ * Serve routes starting with /subscriptions.
  */
 class SubscriptionsController extends BaseController
 {
-    public const PRICE_PER_MONTH = [
-        "v4_monthly" => 17.90,
-        "v4_annually" => 12.90,
-        "v4_biannually" => 9.90,
-    ];
-
-
     /**
      * POST /subscriptions
-     * Create a new subscriptions for a user.
+     * Create a new subscription.
      *
      * @param Request $request The Illuminate HTTP request.
      *
-     * @return JsonResponse
-     * @throws Http429TooManyRequestsException
+     * @return SuccessJsonResponse The newly created subscription.
+     *
+     * @throws UserAlreadyPremium
      */
-    public function create(Request $request): JsonResponse
+    public function standardPost(Request $request): SuccessJsonResponse
     {
-        $pipeline = new SubscriptionPipeline($request);
-
-        return $pipeline->run();
-    }
-
-
-    /**
-     * GET /subscriptions/{subscriptionId}
-     * Get a subscription by its id.
-     *
-     * @param string $subscriptionId The Braintree subscription id.
-     *
-     * @return JsonResponse
-     */
-    public function find(string $subscriptionId)
-    {
-        $subscription = Subscription::find($subscriptionId);
-
-        return new JsonResponse(Formatter::cast($subscription->jsonSerialize()));
-    }
-
-
-    /**
-     * PATCH /subscriptions/{subscriptionId}
-     * Update a subscription. At the moment, it used to change the payment method of a subscription.
-     *
-     * @param Request $request The Illuminate HTTP request.
-     * @param string $subscriptionId The Braintree subscription id.
-     *
-     * @return JsonResponse
-     * @throws Http400BadRequestException
-     * @throws Http401UnauthorizedException
-     * @throws ValidationException
-     */
-    public function update(Request $request, string $subscriptionId): JsonResponse
-    {
-        // Stage 1: validate the request
         /** @var User $user */
         $user = $request->user();
-        $this->validate($request, [
-            "payment_method_nonce" => "required",
-            "make_default" => "boolean"
-        ]);
-        $user->requireBraintreeCustomer();
 
-
-        // Stage 2: Check that the user is the owner of the targeted subscription.
-        if (!$user->ownsBraintreeSubscriptionId($subscriptionId) || $user->hasScope("subscriptions:read")) {
-            throw new Http401UnauthorizedException(["subscription_id" => $subscriptionId]);
+        if ($user->premium) {
+            throw new UserAlreadyPremium($user);
         }
 
-        $payload = [];
+        $pipeline = (new SubscriptionCreationPipeline())->flow();
+        $data     = Subscription::from($pipeline->subscription);
 
-        // Stage 3: Add the payment method
-        if ($request->has("payment_method_nonce")) {
-            /** @var PaymentMethod $paymentMethod */
-            $paymentMethod = $user->addBraintreePaymentMethod(
-                $request->json("payment_method_nonce"),
-                $request->json("make_default", true)
-            );
-            $payload["paymentMethodToken"] = $paymentMethod->token;
-        }
-
-        // Stage 4: Update the subscription
-        $subscriptionResult = Subscription::update($subscriptionId, $payload);
-
-        if (!$subscriptionResult->success) {
-            BraintreeErrorHandler::report($subscriptionResult);
-        }
-
-        /** @var Subscription $subscription */
-        $subscription = $subscriptionResult->subscription;
-
-        if (
-            isset($user->settings["need_paypal_refresh"])
-            && $user->settings["need_paypal_refresh"] === true
-        ) {
-            $user->settings = Arr::except($user->settings, ["need_paypal_refresh"]);
-            $user->save();
-        }
-
-        return new JsonResponse(Formatter::cast($subscription->jsonSerialize()));
+        return new SuccessJsonResponse(
+            $data,
+            [],
+            $data->status === StripeSubscription::STATUS_INCOMPLETE ? 202 : 200
+        );
     }
 
-
     /**
-     * GET /subscription/{subscriptionId}/transaction
-     * Get transactions linked with a subscription.
+     * GET /subscriptions/{subscriptionId}/invoices
+     * Get the invoices which belong to a given subscription.
      *
-     * @param string $subscriptionId The Braintree subscription id.
-     * @param int $page The results page.
-     * @param int $perPage The number of transactions per page.
+     * @param Request $request        The Illuminate HTTP request.
+     * @param string  $subscriptionId The subscription id.
      *
-     * @return JsonResponse
+     * @return SuccessJsonResponse The invoices list.
+     *
+     * @throws Http401UnauthorizedException
+     * @throws StripeAPIException
      */
-    public function transactions(string $subscriptionId, int $page, int $perPage)
+    public function invoices(Request $request, string $subscriptionId): SuccessJsonResponse
     {
-        $subscription = Subscription::find($subscriptionId);
-        $transactions = $subscription->jsonSerialize()["transactions"];
+        /** @var User $user */
+        $user             = $request->user();
+        [$page, $perPage] = PaginationJsonResponse::getPagination();
 
-        return new JsonResponse([
-            "page" => $page,
-            "perPage" => $perPage,
-            "total" => count($transactions),
-            "data" => Formatter::cast($transactions)
+        // TODO: do collection pagination
+
+        $invoices = StripeInvoice::all([
+            'subscription' => $subscriptionId,
+            'limit'        => $perPage,
+        ]);
+
+        $data = [];
+
+        /** @var StripeInvoice $invoice */
+        foreach ($invoices as $invoice) {
+            if (!scope($user, 'invoices:read') && $invoice->customer !== $user->stripe_id) {
+                throw new Http401UnauthorizedException([], 'Failed to pass invoices policy');
+            }
+
+            $data[] = Invoice::from($invoice);
+        }
+
+        return new SuccessJsonResponse($data, [
+            'page'     => $page,
+            'per_page' => $perPage,
+            'total'    => count($data),
         ]);
     }
 
-
     /**
-     * POST /subscriptions/{subscriptionId}/cancel
-     * Cancel a subscription for a user.
+     * POST /subscriptions/{subscriptionId}/card
+     * Update the payment method of a subscription.
+     * If the subscription is a Braintree one, cancel it and create a new Stripe Subscription.
      *
-     * @param Request $request The Illuminate HTTP request.
-     * @param string $subscriptionId The Braintree subscription id.
+     * @param string $subscriptionId The subscription id to update.
      *
-     * @return JsonResponse
-     * @throws Http400BadRequestException
+     * @return SuccessJsonResponse The Stripe subscription (created or patched).
      */
-    public function cancel(Request $request, string $subscriptionId)
+    public function card(string $subscriptionId): SuccessJsonResponse
     {
-        $cancelNow = $request->json("now", false);
-        $trialEndsAt = null;
-
-        if ($cancelNow) {
-            // Cancel subscription immediately
-            $subscriptionResult = Subscription::cancel($subscriptionId);
+        if (preg_match('/^sub_[0-9A-Fa-f]{32}/', $subscriptionId)) {
+            // Braintree subscription
+            $pipeline = (new SubscriptionMigrationPipeline($subscriptionId))->flow();
         } else {
-            /** @var Subscription $subscription */
-            $subscription = Subscription::find($subscriptionId);
-
-            if ($subscription->trialPeriod && $subscription->currentBillingCycle === 0) {
-                // Subscription with trial: cancel subscription immediately,
-                // and report remaining premium to premium_bypass_expires_at.
-                $trialEndsAt = Carbon::instance($subscription->firstBillingDate);
-                $subscriptionResult = Subscription::cancel($subscriptionId);
-            } else {
-                // Regular subscription: set numberOfBillingCycles to currentBillingCycle,
-                // thus subscription will naturally expires.
-                $subscriptionResult = Subscription::update($subscriptionId, [
-                    "numberOfBillingCycles" => $subscription->currentBillingCycle
-                ]);
-            }
+            // Stripe subscription
+            $pipeline = (new SubscriptionCardUpdatePipeline($subscriptionId))->flow();
         }
 
-        /** @var BraintreeResponse $subscriptionResult */
-        if (!$subscriptionResult->success) {
-            throw new Http400BadRequestException(
-                $subscriptionResult->jsonSerialize(),
-                "Unable to cancel subscription."
-            );
+        $data   = Subscription::from($pipeline->subscription);
+        $status = 200;
+
+        // Subscription triggered 3DS2
+        if ($data->pending_setup_intent !== null
+            && $data->pending_setup_intent->status !== SetupIntent::STATUS_SUCCEEDED
+        ) {
+            $status = 202;
         }
 
-        $subscription = $subscriptionResult->subscription;
-        $customer = SubscriptionUtils::getSubscriptionCustomer($subscription);
-
-        if ($customer !== null) {
-            /** @var User $user */
-            $user = User::query()
-                ->where("braintree_id", "=", $customer->id)
-                ->firstOrFail();
-
-            if ($trialEndsAt instanceof Carbon) {
-                $user->premium_bypass_expires_at = $trialEndsAt;
-            }
-
-            $user->forgetBraintreeCustomerCache();
-            $user->save();
-        }
-
-        return new JsonResponse(Formatter::cast($subscription->jsonSerialize()));
+        return new SuccessJsonResponse(
+            $data,
+            [],
+            $status
+        );
     }
 }

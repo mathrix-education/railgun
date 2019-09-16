@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Carbon\Carbon;
@@ -9,15 +11,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-use Mathrix\Lumen\Bases\BaseModel;
+use Mathrix\Lumen\Zero\Models\BaseModel;
+use function array_fill;
+use function count;
+use function implode;
 
 /**
- * Class Module.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 1.0.0
- *
  * @property int $id
  * @property bool $premium
  * @property string $type
@@ -50,58 +49,76 @@ use Mathrix\Lumen\Bases\BaseModel;
  */
 class Module extends BaseModel
 {
-    public const TYPES = ["course", "test", "mcq", "flashcard"];
+    public const TYPES = ['course', 'test', 'mcq', 'flashcard'];
     /** @var array The attributes that are mass assignable */
     protected $fillable = [
-        "premium",
-        "type",
-        "content",
-        "questions",
-        "choices",
-        "solutions",
-        "corrections",
-        "options",
-        "visible",
-        "seo_index",
-        "seo_title",
-        "seo_slug",
-        "seo_keywords",
-        "seo_description",
-        "order",
-        "activity_id"
+        'premium',
+        'type',
+        'content',
+        'questions',
+        'choices',
+        'solutions',
+        'corrections',
+        'options',
+        'visible',
+        'seo_index',
+        'seo_title',
+        'seo_slug',
+        'seo_keywords',
+        'seo_description',
+        'order',
+        'activity_id',
     ];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
-        "visible" => "boolean",
-        "questions" => "array",
-        "choices" => "array",
-        "solutions" => "array",
-        "corrections" => "array",
-        "options" => "array",
-        "seo_index" => "boolean"
+        'visible' => 'boolean',
+        'questions' => 'array',
+        'choices' => 'array',
+        'solutions' => 'array',
+        'corrections' => 'array',
+        'options' => 'array',
+        'seo_index' => 'boolean',
     ];
     /** @var array The validation rules */
     protected $rules = [
-        "visible" => "required|boolean",
-        "seo_index" => "boolean",
+        'visible' => 'required|boolean',
+        'seo_index' => 'boolean',
     ];
     /** @var array The accessors to append to the model's array form */
-    protected $appends = ["mark"];
-
+    protected $appends = ['mark'];
 
     public function getValidationRules()
     {
         // Dynamic rules
-        $this->rules["type"] = "required|in:" . implode(",", self::TYPES);
+        $this->rules['type'] = 'required|in:' . implode(',', self::TYPES);
 
         return $this->rules;
     }
 
+    /**
+     * Allow module data striping if the user is not premium.
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        if (! $this->shouldStrip()) {
+            return parent::toArray();
+        }
+
+        $keep = ['id', 'type', 'visible'];
+        $data = parent::toArray();
+        $data = Arr::only($data, $keep);
+
+        if ($this->type === 'flashcard') {
+            $data['questions'] = array_fill(0, count($this->questions), '');
+        }
+
+        return $data;
+    }
 
     /**
      * Determine if the module should be striped.
-     *
-     * @return bool
      */
     public function shouldStrip(): bool
     {
@@ -113,138 +130,78 @@ class Module extends BaseModel
         /** @var bool $belongsToProduct If the module is linked to a product */
         $belongsToProduct = $this->products->isNotEmpty();
         /** @var bool $userIsPremium If the user is premium */
-        $userIsPremium = $user && ($user->premium || $user->hasScope("modules:read"));
+        $userIsPremium = $user && ($user->premium || $user->hasScope('modules:read'));
         /** @var bool $userOwnsProduct If the user has purchased one of the related products */
-        $userOwnsProduct = $user && ($user->hasScope("modules:read") || $this->products()
+        $userOwnsProduct = $user && ($user->hasScope('modules:read') || $this->products()
                     ->get()
-                    ->reduce(function (bool $current, Product $product) use ($user) {
+                    ->reduce(static function (bool $current, Product $product) use ($user) {
                         return $current || $user->hasPurchased($product);
                     }, false));
 
-        $this->unsetRelation("activity");
-        $this->unsetRelation("products");
+        $this->unsetRelation('activity');
+        $this->unsetRelation('products');
 
         if ($belongsToProduct) {
-            if ($userOwnsProduct || ($belongsToPremiumActivity && $userIsPremium)) {
-                return false;
-            }
+            return ! $userOwnsProduct && (! $belongsToPremiumActivity || ! $userIsPremium);
+        }
 
-            return true;
-        } else if ($belongsToPremiumActivity) {
+        if ($belongsToPremiumActivity) {
             if ($userIsPremium) {
                 return false;
             }
 
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
-
-
-    /**
-     * Allow module data striping if the user is not premium.
-     *
-     * @return array
-     */
-    public function toArray()
-    {
-        if (!$this->shouldStrip()) {
-            return parent::toArray();
-        }
-
-        $keep = ["id", "type", "visible"];
-        $data = parent::toArray();
-        $data = Arr::only($data, $keep);
-
-        if ($this->type === "flashcard") {
-            $data["questions"] = array_fill(0, count($this->questions), "");
-        }
-
-        return $data;
-    }
-
 
     /*
     |--------------------------------------------------------------------------
     | Relations
     |--------------------------------------------------------------------------
     */
-    /**
-     * @return BelongsTo
-     */
-    public function activity(): BelongsTo
-    {
-        return $this->belongsTo(Activity::class);
-    }
-
-
-    /**
-     * HasMany Comment.
-     *
-     * @return HasMany
-     */
-    public function comments(): HasMany
-    {
-        return $this->hasMany(Comment::class)
-            ->orderBy("created_at");
-    }
-
-
-    /**
-     * MorphMany Mark.
-     *
-     * @return MorphMany
-     */
-    public function marks(): MorphMany
-    {
-        return $this->morphMany(Mark::class, "markable");
-    }
-
 
     /**
      * HasMany Product.
-     *
-     * @return HasMany
      */
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
     }
 
+    public function activity(): BelongsTo
+    {
+        return $this->belongsTo(Activity::class);
+    }
+
+    /**
+     * HasMany Comment.
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class)
+            ->orderBy('created_at');
+    }
 
     /**
      * HasMany Post.
-     *
-     * @return HasMany
      */
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
     }
 
-
     /**
      * HasMany Report.
-     *
-     * @return HasMany
      */
     public function reports(): HasMany
     {
         return $this->hasMany(Report::class);
     }
 
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Attributes
-    |--------------------------------------------------------------------------
-    */
     /**
      * Get the mark attribute (view|to_revise|completed)
-     *
-     * @return string
      */
     public function getMarkAttribute(): ?string
     {
@@ -253,11 +210,25 @@ class Module extends BaseModel
 
         if ($user === null) {
             return null;
-        } else {
-            /** @var Mark $mark */
-            $mark = $this->marks()->where("user_id", "=", $user->id)->first();
-
-            return $mark !== null ? $mark->status : null;
         }
+
+        /** @var Mark $mark */
+        $mark = $this->marks()->where('user_id', '=', $user->id)->first();
+
+        return $mark !== null ? $mark->status : null;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Attributes
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * MorphMany Mark.
+     */
+    public function marks(): MorphMany
+    {
+        return $this->morphMany(Mark::class, 'markable');
     }
 }

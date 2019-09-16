@@ -1,17 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Registrars;
 
 use App\Controllers\PostsController;
-use Mathrix\Lumen\Bases\BaseRegistrar;
+use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
-/**
- * Class PostsRegistrar.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class PostsRegistrar extends BaseRegistrar
 {
     /**
@@ -20,15 +15,14 @@ class PostsRegistrar extends BaseRegistrar
     public function register(): void
     {
         $controller = PostsController::class;
+        $this->get('posts/latest', "$controller@latest");
 
-        $this->rest("posts", $controller, [
-            "index" => null,
-            "get" => "scope:posts:read",
-            "post" => "scope:posts:write",
-            "patch" => "scope:posts:write",
-            "delete" => "scope:posts:delete"
+        $this->rest([
+            'std:index' => null,
+            'std:get' => 'scope:posts:read',
+            'std:post' => 'scope:posts:write',
+            'std:patch' => 'scope:posts:write',
+            'std:delete' => 'scope:posts:delete',
         ]);
-
-        $this->get("posts/latest/{page:\d+}/{perPage:[1-9]\d*}", "$controller@latest");
     }
 }

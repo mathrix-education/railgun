@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\Braintree\Utils;
 
-use App\Exceptions\InvalidSponsorException;
-use App\Exceptions\SponsorNotFoundException;
+use App\Exceptions\InvalidSponsor;
+use App\Exceptions\SponsorNotFound;
 use App\Jobs\RefundSponsorJob;
 use App\Models\User;
 use Braintree\Transaction;
@@ -11,21 +13,13 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Queue;
 
 /**
- * Class Affiliates.
  * Allow affiliation process to occur. In this class, the affiliate user design the user who want to buy products, and
  * the sponsor is the user who has already bought a product.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.1-rc1
  */
 class AffiliateProcess
 {
-    /** @var int The discount amount */
-    public const AFFILIATE_DISCOUNT = 10;
-    /** @var string The default sponsor email (which always works) */
-    public const DEFAULT_SPONSOR = "contact@mathrix.fr";
-    /** @var int The delay (in hours) before trying to refund the sponsor */
+    public const AFFILIATE_DISCOUNT   = 10;
+    public const DEFAULT_SPONSOR      = 'contact@mathrix.fr';
     public const SPONSOR_REFUND_DELAY = 3;
 
     /** @var User The user who is currently engaging a payment process */
@@ -33,32 +27,40 @@ class AffiliateProcess
     /** @var User The user who sponsors the affiliated user */
     private $sponsor;
 
-
     /**
-     * AffiliateProcess constructor.
-     *
-     * @param User $affiliate
+     * @param User   $affiliate
      * @param string $sponsorEmail
      *
-     * @throws SponsorNotFoundException
+     * @throws SponsorNotFound
      */
     public function __construct(User $affiliate, string $sponsorEmail)
     {
         $this->affiliate = $affiliate;
-        $this->sponsor = User::query()
-            ->where("email", "=", $sponsorEmail)
+        $this->sponsor   = User::query()
+            ->where('email', '=', $sponsorEmail)
             ->first();
 
         if ($this->sponsor === null) {
-            throw new SponsorNotFoundException($sponsorEmail);
+            throw new SponsorNotFound($sponsorEmail);
         }
     }
 
+    /**
+     * Check whether the sponsor can have one more affiliate and throw InvalidSponsorException if he cannot.
+     *
+     * @throws InvalidSponsor
+     */
+    public function canBeAffiliatedOrFail(): bool
+    {
+        if (! $this->canBeAffiliated()) {
+            throw new InvalidSponsor($this->sponsor);
+        }
+
+        return true;
+    }
 
     /**
      * Check whether the sponsor can have one more affiliate.
-     *
-     * @return bool
      */
     public function canBeAffiliated(): bool
     {
@@ -67,74 +69,56 @@ class AffiliateProcess
         }
 
         $validSponsor = $this->sponsor->purchases()
-            ->whereBetween("created_at", [
+            ->whereBetween('created_at', [
                 Carbon::createFromDate(2019, 1, 1),
-                Carbon::now()
+                Carbon::now(),
             ])
             ->get()
             ->isNotEmpty();
-        $notHimself = $this->sponsor->email !== $this->affiliate->email;
+        $notHimself   = $this->sponsor->email !== $this->affiliate->email;
 
         return $notHimself && $validSponsor;
     }
 
-
     /**
-     * Check whether the sponsor can have one more affiliate and throw InvalidSponsorException if he cannot.
+     * Get the discount line item for Braintree Transaction sale request.
      *
-     * @return bool
-     * @throws InvalidSponsorException
+     * @link https://developers.braintreepayments.com/reference/request/transaction/sale/php#line_items
+     * @see Transaction::sale()
+     *
+     * @return array
      */
-    public function canBeAffiliatedOrFail(): bool
+    public function getDiscountLineItem(): array
     {
-        if (!$this->canBeAffiliated()) {
-            throw new InvalidSponsorException($this->sponsor);
-        }
-
-        return true;
+        return [
+            'kind' => 'credit',
+            'name' => 'Parrainage',
+            'quantity' => 1,
+            'totalAmount' => $this->getDiscountAmount(),
+            'unitAmount' => $this->getDiscountAmount(),
+        ];
     }
-
 
     /**
      * Get the affiliate discount price.
-     *
-     * @return int
      */
     public function getDiscountAmount(): int
     {
         return self::AFFILIATE_DISCOUNT;
     }
 
-
-    /**
-     * Get the discount line item for Braintree Transaction sale request.
-     *
-     * @return array
-     * @link https://developers.braintreepayments.com/reference/request/transaction/sale/php#line_items
-     * @see Transaction::sale()
-     */
-    public function getDiscountLineItem(): array
-    {
-        return [
-            "kind" => "credit",
-            "name" => "Parrainage",
-            "quantity" => 1,
-            "totalAmount" => $this->getDiscountAmount(),
-            "unitAmount" => $this->getDiscountAmount()
-        ];
-    }
-
-
     /**
      * Refund the sponsor after the transaction process.
      */
-    public function refundSponsor()
+    public function refundSponsor(): void
     {
-        if ($this->sponsor->email !== self::DEFAULT_SPONSOR) {
-            Queue::later(
-                Carbon::now()->addHours(self::SPONSOR_REFUND_DELAY),
-                new RefundSponsorJob($this->affiliate, $this->sponsor)
-            );
+        if ($this->sponsor->email === self::DEFAULT_SPONSOR) {
+            return;
         }
+
+        Queue::later(
+            Carbon::now()->addHours(self::SPONSOR_REFUND_DELAY),
+            new RefundSponsorJob($this->affiliate, $this->sponsor)
+        );
     }
 }

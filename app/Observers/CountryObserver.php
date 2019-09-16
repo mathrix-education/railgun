@@ -1,29 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Observers;
 
-use App\Exceptions\ForeignConstraintsException;
+use App\Exceptions\ForeignConstraints;
 use App\Models\Country;
-use Illuminate\Support\Str;
 
-/**
- * Class CountryObserver.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 4.3.0
- */
 class CountryObserver extends BaseObserver
 {
     /**
      * @param Country $country
      *
      * @return bool
-     * @throws ForeignConstraintsException
+     *
+     * @throws ForeignConstraints
      */
-    public function deleting(Country $country)
+    public function deleting(Country $country): bool
     {
-        $this->handleRelationDeletion($country, "grades");
+        $this->handleRelationDeletion($country, 'grades');
 
         return true;
     }

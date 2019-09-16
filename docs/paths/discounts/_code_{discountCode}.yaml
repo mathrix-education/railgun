@@ -1,0 +1,8 @@
+$extends:
+  ../../fragments/paths/get_key_{modelKey}.yaml:
+    model: discount
+    key: code
+    example: MODEMACHINE2018
+get:
+  security:
+    - bearer: [discounts:read]

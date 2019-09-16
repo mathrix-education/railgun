@@ -1,26 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controllers;
 
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Mathrix\Lumen\Bases\BaseController;
 use Mathrix\Lumen\JWT\Auth\ScopesLoader;
-use Mathrix\Lumen\Responses\PaginationJsonResponse;
+use Mathrix\Lumen\Zero\Controllers\BaseController;
+use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
 
 /**
- * Class ScopesController.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.1.0
+ * Serve routes starting with /scopes.
  */
 class ScopesController extends BaseController
 {
-    public function all()
+    /**
+     * GET /scopes
+     * Get the scopes list.
+     *
+     * @return SuccessJsonResponse The scopes list.
+     */
+    public function all(): SuccessJsonResponse
     {
-        $scopes = ScopesLoader::getRegisteredScopes();
-
-        return new JsonResponse($scopes);
+        return new SuccessJsonResponse(ScopesLoader::getRegisteredScopes());
     }
 }

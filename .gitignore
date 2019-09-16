@@ -1,9 +1,11 @@
 /.env
+/.phpunit.result.cache
 
 # User-specific stuff:
 /.idea/*.iml
 /.idea/**/workspace.xml
 /.idea/dataSources/
+/.idea/dataSources.*
 /.idea/dictionaries
 /.idea/httpRequests/
 /.idea/modules.xml
@@ -12,9 +14,15 @@
 
 /node_modules/
 /vendor/
-/artifacts
-/docs/json-schema
-/docs/out
-/docs/spec.html
-/resources/views/mails
+
+/bootstrap/cache
+/docs/output.yaml
+/resources/view/docs/index.html
+/resources/mails
 /storage/code-coverage/
+
+# Secrets
+/deploy/secrets/*
+!/deploy/secrets/*.enc
+/environments/*/*
+!/environments/*/*.enc

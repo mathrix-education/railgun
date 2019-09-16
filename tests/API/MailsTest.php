@@ -1,35 +1,45 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\API;
 
+use App\Mails\BaseMail;
+use App\Mails\TransactionRefundMail;
 use App\Registrars\MailsRegistrar;
-use Illuminate\Support\Facades\Facade;
 use Tests\APIStatelessTestCase;
 
 /**
  * Class MailsTest.
  *
- * @author Mathieu Bour <mathieu@mathrix.fr>
+ * @author    Mathieu Bour <mathieu@mathrix.fr>
  * @copyright Mathrix Education SA.
- * @since 5.0.1-rc1
+ * @since     5.0.1-rc1
  */
 class MailsTest extends APIStatelessTestCase
 {
-    /**
-     * Test that all emails produce valid views i.e. that there is no syntax errors.
-     * This is better that nothing, but it does not guarantees that the mail is correct.
-     */
-    public function testAllMails()
+    public function mails()
     {
-        MailsRegistrar::getMails()->map(function ($mailableClass, string $uri) {
-            $this->json("get", $uri);
-            $this->assertResponseOk();
+        $mails = MailsRegistrar::getMails();
+        $data  = [];
+        foreach ($mails as $mail) {
+            $data[$mail] = [$mail];
+        }
 
-            /**
-             * Needed for multiple requests in the same test.
-             * @see https://stackoverflow.com/a/38722555/3728261
-             */
-            Facade::clearResolvedInstances();
-        });
+        return $data;
+    }
+
+    /**
+     * @param string|BaseMail $mailClass
+     *
+     * @dataProvider mails
+     */
+    public function testMailsRender(string $mailClass)
+    {
+        if ($mailClass === TransactionRefundMail::class) {
+            $this->markTestSkipped();
+        }
+
+        $this->assertInstanceOf($mailClass, $mailClass::mock());
     }
 }

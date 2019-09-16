@@ -1,17 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Registrars;
 
 use App\Controllers\SystemController;
-use Mathrix\Lumen\Bases\BaseRegistrar;
+use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
-/**
- * Class SystemRegistrar.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class SystemRegistrar extends BaseRegistrar
 {
     /**
@@ -19,8 +14,12 @@ class SystemRegistrar extends BaseRegistrar
      */
     public function register(): void
     {
-        $this->get("/", SystemController::class . "@base");
-        $this->get("system/health[/{count:[1-9]\d*}]", SystemController::class . "@health");
-        $this->get("system/sitemap", SystemController::class . "@sitemap");
+        $controller = SystemController::class;
+
+        $this->get('/', "$controller@base");
+        $this->get('/docs', "$controller@docs");
+        $this->get('/system/health[/{count:[1-9]\d*}]', "$controller@health");
+        $this->get('/system/sitemap', "$controller@sitemap");
+        $this->get('/system/work', "$controller@work");
     }
 }
