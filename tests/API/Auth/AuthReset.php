@@ -10,13 +10,6 @@ use Illuminate\Support\Facades\Mail;
 use Tests\APIStatelessTestCase;
 use function env;
 
-/**
- * Class AuthReset.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class AuthReset extends APIStatelessTestCase
 {
     /**

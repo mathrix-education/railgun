@@ -7,13 +7,6 @@ namespace Tests\API;
 use Mathrix\Lumen\Zero\Testing\Traits\RESTAutoTestTrait;
 use Tests\APIStatelessTestCase;
 
-/**
- * Class PostsTest.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class PostsTest extends APIStatelessTestCase
 {
     use RESTAutoTestTrait;
@@ -29,7 +22,7 @@ class PostsTest extends APIStatelessTestCase
     /**
      * GET /posts/latest
      */
-    public function testLatest() : void
+    public function testLatest(): void
     {
         $uri = '/posts/latest';
 

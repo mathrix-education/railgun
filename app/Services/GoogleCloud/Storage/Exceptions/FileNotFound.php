@@ -11,7 +11,7 @@ use function trans;
 /**
  * Thrown when a file cannot be found on the CDN.
  */
-class FileNotFoundException extends Http404NotFoundException
+class FileNotFound extends Http404NotFoundException
 {
     public function __construct(string $file, ?Throwable $previous = null)
     {

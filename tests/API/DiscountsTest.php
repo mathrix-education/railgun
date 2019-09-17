@@ -4,17 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\API;
 
-use Mathrix\Lumen\Tests\REST\Standard\StandardDeleteTest;
 use Mathrix\Lumen\Zero\Testing\Traits\RESTAutoTestTrait;
 use Tests\APIStatelessTestCase;
 
-/**
- * Class DiscountsTest.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class DiscountsTest extends APIStatelessTestCase
 {
     use RESTAutoTestTrait;

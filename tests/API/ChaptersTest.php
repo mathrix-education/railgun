@@ -9,13 +9,6 @@ use App\Models\Mark;
 use Mathrix\Lumen\Zero\Testing\Traits\RESTAutoTestTrait;
 use Tests\APIStatelessTestCase;
 
-/**
- * Class ChaptersTest.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class ChaptersTest extends APIStatelessTestCase
 {
     use RESTAutoTestTrait;
@@ -31,7 +24,7 @@ class ChaptersTest extends APIStatelessTestCase
     /**
      * DELETE /chapters/{chapterId}
      */
-    public function testDelete() : void
+    public function testDelete(): void
     {
         $chapter  = Chapter::random();
         $fallback = Chapter::random(['id', '!=', $chapter->id]);
@@ -46,7 +39,7 @@ class ChaptersTest extends APIStatelessTestCase
     /**
      * GET /chapters/{chapterId}/recursive
      */
-    public function testRecursive() : void
+    public function testRecursive(): void
     {
         $chapter = Chapter::random();
         $uri     = "/chapters/{$chapter->id}/recursive";

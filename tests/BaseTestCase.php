@@ -11,11 +11,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use function app;
 
 /**
- * Class BaseTestCase.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 4.3.0
+ * Base test class for all application tests.
  */
 abstract class BaseTestCase extends ZeroTestCase
 {
@@ -26,7 +22,7 @@ abstract class BaseTestCase extends ZeroTestCase
      * Setup the test environment.
      * Inject a new Faker instance.
      */
-    public function setUp() : void
+    public function setUp(): void
     {
         $this->faker = FakerFactory::create();
         parent::setUp();
@@ -35,20 +31,16 @@ abstract class BaseTestCase extends ZeroTestCase
     /**
      * Destroy database connection after each test to avoid the Too Many Connections error.
      */
-    public function tearDown() : void
+    public function tearDown(): void
     {
         $this->beforeApplicationDestroyed(static function () {
-            app()->make('db')->disconnect();
+            app()
+                ->make('db')
+                ->disconnect();
         });
 
         parent::tearDown();
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Hooks
-    |--------------------------------------------------------------------------
-    */
 
     /**
      * Creates the application.

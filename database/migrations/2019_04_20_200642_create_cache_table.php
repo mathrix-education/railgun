@@ -13,13 +13,15 @@ class CreateCacheTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('cache',
+        Schema::create(
+            'cache',
             static function (Blueprint $table): void {
                 $table->string('key')
                     ->unique('key');
                 $table->mediumText('value');
                 $table->unsignedInteger('expiration');
-            });
+            }
+        );
     }
 
     /**

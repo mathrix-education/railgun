@@ -17,35 +17,34 @@ use function count;
 use function implode;
 
 /**
- * @property int $id
- * @property bool $premium
- * @property string $type
- * @property string $content
- * @property array $questions
- * @property array $choices
- * @property array $solutions
- * @property array $corrections
- * @property string $options
- * @property bool $visible
- * @property bool $seo_index
- * @property string $seo_title
- * @property string $seo_slug
- * @property string $seo_keywords
- * @property string $seo_description
- * @property int $order
- * @property int $activity_id
- * @property Carbon $created_at
- * @property Carbon $updated_at
+ * @property int                  $id
+ * @property bool                 $premium
+ * @property string               $type
+ * @property string               $content
+ * @property array                $questions
+ * @property array                $choices
+ * @property array                $solutions
+ * @property array                $corrections
+ * @property string               $options
+ * @property bool                 $visible
+ * @property bool                 $seo_index
+ * @property string               $seo_title
+ * @property string               $seo_slug
+ * @property string               $seo_keywords
+ * @property string               $seo_description
+ * @property int                  $order
+ * @property int                  $activity_id
+ * @property Carbon               $created_at
+ * @property Carbon               $updated_at
  * ---
- * @property string|null $status
- * @property string|null $mark
+ * @property string|null          $status
+ * @property string|null          $mark
  * ---
- * @property Activity $activity
+ * @property Activity             $activity
  * @property Collection|Comment[] $comments
- * @property Collection|Log[] $logs
- * @property Collection|Mark[] $marks
+ * @property Collection|Mark[]    $marks
  * @property Collection|Product[] $products
- * @property Collection|Report[] $reports
+ * @property Collection|Report[]  $reports
  */
 class Module extends BaseModel
 {
@@ -71,17 +70,17 @@ class Module extends BaseModel
     ];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
-        'visible' => 'boolean',
-        'questions' => 'array',
-        'choices' => 'array',
-        'solutions' => 'array',
+        'visible'     => 'boolean',
+        'questions'   => 'array',
+        'choices'     => 'array',
+        'solutions'   => 'array',
         'corrections' => 'array',
-        'options' => 'array',
-        'seo_index' => 'boolean',
+        'options'     => 'array',
+        'seo_index'   => 'boolean',
     ];
     /** @var array The validation rules */
     protected $rules = [
-        'visible' => 'required|boolean',
+        'visible'   => 'required|boolean',
         'seo_index' => 'boolean',
     ];
     /** @var array The accessors to append to the model's array form */
@@ -102,7 +101,7 @@ class Module extends BaseModel
      */
     public function toArray(): array
     {
-        if (! $this->shouldStrip()) {
+        if (!$this->shouldStrip()) {
             return parent::toArray();
         }
 
@@ -122,35 +121,41 @@ class Module extends BaseModel
      */
     public function shouldStrip(): bool
     {
-        /** @var User $user */
-        $user = Auth::user();
-
         /** @var bool $belongsToPremiumActivity If the module's parent activity is premium */
         $belongsToPremiumActivity = $this->activity !== null && $this->activity->premium;
         /** @var bool $belongsToProduct If the module is linked to a product */
         $belongsToProduct = $this->products->isNotEmpty();
+
+        /** @var User $user */
+        $user = Auth::user();
+
         /** @var bool $userIsPremium If the user is premium */
-        $userIsPremium = $user && ($user->premium || $user->hasScope('modules:read'));
+        $userIsPremium = false;
         /** @var bool $userOwnsProduct If the user has purchased one of the related products */
-        $userOwnsProduct = $user && ($user->hasScope('modules:read') || $this->products()
-                    ->get()
-                    ->reduce(static function (bool $current, Product $product) use ($user) {
-                        return $current || $user->hasPurchased($product);
-                    }, false));
+        $userOwnsProduct = false;
+
+        if ($user !== null) {
+            $userIsPremium   = $user->premium || $user->hasScope('modules:read');
+            $userOwnsProduct = $user->hasScope('modules:read');
+
+            foreach ($this->products as $product) {
+                if ($userOwnsProduct) {
+                    break;
+                }
+
+                $userOwnsProduct = $userOwnsProduct || $user->hasPurchased($product);
+            }
+        }
 
         $this->unsetRelation('activity');
         $this->unsetRelation('products');
 
         if ($belongsToProduct) {
-            return ! $userOwnsProduct && (! $belongsToPremiumActivity || ! $userIsPremium);
+            return !$userOwnsProduct && (!$belongsToPremiumActivity || !$userIsPremium);
         }
 
         if ($belongsToPremiumActivity) {
-            if ($userIsPremium) {
-                return false;
-            }
-
-            return true;
+            return !$userIsPremium;
         }
 
         return false;
@@ -213,7 +218,9 @@ class Module extends BaseModel
         }
 
         /** @var Mark $mark */
-        $mark = $this->marks()->where('user_id', '=', $user->id)->first();
+        $mark = $this->marks()
+            ->where('user_id', '=', $user->id)
+            ->first();
 
         return $mark !== null ? $mark->status : null;
     }

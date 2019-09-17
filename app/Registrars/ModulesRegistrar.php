@@ -33,6 +33,6 @@ class ModulesRegistrar extends BaseRegistrar
             'middleware' => 'logged',
         ]);
 
-        $this->get("modules/courses/{page}/{perPage}", "$controller@courses");
+        $this->get('modules/courses/{page}/{perPage}', "$controller@courses");
     }
 }

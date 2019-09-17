@@ -9,13 +9,6 @@ use App\Models\Vote;
 use Mathrix\Lumen\JWT\Auth\JWT;
 use Tests\APIStatelessTestCase;
 
-/**
- * Class VotesTest.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class VotesTest extends APIStatelessTestCase
 {
     /**

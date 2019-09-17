@@ -11,19 +11,12 @@ use Mathrix\Lumen\JWT\Auth\JWT;
 use OpenAPIValidation\PSR7\OperationAddress;
 use Tests\APIStatelessTestCase;
 
-/**
- * Class FilesTest.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA
- * @since 6.0.0
- */
 class FilesTest extends APIStatelessTestCase
 {
     /**
      * @return array Generate the files to upload and get.
      */
-    public function uploadsDataProvider() : array
+    public function uploadsDataProvider(): array
     {
         return [
             'shop.png' => ['shop.png', 'shop2.png'],
@@ -35,7 +28,7 @@ class FilesTest extends APIStatelessTestCase
     /**
      * @return array Generate the list files and HTTP statuses.
      */
-    public function listDataProvider() : array
+    public function listDataProvider(): array
     {
         return [
             '/' => ['/', 200],
@@ -48,7 +41,7 @@ class FilesTest extends APIStatelessTestCase
     /**
      * @return array Generate the files to delete.
      */
-    public function deleteDataProvider() : array
+    public function deleteDataProvider(): array
     {
         return [
             'shop2.png' => ['shop2.png'],
@@ -64,7 +57,7 @@ class FilesTest extends APIStatelessTestCase
      *
      * @dataProvider uploadsDataProvider
      */
-    public function testUpload(string $file) : void
+    public function testUpload(string $file): void
     {
         JWT::withScopes('files:write');
 
@@ -84,7 +77,7 @@ class FilesTest extends APIStatelessTestCase
      *
      * @return FilesystemAdapter
      */
-    private function getDisk(string $disk = null) : FilesystemAdapter
+    private function getDisk(?string $disk = null): FilesystemAdapter
     {
         /** @var FilesystemAdapter $disk */
         $disk = Storage::disk($disk);
@@ -157,7 +150,7 @@ class FilesTest extends APIStatelessTestCase
      * @depends      testPatch
      * @dataProvider deleteDataProvider
      */
-    public function testDelete(string $file) : void
+    public function testDelete(string $file): void
     {
         JWT::withScopes('files:delete');
 

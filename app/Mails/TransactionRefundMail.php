@@ -13,6 +13,7 @@ use function gateway;
 
 /**
  * Sent when a Braintree refund is issued.
+ * Note: requires at least one refund on Braintree Sandbox to be mocked.
  */
 class TransactionRefundMail extends BaseMail
 {

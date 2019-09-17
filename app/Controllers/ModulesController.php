@@ -21,21 +21,20 @@ use function app;
 class ModulesController extends BaseController
 {
     /**
+     * @deprecated temporary method, to help to migrate to silicate
+     *
      * @param int $page
      * @param int $perPage
      *
      * @return PaginationJsonResponse
-     *
-     * @deprecated temporary method, to help to migrate to silicate
      */
     public function courses(int $page, int $perPage)
     {
         $courses = Module::query()
-            ->where("type", "=", "course");
+            ->where('type', '=', 'course');
 
         return new PaginationJsonResponse($courses, $page, $perPage);
     }
-
 
     /**
      * GET /modules/{moduleId}/comments/{page}/{perPage}

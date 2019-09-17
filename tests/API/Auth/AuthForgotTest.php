@@ -9,19 +9,12 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Tests\APIStatelessTestCase;
 
-/**
- * Class AuthRefreshTest.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class AuthForgotTest extends APIStatelessTestCase
 {
     /**
      * POST /users/forgot
      */
-    public function testForgot() : void
+    public function testForgot(): void
     {
         Mail::fake();
         $user = User::random(['settings', 'NOT LIKE', '%facebook_id%']);

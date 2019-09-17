@@ -9,19 +9,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Mathrix\Lumen\JWT\Auth\JWT;
 use Tests\APIStatelessTestCase;
 
-/**
- * Class MarksTest.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class MarksTest extends APIStatelessTestCase
 {
     /**
      * GET /marks/activities/to-revise
      */
-    public function testToRevise() : void
+    public function testToRevise(): void
     {
         // We try to find a user which has to-revise marks
         /** @var User $user */

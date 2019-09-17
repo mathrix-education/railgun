@@ -12,23 +12,23 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Mathrix\Lumen\Zero\Models\BaseModel;
 
 /**
- * @property int $id
- * @property string $name
- * @property string $slug
- * @property int $order
- * @property bool $visible
- * @property array $link
- * @property int|null $parent_id
- * @property int $country_id
- * @property Carbon $created_at
- * @property Carbon $updated_at
+ * @property int                     $id
+ * @property string                  $name
+ * @property string                  $slug
+ * @property int                     $order
+ * @property bool                    $visible
+ * @property array                   $link
+ * @property int|null                $parent_id
+ * @property int                     $country_id
+ * @property Carbon                  $created_at
+ * @property Carbon                  $updated_at
  * ---
- * @property Grade|null $parent
- * @property Country $country
- * @property Collection|Grade[] $children
- * @property Collection|Chapter[] $chapters
+ * @property Grade|null              $parent
+ * @property Country                 $country
+ * @property Collection|Grade[]      $children
+ * @property Collection|Chapter[]    $chapters
  * @property Collection|Discipline[] $disciplines
- * @property Collection|User[] $users
+ * @property Collection|User[]       $users
  */
 class Grade extends BaseModel
 {
@@ -36,10 +36,10 @@ class Grade extends BaseModel
     protected $fillable = ['id', 'name', 'slug', 'order', 'visible', 'parent_id', 'country_id'];
     /** @var array Validation rules */
     protected $rules = [
-        'name' => 'required|max:255',
-        'slug' => 'required|max:255',
-        'order' => 'required|integer',
-        'visible' => 'boolean',
+        'name'       => 'required|max:255',
+        'slug'       => 'required|max:255',
+        'order'      => 'required|integer',
+        'visible'    => 'boolean',
         'country_id' => 'required|exists:countries,id',
     ];
     protected $casts = ['visible' => 'boolean'];
@@ -56,7 +56,8 @@ class Grade extends BaseModel
         $end = $grades->last();
 
         while ($end->parent_id !== null) {
-            $grades[] = self::query()->find($end->parent_id);
+            $grades[] = self::query()
+                ->find($end->parent_id);
             $end      = $grades->last();
         }
 
@@ -69,11 +70,23 @@ class Grade extends BaseModel
     |--------------------------------------------------------------------------
     */
 
+    /**
+     * BelongsTo Grade.
+     * The parent grade.
+     *
+     * @return BelongsTo
+     */
     public function parent(): BelongsTo
     {
         return $this->belongsTo(self::class, 'parent_id');
     }
 
+    /**
+     * HasMany Grade.
+     * The child grades.
+     *
+     * @return HasMany
+     */
     public function children(): HasMany
     {
         return $this->hasMany(self::class, 'parent_id');

@@ -11,13 +11,6 @@ use Tests\APIStatelessTestCase;
 use function factory;
 use function json_decode;
 
-/**
- * Class SubscriptionCardTest.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA
- * @since 6.0.0
- */
 class SubscriptionCardTest extends APIStatelessTestCase
 {
     /**

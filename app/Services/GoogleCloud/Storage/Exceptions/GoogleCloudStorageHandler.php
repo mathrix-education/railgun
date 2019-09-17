@@ -13,12 +13,12 @@ use Throwable;
 class GoogleCloudStorageHandler
 {
     /**
-     * @throws FileNotFoundException
+     * @throws FileNotFound
      */
     public static function handle(Throwable $exception): void
     {
         if ($exception instanceof FlysystemFileNotFoundException) {
-            throw new FileNotFoundException($exception->getPath());
+            throw new FileNotFound($exception->getPath());
         }
     }
 }

@@ -9,13 +9,6 @@ use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Zero\Testing\Traits\RESTAutoTestTrait;
 use Tests\APIStatelessTestCase;
 
-/**
- * Class ProductsTests.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class ProductsTest extends APIStatelessTestCase
 {
     use RESTAutoTestTrait;
@@ -31,7 +24,7 @@ class ProductsTest extends APIStatelessTestCase
     /**
      * GET /products/{productId}/items/{page}/{perPage}
      */
-    public function testItems() : void
+    public function testItems(): void
     {
         $pack        = Product::random(['type', '=', 'pack']);
         $trainingIds = Product::query()
@@ -58,7 +51,7 @@ class ProductsTest extends APIStatelessTestCase
     /**
      * GET /products/{productId}/recursive
      */
-    public function testGetRecursive() : void
+    public function testGetRecursive(): void
     {
         /** @var Product $product */
         $product = Product::query()->has('children')->inRandomOrder()->firstOrFail();
@@ -72,7 +65,7 @@ class ProductsTest extends APIStatelessTestCase
     /**
      * GET /products/{type}
      */
-    public function testPaginateByType() : void
+    public function testPaginateByType(): void
     {
         $this->json('get', '/products/type/all');
 
@@ -85,7 +78,7 @@ class ProductsTest extends APIStatelessTestCase
      * GET /products/buyable/type/{type=all}
      * Get all buyable products.
      */
-    public function testBuyable() : void
+    public function testBuyable(): void
     {
         $this->json('get', '/products/buyable/type/all');
 
@@ -98,7 +91,7 @@ class ProductsTest extends APIStatelessTestCase
      * GET /products/buyable/type/{type=training}
      * Get buyable trainings.
      */
-    public function testBuyableTrainings() : void
+    public function testBuyableTrainings(): void
     {
         $this->json('get', '/products/buyable/type/training');
 

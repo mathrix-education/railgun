@@ -14,12 +14,15 @@
     <arg name="colors"/>
     <arg name="parallel" value="75"/>
     <arg name="severity" value="1"/>
+    <arg name="error-severity" value="1"/>
+    <arg name="warning-severity" value="1"/>
 
     <!-- Inclusions -->
     <file>app</file>
     <file>bootstrap/app.php</file>
     <file>config</file>
     <file>database</file>
+    <file>tests</file>
 
     <!-- Rules inherited from Doctrine -->
     <rule ref="Mathrix"/>
@@ -27,7 +30,7 @@
     <!-- Do not require a vendor namespace for migrations and DatabaseSeeder -->
     <rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">
         <exclude-pattern>database/migrations</exclude-pattern>
-        <exclude-pattern>database/seeds/DatabaseSeeder.php</exclude-pattern>
+        <exclude-pattern>database/seeds</exclude-pattern>
     </rule>
 
     <!-- Do not require a class to match filename for migrations -->

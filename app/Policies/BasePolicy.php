@@ -15,14 +15,9 @@ abstract class BasePolicy
 {
     public function __call($name, $arguments)
     {
-        if (in_array($name, ['index', 'post', 'get', 'patch', 'delete'])) {
-            return true;
-        }
+        $isStandard = in_array($name, ['index', 'post', 'get', 'patch', 'delete']);
+        $isRelation = Str::startsWith($name, 'by');
 
-        if (Str::startsWith($name, 'by')) {
-            return true;
-        }
-
-        return false;
+        return $isStandard || $isRelation;
     }
 }

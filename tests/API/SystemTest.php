@@ -6,13 +6,6 @@ namespace Tests\API;
 
 use Tests\APIStatelessTestCase;
 
-/**
- * Class SystemTest.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.1-rc1
- */
 class SystemTest extends APIStatelessTestCase
 {
     /**

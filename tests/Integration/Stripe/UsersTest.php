@@ -13,12 +13,7 @@ use Tests\APIStatelessTestCase;
 use function factory;
 
 /**
- * Class UsersTest.
  * Test UserController while using Stripe.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA
- * @since 6.0.0
  */
 class UsersTest extends APIStatelessTestCase
 {

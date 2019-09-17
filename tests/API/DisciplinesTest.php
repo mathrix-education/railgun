@@ -8,13 +8,6 @@ use App\Models\Discipline;
 use Mathrix\Lumen\Zero\Testing\Traits\RESTAutoTestTrait;
 use Tests\APIStatelessTestCase;
 
-/**
- * Class DisciplinesTest.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class DisciplinesTest extends APIStatelessTestCase
 {
     use RESTAutoTestTrait;
@@ -30,7 +23,7 @@ class DisciplinesTest extends APIStatelessTestCase
     /**
      * DELETE /disciplines/{disciplineId}
      */
-    public function testDelete() : void
+    public function testDelete(): void
     {
         /** @var Discipline $discipline */
         $discipline = Discipline::random();

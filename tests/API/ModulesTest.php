@@ -8,13 +8,6 @@ use App\Models\Module;
 use Mathrix\Lumen\Zero\Testing\Traits\RESTAutoTestTrait;
 use Tests\APIStatelessTestCase;
 
-/**
- * Class ModulesTest.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class ModulesTest extends APIStatelessTestCase
 {
     use RESTAutoTestTrait;
@@ -31,7 +24,7 @@ class ModulesTest extends APIStatelessTestCase
     /**
      * DELETE /modules/{moduleId}
      */
-    public function testDelete() : void
+    public function testDelete(): void
     {
         $module = Module::random();
         $pivot  = Module::random(['id', '!=', $module->id]);

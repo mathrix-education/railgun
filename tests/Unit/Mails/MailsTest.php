@@ -2,19 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Tests\API;
+namespace Tests\Unit\Mails;
 
 use App\Mails\BaseMail;
-use App\Mails\TransactionRefundMail;
 use App\Registrars\MailsRegistrar;
 use Tests\APIStatelessTestCase;
 
 /**
- * Class MailsTest.
- *
- * @author    Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since     5.0.1-rc1
+ * Test that the Mail render correctly.
  */
 class MailsTest extends APIStatelessTestCase
 {
@@ -36,10 +31,6 @@ class MailsTest extends APIStatelessTestCase
      */
     public function testMailsRender(string $mailClass)
     {
-        if ($mailClass === TransactionRefundMail::class) {
-            $this->markTestSkipped();
-        }
-
         $this->assertInstanceOf($mailClass, $mailClass::mock());
     }
 }

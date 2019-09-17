@@ -13,15 +13,10 @@ use Mathrix\Lumen\Zero\Testing\Traits\DebugTrait;
 use Mathrix\Lumen\Zero\Testing\Traits\RESTTrait;
 use Mathrix\OpenAPI\Assertions\Lumen\LumenOpenAPIAssertions;
 use Throwable;
-use function count;
 use function strtolower;
 
 /**
- * Class APITestCase.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
+ * Base class for stateful (with database persistence) tests.
  */
 class APIStatefulTestCase extends BaseTestCase
 {
@@ -32,30 +27,29 @@ class APIStatefulTestCase extends BaseTestCase
     /** @var User $requester The request user */
     protected $requester;
 
-    public static function setUpBeforeClass() : void
+    public static function setUpBeforeClass(): void
     {
         self::$openAPISpecificationPath = __DIR__ . '/../docs/output.yaml';
         parent::setUpBeforeClass();
     }
 
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
 
-        $this->handler('before.json', function (string $method, string $uri) {
-            $scopes = $this->getOpenAPIScopes($method, $uri);
+        $this->handler(
+            'before.json',
+            function (string $method, string $uri) {
+                $scopes = $this->getOpenAPIScopes($method, $uri);
 
-            if (empty($scopes)) {
-                return;
-            }
-            if (count($scopes) === 1 && $scopes[0] === 'logged') {
-                // Authentication needed
-                $this->requester = User::random();
-                JWT::actingAs($this->requester);
-            } else {
+                if (empty($scopes)) {
+                    return;
+                }
+
+                // If route requires a scope, automatically add it.
                 $this->requester = JWT::withScopes($scopes[0]);
             }
-        });
+        );
     }
 
     /**
@@ -96,7 +90,7 @@ class APIStatefulTestCase extends BaseTestCase
         return $operation->security[0]->{$security};
     }
 
-    public function onNotSuccessfulTest(Throwable $t) : void
+    public function onNotSuccessfulTest(Throwable $t): void
     {
         $this->debug();
         parent::onNotSuccessfulTest($t);
@@ -110,9 +104,12 @@ class APIStatefulTestCase extends BaseTestCase
      */
     public function assertMailSentTo($mailClass, User $user)
     {
-        Mail::assertSent($mailClass, static function ($mail) use ($user) {
-            /** @var BaseMail $mail */
-            return $mail->hasTo($user->email);
-        });
+        Mail::assertSent(
+            $mailClass,
+            static function ($mail) use ($user) {
+                /** @var BaseMail $mail The mail which is expected to be sent. */
+                return $mail->hasTo($user->email);
+            }
+        );
     }
 }

@@ -11,13 +11,6 @@ use Stripe\Subscription;
 use Tests\APIStatelessTestCase;
 use function factory;
 
-/**
- * Class SubscriptionInvoicesTest.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA
- * @since 6.0.0
- */
 class SubscriptionInvoicesTest extends APIStatelessTestCase
 {
     /**

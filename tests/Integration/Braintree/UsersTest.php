@@ -14,16 +14,9 @@ use Tests\APIStatelessTestCase;
 use Tests\Utils\BraintreeUtils;
 use function factory;
 use function gateway;
-use function str_replace;
 use function implode;
+use function str_replace;
 
-/**
- * Class UsersTest.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA
- * @since 6.0.0
- */
 class UsersTest extends APIStatelessTestCase
 {
     /**

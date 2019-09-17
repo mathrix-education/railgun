@@ -58,6 +58,7 @@
     "mathrix/openapi-assertions": "0.10.4",
     "mathrix/openapi-processor": "1.0.2",
     "mockery/mockery": "1.2.2",
+    "nunomaduro/phpinsights": "^1.9",
     "nyholm/psr7": "^1.1",
     "phpunit/phpunit": "8.2.4",
     "squizlabs/php_codesniffer": "^3.4",

@@ -6,7 +6,7 @@ namespace App\Models;
 
 use App\Models\Traits\FacebookUser;
 use App\Models\Traits\HasCache;
-use App\Models\Traits\PermissionsTrait;
+use App\Models\Traits\HasPermissions;
 use App\Services\Bishop\Subscription;
 use App\Services\Braintree\Models\BraintreeCustomer;
 use App\Services\Stripe\Models\StripeCustomer;
@@ -75,7 +75,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     use HasCache;
     use HasJWT;
     use FacebookUser;
-    use PermissionsTrait;
+    use HasPermissions;
     use BraintreeCustomer;
     use StripeCustomer;
 

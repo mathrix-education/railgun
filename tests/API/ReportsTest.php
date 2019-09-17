@@ -7,13 +7,6 @@ namespace Tests\API;
 use Mathrix\Lumen\Zero\Testing\Traits\RESTAutoTestTrait;
 use Tests\APIStatelessTestCase;
 
-/**
- * Class ReportsTest.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class ReportsTest extends APIStatelessTestCase
 {
     use RESTAutoTestTrait;

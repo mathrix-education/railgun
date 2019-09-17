@@ -38,7 +38,7 @@ class MJMLCompilerTest extends BaseTestCase
      *
      * @dataProvider MJMLDataProvider
      */
-    public function testMJML(string $file) : void
+    public function testMJML(string $file): void
     {
         $content = file_get_contents($file);
         preg_match_all(self::INCLUDE_FAIL_REGEXP, $content, $matches);

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Services\GoogleCloud\Storage\Exceptions\DirectoryNotFoundException;
+use App\Services\GoogleCloud\Storage\Exceptions\DirectoryNotFound;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\File;
 use Illuminate\Http\Request;
@@ -125,7 +125,7 @@ class FilesController extends BaseController
      *
      * @return SuccessJsonResponse The directory sub-directories and files.
      *
-     * @throws DirectoryNotFoundException
+     * @throws DirectoryNotFound
      */
     public function list(string $directory = '/'): SuccessJsonResponse
     {
@@ -139,7 +139,7 @@ class FilesController extends BaseController
 
         if (empty($data) && !$this->disk->exists($directory)) {
             // Directory is empty and does not exist
-            throw new DirectoryNotFoundException($directory);
+            throw new DirectoryNotFound($directory);
         }
 
         return new SuccessJsonResponse($data);

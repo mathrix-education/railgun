@@ -21,7 +21,7 @@ class SubscriptionCreationTest extends APIStatelessTestCase
      *
      * @return array The dataset for the test.
      */
-    public function postDataProvider() : array
+    public function postDataProvider(): array
     {
         return [
             // Subscription is active
@@ -47,7 +47,7 @@ class SubscriptionCreationTest extends APIStatelessTestCase
      *
      * @dataProvider postDataProvider
      */
-    public function testPost(string $plan, string $token, int $expectedStatus, bool $expectedPremium) : void
+    public function testPost(string $plan, string $token, int $expectedStatus, bool $expectedPremium): void
     {
         $this->requester = factory(User::class)->create();
         JWT::actingAs($this->requester);
@@ -93,7 +93,7 @@ class SubscriptionCreationTest extends APIStatelessTestCase
             [
                 'plan'       => 'v5_annually',
                 'card'       => ['token' => 'tok_fr'],
-                'coupon'     => 'indontexist',
+                'coupon'     => $coupon->id,
                 'product_id' => $product->id,
             ]
         );

@@ -7,11 +7,7 @@ namespace Tests;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
 /**
- * Class APITestCase.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
+ * Base class for stateless (with no database persistence) tests.
  */
 class APIStatelessTestCase extends APIStatefulTestCase
 {

@@ -8,13 +8,6 @@ use App\Models\Module;
 use Illuminate\Database\Eloquent\Builder;
 use Tests\APIStatelessTestCase;
 
-/**
- * Class ChainerTest.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class ChainerTest extends APIStatelessTestCase
 {
     /**

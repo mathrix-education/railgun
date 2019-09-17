@@ -10,13 +10,6 @@ use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Zero\Testing\Traits\RESTAutoTestTrait;
 use Tests\APIStatelessTestCase;
 
-/**
- * Class GradesTest.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class GradesTest extends APIStatelessTestCase
 {
     use RESTAutoTestTrait;
@@ -33,7 +26,7 @@ class GradesTest extends APIStatelessTestCase
     /**
      * DELETE /grades/{gradeId}
      */
-    public function testDelete() : void
+    public function testDelete(): void
     {
         $grade = Grade::random();
         $pivot = Grade::random(['id', '!=', $grade->id]);
@@ -50,7 +43,7 @@ class GradesTest extends APIStatelessTestCase
     /**
      * GET /grades/{gradeId}/disciplines/visible
      */
-    public function testDisciplinesVisible() : void
+    public function testDisciplinesVisible(): void
     {
         $grade = Grade::random();
         $this->json('get', "/grades/{$grade->id}/disciplines/visible");
@@ -62,7 +55,7 @@ class GradesTest extends APIStatelessTestCase
     /**
      * GET /grades/slug/{gradeSlug}/chapters/slug/{chapterSlug}
      */
-    public function testBySlugChapterSlug() : void
+    public function testBySlugChapterSlug(): void
     {
         $chapter = Chapter::random(['visible', '=', true]);
 
@@ -72,14 +65,14 @@ class GradesTest extends APIStatelessTestCase
         $this->assertOpenAPIResponse($this->response);
     }
 
-    public function disciplinesChapters(string $scope) : void
+    public function disciplinesChapters(string $scope): void
     {
     }
 
     /**
      * GET /grades/{gradeId}/disciplines/{disciplineId}/chapters
      */
-    public function testDisciplinesChapters() : void
+    public function testDisciplinesChapters(): void
     {
         $chapter = Chapter::random(['visible', '=', true]);
         $method  = 'get';
@@ -95,7 +88,7 @@ class GradesTest extends APIStatelessTestCase
     /**
      * GET /grades/{gradeId}/disciplines/{disciplineId}/chapters/visible
      */
-    public function testDisciplinesChaptersVisible() : void
+    public function testDisciplinesChaptersVisible(): void
     {
         $chapter = Chapter::random(['visible', '=', true]);
         $method  = 'get';

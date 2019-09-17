@@ -17,13 +17,6 @@ use Tests\APIStatelessTestCase;
 use function array_merge;
 use function env;
 
-/**
- * Class UsersTest.
- *
- * @author    Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since     5.0.0-rc1
- */
 class UsersTest extends APIStatelessTestCase
 {
     use RESTAutoTestTrait;
@@ -178,10 +171,12 @@ class UsersTest extends APIStatelessTestCase
         JWT::actingAs($user);
 
         $module   = Module::random(['visible', '=', true]);
-        $settings = array_merge($user->settings,
+        $settings = array_merge(
+            $user->settings,
             [
                 'last_session' => [$module->activity->notion->chapter->discipline->id => $module->id],
-            ]);
+            ]
+        );
 
         $this->json('patch', "/users/{$user->id}", ['settings' => $settings]);
 

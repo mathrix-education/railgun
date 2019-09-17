@@ -62,10 +62,10 @@ class FacebookLoginTest extends APIStatefulTestCase
 
         // Delete user (does not work for now)
         /** @var User $user */
-        $user = User::query()
-            ->where('metadata->facebook->id', '=', self::$FacebookUser->id)
-            ->firstOrFail();
-        $user->delete();
+        //$user = User::query()
+        //    ->where('metadata->facebook->id', '=', self::$FacebookUser->id)
+        //    ->firstOrFail();
+        //$user->delete();
 
         parent::tearDownAfterClass();
     }

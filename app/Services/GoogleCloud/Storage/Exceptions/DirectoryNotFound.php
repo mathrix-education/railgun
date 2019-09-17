@@ -11,7 +11,7 @@ use function trans;
 /**
  * Thrown when a directory cannot be found on the CDN.
  */
-class DirectoryNotFoundException extends Http404NotFoundException
+class DirectoryNotFound extends Http404NotFoundException
 {
     public function __construct(string $directory, ?Throwable $previous = null)
     {

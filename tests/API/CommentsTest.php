@@ -12,13 +12,6 @@ use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Zero\Testing\Traits\RESTAutoTestTrait;
 use Tests\APIStatelessTestCase;
 
-/**
- * Class CommentsTest.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class CommentsTest extends APIStatelessTestCase
 {
     use RESTAutoTestTrait;
@@ -28,7 +21,7 @@ class CommentsTest extends APIStatelessTestCase
         'std:get',
     ];
 
-    public function testPost() : void
+    public function testPost(): void
     {
         $this->makeRESTJsonRequest('std:post', null, function ($data) {
             $data['user_id'] = $this->requester->id;
@@ -40,7 +33,7 @@ class CommentsTest extends APIStatelessTestCase
     /**
      * PATCH /comments/{commentId}
      */
-    public function testPatch() : void
+    public function testPatch(): void
     {
         $comment    = Comment::random();
         $newContent = 'Edited?';
@@ -59,7 +52,7 @@ class CommentsTest extends APIStatelessTestCase
     /**
      * GET /comments/latest/{page}/{perPage}
      */
-    public function testLatest() : void
+    public function testLatest(): void
     {
         $method = 'get';
         $uri    = '/comments/latest';

@@ -11,13 +11,6 @@ use Tests\BaseTestCase;
 use function count;
 use function factory;
 
-/**
- * Class StripeCustomerTest.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA
- * @since 6.0.0
- */
 class StripeCustomerTest extends BaseTestCase
 {
     use DatabaseTrait;
@@ -40,8 +33,9 @@ class StripeCustomerTest extends BaseTestCase
     /**
      * @param User $user
      *
-     * @depends testCreateStripeCustomer
      * @return User
+     *
+     * @depends testCreateStripeCustomer
      */
     public function testAddSource(User $user)
     {

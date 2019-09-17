@@ -1,7 +1,4 @@
-/.env
-/.phpunit.result.cache
-
-# User-specific stuff:
+# IDEA software
 /.idea/*.iml
 /.idea/**/workspace.xml
 /.idea/dataSources/
@@ -12,16 +9,20 @@
 /.idea/deployment.xml
 /.idea/php.xml
 
+# Vendors
 /node_modules/
 /vendor/
 
+# Generated files
 /bootstrap/cache
 /docs/output.yaml
 /resources/view/docs/index.html
-/resources/mails
+/resources/emails
 /storage/code-coverage/
+/.phpunit.result.cache
 
 # Secrets
+/.env
 /deploy/secrets/*
 !/deploy/secrets/*.enc
 /environments/*/*

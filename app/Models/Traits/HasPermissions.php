@@ -7,16 +7,17 @@ namespace App\Models\Traits;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http401UnauthorizedException;
 
 /**
- * Trait PermissionsTrait.
+ * Trait HasPermissions.
  * Describes all user permissions based on their token scope.
  */
-trait PermissionsTrait
+trait HasPermissions
 {
     /**
      * Check if user is authorized to do something; if not throw an exception.
      *
      * @see Authorizable
      *
+     * @param string      $ability   The ability.
      * @param array|mixed $arguments The policy arguments.
      *
      * @throws Http401UnauthorizedException

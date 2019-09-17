@@ -11,13 +11,6 @@ use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Zero\Testing\Traits\RESTAutoTestTrait;
 use Tests\APIStatelessTestCase;
 
-/**
- * Class ActivitiesTest.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class ActivitiesTest extends APIStatelessTestCase
 {
     use RESTAutoTestTrait;
@@ -33,7 +26,7 @@ class ActivitiesTest extends APIStatelessTestCase
     /**
      * DELETE /activities/{activityId}
      */
-    public function testDelete() : void
+    public function testDelete(): void
     {
         $activity = Activity::random();
         $fallback = Activity::random(['id', '!=', $activity->id]);
@@ -47,7 +40,7 @@ class ActivitiesTest extends APIStatelessTestCase
     /**
      * PATCH /activities/{activityId}/mark
      */
-    public function testMark() : void
+    public function testMark(): void
     {
         $activity = Activity::random(['visible', '=', true]);
         $uri      = "/activities/{$activity->id}/mark";
@@ -69,7 +62,7 @@ class ActivitiesTest extends APIStatelessTestCase
     /**
      * PATCH /activities/{activityId}/unmark
      */
-    public function testUnmark() : void
+    public function testUnmark(): void
     {
         $mark = Mark::random(['markable_type', '=', 'activity']);
         JWT::actingAs($mark->user);

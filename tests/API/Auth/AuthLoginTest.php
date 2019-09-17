@@ -8,19 +8,12 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Tests\APIStatelessTestCase;
 
-/**
- * Class AuthTest.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class AuthLoginTest extends APIStatelessTestCase
 {
     /**
      * POST /auth/login
      */
-    public function testLogin() : void
+    public function testLogin(): void
     {
         $user           = User::random();
         $oldHash        = $user->password; // Save the current hash for revert after the test

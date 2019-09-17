@@ -8,13 +8,6 @@ use App\Models\Country;
 use Mathrix\Lumen\Zero\Testing\Traits\RESTAutoTestTrait;
 use Tests\APIStatelessTestCase;
 
-/**
- * Class CountriesTest.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class CountriesTest extends APIStatelessTestCase
 {
     use RESTAutoTestTrait;
@@ -31,7 +24,7 @@ class CountriesTest extends APIStatelessTestCase
     /**
      * DELETE /countries/{categoryId}
      */
-    public function testDelete() : void
+    public function testDelete(): void
     {
         /** @var Country $country */
         $country  = Country::random(); // France

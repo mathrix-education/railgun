@@ -13,13 +13,6 @@ use Faker\Factory as Fakerfactory;
 use function gateway;
 use function str_replace;
 
-/**
- * Class BraintreeUtils.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA
- * @since 6.0.0
- */
 class BraintreeUtils
 {
     /**
@@ -30,7 +23,7 @@ class BraintreeUtils
      *
      * @return Customer
      */
-    public static function createCustomer(User $user, string $paymentMethodNonce = null) : Customer
+    public static function createCustomer(User $user, ?string $paymentMethodNonce = null): Customer
     {
         $braintreeId = 'cus_' . str_replace('-', '', Fakerfactory::create()->uuid);
 
