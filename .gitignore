@@ -16,8 +16,8 @@
 # Generated files
 /bootstrap/cache
 /docs/output.yaml
-/resources/view/docs/index.html
-/resources/mails
+/resources/views/docs/index.html
+/resources/views/mails
 /storage/code-coverage/
 /.phpunit.result.cache
 

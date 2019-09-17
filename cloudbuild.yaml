@@ -29,7 +29,7 @@ steps:
   - id: 'node:compile'
     waitFor: ['composer:install']
     name: 'node:12-alpine'
-    entrypoint: 'deploy/steps/2_yarn.sh'
+    entrypoint: 'deploy/steps/2_npm.sh'
 
 
   # Build, push and deploy API image

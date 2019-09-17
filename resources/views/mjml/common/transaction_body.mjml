@@ -27,12 +27,12 @@
     @switch($transaction->paymentInstrumentType)
         @case("credit_card")
 </mj-raw>
-<mj-include path="card_details"></mj-include>
+<mj-include path="card_details.mjml"></mj-include>
 <mj-raw>
     @break
     @case("paypal_account")
 </mj-raw>
-<mj-include path="paypal_details"></mj-include>
+<mj-include path="paypal_details.mjml"></mj-include>
 <mj-raw>
     @break
     @endswitch
