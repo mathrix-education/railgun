@@ -17,7 +17,7 @@
 /bootstrap/cache
 /docs/output.yaml
 /resources/view/docs/index.html
-/resources/emails
+/resources/mails
 /storage/code-coverage/
 /.phpunit.result.cache
 

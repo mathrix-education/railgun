@@ -32,7 +32,7 @@
     @break
     @case("paypal_account")
 </mj-raw>
-<mj-include path="payPalDetails"></mj-include>
+<mj-include path="paypal_details"></mj-include>
 <mj-raw>
     @break
     @endswitch
