@@ -1,6 +1,6 @@
 <mj-section padding="20px 0 0 0">
     <mj-column width="33.333%">
-        <mj-text height="16"
+        <mj-text height="16px"
                  padding="0 25px"
                  font-size="14px">
             Date
@@ -9,7 +9,7 @@
     </mj-column>
 
     <mj-column width="66.666%">
-        <mj-text height="16" padding="0 25px" font-size="14px">
+        <mj-text height="16px" padding="0 25px" font-size="14px">
             Compte Mathrix.fr béféficiaire
         </mj-text>
         <mj-text>{{ $user->email }}</mj-text>

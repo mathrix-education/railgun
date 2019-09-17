@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 class MailCompiler {
-    constructor() {
-        this.fs = require("fs");
+    constructor()
+    {
+        this.fs   = require("fs");
         this.path = require("path");
         this.mjml = require("mjml");
 
@@ -9,7 +10,8 @@ class MailCompiler {
         this.mjmlPath = this.path.resolve(this.basePath + '/resources/views/mjml');
     }
 
-    process() {
+    process()
+    {
         this.fs.readdirSync(this.mjmlPath)
             .filter(d => ["common", "compile.js"].indexOf(d) === -1)
             .filter(d => d !== "common")
@@ -17,8 +19,9 @@ class MailCompiler {
             .map(file => this.compile(`${this.mjmlPath}/${file}`));
     }
 
-    compile(src) {
-        const content = this.fs.readFileSync(src);
+    compile(src)
+    {
+        const content    = this.fs.readFileSync(src);
         const mjmlResult = this.mjml(content.toString(), {
             beautify: true,
             validationLevel: "strict",
@@ -35,9 +38,9 @@ class MailCompiler {
 
         if (mjmlResult["html"].length > 0) {
             // Fix dollar escape
-            const content = mjmlResult["html"].replace(/&#36;/g, "$");
+            const content  = mjmlResult["html"].replace(/&#36;/g, "$");
             const destFile = src.replace("/mjml/", "/mails/").replace(".mjml", ".blade.php");
-            const destDir = this.path.dirname(destFile);
+            const destDir  = this.path.dirname(destFile);
 
             if (!this.fs.existsSync(destDir)) {
                 this.fs.mkdirSync(destDir, {recursive: true});
