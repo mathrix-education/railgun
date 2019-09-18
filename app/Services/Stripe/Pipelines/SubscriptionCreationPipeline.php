@@ -19,6 +19,8 @@ use function trans;
 
 class SubscriptionCreationPipeline extends Pipeline
 {
+    private const ANNUALLY_TRAININGS_DISCOUNT = -2500;
+
     /** @var string The subscription plan */
     public $plan;
     /** @var Coupon The coupon to apply to the subscription. */
@@ -39,7 +41,7 @@ class SubscriptionCreationPipeline extends Pipeline
         $this->validate(
             $this->request,
             [
-                'plan' => 'required|in:' . implode(',', SubscriptionUtils::PLANS),
+                'plan'       => 'required|in:' . implode(',', SubscriptionUtils::PLANS),
                 'product_id' => 'sometimes|required|exists:products,id',
             ]
         );
@@ -100,7 +102,7 @@ class SubscriptionCreationPipeline extends Pipeline
                         'user_id' => $this->user->id,
                     ],
                     'quantity'    => 1,
-                    'unit_amount' => -2000,
+                    'unit_amount' => self::ANNUALLY_TRAININGS_DISCOUNT,
                 ]);
             }
         }
