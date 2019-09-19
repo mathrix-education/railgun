@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Zero\Console\Commands\BaseCommand;
 use function dd;
@@ -20,9 +21,6 @@ class TestCommand extends BaseCommand
 
     public function handle(): void
     {
-        $user = User::findByOrFail('id', 155);
-        JWT::actingAs($user);
-        $products = $user->products->toArray();
-        dd($products);
+        Log::info('test');
     }
 }

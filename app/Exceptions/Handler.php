@@ -57,29 +57,6 @@ class Handler extends ExceptionHandler
             return;
         }
 
-        $sentryDSN = env('SENTRY_DSN');
-
-        if (!empty($sentryDSN) && app()->bound('sentry')) {
-            /** @var Sentry $sentry */
-            $sentry = app('sentry');
-
-            $sentry->configureScope(static function (Scope $scope): void {
-                /** @var User $user */
-                $user = Auth::user();
-                if ($user === null) {
-                    return;
-                }
-
-                $scope->setUser($user->toArray());
-            });
-
-            $sentry->captureException($e);
-        }
-
-        if ($e instanceof HttpException) {
-            Log::error($e->getMessage());
-        }
-
         parent::report($e);
     }
 

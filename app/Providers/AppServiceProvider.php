@@ -39,10 +39,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        if (env('SENTRY_DSN') !== null) {
-            $this->app->register(SentryServiceProvider::class);
-        }
-
         $this->app->instance('path.config', app()->basePath() . DIRECTORY_SEPARATOR . 'config');
         $this->app->instance('path.public', app()->basePath() . DIRECTORY_SEPARATOR . 'public');
         $this->app->instance('cache.store', app()->basePath() . DIRECTORY_SEPARATOR . 'public');
