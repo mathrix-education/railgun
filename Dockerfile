@@ -1,9 +1,6 @@
 # Alpine build, nginx, PHP 7.2 and the code itself
 FROM alpine:3.9
 
-ARG BRANCH_NAME=unknown
-ARG SHORT_SHA=unknown
-
 MAINTAINER Mathieu Bour <mathieu@mathrix.fr>
 USER root
 WORKDIR /var/www/
@@ -42,7 +39,6 @@ COPY ./deploy/php7/www.conf /etc/php7/php-fpm.d/www.conf
 COPY ./deploy/entrypoint.sh /entrypoint.sh
 
 RUN php artisan providers:cache -f && \
-    echo "${SHORT_SHA}" >> build.txt && \
     chmod +x /entrypoint.sh && \
     rm -rf deploy/ && \
     ls -l storage/keychain

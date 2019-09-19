@@ -20,10 +20,4 @@ gcloud beta run deploy education-api-"${BRANCH_NAME}" \
   --platform=managed \
   --region=europe-west1 \
   --allow-unauthenticated \
-  --set-env-vars="${ENV_VARS},SHORT_SHA=${SHORT_SHA}"
-
-# Required for the first deployment
-#SQL_INSTANCE=mathrix-education:europe-west1:mysql
-#SERVICE_ACCOUNT=education-api-${BRANCH_NAME}@mathrix-education.iam.gserviceaccount.com
-# --service-account="${SERVICE_ACCOUNT}" \
-# --set-cloudsql-instances=${SQL_INSTANCE}
+  --set-env-vars="${ENV_VARS}"

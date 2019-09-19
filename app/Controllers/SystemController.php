@@ -8,7 +8,6 @@ use App\Models\Chapter;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -20,7 +19,6 @@ use Thepixeldeveloper\Sitemap\Extensions\Video;
 use Thepixeldeveloper\Sitemap\Url;
 use Thepixeldeveloper\Sitemap\Urlset;
 use function collect;
-use function env;
 use function explode;
 use function file_get_contents;
 use function loc;
@@ -37,25 +35,9 @@ class SystemController extends BaseController
 {
     /**
      * GET /
-     * The base application route.
-     */
-    public function base(): JsonResponse
-    {
-        return new SuccessJsonResponse([
-            'message' => 'Welcome to the official Mathrix Education REST API!',
-            'authors' => ['Mathieu Bour <mathieu@mathrix.fr>'],
-            'version' => env('APP_VERSION'),
-            'build'   => env('APP_BUILD'),
-        ]);
-    }
-
-    /**
-     * GET /docs
      * Display the Redoc generated documentation.
-     *
-     * @return Response The documentation.
      */
-    public function docs(): Response
+    public function base(): Response
     {
         $docs = file_get_contents(resource_path('views/docs/index.html'));
 
