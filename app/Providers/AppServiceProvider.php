@@ -59,10 +59,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(PolicyServiceProvider::class);
         $this->app->register(RegistrarServiceProvider::class);
 
-        if (env('SENTRY_DSN') !== null) {
-            $this->app->register(SentryServiceProvider::class);
-        }
-
         ScopesLoader::registerAdditionalScopes(['users:as']);
 
         // MorphMap

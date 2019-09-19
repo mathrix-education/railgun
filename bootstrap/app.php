@@ -101,10 +101,8 @@ $app->alias('mailer', Mailer::class);
 */
 
 $app->configure('auth');
-$app->configure('backup');
 $app->configure('cors');
 $app->configure('filesystems');
-$app->configure('laravel-lang');
 $app->configure('logging');
 $app->configure('mail');
 $app->configure('queue');
@@ -137,6 +135,7 @@ $app->middleware([
 | totally optional, so you are not required to uncomment this line.
 |
 */
+
 $app->register(AppServiceProvider::class);
 
 return $app;

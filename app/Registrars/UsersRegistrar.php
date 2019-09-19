@@ -29,6 +29,7 @@ class UsersRegistrar extends BaseRegistrar
         ]);
 
         $this->group(['middleware' => 'logged'], function () use ($controller): void {
+            $this->post('/users/{userId}/points', "$controller@points");
             $this->get('/users/{userId}/cards', "$controller@getCards");
             $this->get('/users/{userId}/subscriptions', "$controller@getSubscriptions");
         });

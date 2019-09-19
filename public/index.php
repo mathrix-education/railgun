@@ -12,7 +12,7 @@ declare(strict_types=1);
 | is ready to receive HTTP / Console requests from the environment.
 |
 */
-
+/** @var Laravel\Lumen\Application $app */
 $app = require __DIR__ . '/../bootstrap/app.php';
 
 /*
