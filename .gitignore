@@ -1,20 +1,29 @@
-/.env
-
-# User-specific stuff:
+# IDEA software
 /.idea/*.iml
 /.idea/**/workspace.xml
 /.idea/dataSources/
+/.idea/dataSources.*
 /.idea/dictionaries
 /.idea/httpRequests/
 /.idea/modules.xml
 /.idea/deployment.xml
 /.idea/php.xml
 
+# Vendors
 /node_modules/
 /vendor/
-/artifacts
-/docs/json-schema
-/docs/out
-/docs/spec.html
+
+# Generated files
+/bootstrap/cache
+/docs/output.yaml
+/resources/views/docs/index.html
 /resources/views/mails
 /storage/code-coverage/
+/.phpunit.result.cache
+
+# Secrets
+/.env
+/deploy/secrets/*
+!/deploy/secrets/*.enc
+/environments/*/*
+!/environments/*/*.enc

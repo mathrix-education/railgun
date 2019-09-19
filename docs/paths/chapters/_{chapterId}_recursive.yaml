@@ -1,0 +1,44 @@
+get:
+  summary: Get a chapter (recursive)
+  description: Get the notions, activities and modules of a chapter.
+  parameters:
+    - name: 'chapterId'
+      in: path
+      description: 'The chapter id.'
+      required: true
+      schema:
+        type: integer
+        example: 123
+  responses:
+    200:
+      description: The requested notions, activities and modules.
+      content:
+        application/json:
+          schema:
+            $extends:
+              ../../fragments/responses/200_Success.yaml:
+            type: object
+            properties:
+              data:
+                allOf:
+                  - $ref: '#/components/schemas/Chapter'
+                  - type: object
+                    properties:
+                      notions:
+                        type: array
+                        items:
+                          allOf:
+                            - $ref: '#/components/schemas/Notion'
+                            - type: object
+                              properties:
+                                activities:
+                                  type: array
+                                  items:
+                                    allOf:
+                                      - $ref: '#/components/schemas/Activity'
+                                      - type: object
+                                        properties:
+                                          modules:
+                                            type: array
+                                            items:
+                                              $ref: '#/components/schemas/Module'

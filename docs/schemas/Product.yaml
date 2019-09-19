@@ -1,0 +1,6 @@
+oneOf:
+  - $ref: '#/components/schemas/ProductPack'
+  - $ref: '#/components/schemas/ProductTraining'
+  - $ref: '#/components/schemas/ProductSection'
+  - $ref: '#/components/schemas/ProductLesson'
+  - $ref: '#/components/schemas/ProductPremium'

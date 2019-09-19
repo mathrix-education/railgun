@@ -1,0 +1,43 @@
+description: Credit card.
+type: object
+properties:
+  id:
+    description: The credit card id.
+    type: string
+    pattern: '^card_[a-zA-Z0-9]+$'
+  type:
+    description: The payment method type.
+    type: string
+    enum: [card]
+  brand:
+    description: The credit card brand.
+    type: string
+    enum:
+      - american-express
+      - carte-blanche
+      - china-unionpay
+      - diners-club
+      - discover
+      - elo
+      - jcb
+      - laser
+      - maestro
+      - mastercard
+      - solo
+      - switch
+      - unionpay
+      - visa
+      - unknown
+  expiration:
+    description: The credit card expiration date/time.
+    type: string
+    format: date-time
+  fingerprint:
+    description: The credit card fingerprint which uniquely identifies a **card number**.
+    type: string
+    example: oSi79l2PObISPGtC
+  last4:
+    description: The credit card last four digits.
+    type: string
+    pattern: '^[0-9]{4}$'
+    example: '1234'

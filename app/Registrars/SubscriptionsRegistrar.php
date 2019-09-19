@@ -1,17 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Registrars;
 
 use App\Controllers\SubscriptionsController;
-use Mathrix\Lumen\Bases\BaseRegistrar;
+use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
-/**
- * Class SubscriptionsRegistrar.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class SubscriptionsRegistrar extends BaseRegistrar
 {
     /**
@@ -21,15 +16,10 @@ class SubscriptionsRegistrar extends BaseRegistrar
     {
         $controller = SubscriptionsController::class;
 
-        $this->group(["middleware" => "scope:logged"], function () use ($controller) {
-            $this->post("subscriptions", "$controller@create");
-            $this->patch("subscriptions/{subscriptionId:[a-z0-9\_]+}", "$controller@update");
-        });
-        $this->group(["middleware" => "scope:subscriptions:read"], function () use ($controller) {
-            $this->get("subscriptions/{subscriptionId:[a-z0-9\_]+}", "$controller@find");
-        });
-        $this->group(["middleware" => "scope:subscriptions:write"], function () use ($controller) {
-            $this->post("subscriptions/{subscriptionId:[a-z0-9\_]+}/cancel", "$controller@cancel");
+        $this->group(['middleware' => 'logged'], function () use ($controller): void {
+            $this->post('subscriptions', "$controller@standardPost");
+            $this->get('subscriptions/{subscriptionId}/invoices', "$controller@invoices");
+            $this->patch('subscriptions/{subscriptionId}/card', "$controller@card");
         });
     }
 }

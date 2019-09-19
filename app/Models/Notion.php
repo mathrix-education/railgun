@@ -1,20 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Mathrix\Lumen\Bases\BaseModel;
+use Mathrix\Lumen\Zero\Models\BaseModel;
+use function implode;
 
 /**
- * Class Notion.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 1.0.0
- *
  * @property int $id
  * @property string $name
  * @property string $type
@@ -31,44 +28,40 @@ use Mathrix\Lumen\Bases\BaseModel;
  */
 class Notion extends BaseModel
 {
-    public const TYPES = ["normal", "premium", "reminder", "further"];
+    public const TYPES = ['normal', 'premium', 'reminder', 'further'];
 
     /** @var array The attributes that are mass assignable */
     protected $fillable = [
-        "id",
-        "name",
-        "type",
-        "visible",
-        "order",
-        "chapter_id"
+        'id',
+        'name',
+        'type',
+        'visible',
+        'order',
+        'chapter_id',
     ];
     /** @var array The validation rules */
     protected $rules = [
-        "name" => "required|max:255",
-        "chapter_id" => "required|exists:chapters,id",
+        'name' => 'required|max:255',
+        'chapter_id' => 'required|exists:chapters,id',
     ];
-    protected $casts = [
-        "visible" => "boolean"
-    ];
-
+    protected $casts = ['visible' => 'boolean'];
 
     public function __construct(array $attributes = [])
     {
         // Dynamic rules
-        $this->rules["type"] = "required|in:" . implode(",", self::TYPES);
+        $this->rules['type'] = 'required|in:' . implode(',', self::TYPES);
 
         parent::__construct($attributes);
     }
 
-
     /**
      * Update counters.
      */
-    public function updateCounters()
+    public function updateCounters(): void
     {
         $this->activity_count = Activity::query()
-            ->where("notion_id", "=", $this->id)
-            ->where("visible", "=", true)
+            ->where('notion_id', '=', $this->id)
+            ->where('visible', '=', true)
             ->count();
         $this->save();
     }
@@ -78,24 +71,20 @@ class Notion extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
+
     /**
      * The notion parent chapter.
-     *
-     * @return BelongsTo
      */
     public function chapter(): BelongsTo
     {
         return $this->belongsTo(Chapter::class);
     }
 
-
     /**
      * The notion child activities.
-     *
-     * @return HasMany
      */
     public function activities(): HasMany
     {
-        return $this->hasMany(Activity::class)->orderBy("order");
+        return $this->hasMany(Activity::class)->orderBy('order');
     }
 }

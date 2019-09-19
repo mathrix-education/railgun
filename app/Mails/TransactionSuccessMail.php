@@ -1,20 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mails;
 
 use App\Models\User;
-use App\Services\Braintree\Models\Plan;
+use Braintree\Exception\NotFound;
+use Braintree\Plan;
 use Braintree\Transaction;
 use Braintree\Transaction\LineItem;
 use Illuminate\Support\Facades\Cache;
 use stdClass;
+use function gateway;
 
 /**
- * Class TransactionSuccessMail.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 4.1.0
+ * Sent when a Braintree transaction succeeded.
  */
 class TransactionSuccessMail extends BaseMail
 {
@@ -25,53 +25,83 @@ class TransactionSuccessMail extends BaseMail
     /** @var User $user */
     private $user;
 
-
+    /**
+     * @param User        $user        The Braintree user.
+     * @param Transaction $transaction The Braintree transaction.
+     * @param LineItem[]  $lineItems   The Braintree line items.
+     */
     public function __construct(User $user, Transaction $transaction, array $lineItems)
     {
-        $this->user = $user;
+        $this->user        = $user;
         $this->transaction = $transaction;
-        $this->lineItems = $lineItems;
+        $this->lineItems   = $lineItems;
 
         parent::__construct();
     }
 
-
     /**
-     * Mock the Mail.
+     * Mock the mail.
      *
-     * @param string|null $transactionId
+     * @param string|null $transactionId The transaction id to mock.
      *
      * @return TransactionSuccessMail
+     *
+     * @throws NotFound
      */
-    public static function mock(string $transactionId = null): self
+    public static function mock(?string $transactionId = null): self
     {
         $user = User::random();
 
         if ($transactionId === null) {
             // No specific transaction was given: get the first one
             /** @var Transaction $transaction */
-            $transaction = Cache::remember("TransactionSuccessMail_transaction", 1, function () {
-                return Transaction::search([])->firstItem();
-            });
+            $transaction = Cache::remember(
+                'TransactionSuccessMail_transaction',
+                1,
+                static function () {
+                    return gateway()
+                        ->transaction()
+                        ->search([])
+                        ->firstItem();
+                }
+            );
         } else {
             /** @var Transaction $transaction */
-            $transaction = Cache::remember("TransactionSuccessMail_transaction_$transactionId", 1, function () use ($transactionId) {
-                return Transaction::find($transactionId);
-            });
+            $transaction = Cache::remember(
+                "TransactionSuccessMail_transaction_$transactionId",
+                1,
+                static function () use ($transactionId) {
+                    return gateway()
+                        ->transaction()
+                        ->find($transactionId);
+                }
+            );
         }
 
         /** @var LineItem[] $transactionLineItems */
-        $transactionLineItems = LineItem::findAll($transaction->id);
+        $transactionLineItems = gateway()
+            ->transactionLineItem()
+            ->findAll($transaction->id);
 
         if (!empty($transaction->planId)) {
-            /** @var Plan $plans */
-            $plan = Plan::find($transaction->planId);
+            /** @var Plan[] $plans */
+            $plans = gateway()
+                ->plan()
+                ->all();
+            $plan  = null;
 
-            $subscriptionLine = new stdClass();
-            $subscriptionLine->kind = "debit";
-            $subscriptionLine->name = $plan->name;
-            $subscriptionLine->quantity = 1;
-            $subscriptionLine->unitAmount = $transaction->amount;
+            foreach ($plans as $potentialPlan) {
+                if ($transaction->planId === $potentialPlan->id) {
+                    $plan = $potentialPlan;
+                    break;
+                }
+            }
+
+            $subscriptionLine              = new stdClass();
+            $subscriptionLine->kind        = 'debit';
+            $subscriptionLine->name        = $plan->name;
+            $subscriptionLine->quantity    = 1;
+            $subscriptionLine->unitAmount  = $transaction->amount;
             $subscriptionLine->totalAmount = $transaction->amount;
 
             $transactionLineItems[] = $subscriptionLine;
@@ -80,23 +110,23 @@ class TransactionSuccessMail extends BaseMail
         return new self($user, $transaction, $transactionLineItems);
     }
 
-
     /**
      * Build the mail.
-     *
-     * @return TransactionSuccessMail
      */
-    public function build()
+    public function build(): TransactionSuccessMail
     {
-        return $this->subject("Votre reçu de Mathrix")
-            ->from("support@mathrix.fr")
-            ->view("mails.transactions.success", [
-                "title" => "Reçu de Mathrix",
-                "user" => $this->user,
-                "transaction" => $this->transaction,
-                "lineItems" => $this->lineItems,
-                "card" => $this->transaction->creditCardDetails ?? null,
-                "paypal" => $this->transaction->paypalDetails ?? null
-            ]);
+        return $this->subject('Votre reçu de Mathrix')
+            ->from('support@mathrix.fr')
+            ->view(
+                'mails.transactions.success',
+                [
+                    'title'       => 'Reçu de Mathrix',
+                    'user'        => $this->user,
+                    'transaction' => $this->transaction,
+                    'lineItems'   => $this->lineItems,
+                    'card'        => $this->transaction->creditCardDetails ?? null,
+                    'paypal'      => $this->transaction->paypalDetails ?? null,
+                ]
+            );
     }
 }

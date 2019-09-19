@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controllers;
 
 use App\Models\Activity;
@@ -10,30 +12,26 @@ use App\Models\Grade;
 use App\Models\Mark;
 use App\Models\Notion;
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Mathrix\Lumen\Bases\BaseController;
+use Mathrix\Lumen\Zero\Controllers\BaseController;
+use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
 
 /**
- * Class MarksController.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
+ * Serve routes starting by /marks
  */
 class MarksController extends BaseController
 {
     /**
-     * Convert a collect of Marks to a collection of Tree
+     * Convert a collection of Marks to a collection of tree.
      *
-     * @param Collection|Mark[] $marks
+     * @param Collection $marks The collection of marks.
      *
-     * @return Collection
+     * @return Collection The collection of tree.
      */
-    private function getTreeFromMarks($marks)
+    private function getTreeFromMarks(Collection $marks): Collection
     {
-        return $marks->map(function (Mark $mark) {
+        return $marks->map(static function (Mark $mark): array {
             /** @var Activity $activity */
             $activity = $mark->markable;
 
@@ -49,16 +47,15 @@ class MarksController extends BaseController
             $country = $grade->country()->firstOrFail();
 
             return [
-                "country" => $country,
-                "discipline" => $discipline,
-                "grade" => $grade,
-                "chapter" => $chapter,
-                "notion" => $notion,
-                "activity" => $activity
+                'country' => $country,
+                'discipline' => $discipline,
+                'grade' => $grade,
+                'chapter' => $chapter,
+                'notion' => $notion,
+                'activity' => $activity,
             ];
         });
     }
-
 
     /**
      * GET /marks/activities/to-revise
@@ -66,22 +63,22 @@ class MarksController extends BaseController
      *
      * @param Request $request The Illuminate HTTP request.
      *
-     * @return JsonResponse
+     * @return SuccessJsonResponse The marks list.
      */
-    public function activitiesToRevise(Request $request): JsonResponse
+    public function activitiesToRevise(Request $request): SuccessJsonResponse
     {
         /** @var User $user */
-        $user = $request->user();
+        $user  = $request->user();
         $marks = $user->marks()
-            ->with("markable")
+            ->with('markable')
             ->where([
-                ["status", "=", "to_revise"],
-                ["markable_type", "=", "activity"]
+                ['status', '=', 'to_revise'],
+                ['markable_type', '=', 'activity'],
             ])
             ->get();
 
         $trees = $this->getTreeFromMarks($marks);
 
-        return new JsonResponse($trees);
+        return new SuccessJsonResponse($trees);
     }
 }

@@ -1,0 +1,7 @@
+$extends:
+  ../../fragments/paths/get_{modelId}_{related}.yaml:
+    model: grade
+    related: discipline
+get:
+  security:
+    - bearer: [disciplines:read]

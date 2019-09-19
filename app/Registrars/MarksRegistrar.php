@@ -1,17 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Registrars;
 
 use App\Controllers\MarksController;
-use Mathrix\Lumen\Bases\BaseRegistrar;
+use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
-/**
- * Class MarksRegistrar.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class MarksRegistrar extends BaseRegistrar
 {
     /**
@@ -21,9 +16,9 @@ class MarksRegistrar extends BaseRegistrar
     {
         $controller = MarksController::class;
 
-        $this->get("marks/activities/to-revise", [
-            "uses" => "$controller@activitiesToRevise",
-            "middleware" => "scope:logged"
+        $this->get('marks/activities/to-revise', [
+            'uses' => "$controller@activitiesToRevise",
+            'middleware' => 'logged',
         ]);
     }
 }

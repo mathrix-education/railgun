@@ -1,140 +1,94 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controllers;
 
-use App\Exceptions\DiscountExpiredException;
-use App\Exceptions\DiscountNotApplicableException;
-use App\Exceptions\InvalidSponsorException;
-use App\Exceptions\ProductAlreadyBoughtException;
-use App\Exceptions\ProductNotBuyableException;
-use App\Exceptions\SponsorNotFoundException;
-use App\Models\Discount;
 use App\Models\Product;
-use App\Models\User;
-use App\Services\Braintree\Pipelines\CartPipeline;
-use App\Services\Braintree\Utils\AffiliateProcess;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
-use Mathrix\Lumen\Bases\BaseController;
-use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
-use Mathrix\Lumen\Exceptions\Http\Http429TooManyRequestsException;
-use Mathrix\Lumen\Exceptions\ValidationException;
-use Mathrix\Lumen\Responses\PaginationJsonResponse;
+use Mathrix\Lumen\Zero\Controllers\BaseController;
+use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Zero\Responses\PaginationJsonResponse;
+use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
+use function array_merge;
+use function collect;
 
 /**
- * Class ProductsController.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 4.1.0
+ * Serve routes starting with /products.
  */
 class ProductsController extends BaseController
 {
     /**
-     * GET /products/{packId}/items/{page}/{perPage}
-     *
-     * @param Request $request The Illuminate HTTP request.
-     * @param int $productId The product id.
-     * @param int $page The results page.
-     * @param int $perPage The number of products page.
-     *
-     * @return PaginationJsonResponse
-     * @throws Http401UnauthorizedException
-     */
-    public function items(Request $request, int $productId, int $page, int $perPage): PaginationJsonResponse
-    {
-        return $this->relation($request, "items", $productId, $page, $perPage);
-    }
-
-
-    /**
      * PATCH /products/{packId}/items
      *
      * @param Request $request The Illuminate HTTP request.
-     * @param int $packId The pack id.
+     * @param int     $packId  The pack id.
      *
-     * @return JsonResponse
+     * @return PaginationJsonResponse The pack items list.
+     *
+     * @throws Http400BadRequestException
      */
-    public function patchItems(Request $request, int $packId)
+    public function patchItems(Request $request, int $packId): PaginationJsonResponse
     {
         // TODO: Add validator
 
         /** @var Product $pack */
         $pack = Product::query()
-            ->where("id", "=", $packId)
-            ->where("type", "=", "pack")
+            ->where('id', '=', $packId)
+            ->where('type', '=', 'pack')
             ->firstOrFail();
 
         $itemsSync = collect($request->all())
-            ->mapWithKeys(function (int $itemId, int $order) {
-                return [$itemId => ["order" => $order]];
+            ->mapWithKeys(static function (int $itemId, int $order) {
+                return [$itemId => ['order' => $order]];
             });
 
-        $pack->items()->sync($itemsSync);
+        $pack->items()
+            ->sync($itemsSync);
 
-        return new JsonResponse($pack->load("items"));
+        return new PaginationJsonResponse($pack->items());
     }
 
-
     /**
-     * GET /products/slug/{productSlug}
+     * GET /products/{type}
+     * List products of a given type.
      *
-     * @param string $productSlug The products slug.
+     * @param string $type The products type (pack|training|section|lesson).
      *
-     * @return JsonResponse
+     * @return PaginationJsonResponse The products list.
+     *
+     * @throws Http400BadRequestException
      */
-    public function getBySlug(string $productSlug)
+    public function paginateByType(string $type): PaginationJsonResponse
     {
-        $product = Product::query()
-            ->where("slug", "=", $productSlug)
-            ->firstOrFail();
+        $query = Product::query()
+            ->where('type', '=', $type);
 
-        return new JsonResponse($product);
+        return new PaginationJsonResponse($query);
     }
 
-
     /**
-     * GET /products/{type}/{page}/{perPage}
-     * Get products of a given type.
+     * GET /products/buyable/{type}
+     * List buyable products of a given type.
      *
-     * @param string $type all|training|section|lesson The product types.
-     * @param int $page The page (starts at 0).
-     * @param int $perPage The number of product per page.
+     * @param string $type The products type (pack|training|section|lesson).
      *
-     * @return PaginationJsonResponse
+     * @return PaginationJsonResponse The buyable products list.
+     *
+     * @throws Http400BadRequestException
      */
-    public function paginateByType(string $type, int $page, int $perPage): PaginationJsonResponse
+    public function buyable(string $type): PaginationJsonResponse
     {
-        $query = Product::query()->where("type", "=", $type);
+        $query = Product::with('children')
+            ->where('buyable', '=', true);
 
-        return new PaginationJsonResponse($query, $page, $perPage);
-    }
-
-
-    /**
-     * GET /products/buyable/{type}/{page}/{perPage}
-     * Get buyable products.
-     *
-     * @param string $type all|training|section|lesson The product types.
-     * @param int $page The page (starts at 0).
-     * @param int $perPage The number of product per page.
-     *
-     * @return PaginationJsonResponse
-     */
-    public function buyable(string $type, int $page, int $perPage): PaginationJsonResponse
-    {
-        $query = Product::with("children")
-            ->where("buyable", "=", true);
-
-        if ($type !== "all") {
-            $query = $query->where("type", "=", $type)
-                ->where("visible", "=", true);
+        if ($type !== 'all') {
+            $query = $query->where('type', '=', $type)
+                ->where('visible', '=', true);
         }
 
-        return new PaginationJsonResponse($query, $page, $perPage);
+        return new PaginationJsonResponse($query);
     }
-
 
     /**
      * GET /products/{productId}/recursive
@@ -142,15 +96,15 @@ class ProductsController extends BaseController
      *
      * @param int $productId The product id.
      *
-     * @return JsonResponse
+     * @return SuccessJsonResponse The product and items children.
      */
-    public function recursive(int $productId): JsonResponse
+    public function recursive(int $productId): SuccessJsonResponse
     {
         $maxDepth = 3;
-        $with = ["children"];
+        $with     = ['children'];
 
         for ($i = 1; $i <= $maxDepth; $i++) {
-            $with[] = $with[$i - 1] . ".children";
+            $with[] = $with[$i - 1] . '.children';
         }
 
         foreach ($with as $relation) {
@@ -159,134 +113,13 @@ class ProductsController extends BaseController
 
         $withModules = [];
         foreach ($with as $relation) {
-            $withModules[] = $relation . ".module";
+            $withModules[] = $relation . '.module';
         }
 
-        $with = array_merge($with, $withModules);
-        $product = Product::with($with)->findOrFail($productId);
+        $with    = array_merge($with, $withModules);
+        $product = Product::with($with)
+            ->findOrFail($productId);
 
-        return new JsonResponse($product);
-    }
-
-
-    /**
-     * POST /products/buy
-     * Buy products with Braintree.
-     *
-     * @param Request $request The Illuminate HTTP request.
-     *
-     * @return JsonResponse
-     * @throws Http401UnauthorizedException
-     * @throws Http429TooManyRequestsException
-     */
-    public function buy(Request $request): JsonResponse
-    {
-        return (new CartPipeline($request))->process();
-    }
-
-
-    /**
-     * GET /products/cart
-     * Check if a discount is valid.
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
-     * @throws DiscountExpiredException
-     * @throws DiscountNotApplicableException
-     * @throws InvalidSponsorException
-     * @throws ProductAlreadyBoughtException
-     * @throws ProductNotBuyableException
-     * @throws SponsorNotFoundException
-     * @throws ValidationException
-     * @throws Http401UnauthorizedException
-     */
-    public function cart(Request $request)
-    {
-        // We not ne check id existence here since we got specialized exceptions
-        $this->validate($request, [
-            "cart" => "required",
-            "cart.*" => "distinct|integer|exists:products,id",
-            "discount_code" => "nullable|exists:discounts,code",
-            "sponsor_email" => "nullable|string"
-        ]);
-
-        /** @var User|null $customer */
-        $customer = $request->user();
-        /** @var int[] $productIds */
-        $productIds = $request->json("cart");
-        /** @var Collection|Product[] $products */
-        $products = Product::query()->whereIn("id", $productIds)->get()->unique();
-        /** @var Discount|null $discount */
-        $discount = null;
-
-        // Check discount code if any
-        if ($request->json("discount_code") !== null) {
-            $discount = Discount::query()
-                ->where("code", "=", $request->json("discount_code"))
-                ->firstOrFail();
-
-            if (!$discount->isApplicableBleOnAtLeastOneOf($products)) {
-                throw new DiscountNotApplicableException($discount);
-            } else if ($discount->isExpired()) {
-                throw new DiscountExpiredException($discount);
-            }
-        }
-
-        // Check products integrity
-        foreach ($products as $product) {
-            if ($customer !== null && $customer->hasPurchased($product)) {
-                throw new ProductAlreadyBoughtException($customer, $product);
-            } else if ($product->price === null) {
-                throw  new ProductNotBuyableException($product);
-            }
-        }
-
-        $lines = $products->map(function (Product $product) use ($discount) {
-            return array_merge([
-                "name" => $product->name,
-                "type" => $product->type,
-                "description" => $product->description,
-                "price" => $product->price,
-                "price_after_discount" => $product->getNewPrice($discount)
-            ]);
-        });
-
-        // Check sponsor email if any
-        if ($request->json("sponsor_email") !== null) {
-            if ($customer === null) {
-                throw new Http401UnauthorizedException();
-            }
-
-            $sponsorEmail = $request->json("sponsor_email");
-            $affiliateProcess = new AffiliateProcess($customer, $sponsorEmail);
-            $affiliateProcess->canBeAffiliatedOrFail();
-
-            $lines->push([
-                "name" => "Parrainage",
-                "type" => "sponsorship",
-                "description" => "Email du parrain: {$sponsorEmail}",
-                "price" => -AffiliateProcess::AFFILIATE_DISCOUNT,
-                "price_after_discount" => -AffiliateProcess::AFFILIATE_DISCOUNT
-            ]);
-        }
-
-        $subTotal = $lines->sum(function ($line) {
-            return $line["price"];
-        });
-
-        $total = $lines->sum(function ($line) {
-            return $line["price_after_discount"];
-        });
-
-        $cartPayload = [
-            "discount_code" => $request->json("discount_code"),
-            "sponsor_email" => $request->json("sponsor_email"),
-            "lines" => $lines,
-            "sub_total" => $subTotal,
-            "total" => $total
-        ];
-
-        return new JsonResponse($cartPayload);
+        return new SuccessJsonResponse($product);
     }
 }

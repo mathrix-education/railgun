@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -8,33 +10,28 @@ class CreateReportsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create("reports", function (Blueprint $table) {
-            $table->bigIncrements("id");
-            $table->text("context")->nullable();
-            $table->string("type");
-            $table->text("content")->nullable();
-            $table->string("status");
-            $table->unsignedBigInteger("module_id");
+        Schema::create('reports', static function (Blueprint $table): void {
+            $table->bigIncrements('id');
+            $table->text('context')->nullable();
+            $table->string('type');
+            $table->text('content')->nullable();
+            $table->string('status');
+            $table->unsignedBigInteger('module_id');
             $table->timestamps();
 
             // Foreign keys
-            $table->foreign("module_id")->references("id")->on("modules");
+            $table->foreign('module_id')->references('id')->on('modules');
         });
     }
 
-
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::dropIfExists("reports");
+        Schema::dropIfExists('reports');
     }
 }

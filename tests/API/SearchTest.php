@@ -1,26 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\API;
 
+use App\Models\Grade;
 use Tests\APIStatelessTestCase;
 
-/**
- * Class SearchTest.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class SearchTest extends APIStatelessTestCase
 {
     /**
-     * GET /search/{query}
+     * GET /search/{gradeId}/{query}
      */
-    public function testContent()
+    public function testContent(): void
     {
-        $this->json("get", "/search/13/a/0/100");
+        $grade = Grade::random();
+        $this->json('get', "/search/{$grade->id}/lorem");
 
         $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
+        $this->assertOpenAPIResponse($this->response);
     }
 }

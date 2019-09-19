@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\API;
 
 use App\Models\User;
@@ -7,13 +9,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Mathrix\Lumen\JWT\Auth\JWT;
 use Tests\APIStatelessTestCase;
 
-/**
- * Class MarksTest.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class MarksTest extends APIStatelessTestCase
 {
     /**
@@ -25,18 +20,18 @@ class MarksTest extends APIStatelessTestCase
         /** @var User $user */
         $user = User::query()
             ->inRandomOrder()
-            ->whereHas("marks", function (Builder $query) {
+            ->whereHas('marks', static function (Builder $query) {
                 $query->where([
-                    ["markable_type", "=", "activity"],
-                    ["status", "=", "to_revise"]
+                    ['markable_type', '=', 'activity'],
+                    ['status', '=', 'to_revise'],
                 ]);
             })
             ->firstOrFail();
         JWT::actingAs($user);
 
-        $this->json("get", "/marks/activities/to-revise");
+        $this->json('get', '/marks/activities/to-revise');
 
         $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
+        $this->assertOpenAPIResponse($this->response);
     }
 }

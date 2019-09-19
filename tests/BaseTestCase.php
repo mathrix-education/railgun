@@ -1,57 +1,47 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests;
 
 use Faker\Factory as FakerFactory;
 use Faker\Generator;
-use Laravel\Lumen\Testing\TestCase;
+use Mathrix\Lumen\Zero\Testing\BaseTestCase as ZeroTestCase;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-
+use function app;
 
 /**
- * Class BaseTestCase.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 4.3.0
+ * Base test class for all application tests.
  */
-abstract class BaseTestCase extends TestCase
+abstract class BaseTestCase extends ZeroTestCase
 {
     /** @var Generator */
     public $faker;
-
 
     /**
      * Setup the test environment.
      * Inject a new Faker instance.
      */
-    public function setUp()
+    public function setUp(): void
     {
-
         $this->faker = FakerFactory::create();
         parent::setUp();
     }
 
-
     /**
      * Destroy database connection after each test to avoid the Too Many Connections error.
      */
-    public function tearDown()
+    public function tearDown(): void
     {
-        $this->beforeApplicationDestroyed(function () {
+        $this->beforeApplicationDestroyed(static function () {
             app()
-                ->make("db")
+                ->make('db')
                 ->disconnect();
         });
 
         parent::tearDown();
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Hooks
-    |--------------------------------------------------------------------------
-    */
     /**
      * Creates the application.
      * Needs to be implemented by subclasses.
@@ -60,6 +50,6 @@ abstract class BaseTestCase extends TestCase
      */
     public function createApplication()
     {
-        return require __DIR__ . "/../bootstrap/app.php";
+        return require __DIR__ . '/../bootstrap/app.php';
     }
 }

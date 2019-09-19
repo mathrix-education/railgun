@@ -1,17 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Mathrix\Lumen\Bases\BaseModel;
+use Mathrix\Lumen\Zero\Models\BaseModel;
+use function implode;
 
 /**
- * Class Report.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 1.0.0
- *
  * @property int $id
  * @property string $content
  * @property string $status
@@ -23,27 +20,27 @@ use Mathrix\Lumen\Bases\BaseModel;
  */
 class Report extends BaseModel
 {
-    public const STATUSES = ["todo", "done", "validated"];
+    public const STATUSES = ['todo', 'done', 'validated'];
 
     /** @var bool If timestamps (created_at and updated_at) should be used */
     public $timestamps = true;
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["context", "type",  "content", "status", "module_id"];
+    protected $fillable = ['context', 'type', 'content', 'status', 'module_id'];
     /** @var array The validation rules */
     protected $rules = [
-        "context" => "max:255",
-        "type" => "required|max:255",
-        "content" => "required|max:255",
-        "module_id" => "exists:modules,id",
+        'context' => 'max:255',
+        'type' => 'required|max:255',
+        'content' => 'required|max:255',
+        'module_id' => 'exists:modules,id',
     ];
 
     /** @var array Relation included by default */
-    protected $with = ["module"];
-
+    protected $with = ['module'];
 
     public function getValidationRules()
     {
-        $this->rules["status"] = "required|in:" . implode(",", self::STATUSES);
+        $this->rules['status'] = 'required|in:' . implode(',', self::STATUSES);
+
         return parent::getValidationRules();
     }
 
@@ -52,12 +49,11 @@ class Report extends BaseModel
     | Relations
     |--------------------------------------------------------------------------
     */
+
     /**
      * BelongsTo Module.
-     *
-     * @return BelongsTo
      */
-    public function module()
+    public function module(): BelongsTo
     {
         return $this->belongsTo(Module::class);
     }

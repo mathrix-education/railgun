@@ -1,152 +1,103 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\API;
 
 use App\Models\Chapter;
 use App\Models\Grade;
 use Mathrix\Lumen\JWT\Auth\JWT;
-use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
-use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
-use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
-use Mathrix\Lumen\Tests\REST\Standard\StandardPostTest;
+use Mathrix\Lumen\Zero\Testing\Traits\RESTAutoTestTrait;
 use Tests\APIStatelessTestCase;
 
-/**
- * Class GradesTest.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class GradesTest extends APIStatelessTestCase
 {
-    use StandardIndexTest, StandardGetTest, StandardPostTest, StandardPatchTest;
+    use RESTAutoTestTrait;
 
+    protected $testKeys = [
+        'std:index',
+        'std:get',
+        'std:get:slug',
+        'std:post',
+        'std:patch',
+        'rel:get:disciplines',
+    ];
 
     /**
      * DELETE /grades/{gradeId}
      */
-    public function testDelete()
+    public function testDelete(): void
     {
         $grade = Grade::random();
-        $pivot = Grade::random(["id", "!=", $grade->id]);
+        $pivot = Grade::random(['id', '!=', $grade->id]);
 
-        $grade->children()->update(["parent_id" => $pivot->id]);
-        $grade->chapters()->update(["grade_id" => $pivot->id]);
-        $grade->users()->update(["grade_id" => $pivot->id]);
+        $grade->children()->update(['parent_id' => $pivot->id]);
+        $grade->chapters()->update(['grade_id' => $pivot->id]);
+        $grade->users()->update(['grade_id' => $pivot->id]);
 
-        $this->assertRestDeleteSuccess(["conditions" => ["id", "=", $grade->id]]);
+        $this->makeRESTJsonRequest('std:delete', null, null, [
+            'conditions' => ['id', '=', $grade->id],
+        ]);
     }
 
-
     /**
-     * GET /grades/{gradeId}/disciplines/{page}/{perPage}?scope=$scope
-     *
-     * @param string $scope
+     * GET /grades/{gradeId}/disciplines/visible
      */
-    public function disciplines(string $scope)
+    public function testDisciplinesVisible(): void
     {
-        $this->requestModel = Grade::query()
-            ->inRandomOrder()
-            ->has("disciplines")
-            ->firstOrFail();
-
-        [$page, $perPage] = $this->getPaginationParameters([]);
-
-        if ($scope === "all") {
-            $this->requester = JWT::withScopes("disciplines:read");
-        }
-        $this->json("get", "/grades/{$this->requestModel->id}/disciplines/$page/$perPage?scope=$scope");
-
-        $uri = $this->getOpenAPIUri($this->requestMethod, str_replace("?scope=$scope", "", $this->requestUri));
+        $grade = Grade::random();
+        $this->json('get', "/grades/{$grade->id}/disciplines/visible");
 
         $this->assertResponseOk();
-        $this->assertOpenAPIResponse($uri);
+        $this->assertOpenAPIResponse($this->response);
     }
-
-
-    /**
-     * GET /grades/{gradeId}/disciplines/{page}/{perPage}?scope=all
-     */
-    public function testDisciplinesScopeAll(): void
-    {
-        $this->disciplines("all");
-    }
-
-
-    /**
-     * GET /grades/{gradeId}/disciplines/{page}/{perPage}?scope=visible
-     */
-    public function testDisciplinesScopeVisible(): void
-    {
-        $this->disciplines("visible");
-    }
-
-
-    /**
-     * GET /grades/slug/{gradeSlug}
-     */
-    public function testBySlug(): void
-    {
-        $this->assertRestGetBySuccess("slug");
-    }
-
 
     /**
      * GET /grades/slug/{gradeSlug}/chapters/slug/{chapterSlug}
      */
     public function testBySlugChapterSlug(): void
     {
-        /** @var Grade $grade */
-        $grade = Grade::query()
-            ->has("chapters")
-            ->inRandomOrder()
-            ->firstOrFail();
-        /** @var Chapter $chapter */
-        $chapter = $grade->chapters()->inRandomOrder()->firstOrFail();
+        $chapter = Chapter::random(['visible', '=', true]);
 
-        $this->json("get", "/grades/slug/$grade->slug/chapters/slug/$chapter->slug");
+        $this->json('get', "/grades/slug/{$chapter->grade->slug}/chapters/slug/{$chapter->slug}");
 
         $this->assertResponseOk();
-        $this->assertOpenAPIResponse();
+        $this->assertOpenAPIResponse($this->response);
     }
-
 
     public function disciplinesChapters(string $scope): void
     {
-        $chapter = Chapter::random(["visible", "=", true]);
-        $this->requestModel = $chapter->grade;
-
-        [$page, $perPage] = $this->getPaginationParameters([]);
-
-        if ($scope === "all") {
-            $this->requester = JWT::withScopes("disciplines:read");
-        }
-
-        $uri = "/grades/$chapter->grade_id/disciplines/$chapter->discipline_id/chapters/$page/$perPage?scope=$scope";
-        $this->json("get", $uri);
-
-        $uri = $this->getOpenAPIUri($this->requestMethod, str_replace("?scope=$scope", "", $this->requestUri));
-
-        $this->assertResponseOk();
-        $this->assertOpenAPIResponse($uri);
     }
 
-
     /**
-     * GET /grades/{gradeId}/disciplines/{disciplineId}/chapters/{page}/{perPage}?scope=all
+     * GET /grades/{gradeId}/disciplines/{disciplineId}/chapters
      */
-    public function testDisciplinesChaptersAll(): void
+    public function testDisciplinesChapters(): void
     {
-        $this->disciplinesChapters("all");
+        $chapter = Chapter::random(['visible', '=', true]);
+        $method  = 'get';
+        $uri     = "/grades/$chapter->grade_id/disciplines/{$chapter->discipline_id}/chapters";
+
+        JWT::autoScope($method, $uri);
+        $this->json($method, $uri);
+
+        $this->assertOpenAPIResponse($this->response);
+        $this->assertResponseOk();
     }
 
-
     /**
-     * GET /grades/{gradeId}/disciplines/{disciplineId}/chapters/{page}/{perPage}?scope=visible
+     * GET /grades/{gradeId}/disciplines/{disciplineId}/chapters/visible
      */
     public function testDisciplinesChaptersVisible(): void
     {
-        $this->disciplinesChapters("visible");
+        $chapter = Chapter::random(['visible', '=', true]);
+        $method  = 'get';
+        $uri     = "/grades/$chapter->grade_id/disciplines/{$chapter->discipline_id}/chapters/visible";
+
+        JWT::autoScope($method, $uri);
+        $this->json($method, $uri);
+
+        $this->assertOpenAPIResponse($this->response);
+        $this->assertResponseOk();
     }
 }

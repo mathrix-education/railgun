@@ -1,19 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use App\Services\Braintree\Models\LineItem;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Mathrix\Lumen\Bases\BaseModel;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Mathrix\Lumen\Zero\Models\BaseModel;
 
 /**
- * Class Discount.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 4.1.0
- *
  * @property string $code
  * @property int $counter
  * @property int $id
@@ -26,52 +24,27 @@ use Mathrix\Lumen\Bases\BaseModel;
  */
 class Discount extends BaseModel
 {
-    public const TYPES = ["absolute", "percentage"];
+    public const TYPES = ['absolute', 'percentage'];
 
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ["id", "code", "type", "value", "counter", "expire_at", "link"];
+    protected $fillable = ['id', 'code', 'type', 'value', 'counter', 'expire_at', 'link'];
 
     /** @var array The attributes that should be mutated to dates */
-    protected $dates = ["expire_at"];
+    protected $dates = ['expire_at'];
 
     /*
     |--------------------------------------------------------------------------
     | Relations
     |--------------------------------------------------------------------------
     */
+
     /**
-     * BelongsToMany Product.
-     *
-     * @return BelongsToMany
+     * @return MorphMany
      */
-    public function products()
+    public function lineItems()
     {
-        return $this->belongsToMany(Product::class);
+        return $this->morphMany(LineItem::class, 'product');
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Methods
-    |--------------------------------------------------------------------------
-    */
-    /**
-     * Check if the discount is applicable on the given product.
-     *
-     * @param Product $product
-     *
-     * @return bool
-     */
-    public function isApplicableOn(Product $product)
-    {
-        if ($this->isExpired()) {
-            return false;
-        }
-
-        return $this->products()
-            ->where("product_id", "=", $product->id)
-            ->exists();
-    }
-
 
     /**
      * Check if the discount is applicable on at least one of the given products.
@@ -80,7 +53,7 @@ class Discount extends BaseModel
      *
      * @return bool
      */
-    public function isApplicableBleOnAtLeastOneOf($products)
+    public function isApplicableBleOnAtLeastOneOf(array $products): bool
     {
         /** @var Product $product */
         foreach ($products as $product) {
@@ -92,14 +65,39 @@ class Discount extends BaseModel
         return false;
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Methods
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Check if the discount is applicable on the given product.
+     */
+    public function isApplicableOn(Product $product): bool
+    {
+        if ($this->isExpired()) {
+            return false;
+        }
+
+        return $this->products()
+            ->where('product_id', '=', $product->id)
+            ->exists();
+    }
 
     /**
      * Check if the code is expired by its properties (counter and/or expiration date).
-     *
-     * @return bool
      */
-    public function isExpired()
+    public function isExpired(): bool
     {
         return $this->counter === 0 || ($this->expire_at !== null && $this->expire_at->isPast());
+    }
+
+    /**
+     * BelongsToMany Product.
+     */
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class);
     }
 }

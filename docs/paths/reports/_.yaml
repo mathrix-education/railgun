@@ -1,0 +1,11 @@
+$extends:
+  ../../fragments/paths/index.yaml:
+    model: report
+  ../../fragments/paths/post.yaml:
+    model: report
+get:
+  security:
+    - bearer: [reports:read]
+post:
+  security:
+    - bearer: [logged]

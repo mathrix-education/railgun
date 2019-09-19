@@ -1,0 +1,10 @@
+$extends:
+  Base.yaml:
+properties:
+  type:
+    enum: [lesson]
+  module:
+    allOf:
+      - $ref: '#/components/schemas/Module'
+    readOnly: true
+    nullable: true

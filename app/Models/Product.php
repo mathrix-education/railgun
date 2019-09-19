@@ -1,170 +1,173 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
-use App\Models\Traits\NoPivot;
 use Braintree\Transaction;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Mathrix\Lumen\Bases\BaseModel;
+use Mathrix\Lumen\Zero\Models\BaseModel;
 
 /**
- * Class Product.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 1.0.0
- *
- * @property int $id
- * @property string $name
- * @property string $slug
- * @property string|null $image
- * @property string|null $type
- * @property string|null $description
- * @property float|null $price
- * @property bool $visible
- * @property bool $buyable
- * @property int|null $order
- * @property int|null $parent_id
- * @property int|null $module_id
- * @property int[]|null $pack_product_ids
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
+ * @property int                          $id
+ * @property string                       $name
+ * @property string                       $slug
+ * @property string|null                  $image
+ * @property string|null                  $type
+ * @property string|null                  $description
+ * @property float|null                   $price
+ * @property bool                         $visible
+ * @property bool                         $buyable
+ * @property int|null                     $order
+ * @property int|null                     $parent_id
+ * @property int|null                     $module_id
+ * @property int[]|null                   $pack_product_ids
+ * @property Carbon|null                  $created_at
+ * @property Carbon|null                  $updated_at
  * ---
- * @property Module|null $module
- * @property Product|null $parent
+ * @property Module|null                  $module
+ * @property Product|null                 $parent
  * @property EloquentCollection|Product[] $children
+ * @property EloquentCollection|Product[] $parents
  * @property EloquentCollection|Product[] $items
- * @property EloquentCollection|Discount[] $discounts
  */
 class Product extends BaseModel
 {
-    public const MODE_MACHINE_2019_END = "2019-07-31 00:00:00";
-    use NoPivot;
+    public const MODE_MACHINE_2019_END = '2019-07-31 00:00:00';
 
     /** @var bool Indicates if the model should be timestamped */
     public $timestamps = true;
     /** @var array The attributes that are mass assignable */
     protected $fillable = [
-        "name",
-        "slug",
-        "image",
-        "type",
-        "description",
-        "price",
-        "visible",
-        "buyable",
-        "order",
-        "parent_id",
-        "module_id"
+        'name',
+        'slug',
+        'image',
+        'type',
+        'description',
+        'price',
+        'visible',
+        'buyable',
+        'order',
+        'parent_id',
+        'module_id',
     ];
-    protected $rules = [
-        "name" => "required|max:35",
-        "slug" => "required|max:35",
-        "image" => "nullable",
-        "type" => "nullable",
-        "description" => "nullable|max:127",
-        "price" => "nullable|numeric",
-        "visible" => "required|boolean",
-        "order" => "required|integer",
-        "module_id" => "nullable|exists:modules,id",
+    protected $rules    = [
+        'name'        => 'required|max:35',
+        'slug'        => 'required|max:35',
+        'image'       => 'nullable',
+        'type'        => 'nullable',
+        'description' => 'nullable|max:127',
+        'price'       => 'nullable|numeric',
+        'visible'     => 'required|boolean',
+        'order'       => 'required|integer',
+        'module_id'   => 'nullable|exists:modules,id',
     ];
     /** @var array The attributes that should be cast to native types */
-    protected $casts = [
-        "visible" => "boolean",
-        "buyable" => "boolean"
+    protected $casts   = [
+        'visible' => 'boolean',
+        'buyable' => 'boolean',
     ];
-    protected $appends = ["owned"];
-
+    protected $appends = ['owned'];
 
     /**
      * Deliver a product to a customer.
      *
-     * @param User $customer The customer.
+     * @param User        $customer    The customer.
      * @param Transaction $transaction The Braintree transaction.
      *
      * @return Purchase|null
+     *
+     * @throws Exception
      */
     public function deliver(User $customer, ?Transaction $transaction = null): ?Purchase
     {
-        if ($this->type === "pack") {
-            $this->items->each(function (Product $item) use ($customer, $transaction) {
+        if ($this->type === 'pack') {
+            $this->items->each(static function (Product $item) use ($customer, $transaction): void {
                 $item->deliver($customer, $transaction);
             });
-        } else if ($this->type === "premium") {
+        } elseif ($this->type === 'premium') {
             // Premium product
             $customer->premium_bypass_expires_at = new Carbon(self::MODE_MACHINE_2019_END);
             $customer->save();
+
             return null;
         }
 
         $purchase = new Purchase([
-            "transaction_id" => $transaction !== null ? $transaction->id : null,
-            "user_id" => $customer->id,
-            "product_id" => $this->id,
+            'transaction_id' => $transaction !== null ? $transaction->id : null,
+            'user_id'        => $customer->id,
+            'product_id'     => $this->id,
         ]);
         $purchase->save();
 
         return $purchase;
     }
 
-
     /**
      * Get the parent products of this product.
      *
+     * @param null $lineage The existing lineage.
+     *
      * @return Collection|Product[]
      */
-    public function lineage(): Collection
+    public function lineage($lineage = null): Collection
     {
-        $lineage = new Collection([$this]);
-
-        $iterator = $this;
-
-        while (
-            $iterator->parent_id !== null
-            && $lineage->pluck("id")->search($iterator->parent_id) === false
-        ) {
-            $iterator = $iterator->parent;
-            $lineage->push($iterator);
+        if ($lineage === null) {
+            $lineage = new Collection();
         }
 
-        return $lineage->map(function (Product $product) {
-            return $product->unsetRelation("parent");
+        if ($lineage->pluck('id')
+                ->search($this->id) === false
+        ) {
+            $lineage->push($this);
+        }
+
+        /** @var Collection $parents The parent products */
+        $parents = $this->parents;
+
+        if ($this->parent !== null) {
+            $parents->push($this->parent);
+        }
+
+        foreach ($parents as $parent) {
+            $lineage = $parent->lineage($lineage);
+        }
+
+        return $lineage->map(static function (Product $product) {
+            return $product
+                ->unsetRelation('parent')
+                ->unsetRelation('parents');
         });
     }
-
 
     /*
     |--------------------------------------------------------------------------
     | Relations
     |--------------------------------------------------------------------------
     */
+
     /**
      * BelongsTo Module.
-     *
-     * @return BelongsTo
      */
-    public function module()
+    public function module(): BelongsTo
     {
         return $this->belongsTo(Module::class);
     }
 
-
     /**
      * BelongsTo parent Products.
-     *
-     * @return BelongsTo
      */
-    public function parent()
+    public function parent(): BelongsTo
     {
-        return $this->belongsTo(self::class, "parent_id");
+        return $this->belongsTo(self::class, 'parent_id');
     }
-
 
     /**
      * HasMany child Products.
@@ -173,67 +176,91 @@ class Product extends BaseModel
      */
     public function children()
     {
-        return $this->hasMany(self::class, "parent_id")
-            ->orderBy("order");
+        return $this->hasMany(self::class, 'parent_id')
+            ->orderBy('order');
     }
 
-
     /**
-     * BelongsToMany products
-     *
-     * @return BelongsToMany
+     * BelongsToMany products.
+     * This relation is only "Pack" typed products.
      */
-    public function items()
+    public function parents(): BelongsToMany
     {
         return $this->belongsToMany(
             self::class,
-            "product_product",
-            "parent_id",
-            "child_id"
+            'product_product',
+            'child_id',
+            'parent_id'
         );
     }
 
+    /**
+     * BelongsToMany products.
+     * This relation is only "Pack" typed products.
+     */
+    public function items(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            self::class,
+            'product_product',
+            'parent_id',
+            'child_id'
+        );
+    }
 
     /**
-     * BelongsToMany Discount.
+     * BelongsToMany User.
      *
      * @return BelongsToMany
      */
-    public function discounts()
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'purchases')
+            ->as('purchase')
+            ->using(Purchase::class)
+            ->wherePivot('transaction_id')
+            ->withTimestamps();
+    }
+
+    /**
+     * BelongsToMany Discount.
+     */
+    public function discounts(): BelongsToMany
     {
         return $this->belongsToMany(Discount::class);
     }
 
-
     /**
-     * Product::owned attribute
-     *
-     * @return bool
+     * Product::$owned getter attribute
      */
-    public function getOwnedAttribute()
+    public function getOwnedAttribute(): bool
     {
         /** @var User $user */
         $user = Auth::user();
-        return $user && $user->hasPurchased($this);
-    }
 
+        return $user && ($user->hasScope('products:read') || $user->hasPurchased($this));
+    }
 
     /**
      * Get the product price after the application of the given discount.
      *
-     * @param Discount $discount
-     *
      * @return float|int|null
      */
-    public function getNewPrice(Discount $discount = null)
+    public function getNewPrice(?Discount $discount = null)
     {
         if ($discount === null) {
             return $this->price;
-        } else if (!$discount->isApplicableOn($this)) {
+        }
+
+        if (!$discount->isApplicableOn($this)) {
             return $this->price;
-        } else if ($discount->type === "percentage") {
+        }
+
+        if ($discount->type === 'percentage') {
             return $this->price * (1 - $discount->value / 100);
-        } else if ($discount->type === "absolute") {
+        }
+
+        if ($discount->type === 'absolute') {
             return $this->price - $discount->value;
         }
 

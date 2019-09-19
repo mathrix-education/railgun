@@ -1,62 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\API;
 
 use App\Models\Chapter;
 use App\Models\Mark;
-use Illuminate\Support\Arr;
-use Mathrix\Lumen\JWT\Auth\JWT;
-use Mathrix\Lumen\Tests\REST\Standard\StandardGetTest;
-use Mathrix\Lumen\Tests\REST\Standard\StandardIndexTest;
-use Mathrix\Lumen\Tests\REST\Standard\StandardPatchTest;
+use Mathrix\Lumen\Zero\Testing\Traits\RESTAutoTestTrait;
 use Tests\APIStatelessTestCase;
 
-/**
- * Class ChaptersTest.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.0.0-rc1
- */
 class ChaptersTest extends APIStatelessTestCase
 {
-    use StandardIndexTest, StandardGetTest, StandardPatchTest;
+    use RESTAutoTestTrait;
 
-
-    /**
-     * POST /chapters
-     * Standard post test.
-     */
-    public function testPost(): void
-    {
-        $this->assertRestPostSuccess(null, function ($data) {
-            return Arr::except($data, ["order"]);
-        });
-    }
-
+    protected $testKeys = [
+        'std:index',
+        'std:post',
+        'std:get',
+        'std:patch',
+        'rel:get:notions',
+    ];
 
     /**
      * DELETE /chapters/{chapterId}
      */
     public function testDelete(): void
     {
-        $chapter = Chapter::random();
-        $pivot = Chapter::random(["id", "!=", $chapter->id]);
+        $chapter  = Chapter::random();
+        $fallback = Chapter::random(['id', '!=', $chapter->id]);
 
-        $chapter->notions()->update(["chapter_id" => $pivot->id]);
+        $chapter->notions()->update(['chapter_id' => $fallback->id]);
 
-        $this->assertRestDeleteSuccess(["conditions" => ["id", "=", $chapter->id]]);
+        $this->makeRESTJsonRequest('std:delete', null, null, [
+            'conditions' => ['id', '=', $chapter->id],
+        ]);
     }
-
-
-    /**
-     * GET /chapters/{chapterId}/notions/{page}/{perPage}
-     */
-    public function testNotions(): void
-    {
-        $this->assertRestRelationSuccess("notions");
-    }
-
 
     /**
      * GET /chapters/{chapterId}/recursive
@@ -64,13 +42,13 @@ class ChaptersTest extends APIStatelessTestCase
     public function testRecursive(): void
     {
         $chapter = Chapter::random();
-        $uri = "/chapters/{$chapter->id}/recursive";
+        $uri     = "/chapters/{$chapter->id}/recursive";
 
-        $this->json("get", $uri);
+        $this->json('get', $uri);
 
         $this->assertResponseOk();
+        $this->assertOpenAPIResponse($this->response);
     }
-
 
     /**
      * GET /chapters/recursive with cache counters
@@ -79,14 +57,14 @@ class ChaptersTest extends APIStatelessTestCase
     {
         /** @var Mark $mark */
         $mark = Mark::query()
-            ->where("markable_type", "=", "activity")
+            ->where('markable_type', '=', 'activity')
             ->inRandomOrder()
             ->firstOrFail();
 
         $chapterId = $mark->markable->notion->chapter_id;
-        $uri = "/chapters/{$chapterId}/recursive";
+        $uri       = "/chapters/{$chapterId}/recursive";
 
-        $this->json("get", $uri);
+        $this->json('get', $uri);
 
         $this->assertResponseOk();
     }

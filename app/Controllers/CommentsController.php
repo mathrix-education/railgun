@@ -1,22 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controllers;
 
 use App\Models\Comment;
-use App\Models\Module;
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Mathrix\Lumen\Bases\BaseController;
-use Mathrix\Lumen\Exceptions\Http\Http401UnauthorizedException;
-use Mathrix\Lumen\Responses\PaginationJsonResponse;
+use Mathrix\Lumen\Zero\Controllers\BaseController;
+use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Zero\Responses\PaginationJsonResponse;
+use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
 
 /**
- * Class CommentsController.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 1.0.0
+ * Serve routes starting with /comments.
  */
 class CommentsController extends BaseController
 {
@@ -24,42 +21,37 @@ class CommentsController extends BaseController
      * POST /comments
      * Post a new comment as logged user.
      *
-     * @param Request $request
+     * @param Request $request The Illuminate HTTP.
      *
-     * @return JsonResponse
-     * @throws Http401UnauthorizedException
+     * @return SuccessJsonResponse The created comment.
      */
-    public function post(Request $request): JsonResponse
+    public function post(Request $request): SuccessJsonResponse
     {
         /** @var User $user */
         $user = $request->user();
 
         $request->merge([
-            "user_id" => $user->id,
+            'user_id' => $user->id,
         ]);
 
-        return parent::post($request);
+        return parent::standardPost($request);
     }
 
-
     /**
-     * GET /comments/latest/{page}/{perPage}
+     * GET /comments/latest
      * Get the latest comments, ordered by desc created_at field.
      *
-     * @param int $page The page (starts at 0).
-     * @param int $perPage The number of comments per page.
-     *
-     * @return JsonResponse
+     * @throws Http400BadRequestException
      */
-    public function latest(int $page = 0, int $perPage = 100): JsonResponse
+    public function latest(): SuccessJsonResponse
     {
         $query = Comment::with([
-            "user:id,username,firstname,level,grade_id",
-            "children",
-            "children.user:id,username,firstname,level,grade_id"
+            'user:id,username,firstname,grade_id',
+            'children',
+            'children.user:id,username,firstname,grade_id',
         ])
-            ->orderBy("created_at", "desc");
+                        ->orderBy('created_at', 'desc');
 
-        return new PaginationJsonResponse($query, $page, $perPage);
+        return new PaginationJsonResponse($query);
     }
 }

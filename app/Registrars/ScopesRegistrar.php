@@ -1,17 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Registrars;
 
 use App\Controllers\ScopesController;
-use Mathrix\Lumen\Bases\BaseRegistrar;
+use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
-/**
- * Class ScopesRegistrar.
- *
- * @author Mathieu Bour <mathieu@mathrix.fr>
- * @copyright Mathrix Education SA.
- * @since 5.1.0
- */
 class ScopesRegistrar extends BaseRegistrar
 {
     /**
@@ -19,6 +14,6 @@ class ScopesRegistrar extends BaseRegistrar
      */
     public function register(): void
     {
-        $this->get("scopes", ScopesController::class . "@all");
+        $this->get('scopes', ScopesController::class . '@all');
     }
 }
