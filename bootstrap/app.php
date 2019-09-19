@@ -13,26 +13,6 @@ require_once __DIR__ . '/../vendor/autoload.php';
     dirname(__DIR__)
 ))->bootstrap();
 
-// APP_VERSION
-$version      = 'unknown';
-$composerData = json_decode(file_get_contents(__DIR__ . '/../composer.json'));
-putenv("APP_VERSION={$composerData->version}");
-
-
-// APP_BUILD
-$build = 'unknown';
-
-if (file_exists(__DIR__ . '/../build.txt')) {
-    $build = trim(file_get_contents(__DIR__ . '/../build.txt'));
-} elseif ('which git') {
-    $base    = realpath(dirname(__DIR__));
-    $gitSha1 = exec("cd $base && git log --pretty=format:'%H' -n 1");
-    $build   = substr($gitSha1, 0, 7);
-}
-
-putenv("APP_BUILD=$build");
-
-
 /*
 |--------------------------------------------------------------------------
 | Create The Application
@@ -74,11 +54,6 @@ $app->singleton(
     }
 );
 
-$app->singleton(
-    Illuminate\Contracts\Routing\ResponseFactory::class,
-    Illuminate\Routing\ResponseFactory::class
-);
-
 /*
  * Fix the sitemap issue
  *
@@ -107,7 +82,6 @@ $app->configure('logging');
 $app->configure('mail');
 $app->configure('queue');
 $app->configure('services');
-
 
 /*
 |--------------------------------------------------------------------------
