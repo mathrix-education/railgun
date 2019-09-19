@@ -136,6 +136,7 @@ $app->middleware([
 | totally optional, so you are not required to uncomment this line.
 |
 */
+
 $app->register(AppServiceProvider::class);
 
 return $app;

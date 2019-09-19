@@ -39,6 +39,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        if (env('SENTRY_DSN') !== null) {
+            $this->app->register(SentryServiceProvider::class);
+        }
+
         $this->app->instance('path.config', app()->basePath() . DIRECTORY_SEPARATOR . 'config');
         $this->app->instance('path.public', app()->basePath() . DIRECTORY_SEPARATOR . 'public');
         $this->app->instance('cache.store', app()->basePath() . DIRECTORY_SEPARATOR . 'public');
@@ -58,10 +62,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(ObserverServiceProvider::class);
         $this->app->register(PolicyServiceProvider::class);
         $this->app->register(RegistrarServiceProvider::class);
-
-        if (env('SENTRY_DSN') !== null) {
-            $this->app->register(SentryServiceProvider::class);
-        }
 
         ScopesLoader::registerAdditionalScopes(['users:as']);
 
