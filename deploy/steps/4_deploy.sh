@@ -20,4 +20,4 @@ gcloud beta run deploy education-api-"${BRANCH_NAME}" \
   --platform=managed \
   --region=europe-west1 \
   --allow-unauthenticated \
-  --set-env-vars="${ENV_VARS}"
+  --set-env-vars="${ENV_VARS},APP_BUILD=${SHORT_SHA}"

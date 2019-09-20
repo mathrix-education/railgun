@@ -24,10 +24,8 @@ use Mathrix\Lumen\JWT\Auth\ScopesLoader;
 use Mathrix\Lumen\Zero\Providers\ObserverServiceProvider;
 use Mathrix\Lumen\Zero\Providers\PolicyServiceProvider;
 use Mathrix\Lumen\Zero\Providers\RegistrarServiceProvider;
-use Sentry\Laravel\ServiceProvider as SentryServiceProvider;
 use const DIRECTORY_SEPARATOR;
 use function app;
-use function env;
 
 /**
  * Register all application service providers.
@@ -39,6 +37,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->register(\Sentry\Laravel\ServiceProvider::class);
+
         $this->app->instance('path.config', app()->basePath() . DIRECTORY_SEPARATOR . 'config');
         $this->app->instance('path.public', app()->basePath() . DIRECTORY_SEPARATOR . 'public');
         $this->app->instance('cache.store', app()->basePath() . DIRECTORY_SEPARATOR . 'public');
@@ -65,12 +65,12 @@ class AppServiceProvider extends ServiceProvider
         Relation::morphMap([
             // Models
             'activity' => Activity::class,
-            'notion' => Notion::class,
-            'module' => Module::class,
-            'post' => Post::class,
-            'comment' => Comment::class,
-            'user' => User::class,
-            'product' => Product::class,
+            'notion'   => Notion::class,
+            'module'   => Module::class,
+            'post'     => Post::class,
+            'comment'  => Comment::class,
+            'user'     => User::class,
+            'product'  => Product::class,
             'discount' => Discount::class,
         ]);
     }
