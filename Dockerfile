@@ -26,6 +26,7 @@ RUN apk -U add ca-certificates && \
         php7-pdo_mysql \
         php7-phar \
         php7-xml \
+        php7-zlib \
         php7-zip && \
         ln -nfs /usr/bin/php7 /usr/bin/php
 
