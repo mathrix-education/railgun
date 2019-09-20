@@ -14,18 +14,17 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Mathrix\Lumen\JWT\Auth\Exceptions\InvalidCredentialsException;
 use Mathrix\Lumen\Zero\Exceptions\Http\HttpException;
-use ReflectionClass;
 use ReflectionException;
-use Sentry\State\Hub as Sentry;
+use Sentry\State\Hub;
 use Sentry\State\Scope;
 use Stripe\Error\Base as StripeBaseException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use function app;
+use function class_basename;
 use function env;
 use function explode;
 use function str_replace;
@@ -40,7 +39,9 @@ class Handler extends ExceptionHandler
      *
      * @var string[]
      */
-    protected $dontReport = [InvalidCredentialsException::class];
+    protected $dontReport = [
+        InvalidCredentialsException::class,
+    ];
 
     /**
      * Sentry integration.
@@ -57,6 +58,21 @@ class Handler extends ExceptionHandler
             return;
         }
 
+        if (app()->bound('sentry') && $this->shouldReport($e)) {
+            /** @var Hub $sentry */
+            $sentry = app('sentry');
+            /** @var User|null $user The logged user */
+            $user = Auth::user();
+
+            if ($user instanceof User) {
+                $sentry->configureScope(static function (Scope $scope) use ($user) {
+                    $scope->setUser($user->toArray());
+                });
+            }
+
+            $sentry->captureException($e);
+        }
+
         parent::report($e);
     }
 
@@ -70,7 +86,6 @@ class Handler extends ExceptionHandler
      *
      * @throws CardDeclined
      * @throws IncorrectCVC
-     * @throws ReflectionException
      */
     public function render($request, Exception $exception)
     {
@@ -82,9 +97,9 @@ class Handler extends ExceptionHandler
             StripeHandler::handle($exception);
         }
 
-        $overriddenStatusCode = false;
+        $overriddenStatusCode = null;
 
-        $exceptionClass = (new ReflectionClass($exception))->getShortName(); // Get the Exception class name
+        $exceptionClass = class_basename($exception); // Get the Exception class name
 
         // Default exception handler
         $error = Str::snake($exceptionClass, '_');
@@ -110,6 +125,6 @@ class Handler extends ExceptionHandler
 
         $rendered = parent::render($request, $exception);
 
-        return new JsonResponse($json, $overriddenStatusCode ? $overriddenStatusCode : $rendered->getStatusCode());
+        return new JsonResponse($json, $overriddenStatusCode ?? $rendered->getStatusCode());
     }
 }

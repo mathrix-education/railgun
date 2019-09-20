@@ -81,6 +81,7 @@ $app->configure('filesystems');
 $app->configure('logging');
 $app->configure('mail');
 $app->configure('queue');
+$app->configure('sentry');
 $app->configure('services');
 
 /*
