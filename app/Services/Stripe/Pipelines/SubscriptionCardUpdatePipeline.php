@@ -43,7 +43,6 @@ class SubscriptionCardUpdatePipeline extends Pipeline
             /** @var StripeCard $subscriptionCard */
             $subscriptionCard = $this->subscription->default_source;
 
-//            die($card->fingerprint . ' vs ' . $subscriptionCard->fingerprint);
             if ($card->fingerprint === $subscriptionCard->fingerprint) {
                 // The requested card is the same as the one attached to the subscription, aborting here.
                 return;

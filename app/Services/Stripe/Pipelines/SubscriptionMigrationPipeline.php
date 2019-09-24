@@ -45,7 +45,7 @@ class SubscriptionMigrationPipeline extends Pipeline
      */
     protected function initialize(): void
     {
-        if (! $this->user->isBraintreeCustomer()) {
+        if (!$this->user->isBraintreeCustomer()) {
             throw new InvalidBraintreeCustomer($this->user);
         }
 
@@ -83,8 +83,7 @@ class SubscriptionMigrationPipeline extends Pipeline
         $payload = [
             'customer' => $this->user->stripe_id,
             'billing_cycle_anchor' => $prorationEndsAt->getTimestamp(),
-            'default_source' => $this->request->json('card.id')
-                ?? $this->user->asStripeCustomer()->default_source,
+            'default_source' => $this->request->json('card.id') ?? $this->user->asStripeCustomer()->default_source,
             'items' => [
                 ['plan' => self::PLANS_EQUIVALENCE[$this->braintreeSubscription->planId]],
             ],
