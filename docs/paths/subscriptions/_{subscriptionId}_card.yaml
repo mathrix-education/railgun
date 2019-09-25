@@ -1,4 +1,4 @@
-post:
+patch:
   summary: Update subscription card
   description: >-
     ### If the subscription managed by Braintree
@@ -84,7 +84,9 @@ post:
                 type: boolean
                 enum: [true]
               data:
-                $ref: '#/components/schemas/SubscriptionActive'
+                anyOf:
+                  - $ref: '#/components/schemas/SubscriptionActive'
+                  - $ref: '#/components/schemas/SubscriptionActiveMigrated'
     202:
       description: Subscription was created but 3D Secure 2 was triggered.
       content:
@@ -110,7 +112,7 @@ post:
               error:
                 description: The error code.
                 type: string
-                enum: [incorrect_cvc, card_declined]
+                enum: [card_incorrect_cvc, card_declined]
               message:
                 description: The error message.
                 type: string

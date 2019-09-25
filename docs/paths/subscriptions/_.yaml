@@ -109,7 +109,7 @@ post:
               error:
                 description: The error code.
                 type: string
-                enum: [incorrect_cvc, card_declined]
+                enum: [card_incorrect_cvc, card_declined]
               message:
                 description: The error message.
                 type: string
