@@ -1,0 +1,10 @@
+$extends:
+  ../../fragments/schemas/Invoice.yaml:
+description: Invoice
+properties:
+  status:
+    enum:
+      - open
+    example: open
+  payment_intent:
+    $ref: '#/components/schemas/PaymentIntent3DS2'

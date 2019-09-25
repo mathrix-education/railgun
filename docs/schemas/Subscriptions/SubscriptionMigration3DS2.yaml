@@ -1,5 +1,5 @@
 $extends:
-  SubscriptionBase.yaml:
+  ../../fragments/schemas/Subscription.yaml:
 description: Subscription which has triggered 3DS2. Additional action is required.
 properties:
   type:

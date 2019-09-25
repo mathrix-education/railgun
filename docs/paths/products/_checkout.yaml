@@ -83,7 +83,7 @@ post:
               data:
                 $ref: '#/components/schemas/Invoice'
     202:
-      description: Subscription was created but 3D Secure 2 was triggered.
+      description: Invoice was created but 3D Secure 2 was triggered.
       content:
         application/json:
           schema:
@@ -96,4 +96,4 @@ post:
                 type: boolean
                 enum: [true]
               data:
-                $ref: '#/components/schemas/Invoice'
+                $ref: '#/components/schemas/InvoiceOpen3DS2'

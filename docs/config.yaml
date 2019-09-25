@@ -5,7 +5,9 @@ responses: []
 schemas:
   Errors:
   Files:
+  Invoices:
   Modules: Module
+  PaymentIntents:
   Products: Product
   Sources:
   Subscriptions:

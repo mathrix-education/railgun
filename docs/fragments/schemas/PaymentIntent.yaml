@@ -1,4 +1,4 @@
-description: The subscription latest invoice payment intent.
+description: Payment Intent.
 type: object
 additionalProperties: false
 properties:
@@ -27,13 +27,6 @@ properties:
   status:
     description: The payment intent status.
     type: string
-    enum:
-      - requires_payment_method
-      - requires_confirmation
-      - requires_action
-      - processing
-      - canceled
-      - succeeded
     externalDocs:
       description: Payment Intent statuses on Stripe
       url: https://stripe.com/docs/payments/intents#intent-statuses

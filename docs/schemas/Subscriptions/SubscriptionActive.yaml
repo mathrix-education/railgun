@@ -1,16 +1,16 @@
 $extends:
-  SubscriptionBase.yaml:
+  ../../fragments/schemas/Subscription.yaml:
 description: Active subscription which has not triggered 3DS2.
 properties:
   type:
     enum: [stripe]
   latest_invoice:
     allOf:
-      - $ref: '#/components/schemas/Invoice'
+      - $ref: '#/components/schemas/InvoicePaid'
       - type: object
         properties:
           payment_intent:
-            $ref: '#/components/schemas/PaymentIntent'
+            $ref: '#/components/schemas/PaymentIntentSucceeded'
   pending_setup_intent:
     type: object
     nullable: true

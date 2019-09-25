@@ -1,5 +1,5 @@
 $extends:
-  SubscriptionBase.yaml:
+  ../../fragments/schemas/Subscription.yaml:
 properties:
   type:
     enum: [stripe]
