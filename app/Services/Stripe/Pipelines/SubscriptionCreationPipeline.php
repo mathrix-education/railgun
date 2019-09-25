@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace App\Services\Stripe\Pipelines;
 
 use App\Models\Product;
-use App\Services\Stripe\Exceptions\InvalidCoupon;
+use App\Services\Stripe\Exceptions\ProductAlreadyBought;
 use App\Services\Stripe\SubscriptionUtils;
 use Exception;
 use Mathrix\Lumen\Zero\Exceptions\ValidationException;
-use Stripe\Coupon;
-use Stripe\Error\InvalidRequest;
 use Stripe\Invoice;
 use Stripe\InvoiceItem;
 use Stripe\Subscription;
@@ -31,7 +29,7 @@ class SubscriptionCreationPipeline extends Pipeline
     public $invoice;
 
     /**
-     * @throws InvalidCoupon
+     * @throws ProductAlreadyBought
      * @throws ValidationException
      */
     protected function initialize(): void
@@ -49,6 +47,10 @@ class SubscriptionCreationPipeline extends Pipeline
         if ($this->request->has('product_id')) {
             $this->product = Product::query()
                 ->findOrFail($this->request->json('product_id'));
+
+            if ($this->user->hasPurchased($this->product)) {
+                throw new ProductAlreadyBought($this->product);
+            }
         }
 
         if ($this->user->isStripeCustomer()) {

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Services\Stripe\Pipelines;
 
 use App\Models\Product;
+use App\Services\Stripe\Exceptions\ProductAlreadyBought;
 use App\Services\Stripe\Utils\InvoiceUtils;
+use Mathrix\Lumen\Zero\Exceptions\ValidationException;
 use Stripe\Error\Card as CardException;
 use Stripe\Invoice as StripeInvoice;
 use Stripe\InvoiceItem as StripeInvoiceItem;
@@ -22,6 +24,10 @@ class ProductsCheckoutPipeline extends Pipeline
     /** @var StripeInvoice $invoice */
     public $invoice;
 
+    /**
+     * @throws ProductAlreadyBought
+     * @throws ValidationException
+     */
     protected function initialize(): void
     {
         $this->validate(
@@ -35,6 +41,10 @@ class ProductsCheckoutPipeline extends Pipeline
 
         $this->product = Product::query()
             ->findOrFail($this->request->json('product_id'));
+
+        if ($this->user->hasPurchased($this->product)) {
+            throw new ProductAlreadyBought($this->product);
+        }
 
         if (!$this->user->isStripeCustomer()) {
             (new CustomerCreationPipeline())->flow();
