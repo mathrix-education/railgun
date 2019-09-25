@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\Product;
+use App\Services\Bishop\Invoice;
+use App\Services\Stripe\Pipelines\ProductsCheckoutPipeline;
 use Illuminate\Http\Request;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
@@ -121,5 +123,20 @@ class ProductsController extends BaseController
             ->findOrFail($productId);
 
         return new SuccessJsonResponse($product);
+    }
+
+    /**
+     * @return SuccessJsonResponse
+     */
+    public function checkout(): SuccessJsonResponse
+    {
+        $pipeline = (new ProductsCheckoutPipeline())->flow();
+        $data     = Invoice::from($pipeline->invoice);
+
+        return new SuccessJsonResponse(
+            $data,
+            [],
+            $data->status === \Stripe\Invoice::STATUS_OPEN ? 202 : 200
+        );
     }
 }

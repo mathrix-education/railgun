@@ -6,7 +6,7 @@ namespace App\Exceptions;
 
 use App\Models\User;
 use App\Services\Stripe\Exceptions\CardDeclined;
-use App\Services\Stripe\Exceptions\IncorrectCVC;
+use App\Services\Stripe\Exceptions\CardIncorrectCVC;
 use App\Services\Stripe\Exceptions\StripeHandler;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -18,7 +18,6 @@ use Illuminate\Support\Str;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Mathrix\Lumen\JWT\Auth\Exceptions\InvalidCredentialsException;
 use Mathrix\Lumen\Zero\Exceptions\Http\HttpException;
-use ReflectionException;
 use Sentry\State\Hub;
 use Sentry\State\Scope;
 use Stripe\Error\Base as StripeBaseException;
@@ -27,6 +26,7 @@ use function app;
 use function class_basename;
 use function env;
 use function explode;
+use function in_array;
 use function str_replace;
 
 /**
@@ -58,7 +58,10 @@ class Handler extends ExceptionHandler
             return;
         }
 
-        if (app()->bound('sentry') && $this->shouldReport($e)) {
+        if (!in_array(env('APP_ENV', 'local'), ['local', 'testing'])
+            && app()->bound('sentry')
+            && $this->shouldReport($e)
+        ) {
             /** @var Hub $sentry */
             $sentry = app('sentry');
             /** @var User|null $user The logged user */
@@ -85,7 +88,7 @@ class Handler extends ExceptionHandler
      * @return JsonResponse|Response
      *
      * @throws CardDeclined
-     * @throws IncorrectCVC
+     * @throws CardIncorrectCVC
      */
     public function render($request, Exception $exception)
     {

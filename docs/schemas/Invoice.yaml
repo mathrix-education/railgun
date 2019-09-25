@@ -44,4 +44,5 @@ properties:
   subscription:
     description: The related subscription id.
     type: string
+    nullable: true
     example: sub_FkxqSe4WQfbU0D

@@ -32,12 +32,12 @@ trait StripeCustomer
     public function createStripeCustomer(?string $source = null): Customer
     {
         $customer = Customer::create([
-            'email' => $this->email,
+            'email'    => $this->email,
             'metadata' => [
                 'user_id' => $this->id,
             ],
-            'name' => $this->full_name,
-            'source' => $source,
+            'name'     => $this->full_name,
+            'source'   => $source,
         ]);
 
         $this->stripe_id = $customer->id;
@@ -53,28 +53,32 @@ trait StripeCustomer
      */
     public function getStripeSubscriptions(): Collection
     {
-        if (! $this->isStripeCustomer()) {
+        if (!$this->isStripeCustomer()) {
             return new Collection();
         }
 
-        return $this->cache(StripeCustomer::$StripeSubscriptionsCacheKey, 7 * 24 * 3600, function () {
-            $subscriptions = new Collection();
+        return $this->cache(
+            StripeCustomer::$StripeSubscriptionsCacheKey,
+            7 * 24 * 3600,
+            function () {
+                $subscriptions = new Collection();
 
-            $stripeCollection = Subscription::all([
-                'customer' => $this->stripe_id,
-                'expand' => [
-                    'data.default_source',
-                    'data.latest_invoice.payment_intent',
-                    'data.pending_setup_intent',
-                ],
-            ]);
+                $stripeCollection = Subscription::all([
+                    'customer' => $this->stripe_id,
+                    'expand'   => [
+                        'data.default_source',
+                        'data.latest_invoice.payment_intent',
+                        'data.pending_setup_intent',
+                    ],
+                ]);
 
-            foreach ($stripeCollection as $subscription) {
-                $subscriptions->push($subscription);
+                foreach ($stripeCollection as $subscription) {
+                    $subscriptions->push($subscription);
+                }
+
+                return $subscriptions;
             }
-
-            return $subscriptions;
-        });
+        );
     }
 
     /**
@@ -90,7 +94,7 @@ trait StripeCustomer
             return false;
         }
 
-        if (! $strict) {
+        if (!$strict) {
             return true;
         }
 
@@ -102,20 +106,24 @@ trait StripeCustomer
      */
     public function asStripeCustomer(): ?Customer
     {
-        if (! $this->isStripeCustomer()) {
+        if (!$this->isStripeCustomer()) {
             return null;
         }
 
-        return $this->cache(StripeCustomer::$StripeCustomerCacheKey, 7 * 24 * 3600, function () {
-            try {
-                return Customer::retrieve($this->stripe_id);
-            } catch (Api $exception) {
-                $this->stripe_id = null;
-                $this->save();
+        return $this->cache(
+            StripeCustomer::$StripeCustomerCacheKey,
+            7 * 24 * 3600,
+            function () {
+                try {
+                    return Customer::retrieve($this->stripe_id);
+                } catch (Api $exception) {
+                    $this->stripe_id = null;
+                    $this->save();
 
-                return null;
+                    return null;
+                }
             }
-        });
+        );
     }
 
     /**
@@ -131,21 +139,21 @@ trait StripeCustomer
         // Check if card already exists
         $token = Token::retrieve($cardToken);
         /** @var StripeCard $card */
-        $card            = null;
-        $cards           = $this->getStripeCards();
-        $alreadyAttached = false;
+        $card      = null;
+        $cards     = $this->getStripeCards();
+        $isNewCard = true;
 
         /** @var StripeCard $card */
         foreach ($cards as $card) {
             if ($card->fingerprint === $token->card->fingerprint) {
                 // Card already attached
-                $alreadyAttached = true;
+                $isNewCard = false;
                 // $card            = $token->card;
                 break;
             }
         }
 
-        if (! $alreadyAttached) {
+        if ($isNewCard) {
             /** @var StripeCard $card */
             $card = Customer::createSource($this->stripe_id, ['source' => $cardToken]);
 
@@ -153,9 +161,7 @@ trait StripeCustomer
 
             if ($makeDefault) {
                 // $card will always be defined
-                Customer::update($this->stripe_id, [
-                    'default_source' => $card->id,
-                ]);
+                Customer::update($this->stripe_id, ['default_source' => $card->id]);
             }
         }
 
@@ -169,19 +175,26 @@ trait StripeCustomer
      */
     public function getStripeCards(): Collection
     {
-        return $this->cache(StripeCustomer::$StripeCardsCacheKey, 7 * 24 * 3600, function () {
-            $cards = new Collection();
+        return $this->cache(
+            StripeCustomer::$StripeCardsCacheKey,
+            7 * 24 * 3600,
+            function () {
+                $cards = new Collection();
 
-            $stripeCards = Customer::allSources($this->stripe_id, [
-                'limit' => 100,
-                'object' => 'card',
-            ]);
+                $stripeCards = Customer::allSources(
+                    $this->stripe_id,
+                    [
+                        'limit'  => 100,
+                        'object' => 'card',
+                    ]
+                );
 
-            foreach ($stripeCards as $stripeCard) {
-                $cards->push($stripeCard);
+                foreach ($stripeCards as $stripeCard) {
+                    $cards->push($stripeCard);
+                }
+
+                return $cards;
             }
-
-            return $cards;
-        });
+        );
     }
 }

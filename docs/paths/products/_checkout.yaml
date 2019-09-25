@@ -1,0 +1,99 @@
+post:
+  summary: Checkout
+  description: >-
+    Allow the current logged user to buy a single product. If the user is not a Stripe customer, his profile will be
+    automatically created.
+
+    ### Using new payment method
+
+    If the user is not a Stripe customer or want to use a new payment method, Stripe Elements should be used to safely
+    collect the user credit card details.
+    Then, the **tokenized** credit card can be passed in the `card.token` field.
+
+    Sample payload:
+
+    <pre>{
+      "product_id": 152,
+      "card": {
+        "token": "tok_fr"
+      }
+    }</pre>
+
+    ### Using an existing payment method
+
+    If the user is already a Stripe customer **and** wants to use a saved payment method, the credit card id can be
+    passed int the `card.id` field.
+
+    Sample payload:
+
+    <pre>{
+      "product_id": 152,
+      "card": {
+        "id": "tok_fr"
+      }
+    }</pre>
+
+    ### 3D Secure 2 process
+
+    3D Secure 2 may be triggered by this request. If this occurs, it means that the customer has to agree to be debited
+    by Stripe.<br>
+    In this case, the `data.status` will be equal to `"open"` and the related payment intent secret will be
+    located in the `data.latest_invoice.payment_intent.client_secret` field.<br>
+    To confirm the payment, the Stripe.js
+    [handleCardPayment()](https://stripe.com/docs/stripe-js/reference#stripe-handle-card-payment) has to be used to
+    display the 3D Secure modal.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required: [product_id, card]
+          properties:
+            product_id:
+              description: The product id.
+              type: integer
+              example: 152
+            card:
+              description: The user credit card token **OR** id, see above for details.
+              type: object
+              properties:
+                token:
+                  description: >-
+                    The payment method token associated with the subscription. It can
+                    be retrieved using the Stripe.js `createToken()` function.
+                  externalDocs:
+                    description: Stripe.js `createToken()`
+                    url: 'https://stripe.com/docs/stripe-js/reference#stripe-create-token'
+                  type: string
+                  example: tok_fr
+  responses:
+    200:
+      description: Invoice was successfully paid.
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [success, data]
+            additionalProperties: false
+            properties:
+              success:
+                description: The response success.
+                type: boolean
+                enum: [true]
+              data:
+                $ref: '#/components/schemas/Invoice'
+    202:
+      description: Subscription was created but 3D Secure 2 was triggered.
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [success, data]
+            additionalProperties: false
+            properties:
+              success:
+                description: The response success.
+                type: boolean
+                enum: [true]
+              data:
+                $ref: '#/components/schemas/Invoice'
