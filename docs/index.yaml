@@ -43,16 +43,12 @@ x-tagGroups:
       - Categories
   - name: Interactions
     tags:
-      - Levels
       - Comments
       - Marks
-      - Notifications
       - Votes
       - Reports
-      - Settings
   - name: Billing
     tags:
       - Plans
       - Subscriptions
-      - Discounts
       - Products

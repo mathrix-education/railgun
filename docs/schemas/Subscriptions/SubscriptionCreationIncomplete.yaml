@@ -1,5 +1,5 @@
 $extends:
-  SubscriptionBase.yaml:
+  ../../fragments/schemas/Subscription.yaml:
 description: Subscription which has triggered 3DS2. Additional action is required.
 properties:
   type:
@@ -12,11 +12,11 @@ properties:
     $ref: '#/components/schemas/CreditCard'
   latest_invoice:
     allOf:
-      - $ref: '#/components/schemas/Invoice'
+      - $ref: '#/components/schemas/InvoiceOpen3DS2'
       - type: object
         properties:
           payment_intent:
-            $ref: '#/components/schemas/PaymentIntent'
+            $ref: '#/components/schemas/PaymentIntent3DS2'
   status:
     description: The subcription is `"incomplete"`, 3DS2 process is required.
     enum: [incomplete]
