@@ -47,10 +47,8 @@ class DatabaseSeeder extends BaseTableSeeder
         $this->seedFromSubFactory(Comment::class, 'child', 500);
         $this->seedFromFactory(Vote::class, 100);
 
-        // Products & discounts
+        // Products
         $this->call(ProductTableSeeder::class);
-        $this->seedFromFactory(Discount::class, 30);
-        $this->linkAll(Discount::class, Product::class);
 
         // Reports
         $this->seedFromFactory(Report::class, 50);
