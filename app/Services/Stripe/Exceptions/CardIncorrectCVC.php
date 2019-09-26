@@ -12,9 +12,9 @@ use function trans;
 /**
  * Thrown when a card CVC is incorrect.
  */
-class IncorrectCVC extends Http422UnprocessableEntityException
+class CardIncorrectCVC extends Http422UnprocessableEntityException
 {
-    protected $error = 'incorrect_cvc';
+    protected $error = 'card_incorrect_cvc';
 
     public function __construct(StripeCardException $exception, ?Throwable $previous = null)
     {

@@ -1,3 +1,0 @@
-$extends:
-  ../../fragments/paths/index.yaml:
-    model: level

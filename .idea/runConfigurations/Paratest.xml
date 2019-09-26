@@ -1,16 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Paratest" type="PhpLocalRunConfigurationType" factoryName="PHP Console" singleton="true" path="$PROJECT_DIR$/vendor/bin/paratest" scriptParameters="--runner=WrapperRunner --configuration=phpunit.xml">
     <CommandLine workingDirectory="$PROJECT_DIR$" />
-    <method v="2">
-      <option name="NpmBeforeRunTask" enabled="true">
-        <package-json value="$PROJECT_DIR$/package.json" />
-        <command value="run" />
-        <scripts>
-          <script value="compile" />
-        </scripts>
-        <node-interpreter value="project" />
-        <envs />
-      </option>
-    </method>
+    <method v="2" />
   </configuration>
 </component>

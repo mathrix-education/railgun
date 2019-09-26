@@ -34,7 +34,7 @@ class ProductsRegistrar extends BaseRegistrar
         $this->group(
             ['middleware' => 'logged'],
             function () use ($controller): void {
-                $this->post('products/buy', "$controller@buy");
+                $this->post('products/checkout', "$controller@checkout");
             }
         );
 

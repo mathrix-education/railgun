@@ -36,7 +36,7 @@ use Ramsey\Uuid\Uuid;
 //    }
 //}
 
-if (! function_exists('timestamps')) {
+if (!function_exists('timestamps')) {
 
     /**
      * Get two coherent timestamps.
@@ -59,7 +59,7 @@ if (! function_exists('timestamps')) {
 
 }
 
-if (! function_exists('scope')) {
+if (!function_exists('scope')) {
 
     /**
      * Check if a user has the given scope.
@@ -76,7 +76,7 @@ if (! function_exists('scope')) {
 
 }
 
-if (! function_exists('gateway')) {
+if (!function_exists('gateway')) {
 
     function gateway(): Gateway
     {
@@ -85,13 +85,13 @@ if (! function_exists('gateway')) {
 
 }
 
-
-if (! function_exists('uuid')) {
+if (!function_exists('uuid')) {
 
     function uuid(): ?string
     {
         try {
-            return Uuid::uuid4()->toString();
+            return Uuid::uuid4()
+                ->toString();
         } catch (Throwable $e) {
             return null;
         }
@@ -99,7 +99,7 @@ if (! function_exists('uuid')) {
 
 }
 
-if ((! function_exists('morph_alias'))) {
+if ((!function_exists('morph_alias'))) {
 
     function morph_alias($class)
     {
@@ -108,7 +108,7 @@ if ((! function_exists('morph_alias'))) {
 
 }
 
-if ((! function_exists('loc'))) {
+if ((!function_exists('loc'))) {
 
     function loc($loc)
     {

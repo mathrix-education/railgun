@@ -1,5 +1,5 @@
 $extends:
-  SubscriptionBase.yaml:
+  ../../fragments/schemas/Subscription.yaml:
 description: Braintree Subscription
 type: object
 properties:

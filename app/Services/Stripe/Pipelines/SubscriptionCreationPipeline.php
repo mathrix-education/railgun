@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace App\Services\Stripe\Pipelines;
 
 use App\Models\Product;
-use App\Services\Stripe\Exceptions\InvalidCoupon;
+use App\Services\Stripe\Exceptions\ProductAlreadyBought;
 use App\Services\Stripe\SubscriptionUtils;
 use Exception;
 use Mathrix\Lumen\Zero\Exceptions\ValidationException;
-use Stripe\Coupon;
-use Stripe\Error\InvalidRequest;
 use Stripe\Invoice;
 use Stripe\InvoiceItem;
 use Stripe\Subscription;
@@ -23,8 +21,6 @@ class SubscriptionCreationPipeline extends Pipeline
 
     /** @var string The subscription plan */
     public $plan;
-    /** @var Coupon The coupon to apply to the subscription. */
-    public $coupon;
     /** @var Product The product (training) to buy with the subscription. */
     public $product;
     /** @var Subscription $subscription */
@@ -33,7 +29,7 @@ class SubscriptionCreationPipeline extends Pipeline
     public $invoice;
 
     /**
-     * @throws InvalidCoupon
+     * @throws ProductAlreadyBought
      * @throws ValidationException
      */
     protected function initialize(): void
@@ -51,18 +47,9 @@ class SubscriptionCreationPipeline extends Pipeline
         if ($this->request->has('product_id')) {
             $this->product = Product::query()
                 ->findOrFail($this->request->json('product_id'));
-        }
 
-        if ($this->request->has('coupon')) {
-            $couponId = (string)$this->request->json('coupon');
-            try {
-                $this->coupon = Coupon::retrieve($couponId);
-            } catch (InvalidRequest $exception) {
-                throw new InvalidCoupon($couponId);
-            }
-
-            if (!$this->coupon->valid) {
-                throw new InvalidCoupon($couponId);
+            if ($this->user->hasPurchased($this->product)) {
+                throw new ProductAlreadyBought($this->product);
             }
         }
 
@@ -125,11 +112,6 @@ class SubscriptionCreationPipeline extends Pipeline
             // Add the billing cycle anchor if necessary
             $payload['billing_cycle_anchor'] = SubscriptionUtils::getProrationAnchor($this->plan)
                 ->getTimestamp();
-        }
-
-        if ($this->coupon !== null) {
-            // Add the coupon code if necessary
-            $payload['coupon'] = $this->coupon->id;
         }
 
         if ($this->product !== null) {

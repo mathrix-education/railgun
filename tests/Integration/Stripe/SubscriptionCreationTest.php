@@ -7,10 +7,8 @@ namespace Tests\Integration\Stripe;
 use App\Models\Product;
 use App\Models\User;
 use Mathrix\Lumen\JWT\Auth\JWT;
-use Stripe\Coupon;
 use Tests\APIStatelessTestCase;
 use function factory;
-use function json_decode;
 
 class SubscriptionCreationTest extends APIStatelessTestCase
 {
@@ -64,21 +62,12 @@ class SubscriptionCreationTest extends APIStatelessTestCase
         $this->assertResponseStatus($expectedStatus);
         $this->assertOpenAPIResponse($this->response);
         $this->assertEquals($expectedPremium, $this->requester->premium);
-
-        $response = json_decode($this->response->getContent());
     }
 
     public function testPostWithProductId()
     {
         $this->requester = factory(User::class)->create();
         JWT::actingAs($this->requester);
-
-        $coupon = Coupon::create([
-            'amount_off'      => 2500,
-            'currency'        => 'eur',
-            'duration'        => 'once',
-            'max_redemptions' => 1,
-        ]);
 
         /** @var Product $product */
         $product = Product::query()
@@ -93,9 +82,12 @@ class SubscriptionCreationTest extends APIStatelessTestCase
             [
                 'plan'       => 'v5_annually',
                 'card'       => ['token' => 'tok_fr'],
-                'coupon'     => $coupon->id,
                 'product_id' => $product->id,
             ]
         );
+
+        $this->assertResponseStatus(200);
+        $this->assertOpenAPIResponse($this->response);
+        $this->assertTrue($this->requester->premium);
     }
 }

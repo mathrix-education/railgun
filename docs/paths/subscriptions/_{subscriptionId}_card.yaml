@@ -1,7 +1,8 @@
-post:
+patch:
   summary: Update subscription card
   description: >-
     ### If the subscription managed by Braintree
+
     Migrate an old Braintree subscription to a new Stripe subscription. Since the user has paid for the current
     Braintree billing period, we will not try to debit him until the next billing date.<br>
     **Note 1:** Currently, only the `v4_monthly` and `v4_annually` are supported.<br>
@@ -9,6 +10,7 @@ post:
 
 
     ### Using new payment method
+
     If the user is not a Stripe customer or want to use a new payment method, Stripe Elements should be used to safely
     collect the user credit card details.
     Then, the **tokenized** credit card can be passed in the `card.token` field.
@@ -23,6 +25,7 @@ post:
 
 
     ### Using an existing payment method
+
     If the user is already a Stripe customer **and** wants to use a saved payment method, the credit card id can be
     passed int the `card.id` field.
 
@@ -36,6 +39,7 @@ post:
 
 
     ### 3D Secure 2 process
+
     3D Secure 2 may be triggered by this request. If this occurs, it means that the customer has to agree to be debited
     by Stripe.<br>
     In this case, the `data.pending_setup_intent` will not `null` and the related setup intent secret will be located
@@ -80,7 +84,9 @@ post:
                 type: boolean
                 enum: [true]
               data:
-                $ref: '#/components/schemas/SubscriptionActive'
+                anyOf:
+                  - $ref: '#/components/schemas/SubscriptionActive'
+                  - $ref: '#/components/schemas/SubscriptionActiveMigrated'
     202:
       description: Subscription was created but 3D Secure 2 was triggered.
       content:
@@ -106,7 +112,7 @@ post:
               error:
                 description: The error code.
                 type: string
-                enum: [incorrect_cvc, card_declined]
+                enum: [card_incorrect_cvc, card_declined]
               message:
                 description: The error message.
                 type: string

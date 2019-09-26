@@ -114,5 +114,7 @@ class SubscriptionMigrationTest extends APIStatelessTestCase
                 $this->assertEquals(BraintreeSubscription::ACTIVE, $braintreeSubscription->status);
                 break;
         }
+
+        $this->assertOpenAPIResponse($this->response);
     }
 }

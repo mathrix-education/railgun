@@ -32,16 +32,11 @@ properties:
   status:
     description: The invoice status.
     type: string
-    enum:
-      - draft
-      - open
-      - paid
-      - uncollectible
-      - void
     externalDocs:
       description: Stripe Invoices overview
       url: https://stripe.com/docs/billing/invoices/workflow#workflow-overview
   subscription:
-    description: The related subscription id.
+    description: The related subscription id, if any.
     type: string
+    nullable: true
     example: sub_FkxqSe4WQfbU0D

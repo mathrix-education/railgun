@@ -1,0 +1,11 @@
+$extends:
+  ../../fragments/schemas/Invoice.yaml:
+description: Invoice
+properties:
+  status:
+    enum:
+      - draft
+      - open
+      - paid
+      - uncollectible
+      - void
