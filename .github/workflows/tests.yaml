@@ -2,7 +2,7 @@ name: Tests
 on: [push, pull_request]
 jobs:
   paratest:
-    name: Test with Paratest
+    name: Run PHPUnit tests, analyse with Sonar Scanner
     runs-on: ubuntu-latest
     services:
       mysql:
