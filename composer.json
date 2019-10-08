@@ -113,7 +113,7 @@
     "optimize-autoloader": true
   },
   "scripts": {
-    "compile:docs": "openapi-processor --input=docs/index.yaml --config=docs/config.yaml",
+    "docs:compile": "openapi-processor --input=docs/index.yaml --config=docs/config.yaml",
     "lint": "phpcs --report=source",
     "lint:details": "phpcs",
     "lint:fix": "phpcbf"
