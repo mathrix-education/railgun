@@ -1,0 +1,84 @@
+name: Tests
+on: [push, pull_request]
+jobs:
+  paratest:
+    name: Test with Paratest
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_DATABASE: mathrix_education_testing
+          MYSQL_ROOT_PASSWORD: '123456'
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup Google Cloud
+        env:
+          GCLOUD_AUTH: ${{ secrets.GCLOUD_AUTH }}
+        run: printenv GCLOUD_AUTH | base64 -d > storage/keychain/service_account.json
+      - name: Setup PHP
+        uses: shivammathur/setup-php@1.3.9
+        with:
+          php-version: 7.3
+          extension-csv: mbstring, gmp
+          coverage: pcov
+      - name: Setup node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: Install dependencies
+        env:
+          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
+        run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+      - name: Compile docs
+        run: composer docs:compile
+      - name: Compile mails
+        run: |
+          npm install
+          npm run mails:compile
+          rm -rf node_modules/
+      - name: Setup application (environment, JWT key and database seed)
+        env:
+          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
+          DB_PASSWORD: '123456'
+        run: |
+          cp environments/testing/.env .env
+          php artisan jwt:key
+          php artisan migrate --seed
+      - name: Test with Paratest
+        continue-on-error: true
+        env:
+          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
+          DB_PASSWORD: '123456'
+          GOOGLE_CLOUD_KEY_FILE: keychain/service_account.json
+          MAILGUN_SECRET: ${{ secrets.MAILGUN_SECRET }}
+          STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
+          BRAINTREE_PRIVATE_KEY: ${{ secrets.BRAINTREE_PRIVATE_KEY }}
+        run: |
+          ./vendor/bin/paratest \
+            --verbose=1 \
+            --processes=4 \
+            --runner=WrapperRunner \
+            --coverage-clover=storage/artifacts/cover-clover.xml \
+            --configuration=phpunit.xml
+      - name: Setup Sonar project
+        run: |
+          git checkout "${GITHUB_REF:11}"
+          CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+          PARENT_BRANCH=$(git show-branch -a \
+            | grep '\*' \
+            | grep -v `git rev-parse --abbrev-ref HEAD` \
+            | head -n1 \
+            | sed 's/.*\[\(.*\)\].*/\1/' \
+            | sed 's/origin\///g')
+          echo "sonar.branch.name=${CURRENT_BRANCH}" >> sonar-project.properties
+          echo "sonar.branch.target=${PARENT_BRANCH}" >> sonar-project.properties
+          cat sonar-project.properties
+      - name: Send test results to Sonarqube
+        uses: docker://skilldlabs/sonar-scanner:3.3
+        with:
+          entrypoint: sonar-scanner
+          args: -Dsonar.projectBaseDir=. -Dsonar.login=${{ secrets.SONAR_TOKEN }}
