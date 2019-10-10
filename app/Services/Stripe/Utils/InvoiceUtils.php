@@ -7,9 +7,6 @@ namespace App\Services\Stripe\Utils;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 
-/**
- *
- */
 class InvoiceUtils
 {
     /**

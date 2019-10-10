@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Integration\GoogleCloud\Storage;
 
+use Exception;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -73,14 +74,14 @@ class FilesTest extends APIStatelessTestCase
     /**
      * Get a disk.
      *
-     * @param string|null $disk The disk id to get.
+     * @param string|null $diskName The disk id to get.
      *
      * @return FilesystemAdapter
      */
-    private function getDisk(?string $disk = null): FilesystemAdapter
+    private function getDisk(?string $diskName = null): FilesystemAdapter
     {
         /** @var FilesystemAdapter $disk */
-        $disk = Storage::disk($disk);
+        $disk = Storage::disk($diskName);
 
         return $disk;
     }
@@ -109,6 +110,8 @@ class FilesTest extends APIStatelessTestCase
      * @param string $directory      The directory to list.
      * @param int    $expectedStatus The expected HTTP status.
      *
+     * @throws Exception
+     *
      * @dataProvider listDataProvider
      */
     public function testList(string $directory, int $expectedStatus)
@@ -117,7 +120,6 @@ class FilesTest extends APIStatelessTestCase
 
         $this->json('get', "/files/list/$directory");
 
-        $this->debug();
         $this->assertResponseStatus($expectedStatus);
         $this->assertOpenAPI($this->response, new OperationAddress('/files/list/{directory}', 'get'));
     }

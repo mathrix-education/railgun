@@ -26,17 +26,17 @@ class SubscriptionMigrationTest extends APIStatelessTestCase
 {
     public function migrationDataProvider()
     {
-        return [
-            // Subscription is active
-            'monthly_tok_fr' => ['v4_monthly', 'tok_fr', 200],
-            'annually_tok_fr' => ['v4_annually', 'tok_fr', 200],
-            // 3D Secure 2 has been triggered
-            'monthly_tok_threeDSecure2Required' => ['v4_monthly', 'tok_threeDSecure2Required', 202],
-            'annually_tok_threeDSecure2Required' => ['v4_annually', 'tok_threeDSecure2Required', 202],
-            // Errors
-            'cvc_fail' => ['v4_annually', 'tok_cvcCheckFail', 422],
-            'tok_chargeDeclined' => ['v4_annually', 'tok_chargeDeclined', 422],
+        $dataset = [
+            'plans'  => ['v4_monthly', 'v4_annually'],
+            'tokens' => [
+                ['tok_fr', 200],
+                ['tok_threeDSecure2Required', 202],
+                ['tok_cvcCheckFail', 422],
+                ['tok_chargeDeclined', 422],
+            ],
         ];
+
+        return $this->cartesian($dataset);
     }
 
     /**
@@ -62,40 +62,53 @@ class SubscriptionMigrationTest extends APIStatelessTestCase
 
         // Setup subscription
         /** @var BraintreePaymentMethod $paymentMethod */
-        $paymentMethod = gateway()->paymentMethod()->create([
-            'customerId' => $braintreeCustomer->id,
-            'paymentMethodNonce' => Nonces::$transactableVisa,
-        ])->paymentMethod;
+        $paymentMethod = gateway()
+            ->paymentMethod()
+            ->create([
+                'customerId'         => $braintreeCustomer->id,
+                'paymentMethodNonce' => Nonces::$transactableVisa,
+            ])->paymentMethod;
 
         $subscriptionPayload = [
-            'id' => 'sub_' . str_replace('-', '', $this->faker->uuid),
-            'merchantAccountId' => env('BRAINTREE_MERCHANT_ACCOUNT'),
+            'id'                 => 'sub_' . str_replace('-', '', $this->faker->uuid),
+            'merchantAccountId'  => env('BRAINTREE_MERCHANT_ACCOUNT'),
             'paymentMethodToken' => $paymentMethod->token,
-            'planId' => $braintreePlan,
+            'planId'             => $braintreePlan,
         ];
 
         if ($braintreePlan === 'v4_annually') {
-            $subscriptionPayload = array_replace_recursive($subscriptionPayload, [
-                'trialDuration' => SubscriptionUtils::getProrationAnchor('v5_annually')
-                    ->diffInDays(Carbon::now()),
-                'trialDurationUnit' => 'day',
-                'trialPeriod' => true,
-            ]);
+            $subscriptionPayload = array_replace_recursive(
+                $subscriptionPayload,
+                [
+                    'trialDuration'     => SubscriptionUtils::getProrationAnchor('v5_annually')
+                        ->diffInDays(Carbon::now()),
+                    'trialDurationUnit' => 'day',
+                    'trialPeriod'       => true,
+                ]
+            );
         }
 
-        $result = gateway()->subscription()->create($subscriptionPayload);
+        $result = gateway()
+            ->subscription()
+            ->create($subscriptionPayload);
         /** @var BraintreeSubscription $braintreeSubscription */
         $braintreeSubscription = $result->subscription;
         $this->requester->invalidate('braintree.%');
 
         JWT::actingAs($this->requester);
 
-        $this->json('patch', "/subscriptions/{$braintreeSubscription->id}/card", [
-            'card' => ['token' => $token],
-        ]);
+        $this->json(
+            'patch',
+            "/subscriptions/{$braintreeSubscription->id}/card",
+            [
+                'card' => ['token' => $token],
+            ]
+        );
 
         // Assertions
-        $braintreeSubscription = gateway()->subscription()->find($braintreeSubscription->id);
+        $braintreeSubscription = gateway()
+            ->subscription()
+            ->find($braintreeSubscription->id);
         $response              = json_decode($this->response->getContent());
 
         $this->assertResponseStatus($expectedStatus);

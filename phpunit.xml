@@ -2,8 +2,9 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
          bootstrap="bootstrap/app.php"
-         cacheResult="false"
-         colors="true">
+         cacheResultFile="storage/framework/cache/phpunit-cache.php"
+         colors="true"
+         printerClass="Codedungeon\PHPUnitPrettyResultPrinter\Printer">
     <testsuites>
         <testsuite name="API Test Suite">
             <directory>./tests/API</directory>
@@ -20,6 +21,7 @@
             <directory suffix=".php">./app</directory>
             <exclude>
                 <directory>./app/Console</directory>
+                <directory>./app/Registrars</directory>
             </exclude>
         </whitelist>
     </filter>

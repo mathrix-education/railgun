@@ -75,13 +75,7 @@ jobs:
           MAILGUN_SECRET: ${{ secrets.MAILGUN_SECRET }}
           STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
           BRAINTREE_PRIVATE_KEY: ${{ secrets.BRAINTREE_PRIVATE_KEY }}
-        run: |
-          ./vendor/bin/paratest \
-            --verbose=1 \
-            --processes=4 \
-            --runner=WrapperRunner \
-            --coverage-clover=storage/artifacts/cover-clover.xml \
-            --configuration=phpunit.xml
+        run: composer test:cover
       - name: Setup Sonar project
         run: |
           git checkout "${GITHUB_REF:11}"

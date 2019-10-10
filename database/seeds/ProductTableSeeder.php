@@ -67,23 +67,6 @@ class ProductTableSeeder extends BaseTableSeeder
             }
         }
 
-        $products[] = [
-            'id' => self::PRODUCT_COUNT + 1,
-            'name' => 'Mode Machine 2019',
-            'slug' => 'mode-machine-2019',
-            'image' => null,
-            'type' => 'premium',
-            'description' => 'Le mode Machine 2019 ! Disponible uniquement en pack promo !',
-            'price' => null,
-            'visible' => true,
-            'order' => 0,
-            'buyable' => 1,
-            'parent_id' => null,
-            'module_id' => null,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ];
-
         $this->output->writeln('<comment>Seeding:</comment> products from factory');
         $this->seedFromArray($products, 'products');
 

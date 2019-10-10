@@ -21,17 +21,15 @@ class SubscriptionCreationTest extends APIStatelessTestCase
      */
     public function postDataProvider(): array
     {
-        return [
-            // Subscription is active
-            'monthly_no_3ds2'                    => ['v5_monthly', 'tok_fr', 200, true],
-            'annually_no_3ds2'                   => ['v5_annually', 'tok_fr', 200, true],
-            // 3D Secure 2 has been triggered
-            'monthly_tok_threeDSecure2Required'  => ['v5_monthly', 'tok_threeDSecure2Required', 202, false],
-            'annually_tok_threeDSecure2Required' => ['v5_annually', 'tok_threeDSecure2Required', 202, false],
-            // Errors
-            'cvc_fail'                           => ['v5_monthly', 'tok_cvcCheckFail', 422, false],
-            'tok_chargeDeclined'                 => ['v5_monthly', 'tok_chargeDeclined', 422, false],
-        ];
+        return $this->cartesian([
+            'plans'  => ['v5_monthly', 'v5_annually'],
+            'tokens' => [
+                ['tok_fr', 200, true],
+                ['tok_threeDSecure2Required', 202, false],
+                ['tok_cvcCheckFail', 422, false],
+                ['tok_chargeDeclined', 422, false],
+            ],
+        ]);
     }
 
     /**
