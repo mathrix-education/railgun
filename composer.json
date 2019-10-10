@@ -114,7 +114,7 @@
   },
   "scripts": {
     "test": "phpunit",
-    "test:cover": "phpunit --log-junit=storage/artifacts/phpunit-junit.xml --coverage-clover=storage/artifacts/phpunit-coverage.xml --coverage-text",
+    "test:cover": "phpunit --log-junit=artifacts/phpunit-junit.xml --coverage-clover=artifacts/phpunit-coverage.xml --coverage-text",
     "docs:compile": "openapi-processor --input=docs/index.yaml --config=docs/config.yaml",
     "lint": "phpcs --report=source",
     "lint:details": "phpcs",
