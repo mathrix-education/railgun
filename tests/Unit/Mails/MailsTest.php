@@ -13,7 +13,7 @@ use Tests\APIStatelessTestCase;
  */
 class MailsTest extends APIStatelessTestCase
 {
-    public function mails()
+    public function mailsDataProvider(): array
     {
         $mails = MailsRegistrar::getMails();
         $data  = [];
@@ -27,9 +27,9 @@ class MailsTest extends APIStatelessTestCase
     /**
      * @param string|BaseMail $mailClass
      *
-     * @dataProvider mails
+     * @dataProvider mailsDataProvider
      */
-    public function testMailsRender(string $mailClass)
+    public function testMailsRender(string $mailClass): void
     {
         $this->assertInstanceOf($mailClass, $mailClass::mock());
     }

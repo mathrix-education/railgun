@@ -14,10 +14,12 @@ class ProductsCheckoutTest extends APIStatelessTestCase
 {
     public function invoiceCreateDataProvider()
     {
-        return [
-            'tok_fr'                    => ['tok_fr', 200],
-            'tok_threeDSecure2Required' => ['tok_threeDSecure2Required', 202],
-        ];
+        return $this->cartesian([
+            'tokens' => [
+                ['tok_fr', 200],
+                ['tok_threeDSecure2Required', 202],
+            ],
+        ]);
     }
 
     /**

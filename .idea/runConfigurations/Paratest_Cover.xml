@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Paratest Cover" type="PhpLocalRunConfigurationType" factoryName="PHP Console" singleton="true" path="$PROJECT_DIR$/vendor/bin/paratest" scriptParameters="--runner=WrapperRunner --coverage-clover=storage/artifacts/coverage.xml --log-junit=storage/artifacts/junit.xml --configuration=phpunit.xml">
+  <configuration default="false" name="Paratest Cover" type="PhpLocalRunConfigurationType" factoryName="PHP Console" singleton="true" path="$PROJECT_DIR$/vendor/bin/paratest" scriptParameters="--processes=32 --runner=WrapperRunner --coverage-clover=storage/artifacts/coverage.xml --log-junit=storage/artifacts/junit.xml --configuration=phpunit.xml">
     <CommandLine workingDirectory="$PROJECT_DIR$" />
     <method v="2" />
   </configuration>

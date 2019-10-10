@@ -67,7 +67,6 @@ jobs:
           php artisan jwt:key
           php artisan migrate --seed
       - name: Test with Paratest
-        continue-on-error: true
         env:
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
           DB_PASSWORD: '123456'
@@ -75,23 +74,16 @@ jobs:
           MAILGUN_SECRET: ${{ secrets.MAILGUN_SECRET }}
           STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
           BRAINTREE_PRIVATE_KEY: ${{ secrets.BRAINTREE_PRIVATE_KEY }}
-        run: |
-          ./vendor/bin/paratest \
-            --verbose=1 \
-            --processes=4 \
-            --runner=WrapperRunner \
-            --coverage-clover=storage/artifacts/cover-clover.xml \
-            --configuration=phpunit.xml
+        run: composer test:cover
       - name: Setup Sonar project
         run: |
           git checkout "${GITHUB_REF:11}"
           CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-          PARENT_BRANCH=$(git show-branch -a \
-            | grep '\*' \
-            | grep -v `git rev-parse --abbrev-ref HEAD` \
-            | head -n1 \
-            | sed 's/.*\[\(.*\)\].*/\1/' \
-            | sed 's/origin\///g')
+          if [[ "$CURRENT_BRANCH" = "dev" ]]; then
+            PARENT_BRANCH="master"
+          else
+            PARENT_BRANCH="dev"
+          fi
           echo "sonar.branch.name=${CURRENT_BRANCH}" >> sonar-project.properties
           echo "sonar.branch.target=${PARENT_BRANCH}" >> sonar-project.properties
           cat sonar-project.properties

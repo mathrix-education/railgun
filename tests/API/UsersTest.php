@@ -220,7 +220,6 @@ class UsersTest extends APIStatelessTestCase
 
         $this->json('get', "/users/{$user->id}/products");
 
-        $this->debug();
         $this->assertResponseOk();
         $this->assertOpenAPIResponse($this->response);
     }

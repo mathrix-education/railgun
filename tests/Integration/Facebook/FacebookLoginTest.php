@@ -1,4 +1,5 @@
 <?php
+/** @noinspection PhpRedundantCatchClauseInspection */
 
 declare(strict_types=1);
 
@@ -6,6 +7,7 @@ namespace Tests\Integration\Facebook;
 
 use App\Models\User;
 use Exception;
+use Facebook\Exceptions\FacebookResponseException;
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook;
 use Jose\Component\Signature\JWS;
@@ -20,6 +22,7 @@ use function json_decode;
  */
 class FacebookLoginTest extends APIStatefulTestCase
 {
+    private static $LimitReached;
     private static $FacebookUser;
 
     /**
@@ -34,16 +37,20 @@ class FacebookLoginTest extends APIStatefulTestCase
         /** @var Facebook $facebook */
         $facebook = app()->make(Facebook::class);
 
-        $response = $facebook->post(
-            env('FACEBOOK_APP_ID') . '/accounts/test-users',
-            [
-                'installed'   => true,
-                'permissions' => 'email',
-            ],
-            env('FACEBOOK_APP_TOKEN')
-        );
+        try {
+            $response = $facebook->post(
+                env('FACEBOOK_APP_ID') . '/accounts/test-users',
+                [
+                    'installed'   => true,
+                    'permissions' => 'email',
+                ],
+                env('FACEBOOK_APP_TOKEN')
+            );
 
-        self::$FacebookUser = json_decode($response->getBody());
+            self::$FacebookUser = json_decode($response->getBody());
+        } catch (FacebookResponseException $throttleException) {
+            self::$LimitReached = true;
+        }
     }
 
     /**
@@ -53,6 +60,10 @@ class FacebookLoginTest extends APIStatefulTestCase
      */
     public static function tearDownAfterClass(): void
     {
+        if (self::$LimitReached) {
+            return;
+        }
+
         // Clean Facebook test account
         /** @var Facebook $facebook */
         $facebook = app()->make(Facebook::class);
@@ -68,6 +79,18 @@ class FacebookLoginTest extends APIStatefulTestCase
         //$user->delete();
 
         parent::tearDownAfterClass();
+    }
+
+    /**
+     * Handle Facebook Application request limit reached to skip the tests.
+     */
+    public function setUp(): void
+    {
+        if (self::$LimitReached) {
+            $this->markTestSkipped('Facebook Application request limit reached, skipping');
+        }
+
+        parent::setUp();
     }
 
     /**
