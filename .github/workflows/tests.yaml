@@ -79,12 +79,11 @@ jobs:
         run: |
           git checkout "${GITHUB_REF:11}"
           CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-          PARENT_BRANCH=$(git show-branch -a \
-            | grep '\*' \
-            | grep -v `git rev-parse --abbrev-ref HEAD` \
-            | head -n1 \
-            | sed 's/.*\[\(.*\)\].*/\1/' \
-            | sed 's/origin\///g')
+          if [[ "$CURRENT_BRANCH" = "dev" ]]; then
+            PARENT_BRANCH="master"
+          else
+            PARENT_BRANCH="dev"
+          fi
           echo "sonar.branch.name=${CURRENT_BRANCH}" >> sonar-project.properties
           echo "sonar.branch.target=${PARENT_BRANCH}" >> sonar-project.properties
           cat sonar-project.properties
