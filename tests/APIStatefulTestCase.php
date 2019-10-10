@@ -12,7 +12,6 @@ use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Zero\Testing\Traits\DebugTrait;
 use Mathrix\Lumen\Zero\Testing\Traits\RESTTrait;
 use Mathrix\OpenAPI\Assertions\Lumen\LumenOpenAPIAssertions;
-use Throwable;
 use function strtolower;
 
 /**

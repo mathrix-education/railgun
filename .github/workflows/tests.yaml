@@ -67,7 +67,6 @@ jobs:
           php artisan jwt:key
           php artisan migrate --seed
       - name: Test with Paratest
-        continue-on-error: true
         env:
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
           DB_PASSWORD: '123456'

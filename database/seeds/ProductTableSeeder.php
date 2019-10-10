@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Models\Module;
 use App\Models\Product;
-use Carbon\Carbon;
 use Faker\Factory;
 use Mathrix\Lumen\Zero\Database\BaseTableSeeder;
 
