@@ -7,14 +7,13 @@ use App\Models\Category;
 use App\Models\Chapter;
 use App\Models\Comment;
 use App\Models\Country;
-use App\Models\Discount;
 use App\Models\Module;
 use App\Models\Notion;
 use App\Models\Post;
-use App\Models\Product;
 use App\Models\Report;
 use App\Models\User;
 use App\Models\Vote;
+use Illuminate\Support\Facades\DB;
 use Mathrix\Lumen\Zero\Database\BaseTableSeeder;
 
 class DatabaseSeeder extends BaseTableSeeder
@@ -33,10 +32,7 @@ class DatabaseSeeder extends BaseTableSeeder
 
         // Users
         $this->seedFromFactory(User::class, 100);
-        User::query()->firstOrFail()->update([
-            'scopes' => ['*'],
-            'email' => 'admin@mathrix.fr',
-        ]);
+        DB::update("UPDATE users SET `email` = 'admin@mathrix.fr', scopes = '[\"*\"]' WHERE id = 1");
 
         // Categories & Posts
         $this->seedFromFactory(Category::class, 10);

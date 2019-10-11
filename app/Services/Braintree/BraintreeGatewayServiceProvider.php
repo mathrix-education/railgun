@@ -31,8 +31,4 @@ class BraintreeGatewayServiceProvider extends ServiceProvider
             ]);
         });
     }
-
-    public function register(): void
-    {
-    }
 }

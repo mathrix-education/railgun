@@ -11,4 +11,4 @@ composer install \
   --no-progress \
   --no-ansi
 
-composer compile:docs
+composer docs:compile

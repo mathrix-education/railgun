@@ -12,7 +12,6 @@ use Mathrix\Lumen\JWT\Auth\JWT;
 use Mathrix\Lumen\Zero\Testing\Traits\DebugTrait;
 use Mathrix\Lumen\Zero\Testing\Traits\RESTTrait;
 use Mathrix\OpenAPI\Assertions\Lumen\LumenOpenAPIAssertions;
-use Throwable;
 use function strtolower;
 
 /**
@@ -71,13 +70,13 @@ class APIStatefulTestCase extends BaseTestCase
         $paths = self::$schema->paths;
 
         if (!isset($paths[$openAPIUri])) {
-            $this->fail('$openAPIUri PathItem does not exist in the OpenAPI specification.');
+            $this->fail("$openAPIUri PathItem does not exist in the OpenAPI specification.");
         }
 
         $pathItem = $paths[$openAPIUri];
 
         if (!isset($pathItem->{$method})) {
-            $this->fail('$openAPIUri does not support $method method.');
+            $this->fail("$openAPIUri does not support $method method.");
         }
 
         /** @var Operation $operation */
@@ -88,12 +87,6 @@ class APIStatefulTestCase extends BaseTestCase
         }
 
         return $operation->security[0]->{$security};
-    }
-
-    public function onNotSuccessfulTest(Throwable $t): void
-    {
-        $this->debug();
-        parent::onNotSuccessfulTest($t);
     }
 
     /**
