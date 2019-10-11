@@ -7,7 +7,7 @@
 /.idea/httpRequests/
 /.idea/modules.xml
 /.idea/deployment.xml
-/.idea/php.xml
+/.idea/vagrant.xml
 
 # Vendors
 /node_modules/
@@ -19,7 +19,6 @@
 /resources/views/docs/index.html
 /resources/views/mails
 /storage/code-coverage/
-/.phpunit.result.cache
 
 # Secrets
 /.env

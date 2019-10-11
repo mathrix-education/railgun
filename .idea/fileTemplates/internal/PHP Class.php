@@ -1,8 +1,11 @@
 <?php
-#if (${NAMESPACE})namespace ${NAMESPACE};
+#parse("PHP File Header.php")
+
+#if (${NAMESPACE})
+namespace ${NAMESPACE};
 #end
 
-#parse ("PHP Class Doc Comment.php")
+#parse("PHP Class Doc Comment.php")
 class ${NAME} {
 
 }

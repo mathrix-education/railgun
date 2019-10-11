@@ -1,5 +1,2 @@
-/**
- * @author Mathieu Bour <mathieu.tin.bour@gmail.com>
- * @since ${CARET}
- * @copyright Mathrix Education SA
- */
+
+declare(strict_types=1);
