@@ -116,8 +116,8 @@ jobs:
           path: storage/artifacts
       - name: Patch Clover coverage report
         run: |
-          head -n 10 storage/artifacts/phpunit-coverage.xml
-          sed -i 's/\/home\/runner\/work\/education-api\/education-api/\/github\/workflow/g' storage/artifacts/phpunit-coverage.xml
+          sed -i 's/\/home\/runner\/work\/education-api\/education-api/\/github\/workflow/g' \
+            storage/artifacts/phpunit-coverage.xml
       - name: Analyse with Sonar Scanner
         uses: docker://skilldlabs/sonar-scanner:3.3
         with:
