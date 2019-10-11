@@ -1,4 +1,4 @@
-name: Tests
+name: Quality assessment
 on: push
 jobs:
   lint:
@@ -18,8 +18,8 @@ jobs:
         run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
       - name: Lint with PHP_CodeSniffer
         run: composer lint:details
-  paratest:
-    name: Run PHPUnit tests, analyse with Sonar Scanner
+  test:
+    name: Test with PHPUnit
     runs-on: ubuntu-latest
     services:
       mysql:
@@ -75,9 +75,27 @@ jobs:
           STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
           BRAINTREE_PRIVATE_KEY: ${{ secrets.BRAINTREE_PRIVATE_KEY }}
         run: composer test:cover
-      - name: Setup Sonar project
+      - name: Upload JUnit report
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: phpunit-junit.xml
+          path: storage/artifacts/phpunit-junit.xml
+      - name: Upload Clover coverage report
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: phpunit-coverage.xml
+          path: storage/artifacts/phpunit-coverage.xml
+  analyse:
+    name: Analyse with Sonar Scanner
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Unshallow
+        run: git checkout "${GITHUB_REF:11}"
+      - name: Setup sonar.properties
         run: |
-          git checkout "${GITHUB_REF:11}"
           CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
           if [[ "$CURRENT_BRANCH" = "dev" ]]; then
             PARENT_BRANCH="master"
@@ -86,9 +104,21 @@ jobs:
           fi
           echo "sonar.branch.name=${CURRENT_BRANCH}" >> sonar-project.properties
           echo "sonar.branch.target=${PARENT_BRANCH}" >> sonar-project.properties
-
-          sed -i 's/\/home\/runner\/work\/education-api\/education-api/\/github\/workspace/g' artifacts/phpunit-coverage.xml
-      - name: Send test results to Sonarqube
+      - name: Download JUnit report
+        uses: actions/download-artifact@v1.0.0
+        with:
+          name: phpunit-junit.xml
+          path: storage/artifacts
+      - name: Download Clover coverage report
+        uses: actions/download-artifact@v1.0.0
+        with:
+          name: phpunit-coverage.xml
+          path: storage/artifacts
+      - name: Patch Clover coverage report
+        run: |
+          sed -i 's/\/home\/runner\/work\/education-api\/education-api/\/github\/workflow/g' \
+            storage/artifacts/phpunit-coverage.xml
+      - name: Analyse with Sonar Scanner
         uses: docker://skilldlabs/sonar-scanner:3.3
         with:
           entrypoint: sonar-scanner
