@@ -1,4 +1,4 @@
-name: Tests
+name: Quality assessment
 on: push
 jobs:
   lint:
@@ -78,12 +78,12 @@ jobs:
       - name: Upload JUnit report
         uses: actions/upload-artifact@v1.0.0
         with:
-          name: phpunit-junit-${{ github.sha	}}.xml
+          name: phpunit-junit.xml
           path: storage/artifacts/phpunit-junit.xml
       - name: Upload Clover coverage report
         uses: actions/upload-artifact@v1.0.0
         with:
-          name: phpunit-coverage-${{ github.sha	}}.xml
+          name: phpunit-coverage.xml
           path: storage/artifacts/phpunit-coverage.xml
   analyse:
     name: Analyse with Sonar Scanner
@@ -107,17 +107,17 @@ jobs:
       - name: Download JUnit report
         uses: actions/download-artifact@v1.0.0
         with:
-          name: phpunit-junit-${{ github.sha	}}.xml
-          path: storage/artifacts/phpunit-junit.xml
+          name: phpunit-junit.xml
+          path: storage/artifacts
       - name: Download Clover coverage report
         uses: actions/download-artifact@v1.0.0
         with:
-          name: phpunit-coverage-${{ github.sha	}}.xml
-          path: storage/artifacts/phpunit-coverage.xml
+          name: phpunit-coverage.xml
+          path: storage/artifacts
       - name: Patch Clover coverage report
         run: |
           head -n 10 storage/artifacts/phpunit-coverage.xml
-          sed -i 's/$(pwd)/\/github\/workspace/g' storage/artifacts/phpunit-coverage.xml
+          sed -i 's/\/home\/runner\/work\/education-api\/education-api/\/github\/workflow/g' storage/artifacts/phpunit-coverage.xml
       - name: Analyse with Sonar Scanner
         uses: docker://skilldlabs/sonar-scanner:3.3
         with:
