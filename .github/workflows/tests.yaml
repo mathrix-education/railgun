@@ -18,8 +18,8 @@ jobs:
         run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
       - name: Lint with PHP_CodeSniffer
         run: composer lint:details
-  paratest:
-    name: Run PHPUnit tests, analyse with Sonar Scanner
+  test:
+    name: Test with PHPUnit
     runs-on: ubuntu-latest
     services:
       mysql:
@@ -75,29 +75,51 @@ jobs:
           STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
           BRAINTREE_PRIVATE_KEY: ${{ secrets.BRAINTREE_PRIVATE_KEY }}
         run: composer test:cover
-      - uses: actions/upload-artifact@v1.0.0
+      - name: Upload JUnit report
+        uses: actions/upload-artifact@v1.0.0
         with:
           name: phpunit-junit-${{ github.sha	}}.xml
           path: storage/artifacts/phpunit-junit.xml
-      - uses: actions/upload-artifact@v1.0.0
+      - name: Upload Clover coverage report
+        uses: actions/upload-artifact@v1.0.0
         with:
           name: phpunit-coverage-${{ github.sha	}}.xml
           path: storage/artifacts/phpunit-coverage.xml
-#      - name: Setup Sonar project
-#        run: |
-#          git checkout "${GITHUB_REF:11}"
-#          CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-#          if [[ "$CURRENT_BRANCH" = "dev" ]]; then
-#            PARENT_BRANCH="master"
-#          else
-#            PARENT_BRANCH="dev"
-#          fi
-#          echo "sonar.branch.name=${CURRENT_BRANCH}" >> sonar-project.properties
-#          echo "sonar.branch.target=${PARENT_BRANCH}" >> sonar-project.properties
-#
-#          sed -i 's/\/home\/runner\/work\/education-api\/education-api/\/github\/workspace/g' artifacts/phpunit-coverage.xml
-#      - name: Send test results to Sonarqube
-#        uses: docker://skilldlabs/sonar-scanner:3.3
-#        with:
-#          entrypoint: sonar-scanner
-#          args: -Dsonar.projectBaseDir=. -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+  analyse:
+    name: Analyse with Sonar Scanner
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Unshallow
+        run: git checkout "${GITHUB_REF:11}"
+      - name: Setup sonar.properties
+        run: |
+          CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+          if [[ "$CURRENT_BRANCH" = "dev" ]]; then
+            PARENT_BRANCH="master"
+          else
+            PARENT_BRANCH="dev"
+          fi
+          echo "sonar.branch.name=${CURRENT_BRANCH}" >> sonar-project.properties
+          echo "sonar.branch.target=${PARENT_BRANCH}" >> sonar-project.properties
+      - name: Download JUnit report
+        uses: actions/download-artifact@v1.0.0
+        with:
+          name: phpunit-junit-${{ github.sha	}}.xml
+          path: storage/artifacts/phpunit-junit.xml
+      - name: Download Clover coverage report
+        uses: actions/download-artifact@v1.0.0
+        with:
+          name: phpunit-coverage-${{ github.sha	}}.xml
+          path: storage/artifacts/phpunit-coverage.xml
+      - name: Patch Clover coverage report
+        run: |
+          head -n 10 storage/artifacts/phpunit-coverage.xml
+          sed -i 's/$(pwd)/\/github\/workspace/g' storage/artifacts/phpunit-coverage.xml
+      - name: Analyse with Sonar Scanner
+        uses: docker://skilldlabs/sonar-scanner:3.3
+        with:
+          entrypoint: sonar-scanner
+          args: -Dsonar.projectBaseDir=. -Dsonar.login=${{ secrets.SONAR_TOKEN }}
