@@ -75,21 +75,29 @@ jobs:
           STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
           BRAINTREE_PRIVATE_KEY: ${{ secrets.BRAINTREE_PRIVATE_KEY }}
         run: composer test:cover
-      - name: Setup Sonar project
-        run: |
-          git checkout "${GITHUB_REF:11}"
-          CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-          if [[ "$CURRENT_BRANCH" = "dev" ]]; then
-            PARENT_BRANCH="master"
-          else
-            PARENT_BRANCH="dev"
-          fi
-          echo "sonar.branch.name=${CURRENT_BRANCH}" >> sonar-project.properties
-          echo "sonar.branch.target=${PARENT_BRANCH}" >> sonar-project.properties
-
-          sed -i 's/\/home\/runner\/work\/education-api\/education-api/\/github\/workspace/g' artifacts/phpunit-coverage.xml
-      - name: Send test results to Sonarqube
-        uses: docker://skilldlabs/sonar-scanner:3.3
+      - uses: actions/upload-artifact@v1.0.0
         with:
-          entrypoint: sonar-scanner
-          args: -Dsonar.projectBaseDir=. -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          name: phpunit-junit-${{ github.sha	}}.xml
+          path: storage/artifacts/phpunit-junit.xml
+      - uses: actions/upload-artifact@v1.0.0
+        with:
+          name: phpunit-coverage-${{ github.sha	}}.xml
+          path: storage/artifacts/phpunit-coverage.xml
+#      - name: Setup Sonar project
+#        run: |
+#          git checkout "${GITHUB_REF:11}"
+#          CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+#          if [[ "$CURRENT_BRANCH" = "dev" ]]; then
+#            PARENT_BRANCH="master"
+#          else
+#            PARENT_BRANCH="dev"
+#          fi
+#          echo "sonar.branch.name=${CURRENT_BRANCH}" >> sonar-project.properties
+#          echo "sonar.branch.target=${PARENT_BRANCH}" >> sonar-project.properties
+#
+#          sed -i 's/\/home\/runner\/work\/education-api\/education-api/\/github\/workspace/g' artifacts/phpunit-coverage.xml
+#      - name: Send test results to Sonarqube
+#        uses: docker://skilldlabs/sonar-scanner:3.3
+#        with:
+#          entrypoint: sonar-scanner
+#          args: -Dsonar.projectBaseDir=. -Dsonar.login=${{ secrets.SONAR_TOKEN }}
