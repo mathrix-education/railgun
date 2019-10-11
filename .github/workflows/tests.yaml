@@ -66,7 +66,7 @@ jobs:
           cp environments/testing/.env .env
           php artisan jwt:key
           php artisan migrate --seed
-      - name: Test with Paratest
+      - name: Test with PHPUnit
         env:
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
           DB_PASSWORD: '123456'
@@ -86,7 +86,8 @@ jobs:
           fi
           echo "sonar.branch.name=${CURRENT_BRANCH}" >> sonar-project.properties
           echo "sonar.branch.target=${PARENT_BRANCH}" >> sonar-project.properties
-          cat sonar-project.properties
+
+          sed -i 's/\/home\/runner\/work\/education-api\/education-api/\/github\/workspace/g' artifacts/phpunit-coverage.xml
       - name: Send test results to Sonarqube
         uses: docker://skilldlabs/sonar-scanner:3.3
         with:
