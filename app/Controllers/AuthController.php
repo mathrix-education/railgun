@@ -18,9 +18,9 @@ use Mathrix\Lumen\Zero\Controllers\BaseController;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Zero\Exceptions\ValidationException;
 use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
+use Ramsey\Uuid\Uuid;
 use stdClass;
 use function json_decode;
-use function uuid;
 
 /**
  * Serve routes starting with /auth
@@ -141,7 +141,7 @@ class AuthController extends BaseController
             throw new Http400BadRequestException(null, 'Cannot reset password of a facebook account');
         }
 
-        $user->token = uuid();
+        $user->token = Uuid::uuid4()->toString();
         $user->save();
 
         // Send the password forgotten mail

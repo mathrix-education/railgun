@@ -15,6 +15,8 @@ use function mb_strlen;
 
 /**
  * Monolog Formatter for Google Cloud Run output.
+ *
+ * @codeCoverageIgnore
  */
 class StackdriverFormatter extends JsonFormatter
 {

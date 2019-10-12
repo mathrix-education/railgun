@@ -5,42 +5,114 @@ declare(strict_types=1);
 namespace App\Policies;
 
 use App\Models\User;
-use function scope;
 
+/**
+ * Describe the user policy.
+ */
 class UserPolicy extends BasePolicy
 {
-    public function get(User $currentUser, User $user): bool
+    /**
+     * Check that the current user is the same user as the target user or has the given scope.
+     *
+     * @param User        $current The current (logged) user.
+     * @param User        $target  The target user.
+     * @param string|null $scope   The required scope. May be null and if so, the scope check is ignored.
+     *
+     * @return bool If the action is permitted.
+     */
+    private function isOrHasScope(User $current, User $target, ?string $scope = null): bool
     {
-        return $currentUser->is($user) || scope($currentUser, 'users:read');
+        return $current->is($target) || ($scope !== null && $current->hasScope($scope));
     }
 
-    public function patch(User $currentUser, User $user): bool
+    /**
+     * Check the user get permission.
+     *
+     * @param User $current The current (logged) user.
+     * @param User $target  The target user.
+     *
+     * @return bool If the get action is permitted.
+     */
+    public function get(User $current, User $target): bool
     {
-        return $currentUser->is($user) || scope($currentUser, 'users:write');
+        return $this->isOrHasScope($current, $target, 'users:read');
     }
 
-    public function delete(User $currentUser, User $user): bool
+    /**
+     * Check the user patch permission.
+     *
+     * @param User $current The current (logged) user.
+     * @param User $target  The target user.
+     *
+     * @return bool If the patch action is permitted.
+     */
+    public function patch(User $current, User $target): bool
     {
-        return $currentUser->is($user) || scope($currentUser, 'users:delete');
+        return $this->isOrHasScope($current, $target, 'users:write');
     }
 
-    public function points(User $currentUser, User $user): bool
+    /**
+     * Check the user delete permission.
+     *
+     * @param User $current The current (logged) user.
+     * @param User $target  The target user.
+     *
+     * @return bool If the delete action is permitted.
+     */
+    public function delete(User $current, User $target): bool
     {
-        return $currentUser->is($user) || scope($currentUser, 'users:write');
+        return $this->isOrHasScope($current, $target, 'users:delete');
     }
 
-    public function subscriptions(User $currentUser, User $user): bool
+    /**
+     * Check the user points permission.
+     *
+     * @param User $current The current (logged) user.
+     * @param User $target  The target user.
+     *
+     * @return bool If the points action is permitted.
+     */
+    public function points(User $current, User $target): bool
     {
-        return $currentUser->is($user) || scope($currentUser, 'subscriptions:read');
+        return $this->isOrHasScope($current, $target, 'users:write');
     }
 
-    public function products(User $currentUser, User $user): bool
+    /**
+     * Check the user points permission.
+     *
+     * @param User $current The current (logged) user.
+     * @param User $target  The target user.
+     *
+     * @return bool If the points action is permitted.
+     */
+    public function subscriptions(User $current, User $target): bool
     {
-        return $currentUser->is($user) || scope($currentUser, 'products:read');
+        return $this->isOrHasScope($current, $target, 'subscriptions:read');
     }
 
-    public function purchases(User $currentUser, User $user): bool
+    /**
+     * Check the user products permission.
+     *
+     * @param User $current The current (logged) user.
+     * @param User $target  The target user.
+     *
+     * @return bool If the products action is permitted.
+     */
+    public function products(User $current, User $target): bool
     {
-        return $currentUser->is($user) || scope($currentUser, 'purchases:read');
+        return $this->isOrHasScope($current, $target, 'products:read');
+    }
+
+    /**
+     * Check the user products permission.
+     *
+     * @param User $current The current (logged) user.
+     * @param User $target  The target user.
+     *
+     * @return bool If the products action is permitted.
+     */
+    public function purchases(User $current, User $target): bool
+    {
+        return $this->isOrHasScope($current, $target, 'purchases:read');
     }
 }

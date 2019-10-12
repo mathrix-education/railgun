@@ -19,20 +19,16 @@ class SetupIntent extends Bishop
 
     public static function from($setupIntent)
     {
-        if ($setupIntent instanceof StripeSetupIntent) {
-            return new self(self::fromStripe($setupIntent));
-        }
-
-        return null;
+        return new self(self::fromStripe($setupIntent));
     }
 
     public static function fromStripe(StripeSetupIntent $setupIntent)
     {
         return [
-            'id' => $setupIntent->id,
+            'id'            => $setupIntent->id,
             'client_secret' => $setupIntent->client_secret,
-            'created_at' => $setupIntent->created,
-            'status' => $setupIntent->status,
+            'created_at'    => $setupIntent->created,
+            'status'        => $setupIntent->status,
         ];
     }
 }

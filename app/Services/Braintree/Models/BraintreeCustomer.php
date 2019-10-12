@@ -26,23 +26,27 @@ trait BraintreeCustomer
      */
     public function getBraintreeSubscriptions(): Collection
     {
-        if (! $this->isBraintreeCustomer()) {
+        if (!$this->isBraintreeCustomer()) {
             return new Collection();
         }
 
-        return $this->cache(self::$BraintreeSubscriptionsCacheKey, 7 * 24 * 3600, function () {
-            $subscriptions = new Collection();
+        return $this->cache(
+            self::$BraintreeSubscriptionsCacheKey,
+            7 * 24 * 3600,
+            function () {
+                $subscriptions = new Collection();
 
-            /** @var PaymentMethod $paymentMethod */
-            foreach ($this->asBraintreeCustomer()->paymentMethods as $paymentMethod) {
-                /** @var Subscription $subscription */
-                foreach ($paymentMethod->subscriptions as $subscription) {
-                    $subscriptions->push($subscription);
+                /** @var PaymentMethod $paymentMethod */
+                foreach ($this->asBraintreeCustomer()->paymentMethods as $paymentMethod) {
+                    /** @var Subscription $subscription */
+                    foreach ($paymentMethod->subscriptions as $subscription) {
+                        $subscriptions->push($subscription);
+                    }
                 }
-            }
 
-            return $subscriptions;
-        });
+                return $subscriptions;
+            }
+        );
     }
 
     /**
@@ -58,11 +62,11 @@ trait BraintreeCustomer
             return false;
         }
 
-        if (! $strict) {
+        if (!$strict) {
             return true;
         }
 
-        return $this->getBraintreeCustomer() instanceof Customer;
+        return $this->asBraintreeCustomer() instanceof Customer;
     }
 
     /**
@@ -70,19 +74,25 @@ trait BraintreeCustomer
      */
     public function asBraintreeCustomer(): ?Customer
     {
-        if (! $this->isBraintreeCustomer()) {
+        if (!$this->isBraintreeCustomer()) {
             return null;
         }
 
-        return $this->cache(BraintreeCustomer::$BraintreeCustomerCacheKey, 7 * 24 * 3600, function () {
-            try {
-                return gateway()->customer()->find($this->braintree_id);
-            } catch (BraintreeNotFound $e) {
-                $this->braintree_id = null;
-                $this->save();
+        return $this->cache(
+            BraintreeCustomer::$BraintreeCustomerCacheKey,
+            7 * 24 * 3600,
+            function () {
+                try {
+                    return gateway()
+                        ->customer()
+                        ->find($this->braintree_id);
+                } catch (BraintreeNotFound $e) {
+                    $this->braintree_id = null;
+                    $this->save();
 
-                return null;
+                    return null;
+                }
             }
-        });
+        );
     }
 }

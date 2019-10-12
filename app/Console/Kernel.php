@@ -20,6 +20,7 @@ class Kernel extends ConsoleKernel
     /** @var string[] The Artisan commands. */
     protected $commands = [
         TestCommand::class,
+        CacheCleanCommand::class,
         EncryptCommand::class,
         DecryptCommand::class,
         SetupCommand::class,
@@ -29,15 +30,17 @@ class Kernel extends ConsoleKernel
      * Define the application's command schedule.
      *
      * @param Schedule $schedule The Laravel scheduler instance.
+     *
+     * @codeCoverageIgnore
      */
     protected function schedule(Schedule $schedule): void
     {
         // Cache cleaning every ten minutes
         $schedule->command(CacheCleanCommand::class)
-                 ->everyTenMinutes();
+            ->everyTenMinutes();
 
         // Queue worker every minute
         $schedule->command('queue:work --stop-when-empty')
-                 ->everyMinute();
+            ->everyMinute();
     }
 }

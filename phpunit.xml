@@ -20,7 +20,6 @@
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./app</directory>
             <exclude>
-                <directory>./app/Console</directory>
                 <directory>./app/Registrars</directory>
             </exclude>
         </whitelist>

@@ -25,20 +25,20 @@ use function intval;
 use function round;
 
 /**
- * @property-read string $id
- * @property-read string $type
- * @property-read Carbon $cancel_at
- * @property-read bool $cancel_at_period_end
- * @property-read Carbon $canceled_at
- * @property-read Carbon $created_at
- * @property-read Carbon $current_period_start
- * @property-read Carbon $current_period_end
- * @property-read string $customer
+ * @property-read string      $id
+ * @property-read string      $type
+ * @property-read Carbon      $cancel_at
+ * @property-read bool        $cancel_at_period_end
+ * @property-read Carbon      $canceled_at
+ * @property-read Carbon      $created_at
+ * @property-read Carbon      $current_period_start
+ * @property-read Carbon      $current_period_end
+ * @property-read string      $customer
  * @property-read SetupIntent $pending_setup_intent
- * @property-read array $plan
- * @property-read array $payment_method
- * @property-read string $status
- * @property-read Carbon $trial_end
+ * @property-read array       $plan
+ * @property-read array       $payment_method
+ * @property-read string      $status
+ * @property-read Carbon      $trial_end
  */
 class Subscription extends Bishop
 {
@@ -64,11 +64,7 @@ class Subscription extends Bishop
             return new self(self::fromStripe($subscription));
         }
 
-        if ($subscription instanceof BraintreeSubscription) {
-            return new self(self::fromBraintree($subscription));
-        }
-
-        return null;
+        return new self(self::fromBraintree($subscription));
     }
 
     /**
@@ -110,28 +106,28 @@ class Subscription extends Bishop
         }
 
         return [
-            'type' => 'stripe',
-            'id' => $subscription->id,
-            'cancel_at' => $subscription->cancel_at,
+            'type'                 => 'stripe',
+            'id'                   => $subscription->id,
+            'cancel_at'            => $subscription->cancel_at,
             'cancel_at_period_end' => $subscription->cancel_at_period_end,
-            'canceled_at' => $subscription->canceled_at,
-            'created_at' => $subscription->created,
+            'canceled_at'          => $subscription->canceled_at,
+            'created_at'           => $subscription->created,
             'current_period_start' => $subscription->current_period_start,
-            'current_period_end' => $subscription->current_period_end,
-            'customer' => $subscription->customer,
-            'latest_invoice' => $subscription->latest_invoice instanceof StripeInvoice
+            'current_period_end'   => $subscription->current_period_end,
+            'customer'             => $subscription->customer,
+            'latest_invoice'       => $subscription->latest_invoice instanceof StripeInvoice
                 ? Invoice::from($subscription->latest_invoice)
                 : $subscription->latest_invoice,
             'pending_setup_intent' => $subscription->pending_setup_intent instanceof StripeSetupIntent
                 ? SetupIntent::from($subscription->pending_setup_intent)
                 : $subscription->pending_setup_intent,
-            'plan' => [
-                'id' => $subscription->plan->id,
+            'plan'                 => [
+                'id'     => $subscription->plan->id,
                 'amount' => $subscription->plan->amount,
             ],
-            'payment_method' => $card !== null ? \App\Services\Bishop\Card::from($card) : null,
-            'status' => $subscription->status,
-            'trial_end' => $subscription->trial_end,
+            'payment_method'       => $card !== null ? \App\Services\Bishop\Card::from($card) : null,
+            'status'               => $subscription->status,
+            'trial_end'            => $subscription->trial_end,
         ];
     }
 
@@ -164,7 +160,7 @@ class Subscription extends Bishop
         }
 
         $paymentMethodObj = null;
-        $hasTransactions  = ! empty($subscription->transactions);
+        $hasTransactions  = !empty($subscription->transactions);
 
         if ($hasTransactions) {
             // If there is at least one transaction, we can retrieve the customer from the latest transaction.
@@ -172,7 +168,9 @@ class Subscription extends Bishop
         } else {
             // If the is no transaction, we have to find the associated payment method.
             try {
-                $paymentMethodObj = gateway()->paymentMethod()->find($subscription->paymentMethodToken);
+                $paymentMethodObj = gateway()
+                    ->paymentMethod()
+                    ->find($subscription->paymentMethodToken);
                 $customer         = $paymentMethodObj->customerId;
             } catch (NotFound $exception) {
                 $paymentMethodObj = null;
@@ -191,9 +189,9 @@ class Subscription extends Bishop
                 $cardDetails = $transaction->creditCardDetails;
 
                 $paymentMethod = [
-                    'type' => 'card',
-                    'brand' => Str::slug($cardDetails->cardType),
-                    'last4' => $cardDetails->last4,
+                    'type'       => 'card',
+                    'brand'      => Str::slug($cardDetails->cardType),
+                    'last4'      => $cardDetails->last4,
                     'expiration' => Carbon::create(
                         intval($cardDetails->expirationYear),
                         intval($cardDetails->expirationMonth),
@@ -219,9 +217,9 @@ class Subscription extends Bishop
              */
             if ($paymentMethodObj instanceof CreditCard) {
                 $paymentMethod = [
-                    'type' => 'card',
-                    'brand' => Str::slug($paymentMethodObj->cardType),
-                    'last4' => $paymentMethodObj->last4,
+                    'type'       => 'card',
+                    'brand'      => Str::slug($paymentMethodObj->cardType),
+                    'last4'      => $paymentMethodObj->last4,
                     'expiration' => Carbon::create(
                         intval($paymentMethodObj->expirationYear),
                         intval($paymentMethodObj->expirationMonth),
@@ -233,7 +231,7 @@ class Subscription extends Bishop
                 ];
             } elseif ($paymentMethodObj instanceof PayPalAccount) {
                 $paymentMethod = [
-                    'type' => 'paypal',
+                    'type'  => 'paypal',
                     'email' => $paymentMethodObj->email,
                 ];
             } else {
@@ -262,26 +260,26 @@ class Subscription extends Bishop
         }
 
         return [
-            'type' => 'braintree',
-            'id' => $subscription->id,
-            'cancel_at' => $cancelAt,
+            'type'                 => 'braintree',
+            'id'                   => $subscription->id,
+            'cancel_at'            => $cancelAt,
             'cancel_at_period_end' => $cancelAtPeriodEnd,
-            'canceled_at' => in_array(
+            'canceled_at'          => in_array(
                 $subscription->status,
                 [BraintreeSubscription::CANCELED, BraintreeSubscription::EXPIRED]
             )
                 ? $subscription->updatedAt : null,
-            'created_at' => $subscription->createdAt,
+            'created_at'           => $subscription->createdAt,
             'current_period_start' => $subscription->billingPeriodStartDate,
-            'current_period_end' => $subscription->billingPeriodEndDate,
-            'customer' => $customer,
-            'plan' => [
-                'id' => $subscription->planId,
+            'current_period_end'   => $subscription->billingPeriodEndDate,
+            'customer'             => $customer,
+            'plan'                 => [
+                'id'     => $subscription->planId,
                 'amount' => round(floatval($subscription->price) * 100),
             ],
-            'payment_method' => $paymentMethod,
-            'status' => $status,
-            'trial_end' => $trialEnd,
+            'payment_method'       => $paymentMethod,
+            'status'               => $status,
+            'trial_end'            => $trialEnd,
         ];
     }
 }

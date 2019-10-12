@@ -31,6 +31,6 @@ class MailsTest extends APIStatelessTestCase
      */
     public function testMailsRender(string $mailClass): void
     {
-        $this->assertInstanceOf($mailClass, $mailClass::mock());
+        $this->assertInstanceOf($mailClass, $mailClass::mock()->build());
     }
 }
