@@ -23,6 +23,7 @@ class InvoicePaymentSucceededWebhook extends BaseWebhook
      */
     public function handle($invoice): SuccessJsonResponse
     {
+        // Handle products delivery
         /** @var InvoiceLineItem $lineItem */
         foreach ($invoice->lines as $lineItem) {
             if (!isset($lineItem->metadata['product_id'], $lineItem->metadata['user_id'])) {
