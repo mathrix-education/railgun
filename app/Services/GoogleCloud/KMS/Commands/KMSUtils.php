@@ -10,6 +10,11 @@ use function array_merge;
 use function base_path;
 use function glob;
 
+/**
+ * Set of utils for Google Cloud KMS.
+ *
+ * @codeCoverageIgnore
+ */
 class KMSUtils
 {
     /**

@@ -15,26 +15,31 @@ use Illuminate\Support\Facades\Hash;
  * @var Factory $factory
  */
 $factory->define(User::class, static function (Generator $faker) {
-    $names                   = $faker->boolean(30);
-    $points                  = $faker->numberBetween(0, 100) * 10;
+    $names  = $faker->boolean(30);
+    $points = $faker->numberBetween(0, 100) * 10;
+
     [$createdAt, $updatedAt] = timestamps();
 
     $data = [
-        'username' => ! $names ? $faker->userName : null,
-        'email' => $faker->email,
-        'firstname' => $names ? $faker->firstName : null,
-        'lastname' => $names ? $faker->lastName : null,
-        'password' => Cache::remember('DB_PASSWORD.hash', 30, static function () {
-            return Hash::make(env('DB_PASSWORD'));
-        }),
-        'scopes' => [],
-        'token' => $faker->uuid,
-        'points' => $points,
-        'daily' => $faker->randomElement([10, 20, 40]),
-        'settings' => [
+        'username'   => !$names ? $faker->userName : null,
+        'email'      => $faker->email,
+        'firstname'  => $names ? $faker->firstName : null,
+        'lastname'   => $names ? $faker->lastName : null,
+        'password'   => Cache::remember(
+            'DB_PASSWORD.hash',
+            30,
+            static function () {
+                return Hash::make(env('DB_PASSWORD'));
+            }
+        ),
+        'scopes'     => [],
+        'token'      => $faker->uuid,
+        'points'     => $points,
+        'daily'      => $faker->randomElement([10, 20, 40]),
+        'settings'   => [
             'sound' => $faker->boolean(70),
         ],
-        'grade_id' => Grade::random()->id,
+        'grade_id'   => Grade::random()->id,
         'created_at' => $createdAt,
         'updated_at' => $updatedAt,
     ];

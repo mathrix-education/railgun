@@ -9,6 +9,8 @@ use Mathrix\Lumen\Zero\Console\Commands\BaseCommand;
 /**
  * Test command which is mainly used as a sandbox during development.
  * The content of the TestCommand::handle() may be kept empty.
+ *
+ * @codeCoverageIgnore
  */
 class TestCommand extends BaseCommand
 {

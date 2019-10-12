@@ -26,7 +26,7 @@ abstract class BaseObserver
         $relation = $model->{$relationName}();
 
         // Handle HasMany relations
-        if (! ($relation instanceof HasMany)) {
+        if (!($relation instanceof HasMany)) {
             return;
         }
 
@@ -36,7 +36,7 @@ abstract class BaseObserver
             return;
         }
 
-        if (! $delete) {
+        if (!$delete) {
             throw new ForeignConstraints($model, $relationName);
         }
 

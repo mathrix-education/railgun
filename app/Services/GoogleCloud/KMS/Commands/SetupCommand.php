@@ -12,6 +12,8 @@ use function str_replace;
 
 /**
  * Setup the container by decrypting secrets and moving them at the right place.
+ *
+ * @codeCoverageIgnore
  */
 class SetupCommand extends BaseCommand
 {

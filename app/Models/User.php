@@ -178,28 +178,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     */
 
     /**
-     * Laravel "dynamic scope" to query users with a specific scope (permission).
-     *
-     * @link https://laravel.com/docs/5.8/eloquent
-     *
-     * @param Builder $query
-     * @param string  $scope
-     *
-     * @return Builder|\Illuminate\Database\Query\Builder
-     */
-    public function scopeScope(Builder $query, string $scope)
-    {
-        return $query->whereRaw("JSON_SEARCH(scopes, 'one', ?) IS NOT NULL", [$scope])
-            ->orWhereRaw("JSON_SEARCH(scopes, 'one', '*') IS NOT NULL");
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Methods
-    |--------------------------------------------------------------------------
-    */
-
-    /**
      * Check if user has purchased the given product.
      *
      * @param Product $product

@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Models\Chapter;
 use App\Models\User;
+use App\Services\Sitemap\SitemapUtils;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Response;
@@ -21,7 +22,6 @@ use Thepixeldeveloper\Sitemap\Urlset;
 use function collect;
 use function explode;
 use function file_get_contents;
-use function loc;
 use function microtime;
 use function preg_match_all;
 use function resource_path;
@@ -33,6 +33,26 @@ use function time;
  */
 class SystemController extends BaseController
 {
+    /**
+     * Run a benchmark.
+     *
+     * @param callable $test  The benchmark.
+     * @param int      $count The number of iteration to run.
+     *
+     * @return float|int The benchmark duration.
+     */
+    private function benchmark(callable $test, int $count = 100)
+    {
+        $start = microtime(true);
+        for ($i = 0; $i < $count; $i++) {
+            $test($count);
+        }
+        $duration = microtime(true) - $start; // In seconds
+        $mean     = $duration / $count;
+
+        return $mean * 1000;
+    }
+
     /**
      * GET /
      * Display the Redoc generated documentation.
@@ -95,34 +115,6 @@ class SystemController extends BaseController
     }
 
     /**
-     * Run a benchmark.
-     *
-     * @param callable $test  The benchmark.
-     * @param int      $count The number of iteration to run.
-     * @param string   $unit  The unit of measure.
-     *
-     * @return float|int The benchmark duration.
-     */
-    private function benchmark(callable $test, int $count = 100, string $unit = 'ms')
-    {
-        $start = microtime(true);
-        for ($i = 0; $i < $count; $i++) {
-            $test($count);
-        }
-        $duration = microtime(true) - $start; // In seconds
-        $mean     = $duration / $count;
-
-        switch ($unit) {
-            case 'ms':
-            case 'msec':
-            case 'milliseconds':
-                return $mean * 1000;
-            default:
-                return $mean;
-        }
-    }
-
-    /**
      * GET /system/sitemap
      * Dynamically generate the sitemap.
      */
@@ -132,7 +124,7 @@ class SystemController extends BaseController
         $sitemap = new Urlset();
 
         // Add root url
-        $home = new Url(loc('/'));
+        $home = new Url(SitemapUtils::loc('/'));
         $sitemap->add($home);
 
         // Add grade urls
@@ -140,7 +132,7 @@ class SystemController extends BaseController
             ->select(['slug'])
             ->get()
             ->each(static function ($data) use ($sitemap): void {
-                $gradeUrl = new Url(loc($data->slug));
+                $gradeUrl = new Url(SitemapUtils::loc($data->slug));
                 $sitemap->add($gradeUrl);
             });
 
@@ -180,9 +172,10 @@ class SystemController extends BaseController
                     }
                 }
 
-                $loc       =
-                    "{$data->discipline_slug}/{$data->chapter_slug}/{$data->module_seo_slug}-{$data->module_id}";
-                $moduleUrl = new Url(loc($loc));
+                /** @var string $loc The internal Angular url */
+                $loc = "{$data->discipline_slug}/{$data->chapter_slug}/{$data->module_seo_slug}-{$data->module_id}";
+
+                $moduleUrl = new Url(SitemapUtils::loc($loc));
                 $moduleUrl->setLastMod(new Carbon($data->module_lastmod));
                 $moduleUrl->setPriority('1');
 

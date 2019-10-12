@@ -27,6 +27,8 @@ use function is_string;
  * account key.
  *
  * @link https://github.com/superchairon/laravel-google-cloud-storage/blob/auto-auth-fix/src/GoogleCloudStorageServiceProvider.php
+ *
+ * @codeCoverageIgnore
  */
 class GoogleCloudStorageServiceProvider extends ServiceProvider
 {
@@ -39,15 +41,18 @@ class GoogleCloudStorageServiceProvider extends ServiceProvider
     {
         $factory = $this->app->make('filesystem');
         /** @var FilesystemManager $factory */
-        $factory->extend('gcs', function ($app, $config) {
-            $storageClient = $this->createClient($config);
-            $bucket        = $storageClient->bucket($config['bucket']);
-            $pathPrefix    = Arr::get($config, 'path_prefix');
-            $storageApiUri = Arr::get($config, 'storage_api_uri');
-            $adapter       = new GoogleStorageAdapter($storageClient, $bucket, $pathPrefix, $storageApiUri);
+        $factory->extend(
+            'gcs',
+            function ($app, $config) {
+                $storageClient = $this->createClient($config);
+                $bucket        = $storageClient->bucket($config['bucket']);
+                $pathPrefix    = Arr::get($config, 'path_prefix');
+                $storageApiUri = Arr::get($config, 'storage_api_uri');
+                $adapter       = new GoogleStorageAdapter($storageClient, $bucket, $pathPrefix, $storageApiUri);
 
-            return $this->createFilesystem($adapter, $config);
-        });
+                return $this->createFilesystem($adapter, $config);
+            }
+        );
     }
 
     /**
@@ -68,7 +73,7 @@ class GoogleCloudStorageServiceProvider extends ServiceProvider
             if (is_string($keyFile)) {
                 $options['keyFilePath'] = $keyFile;
             } else {
-                if (! is_array($keyFile)) {
+                if (!is_array($keyFile)) {
                     $keyFile = [];
                 }
                 $options['keyFile'] = array_merge(['project_id' => $config['project_id']], $keyFile);
