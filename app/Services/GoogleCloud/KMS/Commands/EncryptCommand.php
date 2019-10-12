@@ -38,10 +38,12 @@ class EncryptCommand extends BaseCommand
         $this->line("Encrypting $environment");
 
         $files = KMSUtils::keychain($environment);
-        $files = array_filter($files,
+        $files = array_filter(
+            $files,
             static function (string $file) {
                 return !Str::endsWith($file, '.enc');
-            });
+            }
+        );
 
         $this->line(count($files) . ' files to encrypt');
 

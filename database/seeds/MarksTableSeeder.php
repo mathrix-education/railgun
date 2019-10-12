@@ -15,8 +15,7 @@ class MarksTableSeeder extends BaseTableSeeder
     public function run(): void
     {
         $faker      = FakerFactory::create();
-        $registered = User::query()
-            ->where('scopes', '=', '[]');
+        $registered = User::all();
         $marks      = new Collection();
 
         $this->output->writeln('<comment>Generating:</comment> marks');
@@ -41,6 +40,7 @@ class MarksTableSeeder extends BaseTableSeeder
                 }
 
                 [$createdAt, $updatedAt] = timestamps($model->created_at->__toString());
+
                 $markData = array_merge(
                     $markData,
                     [
