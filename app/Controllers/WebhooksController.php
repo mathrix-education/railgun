@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Services\Braintree\Webhooks\SubscriptionWebhook;
 use App\Services\Stripe\Webhooks\InvoicePaymentSucceededWebhook;
+use App\Services\Stripe\Webhooks\PaymentIntentSucceededWebhook;
 use App\Services\Stripe\Webhooks\SetupIntentSucceededWebhook;
 use Braintree\Exception\InvalidSignature;
 use Braintree\WebhookNotification;
@@ -50,6 +51,8 @@ class WebhooksController extends BaseController
         );
 
         switch ($event->type) {
+            case PaymentIntentSucceededWebhook::EVENT:
+                return (new PaymentIntentSucceededWebhook())->handle($event->data->object);
             case InvoicePaymentSucceededWebhook::EVENT:
                 return (new InvoicePaymentSucceededWebhook())->handle($event->data->object);
             case SetupIntentSucceededWebhook::EVENT:
