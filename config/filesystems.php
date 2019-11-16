@@ -5,7 +5,7 @@ declare(strict_types=1);
 return [
     'default' => env('FILESYSTEM_DRIVER', 'gcs'),
     'disks'   => [
-        'cdn' => [
+        'gcs' => [
             'driver'      => 'gcs',
             'project_id'  => env('GOOGLE_CLOUD_PROJECT_ID'),
             'key_file'    => env('GOOGLE_CLOUD_KEY_FILE', null) !== null
