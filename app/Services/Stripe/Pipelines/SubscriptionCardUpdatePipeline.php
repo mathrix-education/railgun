@@ -39,7 +39,7 @@ class SubscriptionCardUpdatePipeline extends Pipeline
     {
         if ($this->request->has('card.token')) {
             /** @var StripeCard $card */
-            $card = (new CustomerCardAttachPipeline())->flow()->card;
+            $card = (new CustomerCardAttachPipeline(true))->flow()->card;
             /** @var StripeCard $subscriptionCard */
             $subscriptionCard = $this->subscription->default_source;
 

@@ -76,6 +76,7 @@ $app->alias('mailer', Mailer::class);
 */
 
 $app->configure('auth');
+$app->configure('cache');
 $app->configure('cors');
 $app->configure('filesystems');
 $app->configure('logging');

@@ -12,7 +12,7 @@ return [
                 ? storage_path(env('GOOGLE_CLOUD_KEY_FILE'))
                 : null,
             'bucket'      => env('GOOGLE_CLOUD_STORAGE_BUCKET'),
-            'path_prefix' => env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX', null),
+            'path_prefix' => env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX', ''),
             'visibility'  => 'public',
         ],
     ],
