@@ -10,9 +10,8 @@ use Faker\Generator;
 use Illuminate\Support\Arr;
 use Mathrix\Lumen\Zero\Testing\BaseTestCase as ZeroTestCase;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use function array_keys;
 use function implode;
-use function is_bool;
+use function is_array;
 
 /**
  * Base test class for all application tests.
@@ -52,7 +51,6 @@ abstract class BaseTestCase extends ZeroTestCase
      */
     public function cartesian(array $spaces): array
     {
-        $spaceNames       = array_keys($spaces);
         $cartesianProduct = (new CartesianProduct($spaces))->asArray();
         $data             = [];
 
@@ -60,13 +58,11 @@ abstract class BaseTestCase extends ZeroTestCase
             $line  = Arr::flatten($value, 1);
             $parts = [];
 
-            foreach (Arr::flatten($value) as $spaceIndex => $subKey) {
-                $spaceName = $spaceNames[$spaceIndex];
-
-                if (is_bool($subKey)) {
-                    $parts[] = "{$spaceName}:{$subKey}" ? 'true' : 'false';
+            foreach ($value as $spaceName => $subKey) {
+                if (!is_array($subKey)) {
+                    $parts[] = "$spaceName:$subKey";
                 } else {
-                    $parts[] = "{$spaceName}:{$subKey}";
+                    $parts[] = "$spaceName:" . implode(',', Arr::flatten($subKey));
                 }
             }
 

@@ -13,8 +13,16 @@ use Stripe\Card as StripeCard;
  */
 class CustomerCardAttachPipeline extends Pipeline
 {
+    /** @var bool $makeDefault If the new card should become the customer's default card. */
+    private $makeDefault;
     /** @var StripeCard $card */
     public $card;
+
+    public function __construct(bool $makeDefault = false)
+    {
+        parent::__construct();
+        $this->makeDefault = $makeDefault;
+    }
 
     /**
      * @throws InvalidStripeCustomer
@@ -24,14 +32,14 @@ class CustomerCardAttachPipeline extends Pipeline
     {
         $this->validate($this->request, ['card.token' => 'required']);
 
-        if (! $this->user->isStripeCustomer()) {
+        if (!$this->user->isStripeCustomer()) {
             throw new InvalidStripeCustomer($this->user);
         }
     }
 
     protected function exchange(): void
     {
-        $this->card = $this->user->addSource((string)$this->request->json('card.token'));
+        $this->card = $this->user->addSource((string)$this->request->json('card.token'), $this->makeDefault);
     }
 
     protected function finalize(): void

@@ -17,13 +17,24 @@ class ChapterObserver extends BaseObserver
      */
     public function saved(Chapter $chapter): void
     {
-        // Purge cache
-        DB::table('cache')
+        /**
+         * Since there are performance issues with cache deletion, we will simply get the keys to delete then
+         * order the deletion of those keys.
+         *
+         * @link https://github.com/mathrix-education/education-api/issues/45
+         */
+        $table = DB::table('cache');
+
+        /** @var string[] $keys The cache keys to delete. */
+        $keys = $table
+            ->select(['key'])
             ->where('key', 'LIKE', "grade.$chapter->grade_id.discipline.$chapter->discipline_id.chapters.%")
-            ->delete();
-        DB::table('cache')
-            ->where('key', 'REGEXP', "^user\.[0-9]+\.chapter\.{$chapter->id}\.recursive$")
-            ->delete();
+            ->orWhere('key', 'LIKE', "user.%.chapter.{$chapter->id}.recursive")
+            ->get()
+            ->pluck('key')
+            ->toArray();
+
+        $table->whereIn('key', $keys)->delete();
     }
 
     /**

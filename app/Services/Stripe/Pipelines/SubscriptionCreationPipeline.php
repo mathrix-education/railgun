@@ -53,11 +53,11 @@ class SubscriptionCreationPipeline extends Pipeline
             }
         }
 
-        if ($this->user->isStripeCustomer()) {
-            return;
+        if ($this->user->isStripeCustomer() && $this->request->has('card.token')) {
+            (new CustomerCardAttachPipeline(true))->flow();
+        } elseif (!$this->user->isStripeCustomer()) {
+            (new CustomerCreationPipeline())->flow();
         }
-
-        (new CustomerCreationPipeline())->flow();
     }
 
     /**

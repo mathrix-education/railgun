@@ -12,8 +12,11 @@
         <testsuite name="Unit Test Suite">
             <directory>./tests/Unit</directory>
         </testsuite>
-        <testsuite name="IntegrationTest Suite">
+        <testsuite name="Integration Test Suite">
             <directory>./tests/Integration</directory>
+        </testsuite>
+        <testsuite name="Regression Test Suite">
+            <directory>./tests/Regression</directory>
         </testsuite>
     </testsuites>
     <filter>
