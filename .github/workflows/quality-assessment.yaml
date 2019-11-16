@@ -97,12 +97,18 @@ jobs:
         run: git checkout "${GITHUB_REF:11}"
       - name: Setup sonar.properties
         run: |
+          # Setup version
+          VERSION=$(jq -r .version composer.json)
+          echo "sonar.projectVersion=${VERSION}" >> sonar-project.properties
+
+          # Setup branches
           CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
           if [[ "$CURRENT_BRANCH" = "dev" ]]; then
             PARENT_BRANCH="master"
           else
             PARENT_BRANCH="dev"
           fi
+
           echo "sonar.branch.name=${CURRENT_BRANCH}" >> sonar-project.properties
           echo "sonar.branch.target=${PARENT_BRANCH}" >> sonar-project.properties
       - name: Download JUnit report
