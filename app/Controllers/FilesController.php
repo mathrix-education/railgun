@@ -95,7 +95,7 @@ class FilesController extends BaseController
         }
 
         if (isset($data['path'])) {
-            $prefix      = trim(env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX'), '/');
+            $prefix      = trim(env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX', ''), '/');
             $data['url'] = trim(env('CDN_URL')) . '/' . (!empty($prefix) ? $prefix . '/' : '') . $data['path'];
         }
 
