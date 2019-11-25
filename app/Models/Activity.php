@@ -14,23 +14,23 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
 use function implode;
 
 /**
- * @property int $id
- * @property string $name
- * @property string $type
- * @property bool $visible
- * @property bool $premium
- * @property bool $reviewed
- * @property int $notion_id
- * @property int $module_count
- * @property Carbon $created_at
- * @property Carbon $updated_at
+ * @property int                 $id
+ * @property string              $name
+ * @property string              $type
+ * @property bool                $visible
+ * @property bool                $premium
+ * @property bool                $reviewed
+ * @property int                 $notion_id
+ * @property int                 $module_count
+ * @property Carbon              $created_at
+ * @property Carbon              $updated_at
  * ---
- * @property bool $completed
- * @property bool $favorite
- * @property bool $to_revise
+ * @property bool                $completed
+ * @property bool                $favorite
+ * @property bool                $to_revise
  * ---
- * @property Notion $notion
- * @property Collection|Mark[] $marks
+ * @property Notion              $notion
+ * @property Collection|Mark[]   $marks
  * @property Collection|Module[] $modules
  */
 class Activity extends BaseModel
@@ -45,22 +45,22 @@ class Activity extends BaseModel
         'visible',
         'order',
         'premium',
-        'reviewed',
+        'review',
         'notion_id',
     ];
     /** @var array The attributes that should be cast to native types */
     protected $casts = [
         'visible' => 'boolean',
         'premium' => 'boolean',
-        'reviewed' => 'boolean',
+        'review'  => 'array',
     ];
     /** @var array The validation rules */
     protected $rules = [
-        'name' => 'required|max:255',
+        'name'    => 'required|max:255',
         'visible' => 'boolean',
         'premium' => 'boolean',
-        'reviewed' => 'boolean',
     ];
+
     /** @var array Appends attributes */
     protected $appends = ['mark'];
 
@@ -81,9 +81,9 @@ class Activity extends BaseModel
     public function updateCounters(): void
     {
         $this->module_count = Module::query()
-            ->where('activity_id', '=', $this->id)
-            ->where('visible', '=', true)
-            ->count();
+                                    ->where('activity_id', '=', $this->id)
+                                    ->where('visible', '=', true)
+                                    ->count();
         $this->save();
     }
 
@@ -123,9 +123,9 @@ class Activity extends BaseModel
 
         /** @var Mark $mark */
         $mark = $this->marks()
-            ->where('user_id', '=', $user->id)
-            ->orderBy('created_at', 'desc')
-            ->first();
+                     ->where('user_id', '=', $user->id)
+                     ->orderBy('created_at', 'desc')
+                     ->first();
 
         return $mark !== null ? $mark->status : null;
     }

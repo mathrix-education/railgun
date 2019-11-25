@@ -30,10 +30,9 @@ properties:
     description: The activity premium state.
     type: boolean
     example: true
-  reviewed:
-    description: If the activty has been reviewed.
-    type: boolean
-    example: false
+  review:
+    description: The activity review state (free form object)
+    type: object
   notion_id:
     description: The activition aprent notion id.
     type: integer
