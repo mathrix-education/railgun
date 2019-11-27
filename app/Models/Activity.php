@@ -37,6 +37,7 @@ class Activity extends BaseModel
 {
     public const TYPES = ['video', 'course', 'test', 'exercise', 'summary', 'flashcard'];
 
+    protected $attributes = ['review' => '{}'];
     /** @var array The attributes that are mass assignable */
     protected $fillable = [
         'id',
@@ -57,8 +58,9 @@ class Activity extends BaseModel
     /** @var array The validation rules */
     protected $rules = [
         'name'    => 'required|max:255',
-        'visible' => 'boolean',
-        'premium' => 'boolean',
+        'visible' => 'required|boolean',
+        'order'   => 'required|numeric',
+        'premium' => 'required|boolean',
     ];
 
     /** @var array Appends attributes */
