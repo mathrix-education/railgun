@@ -34,7 +34,7 @@
     "barryvdh/laravel-cors": "v0.11.3",
     "braintree/braintree_php": "3.40",
     "facebook/graph-sdk": "5.7.0",
-    "fzaninotto/faker": "v1.8.0",
+    "fzaninotto/faker": "1.9.1",
     "google/cloud-kms": "v1.7.0",
     "guzzlehttp/guzzle": "6.3.3",
     "laravel/lumen-framework": "5.8.10",
