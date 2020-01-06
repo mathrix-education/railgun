@@ -2,8 +2,8 @@
   "name": "education-api",
   "version": "1.0.0",
   "dependencies": {
-    "mjml": "4.5.0",
-    "redoc-cli": "0.8.6"
+    "mjml": "4.5.1",
+    "redoc-cli": "0.9.4"
   },
   "scripts": {
     "mails:compile": "node deploy/steps/3_mjml_compile.js",
