@@ -1,7 +1,7 @@
 {
   "name": "mathrix/education-api",
   "description": "The Mathrix Education Lumen API.",
-  "version": "6.1.1",
+  "version": "6.1.2",
   "type": "project",
   "keywords": [
     "education",
