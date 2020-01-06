@@ -71,7 +71,6 @@ class AppServiceProvider extends ServiceProvider
             'comment'  => Comment::class,
             'user'     => User::class,
             'product'  => Product::class,
-            'discount' => Discount::class,
         ]);
     }
 }

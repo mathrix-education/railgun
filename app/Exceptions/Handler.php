@@ -46,21 +46,17 @@ class Handler extends ExceptionHandler
     /**
      * Sentry integration.
      *
-     * @param Exception $e The exception to report.
+     * @param Exception $exception The exception to report.
      *
      * @throws Exception
      *
      * @codeCoverageIgnore
      */
-    public function report(Exception $e): void
+    public function report(Exception $exception): void
     {
-        if ($this->shouldntReport($e)) {
-            return;
-        }
-
-        if (!in_array(env('APP_ENV', 'local'), ['local', 'testing'])
+        if ($this->shouldReport($exception)
+            && !in_array(env('APP_ENV', 'local'), ['local', 'testing'])
             && app()->bound('sentry')
-            && $this->shouldReport($e)
         ) {
             /** @var Hub $sentry */
             $sentry = app('sentry');
@@ -73,10 +69,10 @@ class Handler extends ExceptionHandler
                 });
             }
 
-            $sentry->captureException($e);
+            $sentry->captureException($exception);
         }
 
-        parent::report($e);
+        parent::report($exception);
     }
 
     /**
