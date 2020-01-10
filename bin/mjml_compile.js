@@ -6,7 +6,7 @@ class MailCompiler {
         this.path = require("path");
         this.mjml = require("mjml");
 
-        this.basePath = this.path.resolve(`${__dirname}/../..`);
+        this.basePath = this.path.resolve(`${__dirname}/..`);
         this.mjmlPath = this.path.resolve(this.basePath + '/resources/views/mjml');
     }
 
