@@ -20,8 +20,8 @@ use Mathrix\Lumen\Zero\Exceptions\ValidationException;
 use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
 use Ramsey\Uuid\Uuid;
 use stdClass;
-use function json_decode;
 use const JSON_THROW_ON_ERROR;
+use function json_decode;
 
 /**
  * Serve routes starting with /auth

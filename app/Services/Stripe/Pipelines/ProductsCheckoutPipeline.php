@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Services\Stripe\Exceptions\ProductAlreadyBought;
 use App\Services\Stripe\Utils\InvoiceUtils;
 use Mathrix\Lumen\Zero\Exceptions\ValidationException;
+use Stripe\Exception\ApiErrorException;
 use Stripe\Exception\CardException;
 use Stripe\Invoice as StripeInvoice;
 use Stripe\InvoiceItem as StripeInvoiceItem;
@@ -58,7 +59,7 @@ class ProductsCheckoutPipeline extends Pipeline
 
     /**
      * @throws CardException
-     * @throws \Stripe\Exception\ApiErrorException
+     * @throws ApiErrorException
      */
     protected function exchange(): void
     {

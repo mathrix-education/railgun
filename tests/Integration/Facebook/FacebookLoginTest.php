@@ -13,10 +13,10 @@ use Facebook\Facebook;
 use Jose\Component\Signature\JWS;
 use Jose\Component\Signature\Serializer\Serializer;
 use Tests\APIStatefulTestCase;
+use const JSON_THROW_ON_ERROR;
 use function app;
 use function env;
 use function json_decode;
-use const JSON_THROW_ON_ERROR;
 
 /**
  * Test Facebook Login integration.
