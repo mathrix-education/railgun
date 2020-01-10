@@ -16,10 +16,12 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
+use Mathrix\Lumen\JWT\Auth\Exceptions\InvalidCredentials;
 use Mathrix\Lumen\Zero\Exceptions\Http\HttpException;
 use Sentry\State\Hub;
 use Sentry\State\Scope;
 use Stripe\Exception\ApiErrorException as StripeApiErrorException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use function app;
 use function class_basename;
@@ -39,7 +41,9 @@ class Handler extends ExceptionHandler
      * @var string[]
      */
     protected $dontReport = [
-        InvalidCredentialsException::class,
+        InvalidCredentials::class,
+        NotFoundHttpException::class,
+        MethodNotAllowedHttpException::class,
     ];
 
     /**
