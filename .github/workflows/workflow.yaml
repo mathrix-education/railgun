@@ -144,6 +144,8 @@ jobs:
           npm run docs:bundle
           npm run mails:compile
           rm -rf node_modules/
+      - name: Patch release
+        run: sed -i "s/RELEASE_ALIAS/$(bin/release)/g" config/sentry.php
       - name: Build Docker image
         run: docker build -t "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/drive-api:$(bin/release)" .
       - name: Setup Google Cloud SDK
