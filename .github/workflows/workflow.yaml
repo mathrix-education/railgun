@@ -173,7 +173,7 @@ jobs:
         uses: mathrix-education/setup-sentry-cli@0.1.0
         with:
           url: https://sentry.mathrix.tech
-          auth: ${{ SECRETS.SENTRY_TOKEN }}
+          token: ${{ SECRETS.SENTRY_TOKEN }}
           organization: mathrix-tech
           project: education-api
       - name: Create Sentry Release
