@@ -97,7 +97,7 @@ jobs:
             echo "sonar.branch.target=$(bin/parent_branch)" >> sonar-project.properties
           fi
       - name: Download artifacts (JUnit Report, Coverage report)
-        uses: actions/upload-artifact@v1.0.0
+        uses: actions/download-artifact@v1.0.0
         with:
           name: artifacts
           path: storage/artifacts
