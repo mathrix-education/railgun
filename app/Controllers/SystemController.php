@@ -14,6 +14,9 @@ use Thepixeldeveloper\Sitemap\Drivers\XmlWriterDriver;
 use Thepixeldeveloper\Sitemap\Extensions\Video;
 use Thepixeldeveloper\Sitemap\Url;
 use Thepixeldeveloper\Sitemap\Urlset;
+use function app;
+use function file_get_contents;
+use function getenv;
 use function preg_match_all;
 
 /**
@@ -24,7 +27,11 @@ class SystemController extends BaseController
 {
     public function env()
     {
-        return new JsonResponse($_ENV);
+        return new JsonResponse([
+            '$_ENV'  => $_ENV,
+            'getenv' => getenv(),
+            '.env'   => file_get_contents(app()->basePath('.env')),
+        ]);
     }
 
     /**
