@@ -8,11 +8,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Setup PHP
-        uses: shivammathur/setup-php@1.5.2
+        uses: shivammathur/setup-php@1.7.2
         with:
-          php-version: 7.3
-          extension-csv: mbstring, gmp
-          coverage: none
+          php-version: 7.4
+          extensions: gd, gmp, mbstring, mysql, zip
+          coverage: pcov
+          tools: prestissimo
       - name: Install dependencies
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
