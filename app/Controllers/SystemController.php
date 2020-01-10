@@ -6,8 +6,6 @@ namespace App\Controllers;
 
 use App\Services\Sitemap\SitemapUtils;
 use Carbon\Carbon;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
@@ -15,12 +13,9 @@ use Thepixeldeveloper\Sitemap\Drivers\XmlWriterDriver;
 use Thepixeldeveloper\Sitemap\Extensions\Video;
 use Thepixeldeveloper\Sitemap\Url;
 use Thepixeldeveloper\Sitemap\Urlset;
-use function app;
 use function file_get_contents;
-use function getenv;
 use function preg_match_all;
 use function resource_path;
-use function shell_exec;
 
 /**
  * Serve routes starting with /system.
