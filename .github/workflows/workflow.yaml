@@ -107,7 +107,7 @@ jobs:
           version: 4.2.0.1873 # required
           scan: true
           args: -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-  build_docker:
+  docker:
     name: Build Docker image
     runs-on: ubuntu-latest
     steps:
@@ -161,3 +161,45 @@ jobs:
           gcloud container images add-tag \
             "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:$(bin/release)" \
             "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:latest-$(bin/current_branch)"
+  sentry_release:
+    name: Setup Sentry Release
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev'
+    needs: [docker]
+    runs-on: ubuntu-latest
+    setps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Sentry CLI
+        uses: mathrix-education/setup-sentry-cli@0.1.0
+        with:
+          url: https://sentry.mathrix.tech
+          auth: ${{ SECRETS.SENTRY_TOKEN }}
+          organization: mathrix-tech
+          project: education-api
+      - name: Create Sentry Release
+        run: |
+          sentry-cli releases new $(bin/release)
+          sentry-cli releases set-commits $(bin/release) --auto
+          sentry-cli releases finalize $(bin/release)
+  deploy_cloud_run:
+    name: Deploy on Cloud Run
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev'
+    needs: [docker]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Google Cloud SDK
+        uses: mathrix-education/setup-gcloud@0.1.2
+        with:
+          project: ${{ secrets.GCLOUD_PROJECT }}
+          service-account-key: ${{ secrets.GCLOUD_AUTH }}
+      - name: Deploy on Google Cloud Run
+        if: contains('master,dev,next', steps.git.outputs.branch)
+        run: |
+          gcloud run deploy "education-api-$(bin/current_branch)" \
+            --image "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:$(bin/release)" \
+            --platform=managed \
+            --region=europe-west1 \
+            --allow-unauthenticated \
+            --set-env-vars="APP_ENV=$(bin/current_branch)"
