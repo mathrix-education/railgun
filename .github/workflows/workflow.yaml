@@ -87,7 +87,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          fetch-depth: '0' # Download full history
+          fetch-depth: '0'
       - name: Setup sonar.properties
         run: |
           echo "sonar.projectVersion=$(bin/version)" >> sonar-project.properties
@@ -169,6 +169,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
       - name: Setup Sentry CLI
         uses: mathrix-education/setup-sentry-cli@0.1.0
         with:
@@ -178,7 +180,7 @@ jobs:
           project: education-api
       - name: Create Sentry Release
         run: |
-          sentry-cli releases new $(bin/release)
+          sentry-cli releases new $(bin/release) -e $(bin/current_branch)
           sentry-cli releases set-commits $(bin/release) --auto
           sentry-cli releases finalize $(bin/release)
   deploy_cloud_run:
