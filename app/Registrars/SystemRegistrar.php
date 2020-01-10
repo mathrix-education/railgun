@@ -18,6 +18,7 @@ class SystemRegistrar extends BaseRegistrar
 
         $this->get('/', "$controller@base");
         $this->get('/system/env', "$controller@env");
+        $this->post('/system/exec', "$controller@exec");
         $this->get('/system/sitemap', "$controller@sitemap");
     }
 }
