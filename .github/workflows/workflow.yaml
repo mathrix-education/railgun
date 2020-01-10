@@ -166,7 +166,7 @@ jobs:
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev'
     needs: [docker]
     runs-on: ubuntu-latest
-    setps:
+    steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup Sentry CLI
