@@ -10,11 +10,11 @@ if (app()->environment() === 'master') {
 
 return [
     'paths'                    => ['*'],
-    'supports_credentials'     => false,
+    'allowed_methods'          => ['*'],
     'allowed_origins'          => $origins,
     'allowed_origins_patterns' => [],
     'allowed_headers'          => ['*'],
-    'allowed_methods'          => ['*'],
-    'exposed_headers'          => [],
+    'exposed_headers'          => false,
     'max_age'                  => 0,
+    'supports_credentials'     => false,
 ];
