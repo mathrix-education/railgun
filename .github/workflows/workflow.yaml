@@ -147,17 +147,17 @@ jobs:
       - name: Patch release
         run: sed -i "s/RELEASE_ALIAS/$(bin/release)/g" config/sentry.php
       - name: Build Docker image
-        run: docker build -t "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/drive-api:$(bin/release)" .
+        run: docker build -t "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:$(bin/release)" .
       - name: Setup Google Cloud SDK
         uses: mathrix-education/setup-gcloud@0.1.2
         with:
           project: ${{ secrets.GCLOUD_PROJECT }}
           service-account-key: ${{ secrets.GCLOUD_AUTH }}
       - name: Push image to Google Cloud Container Registry
-        run: docker push eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/drive-api:${GITHUB_SHA:0:7}
+        run: docker push "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:$(bin/release)"
       - name: Add branch tag
         if: contains('master,dev,next', steps.git.outputs.current_branch)
         run: |
           gcloud container images add-tag \
-            "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/drive-api:$(bin/release)" \
-            "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/drive-api:latest-$(bin/current_branch)"
+            "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:$(bin/release)" \
+            "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:latest-$(bin/current_branch)"
