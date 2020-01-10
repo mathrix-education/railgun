@@ -12,7 +12,7 @@ use function factory;
 
 class ProductsCheckoutTest extends APIStatelessTestCase
 {
-    public function invoiceCreateDataProvider()
+    public function invoiceCreateDataProvider(): array
     {
         return $this->cartesian([
             'tokens' => [
@@ -30,7 +30,7 @@ class ProductsCheckoutTest extends APIStatelessTestCase
      *
      * @dataProvider invoiceCreateDataProvider
      */
-    public function testInvoiceCreate(string $token, int $expectedStatus)
+    public function testInvoiceCreate(string $token, int $expectedStatus): void
     {
         $this->requester = factory(User::class)->create();
         JWT::actingAs($this->requester);

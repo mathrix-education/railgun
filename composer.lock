@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c7f16053117dbb2e05f798568c788f31",
+    "content-hash": "e4033c5c1f960e950f5652d68037dfb7",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -59,79 +59,17 @@
             "time": "2019-12-24T22:41:47+00:00"
         },
         {
-            "name": "barryvdh/laravel-cors",
-            "version": "v0.11.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/fruitcake/laravel-cors.git",
-                "reference": "c95ac944f2f20a17949aae6645692dfd3b402bca"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/fruitcake/laravel-cors/zipball/c95ac944f2f20a17949aae6645692dfd3b402bca",
-                "reference": "c95ac944f2f20a17949aae6645692dfd3b402bca",
-                "shasum": ""
-            },
-            "require": {
-                "asm89/stack-cors": "^1.2",
-                "illuminate/support": "5.5.x|5.6.x|5.7.x|5.8.x",
-                "php": ">=7",
-                "symfony/http-foundation": "^3.1|^4",
-                "symfony/http-kernel": "^3.1|^4"
-            },
-            "require-dev": {
-                "laravel/framework": "^5.5",
-                "orchestra/testbench": "3.3.x|3.4.x|3.5.x|3.6.x|3.7.x",
-                "phpunit/phpunit": "^4.8|^5.2|^7.0",
-                "squizlabs/php_codesniffer": "^2.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.11-dev"
-                },
-                "laravel": {
-                    "providers": [
-                        "Barryvdh\\Cors\\ServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Barryvdh\\Cors\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Barry vd. Heuvel",
-                    "email": "barryvdh@gmail.com"
-                }
-            ],
-            "description": "Adds CORS (Cross-Origin Resource Sharing) headers support in your Laravel application",
-            "keywords": [
-                "api",
-                "cors",
-                "crossdomain",
-                "laravel"
-            ],
-            "time": "2019-02-26T18:08:30+00:00"
-        },
-        {
             "name": "braintree/braintree_php",
-            "version": "3.40.0",
+            "version": "4.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/braintree/braintree_php.git",
-                "reference": "840fc6ebf8d96756fed475cce94565fef178187d"
+                "reference": "4aa200601e126183a572133d7ea2037de44b3d2d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/braintree/braintree_php/zipball/840fc6ebf8d96756fed475cce94565fef178187d",
-                "reference": "840fc6ebf8d96756fed475cce94565fef178187d",
+                "url": "https://api.github.com/repos/braintree/braintree_php/zipball/4aa200601e126183a572133d7ea2037de44b3d2d",
+                "reference": "4aa200601e126183a572133d7ea2037de44b3d2d",
                 "shasum": ""
             },
             "require": {
@@ -140,10 +78,10 @@
                 "ext-hash": "*",
                 "ext-openssl": "*",
                 "ext-xmlwriter": "*",
-                "php": ">=5.4.0"
+                "php": ">=7.2.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "3.7.*"
+                "phpunit/phpunit": "^7.5"
             },
             "type": "library",
             "autoload": {
@@ -165,7 +103,7 @@
                 }
             ],
             "description": "Braintree PHP Client Library",
-            "time": "2019-03-28T23:16:53+00:00"
+            "time": "2019-10-28T16:05:37+00:00"
         },
         {
             "name": "brick/varexporter",
@@ -442,16 +380,16 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.13",
+            "version": "2.1.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "834593d5900615639208417760ba6a17299e2497"
+                "reference": "c4b8d12921999d8a561004371701dbc2e05b5ece"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/834593d5900615639208417760ba6a17299e2497",
-                "reference": "834593d5900615639208417760ba6a17299e2497",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/c4b8d12921999d8a561004371701dbc2e05b5ece",
+                "reference": "c4b8d12921999d8a561004371701dbc2e05b5ece",
                 "shasum": ""
             },
             "require": {
@@ -495,7 +433,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2019-12-30T08:14:25+00:00"
+            "time": "2020-01-05T14:11:20+00:00"
         },
         {
             "name": "erusev/parsedown",
@@ -717,6 +655,73 @@
             "time": "2017-06-27T22:17:23+00:00"
         },
         {
+            "name": "fruitcake/laravel-cors",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fruitcake/laravel-cors.git",
+                "reference": "4b1f95aeaef2c8c201519833ad212bcbf909f15e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fruitcake/laravel-cors/zipball/4b1f95aeaef2c8c201519833ad212bcbf909f15e",
+                "reference": "4b1f95aeaef2c8c201519833ad212bcbf909f15e",
+                "shasum": ""
+            },
+            "require": {
+                "asm89/stack-cors": "^1.3",
+                "illuminate/support": "^5.5|^6.0|^7.0",
+                "php": ">=7",
+                "symfony/http-foundation": "^3.3|^4|^5.0",
+                "symfony/http-kernel": "^3.3|^4|^5.0"
+            },
+            "require-dev": {
+                "laravel/framework": "^5.5|^6.0|^7.0",
+                "orchestra/testbench": "^3.5|^4.0|^5.0",
+                "phpro/grumphp": "^0.16|^0.17",
+                "phpunit/phpunit": "^6.0|^7.0|^8.0",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Fruitcake\\Cors\\CorsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Fruitcake\\Cors\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fruitcake",
+                    "homepage": "https://fruitcake.nl"
+                },
+                {
+                    "name": "Barry vd. Heuvel",
+                    "email": "barryvdh@gmail.com"
+                }
+            ],
+            "description": "Adds CORS (Cross-Origin Resource Sharing) headers support in your Laravel application",
+            "keywords": [
+                "api",
+                "cors",
+                "crossdomain",
+                "laravel"
+            ],
+            "time": "2019-12-31T17:28:15+00:00"
+        },
+        {
             "name": "fzaninotto/faker",
             "version": "v1.9.1",
             "source": {
@@ -928,16 +933,16 @@
         },
         {
             "name": "google/cloud-storage",
-            "version": "v1.16.1",
+            "version": "v1.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-storage.git",
-                "reference": "43dadb634dcbca85c5b9b44296bef2bf22d5153c"
+                "reference": "626e910530f0b9463a15563f697a66f1cfbd6369"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-storage/zipball/43dadb634dcbca85c5b9b44296bef2bf22d5153c",
-                "reference": "43dadb634dcbca85c5b9b44296bef2bf22d5153c",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-storage/zipball/626e910530f0b9463a15563f697a66f1cfbd6369",
+                "reference": "626e910530f0b9463a15563f697a66f1cfbd6369",
                 "shasum": ""
             },
             "require": {
@@ -975,7 +980,7 @@
                 "Apache-2.0"
             ],
             "description": "Cloud Storage Client for PHP",
-            "time": "2019-12-17T22:51:23+00:00"
+            "time": "2020-01-07T21:25:58+00:00"
         },
         {
             "name": "google/common-protos",
@@ -2799,16 +2804,16 @@
         },
         {
             "name": "laravel/lumen-framework",
-            "version": "v5.8.10",
+            "version": "v5.8.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/lumen-framework.git",
-                "reference": "aba436b4824ed688726c3b0086c4e98577a760f5"
+                "reference": "5d1d1ba8dbc5b69a17370d276e96d30eb00a2b48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/lumen-framework/zipball/aba436b4824ed688726c3b0086c4e98577a760f5",
-                "reference": "aba436b4824ed688726c3b0086c4e98577a760f5",
+                "url": "https://api.github.com/repos/laravel/lumen-framework/zipball/5d1d1ba8dbc5b69a17370d276e96d30eb00a2b48",
+                "reference": "5d1d1ba8dbc5b69a17370d276e96d30eb00a2b48",
                 "shasum": ""
             },
             "require": {
@@ -2879,7 +2884,7 @@
                 "laravel",
                 "lumen"
             ],
-            "time": "2019-07-02T15:34:29+00:00"
+            "time": "2019-08-28T21:21:05+00:00"
         },
         {
             "name": "league/flysystem",
@@ -3013,80 +3018,33 @@
             "time": "2018-07-09T20:51:04+00:00"
         },
         {
-            "name": "mathrix/lumen-chainer",
-            "version": "1.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/mathrix-education/lumen-chainer.git",
-                "reference": "b5ffcda5194d60293757b107eaa1756d40656a93"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mathrix-education/lumen-chainer/zipball/b5ffcda5194d60293757b107eaa1756d40656a93",
-                "reference": "b5ffcda5194d60293757b107eaa1756d40656a93",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "mathrix/lumen-zero": "^2.0",
-                "php": ">=7.2"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Mathrix\\Chainer\\": "src"
-                }
-            },
-            "license": [
-                "proprietary"
-            ],
-            "authors": [
-                {
-                    "name": "Mathieu Bour",
-                    "email": "mathieu@mathrix.fr"
-                }
-            ],
-            "description": "A small util which be used to make multiple API request at once.",
-            "homepage": "https://github.com/mathrix-education",
-            "keywords": [
-                "chain",
-                "lumen",
-                "multiple",
-                "php",
-                "request"
-            ],
-            "support": {
-                "email": "mathieu@mathrix.fr",
-                "issues": "https://github.com/mathrix-education/lumen-chainer/issues",
-                "wiki": "https://github.com/mathrix-education/lumen-chainer/wiki",
-                "source": "https://github.com/mathrix-education/lumen-chainer",
-                "docs": "https://github.com/mathrix-education"
-            },
-            "time": "2019-05-16T23:46:58+00:00"
-        },
-        {
-            "name": "mathrix/lumen-jwt-auth",
-            "version": "1.2.0",
+            "name": "mathrix-education/lumen-jwt-auth",
+            "version": "2.0.0-beta.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mathrix-education/lumen-jwt-auth.git",
-                "reference": "9c92f2a18b498cde5738bfbe7d0eb5ed34b06b18"
+                "reference": "83cb9e7e62f6ec307f49cda5c279c464fa872e1b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mathrix-education/lumen-jwt-auth/zipball/9c92f2a18b498cde5738bfbe7d0eb5ed34b06b18",
-                "reference": "9c92f2a18b498cde5738bfbe7d0eb5ed34b06b18",
+                "url": "https://api.github.com/repos/mathrix-education/lumen-jwt-auth/zipball/83cb9e7e62f6ec307f49cda5c279c464fa872e1b",
+                "reference": "83cb9e7e62f6ec307f49cda5c279c464fa872e1b",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "mathrix/lumen-zero": "^2.0",
+                "laravel/lumen-framework": "5.6.* || 5.7.* || 5.8.* || ^6.0",
                 "php": ">=7.2",
                 "ramsey/uuid": "^3.8",
-                "web-token/jwt-core": "^1.3",
-                "web-token/jwt-key-mgmt": "^1.3",
-                "web-token/jwt-signature-algorithm-ecdsa": "^1.3",
-                "web-token/jwt-signature-algorithm-rsa": "^1.3"
+                "web-token/jwt-core": "^v2.0",
+                "web-token/jwt-key-mgmt": "^v2.0",
+                "web-token/jwt-signature-algorithm-ecdsa": "^v2.0",
+                "web-token/jwt-signature-algorithm-rsa": "^v2.0"
+            },
+            "require-dev": {
+                "mathrix-education/coding-standard": "0.9.1",
+                "mockery/mockery": "^1.3",
+                "phpunit/phpunit": "^8.0"
             },
             "type": "library",
             "autoload": {
@@ -3094,6 +3052,7 @@
                     "Mathrix\\Lumen\\JWT\\Auth\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "proprietary"
             ],
@@ -3108,27 +3067,20 @@
             "description": "A small library to handle authentication using JWT.",
             "homepage": "https://github.com/mathrix-education/lumen-jwt-auth",
             "keywords": [
-                "authentication",
+                "Authentication",
                 "jwt",
                 "lumen",
                 "mathrix",
                 "php"
             ],
-            "support": {
-                "email": "mathieu@mathrix.fr",
-                "issues": "https://github.com/mathrix-education/lumen-jwt-auth/issues",
-                "wiki": "https://github.com/mathrix-education/lumen-jwt-auth/wiki",
-                "source": "https://github.com/mathrix-education/lumen-jwt-auth",
-                "docs": "https://github.com/mathrix-education/lumen-jwt-auth/wiki"
-            },
-            "time": "2019-05-16T23:44:24+00:00"
+            "time": "2019-12-13T20:47:23+00:00"
         },
         {
-            "name": "mathrix/lumen-zero",
+            "name": "mathrix-education/lumen-zero",
             "version": "2.4.1",
             "source": {
                 "type": "git",
-                "url": "git@github.com:mathrix-education/lumen-zero.git",
+                "url": "https://github.com/mathrix-education/lumen-zero.git",
                 "reference": "a623732497661f5d21f80001597d8466d4f64ec3"
             },
             "dist": {
@@ -3156,11 +3108,7 @@
                     "Mathrix\\Lumen\\Zero\\": "src"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Mathrix\\Lumen\\Zero\\": "tests"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "proprietary"
             ],
@@ -3179,13 +3127,6 @@
                 "php",
                 "zero"
             ],
-            "support": {
-                "email": "mathieu@mathrix.fr",
-                "issues": "https://github.com/mathrix-education/lumen-zero/issues",
-                "wiki": "https://github.com/mathrix-education/lumen-zero/wiki",
-                "source": "https://github.com/mathrix-education/lumen-zero",
-                "docs": "https://github.com/mathrix-education/lumen-zero"
-            },
             "time": "2019-09-04T21:02:36+00:00"
         },
         {
@@ -3592,88 +3533,6 @@
             "time": "2018-07-02T15:55:56+00:00"
         },
         {
-            "name": "paragonie/sodium_compat",
-            "version": "v1.12.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/paragonie/sodium_compat.git",
-                "reference": "3b953109fdfc821c1979bc829c8b7421721fef82"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/sodium_compat/zipball/3b953109fdfc821c1979bc829c8b7421721fef82",
-                "reference": "3b953109fdfc821c1979bc829c8b7421721fef82",
-                "shasum": ""
-            },
-            "require": {
-                "paragonie/random_compat": ">=1",
-                "php": "^5.2.4|^5.3|^5.4|^5.5|^5.6|^7|^8"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^3|^4|^5|^6|^7"
-            },
-            "suggest": {
-                "ext-libsodium": "PHP < 7.0: Better performance, password hashing (Argon2i), secure memory management (memzero), and better security.",
-                "ext-sodium": "PHP >= 7.0: Better performance, password hashing (Argon2i), secure memory management (memzero), and better security."
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "autoload.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "ISC"
-            ],
-            "authors": [
-                {
-                    "name": "Paragon Initiative Enterprises",
-                    "email": "security@paragonie.com"
-                },
-                {
-                    "name": "Frank Denis",
-                    "email": "jedisct1@pureftpd.org"
-                }
-            ],
-            "description": "Pure PHP implementation of libsodium; uses the PHP extension if it exists",
-            "keywords": [
-                "Authentication",
-                "BLAKE2b",
-                "ChaCha20",
-                "ChaCha20-Poly1305",
-                "Chapoly",
-                "Curve25519",
-                "Ed25519",
-                "EdDSA",
-                "Edwards-curve Digital Signature Algorithm",
-                "Elliptic Curve Diffie-Hellman",
-                "Poly1305",
-                "Pure-PHP cryptography",
-                "RFC 7748",
-                "RFC 8032",
-                "Salpoly",
-                "Salsa20",
-                "X25519",
-                "XChaCha20-Poly1305",
-                "XSalsa20-Poly1305",
-                "Xchacha20",
-                "Xsalsa20",
-                "aead",
-                "cryptography",
-                "ecdh",
-                "elliptic curve",
-                "elliptic curve cryptography",
-                "encryption",
-                "libsodium",
-                "php",
-                "public-key cryptography",
-                "secret-key cryptography",
-                "side-channel resistant"
-            ],
-            "time": "2019-12-30T03:11:08+00:00"
-        },
-        {
             "name": "php-http/client-common",
             "version": "2.1.0",
             "source": {
@@ -3740,71 +3599,6 @@
             "time": "2019-11-18T08:58:18+00:00"
         },
         {
-            "name": "php-http/curl-client",
-            "version": "2.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-http/curl-client.git",
-                "reference": "9e79355af46d72e10da50be20b66f74b26143441"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-http/curl-client/zipball/9e79355af46d72e10da50be20b66f74b26143441",
-                "reference": "9e79355af46d72e10da50be20b66f74b26143441",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "php": "^7.1",
-                "php-http/discovery": "^1.6",
-                "php-http/httplug": "^2.0",
-                "php-http/message": "^1.2",
-                "psr/http-client": "^1.0",
-                "psr/http-factory": "^1.0",
-                "symfony/options-resolver": "^3.4 || ^4.0 || ^5.0"
-            },
-            "provide": {
-                "php-http/async-client-implementation": "1.0",
-                "php-http/client-implementation": "1.0",
-                "psr/http-client-implementation": "1.0"
-            },
-            "require-dev": {
-                "guzzlehttp/psr7": "^1.0",
-                "php-http/client-integration-tests": "^2.0",
-                "phpunit/phpunit": "^7.5",
-                "zendframework/zend-diactoros": "^2.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Http\\Client\\Curl\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Михаил Красильников",
-                    "email": "m.krasilnikov@yandex.ru"
-                }
-            ],
-            "description": "PSR-18 and HTTPlug Async client with cURL",
-            "homepage": "http://php-http.org",
-            "keywords": [
-                "curl",
-                "http",
-                "psr-18"
-            ],
-            "time": "2019-12-27T11:02:07+00:00"
-        },
-        {
             "name": "php-http/discovery",
             "version": "1.7.4",
             "source": {
@@ -3868,6 +3662,69 @@
                 "psr7"
             ],
             "time": "2020-01-03T11:25:47+00:00"
+        },
+        {
+            "name": "php-http/guzzle6-adapter",
+            "version": "v2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-http/guzzle6-adapter.git",
+                "reference": "6074a4b1f4d5c21061b70bab3b8ad484282fe31f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-http/guzzle6-adapter/zipball/6074a4b1f4d5c21061b70bab3b8ad484282fe31f",
+                "reference": "6074a4b1f4d5c21061b70bab3b8ad484282fe31f",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.0",
+                "php": "^7.1",
+                "php-http/httplug": "^2.0",
+                "psr/http-client": "^1.0"
+            },
+            "provide": {
+                "php-http/async-client-implementation": "1.0",
+                "php-http/client-implementation": "1.0",
+                "psr/http-client-implementation": "1.0"
+            },
+            "require-dev": {
+                "ext-curl": "*",
+                "php-http/client-integration-tests": "^2.0",
+                "phpunit/phpunit": "^7.4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Http\\Adapter\\Guzzle6\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Márk Sági-Kazár",
+                    "email": "mark.sagikazar@gmail.com"
+                },
+                {
+                    "name": "David de Boer",
+                    "email": "david@ddeboer.nl"
+                }
+            ],
+            "description": "Guzzle 6 HTTP Adapter",
+            "homepage": "http://httplug.io",
+            "keywords": [
+                "Guzzle",
+                "http"
+            ],
+            "time": "2018-12-16T14:44:03+00:00"
         },
         {
             "name": "php-http/httplug",
@@ -4662,22 +4519,22 @@
         },
         {
             "name": "sentry/sdk",
-            "version": "2.0.4",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-php-sdk.git",
-                "reference": "4c115873c86ad5bd0ac6d962db70ca53bf8fb874"
+                "reference": "18921af9c2777517ef9fb480845c22a98554d6af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php-sdk/zipball/4c115873c86ad5bd0ac6d962db70ca53bf8fb874",
-                "reference": "4c115873c86ad5bd0ac6d962db70ca53bf8fb874",
+                "url": "https://api.github.com/repos/getsentry/sentry-php-sdk/zipball/18921af9c2777517ef9fb480845c22a98554d6af",
+                "reference": "18921af9c2777517ef9fb480845c22a98554d6af",
                 "shasum": ""
             },
             "require": {
                 "http-interop/http-factory-guzzle": "^1.0",
-                "php-http/curl-client": "^1.0|^2.0",
-                "sentry/sentry": "^2.1.3"
+                "php-http/guzzle6-adapter": "^1.1|^2.0",
+                "sentry/sentry": "^2.3"
             },
             "type": "metapackage",
             "notification-url": "https://packagist.org/downloads/",
@@ -4691,26 +4548,27 @@
                 }
             ],
             "description": "This is a metapackage shipping sentry/sentry with a recommended http client.",
-            "time": "2019-09-09T19:54:44+00:00"
+            "time": "2020-01-08T19:16:29+00:00"
         },
         {
             "name": "sentry/sentry",
-            "version": "2.2.6",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-php.git",
-                "reference": "c9b253229b95f8e5bbf6a3661a170a0be0f80563"
+                "reference": "335bd24c4a817efdb7c3ec83ca42321a7761df6a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/c9b253229b95f8e5bbf6a3661a170a0be0f80563",
-                "reference": "c9b253229b95f8e5bbf6a3661a170a0be0f80563",
+                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/335bd24c4a817efdb7c3ec83ca42321a7761df6a",
+                "reference": "335bd24c4a817efdb7c3ec83ca42321a7761df6a",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-mbstring": "*",
                 "guzzlehttp/promises": "^1.3",
+                "guzzlehttp/psr7": "^1.6",
                 "jean85/pretty-package-versions": "^1.2",
                 "php": "^7.1",
                 "php-http/async-client-implementation": "^1.0",
@@ -4719,9 +4577,8 @@
                 "php-http/httplug": "^1.1|^2.0",
                 "php-http/message": "^1.5",
                 "psr/http-message-implementation": "^1.0",
-                "ramsey/uuid": "^3.3",
                 "symfony/options-resolver": "^2.7|^3.0|^4.0|^5.0",
-                "zendframework/zend-diactoros": "^1.7.1|^2.0"
+                "symfony/polyfill-uuid": "^1.13.1"
             },
             "conflict": {
                 "php-http/client-common": "1.8.0",
@@ -4730,7 +4587,7 @@
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.13",
                 "monolog/monolog": "^1.3|^2.0",
-                "php-http/mock-client": "^1.0",
+                "php-http/mock-client": "^1.3",
                 "phpstan/extension-installer": "^1.0",
                 "phpstan/phpstan": "^0.11",
                 "phpstan/phpstan-phpunit": "^0.11",
@@ -4744,7 +4601,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-develop": "2.2-dev"
+                    "dev-master": "2.3-dev"
                 }
             },
             "autoload": {
@@ -4776,20 +4633,20 @@
                 "logging",
                 "sentry"
             ],
-            "time": "2019-12-18T08:56:34+00:00"
+            "time": "2020-01-08T11:27:08+00:00"
         },
         {
             "name": "sentry/sentry-laravel",
-            "version": "1.2.1",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-laravel.git",
-                "reference": "b45a02cafe2f6a12850cfd2e81bb8c023363ad1f"
+                "reference": "724e86b3f96e2b87856b818a2bf53c80e796c279"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/b45a02cafe2f6a12850cfd2e81bb8c023363ad1f",
-                "reference": "b45a02cafe2f6a12850cfd2e81bb8c023363ad1f",
+                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/724e86b3f96e2b87856b818a2bf53c80e796c279",
+                "reference": "724e86b3f96e2b87856b818a2bf53c80e796c279",
                 "shasum": ""
             },
             "require": {
@@ -4806,7 +4663,8 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "1.x-dev",
+                    "dev-0.x": "0.x-dev"
                 },
                 "laravel": {
                     "providers": [
@@ -4844,7 +4702,7 @@
                 "logging",
                 "sentry"
             ],
-            "time": "2019-09-16T07:53:07+00:00"
+            "time": "2019-11-11T11:30:37+00:00"
         },
         {
             "name": "spomky-labs/base64url",
@@ -4900,29 +4758,30 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v6.43.1",
+            "version": "v7.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "42fcdaf99c44bb26937223f8eae1f263491d5ab8"
+                "reference": "b7e86a890e1c57f7cd8e42bf7baac70c6ee0f64f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/42fcdaf99c44bb26937223f8eae1f263491d5ab8",
-                "reference": "42fcdaf99c44bb26937223f8eae1f263491d5ab8",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/b7e86a890e1c57f7cd8e42bf7baac70c6ee0f64f",
+                "reference": "b7e86a890e1c57f7cd8e42bf7baac70c6ee0f64f",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
                 "ext-json": "*",
                 "ext-mbstring": "*",
-                "php": ">=5.4.0"
+                "php": ">=5.6.0"
             },
             "require-dev": {
-                "php-coveralls/php-coveralls": "1.*",
-                "phpunit/phpunit": "~4.0",
-                "squizlabs/php_codesniffer": "~2.0",
-                "symfony/process": "~2.8"
+                "friendsofphp/php-cs-fixer": "^2.15",
+                "php-coveralls/php-coveralls": "^2.1",
+                "phpunit/phpunit": "^5.7",
+                "squizlabs/php_codesniffer": "^3.3",
+                "symfony/process": "~3.4"
             },
             "type": "library",
             "extra": {
@@ -4952,7 +4811,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2019-08-29T16:56:12+00:00"
+            "time": "2020-01-08T21:23:37+00:00"
         },
         {
             "name": "superbalist/flysystem-google-storage",
@@ -6147,6 +6006,65 @@
             "time": "2019-11-27T16:25:15+00:00"
         },
         {
+            "name": "symfony/polyfill-uuid",
+            "version": "v1.13.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-uuid.git",
+                "reference": "7d4215b6944add5073f0ec313a21e1bc2520520d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-uuid/zipball/7d4215b6944add5073f0ec313a21e1bc2520520d",
+                "reference": "7d4215b6944add5073f0ec313a21e1bc2520520d",
+                "shasum": ""
+            },
+            "require": {
+                "paragonie/random_compat": "~1.0|~2.0|~9.99",
+                "php": ">=5.3.3"
+            },
+            "suggest": {
+                "ext-uuid": "For best performance"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.13-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Polyfill\\Uuid\\": ""
+                },
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Grégoire Pineau",
+                    "email": "lyrixx@lyrixx.info"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony polyfill for uuid functions",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "compatibility",
+                "polyfill",
+                "portable",
+                "uuid"
+            ],
+            "time": "2019-11-30T08:58:35+00:00"
+        },
+        {
             "name": "symfony/process",
             "version": "v4.4.2",
             "source": {
@@ -6564,16 +6482,16 @@
         },
         {
             "name": "vlucas/phpdotenv",
-            "version": "v3.4.0",
+            "version": "v3.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vlucas/phpdotenv.git",
-                "reference": "5084b23845c24dbff8ac6c204290c341e4776c92"
+                "reference": "1bdf24f065975594f6a117f0f1f6cabf1333b156"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/5084b23845c24dbff8ac6c204290c341e4776c92",
-                "reference": "5084b23845c24dbff8ac6c204290c341e4776c92",
+                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/1bdf24f065975594f6a117f0f1f6cabf1333b156",
+                "reference": "1bdf24f065975594f6a117f0f1f6cabf1333b156",
                 "shasum": ""
             },
             "require": {
@@ -6582,12 +6500,12 @@
                 "symfony/polyfill-ctype": "^1.9"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8.35 || ^5.0 || ^6.0"
+                "phpunit/phpunit": "^4.8.35 || ^5.0 || ^6.0 || ^7.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.4-dev"
+                    "dev-master": "3.6-dev"
                 }
             },
             "autoload": {
@@ -6601,9 +6519,14 @@
             ],
             "authors": [
                 {
+                    "name": "Graham Campbell",
+                    "email": "graham@alt-three.com",
+                    "homepage": "https://gjcampbell.co.uk/"
+                },
+                {
                     "name": "Vance Lucas",
                     "email": "vance@vancelucas.com",
-                    "homepage": "http://www.vancelucas.com"
+                    "homepage": "https://vancelucas.com/"
                 }
             ],
             "description": "Loads environment variables from `.env` to `getenv()`, `$_ENV` and `$_SERVER` automagically.",
@@ -6612,40 +6535,44 @@
                 "env",
                 "environment"
             ],
-            "time": "2019-06-15T22:40:20+00:00"
+            "time": "2019-09-10T21:37:39+00:00"
         },
         {
             "name": "web-token/jwt-core",
-            "version": "v1.3.9",
+            "version": "v2.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-core.git",
-                "reference": "2d6e2e6f39e9494e6634efe62f4d8b22a8f001e3"
+                "reference": "3e794092db3d85737dcc5ce2a21beeeaf801cd85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-core/zipball/2d6e2e6f39e9494e6634efe62f4d8b22a8f001e3",
-                "reference": "2d6e2e6f39e9494e6634efe62f4d8b22a8f001e3",
+                "url": "https://api.github.com/repos/web-token/jwt-core/zipball/3e794092db3d85737dcc5ce2a21beeeaf801cd85",
+                "reference": "3e794092db3d85737dcc5ce2a21beeeaf801cd85",
                 "shasum": ""
             },
             "require": {
-                "ext-gmp": "*",
+                "ext-json": "*",
                 "ext-mbstring": "*",
                 "fgrosse/phpasn1": "^2.0",
-                "php": "^7.1",
-                "spomky-labs/base64url": "^1.0|^2.0",
-                "web-token/jwt-util-ecc": "^1.3"
+                "php": "^7.2",
+                "spomky-labs/base64url": "^1.0|^2.0"
             },
             "conflict": {
                 "spomky-labs/jose": "*"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6.0|^7.0"
+                "phpunit/phpunit": "^8.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3.x-dev"
+                    "v1.0": "1.0.x-dev",
+                    "v1.1": "1.1.x-dev",
+                    "v1.2": "1.2.x-dev",
+                    "v1.3": "1.3.x-dev",
+                    "v2.0": "2.0.x-dev",
+                    "v2.1": "2.1.x-dev"
                 }
             },
             "autoload": {
@@ -6664,7 +6591,7 @@
                 },
                 {
                     "name": "All contributors",
-                    "homepage": "https://github.com/web-token/jwt-core/contributors"
+                    "homepage": "https://github.com/web-token/jwt-framework/contributors"
                 }
             ],
             "description": "Core component of the JWT Framework.",
@@ -6687,42 +6614,49 @@
                 "jwt",
                 "symfony"
             ],
-            "time": "2019-08-22T10:36:08+00:00"
+            "time": "2019-12-27T22:22:20+00:00"
         },
         {
             "name": "web-token/jwt-key-mgmt",
-            "version": "v1.3.9",
+            "version": "v2.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-key-mgmt.git",
-                "reference": "0d92c381e2732bb9c6c2a8e21ab10d133ae074d2"
+                "reference": "27d5e3e2281ae1f9bbe1ab2e1664f871111fb3e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-key-mgmt/zipball/0d92c381e2732bb9c6c2a8e21ab10d133ae074d2",
-                "reference": "0d92c381e2732bb9c6c2a8e21ab10d133ae074d2",
+                "url": "https://api.github.com/repos/web-token/jwt-key-mgmt/zipball/27d5e3e2281ae1f9bbe1ab2e1664f871111fb3e2",
+                "reference": "27d5e3e2281ae1f9bbe1ab2e1664f871111fb3e2",
                 "shasum": ""
             },
             "require": {
-                "lib-openssl": "*",
-                "paragonie/sodium_compat": "^1.2",
-                "web-token/jwt-core": "^1.3",
-                "web-token/jwt-util-ecc": "^1.3"
+                "ext-openssl": "*",
+                "psr/http-client": "^1.0",
+                "psr/http-factory": "^1.0",
+                "web-token/jwt-core": "^2.0"
             },
             "require-dev": {
                 "php-http/httplug": "^1.1",
                 "php-http/message-factory": "^1.0",
                 "php-http/mock-client": "^1.0",
-                "phpunit/phpunit": "^6.0|^7.0"
+                "phpunit/phpunit": "^8.0"
             },
             "suggest": {
+                "ext-sodium": "Sodium is required for OKP key creation, EdDSA signature algorithm and ECDH-ES key encryption with OKP keys",
                 "php-http/httplug": "To enable JKU/X5U support.",
-                "php-http/message-factory": "To enable JKU/X5U support."
+                "php-http/message-factory": "To enable JKU/X5U support.",
+                "web-token/jwt-util-ecc": "To use EC key analyzers."
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3.x-dev"
+                    "v1.0": "1.0.x-dev",
+                    "v1.1": "1.1.x-dev",
+                    "v1.2": "1.2.x-dev",
+                    "v1.3": "1.3.x-dev",
+                    "v2.0": "2.0.x-dev",
+                    "v2.1": "2.1.x-dev"
                 }
             },
             "autoload": {
@@ -6764,32 +6698,27 @@
                 "jwt",
                 "symfony"
             ],
-            "time": "2019-05-02T12:37:15+00:00"
+            "time": "2019-12-27T22:22:20+00:00"
         },
         {
             "name": "web-token/jwt-signature",
-            "version": "v1.3.9",
+            "version": "v2.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature.git",
-                "reference": "b3ee58ccfdbdbaedf64177bc01abd800db1379e5"
+                "reference": "4c4d43e4fb266578b54c8407f3aeb4f060e4630e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-signature/zipball/b3ee58ccfdbdbaedf64177bc01abd800db1379e5",
-                "reference": "b3ee58ccfdbdbaedf64177bc01abd800db1379e5",
+                "url": "https://api.github.com/repos/web-token/jwt-signature/zipball/4c4d43e4fb266578b54c8407f3aeb4f060e4630e",
+                "reference": "4c4d43e4fb266578b54c8407f3aeb4f060e4630e",
                 "shasum": ""
             },
             "require": {
-                "web-token/jwt-core": "^1.3",
-                "web-token/jwt-signature-algorithm-ecdsa": "^1.3",
-                "web-token/jwt-signature-algorithm-eddsa": "^1.3",
-                "web-token/jwt-signature-algorithm-hmac": "^1.3",
-                "web-token/jwt-signature-algorithm-none": "^1.3",
-                "web-token/jwt-signature-algorithm-rsa": "^1.3"
+                "web-token/jwt-core": "^2.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6.0|^7.0"
+                "phpunit/phpunit": "^8.0"
             },
             "suggest": {
                 "web-token/jwt-signature-algorithm-ecdsa": "ECDSA Based Signature Algorithms",
@@ -6802,7 +6731,12 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3.x-dev"
+                    "v1.0": "1.0.x-dev",
+                    "v1.1": "1.1.x-dev",
+                    "v1.2": "1.2.x-dev",
+                    "v1.3": "1.3.x-dev",
+                    "v2.0": "2.0.x-dev",
+                    "v2.1": "2.1.x-dev"
                 }
             },
             "autoload": {
@@ -6844,32 +6778,38 @@
                 "jwt",
                 "symfony"
             ],
-            "time": "2019-08-22T10:36:08+00:00"
+            "time": "2019-12-27T22:22:20+00:00"
         },
         {
             "name": "web-token/jwt-signature-algorithm-ecdsa",
-            "version": "v1.3.9",
+            "version": "v2.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature-algorithm-ecdsa.git",
-                "reference": "078f99ce0e63474964257b68abcbe60fa2220396"
+                "reference": "2415c5ac44f4aad66ef90ad0904aa8a46526b3c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-ecdsa/zipball/078f99ce0e63474964257b68abcbe60fa2220396",
-                "reference": "078f99ce0e63474964257b68abcbe60fa2220396",
+                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-ecdsa/zipball/2415c5ac44f4aad66ef90ad0904aa8a46526b3c2",
+                "reference": "2415c5ac44f4aad66ef90ad0904aa8a46526b3c2",
                 "shasum": ""
             },
             "require": {
-                "web-token/jwt-signature": "^1.3"
+                "lib-openssl": "*",
+                "web-token/jwt-signature": "^2.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6.0|^7.0"
+                "phpunit/phpunit": "^8.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3.x-dev"
+                    "v1.0": "1.0.x-dev",
+                    "v1.1": "1.1.x-dev",
+                    "v1.2": "1.2.x-dev",
+                    "v1.3": "1.3.x-dev",
+                    "v2.0": "2.0.x-dev",
+                    "v2.1": "2.1.x-dev"
                 }
             },
             "autoload": {
@@ -6888,7 +6828,7 @@
                 },
                 {
                     "name": "All contributors",
-                    "homepage": "https://github.com/web-token/jwt-core/contributors"
+                    "homepage": "https://github.com/web-token/jwt-framework/contributors"
                 }
             ],
             "description": "ECDSA Based Signature Algorithms the JWT Framework.",
@@ -6911,233 +6851,42 @@
                 "jwt",
                 "symfony"
             ],
-            "time": "2019-04-21T22:05:56+00:00"
-        },
-        {
-            "name": "web-token/jwt-signature-algorithm-eddsa",
-            "version": "v1.3.9",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/web-token/jwt-signature-algorithm-eddsa.git",
-                "reference": "c40765e98cf56f9c31844fdb04bd6ff45f255864"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-eddsa/zipball/c40765e98cf56f9c31844fdb04bd6ff45f255864",
-                "reference": "c40765e98cf56f9c31844fdb04bd6ff45f255864",
-                "shasum": ""
-            },
-            "require": {
-                "web-token/jwt-signature": "^1.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^6.0|^7.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.3.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Jose\\Component\\Signature\\Algorithm\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Florent Morselli",
-                    "homepage": "https://github.com/Spomky"
-                },
-                {
-                    "name": "All contributors",
-                    "homepage": "https://github.com/web-token/jwt-core/contributors"
-                }
-            ],
-            "description": "EdDSA Signature Algorithm the JWT Framework.",
-            "homepage": "https://github.com/web-token",
-            "keywords": [
-                "JOSE",
-                "JWE",
-                "JWK",
-                "JWKSet",
-                "JWS",
-                "Jot",
-                "RFC7515",
-                "RFC7516",
-                "RFC7517",
-                "RFC7518",
-                "RFC7519",
-                "RFC7520",
-                "bundle",
-                "jwa",
-                "jwt",
-                "symfony"
-            ],
-            "time": "2019-04-21T22:05:56+00:00"
-        },
-        {
-            "name": "web-token/jwt-signature-algorithm-hmac",
-            "version": "v1.3.9",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/web-token/jwt-signature-algorithm-hmac.git",
-                "reference": "fd51a55534559befe6ffdfe6eb131d8c121eea82"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-hmac/zipball/fd51a55534559befe6ffdfe6eb131d8c121eea82",
-                "reference": "fd51a55534559befe6ffdfe6eb131d8c121eea82",
-                "shasum": ""
-            },
-            "require": {
-                "web-token/jwt-signature": "^1.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^6.0|^7.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.3.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Jose\\Component\\Signature\\Algorithm\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Florent Morselli",
-                    "homepage": "https://github.com/Spomky"
-                },
-                {
-                    "name": "All contributors",
-                    "homepage": "https://github.com/web-token/jwt-core/contributors"
-                }
-            ],
-            "description": "HMAC Based Signature Algorithms the JWT Framework.",
-            "homepage": "https://github.com/web-token",
-            "keywords": [
-                "JOSE",
-                "JWE",
-                "JWK",
-                "JWKSet",
-                "JWS",
-                "Jot",
-                "RFC7515",
-                "RFC7516",
-                "RFC7517",
-                "RFC7518",
-                "RFC7519",
-                "RFC7520",
-                "bundle",
-                "jwa",
-                "jwt",
-                "symfony"
-            ],
-            "time": "2019-04-21T22:05:56+00:00"
-        },
-        {
-            "name": "web-token/jwt-signature-algorithm-none",
-            "version": "v1.3.9",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/web-token/jwt-signature-algorithm-none.git",
-                "reference": "0bd27b01d38868749e9a2daddfe6125a6098565a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-none/zipball/0bd27b01d38868749e9a2daddfe6125a6098565a",
-                "reference": "0bd27b01d38868749e9a2daddfe6125a6098565a",
-                "shasum": ""
-            },
-            "require": {
-                "web-token/jwt-signature": "^1.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^6.0|^7.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.3.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Jose\\Component\\Signature\\Algorithm\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Florent Morselli",
-                    "homepage": "https://github.com/Spomky"
-                },
-                {
-                    "name": "All contributors",
-                    "homepage": "https://github.com/web-token/jwt-core/contributors"
-                }
-            ],
-            "description": "None Signature Algorithm the JWT Framework.",
-            "homepage": "https://github.com/web-token",
-            "keywords": [
-                "JOSE",
-                "JWE",
-                "JWK",
-                "JWKSet",
-                "JWS",
-                "Jot",
-                "RFC7515",
-                "RFC7516",
-                "RFC7517",
-                "RFC7518",
-                "RFC7519",
-                "RFC7520",
-                "bundle",
-                "jwa",
-                "jwt",
-                "symfony"
-            ],
-            "time": "2019-04-21T22:05:56+00:00"
+            "time": "2019-12-27T22:22:20+00:00"
         },
         {
             "name": "web-token/jwt-signature-algorithm-rsa",
-            "version": "v1.3.9",
+            "version": "v2.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature-algorithm-rsa.git",
-                "reference": "58947f022f1f45a4b6b7d6e463714c627e52977c"
+                "reference": "871f3cbcaa5cd8c7856cf1269056f6039586521f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-rsa/zipball/58947f022f1f45a4b6b7d6e463714c627e52977c",
-                "reference": "58947f022f1f45a4b6b7d6e463714c627e52977c",
+                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-rsa/zipball/871f3cbcaa5cd8c7856cf1269056f6039586521f",
+                "reference": "871f3cbcaa5cd8c7856cf1269056f6039586521f",
                 "shasum": ""
             },
             "require": {
-                "web-token/jwt-signature": "^1.3"
+                "ext-gmp": "*",
+                "lib-openssl": "*",
+                "web-token/jwt-signature": "^2.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6.0|^7.0"
+                "phpunit/phpunit": "^8.0"
+            },
+            "suggest": {
+                "ext-gmp": "To use PSxxx algorihtms"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3.x-dev"
+                    "v1.0": "1.0.x-dev",
+                    "v1.1": "1.1.x-dev",
+                    "v1.2": "1.2.x-dev",
+                    "v1.3": "1.3.x-dev",
+                    "v2.0": "2.0.x-dev",
+                    "v2.1": "2.1.x-dev"
                 }
             },
             "autoload": {
@@ -7156,7 +6905,7 @@
                 },
                 {
                     "name": "All contributors",
-                    "homepage": "https://github.com/web-token/jwt-core/contributors"
+                    "homepage": "https://github.com/web-token/jwt-framework/contributors"
                 }
             ],
             "description": "RSA Based Signature Algorithms the JWT Framework.",
@@ -7179,144 +6928,7 @@
                 "jwt",
                 "symfony"
             ],
-            "time": "2019-04-21T22:05:56+00:00"
-        },
-        {
-            "name": "web-token/jwt-util-ecc",
-            "version": "v1.3.9",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/web-token/jwt-util-ecc.git",
-                "reference": "463370e8e96fb6a4916a41f854ec60db090cc367"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-util-ecc/zipball/463370e8e96fb6a4916a41f854ec60db090cc367",
-                "reference": "463370e8e96fb6a4916a41f854ec60db090cc367",
-                "shasum": ""
-            },
-            "require": {
-                "ext-gmp": "*",
-                "ext-mbstring": "*",
-                "php": "^7.1"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^6.0|^7.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.3.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Jose\\Component\\Core\\Util\\Ecc\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Florent Morselli",
-                    "homepage": "https://github.com/Spomky"
-                },
-                {
-                    "name": "All contributors",
-                    "homepage": "https://github.com/web-token/jwt-core/contributors"
-                }
-            ],
-            "description": "ECC Tools for the JWT Framework.",
-            "homepage": "https://github.com/web-token",
-            "keywords": [
-                "JOSE",
-                "JWE",
-                "JWK",
-                "JWKSet",
-                "JWS",
-                "Jot",
-                "RFC7515",
-                "RFC7516",
-                "RFC7517",
-                "RFC7518",
-                "RFC7519",
-                "RFC7520",
-                "bundle",
-                "jwa",
-                "jwt",
-                "symfony"
-            ],
-            "time": "2019-04-21T22:05:56+00:00"
-        },
-        {
-            "name": "zendframework/zend-diactoros",
-            "version": "2.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zendframework/zend-diactoros.git",
-                "reference": "de5847b068362a88684a55b0dbb40d85986cfa52"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/de5847b068362a88684a55b0dbb40d85986cfa52",
-                "reference": "de5847b068362a88684a55b0dbb40d85986cfa52",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1",
-                "psr/http-factory": "^1.0",
-                "psr/http-message": "^1.0"
-            },
-            "provide": {
-                "psr/http-factory-implementation": "1.0",
-                "psr/http-message-implementation": "1.0"
-            },
-            "require-dev": {
-                "ext-curl": "*",
-                "ext-dom": "*",
-                "ext-libxml": "*",
-                "http-interop/http-factory-tests": "^0.5.0",
-                "php-http/psr7-integration-tests": "dev-master",
-                "phpunit/phpunit": "^7.0.2",
-                "zendframework/zend-coding-standard": "~1.0.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.1.x-dev",
-                    "dev-develop": "2.2.x-dev",
-                    "dev-release-1.8": "1.8.x-dev"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "src/functions/create_uploaded_file.php",
-                    "src/functions/marshal_headers_from_sapi.php",
-                    "src/functions/marshal_method_from_sapi.php",
-                    "src/functions/marshal_protocol_version_from_sapi.php",
-                    "src/functions/marshal_uri_from_sapi.php",
-                    "src/functions/normalize_server.php",
-                    "src/functions/normalize_uploaded_files.php",
-                    "src/functions/parse_cookie_header.php"
-                ],
-                "psr-4": {
-                    "Zend\\Diactoros\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "PSR HTTP Message implementations",
-            "keywords": [
-                "http",
-                "psr",
-                "psr-7"
-            ],
-            "abandoned": "laminas/laminas-diactoros",
-            "time": "2019-11-13T19:16:13+00:00"
+            "time": "2019-12-27T22:22:20+00:00"
         }
     ],
     "packages-dev": [
@@ -7628,6 +7240,60 @@
                 "tests"
             ],
             "time": "2018-10-26T13:21:45+00:00"
+        },
+        {
+            "name": "dflydev/fig-cookies",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dflydev/dflydev-fig-cookies.git",
+                "reference": "a59857139b9e30978b5b802b3631b5eaf34e8c66"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dflydev/dflydev-fig-cookies/zipball/a59857139b9e30978b5b802b3631b5eaf34e8c66",
+                "reference": "a59857139b9e30978b5b802b3631b5eaf34e8c66",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pcre": "*",
+                "php": "^7.2",
+                "psr/http-message": "^1"
+            },
+            "require-dev": {
+                "doctrine/coding-standard": "^4",
+                "phpstan/phpstan": "^0.10.1",
+                "phpunit/phpunit": "^7.2.6",
+                "squizlabs/php_codesniffer": "^3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Dflydev\\FigCookies\\": "src/Dflydev/FigCookies"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Beau Simensen",
+                    "email": "beau@dflydev.com"
+                }
+            ],
+            "description": "Cookies for PSR-7 HTTP Message Interface.",
+            "keywords": [
+                "cookies",
+                "psr-7",
+                "psr7"
+            ],
+            "time": "2018-07-11T06:54:37+00:00"
         },
         {
             "name": "doctrine/cache",
@@ -8158,23 +7824,24 @@
             "time": "2019-09-25T14:49:45+00:00"
         },
         {
-            "name": "lezhnev74/openapi-psr7-validator",
-            "version": "0.16",
+            "name": "league/openapi-psr7-validator",
+            "version": "0.5.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/lezhnev74/openapi-psr7-validator.git",
-                "reference": "501a09b017872c254e1decc454934846bf0fbc33"
+                "url": "https://github.com/thephpleague/openapi-psr7-validator.git",
+                "reference": "5d2a74ed7b94511c89b5c79a00835b72844fd012"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lezhnev74/openapi-psr7-validator/zipball/501a09b017872c254e1decc454934846bf0fbc33",
-                "reference": "501a09b017872c254e1decc454934846bf0fbc33",
+                "url": "https://api.github.com/repos/thephpleague/openapi-psr7-validator/zipball/5d2a74ed7b94511c89b5c79a00835b72844fd012",
+                "reference": "5d2a74ed7b94511c89b5c79a00835b72844fd012",
                 "shasum": ""
             },
             "require": {
-                "cebe/php-openapi": "^1.2",
+                "cebe/php-openapi": "^1.3",
+                "dflydev/fig-cookies": "^2.0",
                 "ext-json": "*",
-                "php": ">=7.1",
+                "php": ">=7.2",
                 "psr/cache": "^1.0",
                 "psr/http-message": "^1.0",
                 "psr/http-server-middleware": "^1.0",
@@ -8191,44 +7858,35 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "OpenAPIValidation\\": "src/"
+                    "League\\OpenAPIValidation\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Dmitry Lezhnev",
-                    "role": "Developer",
-                    "email": "lezhnev.work@gmail.com",
-                    "homepage": "https://github.com/lezhnev74/openapi-psr7-validator"
-                }
-            ],
             "description": "Validate PSR-7 messages against OpenAPI (3.0.2) specifications expressed in YAML or JSON",
-            "homepage": "https://github.com/lezhnev74/openapi-psr7-validator",
+            "homepage": "https://github.com/thephpleague/openapi-psr7-validator",
             "keywords": [
                 "http",
                 "openapi",
                 "psr7",
                 "validation"
             ],
-            "abandoned": "league/openapi-psr7-validator",
-            "time": "2019-08-23T08:58:25+00:00"
+            "time": "2019-11-06T14:43:35+00:00"
         },
         {
-            "name": "mathrix/coding-standard",
-            "version": "0.9.1",
+            "name": "mathrix-education/coding-standard",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mathrix-education/coding-standard.git",
-                "reference": "b09b19c5f46a4403f4b899c859fcca28c42072ac"
+                "reference": "043fc855555b42e916ec80165a900136b3c4b557"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mathrix-education/coding-standard/zipball/b09b19c5f46a4403f4b899c859fcca28c42072ac",
-                "reference": "b09b19c5f46a4403f4b899c859fcca28c42072ac",
+                "url": "https://api.github.com/repos/mathrix-education/coding-standard/zipball/043fc855555b42e916ec80165a900136b3c4b557",
+                "reference": "043fc855555b42e916ec80165a900136b3c4b557",
                 "shasum": ""
             },
             "require": {
@@ -8241,6 +7899,7 @@
                     "Mathrix\\CodingStandard\\": "src/Mathrix"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -8261,35 +7920,30 @@
                 "standard",
                 "style"
             ],
-            "support": {
-                "email": "mathieu@mathrix.fr",
-                "issues": "https://github.com/mathrix-education/coding-standard/issues",
-                "wiki": "https://github.com/mathrix-education/coding-standard/wiki",
-                "source": "https://github.com/mathrix-education/coding-standard"
-            },
-            "time": "2019-09-15T16:37:06+00:00"
+            "time": "2019-12-13T20:00:35+00:00"
         },
         {
-            "name": "mathrix/openapi-assertions",
-            "version": "0.10.4",
+            "name": "mathrix-education/openapi-assertions",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mathrix-education/openapi-assertions.git",
-                "reference": "7c20adca90170ee848f9a8d2df07659702c187e5"
+                "reference": "3aca5a3755f3d3e73c7e1a1f2dbe7373c35f71fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mathrix-education/openapi-assertions/zipball/7c20adca90170ee848f9a8d2df07659702c187e5",
-                "reference": "7c20adca90170ee848f9a8d2df07659702c187e5",
+                "url": "https://api.github.com/repos/mathrix-education/openapi-assertions/zipball/3aca5a3755f3d3e73c7e1a1f2dbe7373c35f71fa",
+                "reference": "3aca5a3755f3d3e73c7e1a1f2dbe7373c35f71fa",
                 "shasum": ""
             },
             "require": {
-                "lezhnev74/openapi-psr7-validator": "^0.16",
+                "league/openapi-psr7-validator": "^0.5.1",
                 "php": ">=7.1",
                 "phpunit/phpunit": "^7.0 || ^8.0"
             },
             "require-dev": {
                 "laravel/lumen-framework": " 5.7.* || 5.8.* || ^6.0",
+                "mathrix-education/coding-standard": "^1.0.0",
                 "nyholm/psr7": "^1.1",
                 "symfony/psr-http-message-bridge": "^1.2"
             },
@@ -8303,6 +7957,7 @@
                     "Mathrix\\OpenAPI\\Assertions\\": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -8314,7 +7969,7 @@
                     "role": "Developer"
                 }
             ],
-            "description": "Validate PSR-7 requests against OpenAPI specification. Heavily based on lezhnev74/openapi-psr7-validator.",
+            "description": "Validate PSR-7 requests against OpenAPI specification. Heavily based on league/openapi-psr7-validator.",
             "homepage": "https://github.com/mathrix-education/openapi-assertions",
             "keywords": [
                 "assertions",
@@ -8322,33 +7977,26 @@
                 "openapi",
                 "phpunit"
             ],
-            "support": {
-                "email": "mathieu@mathrix.fr",
-                "issues": "https://github.com/mathrix-education/openapi-processor/issues",
-                "wiki": "https://github.com/mathrix-education/openapi-processor/wiki",
-                "source": "https://github.com/mathrix-education/openapi-processor"
-            },
-            "abandoned": "mathrix-education/openapi-assertions",
-            "time": "2019-09-08T02:51:29+00:00"
+            "time": "2019-12-13T20:24:03+00:00"
         },
         {
-            "name": "mathrix/openapi-processor",
-            "version": "1.0.2",
+            "name": "mathrix-education/openapi-processor",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mathrix-education/openapi-processor.git",
-                "reference": "62151882e0fc0c62669d71909a133fda493ca66b"
+                "reference": "f94064813238c2233cf34f6c189ce442c0112228"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mathrix-education/openapi-processor/zipball/62151882e0fc0c62669d71909a133fda493ca66b",
-                "reference": "62151882e0fc0c62669d71909a133fda493ca66b",
+                "url": "https://api.github.com/repos/mathrix-education/openapi-processor/zipball/f94064813238c2233cf34f6c189ce442c0112228",
+                "reference": "f94064813238c2233cf34f6c189ce442c0112228",
                 "shasum": ""
             },
             "require": {
                 "doctrine/inflector": "^1.3",
                 "ext-json": "*",
-                "mathrix/coding-standard": "0.9.1",
+                "mathrix-education/coding-standard": "^1.0.0",
                 "monolog/monolog": "^1.24",
                 "php": ">=7.1",
                 "symfony/yaml": "^4.2"
@@ -8366,22 +8014,7 @@
                     "Mathrix\\OpenAPI\\Processor\\": "src"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Mathrix\\OpenAPI\\Processor\\": "tests"
-                }
-            },
-            "scripts": {
-                "lint": [
-                    "phpcs --report=source"
-                ],
-                "lint:details": [
-                    "phpcs"
-                ],
-                "lint:fix": [
-                    "phpcbf"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -8397,13 +8030,7 @@
                 "openapi",
                 "processor"
             ],
-            "support": {
-                "email": "mathieu@mathrix.fr",
-                "issues": "https://github.com/mathrix-education/openapi-processor/issues",
-                "wiki": "https://github.com/mathrix-education/openapi-processor/wiki",
-                "source": "https://github.com/mathrix-education/openapi-processor"
-            },
-            "time": "2019-09-15T17:25:09+00:00"
+            "time": "2019-12-13T20:34:14+00:00"
         },
         {
             "name": "mockery/mockery",
@@ -10424,7 +10051,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.3",
+        "php": ">=7.4",
         "ext-fileinfo": "*",
         "ext-json": "*",
         "ext-simplexml": "*",

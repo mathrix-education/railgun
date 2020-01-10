@@ -6,16 +6,12 @@ namespace App\Services\Stripe\Pipelines;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Laravel\Lumen\Routing\ProvidesConvenienceMethods;
 use Mathrix\Lumen\Zero\Controllers\Traits\HasRequestValidator;
 use function app;
 
-abstract class Pipeline
+abstract class Pipeline extends AnonymousPipeline
 {
-    use ProvidesConvenienceMethods;
-    use HasRequestValidator {
-        HasRequestValidator::validate insteadof ProvidesConvenienceMethods;
-    }
+    use HasRequestValidator;
 
     /** @var Request $request */
     protected $request;
@@ -28,7 +24,7 @@ abstract class Pipeline
         $this->user    = $this->request->user();
     }
 
-    final public function flow()
+    final public function flow(): Pipeline
     {
         $this->initialize();
         $this->exchange();

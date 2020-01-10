@@ -8,8 +8,8 @@ use Exception;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use League\OpenAPIValidation\PSR7\OperationAddress;
 use Mathrix\Lumen\JWT\Auth\JWT;
-use OpenAPIValidation\PSR7\OperationAddress;
 use Tests\APIStatelessTestCase;
 
 class FilesTest extends APIStatelessTestCase

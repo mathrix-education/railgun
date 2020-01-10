@@ -16,7 +16,7 @@ use Mathrix\Lumen\Zero\Controllers\BaseController;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http401UnauthorizedException;
 use Mathrix\Lumen\Zero\Responses\PaginationJsonResponse;
 use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
-use Stripe\Error\Api as StripeAPIException;
+use Stripe\Exception\ApiErrorException as StripeAPIErrorException;
 use Stripe\Invoice as StripeInvoice;
 use Stripe\SetupIntent;
 use Stripe\Subscription as StripeSubscription;
@@ -68,7 +68,7 @@ class SubscriptionsController extends BaseController
      * @return SuccessJsonResponse The invoices list.
      *
      * @throws Http401UnauthorizedException
-     * @throws StripeAPIException
+     * @throws StripeAPIErrorException
      */
     public function invoices(Request $request, string $subscriptionId): SuccessJsonResponse
     {
@@ -87,7 +87,7 @@ class SubscriptionsController extends BaseController
 
         /** @var StripeInvoice $invoice */
         foreach ($invoices as $invoice) {
-            if (!scope($user, 'invoices:read') && $invoice->customer !== $user->stripe_id) {
+            if ($invoice->customer !== $user->stripe_id && !scope($user, 'invoices:read')) {
                 throw new Http401UnauthorizedException([], 'Failed to pass invoices policy');
             }
 
@@ -130,10 +130,6 @@ class SubscriptionsController extends BaseController
             $status = 202;
         }
 
-        return new SuccessJsonResponse(
-            $data,
-            [],
-            $status
-        );
+        return new SuccessJsonResponse($data, [], $status);
     }
 }

@@ -31,4 +31,4 @@ post:
               message:
                 description: The error detailed message.
                 type: string
-                enum: [The given credentials were invalid.]
+                enum: [The given credentials were invalid]

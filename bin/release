@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+if [[ -z "${GITHUB_SHA}" ]]; then
+  GITHUB_SHA=$(git rev-parse HEAD)
+fi
+
+SHORT_SHA="${GITHUB_SHA:0:7}"
+
+echo "$(bin/version)-${SHORT_SHA}"

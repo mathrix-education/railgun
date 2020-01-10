@@ -132,11 +132,8 @@ class ProductsController extends BaseController
     {
         $pipeline = (new ProductsCheckoutPipeline())->flow();
         $data     = Invoice::from($pipeline->invoice);
+        $status   = $data->status === \Stripe\Invoice::STATUS_OPEN ? 202 : 200;
 
-        return new SuccessJsonResponse(
-            $data,
-            [],
-            $data->status === \Stripe\Invoice::STATUS_OPEN ? 202 : 200
-        );
+        return new SuccessJsonResponse($data, [], $status);
     }
 }

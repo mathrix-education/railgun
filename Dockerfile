@@ -1,54 +1,9 @@
-# Alpine build, nginx, PHP 7.2 and the code itself
-FROM alpine:3.9
+FROM mathrix/lumen-base:0.1.3
 
-MAINTAINER Mathieu Bour <mathieu@mathrix.fr>
-USER root
-WORKDIR /var/www/
+LABEL Maintainer="Mathieu Bour <mathieu@mathrix.fr>" \
+      Description="Mathrix Drive API image"
 
-ADD https://dl.bintray.com/php-alpine/key/php-alpine.rsa.pub /etc/apk/keys/php-alpine.rsa.pub
+COPY --chown=nobody . /var/www/
 
-RUN apk -U add ca-certificates && \
-    echo "https://dl.bintray.com/php-alpine/v3.9/php-7.3" >> /etc/apk/repositories && \
-    apk -U add \
-        bash \
-        nginx \
-        curl \
-        php7 \
-        php7-fpm \
-        php7-curl \
-        php7-dom \
-        php7-gd \
-        php7-gmp \
-        php7-intl \
-        php7-json \
-        php7-mbstring \
-        php7-opcache \
-        php7-pdo_mysql \
-        php7-phar \
-        php7-xml \
-        php7-zlib \
-        php7-zip && \
-        ln -nfs /usr/bin/php7 /usr/bin/php
-
-ADD . .
-
-COPY ./deploy/nginx/nginx.conf /etc/nginx/nginx.conf
-COPY ./deploy/nginx/vhost.conf /etc/nginx/conf.d/default.conf
-COPY ./deploy/php7/php.ini /etc/php7/php.ini
-COPY ./deploy/php7/php-fpm.conf /etc/php7/php-fpm.conf
-COPY ./deploy/php7/www.conf /etc/php7/php-fpm.d/www.conf
-COPY ./deploy/entrypoint.sh /entrypoint.sh
-
-RUN php artisan providers:cache -f && \
-    chmod +x /entrypoint.sh && \
-    rm -rf deploy/ && \
-    ls -l storage/keychain
-
-# Clean
-RUN rm -rf /var/cache/apk/*
-
-HEALTHCHECK CMD exit 0
-
-STOPSIGNAL SIGTERM
-
-ENTRYPOINT ["/entrypoint.sh"]
+RUN sed -i "s/RELEASE_ALIAS/$(bin/release)/g" config/sentry.php &&
+    APP_SKIP_SETUP=true php artisan providers:cache -f

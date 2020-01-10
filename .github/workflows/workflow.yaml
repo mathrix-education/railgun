@@ -1,0 +1,161 @@
+name: Pipeline
+on: push
+jobs:
+  lint:
+    name: Lint with PHP_CodeSniffer
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup PHP
+        uses: shivammathur/setup-php@1.5.2
+        with:
+          php-version: 7.3
+          extension-csv: mbstring, gmp
+          coverage: none
+      - name: Install dependencies
+        env:
+          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
+        run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+      - name: Lint with PHP_CodeSniffer
+        run: composer lint:details
+  test:
+    name: Test with PHPUnit
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_DATABASE: mathrix_education_testing
+          MYSQL_ROOT_PASSWORD: '123456'
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Google Cloud Service Account Key
+        run: echo "${{ secrets.GCLOUD_AUTH }}" | base64 -d > storage/keychain/service_account.json
+      - name: Setup PHP
+        uses: shivammathur/setup-php@1.7.2
+        with:
+          php-version: 7.4
+          extensions: gd, gmp, mbstring, mysql, zip
+          coverage: pcov
+          tools: prestissimo
+      - name: Setup node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: Install dependencies
+        run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+      - name: Compile OpenAPI specification
+        run: composer docs:compile
+      - name: Compile mjml emails templates
+        run: |
+          npm install
+          npm run mails:compile
+          rm -rf node_modules/
+      - name: Setup application (environment, JWT key and database seed)
+        env:
+          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
+          DB_PASSWORD: '123456'
+        run: |
+          cp environments/testing/.env .env
+          php artisan jwt:key
+          php artisan migrate --seed
+      - name: Test with PHPUnit
+        env:
+          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
+          DB_PASSWORD: '123456'
+          GOOGLE_CLOUD_KEY_FILE: keychain/service_account.json
+          MAILGUN_SECRET: ${{ secrets.MAILGUN_SECRET }}
+          STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
+          BRAINTREE_PRIVATE_KEY: ${{ secrets.BRAINTREE_PRIVATE_KEY }}
+        run: composer test:cover
+      - name: Upload artifacts (JUnit Report, Coverage report)
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: artifacts
+          path: storage/artifacts
+  static_analysis:
+    name: Analyse with Sonar Scanner
+    needs: [test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: '0' # Download full history
+      - name: Setup sonar.properties
+        run: |
+          echo "sonar.projectVersion=$(bin/version)" >> sonar-project.properties
+          echo "sonar.branch.name=$(bin/current_branch)" >> sonar-project.properties
+
+          if [[ "$(bin/parent_branch)" != "no-parent" ]]; then
+            echo "sonar.branch.target=$(bin/parent_branch)" >> sonar-project.properties
+          fi
+      - name: Download artifacts (JUnit Report, Coverage report)
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: artifacts
+          path: storage/artifacts
+      - name: Run Sonar Scanner
+        uses: mathrix-education/sonar-scanner@master
+        with:
+          version: 4.2.0.1873 # required
+          scan: true
+          args: -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+  build_docker:
+    name: Build Docker image
+    needs: [test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Extract context
+        run: |
+          echo "##[set-output name=current_branch;]$(bin/current_branch)"
+      - name: Setup PHP
+        uses: shivammathur/setup-php@1.7.2
+        with:
+          php-version: 7.4
+          extensions: gd, gmp, mbstring, mysql, zip
+          coverage: pcov
+          tools: prestissimo
+      - name: Install dependencies
+        run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+      - name: Setup PHP
+        uses: shivammathur/setup-php@1.7.0
+        with:
+          php-version: 7.4
+          extensions: gmp, mbstring, zip
+          coverage: none
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Install PHP dependencies
+        run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+      - name: Render emails and documentation
+        run: |
+          npm install
+          composer docs:compile
+          npm run docs:bundle
+          npm run mails:compile
+          rm -rf node_modules/
+      - name: Build Docker image
+        run: docker build -t "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/drive-api:$(bin/release)" .
+      - name: Setup Google Cloud SDK
+        uses: mathrix-education/setup-gcloud@0.1.2
+        with:
+          project: ${{ secrets.GCLOUD_PROJECT }}
+          service-account-key: ${{ secrets.GCLOUD_AUTH }}
+      - name: Push image to Google Cloud Container Registry
+        run: docker push eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/drive-api:${GITHUB_SHA:0:7}
+      - name: Add branch tag
+        if: contains('master,dev,next', steps.git.outputs.current_branch)
+        run: |
+          gcloud container images add-tag \
+            "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/drive-api:$(bin/release)" \
+            "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/drive-api:latest-$(bin/current_branch)"

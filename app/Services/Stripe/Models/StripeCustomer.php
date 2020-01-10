@@ -18,9 +18,9 @@ use Stripe\Token;
  */
 trait StripeCustomer
 {
-    public static $StripeCustomerCacheKey      = 'stripe.customer';
-    public static $StripeCardsCacheKey         = 'stripe.cards';
-    public static $StripeSubscriptionsCacheKey = 'stripe.subscriptions';
+    public static string $StripeCustomerCacheKey      = 'stripe.customer';
+    public static string $StripeCardsCacheKey         = 'stripe.cards';
+    public static string $StripeSubscriptionsCacheKey = 'stripe.subscriptions';
 
     /**
      * Create a new Stripe Customer using the user's information.

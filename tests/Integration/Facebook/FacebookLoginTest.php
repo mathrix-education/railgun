@@ -16,6 +16,7 @@ use Tests\APIStatefulTestCase;
 use function app;
 use function env;
 use function json_decode;
+use const JSON_THROW_ON_ERROR;
 
 /**
  * Test Facebook Login integration.
@@ -104,14 +105,16 @@ class FacebookLoginTest extends APIStatefulTestCase
     {
         $this->json('post', '/auth/login/facebook', ['access_token' => $accessToken]);
 
-        $token      = json_decode($this->response->getContent())->data->token;
-        $serializer = app()->make(Serializer::class);
+        $responseData = json_decode($this->response->getContent(), false, 512, JSON_THROW_ON_ERROR);
+        $token        = $responseData->data->token;
+        $serializer   = app()->make(Serializer::class);
+
         /** @var JWS $jws */
         $jws     = $serializer->unserialize($token);
-        $payload = json_decode($jws->getPayload());
+        $payload = json_decode($jws->getPayload(), false, 512, JSON_THROW_ON_ERROR);
+
         /** @var User $user */
-        $user = User::query()
-            ->findOrFail($payload->sub);
+        $user = User::query()->findOrFail($payload->sub);
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse($this->response);
@@ -125,7 +128,7 @@ class FacebookLoginTest extends APIStatefulTestCase
      *
      * @throws Exception
      */
-    public function testFacebookRegister()
+    public function testFacebookRegister(): void
     {
         $this->makeFacebookRequest(self::$FacebookUser->access_token);
     }
@@ -145,8 +148,8 @@ class FacebookLoginTest extends APIStatefulTestCase
 
         /** @var User $user */
         $count = User::query()
-            ->where('metadata->facebook->id', '=', self::$FacebookUser->id)
-            ->count();
+                     ->where('metadata->facebook->id', '=', self::$FacebookUser->id)
+                     ->count();
 
         $this->assertEquals(1, $count);
     }

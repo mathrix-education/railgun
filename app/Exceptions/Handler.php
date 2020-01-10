@@ -16,11 +16,10 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
-use Mathrix\Lumen\JWT\Auth\Exceptions\InvalidCredentialsException;
 use Mathrix\Lumen\Zero\Exceptions\Http\HttpException;
 use Sentry\State\Hub;
 use Sentry\State\Scope;
-use Stripe\Error\Base as StripeBaseException;
+use Stripe\Exception\ApiErrorException as StripeApiErrorException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use function app;
 use function class_basename;
@@ -92,7 +91,7 @@ class Handler extends ExceptionHandler
             return $exception->toJsonResponse();
         }
 
-        if ($exception instanceof StripeBaseException) {
+        if ($exception instanceof StripeApiErrorException) {
             StripeHandler::handle($exception);
         }
 

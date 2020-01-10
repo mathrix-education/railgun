@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Stripe\Exceptions;
 
-use Stripe\Error\Card as StripeCardException;
+use Stripe\Exception\CardException as StripeCardException;
 use Throwable;
 
 /**
@@ -20,7 +20,7 @@ class StripeHandler
      */
     public static function handle(Throwable $exception): void
     {
-        if (! ($exception instanceof StripeCardException)) {
+        if (!$exception instanceof StripeCardException) {
             return;
         }
 

@@ -12,7 +12,7 @@ use Facebook\Facebook;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Mathrix\Lumen\JWT\Auth\Exceptions\InvalidCredentialsException;
+use Mathrix\Lumen\JWT\Auth\Exceptions\InvalidCredentials;
 use Mathrix\Lumen\JWT\Auth\JWT\JWTIssuer;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
@@ -21,54 +21,58 @@ use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
 use Ramsey\Uuid\Uuid;
 use stdClass;
 use function json_decode;
+use const JSON_THROW_ON_ERROR;
 
 /**
  * Serve routes starting with /auth
  */
 class AuthController extends BaseController
 {
+    private JWTIssuer $jwtIssuer;
+
+    public function __construct(JWTIssuer $jwtIssuer)
+    {
+        parent::__construct();
+        $this->jwtIssuer = $jwtIssuer;
+    }
+
     /**
-     * POST /users/login
+     * POST /auth/login
      *
      * @param Request $request The Illuminate HTTP request.
      *
-     * @return SuccessJsonResponse The user serialized JWT.
+     * @return SuccessJsonResponse
      *
-     * @throws InvalidCredentialsException
+     * @throws InvalidCredentials
      * @throws ValidationException
-     * @throws Exception
      */
     public function login(Request $request): SuccessJsonResponse
     {
-        $this->validate(
-            $request,
-            [
-                'email'    => 'required|email',
-                'password' => 'required',
-            ]
-        );
+        $this->validate($request, [
+            'email'    => 'required|email',
+            'password' => 'required',
+        ]);
 
         /** @var User $user */
         $user = User::query()
-            ->where('email', '=', $request->json('email'))
-            ->get(['id', 'password', 'scopes'])
-            ->first();
+                    ->where('email', '=', $request->json('email'))
+                    ->get(['id', 'password', 'scopes'])
+                    ->first();
 
         if ($user === null) {
-            throw new InvalidCredentialsException();
+            throw new InvalidCredentials();
         }
 
-        $match = Hash::check((string)$request->json('password'), $user->password);
+        $logged = Hash::check((string)$request->json('password'), $user->password);
 
-        if (!$match) {
-            throw new InvalidCredentialsException();
+        if (!$logged) {
+            throw new InvalidCredentials();
         }
 
-        $jws = JWTIssuer::issueJWS($user);
+        $jws   = $this->jwtIssuer->issueJWS($user);
+        $token = $this->jwtIssuer->serializeJWS($jws);
 
-        return new SuccessJsonResponse([
-            'token' => JWTIssuer::serializeJWS($jws),
-        ]);
+        return new SuccessJsonResponse(['token' => $token]);
     }
 
     /**
@@ -92,14 +96,14 @@ class AuthController extends BaseController
         $response = $facebook->get('/me?fields=id,first_name,last_name,email');
 
         /** @var stdClass $body The Facebook response (we can trust it). */
-        $body = json_decode($response->getBody());
+        $body = json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
 
         // First, attempt to find user by its facebook_id
         /** @var User $user */
         $user = User::query()
-            ->where('metadata->facebook->id', '=', $body->id)
-            ->orWhere('email', '=', $body->email)
-            ->first();
+                    ->where('metadata->facebook->id', '=', $body->id)
+                    ->orWhere('email', '=', $body->email)
+                    ->first();
 
         if ($user === null) {
             // User does not exist
@@ -108,14 +112,14 @@ class AuthController extends BaseController
 
         User::unguarded(static function () use (&$user, &$request, &$response): void {
             $user->setFacebookAccessToken((string)$request->json('access_token'))
-                ->syncFacebookProfile($response)
-                ->save();
+                 ->syncFacebookProfile($response)
+                 ->save();
         });
 
         $jws = $user->getFacebookJWS();
 
         return new SuccessJsonResponse([
-            'token' => JWTIssuer::serializeJWS($jws),
+            'token' => $this->jwtIssuer->serializeJWS($jws),
         ]);
     }
 
@@ -134,8 +138,8 @@ class AuthController extends BaseController
         // Try to find the user with the given email
         /** @var User $user */
         $user = User::query()
-            ->where('email', '=', $request->json('email'))
-            ->firstOrFail();
+                    ->where('email', '=', $request->json('email'))
+                    ->firstOrFail();
 
         if ($user->provider === 'facebook') {
             throw new Http400BadRequestException(null, 'Cannot reset password of a facebook account');
@@ -172,8 +176,8 @@ class AuthController extends BaseController
         // Try to find with the given token
         /** @var User $user */
         $user = User::query()
-            ->where('token', '=', $token)
-            ->firstOrFail();
+                    ->where('token', '=', $token)
+                    ->firstOrFail();
 
         // Update password
         User::unguarded(static function () use ($user, $request): void {

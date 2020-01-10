@@ -21,6 +21,7 @@
 /resources/views/docs/index.html
 /resources/views/mails
 /storage/code-coverage/
+.phpunit.result.cache
 
 # Secrets
 /.env
