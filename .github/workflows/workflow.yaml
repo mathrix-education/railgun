@@ -109,7 +109,6 @@ jobs:
           args: -Dsonar.login=${{ secrets.SONAR_TOKEN }}
   build_docker:
     name: Build Docker image
-    needs: [test]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

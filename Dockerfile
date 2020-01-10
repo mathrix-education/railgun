@@ -5,5 +5,5 @@ LABEL Maintainer="Mathieu Bour <mathieu@mathrix.fr>" \
 
 COPY --chown=nobody . /var/www/
 
-RUN sed -i "s/RELEASE_ALIAS/$(bin/release)/g" config/sentry.php &&
+RUN sed -i "s/RELEASE_ALIAS/$(bin/release)/g" config/sentry.php && \
     APP_SKIP_SETUP=true php artisan providers:cache -f
