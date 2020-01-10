@@ -62,8 +62,8 @@ jobs:
           DB_PASSWORD: '123456'
         run: |
           cp environments/testing/.env .env
-          php artisan jwt:key
-          php artisan migrate --seed
+          bin/artisan jwt:key
+          bin/artisan migrate --seed
       - name: Test with PHPUnit
         env:
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
