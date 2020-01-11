@@ -1,6 +1,6 @@
 {
   "name": "@mathrix-education/education-api",
-  "version": "6.2.0",
+  "version": "7.0.0",
   "description": "Internal project of Mathrix Education API. Provide support for MJML and Redoc.",
   "keywords": [
     "education-api",
