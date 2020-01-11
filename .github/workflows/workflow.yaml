@@ -164,8 +164,7 @@ jobs:
   sentry_release:
     name: Setup Sentry Release
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev'
-    #needs: [docker, test]
-    needs: [docker]
+    needs: [docker, test]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -187,8 +186,7 @@ jobs:
   deploy_cloud_run:
     name: Deploy on Cloud Run
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev'
-    #needs: [docker, test]
-    needs: [docker]
+    needs: [docker, test]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
