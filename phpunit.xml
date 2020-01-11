@@ -3,8 +3,7 @@
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
          bootstrap="bootstrap/app.php"
          cacheResultFile="storage/framework/cache/phpunit-cache.php"
-         colors="true"
-         printerClass="Codedungeon\PHPUnitPrettyResultPrinter\Printer">
+         colors="true">
     <testsuites>
         <testsuite name="API Test Suite">
             <directory>./tests/API</directory>
