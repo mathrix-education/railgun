@@ -26,7 +26,8 @@ class StackdriverFormatter extends JsonFormatter
      */
     public function format(array $record)
     {
-        return json_encode($this->toStackdriverFormat($record), JSON_THROW_ON_ERROR, 512) . ($this->appendNewline ? "\n" : '');
+        return json_encode($this->toStackdriverFormat($record), JSON_THROW_ON_ERROR, 512)
+            . ($this->appendNewline ? "\n" : '');
     }
 
     /**

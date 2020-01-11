@@ -8,13 +8,13 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use const JSON_THROW_ON_ERROR;
 use function app;
 use function array_shift;
 use function explode;
 use function json_decode;
 use function preg_match_all;
 use function str_replace;
-use const JSON_THROW_ON_ERROR;
 
 class Chainer
 {
