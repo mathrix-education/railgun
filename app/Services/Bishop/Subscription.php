@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Stripe\Card;
+use Stripe\Customer as StripeCustomer;
 use Stripe\Invoice as StripeInvoice;
 use Stripe\SetupIntent as StripeSetupIntent;
 use Stripe\Subscription as StripeSubscription;
@@ -91,17 +92,19 @@ class Subscription extends Bishop
              */
             $customer = $currentUser->asStripeCustomer();
 
-            /** @var Card $card */
-            foreach ($customer->sources as $source) {
-                if ($source->id === $subscription->default_source) {
-                    $card = $source;
-                    break;
+            if ($customer instanceof StripeCustomer) {
+                /** @var Card $card */
+                foreach ($customer->sources as $source) {
+                    if ($source->id === $subscription->default_source) {
+                        $card = $source;
+                        break;
+                    }
                 }
-            }
 
-            if ($card === null) {
-                // If we did not found the card into the user sources, we can try to retrieve it from the Stripe API.
-                $card = $customer->sources->retrieve($subscription->default_source);
+                // If we did not found the card into the user sources, we can try to retrieve it from the Stripe API
+                if ($card === null && $subscription->default_source !== null) {
+                    $card = $customer->sources->retrieve($subscription->default_source);
+                }
             }
         }
 
