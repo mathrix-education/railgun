@@ -12,6 +12,7 @@ use Mathrix\Lumen\Zero\Database\BaseTableSeeder;
 
 class MarksTableSeeder extends BaseTableSeeder
 {
+    /** @noinspection DisconnectedForeachInstructionInspection */
     public function run(): void
     {
         $faker      = FakerFactory::create();
@@ -41,16 +42,11 @@ class MarksTableSeeder extends BaseTableSeeder
 
                 [$createdAt, $updatedAt] = timestamps($model->created_at->__toString());
 
-                $markData = array_merge(
-                    $markData,
-                    [
-                        'status'      => $faker->randomElement(Mark::STATUSES),
-                        'markable_id' => $model->id,
-                        'user_id'     => $user->id,
-                        'created_at'  => $createdAt,
-                        'updated_at'  => $updatedAt,
-                    ]
-                );
+                $markData['status']      = $faker->randomElement(Mark::STATUSES);
+                $markData['markable_id'] = $model->id;
+                $markData['user_id']     = $user->id;
+                $markData['created_at']  = $createdAt;
+                $markData['updated_at']  = $updatedAt;
                 $marks->push($markData);
             }
 

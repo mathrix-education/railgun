@@ -18,7 +18,6 @@ use function basename;
 use function collect;
 use function dirname;
 use function env;
-use function intval;
 use function strcasecmp;
 use function trans;
 use function trim;
@@ -90,7 +89,7 @@ class FilesController extends BaseController
         }
 
         if (isset($data['size'])) {
-            $data['size_kb'] = intval($data['size']);
+            $data['size_kb'] = (int)$data['size'];
             unset($data['size']);
         }
 

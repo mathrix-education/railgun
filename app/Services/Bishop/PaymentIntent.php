@@ -8,7 +8,7 @@ use Stripe\PaymentIntent as StripePaymentIntent;
 
 class PaymentIntent extends Bishop
 {
-    protected $dates = ['created_at'];
+    protected array $dates = ['created_at'];
 
     /**
      * Serialize a payment intent.
@@ -22,7 +22,7 @@ class PaymentIntent extends Bishop
         return new self(self::fromStripe($paymentIntent));
     }
 
-    public static function fromStripe(StripePaymentIntent $paymentIntent)
+    public static function fromStripe(StripePaymentIntent $paymentIntent): array
     {
         return [
             'id'            => $paymentIntent->id,

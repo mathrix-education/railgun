@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Services\Chainer\Chainer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Mathrix\Chainer\Chainer;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 

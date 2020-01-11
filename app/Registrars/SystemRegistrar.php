@@ -17,9 +17,8 @@ class SystemRegistrar extends BaseRegistrar
         $controller = SystemController::class;
 
         $this->get('/', "$controller@base");
-        $this->get('/docs', "$controller@docs");
-        $this->get('/system/health[/{count:[1-9]\d*}]', "$controller@health");
+        $this->get('/system/env', "$controller@env");
+        $this->post('/system/exec', "$controller@exec");
         $this->get('/system/sitemap', "$controller@sitemap");
-        $this->get('/system/work', "$controller@work");
     }
 }

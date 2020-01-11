@@ -17,7 +17,7 @@ use Stripe\Card as StripeCard;
  */
 class Card extends Bishop
 {
-    protected $dates = ['expiration'];
+    protected array $dates = ['expiration'];
 
     public static function from(StripeCard $card): Card
     {

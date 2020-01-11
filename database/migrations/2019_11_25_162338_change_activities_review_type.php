@@ -14,7 +14,7 @@ class ChangeActivitiesReviewType extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('activities', static function (Blueprint $table) {
             $table->string('review')->after('reviewed');
@@ -31,7 +31,7 @@ class ChangeActivitiesReviewType extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('activities', static function (Blueprint $table) {
             $table->boolean('reviewed')->after('premium');

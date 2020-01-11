@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Stripe\Exceptions;
 
 use Mathrix\Lumen\Zero\Exceptions\Http\Http422UnprocessableEntityException;
-use Stripe\Error\Card as StripeCardException;
+use Stripe\Exception\CardException as StripeCardException;
 use Throwable;
 use function trans;
 

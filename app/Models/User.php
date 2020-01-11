@@ -29,7 +29,6 @@ use Stripe\Subscription as StripeSubscription;
 use function array_merge;
 use function floor;
 use function in_array;
-use function pow;
 use function trim;
 
 /**
@@ -78,9 +77,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     use HasPermissions;
     use BraintreeCustomer;
     use StripeCustomer;
-
-    /** @var bool If timestamps (created_at and updated_at) should be used */
-    public $timestamps = true;
 
     /** @var array The guarded attributes */
     protected $fillable = [
@@ -279,7 +275,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function getLevelAttribute(): int
     {
-        return (int)floor((pow($this->points, 1 / 1.2) / 10) + 1);
+        return (int)floor((($this->points ** (1 / 1.2)) / 10) + 1);
     }
 
     /**
@@ -310,7 +306,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
                 StripeSubscription::STATUS_TRIALING,
             ];
 
-            if (in_array($subscription->status, $allowedStatuses)) {
+            if (in_array($subscription->status, $allowedStatuses, true)) {
                 return true;
             }
         }

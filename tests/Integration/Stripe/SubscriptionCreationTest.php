@@ -62,7 +62,7 @@ class SubscriptionCreationTest extends APIStatelessTestCase
         $this->assertEquals($expectedPremium, $this->requester->premium);
     }
 
-    public function testPostWithProductId()
+    public function testPostWithProductId(): void
     {
         $this->requester = factory(User::class)->create();
         JWT::actingAs($this->requester);

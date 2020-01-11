@@ -1,4 +1,4 @@
 .idea/
+.git/
 .sonarwork/
-environments/
 node_modules/

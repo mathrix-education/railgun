@@ -26,7 +26,7 @@ class UsersTest extends APIStatelessTestCase
     /**
      * POST /users
      */
-    public function testPost()
+    public function testPost(): void
     {
         $payload = [
             'email'    => $this->faker->email,
@@ -43,7 +43,7 @@ class UsersTest extends APIStatelessTestCase
     /**
      * GET /users/{userId}
      */
-    public function testGetSelf()
+    public function testGetSelf(): void
     {
         /** @var User $user */
         $user = User::random();
@@ -57,7 +57,7 @@ class UsersTest extends APIStatelessTestCase
     /**
      * GET /users/{userId}
      */
-    public function testGetAdmin()
+    public function testGetAdmin(): void
     {
         /** @var User $user */
         $user = JWT::withScopes('*');
@@ -71,7 +71,7 @@ class UsersTest extends APIStatelessTestCase
     /**
      * GET /users/{userId} as a simple registered user
      */
-    public function testGetSomeoneElse()
+    public function testGetSomeoneElse(): void
     {
         /** @var User $user */
         $user    = JWT::withScopes('logged');
@@ -86,7 +86,7 @@ class UsersTest extends APIStatelessTestCase
     /**
      * PATCH /users/{userId}
      */
-    public function testPatch()
+    public function testPatch(): void
     {
         $newPassword = $this->faker->password(20, 20);
         $payload     = array_merge(
@@ -122,7 +122,7 @@ class UsersTest extends APIStatelessTestCase
     /**
      * PATCH /users/{userId} with the current_password
      */
-    public function testPatchNoCurrentPassword()
+    public function testPatchNoCurrentPassword(): void
     {
         $newPassword = $this->faker->password(20, 20);
         $payload     = array_merge(
@@ -149,7 +149,7 @@ class UsersTest extends APIStatelessTestCase
         $this->assertTrue(Hash::check(env('DB_PASSWORD'), $hashed), 'Hash does not match the old password.');
     }
 
-    public function testSearch()
+    public function testSearch(): void
     {
         $method = 'get';
         $uri    = '/users/search/lo?page=0&perPage=10&order=id&dir=desc';
@@ -164,7 +164,7 @@ class UsersTest extends APIStatelessTestCase
      * PATCH /users/{userId}
      * Test while patching settings for last session.
      */
-    public function testPatchLastSession()
+    public function testPatchLastSession(): void
     {
         /** @var User $user */
         $user = User::random();
@@ -188,7 +188,7 @@ class UsersTest extends APIStatelessTestCase
      * DELETE /users/{userId}/cache
      * Test user cache clear.
      */
-    public function testCache()
+    public function testCache(): void
     {
         $user = User::random();
 
@@ -206,7 +206,7 @@ class UsersTest extends APIStatelessTestCase
         );
     }
 
-    public function testProducts()
+    public function testProducts(): void
     {
         $user     = User::random();
         $product  = Product::random();

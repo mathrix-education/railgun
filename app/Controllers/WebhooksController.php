@@ -15,8 +15,9 @@ use Mathrix\Lumen\Zero\Controllers\BaseController;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http404NotFoundException;
 use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
-use Stripe\Error\SignatureVerification;
 use Stripe\Event;
+use Stripe\Exception\ApiErrorException;
+use Stripe\Exception\SignatureVerificationException;
 use Stripe\Webhook as StripeWebhook;
 use function env;
 use function gateway;
@@ -35,7 +36,8 @@ class WebhooksController extends BaseController
      * @return SuccessJsonResponse The webhook result.
      *
      * @throws Http400BadRequestException
-     * @throws SignatureVerification
+     * @throws ApiErrorException
+     * @throws SignatureVerificationException
      */
     public function stripe(Request $request): SuccessJsonResponse
     {
@@ -75,7 +77,7 @@ class WebhooksController extends BaseController
      * @throws InvalidSignature
      * @throws Http404NotFoundException
      */
-    public function braintree(Request $request)
+    public function braintree(Request $request): SuccessJsonResponse
     {
         /** @var WebhookNotification $webhookNotification */
         $webhookNotification = gateway()

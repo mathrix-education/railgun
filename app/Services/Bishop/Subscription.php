@@ -15,13 +15,12 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Stripe\Card;
+use Stripe\Customer as StripeCustomer;
 use Stripe\Invoice as StripeInvoice;
 use Stripe\SetupIntent as StripeSetupIntent;
 use Stripe\Subscription as StripeSubscription;
-use function floatval;
 use function gateway;
 use function in_array;
-use function intval;
 use function round;
 
 /**
@@ -42,7 +41,7 @@ use function round;
  */
 class Subscription extends Bishop
 {
-    protected $dates = [
+    protected array $dates = [
         'cancel_at',
         'canceled_at',
         'created_at',
@@ -91,17 +90,19 @@ class Subscription extends Bishop
              */
             $customer = $currentUser->asStripeCustomer();
 
-            /** @var Card $card */
-            foreach ($customer->sources as $source) {
-                if ($source->id === $subscription->default_source) {
-                    $card = $source;
-                    break;
+            if ($customer instanceof StripeCustomer) {
+                /** @var Card $card */
+                foreach ($customer->sources as $source) {
+                    if ($source->id === $subscription->default_source) {
+                        $card = $source;
+                        break;
+                    }
                 }
-            }
 
-            if ($card === null) {
-                // If we did not found the card into the user sources, we can try to retrieve it from the Stripe API.
-                $card = $customer->sources->retrieve($subscription->default_source);
+                // If we did not found the card into the user sources, we can try to retrieve it from the Stripe API
+                if ($card === null && $subscription->default_source !== null) {
+                    $card = $customer->sources->retrieve($subscription->default_source);
+                }
             }
         }
 
@@ -193,8 +194,8 @@ class Subscription extends Bishop
                     'brand'      => Str::slug($cardDetails->cardType),
                     'last4'      => $cardDetails->last4,
                     'expiration' => Carbon::create(
-                        intval($cardDetails->expirationYear),
-                        intval($cardDetails->expirationMonth),
+                        (int)$cardDetails->expirationYear,
+                        (int)$cardDetails->expirationMonth,
                         1,
                         0,
                         0,
@@ -210,33 +211,27 @@ class Subscription extends Bishop
                     'email' => $paypalDetails->payerEmail,
                 ];
             }
+        } elseif ($paymentMethodObj instanceof CreditCard) {
+            $paymentMethod = [
+                'type'       => 'card',
+                'brand'      => Str::slug($paymentMethodObj->cardType),
+                'last4'      => $paymentMethodObj->last4,
+                'expiration' => Carbon::create(
+                    (int)$paymentMethodObj->expirationYear,
+                    (int)$paymentMethodObj->expirationMonth,
+                    1,
+                    0,
+                    0,
+                    0
+                ),
+            ];
+        } elseif ($paymentMethodObj instanceof PayPalAccount) {
+            $paymentMethod = [
+                'type'  => 'paypal',
+                'email' => $paymentMethodObj->email,
+            ];
         } else {
-            /*
-             * If the subscription has no transaction yet, we can read the payment method from the previously retrieved
-             * payment method.
-             */
-            if ($paymentMethodObj instanceof CreditCard) {
-                $paymentMethod = [
-                    'type'       => 'card',
-                    'brand'      => Str::slug($paymentMethodObj->cardType),
-                    'last4'      => $paymentMethodObj->last4,
-                    'expiration' => Carbon::create(
-                        intval($paymentMethodObj->expirationYear),
-                        intval($paymentMethodObj->expirationMonth),
-                        1,
-                        0,
-                        0,
-                        0
-                    ),
-                ];
-            } elseif ($paymentMethodObj instanceof PayPalAccount) {
-                $paymentMethod = [
-                    'type'  => 'paypal',
-                    'email' => $paymentMethodObj->email,
-                ];
-            } else {
-                $paymentMethod = null;
-            }
+            $paymentMethod = null;
         }
 
         $status = null;
@@ -266,7 +261,8 @@ class Subscription extends Bishop
             'cancel_at_period_end' => $cancelAtPeriodEnd,
             'canceled_at'          => in_array(
                 $subscription->status,
-                [BraintreeSubscription::CANCELED, BraintreeSubscription::EXPIRED]
+                [BraintreeSubscription::CANCELED, BraintreeSubscription::EXPIRED],
+                true
             )
                 ? $subscription->updatedAt : null,
             'created_at'           => $subscription->createdAt,
@@ -275,7 +271,7 @@ class Subscription extends Bishop
             'customer'             => $customer,
             'plan'                 => [
                 'id'     => $subscription->planId,
-                'amount' => round(floatval($subscription->price) * 100),
+                'amount' => round((float)$subscription->price * 100),
             ],
             'payment_method'       => $paymentMethod,
             'status'               => $status,

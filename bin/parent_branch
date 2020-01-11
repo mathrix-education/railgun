@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+CURRENT_BRANCH=$(bin/current_branch)
+
+if [[ "${CURRENT_BRANCH}" == "dev" ]]; then
+    echo "master"
+elif [[ "${CURRENT_BRANCH}" != "master" ]]; then
+    echo "dev"
+else
+    echo "no-parent"
+fi
+

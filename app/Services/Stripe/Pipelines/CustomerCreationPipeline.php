@@ -6,6 +6,7 @@ namespace App\Services\Stripe\Pipelines;
 
 use App\Services\Stripe\Models\StripeCustomer;
 use Mathrix\Lumen\Zero\Exceptions\ValidationException;
+use Stripe\Exception\ApiErrorException;
 
 /**
  * Create a new Stripe customer, using a source token.
@@ -22,6 +23,8 @@ class CustomerCreationPipeline extends Pipeline
 
     /**
      * Create the user Stripe profile and attach a default source.
+     *
+     * @throws ApiErrorException
      */
     protected function exchange(): void
     {

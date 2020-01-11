@@ -52,7 +52,7 @@ class DecryptCommand extends BaseCommand
         [$client, $key] = KMSUtils::clientKey($environment);
 
         foreach ($files as $file) {
-            $plainTextFile = substr("$file", 0, -4);
+            $plainTextFile = substr((string)$file, 0, -4);
             $cipherFile    = $file;
 
             $this->line(str_replace(base_path(), '', "Decrypting $cipherFile => $plainTextFile"));

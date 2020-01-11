@@ -27,8 +27,6 @@ class Purchase extends BaseModel
 
     /** @var string The model table. */
     protected $table = 'purchases';
-    /** @var bool Indicates if the model should be timestamped */
-    public $timestamps = true;
     /** @var array The attributes that are mass assignable */
     protected $fillable = ['id', 'transaction_id', 'user_id', 'product_id'];
     /** @var array The validation rules */

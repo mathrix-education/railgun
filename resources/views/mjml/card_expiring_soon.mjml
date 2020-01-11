@@ -23,7 +23,7 @@
                     Détail de votre abonnement :
                     <ul>
                         <li>{{ $plan->name }}</li>
-                        <li>Date de prochaine facturation : {{ $subscription->nextBillingDate->format("d/m/Y") }}</li>
+                        <li>Date de prochaine facturation : {{ $subscription->nextBillingDate->format('d/m/Y') }}</li>
                         <li>Montant de la prochaine facturation : {{ $subscription->nextBillingPeriodAmount }} €</li>
                     </ul>
                 </mj-text>
@@ -31,7 +31,7 @@
                 <mj-text align="justify">
                     Comme vous pouvez le voir, votre carte expire <b>avant la date de prochaine facturation</b>.
                     Pour pouvoir continuer à profiter de l'abonnement <b>Mathrix Mode Machine</b>, vous devrez donc
-                    mettre à jour votre moyen de paiement avant le {{ $subscription->nextBillingDate->format("d/m/Y") }}
+                    mettre à jour votre moyen de paiement avant le {{ $subscription->nextBillingDate->format('d/m/Y') }}
                     :
                     il suffit de vous connecter et d'aller dans vos réglages ou de cliquer sur le bouton ci-dessous.
                 </mj-text>

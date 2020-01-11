@@ -18,7 +18,7 @@ class ReportsTest extends APIStatelessTestCase
         'std:delete',
     ];
 
-    public function testPost()
+    public function testPost(): void
     {
         $this->makeRESTJsonRequest('std:post', null, ['status' => 'todo']);
     }

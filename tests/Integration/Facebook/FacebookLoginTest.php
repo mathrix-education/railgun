@@ -1,5 +1,4 @@
 <?php
-/** @noinspection PhpRedundantCatchClauseInspection */
 
 declare(strict_types=1);
 
@@ -13,6 +12,7 @@ use Facebook\Facebook;
 use Jose\Component\Signature\JWS;
 use Jose\Component\Signature\Serializer\Serializer;
 use Tests\APIStatefulTestCase;
+use const JSON_THROW_ON_ERROR;
 use function app;
 use function env;
 use function json_decode;
@@ -47,7 +47,7 @@ class FacebookLoginTest extends APIStatefulTestCase
                 env('FACEBOOK_APP_TOKEN')
             );
 
-            self::$FacebookUser = json_decode($response->getBody());
+            self::$FacebookUser = json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
         } catch (FacebookResponseException $throttleException) {
             self::$LimitReached = true;
         }
@@ -68,7 +68,7 @@ class FacebookLoginTest extends APIStatefulTestCase
         /** @var Facebook $facebook */
         $facebook = app()->make(Facebook::class);
         $response = $facebook->delete(self::$FacebookUser->id, [], env('FACEBOOK_APP_TOKEN'));
-        $body     = json_decode($response->getBody());
+        $body     = json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
         self::assertTrue($body->success);
 
         // Delete user (does not work for now)
@@ -104,14 +104,16 @@ class FacebookLoginTest extends APIStatefulTestCase
     {
         $this->json('post', '/auth/login/facebook', ['access_token' => $accessToken]);
 
-        $token      = json_decode($this->response->getContent())->data->token;
-        $serializer = app()->make(Serializer::class);
+        $responseData = json_decode($this->response->getContent(), false, 512, JSON_THROW_ON_ERROR);
+        $token        = $responseData->data->token;
+        $serializer   = app()->make(Serializer::class);
+
         /** @var JWS $jws */
         $jws     = $serializer->unserialize($token);
-        $payload = json_decode($jws->getPayload());
+        $payload = json_decode($jws->getPayload(), false, 512, JSON_THROW_ON_ERROR);
+
         /** @var User $user */
-        $user = User::query()
-            ->findOrFail($payload->sub);
+        $user = User::query()->findOrFail($payload->sub);
 
         $this->assertResponseOk();
         $this->assertOpenAPIResponse($this->response);
@@ -125,7 +127,7 @@ class FacebookLoginTest extends APIStatefulTestCase
      *
      * @throws Exception
      */
-    public function testFacebookRegister()
+    public function testFacebookRegister(): void
     {
         $this->makeFacebookRequest(self::$FacebookUser->access_token);
     }
@@ -145,8 +147,8 @@ class FacebookLoginTest extends APIStatefulTestCase
 
         /** @var User $user */
         $count = User::query()
-            ->where('metadata->facebook->id', '=', self::$FacebookUser->id)
-            ->count();
+                     ->where('metadata->facebook->id', '=', self::$FacebookUser->id)
+                     ->count();
 
         $this->assertEquals(1, $count);
     }

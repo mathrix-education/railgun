@@ -13,7 +13,10 @@
   <component name="JavaScriptSettings">
     <option name="languageLevel" value="ES6" />
   </component>
-  <component name="ProjectPlainTextFileTypeManager">
-    <file url="file://$PROJECT_DIR$/app/Policies/SubscriptionPolicy.php" />
+  <component name="PhpEntryPointsManager">
+    <entry_point>
+      <entry_point TYPE="phpMethod" FQNAME="\CreateCacheTable down" />
+    </entry_point>
+    <pattern value="\CreateCacheTable" member="down" />
   </component>
 </project>

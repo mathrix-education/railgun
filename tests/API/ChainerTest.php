@@ -14,7 +14,7 @@ class ChainerTest extends APIStatelessTestCase
      * POST /chain
      * Test a big chainer query.
      */
-    public function testWorkspace()
+    public function testWorkspace(): void
     {
         $moduleId = Module::query()
             ->whereHas('activity', static function (Builder $query) {
@@ -74,6 +74,8 @@ class ChainerTest extends APIStatelessTestCase
                 ],
             ],
         ]);
+
+        $this->debug();
 
         $this->assertResponseOk();
     }

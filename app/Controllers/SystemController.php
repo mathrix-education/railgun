@@ -4,28 +4,18 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Models\Chapter;
-use App\Models\User;
 use App\Services\Sitemap\SitemapUtils;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
-use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
-use Symfony\Component\Console\Output\BufferedOutput;
 use Thepixeldeveloper\Sitemap\Drivers\XmlWriterDriver;
 use Thepixeldeveloper\Sitemap\Extensions\Video;
 use Thepixeldeveloper\Sitemap\Url;
 use Thepixeldeveloper\Sitemap\Urlset;
-use function collect;
-use function explode;
 use function file_get_contents;
-use function microtime;
 use function preg_match_all;
 use function resource_path;
-use function time;
 
 /**
  * Serve routes starting with /system.
@@ -33,26 +23,6 @@ use function time;
  */
 class SystemController extends BaseController
 {
-    /**
-     * Run a benchmark.
-     *
-     * @param callable $test  The benchmark.
-     * @param int      $count The number of iteration to run.
-     *
-     * @return float|int The benchmark duration.
-     */
-    private function benchmark(callable $test, int $count = 100)
-    {
-        $start = microtime(true);
-        for ($i = 0; $i < $count; $i++) {
-            $test($count);
-        }
-        $duration = microtime(true) - $start; // In seconds
-        $mean     = $duration / $count;
-
-        return $mean * 1000;
-    }
-
     /**
      * GET /
      * Display the Redoc generated documentation.
@@ -62,56 +32,6 @@ class SystemController extends BaseController
         $docs = file_get_contents(resource_path('views/docs/index.html'));
 
         return new Response($docs);
-    }
-
-    /**
-     * GET /system/health
-     * Health check for Docker
-     *
-     * @param int $count The number of iteration for the benchmark.
-     *
-     * @return SuccessJsonResponse The benchmarks results.
-     */
-    public function health(int $count = 1): SuccessJsonResponse
-    {
-        $userId    = User::random()->id;
-        $chapterId = Chapter::random()->id;
-
-        $userQuery        = User::query()
-            ->where('id', '=', $userId);
-        $chapterRecursive = Chapter::with([
-            'notions'                    => static function (HasMany $q): void {
-                $q->where('visible', '=', true);
-            },
-            'notions.activities'         => static function (HasMany $q): void {
-                $q->where('visible', '=', true);
-            },
-            'notions.activities.modules' => static function (HasMany $q): void {
-                $q->where('visible', '=', true);
-            },
-        ])
-            ->where('id', '=', $chapterId);
-
-        return new SuccessJsonResponse([
-            'user_random'       => [
-                'query'        => $userQuery->toSql(),
-                "mean($count)" => $this->benchmark(
-                    static function () use ($userQuery): void {
-                        $userQuery->firstOrFail();
-                    },
-                    $count
-                ),
-            ],
-            'chapter_recursive' => [
-                'query'        => $chapterRecursive->toSql(),
-                "mean($count)" => $this->benchmark(
-                    static function () use ($chapterRecursive): void {
-                        $chapterRecursive->firstOrFail();
-                    },
-                    $count
-                ),
-            ],
-        ]);
     }
 
     /**
@@ -153,7 +73,7 @@ class SystemController extends BaseController
             ->join('disciplines', 'chapters.discipline_id', '=', 'disciplines.id')
             ->where('seo_index', '=', true)
             ->get()
-            ->map(static function ($data) use ($sitemap): void {
+            ->map(static function ($data) use ($sitemap) {
                 /*
                  * Search for videos in the module content and if some are found, use the
                  */
@@ -192,28 +112,5 @@ class SystemController extends BaseController
         $response->setContent($driver->output());
 
         return $response;
-    }
-
-    /**
-     * GET /system/work
-     * Run schedule and queue workers.
-     */
-    public function work(): SuccessJsonResponse
-    {
-        $start  = time();
-        $output = new BufferedOutput();
-        Artisan::call('schedule:run', [], $output);
-        // Artisan::call("queue:work", [], $output);
-        $end = time();
-
-        $lines = collect(explode("\n", $output->fetch()))
-            ->reject(static function ($line) {
-                return empty($line);
-            });
-
-        return new SuccessJsonResponse([
-            'duration' => $end - $start,
-            'logs'     => $lines,
-        ]);
     }
 }

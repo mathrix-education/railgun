@@ -43,7 +43,7 @@ class SearchController extends BaseController
             ->toArray();
 
         // Trim, decode query
-        $query = trim(mb_strtolower(urldecode($query)));
+        $query = mb_strtolower(trim(urldecode($query)));
         $query = implode('%%', explode(' ', $query));
         $query = "%$query%";
 

@@ -6,6 +6,7 @@ namespace Tests\Regression;
 
 use App\Models\User;
 use Mathrix\Lumen\JWT\Auth\JWT;
+use Stripe\Exception\ApiErrorException;
 use Stripe\Subscription;
 use Tests\APIStatelessTestCase;
 use function factory;
@@ -15,6 +16,9 @@ use function factory;
  */
 class Issue54Test extends APIStatelessTestCase
 {
+    /**
+     * @throws ApiErrorException
+     */
     public function testCardOverrideOnCreation(): void
     {
         /** @var User $user */
@@ -34,6 +38,9 @@ class Issue54Test extends APIStatelessTestCase
         $this->assertResponseStatus(202);
     }
 
+    /**
+     * @throws ApiErrorException
+     */
     public function testSubscriptionCardOverrideOnUpdate(): void
     {
         /** @var User $user */

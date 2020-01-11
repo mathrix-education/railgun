@@ -27,8 +27,10 @@ class ModulesController extends BaseController
      * @param int $perPage
      *
      * @return PaginationJsonResponse
+     *
+     * @throws Http400BadRequestException
      */
-    public function courses(int $page, int $perPage)
+    public function courses(int $page, int $perPage): PaginationJsonResponse
     {
         $courses = Module::query()
             ->where('type', '=', 'course');

@@ -14,7 +14,7 @@ use Tests\APIStatelessTestCase;
  */
 class InvoicePaymentSucceededWebhookTest extends APIStatelessTestCase
 {
-    private function metadata($userId, $productId)
+    private function metadata($userId, $productId): stdClass
     {
         $lineItem           = new stdClass();
         $lineItem->metadata = [

@@ -7,6 +7,7 @@ namespace App\Logging;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Monolog\Formatter\JsonFormatter;
+use const JSON_THROW_ON_ERROR;
 use function app;
 use function array_map;
 use function array_merge;
@@ -25,7 +26,8 @@ class StackdriverFormatter extends JsonFormatter
      */
     public function format(array $record)
     {
-        return json_encode($this->toStackdriverFormat($record)) . ($this->appendNewline ? "\n" : '');
+        return json_encode($this->toStackdriverFormat($record), JSON_THROW_ON_ERROR, 512)
+            . ($this->appendNewline ? "\n" : '');
     }
 
     /**
@@ -44,7 +46,7 @@ class StackdriverFormatter extends JsonFormatter
             $records
         );
 
-        return json_encode($records);
+        return json_encode($records, JSON_THROW_ON_ERROR, 512);
     }
 
     /**

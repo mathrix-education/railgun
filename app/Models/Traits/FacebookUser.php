@@ -12,6 +12,7 @@ use Facebook\Facebook;
 use Facebook\FacebookResponse;
 use Jose\Component\Signature\JWS;
 use Mathrix\Lumen\JWT\Auth\JWT\JWTIssuer;
+use const JSON_THROW_ON_ERROR;
 use function app;
 use function array_replace_recursive;
 use function env;
@@ -46,7 +47,7 @@ trait FacebookUser
             "fb_exchange_token=$shortAccessToken",
         ];
         $response = $facebook->get('/oauth/access_token?' . implode('&', $params));
-        $body     = json_decode($response->getBody());
+        $body     = json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
 
         $metadata                             = $this->metadata ?? [];
         $metadata['facebook']['access_token'] = $body->access_token;
@@ -57,6 +58,10 @@ trait FacebookUser
     }
 
     /**
+     * @param FacebookResponse|null $response
+     *
+     * @return User
+     *
      * @throws FacebookSDKException
      */
     public function syncFacebookProfile(?FacebookResponse $response = null): User
@@ -68,7 +73,7 @@ trait FacebookUser
             $response    = $facebook->get('/me?fields=id,first_name,last_name,email', $accessToken);
         }
 
-        $body = json_decode($response->getBody());
+        $body = json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
 
         $this->metadata  = array_replace_recursive($this->metadata, ['facebook' => ['id' => $body->id]]);
         $this->email     = $body->email;
@@ -85,7 +90,8 @@ trait FacebookUser
     public function getFacebookJWS(): JWS
     {
         $expiresIn = $this->metadata['facebook']['expires_in'];
+        $jwtIssuer = app()->make(JWTIssuer::class);
 
-        return JWTIssuer::issueJWS($this, ['exp' => $expiresIn]);
+        return $jwtIssuer->issueJWS($this, ['exp' => $expiresIn]);
     }
 }

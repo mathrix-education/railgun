@@ -9,19 +9,9 @@ use Tests\APIStatelessTestCase;
 class SystemTest extends APIStatelessTestCase
 {
     /**
-     * GET /system/health
-     */
-    public function testHealth()
-    {
-        $this->json('get', '/system/health');
-
-        $this->assertResponseOk();
-    }
-
-    /**
      * GET /system/sitemap
      */
-    public function testSitemap()
+    public function testSitemap(): void
     {
         $this->json('get', '/system/sitemap');
 

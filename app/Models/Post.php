@@ -27,8 +27,6 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
  */
 class Post extends BaseModel
 {
-    /** @var bool If timestamps (created_at and updated_at) should be used */
-    public $timestamps = true;
     /** @var array The attributes that are mass assignable */
     protected $fillable = ['id', 'title', 'slug', 'module_id', 'category_id', 'user_id'];
     /** @var array Validation rules */

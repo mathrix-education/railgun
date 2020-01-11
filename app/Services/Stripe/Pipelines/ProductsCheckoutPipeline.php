@@ -8,7 +8,8 @@ use App\Models\Product;
 use App\Services\Stripe\Exceptions\ProductAlreadyBought;
 use App\Services\Stripe\Utils\InvoiceUtils;
 use Mathrix\Lumen\Zero\Exceptions\ValidationException;
-use Stripe\Error\Card as CardException;
+use Stripe\Exception\ApiErrorException;
+use Stripe\Exception\CardException;
 use Stripe\Invoice as StripeInvoice;
 use Stripe\InvoiceItem as StripeInvoiceItem;
 
@@ -25,6 +26,7 @@ class ProductsCheckoutPipeline extends Pipeline
     public $invoice;
 
     /**
+     * @throws ApiErrorException
      * @throws ProductAlreadyBought
      * @throws ValidationException
      */
@@ -58,6 +60,7 @@ class ProductsCheckoutPipeline extends Pipeline
 
     /**
      * @throws CardException
+     * @throws ApiErrorException
      */
     protected function exchange(): void
     {
@@ -76,7 +79,12 @@ class ProductsCheckoutPipeline extends Pipeline
                 'source'      => $this->cardId,
                 'expand'      => ['payment_intent'],
             ]);
-        } catch (CardException $exception) {
+        } catch (ApiErrorException $exception) {
+            // We only handle 3DS2 errors here
+            if (!$exception instanceof CardException) {
+                throw $exception;
+            }
+
             $body  = $exception->getJsonBody();
             $error = $body['error']['code'] ?? null;
 

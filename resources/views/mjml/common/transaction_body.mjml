@@ -5,7 +5,7 @@
                  font-size="14px">
             Date
         </mj-text>
-        <mj-text>{{ $transaction->createdAt->format("d/m/y") }}</mj-text>
+        <mj-text>{{ $transaction->createdAt->format('d/m/y') }}</mj-text>
     </mj-column>
 
     <mj-column width="66.666%">
@@ -25,12 +25,12 @@
 
 <mj-raw>
     @switch($transaction->paymentInstrumentType)
-        @case("credit_card")
+        @case('credit_card')
 </mj-raw>
 <mj-include path="card_details.mjml"></mj-include>
 <mj-raw>
     @break
-    @case("paypal_account")
+    @case('paypal_account')
 </mj-raw>
 <mj-include path="paypal_details.mjml"></mj-include>
 <mj-raw>
@@ -55,14 +55,14 @@
                 <td style="padding: 5px 15px;">
                     {{ $lineItem->quantity }} &times;
 
-                    @if($lineItem->kind == "debit")
+                    @if($lineItem->kind === 'debit')
                         {{ $lineItem->unitAmount }} €
                     @else
                         -{{ $lineItem->unitAmount }} €
                     @endif
                 </td>
                 <td style="padding: 5px 15px; text-align: right">
-                    @if($lineItem->kind == "debit")
+                    @if($lineItem->kind === 'debit')
                         {{ $lineItem->totalAmount }} €
                     @else
                         -{{ $lineItem->totalAmount }} €

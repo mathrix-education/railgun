@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 
+use Illuminate\Contracts\Console\Kernel;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -14,7 +15,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 | is ready to receive HTTP / Console requests from the environment.
 |
 */
-$app = require __DIR__ . '/bootstrap/app.php';
+$app = require __DIR__ . '/../bootstrap/app.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -27,8 +28,7 @@ $app = require __DIR__ . '/bootstrap/app.php';
 |
 */
 
-$kernel = $app->make(
-    'Illuminate\Contracts\Console\Kernel'
-);
+/** @var Kernel $kernel */
+$kernel = $app->make(Kernel::class);
 
 exit($kernel->handle(new ArgvInput, new ConsoleOutput));

@@ -18,9 +18,9 @@ class MJMLCompilerTest extends BaseTestCase
 {
     private const INCLUDE_FAIL_REGEXP = '/mj-include fails to read file : [a-zA-Z\.\/\-]+ at [a-zA-Z\.\/\-]+/';
 
-    public function mjmlDataProvider()
+    public function mjmlDataProvider(): array
     {
-        $files = $renderedMails = glob(resource_path('views/mails/*'));
+        $files = glob(resource_path('views/mails/*'));
         $data  = [];
 
         foreach ($files as $file) {

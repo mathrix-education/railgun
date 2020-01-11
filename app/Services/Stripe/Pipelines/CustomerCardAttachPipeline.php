@@ -7,6 +7,7 @@ namespace App\Services\Stripe\Pipelines;
 use App\Services\Stripe\Exceptions\InvalidStripeCustomer;
 use Mathrix\Lumen\Zero\Exceptions\ValidationException;
 use Stripe\Card as StripeCard;
+use Stripe\Exception\ApiErrorException;
 
 /**
  * Attach an additional source to an existing Stripe customer.
@@ -37,6 +38,9 @@ class CustomerCardAttachPipeline extends Pipeline
         }
     }
 
+    /**
+     * @throws ApiErrorException
+     */
     protected function exchange(): void
     {
         $this->card = $this->user->addSource((string)$this->request->json('card.token'), $this->makeDefault);

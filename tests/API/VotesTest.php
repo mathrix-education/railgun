@@ -14,7 +14,7 @@ class VotesTest extends APIStatelessTestCase
     /**
      * POST /votes/comment/{commentId}
      */
-    public function testVote()
+    public function testVote(): void
     {
         $comment = Comment::random();
         $value   = $this->faker->boolean ? 1 : -1;
@@ -36,7 +36,7 @@ class VotesTest extends APIStatelessTestCase
     /**
      * POST /votes/comment/{commentId} with vote value override
      */
-    public function testVoteOverride()
+    public function testVoteOverride(): void
     {
         $vote = Vote::random();
         JWT::actingAs($vote->user);
@@ -58,7 +58,7 @@ class VotesTest extends APIStatelessTestCase
     /**
      * DELETE /votes/comment/{commentId}
      */
-    public function testUnVote()
+    public function testUnVote(): void
     {
         $vote = Vote::random();
         JWT::actingAs($vote->user);

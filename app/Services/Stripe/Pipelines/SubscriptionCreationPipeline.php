@@ -53,9 +53,11 @@ class SubscriptionCreationPipeline extends Pipeline
             }
         }
 
-        if ($this->user->isStripeCustomer() && $this->request->has('card.token')) {
-            (new CustomerCardAttachPipeline(true))->flow();
-        } elseif (!$this->user->isStripeCustomer()) {
+        if ($this->user->isStripeCustomer()) {
+            if ($this->request->has('card.token')) {
+                (new CustomerCardAttachPipeline(true))->flow();
+            }
+        } else {
             (new CustomerCreationPipeline())->flow();
         }
     }
@@ -110,8 +112,7 @@ class SubscriptionCreationPipeline extends Pipeline
 
         if (SubscriptionUtils::isPlanProrated($this->plan)) {
             // Add the billing cycle anchor if necessary
-            $payload['billing_cycle_anchor'] = SubscriptionUtils::getProrationAnchor($this->plan)
-                ->getTimestamp();
+            $payload['billing_cycle_anchor'] = SubscriptionUtils::getProrationAnchor($this->plan)->getTimestamp();
         }
 
         if ($this->product !== null) {

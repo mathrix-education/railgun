@@ -42,8 +42,6 @@ class Product extends BaseModel
 {
     public const MODE_MACHINE_2019_END = '2019-07-31 00:00:00';
 
-    /** @var bool Indicates if the model should be timestamped */
-    public $timestamps = true;
     /** @var array The attributes that are mass assignable */
     protected $fillable = [
         'name',

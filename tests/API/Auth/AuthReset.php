@@ -15,7 +15,7 @@ class AuthReset extends APIStatelessTestCase
     /**
      * POST /auth/reset/{token}
      */
-    public function testReset()
+    public function testReset(): void
     {
         Mail::fake();
         // Set the token to a known value

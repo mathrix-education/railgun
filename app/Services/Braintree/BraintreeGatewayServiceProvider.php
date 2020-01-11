@@ -18,7 +18,7 @@ class BraintreeGatewayServiceProvider extends ServiceProvider
     {
         $braintreeEnv = env('BRAINTREE_ENVIRONMENT', 'sandbox');
 
-        if ($this->app->environment() === 'testing' && $braintreeEnv === 'production') {
+        if ($braintreeEnv === 'production' && $this->app->environment() === 'testing') {
             throw new UnexpectedValueException('Braintree should not be used in production while testing!');
         }
 

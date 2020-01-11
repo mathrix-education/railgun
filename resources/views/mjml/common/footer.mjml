@@ -1,7 +1,7 @@
 <mj-section background-color="#e5e5e5">
     <mj-column>
         <mj-text align="center" color="#9d9d9d">
-            Copyright &copy; {{ date("Y") }} | Mathrix Education SA<br>
+            Copyright &copy; {{ date('Y') }} | Mathrix Education SA<br>
             Vous recevez cet e-mail car vous êtes inscrit sur le site <a href="https://mathrix.fr">mathrix.fr</a>
         </mj-text>
     </mj-column>

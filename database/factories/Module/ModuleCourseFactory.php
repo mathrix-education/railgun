@@ -19,7 +19,8 @@ $factory->defineAs(Module::class, 'course', static function (Generator $faker) u
         $videoCount = $faker->numberBetween(1, 3);
         for ($i = 0; $i < $videoCount; ++$i) {
             $content[] = '[video]FNUTWw17rkM[/video]';
-            $content   = array_merge($content, $faker->paragraphs($faker->numberBetween(1, 3)));
+            /** @noinspection SlowArrayOperationsInLoopInspection */
+            $content = array_merge($content, $faker->paragraphs($faker->numberBetween(1, 3)));
         }
     } else {
         $content = $faker->paragraphs($faker->numberBetween(3, 8));

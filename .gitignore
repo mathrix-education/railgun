@@ -1,11 +1,13 @@
 # IDEA software
-/.idea/*.iml
-/.idea/**/workspace.xml
-/.idea/dataSources/
 /.idea/dataSources.*
 /.idea/dictionaries
 /.idea/httpRequests/
+/.idea/markdown*
+/.idea/*.iml
+/.idea/**/workspace.xml
+/.idea/dataSources/
 /.idea/modules.xml
+/.idea/php.xml
 /.idea/deployment.xml
 /.idea/vagrant.xml
 
@@ -19,6 +21,7 @@
 /resources/views/docs/index.html
 /resources/views/mails
 /storage/code-coverage/
+.phpunit.result.cache
 
 # Secrets
 /.env
@@ -26,3 +29,4 @@
 !/deploy/secrets/*.enc
 /environments/*/*
 !/environments/*/*.enc
+!/environments/testing/*

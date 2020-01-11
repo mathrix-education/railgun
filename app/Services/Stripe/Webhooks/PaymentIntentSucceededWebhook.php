@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Stripe\Webhooks;
 
 use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
+use Stripe\Exception\ApiErrorException;
 use Stripe\Invoice;
 use Stripe\PaymentIntent;
 use Stripe\Plan;
@@ -25,6 +26,8 @@ class PaymentIntentSucceededWebhook extends BaseWebhook
      * @param PaymentIntent $paymentIntent The Stripe object handled by the webhook.
      *
      * @return SuccessJsonResponse
+     *
+     * @throws ApiErrorException
      */
     public function handle($paymentIntent): SuccessJsonResponse
     {

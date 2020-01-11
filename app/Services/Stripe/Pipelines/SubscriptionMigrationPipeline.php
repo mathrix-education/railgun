@@ -9,6 +9,7 @@ use Braintree\Exception\NotFound;
 use Braintree\Subscription as BraintreeSubscription;
 use Carbon\Carbon;
 use Mathrix\Lumen\Zero\Exceptions\Http\Http401UnauthorizedException;
+use Stripe\Exception\ApiErrorException;
 use Stripe\SetupIntent as StripeSetupIntent;
 use Stripe\Subscription as StripeSubscription;
 use function gateway;
@@ -61,6 +62,7 @@ class SubscriptionMigrationPipeline extends Pipeline
      *
      * @throws Http401UnauthorizedException
      * @throws NotFound
+     * @throws ApiErrorException
      */
     protected function exchange(): void
     {

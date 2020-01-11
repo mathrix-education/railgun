@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use Mathrix\Lumen\JWT\Auth\JWT;
 use Tests\APIStatelessTestCase;
 use Tests\Utils\BraintreeUtils;
+use const JSON_THROW_ON_ERROR;
 use function array_replace_recursive;
 use function env;
 use function factory;
@@ -24,7 +25,7 @@ use function str_replace;
 
 class SubscriptionMigrationTest extends APIStatelessTestCase
 {
-    public function migrationDataProvider()
+    public function migrationDataProvider(): array
     {
         $dataset = [
             'plans'  => ['v4_monthly', 'v4_annually'],
@@ -50,7 +51,7 @@ class SubscriptionMigrationTest extends APIStatelessTestCase
      *
      * @dataProvider migrationDataProvider
      */
-    public function testMigration(string $braintreePlan, string $token, int $expectedStatus)
+    public function testMigration(string $braintreePlan, string $token, int $expectedStatus): void
     {
         // Setup Braintree customer
         $this->requester = factory(User::class)->create();
@@ -109,7 +110,8 @@ class SubscriptionMigrationTest extends APIStatelessTestCase
         $braintreeSubscription = gateway()
             ->subscription()
             ->find($braintreeSubscription->id);
-        $response              = json_decode($this->response->getContent());
+
+        $response = json_decode($this->response->getContent(), false, 512, JSON_THROW_ON_ERROR);
 
         $this->assertResponseStatus($expectedStatus);
         $this->assertTrue($this->requester->refresh()->premium);

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Services\Stripe\Pipelines;
 
 use App\Services\Stripe\Models\StripeCustomer;
+use Mathrix\Lumen\Zero\Exceptions\ValidationException;
 use Stripe\Card as StripeCard;
+use Stripe\Exception\ApiErrorException;
 use Stripe\Subscription as StripeSubscription;
 
 class SubscriptionCardUpdatePipeline extends Pipeline
@@ -22,6 +24,10 @@ class SubscriptionCardUpdatePipeline extends Pipeline
         $this->subscriptionId = $subscriptionId;
     }
 
+    /**
+     * @throws ValidationException
+     * @throws ApiErrorException
+     */
     protected function initialize(): void
     {
         $this->validate($this->request, [
