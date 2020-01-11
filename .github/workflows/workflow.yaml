@@ -219,5 +219,4 @@ jobs:
           organization: mathrix-tech
           project: education-api
       - name: Create Sentry Release
-        run: |
-          sentry-cli releases deploys $(bin/release) new -e $(bin/current_branch)
+        run: sentry-cli releases deploys $(bin/release) new -e $(bin/current_branch)
