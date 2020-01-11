@@ -159,27 +159,6 @@ jobs:
           gcloud container images add-tag \
             "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:$(bin/release)" \
             "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:latest-$(bin/current_branch)"
-  sentry_release:
-    name: Create Sentry Release
-    needs: [docker, test]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: '0'
-      - name: Setup Sentry CLI
-        uses: mathrix-education/setup-sentry-cli@0.1.0
-        with:
-          url: https://sentry.mathrix.tech
-          token: ${{ SECRETS.SENTRY_TOKEN }}
-          organization: mathrix-tech
-          project: education-api
-      - name: Create Sentry Release
-        run: |
-          sentry-cli releases new $(bin/release)
-          sentry-cli releases set-commits $(bin/release) --auto
-          sentry-cli releases finalize $(bin/release)
   deploy_cloud_run:
     name: Deploy on Cloud Run
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev'
@@ -201,6 +180,27 @@ jobs:
             --region=europe-west1 \
             --allow-unauthenticated \
             --set-env-vars="APP_ENV=$(bin/current_branch)"
+  sentry_release:
+    name: Create Sentry Release
+    needs: [docker, test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: Setup Sentry CLI
+        uses: mathrix-education/setup-sentry-cli@0.1.0
+        with:
+          url: https://sentry.mathrix.tech
+          token: ${{ SECRETS.SENTRY_TOKEN }}
+          organization: mathrix-tech
+          project: education-api
+      - name: Create Sentry Release
+        run: |
+          sentry-cli releases new $(bin/release)
+          sentry-cli releases set-commits $(bin/release) --auto
+          sentry-cli releases finalize $(bin/release)
   sentry_deploy:
     name: Deploy Sentry Release
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev'
