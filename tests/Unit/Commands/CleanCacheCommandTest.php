@@ -21,7 +21,7 @@ class CleanCacheCommandTest extends BaseTestCase
     /**
      * @covers ::handle
      */
-    public function testHandle()
+    public function testHandle(): void
     {
         $dataset = [
             [

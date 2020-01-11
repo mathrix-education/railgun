@@ -23,7 +23,7 @@
             {{
                 str_replace(
                     $card->bin,
-                    str_repeat("*", strlen($card->bin)),
+                    str_repeat('*', strlen($card->bin)),
                     $card->maskedNumber
                 )
             }}

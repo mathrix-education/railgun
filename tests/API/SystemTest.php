@@ -11,7 +11,7 @@ class SystemTest extends APIStatelessTestCase
     /**
      * GET /system/sitemap
      */
-    public function testSitemap()
+    public function testSitemap(): void
     {
         $this->json('get', '/system/sitemap');
 

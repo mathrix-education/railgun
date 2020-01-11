@@ -15,14 +15,14 @@ use Stripe\SetupIntent as StripeSetupIntent;
  */
 class SetupIntent extends Bishop
 {
-    protected $dates = ['created_at'];
+    protected array $dates = ['created_at'];
 
-    public static function from($setupIntent)
+    public static function from($setupIntent): SetupIntent
     {
         return new self(self::fromStripe($setupIntent));
     }
 
-    public static function fromStripe(StripeSetupIntent $setupIntent)
+    public static function fromStripe(StripeSetupIntent $setupIntent): array
     {
         return [
             'id'            => $setupIntent->id,

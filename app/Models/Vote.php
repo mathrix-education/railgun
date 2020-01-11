@@ -23,8 +23,6 @@ use function array_merge;
  */
 class Vote extends BaseModel
 {
-    /** @var bool If timestamps (created_at and updated_at) should be used */
-    public $timestamps = true;
     /** @var array The attributes that are mass assignable */
     protected $fillable = ['id', 'value', 'user_id', 'comment_id'];
     /** @var array Validation rules */

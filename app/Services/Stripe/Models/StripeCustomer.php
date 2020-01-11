@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Stripe\Card as StripeCard;
 use Stripe\Customer;
 use Stripe\Error\Api;
+use Stripe\Exception\ApiErrorException;
 use Stripe\Subscription;
 use Stripe\Token;
 
@@ -28,6 +29,8 @@ trait StripeCustomer
      * @param string|null $source The default customer source.
      *
      * @return Customer
+     *
+     * @throws ApiErrorException
      */
     public function createStripeCustomer(?string $source = null): Customer
     {
@@ -133,6 +136,8 @@ trait StripeCustomer
      * @param bool   $makeDefault
      *
      * @return StripeCard
+     *
+     * @throws ApiErrorException
      */
     public function addSource(string $cardToken, bool $makeDefault = false): StripeCard
     {

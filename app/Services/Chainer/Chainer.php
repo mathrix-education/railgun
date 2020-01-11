@@ -14,13 +14,14 @@ use function explode;
 use function json_decode;
 use function preg_match_all;
 use function str_replace;
+use const JSON_THROW_ON_ERROR;
 
 class Chainer
 {
-    private $request;
-    private $subRequests;
-    private $responseData = [];
-    private $bearerToken;
+    private Request $request;
+    private array   $subRequests;
+    private array   $responseData = [];
+    private ?string $bearerToken;
 
     /**
      * @param Request $request
@@ -36,7 +37,7 @@ class Chainer
      *
      * @throws Http400BadRequestException
      */
-    public function process()
+    public function process(): JsonResponse
     {
         $this->subRequests = $this->request->input('requests', []);
         foreach ($this->subRequests as $subRequest) {
@@ -51,7 +52,7 @@ class Chainer
      *
      * @throws Http400BadRequestException
      */
-    private function processIndividualRequest(array $subRequest)
+    private function processIndividualRequest(array $subRequest): void
     {
         $key     = $subRequest['name'];
         $request = Request::create(
@@ -65,8 +66,8 @@ class Chainer
         $response                 = app()->handle($request);
         $this->responseData[$key] = [
             'method' => $subRequest['method'],
-            'url' => $this->resolve($subRequest['url']),
-            'body' => json_decode($response->getContent(), true),
+            'url'    => $this->resolve($subRequest['url']),
+            'body'   => json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR),
         ];
         app()->offsetSet('request', $this->request);
     }
@@ -81,7 +82,7 @@ class Chainer
     private function resolve(string $toParse)
     {
         $matches = [];
-        $result  = preg_match_all('/\{(\w+\.[\.\w+]+\w+)\}/', $toParse, $matches);
+        $result  = preg_match_all('/{(\w+\.[.\w+]+\w+)}/', $toParse, $matches);
         if ($result === 0) {
             return $toParse;
         }
@@ -97,7 +98,7 @@ class Chainer
     /**
      * @param string $key
      *
-     * @return array
+     * @return string|int
      *
      * @throws Http400BadRequestException
      */

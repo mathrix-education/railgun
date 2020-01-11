@@ -75,6 +75,7 @@ class CorsTest extends APIStatelessTestCase
         $_ENV['APP_ENV'] = $env;
 
         // Override CORS configuration based on the app environment.
+        /** @noinspection PhpIncludeInspection */
         $this->app->make('config')->set('cors', require base_path('config/cors.php'));
 
         // Craft the CORS request.

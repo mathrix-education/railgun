@@ -94,7 +94,7 @@ class FilesTest extends APIStatelessTestCase
      * @depends      testUpload
      * @dataProvider uploadsDataProvider
      */
-    public function testGet(string $file)
+    public function testGet(string $file): void
     {
         JWT::withScopes('files:read');
 
@@ -114,7 +114,7 @@ class FilesTest extends APIStatelessTestCase
      *
      * @dataProvider listDataProvider
      */
-    public function testList(string $directory, int $expectedStatus)
+    public function testList(string $directory, int $expectedStatus): void
     {
         JWT::withScopes('files:read');
 
@@ -133,7 +133,7 @@ class FilesTest extends APIStatelessTestCase
      * @depends      testUpload
      * @dataProvider uploadsDataProvider
      */
-    public function testPatch(string $file, string $destination)
+    public function testPatch(string $file, string $destination): void
     {
         JWT::withScopes('files:write');
 

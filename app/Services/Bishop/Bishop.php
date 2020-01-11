@@ -7,6 +7,7 @@ namespace App\Services\Bishop;
 use Carbon\Carbon;
 use DateTime;
 use JsonSerializable;
+use RuntimeException;
 use Throwable;
 use function in_array;
 use function is_array;
@@ -15,12 +16,13 @@ use function is_int;
 abstract class Bishop implements JsonSerializable
 {
     /** @var array The bishop attributes. */
-    protected $attributes;
-    /** @var array The dates */
-    protected $dates = [];
-    /** @var string The date format */
-    protected $dateFormat = 'c';
-    protected $virtual    = [];
+    protected array $attributes = [];
+    /** @var array The dates. */
+    protected array $dates = [];
+    /** @var string The date format. */
+    protected string $dateFormat = 'c';
+    /** @var array The virtual attributes. */
+    protected array $virtual = [];
 
     public function __construct(array $attributes)
     {
@@ -90,9 +92,9 @@ abstract class Bishop implements JsonSerializable
         return $value;
     }
 
-    public function isDate($key)
+    public function isDate($key): bool
     {
-        return in_array($key, $this->dates);
+        return in_array($key, $this->dates, true);
     }
 
     /**
@@ -148,10 +150,16 @@ abstract class Bishop implements JsonSerializable
 
     public function getRawAttribute(string $key)
     {
-        if (isset($this->attributes[$key])) {
-            return $this->attributes[$key];
-        }
+        return $this->attributes[$key] ?? null;
+    }
 
-        return null;
+    public function __set($name, $value): void
+    {
+        throw new RuntimeException(static::class . ' is immutable');
+    }
+
+    public function __isset($name): bool
+    {
+        return isset($this->{$name}) || isset($this->attributes[$name]);
     }
 }

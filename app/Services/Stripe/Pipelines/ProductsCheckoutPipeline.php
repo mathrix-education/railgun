@@ -26,6 +26,7 @@ class ProductsCheckoutPipeline extends Pipeline
     public $invoice;
 
     /**
+     * @throws ApiErrorException
      * @throws ProductAlreadyBought
      * @throws ValidationException
      */
@@ -78,7 +79,12 @@ class ProductsCheckoutPipeline extends Pipeline
                 'source'      => $this->cardId,
                 'expand'      => ['payment_intent'],
             ]);
-        } catch (CardException $exception) {
+        } catch (ApiErrorException $exception) {
+            // We only handle 3DS2 errors here
+            if (!$exception instanceof CardException) {
+                throw $exception;
+            }
+
             $body  = $exception->getJsonBody();
             $error = $body['error']['code'] ?? null;
 

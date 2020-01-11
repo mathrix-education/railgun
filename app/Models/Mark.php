@@ -62,7 +62,7 @@ class Mark extends BaseModel
         $userId     = is_int($user) ? $user : $user->id;
 
         $conditions = [
-            'markable_type' => array_search($modelClass, Relation::$morphMap),
+            'markable_type' => array_search($modelClass, Relation::$morphMap, true),
             'markable_id' => $model->id,
             'user_id' => $userId,
         ];
@@ -76,7 +76,7 @@ class Mark extends BaseModel
         $marks = self::query()->where($wheres)->get();
 
         if ($marks->isEmpty()) {
-            $marks = new Collection([new Mark($conditions)]);
+            $marks = new Collection([new self($conditions)]);
         }
 
         return $marks;

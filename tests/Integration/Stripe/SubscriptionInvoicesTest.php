@@ -7,6 +7,7 @@ namespace Tests\Integration\Stripe;
 use App\Models\User;
 use App\Services\Stripe\SubscriptionUtils;
 use Mathrix\Lumen\JWT\Auth\JWT;
+use Stripe\Exception\ApiErrorException;
 use Stripe\Subscription;
 use Tests\APIStatelessTestCase;
 use function factory;
@@ -15,8 +16,10 @@ class SubscriptionInvoicesTest extends APIStatelessTestCase
 {
     /**
      * GET /subscriptions/{subscriptionId}/invoices
+     *
+     * @throws ApiErrorException
      */
-    public function testInvoices()
+    public function testInvoices(): void
     {
         // Create a subscription
         $this->requester = factory(User::class)->create();

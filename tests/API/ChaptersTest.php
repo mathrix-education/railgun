@@ -53,7 +53,7 @@ class ChaptersTest extends APIStatelessTestCase
     /**
      * GET /chapters/recursive with cache counters
      */
-    public function testChapterRecursiveWithCache()
+    public function testChapterRecursiveWithCache(): void
     {
         /** @var Mark $mark */
         $mark = Mark::query()

@@ -21,7 +21,7 @@ use Stripe\PaymentIntent as StripePaymentIntent;
  */
 class Invoice extends Bishop
 {
-    protected $dates = [
+    protected array $dates = [
         'period_end',
         'period_start',
     ];
@@ -38,7 +38,7 @@ class Invoice extends Bishop
         return new self(self::fromStripe($invoice));
     }
 
-    public static function fromStripe(StripeInvoice $invoice)
+    public static function fromStripe(StripeInvoice $invoice): array
     {
         return [
             'id'                 => $invoice->id,

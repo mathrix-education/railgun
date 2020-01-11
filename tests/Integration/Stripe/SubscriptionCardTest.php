@@ -6,8 +6,10 @@ namespace Tests\Integration\Stripe;
 
 use App\Models\User;
 use Mathrix\Lumen\JWT\Auth\JWT;
+use Stripe\Exception\ApiErrorException;
 use Stripe\Subscription;
 use Tests\APIStatelessTestCase;
+use const JSON_THROW_ON_ERROR;
 use function factory;
 use function json_decode;
 
@@ -15,20 +17,22 @@ class SubscriptionCardTest extends APIStatelessTestCase
 {
     /**
      * PATCH /subscriptions/{subscriptionId}/card
+     *
+     * @throws ApiErrorException
      */
-    public function testCard()
+    public function testCard(): void
     {
         /** @var User $user */
         $user = factory(User::class)->create();
         $user->createStripeCustomer('tok_fr');
         /** @var Subscription $subscription */
         $subscription = Subscription::create([
-            'customer' => $user->stripe_id,
+            'customer'       => $user->stripe_id,
             'default_source' => $user->asStripeCustomer()->default_source,
-            'items' => [
+            'items'          => [
                 ['plan' => 'v5_monthly'],
             ],
-            'expand' => ['default_source'],
+            'expand'         => ['default_source'],
         ]);
 
         JWT::actingAs($user);
@@ -37,7 +41,7 @@ class SubscriptionCardTest extends APIStatelessTestCase
             'card' => ['token' => 'tok_es'],
         ]);
 
-        $response = json_decode($this->response->getContent());
+        $response = json_decode($this->response->getContent(), false, 512, JSON_THROW_ON_ERROR);
 
         $this->assertResponseStatus(200);
         $this->assertOpenAPIResponse($this->response);

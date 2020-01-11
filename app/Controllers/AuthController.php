@@ -132,6 +132,7 @@ class AuthController extends BaseController
      * @return SuccessJsonResponse The reset email confirmation.
      *
      * @throws Http400BadRequestException
+     * @throws Exception
      */
     public function forgot(Request $request): SuccessJsonResponse
     {

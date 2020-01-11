@@ -2,9 +2,17 @@
 
 declare(strict_types=1);
 
+use App\Services\GoogleCloud\KMS\SetupEnvironment;
+use Google\ApiCore\ApiException;
+use Google\ApiCore\ValidationException;
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
-(new App\Services\GoogleCloud\KMS\SetupEnvironment(dirname(__DIR__)))->bootstrap();
+try {
+    (new SetupEnvironment(dirname(__DIR__)))->bootstrap();
+} catch (ApiException | ValidationException $e) {
+}
+
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(dirname(__DIR__)))->bootstrap();
 
 $app = new Laravel\Lumen\Application(dirname(__DIR__));

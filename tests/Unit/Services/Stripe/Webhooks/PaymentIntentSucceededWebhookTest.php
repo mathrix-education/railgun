@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Services\Stripe\Webhooks;
 
 use App\Services\Stripe\Webhooks\PaymentIntentSucceededWebhook;
+use Stripe\Exception\ApiErrorException;
 use Stripe\Invoice;
 use Stripe\PaymentIntent;
 use Stripe\Subscription;
@@ -17,9 +18,11 @@ use function count;
 class PaymentIntentSucceededWebhookTest extends BaseTestCase
 {
     /**
+     * @throws ApiErrorException
+     *
      * @covers ::handle
      */
-    public function testHandle()
+    public function testHandle(): void
     {
         $subscriptions = Subscription::all([
             'status' => Subscription::STATUS_ACTIVE,

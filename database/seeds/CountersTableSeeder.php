@@ -9,6 +9,7 @@ use Mathrix\Lumen\Zero\Database\BaseTableSeeder;
 
 class CountersTableSeeder extends BaseTableSeeder
 {
+    /** @noinspection DisconnectedForeachInstructionInspection */
     public function run(): void
     {
         $activities = Activity::all();
@@ -24,6 +25,7 @@ class CountersTableSeeder extends BaseTableSeeder
             $activity->updateCounters();
             $progressBar->advance();
         }
+
         foreach ($notions as $notion) {
             if ($notion->chapter_id === null) {
                 continue;
@@ -32,6 +34,7 @@ class CountersTableSeeder extends BaseTableSeeder
             $notion->updateCounters();
             $progressBar->advance();
         }
+
         foreach ($chapters as $chapter) {
             $chapter->updateCounters();
             $progressBar->advance();

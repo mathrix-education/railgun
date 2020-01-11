@@ -20,7 +20,7 @@ class SitemapUtils
      *
      * @return string
      */
-    public static function loc(string $loc)
+    public static function loc(string $loc): string
     {
         return rtrim(env('ANGULAR_URL'), '/') . '/' . ltrim($loc, '/');
     }

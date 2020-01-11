@@ -24,7 +24,7 @@ class UsersTest extends APIStatelessTestCase
      *
      * @throws Exception
      */
-    public function testSubscriptions()
+    public function testSubscriptions(): void
     {
         // Create the Braintree customer
         $this->requester = factory(User::class)->create();

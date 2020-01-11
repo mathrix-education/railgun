@@ -61,7 +61,7 @@ class APIStatefulTestCase extends BaseTestCase
      *
      * @return string[]|null
      */
-    public function getOpenAPIScopes(string $method, string $uri, string $security = 'bearer')
+    public function getOpenAPIScopes(string $method, string $uri, string $security = 'bearer'): ?array
     {
         $method = strtolower($method);
 
@@ -82,7 +82,7 @@ class APIStatefulTestCase extends BaseTestCase
         /** @var Operation $operation */
         $operation = $pathItem->{$method};
 
-        if (!isset($operation->security[0]) || !isset($operation->security[0]->{$security})) {
+        if (!isset($operation->security[0], $operation->security[0]->{$security})) {
             return null;
         }
 
@@ -95,7 +95,7 @@ class APIStatefulTestCase extends BaseTestCase
      * @param string|BaseMail $mailClass
      * @param User            $user
      */
-    public function assertMailSentTo($mailClass, User $user)
+    public function assertMailSentTo($mailClass, User $user): void
     {
         Mail::assertSent(
             $mailClass,

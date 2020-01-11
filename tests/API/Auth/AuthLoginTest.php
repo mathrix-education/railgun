@@ -38,7 +38,7 @@ class AuthLoginTest extends APIStatelessTestCase
     /**
      * POST /auth/login
      */
-    public function testLoginFailed()
+    public function testLoginFailed(): void
     {
         $user = User::random();
 

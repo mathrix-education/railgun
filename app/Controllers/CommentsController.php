@@ -34,7 +34,7 @@ class CommentsController extends BaseController
             'user_id' => $user->id,
         ]);
 
-        return parent::standardPost($request);
+        return $this->standardPost($request);
     }
 
     /**

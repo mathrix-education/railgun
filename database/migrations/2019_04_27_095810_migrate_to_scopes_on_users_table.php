@@ -20,9 +20,9 @@ class MigrateToScopesOnUsersTable extends Migration
 
         $users = DB::table('users');
         $users->where('type', '=', 'admin')
-            ->update(['scopes' => json_encode(['*'])]);
+            ->update(['scopes' => json_encode(['*'], JSON_THROW_ON_ERROR, 512)]);
         $users->where('type', '!=', 'admin')
-            ->update(['scopes' => json_encode(['logged'])]);
+            ->update(['scopes' => json_encode(['logged'], JSON_THROW_ON_ERROR, 512)]);
 
         Schema::table('users', static function (Blueprint $table): void {
             $table->dropColumn('type');

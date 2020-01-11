@@ -19,6 +19,7 @@ use Mathrix\Lumen\Zero\Exceptions\ValidationException;
 use Mathrix\Lumen\Zero\Responses\PaginationJsonResponse;
 use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
 use Stripe\Customer;
+use Stripe\Exception\ApiErrorException;
 use function array_merge;
 use function scope;
 
@@ -187,9 +188,11 @@ class UsersController extends BaseController
      * GET /users/{userId}/cards
      * Get the user Stripe cards.
      *
-     * @param Request $request
+     * @param Request $request The Illuminate HTTP request.
      *
      * @return SuccessJsonResponse
+     *
+     * @throws ApiErrorException
      */
     public function getCards(Request $request): SuccessJsonResponse
     {

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services\GoogleCloud\KMS;
 
+use Google\ApiCore\ApiException;
+use Google\ApiCore\ValidationException;
 use Google\Cloud\Kms\V1\KeyManagementServiceClient;
 use Illuminate\Support\Str;
 use function array_filter;
@@ -47,6 +49,10 @@ class SetupEnvironment
         $this->env      = getenv('APP_ENV');
     }
 
+    /**
+     * @throws ApiException
+     * @throws ValidationException
+     */
     public function bootstrap(): void
     {
         if (getenv('APP_SKIP_SETUP') !== false || file_exists("$this->basePath/.env")) {

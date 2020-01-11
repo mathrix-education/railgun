@@ -1,5 +1,4 @@
 <?php
-/** @noinspection PhpRedundantCatchClauseInspection */
 
 declare(strict_types=1);
 
@@ -48,7 +47,7 @@ class FacebookLoginTest extends APIStatefulTestCase
                 env('FACEBOOK_APP_TOKEN')
             );
 
-            self::$FacebookUser = json_decode($response->getBody());
+            self::$FacebookUser = json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
         } catch (FacebookResponseException $throttleException) {
             self::$LimitReached = true;
         }
@@ -69,7 +68,7 @@ class FacebookLoginTest extends APIStatefulTestCase
         /** @var Facebook $facebook */
         $facebook = app()->make(Facebook::class);
         $response = $facebook->delete(self::$FacebookUser->id, [], env('FACEBOOK_APP_TOKEN'));
-        $body     = json_decode($response->getBody());
+        $body     = json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
         self::assertTrue($body->success);
 
         // Delete user (does not work for now)

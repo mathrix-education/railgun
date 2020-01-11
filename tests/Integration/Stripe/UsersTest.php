@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Services\Stripe\Models\StripeCustomer;
 use App\Services\Stripe\SubscriptionUtils;
 use Mathrix\Lumen\JWT\Auth\JWT;
+use Stripe\Exception\ApiErrorException;
 use Stripe\Subscription;
 use Tests\APIStatelessTestCase;
 use function factory;
@@ -19,8 +20,10 @@ class UsersTest extends APIStatelessTestCase
 {
     /**
      * GET /users/{userId}/cards
+     *
+     * @throws ApiErrorException
      */
-    public function testCards()
+    public function testCards(): void
     {
         // Create a new user, add two cards
         $this->requester = factory(User::class)->create();
@@ -36,8 +39,10 @@ class UsersTest extends APIStatelessTestCase
 
     /**
      * GET /users/{userId}/subscriptions
+     *
+     * @throws ApiErrorException
      */
-    public function testSubscriptions()
+    public function testSubscriptions(): void
     {
         /** @var User $user */
         $user = $this->getFactoryBuilder([])->create();
