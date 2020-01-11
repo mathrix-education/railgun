@@ -160,8 +160,7 @@ jobs:
             "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:$(bin/release)" \
             "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:latest-$(bin/current_branch)"
   sentry_release:
-    name: Setup Sentry Release
-    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev'
+    name: Create Sentry Release
     needs: [docker, test]
     runs-on: ubuntu-latest
     steps:
@@ -195,7 +194,6 @@ jobs:
           project: ${{ secrets.GCLOUD_PROJECT }}
           service-account-key: ${{ secrets.GCLOUD_AUTH }}
       - name: Deploy on Google Cloud Run
-        if: contains('master,dev,next', steps.git.outputs.branch)
         run: |
           gcloud run deploy "education-api-$(bin/current_branch)" \
             --image "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:$(bin/release)" \
