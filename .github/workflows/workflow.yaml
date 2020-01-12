@@ -3,11 +3,6 @@ on:
   push:
     branches: ['**']
 jobs:
-  ref:
-    name: ref
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "${{ github.ref }}
   lint:
     name: Lint with PHP_CodeSniffer
     runs-on: ubuntu-latest
@@ -168,7 +163,7 @@ jobs:
             "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:latest-$(bin/current_branch)"
   deploy_cloud_run:
     name: Deploy on Cloud Run
-    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev' || github.ref == 'ref/heads/v7'
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/v7'
     needs: [docker, test]
     runs-on: ubuntu-latest
     steps:
@@ -210,7 +205,7 @@ jobs:
           sentry-cli releases finalize $(bin/release)
   sentry_deploy:
     name: Deploy Sentry Release
-    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev' || github.ref == 'ref/heads/v7'
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/v7'
     needs: [deploy_cloud_run]
     runs-on: ubuntu-latest
     steps:
