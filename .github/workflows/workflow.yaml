@@ -3,6 +3,11 @@ on:
   push:
     branches: ['**']
 jobs:
+  ref:
+    name: ref
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ github.ref }}
   lint:
     name: Lint with PHP_CodeSniffer
     runs-on: ubuntu-latest
