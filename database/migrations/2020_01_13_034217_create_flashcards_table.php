@@ -23,7 +23,7 @@ class CreateFlashcardsTable extends Migration
             $table->boolean('visible');
             $table->unsignedBigInteger('chapter_id');
             $table->timestamps();
-            $table->strding('mapping');
+            $table->string('mapping');
 
             // Foreign keys
             $table->foreign('chapter_id')->references('id')->on('chapters');
