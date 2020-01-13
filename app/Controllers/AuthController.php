@@ -10,14 +10,14 @@ use Exception;
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Mathrix\Lumen\JWT\Auth\Exceptions\InvalidCredentials;
 use Mathrix\Lumen\JWT\Auth\JWT\JWTIssuer;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
-use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
-use Mathrix\Lumen\Zero\Exceptions\ValidationException;
-use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
+use Mathrix\Lumen\Zero\Exceptions\Validation;
+use Mathrix\Lumen\Zero\Responses\DataResponse;
 use Ramsey\Uuid\Uuid;
 use stdClass;
 use const JSON_THROW_ON_ERROR;
@@ -41,12 +41,12 @@ class AuthController extends BaseController
      *
      * @param Request $request The Illuminate HTTP request.
      *
-     * @return SuccessJsonResponse
+     * @return DataResponse
      *
      * @throws InvalidCredentials
-     * @throws ValidationException
+     * @throws Validation
      */
-    public function login(Request $request): SuccessJsonResponse
+    public function login(Request $request): DataResponse
     {
         $this->validate($request, [
             'email'    => 'required|email',
@@ -55,9 +55,9 @@ class AuthController extends BaseController
 
         /** @var User $user */
         $user = User::query()
-                    ->where('email', '=', $request->json('email'))
-                    ->get(['id', 'password', 'scopes'])
-                    ->first();
+            ->where('email', '=', $request->json('email'))
+            ->get(['id', 'password', 'scopes'])
+            ->first();
 
         if ($user === null) {
             throw new InvalidCredentials();
@@ -72,7 +72,7 @@ class AuthController extends BaseController
         $jws   = $this->jwtIssuer->issueJWS($user);
         $token = $this->jwtIssuer->serializeJWS($jws);
 
-        return new SuccessJsonResponse(['token' => $token]);
+        return new DataResponse(['token' => $token]);
     }
 
     /**
@@ -82,13 +82,13 @@ class AuthController extends BaseController
      * @param Request  $request  The Illuminate HTTP request.
      * @param Facebook $facebook The Facebook SDK.
      *
-     * @return SuccessJsonResponse The user serialized JWT.
+     * @return DataResponse The user serialized JWT.
      *
-     * @throws ValidationException
+     * @throws Validation
      * @throws FacebookSDKException
      * @throws Exception
      */
-    public function facebook(Request $request, Facebook $facebook): SuccessJsonResponse
+    public function facebook(Request $request, Facebook $facebook): DataResponse
     {
         $this->validate($request, ['access_token' => 'required']);
 
@@ -101,9 +101,9 @@ class AuthController extends BaseController
         // First, attempt to find user by its facebook_id
         /** @var User $user */
         $user = User::query()
-                    ->where('metadata->facebook->id', '=', $body->id)
-                    ->orWhere('email', '=', $body->email)
-                    ->first();
+            ->where('metadata->facebook->id', '=', $body->id)
+            ->orWhere('email', '=', $body->email)
+            ->first();
 
         if ($user === null) {
             // User does not exist
@@ -112,13 +112,13 @@ class AuthController extends BaseController
 
         User::unguarded(static function () use (&$user, &$request, &$response): void {
             $user->setFacebookAccessToken((string)$request->json('access_token'))
-                 ->syncFacebookProfile($response)
-                 ->save();
+                ->syncFacebookProfile($response)
+                ->save();
         });
 
         $jws = $user->getFacebookJWS();
 
-        return new SuccessJsonResponse([
+        return new DataResponse([
             'token' => $this->jwtIssuer->serializeJWS($jws),
         ]);
     }
@@ -129,18 +129,17 @@ class AuthController extends BaseController
      *
      * @param Request $request The Illuminate HTTP request.
      *
-     * @return SuccessJsonResponse The reset email confirmation.
+     * @return Response
      *
-     * @throws Http400BadRequestException
      * @throws Exception
      */
-    public function forgot(Request $request): SuccessJsonResponse
+    public function forgot(Request $request): Response
     {
         // Try to find the user with the given email
         /** @var User $user */
         $user = User::query()
-                    ->where('email', '=', $request->json('email'))
-                    ->firstOrFail();
+            ->where('email', '=', $request->json('email'))
+            ->firstOrFail();
 
         if ($user->provider === 'facebook') {
             throw new Http400BadRequestException(null, 'Cannot reset password of a facebook account');
@@ -150,13 +149,9 @@ class AuthController extends BaseController
         $user->save();
 
         // Send the password forgotten mail
-        Mail::to($user->email)
-            ->sendNow(new PasswordForgottenMail($user));
+        Mail::to($user->email)->send(new PasswordForgottenMail($user));
 
-        return new SuccessJsonResponse(
-            [],
-            ['message' => 'Reset email sent successfully']
-        );
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -166,19 +161,19 @@ class AuthController extends BaseController
      * @param Request $request The Illuminate HTTP request.
      * @param string  $token   The reset token.
      *
-     * @return SuccessJsonResponse The user.
+     * @return Response
      *
-     * @throws ValidationException
+     * @throws Validation
      */
-    public function reset(Request $request, string $token): SuccessJsonResponse
+    public function reset(Request $request, string $token): Response
     {
         $this->validate($request, ['password' => 'required']);
 
         // Try to find with the given token
         /** @var User $user */
         $user = User::query()
-                    ->where('token', '=', $token)
-                    ->firstOrFail();
+            ->where('token', '=', $token)
+            ->firstOrFail();
 
         // Update password
         User::unguarded(static function () use ($user, $request): void {
@@ -188,6 +183,6 @@ class AuthController extends BaseController
             ]);
         });
 
-        return new SuccessJsonResponse($user->refresh());
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 }

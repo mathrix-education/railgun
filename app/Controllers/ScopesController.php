@@ -6,7 +6,7 @@ namespace App\Controllers;
 
 use Mathrix\Lumen\JWT\Auth\ScopesLoader;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
-use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
+use Mathrix\Lumen\Zero\Responses\DataResponse;
 
 /**
  * Serve routes starting with /scopes.
@@ -17,10 +17,10 @@ class ScopesController extends BaseController
      * GET /scopes
      * Get the scopes list.
      *
-     * @return SuccessJsonResponse The scopes list.
+     * @return DataResponse The scopes list.
      */
-    public function all(): SuccessJsonResponse
+    public function all(): DataResponse
     {
-        return new SuccessJsonResponse(ScopesLoader::getRegisteredScopes());
+        return new DataResponse(ScopesLoader::getRegisteredScopes());
     }
 }

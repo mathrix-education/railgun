@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Registrars;
 
+use Mathrix\Lumen\Zero\Exceptions\InvalidArgument;
 use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
 /**
@@ -13,15 +14,17 @@ class PurchasesRegistrar extends BaseRegistrar
 {
     /**
      * Register the routes.
+     *
+     * @throws InvalidArgument
      */
     public function register(): void
     {
-        $this->rest([
-            'std:index'  => 'scope:purchases:read',
-            'std:get'    => 'scope:purchases:read',
-            'std:post'   => 'scope:purchases:write',
-            'std:patch'  => 'scope:purchases:write',
-            'std:delete' => 'scope:purchases:delete',
+        $this->registerCRUDRoutes([
+            'list'   => 'scope:purchases:read',
+            'read'   => 'scope:purchases:read',
+            'create' => 'scope:purchases:write',
+            'update' => 'scope:purchases:write',
+            'delete' => 'scope:purchases:delete',
         ]);
     }
 }

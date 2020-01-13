@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace App\Registrars;
 
 use App\Controllers\CommentsController;
+use Mathrix\Lumen\Zero\Exceptions\InvalidArgument;
 use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
 class CommentsRegistrar extends BaseRegistrar
 {
     /**
      * Register the routes.
+     *
+     * @throws InvalidArgument
      */
     public function register(): void
     {
@@ -21,12 +24,12 @@ class CommentsRegistrar extends BaseRegistrar
             'middleware' => 'scope:comments:read',
         ]);
 
-        $this->rest([
-            'std:index' => 'scope:comments:read',
-            'std:get' => 'scope:comments:read',
-            'std:post' => 'logged',
-            'std:patch' => 'logged',
-            'std:delete' => 'scope:comments:delete',
+        $this->registerCRUDRoutes([
+            'list' => 'scope:comments:read',
+            'read' => 'scope:comments:read',
+            'create' => 'logged',
+            'update' => 'logged',
+            'delete' => 'scope:comments:delete',
         ]);
     }
 }

@@ -35,7 +35,7 @@ class Report extends BaseModel
     /** @var array Relation included by default */
     protected $with = ['module'];
 
-    public function getValidationRules()
+    public function getValidationRules(): array
     {
         $this->rules['status'] = 'required|in:' . implode(',', self::STATUSES);
 

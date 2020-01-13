@@ -12,8 +12,8 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use League\Flysystem\FileNotFoundException;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
-use Mathrix\Lumen\Zero\Exceptions\ValidationException;
-use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
+use Mathrix\Lumen\Zero\Exceptions\Validation;
+use Mathrix\Lumen\Zero\Responses\DataResponse;
 use function basename;
 use function collect;
 use function dirname;
@@ -45,12 +45,12 @@ class FilesController extends BaseController
      * @param Request $request The Illuminate HTTP request.
      * @param string  $path    The file destination.
      *
-     * @return SuccessJsonResponse The newly created file metadata.
+     * @return DataResponse The newly created file metadata.
      *
-     * @throws ValidationException
      * @throws FileNotFoundException
+     * @throws Validation
      */
-    public function post(Request $request, string $path): SuccessJsonResponse
+    public function post(Request $request, string $path): DataResponse
     {
         $this->validate($request, ['file' => 'required|file|max:204800|mimes:pdf,gif,jpeg,svg,png,mp4']);
 
@@ -62,7 +62,7 @@ class FilesController extends BaseController
         $metadata = $this->disk->getMetadata($path);
         $data     = $this->cast($metadata);
 
-        return new SuccessJsonResponse($data);
+        return new DataResponse($data);
     }
 
     /**
@@ -122,11 +122,11 @@ class FilesController extends BaseController
      *
      * @param string $directory The directory to explore.
      *
-     * @return SuccessJsonResponse The directory sub-directories and files.
+     * @return DataResponse The directory sub-directories and files.
      *
      * @throws DirectoryNotFound
      */
-    public function list(string $directory = '/'): SuccessJsonResponse
+    public function list(string $directory = '/'): DataResponse
     {
         $data = $this->cast($this->disk->listContents($directory), true);
         $data = collect($data)
@@ -141,7 +141,7 @@ class FilesController extends BaseController
             throw new DirectoryNotFound($directory);
         }
 
-        return new SuccessJsonResponse($data);
+        return new DataResponse($data);
     }
 
     /**
@@ -151,12 +151,12 @@ class FilesController extends BaseController
      * @param Request $request The Illuminate HTTP request.
      * @param string  $path    The source file.
      *
-     * @return SuccessJsonResponse The moved file metadata.
+     * @return DataResponse The moved file metadata.
      *
      * @throws FileNotFoundException
-     * @throws ValidationException
+     * @throws Validation
      */
-    public function patch(Request $request, string $path): SuccessJsonResponse
+    public function patch(Request $request, string $path): DataResponse
     {
         $this->validate($request, ['destination' => 'required']);
         $destination = $request->json('destination');
@@ -173,16 +173,16 @@ class FilesController extends BaseController
      *
      * @param string $path The file path.
      *
-     * @return SuccessJsonResponse The file metadata.
+     * @return DataResponse The file metadata.
      *
      * @throws FileNotFoundException
      */
-    public function get(string $path): SuccessJsonResponse
+    public function get(string $path): DataResponse
     {
         $metadata = $this->disk->getMetadata($path);
         $data     = $this->cast($metadata);
 
-        return new SuccessJsonResponse($data);
+        return new DataResponse($data);
     }
 
     /**
@@ -191,16 +191,16 @@ class FilesController extends BaseController
      *
      * @param string $path The file to delete.
      *
-     * @return SuccessJsonResponse The file deletion confirmation.
+     * @return DataResponse The file deletion confirmation.
      *
      * @throws FileNotFoundException
      */
-    public function delete(string $path): SuccessJsonResponse
+    public function delete(string $path): DataResponse
     {
         $this->disk->getDriver()
             ->delete($path); // Alternative syntax to throw FileNotFoundException
 
-        return new SuccessJsonResponse(
+        return new DataResponse(
             ['path' => $path],
             ['message' => trans('google-cloud.storage.file_deleted', ['file' => $path])]
         );

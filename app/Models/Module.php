@@ -86,7 +86,7 @@ class Module extends BaseModel
     /** @var array The accessors to append to the model's array form */
     protected $appends = ['mark'];
 
-    public function getValidationRules()
+    public function getValidationRules(): array
     {
         // Dynamic rules
         $this->rules['type'] = 'required|in:' . implode(',', self::TYPES);

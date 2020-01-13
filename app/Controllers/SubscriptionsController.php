@@ -13,16 +13,14 @@ use App\Services\Stripe\Pipelines\SubscriptionCreationPipeline;
 use App\Services\Stripe\Pipelines\SubscriptionMigrationPipeline;
 use Illuminate\Http\Request;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
-use Mathrix\Lumen\Zero\Exceptions\Http\Http401UnauthorizedException;
-use Mathrix\Lumen\Zero\Responses\PaginationJsonResponse;
-use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
+use Mathrix\Lumen\Zero\Responses\DataResponse;
 use Stripe\Exception\ApiErrorException as StripeAPIErrorException;
 use Stripe\Invoice as StripeInvoice;
 use Stripe\SetupIntent;
 use Stripe\Subscription as StripeSubscription;
 use function count;
 use function preg_match;
-use function scope;
+use function hasScope;
 
 /**
  * Serve routes starting with /subscriptions.
@@ -35,11 +33,11 @@ class SubscriptionsController extends BaseController
      *
      * @param Request $request The Illuminate HTTP request.
      *
-     * @return SuccessJsonResponse The newly created subscription.
+     * @return DataResponse The newly created subscription.
      *
      * @throws UserAlreadyPremium
      */
-    public function standardPost(Request $request): SuccessJsonResponse
+    public function standardPost(Request $request): DataResponse
     {
         /** @var User $user */
         $user = $request->user();
@@ -51,7 +49,7 @@ class SubscriptionsController extends BaseController
         $pipeline = (new SubscriptionCreationPipeline())->flow();
         $data     = Subscription::from($pipeline->subscription);
 
-        return new SuccessJsonResponse(
+        return new DataResponse(
             $data,
             [],
             $data->status === StripeSubscription::STATUS_INCOMPLETE ? 202 : 200
@@ -87,7 +85,7 @@ class SubscriptionsController extends BaseController
 
         /** @var StripeInvoice $invoice */
         foreach ($invoices as $invoice) {
-            if ($invoice->customer !== $user->stripe_id && !scope($user, 'invoices:read')) {
+            if ($invoice->customer !== $user->stripe_id && !hasScope($user, 'invoices:read')) {
                 throw new Http401UnauthorizedException([], 'Failed to pass invoices policy');
             }
 
