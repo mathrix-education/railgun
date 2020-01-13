@@ -1,7 +1,7 @@
 name: Pipeline
 on:
   push:
-    branches: ['**']
+    branches: ['v7', 'dev', 'master']
 jobs:
   lint:
     name: Lint with PHP_CodeSniffer
