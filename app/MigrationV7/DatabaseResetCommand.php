@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\MigrationV7;
 
-use Mathrix\Lumen\Zero\Console\Commands\BaseCommand;
 use Symfony\Component\Process\Process;
 use function env;
 use function storage_path;
 
-class DatabaseResetCommand extends BaseCommand
+class DatabaseResetCommand extends V7Command
 {
     private const BACKUP_NAME = 'artifacts/mathrix_education_v7-ori.sql';
 
@@ -17,11 +16,9 @@ class DatabaseResetCommand extends BaseCommand
 
     public function handle(): void
     {
-        $this->info('Cleaning database');
+        $this->title('Restoring backup');
         $this->callSilent('db:wipe', ['--force' => true]);
-        $this->info('Cleaning database: OK');
 
-        $this->info('Restoring backup');
         $dbFile = storage_path(self::BACKUP_NAME);
         $dbHost = env('DB_HOST');
         $dbName = env('DB_DATABASE');
@@ -33,6 +30,5 @@ class DatabaseResetCommand extends BaseCommand
         $restoreProcess = Process::fromShellCommandline($cmd);
         $restoreProcess->setTty(Process::isTtySupported());
         $restoreProcess->run();
-        $this->info('Restoring backup: OK');
     }
 }
