@@ -8,13 +8,13 @@ use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use const JSON_THROW_ON_ERROR;
 use function collect;
 use function count;
 use function implode;
 use function json_decode;
 use function json_encode;
 use function trim;
-use const JSON_THROW_ON_ERROR;
 
 class CoursesCommand extends V7Command
 {
@@ -57,8 +57,10 @@ class CoursesCommand extends V7Command
                 if (empty($content->silicate) && !empty(trim($content->text))) {
                     $errorTable[] = [$module->id, 'not migrated'];
                 } elseif (!isset($content->silicate)) {
+                    $keep = false;
                     // $errorTable[] = [$module->id, 'missing'];
                 } elseif (empty($content->silicate)) {
+                    $keep = false;
                     // $errorTable[] = [$module->id, 'empty'];
                 } else {
                     $keep = true;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\MigrationV7;
 
-use Exception;
 use Illuminate\Support\Facades\DB;
 use function array_merge;
 use function array_reverse;
@@ -14,27 +13,10 @@ class ZerosCommand extends V7Command
 {
     protected $signature = 'v7:zeros';
 
-    /**
-     * @throws Exception
-     */
     public function handle(): void
     {
         $this->title('Purging models with foreign keys = 0');
 
-        try {
-            DB::beginTransaction();
-            $this->exec();
-        } catch (Exception $exception) {
-            DB::rollBack();
-            throw $exception;
-        }
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function exec(): void
-    {
         $toDelete = [];
 
         $notionIds = DB::table('notions')
@@ -100,7 +82,5 @@ class ZerosCommand extends V7Command
             [$table, $ids] = $toDelete;
             DB::table($table)->whereIn('id', $ids)->delete();
         }
-
-        DB::commit();
     }
 }

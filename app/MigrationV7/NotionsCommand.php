@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\MigrationV7;
 
 use Illuminate\Support\Facades\DB;
+use stdClass;
 use function array_diff;
 use function array_intersect;
 use function collect;
@@ -55,9 +56,7 @@ class NotionsCommand extends V7Command
             ->selectRaw('type, COUNT(type) as `count`')
             ->groupBy('type')
             ->get()
-            ->map(function ($stat) {
-                return [$stat->type, $stat->count];
-            })
+            ->map(fn(stdClass $stat) => [$stat->type, $stat->count])
             ->toArray();
         $this->table(['type', 'count'], $finalRepartition);
     }
