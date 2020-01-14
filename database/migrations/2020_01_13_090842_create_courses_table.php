@@ -29,6 +29,7 @@ class CreateCoursesTable extends Migration
             $table->string('seo_description')->nullable();
             $table->unsignedBigInteger('notion_id');
             $table->timestamps();
+            $table->string('mapping');
 
             // Foreign keys
             $table->foreign('notion_id')->references('id')->on('notions');

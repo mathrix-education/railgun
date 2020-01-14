@@ -21,6 +21,7 @@ class MainCommand extends BaseCommand
         'v7:exercises',
         'v7:courses',
         'v7:notions',
+        'v7:comments',
     ];
 
     protected $signature = 'v7';

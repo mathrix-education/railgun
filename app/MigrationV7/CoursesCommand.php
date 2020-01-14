@@ -46,6 +46,7 @@ class CoursesCommand extends V7Command
                 'activities.notion_id AS notion_id',
                 'modules.created_at AS created_at',
                 'modules.updated_at AS updated_at',
+                "CONCAT('module-', modules.id) AS mapping",
             ]));
 
         $errorTable = [];

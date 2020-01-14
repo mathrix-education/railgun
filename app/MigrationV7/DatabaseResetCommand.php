@@ -10,7 +10,7 @@ use function storage_path;
 
 class DatabaseResetCommand extends V7Command
 {
-    private const BACKUP_NAME = 'artifacts/mathrix_education_v7-ori.sql';
+    private const BACKUP_NAME = 'artifacts/mathrix_education_v7.sql';
 
     protected $signature = 'v7:reset';
 
