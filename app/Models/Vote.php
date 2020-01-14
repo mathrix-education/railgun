@@ -31,7 +31,7 @@ class Vote extends BaseModel
         'comment_id' => 'required|exists:comments,id',
     ];
 
-    public function getValidationRules()
+    public function getValidationRules(): array
     {
         return array_merge($this->rules, [
             'value' => ['required', Rule::in([1, -1])],

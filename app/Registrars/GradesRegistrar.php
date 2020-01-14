@@ -40,7 +40,7 @@ class GradesRegistrar extends BaseRegistrar
             'create' => 'scope:grades:write',
             'update' => 'scope:grades:write',
             'delete' => 'scope:grades:delete',
-            'rel:get:disciplines' => 'scope:disciplines:read',
+            // 'rel:get:disciplines' => 'scope:disciplines:read',
         ]);
     }
 }

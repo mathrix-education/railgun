@@ -7,6 +7,9 @@ namespace App\MigrationV7;
 use Symfony\Component\Process\Process;
 use function env;
 use function storage_path;
+use function str_repeat;
+use function str_replace;
+use function strlen;
 
 class DatabaseResetCommand extends V7Command
 {
@@ -21,11 +24,13 @@ class DatabaseResetCommand extends V7Command
 
         $dbFile = storage_path(self::BACKUP_NAME);
         $dbHost = env('DB_HOST');
+        $dbPort = env('DB_PORT', 3306);
         $dbName = env('DB_DATABASE');
         $dbUser = env('DB_USERNAME');
         $dbPass = env('DB_PASSWORD');
 
-        $cmd = "pv $dbFile | mysql $dbName --host=$dbHost -u'$dbUser' -p'$dbPass'";
+        $cmd = "pv $dbFile | mysql $dbName --host=$dbHost --port=$dbPort -u'$dbUser' -p'$dbPass'";
+        $this->line(str_replace($dbPass, str_repeat('*', strlen($dbPass)), $cmd));
 
         $restoreProcess = Process::fromShellCommandline($cmd);
         $restoreProcess->setTty(Process::isTtySupported());

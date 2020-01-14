@@ -25,7 +25,7 @@ class ProductsRegistrar extends BaseRegistrar
             'create'        => 'scope:products:write',
             'update'        => 'scope:products:write',
             'delete'        => 'scope:products:delete',
-            'rel:get:items' => null,
+            // 'rel:get:items' => null,
         ]);
 
         $this->patch('products/{packId:[1-9]\d*}/items', "$controller@patchItems");

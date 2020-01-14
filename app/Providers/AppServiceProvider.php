@@ -30,6 +30,7 @@ use Mathrix\Lumen\JWT\Auth\ScopesLoader;
 use Mathrix\Lumen\Zero\Providers\ObserverServiceProvider;
 use Mathrix\Lumen\Zero\Providers\PolicyServiceProvider;
 use Mathrix\Lumen\Zero\Providers\RegistrarServiceProvider;
+use Mathrix\Lumen\Zero\Providers\ZeroServiceProvider;
 
 /**
  * Register all application service providers.
@@ -60,9 +61,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(GoogleCloudStorageServiceProvider::class);
 
         // Mathrix Lumen Zero Providers
-        $this->app->register(ObserverServiceProvider::class);
-        $this->app->register(PolicyServiceProvider::class);
-        $this->app->register(RegistrarServiceProvider::class);
+        $this->app->register(ZeroServiceProvider::class);
 
         ScopesLoader::registerAdditionalScopes(['users:as']);
 
