@@ -13,6 +13,8 @@ use function implode;
 
 class ExercisesCommand extends V7Command
 {
+    private const CHUNK_SIZE = 500;
+
     protected $signature = 'v7:exercises';
 
     public function handle(): void
@@ -36,6 +38,8 @@ class ExercisesCommand extends V7Command
                 'modules.corrections AS explanations',
                 'modules.visible AS visible',
                 'subjects.id AS subject_id',
+                'modules.created_at AS created_at',
+                'modules.updated_at AS updated_at',
                 "CONCAT('module-', modules.id) AS mapping",
             ]))
             ->orderBy('subjects.id')
@@ -57,7 +61,7 @@ class ExercisesCommand extends V7Command
             $iterator++;
         }
 
-        collect($exercises)->chunk(1000)->each(static function (Collection $exercises) {
+        collect($exercises)->chunk(self::CHUNK_SIZE)->each(static function (Collection $exercises) {
             DB::table('exercises')->insert($exercises->toArray());
         });
     }

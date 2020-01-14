@@ -12,12 +12,15 @@ class MainCommand extends BaseCommand
 {
     private const COMMANDS = [
         'v7:reset',
+        'v7:zeros',
         'migrate',
         'v7:flashcards',
         'v7:subjects',
         'v7:exercises',
+        'v7:courses',
+        'v7:notions',
     ];
-    protected $signature   = 'v7';
+    protected $signature = 'v7';
 
     public function handle(): void
     {
