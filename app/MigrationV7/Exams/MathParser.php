@@ -140,6 +140,6 @@ class MathParser
             $wall[] = BrickFactory::text(implode(' ', $buffer));
         }
 
-        return $wall;
+        return array_values($wall);
     }
 }

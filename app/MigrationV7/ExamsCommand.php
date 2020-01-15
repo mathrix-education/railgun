@@ -19,9 +19,8 @@ use function storage_path;
 
 class ExamsCommand extends V7Command
 {
-    private const CHUNK_SIZE       = 100;
-    private const MALFORMED_DIR    = 'artifacts/malformed-exams';
-    private const DEFAULT_DURATION = 30;
+    private const CHUNK_SIZE    = 100;
+    private const MALFORMED_DIR = 'artifacts/malformed-exams';
 
     protected $signature = 'v7:exams';
 
@@ -47,16 +46,15 @@ class ExamsCommand extends V7Command
                 return $exam;
             });
 
-        $notNormalizable = new Collection();
-        $malformed       = new Collection();
+        $malformed = new Collection();
 
         $this->line("Found {$exams->count()} exams");
         $valid = $exams->map(fn(stdClass $exam) => ExamConverter::decode($exam))
-            ->filter(static function (stdClass $exam) use ($notNormalizable) {
+            ->filter(static function (stdClass $exam) use ($malformed) {
                 $normalizable = ExamConverter::isNormalizable($exam);
 
                 if (!$normalizable) {
-                    $notNormalizable->push($exam);
+                    $malformed->push($exam);
                 }
 
                 return $normalizable;
@@ -94,7 +92,6 @@ class ExamsCommand extends V7Command
         $this->newLine();
         $this->line('After parsing, got:');
         $this->table(['kind', 'count'], [
-            ['<comment>not normalizable</comment>', $notNormalizable->count()],
             ['<comment>malformed</comment>', $malformed->count()],
             ['<info>valid</info>', $valid->count()],
             ['<comment>total</comment>', $exams->count()],
@@ -109,23 +106,24 @@ class ExamsCommand extends V7Command
         $progress = $this->getOutput()->createProgressBar($valid->count());
         $valid
             ->map(static function (stdClass $exam) {
-                if ($exam->duration === null) {
-                    $exam->duration = self::DEFAULT_DURATION;
-                }
-
                 $exam->content = json_encode($exam->content, JSON_THROW_ON_ERROR, 512);
 
                 return (array)$exam;
             })
             ->chunk(self::CHUNK_SIZE)
             ->each(static function (Collection $exams) use ($progress) {
-                // DB::table('exams')->insert($exams->toArray());
+                DB::table('exams')->insert($exams->toArray());
                 $progress->advance($exams->count());
             });
         $progress->finish();
         $this->newLine();
     }
 
+    /**
+     * Export malformed exams to separate JSON files.
+     *
+     * @param Collection $exams The malformed exams collection.
+     */
     private function exportMalformed(Collection $exams): void
     {
         $exportDir = storage_path(self::MALFORMED_DIR);

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\MigrationV7\Exams;
 
+use RuntimeException;
+use function count;
 use function trim;
 
 class BrickFactory
@@ -44,14 +46,26 @@ class BrickFactory
         ];
     }
 
-    public static function question(array $question, array $explanations, array $points, $children = [])
+    public static function question(array $question, array $explanations, array $points, $children = []): array
     {
         $data = [
-            'question'     => $question,
-            'explanations' => $explanations,
-            'points'       => $points,
+            'uuid'         => StringUtils::uuid(),
+            'kind'         => 'question',
+            'statement'    => $question,
+            'explanations' => [],
             'children'     => $children,
         ];
+
+        if (count($explanations) !== count($points)) {
+            throw new RuntimeException('explanations and points size mismatch');
+        }
+
+        foreach ($explanations as $i => $explanation) {
+            $data['explanations'][] = [
+                'points'  => $points[$i],
+                'content' => $explanation,
+            ];
+        }
 
         if ($children === false) {
             unset($data['children']);
