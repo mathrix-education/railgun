@@ -31,8 +31,9 @@ class DatabaseResetCommand extends V7Command
 
         $cmd = "pv $dbFile | mysql $dbName --host=$dbHost --port=$dbPort -u'$dbUser' -p'$dbPass'";
         $this->line(str_replace($dbPass, str_repeat('*', strlen($dbPass)), $cmd));
-
+;
         $restoreProcess = Process::fromShellCommandline($cmd);
+        $restoreProcess->setTimeout(300);
         $restoreProcess->setTty(Process::isTtySupported());
         $restoreProcess->run();
     }

@@ -8,11 +8,11 @@ use App\MigrationV7\Exams\ExamConverter;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use RuntimeException;
 use stdClass;
-use ZipArchive;
+use Symfony\Component\Process\Process;
 use const JSON_PRETTY_PRINT;
 use const JSON_THROW_ON_ERROR;
+use function file_put_contents;
 use function implode;
 use function json_encode;
 use function storage_path;
@@ -20,7 +20,7 @@ use function storage_path;
 class ExamsCommand extends V7Command
 {
     private const CHUNK_SIZE       = 100;
-    private const MALFORMED_ZIP    = 'artifacts/malformed-exams.zip';
+    private const MALFORMED_DIR    = 'artifacts/malformed-exams';
     private const DEFAULT_DURATION = 30;
 
     protected $signature = 'v7:exams';
@@ -119,7 +119,7 @@ class ExamsCommand extends V7Command
             })
             ->chunk(self::CHUNK_SIZE)
             ->each(static function (Collection $exams) use ($progress) {
-                DB::table('exams')->insert($exams->toArray());
+                // DB::table('exams')->insert($exams->toArray());
                 $progress->advance($exams->count());
             });
         $progress->finish();
@@ -128,21 +128,17 @@ class ExamsCommand extends V7Command
 
     private function exportMalformed(Collection $exams): void
     {
-        $zip     = new ZipArchive();
-        $zipPath = storage_path(self::MALFORMED_ZIP);
+        $exportDir = storage_path(self::MALFORMED_DIR);
+        Process::fromShellCommandline("rm -rf $exportDir")->run();
+        Process::fromShellCommandline("mkdir -p $exportDir")->run();
 
-        if ($zip->open($zipPath, ZipArchive::CREATE) !== true) {
-            throw new RuntimeException("Unable to create $zipPath");
-        }
-
-        $exams->each(static function ($exam) use ($zip) {
+        $exams->each(static function ($exam) use ($exportDir) {
+            $examDest   = "{$exportDir}/{$exam->mapping}.json";
             $examString = json_encode($exam, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT, 512);
-            $zip->addFromString("{$exam->mapping}.json", $examString);
+            file_put_contents($examDest, $examString);
         });
 
-        $zip->close();
-
-        $this->info("Exported {$exams->count()} malformed exams to $zipPath");
+        $this->info("Exported {$exams->count()} malformed exams to $exportDir");
         $this->newLine();
     }
 }
