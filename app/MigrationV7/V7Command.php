@@ -10,6 +10,11 @@ use function strlen;
 
 abstract class V7Command extends BaseCommand
 {
+    protected function newLine($count = 1): void
+    {
+        $this->getOutput()->newLine($count);
+    }
+
     protected function title(string $string): void
     {
         $header = "| <info>$string</info> |";
@@ -18,10 +23,5 @@ abstract class V7Command extends BaseCommand
         $this->line($border);
         $this->line($header);
         $this->line($border);
-    }
-
-    protected function newLine($count = 1): void
-    {
-        $this->getOutput()->newLine($count);
     }
 }

@@ -7,17 +7,21 @@ namespace App\MigrationV7;
 use App\MigrationV7\Exams\ExamConverter;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use RuntimeException;
 use stdClass;
 use ZipArchive;
-use function json_encode;
-use function storage_path;
 use const JSON_PRETTY_PRINT;
 use const JSON_THROW_ON_ERROR;
+use function implode;
+use function json_encode;
+use function storage_path;
 
 class ExamsCommand extends V7Command
 {
-    private const MALFORMED_ZIP = 'artifacts/malformed-exams.zip';
+    private const CHUNK_SIZE       = 100;
+    private const MALFORMED_ZIP    = 'artifacts/malformed-exams.zip';
+    private const DEFAULT_DURATION = 30;
 
     protected $signature = 'v7:exams';
 
@@ -25,8 +29,23 @@ class ExamsCommand extends V7Command
     {
         $this->title('Migrating modules => exams');
         $exams = DB::table('modules')
-            ->where('type', '=', 'test')
-            ->get();
+            ->join('activities', 'modules.activity_id', '=', 'activities.id')
+            ->join('notions', 'activities.notion_id', '=', 'notions.id')
+            ->where('activities.type', '=', 'test')
+            ->selectRaw(implode(',', [
+                'modules.*',
+                'activities.name AS name',
+                'notions.chapter_id AS chapter_id',
+                "CONCAT('module-', modules.id) AS mapping",
+            ]))
+            ->orderBy('notions.chapter_id')
+            ->get()
+            ->map(static function (stdClass $exam) {
+                $exam->slug = Str::slug($exam->name);
+                unset($exam->id, $exam->activity_id);
+
+                return $exam;
+            });
 
         $notNormalizable = new Collection();
         $malformed       = new Collection();
@@ -55,13 +74,30 @@ class ExamsCommand extends V7Command
             ->map(fn(stdClass $exam) => ExamConverter::reshape($exam))
             ->map(fn(stdClass $exam) => ExamConverter::strip($exam));
 
+        // Set order
+        $chapterId = 0;
+        $iterator  = 0;
+
+        $valid = $valid->map(static function (stdClass $exam) use (&$chapterId, &$iterator) {
+            if ($exam->chapter_id !== $chapterId) {
+                $chapterId = $exam->chapter_id;
+                $iterator  = 0;
+            }
+
+            $exam->order = $iterator;
+            $iterator++;
+
+            return $exam;
+        })
+            ->values();
+
         $this->newLine();
         $this->line('After parsing, got:');
         $this->table(['kind', 'count'], [
             ['<comment>not normalizable</comment>', $notNormalizable->count()],
             ['<comment>malformed</comment>', $malformed->count()],
-            ['<info>valid</info>', $exams->count()],
-            ['<comment>total</comment>', $valid->count()],
+            ['<info>valid</info>', $valid->count()],
+            ['<comment>total</comment>', $exams->count()],
         ]);
         $this->newLine();
 
@@ -69,7 +105,25 @@ class ExamsCommand extends V7Command
             $this->exportMalformed($malformed);
         }
 
-        $this->info('TODO: injection in the database');
+        $this->line('Saving exams');
+        $progress = $this->getOutput()->createProgressBar($valid->count());
+        $valid
+            ->map(static function (stdClass $exam) {
+                if ($exam->duration === null) {
+                    $exam->duration = self::DEFAULT_DURATION;
+                }
+
+                $exam->content = json_encode($exam->content, JSON_THROW_ON_ERROR, 512);
+
+                return (array)$exam;
+            })
+            ->chunk(self::CHUNK_SIZE)
+            ->each(static function (Collection $exams) use ($progress) {
+                DB::table('exams')->insert($exams->toArray());
+                $progress->advance($exams->count());
+            });
+        $progress->finish();
+        $this->newLine();
     }
 
     private function exportMalformed(Collection $exams): void
@@ -77,13 +131,13 @@ class ExamsCommand extends V7Command
         $zip     = new ZipArchive();
         $zipPath = storage_path(self::MALFORMED_ZIP);
 
-        if ($zip->open($zipPath, ZipArchive::OVERWRITE) !== true) {
+        if ($zip->open($zipPath, ZipArchive::CREATE) !== true) {
             throw new RuntimeException("Unable to create $zipPath");
         }
 
         $exams->each(static function ($exam) use ($zip) {
             $examString = json_encode($exam, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT, 512);
-            $zip->addFromString('exam-' . $exam->id . '.json', $examString);
+            $zip->addFromString("{$exam->mapping}.json", $examString);
         });
 
         $zip->close();

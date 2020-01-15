@@ -16,10 +16,6 @@ use const JSON_THROW_ON_ERROR;
 
 class ExamConverter
 {
-    private stdClass $raw;
-    private stdClass $work;
-    private int      $duration;
-
     public static function decode(stdClass $exam): stdClass
     {
         $exam->questions   = json_decode($exam->questions ?? '[]', false, 512, JSON_THROW_ON_ERROR);
@@ -35,7 +31,11 @@ class ExamConverter
         $solutionsCount   = count($exam->solutions);
         $correctionsCount = count($exam->corrections);
 
-        return $solutionsCount === $questionsCount && $correctionsCount === $questionsCount;
+        return $solutionsCount === $questionsCount
+            && $correctionsCount === $questionsCount
+            && $questionsCount !== 0
+            && $solutionsCount !== 0
+            && $correctionsCount !== 0;
     }
 
     /**
@@ -108,6 +108,7 @@ class ExamConverter
                     $exam->malformed = true;
 
                     return $exam;
+
                     //throw new RuntimeException("Invalid normalization of exam id {$exam->id}. Got:\n"
                     //    . json_encode($exam, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT, 512));
                 }

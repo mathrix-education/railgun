@@ -40,6 +40,7 @@ class MainCommand extends BaseCommand
             try {
                 DB::beginTransaction();
                 $this->call($command);
+                DB::commit();
             } catch (Exception $exception) {
                 DB::rollBack();
                 $this->alert("Error while executing command $command");
