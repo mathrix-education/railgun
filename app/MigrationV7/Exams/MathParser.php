@@ -6,6 +6,7 @@ namespace App\MigrationV7\Exams;
 
 use function array_filter;
 use function array_map;
+use function array_values;
 use function implode;
 use function strlen;
 use function strpos;

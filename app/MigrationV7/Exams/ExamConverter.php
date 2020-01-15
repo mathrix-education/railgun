@@ -18,8 +18,6 @@ use function str_replace;
 
 class ExamConverter
 {
-    private const DEFAULT_DURATION = 20;
-
     public static function decode(stdClass $exam): stdClass
     {
         $exam->questions   = json_decode($exam->questions ?? '[]', false, 512, JSON_THROW_ON_ERROR);
@@ -147,7 +145,7 @@ class ExamConverter
 
         // Extract duration
         preg_match('/(\d+)--/', $exam->content, $matches);
-        $exam->duration = isset($matches[1]) ? (int)$matches[1] : self::DEFAULT_DURATION;
+        $exam->duration = isset($matches[1]) ? (int)$matches[1] : null;
 
         if ($exam->duration !== null) {
             $exam->content = StringUtils::mtrim(str_replace("{$exam->duration}--", '', $exam->content));

@@ -8,13 +8,13 @@ use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use const JSON_THROW_ON_ERROR;
 use function collect;
 use function count;
 use function implode;
 use function json_decode;
 use function json_encode;
 use function trim;
+use const JSON_THROW_ON_ERROR;
 
 class CoursesCommand extends V7Command
 {
@@ -32,6 +32,11 @@ class CoursesCommand extends V7Command
             ->join('activities', static function (JoinClause $join) {
                 $join->on('modules.activity_id', '=', 'activities.id')
                     ->where('activities.notion_id', '>', 0);
+            })
+            ->join('notions', static function (JoinClause $join) {
+                // Exclude video tests
+                $join->on('activities.notion_id', '=', 'notions.id')
+                    ->where('notions.name', 'NOT LIKE', '%erroga%');
             })
             ->selectRaw(implode(',', [
                 'modules.id AS id', // keep module ids, mapping is not necessary

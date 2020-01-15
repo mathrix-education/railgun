@@ -19,7 +19,7 @@ class CreateExamsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('slug');
-            $table->unsignedTinyInteger('duration');
+            $table->unsignedTinyInteger('duration')->nullable();
             $table->json('content');
             $table->unsignedTinyInteger('order');
             $table->boolean('visible');
