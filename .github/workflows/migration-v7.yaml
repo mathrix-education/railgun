@@ -50,3 +50,8 @@ jobs:
         run: |
           cp environments/testing/.env .env
           bin/artisan v7
+      - name: Upload malformed exams artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: malformed-exams.zip
+          path: storage/artifacts/malformed-exams.zip

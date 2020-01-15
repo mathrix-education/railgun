@@ -9,6 +9,7 @@ use App\Console\Commands\TestCommand;
 use App\MigrationV7\CommentsCommand;
 use App\MigrationV7\CoursesCommand;
 use App\MigrationV7\DatabaseResetCommand;
+use App\MigrationV7\ExamsCommand;
 use App\MigrationV7\ExercisesCommand;
 use App\MigrationV7\FlashcardsCommand;
 use App\MigrationV7\MainCommand;
@@ -43,6 +44,7 @@ class Kernel extends ConsoleKernel
         CoursesCommand::class,
         NotionsCommand::class,
         CommentsCommand::class,
+        ExamsCommand::class,
     ];
 
     /**

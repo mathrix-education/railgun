@@ -19,4 +19,9 @@ abstract class V7Command extends BaseCommand
         $this->line($header);
         $this->line($border);
     }
+
+    protected function newLine($count = 1): void
+    {
+        $this->getOutput()->newLine($count);
+    }
 }
