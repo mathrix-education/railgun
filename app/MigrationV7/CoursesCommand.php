@@ -13,7 +13,6 @@ use function count;
 use function implode;
 use function json_decode;
 use function json_encode;
-use function trim;
 use const JSON_THROW_ON_ERROR;
 
 class CoursesCommand extends V7Command
@@ -41,7 +40,7 @@ class CoursesCommand extends V7Command
             ->selectRaw(implode(',', [
                 'modules.id AS id', // keep module ids, mapping is not necessary
                 'activities.name AS name',
-                'modules.content AS content',
+                "JSON_EXTRACT(modules.content, '$.silicate') AS content",
                 'modules.visible AS visible',
                 'modules.seo_index AS seo_index',
                 'modules.seo_title AS seo_title',
@@ -57,28 +56,13 @@ class CoursesCommand extends V7Command
         $errorTable = [];
         $courses    = $query->get()
             ->filter(static function ($module) use (&$errorTable) {
-                $keep    = false;
-                $content = json_decode($module->content, false, 512, JSON_THROW_ON_ERROR);
-
-                if (empty($content->silicate) && !empty(trim($content->text))) {
+                if (empty($module->content)) {
                     $errorTable[] = [$module->id, 'not migrated'];
-                } elseif (!isset($content->silicate)) {
-                    $keep = false;
-                    // $errorTable[] = [$module->id, 'missing'];
-                } elseif (empty($content->silicate)) {
-                    $keep = false;
-                    // $errorTable[] = [$module->id, 'empty'];
-                } else {
-                    $keep = true;
+
+                    return false;
                 }
 
-                return $keep;
-            })
-            ->map(static function ($module) {
-                $content         = json_decode($module->content, false, 512, JSON_THROW_ON_ERROR);
-                $module->content = json_encode($content->silicate, JSON_THROW_ON_ERROR, 512);
-
-                return $module;
+                return true;
             })
             ->toArray();
 

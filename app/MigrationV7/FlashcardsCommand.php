@@ -28,7 +28,7 @@ class FlashcardsCommand extends V7Command
                 'notions.chapter_id AS chapter_id',
                 'modules.created_at AS created_at',
                 'modules.updated_at AS updated_at',
-                'CONCAT(\'module-\', modules.id) AS mapping',
+                "CONCAT('module-', modules.id) AS mapping",
             ]))
             ->orderByRaw('notions.chapter_id, notions.order, activities.order, modules.order');
 

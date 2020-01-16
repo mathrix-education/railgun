@@ -14,6 +14,7 @@ use App\MigrationV7\ExercisesCommand;
 use App\MigrationV7\FlashcardsCommand;
 use App\MigrationV7\MainCommand;
 use App\MigrationV7\NotionsCommand;
+use App\MigrationV7\PostsCommand;
 use App\MigrationV7\SubjectsCommand;
 use App\MigrationV7\ZerosCommand;
 use App\Services\GoogleCloud\KMS\Commands\DecryptCommand;
@@ -45,6 +46,7 @@ class Kernel extends ConsoleKernel
         NotionsCommand::class,
         CommentsCommand::class,
         ExamsCommand::class,
+        PostsCommand::class,
     ];
 
     /**

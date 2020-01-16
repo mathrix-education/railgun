@@ -32,6 +32,7 @@ class MainCommand extends BaseCommand
      */
     public function handle(): void
     {
+        $start = time();
         $this->banner();
 
         foreach (self::COMMANDS as $command) {
