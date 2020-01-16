@@ -15,6 +15,7 @@ use App\MigrationV7\FlashcardsCommand;
 use App\MigrationV7\MainCommand;
 use App\MigrationV7\NotionsCommand;
 use App\MigrationV7\PostsCommand;
+use App\MigrationV7\ProductsCommand;
 use App\MigrationV7\SubjectsCommand;
 use App\MigrationV7\ZerosCommand;
 use App\Services\GoogleCloud\KMS\Commands\DecryptCommand;
@@ -47,6 +48,7 @@ class Kernel extends ConsoleKernel
         CommentsCommand::class,
         ExamsCommand::class,
         PostsCommand::class,
+        ProductsCommand::class,
     ];
 
     /**
