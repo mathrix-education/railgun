@@ -6,6 +6,7 @@ namespace App\Console;
 
 use App\Console\Commands\CacheCleanCommand;
 use App\Console\Commands\TestCommand;
+use App\MigrationV7\AcquisitionsCommand;
 use App\MigrationV7\CommentsCommand;
 use App\MigrationV7\CoursesCommand;
 use App\MigrationV7\DatabaseResetCommand;
@@ -49,6 +50,7 @@ class Kernel extends ConsoleKernel
         ExamsCommand::class,
         PostsCommand::class,
         ProductsCommand::class,
+        AcquisitionsCommand::class,
     ];
 
     /**

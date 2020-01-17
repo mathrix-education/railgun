@@ -16,8 +16,14 @@ class CreateAcquisitionsTable extends Migration
     public function up(): void
     {
         Schema::create('acquisitions', static function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
+            $table->morphs('product');
+            $table->string('transaction_id')->nullable();
             $table->timestamps();
+            $table->primary(['user_id', 'product_type', 'product_id']);
+
+            // Foreign keys
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
