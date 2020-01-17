@@ -24,6 +24,7 @@ class MainCommand extends BaseCommand
         'v7:courses',
         'v7:notions',
         'v7:comments',
+        'v7:posts',
         'v7:exams',
         'v7:products',
         'v7:acquisitions',

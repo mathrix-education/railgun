@@ -17,7 +17,7 @@ class PostsCommand extends V7Command
     {
         $this->title('Merging modules => posts');
 
-        $iterator   = 0;
+        $iterator   = -1;
         $categoryId = 0;
 
         DB::table('modules')
@@ -38,17 +38,15 @@ class PostsCommand extends V7Command
             })
             ->each(static function (stdClass $post) use (&$iterator, &$categoryId) {
                 if ($categoryId !== $post->category_id) {
-                    $iterator   = 0;
+                    $iterator   = -1;
                     $categoryId = $post->category_id;
                 }
 
-                $post->order = $iterator;
+                $post->order = ++$iterator;
 
                 DB::table('posts')
                     ->where('id', '=', $post->id)
                     ->update((array)$post);
-
-                $iterator++;
             });
     }
 }
