@@ -4,73 +4,78 @@ declare(strict_types=1);
 
 namespace App\MigrationV7;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use function time;
+use stdClass;
+use Symfony\Component\Process\Process;
+use function env;
+use function explode;
+use function storage_path;
+use function str_repeat;
+use function str_replace;
+use function strlen;
 
 class InteractionsCommand extends V7Command
 {
+    private const EXPORT_NAME = 'artifacts/interactions.csv';
+
     protected $signature = 'v7:interactions';
+
+    private Collection $moduleMappings;
+    private Collection $activity;
 
     public function handle(): void
     {
-        // $this->migrate('course', 'module');
-        $this->migrate('exercise', 'module');
-        // $this->migrate('exam', 'module');
-        // $this->migrate('flashcard', 'module');
-        // $this->migrate('subject', 'activity');
+        $this->moduleMappings = new Collection();
+
+        $this->generateMappings('courses');
+        $this->generateMappings('exams');
+        $this->generateMappings('exercises');
+        $this->generateMappings('flashcards');
+        $this->export();
     }
 
-    private function migrate(string $target, string $source, int $page = 0): void
+    private function export(): void
     {
-        $countBefore = DB::table('interactions')->count();
-        $start       = time();
+        $this->line('Exporting marks table');
 
-        $this->line($this->makeScript($target, $source, $page));
-        dd('');
+        $dbFile = storage_path(self::EXPORT_NAME);
+        $dbHost = env('DB_HOST');
+        $dbPort = env('DB_PORT', 3306);
+        $dbName = env('DB_DATABASE');
+        $dbUser = env('DB_USERNAME');
+        $dbPass = env('DB_PASSWORD');
 
-        DB::unprepared($this->makeScript($target, $source, $page));
+        $mysqlArgs  = "$dbName --host=$dbHost --port=$dbPort -u'$dbUser' -p'$dbPass'";
+        $mysqlQuery = 'SELECT * FROM marks';
+        $sed        = 'sed \'s/\t/","/g;s/^/"/;s/$/"/;s/\n//g\'';
 
-        $duration   = time() - $start;
-        $countAfter = DB::table('interactions')->count();
-        $delta      = $countAfter - $countBefore;
+        $cmd = "mysql $mysqlArgs -e '$mysqlQuery' | pv | $sed  > $dbFile";
 
-        if ($countBefore === $countAfter) {
-            return;
-        }
-
-        $this->line("Inserted {$delta} new interactions in $duration seconds");
-        $this->migrate($target, $source, $page + 1);
+        $this->line(str_replace($dbPass, str_repeat('*', strlen($dbPass)), $cmd));
+        $restoreProcess = Process::fromShellCommandline($cmd);
+        $restoreProcess->setTimeout(300);
+        $restoreProcess->setTty(Process::isTtySupported());
+        $restoreProcess->run();
     }
 
-    private function makeScript(string $target, string $source, int $page, int $chunk = 1000): string
+    private function generateMappings(string $table): void
     {
-        $targets = Str::plural($target);
-        $sources = Str::plural($source);
-        $offset  = $page * $chunk;
+        $this->line("Generating $table mappings");
+        DB::table($table)
+            ->get(['id', 'mapping'])
+            ->mapWithKeys(static function (stdClass $raw) use ($table) {
+                $parts     = explode('-', $raw->mapping);
+                $mappingId = (int)$parts[1];
 
-        return <<<MYSQL
-        INSERT INTO interactions (
-            SELECT marks.user_id AS user_id,
-                '$target'        AS interactable_type,
-                $targets.id      AS interactable_id,
-                CASE
-                    WHEN marks.status = 'completed' THEN 'clear'
-                    WHEN marks.status = 'to_revise' THEN 'blur'
-                END              AS comprehension,
-                NULL             AS score,
-                marks.created_at AS created_at,
-                marks.updated_at AS updated_at
-            FROM $targets
-                INNER JOIN $sources on $targets.mapping = CONCAT('$source-', $sources.id)
-                INNER JOIN marks on $sources.id = marks.markable_id and marks.markable_type = '$source'
-        )
-        
-        ON DUPLICATE KEY UPDATE
-            comprehension = VALUES(comprehension),
-            score         = VALUES(score),
-            created_at    = VALUES(created_at),
-            updated_at    = VALUES(updated_at);
-        MYSQL;
+                return [
+                    $mappingId => [
+                        'interactable_type' => Str::singular($table),
+                        'interactable_id'   => $raw->id,
+                    ],
+                ];
+            })
+            ->tap(fn($data) => $this->moduleMappings->merge($data));
     }
 }
