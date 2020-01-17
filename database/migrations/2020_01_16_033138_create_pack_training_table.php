@@ -18,6 +18,7 @@ class CreatePackTrainingTable extends Migration
         Schema::create('pack_training', static function (Blueprint $table) {
             $table->unsignedBigInteger('pack_id');
             $table->unsignedBigInteger('training_id');
+            $table->unsignedTinyInteger('order');
             $table->primary(['pack_id', 'training_id']);
 
             // Foreign keys

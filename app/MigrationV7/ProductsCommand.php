@@ -17,15 +17,17 @@ class ProductsCommand extends V7Command
 
     public function handle(): void
     {
+        $this->title('Migrating products => packs, trainings, sections, lessons');
         $this->packs();
         $this->trainings();
+        $this->packTrainings();
         $this->sections();
         $this->lessons();
     }
 
     private function packs(): void
     {
-        $this->title('Migrate products => packs');
+        $this->line('Migrate products => packs');
 
         $iterator = -1;
 
@@ -55,7 +57,7 @@ class ProductsCommand extends V7Command
 
     private function trainings(): void
     {
-        $this->title('Migrate products => trainings');
+        $this->line('Migrate products => trainings');
 
         $iterator = -1;
 
@@ -83,9 +85,51 @@ class ProductsCommand extends V7Command
             });
     }
 
+    private function packTrainings(): void
+    {
+        $this->line('Migrate product_product => pack_training');
+
+        $packId   = 0;
+        $iterator = -1;
+
+        DB::table('product_product')
+            ->join(DB::raw('products AS product_packs'), static function (JoinClause $join) {
+                $join->on('product_product.parent_id', '=', 'product_packs.id')
+                    ->where('product_packs.type', '=', 'pack');
+            })
+            ->join('packs', DB::raw("CONCAT('product-', product_packs.id)"), '=', 'packs.mapping')
+            ->join(DB::raw('products AS product_training'), static function (JoinClause $join) {
+                $join->on('product_product.child_id', '=', 'product_training.id')
+                    ->where('product_training.type', '=', 'training');
+            })
+            ->join('trainings', DB::raw("CONCAT('product-', product_training.id)"), '=', 'trainings.mapping')
+            ->selectRaw(implode(', ', [
+                'packs.id AS pack_id',
+                'trainings.id AS training_id',
+            ]))
+            ->orderBy('packs.id')
+            ->orderBy('product_product.order')
+            ->orderBy('product_product.id')
+            ->get()
+            ->map(static function (stdClass $assoc) use (&$packId, &$iterator) {
+                if ($packId !== $assoc->pack_id) {
+                    $packId   = $assoc->pack_id;
+                    $iterator = -1;
+                }
+
+                $assoc->order = ++$iterator;
+
+                return (array)$assoc;
+            })
+            ->tap(function (Collection $data) {
+                $this->line("Found {$data->count()} associations");
+                DB::table('pack_training')->insert($data->toArray());
+            });
+    }
+
     private function sections(): void
     {
-        $this->title('Migrate products => sections');
+        $this->line('Migrate products => sections');
 
         $trainingId = 0;
         $iterator   = -1;
@@ -138,7 +182,7 @@ class ProductsCommand extends V7Command
 
     private function lessons(): void
     {
-        $this->title('Migrate products => lessons');
+        $this->line('Migrate products => lessons');
 
         $sectionId = 0;
         $iterator  = -1;

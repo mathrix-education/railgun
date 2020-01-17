@@ -8,6 +8,8 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Mathrix\Lumen\Zero\Console\Commands\BaseCommand;
 use function file_get_contents;
+use function microtime;
+use function round;
 use function time;
 
 class MainCommand extends BaseCommand
@@ -37,7 +39,7 @@ class MainCommand extends BaseCommand
         $this->banner();
 
         foreach (self::COMMANDS as $command) {
-            $now = time();
+            $now = $this->timeMs();
 
             try {
                 DB::beginTransaction();
@@ -49,16 +51,27 @@ class MainCommand extends BaseCommand
                 throw $exception;
             }
 
-            $duration = time() - $now;
-            $this->info('> Done in ' . $duration . ' second' . ($duration > 1 ? 's' : ''));
+            $duration = $this->timeMs() - $now;
+
+            if ($duration > 10000) {
+                $durationSeconds = round($duration / 1000, 1);
+                $this->info("> Done in {$durationSeconds} s");
+            } else {
+                $this->info("> Done in {$duration} ms");
+            }
             $this->line('');
         }
     }
 
-    public function banner(): void
+    private function banner(): void
     {
         $this->output->write(file_get_contents(__DIR__ . '/banner.txt'));
         $this->line('Migration script by Mathieu Bour and Valentin Pollart');
         $this->line("\n");
+    }
+
+    private function timeMs(): int
+    {
+        return (int)round(microtime(true) * 1000, 0);
     }
 }

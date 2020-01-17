@@ -10,6 +10,7 @@ use function array_diff;
 use function array_intersect;
 use function collect;
 use function count;
+use function sprintf;
 
 class NotionsCommand extends V7Command
 {
@@ -25,7 +26,7 @@ class NotionsCommand extends V7Command
         $table->update(['type' => 'to-delete']);
 
         $repartition = $this->getRepartition();
-        $this->line("\nDuplicating " . count($repartition['both']) . ' notions while updating subjects');
+        $this->line(sprintf("\nDuplicating %s notions while updating subjects", count($repartition['both'])));
         $progress = $this->getOutput()->createProgressBar(count($repartition['both']));
 
         collect($repartition['both'])->each(static function ($originalNotionId) use ($progress) {
