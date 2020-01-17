@@ -14,6 +14,7 @@ use App\MigrationV7\DatabaseResetCommand;
 use App\MigrationV7\ExamsCommand;
 use App\MigrationV7\ExercisesCommand;
 use App\MigrationV7\FlashcardsCommand;
+use App\MigrationV7\InteractionsCommand;
 use App\MigrationV7\MainCommand;
 use App\MigrationV7\NotionsCommand;
 use App\MigrationV7\PostsCommand;
@@ -53,6 +54,7 @@ class Kernel extends ConsoleKernel
         ProductsCommand::class,
         AcquisitionsCommand::class,
         CouponsCommand::class,
+        InteractionsCommand::class,
     ];
 
     /**
