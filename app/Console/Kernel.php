@@ -8,6 +8,7 @@ use App\Console\Commands\CacheCleanCommand;
 use App\Console\Commands\TestCommand;
 use App\MigrationV7\AcquisitionsCommand;
 use App\MigrationV7\CommentsCommand;
+use App\MigrationV7\CouponsCommand;
 use App\MigrationV7\CoursesCommand;
 use App\MigrationV7\DatabaseResetCommand;
 use App\MigrationV7\ExamsCommand;
@@ -51,6 +52,7 @@ class Kernel extends ConsoleKernel
         PostsCommand::class,
         ProductsCommand::class,
         AcquisitionsCommand::class,
+        CouponsCommand::class,
     ];
 
     /**
