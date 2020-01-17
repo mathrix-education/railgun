@@ -29,6 +29,7 @@ class MainCommand extends BaseCommand
         'v7:products',
         'v7:acquisitions',
         'v7:coupons',
+        'v7:interactions',
     ];
 
     protected $signature = 'v7';
@@ -64,6 +65,9 @@ class MainCommand extends BaseCommand
             }
             $this->line('');
         }
+
+        $duration = time() - $start;
+        $this->line("> Finished in $duration seconds!");
     }
 
     private function banner(): void
