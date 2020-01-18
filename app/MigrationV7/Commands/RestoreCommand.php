@@ -27,7 +27,7 @@ class RestoreCommand extends V7Command
         $gsObject = 'gs://' . self::BUCKET . "/$target/$export";
 
         $this->title('Exporting database to Google Cloud Storage');
-        $cmd = implode(" \\\n", [
+        $cmd = implode(' ', [
             "mysqldump {$this->getMySQLOptions()} --databases $database",
             '  --hex-blob --skip-triggers --order-by-primary --no-autocommit',
             '  --default-character-set=utf8mb4 --single-transaction',
@@ -43,7 +43,7 @@ class RestoreCommand extends V7Command
             ->run();
 
         $this->title('Importing database from Google Cloud Storage');
-        $cmd = implode(" \\\n", [
+        $cmd = implode(' ', [
             'gsutil acl ch -u ' . self::SERVICE_ACCOUNT . ':W gs://' . self::BUCKET . ' &&',
             'gsutil acl ch -u ' . self::SERVICE_ACCOUNT . ":R $gsObject &&",
             'gsutil sql import sql ' . self::SQL_INSTANCE . " $gsObject --database=$target &&",
