@@ -22,8 +22,14 @@ class CreatePackTrainingTable extends Migration
             $table->primary(['pack_id', 'training_id']);
 
             // Foreign keys
-            $table->foreign('pack_id')->references('id')->on('packs');
-            $table->foreign('training_id')->references('id')->on('trainings');
+            $table->foreign('pack_id')
+                ->references('id')
+                ->on('packs')
+                ->onDelete('cascade');
+            $table->foreign('training_id')
+                ->references('id')
+                ->on('trainings')
+                ->onDelete('cascade');
         });
     }
 

@@ -25,7 +25,10 @@ class CreateInteractionsTable extends Migration
             $table->primary(['user_id', 'interactable_type', 'interactable_id']);
 
             // Foreign keys
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
         });
     }
 

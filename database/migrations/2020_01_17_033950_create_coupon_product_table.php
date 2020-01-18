@@ -19,6 +19,13 @@ class CreateCouponProductTable extends Migration
             $table->string('coupon_id');
             $table->morphs('product');
             $table->primary(['coupon_id', 'product_type', 'product_id']);
+
+            // Foreign keys
+            $table->foreign('coupon_id')
+                ->references('id')
+                ->on('coupons')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 
