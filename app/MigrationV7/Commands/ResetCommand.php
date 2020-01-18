@@ -11,7 +11,7 @@ use function str_repeat;
 use function str_replace;
 use function strlen;
 
-class DatabaseResetCommand extends V7Command
+class ResetCommand extends V7Command
 {
     private const BACKUP_NAME = 'artifacts/mathrix_education_v7.sql';
 

@@ -7,8 +7,9 @@ namespace App\MigrationV7\Commands;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use stdClass;
+use function collect;
 use function implode;
-use function strtolower;
 
 /**
  * 1. Migrate the module_id of the comments table to their new polymorphic column.
@@ -16,48 +17,38 @@ use function strtolower;
  */
 class CommentsCommand extends V7Command
 {
+    private const REPORT_TABLES = ['courses', 'exercises', 'flashcards', 'exams'];
+
     protected $signature = 'v7:comments';
 
     public function handle(): void
     {
-        $this->title('Migrating comments polymorphic foreign keys');
-        $mappings = new Collection();
-        $tables   = ['courses', 'exercises', 'flashcards'];
+        collect(self::REPORT_TABLES)
+            ->tap(fn() => $this->title('Migrating polymorphic reports'))
+            ->map(static function (string $table) {
+                return DB::table($table)
+                    ->selectRaw(implode(',', [
+                        "CAST(REPLACE(mapping, 'module-', '') as UNSIGNED) as module_id",
+                        "'" . Str::singular($table) . "' AS commentable_type",
+                        'id AS commentable_id',
+                    ]))
+                    ->get();
+            })
+            ->collapse()
+            ->mapWithKeys(static function (stdClass $mapping) {
+                $moduleId = $mapping->module_id;
+                unset($mapping->module_id);
 
-        foreach ($tables as $table) {
-            $this->line("Generating $table mappings");
-            $singular = strtolower(Str::singular($table));
+                return [$moduleId => $mapping];
+            })
+            ->tap(fn(Collection $mappings) => $this->getOutput()->progressStart($mappings->count()))
+            ->each(function (stdClass $mapping, int $moduleId) {
+                DB::table('comments')
+                    ->where('module_id', '=', $moduleId)
+                    ->update((array)$mapping);
 
-            $tableMappings = DB::table($table)
-                ->selectRaw(implode(',', [
-                    'id AS new_id',
-                    "CAST(REPLACE(mapping, 'module-', '') as UNSIGNED) as module_id",
-                ]))
-                ->get();
-            $this->line("Found {$tableMappings->count()} $table mappings");
-
-            foreach ($tableMappings as $mapping) {
-                $mappings->push([
-                    $singular,
-                    $mapping->new_id,
-                    $mapping->module_id,
-                ]);
-            }
-        }
-
-        $this->line("Patching {$mappings->count()} comments");
-        $progress = $this->getOutput()->createProgressBar($mappings->count());
-        $mappings->each(static function ($mapping) use ($progress) {
-            [$commentableType, $commentableId, $commentId] = $mapping;
-            DB::table('comments')
-                ->where('id', '=', $commentId)
-                ->update([
-                    'commentable_type' => $commentableType,
-                    'commentable_id'   => $commentableId,
-                ]);
-            $progress->advance();
-        });
-        $progress->finish();
-        $this->getOutput()->newLine();
+                $this->getOutput()->progressAdvance();
+            })
+            ->tap(fn(Collection $mappings) => $this->getOutput()->progressFinish());
     }
 }

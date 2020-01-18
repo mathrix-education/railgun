@@ -10,10 +10,13 @@ use RuntimeException;
 use Symfony\Component\Process\Process;
 use function collect;
 use function database_path;
+use function env;
 use function glob;
 use function is_dir;
+use function microtime;
 use function mkdir;
 use function rename;
+use function round;
 use function str_repeat;
 use function str_replace;
 use function strlen;
@@ -33,6 +36,26 @@ abstract class V7Command extends BaseCommand
         $this->line($border);
         $this->line($header);
         $this->line($border);
+    }
+
+    /**
+     * Get the current time in milliseconds.
+     *
+     * @return int
+     */
+    protected function timeMs(): int
+    {
+        return (int)round(microtime(true) * 1000, 0);
+    }
+
+    protected function getMySQLOptions(): string
+    {
+        $dbHost = env('DB_HOST');
+        $dbPort = env('DB_PORT', 3306);
+        $dbUser = env('DB_USERNAME');
+        $dbPass = env('DB_PASSWORD');
+
+        return "-h $dbHost -P $dbPort -u'$dbUser' -p'$dbPass'";
     }
 
     protected function migrateTo(string $name): void

@@ -4,31 +4,44 @@ declare(strict_types=1);
 
 namespace App\MigrationV7\Commands;
 
-use function copy;
-use function database_path;
-use function dirname;
-use function file_exists;
-use function unlink;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class CleanCommand extends V7Command
 {
-    private const MIGRATION_NAMES = ['2020_01_17_140706_drop_mapping_columns'];
-
     protected $signature = 'v7:clean';
 
     public function handle(): void
     {
-        foreach (self::MIGRATION_NAMES as $migration) {
-            $source      = dirname(__DIR__) . "/Migrations/{$migration}.php";
-            $destination = database_path("migrations/{$migration}.php");
+        $this->title('Cleaning non-associated comments');
 
-            if (file_exists($destination)) {
-                unlink($destination);
-            }
+        DB::table('comments')
+            ->whereNull('commentable_id')
+            ->get(['id'])
+            ->pluck('id')
+            ->tap(function (Collection $commentIds) {
+                $this->line("Found {$commentIds->count()} invalid comments");
 
-            copy($source, $destination);
-        }
+                $votesCount = DB::table('votes')
+                    ->whereIn('comment_id', $commentIds->toBase())
+                    ->delete();
+                $this->line("Deleted $votesCount invalid votes");
 
-        $this->call('migrate');
+                $commentChildCount  = DB::table('comments')
+                    ->whereIn('parent_id', $commentIds->toArray())
+                    ->delete();
+                $commentParentCount = DB::table('comments')
+                    ->whereIn('id', $commentIds->toArray())
+                    ->delete();
+                $commentCount       = $commentChildCount + $commentParentCount;
+                $this->line("Deleted $commentCount invalid comments");
+            });
+
+        $reportCount = DB::table('reports')
+            ->whereNull('reportable_id')
+            ->delete();
+        $this->line("Deleted $reportCount invalid reports");
+
+        $this->migrateTo('2020_01_18_032807_drop_mapping_columns');
     }
 }

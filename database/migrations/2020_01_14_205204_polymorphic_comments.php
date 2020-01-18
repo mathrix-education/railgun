@@ -29,5 +29,9 @@ class PolymorphicComments extends Migration
      */
     public function down(): void
     {
+        Schema::table('comments', static function (Blueprint $table) {
+            $table->dropIndex(['commentable_type', 'commentable_id']);
+            $table->dropColumn(['commentable_type', 'commentable_id']);
+        });
     }
 }

@@ -15,6 +15,7 @@ class VotesCommand extends V7Command
     public function handle(): void
     {
         DB::table('votes')
+            ->tap(fn() => $this->title('Migrating votes'))
             ->get()
             ->tap(fn() => $this->migrateTo('2020_01_17_042806_drop_votes_table'))
             ->mapWithKeys(static function (stdClass $vote) {

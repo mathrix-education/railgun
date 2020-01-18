@@ -12,7 +12,7 @@ use function microtime;
 use function round;
 use function time;
 
-class MainCommand extends V7Command
+class MigrateCommand extends V7Command
 {
     private const COMMANDS = [
         'v7:reset',
@@ -31,6 +31,8 @@ class MainCommand extends V7Command
         'v7:coupons',
         'v7:interactions',
         'v7:votes',
+        'v7:reports',
+        'v7:clean',
     ];
 
     protected $signature = 'v7';
@@ -41,7 +43,11 @@ class MainCommand extends V7Command
     public function handle(): void
     {
         $start = time();
-        $this->banner();
+
+        // Banner
+        $this->output->write(file_get_contents(dirname(__DIR__) . '/banner.txt'));
+        $this->line('Migration script by Mathieu Bour and Valentin Pollart');
+        $this->line("\n");
 
         foreach (self::COMMANDS as $command) {
             $now = $this->timeMs();
@@ -69,25 +75,5 @@ class MainCommand extends V7Command
 
         $duration = time() - $start;
         $this->line("> Finished in $duration seconds!");
-    }
-
-    /**
-     * Print the Mathrix V7.0.0 banner
-     */
-    private function banner(): void
-    {
-        $this->output->write(file_get_contents(dirname(__DIR__) . '/banner.txt'));
-        $this->line('Migration script by Mathieu Bour and Valentin Pollart');
-        $this->line("\n");
-    }
-
-    /**
-     * Get the current time in milliseconds.
-     *
-     * @return int
-     */
-    private function timeMs(): int
-    {
-        return (int)round(microtime(true) * 1000, 0);
     }
 }

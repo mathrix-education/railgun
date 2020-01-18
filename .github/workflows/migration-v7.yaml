@@ -55,3 +55,5 @@ jobs:
         with:
           name: malformed-exams
           path: storage/artifacts/malformed-exams
+      - name: Upload generated backup
+        run: bin/artisan v7:export mathrix_education_v7 gsutil
