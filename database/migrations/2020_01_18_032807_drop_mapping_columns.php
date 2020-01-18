@@ -45,7 +45,7 @@ class DropMappingColumns extends Migration
 
         Schema::table('comments', static function (Blueprint $table) {
             $table->dropForeign(['module_id']);
-            $table->dropColumn('module_id');
+            $table->dropColumn(['module_id', 'deleted_at']);
         });
 
         Schema::table('posts', static function (Blueprint $table) {

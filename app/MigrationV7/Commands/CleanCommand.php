@@ -18,6 +18,7 @@ class CleanCommand extends V7Command
 
         $commentCount = DB::table('comments')
             ->whereNull('commentable_id')
+            ->orWhereNotNull('deleted_at')
             ->delete();
         $this->line("Deleted $commentCount invalid comments");
 

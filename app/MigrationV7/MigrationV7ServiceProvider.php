@@ -22,6 +22,7 @@ use App\MigrationV7\Commands\ReportsCommand;
 use App\MigrationV7\Commands\ResetCommand;
 use App\MigrationV7\Commands\RestoreCommand;
 use App\MigrationV7\Commands\SubjectsCommand;
+use App\MigrationV7\Commands\TriggersCommand;
 use App\MigrationV7\Commands\VotesCommand;
 use App\MigrationV7\Commands\ZerosCommand;
 use Illuminate\Support\ServiceProvider;
@@ -54,7 +55,7 @@ class MigrationV7ServiceProvider extends ServiceProvider
             VotesCommand::class,
             ReportsCommand::class,
             CleanCommand::class,
-            RestoreCommand::class,
+            TriggersCommand::class,
         ]);
     }
 }
