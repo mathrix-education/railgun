@@ -57,7 +57,22 @@ jobs:
           path: storage/artifacts/malformed-exams
       - name: Restore generated database
         # if: "!contains(github.event.head_commit.message, 'db:restore')"
-        run: bin/artisan v7:restore mathrix_education_v7
-        env:
-          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
-          DB_PASSWORD: '123456'
+        run: |
+          DATE=$(date +%F_%H-%M-%S)
+          DB_SOURCE="mathrix_education_testing"
+          DB_TARGET="mathrix_education_v7"
+          DB_SERVICE_ACCOUNT="p731492094632-9gcerm@gcp-sa-cloud-sql.iam.gserviceaccount.com"
+          BUCKET="gs://mathrix-backups"
+          GSOBJECT="$BUCKET/databases/$DB_TARGET/$DB_TARGET-$DATE"
+
+          mysqldump -h 127.0.0.1 -P ${{ job.services.mysql.ports['3306'] }} -u'root' -p'123456' \
+            --databases "$DB_SOURCE" --hex-blob --skip-triggers --order-by-primary --no-autocommit \
+            --default-character-set=utf8mb4 --single-transaction \
+            | sed "s/$DB_SOURCE/$DB_TARGET/g" | gzip | pv \
+            | gsutil cp - "$GSOBJECT"
+
+          gsutil acl ch -u "$DB_SERVICE_ACCOUNT:W" "$BUCKET"
+          gsutil acl ch -u "$DB_SERVICE_ACCOUNT:R" "$GSOBJECT"
+          gcloud sql import sql mysql "$GSOBJECT" "--database=$DB_TARGET" --quiet
+          gsutil acl ch -d "$DB_SERVICE_ACCOUNT" "$BUCKET"
+          gsutil acl ch -d "$DB_SERVICE_ACCOUNT" "$GSOBJECT"
