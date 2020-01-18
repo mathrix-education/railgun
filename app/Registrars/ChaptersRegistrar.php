@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Registrars;
 
-use App\Controllers\ChaptersController;
 use Mathrix\Lumen\Zero\Exceptions\InvalidArgument;
 use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 

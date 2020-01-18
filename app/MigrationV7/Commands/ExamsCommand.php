@@ -11,14 +11,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use stdClass;
 use Symfony\Component\Process\Process;
+use const JSON_PRETTY_PRINT;
+use const JSON_THROW_ON_ERROR;
 use function file_put_contents;
 use function implode;
 use function json_decode;
 use function json_encode;
 use function ksort;
 use function storage_path;
-use const JSON_PRETTY_PRINT;
-use const JSON_THROW_ON_ERROR;
 
 class ExamsCommand extends V7Command
 {

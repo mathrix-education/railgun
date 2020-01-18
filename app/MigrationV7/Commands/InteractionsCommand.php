@@ -27,7 +27,7 @@ class InteractionsCommand extends V7Command
     private const CHUNK_SIZE  = 1000;
 
     protected $signature = 'v7:interactions';
-    
+
     private string $exportPath;
 
     private array      $mappings = [

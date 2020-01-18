@@ -19,8 +19,8 @@ use Stripe\Invoice as StripeInvoice;
 use Stripe\SetupIntent;
 use Stripe\Subscription as StripeSubscription;
 use function count;
-use function preg_match;
 use function hasScope;
+use function preg_match;
 
 /**
  * Serve routes starting with /subscriptions.

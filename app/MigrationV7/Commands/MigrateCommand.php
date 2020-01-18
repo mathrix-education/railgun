@@ -8,7 +8,6 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use function dirname;
 use function file_get_contents;
-use function microtime;
 use function round;
 use function time;
 

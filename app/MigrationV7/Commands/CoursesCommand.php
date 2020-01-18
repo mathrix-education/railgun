@@ -11,9 +11,6 @@ use Illuminate\Support\Str;
 use function collect;
 use function count;
 use function implode;
-use function json_decode;
-use function json_encode;
-use const JSON_THROW_ON_ERROR;
 
 class CoursesCommand extends V7Command
 {
