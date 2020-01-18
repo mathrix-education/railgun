@@ -8,40 +8,30 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Auth;
 use Mathrix\Lumen\Zero\Models\BaseModel;
 
 /**
- * @property int $id
- * @property string|null $content
- * @property int|null $parent_id
- * @property int|null $user_id
- * @property int $path_id
- * @property int $module_id
- * @property int $score
- * @property int|null $user_vote
- * @property Carbon $created_at
- * @property Carbon $updated_at
- * @property Carbon|null $deleted_at
- * @property User|null $user
- * @property Module $module
- * @property Comment|null $parent
+ * @property-read int             $id
+ * @property string|null          $content
+ * @property-read int             $score
+ * @property int|null             $parent_id
+ * @property int                  $user_id
+ * @property string               $commentable_type
+ * @property string               $commentable_id
+ * @property Carbon               $created_at
+ * @property Carbon               $updated_at
+ * @property User|null            $user
+ * @property Comment|null         $parent
  * @property Collection|Comment[] $children
- * @property Collection|Vote[] $votes
- * @method static QueryBuilder|Comment onlyTrashed()
- * @method static QueryBuilder|Comment withTrashed()
- * @method static QueryBuilder|Comment withoutTrashed()
- * @method static bool|null forceDelete()
- * @method static bool|null restore()
+ * @property Collection|Vote[]    $votes
  */
 class Comment extends BaseModel
 {
-    use SoftDeletes;
-
     /** @var array The default relations included */
     public $with = ['user:id,username,firstname,grade_id'];
+
     /** @var array The attributes that are mass assignable */
     protected $fillable = [
         'content',
@@ -53,9 +43,9 @@ class Comment extends BaseModel
     ];
     /** @var array Validation rules */
     protected $rules = [
-        'content' => 'required',
+        'content'   => 'required',
         'parent_id' => 'nullable|exists:comments,id',
-        'user_id' => 'required|exists:users,id',
+        'user_id'   => 'required|exists:users,id',
     ];
     /** @var array The attributes that should be mutated to dates */
     protected $dates = ['deleted_at'];
@@ -102,23 +92,7 @@ class Comment extends BaseModel
     }
 
     /**
-     * Score attribute.
-     */
-    public function getScoreAttribute(): int
-    {
-        return (int)$this->votes()->sum('value');
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Attributes
-    |--------------------------------------------------------------------------
-    */
-
-    /**
      * Get the votes.
-     *
-     * @codeCoverageIgnore
      */
     public function votes(): HasMany
     {
@@ -126,26 +100,12 @@ class Comment extends BaseModel
     }
 
     /**
-     * Get the user vote value (0|1|-1).
+     * The current user vote.
+     *
+     * @return HasOne<Vote>
      */
-    public function getUserVoteAttribute(): int
+    public function userVote(): HasOne
     {
-        /** @var User $user */
-        $user = Auth::user();
-
-        if ($user === null) {
-            return 0;
-        }
-
-        $query = $this->votes()->where('user_id', '=', $user->id);
-
-        if (! $query->exists()) {
-            return 0;
-        }
-
-        /** @var Vote $vote */
-        $vote = $query->firstOrFail();
-
-        return $vote->value;
+        return $this->hasOne(Vote::class)->where('user_id', '=', Auth::id());
     }
 }

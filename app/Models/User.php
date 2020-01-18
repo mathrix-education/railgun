@@ -68,10 +68,8 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 {
     use Authorizable;
     use Authenticatable;
-    use HasCache;
     use HasJWT;
     use FacebookUser;
-    use HasPermissions;
     use BraintreeCustomer;
     use StripeCustomer;
 

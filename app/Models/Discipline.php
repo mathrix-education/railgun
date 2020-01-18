@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Models\Traits\NoPivot;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -21,8 +20,6 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
  */
 class Discipline extends BaseModel
 {
-    use NoPivot;
-
     /** @var array The attributes that are mass assignable */
     protected $fillable = ['id', 'name', 'slug', 'beta'];
     /** @var array Validation rules */
