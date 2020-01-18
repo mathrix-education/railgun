@@ -11,7 +11,7 @@ use function implode;
 
 class RestoreCommand extends V7Command
 {
-    private const SQL_INSTANCE    = 'mathrix-education:europe-west1:mysql';
+    private const SQL_INSTANCE    = 'mysql';
     private const SERVICE_ACCOUNT = 'p731492094632-9gcerm@gcp-sa-cloud-sql.iam.gserviceaccount.com';
     private const BUCKET          = 'mathrix-backups';
 
@@ -24,10 +24,10 @@ class RestoreCommand extends V7Command
         $database = env('DB_DATABASE');
         $date     = Carbon::now()->format('Y-m-d_H-i-s');
         $export   = "$target-$date.sql.gz";
-        $gsObject = 'gs://' . self::BUCKET . "/$target/$export";
+        $gsObject = 'gs://' . self::BUCKET . "/$target/databases/$export";
 
         $this->title('Exporting database to Google Cloud Storage');
-        $cmd = implode(' ', [
+        $cmd = implode(" \\\n", [
             "mysqldump {$this->getMySQLOptions()} --databases $database",
             '  --hex-blob --skip-triggers --order-by-primary --no-autocommit',
             '  --default-character-set=utf8mb4 --single-transaction',
@@ -43,10 +43,10 @@ class RestoreCommand extends V7Command
             ->run();
 
         $this->title('Importing database from Google Cloud Storage');
-        $cmd = implode(' ', [
+        $cmd = implode(" \\\n", [
             'gsutil acl ch -u ' . self::SERVICE_ACCOUNT . ':W gs://' . self::BUCKET . ' &&',
             'gsutil acl ch -u ' . self::SERVICE_ACCOUNT . ":R $gsObject &&",
-            'gsutil sql import sql ' . self::SQL_INSTANCE . " $gsObject --database=$target &&",
+            'gcloud sql import sql ' . self::SQL_INSTANCE . " $gsObject --database=$target --quiet &&",
             'gsutil acl ch -d ' . self::SERVICE_ACCOUNT . ' gs://' . self::BUCKET . ' &&',
             'gsutil acl ch -d ' . self::SERVICE_ACCOUNT . " $gsObject",
         ]);
