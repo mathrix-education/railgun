@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace App\MigrationV7;
+namespace App\MigrationV7\Commands;
 
 use Exception;
 use Illuminate\Support\Facades\DB;
-use Mathrix\Lumen\Zero\Console\Commands\BaseCommand;
+use function dirname;
 use function file_get_contents;
 use function microtime;
 use function round;
 use function time;
 
-class MainCommand extends BaseCommand
+class MainCommand extends V7Command
 {
     private const COMMANDS = [
         'v7:reset',
         'v7:zeros',
-        'migrate',
+        'v7:initialization',
         'v7:flashcards',
         'v7:subjects',
         'v7:exercises',
@@ -30,6 +30,7 @@ class MainCommand extends BaseCommand
         'v7:acquisitions',
         'v7:coupons',
         'v7:interactions',
+        'v7:votes',
     ];
 
     protected $signature = 'v7';
@@ -70,13 +71,21 @@ class MainCommand extends BaseCommand
         $this->line("> Finished in $duration seconds!");
     }
 
+    /**
+     * Print the Mathrix V7.0.0 banner
+     */
     private function banner(): void
     {
-        $this->output->write(file_get_contents(__DIR__ . '/banner.txt'));
+        $this->output->write(file_get_contents(dirname(__DIR__) . '/banner.txt'));
         $this->line('Migration script by Mathieu Bour and Valentin Pollart');
         $this->line("\n");
     }
 
+    /**
+     * Get the current time in milliseconds.
+     *
+     * @return int
+     */
     private function timeMs(): int
     {
         return (int)round(microtime(true) * 1000, 0);

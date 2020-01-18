@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\MigrationV7;
+namespace App\MigrationV7\Commands;
 
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\JoinClause;
