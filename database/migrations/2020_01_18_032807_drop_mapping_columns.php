@@ -35,6 +35,10 @@ class DropMappingColumns extends Migration
 
         (new CreateMarksTable())->down();
 
+        Schema::table('categories', static function (Blueprint $table) {
+            $table->dropColumn(['image']);
+        });
+
         Schema::table('comments', static function (Blueprint $table) {
             $table->dropForeign(['module_id']);
             $table->dropColumn('module_id');
