@@ -9,7 +9,7 @@ use App\MigrationV7\Commands\CleanCommand;
 use App\MigrationV7\Commands\CommentsCommand;
 use App\MigrationV7\Commands\CouponsCommand;
 use App\MigrationV7\Commands\CoursesCommand;
-use App\MigrationV7\Commands\ExportCommand;
+use App\MigrationV7\Commands\RestoreCommand;
 use App\MigrationV7\Commands\ResetCommand;
 use App\MigrationV7\Commands\ExamsCommand;
 use App\MigrationV7\Commands\ExercisesCommand;
@@ -54,7 +54,7 @@ class MigrationV7ServiceProvider extends ServiceProvider
             VotesCommand::class,
             ReportsCommand::class,
             CleanCommand::class,
-            ExportCommand::class,
+            RestoreCommand::class,
         ]);
     }
 }

@@ -55,9 +55,6 @@ jobs:
         with:
           name: malformed-exams
           path: storage/artifacts/malformed-exams
-      - name: Upload generated backup
-        run: bin/artisan v7:export mathrix_education_v7 gsutil
-  restore_database:
-    name: Restore generated database
-    runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, 'db:restore')"
+      - name: Restore generated database
+        # if: "!contains(github.event.head_commit.message, 'db:restore')"
+        run: bin/artisan v7:restore mathrix_education_v7
