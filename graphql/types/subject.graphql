@@ -1,0 +1,10 @@
+type Subject {
+    id: ID!
+    name: String!
+    order: Int!
+    visible: Boolean!
+    created_at: DateTime!
+    updated_at: DateTime!
+    notion: Notion! @belongsTo
+    exercises: [Exercise!]! @hasMany
+}

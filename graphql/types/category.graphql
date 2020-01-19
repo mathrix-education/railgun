@@ -1,0 +1,8 @@
+type Category {
+    id: ID!
+    name: String!
+    slug: String!
+    created_at: DateTime!
+    updated_at: DateTime!
+    posts: [Post]! @hasMany
+}

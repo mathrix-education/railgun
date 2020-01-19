@@ -1,0 +1,14 @@
+type Coupon {
+    id: ID!
+    type: CouponType
+    value: Int!
+    counter: Int!
+    expires_at: DateTime
+    created_at: DateTime!
+    updated_at: DateTime!
+}
+
+enum CouponType {
+    percentage
+    absolute
+}

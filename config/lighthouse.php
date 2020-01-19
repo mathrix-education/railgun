@@ -1,5 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+use GraphQL\Error\Debug;
+use GraphQL\Validator\Rules\DisableIntrospection;
+use GraphQL\Validator\Rules\QueryComplexity;
+use GraphQL\Validator\Rules\QueryDepth;
+use Nuwave\Lighthouse\Execution\ExtensionErrorHandler;
+use Nuwave\Lighthouse\Subscriptions\SubscriptionRouter;
+use Nuwave\Lighthouse\Support\Http\Middleware\AcceptJson;
+
 return [
 
     /*
@@ -31,7 +41,7 @@ return [
          * To apply middleware on a field level, use the @middleware directive.
          */
         'middleware' => [
-            \Nuwave\Lighthouse\Support\Http\Middleware\AcceptJson::class,
+            AcceptJson::class,
         ],
 
         /*
@@ -85,7 +95,7 @@ return [
     */
 
     'namespaces' => [
-        'models' => ['App', 'App\\Models'],
+        'models' => 'App\\Models',
         'queries' => 'App\\GraphQL\\Queries',
         'mutations' => 'App\\GraphQL\\Mutations',
         'subscriptions' => 'App\\GraphQL\\Subscriptions',
@@ -106,9 +116,9 @@ return [
     */
 
     'security' => [
-        'max_query_complexity' => \GraphQL\Validator\Rules\QueryComplexity::DISABLED,
-        'max_query_depth' => \GraphQL\Validator\Rules\QueryDepth::DISABLED,
-        'disable_introspection' => \GraphQL\Validator\Rules\DisableIntrospection::DISABLED,
+        'max_query_complexity' => QueryComplexity::DISABLED,
+        'max_query_depth' => QueryDepth::DISABLED,
+        'disable_introspection' => DisableIntrospection::DISABLED,
     ],
 
     /*
@@ -162,7 +172,7 @@ return [
     |
     */
 
-    'debug' => \GraphQL\Error\Debug::INCLUDE_DEBUG_MESSAGE | \GraphQL\Error\Debug::INCLUDE_TRACE,
+    'debug' => Debug::INCLUDE_DEBUG_MESSAGE | Debug::INCLUDE_TRACE,
 
     /*
     |--------------------------------------------------------------------------
@@ -176,7 +186,7 @@ return [
     */
 
     'error_handlers' => [
-        \Nuwave\Lighthouse\Execution\ExtensionErrorHandler::class,
+        ExtensionErrorHandler::class,
     ],
 
     /*
@@ -259,12 +269,10 @@ return [
          * Subscription broadcasting drivers with config options.
          */
         'broadcasters' => [
-            'log' => [
-                'driver' => 'log',
-            ],
+            'log' => ['driver' => 'log'],
             'pusher' => [
                 'driver' => 'pusher',
-                'routes' => \Nuwave\Lighthouse\Subscriptions\SubscriptionRouter::class.'@pusher',
+                'routes' => SubscriptionRouter::class . '@pusher',
                 'connection' => 'pusher',
             ],
         ],

@@ -1,0 +1,10 @@
+type Grade {
+    id: ID!
+    name: String!
+    slug: String!
+    order: Int!
+    visible: Boolean!
+    parent: Grade @belongsTo
+    country: Country! @belongsTo
+    chapters: [Chapter!]! @hasMany
+}

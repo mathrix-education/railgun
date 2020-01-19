@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\MigrationV7\Commands;
 
+use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 use Mathrix\Lumen\Zero\Console\Commands\BaseCommand;
 use RuntimeException;
@@ -21,7 +22,7 @@ use function str_repeat;
 use function str_replace;
 use function strlen;
 
-abstract class V7Command extends BaseCommand
+abstract class V7Command extends Command
 {
     protected function newLine($count = 1): void
     {

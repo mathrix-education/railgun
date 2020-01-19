@@ -1,0 +1,12 @@
+type Exam {
+    id: ID!
+    name: String!
+    slug: String!
+    duration: Int
+    content: SilicateWall
+    order: Int!
+    visible: Boolean!
+    created_at: DateTime!
+    updated_at: DateTime!
+    chapter: Chapter! @belongsTo
+}

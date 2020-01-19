@@ -1,0 +1,9 @@
+type Lesson {
+    id: ID!
+    name: String!
+    slug: String!
+    content: SilicateWall!
+    order: Int!
+    visible: Boolean!
+    section: Section! @belongsTo
+}

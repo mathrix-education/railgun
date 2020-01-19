@@ -1,0 +1,12 @@
+type Notion {
+    id: ID!
+    name: String!
+    type: String!
+    visible: Boolean!
+    order: Int!
+    created_at: DateTime!
+    updated_at: DateTime!
+    chapter: Chapter! @belongsTo
+    courses: [Course!]! @hasMany
+    subject: [Subject!]! @hasMany
+}

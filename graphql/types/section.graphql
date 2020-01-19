@@ -1,0 +1,11 @@
+type Section {
+    id: ID!
+    name: String!
+    slug: String!
+    order: Int!
+    visible: Boolean!
+    created_at: DateTime!
+    updated_at: DateTime!
+    training: Training! @belongsTo
+    lessons: [Lesson!]! @hasMany
+}
