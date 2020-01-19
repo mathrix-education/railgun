@@ -6,7 +6,6 @@ namespace App\Providers;
 
 use App\Console\Kernel;
 use App\Exceptions\Handler;
-use App\Middleware\AsMiddleware;
 use App\MigrationV7\MigrationV7ServiceProvider;
 use App\Models\Comment;
 use App\Models\Notion;
@@ -23,6 +22,7 @@ use Laravel\Lumen\Application;
 use Mathrix\Lumen\JWT\Auth\JWTAuthServiceProvider;
 use MLL\GraphQLPlayground\GraphQLPlaygroundServiceProvider;
 use Nuwave\Lighthouse\LighthouseServiceProvider;
+use Nuwave\Lighthouse\Tracing\TracingServiceProvider;
 
 /**
  * Register all application service providers.
@@ -55,6 +55,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(MigrationV7ServiceProvider::class);
 
         $this->app->register(LighthouseServiceProvider::class);
+        $this->app->register(TracingServiceProvider::class);
         $this->app->register(GraphQLPlaygroundServiceProvider::class);
 
         // MorphMap
