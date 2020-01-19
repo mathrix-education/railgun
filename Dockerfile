@@ -4,5 +4,3 @@ LABEL Maintainer="Mathieu Bour <mathieu@mathrix.fr>" \
       Description="Mathrix Education API image"
 
 COPY --chown=nobody . /var/www/
-
-RUN APP_SKIP_SETUP=true bin/artisan providers:cache -f
