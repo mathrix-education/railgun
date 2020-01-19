@@ -34,6 +34,10 @@ class DropMappingColumns extends Migration
             });
         });
 
+        Schema::table('users', static function (Blueprint $table) {
+            $table->dropColumn(['points', 'daily', 'daily_achievements']);
+        });
+
         (new CreateMarksTable())->down();
 
         Schema::table('categories', static function (Blueprint $table) {
