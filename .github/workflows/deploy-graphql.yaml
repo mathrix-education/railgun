@@ -1,0 +1,61 @@
+name: Deploy GraphQL
+on:
+  push:
+    branches: ['graphql']
+jobs:
+  docker:
+    name: Build Docker image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@1.7.2
+        with:
+          php-version: 7.4
+          extensions: gd, gmp, mbstring, mysql, zip
+          coverage: pcov
+          tools: prestissimo
+      - name: Install dependencies
+        run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+      - name: Setup PHP
+        uses: shivammathur/setup-php@1.7.0
+        with:
+          php-version: 7.4
+          extensions: gmp, mbstring, zip
+          coverage: none
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Install PHP dependencies
+        run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+      - name: Build Docker image
+        run: docker build -t "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:$(bin/release)" .
+      - name: Setup Google Cloud SDK
+        uses: mathrix-education/setup-gcloud@0.1.2
+        with:
+          project: ${{ secrets.GCLOUD_PROJECT }}
+          service-account-key: ${{ secrets.GCLOUD_AUTH }}
+      - name: Push image to Google Cloud Container Registry
+        run: docker push "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:$(bin/release)"
+    deploy_cloud_run:
+      name: Deploy on Cloud Run
+      needs: [docker, test]
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+        - name: Setup Google Cloud SDK
+          uses: mathrix-education/setup-gcloud@0.1.2
+          with:
+            project: ${{ secrets.GCLOUD_PROJECT }}
+            service-account-key: ${{ secrets.GCLOUD_AUTH }}
+        - name: Deploy on Google Cloud Run
+          run: |
+            gcloud run deploy "education-api-graphql" \
+              --image "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:$(bin/release)" \
+              --platform=managed \
+              --region=europe-west1 \
+              --allow-unauthenticated \
+              --set-env-vars="APP_ENV=v7"
