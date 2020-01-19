@@ -24,4 +24,5 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Course extends Model
 {
+    protected $casts = ['content' => 'array'];
 }

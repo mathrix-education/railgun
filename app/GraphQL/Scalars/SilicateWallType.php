@@ -13,6 +13,7 @@ class SilicateWallType extends ScalarType
      */
     public function serialize($value)
     {
+        return $value;
         // TODO: Implement serialize() method.
     }
 
@@ -21,6 +22,7 @@ class SilicateWallType extends ScalarType
      */
     public function parseValue($value)
     {
+        return $value;
         // TODO: Implement parseValue() method.
     }
 
