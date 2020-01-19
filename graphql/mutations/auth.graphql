@@ -1,0 +1,7 @@
+type TokenResponse {
+    token: String!
+}
+
+extend type Mutation {
+    login(email: String!, password: String!): TokenResponse!
+}
