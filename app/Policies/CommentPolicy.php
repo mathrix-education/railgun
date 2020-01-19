@@ -6,13 +6,13 @@ namespace App\Policies;
 
 use App\Models\Comment;
 use App\Models\User;
-use function scope;
+use function hasScope;
 
 class CommentPolicy extends BasePolicy
 {
     public function patch(User $currentUser, Comment $comment): bool
     {
-        $hasScope    = scope($currentUser, 'comments:read');
+        $hasScope    = hasScope($currentUser, 'comments:read');
         $ownsComment = $currentUser->id === $comment->user_id;
         $isTooLate   = $comment->updated_at->addDays(3)->isPast();
 

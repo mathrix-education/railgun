@@ -7,6 +7,7 @@ namespace App\Providers;
 use App\Console\Kernel;
 use App\Exceptions\Handler;
 use App\Middleware\AsMiddleware;
+use App\MigrationV7\MigrationV7ServiceProvider;
 use App\Models\Activity;
 use App\Models\Comment;
 use App\Models\Module;
@@ -27,9 +28,7 @@ use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application;
 use Mathrix\Lumen\JWT\Auth\JWTAuthServiceProvider;
 use Mathrix\Lumen\JWT\Auth\ScopesLoader;
-use Mathrix\Lumen\Zero\Providers\ObserverServiceProvider;
-use Mathrix\Lumen\Zero\Providers\PolicyServiceProvider;
-use Mathrix\Lumen\Zero\Providers\RegistrarServiceProvider;
+use Mathrix\Lumen\Zero\Providers\ZeroServiceProvider;
 
 /**
  * Register all application service providers.
@@ -60,9 +59,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(GoogleCloudStorageServiceProvider::class);
 
         // Mathrix Lumen Zero Providers
-        $this->app->register(ObserverServiceProvider::class);
-        $this->app->register(PolicyServiceProvider::class);
-        $this->app->register(RegistrarServiceProvider::class);
+        $this->app->register(ZeroServiceProvider::class);
+
+        $this->app->register(MigrationV7ServiceProvider::class);
 
         ScopesLoader::registerAdditionalScopes(['users:as']);
 

@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Models\Traits\FacebookUser;
-use App\Models\Traits\HasCache;
-use App\Models\Traits\HasPermissions;
 use App\Services\Bishop\Subscription;
 use App\Services\Braintree\Models\BraintreeCustomer;
 use App\Services\Stripe\Models\StripeCustomer;
@@ -20,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection as BaseCollection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Laravel\Lumen\Auth\Authorizable;
 use Mathrix\Lumen\JWT\Auth\HasJWT;
@@ -29,35 +28,31 @@ use Stripe\Subscription as StripeSubscription;
 use function array_merge;
 use function floor;
 use function in_array;
+use function scope;
 use function trim;
 
 /**
- * @property int                   $id
+ * @property-read int              $id
  * @property string|null           $username
  * @property string                $email
  * @property string|null           $firstname
  * @property string|null           $lastname
  * @property string                $password
- * @property string                $type
+ * @property string[]              $scopes
  * @property string                $token
- * @property int                   $points
- * @property int                   $daily
- * @property int                   $daily_achievements
- * @property array                 $settings
- * @property array                 $metadata
  * @property bool                  $premium_bypass
  * @property Carbon                $premium_bypass_expires_at
  * @property int|null              $grade_id
- * @property string|null           $braintree_id
  * @property string|null           $stripe_id
- * @property Carbon                $created_at
- * @property Carbon                $updated_at
+ * @property string|null           $braintree_id
+ * @property array                 $settings
+ * @property array                 $metadata
+ * @property-read  Carbon          $created_at
+ * @property-read  Carbon          $updated_at
  * ---
  * @property-read string           $full_name
- * @property-read int              $level
  * @property-read bool             $premium
  * @property-read string           $provider
- * @property-read int              $daily_points
  * ---
  * @property Grade                 $grade
  * @property Collection|Comment[]  $comments
@@ -71,10 +66,8 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 {
     use Authorizable;
     use Authenticatable;
-    use HasCache;
     use HasJWT;
     use FacebookUser;
-    use HasPermissions;
     use BraintreeCustomer;
     use StripeCustomer;
 
@@ -85,10 +78,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         'firstname',
         'lastname',
         'password',
-        'scopes',
-        'points',
-        'daily',
-        'settings',
         'grade_id',
     ];
 
@@ -107,9 +96,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         'firstname'                 => null,
         'lastname'                  => null,
         'scopes'                    => '[]',
-        'points'                    => 0,
-        'daily'                     => 10,
-        'daily_achievements'        => 0,
         'premium_bypass'            => false,
         'premium_bypass_expires_at' => null,
         'settings'                  => '[]',
@@ -131,8 +117,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         'lastname'                  => 'nullable|max:60',
         'password'                  => 'nullable|min:3',
         'token'                     => 'nullable|size:36',
-        'points'                    => 'required|integer',
-        'daily'                     => 'nullable|in:10,20,40',
         'grade_id'                  => 'nullable|exists:grades,id',
         'premium_bypass'            => 'boolean',
         'premium_bypass_expires_at' => 'nullable|date',
@@ -165,6 +149,22 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
                 ],
             ]
         );
+    }
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        /** @var User $user */
+        $user = Auth::user();
+
+        // Give full read to authorized users or themselves
+        if (scope('users:read') || $this->is($user)) {
+            return;
+        }
+
+        // Restrict visible fields for unauthorized users
+        $this->setVisible(['id', 'username', 'grade_id']);
     }
 
     /*

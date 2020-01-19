@@ -4,27 +4,24 @@ declare(strict_types=1);
 
 namespace App\Registrars;
 
-use App\Controllers\ChaptersController;
+use Mathrix\Lumen\Zero\Exceptions\InvalidArgument;
 use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
 class ChaptersRegistrar extends BaseRegistrar
 {
     /**
      * Register the routes.
+     *
+     * @throws InvalidArgument
      */
     public function register(): void
     {
-        $this->rest([
-            'std:index' => 'scope:chapters:read',
-            'std:get' => null,
-            'std:post' => 'scope:chapters:write',
-            'std:patch' => 'scope:chapters:write',
-            'std:delete' => 'scope:chapters:delete',
-            'rel:get:notions' => null,
+        $this->registerCRUDRoutes([
+            'list' => 'scope:chapters:read',
+            'read' => null,
+            'create' => 'scope:chapters:write',
+            'update' => 'scope:chapters:write',
+            'delete' => 'scope:chapters:delete',
         ]);
-
-        $controller = ChaptersController::class;
-
-        $this->get('chapters/{chapterId}/recursive', "$controller@recursive");
     }
 }

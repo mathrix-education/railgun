@@ -4,23 +4,25 @@ declare(strict_types=1);
 
 namespace App\Registrars;
 
+use Mathrix\Lumen\Zero\Exceptions\InvalidArgument;
 use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
 class CountriesRegistrar extends BaseRegistrar
 {
     /**
      * Register the routes.
+     *
+     * @throws InvalidArgument
      */
     public function register(): void
     {
-        $this->rest([
-            'std:index' => null,
-            'std:get' => null,
-            'std:get:slug' => null,
-            'std:post' => 'scope:countries:write',
-            'std:patch' => 'scope:countries:write',
-            'std:delete' => 'scope:countries:delete',
-            'rel:get:grades' => null,
+        $this->registerCRUDRoutes([
+            'list' => null,
+            'read' => null,
+            'read:slug' => null,
+            'create' => 'scope:countries:write',
+            'update' => 'scope:countries:write',
+            'delete' => 'scope:countries:delete',
         ]);
     }
 }

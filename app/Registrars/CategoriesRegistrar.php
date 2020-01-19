@@ -4,22 +4,24 @@ declare(strict_types=1);
 
 namespace App\Registrars;
 
+use Mathrix\Lumen\Zero\Exceptions\InvalidArgument;
 use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
 class CategoriesRegistrar extends BaseRegistrar
 {
     /**
      * Register the routes.
+     *
+     * @throws InvalidArgument
      */
     public function register(): void
     {
-        $this->rest([
-            'std:index' => 'scope:categories:read',
-            'std:get' => 'scope:categories:read',
-            'std:post' => 'scope:categories:write',
-            'std:patch' => 'scope:categories:write',
-            'std:delete' => 'scope:categories:delete',
-            'rel:get:posts' => 'scope:posts:read',
+        $this->registerCRUDRoutes([
+            'list' => 'scope:categories:read',
+            'read' => 'scope:categories:read',
+            'create' => 'scope:categories:write',
+            'update' => 'scope:categories:write',
+            'delete' => 'scope:categories:delete',
         ]);
     }
 }

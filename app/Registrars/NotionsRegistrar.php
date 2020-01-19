@@ -4,22 +4,24 @@ declare(strict_types=1);
 
 namespace App\Registrars;
 
+use Mathrix\Lumen\Zero\Exceptions\InvalidArgument;
 use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
 class NotionsRegistrar extends BaseRegistrar
 {
     /**
      * Register the routes.
+     *
+     * @throws InvalidArgument
      */
     public function register(): void
     {
-        $this->rest([
-            'std:index' => 'scope:notions:read',
-            'std:get' => null,
-            'std:post' => 'scope:notions:write',
-            'std:patch' => 'scope:notions:write',
-            'std:delete' => 'scope:notions:delete',
-            'rel:get:activities' => null,
+        $this->registerCRUDRoutes([
+            'list' => 'scope:notions:read',
+            'read' => null,
+            'create' => 'scope:notions:write',
+            'update' => 'scope:notions:write',
+            'delete' => 'scope:notions:delete',
         ]);
     }
 }

@@ -7,21 +7,16 @@ namespace App\Controllers;
 use App\Models\User;
 use App\Services\Bishop\Card;
 use App\Services\Bishop\Subscription;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Mathrix\Lumen\Zero\Controllers\BaseController;
-use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
-use Mathrix\Lumen\Zero\Exceptions\Http\Http401UnauthorizedException;
-use Mathrix\Lumen\Zero\Exceptions\ValidationException;
-use Mathrix\Lumen\Zero\Responses\PaginationJsonResponse;
-use Mathrix\Lumen\Zero\Responses\SuccessJsonResponse;
+use Mathrix\Lumen\Zero\Responses\DataResponse;
 use Stripe\Customer;
 use Stripe\Exception\ApiErrorException;
 use function array_merge;
-use function scope;
+use function hasScope;
 
 /**
  * Serve routes starting with /users.
@@ -34,19 +29,15 @@ class UsersController extends BaseController
      *
      * @param Request $request The Illuminate HTTP request.
      *
-     * @return SuccessJsonResponse The newly created user.
+     * @return DataResponse The newly created user.
      */
-    public function standardPost(Request $request): SuccessJsonResponse
+    public function create(Request $request): SuccessJsonResponse
     {
-        // Build and save the user
         $user = new User();
+        $user->fillable(array_merge($user->getFillable(), ['password']));
+        $user->fill($request->all())->save();
 
-        User::unguarded(static function () use ($user, $request): void {
-            $user->fill($request->all())
-                ->save();
-        });
-
-        return new SuccessJsonResponse($user->fresh());
+        return new DataResponse($user);
     }
 
     /**
@@ -63,7 +54,7 @@ class UsersController extends BaseController
         /** @var User $user */
         $user = $request->user();
 
-        if (!scope($user, 'users:read')) {
+        if (!hasScope($user, 'users:read')) {
             return parent::standardGet($request, $key, $identifier);
         }
 
@@ -229,84 +220,5 @@ class UsersController extends BaseController
             'page'     => 0,
             'per_page' => 100,
         ]);
-    }
-
-    /**
-     * DELETE /users/{userId}/cache
-     * Invalidate the cache of a user.
-     *
-     * @param int $userId The user id.
-     *
-     * @return SuccessJsonResponse An empty response.
-     */
-    public function cache(int $userId): JsonResponse
-    {
-        /** @var User $user */
-        $user = User::query()
-            ->findOrFail($userId);
-        $user->invalidate();
-
-        return new SuccessJsonResponse();
-    }
-
-    /**
-     * POST /users/points
-     * Add points to the current user.
-     *
-     * @param Request $request The Illuminate HTTP request.
-     *
-     * @return SuccessJsonResponse The patched user.
-     *
-     * @throws ValidationException
-     */
-    public function points(Request $request): SuccessJsonResponse
-    {
-        /** @var User $user */
-        $user = $request->user();
-
-        $this->validate($request, ['points' => 'required|integer']);
-
-        $pointsToAdd = (int)$request->json('points');
-
-        // Update the user points count
-        $user->update(['points' => $user->points + $pointsToAdd]);
-
-        return new SuccessJsonResponse($user);
-    }
-
-    /**
-     * GET /users/search/{query}/{page}/{perPage}?order={order}&dir={dir}
-     * Search for users.
-     *
-     * @param Request $request The Illuminate HTTP response.
-     * @param string  $query   The query.
-     *
-     * @return PaginationJsonResponse The user list matching the given criteria.
-     *
-     * @throws Http400BadRequestException
-     */
-    public function search(Request $request, string $query): PaginationJsonResponse
-    {
-        $order = $request->query('order', 'id');
-        $dir   = $request->query('dir', 'asc');
-
-        $fields = Collection::make([
-            'username',
-            'email',
-            'firstname',
-            'lastname',
-            'scopes',
-            'braintree_id',
-            'stripe_id',
-        ]);
-
-        $builder = User::query()
-            ->orderBy($order, $dir);
-
-        $fields->each(static function ($field) use ($query, &$builder): void {
-            $builder = $builder->orWhere($field, 'LIKE', "%$query%");
-        });
-
-        return new PaginationJsonResponse($builder);
     }
 }

@@ -9,14 +9,14 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
 use function implode;
 
 /**
- * @property int $id
+ * @property-read  int $id
+ * @property-read  string $type
  * @property string $content
  * @property string $status
- * @property int $module_id
- * @property string $created_at
- * @property string $updated_at
- * ---
- * @property Module $module
+ * @property string $reportable_type
+ * @property int $reportable_id
+ * @property-read string $created_at
+ * @property-read string $updated_at
  */
 class Report extends BaseModel
 {
@@ -35,7 +35,7 @@ class Report extends BaseModel
     /** @var array Relation included by default */
     protected $with = ['module'];
 
-    public function getValidationRules()
+    public function getValidationRules(): array
     {
         $this->rules['status'] = 'required|in:' . implode(',', self::STATUSES);
 

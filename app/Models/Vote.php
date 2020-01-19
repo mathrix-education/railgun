@@ -11,12 +11,11 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
 use function array_merge;
 
 /**
- * @property int $id
+ * @property-read int $comment_id
+ * @property-read int $user_id
  * @property int $value
- * @property int|null $user_id
- * @property int $comment_id
- * @property Carbon $created_at
- * @property Carbon $updated_at
+ * @property-read Carbon $created_at
+ * @property-read Carbon $updated_at
  * ---
  * @property User $user
  * @property Comment $comment
@@ -31,7 +30,7 @@ class Vote extends BaseModel
         'comment_id' => 'required|exists:comments,id',
     ];
 
-    public function getValidationRules()
+    public function getValidationRules(): array
     {
         return array_merge($this->rules, [
             'value' => ['required', Rule::in([1, -1])],

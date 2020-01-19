@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace App\Registrars;
 
 use App\Controllers\GradesController;
+use Mathrix\Lumen\Zero\Exceptions\InvalidArgument;
 use Mathrix\Lumen\Zero\Registrars\BaseRegistrar;
 
 class GradesRegistrar extends BaseRegistrar
 {
     /**
      * Register the routes.
+     *
+     * @throws InvalidArgument
      */
     public function register(): void
     {
@@ -30,14 +33,14 @@ class GradesRegistrar extends BaseRegistrar
             );
         });
 
-        $this->rest([
-            'std:index' => null,
-            'std:get' => null,
-            'std:get:slug' => null,
-            'std:post' => 'scope:grades:write',
-            'std:patch' => 'scope:grades:write',
-            'std:delete' => 'scope:grades:delete',
-            'rel:get:disciplines' => 'scope:disciplines:read',
+        $this->registerCRUDRoutes([
+            'list' => null,
+            'read' => null,
+            'read:slug' => null,
+            'create' => 'scope:grades:write',
+            'update' => 'scope:grades:write',
+            'delete' => 'scope:grades:delete',
+            // 'rel:get:disciplines' => 'scope:disciplines:read',
         ]);
     }
 }

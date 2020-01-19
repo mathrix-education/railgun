@@ -1,0 +1,78 @@
+name: Migration V7
+on:
+  push:
+    branches: ['v7', 'mathieu/data-migration']
+jobs:
+  migrate_database:
+    name: Migrate database to v7
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_DATABASE: mathrix_education_testing
+          MYSQL_ROOT_PASSWORD: '123456'
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install pv
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pv
+      - name: Setup PHP
+        uses: shivammathur/setup-php@1.7.2
+        with:
+          php-version: 7.4
+          extensions: gd, gmp, mbstring, mysql, zip
+          coverage: none
+          tools: prestissimo
+      - name: Setup Google Cloud SDK
+        uses: mathrix-education/setup-gcloud@0.1.2
+        with:
+          project: ${{ secrets.GCLOUD_PROJECT }}
+          service-account-key: ${{ secrets.GCLOUD_AUTH }}
+      - name: Download latest backup
+        run: |
+          DESTINATION_FILE=storage/artifacts/mathrix_education_v7.sql
+          BACKUP_FILE=$(gsutil ls gs://mathrix-backups/databases/mathrix_education_master/ | tail -1)
+          gsutil cp $BACKUP_FILE "${DESTINATION_FILE}.gz"
+          gzip -d "${DESTINATION_FILE}.gz"
+          sed -i 's/mathrix_education_master/mathrix_education_testing/g' $DESTINATION_FILE
+      - name: Install PHP dependencies
+        run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+      - name: Migrate database
+        env:
+          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
+          DB_PASSWORD: '123456'
+        run: |
+          cp environments/testing/.env .env
+          bin/artisan v7
+      - name: Upload malformed exams artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: malformed-exams
+          path: storage/artifacts/malformed-exams
+      - name: Restore generated database
+        if: "!contains(github.event.head_commit.message, 'db:restore')"
+        run: |
+          DATE=$(date +%F_%H-%M-%S)
+          DB_SOURCE="mathrix_education_testing"
+          DB_TARGET="mathrix_education_v7"
+          DB_SERVICE_ACCOUNT="p731492094632-9gcerm@gcp-sa-cloud-sql.iam.gserviceaccount.com"
+          BUCKET="gs://mathrix-backups"
+          GSOBJECT="$BUCKET/databases/$DB_TARGET/$DB_TARGET-$DATE"
+
+          mysqldump -h 127.0.0.1 -P ${{ job.services.mysql.ports['3306'] }} -u'root' -p'123456' \
+            --databases "$DB_SOURCE" --hex-blob --skip-triggers --order-by-primary --no-autocommit \
+            --default-character-set=utf8mb4 --single-transaction \
+            | sed "s/$DB_SOURCE/$DB_TARGET/g" | gzip | pv \
+            | gsutil cp - "$GSOBJECT"
+
+          gsutil acl ch -u "$DB_SERVICE_ACCOUNT:W" "$BUCKET"
+          gsutil acl ch -u "$DB_SERVICE_ACCOUNT:R" "$GSOBJECT"
+          gcloud sql import sql mysql "$GSOBJECT" "--database=$DB_TARGET" --quiet
+          gsutil acl ch -d "$DB_SERVICE_ACCOUNT" "$BUCKET"
+          gsutil acl ch -d "$DB_SERVICE_ACCOUNT" "$GSOBJECT"

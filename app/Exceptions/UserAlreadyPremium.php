@@ -6,14 +6,14 @@ namespace App\Exceptions;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Mathrix\Lumen\Zero\Exceptions\Http\Http400BadRequestException;
+use Mathrix\Lumen\Zero\Exceptions\Http\Http422UnprocessableEntity;
 use Throwable;
 use function trans;
 
 /**
  * Thrown when a user tries to subscribe to a plan when he is already premium.
  */
-class UserAlreadyPremium extends Http400BadRequestException
+class UserAlreadyPremium extends Http422UnprocessableEntity
 {
     public function __construct(User $user, ?Throwable $previous = null)
     {
