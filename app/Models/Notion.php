@@ -12,19 +12,19 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
 use function implode;
 
 /**
- * @property int $id
- * @property string $name
- * @property string $type
- * @property bool $visible
- * @property int $order
- * @property int $chapter_id
- * @property int $activity_count
- * @property Carbon $created_at
- * @property Carbon $updated_at
+ * @property-read int              $id
+ * @property string                $name
+ * @property string                $type
+ * @property bool                  $visible
+ * @property int                   $order
+ * @property int                   $chapter_id
+ * @property int                   $activity_count
+ * @property-read Carbon           $created_at
+ * @property-read Carbon           $updated_at
  * ---
- * @property Collection|Chapter $chapter
+ * @property Collection|Chapter    $chapter
  * @property Collection|Activity[] $activities
- * @property Collection|Comment[] $comments
+ * @property Collection|Comment[]  $comments
  */
 class Notion extends BaseModel
 {

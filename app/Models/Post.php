@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Mathrix\Lumen\Zero\Models\BaseModel;
@@ -14,16 +13,12 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
  * @property int $id
  * @property string $title
  * @property string $slug
- * @property int $module_id
+ * @property array $content
+ * @property int   $order
+ * @property bool $visible
  * @property int $category_id
- * @property int $user_id
- * @property Carbon $created_at
- * @property Carbon $updated_at
- * ---
- * @property Module $module
- * @property Category $category
- * @property User $user The post author.
- * @property Collection|Comment[] $comments
+ * @property-read Carbon $created_at
+ * @property-read Carbon $updated_at
  */
 class Post extends BaseModel
 {
