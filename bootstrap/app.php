@@ -24,6 +24,7 @@ $app->configure('cache');
 $app->configure('cors');
 $app->configure('filesystems');
 $app->configure('jwt_auth');
+$app->configure('lighthouse');
 $app->configure('logging');
 $app->configure('mail');
 $app->configure('queue');

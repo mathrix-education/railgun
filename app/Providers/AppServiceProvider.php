@@ -29,6 +29,7 @@ use Laravel\Lumen\Application;
 use Mathrix\Lumen\JWT\Auth\JWTAuthServiceProvider;
 use Mathrix\Lumen\JWT\Auth\ScopesLoader;
 use Mathrix\Lumen\Zero\Providers\ZeroServiceProvider;
+use Nuwave\Lighthouse\LighthouseServiceProvider;
 
 /**
  * Register all application service providers.
@@ -39,6 +40,8 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        $this->app->instance('path.config', $this->app->configPath());
+
         // Singletons
         $this->app->singleton(ExceptionHandler::class, Handler::class);
         $this->app->singleton(KernelContract::class, Kernel::class);
@@ -62,6 +65,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(ZeroServiceProvider::class);
 
         $this->app->register(MigrationV7ServiceProvider::class);
+
+        $this->app->register(LighthouseServiceProvider::class);
 
         ScopesLoader::registerAdditionalScopes(['users:as']);
 
