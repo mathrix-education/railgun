@@ -9,21 +9,27 @@ use GraphQL\Type\Definition\ScalarType;
 class SilicateWallType extends ScalarType
 {
     /**
-     * @inheritDoc
+     * Handled by Eloquent model.
+     *
+     * @param mixed $value
+     *
+     * @return mixed
      */
     public function serialize($value)
     {
         return $value;
-        // TODO: Implement serialize() method.
     }
 
     /**
-     * @inheritDoc
+     * Handled by Eloquent model.
+     *
+     * @param mixed $value
+     *
+     * @return mixed
      */
     public function parseValue($value)
     {
         return $value;
-        // TODO: Implement parseValue() method.
     }
 
     /**
