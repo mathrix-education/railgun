@@ -23,6 +23,7 @@ $app->configure('auth');
 $app->configure('cache');
 $app->configure('cors');
 $app->configure('filesystems');
+$app->configure('graphql-playground');
 $app->configure('jwt_auth');
 $app->configure('lighthouse');
 $app->configure('logging');
