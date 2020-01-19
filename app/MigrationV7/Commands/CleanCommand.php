@@ -27,6 +27,11 @@ class CleanCommand extends V7Command
             ->delete();
         $this->line("Deleted $reportCount invalid reports");
 
+        $notionCount = DB::table('notions')
+            ->where('type', '=', 'to-delete')
+            ->delete();
+        $this->line("Deleted $notionCount invalid notions");
+
         $this->migrateTo('2020_01_18_032807_drop_mapping_columns');
     }
 }
