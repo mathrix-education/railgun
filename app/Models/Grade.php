@@ -12,16 +12,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Mathrix\Lumen\Zero\Models\BaseModel;
 
 /**
- * @property int                     $id
+ * @property-read  int               $id
  * @property string                  $name
  * @property string                  $slug
  * @property int                     $order
  * @property bool                    $visible
- * @property array                   $link
  * @property int|null                $parent_id
  * @property int                     $country_id
- * @property Carbon                  $created_at
- * @property Carbon                  $updated_at
+ * @property-read Carbon             $created_at
+ * @property-read Carbon             $updated_at
  * ---
  * @property Grade|null              $parent
  * @property Country                 $country

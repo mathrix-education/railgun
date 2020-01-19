@@ -4,13 +4,19 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Mathrix\Lumen\Zero\Models\BaseModel;
 
 /**
- * @property-read int $id
- * @property array    $fronts
- * @property array    $backs
+ * @property-read int    $id
+ * @property array       $fronts
+ * @property array       $backs
+ * @property int         $order
+ * @property bool        $visible
+ * @property int         $chapter_id
+ * @property-read Carbon $created_at
+ * @property-read Carbon $updated_at
  */
 class Flashcard extends BaseModel
 {

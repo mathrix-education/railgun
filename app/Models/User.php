@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Models\Traits\FacebookUser;
-use App\Models\Traits\HasCache;
-use App\Models\Traits\HasPermissions;
 use App\Services\Bishop\Subscription;
 use App\Services\Braintree\Models\BraintreeCustomer;
 use App\Services\Stripe\Models\StripeCustomer;
@@ -34,7 +32,7 @@ use function scope;
 use function trim;
 
 /**
- * @property int                   $id
+ * @property-read int              $id
  * @property string|null           $username
  * @property string                $email
  * @property string|null           $firstname
@@ -42,15 +40,15 @@ use function trim;
  * @property string                $password
  * @property string[]              $scopes
  * @property string                $token
- * @property array                 $settings
  * @property bool                  $premium_bypass
  * @property Carbon                $premium_bypass_expires_at
  * @property int|null              $grade_id
  * @property string|null           $stripe_id
  * @property string|null           $braintree_id
+ * @property array                 $settings
  * @property array                 $metadata
- * @property Carbon                $created_at
- * @property Carbon                $updated_at
+ * @property-read  Carbon          $created_at
+ * @property-read  Carbon          $updated_at
  * ---
  * @property-read string           $full_name
  * @property-read bool             $premium
@@ -68,10 +66,8 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 {
     use Authorizable;
     use Authenticatable;
-    use HasCache;
     use HasJWT;
     use FacebookUser;
-    use HasPermissions;
     use BraintreeCustomer;
     use StripeCustomer;
 
