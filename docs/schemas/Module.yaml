@@ -1,6 +1,0 @@
-anyOf:
-  - $ref: '#/components/schemas/ModuleCourse'
-  - $ref: '#/components/schemas/ModuleMCQ'
-  - $ref: '#/components/schemas/ModuleFlashcard'
-  - $ref: '#/components/schemas/ModuleTest'
-  - $ref: '#/components/schemas/ModuleStriped'

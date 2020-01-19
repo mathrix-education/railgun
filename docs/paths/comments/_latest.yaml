@@ -1,8 +1,0 @@
-$extends:
-  ../../fragments/paths/index.yaml:
-    model: comment
-get:
-  summary: Paginate latest comments
-  description: Retrive all comments by descending creation date, paginated.
-  security:
-    - bearer: [comments:read]

@@ -19,11 +19,9 @@ $app = new Laravel\Lumen\Application(dirname(__DIR__));
 $app->withFacades();
 $app->withEloquent();
 
-$app->configure('auth');
 $app->configure('cache');
 $app->configure('cors');
 $app->configure('filesystems');
-$app->configure('jwt_auth');
 $app->configure('lighthouse');
 $app->configure('logging');
 $app->configure('mail');
