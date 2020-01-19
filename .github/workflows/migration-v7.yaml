@@ -1,7 +1,7 @@
 name: Migration V7
 on:
   push:
-    branches: ['v7', 'mathieu/data-migration']
+    branches: ['v7', 'graphql']
 jobs:
   migrate_database:
     name: Migrate database to v7
