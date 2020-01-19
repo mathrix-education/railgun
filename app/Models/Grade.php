@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Mathrix\Lumen\Zero\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property-read  int               $id
@@ -29,7 +29,7 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
  * @property Collection|Discipline[] $disciplines
  * @property Collection|User[]       $users
  */
-class Grade extends BaseModel
+class Grade extends Model
 {
     /** @var array The attributes that are mass assignable */
     protected $fillable = ['id', 'name', 'slug', 'order', 'visible', 'parent_id', 'country_id'];

@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Filesystem\FilesystemServiceProvider;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application;
+use Mathrix\Lumen\JWT\Auth\JWTAuthServiceProvider;
 use MLL\GraphQLPlayground\GraphQLPlaygroundServiceProvider;
 use Nuwave\Lighthouse\LighthouseServiceProvider;
 
@@ -50,6 +51,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(GoogleCloudStorageServiceProvider::class);
 
         // Mathrix Lumen Zero Providers
+        $this->app->register(JWTAuthServiceProvider::class);
         $this->app->register(MigrationV7ServiceProvider::class);
 
         $this->app->register(LighthouseServiceProvider::class);

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Mathrix\Lumen\Zero\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use function implode;
 
 /**
@@ -18,7 +18,7 @@ use function implode;
  * @property-read string $created_at
  * @property-read string $updated_at
  */
-class Report extends BaseModel
+class Report extends Model
 {
     public const STATUSES = ['todo', 'done', 'validated'];
 

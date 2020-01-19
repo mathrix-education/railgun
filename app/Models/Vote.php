@@ -7,7 +7,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Validation\Rule;
-use Mathrix\Lumen\Zero\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use function array_merge;
 
 /**
@@ -20,7 +20,7 @@ use function array_merge;
  * @property User $user
  * @property Comment $comment
  */
-class Vote extends BaseModel
+class Vote extends Model
 {
     /** @var array The attributes that are mass assignable */
     protected $fillable = ['id', 'value', 'user_id', 'comment_id'];

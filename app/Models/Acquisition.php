@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Concerns\AsPivot;
-use Mathrix\Lumen\Zero\Models\BaseModel;
 
 /**
  * @property-read int         $user_id
@@ -16,7 +16,7 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
  * @property-read Carbon      $created_at
  * @property-read Carbon      $updated_at
  */
-class Acquisition extends BaseModel
+class Acquisition extends Model
 {
     use AsPivot;
 

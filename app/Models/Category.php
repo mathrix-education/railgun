@@ -7,7 +7,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Mathrix\Lumen\Zero\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property-read int          $id
@@ -18,7 +18,7 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
  * ---
  * @property Collection|Post[] $posts
  */
-class Category extends BaseModel
+class Category extends Model
 {
     /** @var array The attributes that are mass assignable */
     protected $fillable = ['name', 'slug', 'image'];

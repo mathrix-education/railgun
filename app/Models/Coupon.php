@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Models\Traits;
 
 use Carbon\Carbon;
-use Mathrix\Lumen\Zero\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property-read int           $id
@@ -16,6 +16,6 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
  * @property-read Carbon        $created_at
  * @property-read Carbon        $updated_at
  */
-class Coupon extends BaseModel
+class Coupon extends Model
 {
 }

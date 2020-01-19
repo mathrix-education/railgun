@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Mathrix\Lumen\Zero\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property-read  int $id
@@ -17,6 +17,6 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
  * @property-read string $created_at
  * @property-read string $updated_at
  */
-class Training extends BaseModel
+class Training extends Model
 {
 }

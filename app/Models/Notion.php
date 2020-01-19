@@ -8,7 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Mathrix\Lumen\Zero\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use function implode;
 
 /**
@@ -26,7 +26,7 @@ use function implode;
  * @property Collection|Activity[] $activities
  * @property Collection|Comment[]  $comments
  */
-class Notion extends BaseModel
+class Notion extends Model
 {
     public const TYPES = ['normal', 'premium', 'reminder', 'further'];
 

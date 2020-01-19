@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Auth;
-use Mathrix\Lumen\Zero\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property-read int             $id
@@ -22,7 +22,7 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
  * @property-read Carbon          $created_at
  * @property-read Carbon          $updated_at
  */
-class Comment extends BaseModel
+class Comment extends Model
 {
     /** @var array The default relations included */
     public $with = ['user:id,username,firstname,grade_id'];
