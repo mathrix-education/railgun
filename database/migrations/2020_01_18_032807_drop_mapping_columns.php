@@ -18,6 +18,7 @@ class DropMappingColumns extends Migration
         'sections',
         'trainings',
         'subjects',
+        'courses',
     ];
 
     /**
