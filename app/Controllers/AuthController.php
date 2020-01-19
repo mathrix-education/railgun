@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Exceptions\FacebookPasswordReset;
 use App\Mails\PasswordForgottenMail;
 use App\Models\User;
 use Exception;
@@ -69,10 +70,10 @@ class AuthController extends BaseController
             throw new InvalidCredentials();
         }
 
-        $jws   = $this->jwtIssuer->issueJWS($user);
-        $token = $this->jwtIssuer->serializeJWS($jws);
+        // Sign the JWS
+        $jws = $this->jwtIssuer->issueJWS($user);
 
-        return new DataResponse(['token' => $token]);
+        return new DataResponse(['token' => $this->jwtIssuer->serializeJWS($jws)]);
     }
 
     /**
@@ -142,7 +143,7 @@ class AuthController extends BaseController
             ->firstOrFail();
 
         if ($user->provider === 'facebook') {
-            throw new Http400BadRequestException(null, 'Cannot reset password of a facebook account');
+            throw new FacebookPasswordReset();
         }
 
         $user->token = Uuid::uuid4()->toString();
