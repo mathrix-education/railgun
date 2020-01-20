@@ -80,8 +80,6 @@ class DropMappingColumns extends Migration
         DB::unprepared('alter table reports modify reportable_id bigint unsigned not null');
 
         Schema::dropIfExists('notifications');
-        
-        DB::table('notions')->where('type', '=', 'to-delete')->delete();
     }
 
     /**
