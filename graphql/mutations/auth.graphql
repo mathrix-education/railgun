@@ -1,4 +1,5 @@
 type TokenResponse {
+    "The JWT token serialized and base64-encoded"
     token: String!
 }
 

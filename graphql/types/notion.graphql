@@ -8,5 +8,5 @@ type Notion {
     updated_at: DateTime!
     chapter: Chapter! @belongsTo
     courses: [Course!]! @hasMany
-    subject: [Subject!]! @hasMany
+    subjects: [Subject!]! @hasMany
 }

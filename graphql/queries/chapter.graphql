@@ -1,3 +1,4 @@
 extend type Query {
+    listChapters: [Chapter!]! @paginate(defaultCount: 100)
     readChapter(id: ID @eq): Chapter @find
 }
