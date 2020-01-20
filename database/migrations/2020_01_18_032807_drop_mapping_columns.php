@@ -48,6 +48,10 @@ class DropMappingColumns extends Migration
             $table->dropColumn(['notion_count', 'activity_count']);
         });
 
+        Schema::table('notions', static function (Blueprint $table) {
+            $table->dropColumn(['activity_count']);
+        });
+
         Schema::table('comments', static function (Blueprint $table) {
             $table->dropForeign(['module_id']);
             $table->dropColumn(['module_id', 'deleted_at']);
