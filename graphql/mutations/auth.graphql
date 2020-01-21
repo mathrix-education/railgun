@@ -11,17 +11,20 @@ type ECCPublicKey {
 }
 
 extend type Query {
+    """
+    Get the Ellipitic Curve Cryptography public key.
+    """
     loginPublicKey: ECCPublicKey!
 }
 
 extend type Mutation {
     """
-    LoginBasic a user into the application using email/password credentials.
+    Login a user into the application using email/password credentials.
     """
     loginBasic(email: String!, password: String!): JWT!
 
     """
-    LoginBasic a user into the application using its Facebook token.
+    Login a user into the application using its Facebook token.
     """
     loginFacebook(access_token: String!): JWT!
 }
