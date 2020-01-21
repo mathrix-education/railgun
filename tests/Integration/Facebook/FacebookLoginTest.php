@@ -18,7 +18,7 @@ use function env;
 use function json_decode;
 
 /**
- * Test Facebook Login integration.
+ * Test Facebook LoginBasic integration.
  */
 class FacebookLoginTest extends APIStatefulTestCase
 {

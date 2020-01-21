@@ -1,8 +1,27 @@
-type TokenResponse {
+type JWT {
     "The JWT token serialized and base64-encoded"
     token: String!
 }
 
+type ECCPublicKey {
+    kty: String!
+    crv: String!
+    x: String!
+    y: String!
+}
+
+extend type Query {
+    loginPublicKey: ECCPublicKey!
+}
+
 extend type Mutation {
-    login(email: String!, password: String!): TokenResponse!
+    """
+    LoginBasic a user into the application using email/password credentials.
+    """
+    loginBasic(email: String!, password: String!): JWT!
+
+    """
+    LoginBasic a user into the application using its Facebook token.
+    """
+    loginFacebook(access_token: String!): JWT!
 }
