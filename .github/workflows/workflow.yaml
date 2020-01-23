@@ -134,7 +134,8 @@ jobs:
   deploy_cloud_run:
     name: Deploy on Cloud Run
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/v7'
-    needs: [docker, test]
+    # needs: [docker, test]
+    needs: [docker]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -154,7 +155,8 @@ jobs:
             --set-env-vars="APP_ENV=$(bin/current_branch)"
   sentry_release:
     name: Create Sentry Release
-    needs: [docker, test]
+    # needs: [docker, test]
+    needs: [docker]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
