@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Console;
 
-use App\Console\Commands\CacheCleanCommand;
-use App\Console\Commands\TestCommand;
 use App\Services\GoogleCloud\KMS\Commands\DecryptCommand;
 use App\Services\GoogleCloud\KMS\Commands\EncryptCommand;
 use App\Services\GoogleCloud\KMS\Commands\SetupCommand;
@@ -19,8 +17,6 @@ class Kernel extends ConsoleKernel
 {
     /** @var string[] The Artisan commands. */
     protected $commands = [
-        TestCommand::class,
-        CacheCleanCommand::class,
         EncryptCommand::class,
         DecryptCommand::class,
         SetupCommand::class,
