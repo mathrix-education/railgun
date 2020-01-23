@@ -14,7 +14,7 @@ return [
     */
 
     'route' => [
-        'uri' => '/playground',
+        'uri' => '/',
         'name' => 'graphql-playground',
         // 'middleware' => ['web']
         // 'prefix' => '',
