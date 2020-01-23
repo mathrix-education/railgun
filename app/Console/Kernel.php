@@ -7,7 +7,6 @@ namespace App\Console;
 use App\Services\GoogleCloud\KMS\Commands\DecryptCommand;
 use App\Services\GoogleCloud\KMS\Commands\EncryptCommand;
 use App\Services\GoogleCloud\KMS\Commands\SetupCommand;
-use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
 /**

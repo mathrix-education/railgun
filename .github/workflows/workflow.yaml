@@ -44,19 +44,8 @@ jobs:
           extensions: gd, gmp, mbstring, mysql, zip
           coverage: pcov
           tools: prestissimo
-      - name: Setup node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12.x
       - name: Install dependencies
         run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
-      - name: Compile OpenAPI specification
-        run: composer docs:compile
-      - name: Compile mjml emails templates
-        run: |
-          npm install
-          npm run mails:compile
-          rm -rf node_modules/
       - name: Setup application (environment, JWT key and database seed)
         env:
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
@@ -125,25 +114,6 @@ jobs:
           tools: prestissimo
       - name: Install dependencies
         run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
-      - name: Setup PHP
-        uses: shivammathur/setup-php@1.7.0
-        with:
-          php-version: 7.4
-          extensions: gmp, mbstring, zip
-          coverage: none
-      - name: Setup node
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12
-      - name: Install PHP dependencies
-        run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
-      - name: Render emails and documentation
-        run: |
-          npm install
-          composer docs:compile
-          npm run docs:bundle
-          npm run mails:compile
-          rm -rf node_modules/
       - name: Patch release
         run: sed -i "s/RELEASE_ALIAS/$(bin/release)/g" config/sentry.php
       - name: Build Docker image
