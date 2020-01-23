@@ -8,7 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Mathrix\Lumen\Zero\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property-read  int           $id
@@ -25,7 +25,7 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
  * @property Discipline          $discipline
  * @property Collection|Notion[] $notions
  */
-class Chapter extends BaseModel
+class Chapter extends Model
 {
     /** @var array The attributes that are mass assignable */
     protected $fillable = ['name', 'slug', 'order', 'visible', 'grade_id', 'discipline_id'];

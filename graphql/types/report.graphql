@@ -1,0 +1,11 @@
+union Reportable = Course | Exercise | Flashcard | Exam
+
+type Report {
+    id: ID!
+    type: String
+    content: String
+    status: String
+    created_at: DateTime!
+    updated_at: DateTime!
+    reportable: Reportable! @morphTo
+}

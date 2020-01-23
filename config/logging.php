@@ -17,5 +17,10 @@ return [
             'with'      => ['filename' => '/var/log/lumen.log'], // Cloud Run logs location
             'formatter' => App\Logging\StackdriverFormatter::class,
         ],
+        'stdout'      => [
+            'driver' => 'single',
+            'path'   => 'php://stdout',
+            'level'  => 'debug',
+        ],
     ],
 ];

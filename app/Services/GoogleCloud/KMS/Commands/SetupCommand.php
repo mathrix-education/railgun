@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\GoogleCloud\KMS\Commands;
 
-use Mathrix\Lumen\Zero\Console\Commands\BaseCommand;
+use Illuminate\Console\Command;
 use function base_path;
 use function basename;
 use function rename;
@@ -15,7 +15,7 @@ use function str_replace;
  *
  * @codeCoverageIgnore
  */
-class SetupCommand extends BaseCommand
+class SetupCommand extends Command
 {
     protected $signature = 'gcloud:setup {environment}';
 

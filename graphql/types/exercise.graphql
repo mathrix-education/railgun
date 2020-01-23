@@ -1,0 +1,12 @@
+type Exercise {
+    id: ID!
+    type: String
+    questions: [String!]!
+    choices: [[String!]!]!
+    solutions: [[Int!]!]!
+    examplations: [SilicateWall!]!
+    order: Int!
+    created_at: DateTime!
+    updated_at: DateTime!
+    subject: Subject! @belongsTo
+}

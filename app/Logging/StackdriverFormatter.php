@@ -24,7 +24,7 @@ class StackdriverFormatter extends JsonFormatter
     /**
      * {@inheritdoc}
      */
-    public function format(array $record)
+    public function format(array $record): string
     {
         return json_encode($this->toStackdriverFormat($record), JSON_THROW_ON_ERROR, 512)
             . ($this->appendNewline ? "\n" : '');
@@ -37,7 +37,7 @@ class StackdriverFormatter extends JsonFormatter
      *
      * @return string
      */
-    protected function formatBatchJson(array $records)
+    protected function formatBatchJson(array $records): string
     {
         $records = array_map(
             function ($record) {

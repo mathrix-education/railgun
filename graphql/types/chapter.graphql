@@ -1,0 +1,13 @@
+type Chapter {
+    id: ID!
+    name: String!
+    slug: String!
+    order: Int!
+    visible: Int!
+    created_at: DateTime!
+    updated_at: DateTime!
+    discipline: Discipline @belongsTo
+    grade: Grade! @belongsTo
+    courseNotions: [Notion!]! @hasMany
+    subjectNotions: [Notion!]! @hasMany
+}

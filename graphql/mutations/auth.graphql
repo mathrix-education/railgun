@@ -1,0 +1,30 @@
+type JWT {
+    "The JWT token serialized and base64-encoded"
+    token: String!
+}
+
+type ECCPublicKey {
+    kty: String!
+    crv: String!
+    x: String!
+    y: String!
+}
+
+extend type Query {
+    """
+    Get the Ellipitic Curve Cryptography public key.
+    """
+    loginPublicKey: ECCPublicKey!
+}
+
+extend type Mutation {
+    """
+    Login a user into the application using email/password credentials.
+    """
+    loginBasic(email: String!, password: String!): JWT!
+
+    """
+    Login a user into the application using its Facebook token.
+    """
+    loginFacebook(access_token: String!): JWT!
+}

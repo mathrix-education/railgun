@@ -1,0 +1,16 @@
+type User {
+    id: ID!
+    username: String
+    firstname: String
+    lastname: String
+    password: String!
+    email: String!
+    scopes: [String!]!
+    token: String!
+    premium_bypass: Boolean!
+    premium_bypass_expires_at: DateTime
+    stripe_id: String
+    braintree_id: String
+    created_at: DateTime!
+    updated_at: DateTime!
+}

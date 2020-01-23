@@ -1,0 +1,8 @@
+type Acquisition {
+    user_id: Int!
+    product_type: String!
+    product_id: Int! @morphTo
+    transaction_id: String
+    created_at: DateTime!
+    updated_at: DateTime!
+}

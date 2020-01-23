@@ -1,0 +1,1 @@
+scalar SilicateWall @scalar(class: "App\\GraphQL\\Scalars\\SilicateWallType")

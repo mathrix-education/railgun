@@ -6,7 +6,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Mathrix\Lumen\Zero\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property-read int    $id
@@ -18,7 +18,7 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
  * @property-read Carbon $created_at
  * @property-read Carbon $updated_at
  */
-class Flashcard extends BaseModel
+class Flashcard extends Model
 {
     protected $fillable = ['fronts', 'backs', 'order', 'visible', 'chapter_id'];
 

@@ -7,8 +7,8 @@ namespace App\Services\GoogleCloud\KMS\Commands;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\ValidationException;
 use Google\Cloud\Kms\V1\KeyManagementServiceClient;
+use Illuminate\Console\Command;
 use Illuminate\Support\Str;
-use Mathrix\Lumen\Zero\Console\Commands\BaseCommand;
 use function array_filter;
 use function base_path;
 use function count;
@@ -22,7 +22,7 @@ use function str_replace;
  *
  * @codeCoverageIgnore
  */
-class EncryptCommand extends BaseCommand
+class EncryptCommand extends Command
 {
     protected $signature = 'gcloud:encrypt {environment}';
 

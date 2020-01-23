@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Laravel\Lumen\Auth\Authorizable;
 use Mathrix\Lumen\JWT\Auth\HasJWT;
-use Mathrix\Lumen\Zero\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use stdClass;
 use Stripe\Subscription as StripeSubscription;
 use function array_merge;
@@ -62,14 +62,12 @@ use function trim;
  * ---
  * @method static Builder scope(string $scope)
  */
-class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
+class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use Authorizable;
     use Authenticatable;
     use HasJWT;
     use FacebookUser;
-    use BraintreeCustomer;
-    use StripeCustomer;
 
     /** @var array The guarded attributes */
     protected $fillable = [

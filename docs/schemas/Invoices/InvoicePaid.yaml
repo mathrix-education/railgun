@@ -1,8 +1,0 @@
-$extends:
-  ../../fragments/schemas/Invoice.yaml:
-description: Invoice
-properties:
-  status:
-    enum:
-      - paid
-    example: paid

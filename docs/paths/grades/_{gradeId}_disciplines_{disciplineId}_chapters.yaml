@@ -1,8 +1,0 @@
-$extends:
-  ../../fragments/paths/index.yaml:
-    model: chapter
-get:
-  summary: Get related discipline chapters
-  description: Retrieve all chapters by ascending order, paginated.
-  security:
-    - bearer: [chapters:read]

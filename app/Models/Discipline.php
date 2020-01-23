@@ -8,7 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Mathrix\Lumen\Zero\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property-read               int $id
@@ -21,7 +21,7 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
  * @property Collection|Grade[] $grades
  * @property Collection|Chapter[] $chapters
  */
-class Discipline extends BaseModel
+class Discipline extends Model
 {
     /** @var array The attributes that are mass assignable */
     protected $fillable = ['id', 'name', 'slug', 'beta'];

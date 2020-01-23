@@ -1,0 +1,13 @@
+type Training {
+    id: ID!
+    name: String!
+    slug: String!
+    buyable: Boolean!
+    price: Int!
+    order: Int!
+    visible: Boolean!
+    created_at: DateTime!
+    updated_at: DateTime!
+    sections: [Section!]! @hasMany
+    packs: [Pack!]! @belongsToMany
+}

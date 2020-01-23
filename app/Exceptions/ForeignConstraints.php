@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Exceptions;
 
 use Mathrix\Lumen\Zero\Exceptions\Http\Http422UnprocessableEntity;
-use Mathrix\Lumen\Zero\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Throwable;
 use function class_basename;
 

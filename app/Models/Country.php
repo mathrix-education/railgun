@@ -7,7 +7,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Mathrix\Lumen\Zero\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property-read int           $id
@@ -21,7 +21,7 @@ use Mathrix\Lumen\Zero\Models\BaseModel;
  * ---
  * @property Collection|Grade[] $grades
  */
-class Country extends BaseModel
+class Country extends Model
 {
     /** @var array The attributes that are mass assignable */
     protected $fillable = ['id', 'name', 'slug', 'visible'];

@@ -1,0 +1,9 @@
+type Intraction {
+    user_id: Int!
+    interactable_type: String!
+    interactable_id: Int!
+    comprehension: String!
+    score: Int
+    created_at: DateTime!
+    updated_at: DateTime!
+}

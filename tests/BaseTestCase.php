@@ -4,33 +4,18 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use BenTools\CartesianProduct\CartesianProduct;
 use Faker\Factory as FakerFactory;
 use Faker\Generator;
-use Illuminate\Support\Arr;
-use Mathrix\Lumen\Zero\Testing\BaseTestCase as ZeroTestCase;
+use Laravel\Lumen\Testing\TestCase;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use function implode;
-use function is_array;
 
 /**
  * Base test class for all application tests.
  */
-abstract class BaseTestCase extends ZeroTestCase
+abstract class BaseTestCase extends TestCase
 {
     /** @var Generator */
     public $faker;
-
-    /**
-     * Creates the application.
-     * Needs to be implemented by subclasses.
-     *
-     * @return HttpKernelInterface
-     */
-    public function createApplication()
-    {
-        return require __DIR__ . '/../bootstrap/app.php';
-    }
 
     /**
      * Setup the test environment.
@@ -43,34 +28,13 @@ abstract class BaseTestCase extends ZeroTestCase
     }
 
     /**
-     * Create a cartesian product.
+     * Creates the application.
+     * Needs to be implemented by subclasses.
      *
-     * @param array $spaces
-     *
-     * @return array
+     * @return HttpKernelInterface
      */
-    public function cartesian(array $spaces): array
+    public function createApplication()
     {
-        $cartesianProduct = (new CartesianProduct($spaces))->asArray();
-        $data             = [];
-
-        foreach ($cartesianProduct as $value) {
-            $line  = Arr::flatten($value, 1);
-            $parts = [];
-
-            foreach ($value as $spaceName => $subKey) {
-                if (!is_array($subKey)) {
-                    $parts[] = "$spaceName:$subKey";
-                } else {
-                    $parts[] = "$spaceName:" . implode(',', Arr::flatten($subKey));
-                }
-            }
-
-            $key = implode('|', $parts);
-
-            $data[$key] = $line;
-        }
-
-        return $data;
+        return require __DIR__ . '/../bootstrap/app.php';
     }
 }

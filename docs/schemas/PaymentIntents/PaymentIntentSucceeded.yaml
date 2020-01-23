@@ -1,6 +1,0 @@
-$extends:
-  ../../fragments/schemas/PaymentIntent.yaml:
-properties:
-  status:
-    enum:
-      - succeeded

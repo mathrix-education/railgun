@@ -6,9 +6,9 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Mathrix\Lumen\Zero\Models\BaseModel;
 use function implode;
 
 /**
@@ -26,7 +26,7 @@ use function implode;
  * @property Collection|Activity[] $activities
  * @property Collection|Comment[]  $comments
  */
-class Notion extends BaseModel
+class Notion extends Model
 {
     public const TYPES = ['normal', 'premium', 'reminder', 'further'];
 
@@ -41,7 +41,7 @@ class Notion extends BaseModel
     ];
     /** @var array The validation rules */
     protected $rules = [
-        'name' => 'required|max:255',
+        'name'       => 'required|max:255',
         'chapter_id' => 'required|exists:chapters,id',
     ];
     protected $casts = ['visible' => 'boolean'];
@@ -80,11 +80,8 @@ class Notion extends BaseModel
         return $this->belongsTo(Chapter::class);
     }
 
-    /**
-     * The notion child activities.
-     */
-    public function activities(): HasMany
+    public function courses(): HasMany
     {
-        return $this->hasMany(Activity::class)->orderBy('order');
+        return $this->hasMany(Course::class);
     }
 }

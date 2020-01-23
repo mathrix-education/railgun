@@ -1,0 +1,10 @@
+type Flashcard {
+    id: ID!
+    fronts: [SilicateWall!]!
+    backs:  [SilicateWall!]!
+    order: Int!
+    visible: Boolean!
+    created_at: DateTime!
+    updated_at: DateTime!
+    chapter: Chapter! @belongsTo
+}
