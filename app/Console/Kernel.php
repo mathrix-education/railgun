@@ -21,22 +21,4 @@ class Kernel extends ConsoleKernel
         DecryptCommand::class,
         SetupCommand::class,
     ];
-
-    /**
-     * Define the application's command schedule.
-     *
-     * @param Schedule $schedule The Laravel scheduler instance.
-     *
-     * @codeCoverageIgnore
-     */
-    protected function schedule(Schedule $schedule): void
-    {
-        // Cache cleaning every ten minutes
-        $schedule->command(CacheCleanCommand::class)
-            ->everyTenMinutes();
-
-        // Queue worker every minute
-        $schedule->command('queue:work --stop-when-empty')
-            ->everyMinute();
-    }
 }
