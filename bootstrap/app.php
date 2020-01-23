@@ -19,6 +19,7 @@ $app = new Laravel\Lumen\Application(dirname(__DIR__));
 $app->withFacades();
 $app->withEloquent();
 
+$app->configure('app');
 $app->configure('auth');
 $app->configure('cache');
 $app->configure('cors');
