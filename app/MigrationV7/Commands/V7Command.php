@@ -6,7 +6,6 @@ namespace App\MigrationV7\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
-use Mathrix\Lumen\Zero\Console\Commands\BaseCommand;
 use RuntimeException;
 use Symfony\Component\Process\Process;
 use function collect;
