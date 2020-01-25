@@ -22,4 +22,4 @@ COPY docker/php/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 # Declare healthcheck
 HEALTHCHECK CMD /usr/local/bin/healthcheck || exit 1
 
-ENTRYPOINT ["entrypoint"]
+ENTRYPOINT ["/usr/local/bin/entrypoint"]
