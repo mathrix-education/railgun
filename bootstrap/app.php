@@ -2,20 +2,15 @@
 
 declare(strict_types=1);
 
-use App\Services\GoogleCloud\KMS\SetupEnvironment;
-use Google\ApiCore\ApiException;
-use Google\ApiCore\ValidationException;
-
 require_once __DIR__ . '/../vendor/autoload.php';
 
-try {
-    (new SetupEnvironment(dirname(__DIR__)))->bootstrap();
-} catch (ApiException | ValidationException $e) {
-}
+use App\Providers\AppServiceProvider;
+use Laravel\Lumen\Application;
+use Laravel\Lumen\Bootstrap\LoadEnvironmentVariables;
 
-(new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(dirname(__DIR__)))->bootstrap();
+(new LoadEnvironmentVariables(dirname(__DIR__)))->bootstrap();
 
-$app = new Laravel\Lumen\Application(dirname(__DIR__));
+$app = new Application(dirname(__DIR__));
 $app->withFacades();
 $app->withEloquent();
 
@@ -33,6 +28,6 @@ $app->configure('queue');
 $app->configure('sentry');
 $app->configure('services');
 
-$app->register(App\Providers\AppServiceProvider::class);
+$app->register(AppServiceProvider::class);
 
 return $app;
