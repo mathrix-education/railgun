@@ -24,6 +24,7 @@ use function array_merge;
 class Vote extends Model
 {
     use Randomizable;
+
     /** @var array The attributes that are mass assignable */
     protected $fillable = ['id', 'value', 'user_id', 'comment_id'];
     /** @var array Validation rules */

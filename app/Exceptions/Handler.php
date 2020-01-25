@@ -6,23 +6,13 @@ namespace App\Exceptions;
 
 use App\Models\User;
 use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Sentry\State\Hub;
 use Sentry\State\Scope;
-use Stripe\Exception\ApiErrorException as StripeApiErrorException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use function app;
-use function class_basename;
 use function env;
-use function explode;
 use function in_array;
-use function str_replace;
 
 /**
  * Handle exceptions and display them in json as response. Also handle Sentry's behavior.

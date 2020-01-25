@@ -33,6 +33,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Grade extends Model
 {
     use Randomizable;
+
     /** @var array The attributes that are mass assignable */
     protected $fillable = ['id', 'name', 'slug', 'order', 'visible', 'parent_id', 'country_id'];
     /** @var array Validation rules */

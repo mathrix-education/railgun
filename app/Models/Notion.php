@@ -30,6 +30,7 @@ use function implode;
 class Notion extends Model
 {
     use Randomizable;
+
     public const TYPES = ['normal', 'premium', 'reminder', 'further'];
 
     /** @var array The attributes that are mass assignable */

@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Post extends Model
 {
     use Randomizable;
+
     /** @var array The attributes that are mass assignable */
     protected $fillable = ['id', 'title', 'slug', 'module_id', 'category_id', 'user_id'];
     /** @var array Validation rules */

@@ -22,6 +22,7 @@ use function implode;
 class Report extends Model
 {
     use Randomizable;
+
     public const STATUSES = ['todo', 'done', 'validated'];
 
     /** @var array The attributes that are mass assignable */
