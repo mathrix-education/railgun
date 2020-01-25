@@ -21,8 +21,8 @@ if (!function_exists('timestamps')) {
         $format = 'Y-m-d H:i:s';
         $faker  = FakerFactory::create();
 
-        $createdAt = $faker->dateTimeBetween($start);
-        $updatedAt = $faker->boolean($bias) ? $createdAt : $faker->dateTimeBetween($createdAt);
+        $createdAt  = $faker->dateTimeBetween($start);
+        $updatedAt  = $faker->boolean($bias) ? $createdAt : $faker->dateTimeBetween($createdAt);
 
         return [$createdAt->format($format), $updatedAt->format($format)];
     }

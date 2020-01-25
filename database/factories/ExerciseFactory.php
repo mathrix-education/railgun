@@ -1,0 +1,57 @@
+<?php
+
+declare(strict_types=1);
+
+use App\Models\Exercise;
+use App\Models\Subject;
+use App\Support\Silicate;
+use App\Support\Timestamps;
+use Faker\Generator;
+use Illuminate\Database\Eloquent\Factory;
+
+/**
+ * @var Factory $factory
+ */
+$factory->define(Exercise::class, static function (Generator $faker) {
+    $questionCount = $faker->numberBetween(2, 4);
+    $questions     = [];
+    $choices       = [];
+    $solutions     = [];
+    $explanations  = [];
+
+    for ($i = 0; $i < $questionCount; $i++) {
+        // questions
+        $questions[] = str_replace('.', '?', $faker->sentence);
+
+        // choices
+        $localChoices = [];
+        $choiceCount  = $faker->numberBetween(2, 4);
+        for ($j = 0; $j < $choiceCount; $j++) {
+            $localChoices[] = $faker->words($faker->numberBetween(1, 3), true);
+        }
+        $choices[]   = $localChoices;
+        $solutions[] = $faker->numberBetween(0, $choiceCount - 1);
+
+        // explanations
+        $localExplanations = [];
+        $explanationCount  = $faker->numberBetween(2, 4);
+        for ($j = 0; $j < $explanationCount; $j++) {
+            $localExplanations[] = Silicate::wall($faker->numberBetween(1, 3));
+        }
+        $explanations[] = $localExplanations;
+    }
+
+    $timestamps = Timestamps::factory();
+
+    return [
+        'type'         => 'mcq',
+        'questions'    => $questions,
+        'choices'      => $choices,
+        'solutions'    => $solutions,
+        'explanations' => $explanations,
+        'visible'      => $faker->boolean(90),
+        'subject_id'   => Subject::random()->id,
+        'created_at'   => $timestamps->createdAt,
+        'updated_at'   => $timestamps->updatedAt,
+    ];
+});

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Support\Randomizable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use function implode;
@@ -20,6 +21,7 @@ use function implode;
  */
 class Report extends Model
 {
+    use Randomizable;
     public const STATUSES = ['todo', 'done', 'validated'];
 
     /** @var array The attributes that are mass assignable */

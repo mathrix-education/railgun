@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Support\Randomizable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -22,6 +23,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Post extends Model
 {
+    use Randomizable;
     /** @var array The attributes that are mass assignable */
     protected $fillable = ['id', 'title', 'slug', 'module_id', 'category_id', 'user_id'];
     /** @var array Validation rules */

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Support\Randomizable;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -19,4 +20,5 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Training extends Model
 {
+    use Randomizable;
 }

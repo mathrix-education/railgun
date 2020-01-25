@@ -8,12 +8,10 @@ use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Str;
 
 /**
- * DisciplineFactory.
- *
  * @var Factory $factory
  */
 $factory->define(Discipline::class, static function (Generator $faker) {
-    $name = mb_substr($faker->sentence(random_int(3, 5)), 0, -1);
+    $name = $faker->word;
 
     return [
         'name' => $name,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Support\Randomizable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,5 +25,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Course extends Model
 {
+    use Randomizable;
+
     protected $casts = ['content' => 'array'];
 }

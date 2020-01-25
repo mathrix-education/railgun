@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Support\Randomizable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,18 +13,20 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * @property-read int             $id
- * @property string|null          $content
- * @property-read int             $score
- * @property int|null             $parent_id
- * @property int                  $user_id
- * @property string               $commentable_type
- * @property string               $commentable_id
- * @property-read Carbon          $created_at
- * @property-read Carbon          $updated_at
+ * @property-read int    $id
+ * @property string|null $content
+ * @property-read int    $score
+ * @property int|null    $parent_id
+ * @property int         $user_id
+ * @property string      $commentable_type
+ * @property int         $commentable_id
+ * @property-read Carbon $created_at
+ * @property-read Carbon $updated_at
  */
 class Comment extends Model
 {
+    use Randomizable;
+
     /** @var array The default relations included */
     public $with = ['user:id,username,firstname,grade_id'];
 

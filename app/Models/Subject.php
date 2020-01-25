@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Support\Randomizable;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -15,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read string $created_at
  * @property-read string $updated_at
  */
-class Subjects extends Model
+class Subject extends Model
 {
+    use Randomizable;
 }

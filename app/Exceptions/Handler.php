@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace App\Exceptions;
 
 use App\Models\User;
-use App\Services\Stripe\Exceptions\CardDeclined;
-use App\Services\Stripe\Exceptions\CardIncorrectCVC;
-use App\Services\Stripe\Exceptions\StripeHandler;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
@@ -16,12 +13,9 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
-use Mathrix\Lumen\JWT\Auth\Exceptions\InvalidCredentials;
-use Mathrix\Lumen\Zero\Exceptions\Http\HttpException;
 use Sentry\State\Hub;
 use Sentry\State\Scope;
 use Stripe\Exception\ApiErrorException as StripeApiErrorException;
-use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use function app;
 use function class_basename;
@@ -40,11 +34,7 @@ class Handler extends ExceptionHandler
      *
      * @var string[]
      */
-    protected $dontReport = [
-        InvalidCredentials::class,
-        NotFoundHttpException::class,
-        MethodNotAllowedHttpException::class,
-    ];
+    protected $dontReport = [];
 
     /**
      * Sentry integration.
@@ -76,57 +66,5 @@ class Handler extends ExceptionHandler
         }
 
         parent::report($exception);
-    }
-
-    /**
-     * Render an exception into an HTTP response.
-     *
-     * @param Request|mixed $request   The Illuminate HTTP request.
-     * @param Exception     $exception The exception to render.
-     *
-     * @return JsonResponse|Response
-     *
-     * @throws CardDeclined
-     * @throws CardIncorrectCVC
-     */
-    public function render($request, Exception $exception)
-    {
-        if ($exception instanceof HttpException) {
-            return $exception->toJsonResponse();
-        }
-
-        if ($exception instanceof StripeApiErrorException) {
-            StripeHandler::handle($exception);
-        }
-
-        $overriddenStatusCode = null;
-
-        $exceptionClass = class_basename($exception); // Get the Exception class name
-
-        // Default exception handler
-        $error = Str::snake($exceptionClass, '_');
-        $error = str_replace('_exception', '', $error);
-
-        $json = [
-            'error'   => $error,
-            'message' => $exception->getMessage(),
-        ];
-
-        if ($exception instanceof ModelNotFoundException) {
-            $overriddenStatusCode = 404;
-        }
-
-        if ($exception instanceof NotFoundHttpException) {
-            $json['data'] = $request->url();
-        }
-
-        // Include trace in debug mode
-        if (env('APP_DEBUG')) {
-            $json['trace'] = explode("\n", $exception->getTraceAsString());
-        }
-
-        $rendered = parent::render($request, $exception);
-
-        return new JsonResponse($json, $overriddenStatusCode ?? $rendered->getStatusCode());
     }
 }

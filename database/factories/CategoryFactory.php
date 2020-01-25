@@ -8,16 +8,13 @@ use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Str;
 
 /**
- * CategoryFactory.
- *
  * @var Factory $factory
  */
 $factory->define(Category::class, static function (Generator $faker) {
-    $name = mb_substr($faker->sentence($faker->numberBetween(3, 5)), 0, -1);
+    $name = $faker->word;
 
     return [
         'name' => $name,
         'slug' => Str::slug($name),
-        'image' => "img/categories/{$faker->uuid}.jpg",
     ];
 });

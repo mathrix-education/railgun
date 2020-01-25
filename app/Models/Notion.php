@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Support\Randomizable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -28,6 +29,7 @@ use function implode;
  */
 class Notion extends Model
 {
+    use Randomizable;
     public const TYPES = ['normal', 'premium', 'reminder', 'further'];
 
     /** @var array The attributes that are mass assignable */

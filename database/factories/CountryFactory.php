@@ -8,12 +8,10 @@ use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Str;
 
 /**
- * CountryFactory.
- *
  * @var Factory $factory
  */
 $factory->define(Country::class, static function (Generator $faker) {
-    $name = $faker->firstName;
+    $name = $faker->country;
     $slug = Str::slug(mb_substr($name, 0, random_int(2, 3)));
 
     return [

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\GraphQL\Mutations;
 
+use App\Exceptions\InvalidCredentials;
 use App\Models\User;
 use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Support\Facades\Hash;
-use Mathrix\Lumen\JWT\Auth\Exceptions\InvalidCredentials;
 use Mathrix\Lumen\JWT\Auth\JWT\JWTIssuer;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use function app;

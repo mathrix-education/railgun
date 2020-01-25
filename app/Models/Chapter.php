@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Support\Randomizable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -27,6 +28,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Chapter extends Model
 {
+    use Randomizable;
+
     /** @var array The attributes that are mass assignable */
     protected $fillable = ['name', 'slug', 'order', 'visible', 'grade_id', 'discipline_id'];
 

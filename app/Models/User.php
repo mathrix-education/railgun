@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Models\Traits\FacebookUser;
 use App\Services\Bishop\Subscription;
+use App\Support\Randomizable;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -62,6 +63,7 @@ use function trim;
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
+    use Randomizable;
     use Authorizable;
     use Authenticatable;
     use HasJWT;

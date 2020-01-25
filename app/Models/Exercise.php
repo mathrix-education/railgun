@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Support\Randomizable;
 use Carbon\Carbon;
 
 /**
@@ -21,4 +22,5 @@ use Carbon\Carbon;
  */
 class Exercise
 {
+    use Randomizable;
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Support\Randomizable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Concerns\AsPivot;
@@ -18,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\Concerns\AsPivot;
  */
 class Acquisition extends Model
 {
+    use Randomizable;
     use AsPivot;
 
     protected $table = 'acquisitions';
