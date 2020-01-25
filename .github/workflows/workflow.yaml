@@ -143,7 +143,7 @@ jobs:
           service-account-key: ${{ secrets.GCLOUD_AUTH }}
       - name: Retrieve Kubernetes Cluster Credentials
         run: |
-          gcloud container clusters get-credentials php-fpm-testing --zone=europe-west-1b
+          gcloud container clusters get-credentials php-fpm-testing --zone=europe-west1-b
       - name: Change image version
         run: |
           kubectl set image -n education-graphql deployment/api \
