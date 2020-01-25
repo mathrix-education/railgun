@@ -142,11 +142,12 @@ jobs:
           project: ${{ secrets.GCLOUD_PROJECT }}
           service-account-key: ${{ secrets.GCLOUD_AUTH }}
       - name: Retrieve Kubernetes Cluster Credentials
-        run: gcloud container clusters get-credentials php-fpm-testing
+        run: |
+          gcloud container clusters get-credentials php-fpm-testing --zone=europe-west-1b
       - name: Change image version
         run: |
           kubectl set image -n education-graphql deployment/api \
-          "php=eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:$(bin/release)"
+            "php=eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:$(bin/release)"
   sentry_release:
     name: Create Sentry Release
     # needs: [docker, test]
