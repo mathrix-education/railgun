@@ -20,57 +20,57 @@ jobs:
         run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
       - name: Lint with PHP_CodeSniffer
         run: composer lint:details
-  test:
-    name: Test with PHPUnit
-    runs-on: ubuntu-latest
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_DATABASE: mathrix_education_testing
-          MYSQL_ROOT_PASSWORD: '123456'
-        ports:
-          - 3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup Google Cloud Service Account Key
-        run: echo "${{ secrets.GCLOUD_AUTH }}" | base64 -d > storage/keychain/service_account.json
-      - name: Setup PHP
-        uses: shivammathur/setup-php@1.7.2
-        with:
-          php-version: 7.4
-          extensions: gd, gmp, mbstring, mysql, zip
-          coverage: pcov
-          tools: prestissimo
-      - name: Install dependencies
-        run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
-      - name: Setup application (environment, JWT key and database seed)
-        env:
-          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
-          DB_PASSWORD: '123456'
-        run: |
-          cp environments/testing/.env .env
-          bin/artisan jwt:key
-          bin/artisan migrate --seed
-      - name: Test with PHPUnit
-        env:
-          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
-          DB_PASSWORD: '123456'
-          GOOGLE_CLOUD_KEY_FILE: keychain/service_account.json
-          MAILGUN_SECRET: ${{ secrets.MAILGUN_SECRET }}
-          STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
-          BRAINTREE_PRIVATE_KEY: ${{ secrets.BRAINTREE_PRIVATE_KEY }}
-        run: composer test:cover
-      - name: Upload artifacts (JUnit Report, Coverage report)
-        uses: actions/upload-artifact@v1.0.0
-        with:
-          name: artifacts
-          path: storage/artifacts
+#  test:
+#    name: Test with PHPUnit
+#    runs-on: ubuntu-latest
+#    services:
+#      mysql:
+#        image: mysql:5.7
+#        env:
+#          MYSQL_DATABASE: mathrix_education_testing
+#          MYSQL_ROOT_PASSWORD: '123456'
+#        ports:
+#          - 3306
+#        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#      - name: Setup Google Cloud Service Account Key
+#        run: echo "${{ secrets.GCLOUD_AUTH }}" | base64 -d > storage/keychain/service_account.json
+#      - name: Setup PHP
+#        uses: shivammathur/setup-php@1.7.2
+#        with:test
+#          php-version: 7.4
+#          extensions: gd, gmp, mbstring, mysql, zip
+#          coverage: pcov
+#          tools: prestissimo
+#      - name: Install dependencies
+#        run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+#      - name: Setup application (environment, JWT key and database seed)
+#        env:
+#          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
+#          DB_PASSWORD: '123456'
+#        run: |
+#          cp environments/testing/.env .env
+#          bin/artisan jwt:key
+#          bin/artisan migrate --seed
+#      - name: Test with PHPUnit
+#        env:
+#          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
+#          DB_PASSWORD: '123456'
+#          GOOGLE_CLOUD_KEY_FILE: keychain/service_account.json
+#          MAILGUN_SECRET: ${{ secrets.MAILGUN_SECRET }}
+#          STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
+#          BRAINTREE_PRIVATE_KEY: ${{ secrets.BRAINTREE_PRIVATE_KEY }}
+#        run: composer test:cover
+#      - name: Upload artifacts (JUnit Report, Coverage report)
+#        uses: actions/upload-artifact@v1.0.0
+#        with:
+#          name: artifacts
+#          path: storage/artifacts
   static_analysis:
     name: Analyse with Sonar Scanner
-    needs: [test]
+    # needs: [test]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -85,11 +85,11 @@ jobs:
           if [[ "$(bin/parent_branch)" != "no-parent" ]]; then
             echo "sonar.branch.target=$(bin/parent_branch)" >> sonar-project.properties
           fi
-      - name: Download artifacts (JUnit Report, Coverage report)
-        uses: actions/download-artifact@v1.0.0
-        with:
-          name: artifacts
-          path: storage/artifacts
+#      - name: Download artifacts (JUnit Report, Coverage report)
+#        uses: actions/download-artifact@v1.0.0
+#        with:
+#          name: artifacts
+#          path: storage/artifacts
       - name: Run Sonar Scanner
         uses: mathrix-education/sonar-scanner@master
         with:
@@ -97,7 +97,7 @@ jobs:
           scan: true
           args: -Dsonar.login=${{ secrets.SONAR_TOKEN }}
   docker:
-    name: Build Docker image
+    name: Build and push Docker image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -131,28 +131,22 @@ jobs:
           gcloud container images add-tag \
             "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:$(bin/release)" \
             "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:latest-$(bin/current_branch)"
-  deploy_cloud_run:
-    name: Deploy on Cloud Run
-    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/v7'
-    # needs: [docker, test]
+  deploy_gke:
+    name: Deploy on Google Kubernetes Engine
     needs: [docker]
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
       - name: Setup Google Cloud SDK
         uses: mathrix-education/setup-gcloud@0.1.2
         with:
           project: ${{ secrets.GCLOUD_PROJECT }}
           service-account-key: ${{ secrets.GCLOUD_AUTH }}
-      - name: Deploy on Google Cloud Run
+      - name: Retrieve Kubernetes Cluster Credentials
+        run: gcloud container clusters get-credentials php-fpm-testing
+      - name: Change image version
         run: |
-          gcloud run deploy "education-api-$(bin/current_branch)" \
-            --image "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:$(bin/release)" \
-            --platform=managed \
-            --region=europe-west1 \
-            --allow-unauthenticated \
-            --set-env-vars="APP_ENV=$(bin/current_branch)"
+          kubectl set image -n education-graphql deployment/api \
+          "php=eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:$(bin/release)"
   sentry_release:
     name: Create Sentry Release
     # needs: [docker, test]
@@ -178,7 +172,7 @@ jobs:
   sentry_deploy:
     name: Deploy Sentry Release
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/v7'
-    needs: [deploy_cloud_run]
+    needs: [deploy_gke]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
