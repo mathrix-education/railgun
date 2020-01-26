@@ -6,24 +6,12 @@
          colors="true">
     <testsuites>
         <testsuite name="API Test Suite">
-            <directory>./tests/API</directory>
-        </testsuite>
-        <testsuite name="Unit Test Suite">
-            <directory>./tests/Unit</directory>
-        </testsuite>
-        <testsuite name="Integration Test Suite">
-            <directory>./tests/Integration</directory>
-        </testsuite>
-        <testsuite name="Regression Test Suite">
-            <directory>./tests/Regression</directory>
+            <directory>./tests/GraphQL</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./app</directory>
-            <exclude>
-                <directory>./app/Registrars</directory>
-            </exclude>
         </whitelist>
     </filter>
 </phpunit>
