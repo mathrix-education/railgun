@@ -20,11 +20,11 @@ COPY docker/entrypoint.sh /usr/local/bin/entrypoint
 COPY docker/healthcheck.sh /usr/local/bin/healthcheck
 COPY docker/etc/. /usr/local/etc/
 
-COPY --chown=nobody . /var/www/
+COPY --chown=www-data . /var/www/
 
-# Make sure files/folders needed by the processes are accessible when they run under the nobody user
-RUN chown -R nobody.nobody /run && \
-    chown -R nobody.nobody /var/www
+# Make sure files/folders needed by the processes are accessible when they run under the www-data user
+RUN chown -R www-data.www-data /run && \
+    chown -R www-data.www-data /var/www
 
 # Declare healthcheck
 HEALTHCHECK CMD /usr/local/bin/healthcheck || exit 1
