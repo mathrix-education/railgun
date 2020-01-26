@@ -4,13 +4,6 @@ declare(strict_types=1);
 
 namespace Railgun\Providers;
 
-use Railgun\Console\Kernel;
-use Railgun\Exceptions\Handler;
-use Railgun\MigrationV7\MigrationV7ServiceProvider;
-use Railgun\Models\Comment;
-use Railgun\Models\Notion;
-use Railgun\Models\Post;
-use Railgun\Models\User;
 use Fruitcake\Cors\CorsServiceProvider;
 use Fruitcake\Cors\HandleCors;
 use Illuminate\Contracts\Console\Kernel as KernelContract;
@@ -23,6 +16,13 @@ use Mathrix\Lumen\JWT\Auth\JWTAuthServiceProvider;
 use MLL\GraphQLPlayground\GraphQLPlaygroundServiceProvider;
 use Nuwave\Lighthouse\LighthouseServiceProvider;
 use Nuwave\Lighthouse\Tracing\TracingServiceProvider;
+use Railgun\Console\Kernel;
+use Railgun\Exceptions\Handler;
+use Railgun\MigrationV7\MigrationV7ServiceProvider;
+use Railgun\Models\Comment;
+use Railgun\Models\Notion;
+use Railgun\Models\Post;
+use Railgun\Models\User;
 
 /**
  * Register all application service providers.

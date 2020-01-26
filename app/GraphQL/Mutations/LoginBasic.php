@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Railgun\GraphQL\Mutations;
 
-use Railgun\Exceptions\InvalidCredentials;
-use Railgun\Models\User;
 use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Support\Facades\Hash;
 use Mathrix\Lumen\JWT\Auth\JWT\JWTIssuer;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+use Railgun\Exceptions\InvalidCredentials;
+use Railgun\Models\User;
 use function app;
 
 class LoginBasic

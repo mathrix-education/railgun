@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Railgun\Providers\AppServiceProvider;
 use Laravel\Lumen\Application;
 use Laravel\Lumen\Bootstrap\LoadEnvironmentVariables;
+use Railgun\Providers\AppServiceProvider;
 
 (new LoadEnvironmentVariables(dirname(__DIR__)))->bootstrap();
 

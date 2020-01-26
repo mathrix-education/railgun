@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Railgun\Exceptions;
 
-use Railgun\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
+use Railgun\Models\User;
 use Sentry\State\Hub;
 use Sentry\State\Scope;
 use function app;

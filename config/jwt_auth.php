@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Railgun\Models\User;
 use Jose\Component\Signature\Algorithm\ES512;
+use Railgun\Models\User;
 
 return [
     'key'        => [

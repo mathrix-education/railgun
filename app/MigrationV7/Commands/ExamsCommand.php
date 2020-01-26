@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Railgun\MigrationV7\Commands;
 
-use Railgun\MigrationV7\Exams\ExamConverter;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Railgun\MigrationV7\Exams\ExamConverter;
 use stdClass;
 use Symfony\Component\Process\Process;
 use const JSON_PRETTY_PRINT;

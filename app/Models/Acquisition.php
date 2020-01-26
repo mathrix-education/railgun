@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Railgun\Models;
 
-use Railgun\Models\Traits\Randomizable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Concerns\AsPivot;
+use Railgun\Models\Traits\Randomizable;
 
 /**
  * An acquisition represents the fact that a user owns a certain product.

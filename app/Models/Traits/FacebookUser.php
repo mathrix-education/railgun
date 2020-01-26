@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Railgun\Models\Traits;
 
-use Railgun\Models\User;
 use Carbon\Carbon;
 use Exception;
 use Facebook\Exceptions\FacebookSDKException;
@@ -12,6 +11,7 @@ use Facebook\Facebook;
 use Facebook\FacebookResponse;
 use Jose\Component\Signature\JWS;
 use Mathrix\Lumen\JWT\Auth\JWT\JWTIssuer;
+use Railgun\Models\User;
 use const JSON_THROW_ON_ERROR;
 use function app;
 use function array_replace_recursive;

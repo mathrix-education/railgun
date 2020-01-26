@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-use Railgun\Models\Grade;
-use Railgun\Models\User;
-use Railgun\Support\Timestamps;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Railgun\Models\Grade;
+use Railgun\Models\User;
+use Railgun\Support\Timestamps;
 
 /**
  * UserFactory.

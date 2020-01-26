@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use Faker\Generator;
+use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Support\Str;
 use Railgun\Models\Course;
 use Railgun\Models\Exam;
 use Railgun\Models\Exercise;
@@ -9,9 +12,6 @@ use Railgun\Models\Flashcard;
 use Railgun\Models\Interaction;
 use Railgun\Models\User;
 use Railgun\Support\Timestamps;
-use Faker\Generator;
-use Illuminate\Database\Eloquent\Factory;
-use Illuminate\Support\Str;
 
 /**
  * @var Factory $factory

@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Railgun\Models\Chapter;
 use Railgun\Models\Course;
 use Railgun\Models\Exam;
@@ -9,8 +11,6 @@ use Railgun\Models\Exercise;
 use Railgun\Models\Flashcard;
 use Railgun\Models\Notion;
 use Railgun\Models\Subject;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 
 /**
  * Seed the content data (countries, grades, disciplines, chapters, notions, courses, subjects, exercises, flashcards

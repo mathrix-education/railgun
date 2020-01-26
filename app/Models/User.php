@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Railgun\Models;
 
-use Railgun\Models\Traits\FacebookUser;
-use Railgun\Services\Bishop\Subscription;
-use Railgun\Models\Traits\Randomizable;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -22,6 +19,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Laravel\Lumen\Auth\Authorizable;
 use Mathrix\Lumen\JWT\Auth\HasJWT;
+use Railgun\Models\Traits\FacebookUser;
+use Railgun\Models\Traits\Randomizable;
+use Railgun\Services\Bishop\Subscription;
 use stdClass;
 use Stripe\Subscription as StripeSubscription;
 use function array_merge;

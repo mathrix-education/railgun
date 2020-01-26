@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-use Railgun\Models\Pack;
-use Railgun\Support\Timestamps;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Str;
+use Railgun\Models\Pack;
+use Railgun\Support\Timestamps;
 
 /**
  * NotionFactory.

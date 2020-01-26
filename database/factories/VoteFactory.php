@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
+use Faker\Generator;
+use Illuminate\Database\Eloquent\Factory;
 use Railgun\Models\Comment;
 use Railgun\Models\User;
 use Railgun\Models\Vote;
 use Railgun\Support\Timestamps;
-use Faker\Generator;
-use Illuminate\Database\Eloquent\Factory;
 
 /**
  * VoteFactory.

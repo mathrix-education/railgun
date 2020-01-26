@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use Railgun\Models\Coupon;
-use Railgun\Support\Timestamps;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
+use Railgun\Models\Coupon;
+use Railgun\Support\Timestamps;
 
 /**
  * @var Factory $factory

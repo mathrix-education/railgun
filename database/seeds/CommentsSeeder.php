@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Collection;
 use Railgun\Models\Comment;
 use Railgun\Models\Vote;
-use Illuminate\Support\Collection;
 
 class CommentsSeeder extends AdvancedSeeder
 {

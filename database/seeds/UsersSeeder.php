@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Railgun\Models\User;
 use Illuminate\Support\Facades\DB;
+use Railgun\Models\User;
 
 class UsersSeeder extends AdvancedSeeder
 {

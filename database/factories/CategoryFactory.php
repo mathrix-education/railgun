@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use Railgun\Models\Category;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Str;
+use Railgun\Models\Category;
 
 /**
  * @var Factory $factory

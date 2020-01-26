@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Railgun\Models;
 
-use Railgun\Models\Traits\Randomizable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Railgun\Models\Traits\Randomizable;
 
 /**
  * @property-read  int           $id

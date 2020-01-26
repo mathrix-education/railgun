@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\GraphQL\Mutations;
 
-use Railgun\Models\User;
 use Jose\Component\Signature\Serializer\Serializer;
 use Mathrix\Lumen\JWT\Auth\JWT\JWTVerifier;
+use Railgun\Models\User;
 use Tests\GraphQLTestCase;
 use const JSON_THROW_ON_ERROR;
 use function app;

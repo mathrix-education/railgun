@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use Railgun\Models\Setting;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
+use Railgun\Models\Setting;
 
 /**
  * @var Factory $factory

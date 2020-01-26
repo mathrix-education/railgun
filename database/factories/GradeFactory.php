@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-use Railgun\Models\Country;
-use Railgun\Models\Grade;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Str;
+use Railgun\Models\Country;
+use Railgun\Models\Grade;
 
 /**
  * GradeFactory.

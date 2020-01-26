@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
+use Faker\Generator;
+use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Support\Str;
 use Railgun\Models\Course;
 use Railgun\Models\Notion;
 use Railgun\Support\Silicate;
 use Railgun\Support\Timestamps;
-use Faker\Generator;
-use Illuminate\Database\Eloquent\Factory;
-use Illuminate\Support\Str;
 
 /**
  * @var Factory $factory

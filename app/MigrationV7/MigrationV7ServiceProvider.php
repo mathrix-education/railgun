@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Railgun\MigrationV7;
 
+use Illuminate\Support\ServiceProvider;
+use Laravel\Lumen\Application;
 use Railgun\MigrationV7\Commands\AcquisitionsCommand;
 use Railgun\MigrationV7\Commands\CleanCommand;
 use Railgun\MigrationV7\Commands\CommentsCommand;
@@ -24,8 +26,6 @@ use Railgun\MigrationV7\Commands\SubjectsCommand;
 use Railgun\MigrationV7\Commands\TriggersCommand;
 use Railgun\MigrationV7\Commands\VotesCommand;
 use Railgun\MigrationV7\Commands\ZerosCommand;
-use Illuminate\Support\ServiceProvider;
-use Laravel\Lumen\Application;
 
 /**
  * @property-read Application $app
