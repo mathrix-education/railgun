@@ -9,7 +9,8 @@ WORKDIR /var/www
 # - gmp for the php-gmp extension required to use ellipitic curves
 # - gettext to use the envsubst command
 RUN apk add --no-cache gmp gmp-dev gettext fcgi \
-    && docker-php-ext-install -j$(nproc) gmp opcache pdo_mysql \
+    && pecl install redis-5.1.1
+    && docker-php-ext-install -j$(nproc) gmp opcache pdo_mysql redis \
     && rm -rf /usr/src \
         /var/www /var/cache/apk/* \
         /usr/local/bin/docker-php-entrypoint \

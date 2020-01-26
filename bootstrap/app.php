@@ -18,6 +18,7 @@ $app->configure('app');
 $app->configure('auth');
 $app->configure('cache');
 $app->configure('cors');
+$app->configure('database');
 $app->configure('filesystems');
 $app->configure('graphql-playground');
 $app->configure('jwt_auth');

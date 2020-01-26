@@ -8,6 +8,7 @@ use Illuminate\Contracts\Console\Kernel as KernelContract;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Filesystem\FilesystemServiceProvider;
+use Illuminate\Redis\RedisServiceProvider;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application;
 use Mathrix\Lumen\JWT\Auth\JWTAuthServiceProvider;
@@ -46,6 +47,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(LighthouseServiceProvider::class);
         $this->app->register(TracingServiceProvider::class);
         $this->app->register(GraphQLPlaygroundServiceProvider::class);
+        $this->app->register(RedisServiceProvider::class);
 
         // MorphMap
         Relation::morphMap([
