@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+BIN="./vendor/bin/phpunit"
+ARGS=""
+
+if [[ $1 == "cover" ]]; then
+    ARGS="--testdox \
+        --log-junit=storage/artifacts/phpunit-junit.xml \
+        --coverage-clover=storage/artifacts/phpunit-coverage.xml \
+        --coverage-text"
+fi
+
+eval "$BIN $ARGS"

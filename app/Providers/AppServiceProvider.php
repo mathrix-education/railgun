@@ -40,19 +40,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(ExceptionHandler::class, Handler::class);
         $this->app->singleton(KernelContract::class, Kernel::class);
 
-        // Middleware
-        $this->app->middleware([HandleCors::class]);
-
-        $this->app->register(SentryServiceProvider::class);
-
         // Vendor service providers
-        $this->app->register(CorsServiceProvider::class);
+        $this->app->register(SentryServiceProvider::class);
         $this->app->register(FilesystemServiceProvider::class);
-
-        // Mathrix Lumen Zero Providers
         $this->app->register(JWTAuthServiceProvider::class);
         $this->app->register(MigrationV7ServiceProvider::class);
-
         $this->app->register(LighthouseServiceProvider::class);
         $this->app->register(TracingServiceProvider::class);
         $this->app->register(GraphQLPlaygroundServiceProvider::class);
