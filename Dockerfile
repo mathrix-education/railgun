@@ -10,14 +10,16 @@ WORKDIR /var/www
 # - gettext to use the envsubst command
 RUN apk add --no-cache gmp gmp-dev gettext fcgi \
     && docker-php-ext-install -j$(nproc) gmp opcache pdo_mysql \
-    && rm -rf /usr/src /var/www /var/cache/apk/* /usr/local/bin/docker-php-entrypoint
+    && rm -rf /usr/src \
+        /var/www /var/cache/apk/* \
+        /usr/local/bin/docker-php-entrypoint \
+        /usr/local/etc/php-fpm.conf.default \
+        /usr/local/etc/php-fpm.conf.d/www.conf.default
 
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint
 COPY docker/healthcheck.sh /usr/local/bin/healthcheck
-COPY docker/php/php.ini /usr/local/etc/php/php.ini
-COPY docker/php/php-fpm.conf /usr/local/etc/php-fpm.conf
-COPY docker/php/php-fpm-pool.conf /usr/local/etc/php-fpm.d/www.conf
-COPY docker/php/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+COPY docker/etc/. /usr/local/etc/
+
 COPY --chown=nobody . /var/www/
 
 # Make sure files/folders needed by the processes are accessible when they run under the nobody user
