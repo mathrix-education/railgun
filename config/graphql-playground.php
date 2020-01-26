@@ -7,6 +7,6 @@ return [
         'uri'  => '/',
         'name' => 'graphql-playground',
     ],
-    'endpoint' => '/graphql',
+    'endpoint' => '/',
     'enabled'  => env('GRAPHQL_PLAYGROUND_ENABLED', env('APP_ENV') !== 'master'),
 ];

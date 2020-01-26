@@ -3,13 +3,15 @@
 declare(strict_types=1);
 
 use GraphQL\Error\Debug;
+use GraphQL\Validator\Rules\DisableIntrospection;
 use GraphQL\Validator\Rules\QueryComplexity;
+use GraphQL\Validator\Rules\QueryDepth;
 use Nuwave\Lighthouse\Execution\ExtensionErrorHandler;
 use Nuwave\Lighthouse\Support\Http\Middleware\AcceptJson;
 
 return [
     'route'                   => [
-        'uri'        => '/graphql',
+        'uri'        => '/',
         'name'       => 'graphql',
         'middleware' => [
             AcceptJson::class,
@@ -35,8 +37,8 @@ return [
     ],
     'security'                => [
         'max_query_complexity'  => QueryComplexity::DISABLED,
-        'max_query_depth'       => 3,
-        'disable_introspection' => env('APP_ENV') === 'master',
+        'max_query_depth'       => QueryDepth::DISABLED,
+        'disable_introspection' => env('APP_ENV') === 'master' ? true : DisableIntrospection::DISABLED,
     ],
     'paginate_max_count'      => 100,
     'debug'                   => Debug::INCLUDE_DEBUG_MESSAGE | Debug::INCLUDE_TRACE,
