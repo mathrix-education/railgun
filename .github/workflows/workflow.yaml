@@ -56,6 +56,11 @@ jobs:
           STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
           BRAINTREE_PRIVATE_KEY: ${{ secrets.BRAINTREE_PRIVATE_KEY }}
         run: composer test:cover
+      - name: Upload logs artifact
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: phpunit-logs
+          path: storage/logs
       - name: Upload artifacts (JUnit Report, Coverage report)
         uses: actions/upload-artifact@v1.0.0
         with:
