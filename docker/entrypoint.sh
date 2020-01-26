@@ -1,3 +1,3 @@
 #!/bin/sh
-php bin/artisan gcloud:setup
+php /var/www/bin/artisan gcloud:setup
 php-fpm
