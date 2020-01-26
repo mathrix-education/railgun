@@ -29,6 +29,6 @@ RUN chown -R nobody.nobody /run && \
 # Declare healthcheck
 HEALTHCHECK CMD /usr/local/bin/healthcheck || exit 1
 
-USER nobody
+USER www-data
 
 ENTRYPOINT ["/usr/local/bin/entrypoint"]
