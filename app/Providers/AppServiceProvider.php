@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Railgun\Providers;
 
-use Fruitcake\Cors\CorsServiceProvider;
-use Fruitcake\Cors\HandleCors;
 use Illuminate\Contracts\Console\Kernel as KernelContract;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Eloquent\Relations\Relation;
