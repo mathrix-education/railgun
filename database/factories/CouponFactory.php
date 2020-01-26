@@ -21,7 +21,7 @@ $factory->define(Coupon::class, static function (Generator $faker) {
     $timestamps = Timestamps::factory();
 
     return [
-        'id'         => mb_strtoupper($faker->domainWord),
+        'id'         => mb_strtoupper($faker->domainWord . $faker->randomNumber(4)),
         'type'       => $type,
         'value'      => $value,
         'counter'    => $faker->boolean ? -1 : $faker->randomDigit,
