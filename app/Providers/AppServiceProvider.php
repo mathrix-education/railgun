@@ -23,6 +23,7 @@ use Railgun\Models\Comment;
 use Railgun\Models\Notion;
 use Railgun\Models\Post;
 use Railgun\Models\User;
+use Sentry\Laravel\ServiceProvider as SentryServiceProvider;
 
 /**
  * Register all application service providers.
@@ -42,13 +43,11 @@ class AppServiceProvider extends ServiceProvider
         // Middleware
         $this->app->middleware([HandleCors::class]);
 
-        $this->app->register(\Sentry\Laravel\ServiceProvider::class);
+        $this->app->register(SentryServiceProvider::class);
 
         // Vendor service providers
         $this->app->register(CorsServiceProvider::class);
         $this->app->register(FilesystemServiceProvider::class);
-        $this->app->register(FacebookServiceProvider::class);
-        $this->app->register(GoogleCloudStorageServiceProvider::class);
 
         // Mathrix Lumen Zero Providers
         $this->app->register(JWTAuthServiceProvider::class);

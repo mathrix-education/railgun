@@ -11,12 +11,6 @@ return [
             'level'  => 'debug',
             'days'   => 7,
         ],
-        'stackdriver' => [
-            'driver'    => 'monolog',
-            'handler'   => Monolog\Handler\RotatingFileHandler::class,
-            'with'      => ['filename' => '/var/log/lumen.log'], // Cloud Run logs location
-            'formatter' => App\Logging\StackdriverFormatter::class,
-        ],
         'stdout'      => [
             'driver' => 'single',
             'path'   => 'php://stdout',

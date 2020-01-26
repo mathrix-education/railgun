@@ -4,17 +4,17 @@
          bootstrap="bootstrap/app.php"
          cacheResultFile="storage/framework/cache/phpunit-cache.php"
          colors="true">
-    <testsuites>
-        <testsuite name="API Test Suite">
-            <directory>./tests/GraphQL</directory>
-        </testsuite>
-    </testsuites>
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./app</directory>
-            <exclude>
-                <directory>./app/MigrationV7</directory>
-            </exclude>
-        </whitelist>
-    </filter>
+<testsuites>
+    <testsuite name="API Test Suite">
+        <directory>./tests/GraphQL</directory>
+    </testsuite>
+</testsuites>
+<filter>
+    <whitelist processUncoveredFilesFromWhitelist="true">
+        <directory suffix=".php">./app</directory>
+        <exclude>
+            <directory>./app/MigrationV7</directory>
+        </exclude>
+    </whitelist>
+</filter>
 </phpunit>
