@@ -31,7 +31,7 @@ class Notion extends Model
 {
     use Randomizable;
 
-    public const TYPES = ['normal', 'premium', 'reminder', 'further'];
+    public const TYPES = ['course', 'subject'];
 
     /** @var array The attributes that are mass assignable */
     protected $fillable = [

@@ -10,6 +10,9 @@ return [
             'table'      => env('CACHE_DATABASE_TABLE', 'cache'),
             'connection' => env('CACHE_DATABASE_CONNECTION', null),
         ],
+        'array'    => [
+            'driver' => 'array',
+        ],
     ],
     'prefix'  => env('CACHE_PREFIX', ''),
 ];

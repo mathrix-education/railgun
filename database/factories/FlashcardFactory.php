@@ -26,6 +26,7 @@ $factory->define(Flashcard::class, static function (Generator $faker) {
     return [
         'fronts'     => $fronts,
         'backs'      => $backs,
+        'order'      => 99,
         'visible'    => $faker->boolean(90),
         'chapter_id' => Chapter::random()->id,
         'created_at' => $timestamps->createdAt,

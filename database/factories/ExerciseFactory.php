@@ -49,6 +49,7 @@ $factory->define(Exercise::class, static function (Generator $faker) {
         'choices'      => $choices,
         'solutions'    => $solutions,
         'explanations' => $explanations,
+        'order'        => 99,
         'visible'      => $faker->boolean(90),
         'subject_id'   => Subject::random()->id,
         'created_at'   => $timestamps->createdAt,

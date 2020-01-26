@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Models\Chapter;
 use App\Models\Notion;
+use App\Support\Timestamps;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 
@@ -13,15 +14,16 @@ use Illuminate\Database\Eloquent\Factory;
  * @var Factory $factory
  */
 $factory->define(Notion::class, static function (Generator $faker) {
-    [$createdAt, $updatedAt] = timestamps();
+    $name       = ucfirst($faker->word);
+    $timestamps = Timestamps::factory();
 
     return [
-        'name' => mb_substr($faker->sentence(), 0, -1),
-        'type' => $faker->randomElement(Notion::TYPES),
-        'visible' => $faker->boolean(95),
-        'order' => $faker->numberBetween(0, 100),
+        'name'       => $name,
+        'type'       => $faker->randomElement(Notion::TYPES),
+        'visible'    => $faker->boolean(95),
+        'order'      => 99,
         'chapter_id' => Chapter::random()->id,
-        'created_at' => $createdAt,
-        'updated_at' => $updatedAt,
+        'created_at' => $timestamps->createdAt,
+        'updated_at' => $timestamps->updatedAt,
     ];
 });

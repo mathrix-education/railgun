@@ -5,20 +5,20 @@ declare(strict_types=1);
 namespace App\Support;
 
 use Faker\Generator;
-use ReflectionClass;
-use ReflectionException;
-use ReflectionMethod;
-use const JSON_THROW_ON_ERROR;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use function app;
 use function array_filter;
-use function array_map;
+use function file_get_contents;
 use function in_array;
 use function json_decode;
 use function storage_path;
+use const JSON_THROW_ON_ERROR;
 
 class Silicate
 {
-    private static $youTubeIds;
+    private const FACTORIES       = ['text', 'video'];
+    private const WALL_CACHE_SIZE = 100;
 
     /**
      * Get a faker instance.
@@ -51,15 +51,20 @@ class Silicate
      */
     public static function video(): array
     {
-        if (!isset(self::$youTubeIds)) {
-            self::$youTubeIds = json_decode(storage_path('raws/youtube.json'), true, 512, JSON_THROW_ON_ERROR);
-        }
+        $youtubeIds = Cache::remember('silicate.youtube_ids', 3600, static function () {
+            return json_decode(
+                file_get_contents(storage_path('raws/youtube.json')),
+                true,
+                512,
+                JSON_THROW_ON_ERROR
+            );
+        });
 
         return [
             'uuid'    => self::faker()->uuid,
             'kind'    => 'video',
             'type'    => 'youtube',
-            'videoId' => self::faker()->randomElement(self::$youTubeIds),
+            'videoId' => self::faker()->randomElement($youtubeIds),
         ];
     }
 
@@ -70,26 +75,38 @@ class Silicate
      * @param array $blacklist An optional blacklist of generators.
      *
      * @return array
-     *
-     * @throws ReflectionException
      */
     public static function wall(int $length = 5, array $blacklist = []): array
     {
-        $class     = new ReflectionClass(self::class);
-        $blacklist = [...$blacklist, ...['faker', 'wall']];
-        $factories = array_map(
-            fn(ReflectionMethod $method) => $method->name,
-            $class->getMethods(ReflectionMethod::IS_STATIC)
-        );
-        $factories = array_filter($factories, fn($f) => !in_array($f, $blacklist, true));
+        $generator = static function (int $length, array $factories) {
+            $wall = [];
 
-        $wall = [];
+            for ($i = 0; $i < $length; $i++) {
+                $factory = self::faker()->randomElement($factories);
+                $wall[]  = self::{$factory}();
+            }
 
-        for ($i = 0; $i < $length; $i++) {
-            $factory = self::faker()->randomElement($factories);
-            $wall[]  = self::{$factory}();
+            return $wall;
+        };
+
+        // This is not a standard generation, generate using generator.
+        if ($length !== 5 || !empty($blacklist)) {
+            $factories = array_filter(self::FACTORIES, fn($f) => !in_array($f, $blacklist, true));
+
+            return $generator($length, $factories);
         }
 
-        return $wall;
+        // Use the cache
+        /** @var Collection $walls */
+        $walls = Cache::remember('silicate.walls', 10, static function () use ($generator) {
+            $walls = new Collection();
+            for ($i = 0; $i < self::WALL_CACHE_SIZE; $i++) {
+                $walls->push($generator(5, self::FACTORIES));
+            }
+
+            return $walls;
+        });
+
+        return $walls->random();
     }
 }

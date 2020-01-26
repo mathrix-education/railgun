@@ -14,7 +14,7 @@ use Illuminate\Support\Str;
  * @var Factory $factory
  */
 $factory->define(Course::class, static function (Generator $faker) {
-    $name       = ucfirst($faker->words(5, true));
+    $name       = ucfirst($faker->words(3, true));
     $slug       = Str::slug($name);
     $visible    = $faker->boolean(90);
     $timestamps = Timestamps::factory();
@@ -23,6 +23,7 @@ $factory->define(Course::class, static function (Generator $faker) {
         'name'            => $name,
         'slug'            => $slug,
         'content'         => Silicate::wall(),
+        'order'           => 99,
         'visible'         => $visible,
         'seo_index'       => $visible ? $faker->boolean(90) : false,
         'seo_slug'        => $slug,

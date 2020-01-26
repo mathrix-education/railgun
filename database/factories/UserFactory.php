@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Models\Grade;
 use App\Models\User;
+use App\Support\Timestamps;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Facades\Cache;
@@ -15,10 +16,8 @@ use Illuminate\Support\Facades\Hash;
  * @var Factory $factory
  */
 $factory->define(User::class, static function (Generator $faker) {
-    $names  = $faker->boolean(30);
-    $points = $faker->numberBetween(0, 100) * 10;
-
-    [$createdAt, $updatedAt] = timestamps();
+    $names      = $faker->boolean(30);
+    $timestamps = Timestamps::factory();
 
     $data = [
         'username'   => !$names ? $faker->userName : null,
@@ -34,18 +33,16 @@ $factory->define(User::class, static function (Generator $faker) {
         ),
         'scopes'     => [],
         'token'      => $faker->uuid,
-        'points'     => $points,
-        'daily'      => $faker->randomElement([10, 20, 40]),
         'settings'   => [
             'sound' => $faker->boolean(70),
         ],
         'grade_id'   => Grade::random()->id,
-        'created_at' => $createdAt,
-        'updated_at' => $updatedAt,
+        'created_at' => $timestamps->createdAt,
+        'updated_at' => $timestamps->updatedAt,
     ];
 
     if ($faker->boolean(50)) {
-        $data['settings']['facebook_id'] = $faker->password();
+        $data['settings']['facebook_id'] = md5($faker->password());
     }
 
     return $data;

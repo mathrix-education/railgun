@@ -2,57 +2,22 @@
 
 declare(strict_types=1);
 
-use App\Models\Activity;
-use App\Models\Category;
-use App\Models\Chapter;
-use App\Models\Comment;
-use App\Models\Country;
-use App\Models\Module;
-use App\Models\Notion;
-use App\Models\Post;
-use App\Models\Report;
-use App\Models\User;
-use App\Models\Vote;
-use Illuminate\Support\Facades\DB;
-use Mathrix\Lumen\Zero\Database\BaseTableSeeder;
-
-class DatabaseSeeder extends BaseTableSeeder
+class DatabaseSeeder extends AdvancedSeeder
 {
     public function run(): void
     {
-        // Content
-        $this->seedFromJson('countries');
-        $this->seedFromJson('grades');
-        $this->seedFromJson('disciplines');
-        $this->seedFromFactory(Country::class, 10);
-        $this->seedFromFactory(Chapter::class, 30);
-        $this->seedFromFactory(Notion::class, 90);
-        $this->seedFromFactory(Activity::class, 200);
-        $this->seedFromFactory(Module::class, 250);
+        $this->writeln('Starting database seeding (this might take a while!)');
+        putenv('CACHE_DRIVER=array');
+        $start = time();
 
-        // Users
-        $this->seedFromFactory(User::class, 100);
-        DB::update("UPDATE users SET `email` = 'admin@mathrix.fr', scopes = '[\"*\"]' WHERE id = 1");
+        $this->callSilent(ContentSeeder::class);
+        $this->callSilent(TrainingsSeeder::class);
+        $this->callSilent(BlogSeeder::class);
+        $this->callSilent(UsersSeeder::class);
+        $this->callSilent(CommentsSeeder::class);
+        $this->callSilent(InteractionsSeeder::class);
 
-        // Categories & Posts
-        $this->seedFromFactory(Category::class, 10);
-        $this->seedFromFactory(Post::class, 20);
-
-        // Comments & votes
-        $this->seedFromFactory(Comment::class, 200);
-        $this->seedFromSubFactory(Comment::class, 'child', 500);
-        $this->seedFromFactory(Vote::class, 100);
-
-        // Products
-        $this->call(ProductTableSeeder::class);
-
-        // Reports
-        $this->seedFromFactory(Report::class, 50);
-
-        // Marks
-        $this->call(MarksTableSeeder::class);
-
-        // Notifications
-        $this->call(CountersTableSeeder::class);
+        $duration = time() - $start;
+        $this->writeln("<info>> Done in $duration seconds</info>");
     }
 }

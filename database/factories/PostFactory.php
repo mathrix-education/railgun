@@ -3,29 +3,28 @@
 declare(strict_types=1);
 
 use App\Models\Category;
-use App\Models\Module;
 use App\Models\Post;
-use App\Models\User;
+use App\Support\Silicate;
+use App\Support\Timestamps;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Str;
 
 /**
- * NotionFactory.
- *
  * @var Factory $factory
  */
 $factory->define(Post::class, static function (Generator $faker) {
-    $title                   = mb_substr($faker->sentence($faker->numberBetween(3, 5)), 0, -1);
-    [$createdAt, $updatedAt] = timestamps();
+    $title      = ucfirst($faker->words(3, true));
+    $timestamps = Timestamps::factory();
 
     return [
-        'title' => $title,
-        'slug' => Str::slug($title),
-        'module_id' => Module::random(['type', '=', 'course'])->id,
+        'title'       => $title,
+        'slug'        => Str::slug($title),
+        'content'     => Silicate::wall(),
+        'order'       => 99,
+        'visible'     => $faker->boolean(90),
         'category_id' => Category::random()->id,
-        'user_id' => User::random()->id,
-        'created_at' => $createdAt,
-        'updated_at' => $updatedAt,
+        'created_at'  => $timestamps->createdAt,
+        'updated_at'  => $timestamps->updatedAt,
     ];
 });

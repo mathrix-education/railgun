@@ -11,12 +11,11 @@ use Illuminate\Support\Str;
  * @var Factory $factory
  */
 $factory->define(Country::class, static function (Generator $faker) {
-    $name = $faker->country;
-    $slug = Str::slug(mb_substr($name, 0, random_int(2, 3)));
+    $name = ucfirst($faker->country);
 
     return [
         'name' => $name,
-        'slug' => Str::slug($slug),
+        'slug' => Str::slug($name),
         'visible' => $faker->boolean(95),
     ];
 });

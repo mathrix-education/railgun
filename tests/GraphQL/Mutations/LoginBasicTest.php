@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\GraphQL\Mutations;
 
+use App\Models\User;
 use Tests\GraphQLTestCase;
-use function dd;
 
 class LoginBasicTest extends GraphQLTestCase
 {
     public function testLoginBasic()
     {
-        $query = /** @lang GraphQL */<<<GRAPHQL
+        $query = <<<GRAPHQL
         mutation (\$email: String!, \$password: String!) {
             loginBasic(email: \$email, password: \$password) {
                 token
@@ -20,11 +20,10 @@ class LoginBasicTest extends GraphQLTestCase
         GRAPHQL;
 
         $this->graphQL($query, [
-            'email'    => 'test',
-            'password' => 'lo',
+            'email'    => User::random()->email,
+            'password' => env('DB_PASSWORD'),
         ]);
 
-        dd($this->getErrors());
         $this->assertResponseOk();
     }
 }

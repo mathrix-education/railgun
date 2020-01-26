@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Support\Randomizable;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property-read int           $id
@@ -20,7 +21,7 @@ use Carbon\Carbon;
  * @property-read Carbon        $created_at
  * @property-read Carbon        $updated_at
  */
-class Exercise
+class Exercise extends Model
 {
     use Randomizable;
 }

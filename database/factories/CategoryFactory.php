@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
  * @var Factory $factory
  */
 $factory->define(Category::class, static function (Generator $faker) {
-    $name = $faker->word;
+    $name = ucfirst($faker->word);
 
     return [
         'name' => $name,

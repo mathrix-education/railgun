@@ -5,31 +5,24 @@ declare(strict_types=1);
 use App\Models\Comment;
 use App\Models\User;
 use App\Models\Vote;
+use App\Support\Timestamps;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 
 /**
  * VoteFactory.
+ * May generate conflicting composite keys!
  *
  * @var Factory $factory
  */
 $factory->define(Vote::class, static function (Generator $faker) {
-    $createdAt = $faker->dateTimeBetween('-1 month');
+    $timestamps = Timestamps::factory();
 
-    do {
-        $voteData = [
-            'value' => $faker->boolean(70) ? 1 : -1,
-            'user_id' => User::random()->id,
-            'comment_id' => Comment::random()->id,
-            'created_at' => $createdAt,
-            'updated_at' => $faker->boolean(90) ? $createdAt : $faker->dateTimeBetween($createdAt, 'now'),
-        ];
-    } while (Vote::query()
-        ->where([
-            ['user_id', '=', $voteData['user_id']],
-            ['comment_id', '=', $voteData['comment_id']],
-        ])
-        ->exists());
-
-    return $voteData;
+    return [
+        'user_id'    => User::random()->id,
+        'comment_id' => Comment::random()->id,
+        'value'      => $faker->boolean(70) ? 1 : -1,
+        'created_at' => $timestamps->createdAt,
+        'updated_at' => $timestamps->updatedAt,
+    ];
 });
