@@ -8,14 +8,17 @@ WORKDIR /var/www
 # Install additional packages:
 # - gmp for the php-gmp extension required to use ellipitic curves
 # - gettext to use the envsubst command
-RUN apk add --no-cache gmp gmp-dev gettext fcgi \
-    && pecl install redis-5.1.1 \
-    && docker-php-ext-install -j$(nproc) gmp opcache pdo_mysql redis \
+RUN apk add --no-cache gmp gmp-dev gettext fcgi pcre-dev ${PHPIZE_DEPS} \
+    && pecl install -o redis-5.1.1 \
+    && docker-php-ext-enable redis \
+    # && apk del pcre-dev ${PHPIZE_DEPS} \
+    && docker-php-ext-install -j$(nproc) gmp opcache pdo_mysql \
     && rm -rf /usr/src \
         /var/www /var/cache/apk/* \
         /usr/local/bin/docker-php-entrypoint \
         /usr/local/etc/php-fpm.conf.default \
-        /usr/local/etc/php-fpm.conf.d/www.conf.default
+        /usr/local/etc/php-fpm.conf.d/www.conf.default \
+    && php -m
 
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint
 COPY docker/healthcheck.sh /usr/local/bin/healthcheck
