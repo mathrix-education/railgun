@@ -100,9 +100,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Extract context
-        run: |
-          echo "##[set-output name=current_branch;]$(bin/current_branch)"
       - name: Setup PHP
         uses: shivammathur/setup-php@1.7.4
         with:
@@ -124,7 +121,7 @@ jobs:
       - name: Push image to Google Cloud Container Registry
         run: docker push "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:$(bin/release)"
       - name: Add branch tag if necessary
-        if: contains('master,dev,v7', steps.git.outputs.current_branch)
+        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/v7'
         run: |
           gcloud container images add-tag \
             "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:$(bin/release)" \
