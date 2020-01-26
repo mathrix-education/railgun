@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Exceptions;
+namespace Railgun\Exceptions;
 
 use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;

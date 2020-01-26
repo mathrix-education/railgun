@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Services\GoogleCloud\KMS\Commands;
+namespace Railgun\Services\GoogleCloud\KMS\Commands;
 
 use Google\ApiCore\ValidationException;
 use Google\Cloud\Kms\V1\KeyManagementServiceClient;

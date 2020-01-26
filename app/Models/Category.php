@@ -2,22 +2,24 @@
 
 declare(strict_types=1);
 
-namespace App\Models;
+namespace Railgun\Models;
 
-use App\Support\Randomizable;
+use Railgun\Models\Traits\Randomizable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property-read int          $id
- * @property string            $name
- * @property string            $slug
- * @property-read Carbon       $created_at
- * @property-read Carbon       $updated_at
+ * A category is a group of related posts.
+ *
+ * @property-read int          $id         The category id.
+ * @property string            $name       The category name.
+ * @property string            $slug       The category slug (generated from Str::slug).
+ * @property-read Carbon       $created_at The date/time when the category was created.
+ * @property-read Carbon       $updated_at The date/time when the category was last updated.
  * ---
- * @property Collection|Post[] $posts
+ * @property Collection|Post[] $posts      The posts related to the category.
  */
 class Category extends Model
 {
@@ -25,20 +27,9 @@ class Category extends Model
 
     /** @var array The attributes that are mass assignable */
     protected $fillable = ['name', 'slug', 'image'];
-    /** @var array Validation rules */
-    protected $rules = [
-        'name' => 'required|max:255',
-        'slug' => 'required|max:255',
-    ];
-
-    /*
-    |--------------------------------------------------------------------------
-    | Relations
-    |--------------------------------------------------------------------------
-    */
 
     /**
-     * HasMany Post.
+     * @return HasMany<Post>
      */
     public function posts(): HasMany
     {

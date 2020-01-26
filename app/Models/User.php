@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Models;
+namespace Railgun\Models;
 
-use App\Models\Traits\FacebookUser;
-use App\Services\Bishop\Subscription;
-use App\Support\Randomizable;
+use Railgun\Models\Traits\FacebookUser;
+use Railgun\Services\Bishop\Subscription;
+use Railgun\Models\Traits\Randomizable;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;

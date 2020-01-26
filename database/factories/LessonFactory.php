@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use App\Models\Lesson;
-use App\Models\Section;
-use App\Support\Silicate;
-use App\Support\Timestamps;
+use Railgun\Models\Lesson;
+use Railgun\Models\Section;
+use Railgun\Support\Silicate;
+use Railgun\Support\Timestamps;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Str;

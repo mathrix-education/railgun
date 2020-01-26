@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use App\Models\Exercise;
-use App\Models\Subject;
-use App\Support\Silicate;
-use App\Support\Timestamps;
+use Railgun\Models\Exercise;
+use Railgun\Models\Subject;
+use Railgun\Support\Silicate;
+use Railgun\Support\Timestamps;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 

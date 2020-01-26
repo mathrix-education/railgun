@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Models\Grade;
-use App\Models\User;
-use App\Support\Timestamps;
+use Railgun\Models\Grade;
+use Railgun\Models\User;
+use Railgun\Support\Timestamps;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Facades\Cache;

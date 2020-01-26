@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Models\Country;
+use Railgun\Models\Country;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Str;

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Console;
+namespace Railgun\Console;
 
-use App\Services\GoogleCloud\KMS\Commands\DecryptCommand;
-use App\Services\GoogleCloud\KMS\Commands\EncryptCommand;
-use App\Services\GoogleCloud\KMS\Commands\SetupCommand;
+use Railgun\Services\GoogleCloud\KMS\Commands\DecryptCommand;
+use Railgun\Services\GoogleCloud\KMS\Commands\EncryptCommand;
+use Railgun\Services\GoogleCloud\KMS\Commands\SetupCommand;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
 /**

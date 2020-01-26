@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Providers;
+namespace Railgun\Providers;
 
 use Google\Cloud\Storage\StorageClient;
 use Illuminate\Contracts\Container\BindingResolutionException;

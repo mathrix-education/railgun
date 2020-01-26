@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Models\User;
+use Railgun\Models\User;
 use Jose\Component\Signature\Algorithm\ES512;
 
 return [

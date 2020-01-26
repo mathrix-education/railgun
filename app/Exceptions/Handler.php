@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Exceptions;
+namespace Railgun\Exceptions;
 
-use App\Models\User;
+use Railgun\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;

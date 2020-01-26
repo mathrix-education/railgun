@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\GraphQL\Queries;
+namespace Railgun\GraphQL\Queries;
 
 use GraphQL\Type\Definition\ResolveInfo;
 use Mathrix\Lumen\JWT\Auth\JWT\JWTIssuer;

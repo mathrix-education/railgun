@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Models\Traits;
+namespace Railgun\Models\Traits;
 
-use App\Models\User;
+use Railgun\Models\User;
 use Carbon\Carbon;
 use Exception;
 use Facebook\Exceptions\FacebookSDKException;

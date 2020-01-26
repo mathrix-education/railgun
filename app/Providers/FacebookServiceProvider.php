@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Providers;
+namespace Railgun\Providers;
 
 use Facebook\Facebook;
 use Illuminate\Support\ServiceProvider;

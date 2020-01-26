@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-use App\Models\Chapter;
-use App\Models\Course;
-use App\Models\Exam;
-use App\Models\Exercise;
-use App\Models\Flashcard;
-use App\Models\Notion;
-use App\Models\Subject;
+use Railgun\Models\Chapter;
+use Railgun\Models\Course;
+use Railgun\Models\Exam;
+use Railgun\Models\Exercise;
+use Railgun\Models\Flashcard;
+use Railgun\Models\Notion;
+use Railgun\Models\Subject;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -103,7 +103,6 @@ class ContentSeeder extends AdvancedSeeder
             ->tap(fn(Collection $data) => $this->seedCollection($data, 'subjects'));
 
         // Exercises
-        Subject::enableRandomizationCache();
         DB::table('subjects')
             ->get(['id'])
             ->pluck('id')
@@ -117,7 +116,6 @@ class ContentSeeder extends AdvancedSeeder
             ->flatten(1)
             ->tap(fn() => $this->writeFactoryMessage(Exercise::class))
             ->tap(fn(Collection $data) => $this->seedCollection($data, 'exercises'));
-        Subject::enableRandomizationCache();
 
         // Flashcards
         $chapterIds

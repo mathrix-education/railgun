@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Models\Setting;
+use Railgun\Models\Setting;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 

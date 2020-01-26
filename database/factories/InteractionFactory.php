@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-use App\Models\Course;
-use App\Models\Exam;
-use App\Models\Exercise;
-use App\Models\Flashcard;
-use App\Models\Interaction;
-use App\Models\User;
-use App\Support\Timestamps;
+use Railgun\Models\Course;
+use Railgun\Models\Exam;
+use Railgun\Models\Exercise;
+use Railgun\Models\Flashcard;
+use Railgun\Models\Interaction;
+use Railgun\Models\User;
+use Railgun\Support\Timestamps;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Str;

@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Models\Category;
-use App\Models\Post;
+use Railgun\Models\Category;
+use Railgun\Models\Post;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 

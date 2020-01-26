@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-use App\Models\Coupon;
-use App\Models\Lesson;
-use App\Models\Pack;
-use App\Models\Section;
-use App\Models\Training;
+use Railgun\Models\Coupon;
+use Railgun\Models\Lesson;
+use Railgun\Models\Pack;
+use Railgun\Models\Section;
+use Railgun\Models\Training;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\GraphQL\Mutations;
 
-use App\Models\User;
+use Railgun\Models\User;
 use Jose\Component\Signature\Serializer\Serializer;
 use Mathrix\Lumen\JWT\Auth\JWT\JWTVerifier;
 use Tests\GraphQLTestCase;

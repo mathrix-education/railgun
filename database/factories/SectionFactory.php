@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Models\Section;
-use App\Models\Training;
-use App\Support\Timestamps;
+use Railgun\Models\Section;
+use Railgun\Models\Training;
+use Railgun\Support\Timestamps;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Str;

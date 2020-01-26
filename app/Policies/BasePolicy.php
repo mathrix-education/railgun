@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Policies;
+namespace Railgun\Policies;
 
 use Illuminate\Support\Str;
 use function in_array;

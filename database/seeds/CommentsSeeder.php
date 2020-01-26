@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Models\Comment;
-use App\Models\Vote;
+use Railgun\Models\Comment;
+use Railgun\Models\Vote;
 use Illuminate\Support\Collection;
 
 class CommentsSeeder extends AdvancedSeeder

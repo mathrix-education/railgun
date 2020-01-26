@@ -2,28 +2,28 @@
 
 declare(strict_types=1);
 
-namespace App\MigrationV7;
+namespace Railgun\MigrationV7;
 
-use App\MigrationV7\Commands\AcquisitionsCommand;
-use App\MigrationV7\Commands\CleanCommand;
-use App\MigrationV7\Commands\CommentsCommand;
-use App\MigrationV7\Commands\CouponsCommand;
-use App\MigrationV7\Commands\CoursesCommand;
-use App\MigrationV7\Commands\ExamsCommand;
-use App\MigrationV7\Commands\ExercisesCommand;
-use App\MigrationV7\Commands\FlashcardsCommand;
-use App\MigrationV7\Commands\InitializationCommand;
-use App\MigrationV7\Commands\InteractionsCommand;
-use App\MigrationV7\Commands\MigrateCommand;
-use App\MigrationV7\Commands\NotionsCommand;
-use App\MigrationV7\Commands\PostsCommand;
-use App\MigrationV7\Commands\ProductsCommand;
-use App\MigrationV7\Commands\ReportsCommand;
-use App\MigrationV7\Commands\ResetCommand;
-use App\MigrationV7\Commands\SubjectsCommand;
-use App\MigrationV7\Commands\TriggersCommand;
-use App\MigrationV7\Commands\VotesCommand;
-use App\MigrationV7\Commands\ZerosCommand;
+use Railgun\MigrationV7\Commands\AcquisitionsCommand;
+use Railgun\MigrationV7\Commands\CleanCommand;
+use Railgun\MigrationV7\Commands\CommentsCommand;
+use Railgun\MigrationV7\Commands\CouponsCommand;
+use Railgun\MigrationV7\Commands\CoursesCommand;
+use Railgun\MigrationV7\Commands\ExamsCommand;
+use Railgun\MigrationV7\Commands\ExercisesCommand;
+use Railgun\MigrationV7\Commands\FlashcardsCommand;
+use Railgun\MigrationV7\Commands\InitializationCommand;
+use Railgun\MigrationV7\Commands\InteractionsCommand;
+use Railgun\MigrationV7\Commands\MigrateCommand;
+use Railgun\MigrationV7\Commands\NotionsCommand;
+use Railgun\MigrationV7\Commands\PostsCommand;
+use Railgun\MigrationV7\Commands\ProductsCommand;
+use Railgun\MigrationV7\Commands\ReportsCommand;
+use Railgun\MigrationV7\Commands\ResetCommand;
+use Railgun\MigrationV7\Commands\SubjectsCommand;
+use Railgun\MigrationV7\Commands\TriggersCommand;
+use Railgun\MigrationV7\Commands\VotesCommand;
+use Railgun\MigrationV7\Commands\ZerosCommand;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application;
 

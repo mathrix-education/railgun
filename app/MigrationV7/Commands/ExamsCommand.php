@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\MigrationV7\Commands;
+namespace Railgun\MigrationV7\Commands;
 
-use App\MigrationV7\Exams\ExamConverter;
+use Railgun\MigrationV7\Exams\ExamConverter;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;

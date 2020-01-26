@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use App\Models\Comment;
-use App\Models\User;
-use App\Models\Vote;
-use App\Support\Timestamps;
+use Railgun\Models\Comment;
+use Railgun\Models\User;
+use Railgun\Models\Vote;
+use Railgun\Support\Timestamps;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 

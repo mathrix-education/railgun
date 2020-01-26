@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\MigrationV7\Commands;
+namespace Railgun\MigrationV7\Commands;
 
 class TriggersCommand extends V7Command
 {

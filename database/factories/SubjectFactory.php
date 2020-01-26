@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Models\Notion;
-use App\Models\Subject;
-use App\Support\Timestamps;
+use Railgun\Models\Notion;
+use Railgun\Models\Subject;
+use Railgun\Support\Timestamps;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 

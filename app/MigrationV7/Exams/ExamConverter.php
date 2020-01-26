@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\MigrationV7\Exams;
+namespace Railgun\MigrationV7\Exams;
 
 use RuntimeException;
 use stdClass;

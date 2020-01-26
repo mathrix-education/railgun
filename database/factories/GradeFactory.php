@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Models\Country;
-use App\Models\Grade;
+use Railgun\Models\Country;
+use Railgun\Models\Grade;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Str;

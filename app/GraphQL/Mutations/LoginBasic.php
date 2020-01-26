@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\GraphQL\Mutations;
+namespace Railgun\GraphQL\Mutations;
 
-use App\Exceptions\InvalidCredentials;
-use App\Models\User;
+use Railgun\Exceptions\InvalidCredentials;
+use Railgun\Models\User;
 use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Support\Facades\Hash;
 use Mathrix\Lumen\JWT\Auth\JWT\JWTIssuer;

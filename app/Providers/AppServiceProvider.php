@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Providers;
+namespace Railgun\Providers;
 
-use App\Console\Kernel;
-use App\Exceptions\Handler;
-use App\MigrationV7\MigrationV7ServiceProvider;
-use App\Models\Comment;
-use App\Models\Notion;
-use App\Models\Post;
-use App\Models\User;
+use Railgun\Console\Kernel;
+use Railgun\Exceptions\Handler;
+use Railgun\MigrationV7\MigrationV7ServiceProvider;
+use Railgun\Models\Comment;
+use Railgun\Models\Notion;
+use Railgun\Models\Post;
+use Railgun\Models\User;
 use Fruitcake\Cors\CorsServiceProvider;
 use Fruitcake\Cors\HandleCors;
 use Illuminate\Contracts\Console\Kernel as KernelContract;

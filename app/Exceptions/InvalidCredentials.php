@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Exceptions;
+namespace Railgun\Exceptions;
 
 use Mathrix\Lumen\JWT\Auth\Exceptions\InvalidCredentials as JWTAuthInvalidCredentials;
 use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;

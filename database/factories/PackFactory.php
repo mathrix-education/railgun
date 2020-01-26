@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Models\Pack;
-use App\Support\Timestamps;
+use Railgun\Models\Pack;
+use Railgun\Support\Timestamps;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Str;

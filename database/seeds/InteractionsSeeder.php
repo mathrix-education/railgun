@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Models\Interaction;
+use Railgun\Models\Interaction;
 use Illuminate\Support\Collection;
 
 class InteractionsSeeder extends AdvancedSeeder

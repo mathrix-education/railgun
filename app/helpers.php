@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Models\User;
+use Railgun\Models\User;
 use Braintree\Gateway;
 use Faker\Factory as FakerFactory;
 use Illuminate\Support\Facades\Auth;

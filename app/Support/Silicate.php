@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Support;
+namespace Railgun\Support;
 
 use Faker\Generator;
 use Illuminate\Support\Collection;

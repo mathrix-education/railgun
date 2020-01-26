@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Models;
+namespace Railgun\Models;
 
-use App\Support\Randomizable;
+use Railgun\Models\Traits\Randomizable;
 use Illuminate\Database\Eloquent\Model;
 
 /**

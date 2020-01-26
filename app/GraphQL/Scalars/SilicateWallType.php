@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\GraphQL\Scalars;
+namespace Railgun\GraphQL\Scalars;
 
 use GraphQL\Type\Definition\ScalarType;
 

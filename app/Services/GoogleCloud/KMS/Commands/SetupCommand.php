@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Services\GoogleCloud\KMS\Commands;
+namespace Railgun\Services\GoogleCloud\KMS\Commands;
 
 use Illuminate\Console\Command;
 use function base_path;

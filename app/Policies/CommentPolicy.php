@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Policies;
+namespace Railgun\Policies;
 
-use App\Models\Comment;
-use App\Models\User;
+use Railgun\Models\Comment;
+use Railgun\Models\User;
 use function hasScope;
 
 class CommentPolicy extends BasePolicy
