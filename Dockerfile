@@ -19,7 +19,13 @@ COPY docker/php/php-fpm.conf /usr/local/etc/php-fpm.conf
 COPY docker/php/php-fpm-pool.conf /usr/local/etc/php-fpm.d/www.conf
 COPY docker/php/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
+# Make sure files/folders needed by the processes are accessible when they run under the nobody user
+RUN chown -R nobody.nobody /run && \
+    chown -R nobody.nobody /var/www
+
 # Declare healthcheck
 HEALTHCHECK CMD /usr/local/bin/healthcheck || exit 1
+
+USER nobody
 
 ENTRYPOINT ["/usr/local/bin/entrypoint"]
