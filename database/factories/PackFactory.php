@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Models\Chapter;
 use App\Models\Pack;
 use App\Support\Timestamps;
 use Faker\Generator;

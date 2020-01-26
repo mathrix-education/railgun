@@ -7,13 +7,13 @@ namespace App\Support;
 use Faker\Generator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use const JSON_THROW_ON_ERROR;
 use function app;
 use function array_filter;
 use function file_get_contents;
 use function in_array;
 use function json_decode;
 use function storage_path;
-use const JSON_THROW_ON_ERROR;
 
 class Silicate
 {

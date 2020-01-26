@@ -6,6 +6,7 @@ namespace Tests\GraphQL\Mutations;
 
 use App\Models\User;
 use Tests\GraphQLTestCase;
+use function env;
 
 class LoginBasicTest extends GraphQLTestCase
 {
