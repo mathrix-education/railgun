@@ -18,6 +18,7 @@ COPY docker/php/php.ini /usr/local/etc/php/php.ini
 COPY docker/php/php-fpm.conf /usr/local/etc/php-fpm.conf
 COPY docker/php/php-fpm-pool.conf /usr/local/etc/php-fpm.d/www.conf
 COPY docker/php/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+COPY --chown=nobody . /var/www/
 
 # Make sure files/folders needed by the processes are accessible when they run under the nobody user
 RUN chown -R nobody.nobody /run && \
