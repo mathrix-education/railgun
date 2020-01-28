@@ -18,13 +18,12 @@ use function json_decode;
  */
 class LoginBasicTest extends GraphQLTestCase
 {
-    private const QUERY = <<<GRAPHQL
-    mutation (\$email: String!, \$password: String!) {
-        loginBasic(email: \$email, password: \$password) {
+    private const QUERY = /** @lang GraphQL */'
+    mutation ($email: String!, $password: String!) {
+        loginBasic(email: $email, password: $password) {
             token
         }
-    }
-    GRAPHQL;
+    }';
 
     /**
      * @testdox returns a JWT on success

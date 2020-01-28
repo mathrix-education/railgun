@@ -118,6 +118,7 @@ jobs:
         with:
           project: ${{ secrets.GCLOUD_PROJECT }}
           service-account-key: ${{ secrets.GCLOUD_AUTH }}
+          configure-docker: true
       - name: Push image to Google Cloud Container Registry
         run: docker push "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:$(bin/release)"
       - name: Add branch tag if necessary
