@@ -12,15 +12,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Railgun\Models\Traits\Randomizable;
 
 /**
- * @property-read               int $id
+ * @property-read               int    $id
  * @property                    string $name
  * @property                    string $slug
- * @property                    bool $beta
+ * @property                    bool   $beta
  * @property-read               Carbon $created_at
  * @property-read               Carbon $updated_at
  * ---
- * @property Collection|Grade[] $grades
- * @property Collection|Chapter[] $chapters
+ * @property Collection|Grade[]        $grades
+ * @property Collection|Chapter[]      $chapters
  */
 class Discipline extends Model
 {
@@ -28,26 +28,13 @@ class Discipline extends Model
 
     /** @var array The attributes that are mass assignable */
     protected $fillable = ['id', 'name', 'slug', 'beta'];
-    /** @var array Validation rules */
-    protected $rules = [
-        'name' => 'required|max:255',
-        'slug' => 'required|max:255',
-        'beta' => 'boolean',
-    ];
-    protected $casts = [
+    protected $casts    = [
         'visible' => 'boolean',
-        'beta' => 'boolean',
+        'beta'    => 'boolean',
     ];
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Relations
-    |--------------------------------------------------------------------------
-    */
 
     /**
-     * BelongsToMany Grade.
+     * @return BelongsToMany<Grade>
      */
     public function grades(): BelongsToMany
     {
@@ -56,7 +43,7 @@ class Discipline extends Model
     }
 
     /**
-     * HasMany Chapter.
+     * @return HasMany<Chapter>
      */
     public function chapters(): HasMany
     {

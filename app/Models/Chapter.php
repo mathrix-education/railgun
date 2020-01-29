@@ -31,34 +31,18 @@ class Chapter extends Model
     use Randomizable;
 
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ['name', 'slug', 'order', 'visible', 'grade_id', 'discipline_id'];
-
-    /** @var array Validation rules */
-    protected $rules = [
-        'name'          => 'required|max:255',
-        'slug'          => 'max:255',
-        'grade_id'      => 'required|exists:grades,id',
-        'discipline_id' => 'required|exists:disciplines,id',
-        'visible'       => 'boolean',
+    protected $fillable = [
+        'name',
+        'slug',
+        'order',
+        'visible',
+        'grade_id',
+        'discipline_id',
     ];
-    protected $casts = ['visible' => 'boolean'];
-
-    /*
-    |--------------------------------------------------------------------------
-    | Relations
-    |--------------------------------------------------------------------------
-    */
+    protected $casts    = ['visible' => 'boolean'];
 
     /**
-     * BelongsTo Grade.
-     */
-    public function grade(): BelongsTo
-    {
-        return $this->belongsTo(Grade::class);
-    }
-
-    /**
-     * BelongsTo Discipline.
+     * @return BelongsTo<Discipline>
      */
     public function discipline(): BelongsTo
     {
@@ -66,20 +50,30 @@ class Chapter extends Model
     }
 
     /**
-     * The chapter notions.
+     * @return BelongsTo<Grade>
      */
-    public function notions(): HasMany
+    public function grade(): BelongsTo
     {
-        return $this->hasMany(Notion::class)->orderBy('order');
+        return $this->belongsTo(Grade::class);
     }
 
+    /**
+     * @return HasMany<Course>
+     */
     public function courseNotions(): HasMany
     {
-        return $this->notions()->where('type', '=', 'course');
+        return $this->hasMany(Notion::class)
+            ->where('type', '=', 'course')
+            ->orderBy('order');
     }
 
+    /**
+     * @return HasMany<Subject>
+     */
     public function subjectNotions(): HasMany
     {
-        return $this->notions()->where('type', '=', 'subject');
+        return $this->hasMany(Notion::class)
+            ->where('type', '=', 'subject')
+            ->orderBy('order');
     }
 }

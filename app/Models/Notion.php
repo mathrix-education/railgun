@@ -31,20 +31,14 @@ class Notion extends Model
 
     /** @var array The attributes that are mass assignable */
     protected $fillable = [
-        'id',
         'name',
         'type',
         'visible',
         'order',
         'chapter_id',
     ];
-    /** @var array The validation rules */
-    protected $rules = [
-        'name'       => 'required|max:255',
-        'chapter_id' => 'required|exists:chapters,id',
-    ];
-    protected $casts = ['visible' => 'boolean'];
-    
+    protected $casts    = ['visible' => 'boolean'];
+
     /**
      * @return BelongsTo<Chapter>
      */
@@ -68,5 +62,4 @@ class Notion extends Model
     {
         return $this->hasMany(Subject::class);
     }
-}
 }

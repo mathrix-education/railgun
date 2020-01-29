@@ -28,22 +28,10 @@ class Country extends Model
 
     /** @var array The attributes that are mass assignable */
     protected $fillable = ['id', 'name', 'slug', 'visible'];
-    /** @var array Validation rules */
-    protected $rules = [
-        'name' => 'required|max:255',
-        'slug' => 'required|max:255',
-        'visible' => 'boolean',
-    ];
-    protected $casts = ['visible' => 'boolean'];
-
-    /*
-    |--------------------------------------------------------------------------
-    | Relations
-    |--------------------------------------------------------------------------
-    */
+    protected $casts    = ['visible' => 'boolean'];
 
     /**
-     * The country grades.
+     * @return HasMany<Grade>
      */
     public function grades(): HasMany
     {

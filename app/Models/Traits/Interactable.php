@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Railgun\Models\Traits;
 
 use Illuminate\Database\Eloquent\Concerns\HasRelationships;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Facades\Auth;
 use Railgun\Models\Interaction;
 
@@ -15,13 +15,13 @@ use Railgun\Models\Interaction;
 trait Interactable
 {
     /**
-     * @return BelongsTo<Interaction>
+     * @return MorphOne
      */
-    public function interaction(): BelongsTo
+    public function interaction(): MorphOne
     {
         $userId = Auth::id() ?? 0;
 
-        return $this->belongsTo(Interaction::class)
+        return $this->morphOne(Interaction::class, 'interactable')
             ->where('user_id', '=', $userId);
     }
 }

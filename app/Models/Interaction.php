@@ -6,6 +6,7 @@ namespace Railgun\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Railgun\Models\Traits\Randomizable;
 
 /**
@@ -22,4 +23,9 @@ class Interaction extends Model
     use Randomizable;
 
     public const COMPREHENSIONS = ['blur', 'clear'];
+
+    public function interactable(): MorphTo
+    {
+        return $this->morphTo();
+    }
 }

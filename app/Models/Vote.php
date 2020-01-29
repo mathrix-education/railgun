@@ -7,9 +7,7 @@ namespace Railgun\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Validation\Rule;
 use Railgun\Models\Traits\Randomizable;
-use function array_merge;
 
 /**
  * @property-read int    $comment_id
@@ -26,25 +24,7 @@ class Vote extends Model
     use Randomizable;
 
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ['id', 'value', 'user_id', 'comment_id'];
-    /** @var array Validation rules */
-    protected $rules = [
-        'user_id'    => 'required|exists:users,id',
-        'comment_id' => 'required|exists:comments,id',
-    ];
-
-    public function getValidationRules(): array
-    {
-        return array_merge($this->rules, [
-            'value' => ['required', Rule::in([1, -1])],
-        ]);
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Relations
-    |--------------------------------------------------------------------------
-    */
+    protected $fillable = ['user_id', 'comment_id', 'value'];
 
     /**
      * BelongsTo User.

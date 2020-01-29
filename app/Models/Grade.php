@@ -35,48 +35,13 @@ class Grade extends Model
     use Randomizable;
 
     /** @var array The attributes that are mass assignable */
-    protected $fillable = ['id', 'name', 'slug', 'order', 'visible', 'parent_id', 'country_id'];
-    /** @var array Validation rules */
-    protected $rules = [
-        'name'       => 'required|max:255',
-        'slug'       => 'required|max:255',
-        'order'      => 'required|integer',
-        'visible'    => 'boolean',
-        'country_id' => 'required|exists:countries,id',
-    ];
-    protected $casts = ['visible' => 'boolean'];
+    protected $fillable = ['name', 'slug', 'order', 'visible', 'parent_id', 'country_id'];
+    protected $casts    = ['visible' => 'boolean'];
 
     /**
-     * Get the cursus (ie. the grade itself and all its previous).
-     */
-    public function cursus(): Collection
-    {
-        $grades = new Collection();
-        $grades->add($this);
-
-        /** @var Grade $end */
-        $end = $grades->last();
-
-        while ($end->parent_id !== null) {
-            $grades[] = self::query()
-                ->find($end->parent_id);
-            $end      = $grades->last();
-        }
-
-        return $grades;
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Relations
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * BelongsTo Grade.
      * The parent grade.
      *
-     * @return BelongsTo
+     * @return BelongsTo<Grade>
      */
     public function parent(): BelongsTo
     {
@@ -84,10 +49,9 @@ class Grade extends Model
     }
 
     /**
-     * HasMany Grade.
      * The child grades.
      *
-     * @return HasMany
+     * @return HasMany<Grade>
      */
     public function children(): HasMany
     {
@@ -95,7 +59,7 @@ class Grade extends Model
     }
 
     /**
-     * BelongsTo Country.
+     * @return BelongsTo<Country>
      */
     public function country(): BelongsTo
     {
@@ -103,7 +67,7 @@ class Grade extends Model
     }
 
     /**
-     * BelongsTo Country.
+     * @return HasMany<Chapter>
      */
     public function chapters(): HasMany
     {
@@ -111,7 +75,7 @@ class Grade extends Model
     }
 
     /**
-     * BelongsToMany Discipline.
+     * @return BelongsToMany<Discipline>
      */
     public function disciplines(): BelongsToMany
     {
@@ -120,7 +84,7 @@ class Grade extends Model
     }
 
     /**
-     * HasMany User.
+     * @return HasMany<User>
      */
     public function users(): HasMany
     {
