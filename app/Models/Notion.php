@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Railgun\Models\Traits\Randomizable;
-use function implode;
 
 /**
  * @property-read int    $id
@@ -45,43 +44,29 @@ class Notion extends Model
         'chapter_id' => 'required|exists:chapters,id',
     ];
     protected $casts = ['visible' => 'boolean'];
-
-    public function __construct(array $attributes = [])
-    {
-        // Dynamic rules
-        $this->rules['type'] = 'required|in:' . implode(',', self::TYPES);
-
-        parent::__construct($attributes);
-    }
-
+    
     /**
-     * Update counters.
-     */
-    public function updateCounters(): void
-    {
-        $this->activity_count = Activity::query()
-            ->where('notion_id', '=', $this->id)
-            ->where('visible', '=', true)
-            ->count();
-        $this->save();
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Relations
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * The notion parent chapter.
+     * @return BelongsTo<Chapter>
      */
     public function chapter(): BelongsTo
     {
         return $this->belongsTo(Chapter::class);
     }
 
+    /**
+     * @return HasMany<Course>
+     */
     public function courses(): HasMany
     {
         return $this->hasMany(Course::class);
     }
+
+    /**
+     * @return HasMany<Subject>
+     */
+    public function subjects(): HasMany
+    {
+        return $this->hasMany(Subject::class);
+    }
+}
 }
