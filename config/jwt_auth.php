@@ -11,7 +11,7 @@ return [
         'type'  => 'ecdsa',
         'ecdsa' => ['curve' => 'P-521'],
     ],
-    'algorithm'  => \Jose\Component\Signature\Algorithm\ES256::class,
+    'algorithm'  => ES512::class,
     'user_model' => User::class,
     'expiration' => [
         'value' => 3,
