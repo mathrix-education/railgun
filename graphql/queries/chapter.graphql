@@ -1,8 +1,8 @@
 extend type Query {
-    listChapters: [Chapter!]! @paginate(defaultCount: 100)
+    listChapters: [Chapter!]! @all
     listChaptersByGradeAndDiscipline(
         gradeId: ID! @where(key: "grade_id")
         disciplineId: ID! @where(key: "discipline_id")
-    ): [Chapter!]! @paginate(defaultCount: 100)
+    ): [Chapter!]! @all
     readChapter(id: ID @eq): Chapter @find
 }

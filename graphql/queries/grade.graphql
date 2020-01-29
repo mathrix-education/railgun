@@ -1,4 +1,4 @@
 extend type Query {
-    listGrades: [Grade!]! @paginate(defaultCount: 100)
+    listGrades: [Grade!]! @all
     readGrade(id: ID @eq): Grade @find
 }
