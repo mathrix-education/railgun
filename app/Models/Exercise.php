@@ -30,6 +30,13 @@ class Exercise extends Model
     use Interactable;
     use Randomizable;
 
+    protected $casts = [
+        'questions'    => 'array',
+        'choices'      => 'array',
+        'solutions'    => 'array',
+        'explanations' => 'array',
+    ];
+
     /**
      * @return BelongsTo<Subject>
      */

@@ -29,6 +29,11 @@ class Flashcard extends Model
 
     protected $fillable = ['fronts', 'backs', 'order', 'visible', 'chapter_id'];
 
+    protected $casts = [
+        'fronts' => 'array',
+        'backs'  => 'array',
+    ];
+
     /**
      * @return BelongsTo<Chapter>
      */
