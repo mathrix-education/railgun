@@ -7,6 +7,7 @@ namespace Railgun\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Railgun\Models\Traits\Interactable;
 use Railgun\Models\Traits\Randomizable;
 
 /**
@@ -26,6 +27,7 @@ use Railgun\Models\Traits\Randomizable;
  */
 class Exercise extends Model
 {
+    use Interactable;
     use Randomizable;
 
     /**

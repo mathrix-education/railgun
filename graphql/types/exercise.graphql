@@ -9,4 +9,5 @@ type Exercise {
     created_at: DateTime!
     updated_at: DateTime!
     subject: Subject! @belongsTo
+    interaction: Interaction @belongsTo
 }

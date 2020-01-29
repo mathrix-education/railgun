@@ -9,4 +9,5 @@ type Exam {
     created_at: DateTime!
     updated_at: DateTime!
     chapter: Chapter! @belongsTo
+    interaction: Interaction @belongsTo
 }

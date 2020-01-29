@@ -1,4 +1,4 @@
-type Intraction {
+type Interaction {
     user_id: Int!
     interactable_type: String!
     interactable_id: Int!
