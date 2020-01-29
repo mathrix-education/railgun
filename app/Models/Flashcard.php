@@ -10,14 +10,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Traits\Randomizable;
 
 /**
- * @property-read int    $id
- * @property array       $fronts
- * @property array       $backs
- * @property int         $order
- * @property bool        $visible
- * @property int         $chapter_id
- * @property-read Carbon $created_at
- * @property-read Carbon $updated_at
+ * @property-read int     $id
+ * @property array        $fronts
+ * @property array        $backs
+ * @property int          $order
+ * @property bool         $visible
+ * @property int          $chapter_id
+ * @property-read Carbon  $created_at
+ * @property-read Carbon  $updated_at
+ * ---
+ * @property-read Chapter $chapter
  */
 class Flashcard extends Model
 {

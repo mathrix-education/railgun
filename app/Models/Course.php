@@ -6,6 +6,7 @@ namespace Railgun\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Traits\Randomizable;
 
 /**
@@ -22,10 +23,20 @@ use Railgun\Models\Traits\Randomizable;
  * @property      int    $notion_id
  * @property-read Carbon $created_at
  * @property-read Carbon $updated_at
+ * ---
+ * @property-read Notion $notion
  */
 class Course extends Model
 {
     use Randomizable;
 
     protected $casts = ['content' => 'array'];
+
+    /**
+     * @return BelongsTo<Notion>
+     */
+    public function notion(): BelongsTo
+    {
+        return $this->belongsTo(Notion::class);
+    }
 }

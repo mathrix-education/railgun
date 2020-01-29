@@ -6,22 +6,33 @@ namespace Railgun\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Traits\Randomizable;
 
 /**
- * @property-read int           $id
- * @property string             $type
- * @property array              $questions
- * @property array              $choices
- * @property array              $solutions
- * @property array              $explanations
- * @property int                $order
- * @property bool               $visible
- * @property int                $subject_id
- * @property-read Carbon        $created_at
- * @property-read Carbon        $updated_at
+ * @property-read int     $id
+ * @property string       $type
+ * @property array        $questions
+ * @property array        $choices
+ * @property array        $solutions
+ * @property array        $explanations
+ * @property int          $order
+ * @property bool         $visible
+ * @property int          $subject_id
+ * @property-read Carbon  $created_at
+ * @property-read Carbon  $updated_at
+ * ---
+ * @property-read Subject $subject
  */
 class Exercise extends Model
 {
     use Randomizable;
+
+    /**
+     * @return BelongsTo<Subject>
+     */
+    public function subject(): BelongsTo
+    {
+        return $this->belongsTo(Subject::class);
+    }
 }

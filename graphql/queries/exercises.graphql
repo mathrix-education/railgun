@@ -1,0 +1,3 @@
+extend type Query {
+    readExercise(id: ID @eq): Exercise @find
+}

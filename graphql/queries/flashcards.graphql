@@ -1,0 +1,3 @@
+extend type Query {
+    readFlashcard(id: ID @eq): Flashcard @find
+}

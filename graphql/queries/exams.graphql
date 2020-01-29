@@ -1,0 +1,3 @@
+extend type Query {
+    readExam(id: ID @eq): Exam @find
+}

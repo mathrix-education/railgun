@@ -6,21 +6,30 @@ namespace Railgun\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Traits\Randomizable;
 
 /**
- * @property-read  int           $id
- * @property string              $name
- * @property string              $slug
- * @property int                 $duration
- * @property array               $content
- * @property int                 $order
- * @property bool                $visible
- * @property int                 $chapter_id
- * @property-read Carbon         $created_at
- * @property-read Carbon         $updated_at
+ * @property-read  int   $id
+ * @property string      $name
+ * @property string      $slug
+ * @property int         $duration
+ * @property array       $content
+ * @property int         $order
+ * @property bool        $visible
+ * @property int         $chapter_id
+ * @property-read Carbon $created_at
+ * @property-read Carbon $updated_at
  */
 class Exam extends Model
 {
     use Randomizable;
+
+    /**
+     * @return BelongsTo<Chapter>
+     */
+    public function chapter(): BelongsTo
+    {
+        return $this->belongsTo(Chapter::class);
+    }
 }
