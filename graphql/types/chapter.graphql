@@ -10,4 +10,6 @@ type Chapter {
     grade: Grade! @belongsTo
     courseNotions: [Notion!]! @hasMany
     subjectNotions: [Notion!]! @hasMany
+    flashcards: [Flashcard!]! @hasMany
+    exams: [Exam!]! @hasMany
 }

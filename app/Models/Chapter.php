@@ -76,4 +76,20 @@ class Chapter extends Model
             ->where('type', '=', 'subject')
             ->orderBy('order');
     }
+
+    /**
+     * @return HasMany<Flashcard>
+     */
+    public function flashcards(): HasMany
+    {
+        return $this->hasMany(Flashcard::class);
+    }
+
+    /**
+     * @return HasMany<Exam>
+     */
+    public function exams(): HasMany
+    {
+        return $this->hasMany(Exam::class);
+    }
 }
