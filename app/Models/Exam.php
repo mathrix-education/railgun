@@ -27,6 +27,8 @@ class Exam extends Model
     use Interactable;
     use Randomizable;
 
+    protected $casts = ['content' => 'array'];
+
     /**
      * @return BelongsTo<Chapter>
      */
