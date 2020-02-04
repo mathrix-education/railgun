@@ -1,0 +1,11 @@
+extend type Mutation {
+    updateChapter(
+        id: ID!
+        name: String
+        slug: String
+        order: Int
+        visible: Boolean
+        discipline_id: Int
+        grade_id: Int
+    ): Chapter @update
+}
