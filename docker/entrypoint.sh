@@ -1,3 +1,3 @@
 #!/bin/sh
-php /var/www/bin/artisan gcloud:setup "$APP_ENV"
+php /var/www/bin/artisan lighthouse:clear-cache
 php-fpm
