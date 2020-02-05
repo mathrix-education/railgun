@@ -7,4 +7,5 @@ type Grade {
     parent: Grade @belongsTo
     country: Country! @belongsTo
     chapters: [Chapter!]! @hasMany
+    disciplines: [Discipline!]! @belongsToMany
 }
