@@ -1,3 +1,4 @@
 extend type Query {
     listDisciplines: [Discipline!]! @all
+    readDisciplineBySlug(slug: String! @eq): Discipline @find
 }
