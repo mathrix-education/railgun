@@ -6,14 +6,20 @@ namespace Railgun\GraphQL\Mutations;
 
 use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Support\Facades\Hash;
-use Mathrix\Lumen\JWT\Auth\JWT\JWTIssuer;
+use Mathrix\Lumen\JWT\Drivers\Driver;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Railgun\Exceptions\InvalidCredentials;
 use Railgun\Models\User;
-use function app;
 
 class LoginBasic
 {
+    private Driver $driver;
+
+    public function __construct(Driver $driver)
+    {
+        $this->driver = $driver;
+    }
+
     /**
      * Return a value for the field.
      *
@@ -28,9 +34,6 @@ class LoginBasic
      */
     public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        /** @var JWTIssuer $jwtIssuer */
-        $jwtIssuer = app()->make(JWTIssuer::class);
-
         $user = User::query()
             ->where('email', '=', $args['email'])
             ->get(['id', 'password', 'scopes'])
@@ -48,7 +51,7 @@ class LoginBasic
 
         // Sign the JWS
         return [
-            'token' => $jwtIssuer->serializeJWS($jwtIssuer->issueJWS($user)),
+            'token' => $this->driver->sign($user),
         ];
     }
 }

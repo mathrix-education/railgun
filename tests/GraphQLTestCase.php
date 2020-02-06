@@ -47,7 +47,7 @@ class GraphQLTestCase extends BaseTestCase
      *
      * @return mixed
      */
-    protected function getContent(string $path, $default = null)
+    protected function getContent(?string $path = null, $default = null)
     {
         if (!isset($this->contentCache)) {
             try {

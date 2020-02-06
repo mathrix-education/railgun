@@ -21,7 +21,7 @@ $app->configure('cors');
 $app->configure('database');
 $app->configure('filesystems');
 $app->configure('graphql-playground');
-$app->configure('jwt_auth');
+$app->configure('jwt');
 $app->configure('lighthouse');
 $app->configure('logging');
 $app->configure('mail');

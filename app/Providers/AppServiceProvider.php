@@ -11,7 +11,7 @@ use Illuminate\Filesystem\FilesystemServiceProvider;
 use Illuminate\Redis\RedisServiceProvider;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application;
-use Mathrix\Lumen\JWT\Auth\JWTAuthServiceProvider;
+use Mathrix\Lumen\JWT\JWTServiceProvider;
 use MLL\GraphQLPlayground\GraphQLPlaygroundServiceProvider;
 use Nuwave\Lighthouse\LighthouseServiceProvider;
 use Nuwave\Lighthouse\Tracing\TracingServiceProvider;
@@ -42,7 +42,7 @@ class AppServiceProvider extends ServiceProvider
         // Vendor service providers
         $this->app->register(SentryServiceProvider::class);
         $this->app->register(FilesystemServiceProvider::class);
-        $this->app->register(JWTAuthServiceProvider::class);
+        $this->app->register(JWTServiceProvider::class);
         $this->app->register(MigrationV7ServiceProvider::class);
         $this->app->register(LighthouseServiceProvider::class);
         $this->app->register(TracingServiceProvider::class);

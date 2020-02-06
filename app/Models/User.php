@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Lumen\Auth\Authorizable;
-use Mathrix\Lumen\JWT\Auth\HasJWT;
 use Railgun\Models\Traits\FacebookUser;
 use Railgun\Models\Traits\Randomizable;
 use function trim;
@@ -53,7 +52,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     use Randomizable;
     use Authorizable;
     use Authenticatable;
-    use HasJWT;
     use FacebookUser;
 
     /** @var array The guarded attributes */
