@@ -36,7 +36,7 @@
     "guzzlehttp/guzzle": "6.3.3",
     "illuminate/redis": "^6.12",
     "laravel/lumen-framework": "^6.0",
-    "mathrix-education/lumen-jwt": "3.0.0-alpha.5",
+    "mathrix-education/lumen-jwt": "3.0.0-alpha.6",
     "mll-lab/laravel-graphql-playground": "^2.0",
     "nuwave/lighthouse": "^4.8",
     "ramsey/uuid": "3.8.0",
