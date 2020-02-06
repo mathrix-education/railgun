@@ -9,6 +9,7 @@ use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Filesystem\FilesystemServiceProvider;
 use Illuminate\Redis\RedisServiceProvider;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application;
 use Mathrix\Lumen\JWT\JWTServiceProvider;
@@ -23,6 +24,7 @@ use Railgun\Models\Notion;
 use Railgun\Models\Post;
 use Railgun\Models\User;
 use Sentry\Laravel\ServiceProvider as SentryServiceProvider;
+use function in_array;
 
 /**
  * Register all application service providers.
@@ -48,6 +50,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(TracingServiceProvider::class);
         $this->app->register(GraphQLPlaygroundServiceProvider::class);
         $this->app->register(RedisServiceProvider::class);
+
+        Gate::define('scope', static function (?User $user, string $scope) {
+            return $user !== null && in_array($scope, $user->scopes);
+        });
 
         // MorphMap
         Relation::morphMap([
