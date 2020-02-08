@@ -4,8 +4,9 @@ extend type Mutation {
         email: String!
         firstname: String
         lastname: String
+        password: String!
         grade_id: Int
-    ): User @permission(scope: "users:create") @create
+    ): User @create
 
     updateUser(
         id: ID!

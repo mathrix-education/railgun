@@ -12,8 +12,8 @@ extend type Mutation {
     updateComment(
         id: ID!
         content: String
-    ): Comment @update
+    ): Comment @permission(scope: "comments:update") @update
 
     "Delete an existing comment"
-    deleteComment(id: ID!): Comment @delete
+    deleteComment(id: ID!): Comment @permission(scope: "comments:delete") @delete
 }

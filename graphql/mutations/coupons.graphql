@@ -6,7 +6,7 @@ extend type Coupon {
         value: Int!
         counter: Int!
         expires_at: DateTime
-    ): Coupon @permission(scope: "coupons:update") @create
+    ): Coupon @permission(scope: "coupons:create") @create
 
     "Update an existing coupon"
     updateCoupon(
