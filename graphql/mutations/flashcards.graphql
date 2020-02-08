@@ -1,10 +1,23 @@
 extend type Mutation {
+    "Create a new flashcard."
+    createFlashcard (
+        fronts: [SilicateWall!]!
+        backs: [SilicateWall!]!
+        order: Int!
+        visible: Boolean!
+        chapter_id: Int!
+    ): Flashcard @create
+
+    "Update an existing flashcard."
     updateFlashcard (
         id: ID!
         fronts: [SilicateWall!]
-        backs:  [SilicateWall!]
+        backs: [SilicateWall!]
         order: Int
         visible: Boolean
         chapter_id: Int
     ): Flashcard @update
+
+    "Delete an existing flashcard."
+    deleteFlashcard(id: ID!): Flashcard @delete
 }

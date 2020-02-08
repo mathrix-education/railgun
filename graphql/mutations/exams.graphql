@@ -1,4 +1,16 @@
 extend type Mutation {
+    "Create a new exam."
+    createExam(
+        name: String!
+        slug: String!
+        duration: Int
+        content: SilicateWall
+        order: Int
+        visible: Boolean
+        chapter_id: Int!
+    ): Exam @create
+
+    "Update an existing exam."
     updateExam(
         id: ID!
         name: String
@@ -9,4 +21,7 @@ extend type Mutation {
         visible: Boolean
         chapter_id: Int
     ): Exam @update
+
+    "Delete an existing exam."
+    deleteExam(id: ID!): Exam @delete
 }

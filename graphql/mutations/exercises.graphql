@@ -1,4 +1,17 @@
 extend type Mutation {
+    "Create a new exercise."
+    createExercise(
+        type: String
+        questions: [String!]
+        choices: [[String!]!]
+        solutions: [[Int!]!]
+        examplations: [SilicateWall!]
+        order: Int
+        visible: Boolean
+        subject_id: Int
+    ): Exercise @create
+
+    "Update an existing exercise."
     updateExercise(
         id: ID!
         type: String
@@ -10,4 +23,7 @@ extend type Mutation {
         visible: Boolean
         subject_id: Int
     ): Exercise @update
+
+    "Delete an existing exercise."
+    deleteExercise(id: ID!): Exercise @delete
 }

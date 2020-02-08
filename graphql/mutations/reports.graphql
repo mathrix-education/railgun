@@ -1,0 +1,23 @@
+extend type Mutation {
+    "Create a new report."
+    createReport(
+        type: String!
+        content: String!
+        status: String!
+        reportable_type: String!
+        reportable_id: Int!
+    ): Report! @create
+
+    "Update an existing report."
+    updateReport(
+        id: ID!
+        type: String
+        content: String
+        status: String
+        reportable_type: String
+        reportable_id: Int
+    ): Report @update
+
+    "Delete an existing report."
+    deleteReport(id: ID!): Report @delete
+}

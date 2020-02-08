@@ -1,0 +1,25 @@
+extend type Mutation {
+    "Create a new lesson."
+    createLesson(
+        name: String!
+        slug: String!
+        content: SilicateWall!
+        order: Int
+        visible: Boolean!
+        section_id: Int
+    ): Lesson! @create
+
+    "Update an existing lesson."
+    updateLesson(
+        id: ID!
+        name: String!
+        slug: String!
+        content: SilicateWall!
+        order: Int
+        visible: Boolean!
+        section_id: Int
+    ): Lesson! @update
+
+    "Delete an existing lesson."
+    deleteLesson(id: ID!): Lesson @delete
+}

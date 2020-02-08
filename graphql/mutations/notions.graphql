@@ -1,10 +1,23 @@
 extend type Mutation {
+    "Create a new notion."
+    createNotion(
+        name: String!
+        type: NotionType!
+        order: Int
+        visible: Boolean!
+        chapter_id: Int!
+    ): Notion! @create
+
+    "Update an existing notion."
     updateNotion(
         id: ID!
         name: String
-        type: String
-        visible: Boolean
+        type: NotionType
         order: Int
+        visible: Boolean
         chapter_id: Int
     ): Notion @update
+
+    "Delete an existing notion."
+    deleteNotion(id: ID!): Notion @delete
 }

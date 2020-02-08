@@ -1,0 +1,21 @@
+extend type Mutation {
+    "Create a new subject."
+    createSubject(
+        name: String!
+        order: Int
+        visible: Boolean!
+        notion_id: Int!
+    ): Subject! @create
+
+    "Update an existing subject."
+    updateSubject(
+        id: ID!
+        name: String!
+        order: Int
+        visible: Boolean!
+        notion_id: Int!
+    ): Subject @update
+
+    "Delete an existing subject."
+    deleteSubject(id: ID!): Subject @delete
+}

@@ -1,0 +1,25 @@
+extend type Mutation {
+    "Create a new training."
+    createTraining(
+        name: String!
+        slug: String!
+        buyable: Boolean!
+        price: Int!
+        order: Int
+        visible: Boolean!
+    ): Training @create
+
+    "Update an existing training."
+    updateTraining(
+        id: ID!
+        name: String
+        slug: String
+        buyable: Boolean
+        price: Int
+        order: Int
+        visible: Boolean
+    ): Training @update
+
+    "Delete an existing traiting."
+    deleteTraining(id: ID!): Training @delete
+}

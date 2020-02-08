@@ -1,0 +1,23 @@
+extend type Mutation {
+    "Create a new section."
+    createSection(
+        name: String!
+        slug: String!
+        order: Int
+        visible: Boolean!
+        training_id: Int!
+    ): Section! @create
+
+    "Update an existing section."
+    updateSection(
+        id: ID!
+        name: String
+        slug: String
+        order: Int
+        visible: Boolean
+        training_id: Int
+    ): Section @update
+
+    "Delete an existing section."
+    deleteSection(id: ID!): Section @delete
+}

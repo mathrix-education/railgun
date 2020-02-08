@@ -1,4 +1,15 @@
 extend type Mutation {
+    "Create a new chapter."
+    createChapter(
+        name: String!
+        slug: String!
+        order: Int
+        visible: Boolean!
+        discipline_id: Int!
+        grade_id: Int!
+    ): Chapter! @create
+
+    "Update an existing chapter."
     updateChapter(
         id: ID!
         name: String
@@ -8,4 +19,7 @@ extend type Mutation {
         discipline_id: Int
         grade_id: Int
     ): Chapter @update
+
+    "Delete an existing chapter."
+    deleteChapter(id: ID!): Chapter @delete
 }

@@ -1,8 +1,19 @@
 extend type Mutation {
+    "Create a new discipline."
+    createDiscipline(
+        name: String
+        slug: String
+        beta: Boolean
+    ): Discipline @create
+
+    "Update an existing disicpline."
     updateDiscipline(
         id: ID!
         name: String
         slug: String
         beta: Boolean
     ): Discipline @update
+
+    "Delete an existing discipline."
+    deleteDiscipline(id: ID!): Discipline @delete
 }

@@ -1,0 +1,22 @@
+extend type Coupon {
+    "Create a new coupon"
+    createCoupon(
+        id: ID!
+        type: CouponType!
+        value: Int!
+        counter: Int!
+        expires_at: DateTime
+    ): Coupon @create
+
+    "Update an existing coupon"
+    updateCoupon(
+        id: ID!
+        type: CouponType
+        value: Int
+        counter: Int
+        expires_at: DateTime
+    ): Coupon @update
+
+    "Delete an existing coupon"
+    deleteCoupon(id: ID!): Coupon @delete
+}

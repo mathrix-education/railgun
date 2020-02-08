@@ -1,0 +1,25 @@
+extend type Pack {
+    "Create new a pack."
+    createPack(
+        name: String!
+        slug: String!
+        buyable: Boolean!
+        price: Int!
+        order: Int
+        visible: Boolean!
+    ): Pack @create
+
+    "Update an existing pack."
+    updatePack(
+        id: ID!
+        name: String
+        slug: String
+        buyable: Boolean
+        price: Int!
+        order: Int
+        visible: Boolean
+    ): Pack @update
+
+    "Delete an existing pack."
+    deletePack(id: ID!): Pack @delete
+}

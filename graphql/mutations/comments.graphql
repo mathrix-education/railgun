@@ -1,0 +1,19 @@
+extend type Mutation {
+    "Create a new comment"
+    createComment(
+        content: String!
+        "The comment parent id, may be provided only if the comment is an answer to another comment."
+        parent_id: Int
+        commentable_type: String!
+        commentatble_id: Int!
+    ): Comment! @create
+
+    "Update an existing comment"
+    updateComment(
+        id: ID!
+        content: String
+    ): Comment @update
+
+    "Delete an existing comment"
+    deleteComment(id: ID!): Comment @delete
+}

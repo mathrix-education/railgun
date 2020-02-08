@@ -1,4 +1,12 @@
 extend type Mutation {
+    createUser(
+        username: String!
+        email: String!
+        firstname: String
+        lastname: String
+        grade_id: Int
+    ): User @create
+
     updateUser(
         id: ID!
         username: String

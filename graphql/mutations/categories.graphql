@@ -1,0 +1,17 @@
+extend type Mutation {
+    "Create a new category."
+    createCategory(
+        name: String!
+        slug: String!
+    ): Category! @create
+
+    "Update an existing category."
+    updateCategory(
+        id: ID!
+        name: String
+        slug: String
+    ): Category @update
+
+    "Delete an existing category."
+    deleteCategory(id: ID!): Category @delete
+}

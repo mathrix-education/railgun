@@ -1,7 +1,7 @@
 type Flashcard {
     id: ID!
     fronts: [SilicateWall!]!
-    backs:  [SilicateWall!]!
+    backs: [SilicateWall!]!
     order: Int!
     visible: Boolean!
     created_at: DateTime!

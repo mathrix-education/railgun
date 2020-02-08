@@ -1,0 +1,17 @@
+extend type Mutation {
+    "Create a new country"
+    createCountry(
+        name: String!
+        slug: String!
+    ): Country @create
+
+    "Update an existing country"
+    updateCountry(
+        id: ID!
+        name: String
+        slug: String
+    ): Country @update
+
+    "Delete an existing country"
+    deleteCountry(id: ID!): Country @delete
+}

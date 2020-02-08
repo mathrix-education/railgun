@@ -1,4 +1,15 @@
 extend type Mutation {
+    "Create a new grade."
+    createGrade(
+        name: String!
+        slug: String!
+        order: Int
+        visible: Boolean!
+        parent_id: Int
+        country_id: Int!
+    ): Grade @create
+
+    "Update an existing grade."
     updateGrade(
         id: ID!
         name: String
@@ -8,4 +19,7 @@ extend type Mutation {
         parent_id: Int
         country_id: Int
     ): Grade @update
+
+    "Delete an existing grade."
+    deleteGrade(id: ID!): Grade @delete
 }
