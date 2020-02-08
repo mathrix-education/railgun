@@ -3,15 +3,15 @@ extend type Mutation {
     createCountry(
         name: String!
         slug: String!
-    ): Country @create
+    ): Country @permission(scope: "countries:create") @create
 
     "Update an existing country"
     updateCountry(
         id: ID!
         name: String
         slug: String
-    ): Country @update
+    ): Country @permission(scope: "countries:update") @update
 
     "Delete an existing country"
-    deleteCountry(id: ID!): Country @delete
+    deleteCountry(id: ID!): Country @permission(scope: "countries:delete") @delete
 }

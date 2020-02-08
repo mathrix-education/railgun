@@ -4,7 +4,7 @@ extend type Mutation {
         name: String
         slug: String
         beta: Boolean
-    ): Discipline @create
+    ): Discipline @permission(scope: "disciplines:create") @create
 
     "Update an existing disicpline."
     updateDiscipline(
@@ -12,8 +12,8 @@ extend type Mutation {
         name: String
         slug: String
         beta: Boolean
-    ): Discipline @update
+    ): Discipline @permission(scope: "disciplines:update") @update
 
     "Delete an existing discipline."
-    deleteDiscipline(id: ID!): Discipline @delete
+    deleteDiscipline(id: ID!): Discipline @permission(scope: "disciplines:delete") @delete
 }

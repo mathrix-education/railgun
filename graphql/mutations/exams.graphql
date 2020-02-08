@@ -8,7 +8,7 @@ extend type Mutation {
         order: Int
         visible: Boolean
         chapter_id: Int!
-    ): Exam @create
+    ): Exam @permission(scope: "exams:create") @create
 
     "Update an existing exam."
     updateExam(
@@ -20,8 +20,8 @@ extend type Mutation {
         order: Int
         visible: Boolean
         chapter_id: Int
-    ): Exam @update
+    ): Exam @permission(scope: "exams:update") @update
 
     "Delete an existing exam."
-    deleteExam(id: ID!): Exam @delete
+    deleteExam(id: ID!): Exam  @permission(scope: "exams:delete") @delete
 }

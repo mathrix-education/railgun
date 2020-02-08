@@ -12,7 +12,7 @@ extend type Mutation {
         seo_keywords: String
         seo_description: String
         notion_id: Int!
-    ): Course @create
+    ): Course  @permission(scope: "courses:create") @create
 
     "Update an existing course."
     updateCourse(
@@ -28,8 +28,8 @@ extend type Mutation {
         seo_keywords: String
         seo_description: String
         notion_id: Int
-    ): Course @update
+    ): Course @permission(scope: "courses:update") @update
 
     "Delete an existing course."
-    deleteCourse(id: ID!): Course @delete
+    deleteCourse(id: ID!): Course @permission(scope: "courses:delete") @delete
 }

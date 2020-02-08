@@ -6,7 +6,7 @@ extend type Mutation {
         order: Int!
         visible: Boolean!
         chapter_id: Int!
-    ): Flashcard @create
+    ): Flashcard @permission(scope: "flashcards:create") @create
 
     "Update an existing flashcard."
     updateFlashcard (
@@ -16,8 +16,8 @@ extend type Mutation {
         order: Int
         visible: Boolean
         chapter_id: Int
-    ): Flashcard @update
+    ): Flashcard @permission(scope: "flashcards:update") @update
 
     "Delete an existing flashcard."
-    deleteFlashcard(id: ID!): Flashcard @delete
+    deleteFlashcard(id: ID!): Flashcard  @permission(scope: "flashcards:delete") @delete
 }

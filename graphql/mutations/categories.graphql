@@ -3,7 +3,7 @@ extend type Mutation {
     createCategory(
         name: String!
         slug: String!
-    ): Category! @permission(scope: "categories:read") @create
+    ): Category! @permission(scope: "categories:create") @create
 
     "Update an existing category."
     updateCategory(

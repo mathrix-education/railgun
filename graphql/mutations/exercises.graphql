@@ -9,7 +9,7 @@ extend type Mutation {
         order: Int
         visible: Boolean
         subject_id: Int
-    ): Exercise @create
+    ): Exercise  @permission(scope: "exercices:create") @create
 
     "Update an existing exercise."
     updateExercise(
@@ -22,8 +22,8 @@ extend type Mutation {
         order: Int
         visible: Boolean
         subject_id: Int
-    ): Exercise @update
+    ): Exercise @permission(scope: "exercices:update") @update
 
     "Delete an existing exercise."
-    deleteExercise(id: ID!): Exercise @delete
+    deleteExercise(id: ID!): Exercise @permission(scope: "exercices:delete") @delete
 }

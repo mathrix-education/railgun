@@ -7,7 +7,7 @@ extend type Mutation {
         visible: Boolean!
         discipline_id: Int!
         grade_id: Int!
-    ): Chapter! @create
+    ): Chapter! @permission(scope: "chapters:create") @create
 
     "Update an existing chapter."
     updateChapter(
@@ -18,8 +18,8 @@ extend type Mutation {
         visible: Boolean
         discipline_id: Int
         grade_id: Int
-    ): Chapter @update
+    ): Chapter @permission(scope: "categories:update") @update
 
     "Delete an existing chapter."
-    deleteChapter(id: ID!): Chapter @delete
+    deleteChapter(id: ID!): Chapter @permission(scope: "categories:delete") @delete
 }
