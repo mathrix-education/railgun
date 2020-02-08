@@ -3,15 +3,15 @@ extend type Mutation {
     createCategory(
         name: String!
         slug: String!
-    ): Category! @create
+    ): Category! @permission(scope: "categories:read") @create
 
     "Update an existing category."
     updateCategory(
         id: ID!
         name: String
         slug: String
-    ): Category @update
+    ): Category @permission(scope: "categories:update") @update
 
     "Delete an existing category."
-    deleteCategory(id: ID!): Category @delete
+    deleteCategory(id: ID!): Category @permission(scope: "categories:delete") @delete
 }
