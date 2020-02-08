@@ -1,7 +1,7 @@
 extend type Query {
     "Paginate the comments."
-    paginateComments: [Comment!]! @paginate(defaultCount: 10)
+    paginateComments: [Comment!]! @permission(scope: "comments:read") @paginate(defaultCount: 10)
 
     "Read an existing comment."
-    readComment(id: ID!): Comment @find
+    readComment(id: ID!): Comment @permission(scope: "comments:read") @find
 }

@@ -1,7 +1,10 @@
 extend type Query {
     "Paginate the users."
-    paginateUsers: [User!]! @paginate(defaultCount: 10)
+    paginateUsers: [User!]! @permission(scope: "users:read") @paginate(defaultCount: 10)
 
     "Read an existing user."
-    readUser(id: ID @eq): User @find
+    readUser(id: ID @eq): User @permission(scope: "users:read") @find
+
+    "Read the current authenticated user."
+    me: User @auth
 }
