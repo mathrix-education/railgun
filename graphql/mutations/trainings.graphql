@@ -7,7 +7,7 @@ extend type Mutation {
         price: Int!
         order: Int
         visible: Boolean!
-    ): Training @create
+    ): Training @permission(scope: "trainings:create") @create
 
     "Update an existing training."
     updateTraining(
@@ -18,8 +18,8 @@ extend type Mutation {
         price: Int
         order: Int
         visible: Boolean
-    ): Training @update
+    ): Training @permission(scope: "trainings:update") @update
 
     "Delete an existing traiting."
-    deleteTraining(id: ID!): Training @delete
+    deleteTraining(id: ID!): Training @permission(scope: "trainings:delete") @delete
 }

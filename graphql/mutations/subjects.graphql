@@ -5,7 +5,7 @@ extend type Mutation {
         order: Int
         visible: Boolean!
         notion_id: Int!
-    ): Subject! @create
+    ): Subject! @permission(scope: "subjects:create") @create
 
     "Update an existing subject."
     updateSubject(
@@ -14,8 +14,8 @@ extend type Mutation {
         order: Int
         visible: Boolean!
         notion_id: Int!
-    ): Subject @update
+    ): Subject @permission(scope: "subjects:update") @update
 
     "Delete an existing subject."
-    deleteSubject(id: ID!): Subject @delete
+    deleteSubject(id: ID!): Subject @permission(scope: "subjects:delete") @delete
 }

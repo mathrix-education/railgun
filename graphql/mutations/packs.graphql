@@ -7,7 +7,7 @@ extend type Pack {
         price: Int!
         order: Int
         visible: Boolean!
-    ): Pack @create
+    ): Pack @permission(scope: "packs:create") @create
 
     "Update an existing pack."
     updatePack(
@@ -18,8 +18,8 @@ extend type Pack {
         price: Int!
         order: Int
         visible: Boolean
-    ): Pack @update
+    ): Pack @permission(scope: "packs:update") @update
 
     "Delete an existing pack."
-    deletePack(id: ID!): Pack @delete
+    deletePack(id: ID!): Pack @permission(scope: "packs:delete") @delete
 }

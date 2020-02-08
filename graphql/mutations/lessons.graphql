@@ -7,7 +7,7 @@ extend type Mutation {
         order: Int
         visible: Boolean!
         section_id: Int
-    ): Lesson! @create
+    ): Lesson! @permission(scope: "lessons:create") @create
 
     "Update an existing lesson."
     updateLesson(
@@ -18,8 +18,8 @@ extend type Mutation {
         order: Int
         visible: Boolean!
         section_id: Int
-    ): Lesson! @update
+    ): Lesson! @permission(scope: "lessons:update") @update
 
     "Delete an existing lesson."
-    deleteLesson(id: ID!): Lesson @delete
+    deleteLesson(id: ID!): Lesson @permission(scope: "lessons:delete") @delete
 }

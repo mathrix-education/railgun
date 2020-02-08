@@ -7,7 +7,7 @@ extend type Mutation {
         order: Int
         visible: Boolean!
         category_id: Int
-    ): Post @create
+    ): Post @permission(scope: "posts:create") @create
 
     "Update an existing post."
     updatePost(
@@ -18,8 +18,8 @@ extend type Mutation {
         order: Int
         visible: Boolean!
         category_id: Int
-    ): Post @update
+    ): Post @permission(scope: "posts:update") @update
 
     "Delete an existing post."
-    deletePost(id: ID!): Post @delete
+    deletePost(id: ID!): Post @permission(scope: "posts:delete") @delete
 }

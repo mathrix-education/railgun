@@ -7,7 +7,7 @@ extend type Mutation {
         visible: Boolean!
         parent_id: Int
         country_id: Int!
-    ): Grade @create
+    ): Grade @permission(scope: "grades:create") @create
 
     "Update an existing grade."
     updateGrade(
@@ -18,8 +18,8 @@ extend type Mutation {
         visible: Boolean
         parent_id: Int
         country_id: Int
-    ): Grade @update
+    ): Grade @permission(scope: "grades:update") @update
 
     "Delete an existing grade."
-    deleteGrade(id: ID!): Grade @delete
+    deleteGrade(id: ID!): Grade @permission(scope: "grades:delete") @delete
 }

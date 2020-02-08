@@ -6,7 +6,7 @@ extend type Mutation {
         order: Int
         visible: Boolean!
         training_id: Int!
-    ): Section! @create
+    ): Section! @permission(scope: "sections:create") @create
 
     "Update an existing section."
     updateSection(
@@ -16,8 +16,8 @@ extend type Mutation {
         order: Int
         visible: Boolean
         training_id: Int
-    ): Section @update
+    ): Section @permission(scope: "sections:update") @update
 
     "Delete an existing section."
-    deleteSection(id: ID!): Section @delete
+    deleteSection(id: ID!): Section @permission(scope: "sections:delete") @delete
 }

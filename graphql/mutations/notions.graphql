@@ -6,7 +6,7 @@ extend type Mutation {
         order: Int
         visible: Boolean!
         chapter_id: Int!
-    ): Notion! @create
+    ): Notion! @permission(scope: "notions:create") @create
 
     "Update an existing notion."
     updateNotion(
@@ -16,8 +16,8 @@ extend type Mutation {
         order: Int
         visible: Boolean
         chapter_id: Int
-    ): Notion @update
+    ): Notion @permission(scope: "notions:update") @update
 
     "Delete an existing notion."
-    deleteNotion(id: ID!): Notion @delete
+    deleteNotion(id: ID!): Notion @permission(scope: "notions:delete") @delete
 }
