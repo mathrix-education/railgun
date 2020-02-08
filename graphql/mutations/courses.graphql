@@ -1,0 +1,16 @@
+extend type Mutation {
+    updateCourse(
+        id: ID!
+        name: String
+        slug: String
+        content: SilicateWall
+        order: Int
+        visible: Boolean
+        seo_index: Boolean
+        seo_title: String
+        seo_slug: String
+        seo_keywords: String
+        seo_description: String
+        notion_id: Int
+    ): Course @update
+}

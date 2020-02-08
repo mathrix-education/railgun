@@ -1,0 +1,10 @@
+extend type Mutation {
+    updateFlashcard (
+        id: ID!
+        fronts: [SilicateWall!]
+        backs:  [SilicateWall!]
+        order: Int
+        visible: Boolean
+        chapter_id: Int
+    ): Flashcard @update
+}

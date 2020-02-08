@@ -1,0 +1,12 @@
+extend type Mutation {
+    updateExam(
+        id: ID!
+        name: String
+        slug: String
+        duration: Int
+        content: SilicateWall
+        order: Int
+        visible: Boolean
+        chapter_id: Int
+    ): Exam @update
+}

@@ -6,5 +6,5 @@ extend type Mutation {
         visible: Boolean
         order: Int
         chapter_id: Int
-    ): Notion!
+    ): Notion @update
 }
