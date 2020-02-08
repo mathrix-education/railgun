@@ -1,0 +1,10 @@
+extend type Mutation {
+    updateNotion(
+        id: ID!
+        name: String
+        type: String
+        visible: Boolean
+        order: Int
+        chapter_id: Int
+    ): Notion!
+}
