@@ -1,0 +1,4 @@
+extend type Query {
+    "Read an existing section."
+    readSection(id: ID @eq): Section @find
+}

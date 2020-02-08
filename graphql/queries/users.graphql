@@ -1,4 +1,7 @@
 extend type Query {
+    "Paginate the users."
     paginateUsers: [User!]! @paginate(defaultCount: 10)
+
+    "Read an existing user."
     readUser(id: ID @eq): User @find
 }

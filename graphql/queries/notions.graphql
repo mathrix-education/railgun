@@ -1,0 +1,4 @@
+extend type Query {
+    "Read an existing notion."
+    readNotion(id: ID @eq): Notion @find
+}

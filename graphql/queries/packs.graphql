@@ -1,0 +1,4 @@
+extend type Query {
+    "Read an existing pack."
+    readPack(id: ID @eq): Pack @find
+}

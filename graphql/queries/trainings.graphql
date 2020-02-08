@@ -1,0 +1,4 @@
+extend type Query {
+    "Read an existing training."
+    readTraining(id: ID @eq): Training @find
+}

@@ -1,0 +1,4 @@
+extend type Query {
+    "Read an existing subject."
+    readSubject(id: ID @eq): Subject @find
+}

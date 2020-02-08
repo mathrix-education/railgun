@@ -1,0 +1,7 @@
+extend type Query {
+    "Paginate the comments."
+    paginateComments: [Comment!]! @paginate(defaultCount: 10)
+
+    "Read an existing comment."
+    readComment(id: ID!): Comment @find
+}

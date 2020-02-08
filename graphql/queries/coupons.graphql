@@ -1,0 +1,7 @@
+extend type Query {
+    "List all coupons."
+    listCoupons: [Coupon!]! @all
+
+    "Read an existing coupon."
+    readCoupon(id: ID!): Coupon @find
+}

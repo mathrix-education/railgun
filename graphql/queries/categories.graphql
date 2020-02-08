@@ -1,0 +1,7 @@
+extend type Query {
+    "List all categories."
+    listCategories: [Category!]! @all
+
+    "Read a category."
+    readCategory(id: ID!): Category @find
+}

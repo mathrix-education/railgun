@@ -1,5 +1,0 @@
-extend type Query {
-    listGrades: [Grade!]! @all
-    readGrade(id: ID @eq): Grade @find
-    readGradeBySlug(slug: String! @eq): Grade @find
-}

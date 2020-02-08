@@ -1,21 +1,23 @@
 extend type Query {
-    listChapters: [Chapter!]! @all
-
+    "List chapters matching a given grade id and discipline id."
     listChaptersByGradeAndDiscipline(
         gradeId: ID! @where(key: "grade_id")
         disciplineId: ID! @where(key: "discipline_id")
     ): [Chapter!]! @all
 
+    "List chapters matching a given grade slug and discipline slug."
     listChaptersByGradeSlugAndDisciplineSlug(
         gradeSlug: String!
         disciplineSlug: String!
     ): [Chapter!]!
 
+    "Read an existing chapter."
     readChapter(id: ID @eq): Chapter @find
 
+    "Read an existing chapter using its slug, and its linked discipline and grade slug."
     readChapterBySlugs(
-        gradeSlug: String!
-        disciplineSlug: String!
         chapterSlug: String!
+        disciplineSlug: String!
+        gradeSlug: String!
     ): Chapter!
 }

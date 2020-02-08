@@ -1,3 +1,4 @@
 extend type Query {
+    "Read an existing course."
     readCourse(id: ID @eq): Course @find
 }

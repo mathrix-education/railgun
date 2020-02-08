@@ -1,0 +1,4 @@
+extend type Query {
+    "Read an existing report."
+    readReport(id: ID @eq): Report @find
+}
