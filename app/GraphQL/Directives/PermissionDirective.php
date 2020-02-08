@@ -19,6 +19,7 @@ use Railgun\Models\User;
 use RuntimeException;
 use function array_intersect;
 use function count;
+use function in_array;
 
 class PermissionDirective extends BaseDirective implements ArgTransformerDirective, FieldMiddleware, DefinedDirective
 {
@@ -99,6 +100,12 @@ class PermissionDirective extends BaseDirective implements ArgTransformerDirecti
         if ($user === null) {
             throw new MissingScope($scopes);
         }
+
+        if (in_array('*', $user->scopes)) {
+            // Users with scope '*' may bypass this verification.
+            return;
+        }
+
         $result = array_intersect($user->scopes, $scopes);
 
         if (count($result) < $min) {
