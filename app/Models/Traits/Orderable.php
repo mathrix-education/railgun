@@ -35,11 +35,7 @@ trait Orderable
         });
         self::created(static function (Model $model) {
             /** @var Orderable $model */
-            $column = $model->getOrderColumn();
-            $model->getQueryOrder()
-                  ->where($model->getKeyName(), '!=', $model->getKey())
-                  ->where($column, '>=', $model->getOrder())
-                  ->increment($column);
+            $model->pushOrder();
         });
 
         self::updating(static function (Model $model) {
@@ -47,38 +43,29 @@ trait Orderable
             $max   = $model->getMaxOrder();
             $order = $model->getOrder();
 
-            if ($order === null || $order <= $max + 1) {
+            if ($order === null || $order <= $max) {
                 return;
             }
 
-            $model->setOrder($max + 1);
+            $model->setOrder($max);
         });
         self::updated(static function (Model $model) {
             /** @var Orderable $model */
-            $order         = $model->getOrder();
-            $previousOrder = $model->getOriginal($model->getOrderColumn());
-            $column        = $model->getOrderColumn();
-            $query         = $model->getQueryOrder()->where($model->getKeyName(), '!=', $model->getKey());
+            foreach ($model->getOrderGroups() as $orderGroup) {
+                if ($model->wasChanged($orderGroup)) {
+                    $model->pullOrder();
+                    $model->pushOrder();
 
-            if ($order > $previousOrder) {
-                $query->where($column, '>', $previousOrder)
-                      ->where($column, '<=', $order)
-                      ->decrement($column);
-            } elseif ($order < $previousOrder) {
-                $query->where($column, '<', $previousOrder)
-                      ->where($column, '>=', $order)
-                      ->increment($column);
+                    return;
+                }
             }
+
+            $model->moveOrder();
         });
 
         self::deleted(static function (Model $model) {
             /** @var Orderable $model */
-            $previousOrder = $model->getOriginal($model->getOrderColumn());
-            $column        = $model->getOrderColumn();
-            $model->getQueryOrder()
-                  ->where($model->getKeyName(), '!=', $model->getKey())
-                  ->where($column, '<', $previousOrder)
-                  ->decrement($column);
+            $model->pullOrder();
         });
     }
 
@@ -127,14 +114,17 @@ trait Orderable
     /**
      * Get the query matching the order groups.
      *
+     * @param bool $original Use original values instead.
+     *
      * @return Builder
      */
-    public function getQueryOrder(): Builder
+    public function getQueryOrder(bool $original = false): Builder
     {
         $query = self::query();
 
         foreach ($this->getOrderGroups() as $orderColumn) {
-            $query = $query->where($orderColumn, '=', $this->{$orderColumn});
+            $value = !$original ? $this->{$orderColumn} : $this->getOriginal($orderColumn);
+            $query = $query->where($orderColumn, '=', $value);
         }
 
         return $query;
@@ -154,5 +144,52 @@ trait Orderable
                     ->first();
 
         return $max->{$max->getOrderColumn()};
+    }
+
+    /**
+     * Push a model at the given order.
+     */
+    public function pushOrder(): void
+    {
+        $column = $this->getOrderColumn();
+        $this->getQueryOrder()
+             ->where($this->getKeyName(), '!=', $this->getKey())
+             ->where($column, '>=', $this->getOrder())
+             ->increment($column);
+    }
+
+    /**
+     * Pul a model at the given order.
+     */
+    public function pullOrder(): void
+    {
+        $prevOrder = $this->getOriginal($this->getOrderColumn());
+        $column    = $this->getOrderColumn();
+
+        $this->getQueryOrder(true)
+             ->where($this->getKeyName(), '!=', $this->getKey())
+             ->where($column, '<', $prevOrder)
+             ->decrement($column);
+    }
+
+    /**
+     * Optimized version of pull/push order.
+     */
+    public function moveOrder(): void
+    {
+        $order         = $this->getOrder();
+        $column        = $this->getOrderColumn();
+        $previousOrder = $this->getOriginal($column);
+        $query         = $this->getQueryOrder()->where($this->getKeyName(), '!=', $this->getKey());
+
+        if ($order > $previousOrder) {
+            $query->where($column, '>', $previousOrder)
+                  ->where($column, '<=', $order)
+                  ->decrement($column);
+        } elseif ($order < $previousOrder) {
+            $query->where($column, '<', $previousOrder)
+                  ->where($column, '>=', $order)
+                  ->increment($column);
+        }
     }
 }
