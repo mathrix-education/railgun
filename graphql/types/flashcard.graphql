@@ -7,5 +7,6 @@ type Flashcard {
     created_at: DateTime!
     updated_at: DateTime!
     chapter: Chapter! @belongsTo
+    comments: [Comment!] @morphMany
     interaction: Interaction @belongsTo
 }

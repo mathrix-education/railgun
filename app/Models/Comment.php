@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Railgun\Models\Traits\Randomizable;
 
 /**
@@ -48,6 +49,14 @@ class Comment extends Model
     {
         return $this->hasMany(self::class, 'parent_id')
                     ->orderBy('created_at');
+    }
+
+    /**
+     * @return MorphTo
+     */
+    public function commentable(): MorphTo
+    {
+        return $this->morphTo();
     }
 
     /**
