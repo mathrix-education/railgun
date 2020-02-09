@@ -46,14 +46,6 @@ class Post extends Model
     */
 
     /**
-     * BelongsTo Module.
-     */
-    public function module(): BelongsTo
-    {
-        return $this->belongsTo(Module::class);
-    }
-
-    /**
      * BelongsTo Category.
      */
     public function category(): BelongsTo
@@ -67,13 +59,5 @@ class Post extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-
-    /**
-     * HasMany Comments
-     */
-    public function comments(): HasMany
-    {
-        return $this->module->comments();
     }
 }

@@ -32,6 +32,17 @@ class Exercise extends Model
     use Orderable;
     use Randomizable;
 
+    protected $fillable = [
+        'type',
+        'questions',
+        'choices',
+        'solutions',
+        'explanations',
+        'order',
+        'visible',
+        'subject_id',
+    ];
+
     protected $casts = [
         'questions'    => 'array',
         'choices'      => 'array',

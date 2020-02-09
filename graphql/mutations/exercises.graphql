@@ -9,7 +9,7 @@ extend type Mutation {
         order: Int
         visible: Boolean
         subject_id: ID
-    ): Exercise  @permission(scope: "exercices:create") @create
+    ): Exercise @permission(scope: "exercices:create") @create
 
     "Update an existing exercise."
     updateExercise(

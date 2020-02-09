@@ -12,11 +12,11 @@ extend type Mutation {
     "Update an existing lesson."
     updateLesson(
         id: ID!
-        name: String!
-        slug: String!
-        content: SilicateWall!
+        name: String
+        slug: String
+        content: SilicateWall
         order: Int
-        visible: Boolean!
+        visible: Boolean
         section_id: ID
     ): Lesson! @permission(scope: "lessons:update") @update
 

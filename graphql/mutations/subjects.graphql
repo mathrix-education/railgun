@@ -10,10 +10,10 @@ extend type Mutation {
     "Update an existing subject."
     updateSubject(
         id: ID!
-        name: String!
+        name: String
         order: Int
-        visible: Boolean!
-        notion_id: ID!
+        visible: Boolean
+        notion_id: ID
     ): Subject @permission(scope: "subjects:update") @update
 
     "Delete an existing subject."

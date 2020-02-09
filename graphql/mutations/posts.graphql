@@ -12,9 +12,9 @@ extend type Mutation {
     "Update an existing post."
     updatePost(
         id: ID!
-        title: String!
-        slug: String!
-        content: SilicateWall!
+        title: String
+        slug: String
+        content: SilicateWall
         order: Int
         visible: Boolean!
         category_id: ID
