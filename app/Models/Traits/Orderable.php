@@ -94,7 +94,7 @@ trait Orderable
      *
      * @return int
      */
-    public function getOrder(): int
+    public function getOrder(): ?int
     {
         return $this->{$this->getOrderColumn()};
     }
@@ -168,7 +168,7 @@ trait Orderable
 
         $this->getQueryOrder(true)
              ->where($this->getKeyName(), '!=', $this->getKey())
-             ->where($column, '<', $prevOrder)
+             ->where($column, '>', $prevOrder)
              ->decrement($column);
     }
 
