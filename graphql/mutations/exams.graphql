@@ -7,7 +7,7 @@ extend type Mutation {
         content: SilicateWall
         order: Int
         visible: Boolean
-        chapter_id: Int!
+        chapter_id: ID!
     ): Exam @permission(scope: "exams:create") @create
 
     "Update an existing exam."
@@ -19,7 +19,7 @@ extend type Mutation {
         content: SilicateWall
         order: Int
         visible: Boolean
-        chapter_id: Int
+        chapter_id: ID
     ): Exam @permission(scope: "exams:update") @update
 
     "Delete an existing exam."

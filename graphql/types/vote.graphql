@@ -1,6 +1,4 @@
 type Vote {
-    comment_id: Int!
-    user_id: Int!
     value: Int
     created_at: DateTime!
     updated_at: DateTime!

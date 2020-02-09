@@ -11,7 +11,7 @@ extend type Mutation {
         seo_slug: String
         seo_keywords: String
         seo_description: String
-        notion_id: Int!
+        notion_id: ID!
     ): Course  @permission(scope: "courses:create") @create
 
     "Update an existing course."
@@ -27,7 +27,7 @@ extend type Mutation {
         seo_slug: String
         seo_keywords: String
         seo_description: String
-        notion_id: Int
+        notion_id: ID
     ): Course @permission(scope: "courses:update") @update
 
     "Delete an existing course."

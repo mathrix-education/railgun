@@ -5,7 +5,7 @@ extend type Mutation {
         slug: String!
         order: Int
         visible: Boolean!
-        training_id: Int!
+        training_id: ID!
     ): Section! @permission(scope: "sections:create") @create
 
     "Update an existing section."
@@ -15,7 +15,7 @@ extend type Mutation {
         slug: String
         order: Int
         visible: Boolean
-        training_id: Int
+        training_id: ID
     ): Section @permission(scope: "sections:update") @update
 
     "Delete an existing section."

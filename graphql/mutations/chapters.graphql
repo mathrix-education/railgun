@@ -5,8 +5,8 @@ extend type Mutation {
         slug: String!
         order: Int
         visible: Boolean!
-        discipline_id: Int!
-        grade_id: Int!
+        discipline_id: ID!
+        grade_id: ID!
     ): Chapter! @permission(scope: "chapters:create") @create
 
     "Update an existing chapter."
@@ -16,8 +16,8 @@ extend type Mutation {
         slug: String
         order: Int
         visible: Boolean
-        discipline_id: Int
-        grade_id: Int
+        discipline_id: ID
+        grade_id: ID
     ): Chapter @permission(scope: "categories:update") @update
 
     "Delete an existing chapter."

@@ -5,8 +5,8 @@ extend type Mutation {
         slug: String!
         order: Int
         visible: Boolean!
-        parent_id: Int
-        country_id: Int!
+        parent_id: ID
+        country_id: ID!
     ): Grade @permission(scope: "grades:create") @create
 
     "Update an existing grade."
@@ -16,8 +16,8 @@ extend type Mutation {
         slug: String
         order: Int
         visible: Boolean
-        parent_id: Int
-        country_id: Int
+        parent_id: ID
+        country_id: ID
     ): Grade @permission(scope: "grades:update") @update
 
     "Delete an existing grade."

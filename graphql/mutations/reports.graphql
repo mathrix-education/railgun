@@ -5,7 +5,7 @@ extend type Mutation {
         content: String!
         status: String!
         reportable_type: String!
-        reportable_id: Int!
+        reportable_id: ID!
     ): Report! @create
 
     "Update an existing report."
@@ -15,7 +15,7 @@ extend type Mutation {
         content: String
         status: String
         reportable_type: String
-        reportable_id: Int
+        reportable_id: ID
     ): Report @permission(scope: "reports:update")  @update
 
     "Delete an existing report."

@@ -6,7 +6,7 @@ extend type Mutation {
         content: SilicateWall!
         order: Int
         visible: Boolean!
-        section_id: Int
+        section_id: ID
     ): Lesson! @permission(scope: "lessons:create") @create
 
     "Update an existing lesson."
@@ -17,7 +17,7 @@ extend type Mutation {
         content: SilicateWall!
         order: Int
         visible: Boolean!
-        section_id: Int
+        section_id: ID
     ): Lesson! @permission(scope: "lessons:update") @update
 
     "Delete an existing lesson."

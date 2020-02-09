@@ -3,9 +3,9 @@ extend type Mutation {
     createComment(
         content: String!
         "The comment parent id, may be provided only if the comment is an answer to another comment."
-        parent_id: Int
+        parent_id: ID
         commentable_type: String!
-        commentatble_id: Int!
+        commentatble_id: ID!
     ): Comment! @create
 
     "Update an existing comment"

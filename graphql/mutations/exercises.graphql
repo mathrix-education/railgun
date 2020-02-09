@@ -8,7 +8,7 @@ extend type Mutation {
         examplations: [SilicateWall!]
         order: Int
         visible: Boolean
-        subject_id: Int
+        subject_id: ID
     ): Exercise  @permission(scope: "exercices:create") @create
 
     "Update an existing exercise."
@@ -21,7 +21,7 @@ extend type Mutation {
         examplations: [SilicateWall!]
         order: Int
         visible: Boolean
-        subject_id: Int
+        subject_id: ID
     ): Exercise @permission(scope: "exercices:update") @update
 
     "Delete an existing exercise."

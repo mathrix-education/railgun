@@ -6,7 +6,7 @@ extend type Mutation {
         content: SilicateWall!
         order: Int
         visible: Boolean!
-        category_id: Int
+        category_id: ID
     ): Post @permission(scope: "posts:create") @create
 
     "Update an existing post."
@@ -17,7 +17,7 @@ extend type Mutation {
         content: SilicateWall!
         order: Int
         visible: Boolean!
-        category_id: Int
+        category_id: ID
     ): Post @permission(scope: "posts:update") @update
 
     "Delete an existing post."

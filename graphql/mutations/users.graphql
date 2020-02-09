@@ -5,7 +5,7 @@ extend type Mutation {
         firstname: String
         lastname: String
         password: String!
-        grade_id: Int
+        grade_id: ID
     ): User @create
 
     updateUser(

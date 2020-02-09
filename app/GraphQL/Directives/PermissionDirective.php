@@ -7,7 +7,7 @@ namespace Railgun\GraphQL\Directives;
 use Closure;
 use Exception;
 use GraphQL\Type\Definition\ResolveInfo;
-use Illuminate\Auth\AuthManager;
+use Illuminate\Support\Facades\Auth;
 use Nuwave\Lighthouse\Schema\Directives\BaseDirective;
 use Nuwave\Lighthouse\Schema\Values\FieldValue;
 use Nuwave\Lighthouse\Support\Contracts\ArgTransformerDirective;
@@ -23,17 +23,6 @@ use function in_array;
 
 class PermissionDirective extends BaseDirective implements ArgTransformerDirective, FieldMiddleware, DefinedDirective
 {
-    /** @var AuthManager */
-    protected AuthManager $auth;
-
-    /**
-     * @param AuthManager $auth
-     */
-    public function __construct(AuthManager $auth)
-    {
-        $this->auth = $auth;
-    }
-
     /**
      * SDL definition of the directive.
      *
@@ -93,9 +82,8 @@ class PermissionDirective extends BaseDirective implements ArgTransformerDirecti
             throw new RuntimeException('PermissionDirective: at least of scope, allOf or anyOf arguments is required.');
         }
 
-        $guard = $this->auth->guard($this->directiveArgValue('guard'));
         /** @var User $user */
-        $user = $guard->user();
+        $user = Auth::user();
 
         if ($user === null) {
             throw new MissingScope($scopes);
