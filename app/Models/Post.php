@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Railgun\Models\Traits\Orderable;
 use Railgun\Models\Traits\Randomizable;
 
 /**
@@ -23,6 +24,7 @@ use Railgun\Models\Traits\Randomizable;
  */
 class Post extends Model
 {
+    use Orderable;
     use Randomizable;
 
     /** @var array The attributes that are mass assignable */
@@ -34,6 +36,8 @@ class Post extends Model
         'visible',
         'category_id',
     ];
+
+    protected $orderGroups = ['category_id'];
 
     /*
     |--------------------------------------------------------------------------

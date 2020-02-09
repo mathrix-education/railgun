@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Railgun\Models\Traits\Orderable;
 use Railgun\Models\Traits\Randomizable;
 
 /**
@@ -28,9 +29,9 @@ use Railgun\Models\Traits\Randomizable;
  */
 class Chapter extends Model
 {
+    use Orderable;
     use Randomizable;
 
-    /** @var array The attributes that are mass assignable */
     protected $fillable = [
         'name',
         'slug',
@@ -39,7 +40,10 @@ class Chapter extends Model
         'grade_id',
         'discipline_id',
     ];
-    protected $casts    = ['visible' => 'boolean'];
+
+    protected $casts = ['visible' => 'boolean'];
+
+    protected array $orderGroups = ['discipline_id', 'grade_id'];
 
     /**
      * @return BelongsTo<Discipline>
@@ -63,8 +67,8 @@ class Chapter extends Model
     public function courseNotions(): HasMany
     {
         return $this->hasMany(Notion::class)
-            ->where('type', '=', 'course')
-            ->orderBy('order');
+                    ->where('type', '=', 'course')
+                    ->orderBy('order');
     }
 
     /**
@@ -73,8 +77,8 @@ class Chapter extends Model
     public function subjectNotions(): HasMany
     {
         return $this->hasMany(Notion::class)
-            ->where('type', '=', 'subject')
-            ->orderBy('order');
+                    ->where('type', '=', 'subject')
+                    ->orderBy('order');
     }
 
     /**

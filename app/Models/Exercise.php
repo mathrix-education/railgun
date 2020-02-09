@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Traits\Interactable;
+use Railgun\Models\Traits\Orderable;
 use Railgun\Models\Traits\Randomizable;
 
 /**
@@ -28,6 +29,7 @@ use Railgun\Models\Traits\Randomizable;
 class Exercise extends Model
 {
     use Interactable;
+    use Orderable;
     use Randomizable;
 
     protected $casts = [
@@ -36,6 +38,8 @@ class Exercise extends Model
         'solutions'    => 'array',
         'explanations' => 'array',
     ];
+
+    protected $orderGroups = ['subject_id'];
 
     /**
      * @return BelongsTo<Subject>

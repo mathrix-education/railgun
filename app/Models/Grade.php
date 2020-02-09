@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Railgun\Models\Traits\Orderable;
 use Railgun\Models\Traits\Randomizable;
 
 /**
@@ -32,11 +33,21 @@ use Railgun\Models\Traits\Randomizable;
  */
 class Grade extends Model
 {
+    use Orderable;
     use Randomizable;
 
-    /** @var array The attributes that are mass assignable */
-    protected $fillable = ['name', 'slug', 'order', 'visible', 'parent_id', 'country_id'];
-    protected $casts    = ['visible' => 'boolean'];
+    protected $fillable = [
+        'name',
+        'slug',
+        'order',
+        'visible',
+        'parent_id',
+        'country_id',
+    ];
+
+    protected $casts = ['visible' => 'boolean'];
+
+    protected $orderGroups = ['country_id'];
 
     /**
      * The parent grade.
@@ -80,7 +91,7 @@ class Grade extends Model
     public function disciplines(): BelongsToMany
     {
         return $this->belongsToMany(Discipline::class, 'chapters')
-            ->groupBy(['grade_id', 'discipline_id']);
+                    ->groupBy(['grade_id', 'discipline_id']);
     }
 
     /**

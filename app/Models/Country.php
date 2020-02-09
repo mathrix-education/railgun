@@ -26,9 +26,9 @@ class Country extends Model
 {
     use Randomizable;
 
-    /** @var array The attributes that are mass assignable */
     protected $fillable = ['id', 'name', 'slug', 'visible'];
-    protected $casts    = ['visible' => 'boolean'];
+
+    protected $casts = ['visible' => 'boolean'];
 
     /**
      * @return HasMany<Grade>

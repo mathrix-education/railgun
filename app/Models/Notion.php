@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Railgun\Models\Traits\Orderable;
 use Railgun\Models\Traits\Randomizable;
 
 /**
@@ -25,6 +26,7 @@ use Railgun\Models\Traits\Randomizable;
  */
 class Notion extends Model
 {
+    use Orderable;
     use Randomizable;
 
     public const TYPES = ['course', 'subject'];
@@ -37,7 +39,10 @@ class Notion extends Model
         'order',
         'chapter_id',
     ];
-    protected $casts    = ['visible' => 'boolean'];
+
+    protected $casts = ['visible' => 'boolean'];
+
+    protected $orderGroups = ['chapter_id', 'type'];
 
     /**
      * @return BelongsTo<Chapter>

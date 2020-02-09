@@ -6,6 +6,7 @@ namespace Railgun\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Railgun\Models\Traits\Orderable;
 use Railgun\Models\Traits\Randomizable;
 
 /**
@@ -19,7 +20,19 @@ use Railgun\Models\Traits\Randomizable;
  */
 class Subject extends Model
 {
+    use Orderable;
     use Randomizable;
+
+    protected $fillable = [
+        'name',
+        'order',
+        'visible',
+        'notion_id',
+    ];
+
+    protected $casts = ['visible' => 'boolean'];
+
+    protected $orderGroups = ['notion_id'];
 
     /**
      * @return BelongsTo<Notion>

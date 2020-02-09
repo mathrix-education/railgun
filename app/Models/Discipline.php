@@ -26,9 +26,9 @@ class Discipline extends Model
 {
     use Randomizable;
 
-    /** @var array The attributes that are mass assignable */
     protected $fillable = ['id', 'name', 'slug', 'beta'];
-    protected $casts    = [
+
+    protected $casts = [
         'visible' => 'boolean',
         'beta'    => 'boolean',
     ];
@@ -39,7 +39,7 @@ class Discipline extends Model
     public function grades(): BelongsToMany
     {
         return $this->belongsToMany(Grade::class, 'chapters')
-            ->groupBy(['grade_id', 'discipline_id']);
+                    ->groupBy(['grade_id', 'discipline_id']);
     }
 
     /**

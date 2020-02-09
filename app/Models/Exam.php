@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Traits\Interactable;
+use Railgun\Models\Traits\Orderable;
 use Railgun\Models\Traits\Randomizable;
 
 /**
@@ -25,9 +26,25 @@ use Railgun\Models\Traits\Randomizable;
 class Exam extends Model
 {
     use Interactable;
+    use Orderable;
     use Randomizable;
 
-    protected $casts = ['content' => 'array'];
+    protected $fillable = [
+        'name',
+        'slug',
+        'duration',
+        'content',
+        'order',
+        'visible',
+        'chapter_id',
+    ];
+
+    protected $casts = [
+        'content'  => 'array',
+        'visible' => 'boolean',
+    ];
+
+    protected $orderGroups = ['chapter_id'];
 
     /**
      * @return BelongsTo<Chapter>

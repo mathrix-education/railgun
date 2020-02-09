@@ -7,10 +7,10 @@ namespace Tests\GraphQL\Mutations;
 use Mathrix\Lumen\JWT\Drivers\Driver;
 use Railgun\Models\User;
 use Tests\GraphQLTestCase;
+use const JSON_THROW_ON_ERROR;
 use function app;
 use function env;
 use function json_decode;
-use const JSON_THROW_ON_ERROR;
 
 /**
  * @testdox Mutation LoginBasic

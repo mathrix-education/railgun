@@ -7,6 +7,7 @@ namespace Railgun\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Railgun\Models\Traits\Orderable;
 use Railgun\Models\Traits\Randomizable;
 
 /**
@@ -22,7 +23,22 @@ use Railgun\Models\Traits\Randomizable;
  */
 class Pack extends Model
 {
+    use Orderable;
     use Randomizable;
+
+    protected $fillable = [
+        'name',
+        'slug',
+        'buyable',
+        'price',
+        'order',
+        'visible',
+    ];
+
+    protected $casts = [
+        'buyable' => 'boolean',
+        'visible' => 'boolean',
+    ];
 
     /**
      * @return BelongsToMany<Training>

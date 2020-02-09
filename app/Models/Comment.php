@@ -25,13 +25,12 @@ class Comment extends Model
 {
     use Randomizable;
 
-    /** @var array The attributes that are mass assignable */
     protected $fillable = [
         'content',
         'parent_id',
         'user_id',
-        'module_id',
-        'deleted_at',
+        'commentable_type',
+        'commentable_id',
     ];
 
     /**
@@ -48,7 +47,7 @@ class Comment extends Model
     public function children(): HasMany
     {
         return $this->hasMany(self::class, 'parent_id')
-            ->orderBy('created_at');
+                    ->orderBy('created_at');
     }
 
     /**

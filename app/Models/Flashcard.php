@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Traits\Interactable;
+use Railgun\Models\Traits\Orderable;
 use Railgun\Models\Traits\Randomizable;
 
 /**
@@ -25,6 +26,7 @@ use Railgun\Models\Traits\Randomizable;
 class Flashcard extends Model
 {
     use Interactable;
+    use Orderable;
     use Randomizable;
 
     protected $fillable = ['fronts', 'backs', 'order', 'visible', 'chapter_id'];
@@ -33,6 +35,8 @@ class Flashcard extends Model
         'fronts' => 'array',
         'backs'  => 'array',
     ];
+
+    protected $orderGroups = ['chapter_id'];
 
     /**
      * @return BelongsTo<Chapter>

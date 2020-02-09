@@ -7,9 +7,6 @@ namespace Tests\GraphQL;
 use Illuminate\Support\Facades\Artisan;
 use Tests\BaseTestCase;
 
-/**
- *
- */
 class SchemaTest extends BaseTestCase
 {
     public function testSchemaIntegrity()
