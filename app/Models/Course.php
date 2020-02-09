@@ -34,6 +34,19 @@ class Course extends Model
     use Orderable;
     use Randomizable;
 
+    protected $fillable = [
+        'name',
+        'slug',
+        'content',
+        'order',
+        'visible',
+        'seo_index',
+        'seo_title',
+        'seo_slug',
+        'seo_description',
+        'notion_id',
+    ];
+
     protected $casts = ['content' => 'array'];
 
     protected array $orderGroups = ['notion_id'];
