@@ -62,7 +62,7 @@ class Chapter extends Model
     }
 
     /**
-     * @return HasMany<Course>
+     * @return HasMany<Notion>
      */
     public function courseNotions(): HasMany
     {
@@ -72,7 +72,7 @@ class Chapter extends Model
     }
 
     /**
-     * @return HasMany<Subject>
+     * @return HasMany<Notion>
      */
     public function subjectNotions(): HasMany
     {
@@ -86,7 +86,7 @@ class Chapter extends Model
      */
     public function flashcards(): HasMany
     {
-        return $this->hasMany(Flashcard::class);
+        return $this->hasMany(Flashcard::class)->orderBy('order');
     }
 
     /**
@@ -94,6 +94,6 @@ class Chapter extends Model
      */
     public function exams(): HasMany
     {
-        return $this->hasMany(Exam::class);
+        return $this->hasMany(Exam::class)->orderBy('order');
     }
 }

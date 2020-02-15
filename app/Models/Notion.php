@@ -57,7 +57,7 @@ class Notion extends Model
      */
     public function courses(): HasMany
     {
-        return $this->hasMany(Course::class);
+        return $this->hasMany(Course::class)->orderBy('order');
     }
 
     /**
@@ -65,6 +65,6 @@ class Notion extends Model
      */
     public function subjects(): HasMany
     {
-        return $this->hasMany(Subject::class);
+        return $this->hasMany(Subject::class)->orderBy('order');
     }
 }
