@@ -31,7 +31,7 @@ jobs:
       - name: Setup Google Cloud Service Account Key
         run: echo "${{ secrets.GCLOUD_AUTH }}" | base64 -d > storage/keychain/service_account.json
       - name: Setup PHP
-        uses: shivammathur/setup-php@1.7.4
+        uses: shivammathur/setup-php@2.0.0
         with:
           php-version: 7.4
           extensions: gd, gmp, mbstring, mysql, zip
@@ -101,7 +101,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup PHP
-        uses: shivammathur/setup-php@1.7.4
+        uses: shivammathur/setup-php@2.0.0
         with:
           php-version: 7.4
           extensions: gd, gmp, mbstring, mysql, zip
