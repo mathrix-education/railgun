@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'name'            => 'Mathrix Education API',
+    'name'            => 'Railgun',
     'env'             => env('APP_ENV', 'master'),
     'debug'           => env('APP_DEBUG', false),
     'url'             => env('APP_URL', 'http://localhost'),
